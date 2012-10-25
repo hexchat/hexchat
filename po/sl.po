@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-22 20:37+0200\n"
-"PO-Revision-Date: 2012-10-22 18:39+0000\n"
+"POT-Creation-Date: 2012-10-25 21:18+0200\n"
+"PO-Revision-Date: 2012-10-25 19:21+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,49 +34,177 @@ msgid ""
 "  create a User Account and use that to login.\n"
 msgstr "* Uporaba IRC-a kot root uporabnik je neumna!\n  Ustvarite uporabniški račun in ga uporabite za prijavo.\n"
 
-#: src/common/dcc.c:72
+#: src/common/dcc.c:84
 msgid "Waiting"
 msgstr "Čakam"
 
-#: src/common/dcc.c:73
+#: src/common/dcc.c:85
 msgid "Active"
 msgstr "Aktiven"
 
-#: src/common/dcc.c:74
+#: src/common/dcc.c:86
 msgid "Failed"
 msgstr "Spodletelo"
 
-#: src/common/dcc.c:75
+#: src/common/dcc.c:87
 msgid "Done"
 msgstr "Opravljeno"
 
-#: src/common/dcc.c:76 src/fe-gtk/menu.c:943
+#: src/common/dcc.c:88 src/fe-gtk/menu.c:943
 msgid "Connect"
 msgstr "Poveži se"
 
-#: src/common/dcc.c:77
+#: src/common/dcc.c:89
 msgid "Aborted"
 msgstr "Prekinjeno"
 
-#: src/common/dcc.c:1892 src/common/outbound.c:2508
+#: src/common/dcc.c:1898 src/common/outbound.c:2508
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Ne morem dostopati do %s\n"
 
-#: src/common/dcc.c:1893 src/common/text.c:1441 src/common/text.c:1479
+#: src/common/dcc.c:1899 src/common/text.c:1441 src/common/text.c:1479
 #: src/common/text.c:1490 src/common/text.c:1497 src/common/text.c:1510
 #: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:356
 msgid "Error"
 msgstr "Napaka"
 
-#: src/common/dcc.c:2379
+#: src/common/dcc.c:2378
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
 msgstr ""
 
-#: src/common/dcc.c:2594
+#: src/common/dcc.c:2593
 msgid "No active DCCs\n"
 msgstr "Ni aktivnih DCCjev\n"
+
+#: src/common/hexchat.c:741
+msgid "_Open Dialog Window"
+msgstr ""
+
+#: src/common/hexchat.c:742
+msgid "_Send a File"
+msgstr ""
+
+#: src/common/hexchat.c:743
+msgid "_User Info (WhoIs)"
+msgstr ""
+
+#: src/common/hexchat.c:744
+msgid "_Add to Friends List"
+msgstr ""
+
+#: src/common/hexchat.c:745
+msgid "_Ignore"
+msgstr ""
+
+#: src/common/hexchat.c:746
+msgid "O_perator Actions"
+msgstr ""
+
+#: src/common/hexchat.c:748
+msgid "Give Ops"
+msgstr "Dodeli status op"
+
+#: src/common/hexchat.c:749
+msgid "Take Ops"
+msgstr "Odvzemi status op"
+
+#: src/common/hexchat.c:750
+msgid "Give Voice"
+msgstr "Dodeli glasovni privilegij"
+
+#: src/common/hexchat.c:751
+msgid "Take Voice"
+msgstr "Odvzemi glasovni privilegij"
+
+#: src/common/hexchat.c:753
+msgid "Kick/Ban"
+msgstr "Brcni/Izobči"
+
+#: src/common/hexchat.c:754 src/common/hexchat.c:791
+msgid "Kick"
+msgstr "Brcni"
+
+#: src/common/hexchat.c:755 src/common/hexchat.c:756 src/common/hexchat.c:757
+#: src/common/hexchat.c:758 src/common/hexchat.c:759 src/common/hexchat.c:790
+msgid "Ban"
+msgstr "Izobči"
+
+#: src/common/hexchat.c:760 src/common/hexchat.c:761 src/common/hexchat.c:762
+#: src/common/hexchat.c:763
+msgid "KickBan"
+msgstr "Brcni in izobči"
+
+#: src/common/hexchat.c:773
+msgid "Leave Channel"
+msgstr "Zapusti kanal"
+
+#: src/common/hexchat.c:774
+msgid "Join Channel..."
+msgstr "Pridruži se kanalu ..."
+
+#: src/common/hexchat.c:775 src/fe-gtk/menu.c:1337
+msgid "Enter Channel to Join:"
+msgstr "Kanal, ki se mu želite pridružiti:"
+
+#: src/common/hexchat.c:776
+msgid "Server Links"
+msgstr "Povezave strežnikov"
+
+#: src/common/hexchat.c:777
+msgid "Ping Server"
+msgstr "\"Ping\" strežnika"
+
+#: src/common/hexchat.c:778
+msgid "Hide Version"
+msgstr "Skrij različico"
+
+#: src/common/hexchat.c:788
+msgid "Op"
+msgstr "Dodeli op"
+
+#: src/common/hexchat.c:789
+msgid "DeOp"
+msgstr "Odvzemi op"
+
+#: src/common/hexchat.c:792
+msgid "bye"
+msgstr "Nasvidenje"
+
+#: src/common/hexchat.c:793
+#, c-format
+msgid "Enter reason to kick %s:"
+msgstr "Vnesite razlog za brco %s:"
+
+#: src/common/hexchat.c:794
+msgid "Sendfile"
+msgstr "Datoteka za pošiljanje"
+
+#: src/common/hexchat.c:795
+msgid "Dialog"
+msgstr "Pogovorno okno"
+
+#: src/common/hexchat.c:804
+msgid "WhoIs"
+msgstr "Whois"
+
+#: src/common/hexchat.c:805
+msgid "Send"
+msgstr "Pošlji"
+
+#: src/common/hexchat.c:806
+msgid "Chat"
+msgstr "Klepet"
+
+#: src/common/hexchat.c:807 src/fe-gtk/banlist.c:411
+#: src/fe-gtk/ignoregui.c:383 src/fe-gtk/urlgrab.c:212
+msgid "Clear"
+msgstr "Počisti"
+
+#: src/common/hexchat.c:808
+msgid "Ping"
+msgstr "Ping"
 
 #: src/common/ignore.c:125 src/common/ignore.c:129 src/common/ignore.c:133
 #: src/common/ignore.c:137 src/common/ignore.c:141 src/common/ignore.c:145
@@ -620,12 +748,12 @@ msgstr "Ne morem določiti imena gostitelja %s\nPreverite svoje nastavitve IP!\n
 msgid "Proxy traversal failed.\n"
 msgstr "Prečkanje proxyja neuspešno.\n"
 
-#: src/common/servlist.c:727
+#: src/common/servlist.c:747
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr "Povezujem se z naslednjim strežnikom v %s...\n"
 
-#: src/common/servlist.c:1179
+#: src/common/servlist.c:1206
 #, c-format
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
@@ -1190,13 +1318,13 @@ msgid "Nick of person who changed the topic"
 msgstr "Vzdevek osebe, ki je spremenila temo"
 
 #: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:357
+#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:356
 msgid "Topic"
 msgstr "Tema"
 
 #: src/common/text.c:1179 src/common/text.c:1183 src/common/text.c:1620
 #: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
-#: src/fe-gtk/servlistgui.c:892
+#: src/fe-gtk/servlistgui.c:894
 msgid "Channel"
 msgstr "Kanal"
 
@@ -1441,7 +1569,7 @@ msgid "Channel Name"
 msgstr "Ime kanala"
 
 #: src/common/text.c:1414 src/common/text.c:1420 src/common/text.c:1578
-#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
+#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:245
 #: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Besedilo"
@@ -2721,134 +2849,6 @@ msgstr "Zimbabve"
 msgid "Unknown"
 msgstr "Neznan"
 
-#: src/common/xchat.c:741
-msgid "_Open Dialog Window"
-msgstr ""
-
-#: src/common/xchat.c:742
-msgid "_Send a File"
-msgstr ""
-
-#: src/common/xchat.c:743
-msgid "_User Info (WhoIs)"
-msgstr ""
-
-#: src/common/xchat.c:744
-msgid "_Add to Friends List"
-msgstr ""
-
-#: src/common/xchat.c:745
-msgid "_Ignore"
-msgstr ""
-
-#: src/common/xchat.c:746
-msgid "O_perator Actions"
-msgstr ""
-
-#: src/common/xchat.c:748
-msgid "Give Ops"
-msgstr "Dodeli status op"
-
-#: src/common/xchat.c:749
-msgid "Take Ops"
-msgstr "Odvzemi status op"
-
-#: src/common/xchat.c:750
-msgid "Give Voice"
-msgstr "Dodeli glasovni privilegij"
-
-#: src/common/xchat.c:751
-msgid "Take Voice"
-msgstr "Odvzemi glasovni privilegij"
-
-#: src/common/xchat.c:753
-msgid "Kick/Ban"
-msgstr "Brcni/Izobči"
-
-#: src/common/xchat.c:754 src/common/xchat.c:791
-msgid "Kick"
-msgstr "Brcni"
-
-#: src/common/xchat.c:755 src/common/xchat.c:756 src/common/xchat.c:757
-#: src/common/xchat.c:758 src/common/xchat.c:759 src/common/xchat.c:790
-msgid "Ban"
-msgstr "Izobči"
-
-#: src/common/xchat.c:760 src/common/xchat.c:761 src/common/xchat.c:762
-#: src/common/xchat.c:763
-msgid "KickBan"
-msgstr "Brcni in izobči"
-
-#: src/common/xchat.c:773
-msgid "Leave Channel"
-msgstr "Zapusti kanal"
-
-#: src/common/xchat.c:774
-msgid "Join Channel..."
-msgstr "Pridruži se kanalu ..."
-
-#: src/common/xchat.c:775 src/fe-gtk/menu.c:1337
-msgid "Enter Channel to Join:"
-msgstr "Kanal, ki se mu želite pridružiti:"
-
-#: src/common/xchat.c:776
-msgid "Server Links"
-msgstr "Povezave strežnikov"
-
-#: src/common/xchat.c:777
-msgid "Ping Server"
-msgstr "\"Ping\" strežnika"
-
-#: src/common/xchat.c:778
-msgid "Hide Version"
-msgstr "Skrij različico"
-
-#: src/common/xchat.c:788
-msgid "Op"
-msgstr "Dodeli op"
-
-#: src/common/xchat.c:789
-msgid "DeOp"
-msgstr "Odvzemi op"
-
-#: src/common/xchat.c:792
-msgid "bye"
-msgstr "Nasvidenje"
-
-#: src/common/xchat.c:793
-#, c-format
-msgid "Enter reason to kick %s:"
-msgstr "Vnesite razlog za brco %s:"
-
-#: src/common/xchat.c:794
-msgid "Sendfile"
-msgstr "Datoteka za pošiljanje"
-
-#: src/common/xchat.c:795
-msgid "Dialog"
-msgstr "Pogovorno okno"
-
-#: src/common/xchat.c:804
-msgid "WhoIs"
-msgstr "Whois"
-
-#: src/common/xchat.c:805
-msgid "Send"
-msgstr "Pošlji"
-
-#: src/common/xchat.c:806
-msgid "Chat"
-msgstr "Klepet"
-
-#: src/common/xchat.c:807 src/fe-gtk/banlist.c:411 src/fe-gtk/ignoregui.c:383
-#: src/fe-gtk/urlgrab.c:212
-msgid "Clear"
-msgstr "Počisti"
-
-#: src/common/xchat.c:808
-msgid "Ping"
-msgstr "Ping"
-
 #: src/common/dbus/dbus-client.c:72
 msgid "Couldn't connect to session bus"
 msgstr ""
@@ -3063,7 +3063,7 @@ msgstr "Datoteka"
 msgid "ETA"
 msgstr "Preostanek čas"
 
-#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:247
+#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:246
 msgid "Both"
 msgstr "Oboje"
 
@@ -3192,7 +3192,7 @@ msgstr ""
 msgid "Open an irc://server:port/channel URL"
 msgstr ""
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:298
+#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:297
 msgid "Execute command:"
 msgstr "Ukaz za povezavo:"
 
@@ -3961,7 +3961,7 @@ msgstr ""
 msgid "_Network Meters"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:244
+#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:243
 msgid "Off"
 msgstr "Izključeno"
 
@@ -4145,7 +4145,7 @@ msgstr "Nazadnje viden"
 msgid "Offline"
 msgstr "Odsoten"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:316
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:315
 msgid "Never"
 msgstr "Nikoli"
 
@@ -4329,200 +4329,208 @@ msgstr ""
 msgid "Close and _Reset"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:173 src/fe-gtk/servlistgui.c:282
+#: src/fe-gtk/servlistgui.c:174 src/fe-gtk/servlistgui.c:283
 msgid "New Network"
 msgstr "Novo omrežje"
 
-#: src/fe-gtk/servlistgui.c:554
+#: src/fe-gtk/servlistgui.c:556
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr "Res odstranim omrežje \"%s\" in vse njegove strežnike?"
 
-#: src/fe-gtk/servlistgui.c:736
+#: src/fe-gtk/servlistgui.c:738
 msgid "#channel"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:846
+#: src/fe-gtk/servlistgui.c:848
 msgid ": Favorite Channels (Auto-Join List)"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:859
+#: src/fe-gtk/servlistgui.c:861
 #, c-format
 msgid "These channels will be joined whenever you connect to %s."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:902
+#: src/fe-gtk/servlistgui.c:904
 msgid "Key (Password)"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:933 src/fe-gtk/servlistgui.c:1573
+#: src/fe-gtk/servlistgui.c:935 src/fe-gtk/servlistgui.c:1581
 msgid "_Edit"
 msgstr "Uredi"
 
-#: src/fe-gtk/servlistgui.c:969
+#: src/fe-gtk/servlistgui.c:971
 #, c-format
 msgid "%s has been removed."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:989
+#: src/fe-gtk/servlistgui.c:991
 #, c-format
 msgid "%s has been added."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1013
+#: src/fe-gtk/servlistgui.c:1015
 msgid "User name and Real name cannot be left blank."
 msgstr "Uporabniško ime in pravo ne morete pustiti praznih."
 
-#: src/fe-gtk/servlistgui.c:1404
+#: src/fe-gtk/servlistgui.c:1406
 #, c-format
 msgid ": Edit %s"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1423
+#: src/fe-gtk/servlistgui.c:1425
 #, c-format
 msgid "Servers for %s"
 msgstr "Strežnik: %s"
 
-#: src/fe-gtk/servlistgui.c:1434
+#: src/fe-gtk/servlistgui.c:1436
 msgid "Connect to selected server only"
 msgstr "Poveži se samo na izbrani strežnik"
 
-#: src/fe-gtk/servlistgui.c:1435
+#: src/fe-gtk/servlistgui.c:1437
 msgid "Don't cycle through all the servers when the connection fails."
 msgstr "Ne kroži skozi seznam strežnikov, ko pride do prekinitve povezave."
 
-#: src/fe-gtk/servlistgui.c:1437
+#: src/fe-gtk/servlistgui.c:1439
 msgid "Your Details"
 msgstr "Podatki o vas"
 
-#: src/fe-gtk/servlistgui.c:1443
+#: src/fe-gtk/servlistgui.c:1445
 msgid "Use global user information"
 msgstr "Uporabi splošne podatke o uporabniku"
 
-#: src/fe-gtk/servlistgui.c:1446 src/fe-gtk/servlistgui.c:1680
+#: src/fe-gtk/servlistgui.c:1448 src/fe-gtk/servlistgui.c:1688
 msgid "_Nick name:"
 msgstr "Vzdevek:"
 
-#: src/fe-gtk/servlistgui.c:1450 src/fe-gtk/servlistgui.c:1687
+#: src/fe-gtk/servlistgui.c:1452 src/fe-gtk/servlistgui.c:1695
 msgid "Second choice:"
 msgstr "Druga izbira: "
 
-#: src/fe-gtk/servlistgui.c:1454 src/fe-gtk/servlistgui.c:1701
+#: src/fe-gtk/servlistgui.c:1456 src/fe-gtk/servlistgui.c:1709
 msgid "_User name:"
 msgstr "Uporabniško ime:"
 
-#: src/fe-gtk/servlistgui.c:1458
+#: src/fe-gtk/servlistgui.c:1460
 msgid "Rea_l name:"
 msgstr "Pravo ime:"
 
-#: src/fe-gtk/servlistgui.c:1461
+#: src/fe-gtk/servlistgui.c:1463
 msgid "Connecting"
 msgstr "Povezujem se"
 
-#: src/fe-gtk/servlistgui.c:1467
+#: src/fe-gtk/servlistgui.c:1469
 msgid "Auto connect to this network at startup"
 msgstr "Samodejna povezava ob zagonu"
 
-#: src/fe-gtk/servlistgui.c:1469
+#: src/fe-gtk/servlistgui.c:1471
 msgid "Bypass proxy server"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1471
+#: src/fe-gtk/servlistgui.c:1473
 msgid "Use SSL for all the servers on this network"
 msgstr "Uporabi povezavo SSL do vseh strežnikov v omrežju"
 
-#: src/fe-gtk/servlistgui.c:1476
+#: src/fe-gtk/servlistgui.c:1478
 msgid "Accept invalid SSL certificate"
 msgstr "Sprejmi neveljaven SSL certifikat"
 
-#: src/fe-gtk/servlistgui.c:1482
+#: src/fe-gtk/servlistgui.c:1484
 msgid "_Favorite channels:"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1484
+#: src/fe-gtk/servlistgui.c:1486
 msgid "Channels to join, separated by commas, but not spaces!"
 msgstr "Kanali, s katerimi se želite povezati, so ločeni z vejicami, ne s presledki!"
 
-#: src/fe-gtk/servlistgui.c:1487
+#: src/fe-gtk/servlistgui.c:1489
 msgid "Connect command:"
 msgstr "Ukaz za povezavo:"
 
-#: src/fe-gtk/servlistgui.c:1489
+#: src/fe-gtk/servlistgui.c:1491
 msgid ""
 "Extra command to execute after connecting. If you need more than one, set "
 "this to LOAD -e <filename>, where <filename> is a text-file full of commands"
 " to execute."
 msgstr "Dodatni ukaz, ki se izvede po uspešni povezavi. Če potrebujete več kot en ukaz, naložite datoteko z LOAD -e <ime datoteke>, ta lahko vsebuje celotno zaporedje ukazov."
 
-#: src/fe-gtk/servlistgui.c:1492
+#: src/fe-gtk/servlistgui.c:1494
 msgid "Nickserv password:"
 msgstr "Geslo strežnika:"
 
-#: src/fe-gtk/servlistgui.c:1494
+#: src/fe-gtk/servlistgui.c:1496
 msgid ""
 "If your nickname requires a password, enter it here. Not all IRC networks "
 "support this."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1498
+#: src/fe-gtk/servlistgui.c:1500
 msgid "Server password:"
 msgstr "Geslo strežnika:"
 
-#: src/fe-gtk/servlistgui.c:1500
+#: src/fe-gtk/servlistgui.c:1502
 msgid "Password for the server, if in doubt, leave blank."
 msgstr "Geslo za strežnik pustite prazno, če ste v dvomih."
 
-#: src/fe-gtk/servlistgui.c:1503
+#: src/fe-gtk/servlistgui.c:1506
+msgid "SASL password:"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:1508
+msgid "Password for SASL authentication, if in doubt, leave blank."
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:1511
 msgid "Character set:"
 msgstr "Kodni nabor:"
 
-#: src/fe-gtk/servlistgui.c:1658
+#: src/fe-gtk/servlistgui.c:1666
 msgid ": Network List"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1670
+#: src/fe-gtk/servlistgui.c:1678
 msgid "User Information"
 msgstr "Podatki o uporabniku"
 
-#: src/fe-gtk/servlistgui.c:1694
+#: src/fe-gtk/servlistgui.c:1702
 msgid "Third choice:"
 msgstr "Tretja izbira:"
 
-#: src/fe-gtk/servlistgui.c:1754
+#: src/fe-gtk/servlistgui.c:1762
 msgid "Networks"
 msgstr "Omrežja"
 
-#: src/fe-gtk/servlistgui.c:1802
+#: src/fe-gtk/servlistgui.c:1810
 msgid "Skip network list on startup"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1811
+#: src/fe-gtk/servlistgui.c:1819
 msgid "Show favorites only"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1841
+#: src/fe-gtk/servlistgui.c:1849
 msgid "_Edit..."
 msgstr "Uredi ..."
 
-#: src/fe-gtk/servlistgui.c:1848
+#: src/fe-gtk/servlistgui.c:1856
 msgid "_Sort"
 msgstr "Razvrsti"
 
-#: src/fe-gtk/servlistgui.c:1849
+#: src/fe-gtk/servlistgui.c:1857
 msgid ""
 "Sorts the network list in alphabetical order. Use SHIFT-UP and SHIFT-DOWN "
 "keys to move a row."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1857
+#: src/fe-gtk/servlistgui.c:1865
 msgid "_Favor"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1858
+#: src/fe-gtk/servlistgui.c:1866
 msgid "Mark or unmark this network as a favorite."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1882
+#: src/fe-gtk/servlistgui.c:1890
 msgid "C_onnect"
 msgstr "P_oveži se"
 
@@ -4747,654 +4755,654 @@ msgid "Font:"
 msgstr "Pisava:"
 
 #: src/fe-gtk/setup.c:171
-msgid "Title Bar"
-msgstr ""
-
-#: src/fe-gtk/setup.c:172
-msgid "Show channel modes"
-msgstr ""
-
-#: src/fe-gtk/setup.c:173
-msgid "Show number of users"
-msgstr ""
-
-#: src/fe-gtk/setup.c:175
 msgid "Text Box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:172
 msgid "Background image:"
 msgstr "Slika za ozadje:"
 
-#: src/fe-gtk/setup.c:177
-msgid "Scrollback lines:"
-msgstr "Vračajoče vrstice:"
-
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:173
 msgid "Colored nick names"
 msgstr "Obarvani vzdevki"
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:174
 msgid "Give each person on IRC a different color"
 msgstr "Vsakemu vzdevku pripiši drugo barvo"
 
-#: src/fe-gtk/setup.c:180
+#: src/fe-gtk/setup.c:175
 msgid "Indent nick names"
 msgstr "Zamakni vzdevke"
 
-#: src/fe-gtk/setup.c:181
+#: src/fe-gtk/setup.c:176
 msgid "Make nick names right-justified"
 msgstr "Desno poravnavaj vzdevke"
 
-#: src/fe-gtk/setup.c:183
+#: src/fe-gtk/setup.c:178
 msgid "Transparent background"
 msgstr "Prozorno ozadje"
 
-#: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:190
+#: src/fe-gtk/setup.c:179 src/fe-gtk/setup.c:185
 msgid "Show marker line"
 msgstr "Pokaži odsotnost enkrat"
 
-#: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:190
+#: src/fe-gtk/setup.c:179 src/fe-gtk/setup.c:185
 msgid "Insert a red line after the last read text."
 msgstr "Zadnjo prebrano vrsto označi z rdečo barvo."
 
-#: src/fe-gtk/setup.c:185
+#: src/fe-gtk/setup.c:180
 msgid "Transparency Settings"
 msgstr ""
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:181
 msgid "Red:"
 msgstr "Rdeča:"
 
-#: src/fe-gtk/setup.c:187
+#: src/fe-gtk/setup.c:182
 msgid "Green:"
 msgstr "Zelena:"
 
-#: src/fe-gtk/setup.c:188
+#: src/fe-gtk/setup.c:183
 msgid "Blue:"
 msgstr "Modra:"
 
-#: src/fe-gtk/setup.c:193 src/fe-gtk/setup.c:554
+#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:554
 msgid "Time Stamps"
 msgstr "Besedilo opremi s časom"
 
-#: src/fe-gtk/setup.c:194
+#: src/fe-gtk/setup.c:189
 msgid "Enable time stamps"
 msgstr "Dnevnike opremi s časom"
 
-#: src/fe-gtk/setup.c:195
+#: src/fe-gtk/setup.c:190
 msgid "Time stamp format:"
 msgstr "Oblika prikaza časa:"
 
-#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:558
+#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:558
 msgid "See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:199 src/fe-gtk/setup.c:560
+#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:560
 msgid "See the strftime manpage for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:207 src/fe-gtk/setup.c:254
+#: src/fe-gtk/setup.c:197
+msgid "Title Bar"
+msgstr ""
+
+#: src/fe-gtk/setup.c:198
+msgid "Show channel modes"
+msgstr ""
+
+#: src/fe-gtk/setup.c:199
+msgid "Show number of users"
+msgstr ""
+
+#: src/fe-gtk/setup.c:206 src/fe-gtk/setup.c:253
 msgid "A-Z"
 msgstr "A-Ž"
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:207
 msgid "Last-spoke order"
 msgstr ""
 
-#: src/fe-gtk/setup.c:214
+#: src/fe-gtk/setup.c:213
 msgid "Input Box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:215 src/fe-gtk/setup.c:286
+#: src/fe-gtk/setup.c:214 src/fe-gtk/setup.c:285
 msgid "Use the Text box font and colors"
 msgstr "Uporabi pisavo in barvo besedilnega polja"
 
-#: src/fe-gtk/setup.c:216
+#: src/fe-gtk/setup.c:215
 msgid "Show nick box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:217
 msgid "Spell checking"
 msgstr ""
 
-#: src/fe-gtk/setup.c:219
+#: src/fe-gtk/setup.c:218
 msgid "Dictionaries to use:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:221
+#: src/fe-gtk/setup.c:220
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:223
+#: src/fe-gtk/setup.c:222
 msgid "Use language codes. Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:226
 msgid "Nick Completion"
 msgstr "Dokončevanje vzdevkov"
 
-#: src/fe-gtk/setup.c:228
+#: src/fe-gtk/setup.c:227
 msgid "Automatic nick completion (without TAB key)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:229
 msgid "Nick completion suffix:"
 msgstr "Pripona za dopolnjevanje vzdevkov:"
 
-#: src/fe-gtk/setup.c:231
+#: src/fe-gtk/setup.c:230
 msgid "Nick completion sorted:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:233
 msgid "Input Box Codes"
 msgstr "Vnosno polje"
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:234
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Prevedi %nnn kot vrednost ASCII"
 
-#: src/fe-gtk/setup.c:236
+#: src/fe-gtk/setup.c:235
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Prevedi %C, %B kot Barva, Povdarjeno itd."
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:244
 msgid "Graphical"
 msgstr ""
 
-#: src/fe-gtk/setup.c:253
+#: src/fe-gtk/setup.c:252
 msgid "A-Z, Ops first"
 msgstr "A-Ž, najprej status op"
 
-#: src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:254
 msgid "Z-A, Ops last"
 msgstr "Ž-A, nazadnje status op"
 
-#: src/fe-gtk/setup.c:256
+#: src/fe-gtk/setup.c:255
 msgid "Z-A"
 msgstr "Ž-A"
 
-#: src/fe-gtk/setup.c:257
+#: src/fe-gtk/setup.c:256
 msgid "Unsorted"
 msgstr "Neurejeno"
 
-#: src/fe-gtk/setup.c:263 src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:262 src/fe-gtk/setup.c:274
 msgid "Left (Upper)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:264 src/fe-gtk/setup.c:276
+#: src/fe-gtk/setup.c:263 src/fe-gtk/setup.c:275
 msgid "Left (Lower)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:265 src/fe-gtk/setup.c:277
+#: src/fe-gtk/setup.c:264 src/fe-gtk/setup.c:276
 msgid "Right (Upper)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:266 src/fe-gtk/setup.c:278
+#: src/fe-gtk/setup.c:265 src/fe-gtk/setup.c:277
 msgid "Right (Lower)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:267
+#: src/fe-gtk/setup.c:266
 msgid "Top"
 msgstr "Zgoraj"
 
-#: src/fe-gtk/setup.c:268
+#: src/fe-gtk/setup.c:267
 msgid "Bottom"
 msgstr "Spodaj"
 
-#: src/fe-gtk/setup.c:269
+#: src/fe-gtk/setup.c:268
 msgid "Hidden"
 msgstr "Skrito"
 
-#: src/fe-gtk/setup.c:284
+#: src/fe-gtk/setup.c:283
 msgid "User List"
 msgstr "Seznam uporabnikov"
 
-#: src/fe-gtk/setup.c:285
+#: src/fe-gtk/setup.c:284
 msgid "Show hostnames in user list"
 msgstr "Pokaži gostitelje v seznamu uporabnikov"
 
-#: src/fe-gtk/setup.c:287
+#: src/fe-gtk/setup.c:286
 msgid "Show icons for user modes"
 msgstr ""
 
-#: src/fe-gtk/setup.c:287
+#: src/fe-gtk/setup.c:286
 msgid "Use graphical icons instead of text symbols in the user list."
 msgstr ""
 
-#: src/fe-gtk/setup.c:288
+#: src/fe-gtk/setup.c:287
 msgid "Show user count in channels"
 msgstr ""
 
-#: src/fe-gtk/setup.c:290
+#: src/fe-gtk/setup.c:289
 msgid "User list sorted by:"
 msgstr "Seznam uporabnikov urejen po:"
 
-#: src/fe-gtk/setup.c:291
+#: src/fe-gtk/setup.c:290
 msgid "Show user list at:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:293
+#: src/fe-gtk/setup.c:292
 msgid "Away Tracking"
 msgstr ""
 
-#: src/fe-gtk/setup.c:294
+#: src/fe-gtk/setup.c:293
 msgid "Track the Away status of users and mark them in a different color"
 msgstr ""
 
-#: src/fe-gtk/setup.c:295
+#: src/fe-gtk/setup.c:294
 msgid "On channels smaller than:"
 msgstr "Spremljaj razloge za odsotnost na kanalih manjših od:"
 
-#: src/fe-gtk/setup.c:297
+#: src/fe-gtk/setup.c:296
 msgid "Action Upon Double Click"
 msgstr "Ob dvokliku izvedi ukaz"
 
-#: src/fe-gtk/setup.c:300
+#: src/fe-gtk/setup.c:299
 msgid "Extra Gadgets"
 msgstr ""
 
-#: src/fe-gtk/setup.c:301
+#: src/fe-gtk/setup.c:300
 msgid "Lag meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:302
+#: src/fe-gtk/setup.c:301
 msgid "Throttle meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:309
+#: src/fe-gtk/setup.c:308
 msgid "Windows"
 msgstr "Okna"
 
-#: src/fe-gtk/setup.c:310 src/fe-gtk/setup.c:324
+#: src/fe-gtk/setup.c:309 src/fe-gtk/setup.c:323
 msgid "Tabs"
 msgstr "Zavihki"
 
-#: src/fe-gtk/setup.c:317
+#: src/fe-gtk/setup.c:316
 msgid "Always"
 msgstr "Vselej"
 
-#: src/fe-gtk/setup.c:318
+#: src/fe-gtk/setup.c:317
 msgid "Only requested tabs"
 msgstr "Le zahtevane zavihke"
 
-#: src/fe-gtk/setup.c:326
+#: src/fe-gtk/setup.c:325
 msgid "Tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:333
+#: src/fe-gtk/setup.c:332
 msgid "Switcher type:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:333
 msgid "Open an extra tab for server messages"
 msgstr "Odpri zavihek za sporočila strežnika"
 
-#: src/fe-gtk/setup.c:335
+#: src/fe-gtk/setup.c:334
 msgid "Open an extra tab for server notices"
 msgstr "Odpri zavihek za opomine strežnika"
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:335
 msgid "Open a new tab when you receive a private message"
 msgstr ""
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:336
 msgid "Sort tabs in alphabetical order"
 msgstr "Zavihke uredi po abecedi"
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:337
 msgid "Show icons in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:338
 msgid "Show dotted lines in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:340
+#: src/fe-gtk/setup.c:339
 msgid "Smaller text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:341
+#: src/fe-gtk/setup.c:340
 msgid "Focus new tabs:"
 msgstr "Fokusiraj nove zavihke:"
 
-#: src/fe-gtk/setup.c:342
+#: src/fe-gtk/setup.c:341
 msgid "Show channel switcher at:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:343
+#: src/fe-gtk/setup.c:342
 msgid "Shorten tab labels to:"
 msgstr "Skrajša zavihke v:"
 
-#: src/fe-gtk/setup.c:343
+#: src/fe-gtk/setup.c:342
 msgid "letters."
 msgstr "črk."
 
-#: src/fe-gtk/setup.c:345
+#: src/fe-gtk/setup.c:344
 msgid "Tabs or Windows"
 msgstr "Zavihki ali okna"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:345
 msgid "Open channels in:"
 msgstr "Odpri kanale v:"
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:346
 msgid "Open dialogs in:"
 msgstr "Odpri pogovorna okna v:"
 
-#: src/fe-gtk/setup.c:348
+#: src/fe-gtk/setup.c:347
 msgid "Open utilities in:"
 msgstr "Odpri orodja v:"
 
-#: src/fe-gtk/setup.c:348
+#: src/fe-gtk/setup.c:347
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Odprem DCC, Opomnike in podobno v zavihkih ali oknih?"
 
-#: src/fe-gtk/setup.c:355
+#: src/fe-gtk/setup.c:354
 msgid "Messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:356
+#: src/fe-gtk/setup.c:355
 msgid "Scrollback"
 msgstr ""
 
-#: src/fe-gtk/setup.c:364
+#: src/fe-gtk/setup.c:363
 msgid "Ask for confirmation"
 msgstr ""
 
-#: src/fe-gtk/setup.c:365
+#: src/fe-gtk/setup.c:364
 msgid "Ask for download folder"
 msgstr ""
 
-#: src/fe-gtk/setup.c:366
+#: src/fe-gtk/setup.c:365
 msgid "Save without interaction"
 msgstr ""
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:371
 msgid "Files and Directories"
 msgstr "Datoteke in imeniki"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:372
 msgid "Auto accept file offers:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:374
+#: src/fe-gtk/setup.c:373
 msgid "Download files to:"
 msgstr "Prenesi datoteke v:"
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:374
 msgid "Move completed files to:"
 msgstr "Premakni dokončane datoteke v:"
 
-#: src/fe-gtk/setup.c:376
+#: src/fe-gtk/setup.c:375
 msgid "Save nick name in filenames"
 msgstr "Shrani vzdevek v imena datotek"
 
-#: src/fe-gtk/setup.c:378
+#: src/fe-gtk/setup.c:377
 msgid "Network Settings"
 msgstr "Nastavitve omrežja"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:378
 msgid "Get my address from the IRC server"
 msgstr "Pridobi moj podatke o mojem  IP od strežnika IRC"
 
-#: src/fe-gtk/setup.c:380
+#: src/fe-gtk/setup.c:379
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a "
 "192.168.*.* address!"
 msgstr "Vpraša IRC strežnik za vaš pravi naslov. Uporabljajte to možnost, če imate naslov oblike 192.168.*.*!"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:380
 msgid "DCC IP address:"
 msgstr "Naslov IP DCC:"
 
-#: src/fe-gtk/setup.c:382
+#: src/fe-gtk/setup.c:381
 msgid "Claim you are at this address when offering files."
 msgstr "Pretvarjajte se, da ste na tem naslovu, ko ponujate datoteke."
 
-#: src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:382
 msgid "First DCC send port:"
 msgstr "Prva vrata za pošiljanje DCC:"
 
-#: src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:383
 msgid "Last DCC send port:"
 msgstr "Zadnja vrata za pošiljanje DCC:"
 
-#: src/fe-gtk/setup.c:385
+#: src/fe-gtk/setup.c:384
 msgid "!Leave ports at zero for full range."
 msgstr ""
 
-#: src/fe-gtk/setup.c:387
+#: src/fe-gtk/setup.c:386
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Največja hitrost prenosa podatkov (bajti na sekundo)"
 
-#: src/fe-gtk/setup.c:388
+#: src/fe-gtk/setup.c:387
 msgid "One upload:"
 msgstr "En sam prenos od vas:"
 
-#: src/fe-gtk/setup.c:389 src/fe-gtk/setup.c:391
+#: src/fe-gtk/setup.c:388 src/fe-gtk/setup.c:390
 msgid "Maximum speed for one transfer"
 msgstr "Največja hitrost za en prenos"
 
-#: src/fe-gtk/setup.c:390
+#: src/fe-gtk/setup.c:389
 msgid "One download:"
 msgstr "En sam prenos k vam:"
 
-#: src/fe-gtk/setup.c:392
+#: src/fe-gtk/setup.c:391
 msgid "All uploads combined:"
 msgstr "Vsi prenosi od vas združeno:"
 
-#: src/fe-gtk/setup.c:393 src/fe-gtk/setup.c:395
+#: src/fe-gtk/setup.c:392 src/fe-gtk/setup.c:394
 msgid "Maximum speed for all files"
 msgstr "Največja hitrost za ves promet"
 
-#: src/fe-gtk/setup.c:394
+#: src/fe-gtk/setup.c:393
 msgid "All downloads combined:"
 msgstr "Vsi prenosi k vam združeno:"
 
-#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:448 src/fe-gtk/setup.c:1897
+#: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:447 src/fe-gtk/setup.c:1897
 msgid "Alerts"
 msgstr "Opozorila"
 
-#: src/fe-gtk/setup.c:426
+#: src/fe-gtk/setup.c:425
 msgid "Show tray balloons on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:428
+#: src/fe-gtk/setup.c:427
 msgid "Blink tray icon on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
+#: src/fe-gtk/setup.c:428 src/fe-gtk/setup.c:450
 msgid "Blink task bar on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:452
+#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
 msgid "Make a beep sound on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:432
+#: src/fe-gtk/setup.c:431
 msgid "Enable system tray icon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:454
+#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:453
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
+#: src/fe-gtk/setup.c:434 src/fe-gtk/setup.c:455
 msgid "Highlighted Messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
+#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:437 src/fe-gtk/setup.c:458
 msgid "Extra words to highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
 msgid "Nick names not to highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
+#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
 msgid "Nick names to always highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
+#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr ""
 
-#: src/fe-gtk/setup.c:469
+#: src/fe-gtk/setup.c:468
 msgid "Default Messages"
 msgstr "Privzeta sporočila"
 
-#: src/fe-gtk/setup.c:470
+#: src/fe-gtk/setup.c:469
 msgid "Quit:"
 msgstr "Izhod:"
 
-#: src/fe-gtk/setup.c:471
+#: src/fe-gtk/setup.c:470
 msgid "Leave channel:"
 msgstr "Zapusti kanal:"
 
-#: src/fe-gtk/setup.c:472
+#: src/fe-gtk/setup.c:471
 msgid "Away:"
 msgstr "Odsoten:"
 
-#: src/fe-gtk/setup.c:474
+#: src/fe-gtk/setup.c:473
 msgid "Away"
 msgstr "Odsoten"
 
-#: src/fe-gtk/setup.c:475
+#: src/fe-gtk/setup.c:474
 msgid "Announce away messages"
 msgstr "Naznani sporočila za odsotnost"
 
-#: src/fe-gtk/setup.c:476
+#: src/fe-gtk/setup.c:475
 msgid "Announce your away messages to all channels."
 msgstr ""
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:476
 msgid "Show away once"
 msgstr "Pokaži odsotnost enkrat"
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:476
 msgid "Show identical away messages only once."
 msgstr ""
 
-#: src/fe-gtk/setup.c:478
+#: src/fe-gtk/setup.c:477
 msgid "Automatically unmark away"
 msgstr "Samodejno prekine odsotnost"
 
-#: src/fe-gtk/setup.c:478
+#: src/fe-gtk/setup.c:477
 msgid "Unmark yourself as away before sending messages."
 msgstr ""
 
-#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:517
+#: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:516
 msgid "Advanced Settings"
 msgstr "Napredne nastavitve"
 
-#: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:518
+#: src/fe-gtk/setup.c:486 src/fe-gtk/setup.c:517
 msgid "Alternative fonts:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
 msgid "Auto reconnect delay:"
 msgstr "Zamik med ponovnim povezovanjem:"
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
 msgid "Display MODEs in raw form"
 msgstr "Prikaže MODE v surovi obliki"
 
-#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
 msgid "Whois on notify"
 msgstr "Whois ob opominu"
 
-#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
 msgid "Sends a /WHOIS when a user comes online in your notify list."
 msgstr ""
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Hide join and part messages"
 msgstr "Skrij sporočila ob prihodu/odhodu"
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Hide channel join/part messages by default."
 msgstr ""
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:523
 msgid "Display lists in compact mode"
 msgstr ""
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:523
 msgid "Use less spacing between user list/channel tree rows."
 msgstr ""
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
 msgid "Auto Open DCC Windows"
 msgstr "Samodejno odpri okna za zasebni pogovor"
 
-#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
 msgid "Send window"
 msgstr "Pošlji datoteko"
 
-#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
 msgid "Receive window"
 msgstr "Prejemnik"
 
-#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
+#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
 msgid "Chat window"
 msgstr "Pogovorno okno"
 
-#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
+#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
 msgid "Auto Copy Behavior"
 msgstr ""
 
-#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
 msgid "Automatically copy selected text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:531
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
+#: src/fe-gtk/setup.c:502 src/fe-gtk/setup.c:533
 msgid "Automatically include time stamps"
 msgstr ""
 
-#: src/fe-gtk/setup.c:504 src/fe-gtk/setup.c:535
+#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
+#: src/fe-gtk/setup.c:505 src/fe-gtk/setup.c:536
 msgid "Automatically include color information"
 msgstr ""
 
-#: src/fe-gtk/setup.c:507 src/fe-gtk/setup.c:538
+#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:522
 msgid "Allow only one instance of HexChat to run"
 msgstr ""
 
-#: src/fe-gtk/setup.c:548 src/fe-gtk/setup.c:1899
+#: src/fe-gtk/setup.c:547 src/fe-gtk/setup.c:1899
 msgid "Logging"
 msgstr "Beleženje"
 
-#: src/fe-gtk/setup.c:549
+#: src/fe-gtk/setup.c:548
 msgid "Display scrollback from previous session"
 msgstr ""
+
+#: src/fe-gtk/setup.c:549
+msgid "Scrollback lines:"
+msgstr "Vračajoče vrstice:"
 
 #: src/fe-gtk/setup.c:550
 msgid "Enable logging of conversations to disk"
