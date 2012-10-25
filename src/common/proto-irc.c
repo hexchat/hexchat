@@ -1224,6 +1224,10 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 		EMIT_SIGNAL (XP_TE_SERVNOTICE, sess, buf, sess->server->servername, NULL, NULL, 0);
 		return;
 	}
+	if (!strncmp (buf, "AUTHENTICATE +", 14))	/* omit SASL "empty" responses */
+	{
+		return;
+	}
 
 	EMIT_SIGNAL (XP_TE_SERVTEXT, sess, buf, sess->server->servername, rawname, NULL, 0);
 }
