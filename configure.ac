@@ -963,11 +963,11 @@ plugins/tcl/Makefile
 plugins/checksum/Makefile
 plugins/doat/Makefile
 plugins/fishlim/Makefile
-dnl plugins/sasl/Makefile
 plugins/sysinfo/Makefile
 intl/Makefile
 po/Makefile.in
 ])
+dnl plugins/sasl/Makefile
 
 echo
 echo HexChat $VERSION
