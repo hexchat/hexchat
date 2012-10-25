@@ -197,8 +197,8 @@ Browse button).
 
 The root of your HexChat config is:
 
--   Windows: %APPDATA%\HexChat\addons
--   Unix/Linux: ~/.config/hexchat/addons
+-   Windows: %APPDATA%\HexChat\
+-   Unix/Linux: ~/.config/hexchat
 
 This may need to be created.
 
