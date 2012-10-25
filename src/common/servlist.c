@@ -620,7 +620,7 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 	{
 		strcpy (serv->sasluser, prefs.hex_irc_user_name);
 	}
-	else
+	else if (net->user != NULL)
 	{
 		safe_strcpy (serv->sasluser, net->user, sizeof (serv->sasluser));
 	}
