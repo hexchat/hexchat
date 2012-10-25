@@ -80,11 +80,13 @@ the specified directory.
 
 #### Locations
 
+You will need to create the directory.
+
 * Unix/Linux
->   /usr/share/hexchat
+>   ~/.config/hexchat/icons
 
 * Windows
->   C:\Program Files\HexChat\Icons\
+>   %APPDATA%\HexChat\icons\
 
 You can hide either of them in Preferences.
 
