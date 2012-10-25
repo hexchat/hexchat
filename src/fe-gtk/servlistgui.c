@@ -73,6 +73,7 @@ static GtkWidget *edit_entry_user;
 static GtkWidget *edit_entry_real;
 static GtkWidget *edit_entry_join;
 static GtkWidget *edit_entry_pass;
+static GtkWidget *edit_entry_saslpass;
 static GtkWidget *edit_entry_cmd;
 static GtkWidget *edit_entry_nickserv;
 static GtkWidget *edit_label_nick;
@@ -490,6 +491,7 @@ servlist_edit_update (ircnet *net)
 	servlist_update_from_entry (&net->command, edit_entry_cmd);
 	servlist_update_from_entry (&net->nickserv, edit_entry_nickserv);
 	servlist_update_from_entry (&net->pass, edit_entry_pass);
+	servlist_update_from_entry (&net->saslpass, edit_entry_saslpass);
 }
 
 static void
@@ -1500,9 +1502,15 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 					_("Password for the server, if in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
 
+	edit_entry_saslpass =
+		servlist_create_entry (table3, _("SASL password:"), 19,
+									  net->saslpass, 0,
+					_("Password for SASL authentication, if in doubt, leave blank."));
+	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_saslpass), FALSE);
+
 	label34 = gtk_label_new (_("Character set:"));
 	gtk_widget_show (label34);
-	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 19, 20,
+	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 20, 21,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
@@ -1512,7 +1520,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_charset)->child), net->encoding ? net->encoding : "System default");
 	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_charset);
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 19, 20,
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 20, 21,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 

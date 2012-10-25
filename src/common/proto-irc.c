@@ -28,6 +28,8 @@
 #include <unistd.h>
 #endif
 
+#include <glib.h>
+
 #include "hexchat.h"
 #include "ctcp.h"
 #include "fe.h"
@@ -47,11 +49,12 @@
 static void
 irc_login (server *serv, char *user, char *realname)
 {
+	tcp_sendf (serv, "CAP LS\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
+
 	if (serv->password[0])
+	{
 		tcp_sendf (serv, "PASS %s\r\n", serv->password);
-#if 0	/* breaks the SASL plugin */
-	tcp_sendf (serv, "CAP LS\r\n");
-#endif
+	}
 
 	tcp_sendf (serv,
 				  "NICK %s\r\n"
@@ -880,6 +883,15 @@ process_numeric (session * sess, int n,
 		notify_set_online (serv, word[4]);
 		break;
 
+	case 903:	/* successful SASL auth */
+	case 904:	/* aborted SASL auth */
+	case 905:	/* failed SASL auth */
+	case 906:	/* registration completes before SASL auth */
+	case 907:	/* attempting to re-auth after a successful auth */
+		tcp_send_len (serv, "CAP END\r\n", 9);
+		PrintTextf (sess, "%s\n", ++word_eol[4]);
+		break;
+
 	default:
 
 		if (serv->inside_whois && word[4][0])
@@ -1117,10 +1129,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 		}
 	}
 
-#if 0	/* breaks the SASL plugin */
 	else if (len == 3)
 	{
 		guint32 t;
+		int passlen;
+		char *encoded;
+		char *buffer;
 
 		t = WORDL((guint8)type[0], (guint8)type[1], (guint8)type[2], (guint8)type[3]);
 		switch (t)
@@ -1131,28 +1145,54 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strncasecmp (word[5][0]==':' ? word[5] + 1 : word[5], "identify-msg", 12) == 0)
 					{
 						serv->have_idmsg = TRUE;
-						tcp_send_len (serv, "CAP END\r\n", 9);
+					}
+					if (strncasecmp (word[5][0]==':' ? word[5] + 1 : word[5], "sasl", 12) == 0)
+					{
+						serv->have_sasl = TRUE;
+						PrintTextf (sess, "Authenticating via SASL as %s\n", sess->server->sasluser);
+						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
+
+						/* passphrase generation, nicely copy-pasted from the SASL plugin */
+						passlen = strlen (sess->server->sasluser) * 2 + 2 + strlen (sess->server->saslpassword);
+						buffer = (char*) malloc (passlen + 1);
+						strcpy (buffer, sess->server->sasluser);
+						strcpy (buffer + strlen (sess->server->sasluser) + 1, sess->server->sasluser);
+						strcpy (buffer + strlen (sess->server->sasluser) * 2 + 2, sess->server->saslpassword);
+						encoded = g_base64_encode ((unsigned char*) buffer, passlen);
+
+						tcp_sendf (sess->server, "AUTHENTICATE %s\r\n", encoded);
+
+						free (encoded);
+						free (buffer);
 					}
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)
 				{
+					PrintTextf (sess, "Capabilities supported by the server: %s\n", ++word_eol[5]);
 					if (strstr (word_eol[5], "identify-msg") != 0)
 					{
 						tcp_send_len (serv, "CAP REQ :identify-msg\r\n", 23);
 					}
+
+					/* if the SASL password is set, request SASL auth */
+					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->saslpassword) != 0)
+					{
+						tcp_send_len (serv, "CAP REQ :sasl\r\n", 23);
+					}
 					else
 					{
+						/* if we use SASL, CAP END is dealt via raw numerics */
 						tcp_send_len (serv, "CAP END\r\n", 9);
 					}
 				}
-				else if (strncasecmp (word[4], "NAK",3) == 0)
+				else if (strncasecmp (word[4], "NAK", 3) == 0)
 				{
 					tcp_send_len (serv, "CAP END\r\n", 9);
 				}
+
 				return;
 		}
 	}
-#endif
 
 garbage:
 	/* unknown message */

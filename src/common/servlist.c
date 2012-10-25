@@ -608,13 +608,33 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 	}
 
 	serv->password[0] = 0;
+	serv->sasluser[0] = 0;
+	serv->saslpassword[0] = 0;
+
 	if (net->pass)
+	{
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
+	}
+
+	if (net->flags & FLAG_USE_GLOBAL)
+	{
+		strcpy (serv->sasluser, prefs.hex_irc_user_name);
+	}
+	else
+	{
+		safe_strcpy (serv->sasluser, net->user, sizeof (serv->sasluser));
+	}
+
+	if (net->saslpass)
+	{
+		safe_strcpy (serv->saslpassword, net->saslpass, sizeof (serv->saslpassword));
+	}
 
 	if (net->flags & FLAG_USE_GLOBAL)
 	{
 		strcpy (serv->nick, prefs.hex_irc_nick1);
-	} else
+	}
+	else
 	{
 		if (net->nick)
 			strcpy (serv->nick, net->nick);
@@ -901,6 +921,7 @@ servlist_cleanup (void)
 	{
 		net = list->data;
 		free_and_clear (net->pass);
+		free_and_clear (net->saslpass);
 		free_and_clear (net->nickserv);
 	}
 }
@@ -923,6 +944,7 @@ servlist_net_remove (ircnet *net)
 	if (net->real)
 		free (net->real);
 	free_and_clear (net->pass);
+	free_and_clear (net->saslpass);
 	if (net->autojoin)
 		free (net->autojoin);
 	if (net->command)
@@ -1034,6 +1056,9 @@ servlist_load (void)
 				break;
 			case 'P':
 				net->pass = strdup (buf + 2);
+				break;
+			case 'A':
+				net->saslpass = strdup (buf + 2);
 				break;
 			case 'J':
 				net->autojoin = strdup (buf + 2);
@@ -1166,6 +1191,8 @@ servlist_save (void)
 			fprintf (fp, "R=%s\n", net->real);
 		if (net->pass)
 			fprintf (fp, "P=%s\n", net->pass);
+		if (net->saslpass)
+			fprintf (fp, "A=%s\n", net->saslpass);
 		if (net->autojoin)
 			fprintf (fp, "J=%s\n", net->autojoin);
 		if (net->nickserv)
