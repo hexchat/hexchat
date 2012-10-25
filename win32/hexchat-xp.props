@@ -71,7 +71,7 @@ xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\2.10.0\engines" "$(HexChatRel)\lib\gtk-2
 xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\modules\libgail.dll" "$(HexChatRel)\lib\gtk-2.0\modules\"
 xcopy /q /s /i etc "$(HexChatRel)\etc"
 xcopy /q /s /i share "$(HexChatRel)\share"
-copy "..\..\COPYING" "$(HexChatRel)"
+copy "..\..\share\doc\COPYING" "$(HexChatRel)"
 copy "$(DepsRoot)\LICENSE.OPENSSL" "$(HexChatRel)"
 copy "$(DepsRoot)\LICENSE.ZLIB" "$(HexChatRel)"
 copy "$(DepsRoot)\share\gettext\intl\COPYING.LIB-2.0" "$(HexChatRel)\LICENSE.GTK"
