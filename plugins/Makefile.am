@@ -17,9 +17,9 @@ if DO_TCL
 tcldir = tcl
 endif
 
-if DO_SASL
-sasldir = sasl
-endif
+#if DO_SASL
+#sasldir = sasl
+#endif
 
 if DO_DOAT
 doatdir = doat
@@ -38,4 +38,4 @@ sysinfodir = sysinfo
 endif
 
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir) $(doatdir) $(fishlimdir) $(checksumdir) $(sysinfodir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(doatdir) $(fishlimdir) $(checksumdir) $(sysinfodir)

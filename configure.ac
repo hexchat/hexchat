@@ -146,9 +146,9 @@ AC_ARG_ENABLE(fishlim,
 [  --disable-fishlim       disable the FiSHLiM plugin],
         fishlim=$enableval, fishlim=yes)
 
-AC_ARG_ENABLE(sasl,
-[  --disable-sasl          disable the SASL plugin],
-        sasl=$enableval, sasl=yes)
+dnl AC_ARG_ENABLE(sasl,
+dnl [  --disable-sasl          disable the SASL plugin],
+dnl         sasl=$enableval, sasl=yes)
 
 AC_ARG_ENABLE(sysinfo,
 [  --disable-sysinfo      disable the SysInfo plugin],
@@ -579,16 +579,16 @@ dnl *********************************************************************
 dnl ** SASL *************************************************************
 dnl *********************************************************************
 
-if test "$sasl" != "no"; then
-	AC_MSG_CHECKING(for plugin interface used by SASL)
-	sasl=no
-	if test "$plugin" = yes; then
-		sasl=yes
-		AC_MSG_RESULT([yes])
-	else
-		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for SASL])
-	fi
-fi
+dnl if test "$sasl" != "no"; then
+dnl 	AC_MSG_CHECKING(for plugin interface used by SASL)
+dnl 	sasl=no
+dnl 	if test "$plugin" = yes; then
+dnl 		sasl=yes
+dnl 		AC_MSG_RESULT([yes])
+dnl 	else
+dnl 		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for SASL])
+dnl 	fi
+dnl fi
 
 dnl *********************************************************************
 dnl ** SYSINFO **********************************************************
@@ -697,7 +697,7 @@ AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
 AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
-AM_CONDITIONAL(DO_SASL, test "x$sasl" = "xyes")
+dnl AM_CONDITIONAL(DO_SASL, test "x$sasl" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
@@ -963,7 +963,7 @@ plugins/tcl/Makefile
 plugins/checksum/Makefile
 plugins/doat/Makefile
 plugins/fishlim/Makefile
-plugins/sasl/Makefile
+dnl plugins/sasl/Makefile
 plugins/sysinfo/Makefile
 intl/Makefile
 po/Makefile.in
@@ -999,7 +999,7 @@ echo
 echo Checksum .............. : $checksum
 echo Do At ................. : $doat
 echo FiSHLiM ............... : $fishlim
-echo SASL .................. : $sasl
+dnl echo SASL .................. : $sasl
 echo SysInfo ............... : $sysinfo
 echo
 echo The binary will be installed in $prefix/bin
