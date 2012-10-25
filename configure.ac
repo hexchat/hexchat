@@ -151,7 +151,7 @@ dnl [  --disable-sasl          disable the SASL plugin],
 dnl         sasl=$enableval, sasl=yes)
 
 AC_ARG_ENABLE(sysinfo,
-[  --disable-sysinfo      disable the SysInfo plugin],
+[  --disable-sysinfo       disable the SysInfo plugin],
         sysinfo=$enableval, sysinfo=yes)
 
 AC_ARG_ENABLE(dbus,
