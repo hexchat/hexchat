@@ -26,9 +26,9 @@
 #include "hexchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
-static const char name[] = "Exec";
-static const char desc[] = "Execute commands inside HexChat";
-static const char version[] = "1.1";
+static char name[] = "Exec";
+static char desc[] = "Execute commands inside HexChat";
+static char version[] = "1.1";
 
 static int
 run_command (char *word[], char *word_eol[], void *userdata)

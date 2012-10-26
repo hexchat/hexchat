@@ -41,9 +41,9 @@
 #include "hexchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
-static const char name[] = "SASL";
-static const char desc[] = "SASL authentication plugin for HexChat";
-static const char version[] = "1.2";
+static char name[] = "SASL";
+static char desc[] = "SASL authentication plugin for HexChat";
+static char version[] = "1.2";
 static const char sasl_help[] = "SASL Usage:\n /SASL ADD <login> <password> <network>, enable/update SASL authentication for given network\n /SASL DEL <network>, disable SASL authentication for given network\n /SASL LIST, get the list of SASL-enabled networks\n";
 
 struct sasl_info

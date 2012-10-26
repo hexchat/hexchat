@@ -52,9 +52,9 @@
 #define DEFAULT_LIMIT 256									/* default size is 256 MiB */
 
 static xchat_plugin *ph;									/* plugin handle */
-static const char name[] = "Checksum";
-static const char desc[] = "Calculate checksum for DCC file transfers";
-static const char version[] = "3.1";
+static char name[] = "Checksum";
+static char desc[] = "Calculate checksum for DCC file transfers";
+static char version[] = "3.1";
 
 /* Use of OpenSSL SHA256 interface: http://adamlamers.com/?p=5 */
 static void
@@ -225,8 +225,8 @@ dccoffer_cb (char *word[], void *userdata)
 	return XCHAT_EAT_NONE;
 }
 
-static void
-checksum (char *word[], void *userdata)
+static int
+checksum (char *word[], char *word_eol[], void *userdata)
 {
 	if (!g_ascii_strcasecmp ("GET", word[2]))
 	{
@@ -242,6 +242,8 @@ checksum (char *word[], void *userdata)
 		xchat_printf (ph, "  GET - print the maximum file size (in MiB) to be hashed\n");
 		xchat_printf (ph, "  SET <filesize> - set the maximum file size (in MiB) to be hashed\n");
 	}
+
+	return XCHAT_EAT_NONE;
 }
 
 int
