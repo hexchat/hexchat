@@ -60,7 +60,7 @@ AC_DEFINE([XCHAT_REVISION],["1521"],[XChat SVN Revision])
 
 AC_PATH_PROG(sedpath, sed)
 if test "_$sedpath" = _; then
-	AC_MSG_ERROR("Cannot find sed: I need it\!")
+	AC_MSG_ERROR(Cannot find sed: I need it!)
 fi
 
 AC_PATH_PROG(unamepath, uname)
@@ -189,7 +189,7 @@ dnl *********************************************************************
 
 AM_PATH_GLIB_2_0(2.12.0, glib=yes, glib=no)
 if test "$glib" = no; then
-	AC_MSG_ERROR("Cannot find glib")
+	AC_MSG_ERROR(Cannot find GLib!)
 fi
 
 COMMON_CFLAGS="$GLIB_CFLAGS"
@@ -479,7 +479,7 @@ if test "x$libproxy" = "xyes" -o "x$libproxy" = "xauto" ; then
 		libproxy=yes
 	], [
 		if test "x$libproxy" = "xyes" ; then
-			AC_MSG_ERROR(Can't find libproxy!)
+			AC_MSG_ERROR(Cannot find libproxy!)
 		fi
 		libproxy=no
 	])
@@ -596,12 +596,12 @@ dnl *********************************************************************
 
 if test "$sysinfo" != "no"; then
 	AC_MSG_CHECKING(for plugin interface used by SysInfo)
-	sysinfo=no
 	if test "$plugin" = yes; then
 		AC_MSG_RESULT([yes])
-		PKG_CHECK_MODULES(LIBPCI, libpci >= 3.0.0, [sysinfo=yes], [])
+		PKG_CHECK_MODULES(LIBPCI, libpci >= 3.0.0, [sysinfo=yes], [sysinfo=no])
 	else
 		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for SysInfo])
+		sysinfo=no
 	fi
 fi
 
@@ -677,7 +677,7 @@ if test "$spell" = "static" ; then
 	GUI_CFLAGS="$GUI_CFLAGS -I/usr/include/libxml2"
 	LIBS="$LIBS -lxml2"
 	], [
-	AC_MSG_ERROR("Cannot find libxml2")
+	AC_MSG_ERROR(Cannot find libxml2!)
 	])
 fi
 
@@ -872,7 +872,7 @@ AC_TRY_COMPILE(
 AC_PATH_PROG(gdkpixbufcsourcepath, gdk-pixbuf-csource)
 AC_SUBST(gdkpixbufcsourcepath)
 if test "$gtkfe" != no -a "_$gdkpixbufcsourcepath" = _; then
-	AC_MSG_ERROR("Cannot find gdk-pixbuf-csource: Install GTK+ 2.0\!")
+	AC_MSG_ERROR(Cannot find gdk-pixbuf-csource: Install GTK+ 2.0!)
 fi
 
 dnl if we don't have this, use g_snprintf instead
