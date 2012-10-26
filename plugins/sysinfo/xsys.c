@@ -611,7 +611,7 @@ static int
 netstream_cb (char *word[], char *word_eol[], void *userdata)
 {
 	char netstream[bsize];
-	char mag_r[3];
+	char mag_r[5];
 	char mag_s[5];
 	char format[bsize];
 	unsigned long long bytes_recv;
