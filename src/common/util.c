@@ -33,12 +33,14 @@
 #include <process.h>
 #include <io.h>
 #include "../dirent/dirent-win32.h"
+#include "../../config-win32.h"
 #else
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
 #include <dirent.h>
+#include "../../config.h"
 #endif
 
 #include <fcntl.h>
@@ -48,7 +50,6 @@
 #include <glib.h>
 #include <ctype.h>
 #include "util.h"
-#include "../../config.h"
 
 #if defined (USING_FREEBSD) || defined (__APPLE__)
 #include <sys/sysctl.h>

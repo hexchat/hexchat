@@ -50,7 +50,11 @@
 #include <gtk/gtkwindow.h>
 
 #ifdef XCHAT
+#ifdef WIN32
+#include "../../config-win32.h"
+#else
 #include "../../config.h"			/* can define USE_XLIB here */
+#endif
 #else
 #define USE_XLIB
 #endif

@@ -32,7 +32,11 @@
 #endif
 
 #undef PACKAGE
-#include "../../config.h"		  /* for #define OLD_PERL */
+#ifdef WIN32
+#include "../../config-win32.h"		  /* for #define OLD_PERL */
+#else
+#include "../../config.h"
+#endif
 #include "hexchat-plugin.h"
 
 static xchat_plugin *ph;		  /* plugin handle */

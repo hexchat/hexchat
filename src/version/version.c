@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
-#include "../../config.h"
+#include "../../config-win32.h"
 
 char *
 comma ()

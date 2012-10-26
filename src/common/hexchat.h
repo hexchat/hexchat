@@ -1,4 +1,8 @@
+#ifdef WIN32
+#include "../../config-win32.h"
+#else
 #include "../../config.h"
+#endif
 
 #include <glib.h>
 #include <time.h>			/* need time_t */

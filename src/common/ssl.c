@@ -22,11 +22,13 @@
 #include <openssl/err.h>		  /* ERR_() */
 #ifdef WIN32
 #include <openssl/rand.h>		  /* RAND_seed() */
+#include "../../config-win32.h"	  /* HAVE_SNPRINTF */
+#else
+#include "../../config.h"
 #endif
 #include <time.h>				  /* asctime() */
 #include <string.h>				  /* strncpy() */
 #include "ssl.h"				  /* struct cert_info */
-#include "../../config.h"		  /* HAVE_SNPRINTF */
 
 #ifndef HAVE_SNPRINTF
 #include <glib.h>
