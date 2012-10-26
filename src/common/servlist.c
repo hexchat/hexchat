@@ -992,6 +992,7 @@ servlist_load_defaults (void)
 {
 	int i = 0, j = 0;
 	ircnet *net = NULL;
+	guint def_hash = g_str_hash ("freenode");
 
 	while (1)
 	{
@@ -1000,21 +1001,27 @@ servlist_load_defaults (void)
 			net = servlist_net_add (def[i].network, def[i].host, FALSE);
 			net->encoding = strdup (IRC_DEFAULT_CHARSET);
 			if (def[i].channel)
+			{
 				net->autojoin = strdup (def[i].channel);
+			}
 			if (def[i].charset)
 			{
 				free (net->encoding);
 				net->encoding = strdup (def[i].charset);
 			}
-			/* 0x8e1b96f7 = ChatJunkies, 0xa45aae6e = freenode */
-			if (g_str_hash (def[i].network) == 0xa45aae6e)
+			if (g_str_hash (def[i].network) == def_hash)
+			{
 				prefs.hex_gui_slist_select = j;
+			}
 			j++;
-		} else
+		}
+		else
 		{
 			servlist_server_add (net, def[i].host);
 			if (!def[i+1].host && !def[i+1].network)
+			{
 				break;
+			}
 		}
 		i++;
 	}
