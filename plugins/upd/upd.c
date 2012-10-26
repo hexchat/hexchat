@@ -25,10 +25,13 @@
 
 #include "hexchat-plugin.h"
 
+#define DEFAULT_DELAY 10	/* 10 seconds */
+#define DEFAULT_FREQ 360	/* 6 hours */
+
 static xchat_plugin *ph;   /* plugin handle */
-static const char name[] = "Update Checker";
-static const char desc[] = "Check for HexChat updates automatically";
-static const char version[] = "3.0";
+static char name[] = "Update Checker";
+static char desc[] = "Check for HexChat updates automatically";
+static char version[] = "4.0";
 
 static char*
 check_version ()
@@ -150,7 +153,7 @@ check_version ()
 }
 
 static int
-print_version ()
+print_version (char *word[], char *word_eol[], void *userdata)
 {
 	char *version = check_version ();
 
@@ -194,25 +197,48 @@ print_version_quiet (void *userdata)
 	return 1;
 }
 
+static int
+delayed_check (void *userdata)
+{
+	int freq = xchat_pluginpref_get_int (ph, "freq");
+
+	/* only start the timer if there's no update available during startup */
+	if (print_version_quiet (NULL))
+	{
+		/* check for updates, every 6 hours by default */
+		xchat_hook_timer (ph, freq * 1000 * 60, print_version_quiet, NULL);
+	}
+
+	return 0;	/* run delayed_check() only once */
+}
+
 int
 xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
+	int delay;
 	ph = plugin_handle;
 
 	*plugin_name = name;
 	*plugin_desc = desc;
 	*plugin_version = version;
 
+	/* these are required for the very first run */
+	if (xchat_pluginpref_get_int (ph, "freq") == -1)
+	{
+		xchat_pluginpref_set_int (ph, "freq", DEFAULT_FREQ);
+	}
+
+	delay = xchat_pluginpref_get_int (ph, "delay");
+	if (delay == -1)
+	{
+		delay = DEFAULT_DELAY;
+		xchat_pluginpref_set_int (ph, "delay", DEFAULT_DELAY);
+	}
+
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
+	xchat_hook_timer (ph, delay * 1000, delayed_check, NULL);
 	xchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
 	xchat_printf (ph, "%s plugin loaded\n", name);
-
-	/* only start the timer if there's no update available during startup */
-	if (print_version_quiet (NULL))
-	{
-		/* check for updates every 6 hours */
-		xchat_hook_timer (ph, 21600000, print_version_quiet, NULL);
-	}
 
 	return 1;       /* return 1 for success */
 }
