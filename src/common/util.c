@@ -792,11 +792,10 @@ get_sys_str (int with_cpu)
 					(cpus == 1) ? "%s %s [%s/%.2f%s]" : "%s %s [%s/%.2f%s/SMP]",
 					un.sysname, un.release, un.machine,
 					cpuspeed, cpuspeedstr);
-	} else
+	}
+	else
 #endif
-		snprintf (buf, 128,
-					(cpus == 1) ? "%s %s [%s]" : "%s %s [%s/SMP]",
-					un.sysname, un.release, un.machine);
+		snprintf (buf, 128, "%s %s", un.sysname, un.release);
 
 	return buf;
 }
