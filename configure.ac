@@ -966,6 +966,7 @@ plugins/fishlim/Makefile
 plugins/sysinfo/Makefile
 intl/Makefile
 po/Makefile.in
+man/Makefile
 ])
 dnl plugins/sasl/Makefile
 

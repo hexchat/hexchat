@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = po intl src plugins
+SUBDIRS = po intl src plugins man
 
 EXTRA_DIST = autogen.sh hexchat.png hexchat.desktop hexchat.ico
 
