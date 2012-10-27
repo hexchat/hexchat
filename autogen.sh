@@ -90,7 +90,7 @@ if test "$?" != "0"; then
 	exit 4
 fi
 echo running $AUTOMAKE...
-$AUTOMAKE -a --foreign
+$AUTOMAKE -a
 if test "$?" != "0"; then
 	echo automake failed, stopping.
 	exit 5
