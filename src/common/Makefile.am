@@ -58,5 +58,9 @@ libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c hexchat.c \
 	$(ssl_c) strlutil.c text.c tree.c url.c userlist.c util.c
 libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
 
-textevents: make-te
+textenums.h: textevents.h
+
+textevents.h: textevents.in make-te
 	./make-te < textevents.in > textevents.h 2> textenums.h
+
+BUILT_SOURCES = textenums.h textevents.h
