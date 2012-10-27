@@ -8,7 +8,7 @@ URL:       http://www.hexchat.org
 Source:    https://github.com/downloads/hexchat/hexchat/hexchat-%{version}.tar.xz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: perl, perl(ExtUtils::Embed), python-devel, tcl-devel
+BuildRequires: perl, perl(ExtUtils::Embed), python-devel, tcl-devel, hwdata
 BuildRequires: dbus-devel, dbus-glib-devel
 BuildRequires: glib2-devel >= 2.10.0, gtk2-devel >= 2.10.0, bison >= 1.35
 BuildRequires: libtool, autoconf, gettext-devel, pkgconfig
