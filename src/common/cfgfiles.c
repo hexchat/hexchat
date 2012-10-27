@@ -675,7 +675,7 @@ load_config (void)
 	prefs.hex_gui_input_style = 1;
 	prefs.hex_gui_join_dialog = 1;
 	prefs.hex_gui_quit_dialog = 1;
-	prefs.hex_gui_slist_skip = 1;
+	/* prefs.hex_gui_slist_skip = 1; */
 	prefs.hex_gui_tab_chans = 1;
 	prefs.hex_gui_tab_dialogs = 1;
 	prefs.hex_gui_tab_dots = 1;
