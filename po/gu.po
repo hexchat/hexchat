@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-25 21:18+0200\n"
-"PO-Revision-Date: 2012-10-25 19:21+0000\n"
+"POT-Creation-Date: 2012-10-28 01:41+0200\n"
+"PO-Revision-Date: 2012-10-27 23:43+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Language: gu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/common/cfgfiles.c:756
+#: src/common/cfgfiles.c:757
 msgid "I'm busy"
 msgstr "હું વ્યસ્ત છું"
 
-#: src/common/cfgfiles.c:780
+#: src/common/cfgfiles.c:781
 msgid "Leaving"
 msgstr "છોડી રહ્યા છીએ"
 
-#: src/common/cfgfiles.c:840
+#: src/common/cfgfiles.c:841
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -61,7 +61,7 @@ msgstr "%s વાપરી શકતા નથી\n"
 
 #: src/common/dcc.c:1899 src/common/text.c:1441 src/common/text.c:1479
 #: src/common/text.c:1490 src/common/text.c:1497 src/common/text.c:1510
-#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:356
+#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:357
 msgid "Error"
 msgstr "ભૂલ"
 
@@ -749,7 +749,7 @@ msgstr "પ્રોક્સી પરિવહન નિષ્ફળ.\n"
 msgid "Cycling to next server in %s...\n"
 msgstr "%s માં આગળના સર્વર સુધી ફેરવી રહ્યા છીએ...\n"
 
-#: src/common/servlist.c:1206
+#: src/common/servlist.c:1213
 #, c-format
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
@@ -757,474 +757,486 @@ msgid ""
 msgstr "ચેતવણી: \"%s\" અક્ષર સમૂહ અજ્ઞાત છે. નેટવર્ક %s માટે કોઈ રૂપાંતરણ લાગુ પડશે નહિં."
 
 #: src/common/textevents.h:6
-msgid "%C22*%O$t$1 added to notify list."
-msgstr "%C22*%O$t$1 એ સૂચન યાદીમાં ઉમેરાઈ ગયું."
+msgid "%C18*%O$t%C18$1%O added to notify list."
+msgstr ""
 
 #: src/common/textevents.h:9
-msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
-msgstr "%C22*%O$t$1 બેનયાદી:%C19 $4%C20 $2%C21 $3"
+msgid "%C22*%O$t%C22$1%O Banlist:%C18 $2%O for%C24 $4%O by%C26 $3%O"
+msgstr ""
 
 #: src/common/textevents.h:12
-msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
-msgstr "%C22*%O$tજોડાઈ શકાતા નથી%C26 %B$1 %O(તમે બેન થયેલ છો)."
+msgid "%C22*%O$tCannot join%C22 $1 %O(%C20You are banned%O)."
+msgstr ""
 
 #: src/common/textevents.h:18
-msgid "%C22*%O$t$1 is now known as $2"
-msgstr "%C22*%O$t$1 એ $2 તરીકે ઓળખાય છે"
+msgid "%C24*%O$t%C28$1%O is now known as%C18 $2%O"
+msgstr ""
 
 #: src/common/textevents.h:27
-msgid "%C22*%O$t$1 sets ban on $2"
-msgstr "%C22*%O$t$1 એ $2 પર બેન સુયોજિત કર્યું છે"
+msgid "%C22*%O$t%C26$1%O sets ban on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:30
-msgid "%C22*%O$tChannel $1 created on $2"
-msgstr "%C22*%O$tચેનલ $1 એ $2 પર બનેલી છે"
+msgid "%C22*%O$tChannel %C22$1%O created"
+msgstr ""
 
 #: src/common/textevents.h:33
-msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O એ %C26 $2 માંથી અડધી-કારક ચેનલ સ્થિતિ દૂર કરે છે"
+msgid "%C22*%O$t%C26$1%O removes channel half-operator status from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:36
-msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O એ %C26 $2 માંથી ચેનલ ચાલક સ્થિતિ દૂર કરે છે"
+msgid "%C22*%O$t%C26$1%O removes channel operator status from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:39
-msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O એ %C26 $2 માંથી અવાજ દૂર કરે છે"
+msgid "%C22*%O$t%C26$1%O removes voice from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:42
-msgid "%C22*%O$t$1 sets exempt on $2"
-msgstr "%C22*%O$t$1 એ $2 પર એક્ઝેમ્પ્ટ સુયોજિત કરે છે"
+msgid "%C22*%O$t%C26 $1%C sets exempt on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:45
-msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O એ %C26 $2 ને અડધી-કારક ચેનલ સ્થિતિ આપે છે"
+msgid "%C22*%O$t%C26$1%O gives channel half-operator status to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:48
-msgid "%C22*%O$t$1 sets invite on $2"
-msgstr "%C22*%O$t$1 એ $2 પર આમંત્રણ સુયોજિત કરે છે"
+msgid "%C22*%O$t%C26 $1%C sets invite on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:51
 msgid "%UChannel          Users   Topic"
 msgstr "%Uચેનલ          વપરાશકર્તાઓ   મુદ્દો"
 
 #: src/common/textevents.h:57
-msgid "%C22*%O$t$1 sets mode $2$3 $4"
-msgstr "%C22*%O$t$1 એ સ્થિતિ $2$3 $4 સુયોજિત કરે છે"
+msgid "%C22*%O$t%C26$1%O sets mode %C24$2$3%O on %C22$4%O"
+msgstr ""
 
 #: src/common/textevents.h:60
-msgid "%C22*%O$t%C22Channel $1 modes: $2"
-msgstr "%C22*%O$t%C22ચેનલ $1 સ્થિતિ: $2"
+msgid "%C22*%O$tChannel %C22$1%O modes: %C24$2"
+msgstr ""
 
 #: src/common/textevents.h:69
-msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O એ %C26 $2 ને ચેનલ ચાલક સ્થિતિ આપે છે"
+msgid "%C22*%O$t%C26$1%O gives channel operator status to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:72
-msgid "%C22*%O$t$1 removes exempt on $2"
-msgstr "%C22*%O$t$1 એ $2 પરથી એક્ઝેમ્પ્ટ દૂર કરે છે"
+msgid "%C22*%O$t%C26$1%O removes exempt on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:75
-msgid "%C22*%O$t$1 removes invite on $2"
-msgstr "%C22*%O$t$1 એ $2 પરથી આમંત્રણ દૂર કરે છે"
+msgid "%C22*%O$t%C26 $1%O removes invite on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:78
-msgid "%C22*%O$t$1 removes channel keyword"
-msgstr "%C22*%O$t$1 એ ચેનલ મુખ્ય શબ્દ દૂર કરે છે"
+msgid "%C22*%O$t%C26$1%O removes channel keyword"
+msgstr ""
 
 #: src/common/textevents.h:81
-msgid "%C22*%O$t$1 removes user limit"
-msgstr "%C22*%O$t$1 વપરાશકર્તા મર્યાદા દૂર કરે છે"
+msgid "%C22*%O$t%C26$1%O removes user limit"
+msgstr ""
 
 #: src/common/textevents.h:84
-msgid "%C22*%O$t$1 sets channel keyword to $2"
-msgstr "%C22*%O$t$1 એ $2 માટે ચેનલ મુખ્ય શબ્દ સુયોજિત કરે છે"
+msgid "%C22*%O$t$1 sets channel keyword to %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:87
-msgid "%C22*%O$t$1 sets channel limit to $2"
-msgstr "%C22*%O$t$1 એ $2 માટે ચેનલ મર્યાદા સુયોજિત કરે છે"
+msgid "%C22*%O$t%C26$1%O sets channel limit to %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:90
-msgid "%C22*%O$t$1 removes ban on $2"
-msgstr "%C22*%O$t$1 એ $2 પરથી બેન દૂર કરે છે"
+msgid "%C22*%O$t%C26$1%O removes ban on %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:93
-msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O એ %C26 $2 ને અવાજ આપે છે"
+msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:96
-msgid "%C22*%O$t%C22Connected. Now logging in..."
-msgstr "%C22*%O$t%C22 જોડાયેલ છે. હવે પ્રવેશી રહ્યા છીએ..."
+msgid "%C23*%O$tConnected. Now logging in."
+msgstr ""
 
 #: src/common/textevents.h:99
-msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
-msgstr "%C22*%O$t%C22 એ $1 ($2) પોર્ટ $3%O સાથે જોડાઈ રહ્યા છીએ..."
+msgid "%C23*%O$tConnecting to %C29$1%C (%C23$2:$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:102
-msgid "%C21*%O$t%C21Connection failed. Error: $1"
-msgstr "%C21*%O$t%C21જોડાણ નિષ્ફળ. ભૂલ: $1"
+msgid "%C20*%O$tConnection failed (%C20$1%O)"
+msgstr ""
 
 #: src/common/textevents.h:105
-msgid "%C22*%O$tReceived a CTCP $1 from $2"
-msgstr "%C22*%O$t એ CTCP $1 ને $2 માંથી મેળવ્યું"
+msgid "%C24*%O$tReceived a CTCP %C24$1%C from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:108
-msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
-msgstr "%C22*%O$t એ CTCP $1 ને $2 માંથી ($3 માટે) મેળવ્યું"
+msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
+msgstr ""
 
 #: src/common/textevents.h:111
-msgid "%C19>%O$1%C19<%O$tCTCP $2"
-msgstr "%C19>%O$1%C19<%O$tCTCP $2"
+msgid ">%C18$1%C<$tCTCP %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:114
-msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
-msgstr "%C22*%O$t એ CTCP ધ્વનિ $1 ને $2 માંથી મેળવ્યો"
+msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:117
-msgid "%C22*%O$tReceived a CTCP Sound $1 from $2 (to $3)"
-msgstr "%C22*%O$t CTCP ધ્વનિ $1 ને $2 માંથી મેળવ્યો ($3 પ્રતિ)"
+msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%C (to %C22$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:120
-msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
-msgstr "%C22*%O$tDCC CHAT એ %C26$1%O અડધેથી બંધ થઈ ગઈ."
+msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
+msgstr ""
 
 #: src/common/textevents.h:123
-msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC CHAT જોડાણ %C26$1 %C30[%O$2%C30] માટે અધિષ્ઠાપિત થઈ ગયું"
+msgid ""
+"%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:126
-msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
-msgstr "%C22*%O$tDCC CHAT એ %C26$1%O ગુમ થયેલ ($4) પ્રતિ."
+msgid "%C20*%O$tDCC CHAT to %C18$1%O lost (%C20$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:129
-msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
-msgstr "%C22*%O$t DCC CHAT તક $1 માંથી મળી"
+msgid "%C24*%O$tReceived a DCC CHAT offer from %C18$1%O"
+msgstr ""
 
 #: src/common/textevents.h:132
-msgid "%C22*%O$tOffering DCC CHAT to $1"
-msgstr "%C22*%O$t $1 ને DCC CHAT તક આપી રહ્યા છીએ"
+msgid "%C24*%O$tOffering DCC CHAT to %C18$1%O"
+msgstr ""
 
 #: src/common/textevents.h:135
-msgid "%C22*%O$tAlready offering CHAT to $1"
-msgstr "%C22*%O$t $1 ને પહેલાથી જ CHAT ની તક આપી રહ્યા છીએ"
+msgid "%C24*%O$tAlready offering CHAT to %C18$1%O"
+msgstr ""
 
 #: src/common/textevents.h:138
-msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
-msgstr "%C22*%O$tDCC $1 નું %C26 $2%O સાથેનું જોડાણ નિષ્ફળ (err=$3)."
+msgid "%C20*%O$tDCC $1 connect attempt to %C18$2%O failed (%C20$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:141
-msgid "%C22*%O$tReceived '$1%O' from $2"
-msgstr "%C22*%O$t $2 માંથી '$1%O' મેળવી રહ્યા છીએ"
+msgid "%C23*%O$tReceived '%C23$1%C' from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:144
 #, c-format
-msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
-msgstr "%C24,18 પ્રકાર  પ્રતિ/તરફથી    સ્થિતિ  માપ    સ્થાન     ફાઈલ         "
+msgid "%C16,17 Type  To/From    Status  Size    Pos     File         "
+msgstr ""
 
 #: src/common/textevents.h:147
 msgid ""
-"%C22*%O$tReceived a malformed DCC request from "
-"%C26$1%O.%010%C22*%O$tContents of packet: $2"
-msgstr "%C22*%O$t %C26$1%O માંથી મલીન DCC અરજી મેળવી.%010%C22*%O$tપેકેટના સમાવિષ્ટો: $2"
+"%C20*%O$tReceived a malformed DCC request from "
+"%C18$1%O.%010%C23*%O$tContents of packet: %C23$2%O"
+msgstr ""
 
 #: src/common/textevents.h:150
-msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
-msgstr "%C22*%O$t %C26 $2 ને %C26 $1%O ની તક આપી રહ્યા છીએ"
+msgid "%C24*%O$tOffering '%C24$1%O' to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:153
-msgid "%C22*%O$tNo such DCC offer."
-msgstr "%C22*%O$tઆવી કોઈ DCC તક નથી."
+msgid "%C23*%O$tNo such DCC offer."
+msgstr ""
 
 #: src/common/textevents.h:156
-msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
-msgstr "%C22*%O$tDCC RECV%C26 $2%O એ %C26 $1%O પ્રતિ અડધેથી બંધ થઈ ગયું."
+msgid "%C23*%O$tDCC RECV '%C23$2%O' to %C18$1%O aborted."
+msgstr ""
 
 #: src/common/textevents.h:159
 msgid ""
-"%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr "%C22*%O$tDCC RECV%C26 $1%O એ %C26 $3%O તરફથી %C30[%C26$4%O cps%C30]%O પૂર્ણ કર્યું."
+"%C24*%O$tDCC RECV '%C23$1%O' from %C18$3%O complete %C30[%C24$4%O cps%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:162
-msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC RECV %C26 $1 %C30[%O$2%C30] પ્રતિ જોડાણ અધિષ્ઠાપિત થઈ ગયું"
+msgid ""
+"%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:165
-msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4)."
-msgstr "%C22*%O$tDCC RECV%C26 $1%O એ %C26 $3%O માંથી નિષ્ફળ ($4)."
+msgid "%C20*%O$tDCC RECV '%C23$1%O' from %C18$3%O failed (%C20$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:168
-msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
-msgstr "%C22*%O$tDCC RECV: લખવા માટે $1 ખોલી શકતા નથી ($2)."
+msgid "%C20*%O$tDCC RECV: Cannot open '%C23$1%C' for writing (%C20$2%O)"
+msgstr ""
 
 #: src/common/textevents.h:171
 msgid ""
-"%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
-msgstr "%C22*%O$t ફાઈલ %C26 $1%C પહેલાથી જ હાજર છે, તેની જગ્યાએ તેને %C26 $2%O રીતે સંગ્રહી રહ્યા છીએ."
+"%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' "
+"instead."
+msgstr ""
 
 #: src/common/textevents.h:174
-msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
-msgstr "%C22*%O$t%C26$1 %O એ %C26 $2 %C ને %C26 $3%C માંથી અટકાવવા માટે અરજી કરી છે."
+msgid "%C24*%O$t%C18$1%C has requested to resume '%C23$2%C' from %C24$3%O."
+msgstr ""
 
 #: src/common/textevents.h:177
-msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
-msgstr "%C22*%O$tDCC SEND%C26 $2%O એ %C26 $1%O પ્રતિ અડધેથી બંધ થઈ ગઈ."
+msgid "%C23*%O$tDCC SEND '%C23$2%C' to %C18$1%O aborted."
+msgstr ""
 
 #: src/common/textevents.h:180
 msgid ""
-"%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr "%C22*%O$tDCC SEND%C26 $1%O એ %C26 $2%O પ્રતિ %C30[%C26$3%O cps%C30]%O સમાપ્ત."
+"%C24*%O$tDCC SEND '%C23$1%C' to %C18$2%C complete %C30[%C24$3%C cps%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:183
-msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC SEND જોડાણ %C26 $1 %C30[%O$2%C30] પ્રતિ અધિષ્ઠાપિત થયું"
+msgid ""
+"%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:186
-msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
-msgstr "%C22*%O$tDCC SEND%C26 $1%O ને %C26 $2%O પ્રતિ નિષ્ફળ. $3"
+msgid "%C20*%O$tDCC SEND '%C23$1%C' to %C18$2%C failed (%C20$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:189
-msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
-msgstr "%C22*%O$t%C26$1 %O એ %C26 $2 %O(%C26$3 %O બાઈટો) ની તક આપી છે"
+msgid "%C24*%O$t%C18$1%C has offered '%C23$2%C' (%C24$3%O bytes)"
+msgstr ""
 
 #: src/common/textevents.h:192
-msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %O એ %C26 $3 %C પ્રતિ અટકાવી રાખ્યું છે - અડધેથી બંધ થયેલ છે."
+msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O stalled, aborting."
+msgstr ""
 
 #: src/common/textevents.h:195
-msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %O નો %C26 $3 %O પ્રતિ સમય સમાપ્ત - અડધેથી બંધ કરી રહ્યા છીએ."
+msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O timed out, aborting."
+msgstr ""
 
 #: src/common/textevents.h:198
-msgid "%C22*%O$t$1 deleted from notify list."
-msgstr "%C22*%O$t$1 એ સૂચન યાદીમાંથી કાઢી નંખાયેલ છે."
+msgid "%C24*%O$t%C18$1%O deleted from notify list."
+msgstr ""
 
 #: src/common/textevents.h:201
-msgid "%C22*%O$tDisconnected ($1)."
-msgstr "%C22*%O$t જોડાણ તૂટી ગયેલ છે ($1)."
+msgid "%C20*%O$tDisconnected (%C20$1%O)"
+msgstr ""
 
 #: src/common/textevents.h:204
-msgid "%C22*%O$tFound your IP: [$1]"
-msgstr "%C22*%O$t તમારું IP મળ્યું: [$1]"
+msgid "%C24*%O$tFound your IP: %C30[%C24$1%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:210
-msgid "%O%C26$1%O added to ignore list."
-msgstr "%O%C26$1%O એ અવગણવાની યાદીમાં ઉમેરાઈ ગયું."
+msgid "%O%C18$1%O added to ignore list."
+msgstr ""
 
 #: src/common/textevents.h:213
-msgid "Ignore on %C26$1%O changed."
-msgstr "%C26$1%O પર બદલાયેલ અવગણો."
+msgid "%OIgnore on %C18$1%O changed."
+msgstr ""
 
 #: src/common/textevents.h:216
 #, c-format
-msgid "%C24,18                                                              "
-msgstr "%C24,18                                                              "
+msgid "%C16,17                                                              "
+msgstr ""
 
 #: src/common/textevents.h:219
 #, c-format
-msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
-msgstr "%C24,18 યજમાનમાસ્ક                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
+msgid "%C16,17 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
+msgstr ""
 
 #: src/common/textevents.h:222
-msgid "%O%C26$1%O removed from ignore list."
-msgstr "%O%C26$1%O એ અવગણો યાદીમાંથી દૂર થઈ ગયેલ છે."
+msgid "%O%C18$1%O removed from ignore list."
+msgstr ""
 
 #: src/common/textevents.h:225
-msgid "  Ignore list is empty."
-msgstr "  અવગણો યાદી ખાલી છે."
+msgid "%OIgnore list is empty."
+msgstr ""
 
 #: src/common/textevents.h:228
-msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
-msgstr "%C22*%O$t %C26 %B$1 %O(ચેનલ એ માત્ર આમંત્રિત સ્થિતિમાં જ છે) માં જોડાઈ શકતા નથી."
+msgid "%C20*%O$tCannot join %C22$1%C (%C20Channel is invite only%O)"
+msgstr ""
 
 #: src/common/textevents.h:231
-msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
-msgstr "%C22*%O$t તમે %C26 $1%O by%C26 $2%C (%C26$3%C) માં આમંત્રિત થયા છો"
+msgid "%C24*%O$tYou have been invited to %C22$1%O by %C18$2%O (%C29$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:234
-msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
-msgstr "%C19*%O$t%C19%B$1 %B($3) એ $2 માં જોડાયા"
+#, c-format
+msgid "%C23*$t$1 ($3) has joined"
+msgstr ""
 
 #: src/common/textevents.h:237
-msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
-msgstr "%C22*%O$t %C26 %B$1 %O(મુખ્ય શબ્દ જરૂરી છે) માં જોડાઈ શકતા નથી."
+msgid "%C20*%O$tCannot join %C22$1%C (%C20Requires keyword%O)"
+msgstr ""
 
 #: src/common/textevents.h:240
-msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
-msgstr "%C21*%O$t%C21$1 એ $2 ને $3 ($4%O%C21) માંથી કિક કર્યું છે"
+msgid "%C22*%O$t%C26$1%C has kicked %C18$2%C from %C22$3%C (%C24$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:243
-msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
-msgstr "%C22*%O$t તમે $1 ($2%O%C22) દ્વારા મારી નંખાયેલ છો"
+msgid "%C19*%O$t%C19You have been killed by %C26$1%C (%C20$2%O)"
+msgstr ""
 
 #: src/common/textevents.h:252
-msgid "%C22*%O$t%C22MOTD Skipped."
-msgstr "%C22*%O$t%C22MOTD રદ થયેલ છે."
+msgid "%C29*%O$t%C29MOTD Skipped%O"
+msgstr ""
 
 #: src/common/textevents.h:255
-msgid "%C22*%O$t$1 already in use. Retrying with $2..."
-msgstr "%C22*%O$t$1 પહેલાથી જ વપરાશમાં છે. $2 સાથે પુનઃપ્રયાસ કરી રહ્યા છીએ..."
+msgid "%C23*%O$t%C28$1%C already in use. Retrying with %C18$2%O..."
+msgstr ""
 
 #: src/common/textevents.h:258
-msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
-msgstr "%C22*%O$t નામ પહેલાથી જ વપરાશમાં છે. બીજું વાપરવા માટે /NICK વાપરો."
+msgid "%C20*%O$tNickname already in use. Use /NICK to try another."
+msgstr ""
 
 #: src/common/textevents.h:261
-msgid "%C22*%O$tNo such DCC."
-msgstr "%C22*%O$t આવું કોઈ DCC નથી."
+msgid "%C20*%O$tNo such DCC."
+msgstr ""
 
 #: src/common/textevents.h:264
-msgid "%C22*%O$tNo process is currently running"
-msgstr "%C22*%O$t વર્તમાનમાં કોઈ પ્રક્રિયા ચાલી રહી નથી"
+msgid "%C23*%O$tNo process is currently running"
+msgstr ""
 
 #: src/common/textevents.h:273
 msgid "$tNotify list is empty."
 msgstr "$t સૂચન યાદી ખાલી છે."
 
 #: src/common/textevents.h:276
-msgid "%C24,18 %B  Notify List                           "
-msgstr "%C24,18 %B  સૂચન યાદી                           "
+#, c-format
+msgid "%C16,17  Notify List                           "
+msgstr ""
 
 #: src/common/textevents.h:279
-msgid "%C22*%O$t$1 users in notify list."
-msgstr "%C22*%O$t$1 વપરાશકર્તાઓ સૂચન યાદીમાં."
+msgid "%C23*%O$t%C23$1%O users in notify list."
+msgstr ""
 
 #: src/common/textevents.h:282
-msgid "%C22*%O$tNotify: $1 is offline ($3)."
+msgid "%C23*%O$tNotify: %C18$1%C is offline (%C29$3%O)"
 msgstr ""
 
 #: src/common/textevents.h:285
-msgid "%C22*%O$tNotify: $1 is online ($3)."
+msgid "%C23*%O$tNotify: %C18$1%C is online (%C29$3%O)"
 msgstr ""
 
 #: src/common/textevents.h:291
-msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) એ $3 છોડી મૂક્યું છે"
+#, c-format
+msgid "%C24*$t$1 has left"
+msgstr ""
 
 #: src/common/textevents.h:294
-msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23%B%B$4%O%C23)"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) એ $3 છોડી મૂકી (%O%C23%B%B$4%O%C23)"
+msgid "%C24*%O$t%C18$1%C ($2) has left (%C24$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:297
-msgid "%C22*%O$tPing reply from $1: $2 second(s)"
-msgstr "%C22*%O$tPing પ્રત્યુત્તર $1 તરફથી: $2 સેકન્ડ(ો)"
+msgid "%C24*%O$tPing reply from%C18 $1%C: %C24$2%O second(s)"
+msgstr ""
 
 #: src/common/textevents.h:300
-msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
-msgstr "%C22*%O$t કોઈ ping પ્રત્યુત્તર $1 સેકન્ડો માટે નથી, જોડાણ તોડી રહ્યા છીએ."
+msgid "%C20*%O$tNo ping reply for %C24$1%O seconds, disconnecting."
+msgstr ""
 
 #: src/common/textevents.h:315
-msgid "%C22*%O$tA process is already running"
-msgstr "%C22*%O$t એક પ્રક્રિયા પહેલાથી ચાલી રહેલ છે"
+msgid "%C24*%O$tA process is already running"
+msgstr ""
 
 #: src/common/textevents.h:318
-msgid "%C23*%O$t%C23$1 has quit (%O%C23%B%B$2%O%C23)"
-msgstr "%C23*%O$t%C23$1 એ (%O%C23%B%B$2%O%C23) માંથી બહાર નીકળી ગયા"
+#, c-format
+msgid "%C24*$t$1 has quit ($2)"
+msgstr ""
 
 #: src/common/textevents.h:321
-msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
-msgstr "%C22*%O$t$1 એ %B %C30[%O$2%B%C30] સ્થિતિઓ સુયોજિત કરી"
+msgid "%C24*%O$t%C26$1%C sets modes %C30[%C24$2%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:324
-msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
-msgstr "%C28-%C29$1/Wallops%C28-%O$t$2"
+msgid "%O-%C29$1/Wallops%O-$t$2"
+msgstr ""
 
 #: src/common/textevents.h:327
-msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
-msgstr "%C22*%O$t IP નંબર માટે %C26 $1%O માટે જોઈ રહ્યા છીએ..."
+msgid "%C24*%O$tLooking up IP number for %C18$1%O..."
+msgstr ""
 
 #: src/common/textevents.h:330
-msgid "%C22*%O$t%C22Connected."
-msgstr "%C22*%O$t%C22 જોડાઈ ગયા."
+msgid "%C29*%O$tConnected."
+msgstr ""
 
 #: src/common/textevents.h:336
-msgid "%C22*%O$t%C22Looking up $1"
-msgstr "%C22*%O$t%C22 $1 જોઈ રહ્યા છીએ"
+msgid "%C29*%O$tLooking up %C29$1%O"
+msgstr ""
 
 #: src/common/textevents.h:348
-msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
-msgstr "%C22*%O$t પહેલાંના જોડાણ અટકાવાયેલ છે (pid=$1)"
+msgid "%C23*%O$tStopped previous connection attempt (%C24$1%O)"
+msgstr ""
 
 #: src/common/textevents.h:351
-msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
-msgstr "%C29*%O$t%C29 $1%C %C29 માટેનો મુદ્દો છે: $2"
+msgid "%C22*%O$tTopic for %C22$1%C is: $2%O"
+msgstr ""
 
 #: src/common/textevents.h:354
-msgid "%C22*%O$t$1 has changed the topic to: $2"
-msgstr "%C22*%O$t$1 એ મુદ્દાને આમાં બદલ્યો: $2"
+msgid "%C22*%O$t%C26$1%C has changed the topic to: $2%O"
+msgstr ""
 
 #: src/common/textevents.h:357
-msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
-msgstr "%C29*%O$t%C29 $1%C %C29 માટેનો મુદ્દો $2%C %C29 દ્વારા $3 આગળ સુયોજિત થયેલ છે"
+msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:360
-msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
-msgstr "%C22*%O$t અજ્ઞાત યજમાન. કદાચ તમે તેની જોડણી ખોટી લખી હશે?"
+msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
+msgstr ""
 
 #: src/common/textevents.h:363
-msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
-msgstr "%C22*%O$t %C26 %B$1 %O (વપરાશકર્તા મર્યાદાએ પહોંચી ગયો) માં જોડાઈ શકતા નથી."
+msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
+msgstr ""
 
 #: src/common/textevents.h:366
-msgid "%C22*%O$t%C26Users on $1:%C $2"
-msgstr "%C22*%O$t%C26 $1 પરના વપરાશકર્તાઓ:%C $2"
+msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:369
-msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
+msgid "%C23*%O$t%C28[%C18$1%C28]%O $2 %C18$3%O"
+msgstr ""
 
 #: src/common/textevents.h:372
-msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
-msgstr "%C22*%O$t%C28[%O$1%C28] %C એ દૂર છે %C30(%O$2%O%C30)"
+msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
+msgstr ""
 
 #: src/common/textevents.h:375 src/common/textevents.h:381
-#: src/common/textevents.h:396 src/common/textevents.h:399
-msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
+#: src/common/textevents.h:399
+msgid "%C23*%O$t%C28[%C18$1%C28]%O $2"
+msgstr ""
 
 #: src/common/textevents.h:378
-msgid "%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list."
-msgstr "%C22*%O$t%C28[%O$1%C28] %O WHOIS યાદીનો અંત."
+msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
+msgstr ""
 
 #: src/common/textevents.h:384
-msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O ફાજલ %C26 $2"
+msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O"
+msgstr ""
 
 #: src/common/textevents.h:387
-msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O ફાજલ %C26 $2%O, પ્રવેશ કરો:%C26 $3"
+msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
+msgstr ""
 
 #: src/common/textevents.h:390
-msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
-msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
+msgid "%C23*%O$t%C28[%C18$1%C28] %C30(%C24$2@$3%C30)%O: %C18$4%O"
+msgstr ""
 
 #: src/common/textevents.h:393
-msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
+msgid ""
+"%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
+msgstr ""
+
+#: src/common/textevents.h:396
+msgid "%C23*%O$t%C28[%C18$1%C28]%O %C29$2%O"
+msgstr ""
 
 #: src/common/textevents.h:402
-msgid "%C19*%O$t%C19Now talking on $2"
-msgstr "%C19*%O$t%C19 હવે $2 પર વાત કરી રહ્યા છો"
+msgid "%C19*%O$tNow talking on %C22$2%O"
+msgstr ""
 
 #: src/common/textevents.h:405
-msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
-msgstr "%C23*$t તમે $2 માંથી $3 ($4%O%C23) દ્વારા કિક થઈ ગયેલ છો"
+msgid "%C19*%O$tYou have been kicked from %C22$2%C by %C26$3%O (%C20$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:408
-#, c-format
-msgid "%C23*$tYou have left channel $3"
-msgstr "%C23*$t તમે ચેનલ $3 છોડી દીધી છે"
+msgid "%C19*%O$tYou have left channel %C22$3%O"
+msgstr ""
 
 #: src/common/textevents.h:411
-msgid "%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)"
-msgstr "%C23*$tતમે ચેનલ $3 છોડી મૂકી છે (%O%C23%B%B$4%O%C23)"
+msgid "%C19*%O$tYou have left channel %C22$3%C (%C24$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:417
-msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
-msgstr "%C22*%O$t તમે %C26 $1%O to%C26 $2%O (%C26$3%O) ને આમંત્રિત કર્યો છે"
+msgid "%C20*%O$tYou've invited %C18$1%O to %C22$2%O (%C24$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:423
-msgid "%C22*%O$tYou are now known as $2"
-msgstr "%C22*%O$t તમે હવે $2 તરીકે ઓળખીતા છો"
+msgid "%C20*%O$tYou are now known as %C18$2%O"
+msgstr ""
 
 #: src/common/text.c:367 src/common/text.c:418
 msgid "Loaded log from"
@@ -1713,27 +1725,27 @@ msgid ""
 "%s"
 msgstr "સાઉન્ડ ફાઈલ વાંચી શકતા નથી:\n%s"
 
-#: src/common/util.c:300
+#: src/common/util.c:301
 msgid "Remote host closed socket"
 msgstr "દૂરસ્થ યજમાને સોકેટ બંધ કરેલ છે"
 
-#: src/common/util.c:305
+#: src/common/util.c:306
 msgid "Connection refused"
 msgstr "જોડાણ તૂટી ગયું"
 
-#: src/common/util.c:308
+#: src/common/util.c:309
 msgid "No route to host"
 msgstr "યજમાનનો કોઈ રુટ નથી"
 
-#: src/common/util.c:310
+#: src/common/util.c:311
 msgid "Connection timed out"
 msgstr "જોડાણ સમય સમાપ્તિ"
 
-#: src/common/util.c:312
+#: src/common/util.c:313
 msgid "Cannot assign that address"
 msgstr "તે સરનામું સોંપી શકતા નથી"
 
-#: src/common/util.c:314
+#: src/common/util.c:315
 msgid "Connection reset by peer"
 msgstr "પીયર દ્વારા જોડાણ પુનઃસુયોજિત થયેલ છે"
 
@@ -2875,13 +2887,13 @@ msgstr ""
 msgid "Failed to acquire %s: %s\n"
 msgstr ""
 
-#: src/fe-gtk/about.c:101
+#: src/fe-gtk/about.c:83
 msgid "About "
 msgstr ""
 
-#: src/fe-gtk/about.c:134
-msgid "A multiplatform IRC Client"
-msgstr "મલ્ટીપ્લેટફોર્મ IRC ક્લાઈન્ટ"
+#: src/fe-gtk/about.c:111
+msgid "<b>A multiplatform IRC Client</b>"
+msgstr ""
 
 #: src/fe-gtk/ascii.c:133
 msgid "Character Chart"

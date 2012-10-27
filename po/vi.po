@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-25 21:18+0200\n"
-"PO-Revision-Date: 2012-10-25 19:21+0000\n"
+"POT-Creation-Date: 2012-10-28 01:41+0200\n"
+"PO-Revision-Date: 2012-10-27 23:43+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/common/cfgfiles.c:756
+#: src/common/cfgfiles.c:757
 msgid "I'm busy"
 msgstr "Tôi đang bận"
 
-#: src/common/cfgfiles.c:780
+#: src/common/cfgfiles.c:781
 msgid "Leaving"
 msgstr "Tôi đi"
 
-#: src/common/cfgfiles.c:840
+#: src/common/cfgfiles.c:841
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -61,7 +61,7 @@ msgstr "Không thể truy cập %s\n"
 
 #: src/common/dcc.c:1899 src/common/text.c:1441 src/common/text.c:1479
 #: src/common/text.c:1490 src/common/text.c:1497 src/common/text.c:1510
-#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:356
+#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:357
 msgid "Error"
 msgstr "Lỗi"
 
@@ -749,7 +749,7 @@ msgstr "Việc đi qua máy phục vụ ủy nhiệm bị lỗi.\n"
 msgid "Cycling to next server in %s...\n"
 msgstr "Đang quay lại đến mấy phục vụ kế tiếp trong %s...\n"
 
-#: src/common/servlist.c:1206
+#: src/common/servlist.c:1213
 #, c-format
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
@@ -757,474 +757,486 @@ msgid ""
 msgstr "Cảnh báo : không biết bộ ký tự « %s » nên không chuyển đổi cho mạng %s."
 
 #: src/common/textevents.h:6
-msgid "%C22*%O$t$1 added to notify list."
-msgstr "%C22*%O$t$1 đã được thêm vào danh sách thông báo."
+msgid "%C18*%O$t%C18$1%O added to notify list."
+msgstr ""
 
 #: src/common/textevents.h:9
-msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
-msgstr "%C22*%O$t$1 Danh sách đuổi ra:%C19 $4%C20 $2%C21 $3"
+msgid "%C22*%O$t%C22$1%O Banlist:%C18 $2%O for%C24 $4%O by%C26 $3%O"
+msgstr ""
 
 #: src/common/textevents.h:12
-msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
-msgstr "%C22*%O$tKhông thể vào%C26 %B$1 %O(vì bạn bị đuổi ra)."
+msgid "%C22*%O$tCannot join%C22 $1 %O(%C20You are banned%O)."
+msgstr ""
 
 #: src/common/textevents.h:18
-msgid "%C22*%O$t$1 is now known as $2"
-msgstr "%C22*%O$t$1 lúc bây giờ được biết như là $2"
+msgid "%C24*%O$t%C28$1%O is now known as%C18 $2%O"
+msgstr ""
 
 #: src/common/textevents.h:27
-msgid "%C22*%O$t$1 sets ban on $2"
-msgstr "%C22*%O$t$1 đuổi $2 ra"
+msgid "%C22*%O$t%C26$1%O sets ban on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:30
-msgid "%C22*%O$tChannel $1 created on $2"
-msgstr "%C22*%O$tKênh$1 được tạo vào $2"
+msgid "%C22*%O$tChannel %C22$1%O created"
+msgstr ""
 
 #: src/common/textevents.h:33
-msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O bỏ trạng thái quản trị kênh nửa ra%C26 $2"
+msgid "%C22*%O$t%C26$1%O removes channel half-operator status from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:36
-msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O bỏ trạng thái quản trị kênh ra%C26 $2"
+msgid "%C22*%O$t%C26$1%O removes channel operator status from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:39
-msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O bỏ trạng thái « Tiếng nói » ra%C26 $2"
+msgid "%C22*%O$t%C26$1%O removes voice from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:42
-msgid "%C22*%O$t$1 sets exempt on $2"
-msgstr "%C22*%O$t$1 đặt trạng thái miễn cho $2"
+msgid "%C22*%O$t%C26 $1%C sets exempt on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:45
-msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O đưa ra%C26 $2 trạng thái quản trị kênh nửa"
+msgid "%C22*%O$t%C26$1%O gives channel half-operator status to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:48
-msgid "%C22*%O$t$1 sets invite on $2"
-msgstr "%C22*%O$t$1 đặt trạng thái mời cho $2"
+msgid "%C22*%O$t%C26 $1%C sets invite on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:51
 msgid "%UChannel          Users   Topic"
 msgstr "%UKênh      \t     Người  Chủ đề"
 
 #: src/common/textevents.h:57
-msgid "%C22*%O$t$1 sets mode $2$3 $4"
-msgstr "%C22*%O$t$1 đặt chế độ $2$3 $4"
+msgid "%C22*%O$t%C26$1%O sets mode %C24$2$3%O on %C22$4%O"
+msgstr ""
 
 #: src/common/textevents.h:60
-msgid "%C22*%O$t%C22Channel $1 modes: $2"
-msgstr "%C22*%O$t%C22Kênh $1 chế độ : $2"
+msgid "%C22*%O$tChannel %C22$1%O modes: %C24$2"
+msgstr ""
 
 #: src/common/textevents.h:69
-msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O đưa ra%C26 $2 trạng thái quản trị kênh"
+msgid "%C22*%O$t%C26$1%O gives channel operator status to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:72
-msgid "%C22*%O$t$1 removes exempt on $2"
-msgstr "%C22*%O$t$1 bỏ trạng thái miễn ra $2"
+msgid "%C22*%O$t%C26$1%O removes exempt on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:75
-msgid "%C22*%O$t$1 removes invite on $2"
-msgstr "%C22*%O$t$1 bỏ trạng thái mời ra $2"
+msgid "%C22*%O$t%C26 $1%O removes invite on %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:78
-msgid "%C22*%O$t$1 removes channel keyword"
-msgstr "%C22*%O$t$1 bỏ từ khoá kênh"
+msgid "%C22*%O$t%C26$1%O removes channel keyword"
+msgstr ""
 
 #: src/common/textevents.h:81
-msgid "%C22*%O$t$1 removes user limit"
-msgstr "%C22*%O$t$1 bỏ giới hạn người dùng"
+msgid "%C22*%O$t%C26$1%O removes user limit"
+msgstr ""
 
 #: src/common/textevents.h:84
-msgid "%C22*%O$t$1 sets channel keyword to $2"
-msgstr "%C22*%O$t$1 đặt từ khoá kênh thành $2"
+msgid "%C22*%O$t$1 sets channel keyword to %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:87
-msgid "%C22*%O$t$1 sets channel limit to $2"
-msgstr "%C22*%O$t$1 đặt giới hạn kênh thành $2"
+msgid "%C22*%O$t%C26$1%O sets channel limit to %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:90
-msgid "%C22*%O$t$1 removes ban on $2"
-msgstr "%C22*%O$t$1 bỏ trạng thái bị đuổi ra $2"
+msgid "%C22*%O$t%C26$1%O removes ban on %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:93
-msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O đưa ra %C26 $2 trạng thái « Tiếng nói »"
+msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:96
-msgid "%C22*%O$t%C22Connected. Now logging in..."
-msgstr "%C22*%O$t%C22Mới kết nối. Đang đăng nhập..."
+msgid "%C23*%O$tConnected. Now logging in."
+msgstr ""
 
 #: src/common/textevents.h:99
-msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
-msgstr "%C22*%O$t%C22Đang kết nối đến $1 ($2) trên cổng $3%O..."
+msgid "%C23*%O$tConnecting to %C29$1%C (%C23$2:$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:102
-msgid "%C21*%O$t%C21Connection failed. Error: $1"
-msgstr "%C21*%O$t%C21Kết nối bị lỗi: $1"
+msgid "%C20*%O$tConnection failed (%C20$1%O)"
+msgstr ""
 
 #: src/common/textevents.h:105
-msgid "%C22*%O$tReceived a CTCP $1 from $2"
-msgstr "%C22*%O$tMới nhận CTCP $1 từ $2"
+msgid "%C24*%O$tReceived a CTCP %C24$1%C from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:108
-msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
-msgstr "%C22*%O$tMới nhận CTCP $1 từ $2 (cho $3)"
+msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
+msgstr ""
 
 #: src/common/textevents.h:111
-msgid "%C19>%O$1%C19<%O$tCTCP $2"
-msgstr "%C19>%O$1%C19<%O$tCTCP $2"
+msgid ">%C18$1%C<$tCTCP %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:114
-msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
-msgstr "%C22*%O$tMới nhận âm thanh CTCP $1 từ $2"
+msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:117
-msgid "%C22*%O$tReceived a CTCP Sound $1 from $2 (to $3)"
-msgstr "%C22*%O$tMới nhận âm thanh CTCP $1 từ $2 (cho $3)"
+msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%C (to %C22$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:120
-msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
-msgstr "%C22*%O$tTrò chuyện trực tiếp (DCC) với %C26$1%O bị hủy bỏ."
+msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
+msgstr ""
 
 #: src/common/textevents.h:123
-msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tMới kết nối được để trò chuyện trực tiếp (DCC) với %C26$1 %C30[%O$2%C30]"
+msgid ""
+"%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:126
-msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
-msgstr "%C22*%O$tTrò chuyện trực tiếp (DCC) cho %C26$1%O bị mất ($4)."
+msgid "%C20*%O$tDCC CHAT to %C18$1%O lost (%C20$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:129
-msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
-msgstr "%C22*%O$tMới nhận lời mời trò chuyện trực tiếp (DCC) từ $1"
+msgid "%C24*%O$tReceived a DCC CHAT offer from %C18$1%O"
+msgstr ""
 
 #: src/common/textevents.h:132
-msgid "%C22*%O$tOffering DCC CHAT to $1"
-msgstr "%C22*%O$tĐang mời $1 tro chuyện trực tiếp (DCC)"
+msgid "%C24*%O$tOffering DCC CHAT to %C18$1%O"
+msgstr ""
 
 #: src/common/textevents.h:135
-msgid "%C22*%O$tAlready offering CHAT to $1"
-msgstr "%C22*%O$tĐã mời $1 trò chuyện"
+msgid "%C24*%O$tAlready offering CHAT to %C18$1%O"
+msgstr ""
 
 #: src/common/textevents.h:138
-msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
-msgstr "%C22*%O$tDCC $1 việc cố kết nối đến%C26 $2%O bị lỗi (lỗi=$3)."
+msgid "%C20*%O$tDCC $1 connect attempt to %C18$2%O failed (%C20$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:141
-msgid "%C22*%O$tReceived '$1%O' from $2"
-msgstr "%C22*%O$tMới nhận « $1%O » từ $2"
+msgid "%C23*%O$tReceived '%C23$1%C' from %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:144
 #, c-format
-msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
-msgstr "%C24,18 Kiểu    Đến/Từ    TrThái  Cỡ     Vị trí    Tệp         "
+msgid "%C16,17 Type  To/From    Status  Size    Pos     File         "
+msgstr ""
 
 #: src/common/textevents.h:147
 msgid ""
-"%C22*%O$tReceived a malformed DCC request from "
-"%C26$1%O.%010%C22*%O$tContents of packet: $2"
-msgstr "%C22*%O$tMới nhận yêu cầu dạng sai trò chuyện trực tiếp (DCC) từ %C26$1%O.%010%C22*%O$tNội dung gói tin: $2"
+"%C20*%O$tReceived a malformed DCC request from "
+"%C18$1%O.%010%C23*%O$tContents of packet: %C23$2%O"
+msgstr ""
 
 #: src/common/textevents.h:150
-msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
-msgstr "%C22*%O$tĐang đưa ra%C26 $1%O cho%C26 $2"
+msgid "%C24*%O$tOffering '%C24$1%O' to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:153
-msgid "%C22*%O$tNo such DCC offer."
-msgstr "%C22*%O$tKhông có lời mời trò chuyện trực tiếp (DCC) như vậy."
+msgid "%C23*%O$tNo such DCC offer."
+msgstr ""
 
 #: src/common/textevents.h:156
-msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
-msgstr "%C22*%O$tNHẬN DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
+msgid "%C23*%O$tDCC RECV '%C23$2%O' to %C18$1%O aborted."
+msgstr ""
 
 #: src/common/textevents.h:159
 msgid ""
-"%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr "%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O hoàn thành %C30[%C26$4%O cps%C30]%O."
+"%C24*%O$tDCC RECV '%C23$1%O' from %C18$3%O complete %C30[%C24$4%O cps%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:162
-msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tMới kết nối kiểu NHẬN DCC đếnC26 $1 %C30[%O$2%C30]."
+msgid ""
+"%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:165
-msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4)."
-msgstr "%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O bị lỗi ($4)."
+msgid "%C20*%O$tDCC RECV '%C23$1%O' from %C18$3%O failed (%C20$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:168
-msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
-msgstr "%C22*%O$tNHẬN DCC: không thể mở $1 để ghi ($2)."
+msgid "%C20*%O$tDCC RECV: Cannot open '%C23$1%C' for writing (%C20$2%O)"
+msgstr ""
 
 #: src/common/textevents.h:171
 msgid ""
-"%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
-msgstr "%C22*%O$tTập tin%C26 $1%C đã có : đang lưu nó dạng %C26 $2%O thay thế."
+"%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' "
+"instead."
+msgstr ""
 
 #: src/common/textevents.h:174
-msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
-msgstr "%C22*%O$t%C26$1 %Ođã yêu cầu tiếp tục%C26 $2 %Ctừ%C26 $3%C."
+msgid "%C24*%O$t%C18$1%C has requested to resume '%C23$2%C' from %C24$3%O."
+msgstr ""
 
 #: src/common/textevents.h:177
-msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
-msgstr "%C22*%O$tGỞI DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
+msgid "%C23*%O$tDCC SEND '%C23$2%C' to %C18$1%O aborted."
+msgstr ""
 
 #: src/common/textevents.h:180
 msgid ""
-"%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr "%C22*%O$tGỞI DCC%C26 $1%O cho%C26 $2%O hoàn thành %C30[%C26$3%O cps%C30]%O."
+"%C24*%O$tDCC SEND '%C23$1%C' to %C18$2%C complete %C30[%C24$3%C cps%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:183
-msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tMới kết nối DCC GỞI đến%C26 $1 %C30[%O$2%C30]."
+msgid ""
+"%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:186
-msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
-msgstr "%C22*%O$tViệc kết nối DCC GỞI%C26 $1%O đến%C26 $2%O bị lỗi. $3"
+msgid "%C20*%O$tDCC SEND '%C23$1%C' to %C18$2%C failed (%C20$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:189
-msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
-msgstr "%C22*%O$t%C26$1 %Ođã mời%C26 $2 %O(%C26$3 %Obyte)"
+msgid "%C24*%O$t%C18$1%C has offered '%C23$2%C' (%C24$3%O bytes)"
+msgstr ""
 
 #: src/common/textevents.h:192
-msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Ođến%C26 $3 %Cbị ngừng nên hủy bỏ."
+msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O stalled, aborting."
+msgstr ""
 
 #: src/common/textevents.h:195
-msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Ođến%C26 $3 %Oquá giờ nên hủy bỏ."
+msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O timed out, aborting."
+msgstr ""
 
 #: src/common/textevents.h:198
-msgid "%C22*%O$t$1 deleted from notify list."
-msgstr "%C22*%O$t$1 đã được xoá bỏ ra danh sách thông báo."
+msgid "%C24*%O$t%C18$1%O deleted from notify list."
+msgstr ""
 
 #: src/common/textevents.h:201
-msgid "%C22*%O$tDisconnected ($1)."
-msgstr "%C22*%O$tBị ngắt kết nối ($1)."
+msgid "%C20*%O$tDisconnected (%C20$1%O)"
+msgstr ""
 
 #: src/common/textevents.h:204
-msgid "%C22*%O$tFound your IP: [$1]"
-msgstr "%C22*%O$tTìm thấy địa chỉ IP của bạn: [$1]"
+msgid "%C24*%O$tFound your IP: %C30[%C24$1%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:210
-msgid "%O%C26$1%O added to ignore list."
-msgstr "%O%C26$1%O đã được thêm vào danh sách bỏ qua."
+msgid "%O%C18$1%O added to ignore list."
+msgstr ""
 
 #: src/common/textevents.h:213
-msgid "Ignore on %C26$1%O changed."
-msgstr "Trang thái bỏ qua về %C26$1%O bị thay đổi."
+msgid "%OIgnore on %C18$1%O changed."
+msgstr ""
 
 #: src/common/textevents.h:216
 #, c-format
-msgid "%C24,18                                                              "
-msgstr "%C24,18                                                              "
+msgid "%C16,17                                                              "
+msgstr ""
 
 #: src/common/textevents.h:219
 #, c-format
-msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
-msgstr "%C24,18 Bộ lọc máy                  PRIV NOTI CHAN CTCP DCC  INVI UNIG\n\n[PRIVate\t\triêng\nNOTIfy\t\tthông báo\nCHANnel\t\tkênh\nClient To Client Protocol\tgiao thức ứng dụng khách đến ứng dụng khách\nDirect Chat Channel\t\tkênh trò chuyện trực tiếp\nINVIte\t\tmời\nUNIGnore\t\thủy bỏ qua]"
+msgid "%C16,17 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
+msgstr ""
 
 #: src/common/textevents.h:222
-msgid "%O%C26$1%O removed from ignore list."
-msgstr "%O%C26$1%O được gỡ bỏ ra danh sách bỏ qua."
+msgid "%O%C18$1%O removed from ignore list."
+msgstr ""
 
 #: src/common/textevents.h:225
-msgid "  Ignore list is empty."
-msgstr "  Danh sách bỏ qua la trống."
+msgid "%OIgnore list is empty."
+msgstr ""
 
 #: src/common/textevents.h:228
-msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
-msgstr "%C22*%O$tKhông thể vào%C26 %B$1 %O(Phải có lời mời)."
+msgid "%C20*%O$tCannot join %C22$1%C (%C20Channel is invite only%O)"
+msgstr ""
 
 #: src/common/textevents.h:231
-msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
-msgstr "%C22*%O$tBạn mới được mời vào%C26 $1%O bởi%C26 $2%C (%C26$3%C)"
+msgid "%C24*%O$tYou have been invited to %C22$1%O by %C18$2%O (%C29$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:234
-msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
-msgstr "%C19*%O$t%C19%B$1 %B($3) mới vao $2"
+#, c-format
+msgid "%C23*$t$1 ($3) has joined"
+msgstr ""
 
 #: src/common/textevents.h:237
-msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
-msgstr "%C22*%O$tKhông thể vào%C26 %B$1 %O(Cần đến từ khoá)."
+msgid "%C20*%O$tCannot join %C22$1%C (%C20Requires keyword%O)"
+msgstr ""
 
 #: src/common/textevents.h:240
-msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
-msgstr "%C21*%O$t%C21$1 mới đá $2 ra $3 ($4%O%C21)"
+msgid "%C22*%O$t%C26$1%C has kicked %C18$2%C from %C22$3%C (%C24$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:243
-msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
-msgstr "%C22*%O$tBạn mới bị buộc kết thúc bởi $1 ($2%O%C22)"
+msgid "%C19*%O$t%C19You have been killed by %C26$1%C (%C20$2%O)"
+msgstr ""
 
 #: src/common/textevents.h:252
-msgid "%C22*%O$t%C22MOTD Skipped."
-msgstr "%C22*%O$t%C22MOTD bị nhảy qua.\n[Message Of The Day (thông điệp của hôm nay)]"
+msgid "%C29*%O$t%C29MOTD Skipped%O"
+msgstr ""
 
 #: src/common/textevents.h:255
-msgid "%C22*%O$t$1 already in use. Retrying with $2..."
-msgstr "%C22*%O$t$1 đang dùng nên thử lái vơi $2..."
+msgid "%C23*%O$t%C28$1%C already in use. Retrying with %C18$2%O..."
+msgstr ""
 
 #: src/common/textevents.h:258
-msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
-msgstr "%C22*%O$tTên hiệu đang được dùng nên hay sử dụng lệnh « /NICK » để chọn tên hiệu khác."
+msgid "%C20*%O$tNickname already in use. Use /NICK to try another."
+msgstr ""
 
 #: src/common/textevents.h:261
-msgid "%C22*%O$tNo such DCC."
-msgstr "%C22*%O$tKhông có DCC như vậy."
+msgid "%C20*%O$tNo such DCC."
+msgstr ""
 
 #: src/common/textevents.h:264
-msgid "%C22*%O$tNo process is currently running"
-msgstr "%C22*%O$tKhông có tiến trình nào đang chạy"
+msgid "%C23*%O$tNo process is currently running"
+msgstr ""
 
 #: src/common/textevents.h:273
 msgid "$tNotify list is empty."
 msgstr "$tDanh sách thông báo la trống."
 
 #: src/common/textevents.h:276
-msgid "%C24,18 %B  Notify List                           "
-msgstr "%C24,18 %B  Danh sách thông báo                           "
+#, c-format
+msgid "%C16,17  Notify List                           "
+msgstr ""
 
 #: src/common/textevents.h:279
-msgid "%C22*%O$t$1 users in notify list."
-msgstr "%C22*%O$t$1 người dùng trong danh sách thông báo."
+msgid "%C23*%O$t%C23$1%O users in notify list."
+msgstr ""
 
 #: src/common/textevents.h:282
-msgid "%C22*%O$tNotify: $1 is offline ($3)."
-msgstr "%C22*%O$tThông báo : $1 ngoại tuyến ($3)."
+msgid "%C23*%O$tNotify: %C18$1%C is offline (%C29$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:285
-msgid "%C22*%O$tNotify: $1 is online ($3)."
-msgstr "%C22*%O$tThông báo : $1 trực tuyến ($3)."
+msgid "%C23*%O$tNotify: %C18$1%C is online (%C29$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:291
-msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) đã rời $3 đi"
+#, c-format
+msgid "%C24*$t$1 has left"
+msgstr ""
 
 #: src/common/textevents.h:294
-msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23%B%B$4%O%C23)"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) đa rời $3 đi (%O%C23%B%B$4%O%C23)"
+msgid "%C24*%O$t%C18$1%C ($2) has left (%C24$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:297
-msgid "%C22*%O$tPing reply from $1: $2 second(s)"
-msgstr "%C22*%O$tTrả lời ping từ $1: $2 giây"
+msgid "%C24*%O$tPing reply from%C18 $1%C: %C24$2%O second(s)"
+msgstr ""
 
 #: src/common/textevents.h:300
-msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
-msgstr "%C22*%O$tChưa nhận trả lời ping sau $1 giây nên ngắt kết nối."
+msgid "%C20*%O$tNo ping reply for %C24$1%O seconds, disconnecting."
+msgstr ""
 
 #: src/common/textevents.h:315
-msgid "%C22*%O$tA process is already running"
-msgstr "%C22*%O$tCó một tiến trình đang chạy"
+msgid "%C24*%O$tA process is already running"
+msgstr ""
 
 #: src/common/textevents.h:318
-msgid "%C23*%O$t%C23$1 has quit (%O%C23%B%B$2%O%C23)"
-msgstr "%C23*%O$t%C23$1 đã thoát (%O%C23%B%B$2%O%C23)."
+#, c-format
+msgid "%C24*$t$1 has quit ($2)"
+msgstr ""
 
 #: src/common/textevents.h:321
-msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
-msgstr "%C22*%O$t$1 đặt chế độ%B %C30[%O$2%B%C30]"
+msgid "%C24*%O$t%C26$1%C sets modes %C30[%C24$2%C30]%O"
+msgstr ""
 
 #: src/common/textevents.h:324
-msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
-msgstr "%C28-%C29$1/Gởi tin nhẳn cho mọi quan trị%C28-%O$t$2"
+msgid "%O-%C29$1/Wallops%O-$t$2"
+msgstr ""
 
 #: src/common/textevents.h:327
-msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
-msgstr "%C22*%O$tĐang tra cứu số IP cho%C26 $1%O..."
+msgid "%C24*%O$tLooking up IP number for %C18$1%O..."
+msgstr ""
 
 #: src/common/textevents.h:330
-msgid "%C22*%O$t%C22Connected."
-msgstr "%C22*%O$t%C22Đã kết nối."
+msgid "%C29*%O$tConnected."
+msgstr ""
 
 #: src/common/textevents.h:336
-msgid "%C22*%O$t%C22Looking up $1"
-msgstr "%C22*%O$t%C22Đang tra cứu $1"
+msgid "%C29*%O$tLooking up %C29$1%O"
+msgstr ""
 
 #: src/common/textevents.h:348
-msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
-msgstr "%C22*%O$tĐã thôi việc cố kết nối trước (pid=$1)"
+msgid "%C23*%O$tStopped previous connection attempt (%C24$1%O)"
+msgstr ""
 
 #: src/common/textevents.h:351
-msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
-msgstr "%C29*%O$t%C29Chủ đề cho $1%C %C29là: $2"
+msgid "%C22*%O$tTopic for %C22$1%C is: $2%O"
+msgstr ""
 
 #: src/common/textevents.h:354
-msgid "%C22*%O$t$1 has changed the topic to: $2"
-msgstr "%C22*%O$t$1 mới thay đổi chủ đề thành: $2"
+msgid "%C22*%O$t%C26$1%C has changed the topic to: $2%O"
+msgstr ""
 
 #: src/common/textevents.h:357
-msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
-msgstr "%C29*%O$t%C29Chủ đề cho $1%C %C29 được đặt bởi $2%C %C29vào $3"
+msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:360
-msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
-msgstr "%C22*%O$tKhông biết máy: chính tả sai không?"
+msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
+msgstr ""
 
 #: src/common/textevents.h:363
-msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
-msgstr "%C22*%O$tKhông thể vào%C26 %B$1 %O(Đã tới giới hạn số người dùng)."
+msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
+msgstr ""
 
 #: src/common/textevents.h:366
-msgid "%C22*%O$t%C26Users on $1:%C $2"
-msgstr "%C22*%O$t%C26Người dùng trên $1:%C $2"
+msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
+msgstr ""
 
 #: src/common/textevents.h:369
-msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
+msgid "%C23*%O$t%C28[%C18$1%C28]%O $2 %C18$3%O"
+msgstr ""
 
 #: src/common/textevents.h:372
-msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Cvắng mặt %C30(%O$2%O%C30)"
+msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
+msgstr ""
 
 #: src/common/textevents.h:375 src/common/textevents.h:381
-#: src/common/textevents.h:396 src/common/textevents.h:399
-msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
+#: src/common/textevents.h:399
+msgid "%C23*%O$t%C28[%C18$1%C28]%O $2"
+msgstr ""
 
 #: src/common/textevents.h:378
-msgid "%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list."
-msgstr "%C22*%O$t%C28[%O$1%C28] %OKết thúc danh sách WHOIS.\n[WHO IS (là ai)]"
+msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
+msgstr ""
 
 #: src/common/textevents.h:384
-msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O nhàn rỗi%C26 $2"
+msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O"
+msgstr ""
 
 #: src/common/textevents.h:387
-msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O nghỉ%C26 $2%O, đăng nhập:%C26 $3"
+msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
+msgstr ""
 
 #: src/common/textevents.h:390
-msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
-msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
+msgid "%C23*%O$t%C28[%C18$1%C28] %C30(%C24$2@$3%C30)%O: %C18$4%O"
+msgstr ""
 
 #: src/common/textevents.h:393
-msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Ongười dùng thật@máy%C27 $2%O, địa chỉ IP thật%C27 $3"
+msgid ""
+"%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
+msgstr ""
+
+#: src/common/textevents.h:396
+msgid "%C23*%O$t%C28[%C18$1%C28]%O %C29$2%O"
+msgstr ""
 
 #: src/common/textevents.h:402
-msgid "%C19*%O$t%C19Now talking on $2"
-msgstr "%C19*%O$t%C19Đang nói chuyện trên $2"
+msgid "%C19*%O$tNow talking on %C22$2%O"
+msgstr ""
 
 #: src/common/textevents.h:405
-msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
-msgstr "%C23*$tBạn đã bị đá ra $2 bởi $3 ($4%O%C23)"
+msgid "%C19*%O$tYou have been kicked from %C22$2%C by %C26$3%O (%C20$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:408
-#, c-format
-msgid "%C23*$tYou have left channel $3"
-msgstr "%C23*$tBạn mới rời kênh $3 đi"
+msgid "%C19*%O$tYou have left channel %C22$3%O"
+msgstr ""
 
 #: src/common/textevents.h:411
-msgid "%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)"
-msgstr "%C23*$tBạn mới rời kênh $3 đi (%O%C23%B%B$4%O%C23)"
+msgid "%C19*%O$tYou have left channel %C22$3%C (%C24$4%O)"
+msgstr ""
 
 #: src/common/textevents.h:417
-msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
-msgstr "%C22*%O$tBạn đã mời%C26 $1%O vào%C26 $2%O (%C26$3%O)"
+msgid "%C20*%O$tYou've invited %C18$1%O to %C22$2%O (%C24$3%O)"
+msgstr ""
 
 #: src/common/textevents.h:423
-msgid "%C22*%O$tYou are now known as $2"
-msgstr "%C22*%O$tBạn lúc bây giờ được biết như là $2"
+msgid "%C20*%O$tYou are now known as %C18$2%O"
+msgstr ""
 
 #: src/common/text.c:367 src/common/text.c:418
 msgid "Loaded log from"
@@ -1713,27 +1725,27 @@ msgid ""
 "%s"
 msgstr "Không thể đọc tập tin âm thanh:\n%s"
 
-#: src/common/util.c:300
+#: src/common/util.c:301
 msgid "Remote host closed socket"
 msgstr "Máy ở xa đã đóng ổ cắm"
 
-#: src/common/util.c:305
+#: src/common/util.c:306
 msgid "Connection refused"
 msgstr "Kết nối bị từ chối"
 
-#: src/common/util.c:308
+#: src/common/util.c:309
 msgid "No route to host"
 msgstr "Không có đường dẫ đến máy"
 
-#: src/common/util.c:310
+#: src/common/util.c:311
 msgid "Connection timed out"
 msgstr "Kết nối đã quá giờ"
 
-#: src/common/util.c:312
+#: src/common/util.c:313
 msgid "Cannot assign that address"
 msgstr "Không thể gán địa chỉ đó"
 
-#: src/common/util.c:314
+#: src/common/util.c:315
 msgid "Connection reset by peer"
 msgstr "Kết nối bị đặt lại bởi ngang hàng"
 
@@ -2875,13 +2887,13 @@ msgstr "Không thể kết nối đến bộ nối phiên chạy: %s\n"
 msgid "Failed to acquire %s: %s\n"
 msgstr "Lỗi lấy %s: %s\n"
 
-#: src/fe-gtk/about.c:101
+#: src/fe-gtk/about.c:83
 msgid "About "
 msgstr ""
 
-#: src/fe-gtk/about.c:134
-msgid "A multiplatform IRC Client"
-msgstr "Ứng dụng khách IRC đa nền"
+#: src/fe-gtk/about.c:111
+msgid "<b>A multiplatform IRC Client</b>"
+msgstr ""
 
 #: src/fe-gtk/ascii.c:133
 msgid "Character Chart"
