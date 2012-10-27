@@ -1,3 +1,9 @@
+/* process textevents.in with make-te < textevents.in > textevents.h 2> textenums.h
+ * textevents.in notes:
+ *  - the n prefix means the event text does not have to be translated thus
+ *    the N_() encapsulation will be omitted
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
