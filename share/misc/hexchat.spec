@@ -1,38 +1,19 @@
-%define _default_patch_fuzz 2
-%define gconf_version 2.14
-
 Summary:   A popular and easy to use graphical IRC (chat) client
 Name:      hexchat
-Version:   2.8.8
-Release:   0%{?dist}
-Epoch:     1
+Version:   2.9.4
+Release:   1%{?dist}
 Group:     Applications/Internet
 License:   GPLv2+
 URL:       http://www.hexchat.org
 Source:    https://github.com/downloads/hexchat/hexchat/hexchat-%{version}.tar.xz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-# Patches 0-9 reserved for official xchat.org patches
-
-BuildRequires: perl perl(ExtUtils::Embed) python-devel openssl-devel pkgconfig, tcl-devel
-BuildRequires: GConf2-devel
-BuildRequires: dbus-devel >= 0.60, dbus-glib-devel >= 0.60
+BuildRequires: perl, perl(ExtUtils::Embed), python-devel, tcl-devel
+BuildRequires: dbus-devel, dbus-glib-devel
 BuildRequires: glib2-devel >= 2.10.0, gtk2-devel >= 2.10.0, bison >= 1.35
-BuildRequires: gettext /bin/sed
-BuildRequires: libtool
-BuildRequires: libsexy-devel
-BuildRequires: desktop-file-utils >= 0.10
-# For gconftool-2:
-Requires(post): GConf2 >= %{gconf_version}
-Requires(preun): GConf2 >= %{gconf_version}
-
-# Ensure that a compatible libperl is installed
-Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-
-Provides: hexchat-perl = %{epoch}:%{version}-%{release}
-Obsoletes: hexchat-perl < %{epoch}:%{version}-%{release}
-Provides: hexchat-python = %{epoch}:%{version}-%{release}
-Obsoletes: hexchat-python < %{epoch}:%{version}-%{release}
+BuildRequires: libtool, autoconf, gettext-devel, pkgconfig
+BuildRequires: libproxy-devel, libsexy-devel, libnotify-devel, openssl-devel
+BuildRequires: desktop-file-utils, hicolor-icon-theme
 
 %description
 HexChat is an easy to use graphical IRC chat client for the X Window System.
@@ -40,102 +21,118 @@ It allows you to join multiple IRC channels (chat rooms) at the same time,
 talk publicly, private one-on-one conversations etc. Even file transfers
 are possible.
 
-This includes the plugins to run the Perl and Python scripts.
-
 %package tcl
-Summary: Tcl script plugin for HexChat
-Group: Applications/Internet
-Requires: %{name} = %{epoch}:%{version}-%{release}
+Summary:  Tcl script plugin for HexChat
+Group:    Applications/Internet
+Requires: %{name}%{?_isa} = %{version}-%{release}
 %description tcl
-This package contains the HexChat plugin providing the Tcl scripting interface.
+The HexChat plugin providing the Tcl scripting interface.
+
+%package perl
+Summary:  Perl script plugin for HexChat
+Group:    Applications/Internet
+Requires: %{name}%{?_isa} = %{version}-%{release}
+%description perl
+The HexChat plugin providing the Perl scripting interface.
+
+%package python
+Summary:  Python script plugin for HexChat
+Group:    Applications/Internet
+Requires: %{name}%{?_isa} = %{version}-%{release}
+%description python
+The HexChat plugin providing the Python scripting interface.
 
 %prep
 %setup -q
 
 %build
-# Remove CVS files from source dirs so they're not installed into doc dirs.
-find . -name CVS -type d | xargs rm -rf
+./autogen.sh
 
-export CFLAGS="$RPM_OPT_FLAGS $(perl -MExtUtils::Embed -e ccopts)"
-export LDFLAGS=$(perl -MExtUtils::Embed -e ldopts)
-
-%configure --disable-textfe \
-           --enable-gtkfe \
-           --enable-openssl \
-           --enable-python \
-           --enable-tcl=%{_libdir} \
-           --enable-ipv6 \
+%configure --enable-ipv6 \
            --enable-spell=libsexy \
+           --enable-tcl=%{_libdir} \
            --enable-shm
-
-# gtkspell breaks Input Method commit with ENTER
 
 make %{?_smp_mflags}
 
-
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
-%{__make} install DESTDIR=$RPM_BUILD_ROOT GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
+
+# Add SVG for hicolor
+%{__install} -D -m644 share/icons/hexchat.svg $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/hexchat.svg
 
 # Get rid of libtool archives
 %{__rm} -f $RPM_BUILD_ROOT%{_libdir}/hexchat/plugins/*.la
 
-# Install the .desktop file properly
-%{__rm} -f $RPM_BUILD_ROOT%{_datadir}/applications/hexchat.desktop
-desktop-file-install --vendor="" \
-  --dir $RPM_BUILD_ROOT%{_datadir}/applications \
-  --add-category=IRCClient \
-  --add-category=GTK hexchat.desktop
+# Remove unused schema
+%{__rm} -f $RPM_BUILD_ROOT%{_sysconfdir}/gconf/schemas/apps_hexchat_url_handler.schemas
+
+# Fix opening irc:// links by adding mimetype and editing exec
+desktop-file-edit --set-key=Exec --set-value='sh -c "hexchat --existing --url %U || exec hexchat"' \
+    $RPM_BUILD_ROOT%{_datadir}/applications/hexchat.desktop
+
+desktop-file-edit --add-mime-type='x-scheme-handler/irc;x-scheme-handler/ircs' \
+    $RPM_BUILD_ROOT%{_datadir}/applications/hexchat.desktop
 
 %find_lang %{name}
-
-# do not Provide plugins .so
-%define _use_internal_dependency_generator 0
-%{__cat} << \EOF > %{name}.prov
-#!%{_buildshell}
-%{__grep} -v %{_docdir} - | %{__find_provides} $* \
-	| %{__sed} '/\.so\(()(64bit)\)\?$/d'
-EOF
-%define __find_provides %{_builddir}/%{name}-%{version}/%{name}.prov
-%{__chmod} +x %{__find_provides}
-
-
-%post
-# Install schema
-export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-gconftool-2 --makefile-install-rule /etc/gconf/schemas/apps_hexchat_url_handler.schemas >& /dev/null || :
-
-
-%pre
-if [ "$1" -gt 1 ]; then
-  export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-  gconftool-2 --makefile-uninstall-rule /etc/gconf/schemas/apps_hexchat_url_handler.schemas >& /dev/null || :
-fi
-
-%preun
-if [ "$1" -eq 0 ]; then
-  export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-  gconftool-2 --makefile-uninstall-rule /etc/gconf/schemas/apps_hexchat_url_handler.schemas >& /dev/null || :
-fi
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
 
+%post
+gtk-update-icon-cache %{_datadir}/icons/hicolor
+update-desktop-database
+
+%postun
+gtk-update-icon-cache %{_datadir}/icons/hicolor
+update-desktop-database
+
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc README ChangeLog
-%doc plugins/plugin20.html plugins/perl/hexchat-perl.html
 %{_bindir}/hexchat
+%doc share/doc/changelog.md
+%doc share/doc/readme.md
+%doc share/doc/faq.md
+%doc share/doc/COPYING
 %dir %{_libdir}/hexchat
 %dir %{_libdir}/hexchat/plugins
-%{_libdir}/hexchat/plugins/perl.so
-%{_libdir}/hexchat/plugins/python.so
+%{_libdir}/hexchat/plugins/checksum.so
+%{_libdir}/hexchat/plugins/doat.so
+%{_libdir}/hexchat/plugins/fishlim.so
+%{_libdir}/hexchat/plugins/sysinfo.so
 %{_datadir}/applications/hexchat.desktop
+%{_datadir}/icons/hicolor/scalable/apps/hexchat.svg
 %{_datadir}/pixmaps/*
-%{_sysconfdir}/gconf/schemas/apps_hexchat_url_handler.schemas
 %{_datadir}/dbus-1/services/org.hexchat.service.service
+%{_mandir}/man1/hexchat.1.gz
 
 %files tcl
 %defattr(-,root,root)
 %{_libdir}/hexchat/plugins/tcl.so
+
+%files perl
+%defattr(-,root,root)
+%doc plugins/perl/hexchat-perl.html
+%{_libdir}/hexchat/plugins/perl.so
+
+%files python
+%defattr(-,root,root)
+%doc plugins/python/hexchat-python.md
+%{_libdir}/hexchat/plugins/python.so
+
+%changelog
+* Sat Oct 27 2012 TingPing <tingping@tingping.se> - 2.9.4-1
+- Version bump to 2.9.4
+- Split up python and perl packages
+
+* Fri Oct 19 2012 TingPing <tingping@tingping.se> - 2.9.3-1
+- Version bump to 2.9.3
+- Added COPYING to doc
+
+* Sat Oct 6 2012 TingPing <tingping@tingping.se> - 2.9.2-1
+- Version bump to 2.9.2
+
+* Sat Sep 1 2012 TingPing <tingping@tingping.se> - 2.9.1-1
+- first version for hexchat 2.9.1
 
