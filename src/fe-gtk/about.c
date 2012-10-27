@@ -121,14 +121,14 @@ menu_about (GtkWidget * wid, gpointer sess)
 	/* label for additional info */
 	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
-				"<b>Version</b>: "PACKAGE_VERSION"\n"
-				"<b>Compiled</b>: "__DATE__"\n"
+				"<b>Version:</b> "PACKAGE_VERSION"\n"
+				"<b>Compiled:</b> "__DATE__"\n"
 #ifdef WIN32
-				"<b>Portable Mode</b>: %s\n"
-				"<b>Build Type</b>: x%d\n"
+				"<b>Portable Mode:</b> %s\n"
+				"<b>Build Type:</b> x%d\n"
 #endif
-				"<b>OS</b>: %s\n"
-				"<b>Charset</b>: %s",
+				"<b>OS:</b> %s\n"
+				"<b>Charset:</b> %s",
 #ifdef WIN32
 				(portable_mode () ? "Yes" : "No"),
 				get_cpu_arch (),
