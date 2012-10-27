@@ -1,7 +1,22 @@
-/* process textevents.in with make-te < textevents.in > textevents.h 2> textenums.h
+/* Process textevents.in with make-te < textevents.in > textevents.h 2> textenums.h
+ *
  * textevents.in notes:
- *  - the n prefix means the event text does not have to be translated thus
- *    the N_() encapsulation will be omitted
+ *
+ *  - The number in the ending lines indicates the total number of arguments
+ *    a text event supports. So don't touch them unless you actually modify the
+ *    EMIT_SIGNAL commands, too.
+ *
+ *  - The "n" prefix means the event text does not have to be translated thus
+ *    the N_() gettext encapsulation will be omitted.
+ *
+ *  - EMIT_SIGNAL is just a macro for text_emit() which can take a total amount
+ *    of 4 event arguments, so events have a hard limit of 4 arguments.
+ *
+ *  - $t means the xtext tab, i.e. the vertical separator line for indented nicks.
+ *    That means $t forces a new line for that event.
+ *
+ *  - Text events are emitted in ctcp.c, dcc.c, hexchat.c, ignore.c, inbound.c,
+ *    modes.c, notify.c, outbound.c, proto-irc.c, server.c and text.c.
  */
 
 #include <stdio.h>
