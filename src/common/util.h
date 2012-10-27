@@ -31,7 +31,7 @@ int buf_get_line (char *, char **, int *, int len);
 char *nocasestrstr (const char *text, const char *tofind);
 char *country (char *);
 void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
-char *get_cpu_str (void);
+char *get_sys_str (int with_cpu);
 int util_exec (const char *cmd);
 int util_execv (char * const argv[]);
 #define STRIP_COLOR 1

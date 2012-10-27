@@ -122,18 +122,18 @@ menu_about (GtkWidget * wid, gpointer sess)
 	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
 				"<b>Version</b>: "PACKAGE_VERSION"\n"
-				"<b>OS</b>: %s\n"
 				"<b>Compiled</b>: "__DATE__"\n"
 #ifdef WIN32
 				"<b>Portable Mode</b>: %s\n"
 				"<b>Build Type</b>: x%d\n"
 #endif
+				"<b>OS</b>: %s\n"
 				"<b>Charset</b>: %s",
-				get_cpu_str (),
 #ifdef WIN32
 				(portable_mode () ? "Yes" : "No"),
 				get_cpu_arch (),
 #endif
+				get_sys_str (0),
 				locale);
 
 	label_info = gtk_label_new (NULL);

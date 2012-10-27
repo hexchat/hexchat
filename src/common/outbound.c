@@ -3885,7 +3885,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 				case 'h':
 					utf = h; break;
 				case 'm':
-					utf = get_cpu_str (); break;
+					utf = get_sys_str (1); break;
 				case 'n':
 					utf = n; break;
 				case 's':

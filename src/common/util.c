@@ -674,7 +674,7 @@ get_cpu_arch (void)
 }
 
 char *
-get_cpu_str (void)
+get_sys_str (int with_cpu)
 {
 	static char verbuf[64];
 	static char winver[20];
@@ -749,7 +749,7 @@ get_cpu_str (void)
 	}
 
 	mhz = get_mhz ();
-	if (mhz)
+	if (mhz && with_cpu)
 	{
 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
@@ -766,7 +766,7 @@ get_cpu_str (void)
 #else
 
 char *
-get_cpu_str (void)
+get_sys_str (int with_cpu)
 {
 #if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
 	double mhz;
@@ -784,7 +784,7 @@ get_cpu_str (void)
 
 #if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
 	get_cpu_info (&mhz, &cpus);
-	if (mhz)
+	if (mhz && with_cpu)
 	{
 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
