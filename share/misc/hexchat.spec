@@ -92,10 +92,7 @@ update-desktop-database
 %files -f %{name}.lang
 %defattr(-,root,root)
 %{_bindir}/hexchat
-%doc share/doc/changelog.md
-%doc share/doc/readme.md
-%doc share/doc/faq.md
-%doc share/doc/COPYING
+%doc share/doc/*
 %dir %{_libdir}/hexchat
 %dir %{_libdir}/hexchat/plugins
 %{_libdir}/hexchat/plugins/checksum.so
@@ -114,12 +111,10 @@ update-desktop-database
 
 %files perl
 %defattr(-,root,root)
-%doc plugins/perl/hexchat-perl.html
 %{_libdir}/hexchat/plugins/perl.so
 
 %files python
 %defattr(-,root,root)
-%doc plugins/python/hexchat-python.md
 %{_libdir}/hexchat/plugins/python.so
 
 %changelog
