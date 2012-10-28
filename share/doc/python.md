@@ -1,7 +1,6 @@
 # HexChat Python Interface
 
-Features
---------
+## Features
 
 Here are some of the features of the python plugin interface:
 
@@ -16,8 +15,7 @@ Here are some of the features of the python plugin interface:
 -   Nice context treatment
 -   Plugin preferences
 
-Commands
---------
+## Commands
 
 The following commands will be intercepted by the Python Plugin interface module, when it is loaded.
 
@@ -44,15 +42,13 @@ The following commands will be intercepted by the Python Plugin interface module
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Autoloading modules
--------------------
+## Autoloading modules
 
 If you want some module to be autoloaded together with the Python plugin
 interface (which usually loads at startup time), just make sure it has a
 `.py` extension and put it in your HexChat directory (~/.config/hexchat/addons, %APPDATA%\\HexChat\\addons).
 
-Context theory
---------------
+## Context theory
 
 Before starting to explain what the API offers, I'll do a short
 introduction about the xchat context concept. Not because it's something
@@ -69,8 +65,7 @@ channel, and you have asked xchat to tell you about this event, the
 current context will be set to this channel before your module is
 called.
 
-Hello world
------------
+## Hello world
 
 Here is the traditional *hello world* example.
 
@@ -88,8 +83,7 @@ introduces some concepts. Notice how the module information is set. This
 information is obligatory, and will be shown when listing the loaded
 xchat modules.
 
-xchat module
-------------
+## xchat module
 
 The xchat module is your passport to every xchat functionality offered
 by the Python plugin interface. Here's a simple example:
