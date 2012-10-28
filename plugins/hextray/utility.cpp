@@ -27,7 +27,7 @@
 #include "callbacks.h"
 #include "resource.h"
 
-TCHAR BACKUP_INI_FILE[] = _T(".\\plugins\\config\\hextray.conf");
+TCHAR BACKUP_INI_FILE[] = _T(".\\plugins\\config\\addon_hextray.conf");
 struct HOTKEY g_hHotKey;
 
 /* we need to convert ALT and SHIFT modifiers
@@ -92,7 +92,7 @@ void SavePrefs(int iDlg)
 	char temp[1024];
     TCHAR TEMP_INI_FILE[1024];
 	
-	_snprintf(temp, 1024, "%s\\hextray.conf", xchat_get_info(ph, "xchatdir"));
+	_snprintf(temp, 1024, "%s\\addon_hextray.conf", xchat_get_info(ph, "xchatdir"));
 	ConvertString(temp, TEMP_INI_FILE, 1024);
 
 	// ok this one is really ugly
@@ -185,7 +185,7 @@ void LoadPrefs()
 	char temp[1024];
 	TCHAR TEMP_INI_FILE[1024];
 
-	_snprintf(temp, 1024, "%s\\hextray.conf", xchat_get_info(ph, "xchatdir"));
+	_snprintf(temp, 1024, "%s\\addon_hextray.conf", xchat_get_info(ph, "xchatdir"));
 	ConvertString(temp, TEMP_INI_FILE, 1024);
 
 	if(FileExists(TEMP_INI_FILE))
