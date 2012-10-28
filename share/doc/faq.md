@@ -1,8 +1,6 @@
-HexChat Frequently Asked Questions
-==================================
+# HexChat Frequently Asked Questions
 
-Using HexChat.
---------------
+## Using HexChat
 
 ### How do I autoconnect and join a channel when HexChat loads?
 
@@ -295,8 +293,7 @@ to modify the global real name, just issue the following command:
 >   5. Rename *%APPDATA%\\HexChat\\plugin\_\*.conf to %APPDATA%\\HexChat\\addon\_\*.conf
 
 
-Contributions, Development and Bugs.
-------------------------------------
+## Contributions, Development and Bugs.
 
 ### I found a bug, what can I do?
 

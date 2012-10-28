@@ -1,4 +1,4 @@
-% HexChat Python Interface
+# HexChat Python Interface
 
 Features
 --------
