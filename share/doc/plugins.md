@@ -423,7 +423,7 @@ get_file_name (char *nick, char *fname)
 	wchar_t wide_name[MAX_PATH];
 
 	/* convert UTF-8 to WIDECHARs (aka UTF-16LE) */
-	if (MultiByteToWideChar (CP_UTF8, 0, fname, -1, wide_name, MAX_PATH) < 1)
+	if (MultiByteToWideChar (CP_UTF8, 0, fname, -1, wide_name, MAX_PATH) &lt; 1)
 	{
 		return;
 	}
@@ -1060,7 +1060,7 @@ saveint_cb (char *word[], char *word_eol[], void *user_data)
 {
 	int buffer = atoi (word[2]);
 
-	if (buffer > 0 && buffer < INT_MAX)
+	if (buffer > 0 && buffer &lt; INT_MAX)
 	{
 		if (xchat_pluginpref_set_int (ph, "myint1", buffer))
 		{
