@@ -1,31 +1,32 @@
-  .----------------------.
---|   X-Chat ChangeLog   |--------------------------------------------
-  `----------------------'
+# XChat ChangeLog
 
 To see more details of bugs, go to this URL:
+
 http://sf.net/tracker/?func=detail&atid=100239&group_id=239&aid=NUMBER
+
 Where "NUMBER" is the bug number.
 
 This log DOES NOT apply to XChat for Windows.
 
 There are always more changes than listed here, these are just the
-highlights. The full CVS log is available at www.xchat.org/cvslog/
+highlights. The full CVS log is available at [www.xchat.org/cvslog/](http://www.xchat.org/cvslog/)
 
-------------------------------------------------------------------------------
- 2.8.10 - dd/mm/yyyy
-------------------------------------------------------------------------------
+***
+
+## 2.8.10 - dd/mm/yyyy
+
  - Emit the Topic Change event before setting the topic internally so plugins
    can access the old topic inside the callback.
- - Add two options url_grabber and url_grabber_limit.
-   * url_grabber is a boolean for enabling/disabling the url grabber
-   * url_grabber_limit is an integer controlling the number of URLs the
+ - Add two options url\_grabber and url\_grabber\_limit.
+   * url\_grabber is a boolean for enabling/disabling the url grabber
+   * url\_grabber\_limit is an integer controlling the number of URLs the
      URL Grabber will keep around. Setting it to 0 leaves it unlimited as in
      previous versions.
  - Fixed a bug with the URL Grabber where it fails to grab a URL if the URL
    is the first thing in the message.
- - Change /ignore <nick> to always add !*@* if <nick> does not contain ? or *
+ - Change /ignore &lt;nick> to always add !*@* if &lt;nick> does not contain ? or *
  - Perl (Lian Wan Situ)
-  * Added two new options to hook_print, run_after_event and filter. See
+  * Added two new options to hook\_print, run\_after\_event and filter. See
     documentation for details.
   * When building on Windows, generate the name of the DLL for the Perl
     library based on information from the header files instead of hardcoding
@@ -38,15 +39,15 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
     multiple script declare an inner package with the same name then unloading
     or reloading one of those scripts will cause problems.
 
-------------------------------------------------------------------------------
- 2.8.8 - 30/May/2010
-------------------------------------------------------------------------------
+***
 
- - Made balloon time adjustable via /set input_balloon_time (Nicoleau Fabien).
+## 2.8.8 - 30/May/2010
+
+ - Made balloon time adjustable via /set input\_balloon\_time (Nicoleau Fabien).
  - Fixed a crash in the /SET command if a boolean value was loaded from config
    file that isn't set to 0 or 1.
  - Added -on and -off parameters to the /SET command. This can be used to set
-   bits, for example gui_tweaks.
+   bits, for example gui\_tweaks.
  - Made scrolling backwards for the search window act better (Richard Hitt).
  - [2045483] Made ESC key close the search window (Richard Rowell).
  - Improved the reconnect logic. If a network is already open but disconnected,
@@ -78,30 +79,29 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
     supposed to
   * Reverted the unintentional change to how the server argument of print()
     and command() is interepreted when it is undef
-  * Add hook_fd to the 'hooks' export tag
-  * Fixed a leak in XS_Xchat_get_list(Vincent Pit)
+  * Add hook\_fd to the 'hooks' export tag
+  * Fixed a leak in XS\_Xchat\_get\_list(Vincent Pit)
   * Change Xchat::register so that scripts calling it without a name or
     version will still show up in the plugins and scripts window.
-  * Added calls to PERL_SYS_INIT3 and PERL_SYS_TERM which are required on
+  * Added calls to PERL\_SYS\_INIT3 and PERL\_SYS\_TERM which are required on
     some platforms
   * Added some additional guards to prevents bits of scripts from spilling
     into each other
-  * Added "modes", "win_ptr" and "xchatdirfs" to the list of keys that are
-    returned by context_info()
+  * Added "modes", "win\_ptr" and "xchatdirfs" to the list of keys that are
+    returned by context\_info()
   * Changed the information displayed in the "Plugins & Scripts" for scripts
     that do not call register() to show up as "" for the name and description
     and "unknown" for the version
   * /reloadall will now reload scripts in the same order they were loaded
-  * Make xchat_send_modes available as Xchat::send_modes
-  * Add support for getting the network list using Xchat::get_list( "networks" )
-  * Xchat::strip_code will now strip off ANSI escape codes as well
+  * Make xchat\_send\_modes available as Xchat::send\_modes
+  * Add support for getting the network list using Xchat::get\_list( "networks" )
+  * Xchat::strip\_code will now strip off ANSI escape codes as well
 
+***
 
-------------------------------------------------------------------------------
- 2.8.6 - 11/Jun/2008
-------------------------------------------------------------------------------
+## 2.8.6 - 11/Jun/2008
 
- - Updated translations (de, fi, fr, hu, lt, nb, ru, th, zh_CN).
+ - Updated translations (de, fi, fr, hu, lt, nb, ru, th, zh\_CN).
  - Fixed creation of ~/.xchat2/scrollback/ paths (xc284-scrollbmkdir.diff).
  - Fixed a leak of file descriptors related to the scrollback feature
    (resource leak) (xc284-fix-scrollbfdleak.diff).
@@ -116,7 +116,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    download was still going.
  - Fixed alert balloons failing if the text contained "<" characters [1827629].
  - The Drag&Drop files to userlist feature has been enabled again.
- - Removed the /set tab_icons setting and made it automatic (see FAQ for more
+ - Removed the /set tab\_icons setting and made it automatic (see FAQ for more
    info about icons).
  - Fixed a bug in creating files (save channel list, rawlog etc) that would set
    the wrong permissions.
@@ -153,8 +153,8 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - You can now copy with IRC attributes and mIRC colors if CTRL key is down
    when a selection is finished (on mouse release). This replaces the old
    "Color paste" feature.
- - Added a 'compact' flag to gui_tweaks. This'll make the userlist and tree
-   spacing smaller. E.g. type /set -or gui_tweaks 32 and restart to turn it on.
+ - Added a 'compact' flag to gui\_tweaks. This'll make the userlist and tree
+   spacing smaller. E.g. type /set -or gui\_tweaks 32 and restart to turn it on.
  - The /CLEAR command takes a number as paramater (how many lines to clear).
  - When there's missing information in the Userlist right-click menu, it'll
    issue a silent /WHOIS and fill it in. This includes retrieving a person's
@@ -172,30 +172,29 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
   * Modified Xchat::print and Xchat::command to accept array references in
     addition to strings for the channel and server parameters
  - Plugin API:
-  * xchat_emit_print() will now trigger Sound, Blink, Icon etc type events,
+  * xchat\_emit_print() will now trigger Sound, Blink, Icon etc type events,
     depending on user's settings. 
-  * Fixed a bug where not all 32 elements were available in word[]/word_eol[].
+  * Fixed a bug where not all 32 elements were available in word[]/word\_eol[].
 
+***
 
-------------------------------------------------------------------------------
- 2.8.4 - 01/Jul/2007
-------------------------------------------------------------------------------
+## 2.8.4 - 01/Jul/2007
 
  - Updated translations (cs, de, ko, mk, sv, vi).
  - System-Tray balloons now get the xchat icon instead of a generic one.
  - Fixed the notify-send zombies (released as xc282-fixtrayzombies.diff).
- - Fixed underscore ('_') in real names in the nick-name right-click menu being
+ - Fixed underscore ('\_') in real names in the nick-name right-click menu being
    drawn as a underline.
  - ut2004:// URLs are now underlined too.
- - /set gui_tray_flags 4 will now enable a "Minimize to tray" feature. Clicking
+ - /set gui\_tray\_flags 4 will now enable a "Minimize to tray" feature. Clicking
    the window minimize button will minimize to tray instead of the task-bar.
  - Fixed bug: [1680762] Notify fails if network name contains spaces.
  - Extended tclConfig.sh search paths so it hopefully works on Ubuntu now.
  - Added a feature that reloads conversations from last time you used XChat
-   (type /set text_replay 0 to disable it).
+   (type /set text\_replay 0 to disable it).
  - Fixed /LASTLOG printing everything twice if you had Indented Nicks off.
  - The CTRL-F keybinding (Find) is now disabled when using Emacs keys.
- - Added /SET gui_tweaks. See http://forum.xchat.org/viewtopic.php?p=13766
+ - Added /SET gui\_tweaks. See http://forum.xchat.org/viewtopic.php?p=13766
  - Fixed opening URLs on KDE that didn't begin with http:// or other protocol.
  - A better quit dialog which warns you if you're connected to IRC or have
    active file transfers.
@@ -224,12 +223,11 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
   * /MENU now supports a $CHAN root aswell (see plugin20.html).
   * Fixed GDK warning when using /MENU to add a key binding to a popup menu.
 
+***
 
-------------------------------------------------------------------------------
- 2.8.2 - 01/Apr/2007
-------------------------------------------------------------------------------
+## 2.8.2 - 01/Apr/2007
 
- - Updated translations (be, ca, cs, el, hu, sv, uk, zh_CN).
+ - Updated translations (be, ca, cs, el, hu, sv, uk, zh\_CN).
  - Fixed the "Save As" function saving to the wrong folder in the URL Grabber.
  - Fixed a bug in the "Copy Selected Link" URL right-click on non-ASCII chars.
  - Fixed small bug: #100239 buffer overflow in setup dialog.
@@ -241,18 +239,17 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added command line argument:
    --minimize=level         Begin minimized. Level 0=Normal 1=Iconified 2=Tray
  - Plugin API:
-  * Added "modes" to xchat_get_info(). Returns the current channel modes, if
+  * Added "modes" to xchat\_get_info(). Returns the current channel modes, if
     they are known.
-  * Fixed "event_event name" for xchat_get_info() to match the docs exactly,
+  * Fixed "event\_event name" for xchat\_get\_info() to match the docs exactly,
     but 2.8.0 (mis)behaviour works too.
  - Perl (Lian Wan Situ)
   * Execute the shutdown callback before removing the hooks so commands
     created by the script can be used in the callback.
 
+***
 
-------------------------------------------------------------------------------
- 2.8.0 - 03/Jan/2007
-------------------------------------------------------------------------------
+## 2.8.0 - 03/Jan/2007
 
  - Updated translations (cs, de, gl, hu).
  - XChat now requires at least GTK+ 2.10.
@@ -268,7 +265,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    detects Gnome or KDE to run gnome-open or kfmclient. URLs with quotes
    should also work now (changed to execv()).
  - Settings: Warn the user when trying to put the tree on the top/bottom.
- - Fixed DCC ack reading so it doesn't use MSG_PEEK.
+ - Fixed DCC ack reading so it doesn't use MSG\_PEEK.
  - Channel modes are no longer shown in the titlebar if they contain a key.
  - Added /GUI APPLY command, which does that same as pressing OK in the
    settings window (e.g use it after /set). Mainly for scripters.
@@ -282,16 +279,15 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
   * -p arg can now to be negative to give a position offset from right/bottom.
   * -i arg to specify an icon file.
  - Plugin API:
-  * Added event_text to xchat_get_info().
+  * Added event\_text to xchat\_get\_info().
  - Perl (Lian Wan Situ)
-  * Fixed hook_command so that it won't override the help message for builtin
+  * Fixed hook\_command so that it won't override the help message for builtin
     commands unless a help message was specified.
   * Perl Win32: Warn the user about trying to load 64-bit ActivePerl.
 
+***
 
-------------------------------------------------------------------------------
- 2.6.8 - 16/Oct/2006
-------------------------------------------------------------------------------
+# 2.6.8 - 16/Oct/2006
 
  - Updated translations (be, de, el, es, fi, hu, it, ja, lt, pt, ru, sv, vi).
  - Removed "xchat-remote" and "dbus.so", it's now apart of the "xchat" binary.
@@ -329,13 +325,12 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Perl (Lian Wan Situ)
   * Changed Xchat::print and Xchat::command to return false if they are called
     with either no arguments or undef
-  * Changed Xchat::user_info so that it works even if the nick parameter
+  * Changed Xchat::user\_info so that it works even if the nick parameter
     contains color codes
 
+***
 
-----------------------------------------------------------------------
- 2.6.6 - 18/Jul/2006
-----------------------------------------------------------------------
+## 2.6.6 - 18/Jul/2006
 
  - Updated translations (es, fr, sr).
  - Fixed connecting to a IRC server via proxy (bug in 2.6.4 only).
@@ -352,16 +347,16 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added an option of using 'Last-Spoke' nick completion order in Settings >
    Input Box.
  - The /QUERY command now has -nofocus arg, which scripts might find useful.
- - You can now /set gui_url_mod 0, to allow left-clicking URLs (default is
+ - You can now /set gui\_url\_mod 0, to allow left-clicking URLs (default is
    4, for CTRL).
  - XChat will now respect gtk-button-images=0 set in ~/.gtkrc-2.0.
  - Added a ./configure option to use your preferred spelling library:
    --enable-spell=type. Where type can be: none static libsexy gtkspell.
    Note that using gtkspell will force the inputbox to become a GtkTextView.
- - Advanced users can /set tab_small 2, to get _extra_ small tabs.
+ - Advanced users can /set tab\_small 2, to get _extra_ small tabs.
  - Added /SPLAY <soundfile>.
  - Plugin API:
-  * The second args to xchat_list_int and xchat_list_str can now be NULL as
+  * The second args to xchat\_list_int and xchat\_list\_str can now be NULL as
     a shortcut to "channels" list for current context only.
   * Added bits 6-8 to the field "flags" in the "channels" list.
   * /GUI MSGBOX <text> can now contain Pango markup.
@@ -369,25 +364,24 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Perl (Lian Wan Situ)
   * Fixed a bug with Xchat::print that prevents printing out a
     single 0(Lian Wan Situ)
-  * Fixed a bug in Xchat::get_prefs that was clobbering the stack(Sergio Luis)
+  * Fixed a bug in Xchat::get\_prefs that was clobbering the stack(Sergio Luis)
   * Allow scripts that use a non-existent function for the shutdown callback
     to be unloaded(Lian Wan Situ)
-  * Added check in set_context for undef
-  * Added the fields from get_list "channels" for the current context to the
-    result of context_info
+  * Added check in set\_context for undef
+  * Added the fields from get\_list "channels" for the current context to the
+    result of context\_info
 
+***
 
-----------------------------------------------------------------------
- 2.6.4 - 08/Jun/2006
-----------------------------------------------------------------------
+## 2.6.4 - 08/Jun/2006
 
- - Updated translations (de, el, es, gl, hu, nl, sv, vi, zh_TW).
+ - Updated translations (de, el, es, gl, hu, nl, sv, vi, zh\_TW).
  - Fixed opening a irc:// URL via "xchat -a --url=abc123" command while
    "Skip serverlist on startup" is off. This fix is only relevant when
    opening an initial instance of xchat (i.e not via dbus).
  - Fixed the tree layout "flashing" (redrawing slowly) after you
    switched to tabs and back to tree.
- - Fixed plugin/script get_list("users") causing a critical GDK warning
+ - Fixed plugin/script get\_list("users") causing a critical GDK warning
    when not executed from the front-most tab.
  - Added spelling support in the input-box via GTKSpell.
  - Improved the error reporting when connecting through a Socks proxy.
@@ -410,10 +404,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Python: Fixed some memory usage bugs.
  - Perl: Turned on utf8 flag for things that should have it on.
 
+***
 
-----------------------------------------------------------------------
- 2.6.2 - 27/Mar/2006
-----------------------------------------------------------------------
+## 2.6.2 - 27/Mar/2006
 
  - Updated translations (de, fr, ja, sv).
  - Made "/server freenode" send auto-join channels but not
@@ -432,15 +425,14 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - The server list window now remembers its size.
  - TCL: Added 'selected' flag to users list.
  - Perl:
-  * Fixed strip_code so that it no longer takes off extra commas (LifeIsPain)
+  * Fixed strip\_code so that it no longer takes off extra commas (LifeIsPain)
   * Fixed filename checks so that '/load "filenameWithoutSpaces.pl"'
     will also work (Lian Wan Situ).
-  * Fixed hook_fd to work with sockets on Windows (Vince Pit).
+  * Fixed hook\_fd to work with sockets on Windows (Vince Pit).
 
+***
 
-----------------------------------------------------------------------
- 2.6.1 - 06/Jan/2006
-----------------------------------------------------------------------
+## 2.6.1 - 06/Jan/2006
 
  - Updated translations (de, el, fi, fr, gl, hu, ko, nl, pa, sq, vi).
  - Added support for log rotation based on time or date.
@@ -475,22 +467,21 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    to the network.
  - Plugin API (Lian Wan Situ):
   * Added selected flag to "users" list.
-  * Added "id" to xchat_get_prefs.
-  * Changed xchat_find_context (ph, channel, NULL) to return results
+  * Added "id" to xchat\_get_prefs.
+  * Changed xchat\_find_context (ph, channel, NULL) to return results
     from the same server group as the current context when possible.
  - Perl (Lian Wan Situ):
-  * using emit_print/command/recv will no longer trigger their own
+  * using emit\_print/command/recv will no longer trigger their own
     callbacks.
   * Fix compiling issues with versions older than 5.8.2.
   * Make all scripts appear in the "Plugins and Scripts" window, even
     those that do not call register().
 
+***
 
-----------------------------------------------------------------------
- 2.6.0 - 03/Nov/2005
-----------------------------------------------------------------------
+## 2.6.0 - 03/Nov/2005
 
- - Updated translations (nl, zh_TW).
+ - Updated translations (nl, zh\_TW).
  - Message boxes are now warning, error or info with appropriate icon.
  - Red marker line feature enabled by default.
  - Added /SEND <nick> [file] which will automatically switch to PSEND
@@ -501,7 +492,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Warn when opening banlist in non-channel.
  - Reorganised and simplified IRC/Server menus and new View menu.
  - The editable Server menu is no more, if you want it type
-   /set gui_usermenu 1 and restart.
+   /set gui\_usermenu 1 and restart.
  - Option to view channels in tabs or tree structure.
  - Shorter titlebar text for better viewing in taskbar.
  - Disabled key-search in server list, as GTK's auto-find does this
@@ -518,14 +509,14 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added workaround to show on-join ChanServ notices in the right tab.
  - Tab scroll buttons are now side-by-side when in vertical mode.
  - Automatically change key shortcut of "Marked Away" if the
-   translation already uses ALT-A for the Help menu (e.g _Aide in
+   translation already uses ALT-A for the Help menu (e.g \_Aide in
    French).
  - Your nickname in the bottom-left corner now turns gray when you are
    marked away, just like the userlist.
  - Introduced a delay before joining channels, to allow for FreeNode's
    short comings. If a umode +e is received it'll send auto-join
    channels immediately.
- - Plugin API: Added win_ptr to xchat_get_info.
+ - Plugin API: Added win\_ptr to xchat\_get\_info.
  - Non-irc (utility) tabs can now be detached aswell.
  - Fixed behaviour problems of the userlist pane, which might be set
    incorrectly if the window was resized while a server-tab is focued.
@@ -535,7 +526,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    specific "Second choice" nickname.
  - Auto detect RusNet and use /NICKSERV to identify instead of /MSG.
  - Added /Ghost command.
- - Fixed: The WHOIS away-line ignored irc_whois_front setting.
+ - Fixed: The WHOIS away-line ignored irc\_whois\_front setting.
  - Scroll-wheel now works while hovering over a tab (Lian Wan Situ).
  - The input box right-click menu now has bold, underline and italic.
  - Added xchat-remote for launching irc:// URLs in existing xchat
@@ -544,7 +535,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    C:\Program Files\XChat\Plugins\
  - Better command-line parameter parsing via GOption.
  - Tab completion order can now be in "last talk" order if you
-   /set completion_sort 1.
+   /set completion\_sort 1.
  - "Channel Action" and "Channel Action Hilight" now have a 3rd
    argument of "Mode char", just like normal message events. The last
    talk time is also now updated on actions.
@@ -557,15 +548,14 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - WIN32: Mask out more invalid filename characters when writing to
    log files.
 
+***
 
-----------------------------------------------------------------------
- 2.4.5 - 10/Sep/2005
-----------------------------------------------------------------------
+## 2.4.5 - 10/Sep/2005
 
- - Updated translations (cs, el, fr, gl, it, nl, sl, sr, vi, zh_TW).
+ - Updated translations (cs, el, fr, gl, it, nl, sl, sr, vi, zh\_TW).
  - Fixed incorrect information displayed in Plugins & scripts window
    under unix (xc244-fixpluginns.diff).
- - Added "/set irc_whois_front 1" option to show WHOIS in front tab.
+ - Added "/set irc\_whois\_front 1" option to show WHOIS in front tab.
  - Lots of speed ups under the hood, mainly in handling of URL
    highlighting during mouse motion. Also now allows underlining
    .name and .info domains [1230265].
@@ -589,10 +579,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed possible crashes while using the SJIS (Japanese) charset.
  - Fixed various memory leaks in right-click menus.
 
+***
 
-----------------------------------------------------------------------
- 2.4.4 - 20/Jun/2005
-----------------------------------------------------------------------
+## 2.4.4 - 20/Jun/2005
 
  - Updated translations (hi, ko, lt, pa, ru, vi, zh_TW).
  - People's away message is now shown in the right-click menu, if
@@ -626,18 +615,17 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Implemented taskbar flashing on unix. Requires a window manager
    or taskbar that supports XUrgency flag (Adil).
 
+***
 
-----------------------------------------------------------------------
- 2.4.3 - 31/Mar/2005
-----------------------------------------------------------------------
+## 2.4.3 - 31/Mar/2005
 
- - Updated translations (de, sq, zh_CN).
+ - Updated translations (de, sq, zh\_CN).
  - Fixed crash of server list connect button when no network is
    selected while using GTK's auto-find feature [1166669].
  - Fixed handling of WhoIs Special event on some networks where it
    could chop off the first character [1164315].
- - Plugin API changes: Added "nickserv" field to xchat_get_info.
- - Python: Fixed get_list() incorrectly failing when the list
+ - Plugin API changes: Added "nickserv" field to xchat\_get\_info.
+ - Python: Fixed get\_list() incorrectly failing when the list
    contained a time field [1171525].
  - Perl: Make scripts using calls with fully qualified subs work again
    [1170139] (Lian Wan Situ).
@@ -647,28 +635,27 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Placed Close/Connect buttons in correct position in server list
    [1165474].
 
+***
 
-----------------------------------------------------------------------
- 2.4.2
-----------------------------------------------------------------------
+## 2.4.2
 
  - Updated translations (ca, de, lt, nl, ru, sk, sr, vi).
  - Added command line args -u and -p.
  - Fixed handling of "MODE -o+o nick nick" (#1094026).
  - Plugin API changes:
    * Added "Key Press" print event.
-   * Added "state_cursor" for xchat_get_prefs.
-   * Added xchat_strip and xchat_free functions.
+   * Added "state\_cursor" for xchat\_get\_prefs.
+   * Added xchat\_strip and xchat\_free functions.
    * Added "lasttalk" field to "users" list.
-   * Added "charset" field to xchat_get_info.
+   * Added "charset" field to xchat\_get_info.
  - Perl plugin changes (Lian Wan Situ):
    * Move each script into their own unique package/namespace. Scripts
      containing multiple packages will not be loaded.
    * When warning messages are emitted you will now be told which
      script it came from.
-   * Xchat::set_context will now accept Xchat::set_context( $channel )
-     and Xchat::set_context( $channel, $server ) in addition to
-     Xchat::set_context( $context ).
+   * Xchat::set\_context will now accept Xchat::set\_context( $channel )
+     and Xchat::set\_context( $channel, $server ) in addition to
+     Xchat::set\_context( $context ).
    * Fix display of loaded scripts in the Plugins and Scripts window.
  - TCL: Fixed crash with invalidated TCL timer (#1110306) (Daniel P.
    Stasinski).
@@ -687,13 +674,12 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Actions (/ME) are now treated like PRIV/CHAN for purposes of the
    ignore list.
 
+***
 
-----------------------------------------------------------------------
- 2.4.1
-----------------------------------------------------------------------
+## 2.4.1
 
  - Updated translations (ca, de, eu, it, ko, mk, nb, nl, pt, ru, sl,
-                         sq, uk, zh_TW).
+                         sq, uk, zh\_TW).
  - Fixed custom marker-line color not reloading.
  - Brought back the "Connect to selected server only" option in the
    Serverlist edit window (it's like the reverse of "Cycle until
@@ -706,34 +692,32 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    xchat.unhook() and returns false.
  - Fixed playing sound files with spaces in them.
  - Added support for NickServ on DalNet and FreeNode.
- - Plugin API: Added xchat_get_info(ph,"inputbox");.
+ - Plugin API: Added xchat\_get_info(ph,"inputbox");.
  - Added /settext and /setcursor commands for scripters.
  - You can now scroll tabs with the mouse-wheel while hovering over
    the arrow buttons.
  - Fixed connecting to a SSL server via http proxy (#1054152).
  - Fixed: Opened server tab doesn't count as "requested" (#1044227).
 
+***
 
-----------------------------------------------------------------------
- 2.4.0
-----------------------------------------------------------------------
+## 2.4.0
 
- - Updated translations (ca, de, eu, it, ko, lt, nl, sk, sr, zh_CN).
+ - Updated translations (ca, de, eu, it, ko, lt, nl, sk, sr, zh\_CN).
  - Fixed a possible crash in loading pevents.conf.
  - Made default URL handlers work with Firefox 0.9.x by adding the
    "-a firefox" argument.
- - Plugin API: Added xchat_get_info field "libdirfs".
+ - Plugin API: Added xchat\_get_info field "libdirfs".
  - Fixed crash when trying to dcc send a filename which has encoding
-   that doesn't match G_FILENAME_ENCODING.
+   that doesn't match G\_FILENAME\_ENCODING.
 
+***
 
-----------------------------------------------------------------------
- 2.1.1
-----------------------------------------------------------------------
+## 2.1.1
 
- - Updated translations (de, kr, lt, sk, sr, zh_CN).
+ - Updated translations (de, kr, lt, sk, sr, zh\_CN).
  - Added some rudimentary support for the IDENTIFY-MSG feature.
- - Perl: Added Xchat::context_info (Lian Situ).
+ - Perl: Added Xchat::context\_info (Lian Situ).
  - TCL: Added support for time fields in getlist (Daniel P.Stasinski).
  - Added "Open Dialog" event, so you can add a sound-file to it.
  - The standard beep can now be overridden with a sound-file.
@@ -741,10 +725,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - New keyboard shortcut for line up and down (shift-arrow up/down).
  - Fixed: [986958] tab completion with GTK Input-Methods.
 
+***
 
-----------------------------------------------------------------------
- 2.1.0
-----------------------------------------------------------------------
+## 2.1.0
 
  - Updated translations (eu).
  - Tab nick completion fixes: Crash with space-tab and glib critical
@@ -766,10 +749,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added socks5 authentication support (Benjamin Foster).
  - Win32: fixed auto-loading of TCL scripts.
 
+***
 
-----------------------------------------------------------------------
- 2.0.10
-----------------------------------------------------------------------
+## 2.0.10
 
  - Updated translations (ru, sr).
  - Fixed compiling on systems other than linux/freebsd [969643].
@@ -801,12 +783,11 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Made it possible to execute multiple "Connect Command:"s in the
    ServerList window, when they're separated by ctrl-shift-a.
 
+***
 
-----------------------------------------------------------------------
- 2.0.9
-----------------------------------------------------------------------
+## 2.0.9
 
- - Updated translations (bg, cs, de, en_GB, eu, fi, lt, nl, ru, sk,
+ - Updated translations (bg, cs, de, en\_GB, eu, fi, lt, nl, ru, sk,
                          uk, wa).
  - Fixed the Socks5 overflow security bug.
  - DCC IP address setting can now be a hostname too (Flavio
@@ -818,13 +799,13 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    [941773].
  - Fix: Crashes when setting $CHARSET to nonexistant charset [945855].
  - Plugin API: Added some fields to the "channels" list.
- - Plugin API: Added "win_status" and "xchatdirfs" fields to
-   xchat_get_info.
- - Plugin API: Added xchat_send_modes() function.
+ - Plugin API: Added "win\_status" and "xchatdirfs" fields to
+   xchat\_get\_info.
+ - Plugin API: Added xchat\_send\_modes() function.
  - Fix: Unload, then reload a plugin on FreeBSD fails (Kevin Leung).
  - Plugins should now work on HPUX too.
- - Perl-plugin: Fixes for 3 arg version of emit_print, unhooking the
-   same hook multiple times and get_list returning correct values for
+ - Perl-plugin: Fixes for 3 arg version of emit\_print, unhooking the
+   same hook multiple times and get\_list returning correct values for
    address32 field and some memory leaks (Lian Situ).
  - Made menu keybindings work when the menubar is hidden on GTK 2.4.
  - Added support for the new GTK 2.4 file chooser dialog.
@@ -832,13 +813,12 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Smaller bug fixes [962211] [958599] [950353] and
    [945617] (Frederic Krueger).
 
+***
 
-----------------------------------------------------------------------
- 2.0.8
-----------------------------------------------------------------------
+## 2.0.8
 
  - Updated translations (az, es, fi, lt, mk, nl, ru, sk, sl, sr, sv,
-   zh_CN).
+   zh\_CN).
  - Added color, flash and iconify args to /GUI command (this is for
    use in scripts and plugins only).
  - Plugin API: Added "notify" list.
@@ -856,10 +836,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed non-ASCII chars in time-stamp bug [918445].
  - Smaller bug fixes: [870073] [890891].
 
+***
 
-----------------------------------------------------------------------
- 2.0.7
-----------------------------------------------------------------------
+## 2.0.7
 
  - Updated translations (fi, nl).
  - Fixed dcc psend crash [858539].
@@ -874,10 +853,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Report more informative error when DCC write to disk fails.
  - Fixed crash when xchat.conf contains oversized strings [750403].
 
+***
 
-----------------------------------------------------------------------
- 2.0.6
-----------------------------------------------------------------------
+## 2.0.6
 
  - Updated translations (de, lt, sl, sr).
  - Fixed detection of Python on amd64 (Mads Martin Joergensen).
@@ -891,17 +869,17 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Python plugin changes:
    * Fixed the reentrancy problem which made xchat freeze when some
      python code made xchat trigger a python callback somewhere.
-   * Implemented xchat_emit_print() and xchat_get_prefs() support.
+   * Implemented xchat\_emit\_print() and xchat\_get\_prefs() support.
    * Fixed softspace support for python 2.3. This problem was making
      print statements yield an extra space at the next line start.
    * Other minor changes.
      (Gustavo Niemeyer, Gustavo J. A. M. Carneiro, Marko Kreen).
  - Fixed request of a MODE on a channel you're not in changing the
    current titlebar [820998].
- - Restored compatibility with older Perl that lacks call_pv().
+ - Restored compatibility with older Perl that lacks call\_pv().
  - Use sigaction inplace of signal() for better compatibility.
  - Win32: Don't try to open logfiles with a "\" in them, windows wont
-   allow it. Instead, the "\" is replaced by a "_".
+   allow it. Instead, the "\" is replaced by a "\_".
  - Backported HTTP authentication code from 1.8.11 (you can now
    specify a username and password for HTTP proxies).
  - When beep on highlight is on, beep on channel actions too
@@ -913,16 +891,15 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added "away" users field for plugin API.
  - Smaller bug fixes: 822199, 786267, 783172, 811971, 756048, 844919.
 
+***
 
-----------------------------------------------------------------------
- 2.0.5
-----------------------------------------------------------------------
+## 2.0.5
 
- - Updated translations (ca, fi, lt, nl, sk, sv, zh_CN).
+ - Updated translations (ca, fi, lt, nl, sk, sv, zh\_CN).
  - Fixed detection of Python 2.3 in configure script (anonymous).
  - DCC Send file-selection dialog now supports multi-select.
  - Reset away status after auto-reconnect from a ping timeout.
- - Perl: Fixed IRC::user_info always matching the first entry.
+ - Perl: Fixed IRC::user\_info always matching the first entry.
  - More C89 fixes for non-gcc compilers (Albert Chin). [781809].
  - xtext: now double buffered and flicker free. Also some efficiency
    tweaks for exposure events and multi-wrapped lines.
@@ -944,18 +921,17 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - xtext: tinting now shades towards your background color, making it
    usable with white backgrounds. Tints can also use XShm for extra
    speed with --enable-shm at ./configure time (experimental).
- - Perl: IRC::add_print_handler callbacks now get parameters in
-   $_[1...x], with $_[0] left for compatibility (Lian wan Situ).
- - Perl: added command_with_channel command (Alexander Werth)
+ - Perl: IRC::add\_print\_handler callbacks now get parameters in
+   $\_[1...x], with $\_[0] left for compatibility (Lian wan Situ).
+ - Perl: added command\_with\_channel command (Alexander Werth)
    [801711].
  - Smaller bug fixes: [798655].
 
+***
 
-----------------------------------------------------------------------
- 2.0.4
-----------------------------------------------------------------------
+## 2.0.4
 
- - Updated translations (lt, sv, zh_CN).
+ - Updated translations (lt, sv, zh\_CN).
  - Fixed crash on tinted transparency (xc203-fixtint.diff).
  - Fixed incorrect dcc cps calculation (xc203-fix-cps.diff).
  - Allow fullpath and relative filenames for Text Events sound files
@@ -976,10 +952,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Smaller bug fixes: [773245] [779166].
  - Close tabs on shift-leftclick (Jay Cornwall).
 
+***
 
-----------------------------------------------------------------------
- 2.0.3
-----------------------------------------------------------------------
+## 2.0.3
 
  - Updated translations (ca, fr, ja, sv).
  - Fixed URL grabber not filling up (xc202-fixurlg.diff).
@@ -988,16 +963,16 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed corrupt left margin with indent-nicks off and timestamp on.
  - Remove invalid chars from inbound text when conversion fails. Fall
    back to ISO-8859-1 when using UTF-8 only (Ilya Konstantinov).
- - Fixed perl IRC::get_info(3) crash when not connected [732496].
+ - Fixed perl IRC::get\_info(3) crash when not connected [732496].
  - Fixed crash on long output lines for /exec -o [731187].
  - Made "Move completed files to:" and "Save nickname in filenames"
    work at the same time (Matthew Gabeler-Lee).
  - xtext: fix redraw when new additions not on current page.
  - win32: Added /set identd 0 switch to turn off built-in identd. 
- - Added 6-8 for perl's IRC::get_info to retreive network, host and
+ - Added 6-8 for perl's IRC::get\_info to retreive network, host and
    topic (Ryan).
  - Iterate in alpha order instead of op-alpha for nickcompletion
-   (Gauss_Z88).
+   (Gauss\_Z88).
  - Fixed ChannelList crash on invalid regex match string.
  - Added hide join/parts setting to gui (Jason Wies).
  - Added Delete All button to ignore window (Mohammed Sameer).
@@ -1011,12 +986,11 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added support for numeric 307 and 320 "is an identified user".
  - Allow setting a blank topic via the GUI [720407].
 
+***
 
-----------------------------------------------------------------------
- 2.0.2
-----------------------------------------------------------------------
+## 2.0.2
 
- - Updated translations (lt, ms, nl, pt, sv, zh_CN).
+ - Updated translations (lt, ms, nl, pt, sv, zh\_CN).
  - Fixed a few minor mem leaks in the server and user list.
  - Changes to: UrlGrabber, Notify, Plugins, Ignore and Banlist GUIs.
    Changed GtkCList to GtkTreeview, and general enhancement to these
@@ -1025,14 +999,14 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added /MOP.
  - Fixed pageup/pagedown wrong window bug [710784].
  - Fixed no timestamps in top-level windows bug [710787].
- - Fixed first word being skipped in perl add_command_handler("", cb);
+ - Fixed first word being skipped in perl add\_command_handler("", cb);
    [711802].
  - Fixed WHOIS away line appearing in different tab [695932].
  - win32: fixed transparency [699425].
  - win32: fixed ssl "Error 2" connection bug.
  - Made all toplevel dialog windows transients of the main window.
  - Show filesize/pos in DCC window as KB and MB (Aaron Chernosky).
- - Added /set tab_dnd 0/1 option.
+ - Added /set tab\_dnd 0/1 option.
  - Fixed userlist insertion/deletion GUI performance problem [704233].
  - Each toplevel window now has a "role".
  - Smaller bugs fixed: [698449] [718851].
@@ -1042,10 +1016,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Used a new algorithm for Userlist and UrlGrabber. This one does
    insertion, lookup and deletion in O(log n).
 
+***
 
-----------------------------------------------------------------------
- 2.0.1
-----------------------------------------------------------------------
+## 2.0.1
 
  - Updated translations (am, ca, lt).
  - Save serverlist before connecting (Joe Drew).
@@ -1073,10 +1046,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added more items to the right-click tab menu.
  - Some misc UI cleanups.
 
+***
 
-----------------------------------------------------------------------
- 2.0.0
-----------------------------------------------------------------------
+## 2.0.0
 
  - Updated translations (de, es, lt, nl, sk, sl).
  - Fixed half cut off dates in notify window.
@@ -1085,9 +1057,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Make tabs red on channel actions too.
  - Configure script python detection fixes (Johan Dahlin).
  - Added /charset command.
- - Don't auto remove stalled DCCs unless dcc_remove setting is on.
+ - Don't auto remove stalled DCCs unless dcc\_remove setting is on.
  - Avoid recursive UserCommand buffer overflow.
- - Added xchat_emit_print() to plugin interface.
+ - Added xchat\_emit\_print() to plugin interface.
  - Left and Right positioned tabs are possible again (Lloyd Williams).
  - Added /timer -repeat <num> and -quiet args.
  - Possible tcl plugin crash fixes (Daniel P. Stasinski).
@@ -1095,24 +1067,23 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed plugin loading on solaris.
  - Python fixes (Gustavo Niemeyer):
    * Fixed bug which made Python plugins crash randomly.
-   * Introduced a new xchat.hook_unload() function, as requested by
+   * Introduced a new xchat.hook\_unload() function, as requested by
      many people. This will call a given callback at module unload
      time.
    * Now /py load <filename> will succeed if filename is the name of a
      file inside "xchatdir" (~/.xchat2).
    * Fixed some leakings.
 
+***
 
-----------------------------------------------------------------------
- 2.0.0pre1
-----------------------------------------------------------------------
+## 2.0.0pre1
 
  - Updated translations (sv, es, am, el, lv, no).
  - Fixed possible blank userlist after another tab was detached.
  - Changed default keybinding for next/prev-tab to ctrl-pageup/down,
    as per standard.
  - Added IPAddress field to "DCC SEND Offer" text event.
- - Fixed perl IRC::print_with_channel 1.8.x incompatibility.
+ - Fixed perl IRC::print\_with\_channel 1.8.x incompatibility.
  - xtext: Fixed bugs in new scrolling code.
  - Use filesystem encoding for log filenames.
  - Focus the inputbox when left-clicking in xtext.
@@ -1125,8 +1096,8 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    as the main text area.
  - Don't allow the Perl plugin to be loaded twice (Ian Kumlien).
  - Fixed servlist crash on 'use global' off and empty nick field.
- - Added missing address field to Perl's IRC::dcc_list.
- - Added irc_conf_mode setting (via /set only).
+ - Added missing address field to Perl's IRC::dcc\_list.
+ - Added irc\_conf_mode setting (via /set only).
  - Save xchat.conf safely (Michael Witrant).
  - Added support for numeric 005 token NAMESX.
  - Added TCL Plugin (Daniel P. Stasinski).
@@ -1141,10 +1112,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Treat NOTICE +#channel correctly.
  - Check for common unix paths and don't treat them as commands.
 
+***
 
-----------------------------------------------------------------------
- 1.9.8
-----------------------------------------------------------------------
+## 1.9.8
 
  - Added Amharic translation (Daniel Yacob).
  - Updated Spanish translation (Pablo del Campo).
@@ -1160,7 +1130,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Final fix for filenames' encoding in DCC.
  - New unicode character chart window.
  - xtext: properly recalculate text widths after a font change.
- - Fixed perl IRC::dcc_list 1.8.x incompatibility (Charles Lopes).
+ - Fixed perl IRC::dcc\_list 1.8.x incompatibility (Charles Lopes).
  - xtext: Implemented scrolling instead of full redraws when not using
    a background image or transparency. This improves scrolling on
    machines that draw AA text very slowly.
@@ -1177,10 +1147,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed loading background image crash (from 1.9.7).
  - Fixed broken drawing of mIRC color 0.
 
+***
 
-----------------------------------------------------------------------
- 1.9.7
-----------------------------------------------------------------------
+## 1.9.7
 
  - Updated Swedish translation (Christian Rose).
  - Updated Spanish translation (Pablo del Campo).
@@ -1188,14 +1157,14 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added /GETSTR and /GETINT.
  - Misc. serverlist bug fixes (Shaun Guth).
  - Plugin changes/fixes:
-   * Added xchat_get_info("network").
-   * Added new function: xchat_hook_fd().
+   * Added xchat\_get\_info("network").
+   * Added new function: xchat\_hook_fd().
    * Fixed "DCC Chat Text" event (Daniel P. Stasinski).
    * Added "Open Context" print event.
-   * Fixed implementation of EAT_ return codes.
+   * Fixed implementation of EAT\_ return codes.
    * Keep the leading ":" in server events passed to plugins.
    * Added hack to make plugins possible on win32.
-   * Fixed /unload <plugin_file_name> crash.
+   * Fixed /unload <plugin\_file\_name> crash.
  - Fixed changing tabs via keyboard.
  - Added a few keyboard accelerators to the menubar.
  - Fixed close-tab-0 crash.
@@ -1213,10 +1182,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Made it possible to do /server <networkname>.
  - win32: backported tint/transparency code from 1.8.10.
 
+***
 
-----------------------------------------------------------------------
- 1.9.6
-----------------------------------------------------------------------
+## 1.9.6
 
  - Updated Spanish translation (Pablo del Campo).
  - Added Estonian translation (Ilmar Kerm).
@@ -1244,12 +1212,11 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added a way to reorder networks in the serverlist window (still
    want to add DND later).
 
+***
 
-----------------------------------------------------------------------
- 1.9.5
-----------------------------------------------------------------------
+## 1.9.5
 
- - Fixed the PL_perl_destruct_level crash (Bernard Blackham).
+ - Fixed the PL\_perl\_destruct\_level crash (Bernard Blackham).
  - Fixed the perl readdir crash.
  - Added tab scrolling buttons (Lloyd Williams).
  - Added DCC throttle and better CPS calculation (Richard Fuchs).
@@ -1278,10 +1245,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Dialog window buttons re-implemented.
  - Gnome2-ify the desktop file. Install to $(datadir)/applications.
 
+***
 
-----------------------------------------------------------------------
- 1.9.4
-----------------------------------------------------------------------
+## 1.9.4
 
  - Make DCC support up to 4GB files (previously 2GB).
  - Fixed possible crash when receiving a message from a channel that
@@ -1298,10 +1264,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Reopen logfiles on SIGUSR1.
  - Added Tint RGB settings (foser).
 
+***
 
-----------------------------------------------------------------------
- 1.9.3
-----------------------------------------------------------------------
+## 1.9.3
 
  - Updated Spanish translation (Pablo Gonzalo del Campo).
  - Updated Swedish translation (Christian Rose).
@@ -1309,7 +1274,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added InputBox settings to settings GUI.
  - Make DCC support up to 4GB files (previously 2GB). untested.
  - Fix checks for Xft.h in configure script.
- - Fix perl add_message_handler() xchat 1.8.x incompatability.
+ - Fix perl add\_message\_handler() xchat 1.8.x incompatability.
  - Fix default DCCRECV text event using bad $ variable and crashing.
  - Fix /query #foo, /join #foo crash.
  - Fix utf8-conversion-fail sending truncated text.
@@ -1317,10 +1282,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - More work done on Serverlist 2, but not fully functional yet.
  - Pasting from one tab to another now works.
 
+***
 
-----------------------------------------------------------------------
- 1.9.2
-----------------------------------------------------------------------
+## 1.9.2
 
  - Fixed DCC Chat offer crash (1.9.1 bug only).
  - xtext: Xft tweaks. Included Pango backend for when Xft can't be
@@ -1329,7 +1293,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - xtext: fixed marking multibyte utf8 chars.
  - Included brand new Python interface plugin (Gustavo Niemeyer).
  - Perl is now a plugin.
- - Plugin API: Changed xchat_unhook() return value and type.
+ - Plugin API: Changed xchat\_unhook() return value and type.
  - Plugin API: Added "ignore" list.
  - Plugin gui window can now load/unload scripts aswell.
  - Plugins are now autoloaded from $libdir/xchat/plugins. 
@@ -1337,17 +1301,16 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Strip spaces from join-channel in serverlist (Mathias Hasselmann).
  - The menu in the bottom right corner now works.
 
+***
 
-----------------------------------------------------------------------
- 1.9.1
-----------------------------------------------------------------------
+## 1.9.1
 
  - Fixed serverlist and rawlog crashes.
  - Fixed some 64-bit issues (Elliot Lee).
  - Fixed unrealized xtext crashes and warnings (Elliot Lee).
  - Removed --disable-glib configure option.
  - Added Save rawlog button.
- - Auto detect socklen_t.
+ - Auto detect socklen\_t.
  - All new plugin interface. See plugins/plugin20.html.
  - Made perl.c use the new plugin interface.
  - Made the whole system use the cmdchar setting. This means all
@@ -1382,17 +1345,15 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - xtext: Added XFT support.
  - xtext: Added UTF8 selection support.
 
+***
 
-----------------------------------------------------------------------
- 1.9.0
-----------------------------------------------------------------------
+## 1.9.0
 
  - Ported to GTK+ 2.0 (BIG!).
 
+***
 
-----------------------------------------------------------------------
- 1.8.7
-----------------------------------------------------------------------
+## 1.8.7
 
  - Updated Swedish translation (Christian Rose).
  - Updated Russian translation (Anton Farygin).
@@ -1406,7 +1367,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Connect Cmd is executed again if you get auto-reconnected.
  - Added safe-gaurd to stop duplicate nicks in userlist.
  - Added an option to automatically remove finished/failed dccs
-   from the list. Use /set dcc_remove ON to enable it.
+   from the list. Use /set dcc\_remove ON to enable it.
  - Added an option to truncate long channel tabs. Use:
    /set truncchans xx, where xx is the max chars (Jyrki Muukkonen).
  - Made the default popup menu, dialog buttons, userlist buttons,
@@ -1417,10 +1378,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Immediately abort file transfers when out of space.
  - Fixed a serious CTCP reply vulnerability.
 
+***
 
-----------------------------------------------------------------------
- 1.8.6
-----------------------------------------------------------------------
+## 1.8.6
 
  - Updated Danish translation (Morten Brix Pedersen).
  - Updated Spanish translation (Antonio de la Torre).
@@ -1435,10 +1395,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed the buggy 1.8.5 outbound queue. It now sends privmsg/notice
    with a lower priority, but never out-of-order.
 
+***
 
-----------------------------------------------------------------------
- 1.8.5
-----------------------------------------------------------------------
+## 1.8.5
 
  - Updated Slovak translation (Stano Visnovsky).
  - Updated Swedish translation (Christian Rose).
@@ -1456,7 +1415,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    front.
  - Made it possible to compile with older than 5.6 perl again.
  - The main window's size and position is now saved on exit. Use
-   /set mainwindow_save OFF to revert to the old behaviour.
+   /set mainwindow\_save OFF to revert to the old behaviour.
  - Avoid auto-resuming the same file from two different people
    (without breaking autoresume this time).
  - Removed /sslserver and added a -ssl arg to /server, /reconnect,
@@ -1466,21 +1425,20 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    transparency. Use --disable-mmx to revert to gdk-pixbuf method.
  - Fixed resetting your away status after an auto-reconnect.
 
+***
 
-----------------------------------------------------------------------
- 1.8.4
-----------------------------------------------------------------------
+## 1.8.4
 
  - Updated Spanish translation (Antonio de la Torre and Manuel 
-   García Aguilar).
+   GarcÃ­a Aguilar).
  - Updated Russian translation (Valek Filippov).
  - Fixed lockup when a file being offered is shortened before being
    accepted.
- - Fixed ** ERROR **: file python.c: line 743 (pysH_Eget_users):
+ - Fixed ** ERROR **: file python.c: line 743 (pysH\_Eget\_users):
    assertion failed: (cur->hostname).
  - /kickban now deops and bans in one line (-o+b) (Felix Nawothnig).
  - Auto-nickcompletion now uses the nicksuffix setting (Mukund).
- - win32: change log-filenames with a | character to _.
+ - win32: change log-filenames with a | character to \_.
  - When binding to a set hostname/ip, it would try to bind to port
    65535 - fixed.
  - Fixed crash when closing a dcc chat in a perl-dcc-chat-callback. 
@@ -1489,10 +1447,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Avoid auto-resuming the same file from two different people.
  - /close -m now closes all dialog/query windows.
 
+***
 
-----------------------------------------------------------------------
- 1.8.3
-----------------------------------------------------------------------
+## 1.8.3
 
  - xtext: marked text goes to clipboard aswell as primary selection.
  - xtext: some speedup optimizations.
@@ -1514,10 +1471,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    setting in Setup->File Transfer (Fuentes Xavier).
  - Included some makefiles for ms visual c.
 
+***
 
-----------------------------------------------------------------------
- 1.8.2
-----------------------------------------------------------------------
+## 1.8.2
 
  - Fixed kick messages showing only the first word of the reason.
  - Fixed GTK warnings thrown up when closing a dialog window.
@@ -1529,14 +1485,13 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - When changing fonts, it now changes in the inputbox without having
    to restart.
  - Added safeguard to stop recursive user commands.
- - Added two /set variables dialog_width and dialog_height. Use these
+ - Added two /set variables dialog\_width and dialog\_height. Use these
    to set the default size of dialog windows.
  - Win32: fixed crash of 'Auto Accept DCC Send' menu item.
 
+***
 
-----------------------------------------------------------------------
- 1.8.1
-----------------------------------------------------------------------
+## 1.8.1
 
  - Fixed crash in having server tabs ON and channel tabs OFF.
  - Fixed crash when closing the channel list window AFTER all its
@@ -1558,10 +1513,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Win32: added url handler that sends to windows' shell. 
  - Win32: rendering 8bit characters should now work.
 
+***
 
-----------------------------------------------------------------------
- 1.8.0
-----------------------------------------------------------------------
+## 1.8.0
 
  - Fixed a memory leak in popup menus.
  - Fixed crash in receiving private actions.
@@ -1577,10 +1531,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Updated Swedish translation (Christian Rose).
  - Updated Spanish translation (Antonio de la Torre).
 
+***
 
-----------------------------------------------------------------------
- 1.7.8
-----------------------------------------------------------------------
+## 1.7.8
 
  - xtext: Fixed parsing of "%C2, " to match mIRC, i.e. bg color is not
    reset, fg changes to 2 and the comma is printed (Fuentes Xavier).
@@ -1600,14 +1553,13 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed building with --disable-glib.
  - IPv6 reverted to off by default, use --enable-ipv6 to enable.
  - Win32 fixes: dcc send/recv now works and fixed a bug in loading
-   some .conf files by using the O_BINARY flag.
+   some .conf files by using the O\_BINARY flag.
  - Changed the xchat icon - old one was a bit too dark.
  - Updated Greek translation (Fanis Dokianakis).
 
+***
 
-----------------------------------------------------------------------
- 1.7.7
-----------------------------------------------------------------------
+## 1.7.7
 
  - Re-added support for '+' channels when there's no 005 numeric.
  - Made the new $3 null terminated (works better that way).
@@ -1629,10 +1581,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    char if userlist icons are disabled.
  - Timestamp format is now configurable in Setup->IRC Input/Output.
 
+***
 
-----------------------------------------------------------------------
- 1.7.6
-----------------------------------------------------------------------
+## 1.7.6
 
  - xtext: tweaks to make url highlights less flickery.
  - Added some support for ircd numeric 005. MODES>=6, CHANTYPES,
@@ -1658,10 +1609,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Perl has a valid context at startup again (broken in 1.7.4).
  - Fixed leak of awaymessages for "Show away once" feature.
 
+***
 
-----------------------------------------------------------------------
- 1.7.5
-----------------------------------------------------------------------
+## 1.7.5
 
  - Fixed some buggy catalogs for gettext 0.10.37 (OpenBSD users).
    Compiling with 0.10.35 will now break, there's always
@@ -1678,12 +1628,11 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    up rendering with a FontSet and fix the -/+1 line bug.
  - Fixed Shelltab not opening sometimes (actually a 1.7.4 ipv6 bug).
  - Added ability to change font for Shelltabs only:
-   /set font_shell <fontname>
+   /set font\_shell <fontname>
 
+***
 
-----------------------------------------------------------------------
- 1.7.4
-----------------------------------------------------------------------
+## 1.7.4
 
  - On startup, serverlist now opens without any other windows, looks
    neater, less confusing for newbies. If you disable serverlist at
@@ -1692,25 +1641,24 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    need to refer to the protocol in the GUI!
  - Fixed a xtext bug rendering a background color of 1 incorrectly.
  - Unprintable characters used to cause problems to xtext (who would
-   have thought gdk_char_width returns a different value to
-   gdk_text_width?) - fixed.
+   have thought gdk\_char\_width returns a different value to
+   gdk\_text\_width?) - fixed.
  - xtext renders only once when switching tabs (used to render twice
    because gtk gives us 2 expose signals, why?).
  - When you change your nick it changes in the titlebar now too.
    Server name is now reported in dialog windows' titlebar.
  - Having Strip mIRC Color ON will now strip it from dcc chats too.
- - Added (really this time) perl functions add_user_list,
-   sub_user_list, clear_user_list for manipulating the userlist of a
+ - Added (really this time) perl functions add\_user\_list,
+   sub\_user\_list, clear\_user\_list for manipulating the userlist of a
    channel (Lloyd Williams).
  - Various code cleanups, including a rewrite of the IPv6 code.
    Removed /6server and 'Use IPv6' check-box in the serverlist. It
    automatically handles IPv6/IPv4 addresses now.
  - Added a check-box in the serverlist edit window for "Use Proxy".
 
+***
 
-----------------------------------------------------------------------
- 1.7.3
-----------------------------------------------------------------------
+## 1.7.3
 
  - Added server hostname as $3 for quit print event (Bjorn Olievier).
  - Some fixes to the gnomepanel code. Panel no longer asks to restart
@@ -1728,10 +1676,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed titlebar text for notices/snotices tabs.
  - The topic box gets a tooltip of the current topic.
 
+***
 
-----------------------------------------------------------------------
- 1.7.2
-----------------------------------------------------------------------
+## 1.7.2
 
  - Fixed some Python mem leaks and signal/event handlers can now
    return non-null integer to tell xchat to stop processing the event
@@ -1745,9 +1692,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added Turkish translation (Ozgur Dogan GUNES).
  - Updated Spanish translation (Antonio de la Torre).
  - Fixed the throttle setting (which was reversed! who did that?).
- - Added IRC::notify_list. (Matthew Gabeler-Lee).
+ - Added IRC::notify\_list. (Matthew Gabeler-Lee).
  - Don't crash when bind fails for dcc send.
- - Don't send garbage to server when ban_type is invalid.
+ - Don't send garbage to server when ban\_type is invalid.
  - Rewrote a whole heap of bad code in maingui.c. When opening a new
    tab/window it always uses the same functions instead of having the
    code repeated a few times. This is pretty big so expect some things
@@ -1755,10 +1702,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    too.
  - /KICKBAN now deops users first (Tobias von Koch).
 
+***
 
-----------------------------------------------------------------------
- 1.7.1
-----------------------------------------------------------------------
+## 1.7.1
 
  - Turning off server tabs should work again (1.7.0 bug).
  - Some ipv6 fixes.
@@ -1770,16 +1716,15 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added Opera and w3m to default URL Handlers.
  - New serverlist/window icon - just for a change.
  - Updated Korean translation (Kim SeungBaeck).
- - Added hook_timeout to the XChat.XChat() python class so you can
-   XChat.XChat().hook_timeout(delay, handler). It is a one time
+ - Added hook\_timeout to the XChat.XChat() python class so you can
+   XChat.XChat().hook\_timeout(delay, handler). It is a one time
    function like the perl version (Donald Kjer).
  - /RECONNECT can now takes args like /SERVER, the difference
    being that it'll rejoin all your channels (Angel).
 
+***
 
-----------------------------------------------------------------------
- 1.7.0
-----------------------------------------------------------------------
+## 1.7.0
 
  - Updated German translation (Benedikt Roth).
  - Updated Spanish translation (Antonio de la Torre).
@@ -1796,7 +1741,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    boxes, both, or none (Alex Badea).
  - Added a command to flush the send queue (/FLUSHQ) and one for
    forcing a new lag check (/LAGCHECK) (Alex Badea).
- - Added option 'persist_chans', when ON once a session is created
+ - Added option 'persist\_chans', when ON once a session is created
    for a channel, no other channel will be assigned to that session,
    regardless of any parts or kicks (Alex Badea).
  - Compile errors while loading a perl script are printed on the main
@@ -1816,14 +1761,13 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    --enable-japanese-conv (Takuo Kitame).
  - xtext: smooth (pixel-based) scrolling.
 
+***
 
-----------------------------------------------------------------------
- 1.6.4
-----------------------------------------------------------------------
+## 1.6.4
 
  - Fix for using a DCC port range (Lawrence Gold).
  - Fix for building on UnixWare 7 (Ronald Joe Record).
- - Added Chinese translations - zh_TW.Big5 and zh_CN (Kevin Peng and
+ - Added Chinese translations - zh\_TW.Big5 and zh\_CN (Kevin Peng and
    Anthony Fok Tung-Ling).
  - Added Finnish translation (Jarkko Ranta).
  - Revamped the default URLHandlers to add Galeon and Mozilla.
@@ -1836,10 +1780,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - /MSG'ing a channel or nick will show up in the destination tab
    instead (Richard Fuchs).
 
+***
 
-----------------------------------------------------------------------
- 1.6.3
-----------------------------------------------------------------------
+## 1.6.3
 
  - Updated Swedish translation (Christian Rose).
  - Updated Spanish translation (Antonio de la Torre).
@@ -1857,10 +1800,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Work-around for UnrealIRCd's duplicate /NAMES bug.
  - Fixed DCC receiving filenames with spaces.
 
+***
 
-----------------------------------------------------------------------
- 1.6.2
-----------------------------------------------------------------------
+## 1.6.2
 
  - xtext: Fixed the mark-clear bug (gnome bug #34584).
  - Updated German translation (Tamer Fahmy).
@@ -1869,18 +1811,17 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Bluestring to 300 chars (deb bug #79138).
  - Added option /SET percascii, which can disable/enable translation
    of %XXX into an ascii value while typing (deb bug #76122).
- - New hotkey hook: key_action_put_history. Only inserts line into
+ - New hotkey hook: key\_action\_put\_history. Only inserts line into
    history, but doesn't send it to the server (DaP).
  - Lots of SSL updates:
-   * Make accept_invalid_cert optional on /sslserver (DaP).
+   * Make accept\_invalid\_cert optional on /sslserver (DaP).
    * Print verbose information of SSL session on connect (DaP).
-   * Clean up code at X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT checking
+   * Clean up code at X509\_V\_ERR\_DEPTH\_ZERO\_SELF\_SIGNED\_CERT checking
      (DaP).
 
+***
 
-----------------------------------------------------------------------
- 1.6.1
-----------------------------------------------------------------------
+## 1.6.1
 
  - xtext: Fixed lockup with certain sized fonts.
  - xtext: Made some changes to improve efficiency when using really
@@ -1897,10 +1838,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - The < > buttons arn't shown for non-tab windows (Aaron Lehmann).
  - Fixed the (-1,-1) transparency problem for non-tab windows.
 
+***
 
-----------------------------------------------------------------------
- 1.6.0
-----------------------------------------------------------------------
+## 1.6.0
 
  - xtext: More efficient handling of expose events, text marking and
    url highlighting when double buffer is OFF.
@@ -1913,10 +1853,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    to please some IRCNet servers.
  - Updated Swedish translation (Christian Rose).
 
+***
 
-----------------------------------------------------------------------
- 1.5.11
-----------------------------------------------------------------------
+## 1.5.11
 
  - Updated Slovak translation (Stano Visnovsky).
  - Updated Swedish translation (Christian Rose).
@@ -1932,10 +1871,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Changed the tinting code a bit (thanks gnapster :). 
  - Transparent shell tabs update too when they are moved.
 
+***
 
-----------------------------------------------------------------------
- 1.5.10
-----------------------------------------------------------------------
+## 1.5.10
 
  - Added "Enable double buffer" toggle in Setup->Channel windows.
  - Double buffer is now OFF by default (seems to use less CPU).
@@ -1954,17 +1892,16 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Changed Away behaviour again. No more /back, /away with no args
    brings you back. The menu-item's state is what the server tells
    it, it even changes when you switch tabs to another server. Xchat
-   assumes you are not away when you first connect. irc::get_info(5)
+   assumes you are not away when you first connect. irc::get\_info(5)
    returns the away state. One day the other UserModes menu items will
    show correct states. Is everyone happy now?
  - Translation tables didn't work for outgoing text - fixed.
  - Cleaned up a few xchat.conf names, a few settings may not load up
    from 1.5.9 - just set them again.
 
+***
 
-----------------------------------------------------------------------
- 1.5.9
-----------------------------------------------------------------------
+## 1.5.9
 
  - Updated Spanish translation (Antonio de la Torre).
  - Added Hebrew translation (Dan Fruehauf).
@@ -1985,10 +1922,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Changed the behaviour of /away and added /back (James Crawford).
  - Away reason can now be a text file of random reasons too.
 
+***
 
-----------------------------------------------------------------------
- 1.5.7 -> 1.5.8
-----------------------------------------------------------------------
+## 1.5.7 -> 1.5.8
 
  - Updated Spanish translation (Antonio de la Torre).
  - Updated Swedish translation (Christian Rose).
@@ -2007,10 +1943,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added 1 second linger socket option to stop QUIT msgs from being
    lost (they still get lost sometimes, why?).
 
+***
 
-----------------------------------------------------------------------
- 1.5.6 -> 1.5.7
-----------------------------------------------------------------------
+## 1.5.6 -> 1.5.7
 
  - Fixed transparency-leak problems in 1.5.6
  - New code to create shaded transparency, taken from latest zvt.
@@ -2022,17 +1957,16 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    loose some chars - fixed.
  - Added feature to choose DCC port range            (Lars Sundqvist).
  - Fixed perl-stack overflow probs in irc::userlist() and others.
-   Added perl functions user_list_short() and perl_script_list()
+   Added perl functions user\_list\_short() and perl\_script\_list()
                                                        (Mike Guidero).
  - MHz is now detected on FreeBSD 4.x/5.x           (Jonathan Perkin).
  - It's now possible to "/dcc close chat nick" within a DCC perl
    input handler without crashing xchat.         (Geoffrey Higginson).
  - Fixed a problem with the usermenu not updating sometimes.
 
+***
 
-----------------------------------------------------------------------
- 1.5.5 -> 1.5.6
-----------------------------------------------------------------------
+## 1.5.5 -> 1.5.6
 
  - Added option pingtimeout, which pings the server instead. 
    /set pingtimeout 90 is default (small values will malfunction).
@@ -2050,7 +1984,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    all currently connected servers and joined channels. Also added
    usercommands /ame and /amsg which make use of this.
  - Added sock5 traversal, see Setup->Proxy Server (Alex Badea).
-   (The numbers for proxy_type are now 0=disabled, 1=wingate,
+   (The numbers for proxy\_type are now 0=disabled, 1=wingate,
     2=socks4, 3=socks5).
  - A few more buffer overflow checks (nick & channel length).
  - Mapped mIRC color 99 to "no background" (mIRC lame!).
@@ -2078,10 +2012,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    old 1.5.5 or 1.4.x server list, but older versions WON'T load lists
    from 1.5.6, so backup your serverlist.conf if you need to.
  
+***
 
-----------------------------------------------------------------------
- 1.5.4 -> 1.5.5
-----------------------------------------------------------------------
+## 1.5.4 -> 1.5.5
 
  - Fix for show/hide menu under gnome.
  - Added -a and --noauto arg (don't auto connect to any servers).
@@ -2095,12 +2028,11 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    old versions of xchat and probably BitchX.
  - Added option "Limited Tab Highlighting" (Francis Litterio).
 
+***
 
-----------------------------------------------------------------------
- 1.5.3 -> 1.5.4
-----------------------------------------------------------------------
+## 1.5.3 -> 1.5.4
 
- - Lack of gdk_pixbuf is detected correctly now (configure script).
+ - Lack of gdk\_pixbuf is detected correctly now (configure script).
  - textmarking is no longer a timeout event, is this better or worse?
  - Added Turkish translation (Fatih Demir).
  - Added Russian translation (Valek Filippov).
@@ -2119,12 +2051,11 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Configure script now cleans up the CFLAGS & LDFLAGS (removes
    duplicate words), let's hope this doesn't break on some boxses.
 
+***
 
-----------------------------------------------------------------------
- 1.5.2 -> 1.5.3
-----------------------------------------------------------------------
+## 1.5.2 -> 1.5.3
 
- - Fixed a rare overflow bug in auto_insert().
+ - Fixed a rare overflow bug in auto\_insert().
  - Pressing OK in the settings window on slow machines (p233?) was
    pretty slow, maybe it's faster now.
  - Corrected some inputgad behaviour (Aaron Lehmann).
@@ -2147,10 +2078,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added halfop support (mode +h). This includes support in the
    userlist, /hop, /dehop, /mdehop and new textevents (Elizandro G. Roos).
 
+***
 
-----------------------------------------------------------------------
- 1.5.1 -> 1.5.2
-----------------------------------------------------------------------
+## 1.5.1 -> 1.5.2
 
  - --disable-gnome should work again.
  - Fixed a bug in right-click nick menu.
@@ -2159,13 +2089,12 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - CTCP flood protection won't kick in for ACTIONs.
  - Removed the theme code.
  - Made pixmaps.c, all code to decode/free/etc pixmaps is in here.
- - WM_HINTS icon is set for the app.
+ - WM\_HINTS icon is set for the app.
  - Removed the "-c" flag (it's automatic now).
 
+***
 
-----------------------------------------------------------------------
- 1.5.0 -> 1.5.1
-----------------------------------------------------------------------
+## 1.5.0 -> 1.5.1
 
  - Shell tabs are now delinkable.
  - Added a "show/hide topic bar" button (bottom right), I didn't know
@@ -2177,7 +2106,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Rewrote the function that handles %variables in userlist buttons,
    user commands and ctcp replies (all use the same function now),
    please report any bugs (especially if someone can overflow you from
-   remote ;) - as a consequence, you can use % and & (word/word_eol)
+   remote ;) - as a consequence, you can use % and & (word/word\_eol)
    for ctcp replies now. Also added %m for machine info.
  - Nickname-popup-menu, URLmenu and Usermenu all use the same code now
    (it means you can make submenus in all 3).
@@ -2187,10 +2116,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    finished yet (and doesn't work on IRCNet because it refuses to
    reply to pings correctly).
 
+***
 
-----------------------------------------------------------------------
- 1.4.2 -> 1.5.0
-----------------------------------------------------------------------
+## 1.4.2 -> 1.5.0
 
  - Some changes & cleanups to the parser code (inbound/outbound).
  - Ran all source through indent, using:
@@ -2204,24 +2132,23 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added /timer.
  - Overhauled the ChannelList window (Joshua Gough).
  - Added proxy traversal support for socks and wingate, no gui yet so
-   use /set proxy_host, proxy_port, proxy_type (1=socks, 2=wingate).
+   use /set proxy\_host, proxy\_port, proxy\_type (1=socks, 2=wingate).
  - Added /userlist.
  - Opaque-window-move used to be slow on some windowmanagers even
    with transparency turned off - fixed.
  - Tab-key completion is more like GNU readline (Wes Peters).
  - Now possible to use modules in perl scripts (Andreas Scherbaum).
- - irc::get_info(4) returns the current xchat dir (Mike Guidero).
- - Added irc::get_prefs() (returns a /set variable) (Leo Cacciari).
+ - irc::get\_info(4) returns the current xchat dir (Mike Guidero).
+ - Added irc::get\_prefs() (returns a /set variable) (Leo Cacciari).
  - /set <wildcard> is now possible.
  - Added Show-Userhost-in-Userlist option (Nicolas Dimitrijevic).
  - Build tree cleaned up so 'make dist' can work.
  - Added flood protection from CTCP and mass-dialogs-opening (Bruj0)
-   rdiazleven@ubp.edu.ar. (see variables *_limit).
+   rdiazleven@ubp.edu.ar. (see variables *\_limit).
 
+***
 
-----------------------------------------------------------------------
- 1.4.1 -> 1.4.2
-----------------------------------------------------------------------
+## 1.4.1 -> 1.4.2
 
  - Compilation fixes for IRIX (David Kaelbling).
  - Compilation fixes for AIX (Rodrigo Barbosa).
@@ -2233,10 +2160,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Configure script is now generated with a sane version of autoconf.
  - Alt-minus and Alt-plus now wrap around (AGL).
 
+***
 
-----------------------------------------------------------------------
- 1.4.0 -> 1.4.1
-----------------------------------------------------------------------
+## 1.4.0 -> 1.4.1
 
  - Fixed a bug that could make new text not appear while marking text.
  - xtext: Further improved performance when double buffering is turned
@@ -2253,7 +2179,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Italian translation updated (Stefano Fava).
  - Greek translation added (Fanis Dokianakis).
  - Dutch translation upated (Arjan Scherpenisse).
- - Removed some very old translations: fr_CA, no, pl, ru and sv.
+ - Removed some very old translations: fr\_CA, no, pl, ru and sv.
    (If someone wants to update these, you're welcome to).
  - Channel mode "+h nick" (half Op) is now reported correctly (still
    not supported in the userlist though).
@@ -2262,4 +2188,4 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Sometimes ignores wouldn't save - fixed.
 
 
-http://www.xchat.org
+[http://www.xchat.org](http://www.xchat.org)
