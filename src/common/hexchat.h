@@ -130,6 +130,7 @@ struct hexchatprefs
 	unsigned int hex_gui_autoopen_send;
 	unsigned int hex_gui_compact;
 	unsigned int hex_gui_hide_menu;
+	unsigned int hex_gui_input_icon;
 	unsigned int hex_gui_input_nick;
 	unsigned int hex_gui_input_spell;
 	unsigned int hex_gui_input_style;

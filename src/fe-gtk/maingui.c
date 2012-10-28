@@ -334,7 +334,7 @@ mg_set_access_icon (session_gui *gui, GdkPixbuf *pix, gboolean away)
 		gui->op_xpm = NULL;
 	}
 
-	if (pix)
+	if (pix && prefs.hex_gui_input_icon)
 	{
 		gui->op_xpm = gtk_image_new_from_pixbuf (pix);
 		gtk_box_pack_start (GTK_BOX (gui->nick_box), gui->op_xpm, 0, 0, 0);

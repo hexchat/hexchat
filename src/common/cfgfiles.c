@@ -447,6 +447,7 @@ const struct prefs vars[] =
 	{"gui_dialog_top", P_OFFINT (hex_gui_dialog_top), TYPE_INT},
 	{"gui_prefs.hex_gui_dialog_width", P_OFFINT (hex_gui_dialog_width), TYPE_INT},
 	{"gui_hide_menu", P_OFFINT (hex_gui_hide_menu), TYPE_BOOL},
+	{"gui_input_icon", P_OFFINT (hex_gui_input_icon), TYPE_BOOL},
 	{"gui_input_nick", P_OFFINT (hex_gui_input_nick), TYPE_BOOL},
 	{"gui_input_spell", P_OFFINT (hex_gui_input_spell), TYPE_BOOL},
 	{"gui_input_style", P_OFFINT (hex_gui_input_style), TYPE_BOOL},
@@ -670,6 +671,7 @@ load_config (void)
 	prefs.hex_gui_autoopen_dialog = 1;
 	prefs.hex_gui_autoopen_recv = 1;
 	prefs.hex_gui_autoopen_send = 1;
+	prefs.hex_gui_input_icon = 1;
 	prefs.hex_gui_input_nick = 1;
 	prefs.hex_gui_input_spell = 1;
 	prefs.hex_gui_input_style = 1;
