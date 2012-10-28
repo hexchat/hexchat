@@ -2204,6 +2204,8 @@ setup_apply (struct hexchatprefs *pr)
 #endif
 	if (DIFF (hex_gui_compact))
 		noapply = TRUE;
+	if (DIFF (hex_gui_input_icon))
+		noapply = TRUE;	
 	if (DIFF (hex_gui_input_nick))
 		noapply = TRUE;
 	if (DIFF (hex_gui_lagometer))
