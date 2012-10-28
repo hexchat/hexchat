@@ -475,6 +475,7 @@ plugin_auto_load (session *sess)
 	for_files ("./plugins", "hcdoat.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcexec.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcfishlim.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hchextray.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hclua.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcmpcinfo.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcperl.dll", plugin_auto_load_cb);
@@ -485,7 +486,6 @@ plugin_auto_load (session *sess)
 	for_files ("./plugins", "hcwinamp.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcsysinfo.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcwmpa.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hextray.dll", plugin_auto_load_cb);
 
 	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
 #else

@@ -176,7 +176,7 @@ Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; 
 Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
 ;Source: "plugins\hcsasl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sasl
-Source: "plugins\hextray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\hextray
+Source: "plugins\hchextray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\hextray
 Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
 Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua

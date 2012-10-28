@@ -1897,7 +1897,7 @@ int
 hextray_mode ()
 {
 #ifdef WIN32
-	if ((_access( "plugins/hextray.dll", 0 )) != -1)
+	if ((_access( "plugins/hchextray.dll", 0 )) != -1)
 	{
 		return 1;
 	}
