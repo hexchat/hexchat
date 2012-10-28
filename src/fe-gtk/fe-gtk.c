@@ -376,10 +376,10 @@ fe_main (void)
 {
 	gtk_main ();
 
-	/* sleep for 3 seconds so any QUIT messages are not lost. The  */
+	/* sleep for 2 seconds so any QUIT messages are not lost. The  */
 	/* GUI is closed at this point, so the user doesn't even know! */
 	if (prefs.wait_on_exit)
-		sleep (3);
+		sleep (2);
 }
 
 void
