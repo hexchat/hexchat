@@ -789,8 +789,21 @@ load_config (void)
 #endif
 	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
+#ifdef WIN32
+	if (find_font ("Consolas"))
+	{
+		strcpy (prefs.hex_text_font, "Consolas 10");
+		strcpy (prefs.hex_text_font_main, "Consolas 10");
+	}
+	else
+	{
+		strcpy (prefs.hex_text_font, DEF_FONT);
+		strcpy (prefs.hex_text_font_main, DEF_FONT);
+	}
+#else
 	strcpy (prefs.hex_text_font, DEF_FONT);
 	strcpy (prefs.hex_text_font_main, DEF_FONT);
+#endif
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
 	strcpy (prefs.hex_text_spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
 
