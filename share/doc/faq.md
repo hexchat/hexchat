@@ -19,7 +19,7 @@ When using the nickserv password HexChat waits a short time before joining.
 To change this value (which is in seconds) by running:
 >   /set irc\_join\_delay number
 
-The other option is SASL which is network dependant and can be enabled in the Network list (2.9.4+).
+The other option is SASL which is network dependent and can be enabled in the Network list (2.9.4+).
 
 
 ### How do I connect through a proxy?
@@ -311,9 +311,11 @@ if it has not been reported open an issue with as much detail as possible.
 
 You sure can, but I don't accept translations directly. They must be
 done through the [Transifex
-Project](https://www.transifex.com/projects/p/hexchat/). Bear in mind
-that the email address with which you register on Transifex will be
-visible in the translation files.
+Project](https://www.transifex.com/projects/p/hexchat/). You simply register
+on the site, then you can apply for membership in a translation team via the web
+interface. Approvals are done manually so it might take a few days for you to be
+approved. Also bear in mind that the email address with which you register on
+Transifex will be visible in the translation files.
 
 
 * * * * *
