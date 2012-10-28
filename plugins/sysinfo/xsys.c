@@ -237,7 +237,7 @@ print_summary (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", sysinfo);
+		xchat_commandf (ph, "SAY %s", sysinfo);
 	}
 	else
 	{
@@ -266,7 +266,7 @@ print_os (int announce, char* format)
 	
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", buffer);
+		xchat_commandf (ph, "SAY %s", buffer);
 	}
 	else
 	{
@@ -291,7 +291,7 @@ print_distro (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", name);
+		xchat_commandf (ph, "SAY %s", name);
 	}
 	else
 	{
@@ -336,7 +336,7 @@ print_cpu (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", buffer);
+		xchat_commandf (ph, "SAY %s", buffer);
 	}
 	else
 	{
@@ -371,7 +371,7 @@ print_ram (int announce, char* format)
 	
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", string);
+		xchat_commandf (ph, "SAY %s", string);
 	}
 	else
 	{
@@ -415,7 +415,7 @@ print_disk (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", string);
+		xchat_commandf (ph, "SAY %s", string);
 	}
 	else
 	{
@@ -452,7 +452,7 @@ print_vga (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", buffer);
+		xchat_commandf (ph, "SAY %s", buffer);
 	}
 	else
 	{
@@ -477,7 +477,7 @@ print_sound (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", sound);
+		xchat_commandf (ph, "SAY %s", sound);
 	}
 	else
 	{
@@ -502,11 +502,11 @@ print_ethernet (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf(ph, "ME %s", ethernet_card);
+		xchat_commandf (ph, "SAY %s", ethernet_card);
 	}
 	else
 	{
-		xchat_printf(ph, "%s", ethernet_card);
+		xchat_printf (ph, "%s", ethernet_card);
 	}
 
 	return XCHAT_EAT_ALL;
@@ -558,7 +558,7 @@ print_uptime (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "ME %s", buffer);
+		xchat_commandf (ph, "SAY %s", buffer);
 	}
 	else
 	{
@@ -597,7 +597,7 @@ netdata_cb (char *word[], char *word_eol[], void *userdata)
 
 	if (xchat_list_int (ph, NULL, "type") >= 2)
 	{
-		xchat_commandf (ph, "ME %s", netdata);
+		xchat_commandf (ph, "SAY %s", netdata);
 	}
 	else
 	{
@@ -670,7 +670,7 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 
 	if (xchat_list_int (ph, NULL, "type") >= 2)
 	{
-		xchat_commandf (ph, "ME %s", netstream);
+		xchat_commandf (ph, "SAY %s", netstream);
 	}
 	else
 	{
