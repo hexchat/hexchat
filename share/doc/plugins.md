@@ -1010,7 +1010,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 </pre>
 
 In the example above, the settings will be saved to the plugin_tester_thingie.conf file, and its content will be:
->myvar1 = I want to save this string!
+>myvar1 = I want to save this string!  
 myvar2 = This is important, too.
 
 You should never need to edit this file manually.
