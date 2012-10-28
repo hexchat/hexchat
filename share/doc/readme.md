@@ -9,12 +9,12 @@ provide binary packages linked to the OpenSSL libraries, provided that
 all other requirements of the GPL are met.
 See file COPYING for details.
 
-For building instructions, see http://www.hexchat.org/developers/building
+For building instructions, see [Building](http://www.hexchat.org/developers/building).
 
 ## What is it?
 
 HexChat is an IRC client for Windows and UNIX operating systems. I.R.C. is
-Internet Relay Chat, see http://irchelp.org for more information about IRC
+Internet Relay Chat, see [IRCHelp.org](http://irchelp.org) for more information about IRC
 in general. HexChat runs on most BSD and POSIX compliant operating systems.
 
 ## Requirements:
@@ -44,10 +44,7 @@ If you need your packages to work on i386, you don't need to compile with
 
 ## Python Scripts:
 
-Scripts for XChat 1.8.x are not compatible, a brand new interface has been
-written. The documentation can be found here:
-
-https://github.com/hexchat/hexchat/wiki/Python-Interface
+Scripts for XChat 1.8.x are not compatible, a brand new interface has been written. For more info, see the [HexChat Python Interface](https://github.com/hexchat/hexchat/blob/master/share/doc/python.md).
 
 Consider using the Python interface for your scripts, it's a very nice
 API, allows for loading/unloading individual scripts, and gives you
@@ -56,9 +53,7 @@ almost all the features of the C-Plugin API.
 
 ## Perl Scripts:
 
-Perl 5.8 or newer is required. The documentation can be found here:
-
-https://github.com/hexchat/hexchat/wiki/Perl-Interface
+Perl 5.8 or newer is required. For more info, see the [HexChat Perl Interface](https://github.com/hexchat/hexchat/blob/master/share/doc/perl.md).
 
 Scripts for XChat 1.8.x are compatible with the following exceptions:
 

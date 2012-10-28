@@ -1,0 +1,3 @@
+# HexChat Plugin Interface
+
+TODO
