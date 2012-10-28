@@ -1,7 +1,5 @@
 # temp. solution while mailcheck & xdcc arn't in SUBDIRS
-EXTRA_DIST = plugin20.html Make.plugin plugin-conf.in \
-				xdcc/xdcc.c \
-				xdcc/Makefile.am
+EXTRA_DIST = Make.plugin plugin-conf.in xdcc/xdcc.c xdcc/Makefile.am
 
 noinst_HEADERS = hexchat-plugin.h
 
