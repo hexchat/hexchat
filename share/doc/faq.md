@@ -15,14 +15,14 @@ List channels in the favorites list to join them on connect.
 
 When using the nickserv password HexChat waits a short time before joining.
 To change this value (which is in seconds) by running:
->   /set irc\_join\_delay number
+> /set irc\_join\_delay number
 
 The other option is SASL which is network dependent and can be enabled in the Network list (2.9.4+).
 
 
 ### How do I connect through a proxy?
 
-Go to the menus, *Settings* -> *Preferences* -> *Network Setup* and fill in
+Go to the menus, _Settings_ `->` _Preferences_ `->` _Network Setup_ and fill in
 the requested information there. Authentication (using a username and
 password) is only supported for HTTP and Socks5.
 
@@ -32,16 +32,16 @@ password) is only supported for HTTP and Socks5.
 To display @ and + characters next to nicknames as they talk, do the
 following:
 
-In the menus, open up Settings -> Text Events. Find the
-*Channel Message* event in the list. The $3 code can be inserted to
+In the menus, open up _Settings_ `->` _Text Events_. Find the
+_Channel Message_ event in the list. The $3 code can be inserted to
 print the user's mode-character (e.g. @ or +). For example, you might
 want to change the default:
 
->   %C18%H<%H$4$1%H>%H%O$t$2
+> %C18%H<%H$4$1%H>%H%O$t$2
 
 To
 
->   %C18%H<%H$4$3$1%H>%H%O$t$2 
+> %C18%H<%H$4$3$1%H>%H%O$t$2 
 
 Don't forget to **press Enter**, so the changes take effect in the list at
 the top of the window.
@@ -49,54 +49,50 @@ the top of the window.
 
 ### How do I change the Op and Voice userlist icons and Tree View icons?
 
-You can override the default icons by placing PNG files with the names listed below in
-the specified directory.
+HexChat allows you to override the default icons. To use this feature, first create the required folder:
 
-#### Files
+ * Unix/Linux
 
-**userlist:**
+> ~/.config/hexchat/icons
 
->   - op.png
->   - hop.png
->   - voice.png
->   - red.png *(1 level above op)*
->   - purple.png  *(2 levels above op)*
+ * Windows
 
-**channeltree:**
+> %APPDATA%\\HexChat\\icons
 
->   - server.png
->   - channel.png
->   - dialog.png
->   - util.png *(Channel List, DCC, etc (if enabled as tabs))*
+The required file names:
 
-**tray:**
+ * **channel tree:**
 
->   - message.png
->   - highlight.png
->   - fileoffer.png
->   - hexchat.png
+	* server.png
+	* channel.png
+	* dialog.png
+	* util.png _(Channel List, DCC, etc (if enabled as tabs))_
 
-#### Locations
+ * **tray icon:**
 
-You will need to create the directory.
+	* message.png
+	* highlight.png
+	* fileoffer.png
+	* hexchat.png
 
-* Unix/Linux
+ * **user list:**
 
->   ~/.config/hexchat/icons
+	* op.png
+	* hop.png
+	* voice.png
+	* red.png _(1 level above op)_
+	* purple.png  _(2 levels above op)_
 
-* Windows
-
->   %APPDATA%\\HexChat\\icons
-
-You can hide either of them in Preferences.
+You can hide either of them in _Preferences_.
 
 
 ### How do I set different ban types?
 
-1. Right click the nickname in the userlist, and choose a ban type from the "Kick/Ban" submenu.
-2. You can also do it manually:
+ 1. Right click the nickname in the userlist, and choose a ban type from the "Kick/Ban" submenu.
+
+ 2. You can also do it manually:
     >   /ban nick bantype where the bantype is a number from 0 to 3.
-3. Or set the default with:
+ 3. Or set the default with:
 
     >   /set irc\_ban\_type bantype sets the default ban type to use for all bans. The different types are:
     >
@@ -104,6 +100,7 @@ You can hide either of them in Preferences.
     >   -   1 = \*!*@domain
     >   -   2 = \*!*user@*.host
     >   -   3 = \*!*user@domain
+
 
 ### Why does the timestamp overlap some nicknames?
 
@@ -119,13 +116,14 @@ Once you adjust this setting high enough, overlapping timestamps and
 nicknames should not occur. The adjustment will not take effect
 immediately, a restart may be needed.
 
+
 ### How do I turn on Conference mode where I will not see join or part messages?
 
 Right-click on the tab you want to change. In the submenu of the channel
 name, there's a toggle-item "Show join/part messages", simply turn this
 off.
 
-If you want to turn this option on globally go to *Preferences* -> *Advanced*
+If you want to turn this option on globally go to _Preferences_ `->` _Advanced_.
 
 Then all channels you join **after** setting this will start with "Show
 join/part messages" turned off.
@@ -140,14 +138,14 @@ and must be translated.
 When offering a DCC file, HexChat will tell the receiver your address.
 If it says 192.168.0.1, the receiver will not be able to connect. One
 way to make it send your "real" address is to enable the "Get my IP from
-IRC Server" option in HexChat. This option is available in Preferences
--> File Transfers. When you turn it ON, you will have to re-login to
-the server before it'll take effect.
+IRC Server" option in HexChat. This option is available in
+_Preferences_ `->` _File Transfers_. When you turn it ON, you will have
+to re-login to the server before it'll take effect.
 
 You will also need to forward some ports for use in DCC send. You may
 pick almost any port range you wish, for example, in HexChat set:
 
->   First DCC send port: 4990
+>   First DCC send port: 4990  
 >   Last DCC send port: 5000
 
 This will allow you to send up to ten files at the same time, which
@@ -160,15 +158,13 @@ your router/modem's manual on how to do this.
 
 There are three ways to do this:
 
--   /LOAD -e <textfile>, where <textfile> is a full pathname to a
+ * /LOAD -e &lt;textfile>, where &lt;textfile> is a full pathname to a
     file containing commands on each line.
 
--   Separate your commands with CTRL-SHIFT-u-a. This will appear as
-     a little box with numbers onit.
+ * Separate your commands with CTRL-SHIFT-u-a. This will appear as a little box with numbers onit.
 
--   You can create two UserCommands, with the same name, and then
-    execute the UserCommand. It will be executed in the same order as
-    it's written in the UserCommands GUI.
+ * You can create two UserCommands, with the same name, and then execute the UserCommand.
+It will be executed in the same order as it's written in the UserCommands GUI.
 
 
 ### I get this error: "Unknown file type abc.yz. Maybe you need to install the Perl or Python plugin?"
@@ -176,56 +172,49 @@ There are three ways to do this:
 If you get this error when trying to load a Perl or Python script, it
 means the plugin for running those scripts isn't loaded.
 
--   The Perl, Python and TCL plugins come with HexChat in the same
-    archive.
--   During ./configure, it will check for Perl, Python and TCL libs and
-    headers, you should check if it failed there.
--   The plugins directory can be found by issuing the shell command
-    >   hexchat -p
-
--   All *.so files are auto-loaded at startup (*.dll on Windows).
--   If you downloaded a binary package, maybe the packager decided to
-    exclude the Perl or Python plugins.
+ * The Perl, Python and TCL plugins come with HexChat in the same archive.
+ * During ./configure, it will check for Perl, Python and TCL libs and headers, you should check if it failed there.
+ * The plugins directory can be found by issuing the shell command
+    > hexchat -p
+ * All *.so files are auto-loaded at startup (*.dll on Windows).
+ * If you downloaded a binary package, maybe the packager decided to exclude the Perl or Python plugins.
 
 
 ### How do I play sound files on certain events?
 
-In the menus, go to: *Settings* -> *Preferences* -> *Sound*. Select the event
-you want to make a sound on, then type in a sound filename (or use the
-Browse button).
+In the menus, go to: _Settings_ `->` _Preferences_ `->` _Sound_. Select the event
+you want to make a sound on, then type in a sound filename (or use the Browse button).
 
 
 ### How do I auto-load scripts at startup?
 
 The root of your HexChat config is:
 
--   Windows: %APPDATA%\\HexChat
--   Unix/Linux: ~/.config/hexchat
+ * Windows: %APPDATA%\\HexChat
+ * Unix/Linux: ~/.config/hexchat
 
+Referred to as &lt;config> from now. HexChat automatically loads, at startup:
 
-Referred to as config from now. HexChat automatically loads, at startup:
+ * &lt;config>/addons/*.lua Lua scripts
+ * &lt;config>/addons/*.pl Perl scripts
+ * &lt;config>/addons/*.py Python scripts
+ * &lt;config>/addons/*.tcl Tcl scripts
+ * &lt;config>/addons/*.dll Plugins (Windows)
+ * &lt;config>/addons/*.so Plugins (Unix)
 
->   - config/addons/*.lua Lua scripts
->   - config/addons/*.pl Perl scripts
->   - config/addons/*.py Python scripts
->   - config/addons/*.tcl Tcl scripts
->   - config/addons/*.dll Plugins (Windows)
->   - config/addons/*.so Plugins (Unix)
-
-The addons dir may need to be created.
+You may need to create the _addons_ folder manually.
 
 ### How do I minimize HexChat to the System Tray (Notification Area)?
 
-On both Unix and Windows there is an included tray plugin.
-To enable minimizing to tray on exit:
+On both Unix and Windows there is an included tray plugin. To enable minimizing to tray on exit:
 
->   /set gui\_tray\_flags -on 1
+> /set gui\_tray\_flags -on 1
 
 For minimizing to tray on minimize:
 
->   /set gui\_tray\_flags -on 4 *(use -off to disable)*
+> /set gui\_tray\_flags -on 4 *(use -off to disable)*
 
-Alerts for this tray are in *Preferences* -> *Alerts*
+Alerts for this tray are in _Preferences_ `->` _Alerts_.
 
 The other option is Windows only, called HexTray. It is included with the installer.
 Right click on the tray icon for its options.
@@ -246,21 +235,21 @@ Right click on the tray icon for its options.
 
 By default settings, no rotation occurs, your log files will just keep getting larger.
 
-Go to *Settings* -> *Preferences* -> *Logging* and change the log filename to any one of these:
+Go to _Settings_ `->` _Preferences_ `->` _Logging_ and change the log filename to any one of these:
 
->   %Y-%m-%d/%n-%c.log ->2006-12-30/FreeNode-\#channel.log
+> %Y-%m-%d/%n-%c.log ->2006-12-30/FreeNode-\#channel.log
 >
->   %n/%Y-%m-%d/%c.log ->FreeNode/2006-12-30/\#channel.log
+> %n/%Y-%m-%d/%c.log ->FreeNode/2006-12-30/\#channel.log
 >
->   %n/%c.log -> FreeNode/\#channel.log (no rotation)
+> %n/%c.log -> FreeNode/\#channel.log (no rotation)
 
 %Y, %m and %d represents the current year, month and day respectively.
 %n is the network name, e.g. "FreeNode" or "UnderNet", and finally, %c
 is the channel. In these examples, a new log filename and folder would
 be created after midnight.
 
- You can find more possibilities at
-[http://xchat.org/docs/log/](http://xchat.org/docs/log/).
+You can find more possibilities at [http://xchat.org/docs/log/](http://xchat.org/docs/log/).
+
 
 ### Where did the Real Name field go?
 
@@ -271,50 +260,51 @@ personal data).
 The network-specific real name can still be set via the GUI. If you want
 to modify the global real name, just issue the following command:
 
->   /set irc\_real\_name Stewie Griffin
+> /set irc\_real\_name Stewie Griffin
 
 
 ### How do I migrate my settings from XChat?
 
-* UNIX/Linux
+ * UNIX/Linux
 
->   1. Copy ~/.xchat2 to ~/.config/hexchat
->   2. Rename ~/.config/hexchat/xchat.conf to ~/.config/hexchat/hexchat.conf
->   3. Rename ~/.config/hexchat/xchatlogs to ~/.config/hexchat/logs
->   4. Move all your 3rd party addons to ~/.config/hexchat/addons
->   5. Rename ~/.config/hexchat/plugin\_\*.conf to ~/.config/hexchat/addon\_\*.conf
+> 1. Copy ~/.xchat2 to ~/.config/hexchat
+> 2. Rename ~/.config/hexchat/xchat.conf to ~/.config/hexchat/hexchat.conf
+> 3. Rename ~/.config/hexchat/xchatlogs to ~/.config/hexchat/logs
+> 4. Move all your 3rd party addons to ~/.config/hexchat/addons
+> 5. Rename ~/.config/hexchat/plugin\_\*.conf to ~/.config/hexchat/addon\_\*.conf
 
-* Windows
+ * Windows
 
->   1. Copy *%APPDATA%\\X-Chat 2 to %APPDATA%\\HexChat
->   2. Rename *%APPDATA%\\HexChat\\xchat.conf to %APPDATA%\\HexChat\\hexchat.conf
->   3. Rename *%APPDATA%\\HexChat\\xchatlogs to %APPDATA%\\HexChat\\logs
->   4. Move all your 3rd party addons to %APPDATA%\\HexChat\\addons
->   5. Rename *%APPDATA%\\HexChat\\plugin\_\*.conf to %APPDATA%\\HexChat\\addon\_\*.conf
+> 1. Copy *%APPDATA%\\X-Chat 2 to %APPDATA%\\HexChat
+> 2. Rename *%APPDATA%\\HexChat\\xchat.conf to %APPDATA%\\HexChat\\hexchat.conf
+> 3. Rename *%APPDATA%\\HexChat\\xchatlogs to %APPDATA%\\HexChat\\logs
+> 4. Move all your 3rd party addons to %APPDATA%\\HexChat\\addons
+> 5. Rename *%APPDATA%\\HexChat\\plugin\_\*.conf to %APPDATA%\\HexChat\\addon\_\*.conf
 
 
 ## Contributions, Development and Bugs.
+
 
 ### I found a bug, what can I do?
 
 Firstly, make sure it's the latest stable version of HexChat.
 
 If you still experience issues, you can search for the issue on
-[Github](https://github.com/hexchat/hexchat/issues?state=open)
+[GitHub](https://github.com/hexchat/hexchat/issues?state=open)
 if it has not been reported open an issue with as much detail as possible.
 
 
 ### Can I write a new language translation for HexChat?
 
 You sure can, but I don't accept translations directly. They must be
-done through the [Transifex
-Project](https://www.transifex.com/projects/p/hexchat/). You simply register
-on the site, then you can apply for membership in a translation team via the web
-interface. Approvals are done manually so it might take a few days for you to be
-approved. Also bear in mind that the email address with which you register on
-Transifex will be visible in the translation files.
+done through the
+[Transifex Project](https://www.transifex.com/projects/p/hexchat/).
+You simply register on the site, then you can apply for membership in a translation
+team via the web interface. Approvals are done manually so it might take a few days
+for you to be approved. Also bear in mind that the email address with which you
+register on Transifex will be visible in the translation files.
 
 
-* * * * *
+***
 
 For pretty html: `pandoc --toc -s faq.md -o faq.html`
