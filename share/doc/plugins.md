@@ -254,9 +254,9 @@ Example:
 Yes, it can be done. All you need is Visual Studio setup as explained in [Building](http://www.hexchat.org/developers/building). Your best bet is to use an existing plugin in the HexChat solution as a starting point. You should have the following files:
 
 
-* [hexchat-plugin.h](https://github.com/hexchat/hexchat/blob/master/plugins/hexchat-plugin.h) - main plugin header
-* plugin.c - Your plugin, you need to write this one :)
-* plugin.def - A simple text file containing the following:
+ * [hexchat-plugin.h](https://github.com/hexchat/hexchat/blob/master/plugins/hexchat-plugin.h) - main plugin header
+ * plugin.c - Your plugin, you need to write this one :)
+ * plugin.def - A simple text file containing the following:
 
 <pre>
 	EXPORTS
