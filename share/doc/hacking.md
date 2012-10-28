@@ -9,14 +9,14 @@ Just some tips if you're going to help with HexChat code (patches etc):
 
 * Try to stick to the same consistant coding style (vertically aligned braces, a space after if, while, functions etc.):
 
-<pre>void
-routine (void)
-{
-	if (function (a, b, c))
+	<pre>void
+	routine (void)
 	{
-		x = a + 1;
-	}
-}</pre>
+		if (function (a, b, c))
+		{
+			x = a + 1;
+		}
+	}</pre>
 
 * Don't use "//" C++ style comments, some compilers don't like them.
 
