@@ -84,14 +84,14 @@ The root of your HexChat config is:
  * Windows: %APPDATA%\HexChat
  * Unix: ~/.config/hexchat
 
-Referred to as < config > from now. HexChat automatically loads, at startup:
+Referred to as &lt;config> from now. HexChat automatically loads, at startup:
 
- * < config >/addons/*.lua Lua scripts
- * < config >/addons/*.pl Perl scripts
- * < config >/addons/*.py Python scripts
- * < config >/addons/*.tcl Tcl scripts
- * < config >/addons/*.dll Plugins (Windows)
- * < config >/addons/*.so Plugins (Unix)
+ * &lt;config>/addons/*.lua Lua scripts
+ * &lt;config>/addons/*.pl Perl scripts
+ * &lt;config>/addons/*.py Python scripts
+ * &lt;config>/addons/*.tcl Tcl scripts
+ * &lt;config>/addons/*.dll Plugins (Windows)
+ * &lt;config>/addons/*.so Plugins (Unix)
 
 ## Control Codes:
 
