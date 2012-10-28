@@ -27,7 +27,6 @@
 #include "callbacks.h"
 #include "resource.h"
 
-TCHAR BACKUP_INI_FILE[] = _T(".\\plugins\\config\\addon_hextray.conf");
 struct HOTKEY g_hHotKey;
 
 /* we need to convert ALT and SHIFT modifiers
