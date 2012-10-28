@@ -19,6 +19,12 @@
 #ifndef _XTRAY_H
 #define _XTRAY_H
 
+/******************** Default settings*****************/
+#define HT_DEF_SET		13814
+#define HT_DEF_AOT		5
+#define HT_DEF_KEY		84
+#define HT_DEF_MOD		6
+
 /******************** Globals *************************/
 extern HWND				g_hXchatWnd;
 extern HWND				g_hHotkeyWnd;

@@ -75,15 +75,42 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 
 	*plugin_name	= "HexTray";
 	*plugin_desc	= "Minimize HexChat to the Windows system tray";
-	*plugin_version = "1.2.4";
+	*plugin_version = "1.3.0";
+
+	char buffer[256];
 
 	/***************************************************************************************************************************/
-	/************************* Load our preferances from xTray.ini *************************************************************/
+	/************************* Initialize our preferences if they don't exist yet **********************************************/
+	/***************************************************************************************************************************/
+
+	if (xchat_pluginpref_get_int (ph, "settings") == -1)
+	{
+		xchat_pluginpref_set_int (ph, "settings", HT_DEF_SET);
+	}
+	if (xchat_pluginpref_get_int (ph, "aot") == -1)
+	{
+		xchat_pluginpref_set_int (ph, "aot", HT_DEF_AOT);
+	}
+	if (xchat_pluginpref_get_int (ph, "key") == -1)
+	{
+		xchat_pluginpref_set_int (ph, "key", HT_DEF_KEY);
+	}
+	if (xchat_pluginpref_get_int (ph, "mod") == -1)
+	{
+		xchat_pluginpref_set_int (ph, "mod", HT_DEF_MOD);
+	}
+	if (xchat_pluginpref_get_str (ph, "away", buffer) == 0)
+	{
+		xchat_pluginpref_set_str (ph, "away", "");
+	}
+
+	/***************************************************************************************************************************/
+	/************************* Load our preferences ****************************************************************************/
 	/***************************************************************************************************************************/
 	LoadPrefs();
 
 	/***************************************************************************************************************************/
-	/************************* Finds the xChat window and saves it for later use ***********************************************/
+	/************************* Finds the HexChat window and saves it for later use *********************************************/
 	/***************************************************************************************************************************/
 	g_hXchatWnd = (HWND)xchat_get_info(ph, "win_ptr");
 
@@ -96,7 +123,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	SetWindowLongPtr(g_hXchatWnd, GWLP_WNDPROC, (LONG_PTR)WindowProc);
 
 	/***************************************************************************************************************************/	
-	/************************* Grab the xChat Icon, Load our menu, create the window to receive the hotkey messages  ***********/
+	/************************* Grab the HexChat Icon, Load our menu, create the window to receive the hotkey messages  *********/
 	/************************* and register the windows message so we know if explorer crashes                       ***********/
 	/***************************************************************************************************************************/
 	g_hTrayMenu		= GetSubMenu(LoadMenu((HINSTANCE)g_hInstance, MAKEINTRESOURCE(IDR_TRAY_MENU)), 0);

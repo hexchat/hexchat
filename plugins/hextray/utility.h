@@ -38,15 +38,6 @@ void ConvertString(const char *in,		wchar_t *out,	int size);
 void ConvertString(const wchar_t *in,	char *out,		int size);
 void ConvertString(const char *in,		char *out,		int size);
 
-int WritePrivateProfileIntA(char *, char *, int, char *);
-int WritePrivateProfileIntW(wchar_t *, wchar_t *, int, wchar_t *);
-
-#ifdef UNICODE
-#define WritePrivateProfileInt WritePrivateProfileIntW
-#else
-#define WritePrivateProfileInt WritePrivateProfileIntA
-#endif
-
 struct HOTKEY
 {
 	WORD key;

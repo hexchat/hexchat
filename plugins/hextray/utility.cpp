@@ -75,95 +75,11 @@ WORD ModToHotkeyf(WORD modifiers)
 
 void SavePrefs(int iDlg)
 {
-	/**************************************************************************************************/
-	/********** allocate space for our string, and then set it to the currently logged on user ********/
-	/**************************************************************************************************/
-	DWORD dBuff = 257;
-	TCHAR szUser[257];
-
-	GetUserName(szUser, &dBuff);
-
-	/**************************************************************************************************/
-	/*********************** Test if the file exists, If it doesn't, Create It ************************/
-	/**************************************************************************************************/
-	TCHAR XTRAY_INI_FILE[1024];
-	
-#ifdef UNICODE
-	char temp[1024];
-    TCHAR TEMP_INI_FILE[1024];
-	
-	_snprintf(temp, 1024, "%s\\addon_hextray.conf", xchat_get_info(ph, "xchatdir"));
-	ConvertString(temp, TEMP_INI_FILE, 1024);
-
-	// ok this one is really ugly
-	// it checks to see if the file exists in two locations
-	// HexChat default config dir, if that fails it tries hexchat\plugins\config
-	// if neither one exists it tries to create it in
-	// HexChat default config dir, if that fails it tries hexchat\plugins\config
-	// In either case it writes \xFF\xFE to the file ( on creation )
-	// so that we can save unicode away messages WritePrivateProfile doesn't 
-	// do this for us, though I think it really should
-
-	if(FileExists(TEMP_INI_FILE))
-	{
-		_tcscpy(XTRAY_INI_FILE, TEMP_INI_FILE);
-	}
-	else
-	{
-		if(FileExists(BACKUP_INI_FILE))
-		{
-			_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
-		}
-		else
-		{
-			HANDLE xTemp;
-			DWORD dwBytesTemp;
-
-			if(xTemp = CreateFile(TEMP_INI_FILE, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL))
-			{
-				if(GetLastError() != ERROR_ALREADY_EXISTS)
-				{
-					WriteFile(xTemp, _T("\xFF\xFE"), 4, &dwBytesTemp, NULL);
-				}
-				CloseHandle(xTemp);
-			}
-
-			if(FileExists(TEMP_INI_FILE))
-			{
-				_tcscpy(XTRAY_INI_FILE, TEMP_INI_FILE);
-			}
-			else
-			{
-				HANDLE xBackup;
-				DWORD dwBytesBackup;
-
-				if(xBackup = CreateFile(TEMP_INI_FILE, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL))
-				{
-					if(GetLastError() != ERROR_ALREADY_EXISTS)
-					{
-						WriteFile(xBackup, _T("\xFF\xFE"), 4, &dwBytesBackup, NULL);
-					}
-
-					CloseHandle(xBackup);
-				}
-
-				if(FileExists(BACKUP_INI_FILE))
-				{
-					_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
-				}
-			}
-		}
-	}
-
-#else
-	_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
-#endif
-
-	WritePrivateProfileInt(szUser, _T("SETTINGS"),		g_dwPrefs,		XTRAY_INI_FILE);
-	WritePrivateProfileInt(szUser, _T("AOT"),			g_iTime,		XTRAY_INI_FILE);
-	WritePrivateProfileInt(szUser, _T("KEY"),			g_hHotKey.key,	XTRAY_INI_FILE);
-	WritePrivateProfileInt(szUser, _T("MOD"),			g_hHotKey.mod,	XTRAY_INI_FILE);
-	WritePrivateProfileString(szUser, _T("AWAY"),		g_szAway,		XTRAY_INI_FILE);
+	xchat_pluginpref_set_int (ph, "settings", g_dwPrefs);
+	xchat_pluginpref_set_int (ph, "aot", g_iTime);
+	xchat_pluginpref_set_int (ph, "key", g_hHotKey.key);
+	xchat_pluginpref_set_int (ph, "mod", g_hHotKey.mod);
+	xchat_pluginpref_set_str (ph, "away", (const char*) g_szAway);
 }
 
 void LoadPrefs()
@@ -171,115 +87,17 @@ void LoadPrefs()
 	/**************************************************************************************************/
 	/*********************** Our Settings Section *****************************************************/
 	/**************************************************************************************************/
-	DWORD dBuff = 257;
-	TCHAR szUser[257];
-
-	GetUserName(szUser, &dBuff);
-
-	/**************************************************************************************************/
-	/*********************** Test if the file exists, If it doesn't, Create It ************************/
-	/**************************************************************************************************/
-	TCHAR XTRAY_INI_FILE[1024];
-
-#ifdef UNICODE
-	char temp[1024];
-	TCHAR TEMP_INI_FILE[1024];
-
-	_snprintf(temp, 1024, "%s\\addon_hextray.conf", xchat_get_info(ph, "xchatdir"));
-	ConvertString(temp, TEMP_INI_FILE, 1024);
-
-	if(FileExists(TEMP_INI_FILE))
-	{
-		_tcscpy(XTRAY_INI_FILE, TEMP_INI_FILE);
-	}
-	else
-	{
-		if(FileExists(BACKUP_INI_FILE))
-		{
-			_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
-		}
-		else
-		{
-			HANDLE xTemp;
-			DWORD dwBytesTemp;
-
-			if(xTemp = CreateFile(TEMP_INI_FILE, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL))
-			{
-				if(GetLastError() != ERROR_ALREADY_EXISTS)
-				{
-					WriteFile(xTemp, _T("\xFF\xFE"), 4, &dwBytesTemp, NULL);
-				}
-
-				CloseHandle(xTemp);
-			}
-
-			if(FileExists(TEMP_INI_FILE))
-			{
-				_tcscpy(XTRAY_INI_FILE, TEMP_INI_FILE);
-			}
-			else
-			{
-				HANDLE xBackup;
-				DWORD dwBytesBackup;
-
-				if(xBackup = CreateFile(TEMP_INI_FILE, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL))
-				{
-					if(GetLastError() != ERROR_ALREADY_EXISTS)
-					{
-						WriteFile(xBackup, _T("\xFF\xFE"), 4, &dwBytesBackup, NULL);
-					}
-
-					CloseHandle(xBackup);
-				}
-
-				if(FileExists(BACKUP_INI_FILE))
-				{
-					_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
-				}
-			}
-		}
-	}
-
-#else
-	_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
-#endif
 
 	/**************************************************************************************************/
 	/*************************** Get the value for each of our preferances ****************************/
 	/**************************************************************************************************/
-	g_dwPrefs = GetPrivateProfileInt(szUser, _T("SETTINGS"),	0,  XTRAY_INI_FILE);
 
-	// backwards compatability
-	// also allows us to set defaults if its a new installation
-	// disable topic change, channel message and server notice by default
-	if(g_dwPrefs == 0)
-	{
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("HILIGHT"),		1,  XTRAY_INI_FILE)<<1);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("INVITE"),		1,  XTRAY_INI_FILE)<<2);
-		/* g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("TOPIC"),		1,  XTRAY_INI_FILE)<<3); */
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("BANNED"),		1,  XTRAY_INI_FILE)<<4);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("KICKED"),		1,  XTRAY_INI_FILE)<<5);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("CTCP"),		1,  XTRAY_INI_FILE)<<6);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("PMSG"),		1,  XTRAY_INI_FILE)<<7);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("KILLED"),		1,  XTRAY_INI_FILE)<<8);
-		/* g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("NOTICE"),		1,  XTRAY_INI_FILE)<<9); */
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("DISCONNECT"),	1,  XTRAY_INI_FILE)<<10);
+	g_dwPrefs = xchat_pluginpref_get_int (ph, "settings");
+	g_iTime = xchat_pluginpref_get_int (ph, "aot");
+	g_hHotKey.key = xchat_pluginpref_get_int (ph, "key");
+	g_hHotKey.mod = xchat_pluginpref_get_int (ph, "mod");
+	xchat_pluginpref_get_str (ph, "away", (char *) g_szAway);
 
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("AOM"),			0,  XTRAY_INI_FILE)<<11);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("TOT"),			1,  XTRAY_INI_FILE)<<12);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("AMAE"),		1,  XTRAY_INI_FILE)<<13);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("OSBWM"),		0,  XTRAY_INI_FILE)<<14);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("UWIOB"),		0,  XTRAY_INI_FILE)<<15);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("KAOI"),		0,  XTRAY_INI_FILE)<<16);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("MIOC"),		0,  XTRAY_INI_FILE)<<17);
-	}
-	
-	g_hHotKey.key	= GetPrivateProfileInt(szUser, _T("KEY"),	84, XTRAY_INI_FILE);
-	g_hHotKey.mod	= GetPrivateProfileInt(szUser, _T("MOD"),	(MOD_CONTROL | MOD_SHIFT),  XTRAY_INI_FILE);
-	g_iTime			= GetPrivateProfileInt(szUser, _T("AOT"),	5,  XTRAY_INI_FILE);
-
-	GetPrivateProfileString(szUser, _T("AWAY"), _T(""),	g_szAway, 1024, XTRAY_INI_FILE);
-	
 	/**************************************************************************************************/
 	/******************************** Register our hotkey with windows ********************************/
 	/**************************************************************************************************/
@@ -517,20 +335,6 @@ int SetOption(HWND hDialog, unsigned int uiCheckBox, unsigned int uiPref)
 	}
 
 	return (g_dwPrefs & (1<<uiPref));
-}
-
-int WritePrivateProfileIntA(char *szSection, char *szItem, int iData, char *szPath)
-{
-	char szData[33];
-	itoa(iData, szData, 10);
-	return WritePrivateProfileStringA(szSection, szItem, szData, szPath);
-}
-
-int WritePrivateProfileIntW(wchar_t *wszSection, wchar_t *wszItem, int iData, wchar_t *wszPath)
-{
-	wchar_t wszData[33];
-	_itow(iData, wszData, 10);
-	return WritePrivateProfileStringW(wszSection, wszItem, wszData, wszPath);
 }
 
 // For cleanup ( Closing windows and the such )
