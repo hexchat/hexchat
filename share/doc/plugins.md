@@ -205,8 +205,7 @@ needed for a long time after calling _hexchat\_list\_str_. The types of lists an
 <tr><td>off</td><td>Time when user went offline.</td><td>time_t</td></tr>
 <tr><td>seen</td><td>Time when user the user was last verified still online.</td><td>time_t</td></tr>
 </table>
-<small>The entire "notify" list was added in xchat 2.0.8. Fields are
-only valid for the context when hexchat_list_get() was called
+<small>Fields are only valid for the context when hexchat_list_get() was called
 (i.e. you get information about the user ON THAT ONE SERVER ONLY). You
 may cycle through the "channels" list to find notify information for every
 server.</small>
@@ -254,7 +253,7 @@ Example:
 All you need is Visual Studio setup as explained in [Building](http://www.hexchat.org/developers/building). Your best bet is to use an existing plugin (such as the currently unused SASL plugin) in the HexChat solution as a starting point. You should have the following files:
 
 
- * [hexchat-plugin.h](https://github.com/hexchat/hexchat/blob/master/plugins/hexchat-plugin.h) - main plugin header
+ * [hexchat-plugin.h](https://github.com/hexchat/hexchat/blob/master/src/common/hexchat-plugin.h) - main plugin header
  * plugin.c - Your plugin, you need to write this one :)
  * plugin.def - A simple text file containing the following:
 
@@ -277,20 +276,16 @@ in the sample plugin above.
 A simple way to perform basic GUI functions is to use the _/GUI_ command.
 You can execute this command through the input box, or by calling _hexchat\_command (ph, "GUI .....");_.
 
-<blockquote>
-	<table border=0 cellpadding=4>
-	<tr><td>GUI ATTACH</td><td>Same function as "Attach Window" in the HexChat menu (new for 2.6.2).</td></tr>
-	<tr><td>GUI DETACH</td><td>Same function as "Detach Tab" in the HexChat menu (new for 2.6.2).</td></tr>
-	<tr><td>GUI APPLY</td><td>Similar to clicking OK in the settings window. Execute this after /SET to activate GUI changes (new for 2.8.0)</td></tr>
-	<tr><td>GUI COLOR <i>n</i></td><td>Change the tab color of the current context, where n is a number from 0 to 3.</td></tr>
-	<tr><td>GUI FOCUS</td><td>Focus the current window or tab.</td></tr>
-	<tr><td>GUI FLASH</td><td>Flash the taskbar button. It will flash only if the window isn't focused and will stop when it is focused by the user.</td></tr>
-	<tr><td>GUI HIDE</td><td>Hide the main HexChat window completely (this is used by the Systray plugin).</td></tr>
-	<tr><td>GUI ICONIFY</td><td>Iconify (minimize to taskbar) the current HexChat window.</td></tr>
-	<tr><td>GUI MSGBOX <i>text</i></td><td>Displays a asynchronous message box with your text (new for 2.4.5).</td></tr>
-	<tr><td>GUI SHOW</td><td>Show the main HexChat window (if currently hidden).</td></tr>
-	</table>
-</blockquote>
+ * **GUI ATTACH:** Same function as "Attach Window" in the HexChat menu.
+ * **GUI DETACH:** Same function as "Detach Tab" in the HexChat menu.
+ * **GUI APPLY:** Similar to clicking OK in the settings window. Execute this after /SET to activate GUI changes.
+ * **GUI COLOR _n_:** Change the tab color of the current context, where n is a number from 0 to 3.
+ * **GUI FOCUS:** Focus the current window or tab.
+ * **GUI FLASH:** Flash the taskbar button. It will flash only if the window isn't focused and will stop when it is focused by the user.
+ * **GUI HIDE:** Hide the main HexChat window completely.
+ * **GUI ICONIFY:** Iconify (minimize to taskbar) the current HexChat window.
+ * **GUI MSGBOX _text_:** Displays a asynchronous message box with your text.
+ * **GUI SHOW:** Show the main HexChat window (if currently hidden).
 
 You can add your own items to the menu bar. The menu command has this syntax:
 <pre>
@@ -311,17 +306,13 @@ In the example above, it would be recommended to execute _MENU DEL FServe_ insid
 
 Parameters and flags:
 
-<blockquote>
-<table border=1 cellpadding=4 rules=all>
-<tr><td>-eX</td><td>Set enable flag to X. -e0 for disable, -e1 for enable. This lets you create a disabled (shaded) item.</td></tr>
-<tr><td>-iFILE</td><td>Use an icon filename FILE (new for 2.8.0). Not supported for toggles or radio items.</td></tr>
-<tr><td>-k&lt;mod>,&lt;key></td><td>Specify a keyboard shortcut. "mod" is the modifier which is a bitwise OR of: 1-SHIFT 4-CTRL 8-ALT in decimal. "key" is the key value in decimal, e.g. -k5,101 would specify SHIFT-CTRL-E.</td></tr>
-<tr><td>-m</td><td>Specify that this label should be treated as <a href="http://developer.gnome.org/doc/API/2.0/pango/PangoMarkupFormat.html">Pango Markup</a> language. Since forward slash ("/") is already used in menu paths, you should replace closing tags with an ASCII 003 instead e.g.: hexchat_command(ph, "MENU -m ADD \"&lt;b>Bold Menu&lt;\003b>\""); (new for 2.6.6).</td></tr>
-<tr><td>-pX</td><td>Specify a menu item's position number. e.g. -p5 will cause the item to be inserted in the 5th place. New for 2.8.0: If the position is a negative number, it will be used as an offset from the bottom/right-most item.</td></tr>
-<tr><td>-rX,group</td><td>Specify a radio menu item, with initial state X and a group name (new for 2.8.0). The group name should be the exact label of another menu item (without the path) that this item will be grouped with. For radio items, only a select command will be executed (no unselect command).</td></tr>
-<tr><td>-tX</td><td>Specify a toggle menu item with an initial state. -t0 for an "unticked" item and -t1 for a "ticked" item.</td></tr>
-</table>
-</blockquote>
+ * **-eX:** Set enable flag to X. -e0 for disable, -e1 for enable. This lets you create a disabled (shaded) item.
+ * **-iFILE:** Use an icon filename FILE. Not supported for toggles or radio items.
+ * **-k&lt;mod>,&lt;key>:** Specify a keyboard shortcut. "mod" is the modifier which is a bitwise OR of: 1-SHIFT 4- CTRL 8-ALT in decimal. "key" is the key value in decimal, e.g. -k5,101 would specify SHIFT-CTRL-E.
+ * **-m:** Specify that this label should be treated as <a href="http://developer.gnome.org/doc/API/2.0/pango/PangoMarkupFormat.html">Pango Markup</a> language. Since forward slash ("/") is already used in menu paths, you should replace closing tags with an ASCII 003 instead e.g.: hexchat_command (ph, "MENU -m ADD \"&lt;b>Bold Menu&lt;\003b>\"");
+ * **-pX:** Specify a menu item's position number. e.g. -p5 will cause the item to be inserted in the 5th place. If the position is a negative number, it will be used as an offset from the bottom/right-most item.
+ * **-rX,group:** Specify a radio menu item, with initial state X and a group name. The group name should be the exact label of another menu item (without the path) that this item will be grouped with. For radio items, only a select command will be executed (no unselect command).
+ * **-tX:** Specify a toggle menu item with an initial state. -t0 for an "unticked" item and -t1 for a "ticked" item.
 
 If you want to change an item's toggle state or enabled flag,
 just _ADD_ an item with exactly the same name and command and specify the _-tX -eX_ parameters you need.
@@ -407,7 +398,7 @@ ctcp_cb (char *word[], char *word_eol[], void *userdata)
 		get_file_name (nick, word[2]);
 	}
 
-	return HEXCHAT_EAT_hexchat;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 static void
@@ -479,7 +470,7 @@ Commands hooked that begin with a period ('.') will be hidden in _/HELP_ and _/H
 
  * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **name:** Name of the command (without the forward slash).
- * **pri:** Priority of this command. Use _hexchat\_PRI\_NORM_.
+ * **pri:** Priority of this command. Use _HEXCHAT\_PRI\_NORM_.
  * **callb:** Callback function. This will be called when the user executes the given command name.
  * **help\_text:** String of text to display when the user executes _/HELP_ for this command. May be NULL if you're lazy.
  * **userdata:** Pointer passed to the callback function.
@@ -516,7 +507,7 @@ hexchat_hook_command (ph, "ONOTICE", HEXCHAT_PRI_NORM, onotice_cb, "Usage: ONOTI
 
  * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **fd:** The file descriptor or socket.
- * **flags:** One or more of _hexchat\_FD\_READ_, _hexchat\_FD\_WRITE_, _hexchat\_FD\_EXCEPTION_, _hexchat\_FD\_NOTSOCKET_. Use bitwise OR to combine them. _hexchat\_FD\_NOTSOCKET_ tells HexChat that the provided _fd__ is not a socket, but an "MSVCRT.DLL" pipe.
+ * **flags:** One or more of _HEXCHAT\_FD\_READ_, _HEXCHAT\_FD\_WRITE_, _HEXCHAT\_FD\_EXCEPTION_, _HEXCHAT\_FD\_NOTSOCKET_. Use bitwise OR to combine them. _HEXCHAT\_FD\_NOTSOCKET_ tells HexChat that the provided _fd__ is not a socket, but an "MSVCRT.DLL" pipe.
  * **callb:** Callback function. This will be called when the socket is available for reading/writing or exception (depending on your chosen _flags_)
  * **userdata:** Pointer passed to the callback function.
 
@@ -569,7 +560,7 @@ static int
 youpart_cb (char *word[], void *userdata)
 {
 	hexchat_printf (ph, "You have left channel %s\n", word[3]);
-	return HEXCHAT_EAT_hexchat;		/* dont let HexChat do its normal printing */
+	return HEXCHAT_EAT_HEXCHAT;		/* dont let HexChat do its normal printing */
 }
 
 hexchat_hook_print (ph, "You Part", HEXCHAT_PRI_NORM, youpart_cb, NULL);
@@ -814,30 +805,25 @@ Changed in 2.6.1. If _servname_ is NULL, it finds the channel (or query) by the 
 
  * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **id:** ID of the information you want. Currently supported IDs are (case sensitive):
-
-	<blockquote>
-	<table border=0>
-	<tr><td width="18%">away</td><td>away reason or NULL if you are not away.</td></tr>
-	<tr><td>channel</td><td>current channel name.</td></tr>
-	<tr><td>charset</td><td>character-set used in the current context (since 2.4.2).</td></tr>
-	<tr><td>event_text &lt;name></td><td>text event format string for <i>name</i> (since 2.8.2).</td></tr>
-	<tr><td>gtkwin_ptr</td><td>(GtkWindow *) (since 2.8.9).</td></tr>
-	<tr><td>host</td><td>real hostname of the server you connected to.</td></tr>
-	<tr><td>inputbox</td><td>the input-box contents, what the user has typed (since 2.4.1).</td></tr>
-	<tr><td>libdirfs</td><td>library directory. e.g. /usr/lib/hexchat. The same directory used for auto-loading plugins (since 2.4.0).<small>This string isn't necessarily UTF-8, but local file system encoding.</small></td></tr>
-	<tr><td>modes</td><td>channel modes, if known, or NULL (since 2.8.1).</td></tr>
-	<tr><td>network</td><td>current network name or NULL.</td></tr>
-	<tr><td>nick</td><td>your current nick name.</td></tr>
-	<tr><td>nickserv</td><td>nickserv password for this network or NULL (since 2.4.3).</td></tr>
-	<tr><td>server</td><td>current server name (what the server claims to be). NULL if you are not connected.</td></tr>
-	<tr><td>topic</td><td>current channel topic.</td></tr>
-	<tr><td>version</td><td>HexChat version number.</td></tr>
-	<tr><td>win_ptr</td><td>native window pointer. Unix: (GtkWindow *) Win32: HWND (since 2.6.0).</td></tr>
-	<tr><td>win_status</td><td>window status: "active", "hidden" or "normal" (since 2.0.9).</td>
-	<tr><td>hexchatdir</td><td>HexChat config directory, e.g.: /home/user/.config/hexchat <small>This string is encoded in UTF-8, which means you **should** convert it to "locale" encoding before using functions like open() or OpenFile(). For best <a href="#unicode">Unicode support</a> on Linux, convert this string using g_filename_from_utf8 and on Windows convert this string to UTF-16LE (wide) and use OpenFileW() etc.</small></td></tr>
-	<tr><td>hexchatdirfs</td><td>HexChat config directory, e.g.: /home/user/.config/hexchat.<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile(). For real Unicode support on Windows, it's best not to use hexchatdirfs, but hexchatdir instead.</small></td></tr>
-	</table>
-	</blockquote>
+	* **away:** away reason or NULL if you are not away.
+	* **channel:** current channel name.
+	* **charset:** character-set used in the current context.
+	* **event\_text &lt;name>:** text event format string for _name_.
+	* **gtkwin\_ptr:** (GtkWindow \*).
+	* **hexchatdir:** HexChat config directory, e.g.: /home/user/.config/hexchat. This string is encoded in UTF-8, which means you **should** convert it to "locale" encoding before using functions like open() or OpenFile(). For best Unicode support on Linux, convert this string using g\_filename\_from\_utf8 and on Windows convert this string to UTF-16LE (wide) and use OpenFileW() etc.
+	* **hexchatdirfs:** HexChat config directory, e.g.: /home/user/.config/hexchat. This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile(). For real Unicode support on Windows, it's best not to use hexchatdirfs, but hexchatdir instead.
+	* **host:** real hostname of the server you connected to.
+	* **inputbox:** the input-box contents, what the user has typed.
+	* **libdirfs:** library directory. e.g. /usr/lib/hexchat. The same directory used for auto-loading plugins. This string isn't necessarily UTF-8, but local file system encoding.
+	* **modes:** channel modes, if known, or NULL.
+	* **network:** current network name or NULL.
+	* **nick:** your current nick name.
+	* **nickserv:** nickserv password for this network or NULL.
+	* **server:** current server name (what the server claims to be). NULL if you are not connected.
+	* **topic:** current channel topic.
+	* **version:** HexChat version number.
+	* **win\_ptr:** native window pointer. Unix: (GtkWindow *) Win32: HWND.
+	* **win\_status:** window status: "active", "hidden" or "normal".
 
 **Returns:** A string of the requested information, or NULL. This string must
 not be freed and must be copied if needed after the call to _hexchat\_get\_info ()_.
@@ -1076,7 +1062,7 @@ saveint_cb (char *word[], char *word_eol[], void *user_data)
 		hexchat_printf (ph, "Invalid input!\n");
 	}
 
-	return HEXCHAT_EAT_hexchat;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 </pre>
 
