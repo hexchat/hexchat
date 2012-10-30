@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-28 01:41+0200\n"
-"PO-Revision-Date: 2012-10-27 23:43+0000\n"
+"POT-Creation-Date: 2012-10-30 02:56+0100\n"
+"PO-Revision-Date: 2012-10-30 01:59+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/common/cfgfiles.c:757
+#: src/common/cfgfiles.c:759
 msgid "I'm busy"
 msgstr "Tôi đang bận"
 
-#: src/common/cfgfiles.c:781
+#: src/common/cfgfiles.c:783
 msgid "Leaving"
 msgstr "Tôi đi"
 
-#: src/common/cfgfiles.c:841
+#: src/common/cfgfiles.c:856
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -61,7 +61,7 @@ msgstr "Không thể truy cập %s\n"
 
 #: src/common/dcc.c:1899 src/common/text.c:1441 src/common/text.c:1479
 #: src/common/text.c:1490 src/common/text.c:1497 src/common/text.c:1510
-#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:357
+#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:358
 msgid "Error"
 msgstr "Lỗi"
 
@@ -761,7 +761,7 @@ msgid "%C18*%O$t%C18$1%O added to notify list."
 msgstr ""
 
 #: src/common/textevents.h:9
-msgid "%C22*%O$t%C22$1%O Banlist:%C18 $2%O for%C24 $4%O by%C26 $3%O"
+msgid "%C22*%O$t%C22$1%O Banlist: %C18$2%O for %C24$4%O by %C26$3%O"
 msgstr ""
 
 #: src/common/textevents.h:12
@@ -870,10 +870,6 @@ msgstr ""
 
 #: src/common/textevents.h:108
 msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
-msgstr ""
-
-#: src/common/textevents.h:111
-msgid ">%C18$1%C<$tCTCP %C24$2%O"
 msgstr ""
 
 #: src/common/textevents.h:114
@@ -1176,17 +1172,8 @@ msgstr ""
 msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
 msgstr ""
 
-#: src/common/textevents.h:369
-msgid "%C23*%O$t%C28[%C18$1%C28]%O $2 %C18$3%O"
-msgstr ""
-
 #: src/common/textevents.h:372
 msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
-msgstr ""
-
-#: src/common/textevents.h:375 src/common/textevents.h:381
-#: src/common/textevents.h:399
-msgid "%C23*%O$t%C28[%C18$1%C28]%O $2"
 msgstr ""
 
 #: src/common/textevents.h:378
@@ -1201,17 +1188,9 @@ msgstr ""
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
 msgstr ""
 
-#: src/common/textevents.h:390
-msgid "%C23*%O$t%C28[%C18$1%C28] %C30(%C24$2@$3%C30)%O: %C18$4%O"
-msgstr ""
-
 #: src/common/textevents.h:393
 msgid ""
 "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
-msgstr ""
-
-#: src/common/textevents.h:396
-msgid "%C23*%O$t%C28[%C18$1%C28]%O %C29$2%O"
 msgstr ""
 
 #: src/common/textevents.h:402
@@ -1326,7 +1305,7 @@ msgid "Nick of person who changed the topic"
 msgstr "Tên hiệu của người đã thay đổi chủ đề"
 
 #: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:356
+#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:357
 msgid "Topic"
 msgstr "Chủ đề"
 
@@ -1577,7 +1556,7 @@ msgid "Channel Name"
 msgstr "Tên kênh"
 
 #: src/common/text.c:1414 src/common/text.c:1420 src/common/text.c:1578
-#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:245
+#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
 #: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Chuỗi"
@@ -1615,7 +1594,7 @@ msgstr "IP"
 msgid "Port"
 msgstr "Cổng"
 
-#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1903
+#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
 msgid "Network"
 msgstr "Mạng"
 
@@ -1725,1135 +1704,1135 @@ msgid ""
 "%s"
 msgstr "Không thể đọc tập tin âm thanh:\n%s"
 
-#: src/common/util.c:301
+#: src/common/util.c:302
 msgid "Remote host closed socket"
 msgstr "Máy ở xa đã đóng ổ cắm"
 
-#: src/common/util.c:306
+#: src/common/util.c:307
 msgid "Connection refused"
 msgstr "Kết nối bị từ chối"
 
-#: src/common/util.c:309
+#: src/common/util.c:310
 msgid "No route to host"
 msgstr "Không có đường dẫ đến máy"
 
-#: src/common/util.c:311
+#: src/common/util.c:312
 msgid "Connection timed out"
 msgstr "Kết nối đã quá giờ"
 
-#: src/common/util.c:313
+#: src/common/util.c:314
 msgid "Cannot assign that address"
 msgstr "Không thể gán địa chỉ đó"
 
-#: src/common/util.c:315
+#: src/common/util.c:316
 msgid "Connection reset by peer"
 msgstr "Kết nối bị đặt lại bởi ngang hàng"
 
-#: src/common/util.c:959
+#: src/common/util.c:960
 msgid "Ascension Island"
 msgstr "Đảo Ascension"
 
-#: src/common/util.c:960
+#: src/common/util.c:961
 msgid "Andorra"
 msgstr "Ăn-đoa-râ"
 
-#: src/common/util.c:961
+#: src/common/util.c:962
 msgid "United Arab Emirates"
 msgstr "Các Tiểu Vương Quốc A Rập Thống Nhất"
 
-#: src/common/util.c:962
+#: src/common/util.c:963
 msgid "Aviation-Related Fields"
 msgstr ""
 
-#: src/common/util.c:963
+#: src/common/util.c:964
 msgid "Afghanistan"
 msgstr "A Phú Hãn"
 
-#: src/common/util.c:964
+#: src/common/util.c:965
 msgid "Antigua and Barbuda"
 msgstr "Ănh-thí-gụ-a và Ba-bu-đạ"
 
-#: src/common/util.c:965
+#: src/common/util.c:966
 msgid "Anguilla"
 msgstr "Ănh-gouí-lạ"
 
-#: src/common/util.c:966
+#: src/common/util.c:967
 msgid "Albania"
 msgstr "An-ba-ni"
 
-#: src/common/util.c:967
+#: src/common/util.c:968
 msgid "Armenia"
 msgstr "Ác-mê-ni"
 
-#: src/common/util.c:968
+#: src/common/util.c:969
 msgid "Netherlands Antilles"
 msgstr "An-thi-li Hoà-lan"
 
-#: src/common/util.c:969
+#: src/common/util.c:970
 msgid "Angola"
 msgstr "Ăng-gô-la"
 
-#: src/common/util.c:970
+#: src/common/util.c:971
 msgid "Antarctica"
 msgstr "Nam cực"
 
-#: src/common/util.c:971
+#: src/common/util.c:972
 msgid "Argentina"
 msgstr "Ác-hen-ti-na"
 
-#: src/common/util.c:972
+#: src/common/util.c:973
 msgid "Reverse DNS"
 msgstr "DNS ngược"
 
-#: src/common/util.c:973
+#: src/common/util.c:974
 msgid "American Samoa"
 msgstr "Xa-mô-a Mỹ"
 
-#: src/common/util.c:974
+#: src/common/util.c:975
 msgid "Asia-Pacific Region"
 msgstr ""
 
-#: src/common/util.c:975
+#: src/common/util.c:976
 msgid "Austria"
 msgstr "Ao"
 
-#: src/common/util.c:976
+#: src/common/util.c:977
 msgid "Nato Fiel"
 msgstr "Na-tô Phi-en"
 
-#: src/common/util.c:977
+#: src/common/util.c:978
 msgid "Australia"
 msgstr "Úc"
 
-#: src/common/util.c:978
+#: src/common/util.c:979
 msgid "Aruba"
 msgstr "A-ru-ba"
 
-#: src/common/util.c:979
+#: src/common/util.c:980
 msgid "Aland Islands"
 msgstr "Quần Đảo A-lan"
 
-#: src/common/util.c:980
+#: src/common/util.c:981
 msgid "Azerbaijan"
 msgstr "Ai-déc-bai-gian"
 
-#: src/common/util.c:981
+#: src/common/util.c:982
 msgid "Bosnia and Herzegovina"
 msgstr "Bô-x-ni-a và Héc-xê-gô-vi-na"
 
-#: src/common/util.c:982
+#: src/common/util.c:983
 msgid "Barbados"
 msgstr "Bác-ba-đốt"
 
-#: src/common/util.c:983
+#: src/common/util.c:984
 msgid "Bangladesh"
 msgstr "Băng-la-đe-xợ"
 
-#: src/common/util.c:984
+#: src/common/util.c:985
 msgid "Belgium"
 msgstr "Bỉ"
 
-#: src/common/util.c:985
+#: src/common/util.c:986
 msgid "Burkina Faso"
 msgstr "Bổ-khi-na Pha-xô"
 
-#: src/common/util.c:986
+#: src/common/util.c:987
 msgid "Bulgaria"
 msgstr "Bun-ga-ri"
 
-#: src/common/util.c:987
+#: src/common/util.c:988
 msgid "Bahrain"
 msgstr "Ba-ren"
 
-#: src/common/util.c:988
+#: src/common/util.c:989
 msgid "Burundi"
 msgstr "Bu-run-đi"
 
-#: src/common/util.c:989
+#: src/common/util.c:990
 msgid "Businesses"
 msgstr "Kinh doanh"
 
-#: src/common/util.c:990
+#: src/common/util.c:991
 msgid "Benin"
 msgstr "Bê-nin"
 
-#: src/common/util.c:991
+#: src/common/util.c:992
 msgid "Bermuda"
 msgstr "Be-mư-đa"
 
-#: src/common/util.c:992
+#: src/common/util.c:993
 msgid "Brunei Darussalam"
 msgstr "Bợ-ru-này Đa-ru-xa-làm"
 
-#: src/common/util.c:993
+#: src/common/util.c:994
 msgid "Bolivia"
 msgstr "Bô-li-vi-a"
 
-#: src/common/util.c:994
+#: src/common/util.c:995
 msgid "Brazil"
 msgstr "Bra-xin"
 
-#: src/common/util.c:995
+#: src/common/util.c:996
 msgid "Bahamas"
 msgstr "Ba-ha-ma"
 
-#: src/common/util.c:996
+#: src/common/util.c:997
 msgid "Bhutan"
 msgstr "Bu-thăn"
 
-#: src/common/util.c:997
+#: src/common/util.c:998
 msgid "Bouvet Island"
 msgstr "Quần Đảo Bu-vê"
 
-#: src/common/util.c:998
+#: src/common/util.c:999
 msgid "Botswana"
 msgstr "Bốt-xoă-na"
 
-#: src/common/util.c:999
+#: src/common/util.c:1000
 msgid "Belarus"
 msgstr "Be-la-ru-xợ"
 
-#: src/common/util.c:1000
+#: src/common/util.c:1001
 msgid "Belize"
 msgstr "Bê-li-xê"
 
-#: src/common/util.c:1001
+#: src/common/util.c:1002
 msgid "Canada"
 msgstr "Ca-na-đa"
 
-#: src/common/util.c:1002 src/fe-gtk/setup.c:113
+#: src/common/util.c:1003 src/fe-gtk/setup.c:113
 msgid "Catalan"
 msgstr ""
 
-#: src/common/util.c:1003
+#: src/common/util.c:1004
 msgid "Cocos Islands"
 msgstr "Quần Đảo Cô-cô-x"
 
-#: src/common/util.c:1004
+#: src/common/util.c:1005
 msgid "Democratic Republic of Congo"
 msgstr "Cộng Hoà Dân Chủ Công-gô"
 
-#: src/common/util.c:1005
+#: src/common/util.c:1006
 msgid "Central African Republic"
 msgstr "Cộng Hoà Trung Châu Phi"
 
-#: src/common/util.c:1006
+#: src/common/util.c:1007
 msgid "Congo"
 msgstr "Công-gô"
 
-#: src/common/util.c:1007
+#: src/common/util.c:1008
 msgid "Switzerland"
 msgstr "Thụy Sĩ"
 
-#: src/common/util.c:1008
+#: src/common/util.c:1009
 msgid "Cote d'Ivoire"
 msgstr "Cộng Hoà Cốt Đi-vouă"
 
-#: src/common/util.c:1009
+#: src/common/util.c:1010
 msgid "Cook Islands"
 msgstr "Quần Đảo Khu-kh"
 
-#: src/common/util.c:1010
+#: src/common/util.c:1011
 msgid "Chile"
 msgstr "Chi-lê"
 
-#: src/common/util.c:1011
+#: src/common/util.c:1012
 msgid "Cameroon"
 msgstr "Ca-mơ-runh"
 
-#: src/common/util.c:1012
+#: src/common/util.c:1013
 msgid "China"
 msgstr "Trung Quốc"
 
-#: src/common/util.c:1013
+#: src/common/util.c:1014
 msgid "Colombia"
 msgstr "Cô-lôm-bi-a"
 
-#: src/common/util.c:1014
+#: src/common/util.c:1015
 msgid "Internic Commercial"
 msgstr "Thương nghiệp Internic"
 
-#: src/common/util.c:1015
+#: src/common/util.c:1016
 msgid "Cooperatives"
 msgstr ""
 
-#: src/common/util.c:1016
+#: src/common/util.c:1017
 msgid "Costa Rica"
 msgstr "Cốt-x-tha Ri-ca"
 
-#: src/common/util.c:1017
+#: src/common/util.c:1018
 msgid "Serbia and Montenegro"
 msgstr "Xéc-bi và Mon-te-nê-gợ-rô"
 
-#: src/common/util.c:1018
+#: src/common/util.c:1019
 msgid "Cuba"
 msgstr "Cu-ba"
 
-#: src/common/util.c:1019
+#: src/common/util.c:1020
 msgid "Cape Verde"
 msgstr "Cáp-ve-đe"
 
-#: src/common/util.c:1020
+#: src/common/util.c:1021
 msgid "Christmas Island"
 msgstr "Đảo Cợ-ri-x-mạ-x"
 
-#: src/common/util.c:1021
+#: src/common/util.c:1022
 msgid "Cyprus"
 msgstr "Síp"
 
-#: src/common/util.c:1022
+#: src/common/util.c:1023
 msgid "Czech Republic"
 msgstr "Cộng Hoà Séc"
 
-#: src/common/util.c:1023
+#: src/common/util.c:1024
 msgid "East Germany"
 msgstr ""
 
-#: src/common/util.c:1024
+#: src/common/util.c:1025
 msgid "Germany"
 msgstr "Đức"
 
-#: src/common/util.c:1025
+#: src/common/util.c:1026
 msgid "Djibouti"
 msgstr "Gi-bu-ti"
 
-#: src/common/util.c:1026
+#: src/common/util.c:1027
 msgid "Denmark"
 msgstr "Đan Mạch"
 
-#: src/common/util.c:1027
+#: src/common/util.c:1028
 msgid "Dominica"
 msgstr "Đô-mi-ni-cạ"
 
-#: src/common/util.c:1028
+#: src/common/util.c:1029
 msgid "Dominican Republic"
 msgstr "Cộng Hoà Đô-mi-ni-cạ"
 
-#: src/common/util.c:1029
+#: src/common/util.c:1030
 msgid "Algeria"
 msgstr "An-giê-ri"
 
-#: src/common/util.c:1030
+#: src/common/util.c:1031
 msgid "Ecuador"
 msgstr "Ê-cu-a-đọa"
 
-#: src/common/util.c:1031
+#: src/common/util.c:1032
 msgid "Educational Institution"
 msgstr "Tổ chức giáo dục"
 
-#: src/common/util.c:1032
+#: src/common/util.c:1033
 msgid "Estonia"
 msgstr "E-x-tô-ni-a"
 
-#: src/common/util.c:1033
+#: src/common/util.c:1034
 msgid "Egypt"
 msgstr "Ai Cập"
 
-#: src/common/util.c:1034
+#: src/common/util.c:1035
 msgid "Western Sahara"
 msgstr "Tây Sa-ha-ra"
 
-#: src/common/util.c:1035
+#: src/common/util.c:1036
 msgid "Eritrea"
 msgstr "Ê-ri-tơ-rê-a"
 
-#: src/common/util.c:1036
+#: src/common/util.c:1037
 msgid "Spain"
 msgstr "Tây Ban Nha"
 
-#: src/common/util.c:1037
+#: src/common/util.c:1038
 msgid "Ethiopia"
 msgstr "Ê-ti-ô-pi"
 
-#: src/common/util.c:1038
+#: src/common/util.c:1039
 msgid "European Union"
 msgstr "Liên Bang Âu"
 
-#: src/common/util.c:1039
+#: src/common/util.c:1040
 msgid "Finland"
 msgstr "Phần Lan"
 
-#: src/common/util.c:1040
+#: src/common/util.c:1041
 msgid "Fiji"
 msgstr "Phi-gi"
 
-#: src/common/util.c:1041
+#: src/common/util.c:1042
 msgid "Falkland Islands"
 msgstr "Quần Đảo Phoa-kh-lận-đ"
 
-#: src/common/util.c:1042
+#: src/common/util.c:1043
 msgid "Micronesia"
 msgstr "Mi-cợ-rô-nê-xi-a"
 
-#: src/common/util.c:1043
+#: src/common/util.c:1044
 msgid "Faroe Islands"
 msgstr "Quần Đảo Pha-rô"
 
-#: src/common/util.c:1044
+#: src/common/util.c:1045
 msgid "France"
 msgstr "Pháp"
 
-#: src/common/util.c:1045
+#: src/common/util.c:1046
 msgid "Gabon"
 msgstr "Ga-bon"
 
-#: src/common/util.c:1046
+#: src/common/util.c:1047
 msgid "Great Britain"
 msgstr "Vương Quốc Thống Nhất Anh va Bắc Ai-len"
 
-#: src/common/util.c:1047
+#: src/common/util.c:1048
 msgid "Grenada"
 msgstr "Gợ-rê-na-đa"
 
-#: src/common/util.c:1048
+#: src/common/util.c:1049
 msgid "Georgia"
 msgstr "Gi-oa-gi-a"
 
-#: src/common/util.c:1049
+#: src/common/util.c:1050
 msgid "French Guiana"
 msgstr "Ghi-a-na Pháp"
 
-#: src/common/util.c:1050
+#: src/common/util.c:1051
 msgid "British Channel Isles"
 msgstr "Quần Đảo Kênh Anh"
 
-#: src/common/util.c:1051
+#: src/common/util.c:1052
 msgid "Ghana"
 msgstr "Gha-na"
 
-#: src/common/util.c:1052
+#: src/common/util.c:1053
 msgid "Gibraltar"
 msgstr "Gi-boa-thạ"
 
-#: src/common/util.c:1053
+#: src/common/util.c:1054
 msgid "Greenland"
 msgstr "Đảo Băng"
 
-#: src/common/util.c:1054
+#: src/common/util.c:1055
 msgid "Gambia"
 msgstr "Găm-bi-ạ"
 
-#: src/common/util.c:1055
+#: src/common/util.c:1056
 msgid "Guinea"
 msgstr "Ghi-nê"
 
-#: src/common/util.c:1056
+#: src/common/util.c:1057
 msgid "Government"
 msgstr "Chính phủ"
 
-#: src/common/util.c:1057
+#: src/common/util.c:1058
 msgid "Guadeloupe"
 msgstr "Gu-a-đe-lu-pợ"
 
-#: src/common/util.c:1058
+#: src/common/util.c:1059
 msgid "Equatorial Guinea"
 msgstr "Ghi-nê Xích-đạo"
 
-#: src/common/util.c:1059
+#: src/common/util.c:1060
 msgid "Greece"
 msgstr "Hy Lạp"
 
-#: src/common/util.c:1060
+#: src/common/util.c:1061
 msgid "S. Georgia and S. Sandwich Isles"
 msgstr "Quần Đảo xan Gi-oa-gi-a và xan Xan-oui-chợ"
 
-#: src/common/util.c:1061
+#: src/common/util.c:1062
 msgid "Guatemala"
 msgstr "Gua-tê-ma-la"
 
-#: src/common/util.c:1062
+#: src/common/util.c:1063
 msgid "Guam"
 msgstr "Gu-ăm"
 
-#: src/common/util.c:1063
+#: src/common/util.c:1064
 msgid "Guinea-Bissau"
 msgstr "Ghi-nê Bít-xau"
 
-#: src/common/util.c:1064
+#: src/common/util.c:1065
 msgid "Guyana"
 msgstr "Guy-ă-na"
 
-#: src/common/util.c:1065
+#: src/common/util.c:1066
 msgid "Hong Kong"
 msgstr "Hông Kồng"
 
-#: src/common/util.c:1066
+#: src/common/util.c:1067
 msgid "Heard and McDonald Islands"
 msgstr "Quần Đảo Hơ-đh và Mơ-kh-đo-nựn"
 
-#: src/common/util.c:1067
+#: src/common/util.c:1068
 msgid "Honduras"
 msgstr "Hôn-đu-ra-xợ"
 
-#: src/common/util.c:1068
+#: src/common/util.c:1069
 msgid "Croatia"
 msgstr "Cợ-rô-a-ti-a"
 
-#: src/common/util.c:1069
+#: src/common/util.c:1070
 msgid "Haiti"
 msgstr "Ha-i-ti"
 
-#: src/common/util.c:1070
+#: src/common/util.c:1071
 msgid "Hungary"
 msgstr "Hung-ga-ri"
 
-#: src/common/util.c:1071
+#: src/common/util.c:1072
 msgid "Indonesia"
 msgstr "Nam Dương"
 
-#: src/common/util.c:1072
+#: src/common/util.c:1073
 msgid "Ireland"
 msgstr "Ai-len"
 
-#: src/common/util.c:1073
+#: src/common/util.c:1074
 msgid "Israel"
 msgstr "Do Thái"
 
-#: src/common/util.c:1074
+#: src/common/util.c:1075
 msgid "Isle of Man"
 msgstr "Đảo Man"
 
-#: src/common/util.c:1075
+#: src/common/util.c:1076
 msgid "India"
 msgstr "Ấn Độ"
 
-#: src/common/util.c:1076
+#: src/common/util.c:1077
 msgid "Informational"
 msgstr "Cung cấp thông tin"
 
-#: src/common/util.c:1077
+#: src/common/util.c:1078
 msgid "International"
 msgstr "Quốc tế"
 
-#: src/common/util.c:1078
+#: src/common/util.c:1079
 msgid "British Indian Ocean Territory"
 msgstr "Miền Đại Dương Ấn Độ Anh"
 
-#: src/common/util.c:1079
+#: src/common/util.c:1080
 msgid "Iraq"
 msgstr "I-rắc"
 
-#: src/common/util.c:1080
+#: src/common/util.c:1081
 msgid "Iran"
 msgstr "I-ran"
 
-#: src/common/util.c:1081
+#: src/common/util.c:1082
 msgid "Iceland"
 msgstr "Băng Đảo"
 
-#: src/common/util.c:1082
+#: src/common/util.c:1083
 msgid "Italy"
 msgstr "Ý"
 
-#: src/common/util.c:1083
+#: src/common/util.c:1084
 msgid "Jersey"
 msgstr "Giơ-xi"
 
-#: src/common/util.c:1084
+#: src/common/util.c:1085
 msgid "Jamaica"
 msgstr "Gia-mê-ca"
 
-#: src/common/util.c:1085
+#: src/common/util.c:1086
 msgid "Jordan"
 msgstr "Gi-oa-đạn"
 
-#: src/common/util.c:1086
+#: src/common/util.c:1087
 msgid "Company Jobs"
 msgstr ""
 
-#: src/common/util.c:1087
+#: src/common/util.c:1088
 msgid "Japan"
 msgstr "Nhật Bản"
 
-#: src/common/util.c:1088
+#: src/common/util.c:1089
 msgid "Kenya"
 msgstr "Khi-nia"
 
-#: src/common/util.c:1089
+#: src/common/util.c:1090
 msgid "Kyrgyzstan"
 msgstr "Ky-rơ-gy-xtanh"
 
-#: src/common/util.c:1090
+#: src/common/util.c:1091
 msgid "Cambodia"
 msgstr "Căm Bốt"
 
-#: src/common/util.c:1091
+#: src/common/util.c:1092
 msgid "Kiribati"
 msgstr "Ki-ri-ba-ti"
 
-#: src/common/util.c:1092
+#: src/common/util.c:1093
 msgid "Comoros"
 msgstr "Cô-mô-rô-x"
 
-#: src/common/util.c:1093
+#: src/common/util.c:1094
 msgid "St. Kitts and Nevis"
 msgstr "Xan Kith-x và Ne-vi-xợ"
 
-#: src/common/util.c:1094
+#: src/common/util.c:1095
 msgid "North Korea"
 msgstr "Bắc Hàn"
 
-#: src/common/util.c:1095
+#: src/common/util.c:1096
 msgid "South Korea"
 msgstr "Nam Hàn"
 
-#: src/common/util.c:1096
+#: src/common/util.c:1097
 msgid "Kuwait"
 msgstr "Cu-ouai-th"
 
-#: src/common/util.c:1097
+#: src/common/util.c:1098
 msgid "Cayman Islands"
 msgstr "Quần Đảo Cay-man"
 
-#: src/common/util.c:1098
+#: src/common/util.c:1099
 msgid "Kazakhstan"
 msgstr "Ca-xa-kh-x-thanh"
 
-#: src/common/util.c:1099
+#: src/common/util.c:1100
 msgid "Laos"
 msgstr "Lào"
 
-#: src/common/util.c:1100
+#: src/common/util.c:1101
 msgid "Lebanon"
 msgstr "Le-ba-non"
 
-#: src/common/util.c:1101
+#: src/common/util.c:1102
 msgid "Saint Lucia"
 msgstr "Xan Lu-xi-a"
 
-#: src/common/util.c:1102
+#: src/common/util.c:1103
 msgid "Liechtenstein"
 msgstr "Lich-ten-xtênh"
 
-#: src/common/util.c:1103
+#: src/common/util.c:1104
 msgid "Sri Lanka"
 msgstr "Xợ-ri-lan-ca"
 
-#: src/common/util.c:1104
+#: src/common/util.c:1105
 msgid "Liberia"
 msgstr "Li-bê-ri-a"
 
-#: src/common/util.c:1105
+#: src/common/util.c:1106
 msgid "Lesotho"
 msgstr "Lê-xô-thô"
 
-#: src/common/util.c:1106
+#: src/common/util.c:1107
 msgid "Lithuania"
 msgstr "Li-tu-a-ni"
 
-#: src/common/util.c:1107
+#: src/common/util.c:1108
 msgid "Luxembourg"
 msgstr "Lúc-xăm-buac"
 
-#: src/common/util.c:1108
+#: src/common/util.c:1109
 msgid "Latvia"
 msgstr "Lát-vi-a"
 
-#: src/common/util.c:1109
+#: src/common/util.c:1110
 msgid "Libya"
 msgstr "Li-bi-a"
 
-#: src/common/util.c:1110
+#: src/common/util.c:1111
 msgid "Morocco"
 msgstr "Ma-rốc"
 
-#: src/common/util.c:1111
+#: src/common/util.c:1112
 msgid "Monaco"
 msgstr "Mô-na-cô"
 
-#: src/common/util.c:1112
+#: src/common/util.c:1113
 msgid "Moldova"
 msgstr "Moa-đô-vạ"
 
-#: src/common/util.c:1113
+#: src/common/util.c:1114
 msgid "Montenegro"
 msgstr ""
 
-#: src/common/util.c:1114
+#: src/common/util.c:1115
 msgid "United States Medical"
 msgstr "Y Mỹ"
 
-#: src/common/util.c:1115
+#: src/common/util.c:1116
 msgid "Madagascar"
 msgstr "Ma-đa-gá-x-cạ"
 
-#: src/common/util.c:1116
+#: src/common/util.c:1117
 msgid "Marshall Islands"
 msgstr "Quần Đảo Mác-san"
 
-#: src/common/util.c:1117
+#: src/common/util.c:1118
 msgid "Military"
 msgstr "Quân đội"
 
-#: src/common/util.c:1118
+#: src/common/util.c:1119
 msgid "Macedonia"
 msgstr "Ma-xê-đô-ni"
 
-#: src/common/util.c:1119
+#: src/common/util.c:1120
 msgid "Mali"
 msgstr "Ma-li"
 
-#: src/common/util.c:1120
+#: src/common/util.c:1121
 msgid "Myanmar"
 msgstr "Miến Điện"
 
-#: src/common/util.c:1121
+#: src/common/util.c:1122
 msgid "Mongolia"
 msgstr "Mông Cổ"
 
-#: src/common/util.c:1122
+#: src/common/util.c:1123
 msgid "Macau"
 msgstr "Ma-cau"
 
-#: src/common/util.c:1123
+#: src/common/util.c:1124
 msgid "Mobile Devices"
 msgstr ""
 
-#: src/common/util.c:1124
+#: src/common/util.c:1125
 msgid "Northern Mariana Islands"
 msgstr "Quần Đảo Bắc Ma-ri-a-na"
 
-#: src/common/util.c:1125
+#: src/common/util.c:1126
 msgid "Martinique"
 msgstr "Ma-thi-ní-kh"
 
-#: src/common/util.c:1126
+#: src/common/util.c:1127
 msgid "Mauritania"
 msgstr "Mô-ri-ta-ni-a"
 
-#: src/common/util.c:1127
+#: src/common/util.c:1128
 msgid "Montserrat"
 msgstr "Mon-xe-rạc"
 
-#: src/common/util.c:1128
+#: src/common/util.c:1129
 msgid "Malta"
 msgstr "Man-tơ"
 
-#: src/common/util.c:1129
+#: src/common/util.c:1130
 msgid "Mauritius"
 msgstr "Mô-ri-sơ"
 
-#: src/common/util.c:1130
+#: src/common/util.c:1131
 msgid "Museums"
 msgstr ""
 
-#: src/common/util.c:1131
+#: src/common/util.c:1132
 msgid "Maldives"
 msgstr "Man-đi-vợ-x"
 
-#: src/common/util.c:1132
+#: src/common/util.c:1133
 msgid "Malawi"
 msgstr "Ma-la-uy"
 
-#: src/common/util.c:1133
+#: src/common/util.c:1134
 msgid "Mexico"
 msgstr "Mê-hi-cô"
 
-#: src/common/util.c:1134
+#: src/common/util.c:1135
 msgid "Malaysia"
 msgstr "Mã Lai"
 
-#: src/common/util.c:1135
+#: src/common/util.c:1136
 msgid "Mozambique"
 msgstr "Mô-xam-bí-kh"
 
-#: src/common/util.c:1136
+#: src/common/util.c:1137
 msgid "Namibia"
 msgstr "Na-mi-bi-a"
 
-#: src/common/util.c:1137
+#: src/common/util.c:1138
 msgid "Individual's Names"
 msgstr ""
 
-#: src/common/util.c:1138
+#: src/common/util.c:1139
 msgid "New Caledonia"
 msgstr "Niu Ca-lê-đô-ni-a"
 
-#: src/common/util.c:1139
+#: src/common/util.c:1140
 msgid "Niger"
 msgstr "Ni-giê"
 
-#: src/common/util.c:1140
+#: src/common/util.c:1141
 msgid "Internic Network"
 msgstr "Mạng Internic"
 
-#: src/common/util.c:1141
+#: src/common/util.c:1142
 msgid "Norfolk Island"
 msgstr "Đảo Noa-phực"
 
-#: src/common/util.c:1142
+#: src/common/util.c:1143
 msgid "Nigeria"
 msgstr "Ni-giê-ri-a"
 
-#: src/common/util.c:1143
+#: src/common/util.c:1144
 msgid "Nicaragua"
 msgstr "Ni-ca-ra-gua"
 
-#: src/common/util.c:1144
+#: src/common/util.c:1145
 msgid "Netherlands"
 msgstr "Hoà Lan"
 
-#: src/common/util.c:1145
+#: src/common/util.c:1146
 msgid "Norway"
 msgstr "Na Uy"
 
-#: src/common/util.c:1146
+#: src/common/util.c:1147
 msgid "Nepal"
 msgstr "Nê-pan"
 
-#: src/common/util.c:1147
+#: src/common/util.c:1148
 msgid "Nauru"
 msgstr "Nau-ru"
 
-#: src/common/util.c:1148
+#: src/common/util.c:1149
 msgid "Niue"
 msgstr "Ni-u-e"
 
-#: src/common/util.c:1149
+#: src/common/util.c:1150
 msgid "New Zealand"
 msgstr "Niu Xi-lân"
 
-#: src/common/util.c:1150
+#: src/common/util.c:1151
 msgid "Oman"
 msgstr "Ô-man"
 
-#: src/common/util.c:1151
+#: src/common/util.c:1152
 msgid "Internic Non-Profit Organization"
 msgstr "Tổ chức Phi lợi nhuận Internic"
 
-#: src/common/util.c:1152
+#: src/common/util.c:1153
 msgid "Panama"
 msgstr "Pa-na-ma"
 
-#: src/common/util.c:1153
+#: src/common/util.c:1154
 msgid "Peru"
 msgstr "Pê-ru"
 
-#: src/common/util.c:1154
+#: src/common/util.c:1155
 msgid "French Polynesia"
 msgstr "Pô-li-nê-xi Pháp"
 
-#: src/common/util.c:1155
+#: src/common/util.c:1156
 msgid "Papua New Guinea"
 msgstr "Pa-pu-a Niu Ghi-nê"
 
-#: src/common/util.c:1156
+#: src/common/util.c:1157
 msgid "Philippines"
 msgstr "Phi-luật-tân"
 
-#: src/common/util.c:1157
+#: src/common/util.c:1158
 msgid "Pakistan"
 msgstr "Pa-ki-x-thănh"
 
-#: src/common/util.c:1158
+#: src/common/util.c:1159
 msgid "Poland"
 msgstr "Ba Lan"
 
-#: src/common/util.c:1159
+#: src/common/util.c:1160
 msgid "St. Pierre and Miquelon"
 msgstr "Xan Pi-e và Mi-kê-lon"
 
-#: src/common/util.c:1160
+#: src/common/util.c:1161
 msgid "Pitcairn"
 msgstr "Pi-th-khenh"
 
-#: src/common/util.c:1161
+#: src/common/util.c:1162
 msgid "Puerto Rico"
 msgstr "Pu-e-tô Ri-cô"
 
-#: src/common/util.c:1162
+#: src/common/util.c:1163
 msgid "Professions"
 msgstr ""
 
-#: src/common/util.c:1163
+#: src/common/util.c:1164
 msgid "Palestinian Territory"
 msgstr "Hạt Pa-le-x-tin"
 
-#: src/common/util.c:1164
+#: src/common/util.c:1165
 msgid "Portugal"
 msgstr "Bồ Đào Nha"
 
-#: src/common/util.c:1165
+#: src/common/util.c:1166
 msgid "Palau"
 msgstr "Pa-lau"
 
-#: src/common/util.c:1166
+#: src/common/util.c:1167
 msgid "Paraguay"
 msgstr "Pa-ra-guay"
 
-#: src/common/util.c:1167
+#: src/common/util.c:1168
 msgid "Qatar"
 msgstr "Qua-tă"
 
-#: src/common/util.c:1168
+#: src/common/util.c:1169
 msgid "Reunion"
 msgstr "Rê-u-ni-ợnh"
 
-#: src/common/util.c:1169
+#: src/common/util.c:1170
 msgid "Romania"
 msgstr "Rô-ma-ni"
 
-#: src/common/util.c:1170
+#: src/common/util.c:1171
 msgid "Old School ARPAnet"
 msgstr "ARPAnet kiểu cũ"
 
-#: src/common/util.c:1171
+#: src/common/util.c:1172
 msgid "Serbia"
 msgstr ""
 
-#: src/common/util.c:1172
+#: src/common/util.c:1173
 msgid "Russian Federation"
 msgstr "Liên Bang Nga"
 
-#: src/common/util.c:1173
+#: src/common/util.c:1174
 msgid "Rwanda"
 msgstr "Ru-oanh-đạ"
 
-#: src/common/util.c:1174
+#: src/common/util.c:1175
 msgid "Saudi Arabia"
 msgstr "A Rập Xau-đi"
 
-#: src/common/util.c:1175
+#: src/common/util.c:1176
 msgid "Solomon Islands"
 msgstr "Quần Đảo Xô-lô-mon"
 
-#: src/common/util.c:1176
+#: src/common/util.c:1177
 msgid "Seychelles"
 msgstr "Xây-sen"
 
-#: src/common/util.c:1177
+#: src/common/util.c:1178
 msgid "Sudan"
 msgstr "Xu-đan"
 
-#: src/common/util.c:1178
+#: src/common/util.c:1179
 msgid "Sweden"
 msgstr "Thuỵ Điển"
 
-#: src/common/util.c:1179
+#: src/common/util.c:1180
 msgid "Singapore"
 msgstr "Xin-ga-po"
 
-#: src/common/util.c:1180
+#: src/common/util.c:1181
 msgid "St. Helena"
 msgstr "Xan He-le-na"
 
-#: src/common/util.c:1181
+#: src/common/util.c:1182
 msgid "Slovenia"
 msgstr "Xlô-ven"
 
-#: src/common/util.c:1182
+#: src/common/util.c:1183
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Quần Đảo X-van-băt và Dan May-en"
 
-#: src/common/util.c:1183
+#: src/common/util.c:1184
 msgid "Slovak Republic"
 msgstr "Cộng Hoà Xlô-vác"
 
-#: src/common/util.c:1184
+#: src/common/util.c:1185
 msgid "Sierra Leone"
 msgstr "Xi-ê-ra Lê-ôn"
 
-#: src/common/util.c:1185
+#: src/common/util.c:1186
 msgid "San Marino"
 msgstr "Xan Ma-ri-nô"
 
-#: src/common/util.c:1186
+#: src/common/util.c:1187
 msgid "Senegal"
 msgstr "Xê-nê-gan"
 
-#: src/common/util.c:1187
+#: src/common/util.c:1188
 msgid "Somalia"
 msgstr "Xô-ma-li"
 
-#: src/common/util.c:1188
+#: src/common/util.c:1189
 msgid "Suriname"
 msgstr "Xu-ri-nam"
 
-#: src/common/util.c:1189
+#: src/common/util.c:1190
 msgid "South Sudan"
 msgstr ""
 
-#: src/common/util.c:1190
+#: src/common/util.c:1191
 msgid "Sao Tome and Principe"
 msgstr "Xao Tô-mê và Pợ-rin-xi-pê"
 
-#: src/common/util.c:1191
+#: src/common/util.c:1192
 msgid "Former USSR"
 msgstr "Liên xô trước"
 
-#: src/common/util.c:1192
+#: src/common/util.c:1193
 msgid "El Salvador"
 msgstr "En-xan-va-đoa"
 
-#: src/common/util.c:1193
+#: src/common/util.c:1194
 msgid "Syria"
 msgstr "Xi-ri"
 
-#: src/common/util.c:1194
+#: src/common/util.c:1195
 msgid "Swaziland"
 msgstr "Xouă-xi-lan"
 
-#: src/common/util.c:1195
+#: src/common/util.c:1196
 msgid "Turks and Caicos Islands"
 msgstr "Quần Đảo Tổc và Cai-co-x"
 
-#: src/common/util.c:1196
+#: src/common/util.c:1197
 msgid "Chad"
 msgstr "Chê-đ"
 
-#: src/common/util.c:1197
+#: src/common/util.c:1198
 msgid "Internet Communication Services"
 msgstr ""
 
-#: src/common/util.c:1198
+#: src/common/util.c:1199
 msgid "French Southern Territories"
 msgstr "Miền Nam Pháp"
 
-#: src/common/util.c:1199
+#: src/common/util.c:1200
 msgid "Togo"
 msgstr "Tô-gô"
 
-#: src/common/util.c:1200
+#: src/common/util.c:1201
 msgid "Thailand"
 msgstr "Thái Lan"
 
-#: src/common/util.c:1201
+#: src/common/util.c:1202
 msgid "Tajikistan"
 msgstr "Ta-gí-khi-x-thanh"
 
-#: src/common/util.c:1202
+#: src/common/util.c:1203
 msgid "Tokelau"
 msgstr "To-ke-lau"
 
-#: src/common/util.c:1203 src/common/util.c:1207
+#: src/common/util.c:1204 src/common/util.c:1208
 msgid "East Timor"
 msgstr "Đông Ti-mọa"
 
-#: src/common/util.c:1204
+#: src/common/util.c:1205
 msgid "Turkmenistan"
 msgstr "Tổc-mê-ni-x-tanh"
 
-#: src/common/util.c:1205
+#: src/common/util.c:1206
 msgid "Tunisia"
 msgstr "Tu-ni-xi-a"
 
-#: src/common/util.c:1206
+#: src/common/util.c:1207
 msgid "Tonga"
 msgstr "Tông-ga"
 
-#: src/common/util.c:1208
+#: src/common/util.c:1209
 msgid "Turkey"
 msgstr "Thổ Nhĩ Kỳ"
 
-#: src/common/util.c:1209
+#: src/common/util.c:1210
 msgid "Travel and Tourism"
 msgstr ""
 
-#: src/common/util.c:1210
+#: src/common/util.c:1211
 msgid "Trinidad and Tobago"
 msgstr "Trinh-i-đat và To-ba-gô"
 
-#: src/common/util.c:1211
+#: src/common/util.c:1212
 msgid "Tuvalu"
 msgstr "Tu-va-lu"
 
-#: src/common/util.c:1212
+#: src/common/util.c:1213
 msgid "Taiwan"
 msgstr "Đài Loan"
 
-#: src/common/util.c:1213
+#: src/common/util.c:1214
 msgid "Tanzania"
 msgstr "Tan-xa-ni-a"
 
-#: src/common/util.c:1214
+#: src/common/util.c:1215
 msgid "Ukraine"
 msgstr "U-cợ-rainh"
 
-#: src/common/util.c:1215
+#: src/common/util.c:1216
 msgid "Uganda"
 msgstr "U-gan-đa"
 
-#: src/common/util.c:1216
+#: src/common/util.c:1217
 msgid "United Kingdom"
 msgstr "Vương Quốc Anh Thống Nhất"
 
-#: src/common/util.c:1217
+#: src/common/util.c:1218
 msgid "United States of America"
 msgstr "Mỹ"
 
-#: src/common/util.c:1218
+#: src/common/util.c:1219
 msgid "Uruguay"
 msgstr "U-ru-guay"
 
-#: src/common/util.c:1219
+#: src/common/util.c:1220
 msgid "Uzbekistan"
 msgstr "U-xơ-bê-ki-x-tanh"
 
-#: src/common/util.c:1220
+#: src/common/util.c:1221
 msgid "Vatican City State"
 msgstr "Bang Thành Phố Va-ti-can"
 
-#: src/common/util.c:1221
+#: src/common/util.c:1222
 msgid "St. Vincent and the Grenadines"
 msgstr "Xan Vin-xen và Gợ-re-na-đinh"
 
-#: src/common/util.c:1222
+#: src/common/util.c:1223
 msgid "Venezuela"
 msgstr "Vê-nê-xu-ê-la"
 
-#: src/common/util.c:1223
+#: src/common/util.c:1224
 msgid "British Virgin Islands"
 msgstr "Quần Đảo Vơ-ginh Anh"
 
-#: src/common/util.c:1224
+#: src/common/util.c:1225
 msgid "US Virgin Islands"
 msgstr "Quần Đảo Vơ-ginh Mỹ"
 
-#: src/common/util.c:1225
+#: src/common/util.c:1226
 msgid "Vietnam"
 msgstr "Việt Nam"
 
-#: src/common/util.c:1226
+#: src/common/util.c:1227
 msgid "Vanuatu"
 msgstr "Va-nu-a-tu"
 
-#: src/common/util.c:1227
+#: src/common/util.c:1228
 msgid "Wallis and Futuna Islands"
 msgstr "Quần Đảo Oua-lit và Phu-tu-na"
 
-#: src/common/util.c:1228
+#: src/common/util.c:1229
 msgid "Samoa"
 msgstr "Xa-moa"
 
-#: src/common/util.c:1229
+#: src/common/util.c:1230
 msgid "Adult Entertainment"
 msgstr ""
 
-#: src/common/util.c:1230
+#: src/common/util.c:1231
 msgid "Yemen"
 msgstr "Y-ê-men"
 
-#: src/common/util.c:1231
+#: src/common/util.c:1232
 msgid "Mayotte"
 msgstr "May-oth"
 
-#: src/common/util.c:1232
+#: src/common/util.c:1233
 msgid "Yugoslavia"
 msgstr "Nam Tư"
 
-#: src/common/util.c:1233
+#: src/common/util.c:1234
 msgid "South Africa"
 msgstr "Nam Phi"
 
-#: src/common/util.c:1234
+#: src/common/util.c:1235
 msgid "Zambia"
 msgstr "Xăm-bi-a"
 
-#: src/common/util.c:1235
+#: src/common/util.c:1236
 msgid "Zimbabwe"
 msgstr "Xim-ba-buê"
 
-#: src/common/util.c:1245 src/common/util.c:1255 src/fe-gtk/menu.c:617
+#: src/common/util.c:1246 src/common/util.c:1256 src/fe-gtk/menu.c:617
 msgid "Unknown"
 msgstr "Chưa biết"
 
@@ -3071,7 +3050,7 @@ msgstr "Tập tin"
 msgid "ETA"
 msgstr "Giờ tới xấp xỉ"
 
-#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:246
+#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:247
 msgid "Both"
 msgstr "Cả hai"
 
@@ -3200,7 +3179,7 @@ msgstr "Hiển thị thư mục cấu hình của người dung"
 msgid "Open an irc://server:port/channel URL"
 msgstr "Mở địa chỉ URL dạng « irc://máy:cổng/kênh »"
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:297
+#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:298
 msgid "Execute command:"
 msgstr "Thi hành lệnh:"
 
@@ -3969,7 +3948,7 @@ msgstr "Câ_y"
 msgid "_Network Meters"
 msgstr "Bộ do mạ_ng"
 
-#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:243
+#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:244
 msgid "Off"
 msgstr "Tất"
 
@@ -4153,7 +4132,7 @@ msgstr "Gặp cuối cùng"
 msgid "Offline"
 msgstr "Ngoại tuyến"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:315
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:316
 msgid "Never"
 msgstr "Chưa bao giờ"
 
@@ -4203,15 +4182,15 @@ msgstr ""
 msgid "_Blink on"
 msgstr "_Bật chớp"
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:654
+#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:655
 msgid "Channel Message"
 msgstr "Thông điệp kênh"
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:655
+#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:656
 msgid "Private Message"
 msgstr "Tin nhẳn riêng"
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:656
+#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:657
 msgid "Highlighted Message"
 msgstr "Tin nhẳn đã tô sáng"
 
@@ -4746,7 +4725,7 @@ msgstr ""
 msgid "Walloon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1898
+#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1899
 msgid "General"
 msgstr "Chung"
 
@@ -4814,7 +4793,7 @@ msgstr "Xanh lá cây:"
 msgid "Blue:"
 msgstr "Xanh dương:"
 
-#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:554
+#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:555
 msgid "Time Stamps"
 msgstr "Ghi giờ"
 
@@ -4826,11 +4805,11 @@ msgstr "Bật ghi giờ"
 msgid "Time stamp format:"
 msgstr "Định dạng ghi giờ :"
 
-#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:558
+#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:559
 msgid "See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:560
+#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:561
 msgid "See the strftime manpage for details."
 msgstr ""
 
@@ -4846,7 +4825,7 @@ msgstr ""
 msgid "Show number of users"
 msgstr ""
 
-#: src/fe-gtk/setup.c:206 src/fe-gtk/setup.c:253
+#: src/fe-gtk/setup.c:206 src/fe-gtk/setup.c:254
 msgid "A-Z"
 msgstr "A-Z"
 
@@ -4858,7 +4837,7 @@ msgstr "Thứ tự đã nói cuối cùng"
 msgid "Input Box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:214 src/fe-gtk/setup.c:285
+#: src/fe-gtk/setup.c:214 src/fe-gtk/setup.c:286
 msgid "Use the Text box font and colors"
 msgstr "Dùng phông chữ và màu của hộp văn bản"
 
@@ -4866,876 +4845,880 @@ msgstr "Dùng phông chữ và màu của hộp văn bản"
 msgid "Show nick box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:216
+msgid "Show user mode icon in nick box"
+msgstr ""
+
+#: src/fe-gtk/setup.c:218
 msgid "Spell checking"
 msgstr "Bắt lỗi chính tả"
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:219
 msgid "Dictionaries to use:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:221
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:222
+#: src/fe-gtk/setup.c:223
 msgid "Use language codes. Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:227
 msgid "Nick Completion"
 msgstr "Gõ xong tên hiệu"
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:228
 msgid "Automatic nick completion (without TAB key)"
 msgstr "Tự động gõ xong tên hiệu (không có phím TAB)"
 
-#: src/fe-gtk/setup.c:229
+#: src/fe-gtk/setup.c:230
 msgid "Nick completion suffix:"
 msgstr "Hậu tố gõ xong tên hiệu :"
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:231
 msgid "Nick completion sorted:"
 msgstr "Sắp xếp cách gõ xong tên hiệu :"
 
-#: src/fe-gtk/setup.c:233
+#: src/fe-gtk/setup.c:234
 msgid "Input Box Codes"
 msgstr "Mã hộp nhập"
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:235
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Giải thích %nnn là một giá trị ASCII"
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:236
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Giải thích %C, %B là Màu, Đậm v.v."
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:245
 msgid "Graphical"
 msgstr ""
 
-#: src/fe-gtk/setup.c:252
+#: src/fe-gtk/setup.c:253
 msgid "A-Z, Ops first"
 msgstr "A-Z, Quản trị trước"
 
-#: src/fe-gtk/setup.c:254
+#: src/fe-gtk/setup.c:255
 msgid "Z-A, Ops last"
 msgstr "Z-A, Quản trị sau"
 
-#: src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:256
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:256
+#: src/fe-gtk/setup.c:257
 msgid "Unsorted"
 msgstr "Chưa sắp xếp"
 
-#: src/fe-gtk/setup.c:262 src/fe-gtk/setup.c:274
+#: src/fe-gtk/setup.c:263 src/fe-gtk/setup.c:275
 msgid "Left (Upper)"
 msgstr "Trái (Trên)"
 
-#: src/fe-gtk/setup.c:263 src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:264 src/fe-gtk/setup.c:276
 msgid "Left (Lower)"
 msgstr "Trái (Dưới)"
 
-#: src/fe-gtk/setup.c:264 src/fe-gtk/setup.c:276
+#: src/fe-gtk/setup.c:265 src/fe-gtk/setup.c:277
 msgid "Right (Upper)"
 msgstr "Phải (Trên)"
 
-#: src/fe-gtk/setup.c:265 src/fe-gtk/setup.c:277
+#: src/fe-gtk/setup.c:266 src/fe-gtk/setup.c:278
 msgid "Right (Lower)"
 msgstr "Phải (Dưới)"
 
-#: src/fe-gtk/setup.c:266
+#: src/fe-gtk/setup.c:267
 msgid "Top"
 msgstr "Trên"
 
-#: src/fe-gtk/setup.c:267
+#: src/fe-gtk/setup.c:268
 msgid "Bottom"
 msgstr "Dưới"
 
-#: src/fe-gtk/setup.c:268
+#: src/fe-gtk/setup.c:269
 msgid "Hidden"
 msgstr "Ẩn"
 
-#: src/fe-gtk/setup.c:283
+#: src/fe-gtk/setup.c:284
 msgid "User List"
 msgstr "Danh sách người dùng"
 
-#: src/fe-gtk/setup.c:284
+#: src/fe-gtk/setup.c:285
 msgid "Show hostnames in user list"
 msgstr "HIện tên máy trong danh sách người dùng"
 
-#: src/fe-gtk/setup.c:286
+#: src/fe-gtk/setup.c:287
 msgid "Show icons for user modes"
 msgstr ""
 
-#: src/fe-gtk/setup.c:286
+#: src/fe-gtk/setup.c:287
 msgid "Use graphical icons instead of text symbols in the user list."
 msgstr ""
 
-#: src/fe-gtk/setup.c:287
+#: src/fe-gtk/setup.c:288
 msgid "Show user count in channels"
 msgstr ""
 
-#: src/fe-gtk/setup.c:289
+#: src/fe-gtk/setup.c:290
 msgid "User list sorted by:"
 msgstr "Sắp xếp danh sách người dùng theo :"
 
-#: src/fe-gtk/setup.c:290
+#: src/fe-gtk/setup.c:291
 msgid "Show user list at:"
 msgstr "Hiện danh sách người dùng ở :"
 
-#: src/fe-gtk/setup.c:292
+#: src/fe-gtk/setup.c:293
 msgid "Away Tracking"
 msgstr ""
 
-#: src/fe-gtk/setup.c:293
+#: src/fe-gtk/setup.c:294
 msgid "Track the Away status of users and mark them in a different color"
 msgstr "Theo dõi trạng thái Vắng mặt của mọi người dùng, cũng nhãn bằng màu khác"
 
-#: src/fe-gtk/setup.c:294
+#: src/fe-gtk/setup.c:295
 msgid "On channels smaller than:"
 msgstr "Trên kênh nhỏ hơn:"
 
-#: src/fe-gtk/setup.c:296
+#: src/fe-gtk/setup.c:297
 msgid "Action Upon Double Click"
 msgstr "Hành động khi nhấn đôi"
 
-#: src/fe-gtk/setup.c:299
+#: src/fe-gtk/setup.c:300
 msgid "Extra Gadgets"
 msgstr ""
 
-#: src/fe-gtk/setup.c:300
+#: src/fe-gtk/setup.c:301
 msgid "Lag meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:301
+#: src/fe-gtk/setup.c:302
 msgid "Throttle meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:309
 msgid "Windows"
 msgstr "Cửa sổ"
 
-#: src/fe-gtk/setup.c:309 src/fe-gtk/setup.c:323
+#: src/fe-gtk/setup.c:310 src/fe-gtk/setup.c:324
 msgid "Tabs"
 msgstr "Thẻ"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:317
 msgid "Always"
 msgstr "Luôn"
 
-#: src/fe-gtk/setup.c:317
+#: src/fe-gtk/setup.c:318
 msgid "Only requested tabs"
 msgstr "Chỉ thẻ đã yêu cầu"
 
-#: src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:326
 msgid "Tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:332
+#: src/fe-gtk/setup.c:333
 msgid "Switcher type:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:333
+#: src/fe-gtk/setup.c:334
 msgid "Open an extra tab for server messages"
 msgstr "Mở thẻ thêm cho thông điệp máy phục vụ"
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:335
 msgid "Open an extra tab for server notices"
 msgstr "Mở thẻ thêm cho thông báo máy phục vụ"
 
-#: src/fe-gtk/setup.c:335
+#: src/fe-gtk/setup.c:336
 msgid "Open a new tab when you receive a private message"
 msgstr "Mở thẻ mới khi bạn nhận tin nhẳn riêng"
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:337
 msgid "Sort tabs in alphabetical order"
 msgstr "Sắp xếp thẻ theo thứ tự abc"
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:338
 msgid "Show icons in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:339
 msgid "Show dotted lines in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:340
 msgid "Smaller text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:340
+#: src/fe-gtk/setup.c:341
 msgid "Focus new tabs:"
 msgstr "Tới thẻ mới:"
 
-#: src/fe-gtk/setup.c:341
+#: src/fe-gtk/setup.c:342
 msgid "Show channel switcher at:"
 msgstr "Hiện bộ chuyển đổi kênh ở :"
 
-#: src/fe-gtk/setup.c:342
+#: src/fe-gtk/setup.c:343
 msgid "Shorten tab labels to:"
 msgstr "Giảm nhãn thẻ thành:"
 
-#: src/fe-gtk/setup.c:342
+#: src/fe-gtk/setup.c:343
 msgid "letters."
 msgstr "chữ."
 
-#: src/fe-gtk/setup.c:344
+#: src/fe-gtk/setup.c:345
 msgid "Tabs or Windows"
 msgstr "Thẻ hay Cửa sổ"
 
-#: src/fe-gtk/setup.c:345
+#: src/fe-gtk/setup.c:346
 msgid "Open channels in:"
 msgstr "Mở kênh trong:"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:347
 msgid "Open dialogs in:"
 msgstr "Mở đối thoại trong:"
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:348
 msgid "Open utilities in:"
 msgstr "Mở tiện ích trong:"
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:348
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Mở DCC, Bỏ qua, Thông báo v.v. trong thẻ hay cửa sổ?"
 
-#: src/fe-gtk/setup.c:354
+#: src/fe-gtk/setup.c:355
 msgid "Messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:355
+#: src/fe-gtk/setup.c:356
 msgid "Scrollback"
 msgstr ""
 
-#: src/fe-gtk/setup.c:363
+#: src/fe-gtk/setup.c:364
 msgid "Ask for confirmation"
 msgstr ""
 
-#: src/fe-gtk/setup.c:364
+#: src/fe-gtk/setup.c:365
 msgid "Ask for download folder"
 msgstr ""
 
-#: src/fe-gtk/setup.c:365
+#: src/fe-gtk/setup.c:366
 msgid "Save without interaction"
 msgstr ""
 
-#: src/fe-gtk/setup.c:371
+#: src/fe-gtk/setup.c:372
 msgid "Files and Directories"
 msgstr "Tập tin và Thư mục"
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:373
 msgid "Auto accept file offers:"
 msgstr "Tự chấp nhận tập tin đã đưa ra:"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:374
 msgid "Download files to:"
 msgstr "Tải tập tin về:"
 
-#: src/fe-gtk/setup.c:374
+#: src/fe-gtk/setup.c:375
 msgid "Move completed files to:"
 msgstr "Di chuyển tập tin hoàn tất sang:"
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:376
 msgid "Save nick name in filenames"
 msgstr "Lưu tên hiệu trong tên tập tin"
 
-#: src/fe-gtk/setup.c:377
+#: src/fe-gtk/setup.c:378
 msgid "Network Settings"
 msgstr "Thiết lập mạng"
 
-#: src/fe-gtk/setup.c:378
+#: src/fe-gtk/setup.c:379
 msgid "Get my address from the IRC server"
 msgstr "Lấy địa chỉ của tôi từ máy phục vụ IRC"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:380
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a "
 "192.168.*.* address!"
 msgstr "Gọi địa chỉ thật của bạn từ máy phục vụ IRC. Hãy bật tùy chon này nếu bạn có địa chỉ số « 192.168.*.* »."
 
-#: src/fe-gtk/setup.c:380
+#: src/fe-gtk/setup.c:381
 msgid "DCC IP address:"
 msgstr "Địa chỉ IP DCC:"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:382
 msgid "Claim you are at this address when offering files."
 msgstr "Tuyên bố bạn ở địa chỉ này khi đưa ra tập tin."
 
-#: src/fe-gtk/setup.c:382
+#: src/fe-gtk/setup.c:383
 msgid "First DCC send port:"
 msgstr "Cổng gởi DCC đầu :"
 
-#: src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:384
 msgid "Last DCC send port:"
 msgstr "Cổng gởi DCC cuối:"
 
-#: src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:385
 msgid "!Leave ports at zero for full range."
 msgstr "!Để mọi cổng có giá trị số không cho toàn bộ phạm vị."
 
-#: src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:387
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Tốc độ truyền tập tin tối đa (byte/giây)"
 
-#: src/fe-gtk/setup.c:387
+#: src/fe-gtk/setup.c:388
 msgid "One upload:"
 msgstr "Một việc tải lên:"
 
-#: src/fe-gtk/setup.c:388 src/fe-gtk/setup.c:390
+#: src/fe-gtk/setup.c:389 src/fe-gtk/setup.c:391
 msgid "Maximum speed for one transfer"
 msgstr "Tốc độ tối đa cho môt việc truyền"
 
-#: src/fe-gtk/setup.c:389
+#: src/fe-gtk/setup.c:390
 msgid "One download:"
 msgstr "Một việc tải về:"
 
-#: src/fe-gtk/setup.c:391
+#: src/fe-gtk/setup.c:392
 msgid "All uploads combined:"
 msgstr "Tổng số việc tải lên:"
 
-#: src/fe-gtk/setup.c:392 src/fe-gtk/setup.c:394
+#: src/fe-gtk/setup.c:393 src/fe-gtk/setup.c:395
 msgid "Maximum speed for all files"
 msgstr "Tốc độ tối đa cho mọi tập tin"
 
-#: src/fe-gtk/setup.c:393
+#: src/fe-gtk/setup.c:394
 msgid "All downloads combined:"
 msgstr "Tổng số việc tải về:"
 
-#: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:447 src/fe-gtk/setup.c:1897
+#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:448 src/fe-gtk/setup.c:1898
 msgid "Alerts"
 msgstr "Cảnh giác"
 
-#: src/fe-gtk/setup.c:425
+#: src/fe-gtk/setup.c:426
 msgid "Show tray balloons on:"
 msgstr "Hiện thị khung thoại của khay khi:"
 
-#: src/fe-gtk/setup.c:427
+#: src/fe-gtk/setup.c:428
 msgid "Blink tray icon on:"
 msgstr "Chớp biểu tượng khay khi:"
 
-#: src/fe-gtk/setup.c:428 src/fe-gtk/setup.c:450
+#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
 msgid "Blink task bar on:"
 msgstr "Chớp thanh tác vụ khi:"
 
-#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
+#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:452
 msgid "Make a beep sound on:"
 msgstr "Kêu bíp khi:"
 
-#: src/fe-gtk/setup.c:431
+#: src/fe-gtk/setup.c:432
 msgid "Enable system tray icon"
 msgstr "Bật biểu tượng khay của hệ thống"
 
-#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:453
+#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:454
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:434 src/fe-gtk/setup.c:455
+#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
 msgid "Highlighted Messages"
 msgstr "Tin nhẳn đã tô sáng"
 
-#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
+#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr "Tin nhẳn đã tô sáng là tin nhẳn chứa tên hiệu của bạn, cũng như :"
 
-#: src/fe-gtk/setup.c:437 src/fe-gtk/setup.c:458
+#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
 msgid "Extra words to highlight:"
 msgstr "Từ thêm cần tô sáng:"
 
-#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
 msgid "Nick names not to highlight:"
 msgstr "Tên hiệu cần không tô sáng:"
 
-#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
 msgid "Nick names to always highlight:"
 msgstr "Tên hiệu cần tô sáng luôn luôn:"
 
-#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
+#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr ""
 
-#: src/fe-gtk/setup.c:468
+#: src/fe-gtk/setup.c:469
 msgid "Default Messages"
 msgstr "Tin nhẳn mặc định"
 
-#: src/fe-gtk/setup.c:469
+#: src/fe-gtk/setup.c:470
 msgid "Quit:"
 msgstr "Thoát:"
 
-#: src/fe-gtk/setup.c:470
+#: src/fe-gtk/setup.c:471
 msgid "Leave channel:"
 msgstr "Rời kênh đi:"
 
-#: src/fe-gtk/setup.c:471
+#: src/fe-gtk/setup.c:472
 msgid "Away:"
 msgstr "Vắng mặt:"
 
-#: src/fe-gtk/setup.c:473
+#: src/fe-gtk/setup.c:474
 msgid "Away"
 msgstr "Vắng mặt"
 
-#: src/fe-gtk/setup.c:474
+#: src/fe-gtk/setup.c:475
 msgid "Announce away messages"
 msgstr "Thông báo tin nhẳn vắng mặt"
 
-#: src/fe-gtk/setup.c:475
+#: src/fe-gtk/setup.c:476
 msgid "Announce your away messages to all channels."
 msgstr ""
 
-#: src/fe-gtk/setup.c:476
+#: src/fe-gtk/setup.c:477
 msgid "Show away once"
 msgstr "Hiện Vắng mặt một lần"
 
-#: src/fe-gtk/setup.c:476
+#: src/fe-gtk/setup.c:477
 msgid "Show identical away messages only once."
 msgstr ""
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:478
 msgid "Automatically unmark away"
 msgstr "Tự bỏ nhãn Vắng mặt"
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:478
 msgid "Unmark yourself as away before sending messages."
 msgstr ""
 
-#: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:516
+#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:517
 msgid "Advanced Settings"
 msgstr "Thiết lập cấp cao"
 
-#: src/fe-gtk/setup.c:486 src/fe-gtk/setup.c:517
+#: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:518
 msgid "Alternative fonts:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
+#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
 msgid "Auto reconnect delay:"
 msgstr "Trễ tự tái kết nối:"
 
-#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
 msgid "Display MODEs in raw form"
 msgstr "Trình bày CHẾ ĐỘ dạng thô"
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Whois on notify"
 msgstr "WHOIS khi thông báo"
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Sends a /WHOIS when a user comes online in your notify list."
 msgstr ""
 
-#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide join and part messages"
 msgstr "Ẩn các tin nhẳn vào/rời"
 
-#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide channel join/part messages by default."
 msgstr ""
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
 msgid "Display lists in compact mode"
 msgstr ""
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
 msgid "Use less spacing between user list/channel tree rows."
 msgstr ""
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
 msgid "Auto Open DCC Windows"
 msgstr "Tự mở cửa sổ DCC"
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
 msgid "Send window"
 msgstr "Cửa sô Gởi"
 
-#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
+#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
 msgid "Receive window"
 msgstr "Cửa sổ Nhận"
 
-#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
+#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
 msgid "Chat window"
 msgstr "Cửa sổ Trò chuyện"
 
-#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
 msgid "Auto Copy Behavior"
 msgstr ""
 
-#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
 msgid "Automatically copy selected text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:531
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:502 src/fe-gtk/setup.c:533
+#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
 msgid "Automatically include time stamps"
 msgstr ""
 
-#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
+#: src/fe-gtk/setup.c:504 src/fe-gtk/setup.c:535
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:505 src/fe-gtk/setup.c:536
+#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
 msgid "Automatically include color information"
 msgstr ""
 
-#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
+#: src/fe-gtk/setup.c:507 src/fe-gtk/setup.c:538
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:523
 msgid "Allow only one instance of HexChat to run"
 msgstr ""
 
-#: src/fe-gtk/setup.c:547 src/fe-gtk/setup.c:1899
+#: src/fe-gtk/setup.c:548 src/fe-gtk/setup.c:1900
 msgid "Logging"
 msgstr "Ghi lưu"
 
-#: src/fe-gtk/setup.c:548
+#: src/fe-gtk/setup.c:549
 msgid "Display scrollback from previous session"
 msgstr ""
 
-#: src/fe-gtk/setup.c:549
+#: src/fe-gtk/setup.c:550
 msgid "Scrollback lines:"
 msgstr "Dòng cuộn ngược:"
 
-#: src/fe-gtk/setup.c:550
+#: src/fe-gtk/setup.c:551
 msgid "Enable logging of conversations to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:551
+#: src/fe-gtk/setup.c:552
 msgid "Log filename:"
 msgstr "Ghi lưu tên tập tin:"
 
-#: src/fe-gtk/setup.c:552
+#: src/fe-gtk/setup.c:553
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=Máy %c=Kênh %n=Mạng."
 
-#: src/fe-gtk/setup.c:555
+#: src/fe-gtk/setup.c:556
 msgid "Insert timestamps in logs"
 msgstr "Ghi giờ vào bản ghi"
 
-#: src/fe-gtk/setup.c:556
+#: src/fe-gtk/setup.c:557
 msgid "Log timestamp format:"
 msgstr "Dạng ghi giờ bản ghi:"
 
-#: src/fe-gtk/setup.c:563
+#: src/fe-gtk/setup.c:564
 msgid "URLs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:564
+#: src/fe-gtk/setup.c:565
 msgid "Enable logging of URLs to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:565
+#: src/fe-gtk/setup.c:566
 msgid "Enable URL grabber"
 msgstr ""
 
-#: src/fe-gtk/setup.c:566
+#: src/fe-gtk/setup.c:567
 msgid "Maximum number of URLs to grab:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:573
+#: src/fe-gtk/setup.c:574
 msgid "(Disabled)"
 msgstr "(Tắt)"
 
-#: src/fe-gtk/setup.c:574
+#: src/fe-gtk/setup.c:575
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:575
+#: src/fe-gtk/setup.c:576
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:576
+#: src/fe-gtk/setup.c:577
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:577
+#: src/fe-gtk/setup.c:578
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:579
+#: src/fe-gtk/setup.c:580
 msgid "MS Proxy (ISA)"
 msgstr "Ủy nhiệm MS (ISA)"
 
-#: src/fe-gtk/setup.c:582
+#: src/fe-gtk/setup.c:583
 msgid "Auto"
 msgstr ""
 
-#: src/fe-gtk/setup.c:589
+#: src/fe-gtk/setup.c:590
 msgid "All Connections"
 msgstr "Mọi kết nối"
 
-#: src/fe-gtk/setup.c:590
+#: src/fe-gtk/setup.c:591
 msgid "IRC Server Only"
 msgstr "Chỉ máy phục vụ IRC"
 
-#: src/fe-gtk/setup.c:591
+#: src/fe-gtk/setup.c:592
 msgid "DCC Get Only"
 msgstr "Chỉ DCC lấy"
 
-#: src/fe-gtk/setup.c:597
+#: src/fe-gtk/setup.c:598
 msgid "Your Address"
 msgstr "Địa chỉ của bạn"
 
-#: src/fe-gtk/setup.c:598
+#: src/fe-gtk/setup.c:599
 msgid "Bind to:"
 msgstr "Đóng kết với:"
 
-#: src/fe-gtk/setup.c:599
+#: src/fe-gtk/setup.c:600
 msgid "Only useful for computers with multiple addresses."
 msgstr "Chỉ có ích trên máy tính có nhiều địa chỉ."
 
-#: src/fe-gtk/setup.c:601
+#: src/fe-gtk/setup.c:602
 msgid "Proxy Server"
 msgstr "Máy phục vụ ủy nhiệm"
 
-#: src/fe-gtk/setup.c:602
+#: src/fe-gtk/setup.c:603
 msgid "Hostname:"
 msgstr "Tên máy:"
 
-#: src/fe-gtk/setup.c:603
+#: src/fe-gtk/setup.c:604
 msgid "Port:"
 msgstr "Cổng:"
 
-#: src/fe-gtk/setup.c:604
+#: src/fe-gtk/setup.c:605
 msgid "Type:"
 msgstr "Kiểu :"
 
-#: src/fe-gtk/setup.c:605
+#: src/fe-gtk/setup.c:606
 msgid "Use proxy for:"
 msgstr "Dùng ủy nhiệm cho :"
 
-#: src/fe-gtk/setup.c:607
+#: src/fe-gtk/setup.c:608
 msgid "Proxy Authentication"
 msgstr "Xác thực ủy nhiệm"
 
-#: src/fe-gtk/setup.c:609
+#: src/fe-gtk/setup.c:610
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Xác thực (chỉ Ủy nhiệm MS, HTTP hay Socks5)"
 
-#: src/fe-gtk/setup.c:611
+#: src/fe-gtk/setup.c:612
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Xác thực (chỉ HTTP hay Socks5)"
 
-#: src/fe-gtk/setup.c:613
+#: src/fe-gtk/setup.c:614
 msgid "Username:"
 msgstr "Tên người dùng:"
 
-#: src/fe-gtk/setup.c:614
+#: src/fe-gtk/setup.c:615
 msgid "Password:"
 msgstr "Mật khẩu :"
 
-#: src/fe-gtk/setup.c:1045
+#: src/fe-gtk/setup.c:1046
 msgid "Select an Image File"
 msgstr "Chọn tập tin ảnh"
 
-#: src/fe-gtk/setup.c:1080
+#: src/fe-gtk/setup.c:1081
 msgid "Select Download Folder"
 msgstr "Chọn thư mục tải về"
 
-#: src/fe-gtk/setup.c:1089
+#: src/fe-gtk/setup.c:1090
 msgid "Select font"
 msgstr "Chọn phông"
 
-#: src/fe-gtk/setup.c:1189
+#: src/fe-gtk/setup.c:1190
 msgid "Browse..."
 msgstr "Duyệt..."
 
-#: src/fe-gtk/setup.c:1327
+#: src/fe-gtk/setup.c:1328
 msgid "Mark identified users with:"
 msgstr "Nhãn người dùng đã nhận biết bằng:"
 
-#: src/fe-gtk/setup.c:1329
+#: src/fe-gtk/setup.c:1330
 msgid "Mark not-identified users with:"
 msgstr "Nhãn người dùng chưa nhận biết bằng:"
 
-#: src/fe-gtk/setup.c:1336
+#: src/fe-gtk/setup.c:1337
 msgid "Open Data Folder"
 msgstr "Mở thư mục Dữ liệu"
 
-#: src/fe-gtk/setup.c:1390
+#: src/fe-gtk/setup.c:1391
 msgid "Select color"
 msgstr "Chọn màu"
 
-#: src/fe-gtk/setup.c:1470
+#: src/fe-gtk/setup.c:1471
 msgid "Text Colors"
 msgstr "Màu chữ"
 
-#: src/fe-gtk/setup.c:1472
+#: src/fe-gtk/setup.c:1473
 msgid "mIRC colors:"
 msgstr "Màu mIRC:"
 
-#: src/fe-gtk/setup.c:1480
+#: src/fe-gtk/setup.c:1481
 msgid "Local colors:"
 msgstr "Màu cục bộ :"
 
-#: src/fe-gtk/setup.c:1488 src/fe-gtk/setup.c:1493
+#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
 msgid "Foreground:"
 msgstr "Tiền cảnh:"
 
-#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
+#: src/fe-gtk/setup.c:1490 src/fe-gtk/setup.c:1495
 msgid "Background:"
 msgstr "Nền:"
 
-#: src/fe-gtk/setup.c:1491
+#: src/fe-gtk/setup.c:1492
 msgid "Selected Text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1496
+#: src/fe-gtk/setup.c:1497
 msgid "Interface Colors"
 msgstr "Màu giao diện"
 
-#: src/fe-gtk/setup.c:1498
+#: src/fe-gtk/setup.c:1499
 msgid "New data:"
 msgstr "Dữ liệu mới:"
 
-#: src/fe-gtk/setup.c:1499
+#: src/fe-gtk/setup.c:1500
 msgid "Marker line:"
 msgstr "Dòng đánh dấu :"
 
-#: src/fe-gtk/setup.c:1500
+#: src/fe-gtk/setup.c:1501
 msgid "New message:"
 msgstr "Tin nhẳn mới:"
 
-#: src/fe-gtk/setup.c:1501
+#: src/fe-gtk/setup.c:1502
 msgid "Away user:"
 msgstr "Người dùng vắng mặt:"
 
-#: src/fe-gtk/setup.c:1502
+#: src/fe-gtk/setup.c:1503
 msgid "Highlight:"
 msgstr "Tô sáng:"
 
-#: src/fe-gtk/setup.c:1504
+#: src/fe-gtk/setup.c:1505
 msgid "Spell checker:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1507
+#: src/fe-gtk/setup.c:1508
 msgid "Color Stripping"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1613 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1614 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "Sự kiện"
 
-#: src/fe-gtk/setup.c:1619
+#: src/fe-gtk/setup.c:1620
 msgid "Sound file"
 msgstr "Tập tin âm thanh"
 
-#: src/fe-gtk/setup.c:1654
+#: src/fe-gtk/setup.c:1655
 msgid "Select a sound file"
 msgstr "Chon tập tin âm thanh"
 
-#: src/fe-gtk/setup.c:1726
+#: src/fe-gtk/setup.c:1727
 msgid "Sound playing method:"
 msgstr "Phương pháp phát âm thanh:"
 
-#: src/fe-gtk/setup.c:1734
+#: src/fe-gtk/setup.c:1735
 msgid "External sound playing _program:"
 msgstr "Trình bên ngoài _phát âm thanh:"
 
-#: src/fe-gtk/setup.c:1752
+#: src/fe-gtk/setup.c:1753
 msgid "_External program"
 msgstr "Trình _bên ngoài"
 
-#: src/fe-gtk/setup.c:1762
+#: src/fe-gtk/setup.c:1763
 msgid "_Automatic"
 msgstr "_Tự động"
 
-#: src/fe-gtk/setup.c:1775
+#: src/fe-gtk/setup.c:1776
 msgid "Sound files _directory:"
 msgstr "Thư _mục tập tin âm thanh:"
 
-#: src/fe-gtk/setup.c:1814
+#: src/fe-gtk/setup.c:1815
 msgid "Sound file:"
 msgstr "Tập tin âm thanh:"
 
-#: src/fe-gtk/setup.c:1829
+#: src/fe-gtk/setup.c:1830
 msgid "_Browse..."
 msgstr "_Duyệt..."
 
-#: src/fe-gtk/setup.c:1840
+#: src/fe-gtk/setup.c:1841
 msgid "_Play"
 msgstr "_Phát"
 
-#: src/fe-gtk/setup.c:1889
+#: src/fe-gtk/setup.c:1890
 msgid "Interface"
 msgstr "Giao diện"
 
-#: src/fe-gtk/setup.c:1890
+#: src/fe-gtk/setup.c:1891
 msgid "Appearance"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1891
+#: src/fe-gtk/setup.c:1892
 msgid "Input box"
 msgstr "Hộp nhập"
 
-#: src/fe-gtk/setup.c:1892
+#: src/fe-gtk/setup.c:1893
 msgid "User list"
 msgstr "Danh sách Người dùng"
 
-#: src/fe-gtk/setup.c:1893
+#: src/fe-gtk/setup.c:1894
 msgid "Channel switcher"
 msgstr "Bộ chuyển đổi kênh"
 
-#: src/fe-gtk/setup.c:1894
+#: src/fe-gtk/setup.c:1895
 msgid "Colors"
 msgstr "Màu sắc"
 
-#: src/fe-gtk/setup.c:1896
+#: src/fe-gtk/setup.c:1897
 msgid "Chatting"
 msgstr "Đang trò chuyện"
 
-#: src/fe-gtk/setup.c:1900
+#: src/fe-gtk/setup.c:1901
 msgid "Sound"
 msgstr "Âm thanh"
 
-#: src/fe-gtk/setup.c:1901
+#: src/fe-gtk/setup.c:1902
 msgid "Advanced"
 msgstr "Cấp cao"
 
-#: src/fe-gtk/setup.c:1904
+#: src/fe-gtk/setup.c:1905
 msgid "Network setup"
 msgstr "Thiết lập mạng"
 
-#: src/fe-gtk/setup.c:1905
+#: src/fe-gtk/setup.c:1906
 msgid "File transfers"
 msgstr "Việc truyền tập tin"
 
-#: src/fe-gtk/setup.c:2036
+#: src/fe-gtk/setup.c:2037
 msgid "Categories"
 msgstr "Loại"
 
-#: src/fe-gtk/setup.c:2243
+#: src/fe-gtk/setup.c:2246
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr "Không thể đặt cây bên trên hay bên dưới.\nTrước hết hãy chuyển đổi sang bố trí <b>Thanh</b> trong trình đơn <b>Xem</b>."
 
-#: src/fe-gtk/setup.c:2270
+#: src/fe-gtk/setup.c:2273
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:2277
+#: src/fe-gtk/setup.c:2280
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Một sô thiết lập đã được thay đổi nên cần phải khởi chạy lại để hoạt động đầy đủ."
 
-#: src/fe-gtk/setup.c:2285
+#: src/fe-gtk/setup.c:2288
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5743,9 +5726,35 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr "•• CẢNH BÁO ••\nViệc tự động chấp nhận DCC vào thư mục\nchính của bạn có lẽ nguy hiểm và cho phép\nngười khác tấn công hệ thống của bạn.\nV.d. người khác có thể gởi cho bạn\nmột « .bash_profile »."
 
-#: src/fe-gtk/setup.c:2318
+#: src/fe-gtk/setup.c:2321
 msgid ": Preferences"
 msgstr "XChat: Tùy thích"
+
+#: src/fe-gtk/sexy-spell-entry.c:465
+msgid "<i>(no suggestions)</i>"
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:479
+msgid "More..."
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:548
+#, c-format
+msgid "Add \"%s\" to Dictionary"
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:590
+msgid "Ignore All"
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:625
+msgid "Spelling Suggestions"
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:1071
+#, c-format
+msgid "enchant error for language: %s"
+msgstr ""
 
 #: src/fe-gtk/textgui.c:180
 msgid "There was an error parsing the string"

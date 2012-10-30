@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-28 01:41+0200\n"
-"PO-Revision-Date: 2012-10-27 23:43+0000\n"
+"POT-Creation-Date: 2012-10-30 02:56+0100\n"
+"PO-Revision-Date: 2012-10-30 01:59+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: src/common/cfgfiles.c:757
+#: src/common/cfgfiles.c:759
 msgid "I'm busy"
 msgstr "Pracuji"
 
-#: src/common/cfgfiles.c:781
+#: src/common/cfgfiles.c:783
 msgid "Leaving"
 msgstr "Odcházím"
 
-#: src/common/cfgfiles.c:841
+#: src/common/cfgfiles.c:856
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -62,7 +62,7 @@ msgstr "Nemohu přistoupit k %s\n"
 
 #: src/common/dcc.c:1899 src/common/text.c:1441 src/common/text.c:1479
 #: src/common/text.c:1490 src/common/text.c:1497 src/common/text.c:1510
-#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:357
+#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:358
 msgid "Error"
 msgstr "Chyba"
 
@@ -762,7 +762,7 @@ msgid "%C18*%O$t%C18$1%O added to notify list."
 msgstr ""
 
 #: src/common/textevents.h:9
-msgid "%C22*%O$t%C22$1%O Banlist:%C18 $2%O for%C24 $4%O by%C26 $3%O"
+msgid "%C22*%O$t%C22$1%O Banlist: %C18$2%O for %C24$4%O by %C26$3%O"
 msgstr ""
 
 #: src/common/textevents.h:12
@@ -871,10 +871,6 @@ msgstr ""
 
 #: src/common/textevents.h:108
 msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
-msgstr ""
-
-#: src/common/textevents.h:111
-msgid ">%C18$1%C<$tCTCP %C24$2%O"
 msgstr ""
 
 #: src/common/textevents.h:114
@@ -1177,17 +1173,8 @@ msgstr ""
 msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
 msgstr ""
 
-#: src/common/textevents.h:369
-msgid "%C23*%O$t%C28[%C18$1%C28]%O $2 %C18$3%O"
-msgstr ""
-
 #: src/common/textevents.h:372
 msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
-msgstr ""
-
-#: src/common/textevents.h:375 src/common/textevents.h:381
-#: src/common/textevents.h:399
-msgid "%C23*%O$t%C28[%C18$1%C28]%O $2"
 msgstr ""
 
 #: src/common/textevents.h:378
@@ -1202,17 +1189,9 @@ msgstr ""
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
 msgstr ""
 
-#: src/common/textevents.h:390
-msgid "%C23*%O$t%C28[%C18$1%C28] %C30(%C24$2@$3%C30)%O: %C18$4%O"
-msgstr ""
-
 #: src/common/textevents.h:393
 msgid ""
 "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
-msgstr ""
-
-#: src/common/textevents.h:396
-msgid "%C23*%O$t%C28[%C18$1%C28]%O %C29$2%O"
 msgstr ""
 
 #: src/common/textevents.h:402
@@ -1327,7 +1306,7 @@ msgid "Nick of person who changed the topic"
 msgstr "Přezdívka osoby, která změnila téma"
 
 #: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:356
+#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:357
 msgid "Topic"
 msgstr "Téma:"
 
@@ -1578,7 +1557,7 @@ msgid "Channel Name"
 msgstr "Jméno kanálu"
 
 #: src/common/text.c:1414 src/common/text.c:1420 src/common/text.c:1578
-#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:245
+#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
 #: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Text"
@@ -1616,7 +1595,7 @@ msgstr "IP"
 msgid "Port"
 msgstr "Port"
 
-#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1903
+#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
 msgid "Network"
 msgstr "Síť"
 
@@ -1726,1135 +1705,1135 @@ msgid ""
 "%s"
 msgstr "Nemůžu přečíst zvkukový soubor:\n%s"
 
-#: src/common/util.c:301
+#: src/common/util.c:302
 msgid "Remote host closed socket"
 msgstr "Vzdálený počítač zavřel soket"
 
-#: src/common/util.c:306
+#: src/common/util.c:307
 msgid "Connection refused"
 msgstr "Připojení odmítnuto"
 
-#: src/common/util.c:309
+#: src/common/util.c:310
 msgid "No route to host"
 msgstr "Není cesta k počítači"
 
-#: src/common/util.c:311
+#: src/common/util.c:312
 msgid "Connection timed out"
 msgstr "Připojení vypršelo"
 
-#: src/common/util.c:313
+#: src/common/util.c:314
 msgid "Cannot assign that address"
 msgstr "Nemohu přiřadit tuto adresu"
 
-#: src/common/util.c:315
+#: src/common/util.c:316
 msgid "Connection reset by peer"
 msgstr "Připojení resetováno hostitelem"
 
-#: src/common/util.c:959
+#: src/common/util.c:960
 msgid "Ascension Island"
 msgstr "Ostrov Nanebevstoupení"
 
-#: src/common/util.c:960
+#: src/common/util.c:961
 msgid "Andorra"
 msgstr "Andora"
 
-#: src/common/util.c:961
+#: src/common/util.c:962
 msgid "United Arab Emirates"
 msgstr "Spojené arabské emiráty"
 
-#: src/common/util.c:962
+#: src/common/util.c:963
 msgid "Aviation-Related Fields"
 msgstr ""
 
-#: src/common/util.c:963
+#: src/common/util.c:964
 msgid "Afghanistan"
 msgstr "Afgánistán"
 
-#: src/common/util.c:964
+#: src/common/util.c:965
 msgid "Antigua and Barbuda"
 msgstr "Antigua a Barbuda"
 
-#: src/common/util.c:965
+#: src/common/util.c:966
 msgid "Anguilla"
 msgstr "Anguilla"
 
-#: src/common/util.c:966
+#: src/common/util.c:967
 msgid "Albania"
 msgstr "Albánie"
 
-#: src/common/util.c:967
+#: src/common/util.c:968
 msgid "Armenia"
 msgstr "Arménie"
 
-#: src/common/util.c:968
+#: src/common/util.c:969
 msgid "Netherlands Antilles"
 msgstr "Nizozemské Antily"
 
-#: src/common/util.c:969
+#: src/common/util.c:970
 msgid "Angola"
 msgstr "Angola"
 
-#: src/common/util.c:970
+#: src/common/util.c:971
 msgid "Antarctica"
 msgstr "Antarktida"
 
-#: src/common/util.c:971
+#: src/common/util.c:972
 msgid "Argentina"
 msgstr "Argentina"
 
-#: src/common/util.c:972
+#: src/common/util.c:973
 msgid "Reverse DNS"
 msgstr "Reverzní DNS"
 
-#: src/common/util.c:973
+#: src/common/util.c:974
 msgid "American Samoa"
 msgstr "Americká Samoa"
 
-#: src/common/util.c:974
+#: src/common/util.c:975
 msgid "Asia-Pacific Region"
 msgstr ""
 
-#: src/common/util.c:975
+#: src/common/util.c:976
 msgid "Austria"
 msgstr "Rakousko"
 
-#: src/common/util.c:976
+#: src/common/util.c:977
 msgid "Nato Fiel"
 msgstr "Nato Fiel"
 
-#: src/common/util.c:977
+#: src/common/util.c:978
 msgid "Australia"
 msgstr "Austrálie"
 
-#: src/common/util.c:978
+#: src/common/util.c:979
 msgid "Aruba"
 msgstr "Aruba"
 
-#: src/common/util.c:979
+#: src/common/util.c:980
 msgid "Aland Islands"
 msgstr "Alandské ostrovy"
 
-#: src/common/util.c:980
+#: src/common/util.c:981
 msgid "Azerbaijan"
 msgstr "Ázerbájdžán"
 
-#: src/common/util.c:981
+#: src/common/util.c:982
 msgid "Bosnia and Herzegovina"
 msgstr "Bosna a Hercegovina"
 
-#: src/common/util.c:982
+#: src/common/util.c:983
 msgid "Barbados"
 msgstr "Barbados"
 
-#: src/common/util.c:983
+#: src/common/util.c:984
 msgid "Bangladesh"
 msgstr "Bangladéš"
 
-#: src/common/util.c:984
+#: src/common/util.c:985
 msgid "Belgium"
 msgstr "Belgie"
 
-#: src/common/util.c:985
+#: src/common/util.c:986
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
-#: src/common/util.c:986
+#: src/common/util.c:987
 msgid "Bulgaria"
 msgstr "Bulharsko"
 
-#: src/common/util.c:987
+#: src/common/util.c:988
 msgid "Bahrain"
 msgstr "Bahrain"
 
-#: src/common/util.c:988
+#: src/common/util.c:989
 msgid "Burundi"
 msgstr "Burundi"
 
-#: src/common/util.c:989
+#: src/common/util.c:990
 msgid "Businesses"
 msgstr "Businesses"
 
-#: src/common/util.c:990
+#: src/common/util.c:991
 msgid "Benin"
 msgstr "Benin"
 
-#: src/common/util.c:991
+#: src/common/util.c:992
 msgid "Bermuda"
 msgstr "Bermudy"
 
-#: src/common/util.c:992
+#: src/common/util.c:993
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
-#: src/common/util.c:993
+#: src/common/util.c:994
 msgid "Bolivia"
 msgstr "Bolívie"
 
-#: src/common/util.c:994
+#: src/common/util.c:995
 msgid "Brazil"
 msgstr "Brazílie"
 
-#: src/common/util.c:995
+#: src/common/util.c:996
 msgid "Bahamas"
 msgstr "Bahamy"
 
-#: src/common/util.c:996
+#: src/common/util.c:997
 msgid "Bhutan"
 msgstr "Bhutan"
 
-#: src/common/util.c:997
+#: src/common/util.c:998
 msgid "Bouvet Island"
 msgstr "Bouvet Island"
 
-#: src/common/util.c:998
+#: src/common/util.c:999
 msgid "Botswana"
 msgstr "Botswana"
 
-#: src/common/util.c:999
+#: src/common/util.c:1000
 msgid "Belarus"
 msgstr "Bělorusko"
 
-#: src/common/util.c:1000
+#: src/common/util.c:1001
 msgid "Belize"
 msgstr "Belize"
 
-#: src/common/util.c:1001
+#: src/common/util.c:1002
 msgid "Canada"
 msgstr "Kanada"
 
-#: src/common/util.c:1002 src/fe-gtk/setup.c:113
+#: src/common/util.c:1003 src/fe-gtk/setup.c:113
 msgid "Catalan"
 msgstr ""
 
-#: src/common/util.c:1003
+#: src/common/util.c:1004
 msgid "Cocos Islands"
 msgstr "Kokosové ostrovy"
 
-#: src/common/util.c:1004
+#: src/common/util.c:1005
 msgid "Democratic Republic of Congo"
 msgstr "Demokratická republika Kongo"
 
-#: src/common/util.c:1005
+#: src/common/util.c:1006
 msgid "Central African Republic"
 msgstr "Středoafrická republika"
 
-#: src/common/util.c:1006
+#: src/common/util.c:1007
 msgid "Congo"
 msgstr "Kongo"
 
-#: src/common/util.c:1007
+#: src/common/util.c:1008
 msgid "Switzerland"
 msgstr "Švýcarsko"
 
-#: src/common/util.c:1008
+#: src/common/util.c:1009
 msgid "Cote d'Ivoire"
 msgstr "Cote d'Ivoire"
 
-#: src/common/util.c:1009
+#: src/common/util.c:1010
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
-#: src/common/util.c:1010
+#: src/common/util.c:1011
 msgid "Chile"
 msgstr "Chile"
 
-#: src/common/util.c:1011
+#: src/common/util.c:1012
 msgid "Cameroon"
 msgstr "Kamerun"
 
-#: src/common/util.c:1012
+#: src/common/util.c:1013
 msgid "China"
 msgstr "Čína"
 
-#: src/common/util.c:1013
+#: src/common/util.c:1014
 msgid "Colombia"
 msgstr "Kolombie"
 
-#: src/common/util.c:1014
+#: src/common/util.c:1015
 msgid "Internic Commercial"
 msgstr "Internic Commercial"
 
-#: src/common/util.c:1015
+#: src/common/util.c:1016
 msgid "Cooperatives"
 msgstr ""
 
-#: src/common/util.c:1016
+#: src/common/util.c:1017
 msgid "Costa Rica"
 msgstr "Costa Rica"
 
-#: src/common/util.c:1017
+#: src/common/util.c:1018
 msgid "Serbia and Montenegro"
 msgstr "Srbsko a Černá hora"
 
-#: src/common/util.c:1018
+#: src/common/util.c:1019
 msgid "Cuba"
 msgstr "Kuba"
 
-#: src/common/util.c:1019
+#: src/common/util.c:1020
 msgid "Cape Verde"
 msgstr "Cape Verde"
 
-#: src/common/util.c:1020
+#: src/common/util.c:1021
 msgid "Christmas Island"
 msgstr "Vánoční ostrov"
 
-#: src/common/util.c:1021
+#: src/common/util.c:1022
 msgid "Cyprus"
 msgstr "Kypr"
 
-#: src/common/util.c:1022
+#: src/common/util.c:1023
 msgid "Czech Republic"
 msgstr "Česká republika"
 
-#: src/common/util.c:1023
+#: src/common/util.c:1024
 msgid "East Germany"
 msgstr ""
 
-#: src/common/util.c:1024
+#: src/common/util.c:1025
 msgid "Germany"
 msgstr "Německo"
 
-#: src/common/util.c:1025
+#: src/common/util.c:1026
 msgid "Djibouti"
 msgstr "Djibouti"
 
-#: src/common/util.c:1026
+#: src/common/util.c:1027
 msgid "Denmark"
 msgstr "Dánsko"
 
-#: src/common/util.c:1027
+#: src/common/util.c:1028
 msgid "Dominica"
 msgstr "Dominica"
 
-#: src/common/util.c:1028
+#: src/common/util.c:1029
 msgid "Dominican Republic"
 msgstr "Dominkánská republika"
 
-#: src/common/util.c:1029
+#: src/common/util.c:1030
 msgid "Algeria"
 msgstr "Algeria"
 
-#: src/common/util.c:1030
+#: src/common/util.c:1031
 msgid "Ecuador"
 msgstr "Ekvádor"
 
-#: src/common/util.c:1031
+#: src/common/util.c:1032
 msgid "Educational Institution"
 msgstr "Vzdělávací instituce"
 
-#: src/common/util.c:1032
+#: src/common/util.c:1033
 msgid "Estonia"
 msgstr "Estonsko"
 
-#: src/common/util.c:1033
+#: src/common/util.c:1034
 msgid "Egypt"
 msgstr "Egypt"
 
-#: src/common/util.c:1034
+#: src/common/util.c:1035
 msgid "Western Sahara"
 msgstr "Západní Sahara"
 
-#: src/common/util.c:1035
+#: src/common/util.c:1036
 msgid "Eritrea"
 msgstr "Eritrea"
 
-#: src/common/util.c:1036
+#: src/common/util.c:1037
 msgid "Spain"
 msgstr "Španělsko"
 
-#: src/common/util.c:1037
+#: src/common/util.c:1038
 msgid "Ethiopia"
 msgstr "Etiopie"
 
-#: src/common/util.c:1038
+#: src/common/util.c:1039
 msgid "European Union"
 msgstr "Evropská unie"
 
-#: src/common/util.c:1039
+#: src/common/util.c:1040
 msgid "Finland"
 msgstr "Finsko"
 
-#: src/common/util.c:1040
+#: src/common/util.c:1041
 msgid "Fiji"
 msgstr "Fidži"
 
-#: src/common/util.c:1041
+#: src/common/util.c:1042
 msgid "Falkland Islands"
 msgstr "Falklandské ostrovy"
 
-#: src/common/util.c:1042
+#: src/common/util.c:1043
 msgid "Micronesia"
 msgstr "Mikronésie"
 
-#: src/common/util.c:1043
+#: src/common/util.c:1044
 msgid "Faroe Islands"
 msgstr "Faroe Islands"
 
-#: src/common/util.c:1044
+#: src/common/util.c:1045
 msgid "France"
 msgstr "Francie"
 
-#: src/common/util.c:1045
+#: src/common/util.c:1046
 msgid "Gabon"
 msgstr "Gabon"
 
-#: src/common/util.c:1046
+#: src/common/util.c:1047
 msgid "Great Britain"
 msgstr "Velká Británie"
 
-#: src/common/util.c:1047
+#: src/common/util.c:1048
 msgid "Grenada"
 msgstr "Grenada"
 
-#: src/common/util.c:1048
+#: src/common/util.c:1049
 msgid "Georgia"
 msgstr "Gruzie"
 
-#: src/common/util.c:1049
+#: src/common/util.c:1050
 msgid "French Guiana"
 msgstr "Francouzská Guayana"
 
-#: src/common/util.c:1050
+#: src/common/util.c:1051
 msgid "British Channel Isles"
 msgstr "Britské satelitní ostrovy"
 
-#: src/common/util.c:1051
+#: src/common/util.c:1052
 msgid "Ghana"
 msgstr "Ghana"
 
-#: src/common/util.c:1052
+#: src/common/util.c:1053
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
-#: src/common/util.c:1053
+#: src/common/util.c:1054
 msgid "Greenland"
 msgstr "Grónsko"
 
-#: src/common/util.c:1054
+#: src/common/util.c:1055
 msgid "Gambia"
 msgstr "Gambia"
 
-#: src/common/util.c:1055
+#: src/common/util.c:1056
 msgid "Guinea"
 msgstr "Guinea"
 
-#: src/common/util.c:1056
+#: src/common/util.c:1057
 msgid "Government"
 msgstr "Vláda"
 
-#: src/common/util.c:1057
+#: src/common/util.c:1058
 msgid "Guadeloupe"
 msgstr "Guadeloupe"
 
-#: src/common/util.c:1058
+#: src/common/util.c:1059
 msgid "Equatorial Guinea"
 msgstr "Rovníková Guinea"
 
-#: src/common/util.c:1059
+#: src/common/util.c:1060
 msgid "Greece"
 msgstr "Řecko"
 
-#: src/common/util.c:1060
+#: src/common/util.c:1061
 msgid "S. Georgia and S. Sandwich Isles"
 msgstr "S. Georgia a S. Sandwich Isles"
 
-#: src/common/util.c:1061
+#: src/common/util.c:1062
 msgid "Guatemala"
 msgstr "Guatemala"
 
-#: src/common/util.c:1062
+#: src/common/util.c:1063
 msgid "Guam"
 msgstr "Guam"
 
-#: src/common/util.c:1063
+#: src/common/util.c:1064
 msgid "Guinea-Bissau"
 msgstr "Guinea-Bissau"
 
-#: src/common/util.c:1064
+#: src/common/util.c:1065
 msgid "Guyana"
 msgstr "Guyana"
 
-#: src/common/util.c:1065
+#: src/common/util.c:1066
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
-#: src/common/util.c:1066
+#: src/common/util.c:1067
 msgid "Heard and McDonald Islands"
 msgstr "Heard a McDonald Islands"
 
-#: src/common/util.c:1067
+#: src/common/util.c:1068
 msgid "Honduras"
 msgstr "Honduras"
 
-#: src/common/util.c:1068
+#: src/common/util.c:1069
 msgid "Croatia"
 msgstr "Chorvatsko"
 
-#: src/common/util.c:1069
+#: src/common/util.c:1070
 msgid "Haiti"
 msgstr "Haiti"
 
-#: src/common/util.c:1070
+#: src/common/util.c:1071
 msgid "Hungary"
 msgstr "Maďarsko"
 
-#: src/common/util.c:1071
+#: src/common/util.c:1072
 msgid "Indonesia"
 msgstr "Indonésie"
 
-#: src/common/util.c:1072
+#: src/common/util.c:1073
 msgid "Ireland"
 msgstr "Irsko"
 
-#: src/common/util.c:1073
+#: src/common/util.c:1074
 msgid "Israel"
 msgstr "Israel"
 
-#: src/common/util.c:1074
+#: src/common/util.c:1075
 msgid "Isle of Man"
 msgstr "Isle of Man"
 
-#: src/common/util.c:1075
+#: src/common/util.c:1076
 msgid "India"
 msgstr "Indie"
 
-#: src/common/util.c:1076
+#: src/common/util.c:1077
 msgid "Informational"
 msgstr "Infromační"
 
-#: src/common/util.c:1077
+#: src/common/util.c:1078
 msgid "International"
 msgstr "Mezinárodní"
 
-#: src/common/util.c:1078
+#: src/common/util.c:1079
 msgid "British Indian Ocean Territory"
 msgstr "Britské teritorium Indického oceánu"
 
-#: src/common/util.c:1079
+#: src/common/util.c:1080
 msgid "Iraq"
 msgstr "Irák"
 
-#: src/common/util.c:1080
+#: src/common/util.c:1081
 msgid "Iran"
 msgstr "Irán"
 
-#: src/common/util.c:1081
+#: src/common/util.c:1082
 msgid "Iceland"
 msgstr "Island"
 
-#: src/common/util.c:1082
+#: src/common/util.c:1083
 msgid "Italy"
 msgstr "Itálie"
 
-#: src/common/util.c:1083
+#: src/common/util.c:1084
 msgid "Jersey"
 msgstr "Jersey"
 
-#: src/common/util.c:1084
+#: src/common/util.c:1085
 msgid "Jamaica"
 msgstr "Jamajka"
 
-#: src/common/util.c:1085
+#: src/common/util.c:1086
 msgid "Jordan"
 msgstr "Jordánsko"
 
-#: src/common/util.c:1086
+#: src/common/util.c:1087
 msgid "Company Jobs"
 msgstr ""
 
-#: src/common/util.c:1087
+#: src/common/util.c:1088
 msgid "Japan"
 msgstr "Japonsko"
 
-#: src/common/util.c:1088
+#: src/common/util.c:1089
 msgid "Kenya"
 msgstr "Keňa"
 
-#: src/common/util.c:1089
+#: src/common/util.c:1090
 msgid "Kyrgyzstan"
 msgstr "Kyrgyzstán"
 
-#: src/common/util.c:1090
+#: src/common/util.c:1091
 msgid "Cambodia"
 msgstr "Kambodža"
 
-#: src/common/util.c:1091
+#: src/common/util.c:1092
 msgid "Kiribati"
 msgstr "Kiribati"
 
-#: src/common/util.c:1092
+#: src/common/util.c:1093
 msgid "Comoros"
 msgstr "Comoros"
 
-#: src/common/util.c:1093
+#: src/common/util.c:1094
 msgid "St. Kitts and Nevis"
 msgstr "St. Kitts and Nevis"
 
-#: src/common/util.c:1094
+#: src/common/util.c:1095
 msgid "North Korea"
 msgstr "Severní Korea"
 
-#: src/common/util.c:1095
+#: src/common/util.c:1096
 msgid "South Korea"
 msgstr "Jižní Korea"
 
-#: src/common/util.c:1096
+#: src/common/util.c:1097
 msgid "Kuwait"
 msgstr "Kuvajt"
 
-#: src/common/util.c:1097
+#: src/common/util.c:1098
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
 
-#: src/common/util.c:1098
+#: src/common/util.c:1099
 msgid "Kazakhstan"
 msgstr "Kazachstán"
 
-#: src/common/util.c:1099
+#: src/common/util.c:1100
 msgid "Laos"
 msgstr "Laos"
 
-#: src/common/util.c:1100
+#: src/common/util.c:1101
 msgid "Lebanon"
 msgstr "Libanon"
 
-#: src/common/util.c:1101
+#: src/common/util.c:1102
 msgid "Saint Lucia"
 msgstr "Saint Lucia"
 
-#: src/common/util.c:1102
+#: src/common/util.c:1103
 msgid "Liechtenstein"
 msgstr "Lichtenštejnsko"
 
-#: src/common/util.c:1103
+#: src/common/util.c:1104
 msgid "Sri Lanka"
 msgstr "Srí Lanka"
 
-#: src/common/util.c:1104
+#: src/common/util.c:1105
 msgid "Liberia"
 msgstr "Libérie"
 
-#: src/common/util.c:1105
+#: src/common/util.c:1106
 msgid "Lesotho"
 msgstr "Lesotho"
 
-#: src/common/util.c:1106
+#: src/common/util.c:1107
 msgid "Lithuania"
 msgstr "Litva"
 
-#: src/common/util.c:1107
+#: src/common/util.c:1108
 msgid "Luxembourg"
 msgstr "Lucembursko"
 
-#: src/common/util.c:1108
+#: src/common/util.c:1109
 msgid "Latvia"
 msgstr "Lotyšsko"
 
-#: src/common/util.c:1109
+#: src/common/util.c:1110
 msgid "Libya"
 msgstr "Libya"
 
-#: src/common/util.c:1110
+#: src/common/util.c:1111
 msgid "Morocco"
 msgstr "Maroko"
 
-#: src/common/util.c:1111
+#: src/common/util.c:1112
 msgid "Monaco"
 msgstr "Monako"
 
-#: src/common/util.c:1112
+#: src/common/util.c:1113
 msgid "Moldova"
 msgstr "Moldávie"
 
-#: src/common/util.c:1113
+#: src/common/util.c:1114
 msgid "Montenegro"
 msgstr ""
 
-#: src/common/util.c:1114
+#: src/common/util.c:1115
 msgid "United States Medical"
 msgstr "United States Medical"
 
-#: src/common/util.c:1115
+#: src/common/util.c:1116
 msgid "Madagascar"
 msgstr "Madagaskar"
 
-#: src/common/util.c:1116
+#: src/common/util.c:1117
 msgid "Marshall Islands"
 msgstr "Marshall Islands"
 
-#: src/common/util.c:1117
+#: src/common/util.c:1118
 msgid "Military"
 msgstr "Vojenské"
 
-#: src/common/util.c:1118
+#: src/common/util.c:1119
 msgid "Macedonia"
 msgstr "Makedonie"
 
-#: src/common/util.c:1119
+#: src/common/util.c:1120
 msgid "Mali"
 msgstr "Mali"
 
-#: src/common/util.c:1120
+#: src/common/util.c:1121
 msgid "Myanmar"
 msgstr "Myanmar"
 
-#: src/common/util.c:1121
+#: src/common/util.c:1122
 msgid "Mongolia"
 msgstr "Mongolsko"
 
-#: src/common/util.c:1122
+#: src/common/util.c:1123
 msgid "Macau"
 msgstr "Macau"
 
-#: src/common/util.c:1123
+#: src/common/util.c:1124
 msgid "Mobile Devices"
 msgstr ""
 
-#: src/common/util.c:1124
+#: src/common/util.c:1125
 msgid "Northern Mariana Islands"
 msgstr "Northern Mariana Islands"
 
-#: src/common/util.c:1125
+#: src/common/util.c:1126
 msgid "Martinique"
 msgstr "Martinique"
 
-#: src/common/util.c:1126
+#: src/common/util.c:1127
 msgid "Mauritania"
 msgstr "Mauretánie"
 
-#: src/common/util.c:1127
+#: src/common/util.c:1128
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/common/util.c:1128
+#: src/common/util.c:1129
 msgid "Malta"
 msgstr "Malta"
 
-#: src/common/util.c:1129
+#: src/common/util.c:1130
 msgid "Mauritius"
 msgstr "Mauritius"
 
-#: src/common/util.c:1130
+#: src/common/util.c:1131
 msgid "Museums"
 msgstr ""
 
-#: src/common/util.c:1131
+#: src/common/util.c:1132
 msgid "Maldives"
 msgstr "Maldivy"
 
-#: src/common/util.c:1132
+#: src/common/util.c:1133
 msgid "Malawi"
 msgstr "Malawi"
 
-#: src/common/util.c:1133
+#: src/common/util.c:1134
 msgid "Mexico"
 msgstr "Mexiko"
 
-#: src/common/util.c:1134
+#: src/common/util.c:1135
 msgid "Malaysia"
 msgstr "Malajsie"
 
-#: src/common/util.c:1135
+#: src/common/util.c:1136
 msgid "Mozambique"
 msgstr "Mozambik"
 
-#: src/common/util.c:1136
+#: src/common/util.c:1137
 msgid "Namibia"
 msgstr "Namibie"
 
-#: src/common/util.c:1137
+#: src/common/util.c:1138
 msgid "Individual's Names"
 msgstr ""
 
-#: src/common/util.c:1138
+#: src/common/util.c:1139
 msgid "New Caledonia"
 msgstr "Nová Kaledonie"
 
-#: src/common/util.c:1139
+#: src/common/util.c:1140
 msgid "Niger"
 msgstr "Niger"
 
-#: src/common/util.c:1140
+#: src/common/util.c:1141
 msgid "Internic Network"
 msgstr "Internic Network"
 
-#: src/common/util.c:1141
+#: src/common/util.c:1142
 msgid "Norfolk Island"
 msgstr "Norfolk Island"
 
-#: src/common/util.c:1142
+#: src/common/util.c:1143
 msgid "Nigeria"
 msgstr "Nigérie"
 
-#: src/common/util.c:1143
+#: src/common/util.c:1144
 msgid "Nicaragua"
 msgstr "Nicaragua"
 
-#: src/common/util.c:1144
+#: src/common/util.c:1145
 msgid "Netherlands"
 msgstr "Holandsko"
 
-#: src/common/util.c:1145
+#: src/common/util.c:1146
 msgid "Norway"
 msgstr "Norsko"
 
-#: src/common/util.c:1146
+#: src/common/util.c:1147
 msgid "Nepal"
 msgstr "Nepál"
 
-#: src/common/util.c:1147
+#: src/common/util.c:1148
 msgid "Nauru"
 msgstr "Nauru"
 
-#: src/common/util.c:1148
+#: src/common/util.c:1149
 msgid "Niue"
 msgstr "Niue"
 
-#: src/common/util.c:1149
+#: src/common/util.c:1150
 msgid "New Zealand"
 msgstr "Nový Zéland"
 
-#: src/common/util.c:1150
+#: src/common/util.c:1151
 msgid "Oman"
 msgstr "Omán"
 
-#: src/common/util.c:1151
+#: src/common/util.c:1152
 msgid "Internic Non-Profit Organization"
 msgstr "Internic Non-Profit Organization"
 
-#: src/common/util.c:1152
+#: src/common/util.c:1153
 msgid "Panama"
 msgstr "Panama"
 
-#: src/common/util.c:1153
+#: src/common/util.c:1154
 msgid "Peru"
 msgstr "Peru"
 
-#: src/common/util.c:1154
+#: src/common/util.c:1155
 msgid "French Polynesia"
 msgstr "Francouzská Polynésie"
 
-#: src/common/util.c:1155
+#: src/common/util.c:1156
 msgid "Papua New Guinea"
 msgstr "Papua-Nová Guinea"
 
-#: src/common/util.c:1156
+#: src/common/util.c:1157
 msgid "Philippines"
 msgstr "Filipíny"
 
-#: src/common/util.c:1157
+#: src/common/util.c:1158
 msgid "Pakistan"
 msgstr "Pákistán"
 
-#: src/common/util.c:1158
+#: src/common/util.c:1159
 msgid "Poland"
 msgstr "Polsko"
 
-#: src/common/util.c:1159
+#: src/common/util.c:1160
 msgid "St. Pierre and Miquelon"
 msgstr "St. Pierre and Miquelon"
 
-#: src/common/util.c:1160
+#: src/common/util.c:1161
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
-#: src/common/util.c:1161
+#: src/common/util.c:1162
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: src/common/util.c:1162
+#: src/common/util.c:1163
 msgid "Professions"
 msgstr ""
 
-#: src/common/util.c:1163
+#: src/common/util.c:1164
 msgid "Palestinian Territory"
 msgstr "Palestinské teritorium"
 
-#: src/common/util.c:1164
+#: src/common/util.c:1165
 msgid "Portugal"
 msgstr "Portugalsko"
 
-#: src/common/util.c:1165
+#: src/common/util.c:1166
 msgid "Palau"
 msgstr "Palau"
 
-#: src/common/util.c:1166
+#: src/common/util.c:1167
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: src/common/util.c:1167
+#: src/common/util.c:1168
 msgid "Qatar"
 msgstr "Qatar"
 
-#: src/common/util.c:1168
+#: src/common/util.c:1169
 msgid "Reunion"
 msgstr "Sjednocení"
 
-#: src/common/util.c:1169
+#: src/common/util.c:1170
 msgid "Romania"
 msgstr "Rumunsko"
 
-#: src/common/util.c:1170
+#: src/common/util.c:1171
 msgid "Old School ARPAnet"
 msgstr "Starý školní ARPAnet"
 
-#: src/common/util.c:1171
+#: src/common/util.c:1172
 msgid "Serbia"
 msgstr ""
 
-#: src/common/util.c:1172
+#: src/common/util.c:1173
 msgid "Russian Federation"
 msgstr "Ruská federace"
 
-#: src/common/util.c:1173
+#: src/common/util.c:1174
 msgid "Rwanda"
 msgstr "Rwanda"
 
-#: src/common/util.c:1174
+#: src/common/util.c:1175
 msgid "Saudi Arabia"
 msgstr "Saudská arábie"
 
-#: src/common/util.c:1175
+#: src/common/util.c:1176
 msgid "Solomon Islands"
 msgstr "Šalamounovy ostrovy"
 
-#: src/common/util.c:1176
+#: src/common/util.c:1177
 msgid "Seychelles"
 msgstr "Seychelles"
 
-#: src/common/util.c:1177
+#: src/common/util.c:1178
 msgid "Sudan"
 msgstr "Súdán"
 
-#: src/common/util.c:1178
+#: src/common/util.c:1179
 msgid "Sweden"
 msgstr "Švédsko"
 
-#: src/common/util.c:1179
+#: src/common/util.c:1180
 msgid "Singapore"
 msgstr "Singapur"
 
-#: src/common/util.c:1180
+#: src/common/util.c:1181
 msgid "St. Helena"
 msgstr "St. Helena"
 
-#: src/common/util.c:1181
+#: src/common/util.c:1182
 msgid "Slovenia"
 msgstr "Slovinsko"
 
-#: src/common/util.c:1182
+#: src/common/util.c:1183
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Svalbard and Jan Mayen Islands"
 
-#: src/common/util.c:1183
+#: src/common/util.c:1184
 msgid "Slovak Republic"
 msgstr "Slovenská republika"
 
-#: src/common/util.c:1184
+#: src/common/util.c:1185
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
 
-#: src/common/util.c:1185
+#: src/common/util.c:1186
 msgid "San Marino"
 msgstr "San Marino"
 
-#: src/common/util.c:1186
+#: src/common/util.c:1187
 msgid "Senegal"
 msgstr "Senegal"
 
-#: src/common/util.c:1187
+#: src/common/util.c:1188
 msgid "Somalia"
 msgstr "Somálsko"
 
-#: src/common/util.c:1188
+#: src/common/util.c:1189
 msgid "Suriname"
 msgstr "Surinam"
 
-#: src/common/util.c:1189
+#: src/common/util.c:1190
 msgid "South Sudan"
 msgstr ""
 
-#: src/common/util.c:1190
+#: src/common/util.c:1191
 msgid "Sao Tome and Principe"
 msgstr "Sao Tome and Principe"
 
-#: src/common/util.c:1191
+#: src/common/util.c:1192
 msgid "Former USSR"
 msgstr "Bývalé USSR"
 
-#: src/common/util.c:1192
+#: src/common/util.c:1193
 msgid "El Salvador"
 msgstr "El Salvádor"
 
-#: src/common/util.c:1193
+#: src/common/util.c:1194
 msgid "Syria"
 msgstr "Sýrie"
 
-#: src/common/util.c:1194
+#: src/common/util.c:1195
 msgid "Swaziland"
 msgstr "Swaziland"
 
-#: src/common/util.c:1195
+#: src/common/util.c:1196
 msgid "Turks and Caicos Islands"
 msgstr "Turks and Caicos Islands"
 
-#: src/common/util.c:1196
+#: src/common/util.c:1197
 msgid "Chad"
 msgstr "Čad"
 
-#: src/common/util.c:1197
+#: src/common/util.c:1198
 msgid "Internet Communication Services"
 msgstr ""
 
-#: src/common/util.c:1198
+#: src/common/util.c:1199
 msgid "French Southern Territories"
 msgstr "Francouzská jižní teritoria"
 
-#: src/common/util.c:1199
+#: src/common/util.c:1200
 msgid "Togo"
 msgstr "Togo"
 
-#: src/common/util.c:1200
+#: src/common/util.c:1201
 msgid "Thailand"
 msgstr "Thajsko"
 
-#: src/common/util.c:1201
+#: src/common/util.c:1202
 msgid "Tajikistan"
 msgstr "Tajikistan"
 
-#: src/common/util.c:1202
+#: src/common/util.c:1203
 msgid "Tokelau"
 msgstr "Tokelau"
 
-#: src/common/util.c:1203 src/common/util.c:1207
+#: src/common/util.c:1204 src/common/util.c:1208
 msgid "East Timor"
 msgstr "Východní Timor"
 
-#: src/common/util.c:1204
+#: src/common/util.c:1205
 msgid "Turkmenistan"
 msgstr "Turkménistán"
 
-#: src/common/util.c:1205
+#: src/common/util.c:1206
 msgid "Tunisia"
 msgstr "Tunis"
 
-#: src/common/util.c:1206
+#: src/common/util.c:1207
 msgid "Tonga"
 msgstr "Tonga"
 
-#: src/common/util.c:1208
+#: src/common/util.c:1209
 msgid "Turkey"
 msgstr "Turecko"
 
-#: src/common/util.c:1209
+#: src/common/util.c:1210
 msgid "Travel and Tourism"
 msgstr ""
 
-#: src/common/util.c:1210
+#: src/common/util.c:1211
 msgid "Trinidad and Tobago"
 msgstr "Trinidad a Tobago"
 
-#: src/common/util.c:1211
+#: src/common/util.c:1212
 msgid "Tuvalu"
 msgstr "Tuvalu"
 
-#: src/common/util.c:1212
+#: src/common/util.c:1213
 msgid "Taiwan"
 msgstr "Taiwan"
 
-#: src/common/util.c:1213
+#: src/common/util.c:1214
 msgid "Tanzania"
 msgstr "Tanzánie"
 
-#: src/common/util.c:1214
+#: src/common/util.c:1215
 msgid "Ukraine"
 msgstr "Ukrajina"
 
-#: src/common/util.c:1215
+#: src/common/util.c:1216
 msgid "Uganda"
 msgstr "Uganda"
 
-#: src/common/util.c:1216
+#: src/common/util.c:1217
 msgid "United Kingdom"
 msgstr "Spojené Království"
 
-#: src/common/util.c:1217
+#: src/common/util.c:1218
 msgid "United States of America"
 msgstr "USA"
 
-#: src/common/util.c:1218
+#: src/common/util.c:1219
 msgid "Uruguay"
 msgstr "Uruguay"
 
-#: src/common/util.c:1219
+#: src/common/util.c:1220
 msgid "Uzbekistan"
 msgstr "Uzbekistán"
 
-#: src/common/util.c:1220
+#: src/common/util.c:1221
 msgid "Vatican City State"
 msgstr "Městský stát Vatikán"
 
-#: src/common/util.c:1221
+#: src/common/util.c:1222
 msgid "St. Vincent and the Grenadines"
 msgstr "St. Vincent and the Grenadines"
 
-#: src/common/util.c:1222
+#: src/common/util.c:1223
 msgid "Venezuela"
 msgstr "Venezuela"
 
-#: src/common/util.c:1223
+#: src/common/util.c:1224
 msgid "British Virgin Islands"
 msgstr "British Virgin Islands"
 
-#: src/common/util.c:1224
+#: src/common/util.c:1225
 msgid "US Virgin Islands"
 msgstr "US Virgin Islands"
 
-#: src/common/util.c:1225
+#: src/common/util.c:1226
 msgid "Vietnam"
 msgstr "Vietnam"
 
-#: src/common/util.c:1226
+#: src/common/util.c:1227
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
-#: src/common/util.c:1227
+#: src/common/util.c:1228
 msgid "Wallis and Futuna Islands"
 msgstr "Wallis and Futuna Islands"
 
-#: src/common/util.c:1228
+#: src/common/util.c:1229
 msgid "Samoa"
 msgstr "Samoa"
 
-#: src/common/util.c:1229
+#: src/common/util.c:1230
 msgid "Adult Entertainment"
 msgstr ""
 
-#: src/common/util.c:1230
+#: src/common/util.c:1231
 msgid "Yemen"
 msgstr "Yemen"
 
-#: src/common/util.c:1231
+#: src/common/util.c:1232
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: src/common/util.c:1232
+#: src/common/util.c:1233
 msgid "Yugoslavia"
 msgstr "Jugoslávie"
 
-#: src/common/util.c:1233
+#: src/common/util.c:1234
 msgid "South Africa"
 msgstr "Jižní Afrika"
 
-#: src/common/util.c:1234
+#: src/common/util.c:1235
 msgid "Zambia"
 msgstr "Zambie"
 
-#: src/common/util.c:1235
+#: src/common/util.c:1236
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#: src/common/util.c:1245 src/common/util.c:1255 src/fe-gtk/menu.c:617
+#: src/common/util.c:1246 src/common/util.c:1256 src/fe-gtk/menu.c:617
 msgid "Unknown"
 msgstr "Neznámé"
 
@@ -3072,7 +3051,7 @@ msgstr "Soubor"
 msgid "ETA"
 msgstr "ETA"
 
-#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:246
+#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:247
 msgid "Both"
 msgstr "Obě"
 
@@ -3201,7 +3180,7 @@ msgstr "Zobrazit uživatelský konfigurační adresář"
 msgid "Open an irc://server:port/channel URL"
 msgstr "Otevřít URL irc://server:port/channel"
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:297
+#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:298
 msgid "Execute command:"
 msgstr "Vykonat příkaz"
 
@@ -3970,7 +3949,7 @@ msgstr "Stro_m"
 msgid "_Network Meters"
 msgstr "_Měření sítě"
 
-#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:243
+#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:244
 msgid "Off"
 msgstr "Vypnuto"
 
@@ -4154,7 +4133,7 @@ msgstr "Naposledy viděn"
 msgid "Offline"
 msgstr "Offline"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:315
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:316
 msgid "Never"
 msgstr "Nikdy"
 
@@ -4204,15 +4183,15 @@ msgstr ""
 msgid "_Blink on"
 msgstr "_Zablikat při"
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:654
+#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:655
 msgid "Channel Message"
 msgstr "Zpráva kanálu"
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:655
+#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:656
 msgid "Private Message"
 msgstr "Soukromá zpráva"
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:656
+#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:657
 msgid "Highlighted Message"
 msgstr "Zvýrazněná zpráva"
 
@@ -4747,7 +4726,7 @@ msgstr ""
 msgid "Walloon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1898
+#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1899
 msgid "General"
 msgstr "Obecné"
 
@@ -4815,7 +4794,7 @@ msgstr "Zelená:"
 msgid "Blue:"
 msgstr "Modrá:"
 
-#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:554
+#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:555
 msgid "Time Stamps"
 msgstr "Časové značky"
 
@@ -4827,11 +4806,11 @@ msgstr "Povolit časové značky"
 msgid "Time stamp format:"
 msgstr "Formát časových značek:"
 
-#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:558
+#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:559
 msgid "See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:560
+#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:561
 msgid "See the strftime manpage for details."
 msgstr ""
 
@@ -4847,7 +4826,7 @@ msgstr ""
 msgid "Show number of users"
 msgstr ""
 
-#: src/fe-gtk/setup.c:206 src/fe-gtk/setup.c:253
+#: src/fe-gtk/setup.c:206 src/fe-gtk/setup.c:254
 msgid "A-Z"
 msgstr "A-Z"
 
@@ -4859,7 +4838,7 @@ msgstr "Poslední řečené pořadí"
 msgid "Input Box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:214 src/fe-gtk/setup.c:285
+#: src/fe-gtk/setup.c:214 src/fe-gtk/setup.c:286
 msgid "Use the Text box font and colors"
 msgstr "Použít v textu písmo a barvy"
 
@@ -4867,876 +4846,880 @@ msgstr "Použít v textu písmo a barvy"
 msgid "Show nick box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:216
+msgid "Show user mode icon in nick box"
+msgstr ""
+
+#: src/fe-gtk/setup.c:218
 msgid "Spell checking"
 msgstr "Kontrola pravopisu"
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:219
 msgid "Dictionaries to use:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:221
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:222
+#: src/fe-gtk/setup.c:223
 msgid "Use language codes. Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:227
 msgid "Nick Completion"
 msgstr "Dokončování přezdívky"
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:228
 msgid "Automatic nick completion (without TAB key)"
 msgstr "Automatické dokončování přezdívky (bez klávesy TAB)"
 
-#: src/fe-gtk/setup.c:229
+#: src/fe-gtk/setup.c:230
 msgid "Nick completion suffix:"
 msgstr "Přípona dokončení přezdívky:"
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:231
 msgid "Nick completion sorted:"
 msgstr "Dokončování přezdívky setříděno:"
 
-#: src/fe-gtk/setup.c:233
+#: src/fe-gtk/setup.c:234
 msgid "Input Box Codes"
 msgstr "Vstupní box s kódy"
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:235
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Interpretuje %nnn jako hodnoty ASCII"
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:236
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Interpretuje %C, %B jako barvu, tučně atd"
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:245
 msgid "Graphical"
 msgstr ""
 
-#: src/fe-gtk/setup.c:252
+#: src/fe-gtk/setup.c:253
 msgid "A-Z, Ops first"
 msgstr "A-Z, Op je první"
 
-#: src/fe-gtk/setup.c:254
+#: src/fe-gtk/setup.c:255
 msgid "Z-A, Ops last"
 msgstr "Z-a, Op je poslední"
 
-#: src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:256
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:256
+#: src/fe-gtk/setup.c:257
 msgid "Unsorted"
 msgstr "Netřídit"
 
-#: src/fe-gtk/setup.c:262 src/fe-gtk/setup.c:274
+#: src/fe-gtk/setup.c:263 src/fe-gtk/setup.c:275
 msgid "Left (Upper)"
 msgstr "Levý (Horní)"
 
-#: src/fe-gtk/setup.c:263 src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:264 src/fe-gtk/setup.c:276
 msgid "Left (Lower)"
 msgstr "Levý (Dolní)"
 
-#: src/fe-gtk/setup.c:264 src/fe-gtk/setup.c:276
+#: src/fe-gtk/setup.c:265 src/fe-gtk/setup.c:277
 msgid "Right (Upper)"
 msgstr "Pravý (horní)"
 
-#: src/fe-gtk/setup.c:265 src/fe-gtk/setup.c:277
+#: src/fe-gtk/setup.c:266 src/fe-gtk/setup.c:278
 msgid "Right (Lower)"
 msgstr "Pravý (Dolní)"
 
-#: src/fe-gtk/setup.c:266
+#: src/fe-gtk/setup.c:267
 msgid "Top"
 msgstr "Nahoře"
 
-#: src/fe-gtk/setup.c:267
+#: src/fe-gtk/setup.c:268
 msgid "Bottom"
 msgstr "Dole"
 
-#: src/fe-gtk/setup.c:268
+#: src/fe-gtk/setup.c:269
 msgid "Hidden"
 msgstr "Skryté"
 
-#: src/fe-gtk/setup.c:283
+#: src/fe-gtk/setup.c:284
 msgid "User List"
 msgstr "Seznam uživatelů"
 
-#: src/fe-gtk/setup.c:284
+#: src/fe-gtk/setup.c:285
 msgid "Show hostnames in user list"
 msgstr "Zobrazit hostitelské názvy v seznamu uživatelů"
 
-#: src/fe-gtk/setup.c:286
+#: src/fe-gtk/setup.c:287
 msgid "Show icons for user modes"
 msgstr ""
 
-#: src/fe-gtk/setup.c:286
+#: src/fe-gtk/setup.c:287
 msgid "Use graphical icons instead of text symbols in the user list."
 msgstr ""
 
-#: src/fe-gtk/setup.c:287
+#: src/fe-gtk/setup.c:288
 msgid "Show user count in channels"
 msgstr ""
 
-#: src/fe-gtk/setup.c:289
+#: src/fe-gtk/setup.c:290
 msgid "User list sorted by:"
 msgstr "Seznam uživatelů setříděný podle:"
 
-#: src/fe-gtk/setup.c:290
+#: src/fe-gtk/setup.c:291
 msgid "Show user list at:"
 msgstr "Zobrazit seznam uživatelů:"
 
-#: src/fe-gtk/setup.c:292
+#: src/fe-gtk/setup.c:293
 msgid "Away Tracking"
 msgstr ""
 
-#: src/fe-gtk/setup.c:293
+#: src/fe-gtk/setup.c:294
 msgid "Track the Away status of users and mark them in a different color"
 msgstr "Sleduje stav away (pryč) uživatelů a označuje je jinou barvou"
 
-#: src/fe-gtk/setup.c:294
+#: src/fe-gtk/setup.c:295
 msgid "On channels smaller than:"
 msgstr "Na kanálech menších jak:"
 
-#: src/fe-gtk/setup.c:296
+#: src/fe-gtk/setup.c:297
 msgid "Action Upon Double Click"
 msgstr "Akce při dvojkliku"
 
-#: src/fe-gtk/setup.c:299
+#: src/fe-gtk/setup.c:300
 msgid "Extra Gadgets"
 msgstr ""
 
-#: src/fe-gtk/setup.c:300
+#: src/fe-gtk/setup.c:301
 msgid "Lag meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:301
+#: src/fe-gtk/setup.c:302
 msgid "Throttle meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:309
 msgid "Windows"
 msgstr "Okna"
 
-#: src/fe-gtk/setup.c:309 src/fe-gtk/setup.c:323
+#: src/fe-gtk/setup.c:310 src/fe-gtk/setup.c:324
 msgid "Tabs"
 msgstr "Záložky"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:317
 msgid "Always"
 msgstr "Vždy"
 
-#: src/fe-gtk/setup.c:317
+#: src/fe-gtk/setup.c:318
 msgid "Only requested tabs"
 msgstr "Pouze požadované záložky"
 
-#: src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:326
 msgid "Tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:332
+#: src/fe-gtk/setup.c:333
 msgid "Switcher type:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:333
+#: src/fe-gtk/setup.c:334
 msgid "Open an extra tab for server messages"
 msgstr "Otevřít speciální záložku pro zprávy serveru"
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:335
 msgid "Open an extra tab for server notices"
 msgstr "Otevřít speciální záložku pro oznámení serveru"
 
-#: src/fe-gtk/setup.c:335
+#: src/fe-gtk/setup.c:336
 msgid "Open a new tab when you receive a private message"
 msgstr "Otevřít novou záložku jakmile přijde soukromá zpráva"
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:337
 msgid "Sort tabs in alphabetical order"
 msgstr "Třídit záložky v abecedním pořadí"
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:338
 msgid "Show icons in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:339
 msgid "Show dotted lines in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:340
 msgid "Smaller text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:340
+#: src/fe-gtk/setup.c:341
 msgid "Focus new tabs:"
 msgstr "Zaměřit se na nové záložky:"
 
-#: src/fe-gtk/setup.c:341
+#: src/fe-gtk/setup.c:342
 msgid "Show channel switcher at:"
 msgstr "Zobrazit přepínač kanálu:"
 
-#: src/fe-gtk/setup.c:342
+#: src/fe-gtk/setup.c:343
 msgid "Shorten tab labels to:"
 msgstr "Zkrácené popisky záložek na:"
 
-#: src/fe-gtk/setup.c:342
+#: src/fe-gtk/setup.c:343
 msgid "letters."
 msgstr "znaky."
 
-#: src/fe-gtk/setup.c:344
+#: src/fe-gtk/setup.c:345
 msgid "Tabs or Windows"
 msgstr "Záložky nebo okna"
 
-#: src/fe-gtk/setup.c:345
+#: src/fe-gtk/setup.c:346
 msgid "Open channels in:"
 msgstr "Otevřít kanály v:"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:347
 msgid "Open dialogs in:"
 msgstr "Otevřít dialogy v:"
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:348
 msgid "Open utilities in:"
 msgstr "Otevřít utility v:"
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:348
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Otevřít DCC, ignorace, oznámení, atd. v záložkách nebo oknech?"
 
-#: src/fe-gtk/setup.c:354
+#: src/fe-gtk/setup.c:355
 msgid "Messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:355
+#: src/fe-gtk/setup.c:356
 msgid "Scrollback"
 msgstr ""
 
-#: src/fe-gtk/setup.c:363
+#: src/fe-gtk/setup.c:364
 msgid "Ask for confirmation"
 msgstr ""
 
-#: src/fe-gtk/setup.c:364
+#: src/fe-gtk/setup.c:365
 msgid "Ask for download folder"
 msgstr ""
 
-#: src/fe-gtk/setup.c:365
+#: src/fe-gtk/setup.c:366
 msgid "Save without interaction"
 msgstr ""
 
-#: src/fe-gtk/setup.c:371
+#: src/fe-gtk/setup.c:372
 msgid "Files and Directories"
 msgstr "Soubory a adresáře"
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:373
 msgid "Auto accept file offers:"
 msgstr "Automaticky přijmout nabídku souboru:"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:374
 msgid "Download files to:"
 msgstr "Stáhnout soubory do:"
 
-#: src/fe-gtk/setup.c:374
+#: src/fe-gtk/setup.c:375
 msgid "Move completed files to:"
 msgstr "Přesunout kompletní soubory do:"
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:376
 msgid "Save nick name in filenames"
 msgstr "Uložit přezdívku ve jméně souborů"
 
-#: src/fe-gtk/setup.c:377
+#: src/fe-gtk/setup.c:378
 msgid "Network Settings"
 msgstr "Nastavení sítě"
 
-#: src/fe-gtk/setup.c:378
+#: src/fe-gtk/setup.c:379
 msgid "Get my address from the IRC server"
 msgstr "Vzít moji adresu ze serveru IRC"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:380
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a "
 "192.168.*.* address!"
 msgstr "Zeptat se IRC serveru na skutečnou adresu. Použít tuto pokud máte nějakou 192.168.*.*!"
 
-#: src/fe-gtk/setup.c:380
+#: src/fe-gtk/setup.c:381
 msgid "DCC IP address:"
 msgstr "DCC IP adresa:"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:382
 msgid "Claim you are at this address when offering files."
 msgstr "V okamžiku nabízení souboru tvrdit, že máte tuto adresu."
 
-#: src/fe-gtk/setup.c:382
+#: src/fe-gtk/setup.c:383
 msgid "First DCC send port:"
 msgstr "První port pro odesílání DCC:"
 
-#: src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:384
 msgid "Last DCC send port:"
 msgstr "Poslední port pro odesílání DCC:"
 
-#: src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:385
 msgid "!Leave ports at zero for full range."
 msgstr "!Nechat porty na nule pro nulové rozmezí."
 
-#: src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:387
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Maximální rychlost přenosu souboru (bytů za sekundu)"
 
-#: src/fe-gtk/setup.c:387
+#: src/fe-gtk/setup.c:388
 msgid "One upload:"
 msgstr "Jeden upload:"
 
-#: src/fe-gtk/setup.c:388 src/fe-gtk/setup.c:390
+#: src/fe-gtk/setup.c:389 src/fe-gtk/setup.c:391
 msgid "Maximum speed for one transfer"
 msgstr "Maximální rychlost jednoho přenosu"
 
-#: src/fe-gtk/setup.c:389
+#: src/fe-gtk/setup.c:390
 msgid "One download:"
 msgstr "Jeden download:"
 
-#: src/fe-gtk/setup.c:391
+#: src/fe-gtk/setup.c:392
 msgid "All uploads combined:"
 msgstr "Kombinace všech uploadů:"
 
-#: src/fe-gtk/setup.c:392 src/fe-gtk/setup.c:394
+#: src/fe-gtk/setup.c:393 src/fe-gtk/setup.c:395
 msgid "Maximum speed for all files"
 msgstr "Maximální rychlost pro všechny soubory"
 
-#: src/fe-gtk/setup.c:393
+#: src/fe-gtk/setup.c:394
 msgid "All downloads combined:"
 msgstr "Kombinace všech downloadů:"
 
-#: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:447 src/fe-gtk/setup.c:1897
+#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:448 src/fe-gtk/setup.c:1898
 msgid "Alerts"
 msgstr "Upozornění"
 
-#: src/fe-gtk/setup.c:425
+#: src/fe-gtk/setup.c:426
 msgid "Show tray balloons on:"
 msgstr "Zobrazit upozornění oznamovací ikony při:"
 
-#: src/fe-gtk/setup.c:427
+#: src/fe-gtk/setup.c:428
 msgid "Blink tray icon on:"
 msgstr "Zablikat oznamovací ikonou při:"
 
-#: src/fe-gtk/setup.c:428 src/fe-gtk/setup.c:450
+#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
 msgid "Blink task bar on:"
 msgstr "Zablikat pruhem úlohy při:"
 
-#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
+#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:452
 msgid "Make a beep sound on:"
 msgstr "Vydat zvuk při:"
 
-#: src/fe-gtk/setup.c:431
+#: src/fe-gtk/setup.c:432
 msgid "Enable system tray icon"
 msgstr "Povolit ikonu panelu nástrojů"
 
-#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:453
+#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:454
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:434 src/fe-gtk/setup.c:455
+#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
 msgid "Highlighted Messages"
 msgstr "Zvýrazněné zprávy"
 
-#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
+#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr "Zvýrazněné zprávy jsou ty, kde je zmíněna vaše přezdívka a také:"
 
-#: src/fe-gtk/setup.c:437 src/fe-gtk/setup.c:458
+#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
 msgid "Extra words to highlight:"
 msgstr "Další slova pro zvýraznění:"
 
-#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
 msgid "Nick names not to highlight:"
 msgstr "Přezdívky, které se nebudou zvýrazňovat:"
 
-#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
 msgid "Nick names to always highlight:"
 msgstr "Přezdívky, které se budou zvýrazňovat:"
 
-#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
+#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr ""
 
-#: src/fe-gtk/setup.c:468
+#: src/fe-gtk/setup.c:469
 msgid "Default Messages"
 msgstr "Výchozí zpráva"
 
-#: src/fe-gtk/setup.c:469
+#: src/fe-gtk/setup.c:470
 msgid "Quit:"
 msgstr "Konec:"
 
-#: src/fe-gtk/setup.c:470
+#: src/fe-gtk/setup.c:471
 msgid "Leave channel:"
 msgstr "Opuštění kanálu:"
 
-#: src/fe-gtk/setup.c:471
+#: src/fe-gtk/setup.c:472
 msgid "Away:"
 msgstr "Pryč"
 
-#: src/fe-gtk/setup.c:473
+#: src/fe-gtk/setup.c:474
 msgid "Away"
 msgstr "Away"
 
-#: src/fe-gtk/setup.c:474
+#: src/fe-gtk/setup.c:475
 msgid "Announce away messages"
 msgstr "Zasílat away (pryč) zprávy"
 
-#: src/fe-gtk/setup.c:475
+#: src/fe-gtk/setup.c:476
 msgid "Announce your away messages to all channels."
 msgstr ""
 
-#: src/fe-gtk/setup.c:476
+#: src/fe-gtk/setup.c:477
 msgid "Show away once"
 msgstr "Zobrazovat away jednou"
 
-#: src/fe-gtk/setup.c:476
+#: src/fe-gtk/setup.c:477
 msgid "Show identical away messages only once."
 msgstr ""
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:478
 msgid "Automatically unmark away"
 msgstr "Automaticky zrušit stav away"
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:478
 msgid "Unmark yourself as away before sending messages."
 msgstr ""
 
-#: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:516
+#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:517
 msgid "Advanced Settings"
 msgstr "Rozšířená nastavení"
 
-#: src/fe-gtk/setup.c:486 src/fe-gtk/setup.c:517
+#: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:518
 msgid "Alternative fonts:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
+#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
 msgid "Auto reconnect delay:"
 msgstr "Zpoždění při opakovaném automatickém připojení:"
 
-#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
 msgid "Display MODEs in raw form"
 msgstr "Zobrazit módy v jejich podobě"
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Whois on notify"
 msgstr "Whois při oznámení"
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Sends a /WHOIS when a user comes online in your notify list."
 msgstr ""
 
-#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide join and part messages"
 msgstr "Skrývat zprávy o připojení a odchodu"
 
-#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide channel join/part messages by default."
 msgstr ""
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
 msgid "Display lists in compact mode"
 msgstr ""
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
 msgid "Use less spacing between user list/channel tree rows."
 msgstr ""
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
 msgid "Auto Open DCC Windows"
 msgstr "Automaticky otevřít okna DCC"
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
 msgid "Send window"
 msgstr "Poslat okno"
 
-#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
+#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
 msgid "Receive window"
 msgstr "Obdržet okno"
 
-#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
+#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
 msgid "Chat window"
 msgstr "Okno hovoru"
 
-#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
 msgid "Auto Copy Behavior"
 msgstr ""
 
-#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
 msgid "Automatically copy selected text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:531
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:502 src/fe-gtk/setup.c:533
+#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
 msgid "Automatically include time stamps"
 msgstr ""
 
-#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
+#: src/fe-gtk/setup.c:504 src/fe-gtk/setup.c:535
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:505 src/fe-gtk/setup.c:536
+#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
 msgid "Automatically include color information"
 msgstr ""
 
-#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
+#: src/fe-gtk/setup.c:507 src/fe-gtk/setup.c:538
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:523
 msgid "Allow only one instance of HexChat to run"
 msgstr ""
 
-#: src/fe-gtk/setup.c:547 src/fe-gtk/setup.c:1899
+#: src/fe-gtk/setup.c:548 src/fe-gtk/setup.c:1900
 msgid "Logging"
 msgstr "Přihlašování"
 
-#: src/fe-gtk/setup.c:548
+#: src/fe-gtk/setup.c:549
 msgid "Display scrollback from previous session"
 msgstr ""
 
-#: src/fe-gtk/setup.c:549
+#: src/fe-gtk/setup.c:550
 msgid "Scrollback lines:"
 msgstr "Posuvníky:"
 
-#: src/fe-gtk/setup.c:550
+#: src/fe-gtk/setup.c:551
 msgid "Enable logging of conversations to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:551
+#: src/fe-gtk/setup.c:552
 msgid "Log filename:"
 msgstr "Jméno logu:"
 
-#: src/fe-gtk/setup.c:552
+#: src/fe-gtk/setup.c:553
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=Server %c=Kanál %n=Síť."
 
-#: src/fe-gtk/setup.c:555
+#: src/fe-gtk/setup.c:556
 msgid "Insert timestamps in logs"
 msgstr "Přidat do logů časové značky"
 
-#: src/fe-gtk/setup.c:556
+#: src/fe-gtk/setup.c:557
 msgid "Log timestamp format:"
 msgstr "Formát časových značek v logu:"
 
-#: src/fe-gtk/setup.c:563
+#: src/fe-gtk/setup.c:564
 msgid "URLs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:564
+#: src/fe-gtk/setup.c:565
 msgid "Enable logging of URLs to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:565
+#: src/fe-gtk/setup.c:566
 msgid "Enable URL grabber"
 msgstr ""
 
-#: src/fe-gtk/setup.c:566
+#: src/fe-gtk/setup.c:567
 msgid "Maximum number of URLs to grab:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:573
+#: src/fe-gtk/setup.c:574
 msgid "(Disabled)"
 msgstr "(Vypnuto)"
 
-#: src/fe-gtk/setup.c:574
+#: src/fe-gtk/setup.c:575
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:575
+#: src/fe-gtk/setup.c:576
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:576
+#: src/fe-gtk/setup.c:577
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:577
+#: src/fe-gtk/setup.c:578
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:579
+#: src/fe-gtk/setup.c:580
 msgid "MS Proxy (ISA)"
 msgstr "MS Proxy (ISA)"
 
-#: src/fe-gtk/setup.c:582
+#: src/fe-gtk/setup.c:583
 msgid "Auto"
 msgstr ""
 
-#: src/fe-gtk/setup.c:589
+#: src/fe-gtk/setup.c:590
 msgid "All Connections"
 msgstr "Všechna připojení"
 
-#: src/fe-gtk/setup.c:590
+#: src/fe-gtk/setup.c:591
 msgid "IRC Server Only"
 msgstr "Pouze servery IRC"
 
-#: src/fe-gtk/setup.c:591
+#: src/fe-gtk/setup.c:592
 msgid "DCC Get Only"
 msgstr "Pouze Příjem DCC"
 
-#: src/fe-gtk/setup.c:597
+#: src/fe-gtk/setup.c:598
 msgid "Your Address"
 msgstr "Vaše adresa"
 
-#: src/fe-gtk/setup.c:598
+#: src/fe-gtk/setup.c:599
 msgid "Bind to:"
 msgstr "Přiřadit k:"
 
-#: src/fe-gtk/setup.c:599
+#: src/fe-gtk/setup.c:600
 msgid "Only useful for computers with multiple addresses."
 msgstr "Užitečné pouze v případě počítačů s více adresami."
 
-#: src/fe-gtk/setup.c:601
+#: src/fe-gtk/setup.c:602
 msgid "Proxy Server"
 msgstr "Proxy server"
 
-#: src/fe-gtk/setup.c:602
+#: src/fe-gtk/setup.c:603
 msgid "Hostname:"
 msgstr "Jméno počítače:"
 
-#: src/fe-gtk/setup.c:603
+#: src/fe-gtk/setup.c:604
 msgid "Port:"
 msgstr "Port:"
 
-#: src/fe-gtk/setup.c:604
+#: src/fe-gtk/setup.c:605
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/fe-gtk/setup.c:605
+#: src/fe-gtk/setup.c:606
 msgid "Use proxy for:"
 msgstr "Použít proxy"
 
-#: src/fe-gtk/setup.c:607
+#: src/fe-gtk/setup.c:608
 msgid "Proxy Authentication"
 msgstr "Autentikace Proxy"
 
-#: src/fe-gtk/setup.c:609
+#: src/fe-gtk/setup.c:610
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Použít autentikaci (MS proxy, HTTP nebo Socks5 pouze)"
 
-#: src/fe-gtk/setup.c:611
+#: src/fe-gtk/setup.c:612
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Použít autentikaci (HTTP nebo Socks5 pouze)"
 
-#: src/fe-gtk/setup.c:613
+#: src/fe-gtk/setup.c:614
 msgid "Username:"
 msgstr "Uživatelské jméno:"
 
-#: src/fe-gtk/setup.c:614
+#: src/fe-gtk/setup.c:615
 msgid "Password:"
 msgstr "Heslo:"
 
-#: src/fe-gtk/setup.c:1045
+#: src/fe-gtk/setup.c:1046
 msgid "Select an Image File"
 msgstr "Zvolit soubor s obrázkem"
 
-#: src/fe-gtk/setup.c:1080
+#: src/fe-gtk/setup.c:1081
 msgid "Select Download Folder"
 msgstr "Zvolit adresář pro stažení"
 
-#: src/fe-gtk/setup.c:1089
+#: src/fe-gtk/setup.c:1090
 msgid "Select font"
 msgstr "Výběr písma"
 
-#: src/fe-gtk/setup.c:1189
+#: src/fe-gtk/setup.c:1190
 msgid "Browse..."
 msgstr "Procházet..."
 
-#: src/fe-gtk/setup.c:1327
+#: src/fe-gtk/setup.c:1328
 msgid "Mark identified users with:"
 msgstr "Označit idetifikované uživatele s:"
 
-#: src/fe-gtk/setup.c:1329
+#: src/fe-gtk/setup.c:1330
 msgid "Mark not-identified users with:"
 msgstr "Označit neidentifikované uživatele s:"
 
-#: src/fe-gtk/setup.c:1336
+#: src/fe-gtk/setup.c:1337
 msgid "Open Data Folder"
 msgstr "Otevřít adresář s daty"
 
-#: src/fe-gtk/setup.c:1390
+#: src/fe-gtk/setup.c:1391
 msgid "Select color"
 msgstr "Výběr barvy"
 
-#: src/fe-gtk/setup.c:1470
+#: src/fe-gtk/setup.c:1471
 msgid "Text Colors"
 msgstr "Barvy textu"
 
-#: src/fe-gtk/setup.c:1472
+#: src/fe-gtk/setup.c:1473
 msgid "mIRC colors:"
 msgstr "barvy mIRC"
 
-#: src/fe-gtk/setup.c:1480
+#: src/fe-gtk/setup.c:1481
 msgid "Local colors:"
 msgstr "Místní barvy:"
 
-#: src/fe-gtk/setup.c:1488 src/fe-gtk/setup.c:1493
+#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
 msgid "Foreground:"
 msgstr "Popředí:"
 
-#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
+#: src/fe-gtk/setup.c:1490 src/fe-gtk/setup.c:1495
 msgid "Background:"
 msgstr "Pozadí:"
 
-#: src/fe-gtk/setup.c:1491
+#: src/fe-gtk/setup.c:1492
 msgid "Selected Text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1496
+#: src/fe-gtk/setup.c:1497
 msgid "Interface Colors"
 msgstr "Barvy rozhraní"
 
-#: src/fe-gtk/setup.c:1498
+#: src/fe-gtk/setup.c:1499
 msgid "New data:"
 msgstr "Nová data:"
 
-#: src/fe-gtk/setup.c:1499
+#: src/fe-gtk/setup.c:1500
 msgid "Marker line:"
 msgstr "Značící čára"
 
-#: src/fe-gtk/setup.c:1500
+#: src/fe-gtk/setup.c:1501
 msgid "New message:"
 msgstr "Nová zpráva:"
 
-#: src/fe-gtk/setup.c:1501
+#: src/fe-gtk/setup.c:1502
 msgid "Away user:"
 msgstr "Uživatel je pryč:"
 
-#: src/fe-gtk/setup.c:1502
+#: src/fe-gtk/setup.c:1503
 msgid "Highlight:"
 msgstr "Zvýraznění:"
 
-#: src/fe-gtk/setup.c:1504
+#: src/fe-gtk/setup.c:1505
 msgid "Spell checker:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1507
+#: src/fe-gtk/setup.c:1508
 msgid "Color Stripping"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1613 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1614 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "Událost"
 
-#: src/fe-gtk/setup.c:1619
+#: src/fe-gtk/setup.c:1620
 msgid "Sound file"
 msgstr "Soubor se zvukem"
 
-#: src/fe-gtk/setup.c:1654
+#: src/fe-gtk/setup.c:1655
 msgid "Select a sound file"
 msgstr "Zvolit soubor se zvukem"
 
-#: src/fe-gtk/setup.c:1726
+#: src/fe-gtk/setup.c:1727
 msgid "Sound playing method:"
 msgstr "Metoda přehrávání zvuku:"
 
-#: src/fe-gtk/setup.c:1734
+#: src/fe-gtk/setup.c:1735
 msgid "External sound playing _program:"
 msgstr "Externí _program pro přehrávání zvuku:"
 
-#: src/fe-gtk/setup.c:1752
+#: src/fe-gtk/setup.c:1753
 msgid "_External program"
 msgstr "_Externí program"
 
-#: src/fe-gtk/setup.c:1762
+#: src/fe-gtk/setup.c:1763
 msgid "_Automatic"
 msgstr "_Automaticky"
 
-#: src/fe-gtk/setup.c:1775
+#: src/fe-gtk/setup.c:1776
 msgid "Sound files _directory:"
 msgstr "Adresář pro zvuky:"
 
-#: src/fe-gtk/setup.c:1814
+#: src/fe-gtk/setup.c:1815
 msgid "Sound file:"
 msgstr "Zvukový soubor:"
 
-#: src/fe-gtk/setup.c:1829
+#: src/fe-gtk/setup.c:1830
 msgid "_Browse..."
 msgstr "_Procházet..."
 
-#: src/fe-gtk/setup.c:1840
+#: src/fe-gtk/setup.c:1841
 msgid "_Play"
 msgstr "Př_ehrát"
 
-#: src/fe-gtk/setup.c:1889
+#: src/fe-gtk/setup.c:1890
 msgid "Interface"
 msgstr "Uživatelské rozhraní"
 
-#: src/fe-gtk/setup.c:1890
+#: src/fe-gtk/setup.c:1891
 msgid "Appearance"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1891
+#: src/fe-gtk/setup.c:1892
 msgid "Input box"
 msgstr "Vstupní pole"
 
-#: src/fe-gtk/setup.c:1892
+#: src/fe-gtk/setup.c:1893
 msgid "User list"
 msgstr "Seznam uživatelů"
 
-#: src/fe-gtk/setup.c:1893
+#: src/fe-gtk/setup.c:1894
 msgid "Channel switcher"
 msgstr "Přepínač kanálu"
 
-#: src/fe-gtk/setup.c:1894
+#: src/fe-gtk/setup.c:1895
 msgid "Colors"
 msgstr "Barvy"
 
-#: src/fe-gtk/setup.c:1896
+#: src/fe-gtk/setup.c:1897
 msgid "Chatting"
 msgstr "Chatování"
 
-#: src/fe-gtk/setup.c:1900
+#: src/fe-gtk/setup.c:1901
 msgid "Sound"
 msgstr "Zvuky"
 
-#: src/fe-gtk/setup.c:1901
+#: src/fe-gtk/setup.c:1902
 msgid "Advanced"
 msgstr "Pokročilá nastavení"
 
-#: src/fe-gtk/setup.c:1904
+#: src/fe-gtk/setup.c:1905
 msgid "Network setup"
 msgstr "Nastavení sítě"
 
-#: src/fe-gtk/setup.c:1905
+#: src/fe-gtk/setup.c:1906
 msgid "File transfers"
 msgstr "Přenosy souboru"
 
-#: src/fe-gtk/setup.c:2036
+#: src/fe-gtk/setup.c:2037
 msgid "Categories"
 msgstr "Kategorie"
 
-#: src/fe-gtk/setup.c:2243
+#: src/fe-gtk/setup.c:2246
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr "Strom není možné umístit nahoru nebo dospod!\nZměňte prosím nejprve rozložení <b>Záložek</b> v nabídce <b>Zobrazit</b>."
 
-#: src/fe-gtk/setup.c:2270
+#: src/fe-gtk/setup.c:2273
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:2277
+#: src/fe-gtk/setup.c:2280
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Některá z nastavení, která byla změněna, vyžadují restart aplikace."
 
-#: src/fe-gtk/setup.c:2285
+#: src/fe-gtk/setup.c:2288
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5744,9 +5727,35 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr "*UPOZORNĚNÍ*\nAutomatické přijmutí DCC do vašeho domovského adresáře\nmůže být nebezpečné a zneužitelné. Např.:\nNěkdo vám může poslat soubor .bash_profile"
 
-#: src/fe-gtk/setup.c:2318
+#: src/fe-gtk/setup.c:2321
 msgid ": Preferences"
 msgstr "XChat: Nastavení"
+
+#: src/fe-gtk/sexy-spell-entry.c:465
+msgid "<i>(no suggestions)</i>"
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:479
+msgid "More..."
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:548
+#, c-format
+msgid "Add \"%s\" to Dictionary"
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:590
+msgid "Ignore All"
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:625
+msgid "Spelling Suggestions"
+msgstr ""
+
+#: src/fe-gtk/sexy-spell-entry.c:1071
+#, c-format
+msgid "enchant error for language: %s"
+msgstr ""
 
 #: src/fe-gtk/textgui.c:180
 msgid "There was an error parsing the string"
