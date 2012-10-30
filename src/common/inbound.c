@@ -45,7 +45,6 @@
 #include "servlist.h"
 #include "text.h"
 #include "ctcp.h"
-#include "plugin.h"
 #include "hexchatc.h"
 
 
