@@ -14,7 +14,7 @@ extern void *url_tree;
 
 void url_clear (void);
 void url_save_tree (const char *fname, const char *mode, gboolean fullpath);
-int url_check_word (char *word, int len);
+int url_check_word (const char *word, int len);
 void url_check_line (char *buf, int len);
 
 #endif

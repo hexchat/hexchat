@@ -1053,7 +1053,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 static int
 server_cleanup (server * serv)
 {
-	fe_set_lag (serv, 0.0);
+	fe_set_lag (serv, 0);
 
 	if (serv->iotag)
 	{

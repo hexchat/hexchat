@@ -376,7 +376,7 @@ tray_toggle_visibility (gboolean force_hide)
 	/* ph may have an invalid context now */
 	hexchat_set_context (ph, hexchat_find_context (ph, NULL, NULL));
 
-	win = hexchat_get_info (ph, "gtkwin_ptr");
+	win = GTK_WINDOW (hexchat_get_info (ph, "gtkwin_ptr"));
 
 	tray_stop_flash ();
 	tray_reset_counts ();

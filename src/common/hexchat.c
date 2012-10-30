@@ -1147,7 +1147,7 @@ main (int argc, char *argv[])
 			if (hextray_mode ())
 			{
 				/* FindWindow() doesn't support wildcards so we check all the open windows */
-				EnumWindows (enum_windows_impl, NULL);
+				EnumWindows (enum_windows_impl, (LPARAM) NULL);
 				return 0;
 			}
 			else

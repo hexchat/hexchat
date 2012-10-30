@@ -178,7 +178,7 @@ url_add (char *urltext, int len)
    2.4.4 release. */
 
 int
-url_check_word (char *word, int len)
+url_check_word (const char *word, int len)
 {
 #define D(x) (x), ((sizeof (x)) - 1)
 	static const struct {

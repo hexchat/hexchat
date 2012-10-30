@@ -166,7 +166,7 @@ list_delentry (GSList ** list, char *name)
 }
 
 char *
-cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
+cfg_get_str (char *cfg, const char *var, char *dest, int dest_len)
 {
 	char buffer[128];	/* should be plenty for a variable name */
 

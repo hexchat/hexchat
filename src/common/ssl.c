@@ -206,7 +206,7 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 struct chiper_info *
 _SSL_get_cipher_info (SSL * ssl)
 {
-	SSL_CIPHER *c;
+	const SSL_CIPHER *c;
 
 
 	c = SSL_get_current_cipher (ssl);

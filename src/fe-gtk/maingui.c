@@ -2641,7 +2641,7 @@ static void
 mg_nickclick_cb (GtkWidget *button, gpointer userdata)
 {
 	fe_get_str (_("Enter new nickname:"), current_sess->server->nick,
-					mg_change_nick, 1);
+					mg_change_nick, (void *) 1);
 }
 
 /* make sure chanview and userlist positions are sane */

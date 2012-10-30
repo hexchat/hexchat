@@ -2179,7 +2179,7 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 void
 gtk_xtext_copy_selection (GtkXText *xtext)
 {
-	gtk_xtext_set_clip_owner (xtext, NULL);
+	gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), NULL);
 }
 
 static void
@@ -4057,7 +4057,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	ReleaseDC (hwnd, hdc);
 
 	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
-	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width+128, height);
+	img = gdk_drawable_get_image (GTK_WIDGET (xtext)->window, 0, 0, width+128, height);
 	xtext->pixmap = win32_tint (xtext, img, img->width, img->height);
 
 #else

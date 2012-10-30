@@ -573,7 +573,7 @@ fe_get_str (char *msg, char *def, void *callback, void *userdata)
 										NULL);
 	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
 
-	if ((int*) userdata == 1)	/* nick box is usually on the very bottom, make it centered */
+	if ((int) userdata == 1)	/* nick box is usually on the very bottom, make it centered */
 	{
 		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
 	}
