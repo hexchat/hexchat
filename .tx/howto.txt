@@ -8,7 +8,7 @@ More info: http://help.transifex.com/features/client/index.html
 Append 'type = PO' to .tx\config without apostrophes
 
 Push the resources to Transifex
-# tx push -s -t
+# tx push --source --translation
 
 
 
@@ -18,7 +18,7 @@ Regenerate the source file (hexchat.pot) on a Unix machine
 # rm po/hexchat.pot && ./autogen.sh && ./configure --enable-nls && make
 
 Push the updated source file to Transifex (this automatically updates all translation files)
-# tx push -s
+# tx push --source
 
 
 
@@ -31,3 +31,11 @@ Update GitHub repo
 # git add po/
 # git commit
 # git push
+
+
+
+4) To update just one translation with local changes:
+
+# tx push --translation --language xy
+
+Where xy is the language code
