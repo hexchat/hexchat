@@ -1436,7 +1436,7 @@ menu_pluginlist (void)
 
 #define url_help           _("URL Handlers - Special codes:\n\n"\
                            "%s  =  the URL string\n\n"\
-                           "Putting a ! infront of the command\n"\
+                           "Putting a ! in front of the command\n"\
                            "indicates it should be sent to a\n"\
                            "shell instead of HexChat")
 

@@ -397,7 +397,7 @@ userlist_add (struct session *sess, char *name, char *hostname)
 
 	sess->total++;
 
-	/* most ircds don't support multiple modechars infront of the nickname
+	/* most ircds don't support multiple modechars in front of the nickname
       for /NAMES - though they should. */
 	while (prefix_chars)
 	{
