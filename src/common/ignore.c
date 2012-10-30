@@ -36,6 +36,7 @@
 #include "text.h"
 #include "util.h"
 #include "hexchatc.h"
+#include "typedef.h"
 
 
 int ignored_ctcp = 0;			  /* keep a count of all we ignore */

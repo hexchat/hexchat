@@ -29,6 +29,7 @@
 #include "fe.h"
 #include "text.h"
 #include "hexchatc.h"
+#include "typedef.h"
 
 #ifdef WIN32
 #include <io.h>

@@ -1,3 +1,8 @@
+#ifndef HEXCHAT_TYPEDEF_H
+#define HEXCHAT_TYPEDEF_H
+
+#ifdef WIN32
+
 #ifndef SSIZE_T_DEFINED
 #ifdef ssize_t
 #undef ssize_t
@@ -8,4 +13,13 @@ typedef __int64          ssize_t;
 typedef _W64 int         ssize_t;
 #endif
 #define SSIZE_T_DEFINED
+#endif
+
+#ifndef fstat
+#define fstat _fstat
+#define stat _stat
+#endif
+
+#endif
+
 #endif

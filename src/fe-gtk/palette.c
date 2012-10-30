@@ -34,6 +34,7 @@
 #include "../common/hexchat.h"
 #include "../common/util.h"
 #include "../common/cfgfiles.h"
+#include "../common/typedef.h"
 
 
 GdkColor colors[] = {

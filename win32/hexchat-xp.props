@@ -11,7 +11,8 @@
     <YourPerl516Path>c:\mozilla-build\perl-5.16</YourPerl516Path>
     <YourPythonPath>c:\mozilla-build\python-2.7</YourPythonPath>
     <!-- YOU SHOULDN'T TOUCH ANYTHING BELOW -->
-    <OwnFlags>G_DISABLE_CAST_CHECKS;G_DISABLE_DEPRECATED;GDK_PIXBUF_DISABLE_DEPRECATED;GDK_DISABLE_DEPRECATED;HAVE_STRTOULL;strtoull=_strtoui64;strcasecmp=stricmp;strncasecmp=strnicmp;__inline__=__inline;</OwnFlags>
+	<!-- G_DISABLE_DEPRECATED is unfeasible due to g_completion_* -->
+    <OwnFlags>G_DISABLE_CAST_CHECKS;GDK_PIXBUF_DISABLE_DEPRECATED;GDK_DISABLE_DEPRECATED;HAVE_STRTOULL;strtoull=_strtoui64;strcasecmp=stricmp;strncasecmp=strnicmp;__inline__=__inline;</OwnFlags>
     <DepsRoot>$(YourDepsPath)\$(PlatformName)</DepsRoot>
     <GendefPath>$(YourGendefPath)</GendefPath>
     <LuaLib>lua51</LuaLib>
@@ -111,7 +112,7 @@ copy "$(ProgramFiles)\Codejock Software\ISSkin\ISSkinU.dll" "$(HexChatRel)"
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <WarningLevel>Level2</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
   </ItemDefinitionGroup>
 

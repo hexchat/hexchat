@@ -44,6 +44,7 @@
 typedef struct session hexchat_context;
 #include "hexchat-plugin.h"
 #include "plugin.h"
+#include "typedef.h"
 
 
 #include "hexchatc.h"

@@ -60,7 +60,7 @@ pixmap_load_from_file_real (char *file)
 	if (!img)
 		return NULL;
 	gdk_pixbuf_render_pixmap_and_mask (img, &pixmap, NULL, 128);
-	gdk_pixbuf_unref (img);
+	g_object_unref (img);
 
 	return pixmap;
 }

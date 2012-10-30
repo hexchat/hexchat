@@ -43,6 +43,7 @@
 #include "outbound.h"
 #include "hexchatc.h"
 #include "text.h"
+#include "typedef.h"
 #ifdef WIN32
 #include <windows.h>
 #endif

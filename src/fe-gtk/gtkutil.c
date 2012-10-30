@@ -51,6 +51,7 @@
 #include "../common/util.h"
 #include "../common/cfgfiles.h"
 #include "../common/hexchatc.h"
+#include "../common/typedef.h"
 #include "gtkutil.h"
 #include "pixmaps.h"
 
