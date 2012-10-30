@@ -291,16 +291,16 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	xchat_hook_command (ph, "SASL", XCHAT_PRI_NORM, sasl_cmd_cb, sasl_help, 0);
-	xchat_hook_print (ph, "Connected", XCHAT_PRI_NORM, connect_cb, NULL);
-	/* xchat_hook_print (ph, "Disconnected", XCHAT_PRI_NORM, disconnect_cb, NULL); */
-	xchat_hook_server (ph, "CAP", XCHAT_PRI_NORM, cap_cb, NULL);
-	xchat_hook_server (ph, "RAW LINE", XCHAT_PRI_NORM, server_cb, NULL);
-	xchat_hook_server (ph, "903", XCHAT_PRI_NORM, authend_cb, NULL);
-	xchat_hook_server (ph, "904", XCHAT_PRI_NORM, authend_cb, NULL);
-	xchat_hook_server (ph, "905", XCHAT_PRI_NORM, authend_cb, NULL);
-	xchat_hook_server (ph, "906", XCHAT_PRI_NORM, authend_cb, NULL);
-	xchat_hook_server (ph, "907", XCHAT_PRI_NORM, authend_cb, NULL);
+	xchat_hook_command (ph, "SASL", HEXCHAT_PRI_NORM, sasl_cmd_cb, sasl_help, 0);
+	xchat_hook_print (ph, "Connected", HEXCHAT_PRI_NORM, connect_cb, NULL);
+	/* xchat_hook_print (ph, "Disconnected", HEXCHAT_PRI_NORM, disconnect_cb, NULL); */
+	xchat_hook_server (ph, "CAP", HEXCHAT_PRI_NORM, cap_cb, NULL);
+	xchat_hook_server (ph, "RAW LINE", HEXCHAT_PRI_NORM, server_cb, NULL);
+	xchat_hook_server (ph, "903", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	xchat_hook_server (ph, "904", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	xchat_hook_server (ph, "905", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	xchat_hook_server (ph, "906", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	xchat_hook_server (ph, "907", HEXCHAT_PRI_NORM, authend_cb, NULL);
 
 	xchat_printf (ph, "%s plugin loaded\n", name);
 

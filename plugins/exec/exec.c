@@ -124,7 +124,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	xchat_hook_command (ph, "EXEC", XCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside XChat", 0);
+	xchat_hook_command (ph, "EXEC", HEXCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside XChat", 0);
 	xchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */

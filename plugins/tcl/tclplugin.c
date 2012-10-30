@@ -832,7 +832,7 @@ static int tcl_on(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[])
         for (index = 0; index < XC_SIZE; index++) {
             if (strcmp(xc[index].event, token) == 0) {
                 if (xc[index].hook == NULL) {
-                    xc[index].hook = xchat_hook_print(ph, xc[index].emit, XCHAT_PRI_NORM, Print_Hook, (void *) index);
+                    xc[index].hook = xchat_hook_print(ph, xc[index].emit, HEXCHAT_PRI_NORM, Print_Hook, (void *) index);
                     break;
                 }
             }
@@ -950,7 +950,7 @@ static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, const char *argv
             if (string[0] == '@')
                 aliasPtr->hook = NULL;
             else
-                aliasPtr->hook = xchat_hook_command(ph, string, XCHAT_PRI_NORM, Command_Alias, help, 0);
+                aliasPtr->hook = xchat_hook_command(ph, string, HEXCHAT_PRI_NORM, Command_Alias, help, 0);
         } else {
             aliasPtr = Tcl_GetHashValue(entry);
             DeleteInternalProc(aliasPtr->procPtr);
@@ -2245,13 +2245,13 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
 
     Tcl_Plugin_Init();
 
-    raw_line_hook = xchat_hook_server(ph, "RAW LINE", XCHAT_PRI_NORM, Server_raw_line, NULL);
-    Command_TCL_hook = xchat_hook_command(ph, "tcl", XCHAT_PRI_NORM, Command_TCL, 0, 0);
-    Command_Source_hook = xchat_hook_command(ph, "source", XCHAT_PRI_NORM, Command_Source, 0, 0);
-    Command_Reload_hook = xchat_hook_command(ph, "reloadall", XCHAT_PRI_NORM, Command_Reloadall, 0, 0);
-    Command_Load_hook = xchat_hook_command(ph, "LOAD", XCHAT_PRI_NORM, Command_Source, 0, 0);
+    raw_line_hook = xchat_hook_server(ph, "RAW LINE", HEXCHAT_PRI_NORM, Server_raw_line, NULL);
+    Command_TCL_hook = xchat_hook_command(ph, "tcl", HEXCHAT_PRI_NORM, Command_TCL, 0, 0);
+    Command_Source_hook = xchat_hook_command(ph, "source", HEXCHAT_PRI_NORM, Command_Source, 0, 0);
+    Command_Reload_hook = xchat_hook_command(ph, "reloadall", HEXCHAT_PRI_NORM, Command_Reloadall, 0, 0);
+    Command_Load_hook = xchat_hook_command(ph, "LOAD", HEXCHAT_PRI_NORM, Command_Source, 0, 0);
     Event_Handler_hook = xchat_hook_timer(ph, 100, TCL_Event_Handler, 0);
-    Null_Command_hook = xchat_hook_command(ph, "", XCHAT_PRI_NORM, Null_Command_Alias, "", 0);
+    Null_Command_hook = xchat_hook_command(ph, "", HEXCHAT_PRI_NORM, Null_Command_Alias, "", 0);
 
     banner();
     xchat_print(ph, "Tcl interface loaded\n");

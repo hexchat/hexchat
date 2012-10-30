@@ -54,7 +54,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = "GTK+ Preference Tool Launcher";
 	*plugin_version = "1.0";
 
-	xchat_hook_command (ph, "GTKPREF", XCHAT_PRI_NORM, launch_tool, 0, 0);
+	xchat_hook_command (ph, "GTKPREF", HEXCHAT_PRI_NORM, launch_tool, 0, 0);
 	xchat_command (ph, "MENU -ietc\\gtkpref.png ADD \"Settings/GTK+ Preferences\" \"GTKPREF\"");
 
 	return 1;       /* return 1 for success */

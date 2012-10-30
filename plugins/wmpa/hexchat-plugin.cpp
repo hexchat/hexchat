@@ -61,18 +61,18 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
       xchat_printf(ph, "WMPA: Failed to restore the settings.");
    }
 
-   xchat_hook_command(ph, "auto", XCHAT_PRI_NORM, wmpaAuto, 0, 0);
-   xchat_hook_command(ph, "curr", XCHAT_PRI_NORM, wmpaCurr, 0, 0);
-   xchat_hook_command(ph, "find", XCHAT_PRI_NORM, wmpaFind, 0, 0);
-   xchat_hook_command(ph, "slist", XCHAT_PRI_NORM, wmpaList, 0, 0);
-   xchat_hook_command(ph, "next", XCHAT_PRI_NORM, wmpaNext, 0, 0);
-   xchat_hook_command(ph, "play", XCHAT_PRI_NORM, wmpaPlay, 0, 0);
-   xchat_hook_command(ph, "pause", XCHAT_PRI_NORM, wmpaPause, 0, 0);
-   xchat_hook_command(ph, "prev", XCHAT_PRI_NORM, wmpaPrev, 0, 0);
-   xchat_hook_command(ph, "song", XCHAT_PRI_NORM, wmpaSong, 0, 0);
-   xchat_hook_command(ph, "stop", XCHAT_PRI_NORM, wmpaStop, 0, 0);
-   xchat_hook_command(ph, "volume", XCHAT_PRI_NORM, wmpaVolume, 0, 0);
-   xchat_hook_command(ph, "wmpahelp", XCHAT_PRI_NORM, wmpaHelp, 0, 0);
+   xchat_hook_command(ph, "auto", HEXCHAT_PRI_NORM, wmpaAuto, 0, 0);
+   xchat_hook_command(ph, "curr", HEXCHAT_PRI_NORM, wmpaCurr, 0, 0);
+   xchat_hook_command(ph, "find", HEXCHAT_PRI_NORM, wmpaFind, 0, 0);
+   xchat_hook_command(ph, "slist", HEXCHAT_PRI_NORM, wmpaList, 0, 0);
+   xchat_hook_command(ph, "next", HEXCHAT_PRI_NORM, wmpaNext, 0, 0);
+   xchat_hook_command(ph, "play", HEXCHAT_PRI_NORM, wmpaPlay, 0, 0);
+   xchat_hook_command(ph, "pause", HEXCHAT_PRI_NORM, wmpaPause, 0, 0);
+   xchat_hook_command(ph, "prev", HEXCHAT_PRI_NORM, wmpaPrev, 0, 0);
+   xchat_hook_command(ph, "song", HEXCHAT_PRI_NORM, wmpaSong, 0, 0);
+   xchat_hook_command(ph, "stop", HEXCHAT_PRI_NORM, wmpaStop, 0, 0);
+   xchat_hook_command(ph, "volume", HEXCHAT_PRI_NORM, wmpaVolume, 0, 0);
+   xchat_hook_command(ph, "wmpahelp", HEXCHAT_PRI_NORM, wmpaHelp, 0, 0);
 
    xchat_printf(ph, "WMPA %s successfully loaded.", VER_STRING);
    wmpaCommands();

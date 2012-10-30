@@ -320,9 +320,9 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	*plugin_desc = "Very simple XDCC server";
 	*plugin_version = "0.1";
 
-	xchat_hook_command(ph, "XDCC", XCHAT_PRI_NORM, xdcc_command, 0, 0);
-	xchat_hook_print(ph, "CTCP Generic", XCHAT_PRI_NORM, ctcp_cb, 0);
-	xchat_hook_print(ph, "CTCP Generic to Channel", XCHAT_PRI_NORM, ctcp_cb, 0);
+	xchat_hook_command(ph, "XDCC", HEXCHAT_PRI_NORM, xdcc_command, 0, 0);
+	xchat_hook_print(ph, "CTCP Generic", HEXCHAT_PRI_NORM, ctcp_cb, 0);
+	xchat_hook_print(ph, "CTCP Generic to Channel", HEXCHAT_PRI_NORM, ctcp_cb, 0);
 
 	xdcc_load();
 	xchat_print(ph, "XDCC loaded. Type /XDCC for help.\n");

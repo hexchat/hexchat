@@ -397,7 +397,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	firstRun = 1;
 
-	xchat_hook_command (ph, "SYSINFO", XCHAT_PRI_NORM, printInfo, NULL, NULL);
+	xchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, printInfo, NULL, NULL);
 	xchat_command (ph, "MENU -ietc\\system.png ADD \"Window/Display System Info\" \"SYSINFO\"");
 
 	xchat_printf (ph, "%s plugin loaded\n", name);

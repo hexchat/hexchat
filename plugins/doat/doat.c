@@ -79,7 +79,7 @@ xchat_plugin_init( xchat_plugin * plugin_handle, char **plugin_name,
 	*plugin_version = "1.0001";
 	*plugin_desc = "Perform an arbitrary command on multiple channels";
 
-	xchat_hook_command( ph, "doat", XCHAT_PRI_NORM, parse_command, "DOAT [channel,list,/network] [command], perform a command on multiple contexts", NULL );
+	xchat_hook_command( ph, "doat", HEXCHAT_PRI_NORM, parse_command, "DOAT [channel,list,/network] [command], perform a command on multiple contexts", NULL );
 
 	xchat_print (ph, "Do At plugin loaded\n");
 

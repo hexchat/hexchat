@@ -128,9 +128,9 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	*plugin_desc = "Information-Script for Media Player Classic"; 
 	*plugin_version=VERSION;
 
-	xchat_hook_command(ph, "mpc", XCHAT_PRI_NORM, mpc_tell,"no help text", 0);
-	xchat_hook_command(ph, "mpc_themes", XCHAT_PRI_NORM, print_themes,"no help text", 0);
-	xchat_hook_command(ph, "mpc_reloadthemes", XCHAT_PRI_NORM, mpc_themeReload,"no help text", 0);
+	xchat_hook_command(ph, "mpc", HEXCHAT_PRI_NORM, mpc_tell,"no help text", 0);
+	xchat_hook_command(ph, "mpc_themes", HEXCHAT_PRI_NORM, print_themes,"no help text", 0);
+	xchat_hook_command(ph, "mpc_reloadthemes", HEXCHAT_PRI_NORM, mpc_themeReload,"no help text", 0);
 	xchat_command (ph, "MENU -ietc\\music.png ADD \"Window/Display Current Song (MPC)\" \"MPC\"");
 
 	themeInit();

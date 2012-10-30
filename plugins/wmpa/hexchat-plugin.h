@@ -9,11 +9,11 @@
 #include <time.h>
 #include <tchar.h>
 
-#define XCHAT_PRI_HIGHEST  127
-#define XCHAT_PRI_HIGH     64
-#define XCHAT_PRI_NORM     0
-#define XCHAT_PRI_LOW      (-64)
-#define XCHAT_PRI_LOWEST   (-128)
+#define HEXCHAT_PRI_HIGHEST  127
+#define HEXCHAT_PRI_HIGH     64
+#define HEXCHAT_PRI_NORM     0
+#define HEXCHAT_PRI_LOW      (-64)
+#define HEXCHAT_PRI_LOWEST   (-128)
 
 #define XCHAT_FD_READ      1
 #define XCHAT_FD_WRITE     2

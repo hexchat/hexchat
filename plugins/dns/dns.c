@@ -324,7 +324,7 @@ xchat_plugin_init
 	*plugin_desc = "Threaded IPv4/6 DNS Command";
 	*plugin_version = DNS_VERSION;
 
-	xchat_hook_command(ph, "DNS", XCHAT_PRI_LOW, dns_cmd_cb, HELP, 0);
+	xchat_hook_command(ph, "DNS", HEXCHAT_PRI_LOW, dns_cmd_cb, HELP, 0);
 	xchat_printf (ph, "DNS plugin loaded\n");
 
 	return 1;       /* return 1 for success */

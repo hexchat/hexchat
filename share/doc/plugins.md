@@ -90,8 +90,8 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = PDESC;
 	*plugin_version = PVERSION;
 
-	xchat_hook_command (ph, "AutoOpToggle", XCHAT_PRI_NORM, autooptoggle_cb, "Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping", 0);
-	xchat_hook_print (ph, "Join", XCHAT_PRI_NORM, join_cb, 0);
+	xchat_hook_command (ph, "AutoOpToggle", HEXCHAT_PRI_NORM, autooptoggle_cb, "Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping", 0);
+	xchat_hook_print (ph, "Join", HEXCHAT_PRI_NORM, join_cb, 0);
 
 	xchat_print (ph, "AutoOpPlugin loaded successfully!\n");
 
@@ -502,7 +502,7 @@ onotice_cb (char *word[], char *word_eol[], void *userdata)
 	return XCHAT_EAT_ALL;
 }
 
-xchat_hook_command (ph, "ONOTICE", XCHAT_PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
+xchat_hook_command (ph, "ONOTICE", HEXCHAT_PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
 </pre>
 
 ***
@@ -572,7 +572,7 @@ youpart_cb (char *word[], void *userdata)
 	return XCHAT_EAT_XCHAT;		/* dont let HexChat do its normal printing */
 }
 
-xchat_hook_print (ph, "You Part", XCHAT_PRI_NORM, youpart_cb, NULL);
+xchat_hook_print (ph, "You Part", HEXCHAT_PRI_NORM, youpart_cb, NULL);
 </pre>
 
 ***
@@ -604,7 +604,7 @@ kick_cb (char *word[], char *word_eol[], void *userdata)
 	return XCHAT_EAT_NONE;		/* don't eat this event, let other plugins and HexChat see it too */
 }
 
-xchat_hook_server (ph, "KICK", XCHAT_PRI_NORM, kick_cb, NULL);
+xchat_hook_server (ph, "KICK", HEXCHAT_PRI_NORM, kick_cb, NULL);
 </pre>
 
 ***
@@ -650,7 +650,7 @@ timeout_cb (void *userdata)
 }
 
 myhook = xchat_hook_timer (ph, 5000, timeout_cb, NULL);
-xchat_hook_command (ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
+xchat_hook_command (ph, "STOP", HEXCHAT_PRI_NORM, stop_cb, NULL, NULL);
 </pre>
 
 ***

@@ -269,16 +269,16 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
     *version = plugin_version;
     
     /* Register commands */
-    xchat_hook_command(ph, "SETKEY", XCHAT_PRI_NORM, handle_setkey, usage_setkey, NULL);
-    xchat_hook_command(ph, "DELKEY", XCHAT_PRI_NORM, handle_delkey, usage_delkey, NULL);
+    xchat_hook_command(ph, "SETKEY", HEXCHAT_PRI_NORM, handle_setkey, usage_setkey, NULL);
+    xchat_hook_command(ph, "DELKEY", HEXCHAT_PRI_NORM, handle_delkey, usage_delkey, NULL);
     
     /* Add handlers */
-    xchat_hook_command(ph, "", XCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
-    xchat_hook_server(ph, "NOTICE", XCHAT_PRI_NORM, handle_incoming, NULL);
-    xchat_hook_server(ph, "PRIVMSG", XCHAT_PRI_NORM, handle_incoming, NULL);
-    //xchat_hook_server(ph, "RAW LINE", XCHAT_PRI_NORM, handle_debug, NULL);
-    xchat_hook_server(ph, "TOPIC", XCHAT_PRI_NORM, handle_incoming, NULL);
-    xchat_hook_server(ph, "332", XCHAT_PRI_NORM, handle_incoming, NULL);
+    xchat_hook_command(ph, "", HEXCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
+    xchat_hook_server(ph, "NOTICE", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    xchat_hook_server(ph, "PRIVMSG", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    //xchat_hook_server(ph, "RAW LINE", HEXCHAT_PRI_NORM, handle_debug, NULL);
+    xchat_hook_server(ph, "TOPIC", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    xchat_hook_server(ph, "332", HEXCHAT_PRI_NORM, handle_incoming, NULL);
     
     xchat_printf(ph, "%s plugin loaded\n", plugin_name);
     /* Return success */

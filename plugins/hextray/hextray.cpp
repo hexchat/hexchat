@@ -161,20 +161,20 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	/***************************************************************************************************************************/
 	/************************* Set our hooks and save them for later so we can unhook them *************************************/
 	/***************************************************************************************************************************/
-	g_vHooks.push_back(xchat_hook_print(ph, "Channel Msg Hilight",			XCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
-	g_vHooks.push_back(xchat_hook_print(ph, "Channel Message",				XCHAT_PRI_NORM, event_cb,	(void *)CHAN_MESSAGE));
-	g_vHooks.push_back(xchat_hook_print(ph, "Topic Change",					XCHAT_PRI_NORM, event_cb,	(void *)CHAN_TOPIC_CHANGE));
-	g_vHooks.push_back(xchat_hook_print(ph, "Channel Action Hilight",		XCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
-	g_vHooks.push_back(xchat_hook_print(ph, "Channel INVITE",				XCHAT_PRI_NORM, event_cb,	(void *)CHAN_INVITE));
-	g_vHooks.push_back(xchat_hook_print(ph, "You Kicked",					XCHAT_PRI_NORM, event_cb,	(void *)CHAN_KICKED));
-	g_vHooks.push_back(xchat_hook_print(ph, "Banned",						XCHAT_PRI_NORM, event_cb,	(void *)CHAN_BANNED));
-	g_vHooks.push_back(xchat_hook_print(ph, "CTCP Generic",					XCHAT_PRI_NORM, event_cb,	(void *)CTCP_GENERIC));
-	g_vHooks.push_back(xchat_hook_print(ph, "Private Message",				XCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
-	g_vHooks.push_back(xchat_hook_print(ph, "Private Message to Dialog",	XCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
-	g_vHooks.push_back(xchat_hook_print(ph, "Disconnected",					XCHAT_PRI_NORM, event_cb,	(void *)SERV_DISCONNECT));
-	g_vHooks.push_back(xchat_hook_print(ph, "Killed",						XCHAT_PRI_NORM, event_cb,	(void *)SERV_KILLED));
-	g_vHooks.push_back(xchat_hook_print(ph, "Notice",						XCHAT_PRI_NORM, event_cb,	(void *)SERV_NOTICE));
-	g_vHooks.push_back(xchat_hook_command(ph, "tray_alert",					XCHAT_PRI_NORM, command_cb,	"Create an Alert", NULL));
+	g_vHooks.push_back(xchat_hook_print(ph, "Channel Msg Hilight",			HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
+	g_vHooks.push_back(xchat_hook_print(ph, "Channel Message",				HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_MESSAGE));
+	g_vHooks.push_back(xchat_hook_print(ph, "Topic Change",					HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_TOPIC_CHANGE));
+	g_vHooks.push_back(xchat_hook_print(ph, "Channel Action Hilight",		HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
+	g_vHooks.push_back(xchat_hook_print(ph, "Channel INVITE",				HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_INVITE));
+	g_vHooks.push_back(xchat_hook_print(ph, "You Kicked",					HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_KICKED));
+	g_vHooks.push_back(xchat_hook_print(ph, "Banned",						HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_BANNED));
+	g_vHooks.push_back(xchat_hook_print(ph, "CTCP Generic",					HEXCHAT_PRI_NORM, event_cb,	(void *)CTCP_GENERIC));
+	g_vHooks.push_back(xchat_hook_print(ph, "Private Message",				HEXCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
+	g_vHooks.push_back(xchat_hook_print(ph, "Private Message to Dialog",	HEXCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
+	g_vHooks.push_back(xchat_hook_print(ph, "Disconnected",					HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_DISCONNECT));
+	g_vHooks.push_back(xchat_hook_print(ph, "Killed",						HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_KILLED));
+	g_vHooks.push_back(xchat_hook_print(ph, "Notice",						HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_NOTICE));
+	g_vHooks.push_back(xchat_hook_command(ph, "tray_alert",					HEXCHAT_PRI_NORM, command_cb,	"Create an Alert", NULL));
 
 	return 1;
 }

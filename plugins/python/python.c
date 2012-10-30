@@ -1174,11 +1174,11 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	PyModule_AddIntConstant(m, "EAT_XCHAT", XCHAT_EAT_XCHAT);
 	PyModule_AddIntConstant(m, "EAT_PLUGIN", XCHAT_EAT_PLUGIN);
 	PyModule_AddIntConstant(m, "EAT_ALL", XCHAT_EAT_ALL);
-	PyModule_AddIntConstant(m, "PRI_HIGHEST", XCHAT_PRI_HIGHEST);
-	PyModule_AddIntConstant(m, "PRI_HIGH", XCHAT_PRI_HIGH);
-	PyModule_AddIntConstant(m, "PRI_NORM", XCHAT_PRI_NORM);
-	PyModule_AddIntConstant(m, "PRI_LOW", XCHAT_PRI_LOW);
-	PyModule_AddIntConstant(m, "PRI_LOWEST", XCHAT_PRI_LOWEST);
+	PyModule_AddIntConstant(m, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
+	PyModule_AddIntConstant(m, "PRI_HIGH", HEXCHAT_PRI_HIGH);
+	PyModule_AddIntConstant(m, "PRI_NORM", HEXCHAT_PRI_NORM);
+	PyModule_AddIntConstant(m, "PRI_LOW", HEXCHAT_PRI_LOW);
+	PyModule_AddIntConstant(m, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
 
 	o = Py_BuildValue("(ii)", VERSION_MAJOR, VERSION_MINOR);
 	if (o == NULL) {
@@ -1654,7 +1654,7 @@ Module_xchat_hook_command(PyObject *self, PyObject *args, PyObject *kwargs)
 	char *name;
 	PyObject *callback;
 	PyObject *userdata = Py_None;
-	int priority = XCHAT_PRI_NORM;
+	int priority = HEXCHAT_PRI_NORM;
 	char *help = NULL;
 	PyObject *plugin;
 	Hook *hook;
@@ -1692,7 +1692,7 @@ Module_xchat_hook_server(PyObject *self, PyObject *args, PyObject *kwargs)
 	char *name;
 	PyObject *callback;
 	PyObject *userdata = Py_None;
-	int priority = XCHAT_PRI_NORM;
+	int priority = HEXCHAT_PRI_NORM;
 	PyObject *plugin;
 	Hook *hook;
 	char *kwlist[] = {"name", "callback", "userdata", "priority", 0};
@@ -1728,7 +1728,7 @@ Module_xchat_hook_print(PyObject *self, PyObject *args, PyObject *kwargs)
 	char *name;
 	PyObject *callback;
 	PyObject *userdata = Py_None;
-	int priority = XCHAT_PRI_NORM;
+	int priority = HEXCHAT_PRI_NORM;
 	PyObject *plugin;
 	Hook *hook;
 	char *kwlist[] = {"name", "callback", "userdata", "priority", 0};
@@ -2292,10 +2292,10 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 	}
 
 
-	xchat_hook_command(ph, "", XCHAT_PRI_NORM, IInterp_Cmd, 0, 0);
-	xchat_hook_command(ph, "PY", XCHAT_PRI_NORM, Command_Py, usage, 0);
-	xchat_hook_command(ph, "LOAD", XCHAT_PRI_NORM, Command_Load, 0, 0);
-	xchat_hook_command(ph, "UNLOAD", XCHAT_PRI_NORM, Command_Unload, 0, 0);
+	xchat_hook_command(ph, "", HEXCHAT_PRI_NORM, IInterp_Cmd, 0, 0);
+	xchat_hook_command(ph, "PY", HEXCHAT_PRI_NORM, Command_Py, usage, 0);
+	xchat_hook_command(ph, "LOAD", HEXCHAT_PRI_NORM, Command_Load, 0, 0);
+	xchat_hook_command(ph, "UNLOAD", HEXCHAT_PRI_NORM, Command_Unload, 0, 0);
 #ifdef WITH_THREAD
 	thread_timer = xchat_hook_timer(ph, 300, Callback_ThreadTimer, NULL);
 #endif

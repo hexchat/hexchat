@@ -202,7 +202,7 @@ xchat_plugin_init
 	*plugin_desc = "IrcII style /TIMER command";
 	*plugin_version = "";
 
-	xchat_hook_command (ph, "TIMER", XCHAT_PRI_NORM, timer_cb, HELP, 0);
+	xchat_hook_command (ph, "TIMER", HEXCHAT_PRI_NORM, timer_cb, HELP, 0);
 
 	return 1;       /* return 1 for success */
 }

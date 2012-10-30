@@ -261,9 +261,9 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 		xchat_pluginpref_set_int (ph, "limit", DEFAULT_LIMIT);
 	}
 
-	xchat_hook_command (ph, "CHECKSUM", XCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|SET", 0);
-	xchat_hook_print (ph, "DCC RECV Complete", XCHAT_PRI_NORM, dccrecv_cb, NULL);
-	xchat_hook_print (ph, "DCC Offer", XCHAT_PRI_NORM, dccoffer_cb, NULL);
+	xchat_hook_command (ph, "CHECKSUM", HEXCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|SET", 0);
+	xchat_hook_print (ph, "DCC RECV Complete", HEXCHAT_PRI_NORM, dccrecv_cb, NULL);
+	xchat_hook_print (ph, "DCC Offer", HEXCHAT_PRI_NORM, dccoffer_cb, NULL);
 
 	xchat_printf (ph, "%s plugin loaded\n", name);
 	return 1;

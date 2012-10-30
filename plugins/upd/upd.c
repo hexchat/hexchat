@@ -297,7 +297,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 		xchat_pluginpref_set_int (ph, "freq", DEFAULT_FREQ);
 	}
 
-	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, upd_help, NULL);
+	xchat_hook_command (ph, "UPDCHK", HEXCHAT_PRI_NORM, print_version, upd_help, NULL);
 	xchat_hook_timer (ph, delay * 1000, delayed_check, NULL);
 	xchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
 	xchat_printf (ph, "%s plugin loaded\n", name);

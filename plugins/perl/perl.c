@@ -1322,11 +1322,11 @@ xs_init (pTHX)
 		exit (1);
 	}
 
-	newCONSTSUB (stash, "PRI_HIGHEST", newSViv (XCHAT_PRI_HIGHEST));
-	newCONSTSUB (stash, "PRI_HIGH", newSViv (XCHAT_PRI_HIGH));
-	newCONSTSUB (stash, "PRI_NORM", newSViv (XCHAT_PRI_NORM));
-	newCONSTSUB (stash, "PRI_LOW", newSViv (XCHAT_PRI_LOW));
-	newCONSTSUB (stash, "PRI_LOWEST", newSViv (XCHAT_PRI_LOWEST));
+	newCONSTSUB (stash, "PRI_HIGHEST", newSViv (HEXCHAT_PRI_HIGHEST));
+	newCONSTSUB (stash, "PRI_HIGH", newSViv (HEXCHAT_PRI_HIGH));
+	newCONSTSUB (stash, "PRI_NORM", newSViv (HEXCHAT_PRI_NORM));
+	newCONSTSUB (stash, "PRI_LOW", newSViv (HEXCHAT_PRI_LOW));
+	newCONSTSUB (stash, "PRI_LOWEST", newSViv (HEXCHAT_PRI_LOWEST));
 
 	newCONSTSUB (stash, "EAT_NONE", newSViv (XCHAT_EAT_NONE));
 	newCONSTSUB (stash, "EAT_XCHAT", newSViv (XCHAT_EAT_XCHAT));
@@ -1566,16 +1566,16 @@ xchat_plugin_init (xchat_plugin * plugin_handle, char **plugin_name,
 	*plugin_desc = "Perl scripting interface";
 	*plugin_version = PACKAGE_VERSION;
 
-	xchat_hook_command (ph, "load", XCHAT_PRI_NORM, perl_command_load, 0, 0);
-	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0,
+	xchat_hook_command (ph, "load", HEXCHAT_PRI_NORM, perl_command_load, 0, 0);
+	xchat_hook_command (ph, "unload", HEXCHAT_PRI_NORM, perl_command_unload, 0,
 							  0);
-	xchat_hook_command (ph, "reload", XCHAT_PRI_NORM, perl_command_reload, 0,
+	xchat_hook_command (ph, "reload", HEXCHAT_PRI_NORM, perl_command_reload, 0,
 							  0);
-	xchat_hook_command (ph, "pl_reload", XCHAT_PRI_NORM, perl_command_reload, 0,
+	xchat_hook_command (ph, "pl_reload", HEXCHAT_PRI_NORM, perl_command_reload, 0,
 							  0);
-	xchat_hook_command (ph, "unloadall", XCHAT_PRI_NORM,
+	xchat_hook_command (ph, "unloadall", HEXCHAT_PRI_NORM,
 							  perl_command_unloadall, 0, 0);
-	xchat_hook_command (ph, "reloadall", XCHAT_PRI_NORM,
+	xchat_hook_command (ph, "reloadall", HEXCHAT_PRI_NORM,
 							  perl_command_reloadall, 0, 0);
 
 	/*perl_init (); */

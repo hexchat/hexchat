@@ -187,11 +187,11 @@ static struct {
 	{"FD_NOTSOCKET",	XCHAT_FD_NOTSOCKET},
    */
 
-	{"PRI_HIGHEST", 	XCHAT_PRI_HIGHEST},
-	{"PRI_HIGH", 		XCHAT_PRI_HIGH},
-	{"PRI_NORM", 		XCHAT_PRI_NORM},
-	{"PRI_LOW", 		XCHAT_PRI_LOW},
-	{"PRI_LOWEST", 	XCHAT_PRI_LOWEST},
+	{"PRI_HIGHEST", 	HEXCHAT_PRI_HIGHEST},
+	{"PRI_HIGH", 		HEXCHAT_PRI_HIGH},
+	{"PRI_NORM", 		HEXCHAT_PRI_NORM},
+	{"PRI_LOW", 		HEXCHAT_PRI_LOW},
+	{"PRI_LOWEST", 	HEXCHAT_PRI_LOWEST},
 
 	/* for: clean = xchat.strip(dirty, xchat.STRIP_ALL) */
 	{"STRIP_COLOR",	LXC_STRIP_COLOR},
@@ -674,9 +674,9 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
    *plugin_desc = LXC_DESC;
    *plugin_version = LXC_VERSION;
 
-	xchat_hook_command(ph, "LOAD", XCHAT_PRI_NORM, lxc_cb_load, NULL, NULL);
-	xchat_hook_command(ph, "UNLOAD", XCHAT_PRI_NORM, lxc_cb_unload, NULL, NULL);
-	xchat_hook_command(ph, "LUA", XCHAT_PRI_NORM, lxc_cb_lua, "Usage: LUA <code>, executes <code> in a new lua state", NULL);
+	xchat_hook_command(ph, "LOAD", HEXCHAT_PRI_NORM, lxc_cb_load, NULL, NULL);
+	xchat_hook_command(ph, "UNLOAD", HEXCHAT_PRI_NORM, lxc_cb_unload, NULL, NULL);
+	xchat_hook_command(ph, "LUA", HEXCHAT_PRI_NORM, lxc_cb_lua, "Usage: LUA <code>, executes <code> in a new lua state", NULL);
 
 	xdir = xchat_get_info (ph, "xchatdirfs");
 	xsubdir = g_build_filename (xdir, "addons", NULL);
@@ -939,7 +939,7 @@ static int lxc_hook_command(lua_State *L)
 	cb->hook = NULL;
 
 	if (lua_type(L, 3) == LUA_TNIL)
-		prio = XCHAT_PRI_NORM;
+		prio = HEXCHAT_PRI_NORM;
 	else
 		prio = luaL_checknumber(L, 3);
 
@@ -1064,7 +1064,7 @@ static int lxc_hook_print(lua_State *L)
 	name = luaL_checkstring(L, 1);
 	func = luaL_checkstring(L, 2);
 	if (lua_type(L, 3) == LUA_TNIL)
-		prio = XCHAT_PRI_NORM;
+		prio = HEXCHAT_PRI_NORM;
 	else
 		prio = luaL_checknumber(L, 3);
 
@@ -1143,7 +1143,7 @@ static int lxc_hook_server(lua_State *L)
 	name = luaL_checkstring(L, 1);
 	func = luaL_checkstring(L, 2);
 	if (lua_type(L, 3) == LUA_TNIL)
-		prio = XCHAT_PRI_NORM;
+		prio = HEXCHAT_PRI_NORM;
 	else
 		prio = luaL_checknumber(L, 3);
 

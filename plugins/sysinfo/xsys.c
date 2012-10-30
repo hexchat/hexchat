@@ -847,9 +847,9 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_version = version;
 	char buffer[bsize];
 
-	xchat_hook_command (ph, "SYSINFO",	XCHAT_PRI_NORM,	sysinfo_cb,	sysinfo_help, NULL);
-	xchat_hook_command (ph, "NETDATA",	XCHAT_PRI_NORM,	netdata_cb,	NULL, NULL);
-	xchat_hook_command (ph, "NETSTREAM",	XCHAT_PRI_NORM,	netstream_cb,	NULL, NULL);
+	xchat_hook_command (ph, "SYSINFO",	HEXCHAT_PRI_NORM,	sysinfo_cb,	sysinfo_help, NULL);
+	xchat_hook_command (ph, "NETDATA",	HEXCHAT_PRI_NORM,	netdata_cb,	NULL, NULL);
+	xchat_hook_command (ph, "NETSTREAM",	HEXCHAT_PRI_NORM,	netstream_cb,	NULL, NULL);
 
 	/* this is required for the very first run */
 	if (xchat_pluginpref_get_str (ph, "pciids", buffer) == 0)

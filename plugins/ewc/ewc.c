@@ -213,10 +213,10 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
   *plugin_desc = "Some commands to remotely control winamp";
   *plugin_version = "1.2";
 
-  xchat_hook_command(ph, "wp", XCHAT_PRI_NORM, wp_cb,
+  xchat_hook_command(ph, "wp", HEXCHAT_PRI_NORM, wp_cb,
                     "Usage: wp", 0);
 
-  xchat_hook_command(ph, "wcmd", XCHAT_PRI_NORM, wcmd_cb,
+  xchat_hook_command(ph, "wcmd", HEXCHAT_PRI_NORM, wcmd_cb,
                     "Usage: wcmd [play|pause|stop|prev|next]", 0);
 
   xchat_print(ph, "EasyWinampControl plugin loaded\n");
