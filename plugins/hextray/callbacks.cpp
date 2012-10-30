@@ -90,12 +90,12 @@ int event_cb(char *word[], void *userdata)
 		{
 		case CHAN_HILIGHT:
 			_snprintf(szInfo, 512, "%s:\r\n%s", word[1], word[2]);
-			_snprintf(szName, 64, "Highlight: %s", xchat_get_info (ph, "channel"));
+			_snprintf(szName, 64, "Highlight: %s", hexchat_get_info (ph, "channel"));
 			dwInfoFlags = NIIF_INFO;
 			break;
 		case CHAN_MESSAGE:
 			_snprintf(szInfo, 512, "%s:\r\n%s", word[1], word[2]);
-			_snprintf(szName, 64, "Channel Message: %s", xchat_get_info (ph, "channel"));
+			_snprintf(szName, 64, "Channel Message: %s", hexchat_get_info (ph, "channel"));
 			dwInfoFlags = NIIF_INFO;
 			break;
 		case CHAN_TOPIC_CHANGE:
@@ -154,7 +154,7 @@ int event_cb(char *word[], void *userdata)
 		/***** Use windows instead of balloons, and if its a window should we keep it open ****/
 		/***** indefinitely?															   ****/
 		/**************************************************************************************/
-		szTemp = xchat_strip_color(szInfo);
+		szTemp = hexchat_strip_color(szInfo);
 
 		if(g_dwPrefs & (1<<PREF_UWIOB))
 		{
@@ -186,7 +186,7 @@ int command_cb(char *word[], char *word_eol[], void *userdata)
 	int iTime		= g_iTime*1000;
 
 	_snprintf(szInfo, 512, word_eol[2]);
-	szTemp = xchat_strip_color(szInfo);
+	szTemp = hexchat_strip_color(szInfo);
 
 	if(g_dwPrefs & (1<<PREF_KAOI))
 	{
@@ -223,7 +223,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				/*******************************************/
 				if(g_dwPrefs & (1<<PREF_AOM))
 				{
-					xchat_globally_away(g_szAway);
+					hexchat_globally_away(g_szAway);
 				}
 
 				/**************************************************/
@@ -266,7 +266,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 				/*******************************************/
 				if(g_dwPrefs & (1<<PREF_AOM))
 				{
-					xchat_globally_away(g_szAway);
+					hexchat_globally_away(g_szAway);
 				}
 
 				/**************************************************/
@@ -299,7 +299,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 
 						if(g_dwPrefs & (1<<PREF_AOM))
 						{
-							xchat_globally_back();
+							hexchat_globally_back();
 						}
 					}
 					else
@@ -344,7 +344,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			if(msg == RegisterWindowMessage(_T("TaskbarCreated")))
 			{
 				char szVersion[64];
-				_snprintf(szVersion, 64, "HexChat [%s]", xchat_get_info(ph, "version"));
+				_snprintf(szVersion, 64, "HexChat [%s]", hexchat_get_info(ph, "version"));
 				AddIcon(g_hXchatWnd, 1, g_hIcons[0], szVersion, (NIF_ICON | NIF_MESSAGE | NIF_TIP), WM_TRAYMSG);
 			}
 		}
@@ -378,7 +378,7 @@ LRESULT CALLBACK sdTrayProc(HWND hWnd, int msg)
 			
 			if((!g_iIsActive) && (g_dwPrefs & (1<<PREF_AOM)))
 			{
-				xchat_globally_back();
+				hexchat_globally_back();
 				g_iIsActive = 1;
 			}
 		}
@@ -390,27 +390,27 @@ LRESULT CALLBACK sdTrayProc(HWND hWnd, int msg)
 		break;
 	case ACT_AWAY:
 		{
-			xchat_globally_away(g_szAway);
+			hexchat_globally_away(g_szAway);
 		}
 		break;
 	case ACT_BACK:
 		{
-			xchat_globally_back();
+			hexchat_globally_back();
 		}
 		break;
 	default:
 		{
 			if(msg > 0)
 			{
-				xchat_set_context(ph, xchat_find_server(msg-1));
+				hexchat_set_context(ph, hexchat_find_server(msg-1));
 
-				if(!xchat_get_info(ph, "away"))
+				if(!hexchat_get_info(ph, "away"))
 				{
-					xchat_away(g_szAway);
+					hexchat_away(g_szAway);
 				}
 				else
 				{
-					xchat_back();
+					hexchat_back();
 				}
 			}
 		}

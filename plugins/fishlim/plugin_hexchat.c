@@ -45,14 +45,14 @@ static const char plugin_version[] = "0.0.16";
 static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
 static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
 
-static xchat_plugin *ph;
+static hexchat_plugin *ph;
 
 
 /**
  * Returns the path to the key store file.
  */
 gchar *get_config_filename() {
-    return g_build_filename(xchat_get_info(ph, "xchatdirfs"), "addon_fishlim.conf", NULL);
+    return g_build_filename(hexchat_get_info(ph, "xchatdirfs"), "addon_fishlim.conf", NULL);
 }
 
 /**
@@ -74,11 +74,11 @@ static bool append(char **s, size_t *length, const char *data) {
 
 
 /*static int handle_debug(char *word[], char *word_eol[], void *userdata) {
-    xchat_printf(ph, "debug incoming: ");
+    hexchat_printf(ph, "debug incoming: ");
     for (size_t i = 1; word[i] != NULL && word[i][0] != '\0'; i++) {
-        xchat_printf(ph, ">%s< ", word[i]);
+        hexchat_printf(ph, ">%s< ", word[i]);
     }
-    xchat_printf(ph, "\n");
+    hexchat_printf(ph, "\n");
     return HEXCHAT_EAT_NONE;
 }*/
 
@@ -88,16 +88,16 @@ static bool append(char **s, size_t *length, const char *data) {
 static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     const char *own_nick;
     // Encrypt the message if possible
-    const char *channel = xchat_get_info(ph, "channel");
+    const char *channel = hexchat_get_info(ph, "channel");
     char *encrypted = fish_encrypt_for_nick(channel, word_eol[1]);
     if (!encrypted) return HEXCHAT_EAT_NONE;
     
     // Display message
-    own_nick = xchat_get_info(ph, "nick");
-    xchat_emit_print(ph, "Your Message", own_nick, word_eol[1], NULL);
+    own_nick = hexchat_get_info(ph, "nick");
+    hexchat_emit_print(ph, "Your Message", own_nick, word_eol[1], NULL);
     
     // Send message
-    xchat_commandf(ph, "PRIVMSG %s :+OK %s", channel, encrypted);
+    hexchat_commandf(ph, "PRIVMSG %s :+OK %s", channel, encrypted);
     
     free(encrypted);
     return HEXCHAT_EAT_XCHAT;
@@ -173,8 +173,8 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     free(decrypted);
     
     // Simulate unencrypted message
-    //xchat_printf(ph, "simulating: %s\n", message);
-    xchat_command(ph, message);
+    //hexchat_printf(ph, "simulating: %s\n", message);
+    hexchat_command(ph, message);
     
     free(message);
     free(sender_nick);
@@ -195,13 +195,13 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     
     // Check syntax
     if (*word[2] == '\0') {
-        xchat_printf(ph, "%s\n", usage_setkey);
+        hexchat_printf(ph, "%s\n", usage_setkey);
         return HEXCHAT_EAT_XCHAT;
     }
     
     if (*word[3] == '\0') {
         // /setkey password
-        nick = xchat_get_info(ph, "channel");
+        nick = hexchat_get_info(ph, "channel");
         key = word_eol[2];
     } else {
         // /setkey #channel password
@@ -211,9 +211,9 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     
     // Set password
     if (keystore_store_key(nick, key)) {
-        xchat_printf(ph, "Stored key for %s\n", nick);
+        hexchat_printf(ph, "Stored key for %s\n", nick);
     } else {
-        xchat_printf(ph, "\00305Failed to store key in blow.ini\n", nick, key);
+        hexchat_printf(ph, "\00305Failed to store key in blow.ini\n", nick, key);
     }
     
     return HEXCHAT_EAT_XCHAT;
@@ -227,7 +227,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     
     // Check syntax
     if (*word[2] == '\0' || *word[3] != '\0') {
-        xchat_printf(ph, "%s\n", usage_delkey);
+        hexchat_printf(ph, "%s\n", usage_delkey);
         return HEXCHAT_EAT_XCHAT;
     }
     
@@ -235,9 +235,9 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     
     // Delete the given nick from the key store
     if (keystore_delete_nick(nick)) {
-        xchat_printf(ph, "Deleted key for %s\n", nick);
+        hexchat_printf(ph, "Deleted key for %s\n", nick);
     } else {
-        xchat_printf(ph, "\00305Failed to delete key in blow.ini!\n", nick);
+        hexchat_printf(ph, "\00305Failed to delete key in blow.ini!\n", nick);
     }
     
     return HEXCHAT_EAT_XCHAT;
@@ -246,7 +246,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
 /**
  * Returns the plugin name version information.
  */
-void xchat_plugin_get_info(const char **name, const char **desc,
+void hexchat_plugin_get_info(const char **name, const char **desc,
                            const char **version, void **reserved) {
     *name = plugin_name;
     *desc = plugin_desc;
@@ -256,7 +256,7 @@ void xchat_plugin_get_info(const char **name, const char **desc,
 /**
  * Plugin entry point.
  */
-int xchat_plugin_init(xchat_plugin *plugin_handle,
+int hexchat_plugin_init(hexchat_plugin *plugin_handle,
                       const char **name,
                       const char **desc,
                       const char **version,
@@ -269,24 +269,24 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
     *version = plugin_version;
     
     /* Register commands */
-    xchat_hook_command(ph, "SETKEY", HEXCHAT_PRI_NORM, handle_setkey, usage_setkey, NULL);
-    xchat_hook_command(ph, "DELKEY", HEXCHAT_PRI_NORM, handle_delkey, usage_delkey, NULL);
+    hexchat_hook_command(ph, "SETKEY", HEXCHAT_PRI_NORM, handle_setkey, usage_setkey, NULL);
+    hexchat_hook_command(ph, "DELKEY", HEXCHAT_PRI_NORM, handle_delkey, usage_delkey, NULL);
     
     /* Add handlers */
-    xchat_hook_command(ph, "", HEXCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
-    xchat_hook_server(ph, "NOTICE", HEXCHAT_PRI_NORM, handle_incoming, NULL);
-    xchat_hook_server(ph, "PRIVMSG", HEXCHAT_PRI_NORM, handle_incoming, NULL);
-    //xchat_hook_server(ph, "RAW LINE", HEXCHAT_PRI_NORM, handle_debug, NULL);
-    xchat_hook_server(ph, "TOPIC", HEXCHAT_PRI_NORM, handle_incoming, NULL);
-    xchat_hook_server(ph, "332", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    hexchat_hook_command(ph, "", HEXCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
+    hexchat_hook_server(ph, "NOTICE", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    hexchat_hook_server(ph, "PRIVMSG", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    //hexchat_hook_server(ph, "RAW LINE", HEXCHAT_PRI_NORM, handle_debug, NULL);
+    hexchat_hook_server(ph, "TOPIC", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    hexchat_hook_server(ph, "332", HEXCHAT_PRI_NORM, handle_incoming, NULL);
     
-    xchat_printf(ph, "%s plugin loaded\n", plugin_name);
+    hexchat_printf(ph, "%s plugin loaded\n", plugin_name);
     /* Return success */
     return 1;
 }
 
-int xchat_plugin_deinit(void) {
-    xchat_printf(ph, "%s plugin unloaded\n", plugin_name);
+int hexchat_plugin_deinit(void) {
+    hexchat_printf(ph, "%s plugin unloaded\n", plugin_name);
     return 1;
 }
 

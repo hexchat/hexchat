@@ -5,8 +5,8 @@ all: xdcc.obj xdcc.def
 
 xdcc.def:
 	echo EXPORTS > xdcc.def
-	echo xchat_plugin_init >> xdcc.def
-	echo xchat_plugin_deinit >> xdcc.def
+	echo hexchat_plugin_init >> xdcc.def
+	echo hexchat_plugin_deinit >> xdcc.def
 
 xdcc.obj: xdcc.c makefile.mak
 	cl $(CFLAGS) $(GLIB) /I.. xdcc.c

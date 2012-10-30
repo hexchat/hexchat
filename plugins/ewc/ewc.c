@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <windows.h>
 #include "hexchat-plugin.h"
 
-static xchat_plugin *ph;   /* plugin handle */
+static hexchat_plugin *ph;   /* plugin handle */
 static int enable = 1;
 
 // For example, circularstrstr("winamp", "pwi", 3) would return 5 (the index of p)
@@ -98,25 +98,25 @@ static int wcmd_cb(char *word[], char *word_eol[], void *userdata)
   HWND hwndWinamp = NULL;
 
   if ((hwndWinamp = FindWindow("Winamp v1.x",NULL)) == NULL) {
-    xchat_print(ph, "Winamp's window not found - Is winamp really running?\n");
+    hexchat_print(ph, "Winamp's window not found - Is winamp really running?\n");
   }
   else {
     if (strcmp(word[1], "") == 0)
-      xchat_print(ph, "Usage: wcmd [command]\n");
+      hexchat_print(ph, "Usage: wcmd [command]\n");
     else if (strcmp(word[2], "next") == 0) {
-      xchat_print(ph, "Loading next song...\n");
+      hexchat_print(ph, "Loading next song...\n");
       SendMessage (hwndWinamp, WM_COMMAND, 40048, 0);
     }
     else if (strcmp(word[2], "prev") == 0) {
-      xchat_print(ph, "Loading previous song...\n");
+      hexchat_print(ph, "Loading previous song...\n");
       SendMessage (hwndWinamp, WM_COMMAND, 40044, 0);
     }
     else if (strcmp(word[2], "play") == 0) {
-      xchat_print(ph, "Playin'...\n");
+      hexchat_print(ph, "Playin'...\n");
       SendMessage (hwndWinamp, WM_COMMAND, 40045, 0);
     }
     else if (strcmp(word[2], "stop") == 0) {
-      xchat_print(ph, "Winamp stopped!...\n");
+      hexchat_print(ph, "Winamp stopped!...\n");
       SendMessage (hwndWinamp, WM_COMMAND, 40047, 0);
     }
     else if (strcmp(word[2], "pause") == 0) {
@@ -138,28 +138,28 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
   char this_title[1024];
 
   if ((hwndWinamp = FindWindow("Winamp v1.x",NULL)) == NULL)
-    xchat_print(ph, "Winamp's window not found - Is winamp really running?\n");
+    hexchat_print(ph, "Winamp's window not found - Is winamp really running?\n");
   else {
     //Winamp's running
     // Seems buggy when winamp2's agent is running, and winamp not (or winamp3) -> crashes xchat.
     SendMessage(hwndWinamp, WM_USER, (WPARAM)0, (LPARAM)125);
 
     if ((samplerate = SendMessage(hwndWinamp, WM_USER, (WPARAM)0, (LPARAM)126)) == 0) {
-      xchat_print(ph, "Could not get current song's samplerate... !?\n");
+      hexchat_print(ph, "Could not get current song's samplerate... !?\n");
       return HEXCHAT_EAT_ALL;
     }
     if ((bitrate = SendMessage(hwndWinamp, WM_USER, (WPARAM)1, (LPARAM)126)) == 0) {
-      xchat_print(ph, "Could not get current song's bitrate... !?\n");
+      hexchat_print(ph, "Could not get current song's bitrate... !?\n");
       return HEXCHAT_EAT_ALL;
     }
     if ((nbchannels = SendMessage(hwndWinamp, WM_USER, (WPARAM)2, (LPARAM)126)) == 0) {
-      xchat_print(ph, "Could not get the number of channels... !?\n");
+      hexchat_print(ph, "Could not get the number of channels... !?\n");
       return HEXCHAT_EAT_ALL;
     }
     if ((length = SendMessage(hwndWinamp, WM_USER, (WPARAM)1, (LPARAM)105)) == 0) {
       // Could be buggy when streaming audio or video, returned length is unexpected;
       // How to detect is Winamp is streaming, and display ??:?? in that case?
-      xchat_print(ph, "Could not get current song's length... !?\n");
+      hexchat_print(ph, "Could not get current song's length... !?\n");
       return HEXCHAT_EAT_ALL;
     }
     else {
@@ -172,7 +172,7 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
         wsprintf(totaltime, "%d:0%d", minutes, seconds);
     }
     if ((elapsed = SendMessage(hwndWinamp, WM_USER, (WPARAM)0, (LPARAM)105)) == 0) {
-      xchat_print(ph, "Could not get current song's elapsed time... !?\n");
+      hexchat_print(ph, "Could not get current song's elapsed time... !?\n");
       return HEXCHAT_EAT_ALL;
     }
     else {
@@ -186,13 +186,13 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
     }
 
     if ((bitrate = SendMessage(hwndWinamp, WM_USER, (WPARAM)1, (LPARAM)126)) == 0) {
-      xchat_print(ph, "Could not get current song's bitrate... !?\n");
+      hexchat_print(ph, "Could not get current song's bitrate... !?\n");
       return HEXCHAT_EAT_ALL;
     }
 
     GetCurrentSongsName(hwndWinamp, this_title, 1024);
 
-    xchat_commandf(ph, "dispcurrsong %d %d %d %s %s %s", samplerate, bitrate, nbchannels, elapsedtime, totaltime, this_title);
+    hexchat_commandf(ph, "dispcurrsong %d %d %d %s %s %s", samplerate, bitrate, nbchannels, elapsedtime, totaltime, this_title);
   }
 
   return HEXCHAT_EAT_ALL;   /* eat this command so xchat and other plugins can't process it */
@@ -200,7 +200,7 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
 
 
 
-int xchat_plugin_init(xchat_plugin *plugin_handle,
+int hexchat_plugin_init(hexchat_plugin *plugin_handle,
                       char **plugin_name,
                       char **plugin_desc,
                       char **plugin_version,
@@ -213,19 +213,19 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
   *plugin_desc = "Some commands to remotely control winamp";
   *plugin_version = "1.2";
 
-  xchat_hook_command(ph, "wp", HEXCHAT_PRI_NORM, wp_cb,
+  hexchat_hook_command(ph, "wp", HEXCHAT_PRI_NORM, wp_cb,
                     "Usage: wp", 0);
 
-  xchat_hook_command(ph, "wcmd", HEXCHAT_PRI_NORM, wcmd_cb,
+  hexchat_hook_command(ph, "wcmd", HEXCHAT_PRI_NORM, wcmd_cb,
                     "Usage: wcmd [play|pause|stop|prev|next]", 0);
 
-  xchat_print(ph, "EasyWinampControl plugin loaded\n");
+  hexchat_print(ph, "EasyWinampControl plugin loaded\n");
 
   return 1;       /* return 1 for success */
 }
 
-int xchat_plugin_deinit(void)
+int hexchat_plugin_deinit(void)
 {
-  xchat_print(ph, "EasyWinampControl plugin unloaded\n");
+  hexchat_print(ph, "EasyWinampControl plugin unloaded\n");
   return 1;
 }

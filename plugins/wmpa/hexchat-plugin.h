@@ -30,230 +30,230 @@ extern "C" {
 #endif
 
 
-   typedef struct _xchat_plugin xchat_plugin;
-   typedef struct _xchat_list xchat_list;
-   typedef struct _xchat_hook xchat_hook;
+   typedef struct _hexchat_plugin hexchat_plugin;
+   typedef struct _hexchat_list hexchat_list;
+   typedef struct _hexchat_hook hexchat_hook;
 #ifndef PLUGIN_C
-   typedef struct _xchat_context xchat_context;
+   typedef struct _hexchat_context hexchat_context;
 #endif
 
 #ifndef PLUGIN_C
-   struct _xchat_plugin {
+   struct _hexchat_plugin {
       /* these are only used on win32 */
-      xchat_hook *(*xchat_hook_command) (xchat_plugin *ph,
+      hexchat_hook *(*hexchat_hook_command) (hexchat_plugin *ph,
                                          const char *name,
                                          int pri,
                                          int (*callback) (char *word[], char *word_eol[], void *user_data),
                                          const char *help_text,
                                          void *userdata);
-      xchat_hook *(*xchat_hook_server) (xchat_plugin *ph,
+      hexchat_hook *(*hexchat_hook_server) (hexchat_plugin *ph,
                                         const char *name,
                                         int pri,
                                         int (*callback) (char *word[], char *word_eol[], void *user_data),
                                         void *userdata);
-      xchat_hook *(*xchat_hook_print) (xchat_plugin *ph,
+      hexchat_hook *(*hexchat_hook_print) (hexchat_plugin *ph,
                                        const char *name,
                                        int pri,
                                        int (*callback) (char *word[], void *user_data),
                                        void *userdata);
-      xchat_hook *(*xchat_hook_timer) (xchat_plugin *ph,
+      hexchat_hook *(*hexchat_hook_timer) (hexchat_plugin *ph,
                                        int timeout,
                                        int (*callback) (void *user_data),
                                        void *userdata);
-      xchat_hook *(*xchat_hook_fd) (xchat_plugin *ph,
+      hexchat_hook *(*hexchat_hook_fd) (hexchat_plugin *ph,
                                     int fd,
                                     int flags,
                                     int (*callback) (int fd, int flags, void *user_data),
                                     void *userdata);
-      void *(*xchat_unhook) (xchat_plugin *ph,
-                             xchat_hook *hook);
-      void (*xchat_print) (xchat_plugin *ph,
+      void *(*hexchat_unhook) (hexchat_plugin *ph,
+                             hexchat_hook *hook);
+      void (*hexchat_print) (hexchat_plugin *ph,
                            const char *text);
-      void (*xchat_printf) (xchat_plugin *ph,
+      void (*hexchat_printf) (hexchat_plugin *ph,
                             const char *format, ...);
-      void (*xchat_command) (xchat_plugin *ph,
+      void (*hexchat_command) (hexchat_plugin *ph,
                              const char *command);
-      void (*xchat_commandf) (xchat_plugin *ph,
+      void (*hexchat_commandf) (hexchat_plugin *ph,
                               const char *format, ...);
-      int (*xchat_nickcmp) (xchat_plugin *ph,
+      int (*hexchat_nickcmp) (hexchat_plugin *ph,
                             const char *s1,
                             const char *s2);
-      int (*xchat_set_context) (xchat_plugin *ph,
-                                xchat_context *ctx);
-      xchat_context *(*xchat_find_context) (xchat_plugin *ph,
+      int (*hexchat_set_context) (hexchat_plugin *ph,
+                                hexchat_context *ctx);
+      hexchat_context *(*hexchat_find_context) (hexchat_plugin *ph,
                                             const char *servname,
                                             const char *channel);
-      xchat_context *(*xchat_get_context) (xchat_plugin *ph);
-      const char *(*xchat_get_info) (xchat_plugin *ph,
+      hexchat_context *(*hexchat_get_context) (hexchat_plugin *ph);
+      const char *(*hexchat_get_info) (hexchat_plugin *ph,
                                      const char *id);
-      int (*xchat_get_prefs) (xchat_plugin *ph,
+      int (*xchat_get_prefs) (hexchat_plugin *ph,
                               const char *name,
                               const char **string,
                               int *integer);
-      xchat_list * (*xchat_list_get) (xchat_plugin *ph,
+      hexchat_list * (*hexchat_list_get) (hexchat_plugin *ph,
                                       const char *name);
-      void (*xchat_list_free) (xchat_plugin *ph,
-                               xchat_list *xlist);
-      const char * const * (*xchat_list_fields) (xchat_plugin *ph,
+      void (*hexchat_list_free) (hexchat_plugin *ph,
+                               hexchat_list *xlist);
+      const char * const * (*hexchat_list_fields) (hexchat_plugin *ph,
                                                  const char *name);
-      int (*xchat_list_next) (xchat_plugin *ph,
-                              xchat_list *xlist);
-      const char * (*xchat_list_str) (xchat_plugin *ph,
-                                      xchat_list *xlist,
+      int (*hexchat_list_next) (hexchat_plugin *ph,
+                              hexchat_list *xlist);
+      const char * (*hexchat_list_str) (hexchat_plugin *ph,
+                                      hexchat_list *xlist,
                                       const char *name);
-      int (*xchat_list_int) (xchat_plugin *ph,
-                             xchat_list *xlist,
+      int (*hexchat_list_int) (hexchat_plugin *ph,
+                             hexchat_list *xlist,
                              const char *name);
-      void * (*xchat_plugingui_add) (xchat_plugin *ph,
+      void * (*hexchat_plugingui_add) (hexchat_plugin *ph,
                                      const char *filename,
                                      const char *name,
                                      const char *desc,
                                      const char *version,
                                      char *reserved);
-      void (*xchat_plugingui_remove) (xchat_plugin *ph,
+      void (*hexchat_plugingui_remove) (hexchat_plugin *ph,
                                       void *handle);
-      int (*xchat_emit_print) (xchat_plugin *ph,
+      int (*hexchat_emit_print) (hexchat_plugin *ph,
                                const char *event_name, ...);
-      int (*xchat_read_fd) (xchat_plugin *ph,
+      int (*xchat_read_fd) (hexchat_plugin *ph,
                             void *src,
                             char *buf,
                             int *len);
-      time_t (*xchat_list_time) (xchat_plugin *ph,
-                                 xchat_list *xlist,
+      time_t (*hexchat_list_time) (hexchat_plugin *ph,
+                                 hexchat_list *xlist,
                                  const char *name);
-      char *(*xchat_gettext) (xchat_plugin *ph,
+      char *(*hexchat_gettext) (hexchat_plugin *ph,
                               const char *msgid);
-      void (*xchat_send_modes) (xchat_plugin *ph,
+      void (*hexchat_send_modes) (hexchat_plugin *ph,
                                 const char **targets,
                                 int ntargets,
                                 int modes_per_line,
                                 char sign,
                                 char mode);
-      char *(*xchat_strip) (xchat_plugin *ph,
+      char *(*hexchat_strip) (hexchat_plugin *ph,
                             const char *str,
                             int len,
                             int flags);
-      void (*xchat_free) (xchat_plugin *ph,
+      void (*hexchat_free) (hexchat_plugin *ph,
                           void *ptr);
    };
 #endif
 
 
-   xchat_hook *
-   xchat_hook_command (xchat_plugin *ph,
+   hexchat_hook *
+   hexchat_hook_command (hexchat_plugin *ph,
                        const char *name,
                        int pri,
                        int (*callback) (char *word[], char *word_eol[], void *user_data),
                        const char *help_text,
                        void *userdata);
 
-   xchat_hook *
-   xchat_hook_server (xchat_plugin *ph,
+   hexchat_hook *
+   hexchat_hook_server (hexchat_plugin *ph,
                       const char *name,
                       int pri,
                       int (*callback) (char *word[], char *word_eol[], void *user_data),
                       void *userdata);
 
-   xchat_hook *
-   xchat_hook_print (xchat_plugin *ph,
+   hexchat_hook *
+   hexchat_hook_print (hexchat_plugin *ph,
                      const char *name,
                      int pri,
                      int (*callback) (char *word[], void *user_data),
                      void *userdata);
 
-   xchat_hook *
-   xchat_hook_timer (xchat_plugin *ph,
+   hexchat_hook *
+   hexchat_hook_timer (hexchat_plugin *ph,
                      int timeout,
                      int (*callback) (void *user_data),
                      void *userdata);
 
-   xchat_hook *
-   xchat_hook_fd (xchat_plugin *ph,
+   hexchat_hook *
+   hexchat_hook_fd (hexchat_plugin *ph,
                   int fd,
                   int flags,
                   int (*callback) (int fd, int flags, void *user_data),
                   void *userdata);
 
    void *
-   xchat_unhook (xchat_plugin *ph,
-                 xchat_hook *hook);
+   hexchat_unhook (hexchat_plugin *ph,
+                 hexchat_hook *hook);
 
    void
-   xchat_print (xchat_plugin *ph,
+   hexchat_print (hexchat_plugin *ph,
                 const char *text);
 
    void
-   xchat_printf (xchat_plugin *ph,
+   hexchat_printf (hexchat_plugin *ph,
                  const char *format, ...);
 
    void
-   xchat_command (xchat_plugin *ph,
+   hexchat_command (hexchat_plugin *ph,
                   const char *command);
 
    void
-   xchat_commandf (xchat_plugin *ph,
+   hexchat_commandf (hexchat_plugin *ph,
                    const char *format, ...);
 
    int
-   xchat_nickcmp (xchat_plugin *ph,
+   hexchat_nickcmp (hexchat_plugin *ph,
                   const char *s1,
                   const char *s2);
 
    int
-   xchat_set_context (xchat_plugin *ph,
-                      xchat_context *ctx);
+   hexchat_set_context (hexchat_plugin *ph,
+                      hexchat_context *ctx);
 
-   xchat_context *
-   xchat_find_context (xchat_plugin *ph,
+   hexchat_context *
+   hexchat_find_context (hexchat_plugin *ph,
                        const char *servname,
                        const char *channel);
 
-   xchat_context *
-   xchat_get_context (xchat_plugin *ph);
+   hexchat_context *
+   hexchat_get_context (hexchat_plugin *ph);
 
    const char *
-   xchat_get_info (xchat_plugin *ph,
+   hexchat_get_info (hexchat_plugin *ph,
                    const char *id);
 
    int
-   xchat_get_prefs (xchat_plugin *ph,
+   xchat_get_prefs (hexchat_plugin *ph,
                     const char *name,
                     const char **string,
                     int *integer);
 
-   xchat_list *
-   xchat_list_get (xchat_plugin *ph,
+   hexchat_list *
+   hexchat_list_get (hexchat_plugin *ph,
                    const char *name);
 
    void
-   xchat_list_free (xchat_plugin *ph,
-                    xchat_list *xlist);
+   hexchat_list_free (hexchat_plugin *ph,
+                    hexchat_list *xlist);
 
    const char * const *
-   xchat_list_fields (xchat_plugin *ph,
+   hexchat_list_fields (hexchat_plugin *ph,
                       const char *name);
 
    int
-   xchat_list_next (xchat_plugin *ph,
-                    xchat_list *xlist);
+   hexchat_list_next (hexchat_plugin *ph,
+                    hexchat_list *xlist);
 
    const char *
-   xchat_list_str (xchat_plugin *ph,
-                   xchat_list *xlist,
+   hexchat_list_str (hexchat_plugin *ph,
+                   hexchat_list *xlist,
                    const char *name);
 
    int
-   xchat_list_int (xchat_plugin *ph,
-                   xchat_list *xlist,
+   hexchat_list_int (hexchat_plugin *ph,
+                   hexchat_list *xlist,
                    const char *name);
 
    time_t
-   xchat_list_time (xchat_plugin *ph,
-                    xchat_list *xlist,
+   hexchat_list_time (hexchat_plugin *ph,
+                    hexchat_list *xlist,
                     const char *name);
 
    void *
-   xchat_plugingui_add (xchat_plugin *ph,
+   hexchat_plugingui_add (hexchat_plugin *ph,
                         const char *filename,
                         const char *name,
                         const char *desc,
@@ -261,19 +261,19 @@ extern "C" {
                         char *reserved);
 
    void
-   xchat_plugingui_remove (xchat_plugin *ph,
+   hexchat_plugingui_remove (hexchat_plugin *ph,
                            void *handle);
 
    int
-   xchat_emit_print (xchat_plugin *ph,
+   hexchat_emit_print (hexchat_plugin *ph,
                      const char *event_name, ...);
 
    char *
-   xchat_gettext (xchat_plugin *ph,
+   hexchat_gettext (hexchat_plugin *ph,
                   const char *msgid);
 
    void
-   xchat_send_modes (xchat_plugin *ph,
+   hexchat_send_modes (hexchat_plugin *ph,
                      const char **targets,
                      int ntargets,
                      int modes_per_line,
@@ -281,49 +281,49 @@ extern "C" {
                      char mode);
 
    char *
-   xchat_strip (xchat_plugin *ph,
+   hexchat_strip (hexchat_plugin *ph,
                 const char *str,
                 int len,
                 int flags);
 
    void
-   xchat_free (xchat_plugin *ph,
+   hexchat_free (hexchat_plugin *ph,
                void *ptr);
 
 #if !defined(PLUGIN_C) && defined(WIN32)
 #ifndef HEXCHAT_PLUGIN_HANDLE
 #define HEXCHAT_PLUGIN_HANDLE (ph)
 #endif
-#define xchat_hook_command ((HEXCHAT_PLUGIN_HANDLE)->xchat_hook_command)
-#define xchat_hook_server ((HEXCHAT_PLUGIN_HANDLE)->xchat_hook_server)
-#define xchat_hook_print ((HEXCHAT_PLUGIN_HANDLE)->xchat_hook_print)
-#define xchat_hook_timer ((HEXCHAT_PLUGIN_HANDLE)->xchat_hook_timer)
-#define xchat_hook_fd ((HEXCHAT_PLUGIN_HANDLE)->xchat_hook_fd)
-#define xchat_unhook ((HEXCHAT_PLUGIN_HANDLE)->xchat_unhook)
-#define xchat_print ((HEXCHAT_PLUGIN_HANDLE)->xchat_print)
-#define xchat_printf ((HEXCHAT_PLUGIN_HANDLE)->xchat_printf)
-#define xchat_command ((HEXCHAT_PLUGIN_HANDLE)->xchat_command)
-#define xchat_commandf ((HEXCHAT_PLUGIN_HANDLE)->xchat_commandf)
-#define xchat_nickcmp ((HEXCHAT_PLUGIN_HANDLE)->xchat_nickcmp)
-#define xchat_set_context ((HEXCHAT_PLUGIN_HANDLE)->xchat_set_context)
-#define xchat_find_context ((HEXCHAT_PLUGIN_HANDLE)->xchat_find_context)
-#define xchat_get_context ((HEXCHAT_PLUGIN_HANDLE)->xchat_get_context)
-#define xchat_get_info ((HEXCHAT_PLUGIN_HANDLE)->xchat_get_info)
+#define hexchat_hook_command ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_command)
+#define hexchat_hook_server ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_server)
+#define hexchat_hook_print ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_print)
+#define hexchat_hook_timer ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_timer)
+#define hexchat_hook_fd ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_fd)
+#define hexchat_unhook ((HEXCHAT_PLUGIN_HANDLE)->hexchat_unhook)
+#define hexchat_print ((HEXCHAT_PLUGIN_HANDLE)->hexchat_print)
+#define hexchat_printf ((HEXCHAT_PLUGIN_HANDLE)->hexchat_printf)
+#define hexchat_command ((HEXCHAT_PLUGIN_HANDLE)->hexchat_command)
+#define hexchat_commandf ((HEXCHAT_PLUGIN_HANDLE)->hexchat_commandf)
+#define hexchat_nickcmp ((HEXCHAT_PLUGIN_HANDLE)->hexchat_nickcmp)
+#define hexchat_set_context ((HEXCHAT_PLUGIN_HANDLE)->hexchat_set_context)
+#define hexchat_find_context ((HEXCHAT_PLUGIN_HANDLE)->hexchat_find_context)
+#define hexchat_get_context ((HEXCHAT_PLUGIN_HANDLE)->hexchat_get_context)
+#define hexchat_get_info ((HEXCHAT_PLUGIN_HANDLE)->hexchat_get_info)
 #define xchat_get_prefs ((HEXCHAT_PLUGIN_HANDLE)->xchat_get_prefs)
-#define xchat_list_get ((HEXCHAT_PLUGIN_HANDLE)->xchat_list_get)
-#define xchat_list_free ((HEXCHAT_PLUGIN_HANDLE)->xchat_list_free)
-#define xchat_list_fields ((HEXCHAT_PLUGIN_HANDLE)->xchat_list_fields)
-#define xchat_list_str ((HEXCHAT_PLUGIN_HANDLE)->xchat_list_str)
-#define xchat_list_int ((HEXCHAT_PLUGIN_HANDLE)->xchat_list_int)
-#define xchat_list_time ((HEXCHAT_PLUGIN_HANDLE)->xchat_list_time)
-#define xchat_list_next ((HEXCHAT_PLUGIN_HANDLE)->xchat_list_next)
-#define xchat_plugingui_add ((HEXCHAT_PLUGIN_HANDLE)->xchat_plugingui_add)
-#define xchat_plugingui_remove ((HEXCHAT_PLUGIN_HANDLE)->xchat_plugingui_remove)
-#define xchat_emit_print ((HEXCHAT_PLUGIN_HANDLE)->xchat_emit_print)
-#define xchat_gettext ((HEXCHAT_PLUGIN_HANDLE)->xchat_gettext)
-#define xchat_send_modes ((HEXCHAT_PLUGIN_HANDLE)->xchat_send_modes)
-#define xchat_strip ((HEXCHAT_PLUGIN_HANDLE)->xchat_strip)
-#define xchat_free ((HEXCHAT_PLUGIN_HANDLE)->xchat_free)
+#define hexchat_list_get ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_get)
+#define hexchat_list_free ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_free)
+#define hexchat_list_fields ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_fields)
+#define hexchat_list_str ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_str)
+#define hexchat_list_int ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_int)
+#define hexchat_list_time ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_time)
+#define hexchat_list_next ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_next)
+#define hexchat_plugingui_add ((HEXCHAT_PLUGIN_HANDLE)->hexchat_plugingui_add)
+#define hexchat_plugingui_remove ((HEXCHAT_PLUGIN_HANDLE)->hexchat_plugingui_remove)
+#define hexchat_emit_print ((HEXCHAT_PLUGIN_HANDLE)->hexchat_emit_print)
+#define hexchat_gettext ((HEXCHAT_PLUGIN_HANDLE)->hexchat_gettext)
+#define hexchat_send_modes ((HEXCHAT_PLUGIN_HANDLE)->hexchat_send_modes)
+#define hexchat_strip ((HEXCHAT_PLUGIN_HANDLE)->hexchat_strip)
+#define hexchat_free ((HEXCHAT_PLUGIN_HANDLE)->hexchat_free)
 #endif
 
 #ifdef __cplusplus
@@ -333,7 +333,7 @@ extern "C" {
 /******************************************************************
 * Globals
 ******************************************************************/
-extern xchat_plugin *ph;
+extern hexchat_plugin *ph;
 
 /******************************************************************
 * Prototypes

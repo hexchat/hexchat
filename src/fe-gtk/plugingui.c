@@ -34,7 +34,7 @@
 
 #include "../common/hexchat.h"
 #define PLUGIN_C
-typedef struct session xchat_context;
+typedef struct session hexchat_context;
 #include "../common/hexchat-plugin.h"
 #include "../common/plugin.h"
 #include "../common/util.h"
@@ -99,7 +99,7 @@ extern GSList *plugin_list;
 void
 fe_pluginlist_update (void)
 {
-	xchat_plugin *pl;
+	hexchat_plugin *pl;
 	GSList *list;
 	GtkTreeView *view;
 	GtkListStore *store;

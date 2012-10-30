@@ -39,14 +39,14 @@ void themeInit(){
 
 void printTheme(struct theme data){
      int i;
-     for (i=0;i<data.size;i++) xchat_printf(ph,"line[%i]=%s\n",i,data.line[i]);
+     for (i=0;i<data.size;i++) hexchat_printf(ph,"line[%i]=%s\n",i,data.line[i]);
 }
 
 void printThemes(){
-     xchat_printf(ph,"\nNotRun-Theme:\n");printTheme(notRunTheme);
-     xchat_printf(ph,"\nMP3-Theme:\n");printTheme(mp3Theme);
-     xchat_printf(ph,"\nOGG-Theme:\n");printTheme(oggTheme);
-     xchat_printf(ph,"\nTitle-Theme:\n");printTheme(titleTheme);
+     hexchat_printf(ph,"\nNotRun-Theme:\n");printTheme(notRunTheme);
+     hexchat_printf(ph,"\nMP3-Theme:\n");printTheme(mp3Theme);
+     hexchat_printf(ph,"\nOGG-Theme:\n");printTheme(oggTheme);
+     hexchat_printf(ph,"\nTitle-Theme:\n");printTheme(titleTheme);
 }
 
 void cbFix(char *line){
@@ -85,18 +85,18 @@ struct theme themeAdd(struct theme data, char *info){
 void loadThemes(){
     char *hDir, *hFile, *line, *val;
 	FILE *f;
-	xchat_print(ph,"loading themes\n");
+	hexchat_print(ph,"loading themes\n");
     hDir=(char*)calloc(1024,sizeof(char));
-    strcpy(hDir,xchat_get_info(ph,"xchatdirfs"));
+    strcpy(hDir,hexchat_get_info(ph,"xchatdirfs"));
     hFile=str3cat(hDir,"\\","mpcInfo.theme.txt");
     f = fopen(hFile,"r");
     if(f==NULL)
 	{
-		xchat_print(ph,"no theme in homedir, checking global theme");
+		hexchat_print(ph,"no theme in homedir, checking global theme");
 		f=fopen("mpcInfo.theme.txt","r");
     }
-	//xchat_printf(ph,"file_desc: %p\n",f);
-	if (f==NULL) xchat_print(ph, "no theme found, using hardcoded\n");
+	//hexchat_printf(ph,"file_desc: %p\n",f);
+	if (f==NULL) hexchat_print(ph, "no theme found, using hardcoded\n");
 	else {
 		if (f > 0)
 		{
@@ -118,7 +118,7 @@ void loadThemes(){
 			if (strcmp(toUpper(line),"OGG_LINE")==0) mp3Theme=themeAdd(oggTheme,val);
 		}
 		fclose(f);
-		xchat_print(ph, "theme loaded successfull\n");
+		hexchat_print(ph, "theme loaded successfull\n");
 	}
 	if (notRunTheme.size==0) notRunTheme=themeAdd(notRunTheme,"say Media Player Classic not running");
 	if (titleTheme.size==0) titleTheme=themeAdd(titleTheme,"say Playing %title in Media Player Classic");

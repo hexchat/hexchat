@@ -10,7 +10,7 @@
 #include "hexchat-plugin.h"
 
 
-static xchat_plugin *ph;	/* plugin handle */
+static hexchat_plugin *ph;	/* plugin handle */
 
 static int
 mail_items(char *file)
@@ -63,7 +63,7 @@ xchat_mail_check (void)
 
 	if(size > last_size)
 	{
-		xchat_printf(ph,
+		hexchat_printf(ph,
 	"-\0033-\0039-\017\tYou have new mail (%d messages, %d bytes total).",
 				mail_items(maildir), size);
 	}
@@ -78,7 +78,7 @@ static int timeout_cb(void *userdata)
 	return 1;
 }
 
-int xchat_plugin_init(xchat_plugin *plugin_handle,
+int hexchat_plugin_init(hexchat_plugin *plugin_handle,
 				char **plugin_name, char **plugin_desc, char **plugin_version,
 				char *arg)
 {
@@ -88,7 +88,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	*plugin_desc = "Checks your mailbox every 30 seconds";
 	*plugin_version = "0.1";
 
-	xchat_hook_timer(ph, 30000, timeout_cb, 0);
+	hexchat_hook_timer(ph, 30000, timeout_cb, 0);
 
 	return 1;
 }

@@ -8,7 +8,7 @@ use warnings;
 #   filename
 #     The full path to the script.
 #   gui_entry
-#     This is xchat_plugin pointer that is used to remove the script from
+#     This is hexchat_plugin pointer that is used to remove the script from
 #     Plugins and Scripts window when a script is unloaded. This has also
 #     been converted with the PTR2IV() macro.
 #   hooks

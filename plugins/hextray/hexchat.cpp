@@ -29,7 +29,7 @@
 #include "utility.h"
 
 // from util.c of xchat source code ( slightly modified to fit X-Tray Syntax )
-char *xchat_strip_color (char *text)
+char *hexchat_strip_color (char *text)
 {
 	int nc	= 0;
 	int i	= 0;
@@ -155,7 +155,7 @@ void check_special_chars (char *cmd)
 	}
 }
 
-void xchat_globally_away(TCHAR *tszAway)
+void hexchat_globally_away(TCHAR *tszAway)
 {
 	char szTemp[512];
 	char szAway[512];
@@ -163,10 +163,10 @@ void xchat_globally_away(TCHAR *tszAway)
 	ConvertString(tszAway, szAway, 512);
 	_snprintf(szTemp, 512, "ALLSERV AWAY %s\0", szAway);
 	check_special_chars(szTemp);
-	xchat_exec(szTemp);
+	hexchat_exec(szTemp);
 }
 
-void xchat_away(TCHAR *tszAway)
+void hexchat_away(TCHAR *tszAway)
 {
 	char szTemp[512];
 	char szAway[512];
@@ -174,42 +174,42 @@ void xchat_away(TCHAR *tszAway)
 	ConvertString(tszAway, szAway, 512);
 	_snprintf(szTemp, 512, szAway);
 	check_special_chars(szTemp);
-	xchat_commandf(ph, "AWAY %s\0", szTemp);
+	hexchat_commandf(ph, "AWAY %s\0", szTemp);
 }
 
-void xchat_globally_back()
+void hexchat_globally_back()
 {
 	std::vector<int> xs;
 	std::vector<int>::iterator xsi;
-	xchat_list *xl = xchat_list_get(ph, "channels");
+	hexchat_list *xl = hexchat_list_get(ph, "channels");
 
 	if(xl)
 	{
-		while(xchat_list_next(ph, xl))
+		while(hexchat_list_next(ph, xl))
 		{
-			xsi = std::find(xs.begin(), xs.end(), xchat_list_int(ph, xl, "id"));
+			xsi = std::find(xs.begin(), xs.end(), hexchat_list_int(ph, xl, "id"));
 
 			if((xsi == xs.end()) &&
-				((strlen(xchat_list_str(ph, xl, "server")) > 0) || 
-				(strlen(xchat_list_str(ph, xl, "channel")) > 0)))
+				((strlen(hexchat_list_str(ph, xl, "server")) > 0) || 
+				(strlen(hexchat_list_str(ph, xl, "channel")) > 0)))
 			{
-				xs.push_back(xchat_list_int(ph, xl, "id"));
-				xchat_set_context(ph, (xchat_context *)xchat_list_str(ph, xl, "context"));
-				xchat_back();
+				xs.push_back(hexchat_list_int(ph, xl, "id"));
+				hexchat_set_context(ph, (hexchat_context *)hexchat_list_str(ph, xl, "context"));
+				hexchat_back();
 			}
 		}
 
-		xchat_list_free(ph, xl);
+		hexchat_list_free(ph, xl);
 	}
 }
 
 
 
-void xchat_back()
+void hexchat_back()
 {
-	if(xchat_get_info(ph, "away"))
+	if(hexchat_get_info(ph, "away"))
 	{
-		xchat_command(ph, "BACK");
+		hexchat_command(ph, "BACK");
 	}
 }
 
@@ -222,7 +222,7 @@ HMENU setServerMenu()
 
 	std::vector<int> xs;
 	std::vector<int>::iterator xsi;
-	xchat_list *xl = xchat_list_get(ph, "channels");
+	hexchat_list *xl = hexchat_list_get(ph, "channels");
 
 	AppendMenu(sTemp, MF_STRING, ACT_AWAY, _T("Set Globally Away"));
 	AppendMenu(sTemp, MF_STRING, ACT_BACK, _T("Set Globally Back"));
@@ -230,20 +230,20 @@ HMENU setServerMenu()
 
 	if(xl)
 	{
-		while(xchat_list_next(ph, xl))
+		while(hexchat_list_next(ph, xl))
 		{
-			xsi = std::find(xs.begin(), xs.end(), xchat_list_int(ph, xl, "id"));
+			xsi = std::find(xs.begin(), xs.end(), hexchat_list_int(ph, xl, "id"));
 
 			if( (xsi == xs.end()) &&
-				((strlen(xchat_list_str(ph, xl, "server")) > 0) || 
-				(strlen(xchat_list_str(ph, xl, "channel")) > 0)))
+				((strlen(hexchat_list_str(ph, xl, "server")) > 0) || 
+				(strlen(hexchat_list_str(ph, xl, "channel")) > 0)))
 			{
-				xchat_set_context(ph, (xchat_context *)xchat_list_str(ph, xl, "context"));
-				xs.push_back(xchat_list_int(ph, xl, "id"));
+				hexchat_set_context(ph, (hexchat_context *)hexchat_list_str(ph, xl, "context"));
+				xs.push_back(hexchat_list_int(ph, xl, "id"));
 
-				char *network	= _strdup(xchat_list_str(ph, xl, "network"));
-				char *server	= _strdup(xchat_list_str(ph, xl, "server"));
-				char *nick		= _strdup(xchat_get_info(ph, "nick"));
+				char *network	= _strdup(hexchat_list_str(ph, xl, "network"));
+				char *server	= _strdup(hexchat_list_str(ph, xl, "server"));
+				char *nick		= _strdup(hexchat_get_info(ph, "nick"));
 
 				if(network != NULL)
 				{
@@ -259,13 +259,13 @@ HMENU setServerMenu()
 					ConvertString(nick, wszNick, 128);
 					_sntprintf(wszMenuEntry, 256, _T("%s @ %s\0"), wszNick, wszServer);
 
-					if(!xchat_get_info(ph, "away"))
+					if(!hexchat_get_info(ph, "away"))
 					{
-						AppendMenu(sTemp, MF_STRING, (xchat_list_int(ph, xl, "id") + 1), wszMenuEntry);
+						AppendMenu(sTemp, MF_STRING, (hexchat_list_int(ph, xl, "id") + 1), wszMenuEntry);
 					}
 					else
 					{
-						AppendMenu(sTemp, (MF_CHECKED | MF_STRING), (xchat_list_int(ph, xl, "id") + 1), wszMenuEntry);							
+						AppendMenu(sTemp, (MF_CHECKED | MF_STRING), (hexchat_list_int(ph, xl, "id") + 1), wszMenuEntry);							
 					}
 				}
 
@@ -275,24 +275,24 @@ HMENU setServerMenu()
 			}
 		}
 
-		xchat_list_free(ph, xl);
+		hexchat_list_free(ph, xl);
 	}
 
 	return sTemp;
 }
 
-struct _xchat_context *xchat_find_server(int find_id)
+struct _hexchat_context *hexchat_find_server(int find_id)
 {
-	xchat_context *xc;
-	xchat_list *xl = xchat_list_get(ph, "channels");
+	hexchat_context *xc;
+	hexchat_list *xl = hexchat_list_get(ph, "channels");
 	int id;
 
 	if(!xl)
 		return NULL;
 
-	while(xchat_list_next(ph, xl))
+	while(hexchat_list_next(ph, xl))
 	{
-		id = xchat_list_int(ph, xl, "id");
+		id = hexchat_list_int(ph, xl, "id");
 		
 		if(id == -1)
 		{
@@ -300,21 +300,21 @@ struct _xchat_context *xchat_find_server(int find_id)
 		}
 		else if(id == find_id)
 		{
-			xc = (xchat_context *)xchat_list_str(ph, xl, "context");
+			xc = (hexchat_context *)hexchat_list_str(ph, xl, "context");
 			
-			xchat_list_free(ph, xl);
+			hexchat_list_free(ph, xl);
 
 			return xc;
 		}
 	}
 
-	xchat_list_free(ph, xl);
+	hexchat_list_free(ph, xl);
 
 	return NULL;
 }
 
-void xchat_exec(char *command)
+void hexchat_exec(char *command)
 {
-	xchat_set_context(ph, xchat_find_context(ph, NULL, NULL));
-	xchat_command(ph, command);
+	hexchat_set_context(ph, hexchat_find_context(ph, NULL, NULL));
+	hexchat_command(ph, command);
 }

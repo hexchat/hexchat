@@ -19,14 +19,14 @@
 #ifndef _H_XCHAT_H
 #define _H_XCHAT_H
 
-void					xchat_exec			(char *);
-char					*xchat_strip_color	(char *);
-void					xchat_parse			(char *);
-struct _xchat_context	*xchat_find_server	(int);
-void					xchat_globally_away	(TCHAR *);
-void					xchat_away			(TCHAR *);
-void					xchat_globally_back	();
-void					xchat_back			();
+void					hexchat_exec			(char *);
+char					*hexchat_strip_color	(char *);
+void					hexchat_parse			(char *);
+struct _hexchat_context	*hexchat_find_server	(int);
+void					hexchat_globally_away	(TCHAR *);
+void					hexchat_away			(TCHAR *);
+void					hexchat_globally_back	();
+void					hexchat_back			();
 HMENU					setServerMenu		();
 
 #endif

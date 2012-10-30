@@ -24,7 +24,7 @@
 
 #include "hexchat-plugin.h"
 
-static xchat_plugin *ph;   /* plugin handle */
+static hexchat_plugin *ph;   /* plugin handle */
 
 static void
 launch_tool ()
@@ -38,7 +38,7 @@ launch_tool ()
 
 	if (!CreateProcess ( NULL, "gtk2-prefs.exe", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
 	{
-		xchat_print (ph, "Error launching the GTK+ Preference Tool! Maybe the executable is missing?");
+		hexchat_print (ph, "Error launching the GTK+ Preference Tool! Maybe the executable is missing?");
 	}
 
 	CloseHandle (pi.hProcess);
@@ -46,7 +46,7 @@ launch_tool ()
 }
 
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
 
@@ -54,16 +54,16 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = "GTK+ Preference Tool Launcher";
 	*plugin_version = "1.0";
 
-	xchat_hook_command (ph, "GTKPREF", HEXCHAT_PRI_NORM, launch_tool, 0, 0);
-	xchat_command (ph, "MENU -ietc\\gtkpref.png ADD \"Settings/GTK+ Preferences\" \"GTKPREF\"");
+	hexchat_hook_command (ph, "GTKPREF", HEXCHAT_PRI_NORM, launch_tool, 0, 0);
+	hexchat_command (ph, "MENU -ietc\\gtkpref.png ADD \"Settings/GTK+ Preferences\" \"GTKPREF\"");
 
 	return 1;       /* return 1 for success */
 }
 
 int
-xchat_plugin_deinit (void)
+hexchat_plugin_deinit (void)
 {
-	xchat_command (ph, "MENU DEL \"Settings/GTK+ Preferences\"");
+	hexchat_command (ph, "MENU DEL \"Settings/GTK+ Preferences\"");
 
 	return 1;
 }

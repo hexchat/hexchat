@@ -108,10 +108,10 @@ void CWMPADialog::OnDblclkPlaylist()
 
    m_WMP.GetControls().play();
    if (autoAnnounce) {
-      xchat_commandf(ph, "me is playing %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_commandf(ph, "me is playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
    else {
-      xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
 }
 
@@ -195,10 +195,10 @@ void CWMPADialog::OnDblclkSonglist()
    int index = m_SongListBox.GetCurSel();
    m_WMP.GetControls().playItem(m_WMP.GetCurrentPlaylist().GetItem(index));
    if (autoAnnounce) {
-      xchat_commandf(ph, "me is playing %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_commandf(ph, "me is playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
    else {
-      xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
 }
 
@@ -216,10 +216,10 @@ void CWMPADialog::OnCurrentItemChangeWmp(LPDISPATCH pdispMedia)
    int state = m_WMP.GetPlayState();
    if (state == 3) { // Playing
       if (autoAnnounce) {
-         xchat_commandf(ph, "me is playing %s", (LPCTSTR) wmpaGetSongTitle());
+         hexchat_commandf(ph, "me is playing %s", (LPCTSTR) wmpaGetSongTitle());
       }
       else {
-         xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
+         hexchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
       }
    }
 

@@ -30,7 +30,7 @@
 
 typedef struct {
     char *procPtr;
-    xchat_hook *hook;
+    hexchat_hook *hook;
 } alias;
 
 typedef struct {
@@ -53,7 +53,7 @@ typedef struct {
 
 static char *StrDup(const char *string, int *length);
 static char *myitoa(long value);
-static xchat_context *xchat_smart_context(const char *arg1, const char *arg2);
+static hexchat_context *xchat_smart_context(const char *arg1, const char *arg2);
 static void queue_nexttimer();
 static int insert_timer(int seconds, int count, const char *script);
 static void do_timer();
@@ -79,7 +79,7 @@ static int tcl_chats(ClientData cd, Tcl_Interp * irp, int argc, const char *argv
 static int tcl_ignores(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_dcclist(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_me(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
-static int tcl_xchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
+static int tcl_hexchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_strip(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_topic(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_word(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
@@ -94,5 +94,5 @@ static int TCL_Event_Handler(void *userdata);
 static void Tcl_Plugin_Init();
 static void Tcl_Plugin_DeInit();
 static void banner();
-int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg);
-int xchat_plugin_deinit();
+int hexchat_plugin_init(hexchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg);
+int hexchat_plugin_deinit();

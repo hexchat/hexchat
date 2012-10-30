@@ -12,7 +12,7 @@
 #include "hexchat-plugin.h"
 #include "../../src/common/hexchat.h"
 
-static xchat_plugin *ph;	/* plugin handle */
+static hexchat_plugin *ph;	/* plugin handle */
 
 static int xdcc_on = 1;
 static int xdcc_slots = 3;
@@ -31,25 +31,25 @@ typedef struct fileoffer
 
 static int num_open_dccs(void)
 {
-	xchat_list *list;
+	hexchat_list *list;
 	int num = 0;
 
-	list = xchat_list_get(ph, "dcc");
+	list = hexchat_list_get(ph, "dcc");
 	if(!list)
 		return 0;
 
-	while(xchat_list_next(ph, list))
+	while(hexchat_list_next(ph, list))
 	{
 		/* check only ACTIVE dccs */
-		if(xchat_list_int(ph, list, "status") == 1)
+		if(hexchat_list_int(ph, list, "status") == 1)
 		{
 			/* check only SEND dccs */
-			if(xchat_list_int(ph, list, "type") == 0)
+			if(hexchat_list_int(ph, list, "type") == 0)
 				num++;
 		}
 	}
 
-	xchat_list_free(ph, list);
+	hexchat_list_free(ph, list);
 
 	return num;
 }
@@ -67,20 +67,20 @@ static void xdcc_get(char *nick, char *host, char *arg)
 	list = g_slist_nth(file_list, num - 1);
 	if(!list)
 	{
-		xchat_commandf(ph, "quote NOTICE %s :No such file number #%d!", nick, num);
+		hexchat_commandf(ph, "quote NOTICE %s :No such file number #%d!", nick, num);
 		return;
 	}
 
 	if(num_open_dccs() >= xdcc_slots)
 	{
-		xchat_commandf(ph, "quote NOTICE %s :All slots full. Try again later.", nick);
+		hexchat_commandf(ph, "quote NOTICE %s :All slots full. Try again later.", nick);
 		return;
 	}
 
 	offer = (fileoffer *) list->data;
 	offer->downloads++;
-	xchat_commandf(ph, "quote NOTICE %s :Sending offer #%d %s", nick, num, offer->file);
-	xchat_commandf(ph, "dcc send %s %s", nick, offer->fullpath);
+	hexchat_commandf(ph, "quote NOTICE %s :Sending offer #%d %s", nick, num, offer->file);
+	hexchat_commandf(ph, "dcc send %s %s", nick, offer->fullpath);
 }
 
 static void xdcc_del(char *name)
@@ -95,7 +95,7 @@ static void xdcc_del(char *name)
 		if(strcasecmp(name, offer->file) == 0)
 		{
 			file_list = g_slist_remove(file_list, offer);
-			xchat_printf(ph, "%s [%s] removed.\n", offer->file, offer->fullpath);
+			hexchat_printf(ph, "%s [%s] removed.\n", offer->file, offer->fullpath);
 			free(offer->file);
 			free(offer->desc);
 			free(offer->fullpath);
@@ -125,21 +125,21 @@ static void xdcc_list(char *nick, char *host, char *arg, char *cmd)
 	int i = 0;
 	fileoffer *offer;
 
-	xchat_commandf(ph, "%s %s :XDCC List:", cmd, nick);
+	hexchat_commandf(ph, "%s %s :XDCC List:", cmd, nick);
 	list = file_list;
 	while(list)
 	{
 		i++;
 		offer = (fileoffer *) list->data;
-		xchat_commandf(ph, "%s %s :[#%d] %s - %s [%d dl]", cmd,
+		hexchat_commandf(ph, "%s %s :[#%d] %s - %s [%d dl]", cmd,
 							nick, i, offer->file, offer->desc, offer->downloads);
 		list = list->next;
 	}
 
 	if(i == 0)
-		xchat_commandf(ph, "%s %s :- list empty.", cmd, nick);
+		hexchat_commandf(ph, "%s %s :- list empty.", cmd, nick);
 	else
-		xchat_commandf(ph, "%s %s :%d files listed.", cmd, nick, i);
+		hexchat_commandf(ph, "%s %s :%d files listed.", cmd, nick, i);
 }
 
 static int xdcc_command(char *word[], char *word_eol[], void *userdata)
@@ -147,16 +147,16 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 	if(strcasecmp(word[2], "ADD") == 0)
 	{
 		if(!word_eol[5][0])
-			xchat_print(ph, "Syntax: /XDCC ADD <name> <path> <description>\n");
+			hexchat_print(ph, "Syntax: /XDCC ADD <name> <path> <description>\n");
 		else
 		{
 			if(access(word[4], R_OK) == 0)
 			{
 				xdcc_add(word[3], word[4], word_eol[5], 0);
-				xchat_printf(ph, "%s [%s] added.\n", word[3], word[4]);
+				hexchat_printf(ph, "%s [%s] added.\n", word[3], word[4]);
 			}
 			else
-				xchat_printf(ph, "Cannot read %s\n", word[4]);
+				hexchat_printf(ph, "Cannot read %s\n", word[4]);
 		}
 		return HEXCHAT_EAT_XCHAT;
 	}
@@ -172,10 +172,10 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 		if(word[3][0])
 		{
 			xdcc_slots = atoi(word[3]);
-			xchat_printf(ph, "XDCC slots set to %d\n", xdcc_slots);
+			hexchat_printf(ph, "XDCC slots set to %d\n", xdcc_slots);
 		} else
 		{
-			xchat_printf(ph, "XDCC slots: %d\n", xdcc_slots);
+			hexchat_printf(ph, "XDCC slots: %d\n", xdcc_slots);
 		}
 		return HEXCHAT_EAT_XCHAT;
 	}
@@ -183,7 +183,7 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 	if(strcasecmp(word[2], "ON") == 0)
 	{
 		xdcc_on = TRUE;
-		xchat_print(ph, "XDCC now ON\n");
+		hexchat_print(ph, "XDCC now ON\n");
 		return HEXCHAT_EAT_XCHAT;
 	}
 
@@ -196,11 +196,11 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 	if(strcasecmp(word[2], "OFF") == 0)
 	{
 		xdcc_on = FALSE;
-		xchat_print(ph, "XDCC now OFF\n");
+		hexchat_print(ph, "XDCC now OFF\n");
 		return HEXCHAT_EAT_XCHAT;
 	}
 
-	xchat_print(ph, "Syntax: XDCC ADD <name> <fullpath> <description>\n"
+	hexchat_print(ph, "Syntax: XDCC ADD <name> <fullpath> <description>\n"
 						 "        XDCC DEL <name>\n"
 						 "        XDCC SLOTS <number>\n"
 						 "        XDCC LIST\n"
@@ -223,7 +223,7 @@ static void xdcc_remote(char *from, char *msg)
 
 	if(xdcc_on == 0)
 	{
-		xchat_commandf(ph, "notice %s XDCC is turned OFF!", from);
+		hexchat_commandf(ph, "notice %s XDCC is turned OFF!", from);
 		return;
 	}
 
@@ -232,7 +232,7 @@ static void xdcc_remote(char *from, char *msg)
 	else if(strncasecmp(msg, "GET ", 4) == 0)
 		xdcc_get(nick, host, msg + 4);
 	else
-		xchat_commandf(ph, "notice %s Unknown XDCC command!", from);
+		hexchat_commandf(ph, "notice %s Unknown XDCC command!", from);
 }
 
 static int ctcp_cb(char *word[], void *userdata)
@@ -253,7 +253,7 @@ static void xdcc_save(void)
 	GSList *list;
 	fileoffer *offer;
 
-	snprintf(buf, sizeof(buf), "%s/xdcclist.conf", xchat_get_info(ph, "xchatdir"));
+	snprintf(buf, sizeof(buf), "%s/xdcclist.conf", hexchat_get_info(ph, "xchatdir"));
 
 	fp = fopen(buf, "w");
 	if(!fp)
@@ -280,7 +280,7 @@ static void xdcc_load(void)
 	char dl[128];
 	FILE *fp;
 
-	snprintf(buf, sizeof(buf), "%s/xdcclist.conf", xchat_get_info(ph, "xchatdir"));
+	snprintf(buf, sizeof(buf), "%s/xdcclist.conf", hexchat_get_info(ph, "xchatdir"));
 
 	fp = fopen(buf, "r");
 	if(!fp)
@@ -303,14 +303,14 @@ static void xdcc_load(void)
 	fclose(fp);
 }
 
-int xchat_plugin_deinit(void)
+int hexchat_plugin_deinit(void)
 {
 	xdcc_save();
-	xchat_print(ph, "XDCC List saved\n");
+	hexchat_print(ph, "XDCC List saved\n");
 	return 1;
 }
 
-int xchat_plugin_init(xchat_plugin *plugin_handle,
+int hexchat_plugin_init(hexchat_plugin *plugin_handle,
 				char **plugin_name, char **plugin_desc, char **plugin_version,
 				char *arg)
 {
@@ -320,12 +320,12 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	*plugin_desc = "Very simple XDCC server";
 	*plugin_version = "0.1";
 
-	xchat_hook_command(ph, "XDCC", HEXCHAT_PRI_NORM, xdcc_command, 0, 0);
-	xchat_hook_print(ph, "CTCP Generic", HEXCHAT_PRI_NORM, ctcp_cb, 0);
-	xchat_hook_print(ph, "CTCP Generic to Channel", HEXCHAT_PRI_NORM, ctcp_cb, 0);
+	hexchat_hook_command(ph, "XDCC", HEXCHAT_PRI_NORM, xdcc_command, 0, 0);
+	hexchat_hook_print(ph, "CTCP Generic", HEXCHAT_PRI_NORM, ctcp_cb, 0);
+	hexchat_hook_print(ph, "CTCP Generic to Channel", HEXCHAT_PRI_NORM, ctcp_cb, 0);
 
 	xdcc_load();
-	xchat_print(ph, "XDCC loaded. Type /XDCC for help.\n");
+	hexchat_print(ph, "XDCC loaded. Type /XDCC for help.\n");
 
 	return 1;
 }

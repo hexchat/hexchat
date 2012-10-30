@@ -28,7 +28,7 @@
 #define DEFAULT_DELAY 10	/* 10 seconds */
 #define DEFAULT_FREQ 360	/* 6 hours */
 
-static xchat_plugin *ph;   /* plugin handle */
+static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "Update Checker";
 static char desc[] = "Check for HexChat updates automatically";
 static char version[] = "4.0";
@@ -162,14 +162,14 @@ print_version (char *word[], char *word_eol[], void *userdata)
 
 	if (!g_ascii_strcasecmp ("HELP", word[2]))
 	{
-		xchat_printf (ph, upd_help);
+		hexchat_printf (ph, upd_help);
 		return HEXCHAT_EAT_XCHAT;
 	}
 	else if (!g_ascii_strcasecmp ("SET", word[2]))
 	{
 		if (!g_ascii_strcasecmp ("", word_eol[4]))
 		{
-			xchat_printf (ph, "%s\tEnter a value!\n", name);
+			hexchat_printf (ph, "%s\tEnter a value!\n", name);
 			return HEXCHAT_EAT_XCHAT;
 		}
 		if (!g_ascii_strcasecmp ("delay", word[3]))
@@ -178,13 +178,13 @@ print_version (char *word[], char *word_eol[], void *userdata)
 
 			if (convbuf > 0 && convbuf < INT_MAX)
 			{
-				prevbuf = xchat_pluginpref_get_int (ph, "delay");
-				xchat_pluginpref_set_int (ph, "delay", convbuf);
-				xchat_printf (ph, "%s\tUpdate check startup delay is set to %d seconds (from %d).\n", name, convbuf, prevbuf);
+				prevbuf = hexchat_pluginpref_get_int (ph, "delay");
+				hexchat_pluginpref_set_int (ph, "delay", convbuf);
+				hexchat_printf (ph, "%s\tUpdate check startup delay is set to %d seconds (from %d).\n", name, convbuf, prevbuf);
 			}
 			else
 			{
-				xchat_printf (ph, "%s\tInvalid input!\n", name);
+				hexchat_printf (ph, "%s\tInvalid input!\n", name);
 			}
 		}
 		else if (!g_ascii_strcasecmp ("freq", word[3]))
@@ -193,18 +193,18 @@ print_version (char *word[], char *word_eol[], void *userdata)
 
 			if (convbuf > 0 && convbuf < INT_MAX)
 			{
-				prevbuf = xchat_pluginpref_get_int (ph, "freq");
-				xchat_pluginpref_set_int (ph, "freq", convbuf);
-				xchat_printf (ph, "%s\tUpdate check frequency is set to %d minutes (from %d).\n", name, convbuf, prevbuf);
+				prevbuf = hexchat_pluginpref_get_int (ph, "freq");
+				hexchat_pluginpref_set_int (ph, "freq", convbuf);
+				hexchat_printf (ph, "%s\tUpdate check frequency is set to %d minutes (from %d).\n", name, convbuf, prevbuf);
 			}
 			else
 			{
-				xchat_printf (ph, "%s\tInvalid input!\n", name);
+				hexchat_printf (ph, "%s\tInvalid input!\n", name);
 			}
 		}
 		else
 		{
-			xchat_printf (ph, "%s\tInvalid variable name! Use 'delay' or 'freq'!\n", name);
+			hexchat_printf (ph, "%s\tInvalid variable name! Use 'delay' or 'freq'!\n", name);
 			return HEXCHAT_EAT_XCHAT;
 		}
 
@@ -214,27 +214,27 @@ print_version (char *word[], char *word_eol[], void *userdata)
 	{
 		version = check_version ();
 
-		if (strcmp (version, xchat_get_info (ph, "version")) == 0)
+		if (strcmp (version, hexchat_get_info (ph, "version")) == 0)
 		{
-			xchat_printf (ph, "%s\tYou have the latest version of HexChat installed!\n", name);
+			hexchat_printf (ph, "%s\tYou have the latest version of HexChat installed!\n", name);
 		}
 		else if (strcmp (version, "Unknown") == 0)
 		{
-			xchat_printf (ph, "%s\tUnable to check for HexChat updates!\n", name);
+			hexchat_printf (ph, "%s\tUnable to check for HexChat updates!\n", name);
 		}
 		else
 		{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for some reason */
-			xchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x64.exe\n", name, version);
+			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x64.exe\n", name, version);
 #else
-			xchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
+			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
 #endif
 		}
 		return HEXCHAT_EAT_XCHAT;
 	}
 	else
 	{
-		xchat_printf (ph, upd_help);
+		hexchat_printf (ph, upd_help);
 		return HEXCHAT_EAT_XCHAT;
 	}
 }
@@ -245,12 +245,12 @@ print_version_quiet (void *userdata)
 	char *version = check_version ();
 
 	/* if it's not the current version AND not network error */
-	if (!(strcmp (version, xchat_get_info (ph, "version")) == 0) && !(strcmp (version, "Unknown") == 0))
+	if (!(strcmp (version, hexchat_get_info (ph, "version")) == 0) && !(strcmp (version, "Unknown") == 0))
 	{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for plugins for some reason */
-		xchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x64.exe\n", name, version);
+		hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x64.exe\n", name, version);
 #else
-		xchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
+		hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
 #endif
 		/* print update url once, then stop the timer */
 		return 0;
@@ -262,20 +262,20 @@ print_version_quiet (void *userdata)
 static int
 delayed_check (void *userdata)
 {
-	int freq = xchat_pluginpref_get_int (ph, "freq");
+	int freq = hexchat_pluginpref_get_int (ph, "freq");
 
 	/* only start the timer if there's no update available during startup */
 	if (print_version_quiet (NULL))
 	{
 		/* check for updates, every 6 hours by default */
-		xchat_hook_timer (ph, freq * 1000 * 60, print_version_quiet, NULL);
+		hexchat_hook_timer (ph, freq * 1000 * 60, print_version_quiet, NULL);
 	}
 
 	return 0;	/* run delayed_check() only once */
 }
 
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	int delay;
 	ph = plugin_handle;
@@ -285,30 +285,30 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_version = version;
 
 	/* these are required for the very first run */
-	delay = xchat_pluginpref_get_int (ph, "delay");
+	delay = hexchat_pluginpref_get_int (ph, "delay");
 	if (delay == -1)
 	{
 		delay = DEFAULT_DELAY;
-		xchat_pluginpref_set_int (ph, "delay", DEFAULT_DELAY);
+		hexchat_pluginpref_set_int (ph, "delay", DEFAULT_DELAY);
 	}
 
-	if (xchat_pluginpref_get_int (ph, "freq") == -1)
+	if (hexchat_pluginpref_get_int (ph, "freq") == -1)
 	{
-		xchat_pluginpref_set_int (ph, "freq", DEFAULT_FREQ);
+		hexchat_pluginpref_set_int (ph, "freq", DEFAULT_FREQ);
 	}
 
-	xchat_hook_command (ph, "UPDCHK", HEXCHAT_PRI_NORM, print_version, upd_help, NULL);
-	xchat_hook_timer (ph, delay * 1000, delayed_check, NULL);
-	xchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
-	xchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_hook_command (ph, "UPDCHK", HEXCHAT_PRI_NORM, print_version, upd_help, NULL);
+	hexchat_hook_timer (ph, delay * 1000, delayed_check, NULL);
+	hexchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
+	hexchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
 }
 
 int
-xchat_plugin_deinit (void)
+hexchat_plugin_deinit (void)
 {
-	xchat_command (ph, "MENU DEL \"Help/Check for updates\"");
-	xchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_command (ph, "MENU DEL \"Help/Check for updates\"");
+	hexchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

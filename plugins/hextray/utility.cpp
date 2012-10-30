@@ -74,11 +74,11 @@ WORD ModToHotkeyf(WORD modifiers)
 
 void SavePrefs(int iDlg)
 {
-	xchat_pluginpref_set_int (ph, "settings", g_dwPrefs);
-	xchat_pluginpref_set_int (ph, "aot", g_iTime);
-	xchat_pluginpref_set_int (ph, "key", g_hHotKey.key);
-	xchat_pluginpref_set_int (ph, "mod", g_hHotKey.mod);
-	xchat_pluginpref_set_str (ph, "away", (const char*) g_szAway);
+	hexchat_pluginpref_set_int (ph, "settings", g_dwPrefs);
+	hexchat_pluginpref_set_int (ph, "aot", g_iTime);
+	hexchat_pluginpref_set_int (ph, "key", g_hHotKey.key);
+	hexchat_pluginpref_set_int (ph, "mod", g_hHotKey.mod);
+	hexchat_pluginpref_set_str (ph, "away", (const char*) g_szAway);
 }
 
 void LoadPrefs()
@@ -91,11 +91,11 @@ void LoadPrefs()
 	/*************************** Get the value for each of our preferances ****************************/
 	/**************************************************************************************************/
 
-	g_dwPrefs = xchat_pluginpref_get_int (ph, "settings");
-	g_iTime = xchat_pluginpref_get_int (ph, "aot");
-	g_hHotKey.key = xchat_pluginpref_get_int (ph, "key");
-	g_hHotKey.mod = xchat_pluginpref_get_int (ph, "mod");
-	xchat_pluginpref_get_str (ph, "away", (char *) g_szAway);
+	g_dwPrefs = hexchat_pluginpref_get_int (ph, "settings");
+	g_iTime = hexchat_pluginpref_get_int (ph, "aot");
+	g_hHotKey.key = hexchat_pluginpref_get_int (ph, "key");
+	g_hHotKey.mod = hexchat_pluginpref_get_int (ph, "mod");
+	hexchat_pluginpref_get_str (ph, "away", (char *) g_szAway);
 
 	/**************************************************************************************************/
 	/******************************** Register our hotkey with windows ********************************/

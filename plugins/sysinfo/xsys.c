@@ -37,7 +37,7 @@
 #define DEFAULT_PERCENT 1
 #define DEFAULT_PCIIDS "/usr/share/hwdata/pci.ids"
 
-static xchat_plugin *ph;	/* plugin handle */
+static hexchat_plugin *ph;	/* plugin handle */
 static int error_printed = 0;	/* semaphore, make sure not to print the same error more than once during one execution */
 
 static char name[] = "SysInfo";
@@ -48,13 +48,13 @@ static char sysinfo_help[] = "SysInfo Usage:\n  /SYSINFO [OS|DISTRO|CPU|RAM|DISK
 void
 sysinfo_get_pciids (char* dest)
 {
-	xchat_pluginpref_get_str (ph, "pciids", dest);
+	hexchat_pluginpref_get_str (ph, "pciids", dest);
 }
 
 int
 sysinfo_get_percent ()
 {
-	return xchat_pluginpref_get_int (ph, "percent");
+	return hexchat_pluginpref_get_int (ph, "percent");
 }
 
 void
@@ -62,7 +62,7 @@ sysinfo_print_error (const char* msg)
 {
 	if (!error_printed)
 	{
-		xchat_printf (ph, "%s\t%s", name, msg);
+		hexchat_printf (ph, "%s\t%s", name, msg);
 	}
 	error_printed++;
 	
@@ -91,7 +91,7 @@ print_summary (int announce, char* format)
 	int seconds;
 	sysinfo[0] = '\0';
 
-	snprintf (buffer, bsize, "%s", xchat_get_info (ph, "version"));
+	snprintf (buffer, bsize, "%s", hexchat_get_info (ph, "version"));
 	format_output ("HexChat", buffer, format);
 	strcat (sysinfo, "\017 ");
 	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
@@ -99,7 +99,7 @@ print_summary (int announce, char* format)
 	/* BEGIN OS PARSING */
 	if (xs_parse_os (os_user, os_host, os_kernel) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_os()", name);
+		hexchat_printf (ph, "%s\tERROR in parse_os()", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -121,7 +121,7 @@ print_summary (int announce, char* format)
 	/* BEGIN CPU PARSING */
 	if (xs_parse_cpu (cpu_model, cpu_vendor, &cpu_freq, cpu_cache, &count) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_cpu()", name);
+		hexchat_printf (ph, "%s\tERROR in parse_cpu()", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -147,7 +147,7 @@ print_summary (int announce, char* format)
 	/* BEGIN MEMORY PARSING */
 	if (xs_parse_meminfo (&mem_total, &mem_free, 0) == 1)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
+		hexchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -159,7 +159,7 @@ print_summary (int announce, char* format)
 	/* BEGIN DISK PARSING */
 	if (xs_parse_df (NULL, buffer))
 	{
-		xchat_printf (ph, "%s\tERROR in parse_df", name);
+		hexchat_printf (ph, "%s\tERROR in parse_df", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -170,7 +170,7 @@ print_summary (int announce, char* format)
 	/* BEGIN VIDEO PARSING */
 	if (xs_parse_video (buffer))
 	{
-		xchat_printf (ph, "%s\tERROR in parse_video", name);
+		hexchat_printf (ph, "%s\tERROR in parse_video", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -201,7 +201,7 @@ print_summary (int announce, char* format)
 	/* BEGIN UPTIME PARSING */
 	if (xs_parse_uptime (&weeks, &days, &hours, &minutes, &seconds))
 	{
-		xchat_printf (ph, "%s\tERROR in parse_uptime()", name);
+		hexchat_printf (ph, "%s\tERROR in parse_uptime()", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -237,11 +237,11 @@ print_summary (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", sysinfo);
+		hexchat_commandf (ph, "SAY %s", sysinfo);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", sysinfo);
+		hexchat_printf (ph, "%s", sysinfo);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -257,7 +257,7 @@ print_os (int announce, char* format)
 
 	if (xs_parse_os (user, host, kernel) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_os()", name);
+		hexchat_printf (ph, "%s\tERROR in parse_os()", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -266,11 +266,11 @@ print_os (int announce, char* format)
 	
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", buffer);
+		hexchat_commandf (ph, "SAY %s", buffer);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", buffer);
+		hexchat_printf (ph, "%s", buffer);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -283,7 +283,7 @@ print_distro (int announce, char* format)
 
 	if (xs_parse_distro (name) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_distro()!", name);
+		hexchat_printf (ph, "%s\tERROR in parse_distro()!", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -291,11 +291,11 @@ print_distro (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", name);
+		hexchat_commandf (ph, "SAY %s", name);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", name);
+		hexchat_printf (ph, "%s", name);
 	}
 	return HEXCHAT_EAT_ALL;
 }
@@ -313,7 +313,7 @@ print_cpu (int announce, char* format)
 
 	if (xs_parse_cpu (model, vendor, &freq, cache, &count) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_cpu()", name);
+		hexchat_printf (ph, "%s\tERROR in parse_cpu()", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -336,11 +336,11 @@ print_cpu (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", buffer);
+		hexchat_commandf (ph, "SAY %s", buffer);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", buffer);
+		hexchat_printf (ph, "%s", buffer);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -357,12 +357,12 @@ print_ram (int announce, char* format)
 
 	if (xs_parse_meminfo (&mem_total, &mem_free, 0) == 1)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
+		hexchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
 		return HEXCHAT_EAT_ALL;
 	}
 	if (xs_parse_meminfo (&swap_total, &swap_free, 1) == 1)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
+		hexchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -371,11 +371,11 @@ print_ram (int announce, char* format)
 	
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", string);
+		hexchat_commandf (ph, "SAY %s", string);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", string);
+		hexchat_printf (ph, "%s", string);
 	}
 	
 	return HEXCHAT_EAT_ALL;
@@ -391,7 +391,7 @@ print_disk (int announce, char* format)
 	{
 		if (xs_parse_df (NULL, string))
 		{
-			xchat_printf (ph, "ERROR in parse_df");
+			hexchat_printf (ph, "ERROR in parse_df");
 			return HEXCHAT_EAT_ALL;
 		}
 	}
@@ -399,7 +399,7 @@ print_disk (int announce, char* format)
 	{
 		if (xs_parse_df (*word, string))
 		{
-			xchat_printf (ph, "ERROR in parse_df");
+			hexchat_printf (ph, "ERROR in parse_df");
 			return HEXCHAT_EAT_ALL;
 		}
 	}
@@ -407,7 +407,7 @@ print_disk (int announce, char* format)
 
 	if (xs_parse_df (NULL, string))
 	{
-		xchat_printf (ph, "%s\tERROR in parse_df", name);
+		hexchat_printf (ph, "%s\tERROR in parse_df", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -415,11 +415,11 @@ print_disk (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", string);
+		hexchat_commandf (ph, "SAY %s", string);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", string);
+		hexchat_printf (ph, "%s", string);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -435,7 +435,7 @@ print_vga (int announce, char* format)
 
 	if ((ret = xs_parse_video (vid_card)) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_video! %d", name, ret);
+		hexchat_printf (ph, "%s\tERROR in parse_video! %d", name, ret);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -452,11 +452,11 @@ print_vga (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", buffer);
+		hexchat_commandf (ph, "SAY %s", buffer);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", buffer);
+		hexchat_printf (ph, "%s", buffer);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -469,7 +469,7 @@ print_sound (int announce, char* format)
 
 	if (xs_parse_sound (sound) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_asound()!", name);
+		hexchat_printf (ph, "%s\tERROR in parse_asound()!", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -477,11 +477,11 @@ print_sound (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", sound);
+		hexchat_commandf (ph, "SAY %s", sound);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", sound);
+		hexchat_printf (ph, "%s", sound);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -502,11 +502,11 @@ print_ethernet (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", ethernet_card);
+		hexchat_commandf (ph, "SAY %s", ethernet_card);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", ethernet_card);
+		hexchat_printf (ph, "%s", ethernet_card);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -524,7 +524,7 @@ print_uptime (int announce, char* format)
 
 	if (xs_parse_uptime (&weeks, &days, &hours, &minutes, &seconds))
 	{
-		xchat_printf (ph, "%s\tERROR in parse_uptime()", name);
+		hexchat_printf (ph, "%s\tERROR in parse_uptime()", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -558,11 +558,11 @@ print_uptime (int announce, char* format)
 
 	if (announce)
 	{
-		xchat_commandf (ph, "SAY %s", buffer);
+		hexchat_commandf (ph, "SAY %s", buffer);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", buffer);
+		hexchat_printf (ph, "%s", buffer);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -578,13 +578,13 @@ netdata_cb (char *word[], char *word_eol[], void *userdata)
 	
 	if (*word[2] == '\0')
 	{
-		xchat_printf (ph, "%s\tYou must specify a network device (e.g. /NETDATA eth0)!", name);
+		hexchat_printf (ph, "%s\tYou must specify a network device (e.g. /NETDATA eth0)!", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
 	if (xs_parse_netdev (word[2], &bytes_recv, &bytes_sent) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_netdev", name);
+		hexchat_printf (ph, "%s\tERROR in parse_netdev", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -592,16 +592,16 @@ netdata_cb (char *word[], char *word_eol[], void *userdata)
 	bytes_sent /= 1024;
 	
 	snprintf (netdata, bsize, "%s: %.1f MB Recieved, %.1f MB Sent", word[2], (double)bytes_recv/1024.0, (double)bytes_sent/1024.0);
-	xchat_pluginpref_get_str (ph, "format", format);
+	hexchat_pluginpref_get_str (ph, "format", format);
 	format_output ("Netdata", netdata, format);
 
-	if (xchat_list_int (ph, NULL, "type") >= 2)
+	if (hexchat_list_int (ph, NULL, "type") >= 2)
 	{
-		xchat_commandf (ph, "SAY %s", netdata);
+		hexchat_commandf (ph, "SAY %s", netdata);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", netdata);
+		hexchat_printf (ph, "%s", netdata);
 	}
 	
 	return HEXCHAT_EAT_ALL;
@@ -623,13 +623,13 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 
 	if (*word[2] == '\0')
 	{
-		xchat_printf (ph, "%s\tYou must specify a network device (e.g. /NETSTREAM eth0)!", name);
+		hexchat_printf (ph, "%s\tYou must specify a network device (e.g. /NETSTREAM eth0)!", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
 	if (xs_parse_netdev(word[2], &bytes_recv, &bytes_sent) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_netdev", name);
+		hexchat_printf (ph, "%s\tERROR in parse_netdev", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -637,7 +637,7 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 
 	if (xs_parse_netdev(word[2], &bytes_recv_p, &bytes_sent_p) != 0)
 	{
-		xchat_printf (ph, "%s\tERROR in parse_netdev", name);
+		hexchat_printf (ph, "%s\tERROR in parse_netdev", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -665,16 +665,16 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 	}
 
 	snprintf (netstream, bsize, "%s: Receiving %llu %s, Sending %llu %s", word[2], bytes_recv, mag_r, bytes_sent, mag_s);
-	xchat_pluginpref_get_str (ph, "format", format);
+	hexchat_pluginpref_get_str (ph, "format", format);
 	format_output ("Netstream", netstream, format);
 
-	if (xchat_list_int (ph, NULL, "type") >= 2)
+	if (hexchat_list_int (ph, NULL, "type") >= 2)
 	{
-		xchat_commandf (ph, "SAY %s", netstream);
+		hexchat_commandf (ph, "SAY %s", netstream);
 	}
 	else
 	{
-		xchat_printf (ph, "%s", netstream);
+		hexchat_printf (ph, "%s", netstream);
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -687,14 +687,14 @@ list_settings ()
 	char buffer[512];
 	char* token;
 
-	xchat_pluginpref_list (ph, list);
-	xchat_printf (ph, "%s\tCurrent Settings:", name);
+	hexchat_pluginpref_list (ph, list);
+	hexchat_printf (ph, "%s\tCurrent Settings:", name);
 	token = strtok (list, ",");
 
 	while (token != NULL)
 	{
-		xchat_pluginpref_get_str (ph, token, buffer);
-		xchat_printf (ph, "%s\t%s: %s\n", name, token, buffer);
+		hexchat_pluginpref_get_str (ph, token, buffer);
+		hexchat_printf (ph, "%s\t%s: %s\n", name, token, buffer);
 		token = strtok (NULL, ",");
 	}
 }
@@ -702,9 +702,9 @@ list_settings ()
 static void
 reset_settings ()
 {
-	xchat_pluginpref_set_str (ph, "pciids", DEFAULT_PCIIDS);
-	xchat_pluginpref_set_str (ph, "format", DEFAULT_FORMAT);
-	xchat_pluginpref_set_int (ph, "percent", DEFAULT_PERCENT);
+	hexchat_pluginpref_set_str (ph, "pciids", DEFAULT_PCIIDS);
+	hexchat_pluginpref_set_str (ph, "format", DEFAULT_FORMAT);
+	hexchat_pluginpref_set_int (ph, "percent", DEFAULT_PERCENT);
 }
 
 static int
@@ -715,20 +715,20 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 	int buffer;
 	char format[bsize];
 
-	if (!xchat_pluginpref_get_str (ph, "format", format))
+	if (!hexchat_pluginpref_get_str (ph, "format", format))
 	{
-		xchat_printf (ph, "%s\tError reading config file!", name);
+		hexchat_printf (ph, "%s\tError reading config file!", name);
 		return HEXCHAT_EAT_ALL;
 	}
 
-	if (xchat_list_int (ph, NULL, "type") >= 2)
+	if (hexchat_list_int (ph, NULL, "type") >= 2)
 	{
 		announce = 1;
 	}
 
 	if (!g_ascii_strcasecmp ("HELP", word[2]))
 	{
-		xchat_printf (ph, sysinfo_help);
+		hexchat_printf (ph, sysinfo_help);
 		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("LIST", word[2]))
@@ -740,13 +740,13 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 	{
 		if (!g_ascii_strcasecmp ("", word_eol[4]))
 		{
-			xchat_printf (ph, "%s\tEnter a value!\n", name);
+			hexchat_printf (ph, "%s\tEnter a value!\n", name);
 			return HEXCHAT_EAT_ALL;
 		}
 		if (!g_ascii_strcasecmp ("format", word[3]))
 		{
-			xchat_pluginpref_set_str (ph, "format", word_eol[4]);
-			xchat_printf (ph, "%s\tformat is set to: %s\n", name, word_eol[4]);
+			hexchat_pluginpref_set_str (ph, "format", word_eol[4]);
+			hexchat_printf (ph, "%s\tformat is set to: %s\n", name, word_eol[4]);
 		}
 		else if (!g_ascii_strcasecmp ("percent", word[3]))
 		{
@@ -754,22 +754,22 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 
 			if (buffer > 0 && buffer < INT_MAX)
 			{
-				xchat_pluginpref_set_int (ph, "percent", buffer);
-				xchat_printf (ph, "%s\tpercent is set to: %d\n", name, buffer);
+				hexchat_pluginpref_set_int (ph, "percent", buffer);
+				hexchat_printf (ph, "%s\tpercent is set to: %d\n", name, buffer);
 			}
 			else
 			{
-				xchat_printf (ph, "%s\tInvalid input!\n", name);
+				hexchat_printf (ph, "%s\tInvalid input!\n", name);
 			}
 		}
 		else if (!g_ascii_strcasecmp ("pciids", word[3]))
 		{
-			xchat_pluginpref_set_str (ph, "pciids", word_eol[4]);
-			xchat_printf (ph, "%s\tpciids is set to: %s\n", name, word_eol[4]);
+			hexchat_pluginpref_set_str (ph, "pciids", word_eol[4]);
+			hexchat_printf (ph, "%s\tpciids is set to: %s\n", name, word_eol[4]);
 		}
 		else
 		{
-			xchat_printf (ph, "%s\tInvalid variable name! Use 'pciids', 'format' or 'percent'!\n", name);
+			hexchat_printf (ph, "%s\tInvalid variable name! Use 'pciids', 'format' or 'percent'!\n", name);
 			return HEXCHAT_EAT_ALL;
 		}
 
@@ -778,7 +778,7 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 	else if (!g_ascii_strcasecmp ("RESET", word[2]))
 	{
 		reset_settings ();
-		xchat_printf (ph, "%s\tSettings have been restored to defaults.\n", name);
+		hexchat_printf (ph, "%s\tSettings have been restored to defaults.\n", name);
 		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("OS", word[2]))
@@ -833,13 +833,13 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 	}
 	else
 	{
-		xchat_printf (ph, sysinfo_help);
+		hexchat_printf (ph, sysinfo_help);
 		return HEXCHAT_EAT_ALL;
 	}
 }
 
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
 	*plugin_name    = name;
@@ -847,35 +847,35 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_version = version;
 	char buffer[bsize];
 
-	xchat_hook_command (ph, "SYSINFO",	HEXCHAT_PRI_NORM,	sysinfo_cb,	sysinfo_help, NULL);
-	xchat_hook_command (ph, "NETDATA",	HEXCHAT_PRI_NORM,	netdata_cb,	NULL, NULL);
-	xchat_hook_command (ph, "NETSTREAM",	HEXCHAT_PRI_NORM,	netstream_cb,	NULL, NULL);
+	hexchat_hook_command (ph, "SYSINFO",	HEXCHAT_PRI_NORM,	sysinfo_cb,	sysinfo_help, NULL);
+	hexchat_hook_command (ph, "NETDATA",	HEXCHAT_PRI_NORM,	netdata_cb,	NULL, NULL);
+	hexchat_hook_command (ph, "NETSTREAM",	HEXCHAT_PRI_NORM,	netstream_cb,	NULL, NULL);
 
 	/* this is required for the very first run */
-	if (xchat_pluginpref_get_str (ph, "pciids", buffer) == 0)
+	if (hexchat_pluginpref_get_str (ph, "pciids", buffer) == 0)
 	{
-		xchat_pluginpref_set_str (ph, "pciids", DEFAULT_PCIIDS);
+		hexchat_pluginpref_set_str (ph, "pciids", DEFAULT_PCIIDS);
 	}
 
-	if (xchat_pluginpref_get_str (ph, "format", buffer) == 0)
+	if (hexchat_pluginpref_get_str (ph, "format", buffer) == 0)
 	{
-		xchat_pluginpref_set_str (ph, "format", DEFAULT_FORMAT);
+		hexchat_pluginpref_set_str (ph, "format", DEFAULT_FORMAT);
 	}
 
-	if (xchat_pluginpref_get_int (ph, "percent") == -1)
+	if (hexchat_pluginpref_get_int (ph, "percent") == -1)
 	{
-		xchat_pluginpref_set_int (ph, "percent", DEFAULT_PERCENT);
+		hexchat_pluginpref_set_int (ph, "percent", DEFAULT_PERCENT);
 	}
 
-	xchat_command (ph, "MENU ADD \"Window/Display System Info\" \"SYSINFO\"");
-	xchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_command (ph, "MENU ADD \"Window/Display System Info\" \"SYSINFO\"");
+	hexchat_printf (ph, "%s plugin loaded\n", name);
 	return 1;
 }
 
 int
-xchat_plugin_deinit (void)
+hexchat_plugin_deinit (void)
 {
-	xchat_command (ph, "MENU DEL \"Window/Display System Info\"");
-	xchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_command (ph, "MENU DEL \"Window/Display System Info\"");
+	hexchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

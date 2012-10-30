@@ -40,7 +40,7 @@
 
 #include "hexchat-plugin.h"
 
-static xchat_plugin *ph;   /* plugin handle */
+static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "SASL";
 static char desc[] = "SASL authentication plugin for HexChat";
 static char version[] = "1.2";
@@ -61,13 +61,13 @@ add_info (char const* login, char const* password, char const* network)
 	char buffer[512];
 
 	sprintf (buffer, "%s:%s", login, password);
-	return xchat_pluginpref_set_str (ph, network, buffer);
+	return hexchat_pluginpref_set_str (ph, network, buffer);
 }
 
 static int
 del_info (char const* network)
 {
-	return xchat_pluginpref_delete (ph, network);
+	return hexchat_pluginpref_delete (ph, network);
 }
 
 static void
@@ -76,20 +76,20 @@ print_info ()
 	char list[512];
 	char* token;
 
-	if (xchat_pluginpref_list (ph, list))
+	if (hexchat_pluginpref_list (ph, list))
 	{
-		xchat_printf (ph, "%s\tSASL-enabled networks:", name);
-		xchat_printf (ph, "%s\t----------------------", name);
+		hexchat_printf (ph, "%s\tSASL-enabled networks:", name);
+		hexchat_printf (ph, "%s\t----------------------", name);
 		token = strtok (list, ",");
 		while (token != NULL)
 		{
-			xchat_printf (ph, "%s\t%s", name, token);
+			hexchat_printf (ph, "%s\t%s", name, token);
 			token = strtok (NULL, ",");
 		}
 	}
 	else
 	{
-		xchat_printf (ph, "%s\tThere are no SASL-enabled networks currently", name);
+		hexchat_printf (ph, "%s\tThere are no SASL-enabled networks currently", name);
 	}
 }
 
@@ -100,7 +100,7 @@ find_info (char const* network)
 	char* token;
 	sasl_info* cur = (sasl_info*) malloc (sizeof (sasl_info));
 
-	if (xchat_pluginpref_get_str (ph, network, buffer))
+	if (hexchat_pluginpref_get_str (ph, network, buffer))
 	{
 		token = strtok (buffer, ":");
 		cur->login = g_strdup (token);
@@ -118,7 +118,7 @@ static sasl_info*
 get_info (void)
 {
 	const char* name;
-	name = xchat_get_info (ph, "network");
+	name = hexchat_get_info (ph, "network");
 
 	if (name)
 	{
@@ -136,8 +136,8 @@ authend_cb (char *word[], char *word_eol[], void *userdata)
 	if (get_info ())
 	{
 		/* omit cryptic server message parts */
-		xchat_printf (ph, "%s\t%s\n", name, ++word_eol[4]);
-		xchat_commandf (ph, "QUOTE CAP END");
+		hexchat_printf (ph, "%s\t%s\n", name, ++word_eol[4]);
+		hexchat_commandf (ph, "QUOTE CAP END");
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -147,7 +147,7 @@ authend_cb (char *word[], char *word_eol[], void *userdata)
 static int
 disconnect_cb (char *word[], void *userdata)
 {
-	xchat_printf (ph, "disconnected\n");
+	hexchat_printf (ph, "disconnected\n");
 	return HEXCHAT_EAT_NONE;
 }
 */
@@ -169,7 +169,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 			return HEXCHAT_EAT_NONE;
 		}
 
-		xchat_printf (ph, "%s\tAuthenticating as %s\n", name, p->login);
+		hexchat_printf (ph, "%s\tAuthenticating as %s\n", name, p->login);
 
 		len = strlen (p->login) * 2 + 2 + strlen (p->password);
 		buf = (char*) malloc (len + 1);
@@ -178,8 +178,8 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 		strcpy (buf + strlen (p->login) * 2 + 2, p->password);
 		enc = g_base64_encode ((unsigned char*) buf, len);
 
-		/* xchat_printf (ph, "AUTHENTICATE %s\}", enc); */
-		xchat_commandf (ph, "QUOTE AUTHENTICATE %s", enc);
+		/* hexchat_printf (ph, "AUTHENTICATE %s\}", enc); */
+		hexchat_commandf (ph, "QUOTE AUTHENTICATE %s", enc);
 
 		free (enc);
 		free (buf);
@@ -197,8 +197,8 @@ cap_cb (char *word[], char *word_eol[], void *userdata)
 	{
 		/* FIXME test sasl cap */
 		/* this is visible in the rawlog in case someone needs it, otherwise it's just noise */
-		/* xchat_printf (ph, "%s\t%s\n", name, word_eol[1]); */
-		xchat_commandf (ph, "QUOTE AUTHENTICATE PLAIN");
+		/* hexchat_printf (ph, "%s\t%s\n", name, word_eol[1]); */
+		hexchat_commandf (ph, "QUOTE AUTHENTICATE PLAIN");
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -220,17 +220,17 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 
 		if (!network || !*network)	/* only check for the last word, if it's there, the previous ones will be there, too */
 		{
-			xchat_printf (ph, "%s", sasl_help);
+			hexchat_printf (ph, "%s", sasl_help);
 			return HEXCHAT_EAT_ALL;
 		}
 
 		if (add_info (login, password, network))
 		{
-			xchat_printf (ph, "%s\tEnabled SASL authentication for the \"%s\" network\n", name, network);
+			hexchat_printf (ph, "%s\tEnabled SASL authentication for the \"%s\" network\n", name, network);
 		}
 		else
 		{
-			xchat_printf (ph, "%s\tFailed to enable SASL authentication for the \"%s\" network\n", name, network);
+			hexchat_printf (ph, "%s\tFailed to enable SASL authentication for the \"%s\" network\n", name, network);
 		}
 
 		return HEXCHAT_EAT_ALL;
@@ -241,17 +241,17 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 
 		if (!network || !*network)
 		{
-			xchat_printf (ph, "%s", sasl_help);
+			hexchat_printf (ph, "%s", sasl_help);
 			return HEXCHAT_EAT_ALL;
 		}
 
 		if (del_info (network))
 		{
-			xchat_printf (ph, "%s\tDisabled SASL authentication for the \"%s\" network\n", name, network);
+			hexchat_printf (ph, "%s\tDisabled SASL authentication for the \"%s\" network\n", name, network);
 		}
 		else
 		{
-			xchat_printf (ph, "%s\tFailed to disable SASL authentication for the \"%s\" network\n", name, network);
+			hexchat_printf (ph, "%s\tFailed to disable SASL authentication for the \"%s\" network\n", name, network);
 		}
 
 		return HEXCHAT_EAT_ALL;
@@ -263,7 +263,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 	}
 	else
 	{
-		xchat_printf (ph, "%s", sasl_help);
+		hexchat_printf (ph, "%s", sasl_help);
 		return HEXCHAT_EAT_ALL;
 	}
 }
@@ -273,15 +273,15 @@ connect_cb (char *word[], void *userdata)
 {
 	if (get_info ())
 	{
-		xchat_printf (ph, "%s\tSASL enabled\n", name);
-		xchat_commandf (ph, "QUOTE CAP REQ :sasl");
+		hexchat_printf (ph, "%s\tSASL enabled\n", name);
+		hexchat_commandf (ph, "QUOTE CAP REQ :sasl");
 	}
 
 	return HEXCHAT_EAT_NONE;
 }
 
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	/* we need to save this for use with any xchat_* functions */
 	ph = plugin_handle;
@@ -291,25 +291,25 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	xchat_hook_command (ph, "SASL", HEXCHAT_PRI_NORM, sasl_cmd_cb, sasl_help, 0);
-	xchat_hook_print (ph, "Connected", HEXCHAT_PRI_NORM, connect_cb, NULL);
-	/* xchat_hook_print (ph, "Disconnected", HEXCHAT_PRI_NORM, disconnect_cb, NULL); */
-	xchat_hook_server (ph, "CAP", HEXCHAT_PRI_NORM, cap_cb, NULL);
-	xchat_hook_server (ph, "RAW LINE", HEXCHAT_PRI_NORM, server_cb, NULL);
-	xchat_hook_server (ph, "903", HEXCHAT_PRI_NORM, authend_cb, NULL);
-	xchat_hook_server (ph, "904", HEXCHAT_PRI_NORM, authend_cb, NULL);
-	xchat_hook_server (ph, "905", HEXCHAT_PRI_NORM, authend_cb, NULL);
-	xchat_hook_server (ph, "906", HEXCHAT_PRI_NORM, authend_cb, NULL);
-	xchat_hook_server (ph, "907", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	hexchat_hook_command (ph, "SASL", HEXCHAT_PRI_NORM, sasl_cmd_cb, sasl_help, 0);
+	hexchat_hook_print (ph, "Connected", HEXCHAT_PRI_NORM, connect_cb, NULL);
+	/* hexchat_hook_print (ph, "Disconnected", HEXCHAT_PRI_NORM, disconnect_cb, NULL); */
+	hexchat_hook_server (ph, "CAP", HEXCHAT_PRI_NORM, cap_cb, NULL);
+	hexchat_hook_server (ph, "RAW LINE", HEXCHAT_PRI_NORM, server_cb, NULL);
+	hexchat_hook_server (ph, "903", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	hexchat_hook_server (ph, "904", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	hexchat_hook_server (ph, "905", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	hexchat_hook_server (ph, "906", HEXCHAT_PRI_NORM, authend_cb, NULL);
+	hexchat_hook_server (ph, "907", HEXCHAT_PRI_NORM, authend_cb, NULL);
 
-	xchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;
 }
 
 int
-xchat_plugin_deinit (void)
+hexchat_plugin_deinit (void)
 {
-	xchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

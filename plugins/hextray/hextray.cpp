@@ -34,13 +34,13 @@
 /*****************************************************/
 /**** Don't want to pollute the namespace do we? *****/
 /*****************************************************/
-std::list<xchat_hook *> g_vHooks;
+std::list<hexchat_hook *> g_vHooks;
 
 /*****************************************************/
 /************ Global Identifiers *********************/
 /*****************************************************/
 WNDPROC g_hOldProc;
-xchat_plugin *ph;
+hexchat_plugin *ph;
 
 /*****************************************************/
 /***************** Resources *************************/
@@ -69,7 +69,7 @@ BOOL WINAPI DllMain(HANDLE hModule, DWORD fdwReason, LPVOID lpVoid)
 	return TRUE;
 }
 
-int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
 
@@ -83,25 +83,25 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	/************************* Initialize our preferences if they don't exist yet **********************************************/
 	/***************************************************************************************************************************/
 
-	if (xchat_pluginpref_get_int (ph, "settings") == -1)
+	if (hexchat_pluginpref_get_int (ph, "settings") == -1)
 	{
-		xchat_pluginpref_set_int (ph, "settings", HT_DEF_SET);
+		hexchat_pluginpref_set_int (ph, "settings", HT_DEF_SET);
 	}
-	if (xchat_pluginpref_get_int (ph, "aot") == -1)
+	if (hexchat_pluginpref_get_int (ph, "aot") == -1)
 	{
-		xchat_pluginpref_set_int (ph, "aot", HT_DEF_AOT);
+		hexchat_pluginpref_set_int (ph, "aot", HT_DEF_AOT);
 	}
-	if (xchat_pluginpref_get_int (ph, "key") == -1)
+	if (hexchat_pluginpref_get_int (ph, "key") == -1)
 	{
-		xchat_pluginpref_set_int (ph, "key", HT_DEF_KEY);
+		hexchat_pluginpref_set_int (ph, "key", HT_DEF_KEY);
 	}
-	if (xchat_pluginpref_get_int (ph, "mod") == -1)
+	if (hexchat_pluginpref_get_int (ph, "mod") == -1)
 	{
-		xchat_pluginpref_set_int (ph, "mod", HT_DEF_MOD);
+		hexchat_pluginpref_set_int (ph, "mod", HT_DEF_MOD);
 	}
-	if (xchat_pluginpref_get_str (ph, "away", buffer) == 0)
+	if (hexchat_pluginpref_get_str (ph, "away", buffer) == 0)
 	{
-		xchat_pluginpref_set_str (ph, "away", "");
+		hexchat_pluginpref_set_str (ph, "away", "");
 	}
 
 	/***************************************************************************************************************************/
@@ -112,7 +112,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	/***************************************************************************************************************************/
 	/************************* Finds the HexChat window and saves it for later use *********************************************/
 	/***************************************************************************************************************************/
-	g_hXchatWnd = (HWND)xchat_get_info(ph, "win_ptr");
+	g_hXchatWnd = (HWND)hexchat_get_info(ph, "win_ptr");
 
 	if(g_hXchatWnd == NULL)
 	{
@@ -143,7 +143,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	/************************* Add our icon to the tray ************************************************************************/
 	/***************************************************************************************************************************/
 	char szVersion[64];
-	_snprintf(szVersion, 64, "HexChat %s", xchat_get_info(ph, "version"));
+	_snprintf(szVersion, 64, "HexChat %s", hexchat_get_info(ph, "version"));
 	AddIcon(g_hXchatWnd, 1, g_hIcons[0], szVersion, (NIF_ICON | NIF_MESSAGE | NIF_TIP), WM_TRAYMSG);
 
 	/***************************************************************************************************************************/
@@ -161,25 +161,25 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	/***************************************************************************************************************************/
 	/************************* Set our hooks and save them for later so we can unhook them *************************************/
 	/***************************************************************************************************************************/
-	g_vHooks.push_back(xchat_hook_print(ph, "Channel Msg Hilight",			HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
-	g_vHooks.push_back(xchat_hook_print(ph, "Channel Message",				HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_MESSAGE));
-	g_vHooks.push_back(xchat_hook_print(ph, "Topic Change",					HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_TOPIC_CHANGE));
-	g_vHooks.push_back(xchat_hook_print(ph, "Channel Action Hilight",		HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
-	g_vHooks.push_back(xchat_hook_print(ph, "Channel INVITE",				HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_INVITE));
-	g_vHooks.push_back(xchat_hook_print(ph, "You Kicked",					HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_KICKED));
-	g_vHooks.push_back(xchat_hook_print(ph, "Banned",						HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_BANNED));
-	g_vHooks.push_back(xchat_hook_print(ph, "CTCP Generic",					HEXCHAT_PRI_NORM, event_cb,	(void *)CTCP_GENERIC));
-	g_vHooks.push_back(xchat_hook_print(ph, "Private Message",				HEXCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
-	g_vHooks.push_back(xchat_hook_print(ph, "Private Message to Dialog",	HEXCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
-	g_vHooks.push_back(xchat_hook_print(ph, "Disconnected",					HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_DISCONNECT));
-	g_vHooks.push_back(xchat_hook_print(ph, "Killed",						HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_KILLED));
-	g_vHooks.push_back(xchat_hook_print(ph, "Notice",						HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_NOTICE));
-	g_vHooks.push_back(xchat_hook_command(ph, "tray_alert",					HEXCHAT_PRI_NORM, command_cb,	"Create an Alert", NULL));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Channel Msg Hilight",			HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Channel Message",				HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_MESSAGE));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Topic Change",					HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_TOPIC_CHANGE));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Channel Action Hilight",		HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Channel INVITE",				HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_INVITE));
+	g_vHooks.push_back(hexchat_hook_print(ph, "You Kicked",					HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_KICKED));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Banned",						HEXCHAT_PRI_NORM, event_cb,	(void *)CHAN_BANNED));
+	g_vHooks.push_back(hexchat_hook_print(ph, "CTCP Generic",					HEXCHAT_PRI_NORM, event_cb,	(void *)CTCP_GENERIC));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Private Message",				HEXCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Private Message to Dialog",	HEXCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Disconnected",					HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_DISCONNECT));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Killed",						HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_KILLED));
+	g_vHooks.push_back(hexchat_hook_print(ph, "Notice",						HEXCHAT_PRI_NORM, event_cb,	(void *)SERV_NOTICE));
+	g_vHooks.push_back(hexchat_hook_command(ph, "tray_alert",					HEXCHAT_PRI_NORM, command_cb,	"Create an Alert", NULL));
 
 	return 1;
 }
 
-int xchat_plugin_deinit(xchat_plugin *plugin_handle)
+int hexchat_plugin_deinit(hexchat_plugin *plugin_handle)
 {
 	/******************************************/
 	/****** Remove the Icon from the tray *****/
@@ -231,13 +231,13 @@ int xchat_plugin_deinit(xchat_plugin *plugin_handle)
 		sdCloseAlerts();
 	}
 	/******************************************/
-	/****** remove our xchat_hook_*s **********/
+	/****** remove our hexchat_hook_*s **********/
 	/******************************************/
 	while(!g_vHooks.empty())
 	{
 		if(g_vHooks.back() != NULL)
 		{
-			xchat_unhook(ph, g_vHooks.back());
+			hexchat_unhook(ph, g_vHooks.back());
 		}
 		g_vHooks.pop_back();
 	}

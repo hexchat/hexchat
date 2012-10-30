@@ -18,14 +18,14 @@
 /******************************************************************
 * Globalss
 ******************************************************************/
-xchat_plugin *ph = NULL;
+hexchat_plugin *ph = NULL;
 CWMPPlayer4 *wmp;
 static const char subKey[] = "Software\\FlowerSoft\\WMPA";
 
 /******************************************************************
-* xchat_plugin_init
+* hexchat_plugin_init
 ******************************************************************/
-int xchat_plugin_init(xchat_plugin *plugin_handle,
+int hexchat_plugin_init(hexchat_plugin *plugin_handle,
                       char **plugin_name,
                       char **plugin_desc,
                       char **plugin_version,
@@ -42,75 +42,75 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
    // Show the song browser
    success = StartWindowsMediaPlayer();
    if (!success) {
-      xchat_printf(ph, "WMPA: Failed to show the song browser.");
-      xchat_printf(ph, "WMPA: Could not load plug-in version %s.", VER_STRING);
+      hexchat_printf(ph, "WMPA: Failed to show the song browser.");
+      hexchat_printf(ph, "WMPA: Could not load plug-in version %s.", VER_STRING);
       return(E_FAIL);
    }
 
    // Get a pointer to the Windows Media Player control
    wmp = GetWindowsMediaPlayer();
    if (wmp == NULL) {
-      xchat_printf(ph, "WMPA: Failed to get a pointer to the Windows Media Player interface.");
-      xchat_printf(ph, "WMPA: Could not load plug-in version %s.", VER_STRING);
+      hexchat_printf(ph, "WMPA: Failed to get a pointer to the Windows Media Player interface.");
+      hexchat_printf(ph, "WMPA: Could not load plug-in version %s.", VER_STRING);
       return(E_POINTER);
    }
 
    // Restore the settings (need wmp first)
    success = wmpaRestoreSettings();
    if (!success) {
-      xchat_printf(ph, "WMPA: Failed to restore the settings.");
+      hexchat_printf(ph, "WMPA: Failed to restore the settings.");
    }
 
-   xchat_hook_command(ph, "auto", HEXCHAT_PRI_NORM, wmpaAuto, 0, 0);
-   xchat_hook_command(ph, "curr", HEXCHAT_PRI_NORM, wmpaCurr, 0, 0);
-   xchat_hook_command(ph, "find", HEXCHAT_PRI_NORM, wmpaFind, 0, 0);
-   xchat_hook_command(ph, "slist", HEXCHAT_PRI_NORM, wmpaList, 0, 0);
-   xchat_hook_command(ph, "next", HEXCHAT_PRI_NORM, wmpaNext, 0, 0);
-   xchat_hook_command(ph, "play", HEXCHAT_PRI_NORM, wmpaPlay, 0, 0);
-   xchat_hook_command(ph, "pause", HEXCHAT_PRI_NORM, wmpaPause, 0, 0);
-   xchat_hook_command(ph, "prev", HEXCHAT_PRI_NORM, wmpaPrev, 0, 0);
-   xchat_hook_command(ph, "song", HEXCHAT_PRI_NORM, wmpaSong, 0, 0);
-   xchat_hook_command(ph, "stop", HEXCHAT_PRI_NORM, wmpaStop, 0, 0);
-   xchat_hook_command(ph, "volume", HEXCHAT_PRI_NORM, wmpaVolume, 0, 0);
-   xchat_hook_command(ph, "wmpahelp", HEXCHAT_PRI_NORM, wmpaHelp, 0, 0);
+   hexchat_hook_command(ph, "auto", HEXCHAT_PRI_NORM, wmpaAuto, 0, 0);
+   hexchat_hook_command(ph, "curr", HEXCHAT_PRI_NORM, wmpaCurr, 0, 0);
+   hexchat_hook_command(ph, "find", HEXCHAT_PRI_NORM, wmpaFind, 0, 0);
+   hexchat_hook_command(ph, "slist", HEXCHAT_PRI_NORM, wmpaList, 0, 0);
+   hexchat_hook_command(ph, "next", HEXCHAT_PRI_NORM, wmpaNext, 0, 0);
+   hexchat_hook_command(ph, "play", HEXCHAT_PRI_NORM, wmpaPlay, 0, 0);
+   hexchat_hook_command(ph, "pause", HEXCHAT_PRI_NORM, wmpaPause, 0, 0);
+   hexchat_hook_command(ph, "prev", HEXCHAT_PRI_NORM, wmpaPrev, 0, 0);
+   hexchat_hook_command(ph, "song", HEXCHAT_PRI_NORM, wmpaSong, 0, 0);
+   hexchat_hook_command(ph, "stop", HEXCHAT_PRI_NORM, wmpaStop, 0, 0);
+   hexchat_hook_command(ph, "volume", HEXCHAT_PRI_NORM, wmpaVolume, 0, 0);
+   hexchat_hook_command(ph, "wmpahelp", HEXCHAT_PRI_NORM, wmpaHelp, 0, 0);
 
-   xchat_printf(ph, "WMPA %s successfully loaded.", VER_STRING);
+   hexchat_printf(ph, "WMPA %s successfully loaded.", VER_STRING);
    wmpaCommands();
-   xchat_printf(ph, "WMPA: e-mail me if you find any bugs: dcullen@intergate.com");
+   hexchat_printf(ph, "WMPA: e-mail me if you find any bugs: dcullen@intergate.com");
 
    return 1;
 }
 
 /******************************************************************
-* xchat_plugin_deinit
+* hexchat_plugin_deinit
 ******************************************************************/
-int xchat_plugin_deinit(void)
+int hexchat_plugin_deinit(void)
 {
    BOOL success;
 
-   xchat_printf(ph, "WMPA %s is unloading.", VER_STRING);
+   hexchat_printf(ph, "WMPA %s is unloading.", VER_STRING);
 
    // Save the settings
    success = wmpaSaveSettings();
    if (!success) {
-      xchat_printf(ph, "WMPA: Failed to save the settings.");
+      hexchat_printf(ph, "WMPA: Failed to save the settings.");
    }
 
    wmp = NULL;
 
    BOOL result = StopWindowsMediaPlayer();
    if (!result) {
-      xchat_printf(ph, "WMPA could not shut down Windows Media Player.");
+      hexchat_printf(ph, "WMPA could not shut down Windows Media Player.");
    }
 
-   xchat_printf(ph, "WMPA %s has unloaded.", VER_STRING);
+   hexchat_printf(ph, "WMPA %s has unloaded.", VER_STRING);
    return 1;
 }
 
 /******************************************************************
-* xchat_plugin_get_info
+* hexchat_plugin_get_info
 ******************************************************************/
-void xchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
+void hexchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
 {
    *name = "WMPA";
    *desc = "Announce the current song from Windows Media Player.";
@@ -123,18 +123,18 @@ void xchat_plugin_get_info(char **name, char **desc, char **version, void **rese
 ******************************************************************/
 void wmpaCommands(void)
 {
-   xchat_printf(ph, "WMPA: /auto [on/off]   : Turn on/off auto announce of the current song or display the current setting");
-   xchat_printf(ph, "WMPA: /curr            : Tell what song is currently playing");
-   xchat_printf(ph, "WMPA: /find [word]     : Find songs with \"word\" in their title, create a new playlist, and play it");
-   xchat_printf(ph, "WMPA: /slist [word]    : List songs with \"word\" in their title");
-   xchat_printf(ph, "WMPA: /next            : Play the next song");
-   xchat_printf(ph, "WMPA: /play            : Play the current song");
-   xchat_printf(ph, "WMPA: /pause           : Pause the current song");
-   xchat_printf(ph, "WMPA: /prev            : Play the previous song");
-   xchat_printf(ph, "WMPA: /song            : Announce the current song from Windows Media Player in HexChat");
-   xchat_printf(ph, "WMPA: /stop            : Stop the current song");
-   xchat_printf(ph, "WMPA: /volume [volume] : Set the volume (0 to 100) or display the current volume");
-   xchat_printf(ph, "WMPA: /wmpahelp        : Display this help.");
+   hexchat_printf(ph, "WMPA: /auto [on/off]   : Turn on/off auto announce of the current song or display the current setting");
+   hexchat_printf(ph, "WMPA: /curr            : Tell what song is currently playing");
+   hexchat_printf(ph, "WMPA: /find [word]     : Find songs with \"word\" in their title, create a new playlist, and play it");
+   hexchat_printf(ph, "WMPA: /slist [word]    : List songs with \"word\" in their title");
+   hexchat_printf(ph, "WMPA: /next            : Play the next song");
+   hexchat_printf(ph, "WMPA: /play            : Play the current song");
+   hexchat_printf(ph, "WMPA: /pause           : Pause the current song");
+   hexchat_printf(ph, "WMPA: /prev            : Play the previous song");
+   hexchat_printf(ph, "WMPA: /song            : Announce the current song from Windows Media Player in HexChat");
+   hexchat_printf(ph, "WMPA: /stop            : Stop the current song");
+   hexchat_printf(ph, "WMPA: /volume [volume] : Set the volume (0 to 100) or display the current volume");
+   hexchat_printf(ph, "WMPA: /wmpahelp        : Display this help.");
 }
 
 /******************************************************************
@@ -167,7 +167,7 @@ int wmpaAuto(char *word[], char *word_eol[], void *user_data)
       wmpaSaveSettings();
    }
 
-   xchat_printf(ph, "WMPA: auto is %s", state);
+   hexchat_printf(ph, "WMPA: auto is %s", state);
 
    return(HEXCHAT_EAT_ALL);
 }
@@ -177,7 +177,7 @@ int wmpaAuto(char *word[], char *word_eol[], void *user_data)
 ******************************************************************/
 int wmpaCurr(char *word[], char *word_eol[], void *user_data)
 {
-   xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
+   hexchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
 
    return(HEXCHAT_EAT_ALL);
 }
@@ -224,10 +224,10 @@ int wmpaFind(char *word[], char *word_eol[], void *user_data)
       }
 
       if (found > 0) {
-         xchat_printf(ph, "WMPA: Found %d songs with \"%s\" in them", found, word_eol[2]);
+         hexchat_printf(ph, "WMPA: Found %d songs with \"%s\" in them", found, word_eol[2]);
          wmp->SetCurrentPlaylist(playlist);
          wmp->GetControls().play();
-         xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
+         hexchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
 
          CWMPADialog *dialog = GetWMPADialog();
          if (dialog != NULL) {
@@ -238,7 +238,7 @@ int wmpaFind(char *word[], char *word_eol[], void *user_data)
 
       }
       else {
-         xchat_printf(ph, "WMPA: Could not find %s", word_eol[2]);
+         hexchat_printf(ph, "WMPA: Could not find %s", word_eol[2]);
       }
 
    }
@@ -256,7 +256,7 @@ int wmpaList(char *word[], char *word_eol[], void *user_data)
    long found;
 
    if (wmp != NULL) {
-      xchat_printf(ph, "WMPA: Listing songs with \"%s\" in them", word_eol[2]);
+      hexchat_printf(ph, "WMPA: Listing songs with \"%s\" in them", word_eol[2]);
 
       CWMPMediaCollection mc = wmp->GetMediaCollection();
       CWMPPlaylist all = mc.getAll();
@@ -272,19 +272,19 @@ int wmpaList(char *word[], char *word_eol[], void *user_data)
          if ( (artist.Find(word_eol[2]) != -1) ||
               (title.Find(word_eol[2])  != -1) ||
               (album.Find(word_eol[2])  != -1) ) {
-            xchat_printf(ph, "WMPA: Found \"%s - %s (%s)\"", artist, title, album);
+            hexchat_printf(ph, "WMPA: Found \"%s - %s (%s)\"", artist, title, album);
             found++;
          }
       }
 
       if (found > 0) {
          if (found == 1)
-            xchat_printf(ph, "WMPA: Found %d song with \"%s\" in it", found, word_eol[2]);
+            hexchat_printf(ph, "WMPA: Found %d song with \"%s\" in it", found, word_eol[2]);
          else
-            xchat_printf(ph, "WMPA: Found %d songs with \"%s\" in them", found, word_eol[2]);
+            hexchat_printf(ph, "WMPA: Found %d songs with \"%s\" in them", found, word_eol[2]);
       }
       else {
-         xchat_printf(ph, "WMPA: Could not find any songs with \"%s\" in them", word_eol[2]);
+         hexchat_printf(ph, "WMPA: Could not find any songs with \"%s\" in them", word_eol[2]);
       }
 
    }
@@ -299,7 +299,7 @@ int wmpaNext(char *word[], char *word_eol[], void *user_data)
 {
    if (wmp != NULL) {
       wmp->GetControls().next();
-      xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
    return(HEXCHAT_EAT_ALL);
 }
@@ -311,7 +311,7 @@ int wmpaPlay(char *word[], char *word_eol[], void *user_data)
 {
    if (wmp != NULL) {
       wmp->GetControls().play();
-      xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
    return(HEXCHAT_EAT_ALL);
 }
@@ -323,7 +323,7 @@ int wmpaPause(char *word[], char *word_eol[], void *user_data)
 {
    if (wmp != NULL) {
       wmp->GetControls().pause();
-      xchat_printf(ph, "WMPA: Pausing %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_printf(ph, "WMPA: Pausing %s", (LPCTSTR) wmpaGetSongTitle());
    }
    return(HEXCHAT_EAT_ALL);
 }
@@ -335,7 +335,7 @@ int wmpaPrev(char *word[], char *word_eol[], void *user_data)
 {
    if (wmp != NULL) {
       wmp->GetControls().previous();
-      xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
    return(HEXCHAT_EAT_ALL);
 }
@@ -347,7 +347,7 @@ int wmpaSong(char *word[], char *word_eol[], void *user_data)
 {
    CString songTitle = wmpaGetSongTitle();
 
-   xchat_commandf(ph, "me is playing %s", (LPCTSTR) songTitle);
+   hexchat_commandf(ph, "me is playing %s", (LPCTSTR) songTitle);
 
    return(HEXCHAT_EAT_ALL);
 }
@@ -359,7 +359,7 @@ int wmpaStop(char *word[], char *word_eol[], void *user_data)
 {
    if (wmp != NULL) {
       wmp->GetControls().stop();
-      xchat_printf(ph, "WMPA: Stopping %s", (LPCTSTR) wmpaGetSongTitle());
+      hexchat_printf(ph, "WMPA: Stopping %s", (LPCTSTR) wmpaGetSongTitle());
    }
    return(HEXCHAT_EAT_ALL);
 }
@@ -369,10 +369,10 @@ int wmpaStop(char *word[], char *word_eol[], void *user_data)
 ******************************************************************/
 int wmpaHelp(char *word[], char *word_eol[], void *user_data)
 {
-   xchat_printf(ph, "\n");
-   xchat_printf(ph, "WMPA %s Help", VER_STRING);
+   hexchat_printf(ph, "\n");
+   hexchat_printf(ph, "WMPA %s Help", VER_STRING);
    wmpaCommands();
-   xchat_printf(ph, "\n");
+   hexchat_printf(ph, "\n");
 
    return(HEXCHAT_EAT_ALL);
 }
@@ -397,7 +397,7 @@ int wmpaVolume(char *word[], char *word_eol[], void *user_data)
       }
    }
 
-   xchat_printf(ph, "WMPA: volume is %d", volume);
+   hexchat_printf(ph, "WMPA: volume is %d", volume);
 
    return(HEXCHAT_EAT_ALL);
 }
@@ -471,7 +471,7 @@ CString wmpaGetSongTitle(void)
 
    CWMPMedia media      = wmp->GetCurrentMedia();
    if (media == NULL) {
-      xchat_printf(ph, "WMPA: Could not get current media");
+      hexchat_printf(ph, "WMPA: Could not get current media");
       return(HEXCHAT_EAT_ALL);
    }
 

@@ -53,7 +53,7 @@
 #define PIPE_WRITE 1
 #define MAX_HOSTNAME 128
 
-static xchat_plugin *ph;
+static hexchat_plugin *ph;
 static thread *active_thread = NULL;
 
 
@@ -210,19 +210,19 @@ dns_read_cb (int fd, int flags, thread *th, void *source)
 		case '0':		/* got data to show */
 			waitline (source, buf2, sizeof (buf2));
 			if (buf2[0] == 0)
-				xchat_printf(ph, HEAD"\002Numerical\002: %s\n", buf + 1);
+				hexchat_printf(ph, HEAD"\002Numerical\002: %s\n", buf + 1);
 			else
-				xchat_printf(ph, HEAD"\002Canonical\002: %s \002Numerical\002: %s\n", buf2, buf + 1);
+				hexchat_printf(ph, HEAD"\002Canonical\002: %s \002Numerical\002: %s\n", buf2, buf + 1);
 			return 1;
 
 		case '1':		/* failed */
-			xchat_printf(ph, HEAD"Lookup failed. %s\n", gai_strerrorA (atoi (buf + 1)));
+			hexchat_printf(ph, HEAD"Lookup failed. %s\n", gai_strerrorA (atoi (buf + 1)));
 
 		case '2':		/* done */
 		//	close (th->pipe_fd[PIPE_WRITE]);
 		//	close (th->pipe_fd[PIPE_READ]);
-			xchat_hook_timer(ph, 3000, dns_close_pipe, (void *)th->pipe_fd[PIPE_WRITE]);
-			xchat_hook_timer(ph, 4000, dns_close_pipe, (void *)th->pipe_fd[PIPE_READ]);
+			hexchat_hook_timer(ph, 3000, dns_close_pipe, (void *)th->pipe_fd[PIPE_WRITE]);
+			hexchat_hook_timer(ph, 4000, dns_close_pipe, (void *)th->pipe_fd[PIPE_READ]);
 			free (th->userdata); 	/* hostname strdup'ed */
 			free (th);
 			return 0;
@@ -237,19 +237,19 @@ dns_read_cb (int fd, int flags, thread *th, void *source)
 static char *
 find_nick_host (char *nick)
 {
-	xchat_list *list;
+	hexchat_list *list;
 	char *at;
 	const char *host;
 
-	list = xchat_list_get (ph, "users");
+	list = hexchat_list_get (ph, "users");
 	if (!list)
 		return NULL;
 
-	while (xchat_list_next (ph, list))
+	while (hexchat_list_next (ph, list))
 	{
-		if (stricmp (nick, xchat_list_str (ph, list, "nick")) == 0)
+		if (stricmp (nick, hexchat_list_str (ph, list, "nick")) == 0)
 		{
-			host = xchat_list_str (ph, list, "host");
+			host = hexchat_list_str (ph, list, "host");
 			if (host)
 			{
 				at = strrchr (host, '@');
@@ -271,7 +271,7 @@ dns_cmd_cb (char *word[], char *word_eol[], void *ud)
 
 	if (!word[2][0])
 	{
-		xchat_print (ph, HELP);
+		hexchat_print (ph, HELP);
 		return HEXCHAT_EAT_ALL;
 	}
 
@@ -281,17 +281,17 @@ dns_cmd_cb (char *word[], char *word_eol[], void *ud)
 		nickhost = find_nick_host (word[2]);
 		if (nickhost)
 		{
-			xchat_printf (ph, HEAD"Looking up %s (%s)...\n", nickhost, word[2]);
+			hexchat_printf (ph, HEAD"Looking up %s (%s)...\n", nickhost, word[2]);
 			th->userdata = strdup (nickhost);
 		} else
 		{
-			xchat_printf (ph, HEAD"Looking up %s...\n", word[2]);
+			hexchat_printf (ph, HEAD"Looking up %s...\n", word[2]);
 			th->userdata = strdup (word[2]);
 		}
 
 		if (thread_start (th, thread_function, th))
 		{
-			xchat_hook_fd(ph, th->pipe_fd[PIPE_READ],
+			hexchat_hook_fd(ph, th->pipe_fd[PIPE_READ],
 							HEXCHAT_FD_READ | HEXCHAT_FD_EXCEPTION | HEXCHAT_FD_NOTSOCKET,
 							(void *)dns_read_cb, th);
 
@@ -302,19 +302,19 @@ dns_cmd_cb (char *word[], char *word_eol[], void *ud)
 }
 
 int
-xchat_plugin_deinit (xchat_plugin *plugin_handle)
+hexchat_plugin_deinit (hexchat_plugin *plugin_handle)
 {
 	while (active_thread)	/* children will set this var to NULL soon... */
 	{
 		Sleep (1000);
 	}
-	xchat_printf (ph, "DNS plugin unloaded\n");
+	hexchat_printf (ph, "DNS plugin unloaded\n");
 	return 1;
 }
 
 int
-xchat_plugin_init
-				(xchat_plugin *plugin_handle, char **plugin_name,
+hexchat_plugin_init
+				(hexchat_plugin *plugin_handle, char **plugin_name,
 				char **plugin_desc, char **plugin_version, char *arg)
 {
 	/* we need to save this for use with any xchat_* functions */
@@ -324,8 +324,8 @@ xchat_plugin_init
 	*plugin_desc = "Threaded IPv4/6 DNS Command";
 	*plugin_version = DNS_VERSION;
 
-	xchat_hook_command(ph, "DNS", HEXCHAT_PRI_LOW, dns_cmd_cb, HELP, 0);
-	xchat_printf (ph, "DNS plugin loaded\n");
+	hexchat_hook_command(ph, "DNS", HEXCHAT_PRI_LOW, dns_cmd_cb, HELP, 0);
+	hexchat_printf (ph, "DNS plugin loaded\n");
 
 	return 1;       /* return 1 for success */
 }

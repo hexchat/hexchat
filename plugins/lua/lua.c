@@ -67,7 +67,7 @@
 
 #include "hexchat-plugin.h"
 
-static xchat_plugin *ph; /* plugin handle */
+static hexchat_plugin *ph; /* plugin handle */
 
 #define LXC_STRIP_COLOR 1
 #define LXC_STRIP_ATTR  2
@@ -76,7 +76,7 @@ static xchat_plugin *ph; /* plugin handle */
 /* registered hooks */
 struct lxc_hooks {
 	const char *name;
-	xchat_hook *hook;
+	hexchat_hook *hook;
 	struct lxc_hooks *next;
 };
 
@@ -104,7 +104,7 @@ struct lxc_userdata {
 struct lxc_cbdata {
 	lua_State *state;
 	const char *func;
-	xchat_hook *hook; /* timer ... */
+	hexchat_hook *hook; /* timer ... */
 	struct lxc_userdata *data;
 };
 
@@ -379,7 +379,7 @@ lxc_load_file(const char *script)
 	L = lxc_new_state();
 	state = malloc(sizeof(struct lxc_States));
 	if (state == NULL) {
-		xchat_printf(ph, "malloc() failed: %s\n", strerror(errno));
+		hexchat_printf(ph, "malloc() failed: %s\n", strerror(errno));
 		lua_close(L);
 		return 0;
 	}
@@ -391,7 +391,7 @@ lxc_load_file(const char *script)
 	state->gui   = NULL;
 
 	if (luaL_loadfile(L, script) || lua_pcall(L, 0, 0, 0)) {
-		xchat_printf(ph, "Lua plugin: error loading script %s", 	
+		hexchat_printf(ph, "Lua plugin: error loading script %s", 	
 							lua_tostring(L, -1));
 		lua_close(L);
 		free(state);
@@ -417,7 +417,7 @@ lxc_autoload_from_path(const char *path)
 	struct dirent *ent;
 	char *file;
 	int len;
-	/* xchat_printf(ph, "loading from %s\n", path); */
+	/* hexchat_printf(ph, "loading from %s\n", path); */
 	dir = opendir(path);
 	if (dir) {
 		while ((ent = readdir(dir))) {
@@ -425,7 +425,7 @@ lxc_autoload_from_path(const char *path)
 			if (len > 4 && strcasecmp(".lua", ent->d_name + len - 4) == 0) {
 				file = malloc(len + strlen(path) + 2);
 				if (file == NULL) {
-					xchat_printf(ph, "lxc_autoload_from_path(): malloc failed: %s",
+					hexchat_printf(ph, "lxc_autoload_from_path(): malloc failed: %s",
 						strerror(errno));
 					break;
 				}
@@ -449,14 +449,14 @@ void lxc_unload_script(struct lxc_States *state)
 	lua_gettable(L, LUA_GLOBALSINDEX);
 	if (lua_type(L, -1) == LUA_TFUNCTION) {
 		if (lua_pcall(L, 0, 0, 0)) {
-			xchat_printf(ph, "Lua plugin: error while unloading script %s", 	
+			hexchat_printf(ph, "Lua plugin: error while unloading script %s", 	
 								lua_tostring(L, -1));
 			lua_pop(L, 1);
 		}
 	}
 
 	if (state->gui)
-		xchat_plugingui_remove(ph, state->gui);
+		hexchat_plugingui_remove(ph, state->gui);
 	state->gui = NULL;
 
 	hooks = state->hooks;
@@ -464,7 +464,7 @@ void lxc_unload_script(struct lxc_States *state)
 		h     = hooks;
 		hooks = hooks->next;
 
-		cb    = xchat_unhook(ph, h->hook);
+		cb    = hexchat_unhook(ph, h->hook);
 		if (cb) {
 			ud    = cb->data;
 			while (ud) {
@@ -497,13 +497,13 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 	
 	buf = malloc(PATH_MAX + 1);
 	if (!buf) {
-		xchat_printf(ph, "malloc() failed: %s\n", strerror(errno));
+		hexchat_printf(ph, "malloc() failed: %s\n", strerror(errno));
 		return HEXCHAT_EAT_NONE;
 	}
 
 	st = malloc(sizeof(struct stat));
 	if (!st) {
-		xchat_printf(ph, "malloc() failed: %s\n", strerror(errno));
+		hexchat_printf(ph, "malloc() failed: %s\n", strerror(errno));
 		free(buf);
 		return HEXCHAT_EAT_NONE;
 	}
@@ -524,7 +524,7 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 			}
 			else
 			{
-				xdir = xchat_get_info (ph, "xchatdirfs");
+				xdir = hexchat_get_info (ph, "xchatdirfs");
 				snprintf (file, PATH_MAX, "%s/addons/%s", xdir, word[2]);
 			}
 		}
@@ -543,7 +543,7 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 				lua_pushstring(L, "xchat_register");
 				lua_gettable(L, LUA_GLOBALSINDEX);
 				if (lua_pcall(L, 0, 3, 0)) {
-					xchat_printf(ph, "Lua plugin: error registering script %s", 	
+					hexchat_printf(ph, "Lua plugin: error registering script %s", 	
 								lua_tostring(L, -1));
 					lua_pop(L, 1);
 					free(st);
@@ -555,7 +555,7 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 				desc = lua_tostring(L, -2);
 				vers = lua_tostring(L, -1);
 				lua_pop(L, 4); /* func + 3 ret value */
-				state->gui = xchat_plugingui_add(ph, state->file, 
+				state->gui = hexchat_plugingui_add(ph, state->file, 
 																 name, desc, vers, NULL
 															);
 
@@ -565,7 +565,7 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 					lua_pop(L, 1);
 				else {
 					if (lua_pcall(L, 0, 0, 0)) {
-						xchat_printf(ph, 
+						hexchat_printf(ph, 
 									"Lua plugin: error calling xchat_init() %s", 	
 									lua_tostring(L, -1));
 						lua_pop(L, 1);
@@ -612,7 +612,7 @@ static int lxc_cb_unload(char *word[], char *word_eol[], void *userdata)
 					prev->next = state->next;
 				else
 					lxc_states = state->next;
-				xchat_printf(ph, "Lua script %s unloaded", file);
+				hexchat_printf(ph, "Lua script %s unloaded", file);
 				free(state);
 				return HEXCHAT_EAT_ALL;
 			}
@@ -627,11 +627,11 @@ static int lxc_cb_lua(char *word[], char *word_eol[], void *userdata)
 {
 	lua_State *L = lxc_new_state();
 	if (word[2][0] == '\0') {
-		xchat_printf(ph, "LUA: Usage: /LUA LUA_CODE... execute LUA_CODE");
+		hexchat_printf(ph, "LUA: Usage: /LUA LUA_CODE... execute LUA_CODE");
 		return HEXCHAT_EAT_ALL;
 	}
 	if (luaL_loadbuffer(L, word_eol[2], strlen(word_eol[2]), "/LUA")) {
-		xchat_printf(ph, "LUA: error loading line %s", lua_tostring(L, -1));
+		hexchat_printf(ph, "LUA: error loading line %s", lua_tostring(L, -1));
 		lua_pop(L, 1);
 	}
 
@@ -647,7 +647,7 @@ static int lxc_cb_lua(char *word[], char *word_eol[], void *userdata)
 #endif
 
 	if (lua_pcall(L, 0, 0, 0)) {
-		xchat_printf(ph, "LUA: error executing line %s", lua_tostring(L, -1));
+		hexchat_printf(ph, "LUA: error executing line %s", lua_tostring(L, -1));
 		lua_pop(L, 1);
 	}
 
@@ -655,7 +655,7 @@ static int lxc_cb_lua(char *word[], char *word_eol[], void *userdata)
 	return HEXCHAT_EAT_ALL;
 }
 
-int xchat_plugin_init(xchat_plugin *plugin_handle,
+int hexchat_plugin_init(hexchat_plugin *plugin_handle,
                       char **plugin_name,
                       char **plugin_desc,
                       char **plugin_version,
@@ -674,17 +674,17 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
    *plugin_desc = LXC_DESC;
    *plugin_version = LXC_VERSION;
 
-	xchat_hook_command(ph, "LOAD", HEXCHAT_PRI_NORM, lxc_cb_load, NULL, NULL);
-	xchat_hook_command(ph, "UNLOAD", HEXCHAT_PRI_NORM, lxc_cb_unload, NULL, NULL);
-	xchat_hook_command(ph, "LUA", HEXCHAT_PRI_NORM, lxc_cb_lua, "Usage: LUA <code>, executes <code> in a new lua state", NULL);
+	hexchat_hook_command(ph, "LOAD", HEXCHAT_PRI_NORM, lxc_cb_load, NULL, NULL);
+	hexchat_hook_command(ph, "UNLOAD", HEXCHAT_PRI_NORM, lxc_cb_unload, NULL, NULL);
+	hexchat_hook_command(ph, "LUA", HEXCHAT_PRI_NORM, lxc_cb_lua, "Usage: LUA <code>, executes <code> in a new lua state", NULL);
 
-	xdir = xchat_get_info (ph, "xchatdirfs");
+	xdir = hexchat_get_info (ph, "xchatdirfs");
 	xsubdir = g_build_filename (xdir, "addons", NULL);
 	lxc_autoload_from_path (xsubdir);
 	g_free (xsubdir);
 
 	/* put this here, otherwise it's only displayed when a script is autoloaded upon start */
-	xchat_printf(ph, "Lua interface loaded");
+	hexchat_printf(ph, "Lua interface loaded");
 
 	if (!lxc_states) /* no scripts loaded */
 		return 1;
@@ -695,7 +695,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 		lua_pushstring(L, "xchat_register");
 		lua_gettable(L, LUA_GLOBALSINDEX);
 		if (lua_pcall(L, 0, 3, 0)) {
-			xchat_printf(ph, "Lua plugin: error registering script %s", 	
+			hexchat_printf(ph, "Lua plugin: error registering script %s", 	
 								lua_tostring(L, -1));
 			lua_pop(L, 1);
 			state = state->next;
@@ -706,7 +706,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 		desc = lua_tostring(L, -2);
 		vers = lua_tostring(L, -1);
 		lua_pop(L, 4); /* func + 3 ret value */
-		state->gui = xchat_plugingui_add(ph, state->file, name, desc, vers, NULL);
+		state->gui = hexchat_plugingui_add(ph, state->file, name, desc, vers, NULL);
 
 		lua_pushstring(L, "xchat_init");
 		lua_gettable(L, LUA_GLOBALSINDEX);
@@ -714,7 +714,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 			lua_pop(L, 1);
 		else {
 			if (lua_pcall(L, 0, 0, 0)) {
-				xchat_printf(ph, "Lua plugin: error calling xchat_init() %s", 	
+				hexchat_printf(ph, "Lua plugin: error calling xchat_init() %s", 	
 								lua_tostring(L, -1));
 				lua_pop(L, 1);
 			}
@@ -724,19 +724,19 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	return 1; 
 }
 
-int xchat_plugin_deinit(xchat_plugin *plug_handle) 
+int hexchat_plugin_deinit(hexchat_plugin *plug_handle) 
 {
 	struct lxc_States *state, *st;
 
 	state = lxc_states;
 	while (state) {
 		lxc_unload_script(state);
-		xchat_printf(ph, "Lua script %s unloaded", state->file);
+		hexchat_printf(ph, "Lua script %s unloaded", state->file);
 		st    = state;
 		state = state->next;
 		free(st);
 	}
-	xchat_printf(plug_handle, "Lua interface unloaded");
+	hexchat_printf(plug_handle, "Lua interface unloaded");
 	return 1;
 }
 
@@ -801,7 +801,7 @@ static int lxc_run_hook(char *word[], char *word_eol[], void *data)
 	}
 
 	if (lua_pcall(L, 3, 1, 0)) {
-		xchat_printf(ph, "failed to call callback for '%s': %s", 
+		hexchat_printf(ph, "failed to call callback for '%s': %s", 
 				word[1], lua_tostring(L, -1)
 			);
 		lua_pop(L, 1);
@@ -809,7 +809,7 @@ static int lxc_run_hook(char *word[], char *word_eol[], void *data)
 	}
 
 	if (lua_type(L, -1) != LUA_TNUMBER) {
-		xchat_printf(ph, "callback for '%s' did not return number...", word[1]);
+		hexchat_printf(ph, "callback for '%s' did not return number...", word[1]);
 		return HEXCHAT_EAT_NONE;
 	}
 
@@ -843,7 +843,7 @@ static int lxc_get_userdata(int pos, struct lxc_cbdata *cb)
 
 		ud = malloc(sizeof(struct lxc_userdata));
 		if (!ud) {
-			xchat_printf(ph, "lxc_get_userdata(): failed to malloc: %s", 
+			hexchat_printf(ph, "lxc_get_userdata(): failed to malloc: %s", 
 																strerror(errno));
 			if (cb->data != NULL) {
 				ud = cb->data;
@@ -911,7 +911,7 @@ static int lxc_get_userdata(int pos, struct lxc_cbdata *cb)
  */
 static int lxc_hook_command(lua_State *L)
 {
-	xchat_hook *hook;
+	hexchat_hook *hook;
 	const char *help, *command, *func;
 	double prio;
 	struct lxc_hooks *hooks, *h;
@@ -924,7 +924,7 @@ static int lxc_hook_command(lua_State *L)
 
 	cb = malloc(sizeof(struct lxc_cbdata));
 	if (!cb) {
-		xchat_printf(ph, "lxc_hook_command(): failed to malloc: %s", 
+		hexchat_printf(ph, "lxc_hook_command(): failed to malloc: %s", 
 																	strerror(errno));
 		lua_pushboolean(L, 0);
 		return 1;
@@ -956,12 +956,12 @@ static int lxc_hook_command(lua_State *L)
 	else {
 		h = malloc(sizeof(struct lxc_hooks));
 		if (!h) {
-			xchat_printf(ph, "lxc_hook_command(): failed to malloc: %s", 
+			hexchat_printf(ph, "lxc_hook_command(): failed to malloc: %s", 
 																	strerror(errno));
 			lua_pushboolean(L, 0);
 			return 1;
 		}
-		hook    = xchat_hook_command(ph, command, prio, lxc_run_hook, help, cb);
+		hook    = hexchat_hook_command(ph, command, prio, lxc_run_hook, help, cb);
 		h->hook = hook;
 		h->name = command;
 		h->next = NULL;
@@ -1014,14 +1014,14 @@ static int lxc_run_print(char *word[], void *data)
 	}
 
 	if (lua_pcall(L, 1, 1, 0)) {
-		xchat_printf(ph, "failed to call callback for '%s': %s", 
+		hexchat_printf(ph, "failed to call callback for '%s': %s", 
 			word[1], lua_tostring(L, -1));
 		lua_pop(L, 1);
 		return 0;
 	}
 
 	if (lua_type(L, -1) != LUA_TNUMBER) {
-		xchat_printf(ph, "callback for '%s' didn't return number...", word[1]);
+		hexchat_printf(ph, "callback for '%s' didn't return number...", word[1]);
 		return HEXCHAT_EAT_NONE;
 	}
 	i = (int)lua_tonumber(L, -1);
@@ -1034,7 +1034,7 @@ static int lxc_run_print(char *word[], void *data)
  * desc: Registers a function to trap any print events. The event names may 
  *       be any available in the "Advanced > Text Events" window. There are 
  *       also some extra "special" events you may hook using this function,
- *       see: http://xchat.org/docs/plugin20.html#xchat_hook_print
+ *       see: http://xchat.org/docs/plugin20.html#hexchat_hook_print
  * ret:  true... or false if something went wrong while registering hook
  * args: 
  *       * name (string): the name of the new command
@@ -1046,7 +1046,7 @@ static int lxc_run_print(char *word[], void *data)
  */
 static int lxc_hook_print(lua_State *L)
 {
-	xchat_hook *hook;
+	hexchat_hook *hook;
 	struct lxc_hooks *hooks, *h;
 	struct lxc_States *st;
 	struct lxc_cbdata *cb = malloc(sizeof(struct lxc_cbdata));
@@ -1078,12 +1078,12 @@ static int lxc_hook_print(lua_State *L)
 	else {
 		h = malloc(sizeof(struct lxc_hooks));
 		if (!h) {
-			xchat_printf(ph, "lxc_hook_print(): failed to malloc: %s", 
+			hexchat_printf(ph, "lxc_hook_print(): failed to malloc: %s", 
 																	strerror(errno));
 			lua_pushboolean(L, 0);
 			return 1;
 		}
-		hook 	  = xchat_hook_print(ph, name, prio, lxc_run_print, cb); 
+		hook 	  = hexchat_hook_print(ph, name, prio, lxc_run_print, cb); 
 		h->hook = hook;
 		h->name = name;
 		h->next = NULL;
@@ -1123,7 +1123,7 @@ static int lxc_hook_print(lua_State *L)
  */
 static int lxc_hook_server(lua_State *L)
 {
-	xchat_hook *hook;
+	hexchat_hook *hook;
 	struct lxc_hooks *hooks, *h;
 	struct lxc_States *st;
 	const char *name, *func;
@@ -1131,7 +1131,7 @@ static int lxc_hook_server(lua_State *L)
 
 	struct lxc_cbdata *cb = malloc(sizeof(struct lxc_cbdata));
 	if (!cb) {
-		xchat_printf(ph, "lxc_hook_server(): failed to malloc: %s", 
+		hexchat_printf(ph, "lxc_hook_server(): failed to malloc: %s", 
 																	 strerror(errno));
 		lua_pushnil(L);
 		return 1;
@@ -1157,12 +1157,12 @@ static int lxc_hook_server(lua_State *L)
 	else {
 		h = malloc(sizeof(struct lxc_hooks));
 		if (!h) {
-			xchat_printf(ph, "lxc_hook_server(): failed to malloc: %s", 
+			hexchat_printf(ph, "lxc_hook_server(): failed to malloc: %s", 
 																	strerror(errno));
 			lua_pushboolean(L, 0);
 			return 1;
 		}
-		hook    = xchat_hook_server(ph, name, prio, lxc_run_hook, cb); 
+		hook    = hexchat_hook_server(ph, name, prio, lxc_run_hook, cb); 
 		h->hook = hook;
 		h->name = name;
 		h->next = NULL;
@@ -1201,7 +1201,7 @@ static unsigned long long lxc_timer_count = 0;
 
 static int lxc_hook_timer(lua_State *L)
 {
-	xchat_hook *hook;
+	hexchat_hook *hook;
 	struct lxc_hooks *hooks, *h;
 	struct lxc_States *st;
 	double timeout;
@@ -1234,7 +1234,7 @@ static int lxc_hook_timer(lua_State *L)
 				strerror(errno));
 			return 0;
 		}
-		hook 	   = xchat_hook_timer(ph, timeout, lxc_run_timer, cb); 
+		hook 	   = hexchat_hook_timer(ph, timeout, lxc_run_timer, cb); 
 		cb->hook = hook;
 		h->hook  = hook;
 		h->next  = NULL;
@@ -1261,7 +1261,7 @@ static int lxc_hook_timer(lua_State *L)
 	return 1;
 }
 
-static void lxc_unhook_timer(lua_State *L, xchat_hook *hook)
+static void lxc_unhook_timer(lua_State *L, hexchat_hook *hook)
 {
 	struct lxc_States *state;
 	struct lxc_hooks *hooks, *h, *prev_hook;
@@ -1281,7 +1281,7 @@ static void lxc_unhook_timer(lua_State *L, xchat_hook *hook)
 					else
 						state->hooks = hooks->next;
 
-					cb = xchat_unhook(ph, h->hook);
+					cb = hexchat_unhook(ph, h->hook);
 					if (cb) {
 						 ud = cb->data;
 						 while (ud) {
@@ -1317,14 +1317,14 @@ static void lxc_unhook_timer(lua_State *L, xchat_hook *hook)
 {
 	int ret;
 	struct lxc_cbdata *cb = data;
-	xchat_hook *hook      = cb->hook;
+	hexchat_hook *hook      = cb->hook;
 	lua_State *L          = cb->state;
 
 	lua_pushstring(L, cb->func);
 	lua_gettable(L, LUA_GLOBALSINDEX);
 
 	if (lua_pcall(L, 0, 1, 0)) {
-		xchat_printf(ph, "failed to call timer callback for '%s': %s", 
+		hexchat_printf(ph, "failed to call timer callback for '%s': %s", 
 			cb->func, lua_tostring(L, -1));
 		lua_pop(L, 1);
 		lxc_unhook_timer(L, hook);
@@ -1332,7 +1332,7 @@ static void lxc_unhook_timer(lua_State *L, xchat_hook *hook)
 	}
 
 	if (lua_type(L, -1) != LUA_TBOOLEAN) {
-		xchat_printf(ph, 
+		hexchat_printf(ph, 
 			"timer callback for '%s' didn't return a boolean", cb->func);
 		lua_pop(L, 1);
 		lxc_unhook_timer(L, hook);
@@ -1380,7 +1380,7 @@ static int lxc_unhook(lua_State *L)
 					else
 						state->hooks = hooks->next;
 
-					cb = xchat_unhook(ph, h->hook);
+					cb = hexchat_unhook(ph, h->hook);
 					if (cb) {
 						ud = cb->data;
 						while (ud) {
@@ -1422,7 +1422,7 @@ static int lxc_event(lua_State *L)
 static int lxc_command(lua_State *L)
 {
 	const char *command = luaL_checkstring(L, 1);
-	xchat_command(ph, command);
+	hexchat_command(ph, command);
 	return 0;
 }
 
@@ -1437,7 +1437,7 @@ static int lxc_print(lua_State *L)
 {
 	const char *txt = luaL_checkstring(L, 1);
 	// FIXME? const char *txt = lua_tostring(L, 1);
-	xchat_print(ph, txt);
+	hexchat_print(ph, txt);
 	return 0;
 }
 
@@ -1476,19 +1476,19 @@ static int lxc_emit_print(lua_State *L)
 	}
 	switch (n-1) {
 		case 0:
-			i = xchat_emit_print(ph, event, NULL);
+			i = hexchat_emit_print(ph, event, NULL);
 			break;
 		case 1:
-			i = xchat_emit_print(ph, event, text[0], NULL);
+			i = hexchat_emit_print(ph, event, text[0], NULL);
 			break;
 		case 2:
-			i = xchat_emit_print(ph, event, text[0], text[1], NULL);
+			i = hexchat_emit_print(ph, event, text[0], text[1], NULL);
 			break;
 		case 3:
-			i = xchat_emit_print(ph, event, text[0], text[1], text[2], NULL);
+			i = hexchat_emit_print(ph, event, text[0], text[1], text[2], NULL);
 			break;
 		case 4:
-			i = xchat_emit_print(ph, event, text[0], text[1], text[2], text[3], NULL);
+			i = hexchat_emit_print(ph, event, text[0], text[1], text[2], text[3], NULL);
 			break;
 	}
 	lua_pushboolean(L, (i == 0) ? 0 : 1);
@@ -1575,7 +1575,7 @@ static int lxc_send_modes(lua_State *L)
 	if (lua_gettop(L) == 4)
 		num = luaL_checknumber(L, 4);
 	
-	xchat_send_modes(ph, targets, i-1, num, sign[0], mode[0]);
+	hexchat_send_modes(ph, targets, i-1, num, sign[0], mode[0]);
 	return 0;
 }
 
@@ -1598,7 +1598,7 @@ static int lxc_find_context(lua_State *L)
 {
 	const char *srv, *chan;
 	long ctx;
-	xchat_context *ptr;
+	hexchat_context *ptr;
 
 	if (lua_type(L, 1) == LUA_TSTRING) {
 		srv = lua_tostring(L, 1);
@@ -1616,7 +1616,7 @@ static int lxc_find_context(lua_State *L)
 	else
 		chan = NULL;
 	
-	ptr = xchat_find_context(ph, srv, chan);
+	ptr = hexchat_find_context(ph, srv, chan);
 	ctx = (long)ptr;
 #ifdef DEBUG
 	fprintf(stderr, "find_context(): %#lx\n", (long)ptr);
@@ -1628,14 +1628,14 @@ static int lxc_find_context(lua_State *L)
 /* 
  * lua:  xchat.get_context()
  * desc: Returns the current context for your plugin. You can use this later 
- *       with xchat_set_context. 
+ *       with hexchat_set_context. 
  * ret:  context number ... DON'T modifiy
  * args: none
  */
 static int lxc_get_context(lua_State *L)
 {
 	long ptr;
-	xchat_context *ctx = xchat_get_context(ph);
+	hexchat_context *ctx = hexchat_get_context(ph);
 	ptr = (long)ctx;
 #ifdef DEBUG
 	fprintf(stderr, "get_context(): %#lx\n", ptr);
@@ -1654,7 +1654,7 @@ static int lxc_get_context(lua_State *L)
 static int lxc_get_info(lua_State *L)
 {
 	const char *id    = luaL_checkstring(L, 1);
-	const char *value = xchat_get_info(ph, id);
+	const char *value = hexchat_get_info(ph, id);
 	if (value == NULL)
 		lua_pushnil(L);
 	else
@@ -1717,8 +1717,8 @@ static int lxc_set_context(lua_State *L)
 #ifdef DEBUG
 	fprintf(stderr, "set_context(): %#lx\n", (long)ctx);
 #endif
-	xchat_context *xc = (void *)(long)ctx;
-	lua_pushboolean(L, xchat_set_context(ph, xc));
+	hexchat_context *xc = (void *)(long)ctx;
+	lua_pushboolean(L, hexchat_set_context(ph, xc));
 	return 1;
 }
 
@@ -1738,7 +1738,7 @@ static int lxc_nickcmp(lua_State *L)
 {
 	const char *n1 = luaL_checkstring(L, 1);
 	const char *n2 = luaL_checkstring(L, 2);
-	lua_pushnumber(L, (double)xchat_nickcmp(ph, n1, n2));
+	lua_pushnumber(L, (double)hexchat_nickcmp(ph, n1, n2));
 	return 1;
 }
 
@@ -1761,8 +1761,8 @@ static int lxc_list_get(lua_State *L)
 	double      num;
 	time_t     date;
 	long        ptr;
-	const char *const *fields = xchat_list_fields(ph, name);
-	xchat_list *list          = xchat_list_get(ph, name);
+	const char *const *fields = hexchat_list_fields(ph, name);
+	hexchat_list *list          = hexchat_list_get(ph, name);
 
 	if (!list) {
 		lua_pushnil(L);
@@ -1771,14 +1771,14 @@ static int lxc_list_get(lua_State *L)
 	lua_newtable(L);
 	/* this is like the perl plugin does it ;-) */
 	l = 1;
-	while (xchat_list_next(ph, list)) {
+	while (hexchat_list_next(ph, list)) {
 		i = 0;
 		lua_pushnumber(L, l);
 		lua_newtable(L);
 		while (fields[i] != NULL) {
 			switch (fields[i][0]) {
 				case 's':
-					str = xchat_list_str(ph, list, fields [i] + 1);
+					str = hexchat_list_str(ph, list, fields [i] + 1);
 					lua_pushstring(L, fields[i]+1);
 					if (str != NULL)
 						lua_pushstring(L, str);
@@ -1787,20 +1787,20 @@ static int lxc_list_get(lua_State *L)
 					lua_settable(L, -3);
 					break;
 				case 'p':
-					ptr = (long)xchat_list_str(ph, list, fields [i] + 1);
+					ptr = (long)hexchat_list_str(ph, list, fields [i] + 1);
 					num = (double)ptr;
 					lua_pushstring(L, fields[i]+1);
 					lua_pushnumber(L, num);
 					lua_settable(L, -3);
 					break;
 				case 'i':
-					num = (double)xchat_list_int(ph, list, fields[i] + 1);
+					num = (double)hexchat_list_int(ph, list, fields[i] + 1);
 					lua_pushstring(L, fields[i]+1);
 					lua_pushnumber(L, num);
 					lua_settable(L, -3);
 					break;
 				case 't':
-					date = xchat_list_time(ph, list, fields[i] + 1);
+					date = hexchat_list_time(ph, list, fields[i] + 1);
 					lua_pushstring(L, fields[i]+1);
 					lua_pushnumber(L, (double)date);
 					lua_settable(L, -3);
@@ -1811,7 +1811,7 @@ static int lxc_list_get(lua_State *L)
 		lua_settable(L, -3);
 		l++;
 	}
-	xchat_list_free(ph, list);
+	hexchat_list_free(ph, list);
 	return 1;
 }
 
@@ -1826,7 +1826,7 @@ static int lxc_list_get(lua_State *L)
 static int lxc_list_fields(lua_State *L)
 {
 	const char *name = luaL_checkstring(L, 1);
-	const char *const *fields = xchat_list_fields(ph, name);
+	const char *const *fields = hexchat_list_fields(ph, name);
 	int i;
 
 	lua_newtable(L);
@@ -1847,7 +1847,7 @@ static int lxc_list_fields(lua_State *L)
 static int lxc_gettext(lua_State *L)
 {
 #if defined(_WIN32) || defined(LXC_XCHAT_GETTEXT)
-	lua_pushstring(L, xchat_gettext(ph, luaL_checkstring(L, 1)));
+	lua_pushstring(L, hexchat_gettext(ph, luaL_checkstring(L, 1)));
 #else
 	const char *dom;
 	const char *msgid = luaL_checkstring(L, 1);

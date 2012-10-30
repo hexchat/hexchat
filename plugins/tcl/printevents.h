@@ -20,7 +20,7 @@ typedef struct {
     char *event;
     char *emit;
     int argc;
-    xchat_hook *hook;
+    hexchat_hook *hook;
 } print_event;
 
 enum

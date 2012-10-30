@@ -117,7 +117,7 @@ char *readLine(FILE *f){
              else buffer[pos]=(char)cc;pos++;
           }
      }
-     if (buffer[pos]==EOF) xchat_printf(ph,"EOF: %i\n",pos);
+     if (buffer[pos]==EOF) hexchat_printf(ph,"EOF: %i\n",pos);
      return buffer;
 }
 

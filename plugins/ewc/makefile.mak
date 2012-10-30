@@ -5,8 +5,8 @@ all: ewc.obj ewc.def
 
 ewc.def:
 	echo EXPORTS > ewc.def
-	echo xchat_plugin_init >> ewc.def
-	echo xchat_plugin_deinit >> ewc.def
+	echo hexchat_plugin_init >> ewc.def
+	echo hexchat_plugin_deinit >> ewc.def
 
 ewc.obj: ewc.c makefile.mak
 	cl $(CFLAGS) ewc.c

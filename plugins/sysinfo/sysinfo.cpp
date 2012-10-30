@@ -27,7 +27,7 @@
 
 #include "hexchat-plugin.h"
 
-static xchat_plugin *ph;   /* plugin handle */
+static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "SysInfo";
 static char desc[] = "Display info about your hardware and OS";
 static char version[] = "1.1";
@@ -355,17 +355,17 @@ printInfo (char *word[], char *word_eol[], void *user_data)
 	/* query WMI info only at the first time SysInfo is called, then cache it to save time */
 	if (firstRun)
 	{
-		xchat_printf (ph, "%s first execution, querying and caching WMI info...\n", name);
+		hexchat_printf (ph, "%s first execution, querying and caching WMI info...\n", name);
 		wmiOs = getWmiInfo (0);
 		wmiCpu = getWmiInfo (1);
 		wmiVga = getWmiInfo (2);
 		firstRun = 0;
 	}
-	if (xchat_list_int (ph, NULL, "type") >= 2)
+	if (hexchat_list_int (ph, NULL, "type") >= 2)
 	{
 		/* uptime will work correctly for up to 50 days, should be enough */
-		xchat_commandf (ph, "ME ** SysInfo ** Client: HexChat %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
-			xchat_get_info (ph, "version"),
+		hexchat_commandf (ph, "ME ** SysInfo ** Client: HexChat %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
+			hexchat_get_info (ph, "version"),
 			getCpuArch (),
 			wmiOs,
 			wmiCpu,
@@ -375,19 +375,19 @@ printInfo (char *word[], char *word_eol[], void *user_data)
 	}
 	else
 	{
-		xchat_printf (ph, " * Client:  HexChat %s (x%d)\n", xchat_get_info (ph, "version"), getCpuArch ());
-		xchat_printf (ph, " * OS:      %s\n", wmiOs);
-		xchat_printf (ph, " * CPU:     %s (%s)\n", wmiCpu, getCpuMhz ());
-		xchat_printf (ph, " * RAM:     %s\n", getMemoryInfo ());
-		xchat_printf (ph, " * VGA:     %s\n", wmiVga);
-		xchat_printf (ph, " * Uptime:  %.2f Hours\n", (float) GetTickCount() / 1000 / 60 / 60);
+		hexchat_printf (ph, " * Client:  HexChat %s (x%d)\n", hexchat_get_info (ph, "version"), getCpuArch ());
+		hexchat_printf (ph, " * OS:      %s\n", wmiOs);
+		hexchat_printf (ph, " * CPU:     %s (%s)\n", wmiCpu, getCpuMhz ());
+		hexchat_printf (ph, " * RAM:     %s\n", getMemoryInfo ());
+		hexchat_printf (ph, " * VGA:     %s\n", wmiVga);
+		hexchat_printf (ph, " * Uptime:  %.2f Hours\n", (float) GetTickCount() / 1000 / 60 / 60);
 	}
 
 	return HEXCHAT_EAT_XCHAT;
 }
 
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
 
@@ -397,19 +397,19 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	firstRun = 1;
 
-	xchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, printInfo, NULL, NULL);
-	xchat_command (ph, "MENU -ietc\\system.png ADD \"Window/Display System Info\" \"SYSINFO\"");
+	hexchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, printInfo, NULL, NULL);
+	hexchat_command (ph, "MENU -ietc\\system.png ADD \"Window/Display System Info\" \"SYSINFO\"");
 
-	xchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
 }
 
 
 int
-xchat_plugin_deinit (void)
+hexchat_plugin_deinit (void)
 {
-	xchat_command (ph, "MENU DEL \"Window/Display System Info\"");
-	xchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_command (ph, "MENU DEL \"Window/Display System Info\"");
+	hexchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

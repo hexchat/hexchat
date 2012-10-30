@@ -47,7 +47,7 @@ join_cb (char *word[], void *userdata)
 	if (enable)
 	{
 		/* Op ANYONE who joins */
-		xchat_commandf (ph, "OP %s", word[1]);
+		hexchat_commandf (ph, "OP %s", word[1]);
 	}
 	/* word[1] is the nickname, as in the Settings->Advanced->TextEvents window in xchat */
 
@@ -60,19 +60,19 @@ autooptoggle_cb (char *word[], char *word_eol[], void *userdata)
 	if (!enable)
 	{
 		enable = 1;
-		xchat_print (ph, "AutoOping now enabled!\n");
+		hexchat_print (ph, "AutoOping now enabled!\n");
 	}
 	else
 	{
 		enable = 0;
-		xchat_print (ph, "AutoOping now disabled!\n");
+		hexchat_print (ph, "AutoOping now disabled!\n");
 	}
 
 	return HEXCHAT_EAT_ALL;		/* eat this command so HexChat and other plugins can't process it */
 }
 
 void
-xchat_plugin_get_info (char **name, char **desc, char **version, void **reserved)
+hexchat_plugin_get_info (char **name, char **desc, char **version, void **reserved)
 {
 	*name = PNAME;
 	*desc = PDESC;
@@ -80,7 +80,7 @@ xchat_plugin_get_info (char **name, char **desc, char **version, void **reserved
 }
 
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	/* we need to save this for use with any xchat_* functions */
 	ph = plugin_handle;
@@ -90,10 +90,10 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = PDESC;
 	*plugin_version = PVERSION;
 
-	xchat_hook_command (ph, "AutoOpToggle", HEXCHAT_PRI_NORM, autooptoggle_cb, "Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping", 0);
-	xchat_hook_print (ph, "Join", HEXCHAT_PRI_NORM, join_cb, 0);
+	hexchat_hook_command (ph, "AutoOpToggle", HEXCHAT_PRI_NORM, autooptoggle_cb, "Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping", 0);
+	hexchat_hook_print (ph, "Join", HEXCHAT_PRI_NORM, join_cb, 0);
 
-	xchat_print (ph, "AutoOpPlugin loaded successfully!\n");
+	hexchat_print (ph, "AutoOpPlugin loaded successfully!\n");
 
 	return 1;		/* return 1 for success */
 }
@@ -135,7 +135,7 @@ needed for a long time after calling _xchat\_list\_str_. The types of lists and 
 <tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
 <tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
-<tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
+<tr><td>context</td><td>(hexchat_context *) pointer. Can be used with hexchat_set_context</td><td>string</td></tr>
 <tr><td>flags</td><td>Server/Channel Bits:<br>
 <table>
 <tr><td>Bit #</td><td>Value</td><td>Description</td></tr>
@@ -206,7 +206,7 @@ needed for a long time after calling _xchat\_list\_str_. The types of lists and 
 <tr><td>seen</td><td>Time when user the user was last verified still online.</td><td>time_t</td></tr>
 </table>
 <small>The entire "notify" list was added in xchat 2.0.8. Fields are
-only valid for the context when xchat_list_get() was called
+only valid for the context when hexchat_list_get() was called
 (i.e. you get information about the user ON THAT ONE SERVER ONLY). You
 may cycle through the "channels" list to find notify information for every
 server.</small>
@@ -230,22 +230,22 @@ server.</small>
 Example:
 
 <pre>
-	list = xchat_list_get (ph, "dcc");
+	list = hexchat_list_get (ph, "dcc");
 
 	if (list)
 	{
-		xchat_print (ph, "--- DCC LIST ------------------\nFile  To/From   KB/s   Position\n");
+		hexchat_print (ph, "--- DCC LIST ------------------\nFile  To/From   KB/s   Position\n");
 
-		while (xchat_list_next (ph, list))
+		while (hexchat_list_next (ph, list))
 		{
-			xchat_printf (ph, "%6s %10s %.2f  %d\n",
-				xchat_list_str (ph, list, "file"),
-				xchat_list_str (ph, list, "nick"),
-				xchat_list_int (ph, list, "cps") / 1024,
-				xchat_list_int (ph, list, "pos"));
+			hexchat_printf (ph, "%6s %10s %.2f  %d\n",
+				hexchat_list_str (ph, list, "file"),
+				hexchat_list_str (ph, list, "nick"),
+				hexchat_list_int (ph, list, "cps") / 1024,
+				hexchat_list_int (ph, list, "pos"));
 		}
 
-		xchat_list_free (ph, list);
+		hexchat_list_free (ph, list);
 	}
 </pre>
 
@@ -260,9 +260,9 @@ Yes, it can be done. All you need is Visual Studio setup as explained in [Buildi
 
 <pre>
 	EXPORTS
-	xchat_plugin_init
-	xchat_plugin_deinit
-	xchat_plugin_get_info
+	hexchat_plugin_init
+	hexchat_plugin_deinit
+	hexchat_plugin_get_info
 </pre>
 
 Leave out _xchat\_plugin\_deinit_ if you don't intend to define that
@@ -316,7 +316,7 @@ Parameters and flags:
 <tr><td>-eX</td><td>Set enable flag to X. -e0 for disable, -e1 for enable. This lets you create a disabled (shaded) item.</td></tr>
 <tr><td>-iFILE</td><td>Use an icon filename FILE (new for 2.8.0). Not supported for toggles or radio items.</td></tr>
 <tr><td>-k&lt;mod>,&lt;key></td><td>Specify a keyboard shortcut. "mod" is the modifier which is a bitwise OR of: 1-SHIFT 4-CTRL 8-ALT in decimal. "key" is the key value in decimal, e.g. -k5,101 would specify SHIFT-CTRL-E.</td></tr>
-<tr><td>-m</td><td>Specify that this label should be treated as <a href="http://developer.gnome.org/doc/API/2.0/pango/PangoMarkupFormat.html">Pango Markup</a> language. Since forward slash ("/") is already used in menu paths, you should replace closing tags with an ASCII 003 instead e.g.: xchat_command(ph, "MENU -m ADD \"&lt;b>Bold Menu&lt;\003b>\""); (new for 2.6.6).</td></tr>
+<tr><td>-m</td><td>Specify that this label should be treated as <a href="http://developer.gnome.org/doc/API/2.0/pango/PangoMarkupFormat.html">Pango Markup</a> language. Since forward slash ("/") is already used in menu paths, you should replace closing tags with an ASCII 003 instead e.g.: hexchat_command(ph, "MENU -m ADD \"&lt;b>Bold Menu&lt;\003b>\""); (new for 2.6.6).</td></tr>
 <tr><td>-pX</td><td>Specify a menu item's position number. e.g. -p5 will cause the item to be inserted in the 5th place. New for 2.8.0: If the position is a negative number, it will be used as an offset from the bottom/right-most item.</td></tr>
 <tr><td>-rX,group</td><td>Specify a radio menu item, with initial state X and a group name (new for 2.8.0). The group name should be the exact label of another menu item (without the path) that this item will be grouped with. For radio items, only a select command will be executed (no unselect command).</td></tr>
 <tr><td>-tX</td><td>Specify a toggle menu item with an initial state. -t0 for an "unticked" item and -t1 for a "ticked" item.</td></tr>
@@ -454,7 +454,7 @@ get_file_name (char *nick, char *fname)
 		while (fgets (buf, sizeof (buf), fp))
 		{
 			/* send every line to the user that requested it */
-			xchat_commandf (ph, "QUOTE NOTICE %s :%s", nick, buf);
+			hexchat_commandf (ph, "QUOTE NOTICE %s :%s", nick, buf);
 		}
 		fclose (fp);
 	}
@@ -494,15 +494,15 @@ onotice_cb (char *word[], char *word_eol[], void *userdata)
 {
 	if (word_eol[2][0] == 0)
 	{
-		xchat_printf (ph, "Second arg must be the message!\n");
+		hexchat_printf (ph, "Second arg must be the message!\n");
 		return HEXCHAT_EAT_ALL;
 	}
 
-	xchat_commandf (ph, "NOTICE @%s :%s", xchat_get_info (ph, "channel"), word_eol[2]);
+	hexchat_commandf (ph, "NOTICE @%s :%s", hexchat_get_info (ph, "channel"), word_eol[2]);
 	return HEXCHAT_EAT_ALL;
 }
 
-xchat_hook_command (ph, "ONOTICE", HEXCHAT_PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
+hexchat_hook_command (ph, "ONOTICE", HEXCHAT_PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
 </pre>
 
 ***
@@ -568,11 +568,11 @@ Currently they are:
 static int
 youpart_cb (char *word[], void *userdata)
 {
-	xchat_printf (ph, "You have left channel %s\n", word[3]);
+	hexchat_printf (ph, "You have left channel %s\n", word[3]);
 	return HEXCHAT_EAT_XCHAT;		/* dont let HexChat do its normal printing */
 }
 
-xchat_hook_print (ph, "You Part", HEXCHAT_PRI_NORM, youpart_cb, NULL);
+hexchat_hook_print (ph, "You Part", HEXCHAT_PRI_NORM, youpart_cb, NULL);
 </pre>
 
 ***
@@ -600,11 +600,11 @@ hook every line that comes from the IRC server, you may use the special name of 
 static int
 kick_cb (char *word[], char *word_eol[], void *userdata)
 {
-	xchat_printf (ph, "%s was kicked from %s (reason=%s)\n", word[4], word[3], word_eol[5]);
+	hexchat_printf (ph, "%s was kicked from %s (reason=%s)\n", word[4], word[3], word_eol[5]);
 	return HEXCHAT_EAT_NONE;		/* don't eat this event, let other plugins and HexChat see it too */
 }
 
-xchat_hook_server (ph, "KICK", HEXCHAT_PRI_NORM, kick_cb, NULL);
+hexchat_hook_server (ph, "KICK", HEXCHAT_PRI_NORM, kick_cb, NULL);
 </pre>
 
 ***
@@ -622,21 +622,21 @@ xchat_hook_server (ph, "KICK", HEXCHAT_PRI_NORM, kick_cb, NULL);
  * **callb:** Callback function. This will be called every "timeout" milliseconds.
  * **userdata:** Pointer passed to the callback function.
 
-**Returns:** Pointer to the hook. Can be passed to xchat_unhook.
+**Returns:** Pointer to the hook. Can be passed to hexchat_unhook.
 
 **Example:**
 
 <pre>
-static xchat_hook *myhook;
+static hexchat_hook *myhook;
 
 static int
 stop_cb (char *word[], char *word_eol[], void *userdata)
 {
 	if (myhook != NULL)
 	{
-		xchat_unhook (ph, myhook);
+		hexchat_unhook (ph, myhook);
 		myhook = NULL;
-		xchat_print (ph, "Timeout removed!\n");
+		hexchat_print (ph, "Timeout removed!\n");
 	}
 
 	return HEXCHAT_EAT_ALL;
@@ -645,12 +645,12 @@ stop_cb (char *word[], char *word_eol[], void *userdata)
 static int
 timeout_cb (void *userdata)
 {
-	xchat_print (ph, "Annoying message every 5 seconds! Type /STOP to stop it.\n");
+	hexchat_print (ph, "Annoying message every 5 seconds! Type /STOP to stop it.\n");
 	return 1;		/* return 1 to keep the timeout going */
 }
 
-myhook = xchat_hook_timer (ph, 5000, timeout_cb, NULL);
-xchat_hook_command (ph, "STOP", HEXCHAT_PRI_NORM, stop_cb, NULL, NULL);
+myhook = hexchat_hook_timer (ph, 5000, timeout_cb, NULL);
+hexchat_hook_command (ph, "STOP", HEXCHAT_PRI_NORM, stop_cb, NULL, NULL);
 </pre>
 
 ***
@@ -740,7 +740,7 @@ xchat_hook_command (ph, "STOP", HEXCHAT_PRI_NORM, stop_cb, NULL, NULL);
 **Example:**
 
 <pre>
-xchat_emit_print (ph, "Channel Message", "John", "Hi there", "@", NULL);
+hexchat_emit_print (ph, "Channel Message", "John", "Hi there", "@", NULL);
 </pre>
 
 ***
@@ -767,7 +767,7 @@ in a channel context.
 
 <pre>
 const char *names_to_Op[] = {"John", "Jack", "Jill"};
-xchat_send_modes (ph, names_to_Op, 3, 0, '+', 'o');
+hexchat_send_modes (ph, names_to_Op, 3, 0, '+', 'o');
 </pre>
 
 ***
@@ -877,7 +877,7 @@ A few extra bits of information are available that don't appear in the _/SET_ li
 
 	if (xchat_get_prefs (ph, "irc_nick1", &amp;str, &amp;i) == 1)
 	{
-		xchat_printf (ph, "Current nickname setting: %s\n", str);
+		hexchat_printf (ph, "Current nickname setting: %s\n", str);
 	}
 }
 </pre>
@@ -948,13 +948,13 @@ equivalence of two nicknames.
 	char *new_text;
 
 	/* strip both colors and attributes by using the 0 and 1 bits (1 BITWISE-OR 2) */
-	new_text = xchat_strip (ph, "\00312Blue\003 \002Bold!\002", -1, 1 | 2);
+	new_text = hexchat_strip (ph, "\00312Blue\003 \002Bold!\002", -1, 1 | 2);
 
 	if (new_text)
 	{
 		/* new_text should now contain only "Blue Bold!" */
-		xchat_printf (ph, "%s\n", new_text);
-		xchat_free (ph, new_text);
+		hexchat_printf (ph, "%s\n", new_text);
+		hexchat_free (ph, new_text);
 	}
 }
 </pre>
@@ -995,15 +995,15 @@ equivalence of two nicknames.
 
 <pre>
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
 	*plugin_name = "Tester Thingie";
 	*plugin_desc = "Testing stuff";
 	*plugin_version = "1.0";
 
-	xchat_pluginpref_set_str (ph, "myvar1", "I want to save this string!");
-	xchat_pluginpref_set_str (ph, "myvar2", "This is important, too.");
+	hexchat_pluginpref_set_str (ph, "myvar1", "I want to save this string!");
+	hexchat_pluginpref_set_str (ph, "myvar2", "This is important, too.");
 
 	return 1;       /* return 1 for success */
 }
@@ -1018,7 +1018,7 @@ You should never need to edit this file manually.
 ***
 
 ### xchat\_pluginpref\_get\_str ()
-**Prototype:** int xchat_pluginpref_get_str (xchat\_plugin \*ph, const char \*var, char \*dest);
+**Prototype:** int hexchat_pluginpref_get_str (xchat\_plugin \*ph, const char \*var, char \*dest);
 
 **Description:** Loads a plugin-specific setting with string value from a plugin-specific config file.
 
@@ -1062,18 +1062,18 @@ saveint_cb (char *word[], char *word_eol[], void *user_data)
 
 	if (buffer > 0 && buffer &lt; INT_MAX)
 	{
-		if (xchat_pluginpref_set_int (ph, "myint1", buffer))
+		if (hexchat_pluginpref_set_int (ph, "myint1", buffer))
 		{
-			xchat_printf (ph, "Setting successfully saved!\n");
+			hexchat_printf (ph, "Setting successfully saved!\n");
 		}
 		else
 		{
-			xchat_printf (ph, "Error while saving!\n");
+			hexchat_printf (ph, "Error while saving!\n");
 		}
 	}
 	else
 	{
-		xchat_printf (ph, "Invalid input!\n");
+		hexchat_printf (ph, "Invalid input!\n");
 	}
 
 	return HEXCHAT_EAT_XCHAT;
@@ -1144,14 +1144,14 @@ list_settings ()
 	char buffer[512];
 	char *token;
 
-	xchat_pluginpref_list (ph, list);
-	xchat_printf (ph, "Current Settings:\n");
+	hexchat_pluginpref_list (ph, list);
+	hexchat_printf (ph, "Current Settings:\n");
 	token = strtok (list, ",");
 
 	while (token != NULL)
 	{
-		xchat_pluginpref_get_str (ph, token, buffer);
-		xchat_printf (ph, "%s: %s\n", token, buffer);
+		hexchat_pluginpref_get_str (ph, token, buffer);
+		hexchat_printf (ph, "%s: %s\n", token, buffer);
 		token = strtok (NULL, ",");
 	}
 }

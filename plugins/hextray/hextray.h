@@ -36,7 +36,7 @@ extern unsigned int		g_dwPrefs;
 extern TCHAR			g_szAway[512];
 extern int				g_iTime;
 extern WNDPROC			g_hOldProc;
-extern struct _xchat_plugin *ph;
+extern struct _hexchat_plugin *ph;
 /******************************************************/
 
 /******************** Messages ************************/
