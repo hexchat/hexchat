@@ -4,13 +4,6 @@
 
 #include <time.h>
 
-#define XCHAT_IFACE_MAJOR	1
-#define XCHAT_IFACE_MINOR	9
-#define XCHAT_IFACE_MICRO	11
-#define XCHAT_IFACE_VERSION	((XCHAT_IFACE_MAJOR * 10000) + \
-				 (XCHAT_IFACE_MINOR * 100) + \
-				 (XCHAT_IFACE_MICRO))
-
 #define XCHAT_PRI_HIGHEST	127
 #define XCHAT_PRI_HIGH		64
 #define XCHAT_PRI_NORM		0
