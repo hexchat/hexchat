@@ -1167,7 +1167,7 @@ main (int argc, char *argv[])
 		return ret;
 	
 #ifdef USE_DBUS
-	xchat_remote ();
+	hexchat_remote ();
 #endif
 
 #ifdef USE_LIBPROXY
