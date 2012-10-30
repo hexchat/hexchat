@@ -1,7 +1,7 @@
 # temp. solution while mailcheck & xdcc arn't in SUBDIRS
 EXTRA_DIST = Make.plugin plugin-conf.in xdcc/xdcc.c xdcc/Makefile.am
 
-noinst_HEADERS = hexchat-plugin.h
+# noinst_HEADERS = hexchat-plugin.h
 
 if DO_PYTHON
 pythondir = python
