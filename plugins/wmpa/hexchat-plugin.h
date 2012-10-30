@@ -15,10 +15,10 @@
 #define HEXCHAT_PRI_LOW      (-64)
 #define HEXCHAT_PRI_LOWEST   (-128)
 
-#define XCHAT_FD_READ      1
-#define XCHAT_FD_WRITE     2
-#define XCHAT_FD_EXCEPTION 4
-#define XCHAT_FD_NOTSOCKET 8
+#define HEXCHAT_FD_READ      1
+#define HEXCHAT_FD_WRITE     2
+#define HEXCHAT_FD_EXCEPTION 4
+#define HEXCHAT_FD_NOTSOCKET 8
 
 #define XCHAT_EAT_NONE     0                                   /* pass it on through! */
 #define XCHAT_EAT_XCHAT    1                                   /* don't let xchat see this event */

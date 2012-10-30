@@ -1055,7 +1055,7 @@ XS (XS_Xchat_hook_fd)
 		data = NULL;
 
 #ifdef WIN32
-		if ((flags & XCHAT_FD_NOTSOCKET) == 0) {
+		if ((flags & HEXCHAT_FD_NOTSOCKET) == 0) {
 			/* this _get_osfhandle if from win32iop.h in the perl distribution,
 			 *  not the one provided by Windows
 			 */ 
@@ -1332,10 +1332,10 @@ xs_init (pTHX)
 	newCONSTSUB (stash, "EAT_XCHAT", newSViv (XCHAT_EAT_XCHAT));
 	newCONSTSUB (stash, "EAT_PLUGIN", newSViv (XCHAT_EAT_PLUGIN));
 	newCONSTSUB (stash, "EAT_ALL", newSViv (XCHAT_EAT_ALL));
-	newCONSTSUB (stash, "FD_READ", newSViv (XCHAT_FD_READ));
-	newCONSTSUB (stash, "FD_WRITE", newSViv (XCHAT_FD_WRITE));
-	newCONSTSUB (stash, "FD_EXCEPTION", newSViv (XCHAT_FD_EXCEPTION));
-	newCONSTSUB (stash, "FD_NOTSOCKET", newSViv (XCHAT_FD_NOTSOCKET));
+	newCONSTSUB (stash, "FD_READ", newSViv (HEXCHAT_FD_READ));
+	newCONSTSUB (stash, "FD_WRITE", newSViv (HEXCHAT_FD_WRITE));
+	newCONSTSUB (stash, "FD_EXCEPTION", newSViv (HEXCHAT_FD_EXCEPTION));
+	newCONSTSUB (stash, "FD_NOTSOCKET", newSViv (HEXCHAT_FD_NOTSOCKET));
 	newCONSTSUB (stash, "KEEP", newSViv (1));
 	newCONSTSUB (stash, "REMOVE", newSViv (0));
 

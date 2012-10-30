@@ -292,7 +292,7 @@ dns_cmd_cb (char *word[], char *word_eol[], void *ud)
 		if (thread_start (th, thread_function, th))
 		{
 			xchat_hook_fd(ph, th->pipe_fd[PIPE_READ],
-							XCHAT_FD_READ | XCHAT_FD_EXCEPTION | XCHAT_FD_NOTSOCKET,
+							HEXCHAT_FD_READ | HEXCHAT_FD_EXCEPTION | HEXCHAT_FD_NOTSOCKET,
 							(void *)dns_read_cb, th);
 
 		}
