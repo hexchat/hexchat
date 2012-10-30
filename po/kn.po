@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-30 02:56+0100\n"
-"PO-Revision-Date: 2012-10-30 01:59+0000\n"
+"POT-Creation-Date: 2012-10-30 11:58+0100\n"
+"PO-Revision-Date: 2012-10-30 10:59+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -600,9 +600,9 @@ msgstr "RECONNECT [<host>] [<port>] [<password>], ಪ್ರಸಕ್ತ ಪರ�
 
 #: src/common/outbound.c:3698
 msgid ""
-"RECV <text>, send raw data to xchat, as if it was received from the irc "
+"RECV <text>, send raw data to HexChat, as if it was received from the IRC "
 "server"
-msgstr "RECV <text>, irc ಪರಿಚಾರಕದಂತೆ ಪಡೆದುಕೊಂಡಿದೆಯೊ ಎಂಬಂತೆ ಕಚ್ಛಾದತ್ತಾಂಶವನ್ನು xchat ಗೆ ಕಳುಹಿಸುತ್ತದೆ"
+msgstr ""
 
 #: src/common/outbound.c:3701
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -727,8 +727,8 @@ msgid "Unknown Command. Try /help\n"
 msgstr "ಗೊತ್ತಿಲ್ಲದ ಆಜ್ಞೆ. /help ಅನ್ನು ಪ್ರಯತ್ನಿಸಿ\n"
 
 #: src/common/plugin.c:382 src/common/plugin.c:423
-msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr "xchat_plugin_init ಸಂಕೇತವಾಗಿಲ್ಲ; ಇದು ನಿಜವಾಗಿಯೂ ಒಂದು xchat ಪ್ಲಗ್‌ಇನ್ ಆಗಿದೆಯೆ?"
+msgid "No hexchat_plugin_init symbol; is this really a HexChat plugin?"
+msgstr ""
 
 #: src/common/server.c:665
 msgid "Are you sure this is a SSL capable server and port?\n"
@@ -3185,8 +3185,8 @@ msgid "Execute command:"
 msgstr "ಈ ಆಜ್ಞೆಯನ್ನು ಚಲಾಯಿಸು:"
 
 #: src/fe-gtk/fe-gtk.c:140
-msgid "Open URL or execute command in an existing XChat"
-msgstr "URL ಅನ್ನು ತೆರೆ ಅಥವ ಈಗಿರುವ XChat ನಲ್ಲಿ ಆಜ್ಞೆಯನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸು"
+msgid "Open URL or execute command in an existing HexChat"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:142
 msgid "Begin minimized. Level 0=Normal 1=Iconified 2=Tray"
@@ -3200,7 +3200,7 @@ msgstr "ಮಟ್ಟ"
 msgid "Show version information"
 msgstr "ಆವೃತ್ತಿಯ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು"
 
-#: src/fe-gtk/fe-gtk.c:342
+#: src/fe-gtk/fe-gtk.c:359
 #, c-format
 msgid ""
 "Failed to open font:\n"
@@ -3208,16 +3208,16 @@ msgid ""
 "%s"
 msgstr "ಅಕ್ಷರಶೈಲಿಯನ್ನು ತೆರೆಯಲು ವಿಫಲಗೊಂಡಿದೆ:\n\n%s"
 
-#: src/fe-gtk/fe-gtk.c:732
+#: src/fe-gtk/fe-gtk.c:749
 msgid "Search buffer is empty.\n"
 msgstr "ಹುಡುಕು ಬಫರ್ ಖಾಲಿ ಇದೆ.\n"
 
-#: src/fe-gtk/fe-gtk.c:841
+#: src/fe-gtk/fe-gtk.c:858
 #, c-format
 msgid "%d bytes"
 msgstr "%d ಬೈಟ್‌ಗಳು"
 
-#: src/fe-gtk/fe-gtk.c:842
+#: src/fe-gtk/fe-gtk.c:859
 #, c-format
 msgid "Network send queue: %d bytes"
 msgstr "ಜಾಲಬಂಧ ಕಳುಹಿಸುವ ಸರತಿ: %d ಬೈಟ್‌ಗಳು"
@@ -3772,7 +3772,7 @@ msgid ""
 "%m  =  machine info\n"
 "%n  =  your nick\n"
 "%t  =  time/date\n"
-"%v  =  xchat version\n"
+"%v  =  HexChat version\n"
 "%2  =  word 2\n"
 "%3  =  word 3\n"
 "&2  =  word 2 to the end of line\n"
@@ -3783,7 +3783,7 @@ msgid ""
 "\n"
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
-msgstr "ಬಳಕೆದಾರ ಆಜ್ಞೆಗಳು - ವಿಶೇಷ ಸಂಕೇತಗಳು:\n\n%c  =  ಪ್ರಸಕ್ತ ಚಾನಲ್\n%e  =  ಪ್ರಸಕ್ತ ಜಾಲಬಂಧದ ಹೆಸರು\n%m  =  ಗಣಕದ ಮಾಹಿತಿ\n%n  =  ನಿಮ್ಮ ಅಡ್ಡಹೆಸರು\n%t  =  ಸಮಯ/ದಿನಾಂಕ\n%v  =  xchat ನ ಆವೃತ್ತಿ\n%2  =  ಪದ 2\n%3  =  ಪದ 3\n&2  =  ಪದ 2 ರಿಂದ ಸಾಲಿನ ಕೊನೆಯವರೆಗೆ\n&3  =  ಪದ 3 ರಿಂದ ಸಾಲಿನ ಕೊನೆಯವರೆಗೆ\n\nಉದಾ:\n/cmd john hello\n\n%2 ಎನ್ನುವುದು \"john\" ಆಗಿದೆ\n&2 ಎನ್ನುವುದು \"john hello\" ಆಗಿದೆ."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1406
 msgid ""
@@ -3836,10 +3836,10 @@ msgid ""
 "\n"
 "%s  =  the URL string\n"
 "\n"
-"Putting a ! infront of the command\n"
+"Putting a ! in front of the command\n"
 "indicates it should be sent to a\n"
-"shell instead of XChat"
-msgstr "URL ಹ್ಯಾಂಡ್ಲರುಗಳು - ವಿಶೇಷ ಸಂಕೇತಗಳು:\n\n%s  =  URL ವಾಕ್ಯಾಂಶ\n\nಒಂದು ಆಜ್ಞೆಯ ಎದುರು ! ಅನ್ನು ಸೇರಿಸುವುದರಿಂದ\nಅದನ್ನು XChat ಬದಲಿಗೆ ಶೆಲ್‌ಗೆ ಕಳಿಸಬೇಕು\nಎಂದು ಸೂಚಿಸುತ್ತದೆ"
+"shell instead of HexChat"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1446
 msgid ": User Defined Commands"
