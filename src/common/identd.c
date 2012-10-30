@@ -82,15 +82,15 @@ identd (char *username)
 }
 
 #ifdef USE_IPV6
+#define IPV6BUFLEN 60
 static int
 identd_ipv6 (char *username)
 {
 	int sok, read_sok, len;
 	char *p;
 	char buf[256];
-	char outbuf[256];
-	char ipv6buf[60];
-	DWORD ipv6buflen = sizeof (ipv6buf);
+	char outbuf[256];	
+	LPSTR ipv6buf = (LPSTR) malloc (IPV6BUFLEN);
 	struct sockaddr_in6 addr;
 
 	sok = socket (AF_INET6, SOCK_STREAM, 0);
@@ -98,6 +98,7 @@ identd_ipv6 (char *username)
 	if (sok == INVALID_SOCKET)
 	{
 		free (username);
+		free (ipv6buf);
 		return 0;
 	}
 
@@ -112,6 +113,7 @@ identd_ipv6 (char *username)
 	{
 		closesocket (sok);
 		free (username);
+		free (ipv6buf);
 		return 0;
 	}
 
@@ -119,6 +121,7 @@ identd_ipv6 (char *username)
 	{
 		closesocket (sok);
 		free (username);
+		free (ipv6buf);
 		return 0;
 	}
 
@@ -129,12 +132,13 @@ identd_ipv6 (char *username)
 	if (read_sok == INVALID_SOCKET)
 	{
 		free (username);
+		free (ipv6buf);
 		return 0;
 	}
 
 	identd_ipv6_is_running = FALSE;
 
-	if (WSAAddressToString ((struct sockaddr *) &addr, sizeof (addr), NULL, &ipv6buf, &ipv6buflen) == SOCKET_ERROR)
+	if (WSAAddressToString ((struct sockaddr *) &addr, sizeof (addr), NULL, ipv6buf, (LPDWORD) IPV6BUFLEN) == SOCKET_ERROR)
 	{
 		snprintf (ipv6buf, sizeof (ipv6buf) - 1, "[SOCKET ERROR: 0x%X]", WSAGetLastError ());
 	}
@@ -157,6 +161,7 @@ identd_ipv6 (char *username)
 	sleep (1);
 	closesocket (read_sok);
 	free (username);
+	free (ipv6buf);
 
 	return 0;
 }
