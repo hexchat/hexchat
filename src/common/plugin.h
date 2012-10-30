@@ -6,6 +6,7 @@ struct _xchat_plugin
 {
 	/* Keep these in sync with hexchat-plugin.h */
 	/* !!don't change the order, to keep binary compat!! */
+#ifdef XCHAT_PLUGIN_COMPAT
 	xchat_hook *(*xchat_hook_command) (xchat_plugin *ph,
 		    const char *name,
 		    int pri,
@@ -98,20 +99,113 @@ struct _xchat_plugin
 	     int flags);
 	void (*xchat_free) (xchat_plugin *ph,
 	    void *ptr);
-	int (*xchat_pluginpref_set_str) (xchat_plugin *ph,
+#endif /* XCHAT_PLUGIN_COMPAT */
+	xchat_hook *(*hexchat_hook_command) (xchat_plugin *ph,
+		    const char *name,
+		    int pri,
+		    int (*callback) (char *word[], char *word_eol[], void *user_data),
+		    const char *help_text,
+		    void *userdata);
+	xchat_hook *(*hexchat_hook_server) (xchat_plugin *ph,
+		   const char *name,
+		   int pri,
+		   int (*callback) (char *word[], char *word_eol[], void *user_data),
+		   void *userdata);
+	xchat_hook *(*hexchat_hook_print) (xchat_plugin *ph,
+		  const char *name,
+		  int pri,
+		  int (*callback) (char *word[], void *user_data),
+		  void *userdata);
+	xchat_hook *(*hexchat_hook_timer) (xchat_plugin *ph,
+		  int timeout,
+		  int (*callback) (void *user_data),
+		  void *userdata);
+	xchat_hook *(*hexchat_hook_fd) (xchat_plugin *ph,
+		   int fd,
+		   int flags,
+		   int (*callback) (int fd, int flags, void *user_data),
+		   void *userdata);
+	void *(*hexchat_unhook) (xchat_plugin *ph,
+	      xchat_hook *hook);
+	void (*hexchat_print) (xchat_plugin *ph,
+	     const char *text);
+	void (*hexchat_printf) (xchat_plugin *ph,
+	      const char *format, ...);
+	void (*hexchat_command) (xchat_plugin *ph,
+	       const char *command);
+	void (*hexchat_commandf) (xchat_plugin *ph,
+		const char *format, ...);
+	int (*hexchat_nickcmp) (xchat_plugin *ph,
+	       const char *s1,
+	       const char *s2);
+	int (*hexchat_set_context) (xchat_plugin *ph,
+		   xchat_context *ctx);
+	xchat_context *(*hexchat_find_context) (xchat_plugin *ph,
+		    const char *servname,
+		    const char *channel);
+	xchat_context *(*hexchat_get_context) (xchat_plugin *ph);
+	const char *(*hexchat_get_info) (xchat_plugin *ph,
+		const char *id);
+	int (*hexchat_get_prefs) (xchat_plugin *ph,
+		 const char *name,
+		 const char **string,
+		 int *integer);
+	xchat_list * (*hexchat_list_get) (xchat_plugin *ph,
+		const char *name);
+	void (*hexchat_list_free) (xchat_plugin *ph,
+		 xchat_list *xlist);
+	const char * const * (*hexchat_list_fields) (xchat_plugin *ph,
+		   const char *name);
+	int (*hexchat_list_next) (xchat_plugin *ph,
+		 xchat_list *xlist);
+	const char * (*hexchat_list_str) (xchat_plugin *ph,
+		xchat_list *xlist,
+		const char *name);
+	int (*hexchat_list_int) (xchat_plugin *ph,
+		xchat_list *xlist,
+		const char *name);
+	void * (*hexchat_plugingui_add) (xchat_plugin *ph,
+		     const char *filename,
+		     const char *name,
+		     const char *desc,
+		     const char *version,
+		     char *reserved);
+	void (*hexchat_plugingui_remove) (xchat_plugin *ph,
+			void *handle);
+	int (*hexchat_emit_print) (xchat_plugin *ph,
+			const char *event_name, ...);
+	void *(*hexchat_read_fd) (xchat_plugin *ph);
+	time_t (*hexchat_list_time) (xchat_plugin *ph,
+		xchat_list *xlist,
+		const char *name);
+	char *(*hexchat_gettext) (xchat_plugin *ph,
+		const char *msgid);
+	void (*hexchat_send_modes) (xchat_plugin *ph,
+		  const char **targets,
+		  int ntargets,
+		  int modes_per_line,
+		  char sign,
+		  char mode);
+	char *(*hexchat_strip) (xchat_plugin *ph,
+	     const char *str,
+	     int len,
+	     int flags);
+	void (*hexchat_free) (xchat_plugin *ph,
+	    void *ptr);
+	int (*hexchat_pluginpref_set_str) (xchat_plugin *ph,
 		const char *var,
 		const char *value);
-	int (*xchat_pluginpref_get_str) (xchat_plugin *ph,
+	int (*hexchat_pluginpref_get_str) (xchat_plugin *ph,
 		const char *var,
 		char *dest);
-	int (*xchat_pluginpref_set_int) (xchat_plugin *ph,
+	int (*hexchat_pluginpref_set_int) (xchat_plugin *ph,
 		const char *var,
 		int value);
-	int (*xchat_pluginpref_get_int) (xchat_plugin *ph,
+	int (*hexchat_pluginpref_get_int) (xchat_plugin *ph,
 		const char *var);
-	int (*xchat_pluginpref_delete) (xchat_plugin *ph,
+	int (*hexchat_pluginpref_delete) (xchat_plugin *ph,
 		const char *var);
-	int (*xchat_pluginpref_list) (xchat_plugin *ph,
+	int (*hexchat_pluginpref_list) (xchat_plugin *ph,
 		char *dest);
 	void *(*xchat_dummy4) (xchat_plugin *ph);
 	void *(*xchat_dummy3) (xchat_plugin *ph);

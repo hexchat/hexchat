@@ -209,8 +209,16 @@ xchat_dummy (xchat_plugin *ph)
 }
 
 #ifdef WIN32
+#ifdef XCHAT_PLUGIN_COMPAT
 static int
 xchat_read_fd (xchat_plugin *ph, GIOChannel *source, char *buf, int *len)
+{
+	return hexchat_read_fd (ph, source, buf, len);
+}
+#endif
+
+static int
+hexchat_read_fd (xchat_plugin *ph, GIOChannel *source, char *buf, int *len)
 {
 	GError *error = NULL;
 
@@ -247,6 +255,7 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 	if (!fake)
 	{
 		/* win32 uses these because it doesn't have --export-dynamic! */
+#ifdef XCHAT_PLUGIN_COMPAT
 		pl->xchat_hook_command = xchat_hook_command;
 		pl->xchat_hook_server = xchat_hook_server;
 		pl->xchat_hook_print = xchat_hook_print;
@@ -282,12 +291,48 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_send_modes = xchat_send_modes;
 		pl->xchat_strip = xchat_strip;
 		pl->xchat_free = xchat_free;
-		pl->xchat_pluginpref_set_str = xchat_pluginpref_set_str;
-		pl->xchat_pluginpref_get_str = xchat_pluginpref_get_str;
-		pl->xchat_pluginpref_set_int = xchat_pluginpref_set_int;
-		pl->xchat_pluginpref_get_int = xchat_pluginpref_get_int;
-		pl->xchat_pluginpref_delete = xchat_pluginpref_delete;
-		pl->xchat_pluginpref_list = xchat_pluginpref_list;
+#endif /* XCHAT_PLUGIN_COMPAT */
+		pl->hexchat_hook_command = hexchat_hook_command;
+		pl->hexchat_hook_server = hexchat_hook_server;
+		pl->hexchat_hook_print = hexchat_hook_print;
+		pl->hexchat_hook_timer = hexchat_hook_timer;
+		pl->hexchat_hook_fd = hexchat_hook_fd;
+		pl->hexchat_unhook = hexchat_unhook;
+		pl->hexchat_print = hexchat_print;
+		pl->hexchat_printf = hexchat_printf;
+		pl->hexchat_command = hexchat_command;
+		pl->hexchat_commandf = hexchat_commandf;
+		pl->hexchat_nickcmp = hexchat_nickcmp;
+		pl->hexchat_set_context = hexchat_set_context;
+		pl->hexchat_find_context = hexchat_find_context;
+		pl->hexchat_get_context = hexchat_get_context;
+		pl->hexchat_get_info = hexchat_get_info;
+		pl->hexchat_get_prefs = hexchat_get_prefs;
+		pl->hexchat_list_get = hexchat_list_get;
+		pl->hexchat_list_free = hexchat_list_free;
+		pl->hexchat_list_fields = hexchat_list_fields;
+		pl->hexchat_list_str = hexchat_list_str;
+		pl->hexchat_list_next = hexchat_list_next;
+		pl->hexchat_list_int = hexchat_list_int;
+		pl->hexchat_plugingui_add = hexchat_plugingui_add;
+		pl->hexchat_plugingui_remove = hexchat_plugingui_remove;
+		pl->hexchat_emit_print = hexchat_emit_print;
+#ifdef WIN32
+		pl->hexchat_read_fd = (void *) hexchat_read_fd;
+#else
+		pl->hexchat_read_fd = hexchat_dummy;
+#endif
+		pl->hexchat_list_time = hexchat_list_time;
+		pl->hexchat_gettext = hexchat_gettext;
+		pl->hexchat_send_modes = hexchat_send_modes;
+		pl->hexchat_strip = hexchat_strip;
+		pl->hexchat_free = hexchat_free;
+		pl->hexchat_pluginpref_set_str = hexchat_pluginpref_set_str;
+		pl->hexchat_pluginpref_get_str = hexchat_pluginpref_get_str;
+		pl->hexchat_pluginpref_set_int = hexchat_pluginpref_set_int;
+		pl->hexchat_pluginpref_get_int = hexchat_pluginpref_get_int;
+		pl->hexchat_pluginpref_delete = hexchat_pluginpref_delete;
+		pl->hexchat_pluginpref_list = hexchat_pluginpref_list;
 
 		/* incase new plugins are loaded on older xchat */
 		pl->xchat_dummy4 = xchat_dummy;
@@ -822,8 +867,230 @@ plugin_show_help (session *sess, char *cmd)
 /* ===== these are the functions plugins actually call ===== */
 /* ========================================================= */
 
+#ifdef XCHAT_PLUGIN_COMPAT
 void *
 xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
+{
+	return hexchat_unhook (ph, hook);
+}
+
+xchat_hook *
+xchat_hook_command (xchat_plugin *ph, const char *name, int pri, xchat_cmd_cb *callb, const char *help_text, void *userdata)
+{
+	return hexchat_hook_command (ph, name, pri, callb, help_text, userdata);
+}
+
+xchat_hook *
+xchat_hook_server (xchat_plugin *ph, const char *name, int pri, xchat_serv_cb *callb, void *userdata)
+{
+	return hexchat_hook_server (ph, name, pri, callb, userdata);
+}
+
+xchat_hook *
+xchat_hook_print (xchat_plugin *ph, const char *name, int pri, xchat_print_cb *callb, void *userdata)
+{
+	return hexchat_hook_print (ph, name, pri, callb, userdata);
+}
+
+xchat_hook *
+xchat_hook_timer (xchat_plugin *ph, int timeout, xchat_timer_cb *callb, void *userdata)
+{
+	return hexchat_hook_timer (ph, timeout, callb, userdata);
+}
+
+xchat_hook *
+xchat_hook_fd (xchat_plugin *ph, int fd, int flags, xchat_fd_cb *callb, void *userdata)
+{
+	return hexchat_hook_fd (ph, fd, flags, callb, userdata);
+}
+
+void
+xchat_print (xchat_plugin *ph, const char *text)
+{
+	hexchat_print (ph, text);
+}
+
+void
+xchat_printf (xchat_plugin *ph, const char *format, ...)
+{
+	va_list args;
+	char *buf;
+
+	va_start (args, format);
+	buf = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	hexchat_print (ph, buf);
+	g_free (buf);
+}
+
+void
+xchat_command (xchat_plugin *ph, const char *command)
+{
+	hexchat_command (ph, command);
+}
+
+void
+xchat_commandf (xchat_plugin *ph, const char *format, ...)
+{
+	va_list args;
+	char *buf;
+
+	va_start (args, format);
+	buf = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	hexchat_command (ph, buf);
+	g_free (buf);
+}
+
+int
+xchat_nickcmp (xchat_plugin *ph, const char *s1, const char *s2)
+{
+	return hexchat_nickcmp (ph, s1, s2);
+}
+
+xchat_context *
+xchat_get_context (xchat_plugin *ph)
+{
+	return hexchat_get_context (ph);
+}
+
+int
+xchat_set_context (xchat_plugin *ph, xchat_context *context)
+{
+	return hexchat_set_context (ph, context);
+}
+
+xchat_context *
+xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
+{
+	return hexchat_find_context (ph, servname, channel);
+}
+
+const char *
+xchat_get_info (xchat_plugin *ph, const char *id)
+{
+	return hexchat_get_info (ph, id);
+}
+
+int
+xchat_get_prefs (xchat_plugin *ph, const char *name, const char **string, int *integer)
+{
+	return hexchat_get_prefs (ph, name, string, integer);
+}
+
+xchat_list *
+xchat_list_get (xchat_plugin *ph, const char *name)
+{
+	return hexchat_list_get (ph, name);
+}
+
+void
+xchat_list_free (xchat_plugin *ph, xchat_list *xlist)
+{
+	hexchat_list_free (ph, xlist);
+}
+
+int
+xchat_list_next (xchat_plugin *ph, xchat_list *xlist)
+{
+	return hexchat_list_next (ph, xlist);
+}
+
+const char * const *
+xchat_list_fields (xchat_plugin *ph, const char *name)
+{
+	return hexchat_list_fields (ph, name);
+}
+
+time_t
+xchat_list_time (xchat_plugin *ph, xchat_list *xlist, const char *name)
+{
+	return hexchat_list_time (ph, xlist, name);
+}
+
+const char *
+xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
+{
+	return hexchat_list_str (ph, xlist, name);
+}
+
+int
+xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
+{
+	return hexchat_list_int (ph, xlist, name);
+}
+
+void *
+xchat_plugingui_add (xchat_plugin *ph, const char *filename,
+							const char *name, const char *desc,
+							const char *version, char *reserved)
+{
+	return hexchat_plugingui_add (ph, filename, name, desc, version, reserved);
+}
+
+void
+xchat_plugingui_remove (xchat_plugin *ph, void *handle)
+{
+	hexchat_plugingui_remove (ph, handle);
+}
+
+int
+xchat_emit_print (xchat_plugin *ph, const char *event_name, ...)
+{
+	va_list args;
+	/* currently only 4 because no events use more than 4.
+		This can be easily expanded without breaking the API. */
+	char *argv[4] = {NULL, NULL, NULL, NULL};
+	int i = 0;
+
+	va_start (args, event_name);
+	while (1)
+	{
+		argv[i] = va_arg (args, char *);
+		if (!argv[i])
+			break;
+		i++;
+		if (i >= 4)
+			break;
+	}
+
+	i = text_emit_by_name ((char *)event_name, ph->context, argv[0], argv[1],
+								  argv[2], argv[3]);
+	va_end (args);
+
+	return i;
+}
+
+char *
+xchat_gettext (xchat_plugin *ph, const char *msgid)
+{
+	return hexchat_gettext (ph, msgid);
+}
+
+void
+xchat_send_modes (xchat_plugin *ph, const char **targets, int ntargets, int modes_per_line, char sign, char mode)
+{
+	hexchat_send_modes (ph, targets, ntargets, modes_per_line, sign, mode);
+}
+
+char *
+xchat_strip (xchat_plugin *ph, const char *str, int len, int flags)
+{
+	return hexchat_strip (ph, str, len, flags);
+}
+
+void
+xchat_free (xchat_plugin *ph, void *ptr)
+{
+	hexchat_free (ph, ptr);
+}
+
+#endif /* XCHAT_PLUGIN_COMPAT */
+
+void *
+hexchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 {
 	/* perl.c trips this */
 	if (!g_slist_find (hook_list, hook) || hook->type == HOOK_DELETED)
@@ -846,7 +1113,7 @@ xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 }
 
 xchat_hook *
-xchat_hook_command (xchat_plugin *ph, const char *name, int pri,
+hexchat_hook_command (xchat_plugin *ph, const char *name, int pri,
 						  xchat_cmd_cb *callb, const char *help_text, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_COMMAND, pri, name, help_text, callb, 0,
@@ -854,28 +1121,28 @@ xchat_hook_command (xchat_plugin *ph, const char *name, int pri,
 }
 
 xchat_hook *
-xchat_hook_server (xchat_plugin *ph, const char *name, int pri,
+hexchat_hook_server (xchat_plugin *ph, const char *name, int pri,
 						 xchat_serv_cb *callb, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_SERVER, pri, name, 0, callb, 0, userdata);
 }
 
 xchat_hook *
-xchat_hook_print (xchat_plugin *ph, const char *name, int pri,
+hexchat_hook_print (xchat_plugin *ph, const char *name, int pri,
 						xchat_print_cb *callb, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_PRINT, pri, name, 0, callb, 0, userdata);
 }
 
 xchat_hook *
-xchat_hook_timer (xchat_plugin *ph, int timeout, xchat_timer_cb *callb,
+hexchat_hook_timer (xchat_plugin *ph, int timeout, xchat_timer_cb *callb,
 					   void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_TIMER, 0, 0, 0, callb, timeout, userdata);
 }
 
 xchat_hook *
-xchat_hook_fd (xchat_plugin *ph, int fd, int flags,
+hexchat_hook_fd (xchat_plugin *ph, int fd, int flags,
 					xchat_fd_cb *callb, void *userdata)
 {
 	xchat_hook *hook;
@@ -889,7 +1156,7 @@ xchat_hook_fd (xchat_plugin *ph, int fd, int flags,
 }
 
 void
-xchat_print (xchat_plugin *ph, const char *text)
+hexchat_print (xchat_plugin *ph, const char *text)
 {
 	if (!is_session (ph->context))
 	{
@@ -901,7 +1168,7 @@ xchat_print (xchat_plugin *ph, const char *text)
 }
 
 void
-xchat_printf (xchat_plugin *ph, const char *format, ...)
+hexchat_printf (xchat_plugin *ph, const char *format, ...)
 {
 	va_list args;
 	char *buf;
@@ -915,7 +1182,7 @@ xchat_printf (xchat_plugin *ph, const char *format, ...)
 }
 
 void
-xchat_command (xchat_plugin *ph, const char *command)
+hexchat_command (xchat_plugin *ph, const char *command)
 {
 	char *conv;
 	int len = -1;
@@ -933,7 +1200,7 @@ xchat_command (xchat_plugin *ph, const char *command)
 }
 
 void
-xchat_commandf (xchat_plugin *ph, const char *format, ...)
+hexchat_commandf (xchat_plugin *ph, const char *format, ...)
 {
 	va_list args;
 	char *buf;
@@ -947,19 +1214,19 @@ xchat_commandf (xchat_plugin *ph, const char *format, ...)
 }
 
 int
-xchat_nickcmp (xchat_plugin *ph, const char *s1, const char *s2)
+hexchat_nickcmp (xchat_plugin *ph, const char *s1, const char *s2)
 {
 	return ((session *)ph->context)->server->p_cmp (s1, s2);
 }
 
 xchat_context *
-xchat_get_context (xchat_plugin *ph)
+hexchat_get_context (xchat_plugin *ph)
 {
 	return ph->context;
 }
 
 int
-xchat_set_context (xchat_plugin *ph, xchat_context *context)
+hexchat_set_context (xchat_plugin *ph, xchat_context *context)
 {
 	if (is_session (context))
 	{
@@ -970,7 +1237,7 @@ xchat_set_context (xchat_plugin *ph, xchat_context *context)
 }
 
 xchat_context *
-xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
+hexchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 {
 	GSList *slist, *clist, *sessions = NULL;
 	server *serv;
@@ -1030,7 +1297,7 @@ xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 }
 
 const char *
-xchat_get_info (xchat_plugin *ph, const char *id)
+hexchat_get_info (xchat_plugin *ph, const char *id)
 {
 	session *sess;
 	guint32 hash;
@@ -1137,7 +1404,7 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 }
 
 int
-xchat_get_prefs (xchat_plugin *ph, const char *name, const char **string, int *integer)
+hexchat_get_prefs (xchat_plugin *ph, const char *name, const char **string, int *integer)
 {
 	int i = 0;
 
@@ -1184,7 +1451,7 @@ xchat_get_prefs (xchat_plugin *ph, const char *name, const char **string, int *i
 }
 
 xchat_list *
-xchat_list_get (xchat_plugin *ph, const char *name)
+hexchat_list_get (xchat_plugin *ph, const char *name)
 {
 	xchat_list *list;
 
@@ -1232,7 +1499,7 @@ xchat_list_get (xchat_plugin *ph, const char *name)
 }
 
 void
-xchat_list_free (xchat_plugin *ph, xchat_list *xlist)
+hexchat_list_free (xchat_plugin *ph, xchat_list *xlist)
 {
 	if (xlist->type == LIST_USERS)
 		g_slist_free (xlist->head);
@@ -1240,7 +1507,7 @@ xchat_list_free (xchat_plugin *ph, xchat_list *xlist)
 }
 
 int
-xchat_list_next (xchat_plugin *ph, xchat_list *xlist)
+hexchat_list_next (xchat_plugin *ph, xchat_list *xlist)
 {
 	if (xlist->next == NULL)
 		return 0;
@@ -1262,7 +1529,7 @@ xchat_list_next (xchat_plugin *ph, xchat_list *xlist)
 }
 
 const char * const *
-xchat_list_fields (xchat_plugin *ph, const char *name)
+hexchat_list_fields (xchat_plugin *ph, const char *name)
 {
 	static const char * const dcc_fields[] =
 	{
@@ -1312,7 +1579,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 }
 
 time_t
-xchat_list_time (xchat_plugin *ph, xchat_list *xlist, const char *name)
+hexchat_list_time (xchat_plugin *ph, xchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
 	gpointer data;
@@ -1346,7 +1613,7 @@ xchat_list_time (xchat_plugin *ph, xchat_list *xlist, const char *name)
 }
 
 const char *
-xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
+hexchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
 	gpointer data = ph->context;
@@ -1430,7 +1697,7 @@ xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 }
 
 int
-xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
+hexchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
 	gpointer data = ph->context;
@@ -1547,7 +1814,7 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 }
 
 void *
-xchat_plugingui_add (xchat_plugin *ph, const char *filename,
+hexchat_plugingui_add (xchat_plugin *ph, const char *filename,
 							const char *name, const char *desc,
 							const char *version, char *reserved)
 {
@@ -1561,7 +1828,7 @@ xchat_plugingui_add (xchat_plugin *ph, const char *filename,
 }
 
 void
-xchat_plugingui_remove (xchat_plugin *ph, void *handle)
+hexchat_plugingui_remove (xchat_plugin *ph, void *handle)
 {
 #ifdef USE_PLUGIN
 	plugin_free (handle, FALSE, FALSE);
@@ -1569,7 +1836,7 @@ xchat_plugingui_remove (xchat_plugin *ph, void *handle)
 }
 
 int
-xchat_emit_print (xchat_plugin *ph, const char *event_name, ...)
+hexchat_emit_print (xchat_plugin *ph, const char *event_name, ...)
 {
 	va_list args;
 	/* currently only 4 because no events use more than 4.
@@ -1596,7 +1863,7 @@ xchat_emit_print (xchat_plugin *ph, const char *event_name, ...)
 }
 
 char *
-xchat_gettext (xchat_plugin *ph, const char *msgid)
+hexchat_gettext (xchat_plugin *ph, const char *msgid)
 {
 	/* so that plugins can use xchat's internal gettext strings. */
 	/* e.g. The EXEC plugin uses this on Windows. */
@@ -1604,7 +1871,7 @@ xchat_gettext (xchat_plugin *ph, const char *msgid)
 }
 
 void
-xchat_send_modes (xchat_plugin *ph, const char **targets, int ntargets, int modes_per_line, char sign, char mode)
+hexchat_send_modes (xchat_plugin *ph, const char **targets, int ntargets, int modes_per_line, char sign, char mode)
 {
 	char tbuf[514];	/* modes.c needs 512 + null */
 
@@ -1612,19 +1879,19 @@ xchat_send_modes (xchat_plugin *ph, const char **targets, int ntargets, int mode
 }
 
 char *
-xchat_strip (xchat_plugin *ph, const char *str, int len, int flags)
+hexchat_strip (xchat_plugin *ph, const char *str, int len, int flags)
 {
 	return strip_color ((char *)str, len, flags);
 }
 
 void
-xchat_free (xchat_plugin *ph, void *ptr)
+hexchat_free (xchat_plugin *ph, void *ptr)
 {
 	g_free (ptr);
 }
 
 static int
-xchat_pluginpref_set_str_real (xchat_plugin *pl, const char *var, const char *value, int mode) /* mode: 0 = delete, 1 = save */
+hexchat_pluginpref_set_str_real (xchat_plugin *pl, const char *var, const char *value, int mode) /* mode: 0 = delete, 1 = save */
 {
 	FILE *fpIn;
 	int fhOut;
@@ -1737,13 +2004,13 @@ xchat_pluginpref_set_str_real (xchat_plugin *pl, const char *var, const char *va
 }
 
 int
-xchat_pluginpref_set_str (xchat_plugin *pl, const char *var, const char *value)
+hexchat_pluginpref_set_str (xchat_plugin *pl, const char *var, const char *value)
 {
-	return xchat_pluginpref_set_str_real (pl, var, value, 1);
+	return hexchat_pluginpref_set_str_real (pl, var, value, 1);
 }
 
 int
-xchat_pluginpref_get_str (xchat_plugin *pl, const char *var, char *dest)
+hexchat_pluginpref_get_str (xchat_plugin *pl, const char *var, char *dest)
 {
 	int fh;
 	int l;
@@ -1795,20 +2062,20 @@ xchat_pluginpref_get_str (xchat_plugin *pl, const char *var, char *dest)
 }
 
 int
-xchat_pluginpref_set_int (xchat_plugin *pl, const char *var, int value)
+hexchat_pluginpref_set_int (xchat_plugin *pl, const char *var, int value)
 {
 	char buffer[12];
 
 	sprintf (buffer, "%d", value);
-	return xchat_pluginpref_set_str_real (pl, var, buffer, 1);
+	return hexchat_pluginpref_set_str_real (pl, var, buffer, 1);
 }
 
 int
-xchat_pluginpref_get_int (xchat_plugin *pl, const char *var)
+hexchat_pluginpref_get_int (xchat_plugin *pl, const char *var)
 {
 	char buffer[12];
 
-	if (xchat_pluginpref_get_str (pl, var, buffer))
+	if (hexchat_pluginpref_get_str (pl, var, buffer))
 	{
 		return atoi (buffer);
 	}
@@ -1819,13 +2086,13 @@ xchat_pluginpref_get_int (xchat_plugin *pl, const char *var)
 }
 
 int
-xchat_pluginpref_delete (xchat_plugin *pl, const char *var)
+hexchat_pluginpref_delete (xchat_plugin *pl, const char *var)
 {
-	return xchat_pluginpref_set_str_real (pl, var, 0, 0);
+	return hexchat_pluginpref_set_str_real (pl, var, 0, 0);
 }
 
 int
-xchat_pluginpref_list (xchat_plugin *pl, char* dest)
+hexchat_pluginpref_list (xchat_plugin *pl, char* dest)
 {
 	FILE *fpIn;
 	char confname[64];
