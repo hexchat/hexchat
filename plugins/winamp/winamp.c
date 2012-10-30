@@ -165,7 +165,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
                       char **plugin_version,
                       char *arg)
 {
-	/* we need to save this for use with any xchat_* functions */
+	/* we need to save this for use with any hexchat_* functions */
 	ph = plugin_handle;
 
 	*plugin_name = "Winamp";

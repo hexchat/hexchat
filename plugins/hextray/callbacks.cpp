@@ -55,8 +55,8 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam)
 }
 
 /***********************************************************************************************/
-/******* our xchat event call back, get the name and info for each event and save it ***********/
-/******* for our alerts later														***********/
+/******* our HexChat event call back, get the name and info for each event and save it *********/
+/******* for our alerts later ******************************************************************/
 /***********************************************************************************************/
 int event_cb(char *word[], void *userdata)
 {
@@ -174,7 +174,7 @@ int event_cb(char *word[], void *userdata)
 	}
 
 	/***********************************/
-	/***** pass the events to xchat ****/
+	/***** pass the events to HexChat **/
 	/***********************************/
 	return HEXCHAT_EAT_NONE;
 }
@@ -256,7 +256,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	case WM_SIZE:
 		{
 			/******************************************/
-			/***** User wants to minimize xChat, ******/
+			/***** User wants to minimize HexChat, ****/
 			/***** are we allowed to go to tray? ******/
 			/******************************************/
 			if((g_dwPrefs & (1<<PREF_TOT)) && (wparam == SIZE_MINIMIZED))
@@ -369,10 +369,10 @@ LRESULT CALLBACK sdTrayProc(HWND hWnd, int msg)
 		break;
 	case ACT_RESTORE:
 		{
-			/***********************************************/
-			/** user wants us to restore the xchat window **/
-			/** and of autoaway is on, set as back		**/
-			/***********************************************/
+			/*************************************************/
+			/** user wants us to restore the HexChat window **/
+			/** and of autoaway is on, set as back ******** **/
+			/*************************************************/
 			SendMessage(g_hXchatWnd, WM_SYSCOMMAND, SC_RESTORE, 0);
 			SetForegroundWindow(hWnd);
 			

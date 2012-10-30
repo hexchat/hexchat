@@ -1,4 +1,4 @@
-/* XCHAT 2.0 PLUGIN: Mail checker */
+/* HexChat 2.0 plugin: Mail checker */
 
 #include <stdio.h>
 #include <stdlib.h>

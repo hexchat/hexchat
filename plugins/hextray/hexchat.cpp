@@ -28,7 +28,7 @@
 #include "hexchat.h"
 #include "utility.h"
 
-// from util.c of xchat source code ( slightly modified to fit X-Tray Syntax )
+// from util.c of HexChat source code ( slightly modified to fit HexTray Syntax )
 char *hexchat_strip_color (char *text)
 {
 	int nc	= 0;

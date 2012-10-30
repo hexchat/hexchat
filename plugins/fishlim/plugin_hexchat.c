@@ -28,7 +28,7 @@
 
 // #pragma GCC visibility push(default)
 #include "hexchat-plugin.h"
-#define XCHAT_MAX_WORDS 32
+#define HEXCHAT_MAX_WORDS 32
 // #pragma GCC visibility pop
 
 //#define EXPORT __attribute((visibility("default")))
@@ -127,7 +127,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     if (!strcmp(command, "332")) w++;
     
     // Look for encrypted data
-    for (ew = w+1; ew < XCHAT_MAX_WORDS-1; ew++) {
+    for (ew = w+1; ew < HEXCHAT_MAX_WORDS-1; ew++) {
         const char *s = (ew == w+1 ? word[ew]+1 : word[ew]);
         if (strcmp(s, "+OK") == 0 || strcmp(s, "mcps") == 0) goto has_encrypted_data;
     }
@@ -150,7 +150,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     length = 0;
     if (!append(&message, &length, "RECV")) goto decrypt_error;
     
-    for (uw = 1; uw < XCHAT_MAX_WORDS; uw++) {
+    for (uw = 1; uw < HEXCHAT_MAX_WORDS; uw++) {
         if (word[uw][0] != '\0' && !append(&message, &length, " ")) goto decrypt_error;
         
         if (uw == ew) {
@@ -263,7 +263,7 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
                       char *arg) {
     ph = plugin_handle;
     
-    /* Send our info to XChat */
+    /* Send our info to HexChat */
     *name = plugin_name;
     *desc = plugin_desc;
     *version = plugin_version;

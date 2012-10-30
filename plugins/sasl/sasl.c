@@ -22,7 +22,7 @@
  */
 
 /*
- * SASL authentication plugin for XChat
+ * SASL authentication plugin for HexChat
  * Extremely primitive: only PLAIN, no error checking
  *
  * http://ygrek.org.ua/p/cap_sasl.html
@@ -283,10 +283,10 @@ connect_cb (char *word[], void *userdata)
 int
 hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
-	/* we need to save this for use with any xchat_* functions */
+	/* we need to save this for use with any hexchat_* functions */
 	ph = plugin_handle;
 
-	/* tell xchat our info */
+	/* tell HexChat our info */
 	*plugin_name = name;
 	*plugin_desc = desc;
 	*plugin_version = version;

@@ -1,5 +1,5 @@
 /*
-EasyWinampControl - A Winamp "What's playing" plugin for Xchat
+EasyWinampControl - A Winamp "What's playing" plugin for HexChat
 Copyright (C) Yann HAMON & contributors
 
 This library is free software; you can redistribute it and/or
@@ -141,7 +141,7 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
     hexchat_print(ph, "Winamp's window not found - Is winamp really running?\n");
   else {
     //Winamp's running
-    // Seems buggy when winamp2's agent is running, and winamp not (or winamp3) -> crashes xchat.
+    // Seems buggy when winamp2's agent is running, and winamp not (or winamp3) -> crashes HexChat.
     SendMessage(hwndWinamp, WM_USER, (WPARAM)0, (LPARAM)125);
 
     if ((samplerate = SendMessage(hwndWinamp, WM_USER, (WPARAM)0, (LPARAM)126)) == 0) {
@@ -195,7 +195,7 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
     hexchat_commandf(ph, "dispcurrsong %d %d %d %s %s %s", samplerate, bitrate, nbchannels, elapsedtime, totaltime, this_title);
   }
 
-  return HEXCHAT_EAT_ALL;   /* eat this command so xchat and other plugins can't process it */
+  return HEXCHAT_EAT_ALL;   /* eat this command so HexChat and other plugins can't process it */
 }
 
 
@@ -206,7 +206,7 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
                       char **plugin_version,
                       char *arg)
 {
-  /* we need to save this for use with any xchat_* functions */
+  /* we need to save this for use with any hexchat_* functions */
   ph = plugin_handle;
 
   *plugin_name = "EasyWinampControl";

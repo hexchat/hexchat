@@ -1,4 +1,4 @@
-/* xchat 2.0 plugin: simple xdcc server example */
+/* HexChat 2.0 plugin: simple XDCC server example */
 
 #include <glib.h>
 #include <string.h>

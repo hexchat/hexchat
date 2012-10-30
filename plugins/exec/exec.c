@@ -124,7 +124,7 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	hexchat_hook_command (ph, "EXEC", HEXCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside XChat", 0);
+	hexchat_hook_command (ph, "EXEC", HEXCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside HexChat", 0);
 	hexchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
