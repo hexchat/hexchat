@@ -253,7 +253,7 @@ static void xdcc_save(void)
 	GSList *list;
 	fileoffer *offer;
 
-	snprintf(buf, sizeof(buf), "%s/xdcclist.conf", hexchat_get_info(ph, "xchatdir"));
+	snprintf(buf, sizeof(buf), "%s/xdcclist.conf", hexchat_get_info(ph, "hexchatdir"));
 
 	fp = fopen(buf, "w");
 	if(!fp)
@@ -280,7 +280,7 @@ static void xdcc_load(void)
 	char dl[128];
 	FILE *fp;
 
-	snprintf(buf, sizeof(buf), "%s/xdcclist.conf", hexchat_get_info(ph, "xchatdir"));
+	snprintf(buf, sizeof(buf), "%s/xdcclist.conf", hexchat_get_info(ph, "hexchatdir"));
 
 	fp = fopen(buf, "r");
 	if(!fp)

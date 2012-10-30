@@ -393,13 +393,13 @@ Util_Autoload()
 	char *sub_dir;
 	/* we need local filesystem encoding for chdir, opendir etc */
 
-	xdir = hexchat_get_info(ph, "xchatdirfs");
+	xdir = hexchat_get_info(ph, "hexchatdirfs");
 
 	/* don't pollute the filesystem with script files, this only causes misuse of the folders
 	 * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
 #if 0
 	/* auto-load from ~/.config/hexchat/ or %APPDATA%\HexChat\ */
-	Util_Autoload_from(hexchat_get_info(ph, "xchatdirfs"));
+	Util_Autoload_from(hexchat_get_info(ph, "hexchatdirfs"));
 #endif
 
 	/* auto-load from subdirectory addons */
@@ -449,7 +449,7 @@ Util_Expand(char *filename)
 	g_free(expanded);
 
 	/* Check if ~/.config/hexchat/addons/<filename> exists. */
-	expanded = g_build_filename(hexchat_get_info(ph, "xchatdir"),
+	expanded = g_build_filename(hexchat_get_info(ph, "hexchatdir"),
 				    "addons", filename, NULL);
 	if (g_file_test(expanded, G_FILE_TEST_EXISTS))
 		return expanded;

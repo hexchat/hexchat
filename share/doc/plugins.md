@@ -834,8 +834,8 @@ Changed in 2.6.1. If _servname_ is NULL, it finds the channel (or query) by the 
 	<tr><td>version</td><td>HexChat version number.</td></tr>
 	<tr><td>win_ptr</td><td>native window pointer. Unix: (GtkWindow *) Win32: HWND (since 2.6.0).</td></tr>
 	<tr><td>win_status</td><td>window status: "active", "hidden" or "normal" (since 2.0.9).</td>
-	<tr><td>xchatdir</td><td>HexChat config directory, e.g.: /home/user/.config/hexchat <small>This string is encoded in UTF-8, which means you _should_ convert it to "locale" encoding before using functions like open() or OpenFile(). For best <a href="#unicode">Unicode support</a> on Linux, convert this string using g_filename_from_utf8 and on Windows convert this string to UTF-16LE (wide) and use OpenFileW() etc.</small></td></tr>
-	<tr><td>xchatdirfs</td><td>HexChat config directory, e.g.: /home/user/.config/hexchat (since 2.0.9).<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile(). For real Unicode support on Windows, it's best not to use xchatdirfs, but xchatdir instead.</small></td></tr>
+	<tr><td>hexchatdir</td><td>HexChat config directory, e.g.: /home/user/.config/hexchat <small>This string is encoded in UTF-8, which means you **should** convert it to "locale" encoding before using functions like open() or OpenFile(). For best <a href="#unicode">Unicode support</a> on Linux, convert this string using g_filename_from_utf8 and on Windows convert this string to UTF-16LE (wide) and use OpenFileW() etc.</small></td></tr>
+	<tr><td>hexchatdirfs</td><td>HexChat config directory, e.g.: /home/user/.config/hexchat.<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile(). For real Unicode support on Windows, it's best not to use hexchatdirfs, but hexchatdir instead.</small></td></tr>
 	</table>
 	</blockquote>
 

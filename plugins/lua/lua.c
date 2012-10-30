@@ -524,7 +524,7 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 			}
 			else
 			{
-				xdir = hexchat_get_info (ph, "xchatdirfs");
+				xdir = hexchat_get_info (ph, "hexchatdirfs");
 				snprintf (file, PATH_MAX, "%s/addons/%s", xdir, word[2]);
 			}
 		}
@@ -678,7 +678,7 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	hexchat_hook_command(ph, "UNLOAD", HEXCHAT_PRI_NORM, lxc_cb_unload, NULL, NULL);
 	hexchat_hook_command(ph, "LUA", HEXCHAT_PRI_NORM, lxc_cb_lua, "Usage: LUA <code>, executes <code> in a new lua state", NULL);
 
-	xdir = hexchat_get_info (ph, "xchatdirfs");
+	xdir = hexchat_get_info (ph, "hexchatdirfs");
 	xsubdir = g_build_filename (xdir, "addons", NULL);
 	lxc_autoload_from_path (xsubdir);
 	g_free (xsubdir);

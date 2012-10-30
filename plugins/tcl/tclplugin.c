@@ -92,7 +92,7 @@ static char unknown[] = {
 /* don't pollute the filesystem with script files, this only causes misuse of the folders
  * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
 static char sourcedirs[] = {
-    "set files [lsort [glob -nocomplain -directory [xchatdir] \"/addons/*.tcl\"]]\n"
+    "set files [lsort [glob -nocomplain -directory [hexchatdir] \"/addons/*.tcl\"]]\n"
         "set init [lsearch -glob $files \"*/init.tcl\"]\n"
         "if { $init > 0 } {\n"
         "set initfile [lindex $files $init]\n"
@@ -121,8 +121,8 @@ static char inlinetcl[] = {
 "proc ::server { args } { return [eval [join [list getinfo $args server]]] }\n"
 "proc ::version { args } { return [eval [join [list getinfo $args version]]] }\n"
 "proc ::win_status { args } { return [eval [join [list getinfo $args win_status]]] }\n"
-"proc ::xchatdir { args } { return [eval [join [list getinfo $args xchatdir]]] }\n"
-"proc ::xchatdirfs { args } { return [eval [join [list getinfo $args xchatdirfs]]] }\n"
+"proc ::hexchatdir { args } { return [eval [join [list getinfo $args hexchatdir]]] }\n"
+"proc ::hexchatdirfs { args } { return [eval [join [list getinfo $args hexchatdirfs]]] }\n"
 
 "proc ::color { {arg {}} } { return \"\\003$arg\" }\n"
 "proc ::bold { } { return \"\\002\" }\n"
@@ -2013,7 +2013,7 @@ static int Command_TCL(char *word[], char *word_eol[], void *userdata)
 
 static int Command_Source(char *word[], char *word_eol[], void *userdata)
 {
-    const char *xchatdir;
+    const char *hexchatdir;
     Tcl_DString ds;
     struct stat dummy;
     int len;
@@ -2030,7 +2030,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
     if (len > 4 && strcasecmp(".tcl", word[2] + len - 4) == 0) {
 
-        xchatdir = hexchat_get_info(ph, "xchatdir");
+        hexchatdir = hexchat_get_info(ph, "hexchatdir");
 
         Tcl_DStringInit(&ds);
 
@@ -2038,7 +2038,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
             Tcl_DStringAppend(&ds, word_eol[2], strlen(word_eol[2]));
         } else {
             if (!strchr(word_eol[2], '/')) {
-                Tcl_DStringAppend(&ds, xchatdir, strlen(xchatdir));
+                Tcl_DStringAppend(&ds, hexchatdir, strlen(hexchatdir));
                 Tcl_DStringAppend(&ds, "/addons/", 8);
                 Tcl_DStringAppend(&ds, word_eol[2], strlen(word_eol[2]));
             }
@@ -2083,7 +2083,7 @@ static int TCL_Event_Handler(void *userdata)
 static void Tcl_Plugin_Init()
 {
     int x;
-    const char *xchatdir;
+    const char *hexchatdir;
 
     interp = Tcl_CreateInterp();
 
@@ -2136,7 +2136,7 @@ static void Tcl_Plugin_Init()
     for (x = 0; x < XC_SIZE; x++)
         xc[x].hook = NULL;
 
-    xchatdir = hexchat_get_info(ph, "xchatdir");
+    hexchatdir = hexchat_get_info(ph, "hexchatdir");
 
     if (Tcl_Eval(interp, unknown) == TCL_ERROR) {
         hexchat_printf(ph, "Error sourcing internal 'unknown' (%s)\n", Tcl_GetStringResult(interp));

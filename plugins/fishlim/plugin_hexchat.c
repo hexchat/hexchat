@@ -52,7 +52,7 @@ static hexchat_plugin *ph;
  * Returns the path to the key store file.
  */
 gchar *get_config_filename() {
-    return g_build_filename(hexchat_get_info(ph, "xchatdirfs"), "addon_fishlim.conf", NULL);
+    return g_build_filename(hexchat_get_info(ph, "hexchatdirfs"), "addon_fishlim.conf", NULL);
 }
 
 /**

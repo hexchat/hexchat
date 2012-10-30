@@ -95,7 +95,7 @@ before Eggdrop and is broadly considered the industry standard language for auto
 <tr valign=top>
 <td align=right><b>Example:</b></td>
 <td><pre>/tcl puts "Hello, XChat World!"
-/tcl xchatdir</pre></td>
+/tcl hexchatdir</pre></td>
 </tr>
 
 
@@ -706,12 +706,12 @@ The following fields are currently defined:
 </tr>
 <tr>
 <td>version </td>
-<td> xchat version number.
+<td> HexChat version number.
 </td>
 </tr>
 <tr>
-<td>xchatdir </td>
-<td> xchat config directory, e.g.: /home/user/.xchat.</td>
+<td>hexchatdir </td>
+<td> HexChat config directory, e.g.: /home/user/.config/hexchat.</td>
 </tr>
 </table><br>
 </td>
@@ -724,7 +724,7 @@ The following fields are currently defined:
 
 <tr valign=top>
 <td align=right nowrap><b>See Also:</b></td>
-<td><a href='#away'>away</a>, <a href='#channel'>channel</a>, <a href='#host'>host</a>, <a href='#me'>me</a>, <a href='#network'>network</a>, <a href='#server'>server</a>, <a href='#topic'>topic</a>, <a href='#version'>version</a>, <a href='#xchatdir'>xchatdir</a></td>
+<td><a href='#away'>away</a>, <a href='#channel'>channel</a>, <a href='#host'>host</a>, <a href='#me'>me</a>, <a href='#network'>network</a>, <a href='#server'>server</a>, <a href='#topic'>topic</a>, <a href='#version'>version</a>, <a href='#hexchatdir'>hexchatdir</a></td>
 </tr>
 
 
@@ -3581,7 +3581,7 @@ print "[timers]"</pre></td>
 
 <tr valign=top>
 <td align=right nowrap><b>See Also:</b></td>
-<td><a href='#xchatdir'>xchatdir</a></td>
+<td><a href='#hexchatdir'>hexchatdir</a></td>
 </tr>
 
 
@@ -3594,17 +3594,17 @@ print "[timers]"</pre></td>
 <p>
 
 
-<a name='xchatdir'> </a>
+<a name='hexchatdir'> </a>
 <table width=100% border=0 bgcolor=#eeeeee cellpadding=3 cellspacing=0>
 
 <tr valign=top>
 <td align=right width=1% ><b>Name:</b></td>
-<td>xchatdir - Returns the current xchat config directory.</td>
+<td>hexchatdir - Returns the current HexChat config directory.</td>
 </tr>
 
 <tr valign=top>
 <td align=right><b>Synopsis:</b></td>
-<td><pre>xchatdir</pre></td>
+<td><pre>hexchatdir</pre></td>
 </tr>
 
 <tr valign=top>
@@ -3614,7 +3614,7 @@ print "[timers]"</pre></td>
 
 <tr valign=top>
 <td align=right><b>Example:</b></td>
-<td><pre>print "My XChat config directory is [xchatdir]"</pre></td>
+<td><pre>print "My XChat config directory is [hexchatdir]"</pre></td>
 </tr>
 
 <tr valign=top>

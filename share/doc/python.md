@@ -162,7 +162,7 @@ are available to be queried:
  * **server:** Current server name (what the server claims to be) or None if you are not connected.
  * **topic:** Current channel topic.
  * **version:** HexChat version number.
- * **xchatdir:** HexChat config directory e.g.: "~/.config/hexchat".
+ * **hexchatdir:** HexChat config directory e.g.: "~/.config/hexchat".
 
 Example:
 

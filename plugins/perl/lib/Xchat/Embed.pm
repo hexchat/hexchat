@@ -207,7 +207,7 @@ sub reload {
 }
 
 sub reload_all {
-	my @dirs = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
+	my @dirs = Xchat::get_info( "hexchatdirfs" ) || Xchat::get_info( "hexchatdir" );
 	push @dirs, File::Spec->catdir( $dirs[0], "plugins" );
 	for my $dir ( @dirs ) {
 		my $auto_load_glob = File::Spec->catfile( $dir, "*.pl" );

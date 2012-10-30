@@ -471,7 +471,7 @@ sub context_info {
 	my @fields = (
 		qw(away channel charset host id inputbox libdirfs modes network),
 		qw(nick nickserv server topic version win_ptr win_status),
-		qw(xchatdir xchatdirfs state_cursor),
+		qw(hexchatdir hexchatdirfs xchatdir xchatdirfs state_cursor),
 	);
 
 	if( Xchat::set_context( $ctx ) ) {
