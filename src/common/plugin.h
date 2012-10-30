@@ -52,7 +52,7 @@ struct _hexchat_plugin
 	hexchat_context *(*hexchat_get_context) (hexchat_plugin *ph);
 	const char *(*hexchat_get_info) (hexchat_plugin *ph,
 		const char *id);
-	int (*xchat_get_prefs) (hexchat_plugin *ph,
+	int (*hexchat_get_prefs) (hexchat_plugin *ph,
 		 const char *name,
 		 const char **string,
 		 int *integer);

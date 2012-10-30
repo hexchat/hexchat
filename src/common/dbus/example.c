@@ -73,7 +73,7 @@ test_command_cb (DBusGProxy *proxy,
 					G_TYPE_INVALID, G_TYPE_INVALID)) {
 			write_error ("Failed to complete unhook", &error);
 		}
-		/* Now if you write "/test blah" again in the xchat window
+		/* Now if you write "/test blah" again in the HexChat window
 		 * you'll get a "Unknown command" error message */
 		g_print ("test command received: %s\n", word_eol[1]);
 		if (!dbus_g_proxy_call (proxy, "Print",
@@ -193,7 +193,7 @@ main (int argc, char **argv)
 				     G_CALLBACK (unload_cb),
 				     NULL, NULL);
 
-	/* Now you can write on the xchat windows: "/test arg1 arg2 ..." */
+	/* Now you can write on the HexChat windows: "/test arg1 arg2 ..." */
 	mainloop = g_main_loop_new (NULL, FALSE);
 	g_main_loop_run (mainloop);
 

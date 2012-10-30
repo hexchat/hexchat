@@ -1,4 +1,4 @@
-/* dbus-plugin.c - xchat plugin for remote access using D-Bus
+/* dbus-plugin.c - hexchat plugin for remote access using D-Bus
  * Copyright (C) 2006 Claessens Xavier
  *
  * This program is free software; you can redistribute it and/or modify
@@ -510,7 +510,7 @@ remote_object_get_prefs (RemoteObject *obj,
 		*ret_type = 0;
 		return TRUE;
 	}
-	*ret_type = xchat_get_prefs (ph, name, &str, ret_int);
+	*ret_type = hexchat_get_prefs (ph, name, &str, ret_int);
 	*ret_str = g_strdup (str);
 
 	return TRUE;

@@ -1081,7 +1081,7 @@ static int tcl_prefs(ClientData cd, Tcl_Interp * irp, int argc, const char *argv
 
     BADARGS(2, 2, " name");
 
-    switch (xchat_get_prefs (ph, argv[1], &str, &i)) {
+    switch (hexchat_get_prefs (ph, argv[1], &str, &i)) {
         case 1:
             Tcl_AppendResult(irp, str, NULL);
             break;

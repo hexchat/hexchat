@@ -70,7 +70,7 @@ You can use the "/org/hexchat/Remote" object with interface "org.hexchat.plugin"
 		* gchar\*: Name of the command (without the forward slash).
 		* int: Priority of this command.
 		* gchar\*: String of text to display when the user executes /help for this command. May be NULL if you're lazy.
-		* int: Value to returns when the command is catched. See XCHAT\_EAT\_*.
+		* int: Value to returns when the command is catched. See HEXCHAT\_EAT\_*.
 	* Returns:
 		* guint: The ID of the hook.
 
@@ -78,7 +78,7 @@ You can use the "/org/hexchat/Remote" object with interface "org.hexchat.plugin"
 	* Parameters:
 		* gchar\*: Name of the server event.
 		* int: Priority of this command.
-		* int: Value to returns when the command is catched. See XCHAT\_EAT\_*.
+		* int: Value to returns when the command is catched. See HEXCHAT\_EAT\_*.
 	* Returns:
 		* guint: The ID of the hook.
 
@@ -86,7 +86,7 @@ You can use the "/org/hexchat/Remote" object with interface "org.hexchat.plugin"
 	* Parameters:
 		* gchar\*: Name of the print event.
 		* int: Priority of this command.
-		* int: Value to returns when the command is catched. See XCHAT\_EAT\_*.
+		* int: Value to returns when the command is catched. See HEXCHAT\_EAT\_*.
 	* Returns:
 		* guint: The ID of the hook.
 

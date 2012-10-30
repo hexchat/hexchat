@@ -514,7 +514,7 @@ a context cannot be found.</p>
 </table><p>This function is used to retrieve certain information about the current
 context. If there is an associated command then that command can be used to change the value for a particular ID.</p><p>
 </p>
-<h3><a name="xchat_get_prefs" /><code>Xchat::get_prefs( $name )</code></h3>
+<h3><a name="hexchat_get_prefs" /><code>Xchat::get_prefs( $name )</code></h3>
 <ul>
 <li><strong><code>$name</code> -  name of a X-Chat setting (available through the /set command)</strong>
 </li>

@@ -262,7 +262,7 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_find_context = hexchat_find_context;
 		pl->hexchat_get_context = hexchat_get_context;
 		pl->hexchat_get_info = hexchat_get_info;
-		pl->xchat_get_prefs = xchat_get_prefs;
+		pl->hexchat_get_prefs = hexchat_get_prefs;
 		pl->hexchat_list_get = hexchat_list_get;
 		pl->hexchat_list_free = hexchat_list_free;
 		pl->hexchat_list_fields = hexchat_list_fields;
@@ -1137,7 +1137,7 @@ hexchat_get_info (hexchat_plugin *ph, const char *id)
 }
 
 int
-xchat_get_prefs (hexchat_plugin *ph, const char *name, const char **string, int *integer)
+hexchat_get_prefs (hexchat_plugin *ph, const char *name, const char **string, int *integer)
 {
 	int i = 0;
 

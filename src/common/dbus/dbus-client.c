@@ -40,7 +40,7 @@ write_error (char *message,
 }
 
 void
-xchat_remote (void)
+hexchat_remote (void)
 /* TODO: dbus_g_connection_unref (connection) are commented because it makes
  * dbus to crash. Fixed in dbus >=0.70 ?!?
  * https://launchpad.net/distros/ubuntu/+source/dbus/+bug/54375
@@ -49,7 +49,7 @@ xchat_remote (void)
 	DBusGConnection *connection;
 	DBusGProxy *dbus = NULL;
 	DBusGProxy *remote_object = NULL;
-	gboolean xchat_running;
+	gboolean hexchat_running;
 	GError *error = NULL;
 	char *command = NULL;
 
@@ -73,7 +73,7 @@ xchat_remote (void)
 		return;
 	}
 
-	/* Checks if xchat is already running */
+	/* Checks if HexChat is already running */
 	dbus = dbus_g_proxy_new_for_name (connection,
 					  DBUS_SERVICE_DBUS,
 					  DBUS_PATH_DBUS,
@@ -81,14 +81,14 @@ xchat_remote (void)
 	if (!dbus_g_proxy_call (dbus, "NameHasOwner", &error,
 				G_TYPE_STRING, DBUS_SERVICE,
 				G_TYPE_INVALID,
-				G_TYPE_BOOLEAN, &xchat_running,
+				G_TYPE_BOOLEAN, &hexchat_running,
 				G_TYPE_INVALID)) {
 		write_error (_("Failed to complete NameHasOwner"), &error);
-		xchat_running = FALSE;
+		hexchat_running = FALSE;
 	}
 	g_object_unref (dbus);
 
-	if (!xchat_running) {
+	if (!hexchat_running) {
 		//dbus_g_connection_unref (connection);
 		return;
 	}

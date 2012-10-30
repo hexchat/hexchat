@@ -1519,7 +1519,7 @@ Module_xchat_get_prefs(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:get_prefs", &name))
 		return NULL;
 	BEGIN_XCHAT_CALLS(NONE);
-	type = xchat_get_prefs(ph, name, &info, &integer);
+	type = hexchat_get_prefs(ph, name, &info, &integer);
 	END_XCHAT_CALLS();
 	switch (type) {
 		case 0:

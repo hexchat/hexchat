@@ -1,4 +1,4 @@
-/* dbus-plugin.c - xchat plugin for remote access using DBUS
+/* dbus-plugin.c - hexchat plugin for remote access using DBUS
  * Copyright (C) 2006 Claessens Xavier
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 #ifndef XCHAT_DBUS_PLUGIN_H
 #define XCHAT_DBUS_PLUGIN_H
 
-int	dbus_plugin_init	(xchat_plugin *plugin_handle,
+int	dbus_plugin_init	(hexchat_plugin *plugin_handle,
 				 char **plugin_name,
 				 char **plugin_desc,
 				 char **plugin_version,

@@ -22,6 +22,6 @@
 #ifndef __DBUS_PLUGIN_H__
 #define __DBUS_PLUGIN_H__
 
-void xchat_remote (void);
+void hexchat_remote (void);
 
 #endif /* __DBUS_PLUGIN_H__ */

@@ -1663,7 +1663,7 @@ static int lxc_get_info(lua_State *L)
 }
 
 /*
- * lua:  xchat.get_prefs(name)
+ * lua:  hexchat.get_prefs(name)
  * desc: Provides xchat's setting information (that which is available 
  *       through the /set command). A few extra bits of information are 
  *       available that don't appear in the /set list, currently they are:
@@ -1684,7 +1684,7 @@ static int lxc_get_prefs(lua_State *L)
 	 * luckily we can store anything in a lua var... this makes the 
 	 * xchat lua api more user friendly ;-) 
 	 */
-	switch (xchat_get_prefs(ph, name, &str, &i)) { 
+	switch (hexchat_get_prefs(ph, name, &str, &i)) { 
 		case 0: /* request failed */
 			lua_pushnil(L);
 			break;

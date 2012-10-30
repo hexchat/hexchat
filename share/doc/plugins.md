@@ -875,7 +875,7 @@ A few extra bits of information are available that don't appear in the _/SET_ li
 	int i;
 	const char *str;
 
-	if (xchat_get_prefs (ph, "irc_nick1", &amp;str, &amp;i) == 1)
+	if (hexchat_get_prefs (ph, "irc_nick1", &amp;str, &amp;i) == 1)
 	{
 		hexchat_printf (ph, "Current nickname setting: %s\n", str);
 	}

@@ -836,7 +836,7 @@ XS (XS_Xchat_get_prefs)
 	} else {
 
 
-		switch (xchat_get_prefs (ph, SvPV_nolen (ST (0)), &str, &integer)) {
+		switch (hexchat_get_prefs (ph, SvPV_nolen (ST (0)), &str, &integer)) {
 		case 0:
 			XSRETURN_UNDEF;
 			break;
@@ -1376,7 +1376,7 @@ perl_init (void)
 #endif
 
 	warn = 0;
-	xchat_get_prefs (ph, "perl_warnings", NULL, &warn);
+	hexchat_get_prefs (ph, "perl_warnings", NULL, &warn);
 	arg_count = warn ? 4 : 3;
 
 	PERL_SYS_INIT3 (&arg_count, (char ***)&perl_args, (char ***)&env);

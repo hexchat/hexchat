@@ -81,7 +81,7 @@ struct _hexchat_plugin
 	hexchat_context *(*hexchat_get_context) (hexchat_plugin *ph);
 	const char *(*hexchat_get_info) (hexchat_plugin *ph,
 		const char *id);
-	int (*xchat_get_prefs) (hexchat_plugin *ph,
+	int (*hexchat_get_prefs) (hexchat_plugin *ph,
 		 const char *name,
 		 const char **string,
 		 int *integer);
@@ -226,7 +226,7 @@ hexchat_get_info (hexchat_plugin *ph,
 		const char *id);
 
 int
-xchat_get_prefs (hexchat_plugin *ph,
+hexchat_get_prefs (hexchat_plugin *ph,
 		 const char *name,
 		 const char **string,
 		 int *integer);
@@ -345,7 +345,7 @@ hexchat_pluginpref_list (hexchat_plugin *ph,
 #define hexchat_find_context ((HEXCHAT_PLUGIN_HANDLE)->hexchat_find_context)
 #define hexchat_get_context ((HEXCHAT_PLUGIN_HANDLE)->hexchat_get_context)
 #define hexchat_get_info ((HEXCHAT_PLUGIN_HANDLE)->hexchat_get_info)
-#define xchat_get_prefs ((HEXCHAT_PLUGIN_HANDLE)->xchat_get_prefs)
+#define hexchat_get_prefs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_get_prefs)
 #define hexchat_list_get ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_get)
 #define hexchat_list_free ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_free)
 #define hexchat_list_fields ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_fields)
