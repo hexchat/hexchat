@@ -583,9 +583,9 @@ chan_remove (chan *ch, gboolean force)
 {
 	chan *new_ch;
 	int i, num;
-	extern int xchat_is_quitting;
+	extern int hexchat_is_quitting;
 
-	if (xchat_is_quitting)	/* avoid lots of looping on exit */
+	if (hexchat_is_quitting)	/* avoid lots of looping on exit */
 		return TRUE;
 
 	/* is this ch allowed to be closed while still having children? */

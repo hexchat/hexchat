@@ -16,7 +16,7 @@
 #define HEXCHAT_FD_NOTSOCKET	8
 
 #define HEXCHAT_EAT_NONE		0	/* pass it on through! */
-#define HEXCHAT_EAT_HEXCHAT		1	/* don't let xchat see this event */
+#define HEXCHAT_EAT_HEXCHAT		1	/* don't let HexChat see this event */
 #define HEXCHAT_EAT_PLUGIN	2	/* don't let other plugins see this event */
 #define HEXCHAT_EAT_ALL		(HEXCHAT_EAT_HEXCHAT|HEXCHAT_EAT_PLUGIN)	/* don't let anything see this event */
 
@@ -109,7 +109,7 @@ struct _hexchat_plugin
 			void *handle);
 	int (*hexchat_emit_print) (hexchat_plugin *ph,
 			const char *event_name, ...);
-	int (*xchat_read_fd) (hexchat_plugin *ph,
+	int (*hexchat_read_fd) (hexchat_plugin *ph,
 			void *src,
 			char *buf,
 			int *len);

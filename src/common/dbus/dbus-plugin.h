@@ -19,8 +19,8 @@
  * xclaesse@gmail.com
  */
 
-#ifndef XCHAT_DBUS_PLUGIN_H
-#define XCHAT_DBUS_PLUGIN_H
+#ifndef HEXCHAT_DBUS_PLUGIN_H
+#define HEXCHAT_DBUS_PLUGIN_H
 
 int	dbus_plugin_init	(hexchat_plugin *plugin_handle,
 				 char **plugin_name,

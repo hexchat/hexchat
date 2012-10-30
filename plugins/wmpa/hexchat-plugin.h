@@ -114,7 +114,7 @@ extern "C" {
                                       void *handle);
       int (*hexchat_emit_print) (hexchat_plugin *ph,
                                const char *event_name, ...);
-      int (*xchat_read_fd) (hexchat_plugin *ph,
+      int (*hexchat_read_fd) (hexchat_plugin *ph,
                             void *src,
                             char *buf,
                             int *len);

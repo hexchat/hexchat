@@ -170,7 +170,7 @@ editlist_gui_save (GtkWidget * igad)
 	char buf[512];
 	char *a, *b;
 
-	fh = xchat_open_file (editlist_file, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fh = hexchat_open_file (editlist_file, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		while (1)

@@ -77,11 +77,11 @@ cv_tree_init (chanview *cv)
 	GtkCellRenderer *renderer;
 	static const GtkTargetEntry dnd_src_target[] =
 	{
-		{"XCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
+		{"HEXCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
 	};
 	static const GtkTargetEntry dnd_dest_target[] =
 	{
-		{"XCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
+		{"HEXCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
 	};
 
 	win = gtk_scrolled_window_new (0, 0);

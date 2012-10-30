@@ -646,7 +646,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	}
 
 	/* now we need it in FileSystem encoding */
-	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
+	fs = hexchat_filename_from_utf8 (fname, -1, 0, 0, 0);
 
 	/* create all the subdirectories */
 	if (fs)
@@ -1746,9 +1746,9 @@ pevent_load (char *filename)
 	char *ofs;
 
 	if (filename == NULL)
-		fd = xchat_open_file ("pevents.conf", O_RDONLY, 0, 0);
+		fd = hexchat_open_file ("pevents.conf", O_RDONLY, 0, 0);
 	else
-		fd = xchat_open_file (filename, O_RDONLY, 0, XOF_FULLPATH);
+		fd = hexchat_open_file (filename, O_RDONLY, 0, XOF_FULLPATH);
 
 	if (fd == -1)
 		return 1;
@@ -1841,7 +1841,7 @@ pevent_check_all_loaded ()
 		if (pntevts_text[i] == NULL)
 		{
 			/*printf ("%s\n", te[i].name);
-			snprintf(out, sizeof(out), "The data for event %s failed to load. Reverting to defaults.\nThis may be because a new version of XChat is loading an old config file.\n\nCheck all print event texts are correct", evtnames[i]);
+			snprintf(out, sizeof(out), "The data for event %s failed to load. Reverting to defaults.\nThis may be because a new version of HexChat is loading an old config file.\n\nCheck all print event texts are correct", evtnames[i]);
 			   gtkutil_simpledialog(out); */
 			/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
 			if (te[i].num_args & 128)
@@ -2273,10 +2273,10 @@ pevent_save (char *fn)
 	char buf[1024];
 
 	if (!fn)
-		fd = xchat_open_file ("pevents.conf", O_CREAT | O_TRUNC | O_WRONLY,
+		fd = hexchat_open_file ("pevents.conf", O_CREAT | O_TRUNC | O_WRONLY,
 									 0x180, XOF_DOMODE);
 	else
-		fd = xchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY, 0x180,
+		fd = hexchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY, 0x180,
 									 XOF_FULLPATH | XOF_DOMODE);
 	if (fd == -1)
 	{
@@ -2373,7 +2373,7 @@ sound_play (const char *file, gboolean quiet)
 	}
 	wavfile[sizeof (wavfile) - 1] = 0;	/* ensure termination */
 
-	file_fs = xchat_filename_from_utf8 (wavfile, -1, 0, 0, 0);
+	file_fs = hexchat_filename_from_utf8 (wavfile, -1, 0, 0, 0);
 	if (!file_fs)
 		return;
 
@@ -2416,7 +2416,7 @@ sound_play (const char *file, gboolean quiet)
 				else
 					snprintf (buf, sizeof (buf), "%s %s", cmd, file_fs);
 				buf[sizeof (buf) - 1] = '\0';
-				xchat_exec (buf);
+				hexchat_exec (buf);
 			}
 		}
 
@@ -2464,7 +2464,7 @@ sound_load ()
 
 	memset (&sound_files, 0, sizeof (char *) * (NUM_XP));
 
-	fd = xchat_open_file ("sound.conf", O_RDONLY, 0, 0);
+	fd = hexchat_open_file ("sound.conf", O_RDONLY, 0, 0);
 	if (fd == -1)
 		return;
 
@@ -2494,7 +2494,7 @@ sound_save ()
 	int fd, i;
 	char buf[512];
 
-	fd = xchat_open_file ("sound.conf", O_CREAT | O_TRUNC | O_WRONLY, 0x180,
+	fd = hexchat_open_file ("sound.conf", O_CREAT | O_TRUNC | O_WRONLY, 0x180,
 								 XOF_DOMODE);
 	if (fd == -1)
 		return;

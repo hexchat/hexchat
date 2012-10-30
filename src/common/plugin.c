@@ -203,14 +203,14 @@ plugin_list_add (hexchat_context *ctx, char *filename, const char *name,
 }
 
 static void *
-xchat_dummy (hexchat_plugin *ph)
+hexchat_dummy (hexchat_plugin *ph)
 {
 	return NULL;
 }
 
 #ifdef WIN32
 static int
-xchat_read_fd (hexchat_plugin *ph, GIOChannel *source, char *buf, int *len)
+hexchat_read_fd (hexchat_plugin *ph, GIOChannel *source, char *buf, int *len)
 {
 	GError *error = NULL;
 
@@ -273,9 +273,9 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_plugingui_remove = hexchat_plugingui_remove;
 		pl->hexchat_emit_print = hexchat_emit_print;
 #ifdef WIN32
-		pl->xchat_read_fd = (void *) xchat_read_fd;
+		pl->hexchat_read_fd = (void *) hexchat_read_fd;
 #else
-		pl->xchat_read_fd = xchat_dummy;
+		pl->hexchat_read_fd = hexchat_dummy;
 #endif
 		pl->hexchat_list_time = hexchat_list_time;
 		pl->hexchat_gettext = hexchat_gettext;
@@ -289,11 +289,11 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_pluginpref_delete = hexchat_pluginpref_delete;
 		pl->hexchat_pluginpref_list = hexchat_pluginpref_list;
 
-		/* incase new plugins are loaded on older xchat */
-		pl->xchat_dummy4 = xchat_dummy;
-		pl->xchat_dummy3 = xchat_dummy;
-		pl->xchat_dummy2 = xchat_dummy;
-		pl->xchat_dummy1 = xchat_dummy;
+		/* incase new plugins are loaded on older HexChat */
+		pl->hexchat_dummy4 = hexchat_dummy;
+		pl->hexchat_dummy3 = hexchat_dummy;
+		pl->hexchat_dummy2 = hexchat_dummy;
+		pl->hexchat_dummy1 = hexchat_dummy;
 
 		/* run hexchat_plugin_init, if it returns 0, close the plugin */
 		if (((hexchat_init_func *)init_func) (pl, &pl->name, &pl->desc, &pl->version, arg) == 0)
@@ -379,7 +379,7 @@ plugin_load (session *sess, char *filename, char *arg)
 	if (!g_module_symbol (handle, "hexchat_plugin_init", (gpointer *)&init_func))
 	{
 		g_module_close (handle);
-		return _("No hexchat_plugin_init symbol; is this really an xchat plugin?");
+		return _("No hexchat_plugin_init symbol; is this really a HexChat plugin?");
 	}
 
 	/* find the plugin's deinit routine, if any */
@@ -420,7 +420,7 @@ plugin_load (session *sess, char *filename, char *arg)
 	if (error != NULL)
 	{
 		dlclose (handle);
-		return _("No hexchat_plugin_init symbol; is this really an xchat plugin?");
+		return _("No hexchat_plugin_init symbol; is this really a HexChat plugin?");
 	}
 
 	/* find the plugin's deinit routine, if any */
@@ -1600,7 +1600,7 @@ hexchat_emit_print (hexchat_plugin *ph, const char *event_name, ...)
 char *
 hexchat_gettext (hexchat_plugin *ph, const char *msgid)
 {
-	/* so that plugins can use xchat's internal gettext strings. */
+	/* so that plugins can use HexChat's internal gettext strings. */
 	/* e.g. The EXEC plugin uses this on Windows. */
 	return _(msgid);
 }
@@ -1643,8 +1643,8 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	g_free (canon);
 	sprintf (confname_tmp, "%s.new", confname);
 
-	fhOut = xchat_open_file (confname_tmp, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
-	fpIn = xchat_fopen_file (confname, "r", 0);
+	fhOut = hexchat_open_file (confname_tmp, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fpIn = hexchat_fopen_file (confname, "r", 0);
 
 	if (fhOut == -1)		/* unable to save, abort */
 	{
@@ -1760,7 +1760,7 @@ hexchat_pluginpref_get_str (hexchat_plugin *pl, const char *var, char *dest)
 	g_free (canon);
 
 	/* partly borrowed from palette.c */
-	fh = xchat_open_file (confname, O_RDONLY, 0, 0);
+	fh = hexchat_open_file (confname, O_RDONLY, 0, 0);
 
 	if (fh == -1)
 	{
@@ -1839,7 +1839,7 @@ hexchat_pluginpref_list (hexchat_plugin *pl, char* dest)
 	sprintf (confname, "addon_%s.conf", token);
 	g_free (token);
 
-	fpIn = xchat_fopen_file (confname, "r", 0);
+	fpIn = hexchat_fopen_file (confname, "r", 0);
 
 	if (fpIn == NULL)										/* no existing config file, no parsing */
 	{

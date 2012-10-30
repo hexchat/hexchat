@@ -1,4 +1,4 @@
-/* dbus-client.h - XChat command-line options for D-Bus
+/* dbus-client.h - HexChat command-line options for D-Bus
  * Copyright (C) 2006 Claessens Xavier
  *
  * This program is free software; you can redistribute it and/or modify

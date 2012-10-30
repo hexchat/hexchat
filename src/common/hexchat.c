@@ -77,8 +77,8 @@ GSList *usermenu_list = 0;
 GSList *urlhandler_list = 0;
 GSList *tabmenu_list = 0;
 
-static int in_xchat_exit = FALSE;
-int xchat_is_quitting = FALSE;
+static int in_hexchat_exit = FALSE;
+int hexchat_is_quitting = FALSE;
 /* command-line args */
 int arg_dont_autoconnect = FALSE;
 int arg_skip_plugins = FALSE;
@@ -264,7 +264,7 @@ doover:
 }
 
 static int
-xchat_misc_checks (void)		/* this gets called every 1/2 second */
+hexchat_misc_checks (void)		/* this gets called every 1/2 second */
 {
 	static int count = 0;
 #ifdef USE_MSPROXY
@@ -326,7 +326,7 @@ irc_init (session *sess)
 											  notify_checklist, 0);
 
 	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, 0);
-	fe_timeout_add (500, xchat_misc_checks, 0);
+	fe_timeout_add (500, hexchat_misc_checks, 0);
 
 	if (arg_url != NULL)
 	{
@@ -457,7 +457,7 @@ send_quit_or_part (session * killsess)
 			list = list->next;
 	}
 
-	if (xchat_is_quitting)
+	if (hexchat_is_quitting)
 		willquit = TRUE;
 
 	if (killserv->connected)
@@ -548,8 +548,8 @@ session_free (session *killsess)
 
 	free (killsess);
 
-	if (!sess_list && !in_xchat_exit)
-		xchat_exit ();						/* sess_list is empty, quit! */
+	if (!sess_list && !in_hexchat_exit)
+		hexchat_exit ();						/* sess_list is empty, quit! */
 
 	list = sess_list;
 	while (list)
@@ -607,7 +607,7 @@ static char defaultconf_commands[] =
 	"NAME SPING\n"			"CMD ping\n\n"\
 	"NAME SQUERY\n"		"CMD quote SQUERY %2 :&3\n\n"\
 	"NAME SSLSERVER\n"	"CMD server -ssl &2\n\n"\
-	"NAME SV\n"				"CMD echo xchat %v %m\n\n"\
+	"NAME SV\n"				"CMD echo HexChat %v %m\n\n"\
 	"NAME UMODE\n"			"CMD mode %n &2\n\n"\
 	"NAME UPTIME\n"		"CMD quote STATS u\n\n"\
 	"NAME VER\n"			"CMD ctcp %2 VERSION\n\n"\
@@ -843,10 +843,10 @@ xchat_init (void)
 }
 
 void
-xchat_exit (void)
+hexchat_exit (void)
 {
-	xchat_is_quitting = TRUE;
-	in_xchat_exit = TRUE;
+	hexchat_is_quitting = TRUE;
+	in_hexchat_exit = TRUE;
 	plugin_kill_all ();
 	fe_cleanup ();
 
@@ -880,7 +880,7 @@ child_handler (gpointer userdata)
 #endif
 
 void
-xchat_exec (const char *cmd)
+hexchat_exec (const char *cmd)
 {
 #ifdef WIN32
 	util_exec (cmd);
@@ -894,7 +894,7 @@ xchat_exec (const char *cmd)
 }
 
 void
-xchat_execv (char * const argv[])
+hexchat_execv (char * const argv[])
 {
 #ifdef WIN32
 	util_execv (argv);
@@ -909,11 +909,11 @@ xchat_execv (char * const argv[])
 
 #ifdef WIN32
 static void
-xchat_restore_window (HWND xchat_window)
+xchat_restore_window (HWND hexchat_window)
 {
-	/* ShowWindow (xchat_window, SW_RESTORE); another way, but works worse */
-	SendMessage (xchat_window, WM_SYSCOMMAND, SC_RESTORE, 0);
-	SetForegroundWindow (xchat_window);
+	/* ShowWindow (hexchat_window, SW_RESTORE); another way, but works worse */
+	SendMessage (hexchat_window, WM_SYSCOMMAND, SC_RESTORE, 0);
+	SetForegroundWindow (hexchat_window);
 }
 
 BOOL CALLBACK
@@ -1140,10 +1140,10 @@ main (int argc, char *argv[])
 
 		if (error == ERROR_ALREADY_EXISTS || mutex == NULL)
 		{
-			/* restoring the XChat window from the tray via the taskbar icon
-			 * only works correctly when X-Tray is used, but it's not a big deal
-			 * since you can only minimize XChat to tray via the taskbar if you
-			 * use X-Tray*/
+			/* restoring the HexChat window from the tray via the taskbar icon
+			 * only works correctly when HexTray is used, but it's not a big deal
+			 * since you can only minimize HexChat to tray via the taskbar if you
+			 * use HexTray*/
 			if (hextray_mode ())
 			{
 				/* FindWindow() doesn't support wildcards so we check all the open windows */
@@ -1190,7 +1190,7 @@ main (int argc, char *argv[])
 #endif
 
 #ifdef USE_DEBUG
-	xchat_mem_list ();
+	hexchat_mem_list ();
 #endif
 
 #ifdef WIN32

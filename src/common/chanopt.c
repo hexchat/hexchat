@@ -244,7 +244,7 @@ chanopt_load_all (void)
 	chanopt_in_memory *current = NULL;
 
 	/* 1. load the old file into our GSList */
-	fh = xchat_open_file ("chanopt.conf", O_RDONLY, 0, 0);
+	fh = hexchat_open_file ("chanopt.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
 	{
 		while (waitline (fh, buf, sizeof buf, FALSE) != -1)
@@ -391,7 +391,7 @@ chanopt_save_all (void)
 		return;
 	}
 
-	fh = xchat_open_file ("chanopt.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fh = hexchat_open_file ("chanopt.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh == -1)
 	{
 		return;

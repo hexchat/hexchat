@@ -61,7 +61,7 @@ rawlog_save (server *serv, char *file)
 	if (file)
 	{
 		if (serv->gui->rawlog_window)
-			fh = xchat_open_file (file, O_TRUNC | O_WRONLY | O_CREAT,
+			fh = hexchat_open_file (file, O_TRUNC | O_WRONLY | O_CREAT,
 										 0600, XOF_DOMODE | XOF_FULLPATH);
 		if (fh != -1)
 		{

@@ -346,7 +346,7 @@ char *
 get_xdir_utf8 (void)
 {
 	if (!xdir_utf)	/* never free this, keep it for program life time */
-		xdir_utf = xchat_filename_to_utf8 (get_xdir_fs (), -1, 0, 0, 0);
+		xdir_utf = hexchat_filename_to_utf8 (get_xdir_fs (), -1, 0, 0, 0);
 
 	return xdir_utf;
 }
@@ -1172,7 +1172,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 int
-xchat_open_file (char *file, int flags, int mode, int xof_flags)
+hexchat_open_file (char *file, int flags, int mode, int xof_flags)
 {
 	char buf[1024];
 
@@ -1192,7 +1192,7 @@ xchat_open_file (char *file, int flags, int mode, int xof_flags)
 }
 
 FILE *
-xchat_fopen_file (const char *file, const char *mode, int xof_flags)
+hexchat_fopen_file (const char *file, const char *mode, int xof_flags)
 {
 	char buf[1024];
 

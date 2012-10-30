@@ -21,7 +21,7 @@
  *
  */
 
-#define XCHAT							/* using xchat */
+#define HEXCHAT							/* using HexChat */
 #define TINT_VALUE 195				/* 195/255 of the brightness. */
 #define MOTION_MONITOR				/* URL hilights. */
 #define SMOOTH_SCROLL				/* line-by-line or pixel scroll? */
@@ -49,7 +49,7 @@
 #include <gtk/gtkversion.h>
 #include <gtk/gtkwindow.h>
 
-#ifdef XCHAT
+#ifdef HEXCHAT
 #ifdef WIN32
 #include "../../config-win32.h"
 #else
@@ -161,7 +161,7 @@ enum
 
 static guint xtext_signals[LAST_SIGNAL];
 
-#ifdef XCHAT
+#ifdef HEXCHAT
 char *nocasestrstr (const char *text, const char *tofind);	/* util.c */
 int xtext_get_stamp_str (time_t, char **);
 #endif
@@ -203,7 +203,7 @@ static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk
 
 /* some utility functions first */
 
-#ifndef XCHAT	/* xchat has this in util.c */
+#ifndef HEXCHAT	/* HexChat has this in util.c */
 
 static char *
 nocasestrstr (const char *s, const char *tofind)
@@ -799,7 +799,7 @@ gtk_xtext_init (GtkXText * xtext)
 											targets, n_targets);
 	}
 
-	if (getenv ("XCHAT_OVERDRAW"))
+	if (getenv ("HEXCHAT_OVERDRAW"))
 		xtext->overdraw = TRUE;
 }
 
@@ -4338,7 +4338,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 	indent = ent->indent;
 	start_subline = subline;
 
-#ifdef XCHAT
+#ifdef HEXCHAT
 	/* draw the timestamp */
 	if (xtext->auto_indent && xtext->buffer->time_stamp &&
 		 (!xtext->skip_stamp || xtext->mark_stamp || xtext->force_stamp))
@@ -4514,7 +4514,7 @@ gtk_xtext_set_font (GtkXText *xtext, char *name)
 	xtext->space_width = xtext->fontwidth[' '];
 	xtext->fontsize = xtext->font->ascent + xtext->font->descent;
 
-#ifdef XCHAT
+#ifdef HEXCHAT
 	{
 		char *time_str;
 		int stamp_size = xtext_get_stamp_str (time(0), &time_str);

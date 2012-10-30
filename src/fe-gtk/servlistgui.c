@@ -1224,7 +1224,7 @@ servlist_delete_cb (GtkWidget *win, GdkEventAny *event, gpointer userdata)
 	selected_net = NULL;
 
 	if (sess_list == NULL)
-		xchat_exit ();
+		hexchat_exit ();
 
 	return FALSE;
 }
@@ -1238,7 +1238,7 @@ servlist_close_cb (GtkWidget *button, gpointer userdata)
 	selected_net = NULL;
 
 	if (sess_list == NULL)
-		xchat_exit ();
+		hexchat_exit ();
 }
 
 /* convert "host:port" format to "host/port" */

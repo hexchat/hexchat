@@ -21,14 +21,14 @@
 #endif
 
 #ifdef USE_DEBUG
-#define malloc(n) xchat_malloc(n, __FILE__, __LINE__)
-#define realloc(n, m) xchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) xchat_dfree(n, __FILE__, __LINE__)
-#define strdup(n) xchat_strdup(n, __FILE__, __LINE__)
-void *xchat_malloc (int size, char *file, int line);
-void *xchat_strdup (char *str, char *file, int line);
-void xchat_dfree (void *buf, char *file, int line);
-void *xchat_realloc (char *old, int len, char *file, int line);
+#define malloc(n) hexchat_malloc(n, __FILE__, __LINE__)
+#define realloc(n, m) hexchat_realloc(n, m, __FILE__, __LINE__)
+#define free(n) hexchat_dfree(n, __FILE__, __LINE__)
+#define strdup(n) hexchat_strdup(n, __FILE__, __LINE__)
+void *hexchat_malloc (int size, char *file, int line);
+void *hexchat_strdup (char *str, char *file, int line);
+void hexchat_dfree (void *buf, char *file, int line);
+void *hexchat_realloc (char *old, int len, char *file, int line);
 #endif
 
 #ifdef SOCKS
@@ -597,7 +597,7 @@ struct popup
 /* CL: get a random int in the range [0..n-1]. DON'T use rand() % n, it gives terrible results. */
 #define RAND_INT(n) ((int)(rand() / (RAND_MAX + 1.0) * (n)))
 
-#define xchat_filename_from_utf8 g_filename_from_utf8
-#define xchat_filename_to_utf8 g_filename_to_utf8
+#define hexchat_filename_from_utf8 g_filename_from_utf8
+#define hexchat_filename_to_utf8 g_filename_to_utf8
 
 #endif

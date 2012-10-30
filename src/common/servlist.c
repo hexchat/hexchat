@@ -1036,7 +1036,7 @@ servlist_load (void)
 	char *tmp;
 	ircnet *net = NULL;
 
-	fp = xchat_fopen_file ("servlist_.conf", "r", 0);
+	fp = hexchat_fopen_file ("servlist_.conf", "r", 0);
 	if (!fp)
 		return FALSE;
 
@@ -1172,7 +1172,7 @@ servlist_save (void)
 		first = TRUE;
 #endif
 
-	fp = xchat_fopen_file ("servlist_.conf", "w", 0);
+	fp = hexchat_fopen_file ("servlist_.conf", "w", 0);
 	if (!fp)
 		return FALSE;
 

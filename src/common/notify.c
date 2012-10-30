@@ -129,7 +129,7 @@ notify_save (void)
 	struct notify *notify;
 	GSList *list = notify_list;
 
-	fh = xchat_open_file ("notify.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fh = hexchat_open_file ("notify.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		while (list)
@@ -155,7 +155,7 @@ notify_load (void)
 	char buf[256];
 	char *sep;
 
-	fh = xchat_open_file ("notify.conf", O_RDONLY, 0, 0);
+	fh = hexchat_open_file ("notify.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
 	{
 		while (waitline (fh, buf, sizeof buf, FALSE) != -1)
@@ -393,7 +393,7 @@ notify_markonline (server *serv, char *word[])
 			   about 27 people */
 			if (i > PDIWORDS - 5)
 			{
-				/*fprintf (stderr, _("*** XCHAT WARNING: notify list too large.\n"));*/
+				/*fprintf (stderr, _("*** HEXCHAT WARNING: notify list too large.\n"));*/
 				break;
 			}
 		}
@@ -430,7 +430,7 @@ notify_checklist_for_server (server *serv)
 				/* LAME: we can't send more than 512 bytes to the server, but     *
 				 * if we split it in two packets, our offline detection wouldn't  *
 				 work                                                           */
-				/*fprintf (stderr, _("*** XCHAT WARNING: notify list too large.\n"));*/
+				/*fprintf (stderr, _("*** HEXCHAT WARNING: notify list too large.\n"));*/
 				break;
 			}
 		}

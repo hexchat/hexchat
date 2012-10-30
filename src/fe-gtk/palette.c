@@ -104,7 +104,7 @@ palette_alloc (GtkWidget * widget)
 	}
 }
 
-/* maps XChat 2.0.x colors to current */
+/* maps HexChat 2.0.x colors to current */
 static const int remap[] =
 {
 	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
@@ -128,10 +128,10 @@ palette_load (void)
 	int red, green, blue;
 	int upgrade = FALSE;
 
-	fh = xchat_open_file ("colors.conf", O_RDONLY, 0, 0);
+	fh = hexchat_open_file ("colors.conf", O_RDONLY, 0, 0);
 	if (fh == -1)
 	{
-		fh = xchat_open_file ("palette.conf", O_RDONLY, 0, 0);
+		fh = hexchat_open_file ("palette.conf", O_RDONLY, 0, 0);
 		upgrade = TRUE;
 	}
 
@@ -210,7 +210,7 @@ palette_save (void)
 	int i, j, fh;
 	char prefname[256];
 
-	fh = xchat_open_file ("colors.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fh = hexchat_open_file ("colors.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		/* mIRC colors 0-31 are here */

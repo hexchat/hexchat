@@ -612,11 +612,11 @@ userlist_create (GtkWidget *box)
 	static const GtkTargetEntry dnd_dest_targets[] =
 	{
 		{"text/uri-list", 0, 1},
-		{"XCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
+		{"HEXCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
 	};
 	static const GtkTargetEntry dnd_src_target[] =
 	{
-		{"XCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
+		{"HEXCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
 	};
 
 	sw = gtk_scrolled_window_new (NULL, NULL);

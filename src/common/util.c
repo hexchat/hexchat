@@ -85,7 +85,7 @@ struct mem_block
 struct mem_block *mroot = NULL;
 
 void *
-xchat_malloc (int size, char *file, int line)
+hexchat_malloc (int size, char *file, int line)
 {
 	void *ret;
 	struct mem_block *new;
@@ -113,21 +113,21 @@ xchat_malloc (int size, char *file, int line)
 }
 
 void *
-xchat_realloc (char *old, int len, char *file, int line)
+hexchat_realloc (char *old, int len, char *file, int line)
 {
 	char *ret;
 
-	ret = xchat_malloc (len, file, line);
+	ret = hexchat_malloc (len, file, line);
 	if (ret)
 	{
 		strcpy (ret, old);
-		xchat_dfree (old, file, line);
+		hexchat_dfree (old, file, line);
 	}
 	return ret;
 }
 
 void *
-xchat_strdup (char *str, char *file, int line)
+hexchat_strdup (char *str, char *file, int line)
 {
 	void *ret;
 	struct mem_block *new;
@@ -158,7 +158,7 @@ xchat_strdup (char *str, char *file, int line)
 }
 
 void
-xchat_mem_list (void)
+hexchat_mem_list (void)
 {
 	struct mem_block *cur, *p;
 	GSList *totals = 0;
@@ -199,7 +199,7 @@ xchat_mem_list (void)
 }
 
 void
-xchat_dfree (void *buf, char *file, int line)
+hexchat_dfree (void *buf, char *file, int line)
 {
 	struct mem_block *cur, *last;
 
@@ -237,10 +237,10 @@ xchat_dfree (void *buf, char *file, int line)
 	free (cur);
 }
 
-#define malloc(n) xchat_malloc(n, __FILE__, __LINE__)
-#define realloc(n, m) xchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) xchat_dfree(n, __FILE__, __LINE__)
-#define strdup(n) xchat_strdup(n, __FILE__, __LINE__)
+#define malloc(n) hexchat_malloc(n, __FILE__, __LINE__)
+#define realloc(n, m) hexchat_realloc(n, m, __FILE__, __LINE__)
+#define free(n) hexchat_dfree(n, __FILE__, __LINE__)
+#define strdup(n) hexchat_strdup(n, __FILE__, __LINE__)
 
 #endif /* MEMORY_DEBUG */
 
@@ -1567,10 +1567,10 @@ rename_utf8 (char *oldname, char *newname)
 	int sav, res;
 	char *fso, *fsn;
 
-	fso = xchat_filename_from_utf8 (oldname, -1, 0, 0, 0);
+	fso = hexchat_filename_from_utf8 (oldname, -1, 0, 0, 0);
 	if (!fso)
 		return FALSE;
-	fsn = xchat_filename_from_utf8 (newname, -1, 0, 0, 0);
+	fsn = hexchat_filename_from_utf8 (newname, -1, 0, 0, 0);
 	if (!fsn)
 	{
 		g_free (fso);
@@ -1591,7 +1591,7 @@ unlink_utf8 (char *fname)
 	int res;
 	char *fs;
 
-	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
+	fs = hexchat_filename_from_utf8 (fname, -1, 0, 0, 0);
 	if (!fs)
 		return FALSE;
 
@@ -1606,7 +1606,7 @@ file_exists_utf8 (char *fname)
 	int res;
 	char *fs;
 
-	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
+	fs = hexchat_filename_from_utf8 (fname, -1, 0, 0, 0);
 	if (!fs)
 		return FALSE;
 
@@ -1711,10 +1711,10 @@ move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
 	}
 
 	/* convert UTF-8 to filesystem encoding */
-	src_fs = xchat_filename_from_utf8 (src, -1, 0, 0, 0);
+	src_fs = hexchat_filename_from_utf8 (src, -1, 0, 0, 0);
 	if (!src_fs)
 		return;
-	dst_fs = xchat_filename_from_utf8 (dst, -1, 0, 0, 0);
+	dst_fs = hexchat_filename_from_utf8 (dst, -1, 0, 0, 0);
 	if (!dst_fs)
 	{
 		g_free (src_fs);
@@ -1742,7 +1742,7 @@ mkdir_utf8 (char *dir)
 {
 	int ret;
 
-	dir = xchat_filename_from_utf8 (dir, -1, 0, 0, 0);
+	dir = hexchat_filename_from_utf8 (dir, -1, 0, 0, 0);
 	if (!dir)
 		return -1;
 

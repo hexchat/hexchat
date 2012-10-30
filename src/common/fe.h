@@ -144,9 +144,9 @@ void fe_menu_update (menu_entry *);
 #define FE_SE_RECONDELAY 3
 #define FE_SE_CONNECTING 4
 void fe_server_event (server *serv, int type, int arg);
-/* pass NULL filename2 for default xchat icon */
+/* pass NULL filename2 for default HexChat icon */
 void fe_tray_set_flash (const char *filename1, const char *filename2, int timeout);
-/* pass NULL filename for default xchat icon */
+/* pass NULL filename for default HexChat icon */
 void fe_tray_set_file (const char *filename);
 typedef enum
 {

@@ -113,7 +113,7 @@ static void
 nick_command (session * sess, char *cmd)
 {
 	if (*cmd == '!')
-		xchat_exec (cmd + 1);
+		hexchat_exec (cmd + 1);
 	else
 		handle_command (sess, cmd, TRUE);
 }
@@ -516,7 +516,7 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 		{
 			char *icon, *label;
 
-			/* default command in xchat.c */
+			/* default command in hexchat.c */
 			if (pop->cmd[0] == 'n' && !strcmp (pop->cmd, "notify -n ASK %s"))
 			{
 				/* don't create this item if already in notify list */
@@ -1393,7 +1393,7 @@ menu_pluginlist (void)
 									"%m  =  machine info\n"\
                            "%n  =  your nick\n"\
 									"%t  =  time/date\n"\
-                           "%v  =  xchat version\n"\
+                           "%v  =  HexChat version\n"\
                            "%2  =  word 2\n"\
                            "%3  =  word 3\n"\
                            "&2  =  word 2 to the end of line\n"\
@@ -1438,7 +1438,7 @@ menu_pluginlist (void)
                            "%s  =  the URL string\n\n"\
                            "Putting a ! infront of the command\n"\
                            "indicates it should be sent to a\n"\
-                           "shell instead of XChat")
+                           "shell instead of HexChat")
 
 static void
 menu_usercommands (void)

@@ -239,7 +239,7 @@ is_dcc (struct DCC *dcc)
 	return FALSE;
 }
 
-/* this is called from xchat.c:xchat_misc_checks() every 1 second. */
+/* this is called from hexchat.c:hexchat_misc_checks() every 1 second. */
 
 void
 dcc_check_timeouts (void)
@@ -1798,7 +1798,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		free (file);
 
 		/* for_files() will use opendir, so we need local FS encoding */
-		path_fs = xchat_filename_from_utf8 (path, -1, 0, 0, 0);
+		path_fs = hexchat_filename_from_utf8 (path, -1, 0, 0, 0);
 		if (path_fs)
 		{
 			recursive = TRUE;
@@ -1817,7 +1817,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 	dcc->maxcps = maxcps;
 
 	/* get the local filesystem encoding */
-	file_fs = xchat_filename_from_utf8 (file, -1, 0, 0, 0);
+	file_fs = hexchat_filename_from_utf8 (file, -1, 0, 0, 0);
 
 	if (stat (file_fs, &st) != -1)
 	{

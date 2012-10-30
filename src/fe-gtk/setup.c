@@ -2298,7 +2298,7 @@ setup_apply (struct hexchatprefs *pr)
 static void
 setup_apply_cb (GtkWidget *but, GtkWidget *win)
 {
-	/* setup_prefs -> xchat */
+	/* setup_prefs -> hexchat */
 	setup_apply (&setup_prefs);
 }
 #endif

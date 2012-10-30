@@ -43,7 +43,7 @@
 #include "ignore.h"
 #include "util.h"
 #include "fe.h"
-#include "cfgfiles.h"			  /* xchat_fopen_file() */
+#include "cfgfiles.h"			  /* hexchat_fopen_file() */
 #include "network.h"				/* net_ip() */
 #include "modes.h"
 #include "notify.h"
@@ -88,7 +88,7 @@ random_line (char *file_name)
 	if (!file_name[0])
 		goto nofile;
 
-	fh = xchat_fopen_file (file_name, "r", 0);
+	fh = hexchat_fopen_file (file_name, "r", 0);
 	if (!fh)
 	{
 	 nofile:
@@ -2385,7 +2385,7 @@ cmd_kickban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_killall (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	xchat_exit();
+	hexchat_exit();
 	return 2;
 }
 
@@ -2470,7 +2470,7 @@ load_perform_file (session *sess, char *file)
 	char *nl;
 	FILE *fp;
 
-	fp = xchat_fopen_file (file, "r", XOF_FULLPATH);
+	fp = hexchat_fopen_file (file, "r", XOF_FULLPATH);
 	if (!fp)
 		return FALSE;
 
@@ -3223,7 +3223,7 @@ cmd_tray (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (!word[3][0])
 	{
-		fe_tray_set_file (NULL);	/* default xchat icon */
+		fe_tray_set_file (NULL);	/* default HexChat icon */
 		return TRUE;
 	}
 
@@ -3695,7 +3695,7 @@ const struct commands xc_cmds[] = {
 	{"RECONNECT", cmd_reconnect, 0, 0, 1,
 	 N_("RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")},
 #endif
-	{"RECV", cmd_recv, 1, 0, 1, N_("RECV <text>, send raw data to xchat, as if it was received from the irc server")},
+	{"RECV", cmd_recv, 1, 0, 1, N_("RECV <text>, send raw data to HexChat, as if it was received from the IRC server")},
 
 	{"SAY", cmd_say, 0, 0, 1,
 	 N_("SAY <text>, sends the text to the object in the current window")},

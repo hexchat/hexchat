@@ -286,7 +286,7 @@ insert_underline(SexySpellEntry *entry, guint start, guint end)
 	PangoAttribute *ucolor;
 	PangoAttribute *unline;
 
-	fh = xchat_open_file ("colors.conf", O_RDONLY, 0, 0);
+	fh = hexchat_open_file ("colors.conf", O_RDONLY, 0, 0);
 
 	if (fh != -1)
 	{

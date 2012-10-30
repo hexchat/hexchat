@@ -1,4 +1,4 @@
-/* simple identd server for xchat under win32 */
+/* simple identd server for HexChat under Win32 */
 
 #include "inet.h"
 #include "hexchat.h"

@@ -278,7 +278,7 @@ ignore_load ()
 	char *cfg, *my_cfg;
 	int fh, i;
 
-	fh = xchat_open_file ("ignore.conf", O_RDONLY, 0, 0);
+	fh = hexchat_open_file ("ignore.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
 	{
 		fstat (fh, &st);
@@ -313,7 +313,7 @@ ignore_save ()
 	GSList *temp = ignore_list;
 	struct ignore *ig;
 
-	fh = xchat_open_file ("ignore.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fh = hexchat_open_file ("ignore.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		while (temp)

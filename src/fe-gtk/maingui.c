@@ -1064,7 +1064,7 @@ mg_topdestroy_cb (GtkWidget *win, session *sess)
 	/* kill the user list */
 	g_object_unref (G_OBJECT (sess->res->user_model));
 
-	session_free (sess);	/* tell xchat.c about it */
+	session_free (sess);	/* tell hexchat.c about it */
 }
 
 /* cleanup an IRC tab */
@@ -1079,7 +1079,7 @@ mg_ircdestroy (session *sess)
 	/* kill the user list */
 	g_object_unref (G_OBJECT (sess->res->user_model));
 
-	session_free (sess);	/* tell xchat.c about it */
+	session_free (sess);	/* tell hexchat.c about it */
 
 	if (mg_gui == NULL)
 	{
@@ -1243,7 +1243,7 @@ mg_open_quit_dialog (gboolean minimize_button)
 	cons = mg_count_networks ();
 	if (dccs + cons == 0 || !prefs.hex_gui_quit_dialog)
 	{
-		xchat_exit ();
+		hexchat_exit ();
 		return;
 	}
 
@@ -1320,7 +1320,7 @@ mg_open_quit_dialog (gboolean minimize_button)
 	case 0:
 		if (GTK_TOGGLE_BUTTON (checkbutton1)->active)
 			prefs.hex_gui_quit_dialog = 0;
-		xchat_exit ();
+		hexchat_exit ();
 		break;
 	case 1: /* minimize to tray */
 		if (GTK_TOGGLE_BUTTON (checkbutton1)->active)
@@ -1694,7 +1694,7 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 			if (fname)
 			{
 				/* dcc_send() expects utf-8 */
-				p = xchat_filename_to_utf8 (fname, -1, 0, 0, 0);
+				p = hexchat_filename_to_utf8 (fname, -1, 0, 0, 0);
 				if (p)
 				{
 					dcc_send (sess, target, p, prefs.hex_dcc_max_send_cps, 0);
@@ -1829,7 +1829,7 @@ mg_tabwindow_kill_cb (GtkWidget *win, gpointer userdata)
 	session *sess;
 
 /*	puts("enter mg_tabwindow_kill_cb");*/
-	xchat_is_quitting = TRUE;
+	hexchat_is_quitting = TRUE;
 
 	/* see if there's any non-tab windows left */
 	list = sess_list;
@@ -1839,7 +1839,7 @@ mg_tabwindow_kill_cb (GtkWidget *win, gpointer userdata)
 		next = list->next;
 		if (!sess->gui->is_tab)
 		{
-			xchat_is_quitting = FALSE;
+			hexchat_is_quitting = FALSE;
 /*			puts("-> will not exit, some toplevel windows left");*/
 		} else
 		{
@@ -1895,7 +1895,7 @@ mg_link_irctab (session *sess, int focus)
 		win = mg_changui_destroy (sess);
 		mg_changui_new (sess, sess->res, 0, focus);
 		mg_populate (sess);
-		xchat_is_quitting = FALSE;
+		hexchat_is_quitting = FALSE;
 		if (win)
 			gtk_widget_destroy (win);
 		return;
@@ -2381,8 +2381,8 @@ mg_create_textarea (session *sess, GtkWidget *box)
 	};
 	static const GtkTargetEntry dnd_dest_targets[] =
 	{
-		{"XCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 },
-		{"XCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
+		{"HEXCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 },
+		{"HEXCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
 	};
 
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -3621,7 +3621,7 @@ mg_is_gui_target (GdkDragContext *context)
 	target_name = gdk_atom_name (context->targets->data);
 	if (target_name)
 	{
-		/* if it's not XCHAT_CHANVIEW or XCHAT_USERLIST */
+		/* if it's not HEXCHAT_CHANVIEW or HEXCHAT_USERLIST */
 		/* we should ignore it. */
 		if (target_name[0] != 'X')
 		{

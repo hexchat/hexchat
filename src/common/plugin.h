@@ -80,7 +80,7 @@ struct _hexchat_plugin
 			void *handle);
 	int (*hexchat_emit_print) (hexchat_plugin *ph,
 			const char *event_name, ...);
-	void *(*xchat_read_fd) (hexchat_plugin *ph);
+	void *(*hexchat_read_fd) (hexchat_plugin *ph);
 	time_t (*hexchat_list_time) (hexchat_plugin *ph,
 		hexchat_list *xlist,
 		const char *name);
@@ -113,10 +113,10 @@ struct _hexchat_plugin
 		const char *var);
 	int (*hexchat_pluginpref_list) (hexchat_plugin *ph,
 		char *dest);
-	void *(*xchat_dummy4) (hexchat_plugin *ph);
-	void *(*xchat_dummy3) (hexchat_plugin *ph);
-	void *(*xchat_dummy2) (hexchat_plugin *ph);
-	void *(*xchat_dummy1) (hexchat_plugin *ph);
+	void *(*hexchat_dummy4) (hexchat_plugin *ph);
+	void *(*hexchat_dummy3) (hexchat_plugin *ph);
+	void *(*hexchat_dummy2) (hexchat_plugin *ph);
+	void *(*hexchat_dummy1) (hexchat_plugin *ph);
 	/* PRIVATE FIELDS! */
 	void *handle;		/* from dlopen */
 	char *filename;	/* loaded from */

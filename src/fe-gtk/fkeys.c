@@ -427,7 +427,7 @@ key_load_defaults ()
 		"None\nF9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
 	int fd;
 
-	fd = xchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY, 0x180, XOF_DOMODE);
+	fd = hexchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY, 0x180, XOF_DOMODE);
 	if (fd < 0)
 		/* ???!!! */
 		return;
@@ -502,7 +502,7 @@ key_dialog_delete (GtkWidget * button, GtkCList * list)
 			cur = cur->next;
 		}
 		printf ("*** key_dialog_delete: couldn't find kb in list!\n");
-		/*if (getenv ("XCHAT_DEBUG"))
+		/*if (getenv ("HEXCHAT_DEBUG"))
 			abort ();*/
 	}
 }
@@ -844,10 +844,10 @@ key_save_kbs (char *fn)
 	struct key_binding *kb;
 
 	if (!fn)
-		fd = xchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY,
+		fd = hexchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY,
 									 0x180, XOF_DOMODE);
 	else
-		fd = xchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY,
+		fd = hexchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY,
 									 0x180, XOF_DOMODE | XOF_FULLPATH);
 	if (fd < 0)
 	{
@@ -855,7 +855,7 @@ key_save_kbs (char *fn)
 		return;
 	}
 	write (fd, buf,
-			 snprintf (buf, 510, "# XChat key bindings config file\n\n"));
+			 snprintf (buf, 510, "# HexChat key bindings config file\n\n"));
 
 	kb = keys_root;
 	i = 0;
@@ -909,7 +909,7 @@ key_save_kbs (char *fn)
 }
 
 /* I just know this is going to be a nasty parse, if you think it's bugged
-   it almost certainly is so contact the XChat dev team --AGL */
+   it almost certainly is so contact the HexChat dev team --AGL */
 
 static inline int
 key_load_kbs_helper_mod (char *in, int *out)
@@ -972,9 +972,9 @@ key_load_kbs (char *filename)
 	int fd, len, pnt = 0, state = 0, n;
 
 	if (filename == NULL)
-		fd = xchat_open_file ("keybindings.conf", O_RDONLY, 0, 0);
+		fd = hexchat_open_file ("keybindings.conf", O_RDONLY, 0, 0);
 	else
-		fd = xchat_open_file (filename, O_RDONLY, 0, XOF_FULLPATH);
+		fd = hexchat_open_file (filename, O_RDONLY, 0, XOF_FULLPATH);
 	if (fd < 0)
 		return 1;
 	if (fstat (fd, &st) != 0)
@@ -1143,7 +1143,7 @@ key_load_kbs (char *filename)
 	return 0;
 
  corrupt_file:
-	/*if (getenv ("XCHAT_DEBUG"))
+	/*if (getenv ("HEXCHAT_DEBUG"))
 		abort ();*/
 	snprintf (ibuf, 1024,
 						_("Key bindings config file is corrupt, load aborted\n"
