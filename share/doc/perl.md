@@ -55,7 +55,7 @@ This is the first thing to call in every script.
 
 ### `Xchat::hook_server( $message, $callback, [\%options] )`
 
-### `Xchat::hook_command( $command, $callback, [\%options] )</code></h3>`
+### `Xchat::hook_command( $command, $callback, [\%options] )`
 
 ### `Xchat::hook_print( $event,$callback, [\%options] )`
 
@@ -462,7 +462,7 @@ to change the value for a particular ID.
 
 ### `Xchat::get_prefs( $name )`
 
- * **`$name</code>` - name of a HexChat setting (available through the /set command)
+ * **`$name` - name of a HexChat setting (available through the /set command)**
 
 This function provides a way to retrieve HexChat's setting information.
 
