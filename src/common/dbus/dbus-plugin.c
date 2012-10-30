@@ -1069,17 +1069,17 @@ dbus_plugin_init (xchat_plugin *plugin_handle,
 						 g_object_unref);
 
 		xchat_hook_print (ph, "Open Context",
-				  XCHAT_PRI_NORM,
+				  HEXCHAT_PRI_NORM,
 				  open_context_cb,
 				  NULL);
 
 		xchat_hook_print (ph, "Close Context",
-				  XCHAT_PRI_NORM,
+				  HEXCHAT_PRI_NORM,
 				  close_context_cb,
 				  NULL);
 
 		xchat_hook_command (ph, "unload",
-				    XCHAT_PRI_HIGHEST,
+				    HEXCHAT_PRI_HIGHEST,
 				    unload_plugin_cb, NULL, NULL);
 	}
 
