@@ -176,7 +176,7 @@ static struct {
 	long value;
 } lxc_consts[] = {
 	{"EAT_NONE", 	HEXCHAT_EAT_NONE},
-	{"EAT_XCHAT", 	HEXCHAT_EAT_XCHAT},
+	{"EAT_XCHAT", 	HEXCHAT_EAT_HEXCHAT},
 	{"EAT_PLUGIN",	HEXCHAT_EAT_PLUGIN},
 	{"EAT_ALL",		HEXCHAT_EAT_ALL},
 

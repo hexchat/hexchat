@@ -988,7 +988,7 @@ static int tcl_complete(ClientData cd, Tcl_Interp * irp, int argc, const char *a
             if (strcasecmp("EAT_NONE", argv[1]) == 0)
                 complete[complete_level].result = HEXCHAT_EAT_NONE;
             else if (strcasecmp("EAT_XCHAT", argv[1]) == 0)
-                complete[complete_level].result = HEXCHAT_EAT_XCHAT;
+                complete[complete_level].result = HEXCHAT_EAT_HEXCHAT;
             else if (strcasecmp("EAT_PLUGIN", argv[1]) == 0)
                 complete[complete_level].result = HEXCHAT_EAT_PLUGIN;
             else if (strcasecmp("EAT_ALL", argv[1]) == 0)
@@ -2054,7 +2054,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
         complete_level--;
 
-        return HEXCHAT_EAT_XCHAT;
+        return HEXCHAT_EAT_HEXCHAT;
 
     } else {
         complete_level--;

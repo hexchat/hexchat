@@ -1171,7 +1171,7 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	}
 
 	PyModule_AddIntConstant(m, "EAT_NONE", HEXCHAT_EAT_NONE);
-	PyModule_AddIntConstant(m, "EAT_XCHAT", HEXCHAT_EAT_XCHAT);
+	PyModule_AddIntConstant(m, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
 	PyModule_AddIntConstant(m, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
 	PyModule_AddIntConstant(m, "EAT_ALL", HEXCHAT_EAT_ALL);
 	PyModule_AddIntConstant(m, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
@@ -2192,7 +2192,7 @@ Command_Load(char *word[], char *word_eol[], void *userdata)
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {
 		Command_PyLoad(word[2]);
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 	return HEXCHAT_EAT_NONE;
 }
@@ -2203,7 +2203,7 @@ Command_Unload(char *word[], char *word_eol[], void *userdata)
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {
 		Command_PyUnload(word[2]);
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 	return HEXCHAT_EAT_NONE;
 }

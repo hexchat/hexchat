@@ -59,7 +59,7 @@ run_command (char *word[], char *word_eol[], void *userdata)
 		{
 			/*strcat (commandLine, word_eol[3]);*/
 			hexchat_printf (ph, "Printing Exec output to others is not supported yet.\n");
-			return HEXCHAT_EAT_XCHAT;
+			return HEXCHAT_EAT_HEXCHAT;
 		}
 		else
 		{
@@ -112,7 +112,7 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	CloseHandle (pInfo.hProcess);
 	CloseHandle (pInfo.hThread);
 
-	return HEXCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 int

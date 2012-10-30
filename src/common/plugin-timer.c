@@ -148,7 +148,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	if (!word[2][0])
 	{
 		timer_showlist ();
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if (g_ascii_strcasecmp (word[2], "-quiet") == 0)
@@ -160,7 +160,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	if (g_ascii_strcasecmp (word[2 + offset], "-delete") == 0)
 	{
 		timer_del_ref (atoi (word[3 + offset]), quiet);
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if (g_ascii_strcasecmp (word[2 + offset], "-refnum") == 0)
@@ -183,7 +183,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	else
 		timer_add (ref, timeout, repeat, command);
 
-	return HEXCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 int

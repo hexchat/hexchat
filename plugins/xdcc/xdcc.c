@@ -158,13 +158,13 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 			else
 				hexchat_printf(ph, "Cannot read %s\n", word[4]);
 		}
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if(strcasecmp(word[2], "DEL") == 0)
 	{
 		xdcc_del(word[3]);
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if(strcasecmp(word[2], "SLOTS") == 0)
@@ -177,27 +177,27 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 		{
 			hexchat_printf(ph, "XDCC slots: %d\n", xdcc_slots);
 		}
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if(strcasecmp(word[2], "ON") == 0)
 	{
 		xdcc_on = TRUE;
 		hexchat_print(ph, "XDCC now ON\n");
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if(strcasecmp(word[2], "LIST") == 0)
 	{
 		xdcc_list("", "", "", "echo");
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if(strcasecmp(word[2], "OFF") == 0)
 	{
 		xdcc_on = FALSE;
 		hexchat_print(ph, "XDCC now OFF\n");
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	hexchat_print(ph, "Syntax: XDCC ADD <name> <fullpath> <description>\n"
@@ -207,7 +207,7 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 						 "        XDCC ON\n"
 						 "        XDCC OFF\n\n");
 
-	return HEXCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 static void xdcc_remote(char *from, char *msg)

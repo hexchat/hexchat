@@ -100,7 +100,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     hexchat_commandf(ph, "PRIVMSG %s :+OK %s", channel, encrypted);
     
     free(encrypted);
-    return HEXCHAT_EAT_XCHAT;
+    return HEXCHAT_EAT_HEXCHAT;
 }
 
 /**
@@ -178,7 +178,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     
     free(message);
     free(sender_nick);
-    return HEXCHAT_EAT_XCHAT;
+    return HEXCHAT_EAT_HEXCHAT;
   
   decrypt_error:
     free(decrypted);
@@ -196,7 +196,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     // Check syntax
     if (*word[2] == '\0') {
         hexchat_printf(ph, "%s\n", usage_setkey);
-        return HEXCHAT_EAT_XCHAT;
+        return HEXCHAT_EAT_HEXCHAT;
     }
     
     if (*word[3] == '\0') {
@@ -216,7 +216,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
         hexchat_printf(ph, "\00305Failed to store key in blow.ini\n", nick, key);
     }
     
-    return HEXCHAT_EAT_XCHAT;
+    return HEXCHAT_EAT_HEXCHAT;
 }
 
 /**
@@ -228,7 +228,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     // Check syntax
     if (*word[2] == '\0' || *word[3] != '\0') {
         hexchat_printf(ph, "%s\n", usage_delkey);
-        return HEXCHAT_EAT_XCHAT;
+        return HEXCHAT_EAT_HEXCHAT;
     }
     
     nick = word_eol[2];
@@ -240,7 +240,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
         hexchat_printf(ph, "\00305Failed to delete key in blow.ini!\n", nick);
     }
     
-    return HEXCHAT_EAT_XCHAT;
+    return HEXCHAT_EAT_HEXCHAT;
 }
 
 /**

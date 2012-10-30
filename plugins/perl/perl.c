@@ -523,7 +523,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	if (SvTRUE (ERRSV)) {
 		hexchat_printf (ph, "Error in command callback %s", SvPV_nolen (ERRSV));
 		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
-		retVal = HEXCHAT_EAT_XCHAT;
+		retVal = HEXCHAT_EAT_HEXCHAT;
 	} else {
 		if (count != 1) {
 			hexchat_print (ph, "Command handler should only return 1 value.");
@@ -1327,7 +1327,7 @@ xs_init (pTHX)
 	newCONSTSUB (stash, "PRI_LOWEST", newSViv (HEXCHAT_PRI_LOWEST));
 
 	newCONSTSUB (stash, "EAT_NONE", newSViv (HEXCHAT_EAT_NONE));
-	newCONSTSUB (stash, "EAT_XCHAT", newSViv (HEXCHAT_EAT_XCHAT));
+	newCONSTSUB (stash, "EAT_XCHAT", newSViv (HEXCHAT_EAT_HEXCHAT));
 	newCONSTSUB (stash, "EAT_PLUGIN", newSViv (HEXCHAT_EAT_PLUGIN));
 	newCONSTSUB (stash, "EAT_ALL", newSViv (HEXCHAT_EAT_ALL));
 	newCONSTSUB (stash, "FD_READ", newSViv (HEXCHAT_FD_READ));
@@ -1473,10 +1473,10 @@ perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
 {
 	if (my_perl != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload_all", 0)), "");
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
-	return HEXCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 static int
@@ -1485,11 +1485,11 @@ perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 	if (my_perl != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload_all", 0)), "");
 
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	} else {
 		perl_auto_load( NULL );
 	}
-	return HEXCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 static int
@@ -1500,7 +1500,7 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 	if (file != NULL )
 	{
 		perl_load_file (file);
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -1513,7 +1513,7 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 	
 	if (my_perl != NULL && file != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload", 0)), file);
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -1526,10 +1526,10 @@ perl_command_reload (char *word[], char *word_eol[], void *userdata)
 	
 	if (my_perl != NULL && file != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload", 0)), file);
-		return HEXCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 	
-	return HEXCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 void
