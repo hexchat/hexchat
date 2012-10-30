@@ -10,7 +10,7 @@ Here are some of the features of the python plugin interface:
  * Python interactive console
  * Python interactive command execution
  * Full thread support
- * Stdout and stderr redirected to xchat console
+ * Stdout and stderr redirected to HexChat console
  * Dynamic list management
  * Nice context treatment
  * Plugin preferences
@@ -48,17 +48,17 @@ interface (which usually loads at startup time), just make sure it has a
 ## Context theory
 
 Before starting to explain what the API offers, I'll do a short
-introduction about the xchat context concept. Not because it's something
+introduction about the HexChat context concept. Not because it's something
 hard to understand, but because you'll understand better the API
 explanations if you know what I'm talking about.
 
-You can think about a context as an xchat channel, server, or query tab.
+You can think about a context as an HexChat channel, server, or query tab.
 Each of these tabs, has its own context, and is related to a given
 server and channel (queries are a special kind of channel).
 
-The *current* context is the one where xchat passes control to the
-module. For example, when xchat receives a command in a specific
-channel, and you have asked xchat to tell you about this event, the
+The *current* context is the one where HexChat passes control to the
+module. For example, when HexChat receives a command in a specific
+channel, and you have asked HexChat to tell you about this event, the
 current context will be set to this channel before your module is
 called.
 
@@ -79,12 +79,12 @@ This module will print "Hello world!" in the HexChat console, and sleep
 forever until it's unloaded. It's a simple module, but already
 introduces some concepts. Notice how the module information is set. This
 information is obligatory, and will be shown when listing the loaded
-xchat modules.
+HexChat modules.
 
 
 ## xchat module
 
-The xchat module is your passport to every xchat functionality offered
+The xchat module is your passport to every HexChat functionality offered
 by the Python plugin interface. Here's a simple example:
 
 <pre>
@@ -123,7 +123,7 @@ xchat.emit_print("Channel Message", "John", "Hi there", "@")
 #### xchat.command(string)
 
 Execute the given command in the current context. This has the same
-results as executing a command in the xchat window, but notice that the
+results as executing a command in the HexChat window, but notice that the
 `/` prefix is not used. Here is an example:
 
 <pre>
@@ -156,13 +156,13 @@ are available to be queried:
 
  * **away:** Away reason or None if you are not away.
  * **channels** Channel of the current context.
+ * **hexchatdir:** HexChat config directory e.g.: "~/.config/hexchat".
  * **hostname:** Real hostname of the server you connected to.
  * **network:** Current network name or None.
  * **nick:** Your current nick name.
  * **server:** Current server name (what the server claims to be) or None if you are not connected.
  * **topic:** Current channel topic.
  * **version:** HexChat version number.
- * **hexchatdir:** HexChat config directory e.g.: "~/.config/hexchat".
 
 Example:
 
@@ -192,7 +192,7 @@ depending on the information provided by the list type.
 The example below is a rewrite of the example provided with HexChat's
 plugin API documentation. It prints a list of every DCC transfer
 happening at the moment. Notice how similar the interface is to the C
-API provided by xchat.
+API provided by HexChat.
 
 <pre>
 list = xchat.get_list("dcc")
@@ -283,7 +283,7 @@ following attributes are available in each list item:
 
 ### Hook functions
 
-These functions allow one to hook into xchat events.
+These functions allow one to hook into HexChat events.
 
 
 #### Priorities
@@ -324,11 +324,11 @@ your callback.
 #### Callback return constants (EAT\_*)
 
 When a callback is supposed to return one of the EAT\_\* macros, it is
-able control how xchat will proceed after the callback returns. These
+able control how HexChat will proceed after the callback returns. These
 are the available constants, and their meanings:
 
  * **EAT_PLUGIN:** Don't let any other plugin receive this event.
- * **EAT_XCHAT:** Don't let xchat treat this event as usual.
+ * **EAT_XCHAT:** Don't let HexChat treat this event as usual.
  * **EAT_ALL:** Eat the event completely.
  * **EAT_NONE:** Let everything happen as usual.
 
@@ -371,7 +371,7 @@ above. This function returns a hook handler which may be used in the
 <pre>
 def youpart_cb(word, word_eol, userdata):
     print "You have left channel", word[2]
-    return xchat.EAT_XCHAT # Don't let xchat do its normal printing
+    return xchat.EAT_XCHAT # Don't let HexChat do its normal printing
 
 xchat.hook_print("You Part", youpart_cb)
 </pre>
@@ -392,7 +392,7 @@ example:
 <pre>
 def kick_cb(word, word_eol, userdata):
     print "%s was kicked from %s (%s)" % (word[3], word[2], word_eol[4])
-    # Don't eat this event, let other plugins and xchat see it too
+    # Don't eat this event, let other plugins and HexChat see it too
     return xchat.EAT_NONE
 
 xchat.hook_server("KICK", kick_cb)
@@ -485,7 +485,7 @@ Below you will find information about how to work with contexts.
 #### Context objects
 
 As explained in the Context theory session above, contexts give access
-to a specific channel/query/server tab of xchat. Every function
+to a specific channel/query/server tab of HexChat. Every function
 available in the xchat module will be evaluated in the current context,
 which will be specified by HexChat itself before passing control to the
 module. Sometimes you may want to work in a specific context, and that's
