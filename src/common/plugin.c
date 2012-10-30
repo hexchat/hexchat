@@ -712,11 +712,11 @@ plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 	typedef int (xchat_fd_cb2) (int fd, int flags, void *user_data, GIOChannel *);
 
 	if (condition & G_IO_IN)
-		flags |= XCHAT_FD_READ;
+		flags |= HEXCHAT_FD_READ;
 	if (condition & G_IO_OUT)
-		flags |= XCHAT_FD_WRITE;
+		flags |= HEXCHAT_FD_WRITE;
 	if (condition & G_IO_PRI)
-		flags |= XCHAT_FD_EXCEPTION;
+		flags |= HEXCHAT_FD_EXCEPTION;
 
 	ret = ((xchat_fd_cb2 *)hook->callback) (hook->pri, flags, hook->userdata, source);
 
