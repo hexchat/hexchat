@@ -441,14 +441,14 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
     int private = 0;
 
     if (word[0][0] == 0)
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
 
     if (complete_level == MAX_COMPLETES)
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
 
     complete_level++;
-    complete[complete_level].defresult = XCHAT_EAT_NONE;     /* XCHAT_EAT_PLUGIN; */
-    complete[complete_level].result = XCHAT_EAT_NONE;
+    complete[complete_level].defresult = HEXCHAT_EAT_NONE;     /* HEXCHAT_EAT_PLUGIN; */
+    complete[complete_level].result = HEXCHAT_EAT_NONE;
     complete[complete_level].word = word;
 	complete[complete_level].word_eol = word_eol;
 
@@ -541,7 +541,7 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
 
                 Tcl_Free((char *) proc_argv);
 
-                if ((complete[complete_level].result ==  XCHAT_EAT_PLUGIN) || (complete[complete_level].result == XCHAT_EAT_ALL))
+                if ((complete[complete_level].result ==  HEXCHAT_EAT_PLUGIN) || (complete[complete_level].result == HEXCHAT_EAT_ALL))
                     break;
 
             }
@@ -573,11 +573,11 @@ static int Print_Hook(char *word[], void *userdata)
     int x;
 
     if (complete_level == MAX_COMPLETES)
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
 
     complete_level++;
-    complete[complete_level].defresult = XCHAT_EAT_NONE;     /* XCHAT_EAT_PLUGIN; */
-    complete[complete_level].result = XCHAT_EAT_NONE;
+    complete[complete_level].defresult = HEXCHAT_EAT_NONE;     /* HEXCHAT_EAT_PLUGIN; */
+    complete[complete_level].result = HEXCHAT_EAT_NONE;
     complete[complete_level].word = word;
 	complete[complete_level].word_eol = word;
 
@@ -621,7 +621,7 @@ static int Print_Hook(char *word[], void *userdata)
 
                 Tcl_Free((char *) proc_argv);
 
-                if ((complete[complete_level].result ==  XCHAT_EAT_PLUGIN) || (complete[complete_level].result ==  XCHAT_EAT_ALL))
+                if ((complete[complete_level].result ==  HEXCHAT_EAT_PLUGIN) || (complete[complete_level].result ==  HEXCHAT_EAT_ALL))
                     break;
 
             }
@@ -986,13 +986,13 @@ static int tcl_complete(ClientData cd, Tcl_Interp * irp, int argc, const char *a
     if (argc == 2) {
         if (Tcl_GetInt(irp, argv[1], &complete[complete_level].result) != TCL_OK) {
             if (strcasecmp("EAT_NONE", argv[1]) == 0)
-                complete[complete_level].result = XCHAT_EAT_NONE;
+                complete[complete_level].result = HEXCHAT_EAT_NONE;
             else if (strcasecmp("EAT_XCHAT", argv[1]) == 0)
-                complete[complete_level].result = XCHAT_EAT_XCHAT;
+                complete[complete_level].result = HEXCHAT_EAT_XCHAT;
             else if (strcasecmp("EAT_PLUGIN", argv[1]) == 0)
-                complete[complete_level].result = XCHAT_EAT_PLUGIN;
+                complete[complete_level].result = HEXCHAT_EAT_PLUGIN;
             else if (strcasecmp("EAT_ALL", argv[1]) == 0)
-                complete[complete_level].result = XCHAT_EAT_ALL;
+                complete[complete_level].result = HEXCHAT_EAT_ALL;
             else
                 BADARGS(1, 2, " ?EAT_NONE|EAT_XCHAT|EAT_PLUGIN|EAT_ALL?");
         }
@@ -1914,11 +1914,11 @@ static int Command_Alias(char *word[], char *word_eol[], void *userdata)
     char *string;
 
     if (complete_level == MAX_COMPLETES)
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
 
     complete_level++;
-    complete[complete_level].defresult = XCHAT_EAT_ALL;
-    complete[complete_level].result = XCHAT_EAT_NONE;
+    complete[complete_level].defresult = HEXCHAT_EAT_ALL;
+    complete[complete_level].result = HEXCHAT_EAT_NONE;
     complete[complete_level].word = word;
 	complete[complete_level].word_eol = word_eol;
 
@@ -1953,14 +1953,14 @@ static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata)
     static int recurse = 0;
 
     if (recurse)
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
 
     if (complete_level == MAX_COMPLETES)
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
 
     complete_level++;
-    complete[complete_level].defresult = XCHAT_EAT_ALL;
-    complete[complete_level].result = XCHAT_EAT_NONE;
+    complete[complete_level].defresult = HEXCHAT_EAT_ALL;
+    complete[complete_level].result = HEXCHAT_EAT_NONE;
     complete[complete_level].word = word;
 	complete[complete_level].word_eol = word_eol;
 
@@ -2008,7 +2008,7 @@ static int Command_TCL(char *word[], char *word_eol[], void *userdata)
 
     complete_level--;
 
-    return XCHAT_EAT_ALL;
+    return HEXCHAT_EAT_ALL;
 }
 
 static int Command_Source(char *word[], char *word_eol[], void *userdata)
@@ -2020,7 +2020,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
     const char *errorInfo;
 
     if (!strlen(word_eol[2]))
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
 
     complete_level++;
     complete[complete_level].word = word;
@@ -2054,11 +2054,11 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
         complete_level--;
 
-        return XCHAT_EAT_XCHAT;
+        return HEXCHAT_EAT_XCHAT;
 
     } else {
         complete_level--;
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
     }
 
 }
@@ -2070,7 +2070,7 @@ static int Command_Reloadall(char *word[], char *word_eol[], void *userdata)
 
     xchat_print(ph, "\0039Tcl plugin\003\tRehashed\n");
 
-    return XCHAT_EAT_ALL;
+    return HEXCHAT_EAT_ALL;
 }
 
 static int TCL_Event_Handler(void *userdata)

@@ -155,7 +155,7 @@ HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
 	{
        xchat_print(ph, "Winamp not found.\n");
 	}
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 int

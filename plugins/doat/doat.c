@@ -67,7 +67,7 @@ parse_command( char *word[], char *word_eol[], void *userdata ) {
 			}
 		}
 	}
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_XCHAT;
 }
 
 int

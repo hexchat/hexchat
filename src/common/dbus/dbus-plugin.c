@@ -1000,7 +1000,7 @@ open_context_cb (char *word[],
 	info->context = xchat_get_context (ph);
 	contexts = g_list_prepend (contexts, info);
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -1018,7 +1018,7 @@ close_context_cb (char *word[],
 		}
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static gboolean
@@ -1042,10 +1042,10 @@ unload_plugin_cb (char *word[], char *word_eol[], void *userdata)
 		g_signal_emit (obj, 
 			       signals[UNLOAD_SIGNAL],
 			       0);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 int

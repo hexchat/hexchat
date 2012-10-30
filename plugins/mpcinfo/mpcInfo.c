@@ -33,20 +33,20 @@ static xchat_plugin *ph;
 
 static int print_themes (char *word[], char *word_eol[], void *userdata){
        printThemes();
-       return XCHAT_EAT_ALL;
+       return HEXCHAT_EAT_ALL;
 }
 
 static int mpc_themeReload(char *word[], char *word_eol[], void *userdata){
    themeInit();
    loadThemes();
-   return XCHAT_EAT_ALL;
+   return HEXCHAT_EAT_ALL;
 }
 
 static int mpc_tell(char *word[], char *word_eol[], void *userdata){
        char *tTitle, *zero, *oggLine, *line;
 	   struct tagInfo info;
 	   HWND hwnd = FindWindow("MediaPlayerClassicW",NULL);
-       if (hwnd==0) {xchat_command(ph, randomLine(notRunTheme));return XCHAT_EAT_ALL;}
+       if (hwnd==0) {xchat_command(ph, randomLine(notRunTheme));return HEXCHAT_EAT_ALL;}
        
        tTitle=(char*)malloc(sizeof(char)*1024);
        GetWindowText(hwnd, tTitle, 1024);
@@ -83,7 +83,7 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
                 //mp3Line=replace(mp3Line,"%plTitle",title);
                 mp3Line=replace(mp3Line,"%file",tTitle);
                 xchat_command(ph, mp3Line);
-                return XCHAT_EAT_ALL;
+                return HEXCHAT_EAT_ALL;
              }
           }
           if (endsWith(tTitle,".ogg")==1){
@@ -112,14 +112,14 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
                 //oggLine=replace(oggLine,"%plTitle",title);
                 oggLine=replace(oggLine,"%file",tTitle);
                 xchat_command(ph, oggLine);
-                return XCHAT_EAT_ALL;
+                return HEXCHAT_EAT_ALL;
              }
           }
        }
        line=randomLine(titleTheme);
        line=replace(line,"%title", tTitle);
        xchat_command(ph,line); 
-       return XCHAT_EAT_ALL;
+       return HEXCHAT_EAT_ALL;
 }
 
 int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg){

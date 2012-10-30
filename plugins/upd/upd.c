@@ -163,14 +163,14 @@ print_version (char *word[], char *word_eol[], void *userdata)
 	if (!g_ascii_strcasecmp ("HELP", word[2]))
 	{
 		xchat_printf (ph, upd_help);
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
 	else if (!g_ascii_strcasecmp ("SET", word[2]))
 	{
 		if (!g_ascii_strcasecmp ("", word_eol[4]))
 		{
 			xchat_printf (ph, "%s\tEnter a value!\n", name);
-			return XCHAT_EAT_XCHAT;
+			return HEXCHAT_EAT_XCHAT;
 		}
 		if (!g_ascii_strcasecmp ("delay", word[3]))
 		{
@@ -205,10 +205,10 @@ print_version (char *word[], char *word_eol[], void *userdata)
 		else
 		{
 			xchat_printf (ph, "%s\tInvalid variable name! Use 'delay' or 'freq'!\n", name);
-			return XCHAT_EAT_XCHAT;
+			return HEXCHAT_EAT_XCHAT;
 		}
 
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
 	else if (!g_ascii_strcasecmp ("", word[2]))
 	{
@@ -230,12 +230,12 @@ print_version (char *word[], char *word_eol[], void *userdata)
 			xchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
 #endif
 		}
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
 	else
 	{
 		xchat_printf (ph, upd_help);
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
 }
 

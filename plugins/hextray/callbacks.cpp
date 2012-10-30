@@ -63,7 +63,7 @@ int event_cb(char *word[], void *userdata)
 	int iEvent = (int)userdata;
 
 	if(iEvent > 10 && iEvent != 21)
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 
 	/***************************************************************************************/
 	/***** if the window is minimized or if we're allowed to show alerts when its not	 **/
@@ -176,7 +176,7 @@ int event_cb(char *word[], void *userdata)
 	/***********************************/
 	/***** pass the events to xchat ****/
 	/***********************************/
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 int command_cb(char *word[], char *word_eol[], void *userdata)
@@ -207,7 +207,7 @@ int command_cb(char *word[], char *word_eol[], void *userdata)
 
 	free(szTemp);
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)

@@ -146,7 +146,7 @@ int wmpaAuto(char *word[], char *word_eol[], void *user_data)
    char *state;
 
    pDialog = GetWMPADialog();
-   if (pDialog == NULL) return(XCHAT_EAT_ALL);
+   if (pDialog == NULL) return(HEXCHAT_EAT_ALL);
 
    if (CString(word[2]).IsEmpty()) {
       if (pDialog->autoAnnounce) {
@@ -169,7 +169,7 @@ int wmpaAuto(char *word[], char *word_eol[], void *user_data)
 
    xchat_printf(ph, "WMPA: auto is %s", state);
 
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -179,7 +179,7 @@ int wmpaCurr(char *word[], char *word_eol[], void *user_data)
 {
    xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
 
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -243,7 +243,7 @@ int wmpaFind(char *word[], char *word_eol[], void *user_data)
 
    }
 
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -289,7 +289,7 @@ int wmpaList(char *word[], char *word_eol[], void *user_data)
 
    }
 
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -301,7 +301,7 @@ int wmpaNext(char *word[], char *word_eol[], void *user_data)
       wmp->GetControls().next();
       xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -313,7 +313,7 @@ int wmpaPlay(char *word[], char *word_eol[], void *user_data)
       wmp->GetControls().play();
       xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -325,7 +325,7 @@ int wmpaPause(char *word[], char *word_eol[], void *user_data)
       wmp->GetControls().pause();
       xchat_printf(ph, "WMPA: Pausing %s", (LPCTSTR) wmpaGetSongTitle());
    }
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -337,7 +337,7 @@ int wmpaPrev(char *word[], char *word_eol[], void *user_data)
       wmp->GetControls().previous();
       xchat_printf(ph, "WMPA: Playing %s", (LPCTSTR) wmpaGetSongTitle());
    }
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -349,7 +349,7 @@ int wmpaSong(char *word[], char *word_eol[], void *user_data)
 
    xchat_commandf(ph, "me is playing %s", (LPCTSTR) songTitle);
 
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -361,7 +361,7 @@ int wmpaStop(char *word[], char *word_eol[], void *user_data)
       wmp->GetControls().stop();
       xchat_printf(ph, "WMPA: Stopping %s", (LPCTSTR) wmpaGetSongTitle());
    }
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -374,7 +374,7 @@ int wmpaHelp(char *word[], char *word_eol[], void *user_data)
    wmpaCommands();
    xchat_printf(ph, "\n");
 
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -399,7 +399,7 @@ int wmpaVolume(char *word[], char *word_eol[], void *user_data)
 
    xchat_printf(ph, "WMPA: volume is %d", volume);
 
-   return(XCHAT_EAT_ALL);
+   return(HEXCHAT_EAT_ALL);
 }
 
 /******************************************************************
@@ -472,7 +472,7 @@ CString wmpaGetSongTitle(void)
    CWMPMedia media      = wmp->GetCurrentMedia();
    if (media == NULL) {
       xchat_printf(ph, "WMPA: Could not get current media");
-      return(XCHAT_EAT_ALL);
+      return(HEXCHAT_EAT_ALL);
    }
 
    CString artist       = media.getItemInfo("Artist");

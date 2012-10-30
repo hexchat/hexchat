@@ -383,7 +383,7 @@ printInfo (char *word[], char *word_eol[], void *user_data)
 		xchat_printf (ph, " * Uptime:  %.2f Hours\n", (float) GetTickCount() / 1000 / 60 / 60);
 	}
 
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_XCHAT;
 }
 
 int

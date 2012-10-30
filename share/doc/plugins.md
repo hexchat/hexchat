@@ -51,7 +51,7 @@ join_cb (char *word[], void *userdata)
 	}
 	/* word[1] is the nickname, as in the Settings->Advanced->TextEvents window in xchat */
 
-	return XCHAT_EAT_NONE;		/* don't eat this event, HexChat needs to see it! */
+	return HEXCHAT_EAT_NONE;		/* don't eat this event, HexChat needs to see it! */
 }
 
 static int
@@ -68,7 +68,7 @@ autooptoggle_cb (char *word[], char *word_eol[], void *userdata)
 		xchat_print (ph, "AutoOping now disabled!\n");
 	}
 
-	return XCHAT_EAT_ALL;		/* eat this command so HexChat and other plugins can't process it */
+	return HEXCHAT_EAT_ALL;		/* eat this command so HexChat and other plugins can't process it */
 }
 
 void
@@ -407,7 +407,7 @@ ctcp_cb (char *word[], char *word_eol[], void *userdata)
 		get_file_name (nick, word[2]);
 	}
 
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_XCHAT;
 }
 
 static void
@@ -495,11 +495,11 @@ onotice_cb (char *word[], char *word_eol[], void *userdata)
 	if (word_eol[2][0] == 0)
 	{
 		xchat_printf (ph, "Second arg must be the message!\n");
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	xchat_commandf (ph, "NOTICE @%s :%s", xchat_get_info (ph, "channel"), word_eol[2]);
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 xchat_hook_command (ph, "ONOTICE", HEXCHAT_PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
@@ -569,7 +569,7 @@ static int
 youpart_cb (char *word[], void *userdata)
 {
 	xchat_printf (ph, "You have left channel %s\n", word[3]);
-	return XCHAT_EAT_XCHAT;		/* dont let HexChat do its normal printing */
+	return HEXCHAT_EAT_XCHAT;		/* dont let HexChat do its normal printing */
 }
 
 xchat_hook_print (ph, "You Part", HEXCHAT_PRI_NORM, youpart_cb, NULL);
@@ -601,7 +601,7 @@ static int
 kick_cb (char *word[], char *word_eol[], void *userdata)
 {
 	xchat_printf (ph, "%s was kicked from %s (reason=%s)\n", word[4], word[3], word_eol[5]);
-	return XCHAT_EAT_NONE;		/* don't eat this event, let other plugins and HexChat see it too */
+	return HEXCHAT_EAT_NONE;		/* don't eat this event, let other plugins and HexChat see it too */
 }
 
 xchat_hook_server (ph, "KICK", HEXCHAT_PRI_NORM, kick_cb, NULL);
@@ -639,7 +639,7 @@ stop_cb (char *word[], char *word_eol[], void *userdata)
 		xchat_print (ph, "Timeout removed!\n");
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -1076,7 +1076,7 @@ saveint_cb (char *word[], char *word_eol[], void *user_data)
 		xchat_printf (ph, "Invalid input!\n");
 	}
 
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_XCHAT;
 }
 </pre>
 

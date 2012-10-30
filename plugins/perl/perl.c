@@ -356,11 +356,11 @@ fd_cb (int fd, int flags, void *userdata)
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in fd callback %s", SvPV_nolen (ERRSV));
 		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
-		retVal = XCHAT_EAT_ALL;
+		retVal = HEXCHAT_EAT_ALL;
 	} else {
 		if (count != 1) {
 			xchat_print (ph, "Fd handler should only return 1 value.");
-			retVal = XCHAT_EAT_NONE;
+			retVal = HEXCHAT_EAT_NONE;
 		} else {
 			retVal = POPi;
 			if (retVal == 0) {
@@ -417,11 +417,11 @@ timer_cb (void *userdata)
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in timer callback %s", SvPV_nolen (ERRSV));
 		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
-		retVal = XCHAT_EAT_ALL;
+		retVal = HEXCHAT_EAT_ALL;
 	} else {
 		if (count != 1) {
 			xchat_print (ph, "Timer handler should only return 1 value.");
-			retVal = XCHAT_EAT_NONE;
+			retVal = HEXCHAT_EAT_NONE;
 		} else {
 			retVal = POPi;
 			if (retVal == 0) {
@@ -457,7 +457,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	SAVETMPS;
 
 	if (data->depth)
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 
 	/*               xchat_printf (ph, */
 	/*                               "Recieved %d words in server callback", av_len (wd)); */
@@ -476,11 +476,11 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in server callback %s", SvPV_nolen (ERRSV));
 		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
-		retVal = XCHAT_EAT_NONE;
+		retVal = HEXCHAT_EAT_NONE;
 	} else {
 		if (count != 1) {
 			xchat_print (ph, "Server handler should only return 1 value.");
-			retVal = XCHAT_EAT_NONE;
+			retVal = HEXCHAT_EAT_NONE;
 		} else {
 			retVal = POPi;
 		}
@@ -506,7 +506,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	SAVETMPS;
 	
 	if (data->depth)
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 
 	/*               xchat_printf (ph, "Recieved %d words in command callback", */
 	/*                               av_len (wd)); */
@@ -525,11 +525,11 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in command callback %s", SvPV_nolen (ERRSV));
 		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
-		retVal = XCHAT_EAT_XCHAT;
+		retVal = HEXCHAT_EAT_XCHAT;
 	} else {
 		if (count != 1) {
 			xchat_print (ph, "Command handler should only return 1 value.");
-			retVal = XCHAT_EAT_NONE;
+			retVal = HEXCHAT_EAT_NONE;
 		} else {
 			retVal = POPi;
 		}
@@ -560,7 +560,7 @@ print_cb (char *word[], void *userdata)
 	SAVETMPS;
 
 	if (data->depth)
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 
 	wd = newAV ();
 	sv_2mortal ((SV *) wd);
@@ -601,11 +601,11 @@ print_cb (char *word[], void *userdata)
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in print callback %s", SvPV_nolen (ERRSV));
 		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
-		retVal = XCHAT_EAT_NONE;
+		retVal = HEXCHAT_EAT_NONE;
 	} else {
 		if (count != 1) {
 			xchat_print (ph, "Print handler should only return 1 value.");
-			retVal = XCHAT_EAT_NONE;
+			retVal = HEXCHAT_EAT_NONE;
 		} else {
 			retVal = POPi;
 		}
@@ -1328,10 +1328,10 @@ xs_init (pTHX)
 	newCONSTSUB (stash, "PRI_LOW", newSViv (HEXCHAT_PRI_LOW));
 	newCONSTSUB (stash, "PRI_LOWEST", newSViv (HEXCHAT_PRI_LOWEST));
 
-	newCONSTSUB (stash, "EAT_NONE", newSViv (XCHAT_EAT_NONE));
-	newCONSTSUB (stash, "EAT_XCHAT", newSViv (XCHAT_EAT_XCHAT));
-	newCONSTSUB (stash, "EAT_PLUGIN", newSViv (XCHAT_EAT_PLUGIN));
-	newCONSTSUB (stash, "EAT_ALL", newSViv (XCHAT_EAT_ALL));
+	newCONSTSUB (stash, "EAT_NONE", newSViv (HEXCHAT_EAT_NONE));
+	newCONSTSUB (stash, "EAT_XCHAT", newSViv (HEXCHAT_EAT_XCHAT));
+	newCONSTSUB (stash, "EAT_PLUGIN", newSViv (HEXCHAT_EAT_PLUGIN));
+	newCONSTSUB (stash, "EAT_ALL", newSViv (HEXCHAT_EAT_ALL));
 	newCONSTSUB (stash, "FD_READ", newSViv (HEXCHAT_FD_READ));
 	newCONSTSUB (stash, "FD_WRITE", newSViv (HEXCHAT_FD_WRITE));
 	newCONSTSUB (stash, "FD_EXCEPTION", newSViv (HEXCHAT_FD_EXCEPTION));
@@ -1475,10 +1475,10 @@ perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
 {
 	if (my_perl != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload_all", 0)), "");
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
 
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_XCHAT;
 }
 
 static int
@@ -1487,11 +1487,11 @@ perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 	if (my_perl != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload_all", 0)), "");
 
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	} else {
 		perl_auto_load( NULL );
 	}
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_XCHAT;
 }
 
 static int
@@ -1502,10 +1502,10 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 	if (file != NULL )
 	{
 		perl_load_file (file);
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -1515,10 +1515,10 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 	
 	if (my_perl != NULL && file != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload", 0)), file);
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -1528,10 +1528,10 @@ perl_command_reload (char *word[], char *word_eol[], void *userdata)
 	
 	if (my_perl != NULL && file != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload", 0)), file);
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
 	
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_XCHAT;
 }
 
 void

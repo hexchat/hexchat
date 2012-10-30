@@ -124,7 +124,7 @@ static int wcmd_cb(char *word[], char *word_eol[], void *userdata)
     }
   }
 
-  return XCHAT_EAT_ALL;
+  return HEXCHAT_EAT_ALL;
 }
 
 
@@ -146,21 +146,21 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
 
     if ((samplerate = SendMessage(hwndWinamp, WM_USER, (WPARAM)0, (LPARAM)126)) == 0) {
       xchat_print(ph, "Could not get current song's samplerate... !?\n");
-      return XCHAT_EAT_ALL;
+      return HEXCHAT_EAT_ALL;
     }
     if ((bitrate = SendMessage(hwndWinamp, WM_USER, (WPARAM)1, (LPARAM)126)) == 0) {
       xchat_print(ph, "Could not get current song's bitrate... !?\n");
-      return XCHAT_EAT_ALL;
+      return HEXCHAT_EAT_ALL;
     }
     if ((nbchannels = SendMessage(hwndWinamp, WM_USER, (WPARAM)2, (LPARAM)126)) == 0) {
       xchat_print(ph, "Could not get the number of channels... !?\n");
-      return XCHAT_EAT_ALL;
+      return HEXCHAT_EAT_ALL;
     }
     if ((length = SendMessage(hwndWinamp, WM_USER, (WPARAM)1, (LPARAM)105)) == 0) {
       // Could be buggy when streaming audio or video, returned length is unexpected;
       // How to detect is Winamp is streaming, and display ??:?? in that case?
       xchat_print(ph, "Could not get current song's length... !?\n");
-      return XCHAT_EAT_ALL;
+      return HEXCHAT_EAT_ALL;
     }
     else {
       minutes = length/60;
@@ -173,7 +173,7 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
     }
     if ((elapsed = SendMessage(hwndWinamp, WM_USER, (WPARAM)0, (LPARAM)105)) == 0) {
       xchat_print(ph, "Could not get current song's elapsed time... !?\n");
-      return XCHAT_EAT_ALL;
+      return HEXCHAT_EAT_ALL;
     }
     else {
       eminutes = (elapsed/1000)/60;   /* kinda stupid sounding, but e is for elapsed */
@@ -187,7 +187,7 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
 
     if ((bitrate = SendMessage(hwndWinamp, WM_USER, (WPARAM)1, (LPARAM)126)) == 0) {
       xchat_print(ph, "Could not get current song's bitrate... !?\n");
-      return XCHAT_EAT_ALL;
+      return HEXCHAT_EAT_ALL;
     }
 
     GetCurrentSongsName(hwndWinamp, this_title, 1024);
@@ -195,7 +195,7 @@ static int wp_cb(char *word[], char *word_eol[], void *userdata)
     xchat_commandf(ph, "dispcurrsong %d %d %d %s %s %s", samplerate, bitrate, nbchannels, elapsedtime, totaltime, this_title);
   }
 
-  return XCHAT_EAT_ALL;   /* eat this command so xchat and other plugins can't process it */
+  return HEXCHAT_EAT_ALL;   /* eat this command so xchat and other plugins can't process it */
 }
 
 

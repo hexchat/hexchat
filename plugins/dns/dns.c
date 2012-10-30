@@ -272,7 +272,7 @@ dns_cmd_cb (char *word[], char *word_eol[], void *ud)
 	if (!word[2][0])
 	{
 		xchat_print (ph, HELP);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	th = thread_new ();
@@ -298,7 +298,7 @@ dns_cmd_cb (char *word[], char *word_eol[], void *ud)
 		}
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 int

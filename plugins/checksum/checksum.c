@@ -193,7 +193,7 @@ dccrecv_cb (char *word[], void *userdata)
 		xchat_printf (ph, "File access error!\n");
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -222,7 +222,7 @@ dccoffer_cb (char *word[], void *userdata)
 		xchat_printf (ph, "File access error!\n");
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -243,7 +243,7 @@ checksum (char *word[], char *word_eol[], void *userdata)
 		xchat_printf (ph, "  SET <filesize> - set the maximum file size (in MiB) to be hashed\n");
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 int

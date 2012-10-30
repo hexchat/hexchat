@@ -140,7 +140,7 @@ authend_cb (char *word[], char *word_eol[], void *userdata)
 		xchat_commandf (ph, "QUOTE CAP END");
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 /*
@@ -148,7 +148,7 @@ static int
 disconnect_cb (char *word[], void *userdata)
 {
 	xchat_printf (ph, "disconnected\n");
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 */
 
@@ -166,7 +166,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 
 		if (!p)
 		{
-			return XCHAT_EAT_NONE;
+			return HEXCHAT_EAT_NONE;
 		}
 
 		xchat_printf (ph, "%s\tAuthenticating as %s\n", name, p->login);
@@ -184,10 +184,10 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 		free (enc);
 		free (buf);
 
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -201,7 +201,7 @@ cap_cb (char *word[], char *word_eol[], void *userdata)
 		xchat_commandf (ph, "QUOTE AUTHENTICATE PLAIN");
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -221,7 +221,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 		if (!network || !*network)	/* only check for the last word, if it's there, the previous ones will be there, too */
 		{
 			xchat_printf (ph, "%s", sasl_help);
-			return XCHAT_EAT_ALL;
+			return HEXCHAT_EAT_ALL;
 		}
 
 		if (add_info (login, password, network))
@@ -233,7 +233,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 			xchat_printf (ph, "%s\tFailed to enable SASL authentication for the \"%s\" network\n", name, network);
 		}
 
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("DEL", mode))
 	{
@@ -242,7 +242,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 		if (!network || !*network)
 		{
 			xchat_printf (ph, "%s", sasl_help);
-			return XCHAT_EAT_ALL;
+			return HEXCHAT_EAT_ALL;
 		}
 
 		if (del_info (network))
@@ -254,17 +254,17 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 			xchat_printf (ph, "%s\tFailed to disable SASL authentication for the \"%s\" network\n", name, network);
 		}
 
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("LIST", mode))
 	{
 		print_info ();
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else
 	{
 		xchat_printf (ph, "%s", sasl_help);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 }
 
@@ -277,7 +277,7 @@ connect_cb (char *word[], void *userdata)
 		xchat_commandf (ph, "QUOTE CAP REQ :sasl");
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 int

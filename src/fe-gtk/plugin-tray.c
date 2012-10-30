@@ -576,7 +576,7 @@ static int
 tray_hilight_cb (char *word[], void *userdata)
 {
 	/*if (tray_status == TS_HIGHLIGHT)
-		return XCHAT_EAT_NONE;*/
+		return HEXCHAT_EAT_NONE;*/
 
 	if (prefs.hex_input_tray_hilight && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
 	{
@@ -596,14 +596,14 @@ tray_hilight_cb (char *word[], void *userdata)
 		tray_set_balloonf (word[2], _(DISPLAY_NAME": Highlighted message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
 tray_message_cb (char *word[], void *userdata)
 {
 	if (/*tray_status == TS_MESSAGE ||*/ tray_status == TS_HIGHLIGHT)
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 
 	if (prefs.hex_input_tray_chans && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
 	{
@@ -621,7 +621,7 @@ tray_message_cb (char *word[], void *userdata)
 		tray_set_balloonf (word[2], _(DISPLAY_NAME": New public message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static void
@@ -655,24 +655,24 @@ static int
 tray_priv_cb (char *word[], void *userdata)
 {
 	/*if (tray_status == TS_HIGHLIGHT)
-		return XCHAT_EAT_NONE;*/
+		return HEXCHAT_EAT_NONE;*/
 
 	if (prefs.hex_input_tray_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
 		tray_priv (word[1], word[2]);
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
 tray_invited_cb (char *word[], void *userdata)
 {
 	/*if (tray_status == TS_HIGHLIGHT)
-		return XCHAT_EAT_NONE;*/
+		return HEXCHAT_EAT_NONE;*/
 
 	if (prefs.hex_input_tray_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
 		tray_priv (word[2], "Invited");
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -681,7 +681,7 @@ tray_dcc_cb (char *word[], void *userdata)
 	const char *network;
 
 /*	if (tray_status == TS_FILEOFFER)
-		return XCHAT_EAT_NONE;*/
+		return HEXCHAT_EAT_NONE;*/
 
 	network = xchat_get_info (ph, "network");
 	if (!network)
@@ -704,7 +704,7 @@ tray_dcc_cb (char *word[], void *userdata)
 		tray_set_balloonf ("", _(DISPLAY_NAME": File offer from: %s (%s)"),
 								word[1], network);
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -712,7 +712,7 @@ tray_focus_cb (char *word[], void *userdata)
 {
 	tray_stop_flash ();
 	tray_reset_counts ();
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static void

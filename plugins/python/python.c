@@ -503,7 +503,7 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	Py_DECREF(word_eol_list);
 
 	if (retobj == Py_None) {
-		ret = XCHAT_EAT_NONE;
+		ret = HEXCHAT_EAT_NONE;
 		Py_DECREF(retobj);
 	} else if (retobj) {
 		ret = PyInt_AsLong(retobj);
@@ -589,7 +589,7 @@ Callback_Print(char *word[], void *userdata)
 	g_free(word_eol_raw);
 	g_free(word_eol);
 	if (retobj == Py_None) {
-		ret = XCHAT_EAT_NONE;
+		ret = HEXCHAT_EAT_NONE;
 		Py_DECREF(retobj);
 	} else if (retobj) {
 		ret = PyInt_AsLong(retobj);
@@ -1170,10 +1170,10 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 		goto error;
 	}
 
-	PyModule_AddIntConstant(m, "EAT_NONE", XCHAT_EAT_NONE);
-	PyModule_AddIntConstant(m, "EAT_XCHAT", XCHAT_EAT_XCHAT);
-	PyModule_AddIntConstant(m, "EAT_PLUGIN", XCHAT_EAT_PLUGIN);
-	PyModule_AddIntConstant(m, "EAT_ALL", XCHAT_EAT_ALL);
+	PyModule_AddIntConstant(m, "EAT_NONE", HEXCHAT_EAT_NONE);
+	PyModule_AddIntConstant(m, "EAT_XCHAT", HEXCHAT_EAT_XCHAT);
+	PyModule_AddIntConstant(m, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
+	PyModule_AddIntConstant(m, "EAT_ALL", HEXCHAT_EAT_ALL);
 	PyModule_AddIntConstant(m, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
 	PyModule_AddIntConstant(m, "PRI_HIGH", HEXCHAT_PRI_HIGH);
 	PyModule_AddIntConstant(m, "PRI_NORM", HEXCHAT_PRI_NORM);
@@ -2183,7 +2183,7 @@ Command_Py(char *word[], char *word_eol[], void *userdata)
 	}
 	if (!ok)
 		xchat_print(ph, usage);
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -2192,9 +2192,9 @@ Command_Load(char *word[], char *word_eol[], void *userdata)
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {
 		Command_PyLoad(word[2]);
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
@@ -2203,9 +2203,9 @@ Command_Unload(char *word[], char *word_eol[], void *userdata)
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {
 		Command_PyUnload(word[2]);
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_XCHAT;
 	}
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 /* ===================================================================== */

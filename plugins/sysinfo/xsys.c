@@ -100,7 +100,7 @@ print_summary (int announce, char* format)
 	if (xs_parse_os (os_user, os_host, os_kernel) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_os()", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	snprintf (buffer, bsize, "%s", os_kernel);
@@ -122,7 +122,7 @@ print_summary (int announce, char* format)
 	if (xs_parse_cpu (cpu_model, cpu_vendor, &cpu_freq, cpu_cache, &count) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_cpu()", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	if (cpu_freq > 1000)
@@ -148,7 +148,7 @@ print_summary (int announce, char* format)
 	if (xs_parse_meminfo (&mem_total, &mem_free, 0) == 1)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	snprintf (buffer, bsize, "%s", pretty_freespace ("Physical", &mem_free, &mem_total));
@@ -160,7 +160,7 @@ print_summary (int announce, char* format)
 	if (xs_parse_df (NULL, buffer))
 	{
 		xchat_printf (ph, "%s\tERROR in parse_df", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	format_output ("Disk", buffer, format);
@@ -171,7 +171,7 @@ print_summary (int announce, char* format)
 	if (xs_parse_video (buffer))
 	{
 		xchat_printf (ph, "%s\tERROR in parse_video", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	format_output ("VGA", buffer, format);
@@ -202,7 +202,7 @@ print_summary (int announce, char* format)
 	if (xs_parse_uptime (&weeks, &days, &hours, &minutes, &seconds))
 	{
 		xchat_printf (ph, "%s\tERROR in parse_uptime()", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	if (minutes != 0 || hours != 0 || days != 0 || weeks != 0)
@@ -244,7 +244,7 @@ print_summary (int announce, char* format)
 		xchat_printf (ph, "%s", sysinfo);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -258,7 +258,7 @@ print_os (int announce, char* format)
 	if (xs_parse_os (user, host, kernel) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_os()", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	snprintf (buffer, bsize, "%s@%s, %s", user, host, kernel);
@@ -273,7 +273,7 @@ print_os (int announce, char* format)
 		xchat_printf (ph, "%s", buffer);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -284,7 +284,7 @@ print_distro (int announce, char* format)
 	if (xs_parse_distro (name) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_distro()!", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	format_output("Distro", name, format);
@@ -297,7 +297,7 @@ print_distro (int announce, char* format)
 	{
 		xchat_printf (ph, "%s", name);
 	}
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -314,7 +314,7 @@ print_cpu (int announce, char* format)
 	if (xs_parse_cpu (model, vendor, &freq, cache, &count) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_cpu()", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	if (freq > 1000)
@@ -343,7 +343,7 @@ print_cpu (int announce, char* format)
 		xchat_printf (ph, "%s", buffer);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -358,12 +358,12 @@ print_ram (int announce, char* format)
 	if (xs_parse_meminfo (&mem_total, &mem_free, 0) == 1)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	if (xs_parse_meminfo (&swap_total, &swap_free, 1) == 1)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_meminfo!", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	snprintf (string, bsize, "%s - %s", pretty_freespace ("Physical", &mem_free, &mem_total), pretty_freespace ("Swap", &swap_free, &swap_total));
@@ -378,7 +378,7 @@ print_ram (int announce, char* format)
 		xchat_printf (ph, "%s", string);
 	}
 	
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -392,7 +392,7 @@ print_disk (int announce, char* format)
 		if (xs_parse_df (NULL, string))
 		{
 			xchat_printf (ph, "ERROR in parse_df");
-			return XCHAT_EAT_ALL;
+			return HEXCHAT_EAT_ALL;
 		}
 	}
 	else
@@ -400,7 +400,7 @@ print_disk (int announce, char* format)
 		if (xs_parse_df (*word, string))
 		{
 			xchat_printf (ph, "ERROR in parse_df");
-			return XCHAT_EAT_ALL;
+			return HEXCHAT_EAT_ALL;
 		}
 	}
 #endif
@@ -408,7 +408,7 @@ print_disk (int announce, char* format)
 	if (xs_parse_df (NULL, string))
 	{
 		xchat_printf (ph, "%s\tERROR in parse_df", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	format_output ("Disk", string, format);
@@ -422,7 +422,7 @@ print_disk (int announce, char* format)
 		xchat_printf (ph, "%s", string);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -436,7 +436,7 @@ print_vga (int announce, char* format)
 	if ((ret = xs_parse_video (vid_card)) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_video! %d", name, ret);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	if (xs_parse_agpbridge (agp_bridge) != 0)
@@ -459,7 +459,7 @@ print_vga (int announce, char* format)
 		xchat_printf (ph, "%s", buffer);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -470,7 +470,7 @@ print_sound (int announce, char* format)
 	if (xs_parse_sound (sound) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_asound()!", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	format_output ("Sound", sound, format);
@@ -484,7 +484,7 @@ print_sound (int announce, char* format)
 		xchat_printf (ph, "%s", sound);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 
@@ -509,7 +509,7 @@ print_ethernet (int announce, char* format)
 		xchat_printf (ph, "%s", ethernet_card);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -525,7 +525,7 @@ print_uptime (int announce, char* format)
 	if (xs_parse_uptime (&weeks, &days, &hours, &minutes, &seconds))
 	{
 		xchat_printf (ph, "%s\tERROR in parse_uptime()", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	if (minutes != 0 || hours != 0 || days != 0 || weeks != 0)
@@ -565,7 +565,7 @@ print_uptime (int announce, char* format)
 		xchat_printf (ph, "%s", buffer);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -579,13 +579,13 @@ netdata_cb (char *word[], char *word_eol[], void *userdata)
 	if (*word[2] == '\0')
 	{
 		xchat_printf (ph, "%s\tYou must specify a network device (e.g. /NETDATA eth0)!", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	if (xs_parse_netdev (word[2], &bytes_recv, &bytes_sent) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_netdev", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	bytes_recv /= 1024;
@@ -604,7 +604,7 @@ netdata_cb (char *word[], char *word_eol[], void *userdata)
 		xchat_printf (ph, "%s", netdata);
 	}
 	
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static int
@@ -624,13 +624,13 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 	if (*word[2] == '\0')
 	{
 		xchat_printf (ph, "%s\tYou must specify a network device (e.g. /NETSTREAM eth0)!", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	if (xs_parse_netdev(word[2], &bytes_recv, &bytes_sent) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_netdev", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	while (nanosleep (&ts, &ts) < 0);
@@ -638,7 +638,7 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 	if (xs_parse_netdev(word[2], &bytes_recv_p, &bytes_sent_p) != 0)
 	{
 		xchat_printf (ph, "%s\tERROR in parse_netdev", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	bytes_recv = (bytes_recv_p - bytes_recv);
@@ -677,7 +677,7 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 		xchat_printf (ph, "%s", netstream);
 	}
 
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 static void
@@ -718,7 +718,7 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 	if (!xchat_pluginpref_get_str (ph, "format", format))
 	{
 		xchat_printf (ph, "%s\tError reading config file!", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 
 	if (xchat_list_int (ph, NULL, "type") >= 2)
@@ -729,19 +729,19 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 	if (!g_ascii_strcasecmp ("HELP", word[2]))
 	{
 		xchat_printf (ph, sysinfo_help);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("LIST", word[2]))
 	{
 		list_settings ();
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("SET", word[2]))
 	{
 		if (!g_ascii_strcasecmp ("", word_eol[4]))
 		{
 			xchat_printf (ph, "%s\tEnter a value!\n", name);
-			return XCHAT_EAT_ALL;
+			return HEXCHAT_EAT_ALL;
 		}
 		if (!g_ascii_strcasecmp ("format", word[3]))
 		{
@@ -770,71 +770,71 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 		else
 		{
 			xchat_printf (ph, "%s\tInvalid variable name! Use 'pciids', 'format' or 'percent'!\n", name);
-			return XCHAT_EAT_ALL;
+			return HEXCHAT_EAT_ALL;
 		}
 
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("RESET", word[2]))
 	{
 		reset_settings ();
 		xchat_printf (ph, "%s\tSettings have been restored to defaults.\n", name);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("OS", word[2]))
 	{
 		print_os (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("DISTRO", word[2]))
 	{
 		print_distro (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("CPU", word[2]))
 	{
 		print_cpu (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("RAM", word[2]))
 	{
 		print_ram (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("DISK", word[2]))
 	{
 		print_disk (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("VGA", word[2]))
 	{
 		print_vga (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("SOUND", word[2]))
 	{
 		print_sound (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("ETHERNET", word[2]))
 	{
 		print_ethernet (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("UPTIME", word[2]))
 	{
 		print_uptime (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("", word[2]))
 	{
 		print_summary (announce, format);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	else
 	{
 		xchat_printf (ph, sysinfo_help);
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 }
 

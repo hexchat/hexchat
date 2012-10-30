@@ -15,10 +15,10 @@
 #define HEXCHAT_FD_EXCEPTION	4
 #define HEXCHAT_FD_NOTSOCKET	8
 
-#define XCHAT_EAT_NONE		0	/* pass it on through! */
-#define XCHAT_EAT_XCHAT		1	/* don't let xchat see this event */
-#define XCHAT_EAT_PLUGIN	2	/* don't let other plugins see this event */
-#define XCHAT_EAT_ALL		(XCHAT_EAT_XCHAT|XCHAT_EAT_PLUGIN)	/* don't let anything see this event */
+#define HEXCHAT_EAT_NONE		0	/* pass it on through! */
+#define HEXCHAT_EAT_XCHAT		1	/* don't let xchat see this event */
+#define HEXCHAT_EAT_PLUGIN	2	/* don't let other plugins see this event */
+#define HEXCHAT_EAT_ALL		(HEXCHAT_EAT_XCHAT|HEXCHAT_EAT_PLUGIN)	/* don't let anything see this event */
 
 #ifdef __cplusplus
 extern "C" {

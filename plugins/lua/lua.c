@@ -175,10 +175,10 @@ static struct {
 	const char *name;
 	long value;
 } lxc_consts[] = {
-	{"EAT_NONE", 	XCHAT_EAT_NONE},
-	{"EAT_XCHAT", 	XCHAT_EAT_XCHAT},
-	{"EAT_PLUGIN",	XCHAT_EAT_PLUGIN},
-	{"EAT_ALL",		XCHAT_EAT_ALL},
+	{"EAT_NONE", 	HEXCHAT_EAT_NONE},
+	{"EAT_XCHAT", 	HEXCHAT_EAT_XCHAT},
+	{"EAT_PLUGIN",	HEXCHAT_EAT_PLUGIN},
+	{"EAT_ALL",		HEXCHAT_EAT_ALL},
 
 /* unused until hook_fd is done 
 	{"FD_READ",			HEXCHAT_FD_READ},
@@ -493,19 +493,19 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 	struct stat *st;
 
 	if (word_eol[2][0] == 0)
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 	
 	buf = malloc(PATH_MAX + 1);
 	if (!buf) {
 		xchat_printf(ph, "malloc() failed: %s\n", strerror(errno));
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	st = malloc(sizeof(struct stat));
 	if (!st) {
 		xchat_printf(ph, "malloc() failed: %s\n", strerror(errno));
 		free(buf);
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 	}
 
  	len = strlen(word[2]);
@@ -532,7 +532,7 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 		if (lxc_load_file((const char *)file) == 0) {
 			free(st);
 			free(buf);
-			return XCHAT_EAT_ALL;
+			return HEXCHAT_EAT_ALL;
 		}
 
 		state = lxc_states;
@@ -548,7 +548,7 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 					lua_pop(L, 1);
 					free(st);
 					free(buf);
-					return XCHAT_EAT_ALL;
+					return HEXCHAT_EAT_ALL;
 				}
 
 				name = lua_tostring(L, -3);
@@ -573,14 +573,14 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 				}
 				free(st);
 				free(buf);
-				return XCHAT_EAT_ALL;
+				return HEXCHAT_EAT_ALL;
 			}
 			state = state->next;
 		}
 	}
 	free(st);
 	free(buf);
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int lxc_cb_unload(char *word[], char *word_eol[], void *userdata)
@@ -591,7 +591,7 @@ static int lxc_cb_unload(char *word[], char *word_eol[], void *userdata)
 	char *file;
 
 	if (word_eol[2][0] == 0)
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 
 	len = strlen(word[2]);
 	if (len > 4 && strcasecmp(".lua", word[2] + len - 4) == 0) {
@@ -614,13 +614,13 @@ static int lxc_cb_unload(char *word[], char *word_eol[], void *userdata)
 					lxc_states = state->next;
 				xchat_printf(ph, "Lua script %s unloaded", file);
 				free(state);
-				return XCHAT_EAT_ALL;
+				return HEXCHAT_EAT_ALL;
 			}
 			prev  = state;
 			state = state->next;
 		}
 	}
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
 static int lxc_cb_lua(char *word[], char *word_eol[], void *userdata)
@@ -628,7 +628,7 @@ static int lxc_cb_lua(char *word[], char *word_eol[], void *userdata)
 	lua_State *L = lxc_new_state();
 	if (word[2][0] == '\0') {
 		xchat_printf(ph, "LUA: Usage: /LUA LUA_CODE... execute LUA_CODE");
-		return XCHAT_EAT_ALL;
+		return HEXCHAT_EAT_ALL;
 	}
 	if (luaL_loadbuffer(L, word_eol[2], strlen(word_eol[2]), "/LUA")) {
 		xchat_printf(ph, "LUA: error loading line %s", lua_tostring(L, -1));
@@ -652,7 +652,7 @@ static int lxc_cb_lua(char *word[], char *word_eol[], void *userdata)
 	}
 
 	lua_close(L);
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 int xchat_plugin_init(xchat_plugin *plugin_handle,
@@ -805,12 +805,12 @@ static int lxc_run_hook(char *word[], char *word_eol[], void *data)
 				word[1], lua_tostring(L, -1)
 			);
 		lua_pop(L, 1);
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	if (lua_type(L, -1) != LUA_TNUMBER) {
 		xchat_printf(ph, "callback for '%s' did not return number...", word[1]);
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	i = (int)lua_tonumber(L, -1);
@@ -1022,7 +1022,7 @@ static int lxc_run_print(char *word[], void *data)
 
 	if (lua_type(L, -1) != LUA_TNUMBER) {
 		xchat_printf(ph, "callback for '%s' didn't return number...", word[1]);
-		return XCHAT_EAT_NONE;
+		return HEXCHAT_EAT_NONE;
 	}
 	i = (int)lua_tonumber(L, -1);
 	lua_pop(L, 1);

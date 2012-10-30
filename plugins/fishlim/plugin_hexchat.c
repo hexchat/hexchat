@@ -79,7 +79,7 @@ static bool append(char **s, size_t *length, const char *data) {
         xchat_printf(ph, ">%s< ", word[i]);
     }
     xchat_printf(ph, "\n");
-    return XCHAT_EAT_NONE;
+    return HEXCHAT_EAT_NONE;
 }*/
 
 /**
@@ -90,7 +90,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     // Encrypt the message if possible
     const char *channel = xchat_get_info(ph, "channel");
     char *encrypted = fish_encrypt_for_nick(channel, word_eol[1]);
-    if (!encrypted) return XCHAT_EAT_NONE;
+    if (!encrypted) return HEXCHAT_EAT_NONE;
     
     // Display message
     own_nick = xchat_get_info(ph, "nick");
@@ -100,7 +100,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     xchat_commandf(ph, "PRIVMSG %s :+OK %s", channel, encrypted);
     
     free(encrypted);
-    return XCHAT_EAT_XCHAT;
+    return HEXCHAT_EAT_XCHAT;
 }
 
 /**
@@ -121,7 +121,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     size_t length;
 
     if (!irc_parse_message((const char **)word, &prefix, &command, &w))
-        return XCHAT_EAT_NONE;
+        return HEXCHAT_EAT_NONE;
     
     // Topic (command 332) has an extra parameter
     if (!strcmp(command, "332")) w++;
@@ -131,7 +131,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
         const char *s = (ew == w+1 ? word[ew]+1 : word[ew]);
         if (strcmp(s, "+OK") == 0 || strcmp(s, "mcps") == 0) goto has_encrypted_data;
     }
-    return XCHAT_EAT_NONE;
+    return HEXCHAT_EAT_NONE;
   has_encrypted_data: ;
     // Extract sender nick and recipient nick/channel
     sender_nick = irc_prefix_get_nick(prefix);
@@ -178,12 +178,12 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     
     free(message);
     free(sender_nick);
-    return XCHAT_EAT_XCHAT;
+    return HEXCHAT_EAT_XCHAT;
   
   decrypt_error:
     free(decrypted);
     free(sender_nick);
-    return XCHAT_EAT_NONE;
+    return HEXCHAT_EAT_NONE;
 }
 
 /**
@@ -196,7 +196,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     // Check syntax
     if (*word[2] == '\0') {
         xchat_printf(ph, "%s\n", usage_setkey);
-        return XCHAT_EAT_XCHAT;
+        return HEXCHAT_EAT_XCHAT;
     }
     
     if (*word[3] == '\0') {
@@ -216,7 +216,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
         xchat_printf(ph, "\00305Failed to store key in blow.ini\n", nick, key);
     }
     
-    return XCHAT_EAT_XCHAT;
+    return HEXCHAT_EAT_XCHAT;
 }
 
 /**
@@ -228,7 +228,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     // Check syntax
     if (*word[2] == '\0' || *word[3] != '\0') {
         xchat_printf(ph, "%s\n", usage_delkey);
-        return XCHAT_EAT_XCHAT;
+        return HEXCHAT_EAT_XCHAT;
     }
     
     nick = word_eol[2];
@@ -240,7 +240,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
         xchat_printf(ph, "\00305Failed to delete key in blow.ini!\n", nick);
     }
     
-    return XCHAT_EAT_XCHAT;
+    return HEXCHAT_EAT_XCHAT;
 }
 
 /**
