@@ -82,13 +82,13 @@ struct _hexchat_list
 	struct notify_per_server *notifyps;	/* notify_per_server * */
 };
 
-typedef int (xchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
-typedef int (xchat_serv_cb) (char *word[], char *word_eol[], void *user_data);
+typedef int (hexchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
+typedef int (hexchat_serv_cb) (char *word[], char *word_eol[], void *user_data);
 typedef int (hexchat_print_cb) (char *word[], void *user_data);
-typedef int (xchat_fd_cb) (int fd, int flags, void *user_data);
-typedef int (xchat_timer_cb) (void *user_data);
-typedef int (xchat_init_func) (hexchat_plugin *, char **, char **, char **, char *);
-typedef int (xchat_deinit_func) (hexchat_plugin *);
+typedef int (hexchat_fd_cb) (int fd, int flags, void *user_data);
+typedef int (hexchat_timer_cb) (void *user_data);
+typedef int (hexchat_init_func) (hexchat_plugin *, char **, char **, char **, char *);
+typedef int (hexchat_deinit_func) (hexchat_plugin *);
 
 enum
 {
@@ -122,7 +122,7 @@ plugin_free (hexchat_plugin *pl, int do_deinit, int allow_refuse)
 {
 	GSList *list, *next;
 	hexchat_hook *hook;
-	xchat_deinit_func *deinit_func;
+	hexchat_deinit_func *deinit_func;
 
 	/* fake plugin added by hexchat_plugingui_add() */
 	if (pl->fake)
@@ -296,7 +296,7 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_dummy1 = xchat_dummy;
 
 		/* run hexchat_plugin_init, if it returns 0, close the plugin */
-		if (((xchat_init_func *)init_func) (pl, &pl->name, &pl->desc, &pl->version, arg) == 0)
+		if (((hexchat_init_func *)init_func) (pl, &pl->name, &pl->desc, &pl->version, arg) == 0)
 		{
 			plugin_free (pl, FALSE, FALSE);
 			return;
@@ -366,8 +366,8 @@ char *
 plugin_load (session *sess, char *filename, char *arg)
 {
 	void *handle;
-	xchat_init_func *init_func;
-	xchat_deinit_func *deinit_func;
+	hexchat_init_func *init_func;
+	hexchat_deinit_func *deinit_func;
 
 #ifdef USE_GMODULE
 	/* load the plugin */
@@ -552,10 +552,10 @@ plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[], int 
 		switch (type)
 		{
 		case HOOK_COMMAND:
-			ret = ((xchat_cmd_cb *)hook->callback) (word, word_eol, hook->userdata);
+			ret = ((hexchat_cmd_cb *)hook->callback) (word, word_eol, hook->userdata);
 			break;
 		case HOOK_SERVER:
-			ret = ((xchat_serv_cb *)hook->callback) (word, word_eol, hook->userdata);
+			ret = ((hexchat_serv_cb *)hook->callback) (word, word_eol, hook->userdata);
 			break;
 		default: /*case HOOK_PRINT:*/
 			ret = ((hexchat_print_cb *)hook->callback) (word, hook->userdata);
@@ -667,7 +667,7 @@ plugin_timeout_cb (hexchat_hook *hook)
 	hook->pl->context = current_sess;
 
 	/* call the plugin's timeout function */
-	ret = ((xchat_timer_cb *)hook->callback) (hook->userdata);
+	ret = ((hexchat_timer_cb *)hook->callback) (hook->userdata);
 
 	/* the callback might have already unhooked it! */
 	if (!g_slist_find (hook_list, hook) || hook->type == HOOK_DELETED)
@@ -709,7 +709,7 @@ static gboolean
 plugin_fd_cb (GIOChannel *source, GIOCondition condition, hexchat_hook *hook)
 {
 	int flags = 0, ret;
-	typedef int (xchat_fd_cb2) (int fd, int flags, void *user_data, GIOChannel *);
+	typedef int (hexchat_fd_cb2) (int fd, int flags, void *user_data, GIOChannel *);
 
 	if (condition & G_IO_IN)
 		flags |= HEXCHAT_FD_READ;
@@ -718,7 +718,7 @@ plugin_fd_cb (GIOChannel *source, GIOCondition condition, hexchat_hook *hook)
 	if (condition & G_IO_PRI)
 		flags |= HEXCHAT_FD_EXCEPTION;
 
-	ret = ((xchat_fd_cb2 *)hook->callback) (hook->pri, flags, hook->userdata, source);
+	ret = ((hexchat_fd_cb2 *)hook->callback) (hook->pri, flags, hook->userdata, source);
 
 	/* the callback might have already unhooked it! */
 	if (!g_slist_find (hook_list, hook) || hook->type == HOOK_DELETED)
@@ -847,7 +847,7 @@ hexchat_unhook (hexchat_plugin *ph, hexchat_hook *hook)
 
 hexchat_hook *
 hexchat_hook_command (hexchat_plugin *ph, const char *name, int pri,
-						  xchat_cmd_cb *callb, const char *help_text, void *userdata)
+						  hexchat_cmd_cb *callb, const char *help_text, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_COMMAND, pri, name, help_text, callb, 0,
 									userdata);
@@ -855,7 +855,7 @@ hexchat_hook_command (hexchat_plugin *ph, const char *name, int pri,
 
 hexchat_hook *
 hexchat_hook_server (hexchat_plugin *ph, const char *name, int pri,
-						 xchat_serv_cb *callb, void *userdata)
+						 hexchat_serv_cb *callb, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_SERVER, pri, name, 0, callb, 0, userdata);
 }
@@ -868,7 +868,7 @@ hexchat_hook_print (hexchat_plugin *ph, const char *name, int pri,
 }
 
 hexchat_hook *
-hexchat_hook_timer (hexchat_plugin *ph, int timeout, xchat_timer_cb *callb,
+hexchat_hook_timer (hexchat_plugin *ph, int timeout, hexchat_timer_cb *callb,
 					   void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_TIMER, 0, 0, 0, callb, timeout, userdata);
@@ -876,7 +876,7 @@ hexchat_hook_timer (hexchat_plugin *ph, int timeout, xchat_timer_cb *callb,
 
 hexchat_hook *
 hexchat_hook_fd (hexchat_plugin *ph, int fd, int flags,
-					xchat_fd_cb *callb, void *userdata)
+					hexchat_fd_cb *callb, void *userdata)
 {
 	hexchat_hook *hook;
 

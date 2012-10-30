@@ -6,7 +6,7 @@ binary compatability. This means that if you upgrade HexChat, you will
 not need to recompile your plugins, they'll continue to work. The
 interface doesn't depend on any structures and offsets, so compiler
 versions shouldn't have an impact either. The only real requirement of
-a HexChat plugin is that it define an _xchat\_plugin\_init_ symbol. This
+a HexChat plugin is that it define an _hexchat\_plugin\_init_ symbol. This
 is your entry point function, see the example below. You should make
 all your global variables and functions _static_, so that a symbol
 is not exported. There is no harm in exporting these symbols, but they
@@ -28,8 +28,8 @@ of locale.
 
 This simple plugin auto-ops anyone who joins a channel you're in. It also
 adds a new command _/AUTOOPTOGGLE_, which can be used to turn the feature ON
-or OFF. Every HexChat plugin must define an _xchat\_plugin\_init_ function, this
-is the normal entry point. _xchat\_plugin\_deinit_ is optional.
+or OFF. Every HexChat plugin must define an _hexchat\_plugin\_init_ function, this
+is the normal entry point. _hexchat\_plugin\_deinit_ is optional.
 
 <pre>
 #include "hexchat-plugin.h"
@@ -49,7 +49,7 @@ join_cb (char *word[], void *userdata)
 		/* Op ANYONE who joins */
 		hexchat_commandf (ph, "OP %s", word[1]);
 	}
-	/* word[1] is the nickname, as in the Settings->Advanced->TextEvents window in xchat */
+	/* word[1] is the nickname, as in the Settings->Text Events window in HexChat */
 
 	return HEXCHAT_EAT_NONE;		/* don't eat this event, HexChat needs to see it! */
 }
@@ -82,7 +82,7 @@ hexchat_plugin_get_info (char **name, char **desc, char **version, void **reserv
 int
 hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
-	/* we need to save this for use with any xchat_* functions */
+	/* we need to save this for use with any hexchat_* functions */
 	ph = plugin_handle;
 
 	/* tell HexChat our info */
@@ -125,8 +125,8 @@ _word\_eol[0]_ are reserved and should not be read.
 
 ## Lists and Fields
 Lists of information (DCCs, Channels, User list, etc.) can be retreived
-with _xchat\_list\_get_. All fields are **read only** and must be copied if
-needed for a long time after calling _xchat\_list\_str_. The types of lists and fields available are:
+with _hexchat\_list\_get_. All fields are **read only** and must be copied if
+needed for a long time after calling _hexchat\_list\_str_. The types of lists and fields available are:
 
 <blockquote>
 
@@ -251,7 +251,7 @@ Example:
 
 ## Plugins on Windows (Win32)
 
-Yes, it can be done. All you need is Visual Studio setup as explained in [Building](http://www.hexchat.org/developers/building). Your best bet is to use an existing plugin in the HexChat solution as a starting point. You should have the following files:
+All you need is Visual Studio setup as explained in [Building](http://www.hexchat.org/developers/building). Your best bet is to use an existing plugin (such as the currently unused SASL plugin) in the HexChat solution as a starting point. You should have the following files:
 
 
  * [hexchat-plugin.h](https://github.com/hexchat/hexchat/blob/master/plugins/hexchat-plugin.h) - main plugin header
@@ -265,7 +265,7 @@ Yes, it can be done. All you need is Visual Studio setup as explained in [Buildi
 	hexchat_plugin_get_info
 </pre>
 
-Leave out _xchat\_plugin\_deinit_ if you don't intend to define that
+Leave out _hexchat\_plugin\_deinit_ if you don't intend to define that
 function. Then compile your plugin in Visual Studio as usual.
 
 **Caveat:** plugins compiled on Win32 **must** have a
@@ -275,7 +275,7 @@ in the sample plugin above.
 ## Controlling the GUI
 
 A simple way to perform basic GUI functions is to use the _/GUI_ command.
-You can execute this command through the input box, or by calling _xchat\_command (ph, "GUI .....");_.
+You can execute this command through the input box, or by calling _hexchat\_command (ph, "GUI .....");_.
 
 <blockquote>
 	<table border=0 cellpadding=4>
@@ -307,7 +307,7 @@ For example:
 	MENU -e0 ADD "FServe/Do Something" "fs action"
 </pre>
 
-In the example above, it would be recommended to execute _MENU DEL FServe_ inside your _xchat\_plugin\_deinit_ function. The special item with name "-" will add a separator line.
+In the example above, it would be recommended to execute _MENU DEL FServe_ inside your _hexchat\_plugin\_deinit_ function. The special item with name "-" will add a separator line.
 
 Parameters and flags:
 
@@ -407,7 +407,7 @@ ctcp_cb (char *word[], char *word_eol[], void *userdata)
 		get_file_name (nick, word[2]);
 	}
 
-	return HEXCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_hexchat;
 }
 
 static void
@@ -465,26 +465,26 @@ get_file_name (char *nick, char *fname)
 
 ***
 
-### xchat\_hook\_command ()
+### hexchat\_hook\_command ()
 
-**Prototype:** xchat\_hook \*xchat\_hook\_command (xchat\_plugin \*ph, const char \*name, int pri, xchat\_cmd\_cb \*callb, const char \*help\_text, void \*userdata);
+**Prototype:** hexchat\_hook \*hexchat\_hook\_command (hexchat\_plugin \*ph, const char \*name, int pri, hexchat\_cmd\_cb \*callb, const char \*help\_text, void \*userdata);
 
 **Description:** Adds a new _/command_. This allows your program to
 handle commands entered at the input box. To capture text without a "/" at
-the start (non-commands), you may hook a special name of "". i.e _xchat\_hook\_command (ph, "", ...);_.
+the start (non-commands), you may hook a special name of "". i.e _hexchat\_hook\_command (ph, "", ...);_.
 
 Commands hooked that begin with a period ('.') will be hidden in _/HELP_ and _/HELP -l_.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **name:** Name of the command (without the forward slash).
- * **pri:** Priority of this command. Use _XCHAT\_PRI\_NORM_.
+ * **pri:** Priority of this command. Use _hexchat\_PRI\_NORM_.
  * **callb:** Callback function. This will be called when the user executes the given command name.
  * **help\_text:** String of text to display when the user executes _/HELP_ for this command. May be NULL if you're lazy.
  * **userdata:** Pointer passed to the callback function.
 
-**Returns:** Pointer to the hook. Can be passed to _xchat\_unhook ()_.
+**Returns:** Pointer to the hook. Can be passed to _hexchat\_unhook ()_.
 
 **Example:**
 
@@ -507,34 +507,34 @@ hexchat_hook_command (ph, "ONOTICE", HEXCHAT_PRI_NORM, onotice_cb, "Usage: ONOTI
 
 ***
 
-### xchat\_hook\_fd ()
+### hexchat\_hook\_fd ()
 
-**Prototype:** xchat\_hook \*xchat\_hook\_fd (xchat\_plugin \*ph, int fd, int flags, xchat\_fd\_cb \*callb, void \*userdata);
+**Prototype:** hexchat\_hook \*hexchat\_hook\_fd (hexchat\_plugin \*ph, int fd, int flags, hexchat\_fd\_cb \*callb, void \*userdata);
 
 **Description:** Hooks a socket or file descriptor. WIN32: Passing a pipe from MSVCR71, MSVCR80 or other variations is not supported at this time.
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **fd:** The file descriptor or socket.
- * **flags:** One or more of _XCHAT\_FD\_READ_, _XCHAT\_FD\_WRITE_, _XCHAT\_FD\_EXCEPTION_, _XCHAT\_FD\_NOTSOCKET_. Use bitwise OR to combine them. _XCHAT\_FD\_NOTSOCKET_ tells HexChat that the provided _fd__ is not a socket, but an "MSVCRT.DLL" pipe.
+ * **flags:** One or more of _hexchat\_FD\_READ_, _hexchat\_FD\_WRITE_, _hexchat\_FD\_EXCEPTION_, _hexchat\_FD\_NOTSOCKET_. Use bitwise OR to combine them. _hexchat\_FD\_NOTSOCKET_ tells HexChat that the provided _fd__ is not a socket, but an "MSVCRT.DLL" pipe.
  * **callb:** Callback function. This will be called when the socket is available for reading/writing or exception (depending on your chosen _flags_)
  * **userdata:** Pointer passed to the callback function.
 
-**Returns:** Pointer to the hook. Can be passed to _xchat\_unhook ()_.
+**Returns:** Pointer to the hook. Can be passed to _hexchat\_unhook ()_.
 
 ***
 
-### xchat\_hook\_print ()
+### hexchat\_hook\_print ()
 
-**Prototype:** xchat\_hook \*xchat\_hook\_print (xchat\_plugin \*ph, const char \*name, int pri, xchat\_print\_cb \*callb, void \*userdata);
+**Prototype:** hexchat\_hook \*hexchat\_hook\_print (hexchat\_plugin \*ph, const char \*name, int pri, hexchat\_print\_cb \*callb, void \*userdata);
 
 **Description:** Registers a function to trap any print events.
 The event names may be any available in the "Advanced > Text Events" window.
 There are also some extra "special" events you may hook using this function.
 Currently they are:
 
- * "Open Context": Called when a new xchat\_context is created.
- * "Close Context": Called when a xchat\_context pointer is closed.
+ * "Open Context": Called when a new hexchat\_context is created.
+ * "Close Context": Called when a hexchat\_context pointer is closed.
  * "Focus Tab": Called when a tab is brought to front.
  * "Focus Window": Called a toplevel window is focused, or the main tab-window is focused by the window manager.
  * "DCC Chat Text": Called when some text from a DCC Chat arrives. It provides these elements in the _word[]_ array:
@@ -554,13 +554,13 @@ Currently they are:
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **name:** Name of the print event (as in _Edit Event Texts_ window).
- * **pri:** Priority of this command. Use XCHAT\_PRI\_NORM.
+ * **pri:** Priority of this command. Use HEXCHAT\_PRI\_NORM.
  * **callb:** Callback function. This will be called when this event name is printed.
  * **userdata:** Pointer passed to the callback function.
 
-**Returns:** Pointer to the hook. Can be passed to _xchat\_unhook ()_.
+**Returns:** Pointer to the hook. Can be passed to _hexchat\_unhook ()_.
 
 **Example:**
 
@@ -569,7 +569,7 @@ static int
 youpart_cb (char *word[], void *userdata)
 {
 	hexchat_printf (ph, "You have left channel %s\n", word[3]);
-	return HEXCHAT_EAT_XCHAT;		/* dont let HexChat do its normal printing */
+	return HEXCHAT_EAT_hexchat;		/* dont let HexChat do its normal printing */
 }
 
 hexchat_hook_print (ph, "You Part", HEXCHAT_PRI_NORM, youpart_cb, NULL);
@@ -577,9 +577,9 @@ hexchat_hook_print (ph, "You Part", HEXCHAT_PRI_NORM, youpart_cb, NULL);
 
 ***
 
-### xchat\_hook\_server ()
+### hexchat\_hook\_server ()
 
-**Prototype:** xchat\_hook \*xchat\_hook\_server (xchat\_plugin \*ph, const char \*name, int pri, xchat\_serv\_cb \*callb, void \*userdata);
+**Prototype:** hexchat\_hook \*hexchat\_hook\_server (hexchat\_plugin \*ph, const char \*name, int pri, hexchat\_serv\_cb \*callb, void \*userdata);
 
 **Description:** Registers a function to be called when a certain server event occurs. You can
 use this to trap _PRIVMSG_, _NOTICE_, _PART_, a server numeric, etc. If you want to
@@ -587,13 +587,13 @@ hook every line that comes from the IRC server, you may use the special name of 
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **name:** Name of the server event.
- * **pri:** Priority of this command. Use XCHAT\_PRI\_NORM.
+ * **pri:** Priority of this command. Use HEXCHAT\_PRI\_NORM.
  * **callb:** Callback function. This will be called when this event is received from the server.
  * **userdata:** Pointer passed to the callback function.
 
-**Returns:** Pointer to the hook. Can be passed to _xchat\_unhook_.
+**Returns:** Pointer to the hook. Can be passed to _hexchat\_unhook_.
 
 **Example:**
 <pre>
@@ -609,15 +609,15 @@ hexchat_hook_server (ph, "KICK", HEXCHAT_PRI_NORM, kick_cb, NULL);
 
 ***
 
-### xchat\_hook\_timer ()
+### hexchat\_hook\_timer ()
 
-**Prototype:** xchat\_hook \*xchat\_hook\_timer (xchat\_plugin \*ph, int timeout, xchat\_timer\_cb \*callb, void \*userdata);
+**Prototype:** hexchat\_hook \*hexchat\_hook\_timer (hexchat\_plugin \*ph, int timeout, hexchat\_timer\_cb \*callb, void \*userdata);
 
 **Description:** Registers a function to be called every "timeout" milliseconds.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **timeout:** Timeout in milliseconds (1000 is 1 second).
  * **callb:** Callback function. This will be called every "timeout" milliseconds.
  * **userdata:** Pointer passed to the callback function.
@@ -655,81 +655,81 @@ hexchat_hook_command (ph, "STOP", HEXCHAT_PRI_NORM, stop_cb, NULL, NULL);
 
 ***
 
-### xchat\_unhook ()
+### hexchat\_unhook ()
 
-**Prototype:** void \*xchat\_unhook (xchat\_plugin \*ph, xchat\_hook \*hook);
+**Prototype:** void \*hexchat\_unhook (hexchat\_plugin \*ph, hexchat\_hook \*hook);
 
-**Description:** Unhooks any hook registered with xchat\_hook\_print/server/timer/command. When plugins are unloaded, all of its hooks are automatically removed, so you don't need to call this within your xchat\_plugin\_deinit () function.
+**Description:** Unhooks any hook registered with hexchat\_hook\_print/server/timer/command. When plugins are unloaded, all of its hooks are automatically removed, so you don't need to call this within your hexchat\_plugin\_deinit () function.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
- * **hook:** Pointer to the hook, as returned by xchat\_hook\_*.
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
+ * **hook:** Pointer to the hook, as returned by hexchat\_hook\_*.
 
-**Returns:** The userdata you originally gave to xchat\_hook\_*.
+**Returns:** The userdata you originally gave to hexchat\_hook\_*.
 
 ***
 
-### xchat\_command ()
+### hexchat\_command ()
 
-**Prototype:** void xchat\_command (xchat\_plugin \*ph, const char \*command);
+**Prototype:** void hexchat\_command (hexchat\_plugin \*ph, const char \*command);
 
 **Description:** Executes a command as if it were typed in HexChat's input box.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **command:** Command to execute, without the forward slash "/".
 
 ***
 
-### xchat\_commandf ()
+### hexchat\_commandf ()
 
-**Prototype:** void xchat\_commandf (xchat\_plugin \*ph, const char \*format, ...);
+**Prototype:** void hexchat\_commandf (hexchat\_plugin \*ph, const char \*format, ...);
 
 **Description:** Executes a command as if it were typed in HexChat's input box and provides string formatting like _printf ()_.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **format:** The format string.
 
 ***
 
-### xchat\_print ()
+### hexchat\_print ()
 
-**Prototype:** void xchat\_print (xchat\_plugin \*ph, const char \*text);
+**Prototype:** void hexchat\_print (hexchat\_plugin \*ph, const char \*text);
 
 **Description:** Prints some text to the current tab/window.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **text:** Text to print. May contain mIRC color codes.
 
 ***
 
-### xchat\_printf ()
+### hexchat\_printf ()
 
-**Prototype:** void xchat\_printf (xchat\_plugin \*ph, const char \*format, ...);
+**Prototype:** void hexchat\_printf (hexchat\_plugin \*ph, const char \*format, ...);
 
 **Description:** Prints some text to the current tab/window and provides formatting like _printf ()_.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **format:** The format string.
 
 ***
 
-### xchat\_emit\_print ()
-**Prototype:** int xchat\_emit\_print (xchat\_plugin \*ph, const char \*event\_name, ...);
+### hexchat\_emit\_print ()
+**Prototype:** int hexchat\_emit\_print (hexchat\_plugin \*ph, const char \*event\_name, ...);
 
-**Description:** Generates a print event. This can be any event found in the Preferences > Advanced > Text Events window. The vararg parameter list **must** always be NULL terminated. Special care should be taken when calling this function inside a print callback (from xchat\_hook\_print), as not to cause endless recursion.
+**Description:** Generates a print event. This can be any event found in the Preferences > Advanced > Text Events window. The vararg parameter list **must** always be NULL terminated. Special care should be taken when calling this function inside a print callback (from hexchat\_hook\_print), as not to cause endless recursion.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **event_name:** Text event to print.
 
 **Returns:**
@@ -745,9 +745,9 @@ hexchat_emit_print (ph, "Channel Message", "John", "Hi there", "@", NULL);
 
 ***
 
-### xchat\_send\_modes ()
+### hexchat\_send\_modes ()
 
-**Prototype:** void xchat\_send\_modes (xchat\_plugin \*ph, const char \*targets[], int ntargets, int modes_per_line, char sign, char mode)
+**Prototype:** void hexchat\_send\_modes (hexchat\_plugin \*ph, const char \*targets[], int ntargets, int modes_per_line, char sign, char mode)
 
 **Description:** Sends a number of channel mode changes to the current channel. For example, you can Op a whole
 group of people in one go. It may send multiple MODE lines if the request doesn't fit on one. Pass 0 for
@@ -756,7 +756,7 @@ in a channel context.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **targets:** Array of targets (strings). The names of people whom the action will be performed on.
  * **ntargets:** Number of elements in the array given.
  * **modes_per_line:** Maximum modes to send per line.
@@ -772,9 +772,9 @@ hexchat_send_modes (ph, names_to_Op, 3, 0, '+', 'o');
 
 ***
 
-### xchat\_find\_context ()
+### hexchat\_find\_context ()
 
-**Prototype:** xchat\_context \*xchat\_find\_context (xchat\_plugin \*ph, const char \*servname, const char \*channel);
+**Prototype:** hexchat\_context \*hexchat\_find\_context (hexchat\_plugin \*ph, const char \*servname, const char \*channel);
 
 **Description:** Finds a context based on a channel and servername. If _servname_ is NULL, it finds any channel (or query) by the given name. If _channel_ is NULL, it finds the front-most tab/window of the given _servname_. If NULL is given for both arguments, the currently focused tab/window will be returned.
 
@@ -782,37 +782,37 @@ Changed in 2.6.1. If _servname_ is NULL, it finds the channel (or query) by the 
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **servname:** Server name or NULL.
  * **channel:** Channel name or NULL.
 
-**Returns:** Context pointer (for use with _xchat\_set\_context_) or NULL.
+**Returns:** Context pointer (for use with _hexchat\_set\_context_) or NULL.
 
 ***
 
-### xchat\_get\_context ()
+### hexchat\_get\_context ()
 
-**Prototype:** xchat\_context \*xchat\_get\_context (xchat\_plugin \*ph);
+**Prototype:** hexchat\_context \*hexchat\_get\_context (hexchat\_plugin \*ph);
 
-**Description:** Returns the current context for your plugin. You can use this later with _xchat\_set\_context ()_.
+**Description:** Returns the current context for your plugin. You can use this later with _hexchat\_set\_context ()_.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
 
-**Returns:** Context pointer (for use with _xchat\_set\_context_).
+**Returns:** Context pointer (for use with _hexchat\_set\_context_).
 
 ***
 
-### xchat\_get\_info ()
+### hexchat\_get\_info ()
 
-**Prototype:** const char \*xchat\_get\_info (xchat\_plugin \*ph, const char \*id);
+**Prototype:** const char \*hexchat\_get\_info (hexchat\_plugin \*ph, const char \*id);
 
 **Description:** Returns information based on your current context.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **id:** ID of the information you want. Currently supported IDs are (case sensitive):
 
 	<blockquote>
@@ -824,29 +824,29 @@ Changed in 2.6.1. If _servname_ is NULL, it finds the channel (or query) by the 
 	<tr><td>gtkwin_ptr</td><td>(GtkWindow *) (since 2.8.9).</td></tr>
 	<tr><td>host</td><td>real hostname of the server you connected to.</td></tr>
 	<tr><td>inputbox</td><td>the input-box contents, what the user has typed (since 2.4.1).</td></tr>
-	<tr><td>libdirfs</td><td>library directory. e.g. /usr/lib/xchat. The same directory used for auto-loading plugins (since 2.4.0).<small>This string isn't necessarily UTF-8, but local file system encoding.</small></td></tr>
+	<tr><td>libdirfs</td><td>library directory. e.g. /usr/lib/hexchat. The same directory used for auto-loading plugins (since 2.4.0).<small>This string isn't necessarily UTF-8, but local file system encoding.</small></td></tr>
 	<tr><td>modes</td><td>channel modes, if known, or NULL (since 2.8.1).</td></tr>
 	<tr><td>network</td><td>current network name or NULL.</td></tr>
 	<tr><td>nick</td><td>your current nick name.</td></tr>
 	<tr><td>nickserv</td><td>nickserv password for this network or NULL (since 2.4.3).</td></tr>
 	<tr><td>server</td><td>current server name (what the server claims to be). NULL if you are not connected.</td></tr>
 	<tr><td>topic</td><td>current channel topic.</td></tr>
-	<tr><td>version</td><td>xchat version number.</td></tr>
+	<tr><td>version</td><td>HexChat version number.</td></tr>
 	<tr><td>win_ptr</td><td>native window pointer. Unix: (GtkWindow *) Win32: HWND (since 2.6.0).</td></tr>
 	<tr><td>win_status</td><td>window status: "active", "hidden" or "normal" (since 2.0.9).</td>
-	<tr><td>xchatdir</td><td>xchat config directory, e.g.: /home/user/.xchat2 <small>This string is encoded in UTF-8, which means you _should_ convert it to "locale" encoding before using functions like open() or OpenFile(). For best <a href="#unicode">Unicode support</a> on Linux, convert this string using g_filename_from_utf8 and on Windows convert this string to UTF-16LE (wide) and use OpenFileW() etc.</small></td></tr>
-	<tr><td>xchatdirfs</td><td>xchat config directory, e.g.: /home/user/.xchat2 (since 2.0.9).<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile(). For real Unicode support on Windows, it's best not to use HexChatdirfs, but HexChatdir instead.</small></td></tr>
+	<tr><td>xchatdir</td><td>HexChat config directory, e.g.: /home/user/.config/hexchat <small>This string is encoded in UTF-8, which means you _should_ convert it to "locale" encoding before using functions like open() or OpenFile(). For best <a href="#unicode">Unicode support</a> on Linux, convert this string using g_filename_from_utf8 and on Windows convert this string to UTF-16LE (wide) and use OpenFileW() etc.</small></td></tr>
+	<tr><td>xchatdirfs</td><td>HexChat config directory, e.g.: /home/user/.config/hexchat (since 2.0.9).<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile(). For real Unicode support on Windows, it's best not to use xchatdirfs, but xchatdir instead.</small></td></tr>
 	</table>
 	</blockquote>
 
 **Returns:** A string of the requested information, or NULL. This string must
-not be freed and must be copied if needed after the call to _xchat\_get\_info ()_.
+not be freed and must be copied if needed after the call to _hexchat\_get\_info ()_.
 
 ***
 
-### xchat\_get\_prefs ()
+### hexchat\_get\_prefs ()
 
-**Prototype:** int xchat\_get\_prefs (xchat\_plugin \*ph, const char \*name, const char \*\*string, int \*integer);
+**Prototype:** int hexchat\_get\_prefs (hexchat\_plugin \*ph, const char \*name, const char \*\*string, int \*integer);
 
 **Description:** Provides HexChat's setting information (that which is available through the _/SET_ command).
 A few extra bits of information are available that don't appear in the _/SET_ list, currently they are:
@@ -856,7 +856,7 @@ A few extra bits of information are available that don't appear in the _/SET_ li
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **name:** Setting name required.
  * **string:** Pointer-pointer which to set.
  * **integer:** Pointer to an integer to set, if setting is a boolean or integer type.
@@ -884,16 +884,16 @@ A few extra bits of information are available that don't appear in the _/SET_ li
 
 ***
 
-### xchat\_set\_context ()
+### hexchat\_set\_context ()
 
-**Prototype:** int xchat\_set\_context (xchat\_plugin \*ph, xchat\_context \*ctx);
+**Prototype:** int hexchat\_set\_context (hexchat\_plugin \*ph, hexchat\_context \*ctx);
 
 **Description:** Changes your current context to the one given.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
- * **ctx:** Context to change to (obtained with _xchat\_get\_context ()_ or _xchat\_find\_context ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
+ * **ctx:** Context to change to (obtained with _hexchat\_get\_context ()_ or _hexchat\_find\_context ()_).
 
 **Returns:**
 
@@ -902,15 +902,15 @@ A few extra bits of information are available that don't appear in the _/SET_ li
 
 ***
 
-### xchat\_nickcmp ()
+### hexchat\_nickcmp ()
 
-**Prototype:** int xchat\_nickcmp (xchat\_plugin \*ph, const char \*s1, const char \*s2);
+**Prototype:** int hexchat\_nickcmp (hexchat\_plugin \*ph, const char \*s1, const char \*s2);
 
 **Description:** Performs a nick name comparision, based on the current server connection. This might be an RFC1459 compliant string compare, or plain ascii (in the case of DALNet). Use this to compare channels and nicknames. The function works the same way as _strcasecmp ()_.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **s1:** String to compare.
  * **s2:** String to compare _s1_ to.
 
@@ -924,22 +924,22 @@ equivalence of two nicknames.
 
 ***
 
-### xchat\_strip ()
+### hexchat\_strip ()
 
-**Prototype:** char \*xchat\_strip (xchat\_plugin \*ph, const char \*str, int len, int flags);
+**Prototype:** char \*hexchat\_strip (hexchat\_plugin \*ph, const char \*str, int len, int flags);
 
 **Description:** Strips mIRC color codes and/or text attributes (bold, underlined etc) from the given string and returns a newly allocated string.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **str:** String to strip.
  * **len:** Length of the string (or -1 for NULL terminated).
  * **flags:** Bit-field of flags:
 	* 0: Strip mIRC colors.
 	* 1: Strip text attributes.
 
-**Returns:** A newly allocated string or NULL for failure. You must free this string with _xchat\_free ()_.
+**Returns:** A newly allocated string or NULL for failure. You must free this string with _hexchat\_free ()_.
 
 **Example:**
 
@@ -961,28 +961,28 @@ equivalence of two nicknames.
 
 ***
 
-### xchat\_free ()
+### hexchat\_free ()
 
-**Prototype:** void xchat\_free (xchat\_plugin \*ph, void \*ptr);
+**Prototype:** void hexchat\_free (hexchat\_plugin \*ph, void \*ptr);
 
-**Description:** Frees a string returned by _xchat\_*_ functions. Currently only used to free strings from _xchat\_strip ()_.
+**Description:** Frees a string returned by _hexchat\_*_ functions. Currently only used to free strings from _hexchat\_strip ()_.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **ptr:** Pointer to free.
 
 ***
 
-### xchat\_pluginpref\_set\_str ()
+### hexchat\_pluginpref\_set\_str ()
 
-**Prototype:** int xchat\_pluginpref\_set\_str (xchat\_plugin \*ph, const char \*var, const char \*value);
+**Prototype:** int hexchat\_pluginpref\_set\_str (hexchat\_plugin \*ph, const char \*var, const char \*value);
 
 **Description:** Saves a plugin-specific setting with string value to a plugin-specific config file.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **var:** Name of the setting to save.
  * **value:** String value of the the setting.
 
@@ -1017,14 +1017,14 @@ You should never need to edit this file manually.
 
 ***
 
-### xchat\_pluginpref\_get\_str ()
-**Prototype:** int hexchat_pluginpref_get_str (xchat\_plugin \*ph, const char \*var, char \*dest);
+### hexchat\_pluginpref\_get\_str ()
+**Prototype:** int hexchat_pluginpref_get_str (hexchat\_plugin \*ph, const char \*var, char \*dest);
 
 **Description:** Loads a plugin-specific setting with string value from a plugin-specific config file.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **var:** Name of the setting to load.
  * **dest:** Array to save the loaded setting's string value to.
 
@@ -1035,15 +1035,15 @@ You should never need to edit this file manually.
 
 ***
 
-### xchat\_pluginpref\_set\_int ()
+### hexchat\_pluginpref\_set\_int ()
 
-**Prototype:** int xchat\_pluginpref\_set\_int (xchat\_plugin \*ph, const char \*var, int value);
+**Prototype:** int hexchat\_pluginpref\_set\_int (hexchat\_plugin \*ph, const char \*var, int value);
 
 **Description:** Saves a plugin-specific setting with decimal value to a plugin-specific config file.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **var:** Name of the setting to save.
  * **value:** Decimal value of the the setting.
 
@@ -1076,7 +1076,7 @@ saveint_cb (char *word[], char *word_eol[], void *user_data)
 		hexchat_printf (ph, "Invalid input!\n");
 	}
 
-	return HEXCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_hexchat;
 }
 </pre>
 
@@ -1084,30 +1084,30 @@ You only need such complex checks if you're saving user input, which can be non-
 
 ***
 
-### xchat\_pluginpref\_get\_int ()
+### hexchat\_pluginpref\_get\_int ()
 
-**Prototype:** int xchat\_pluginpref\_get\_int (xchat\_plugin \*ph, const char \*var);
+**Prototype:** int hexchat\_pluginpref\_get\_int (hexchat\_plugin \*ph, const char \*var);
 
 **Description:** Loads a plugin-specific setting with decimal value from a plugin-specific config file.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **var:** Name of the setting to load.
 
 **Returns:** The decimal value of the requested setting upon success, -1 for failure.
 
 ***
 
-### xchat\_pluginpref\_delete ()
+### hexchat\_pluginpref\_delete ()
 
-**Prototype:** int xchat\_pluginpref\_delete (xchat\_plugin \*ph, const char \*var);
+**Prototype:** int hexchat\_pluginpref\_delete (hexchat\_plugin \*ph, const char \*var);
 
 **Description:** Deletes a plugin-specific setting from a plugin-specific config file.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **var:** Name of the setting to delete.
 
 **Returns:**
@@ -1119,15 +1119,15 @@ If the given setting didn't exist, it also returns 1, so 1 only indicates that t
 
 ***
 
-### xchat\_pluginpref\_list ()
+### hexchat\_pluginpref\_list ()
 
-**Prototype:** int xchat\_pluginpref\_list (xchat\_plugin \*ph, char \*dest);
+**Prototype:** int hexchat\_pluginpref\_list (hexchat\_plugin \*ph, char \*dest);
 
 **Description:** Builds a comma-separated list of the currently saved settings from a plugin-specific config file.
 
 **Arguments:**
 
- * **ph:** Plugin handle (as given to _xchat\_plugin\_init ()_).
+ * **ph:** Plugin handle (as given to _hexchat\_plugin\_init ()_).
  * **dest:** Array to save the list to.
 
 **Returns:**
@@ -1157,4 +1157,4 @@ list_settings ()
 }
 </pre>
 
-In the example above we query the list of currently stored settings, then print them one by one with their respective values. We always use _xchat\_pluginpref\_get\_str ()_, and that's because we can read an integer as string (but not vice versa).
+In the example above we query the list of currently stored settings, then print them one by one with their respective values. We always use _hexchat\_pluginpref\_get\_str ()_, and that's because we can read an integer as string (but not vice versa).
