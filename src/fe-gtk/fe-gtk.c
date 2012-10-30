@@ -162,7 +162,8 @@ fe_args (int argc, char *argv[])
 	GError *error = NULL;
 	GOptionContext *context;
 #ifdef WIN32
-	char *buffer[2048];
+#define ARGBUF_SIZE 2048
+	char *buffer;
 #endif
 
 #ifdef ENABLE_NLS
@@ -186,27 +187,35 @@ fe_args (int argc, char *argv[])
 		{
 			if (strstr (error->message, "--help-all") != NULL)
 			{
-				if (snprintf (buffer, 2048, g_option_context_get_help (context, FALSE, NULL)))
+				buffer = (char*) malloc (ARGBUF_SIZE);
+				if (snprintf (buffer, ARGBUF_SIZE, g_option_context_get_help (context, FALSE, NULL)))
 				{
 					gtk_init (&argc, &argv);
 					create_msg_dialog ("Long Help", buffer);
 				}
+				free (buffer);
 				return 0;
-			} else if (strstr (error->message, "--help") != NULL || strstr (error->message, "-?") != NULL)
+			}
+			else if (strstr (error->message, "--help") != NULL || strstr (error->message, "-?") != NULL)
 			{
-				if (snprintf (buffer, 2048, g_option_context_get_help (context, TRUE, NULL)))
+				buffer = (char*) malloc (ARGBUF_SIZE);
+				if (snprintf (buffer, ARGBUF_SIZE, g_option_context_get_help (context, TRUE, NULL)))
 				{
 					gtk_init (&argc, &argv);
 					create_msg_dialog ("Help", buffer);
 				}
+				free (buffer);
 				return 0;
-			} else 
+			}
+			else 
 			{
-				if (snprintf (buffer, 2048, "%s\n", error->message))
+				buffer = (char*) malloc (ARGBUF_SIZE);
+				if (snprintf (buffer, ARGBUF_SIZE, "%s\n", error->message))
 				{
 					gtk_init (&argc, &argv);
 					create_msg_dialog ("Error", buffer);
 				}
+				free (buffer);
 				return 1;
 			}
 		}
@@ -225,11 +234,13 @@ fe_args (int argc, char *argv[])
 	if (arg_show_version)
 	{
 #ifdef WIN32
-		if (snprintf (buffer, 2048, DISPLAY_NAME" "PACKAGE_VERSION"\n"))
+		buffer = (char*) malloc (ARGBUF_SIZE);
+		if (snprintf (buffer, ARGBUF_SIZE, DISPLAY_NAME" "PACKAGE_VERSION"\n"))
 		{
 			gtk_init (&argc, &argv);
 			create_msg_dialog ("Version Information", buffer);
 		}
+		free (buffer);
 #else
 		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
 #endif
@@ -242,22 +253,25 @@ fe_args (int argc, char *argv[])
 		/* see the chdir() below */
 		char *sl, *exe = strdup (argv[0]);
 		sl = strrchr (exe, '\\');
+		buffer = (char*) malloc (ARGBUF_SIZE);
 		if (sl)
 		{
 			*sl = 0;
-			if (snprintf (buffer, 2048, "%s\\plugins\n", exe))
-			{
-				gtk_init (&argc, &argv);
-				create_msg_dialog ("Plugin Auto-load Directory", buffer);
-			}
-		} else
-		{
-			if (snprintf (buffer, 2048, ".\\plugins\n"))
+			if (snprintf (buffer, ARGBUF_SIZE, "%s\\plugins\n", exe))
 			{
 				gtk_init (&argc, &argv);
 				create_msg_dialog ("Plugin Auto-load Directory", buffer);
 			}
 		}
+		else
+		{
+			if (snprintf (buffer, ARGBUF_SIZE, ".\\plugins\n"))
+			{
+				gtk_init (&argc, &argv);
+				create_msg_dialog ("Plugin Auto-load Directory", buffer);
+			}
+		}
+		free (buffer);
 #else
 		printf ("%s\n", HEXCHATLIBDIR"/plugins");
 #endif
@@ -267,11 +281,13 @@ fe_args (int argc, char *argv[])
 	if (arg_show_config)
 	{
 #ifdef WIN32
-		if (snprintf (buffer, 2048, "%s\n", get_xdir_fs ()))
+		buffer = (char*) malloc (ARGBUF_SIZE);
+		if (snprintf (buffer, ARGBUF_SIZE, "%s\n", get_xdir_fs ()))
 		{
 			gtk_init (&argc, &argv);
 			create_msg_dialog ("User Config Directory", buffer);
 		}
+		free (buffer);
 #else
 		printf ("%s\n", get_xdir_fs ());
 #endif
@@ -301,7 +317,9 @@ fe_args (int argc, char *argv[])
 	{
 		xdir_fs = strdup (arg_cfgdir);
 		if (xdir_fs[strlen (xdir_fs) - 1] == '/')
+		{
 			xdir_fs[strlen (xdir_fs) - 1] = 0;
+		}
 		g_free (arg_cfgdir);
 	}
 
@@ -309,8 +327,7 @@ fe_args (int argc, char *argv[])
 
 #ifdef USE_XLIB
 	gdk_window_set_events (gdk_get_default_root_window (), GDK_PROPERTY_CHANGE_MASK);
-	gdk_window_add_filter (gdk_get_default_root_window (),
-								  (GdkFilterFunc)root_event_cb, NULL);
+	gdk_window_add_filter (gdk_get_default_root_window (), (GdkFilterFunc)root_event_cb, NULL);
 #endif
 
 	return -1;
