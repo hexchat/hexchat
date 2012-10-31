@@ -34,6 +34,7 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvscrollbar.h>
 #include <gtk/gtkstock.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
@@ -44,7 +45,7 @@
 #include "maingui.h"
 #include "rawlog.h"
 #include "xtext.h"
-
+#include "fkeys.h"
 
 static void
 close_rawlog (GtkWidget *wid, server *serv)
@@ -83,6 +84,28 @@ rawlog_savebutton (GtkWidget * wid, server *serv)
 {
 	gtkutil_file_req (_("Save As..."), rawlog_save, serv, NULL, NULL, FRF_WRITE);
 	return FALSE;
+}
+
+static void
+rawlog_key_cb (GtkWidget * wid, GdkEventKey * key, gpointer userdata)
+{
+	/* Copy rawlog selection to clipboard when Ctrl+Shift+C is pressed,
+	 * but make sure not to copy twice, i.e. when auto-copy is enabled.
+	 */
+	if (!prefs.hex_text_autocopy_text &&
+		(key->keyval == GDK_c || key->keyval == GDK_C) &&
+		key->state & STATE_SHIFT &&
+		key->state & STATE_CTRL)
+	{
+		gtk_xtext_copy_selection (userdata);
+	}
+	/* close_rawlog is given to mg_create_generic_tab as
+	 * close_callback, it should take care of the rest.
+	 */
+	else if (key->keyval == GDK_Escape)
+	{
+		gtk_widget_destroy (wid);
+	}
 }
 
 void
@@ -131,6 +154,9 @@ open_rawlog (struct server *serv)
 
 	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, NULL, rawlog_savebutton,
 						 serv, _("Save As..."));
+
+	/* Copy selection to clipboard when Ctrl+Shift+C is pressed AND text auto-copy is disabled */
+	g_signal_connect (G_OBJECT (serv->gui->rawlog_window), "key_press_event", G_CALLBACK (rawlog_key_cb), serv->gui->rawlog_textlist);
 
 	gtk_widget_show (serv->gui->rawlog_window);
 }
