@@ -882,7 +882,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 903:	/* successful SASL auth */
-		EMIT_SIGNAL (XP_TE_SASLSUCCESS, sess, NULL, NULL,
+		EMIT_SIGNAL (XP_TE_SASLSUCCESS, sess->server->server_session, NULL, NULL,
 							 NULL, NULL, 0);
 		tcp_send_len(serv, "CAP END\r\n", 9);
 		break;
@@ -981,7 +981,6 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				}
 			}
 			return;
-
 		case WORDL('K','I','L','L'):
 			EMIT_SIGNAL (XP_TE_KILL, sess, nick, word_eol[5], NULL, NULL, 0);
 			return;
@@ -1149,7 +1148,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strncasecmp (word[5][0]==':' ? word[5] + 1 : word[5], "sasl", 12) == 0)
 					{
 						serv->have_sasl = TRUE;
-						EMIT_SIGNAL (XP_TE_SASLAUTH, sess, sess->server->sasluser, NULL,
+						EMIT_SIGNAL (XP_TE_SASLAUTH, sess->server->server_session, sess->server->sasluser, NULL,
 							 NULL, NULL, 0);	
 						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
@@ -1160,7 +1159,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)
 				{
-					EMIT_SIGNAL (XP_TE_SERVERCAPAB, sess, ++word_eol[5], NULL,
+					EMIT_SIGNAL (XP_TE_SERVERCAPAB, sess->server->server_session, ++word_eol[5], NULL,
 							 NULL, NULL, 0);
 					if (strstr (word_eol[5], "identify-msg") != 0)
 					{
