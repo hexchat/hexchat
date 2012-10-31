@@ -381,7 +381,7 @@ default_file (void)
 
 	if (!dfile)
 	{
-		dfile = malloc (strlen (get_xdir_fs ()) + 12);
+		dfile = malloc (strlen (get_xdir_fs ()) + 14);
 		sprintf (dfile, "%s/hexchat.conf", get_xdir_fs ());
 	}
 	return dfile;
