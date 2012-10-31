@@ -120,7 +120,7 @@ open_rawlog (struct server *serv)
 		return;
 	}
 
-	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Rawlog (%s)"), serv->servername);
+	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Raw Log (%s)"), serv->servername);
 	serv->gui->rawlog_window =
 		mg_create_generic_tab ("RawLog", tbuf, FALSE, TRUE, close_rawlog, serv,
 							 640, 320, &vbox, serv);
@@ -150,7 +150,7 @@ open_rawlog (struct server *serv)
 	gtk_widget_show (hbox);
 
 	gtkutil_button (hbox, GTK_STOCK_CLEAR, NULL, rawlog_clearbutton,
-						 serv, _("Clear rawlog"));
+						 serv, _("Clear Raw Log"));
 
 	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, NULL, rawlog_savebutton,
 						 serv, _("Save As..."));
