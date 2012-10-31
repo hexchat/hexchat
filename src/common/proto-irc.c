@@ -882,6 +882,10 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 903:	/* successful SASL auth */
+		EMIT_SIGNAL (XP_TE_SASLSUCCESS, sess, NULL, NULL,
+							 NULL, NULL, 0);
+		tcp_send_len(serv, "CAP END\r\n", 9);
+		break;
 	case 904:	/* aborted SASL auth */
 	case 905:	/* failed SASL auth */
 	case 906:	/* registration completes before SASL auth */
@@ -1145,7 +1149,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strncasecmp (word[5][0]==':' ? word[5] + 1 : word[5], "sasl", 12) == 0)
 					{
 						serv->have_sasl = TRUE;
-						PrintTextf (sess, "Authenticating via SASL as %s\n", sess->server->sasluser);
+						EMIT_SIGNAL (XP_TE_SASLAUTH, sess, sess->server->sasluser, NULL,
+							 NULL, NULL, 0);	
 						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
 						pass = encode_sasl_pass (sess->server->sasluser, sess->server->saslpassword);
@@ -1155,7 +1160,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)
 				{
-					PrintTextf (sess, "Capabilities supported by the server: %s\n", ++word_eol[5]);
+					EMIT_SIGNAL (XP_TE_SERVERCAPAB, sess, ++word_eol[5], NULL,
+							 NULL, NULL, 0);
 					if (strstr (word_eol[5], "identify-msg") != 0)
 					{
 						tcp_send_len (serv, "CAP REQ :identify-msg\r\n", 23);

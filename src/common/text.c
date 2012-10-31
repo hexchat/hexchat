@@ -1628,6 +1628,14 @@ static char * const pevt_discon_help[] = {
 	N_("Error"),
 };
 
+static char * const pevt_servercapab_help[] = {
+	N_("Server Capabilities"),
+};
+
+static char * const pevt_saslauth_help[] = {
+	N_("SASL User"),
+};
+
 #include "textevents.h"
 
 static void
