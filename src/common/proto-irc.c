@@ -886,9 +886,16 @@ process_numeric (session * sess, int n,
 							 NULL, NULL, 0);
 		tcp_send_len(serv, "CAP END\r\n", 9);
 		break;
-	case 904:	/* aborted SASL auth */
-	case 905:	/* failed SASL auth */
-	case 906:	/* registration completes before SASL auth */
+	case 904:	/* failed SASL auth */
+		EMIT_SIGNAL (XP_TE_SASLFAIL, sess->server->server_session, NULL, NULL, 
+							NULL, NULL, 0);
+		tcp_send_len(serv, "CAP END\r\n", 9);
+		break;
+	case 905:	/* failed SASL auth?? */
+	case 906:	/* aborted SASL auth */
+		EMIT_SIGNAL (XP_TE_SASLABRT, sess->server->server_session, NULL, NULL, 
+							NULL, NULL, 0);
+		break;
 	case 907:	/* attempting to re-auth after a successful auth */
 		tcp_send_len (serv, "CAP END\r\n", 9);
 		PrintTextf (sess, "%s\n", ++word_eol[4]);
