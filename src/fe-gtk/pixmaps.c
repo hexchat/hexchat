@@ -34,6 +34,7 @@
 GdkPixbuf *pix_xchat;
 GdkPixbuf *pix_book;
 
+GdkPixbuf *pix_orange;
 GdkPixbuf *pix_purple;
 GdkPixbuf *pix_red;
 GdkPixbuf *pix_op;
@@ -127,6 +128,7 @@ pixmaps_init (void)
 
 	/* userlist icons, with inlined defaults */
 	pix_hop = load_pixmap ("hop", hoppng, 1);
+	pix_orange = load_pixmap ("orange", orangepng, 1);
 	pix_purple = load_pixmap ("purple", purplepng, 1);
 	pix_red = load_pixmap ("red", redpng, 1);
 	pix_op = load_pixmap ("op", oppng, 1);
