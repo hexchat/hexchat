@@ -1,5 +1,6 @@
 extern GdkPixbuf *pix_book;
 extern GdkPixbuf *pix_hop;
+extern GdkPixbuf *pix_orange;
 extern GdkPixbuf *pix_purple;
 extern GdkPixbuf *pix_red;
 extern GdkPixbuf *pix_op;
