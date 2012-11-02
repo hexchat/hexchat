@@ -96,8 +96,9 @@ get_user_icon (server *serv, struct User *user)
 				{
 				case 0: return pix_red;	/* 1 level above op */
 				case 1: return pix_purple;	 /* 2 levels above op */
+				case 2: return pix_orange;	/* 3 levels above op */
 				}
-				break;	/* 3+, no icons */
+				break;	/* 4+, no icons */
 			}
 			level++;
 			if (pre == serv->nick_prefixes)
