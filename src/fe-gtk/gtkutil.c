@@ -820,7 +820,12 @@ show_and_unfocus (GtkWidget * wid)
 void
 gtkutil_set_icon (GtkWidget *win)
 {
+#ifndef WIN32
+	/* FIXME: Magically breaks icon rendering in most
+	 * (sub)windows, but OFC only on Windows. GTK <3
+	 */
 	gtk_window_set_icon (GTK_WINDOW (win), pix_hexchat);
+#endif
 }
 
 extern GtkWidget *parent_window;	/* maingui.c */
