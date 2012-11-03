@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-31 05:33+0100\n"
-"PO-Revision-Date: 2012-10-31 04:36+0000\n"
+"POT-Creation-Date: 2012-11-03 05:19+0100\n"
+"PO-Revision-Date: 2012-11-03 04:25+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -60,9 +60,9 @@ msgstr "ನಿಲ್ಲಿಸಿದೆ"
 msgid "Cannot access %s\n"
 msgstr "%s ಅನ್ನು ನಿಲುಕಿಸಕೊಳ್ಳಲು ಸಾಧ್ಯವಿಲ್ಲ\n"
 
-#: src/common/dcc.c:1899 src/common/text.c:1442 src/common/text.c:1480
-#: src/common/text.c:1491 src/common/text.c:1498 src/common/text.c:1511
-#: src/common/text.c:1528 src/common/text.c:1628 src/common/util.c:358
+#: src/common/dcc.c:1899 src/common/text.c:1458 src/common/text.c:1496
+#: src/common/text.c:1507 src/common/text.c:1514 src/common/text.c:1527
+#: src/common/text.c:1544 src/common/text.c:1644 src/common/util.c:358
 msgid "Error"
 msgstr "ದೋಷ"
 
@@ -1138,83 +1138,91 @@ msgid "%C24*%O$tLooking up IP number for %C18$1%O..."
 msgstr ""
 
 #: src/common/textevents.h:330
-msgid "%C29*%O$tConnected."
+msgid "%C23*%O$tAuthenticating via SASL as %C18$1%O"
 msgstr ""
 
 #: src/common/textevents.h:336
+msgid "%C23*%O$tCapabilities supported by the server: %C29$2%O"
+msgstr ""
+
+#: src/common/textevents.h:339
+msgid "%C29*%O$tConnected."
+msgstr ""
+
+#: src/common/textevents.h:345
 msgid "%C29*%O$tLooking up %C29$1%O"
 msgstr ""
 
-#: src/common/textevents.h:348
+#: src/common/textevents.h:357
 msgid "%C23*%O$tStopped previous connection attempt (%C24$1%O)"
 msgstr ""
 
-#: src/common/textevents.h:351
+#: src/common/textevents.h:360
 msgid "%C22*%O$tTopic for %C22$1%C is: $2%O"
 msgstr ""
 
-#: src/common/textevents.h:354
+#: src/common/textevents.h:363
 msgid "%C22*%O$t%C26$1%C has changed the topic to: $2%O"
 msgstr ""
 
-#: src/common/textevents.h:357
+#: src/common/textevents.h:366
 msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:360
+#: src/common/textevents.h:369
 msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
 msgstr ""
 
-#: src/common/textevents.h:363
+#: src/common/textevents.h:372
 msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
 msgstr ""
 
-#: src/common/textevents.h:366
+#: src/common/textevents.h:375
 msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
 msgstr ""
 
-#: src/common/textevents.h:372
+#: src/common/textevents.h:381
 msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
 msgstr ""
 
-#: src/common/textevents.h:378
+#: src/common/textevents.h:387
 msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
 msgstr ""
 
-#: src/common/textevents.h:384
+#: src/common/textevents.h:393
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O"
 msgstr ""
 
-#: src/common/textevents.h:387
+#: src/common/textevents.h:396
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
 msgstr ""
 
-#: src/common/textevents.h:393
+#: src/common/textevents.h:402
 msgid ""
 "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:402
+#: src/common/textevents.h:411
 msgid "%C19*%O$tNow talking on %C22$2%O"
 msgstr ""
 
-#: src/common/textevents.h:405
+#: src/common/textevents.h:414
 msgid "%C19*%O$tYou have been kicked from %C22$2%C by %C26$3%O (%C20$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:408
+#: src/common/textevents.h:417
 msgid "%C19*%O$tYou have left channel %C22$3%O"
 msgstr ""
 
-#: src/common/textevents.h:411
+#: src/common/textevents.h:420
 msgid "%C19*%O$tYou have left channel %C22$3%C (%C24$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:417
+#: src/common/textevents.h:426
 msgid "%C20*%O$tYou've invited %C18$1%O to %C22$2%O (%C24$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:423
+#: src/common/textevents.h:432
 msgid "%C20*%O$tYou are now known as %C18$2%O"
 msgstr ""
 
@@ -1263,13 +1271,13 @@ msgstr "ವ್ಯಕ್ತಿಯ ಆತಿಥೇಯ ಗಣಕ"
 #: src/common/text.c:1355 src/common/text.c:1362 src/common/text.c:1367
 #: src/common/text.c:1372 src/common/text.c:1377 src/common/text.c:1383
 #: src/common/text.c:1388 src/common/text.c:1392 src/common/text.c:1398
-#: src/common/text.c:1404 src/common/text.c:1456 src/common/text.c:1467
-#: src/common/text.c:1472 src/common/text.c:1477 src/common/text.c:1486
-#: src/common/text.c:1497 src/common/text.c:1504 src/common/text.c:1510
-#: src/common/text.c:1515 src/common/text.c:1520 src/common/text.c:1527
-#: src/common/text.c:1533 src/common/text.c:1539 src/common/text.c:1544
-#: src/common/text.c:1549 src/common/text.c:1553 src/common/text.c:1559
-#: src/common/text.c:1567 src/common/text.c:1601 src/common/text.c:1606
+#: src/common/text.c:1404 src/common/text.c:1472 src/common/text.c:1483
+#: src/common/text.c:1488 src/common/text.c:1493 src/common/text.c:1502
+#: src/common/text.c:1513 src/common/text.c:1520 src/common/text.c:1526
+#: src/common/text.c:1531 src/common/text.c:1536 src/common/text.c:1543
+#: src/common/text.c:1549 src/common/text.c:1555 src/common/text.c:1560
+#: src/common/text.c:1565 src/common/text.c:1569 src/common/text.c:1575
+#: src/common/text.c:1583 src/common/text.c:1617 src/common/text.c:1622
 msgid "Nickname"
 msgstr "ಅಡ್ಡಹೆಸರು"
 
@@ -1310,7 +1318,7 @@ msgstr "ವಿಷಯವನ್ನು ಬದಲಾಯಿಸಿದ ವ್ಯಕ್�
 msgid "Topic"
 msgstr "ವಿಷಯ"
 
-#: src/common/text.c:1180 src/common/text.c:1184 src/common/text.c:1621
+#: src/common/text.c:1180 src/common/text.c:1184 src/common/text.c:1637
 #: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
 #: src/fe-gtk/servlistgui.c:894
 msgid "Channel"
@@ -1350,11 +1358,11 @@ msgstr "ರಚಿಸಿದವರು"
 msgid "Nick"
 msgstr "ಅಡ್ಡಹೆಸರು"
 
-#: src/common/text.c:1214 src/common/text.c:1473
+#: src/common/text.c:1214 src/common/text.c:1489
 msgid "Reason"
 msgstr "ಕಾರಣ"
 
-#: src/common/text.c:1215 src/common/text.c:1357 src/common/text.c:1446
+#: src/common/text.c:1215 src/common/text.c:1357 src/common/text.c:1462
 msgid "Host"
 msgstr "ಅತಿಥೇಯ"
 
@@ -1506,7 +1514,7 @@ msgstr "ಕ್ರಮದ ಅಕ್ಷರ"
 msgid "The channel it's being set on"
 msgstr "ಇದನ್ನು ಹೊಂದಿಸಲಾದ ಚಾನಲ್‌"
 
-#: src/common/text.c:1356
+#: src/common/text.c:1356 src/common/text.c:1415 src/common/text.c:1421
 msgid "Username"
 msgstr "ಬಳಕೆದಾರರ ಹೆಸರು "
 
@@ -1535,7 +1543,7 @@ msgid "Away reason"
 msgstr "ಆಚೆ ಹೋಗಲು ಕಾರಣ"
 
 #: src/common/text.c:1393 src/common/text.c:1399 src/common/text.c:1407
-#: src/common/text.c:1593
+#: src/common/text.c:1422 src/common/text.c:1609
 msgid "Message"
 msgstr "ಸಂದೇಶ"
 
@@ -1551,154 +1559,159 @@ msgstr "ನಿಜವಾದ ಬಳಕೆದಾರ@ಆತಿಥೇಯ"
 msgid "Real IP"
 msgstr "ನಿಜವಾದ IP"
 
-#: src/common/text.c:1411 src/common/text.c:1426 src/common/text.c:1432
-#: src/common/text.c:1462 src/common/text.c:1616
+#: src/common/text.c:1411 src/common/text.c:1442 src/common/text.c:1448
+#: src/common/text.c:1478 src/common/text.c:1632
 msgid "Channel Name"
 msgstr "ಚಾನಲ್ ಹೆಸರು"
 
-#: src/common/text.c:1415 src/common/text.c:1421 src/common/text.c:1579
+#: src/common/text.c:1419 src/common/text.c:1426 src/common/text.c:1432
+#: src/common/text.c:1438 src/common/text.c:1444 src/common/text.c:1473
+#: src/common/text.c:1591 src/common/text.c:1633
+msgid "Server Name"
+msgstr "ಪರಿಚಾರಕದ ಹೆಸರು"
+
+#: src/common/text.c:1420 src/common/text.c:1433
+msgid "Raw Numeric or Identifier"
+msgstr ""
+
+#: src/common/text.c:1427
+msgid "Server Capabilities"
+msgstr ""
+
+#: src/common/text.c:1431 src/common/text.c:1437 src/common/text.c:1595
 #: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
 #: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "ಪಠ್ಯ"
 
-#: src/common/text.c:1416 src/common/text.c:1422 src/common/text.c:1428
-#: src/common/text.c:1457 src/common/text.c:1575 src/common/text.c:1617
-msgid "Server Name"
-msgstr "ಪರಿಚಾರಕದ ಹೆಸರು"
-
-#: src/common/text.c:1417
-msgid "Raw Numeric or Identifier"
-msgstr ""
-
-#: src/common/text.c:1427
+#: src/common/text.c:1443
 msgid "Nick of person who invited you"
 msgstr "ನಿಮ್ಮನ್ನು ಆಮಂತ್ರಿಸಲಾದ ವ್ಯಕ್ತಿಯ ಅಡ್ಡಹೆಸರು"
 
-#: src/common/text.c:1433 src/fe-gtk/chanlist.c:787
+#: src/common/text.c:1449 src/fe-gtk/chanlist.c:787
 msgid "Users"
 msgstr "ಬಳಕೆದಾರರು"
 
-#: src/common/text.c:1437
+#: src/common/text.c:1453
 msgid "Nickname in use"
 msgstr "ಬಳಕೆಯಲ್ಲಿರುವ ಅಡ್ಡಹೆಸರು"
 
-#: src/common/text.c:1438
+#: src/common/text.c:1454
 msgid "Nick being tried"
 msgstr "ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿರುವ ಅಡ್ಡಹೆಸರು"
 
-#: src/common/text.c:1447 src/common/text.c:1583
+#: src/common/text.c:1463 src/common/text.c:1599
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:1448 src/common/text.c:1479
+#: src/common/text.c:1464 src/common/text.c:1495
 msgid "Port"
 msgstr "ಸಂಪರ್ಕಸ್ಥಾನ"
 
-#: src/common/text.c:1458 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
+#: src/common/text.c:1474 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
 msgid "Network"
 msgstr "ಜಾಲಬಂಧ"
 
-#: src/common/text.c:1463 src/common/text.c:1468
+#: src/common/text.c:1479 src/common/text.c:1484
 msgid "Modes string"
 msgstr "ಕ್ರಮಗಳ ವಾಕ್ಯ"
 
-#: src/common/text.c:1478 src/common/text.c:1516 src/common/text.c:1521
-#: src/common/text.c:1562
+#: src/common/text.c:1494 src/common/text.c:1532 src/common/text.c:1537
+#: src/common/text.c:1578
 msgid "IP address"
 msgstr "IP ವಿಳಾಸ"
 
-#: src/common/text.c:1484 src/common/text.c:1509
+#: src/common/text.c:1500 src/common/text.c:1525
 msgid "DCC Type"
 msgstr "DCC ಬಗೆ"
 
-#: src/common/text.c:1485 src/common/text.c:1490 src/common/text.c:1495
-#: src/common/text.c:1502 src/common/text.c:1522 src/common/text.c:1526
-#: src/common/text.c:1532 src/common/text.c:1538 src/common/text.c:1545
-#: src/common/text.c:1554 src/common/text.c:1560
+#: src/common/text.c:1501 src/common/text.c:1506 src/common/text.c:1511
+#: src/common/text.c:1518 src/common/text.c:1538 src/common/text.c:1542
+#: src/common/text.c:1548 src/common/text.c:1554 src/common/text.c:1561
+#: src/common/text.c:1570 src/common/text.c:1576
 msgid "Filename"
 msgstr "ಕಡತದ ಹೆಸರು"
 
-#: src/common/text.c:1496 src/common/text.c:1503
+#: src/common/text.c:1512 src/common/text.c:1519
 msgid "Destination filename"
 msgstr "ನಿರ್ದೇಶಿತ ಕಡತದ ಹೆಸರು"
 
-#: src/common/text.c:1505 src/common/text.c:1534
+#: src/common/text.c:1521 src/common/text.c:1550
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:1540
+#: src/common/text.c:1556
 msgid "Pathname"
 msgstr "ಮಾರ್ಗದ ಹೆಸರು"
 
-#: src/common/text.c:1555 src/fe-gtk/dccgui.c:764
+#: src/common/text.c:1571 src/fe-gtk/dccgui.c:764
 msgid "Position"
 msgstr "ಸ್ಥಾನ"
 
-#: src/common/text.c:1561 src/fe-gtk/dccgui.c:763
+#: src/common/text.c:1577 src/fe-gtk/dccgui.c:763
 msgid "Size"
 msgstr "ಗಾತ್ರ"
 
-#: src/common/text.c:1566
+#: src/common/text.c:1582
 msgid "DCC String"
 msgstr "DCC ವಾಕ್ಯ"
 
-#: src/common/text.c:1571
+#: src/common/text.c:1587
 msgid "Number of notify items"
 msgstr "ಸೂಚನಾ ಅಂಶಗಳ ಸಂಖ್ಯೆ"
 
-#: src/common/text.c:1587
+#: src/common/text.c:1603
 msgid "Old Filename"
 msgstr "ಹಳೆಯ ಕಡತದ ಹೆಸರು"
 
-#: src/common/text.c:1588
+#: src/common/text.c:1604
 msgid "New Filename"
 msgstr "ಹೊಸ ಕಡತದ ಹೆಸರು"
 
-#: src/common/text.c:1592
+#: src/common/text.c:1608
 msgid "Receiver"
 msgstr "ಸ್ವೀಕರಿಸುವವರು"
 
-#: src/common/text.c:1597
+#: src/common/text.c:1613
 msgid "Hostmask"
 msgstr "ಅತಿಥೇಯಮುಸುಕು"
 
-#: src/common/text.c:1602
+#: src/common/text.c:1618
 msgid "Hostname"
 msgstr "ಆತಿಥೇಯಗಣಕ"
 
-#: src/common/text.c:1607
+#: src/common/text.c:1623
 msgid "The Packet"
 msgstr "ಪ್ಯಾಕೆಟ್"
 
-#: src/common/text.c:1611
+#: src/common/text.c:1627
 msgid "Seconds"
 msgstr "ಸೆಕೆಂಡುಗಳು"
 
-#: src/common/text.c:1615
+#: src/common/text.c:1631
 msgid "Nick of person who have been invited"
 msgstr "ಆಮಂತ್ರಿತಗೊಂಡ ವ್ಯಕ್ತಿಯ ಅಡ್ಡಹೆಸರು"
 
-#: src/common/text.c:1622
+#: src/common/text.c:1638
 msgid "Banmask"
 msgstr "ನಿಶೇಧಮುಸುಕು"
 
-#: src/common/text.c:1623
+#: src/common/text.c:1639
 msgid "Who set the ban"
 msgstr "ನಿಶೇಧವನ್ನು ವಿಧಿಸಿದವರು"
 
-#: src/common/text.c:1624
+#: src/common/text.c:1640
 msgid "Ban time"
 msgstr "ನಿಶೇಧದ ಸಮಯ"
 
-#: src/common/text.c:1664
+#: src/common/text.c:1680
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
 msgstr "ಘಟನೆ %s ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ.\nಪೂರ್ವನಿಯೋಜಿತವನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ."
 
-#: src/common/text.c:2431
+#: src/common/text.c:2447
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -5810,7 +5823,7 @@ msgstr "ಕಾಪಿ ಮಾಡು"
 msgid "Save list to a file"
 msgstr "ಪಟ್ಟಿಯನ್ನು ಕಡತಕ್ಕೆ ಉಳಿಸಿ"
 
-#: src/fe-gtk/userlistgui.c:121
+#: src/fe-gtk/userlistgui.c:122
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d ops, %d ಒಟ್ಟು"

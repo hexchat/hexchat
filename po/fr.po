@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-31 05:33+0100\n"
-"PO-Revision-Date: 2012-10-31 04:36+0000\n"
+"POT-Creation-Date: 2012-11-03 05:19+0100\n"
+"PO-Revision-Date: 2012-11-03 04:25+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/hexchat/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -61,9 +61,9 @@ msgstr "Interrompu"
 msgid "Cannot access %s\n"
 msgstr "Impossible d'accéder à %s\n"
 
-#: src/common/dcc.c:1899 src/common/text.c:1442 src/common/text.c:1480
-#: src/common/text.c:1491 src/common/text.c:1498 src/common/text.c:1511
-#: src/common/text.c:1528 src/common/text.c:1628 src/common/util.c:358
+#: src/common/dcc.c:1899 src/common/text.c:1458 src/common/text.c:1496
+#: src/common/text.c:1507 src/common/text.c:1514 src/common/text.c:1527
+#: src/common/text.c:1544 src/common/text.c:1644 src/common/util.c:358
 msgid "Error"
 msgstr "Erreur"
 
@@ -603,7 +603,7 @@ msgstr "RECONNECT [<hôte>] [<port>] [<mot_de_passe>], peut être appelée exact
 msgid ""
 "RECV <text>, send raw data to HexChat, as if it was received from the IRC "
 "server"
-msgstr ""
+msgstr "RECV <texte>, envoie des données brutes à HexChat, comme si elles étaient reçues du serveur IRC."
 
 #: src/common/outbound.c:3701
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -729,7 +729,7 @@ msgstr "Commande inconnue. Essayez /help\n"
 
 #: src/common/plugin.c:383 src/common/plugin.c:424
 msgid "No hexchat_plugin_init symbol; is this really a HexChat plugin?"
-msgstr ""
+msgstr "La méthode hexchat_plugin_init n'a pas été trouvée. Est-ce réellement un greffon HexChat ?"
 
 #: src/common/server.c:665
 msgid "Are you sure this is a SSL capable server and port?\n"
@@ -764,7 +764,7 @@ msgstr "%C18*%O$t%C18$1%O ajouté à la liste de notifications."
 
 #: src/common/textevents.h:9
 msgid "%C22*%O$t%C22$1%O Banlist: %C18$2%O for %C24$4%O by %C26$3%O"
-msgstr ""
+msgstr "%C22*%O$t%C22$1%O Liste de bannissement : %C18$2%O pour %C24$4%O par %C26$3%O"
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join%C22 $1 %O(%C20You are banned%O)."
@@ -780,31 +780,31 @@ msgstr "%C22*%O$t%C26$1%O a banni %C18$2%O"
 
 #: src/common/textevents.h:30
 msgid "%C22*%O$tChannel %C22$1%O created"
-msgstr ""
+msgstr "%C22*%O$tCanal %C22$1%O créé"
 
 #: src/common/textevents.h:33
 msgid "%C22*%O$t%C26$1%O removes channel half-operator status from %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a enlevé le statut de semi-opérateur de canal à %C18$2%O"
 
 #: src/common/textevents.h:36
 msgid "%C22*%O$t%C26$1%O removes channel operator status from %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a enlevé le statut d'opérateur de canal à %C18$2%O"
 
 #: src/common/textevents.h:39
 msgid "%C22*%O$t%C26$1%O removes voice from %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a enlevé la parole à %C18$2%O"
 
 #: src/common/textevents.h:42
 msgid "%C22*%O$t%C26 $1%C sets exempt on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26 $1%C a mis une exception sur %C18$2%O"
 
 #: src/common/textevents.h:45
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a donné le statut de semi-opérateur de canal à %C18$2%O"
 
 #: src/common/textevents.h:48
 msgid "%C22*%O$t%C26 $1%C sets invite on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26 $1%C a mis le drapeau d'invitation requise sur %C18$2%O"
 
 #: src/common/textevents.h:51
 msgid "%UChannel          Users   Topic"
@@ -812,113 +812,113 @@ msgstr "%UCanal          Utilisateurs   Sujet"
 
 #: src/common/textevents.h:57
 msgid "%C22*%O$t%C26$1%O sets mode %C24$2$3%O on %C22$4%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a mis le mode %C24$2$3%O sur %C22$4%O"
 
 #: src/common/textevents.h:60
 msgid "%C22*%O$tChannel %C22$1%O modes: %C24$2"
-msgstr ""
+msgstr "%C22*%O$tCanal %C22$1%O mode : %C24$2"
 
 #: src/common/textevents.h:69
 msgid "%C22*%O$t%C26$1%O gives channel operator status to %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a donné le statut d'opérateur de canal à %C18$2%O"
 
 #: src/common/textevents.h:72
 msgid "%C22*%O$t%C26$1%O removes exempt on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a enlevé l'exception sur %C18$2%O"
 
 #: src/common/textevents.h:75
 msgid "%C22*%O$t%C26 $1%O removes invite on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26 $1%O a enlevé le drapeau d'invitation requise sur %C18$2%O"
 
 #: src/common/textevents.h:78
 msgid "%C22*%O$t%C26$1%O removes channel keyword"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a enlevé le mot de passe du canal"
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t%C26$1%O removes user limit"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a enlevé la limite du nombre d'utilisateurs"
 
 #: src/common/textevents.h:84
 msgid "%C22*%O$t$1 sets channel keyword to %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$t$1 a mis un mot de passe au canal : %C24$2%O"
 
 #: src/common/textevents.h:87
 msgid "%C22*%O$t%C26$1%O sets channel limit to %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a mis la limite du canal à %C24$2%O"
 
 #: src/common/textevents.h:90
 msgid "%C22*%O$t%C26$1%O removes ban on %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a enlevé le bannissement à %C24$2%O"
 
 #: src/common/textevents.h:93
 msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O a donné la parole à %C18$2%O"
 
 #: src/common/textevents.h:96
 msgid "%C23*%O$tConnected. Now logging in."
-msgstr ""
+msgstr "%C23*%O$tConnecté. maintenant entrons..."
 
 #: src/common/textevents.h:99
 msgid "%C23*%O$tConnecting to %C29$1%C (%C23$2:$3%O)"
-msgstr ""
+msgstr "%C23*%O$tConnexion à %C29$1%C (%C23$2 :$3%O)"
 
 #: src/common/textevents.h:102
 msgid "%C20*%O$tConnection failed (%C20$1%O)"
-msgstr ""
+msgstr "%C20*%O$tLa connexion a échouée (%C20$1%O)"
 
 #: src/common/textevents.h:105
 msgid "%C24*%O$tReceived a CTCP %C24$1%C from %C18$2%O"
-msgstr ""
+msgstr "%C24*%O$tRéception d'un CTCP %C24$1%C de %C18$2%O"
 
 #: src/common/textevents.h:108
 msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
-msgstr ""
+msgstr "%C24*%C$tRéception d'un CTCP %C24$1%C de %C18$2%C (à %C22$3%C)%O"
 
 #: src/common/textevents.h:114
 msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%O"
-msgstr ""
+msgstr "%C24*%O$tRéception d'un son CTCP %C24$1%C de %C18$2%O"
 
 #: src/common/textevents.h:117
 msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%C (to %C22$3%O)"
-msgstr ""
+msgstr "%C24*%O$tRéception d'un son CTCP %C24$1%C de %C18$2%C (à %C22$3%O)"
 
 #: src/common/textevents.h:120
 msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
-msgstr ""
+msgstr "%C23*%O$tDiscussion DCC vers %C18$1%O annulé."
 
 #: src/common/textevents.h:123
 msgid ""
 "%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
-msgstr ""
+msgstr "%C24*%O$tDiscussion DCC, connexion établie avec %C18$1%C %C30[%C24$2%C30]%O"
 
 #: src/common/textevents.h:126
 msgid "%C20*%O$tDCC CHAT to %C18$1%O lost (%C20$4%O)"
-msgstr ""
+msgstr "%C20*%O$tDiscussion DCC avec %C18$1%O lost (%C20$4%O)"
 
 #: src/common/textevents.h:129
 msgid "%C24*%O$tReceived a DCC CHAT offer from %C18$1%O"
-msgstr ""
+msgstr "%C24*%O$tRéception d'un demande de discussion DCC de %C18$1%O"
 
 #: src/common/textevents.h:132
 msgid "%C24*%O$tOffering DCC CHAT to %C18$1%O"
-msgstr ""
+msgstr "%C24*%O$tEnvoi d'une proposition de discussion DCC à %C18$1%O"
 
 #: src/common/textevents.h:135
 msgid "%C24*%O$tAlready offering CHAT to %C18$1%O"
-msgstr ""
+msgstr "%C24*%O$tVous avez déjà envoyé une demande de discussion à %C18$1%O"
 
 #: src/common/textevents.h:138
 msgid "%C20*%O$tDCC $1 connect attempt to %C18$2%O failed (%C20$3%O)"
-msgstr ""
+msgstr "%C20*%O$tTentative de connexion DCC $1 à %C18$2%O échouée (%C20$3%O)"
 
 #: src/common/textevents.h:141
 msgid "%C23*%O$tReceived '%C23$1%C' from %C18$2%O"
-msgstr ""
+msgstr "%C23*%O$tRéception de '%C23$1%C' de %C18$2%O"
 
 #: src/common/textevents.h:144
 #, c-format
 msgid "%C16,17 Type  To/From    Status  Size    Pos     File         "
-msgstr ""
+msgstr "%C16,17 Type  À/De    État  Taille  Position    Fichier       "
 
 #: src/common/textevents.h:147
 msgid ""
@@ -1139,83 +1139,91 @@ msgid "%C24*%O$tLooking up IP number for %C18$1%O..."
 msgstr ""
 
 #: src/common/textevents.h:330
-msgid "%C29*%O$tConnected."
+msgid "%C23*%O$tAuthenticating via SASL as %C18$1%O"
 msgstr ""
 
 #: src/common/textevents.h:336
+msgid "%C23*%O$tCapabilities supported by the server: %C29$2%O"
+msgstr ""
+
+#: src/common/textevents.h:339
+msgid "%C29*%O$tConnected."
+msgstr ""
+
+#: src/common/textevents.h:345
 msgid "%C29*%O$tLooking up %C29$1%O"
 msgstr ""
 
-#: src/common/textevents.h:348
+#: src/common/textevents.h:357
 msgid "%C23*%O$tStopped previous connection attempt (%C24$1%O)"
 msgstr ""
 
-#: src/common/textevents.h:351
+#: src/common/textevents.h:360
 msgid "%C22*%O$tTopic for %C22$1%C is: $2%O"
 msgstr ""
 
-#: src/common/textevents.h:354
+#: src/common/textevents.h:363
 msgid "%C22*%O$t%C26$1%C has changed the topic to: $2%O"
 msgstr ""
 
-#: src/common/textevents.h:357
+#: src/common/textevents.h:366
 msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:360
+#: src/common/textevents.h:369
 msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
 msgstr ""
 
-#: src/common/textevents.h:363
+#: src/common/textevents.h:372
 msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
 msgstr ""
 
-#: src/common/textevents.h:366
+#: src/common/textevents.h:375
 msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
 msgstr ""
 
-#: src/common/textevents.h:372
+#: src/common/textevents.h:381
 msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
 msgstr ""
 
-#: src/common/textevents.h:378
+#: src/common/textevents.h:387
 msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
 msgstr ""
 
-#: src/common/textevents.h:384
+#: src/common/textevents.h:393
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O"
 msgstr ""
 
-#: src/common/textevents.h:387
+#: src/common/textevents.h:396
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
 msgstr ""
 
-#: src/common/textevents.h:393
+#: src/common/textevents.h:402
 msgid ""
 "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:402
+#: src/common/textevents.h:411
 msgid "%C19*%O$tNow talking on %C22$2%O"
 msgstr ""
 
-#: src/common/textevents.h:405
+#: src/common/textevents.h:414
 msgid "%C19*%O$tYou have been kicked from %C22$2%C by %C26$3%O (%C20$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:408
+#: src/common/textevents.h:417
 msgid "%C19*%O$tYou have left channel %C22$3%O"
 msgstr ""
 
-#: src/common/textevents.h:411
+#: src/common/textevents.h:420
 msgid "%C19*%O$tYou have left channel %C22$3%C (%C24$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:417
+#: src/common/textevents.h:426
 msgid "%C20*%O$tYou've invited %C18$1%O to %C22$2%O (%C24$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:423
+#: src/common/textevents.h:432
 msgid "%C20*%O$tYou are now known as %C18$2%O"
 msgstr ""
 
@@ -1264,13 +1272,13 @@ msgstr "Hôte de la personne"
 #: src/common/text.c:1355 src/common/text.c:1362 src/common/text.c:1367
 #: src/common/text.c:1372 src/common/text.c:1377 src/common/text.c:1383
 #: src/common/text.c:1388 src/common/text.c:1392 src/common/text.c:1398
-#: src/common/text.c:1404 src/common/text.c:1456 src/common/text.c:1467
-#: src/common/text.c:1472 src/common/text.c:1477 src/common/text.c:1486
-#: src/common/text.c:1497 src/common/text.c:1504 src/common/text.c:1510
-#: src/common/text.c:1515 src/common/text.c:1520 src/common/text.c:1527
-#: src/common/text.c:1533 src/common/text.c:1539 src/common/text.c:1544
-#: src/common/text.c:1549 src/common/text.c:1553 src/common/text.c:1559
-#: src/common/text.c:1567 src/common/text.c:1601 src/common/text.c:1606
+#: src/common/text.c:1404 src/common/text.c:1472 src/common/text.c:1483
+#: src/common/text.c:1488 src/common/text.c:1493 src/common/text.c:1502
+#: src/common/text.c:1513 src/common/text.c:1520 src/common/text.c:1526
+#: src/common/text.c:1531 src/common/text.c:1536 src/common/text.c:1543
+#: src/common/text.c:1549 src/common/text.c:1555 src/common/text.c:1560
+#: src/common/text.c:1565 src/common/text.c:1569 src/common/text.c:1575
+#: src/common/text.c:1583 src/common/text.c:1617 src/common/text.c:1622
 msgid "Nickname"
 msgstr "Pseudonyme"
 
@@ -1311,7 +1319,7 @@ msgstr "Pseudonyme de la personne qui a changé le sujet"
 msgid "Topic"
 msgstr "Sujet"
 
-#: src/common/text.c:1180 src/common/text.c:1184 src/common/text.c:1621
+#: src/common/text.c:1180 src/common/text.c:1184 src/common/text.c:1637
 #: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
 #: src/fe-gtk/servlistgui.c:894
 msgid "Channel"
@@ -1351,11 +1359,11 @@ msgstr "Créateur"
 msgid "Nick"
 msgstr "Pseudonyme"
 
-#: src/common/text.c:1214 src/common/text.c:1473
+#: src/common/text.c:1214 src/common/text.c:1489
 msgid "Reason"
 msgstr "Raison"
 
-#: src/common/text.c:1215 src/common/text.c:1357 src/common/text.c:1446
+#: src/common/text.c:1215 src/common/text.c:1357 src/common/text.c:1462
 msgid "Host"
 msgstr "Hôte"
 
@@ -1507,7 +1515,7 @@ msgstr "Lettre de mode"
 msgid "The channel it's being set on"
 msgstr "Canal de destination"
 
-#: src/common/text.c:1356
+#: src/common/text.c:1356 src/common/text.c:1415 src/common/text.c:1421
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
@@ -1536,7 +1544,7 @@ msgid "Away reason"
 msgstr "Raison de l'absence"
 
 #: src/common/text.c:1393 src/common/text.c:1399 src/common/text.c:1407
-#: src/common/text.c:1593
+#: src/common/text.c:1422 src/common/text.c:1609
 msgid "Message"
 msgstr "Message"
 
@@ -1552,154 +1560,159 @@ msgstr "utilisateur réel@hôte"
 msgid "Real IP"
 msgstr "IP réelle"
 
-#: src/common/text.c:1411 src/common/text.c:1426 src/common/text.c:1432
-#: src/common/text.c:1462 src/common/text.c:1616
+#: src/common/text.c:1411 src/common/text.c:1442 src/common/text.c:1448
+#: src/common/text.c:1478 src/common/text.c:1632
 msgid "Channel Name"
 msgstr "Nom du canal"
 
-#: src/common/text.c:1415 src/common/text.c:1421 src/common/text.c:1579
+#: src/common/text.c:1419 src/common/text.c:1426 src/common/text.c:1432
+#: src/common/text.c:1438 src/common/text.c:1444 src/common/text.c:1473
+#: src/common/text.c:1591 src/common/text.c:1633
+msgid "Server Name"
+msgstr "Nom du serveur"
+
+#: src/common/text.c:1420 src/common/text.c:1433
+msgid "Raw Numeric or Identifier"
+msgstr "Nombre ou identifiant"
+
+#: src/common/text.c:1427
+msgid "Server Capabilities"
+msgstr ""
+
+#: src/common/text.c:1431 src/common/text.c:1437 src/common/text.c:1595
 #: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
 #: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Texte"
 
-#: src/common/text.c:1416 src/common/text.c:1422 src/common/text.c:1428
-#: src/common/text.c:1457 src/common/text.c:1575 src/common/text.c:1617
-msgid "Server Name"
-msgstr "Nom du serveur"
-
-#: src/common/text.c:1417
-msgid "Raw Numeric or Identifier"
-msgstr "Nombre ou identifiant"
-
-#: src/common/text.c:1427
+#: src/common/text.c:1443
 msgid "Nick of person who invited you"
 msgstr "Pseudonyme de la personne qui vous a invité"
 
-#: src/common/text.c:1433 src/fe-gtk/chanlist.c:787
+#: src/common/text.c:1449 src/fe-gtk/chanlist.c:787
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: src/common/text.c:1437
+#: src/common/text.c:1453
 msgid "Nickname in use"
 msgstr "Pseudonyme déjà utilisé"
 
-#: src/common/text.c:1438
+#: src/common/text.c:1454
 msgid "Nick being tried"
 msgstr "Pseudonyme en essai"
 
-#: src/common/text.c:1447 src/common/text.c:1583
+#: src/common/text.c:1463 src/common/text.c:1599
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:1448 src/common/text.c:1479
+#: src/common/text.c:1464 src/common/text.c:1495
 msgid "Port"
 msgstr "Port"
 
-#: src/common/text.c:1458 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
+#: src/common/text.c:1474 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
 msgid "Network"
 msgstr "Réseau"
 
-#: src/common/text.c:1463 src/common/text.c:1468
+#: src/common/text.c:1479 src/common/text.c:1484
 msgid "Modes string"
 msgstr "Chaîne de modes"
 
-#: src/common/text.c:1478 src/common/text.c:1516 src/common/text.c:1521
-#: src/common/text.c:1562
+#: src/common/text.c:1494 src/common/text.c:1532 src/common/text.c:1537
+#: src/common/text.c:1578
 msgid "IP address"
 msgstr "Adresse IP"
 
-#: src/common/text.c:1484 src/common/text.c:1509
+#: src/common/text.c:1500 src/common/text.c:1525
 msgid "DCC Type"
 msgstr "Type de DCC"
 
-#: src/common/text.c:1485 src/common/text.c:1490 src/common/text.c:1495
-#: src/common/text.c:1502 src/common/text.c:1522 src/common/text.c:1526
-#: src/common/text.c:1532 src/common/text.c:1538 src/common/text.c:1545
-#: src/common/text.c:1554 src/common/text.c:1560
+#: src/common/text.c:1501 src/common/text.c:1506 src/common/text.c:1511
+#: src/common/text.c:1518 src/common/text.c:1538 src/common/text.c:1542
+#: src/common/text.c:1548 src/common/text.c:1554 src/common/text.c:1561
+#: src/common/text.c:1570 src/common/text.c:1576
 msgid "Filename"
 msgstr "Nom de fichier"
 
-#: src/common/text.c:1496 src/common/text.c:1503
+#: src/common/text.c:1512 src/common/text.c:1519
 msgid "Destination filename"
 msgstr "Nom du fichier de destination"
 
-#: src/common/text.c:1505 src/common/text.c:1534
+#: src/common/text.c:1521 src/common/text.c:1550
 msgid "CPS"
 msgstr "cps"
 
-#: src/common/text.c:1540
+#: src/common/text.c:1556
 msgid "Pathname"
 msgstr "Chemin"
 
-#: src/common/text.c:1555 src/fe-gtk/dccgui.c:764
+#: src/common/text.c:1571 src/fe-gtk/dccgui.c:764
 msgid "Position"
 msgstr "Position"
 
-#: src/common/text.c:1561 src/fe-gtk/dccgui.c:763
+#: src/common/text.c:1577 src/fe-gtk/dccgui.c:763
 msgid "Size"
 msgstr "Taille"
 
-#: src/common/text.c:1566
+#: src/common/text.c:1582
 msgid "DCC String"
 msgstr "Chaîne DCC"
 
-#: src/common/text.c:1571
+#: src/common/text.c:1587
 msgid "Number of notify items"
 msgstr "Nombre de notifications"
 
-#: src/common/text.c:1587
+#: src/common/text.c:1603
 msgid "Old Filename"
 msgstr "Ancien nom de fichier"
 
-#: src/common/text.c:1588
+#: src/common/text.c:1604
 msgid "New Filename"
 msgstr "Nouveau nom de fichier"
 
-#: src/common/text.c:1592
+#: src/common/text.c:1608
 msgid "Receiver"
 msgstr "Destinataire"
 
-#: src/common/text.c:1597
+#: src/common/text.c:1613
 msgid "Hostmask"
 msgstr "Masque d'hôte"
 
-#: src/common/text.c:1602
+#: src/common/text.c:1618
 msgid "Hostname"
 msgstr "Nom d'hôte"
 
-#: src/common/text.c:1607
+#: src/common/text.c:1623
 msgid "The Packet"
 msgstr "Paquet"
 
-#: src/common/text.c:1611
+#: src/common/text.c:1627
 msgid "Seconds"
 msgstr "Secondes"
 
-#: src/common/text.c:1615
+#: src/common/text.c:1631
 msgid "Nick of person who have been invited"
 msgstr "Pseudonyme de la personne qui a été invitée"
 
-#: src/common/text.c:1622
+#: src/common/text.c:1638
 msgid "Banmask"
 msgstr "Masque de bannissement"
 
-#: src/common/text.c:1623
+#: src/common/text.c:1639
 msgid "Who set the ban"
 msgstr "qui a défini le bannissement"
 
-#: src/common/text.c:1624
+#: src/common/text.c:1640
 msgid "Ban time"
 msgstr "Heure du bannissement"
 
-#: src/common/text.c:1664
+#: src/common/text.c:1680
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
 msgstr "Erreur d'analyse de l'événement %s.\nChargement des valeurs par défaut."
 
-#: src/common/text.c:2431
+#: src/common/text.c:2447
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -3187,7 +3200,7 @@ msgstr "Exécuter la commande :"
 
 #: src/fe-gtk/fe-gtk.c:140
 msgid "Open URL or execute command in an existing HexChat"
-msgstr ""
+msgstr "Ouvrir l'URL ou exécuter la commande dans un HexChat existant"
 
 #: src/fe-gtk/fe-gtk.c:142
 msgid "Begin minimized. Level 0=Normal 1=Iconified 2=Tray"
@@ -5811,7 +5824,7 @@ msgstr "Copier"
 msgid "Save list to a file"
 msgstr "Enregistrer la liste dans un fichier"
 
-#: src/fe-gtk/userlistgui.c:121
+#: src/fe-gtk/userlistgui.c:122
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d ops, %d total"
