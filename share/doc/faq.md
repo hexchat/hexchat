@@ -61,27 +61,28 @@ HexChat allows you to override the default icons. To use this feature, first cre
 
 The required file names:
 
- * **channel tree:**
-
-	* server.png
-	* channel.png
-	* dialog.png
-	* util.png _(Channel List, DCC, etc (if enabled as tabs))_
-
  * **tray icon:**
 
-	* message.png
-	* highlight.png
-	* fileoffer.png
+	* tray\_fileoffer.png
+	* tray\_highlight.png
+	* tray\_message.png
 	* hexchat.png
+
+ * **channel tree:**
+
+	* tree\_channel.png
+	* tree\_dialog.png
+	* tree\_server.png
+	* tree\_util.png _(Channel List, DCC, etc (if enabled as tabs))_
 
  * **user list:**
 
-	* op.png
-	* hop.png
-	* voice.png
-	* red.png _(1 level above op)_
-	* purple.png  _(2 levels above op)_
+	* ulist\_voice.png
+	* ulist\_halfop.png
+	* ulist\_op.png
+	* ulist\_owner.png _(1 level above op)_
+	* ulist\_founder.png  _(2 levels above op)_
+	* ulist\_netop.png  _(3 levels above op)_
 
 You can hide either of them in _Preferences_.
 
