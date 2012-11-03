@@ -1,10 +1,11 @@
+extern GdkPixbuf *pix_ulist_voice;
+extern GdkPixbuf *pix_ulist_halfop;
+extern GdkPixbuf *pix_ulist_op;
+extern GdkPixbuf *pix_ulist_owner;
+extern GdkPixbuf *pix_ulist_founder;
+extern GdkPixbuf *pix_ulist_netop;
+
 extern GdkPixbuf *pix_book;
-extern GdkPixbuf *pix_hop;
-extern GdkPixbuf *pix_orange;
-extern GdkPixbuf *pix_purple;
-extern GdkPixbuf *pix_red;
-extern GdkPixbuf *pix_op;
-extern GdkPixbuf *pix_voice;
 extern GdkPixbuf *pix_xchat;
 
 extern GdkPixbuf *pix_tray_msg;

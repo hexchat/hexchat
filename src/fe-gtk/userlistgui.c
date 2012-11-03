@@ -76,10 +76,10 @@ get_user_icon (server *serv, struct User *user)
 	/* these ones are hardcoded */
 	switch (user->prefix[0])
 	{
-	case 0: return NULL;
-	case '@': return pix_op;
-	case '%': return pix_hop;
-	case '+': return pix_voice;
+		case 0: return NULL;
+		case '+': return pix_ulist_voice;
+		case '%': return pix_ulist_halfop;
+		case '@': return pix_ulist_op;
 	}
 
 	/* find out how many levels above Op this user is */
@@ -94,9 +94,9 @@ get_user_icon (server *serv, struct User *user)
 			{
 				switch (level)
 				{
-				case 0: return pix_red;	/* 1 level above op */
-				case 1: return pix_purple;	 /* 2 levels above op */
-				case 2: return pix_orange;	/* 3 levels above op */
+					case 0: return pix_ulist_owner;		/* 1 level above op */
+					case 1: return pix_ulist_founder;	/* 2 levels above op */
+					case 2: return pix_ulist_netop;		/* 3 levels above op */
 				}
 				break;	/* 4+, no icons */
 			}

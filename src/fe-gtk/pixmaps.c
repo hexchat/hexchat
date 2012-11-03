@@ -34,12 +34,13 @@
 GdkPixbuf *pix_xchat;
 GdkPixbuf *pix_book;
 
-GdkPixbuf *pix_orange;
-GdkPixbuf *pix_purple;
-GdkPixbuf *pix_red;
-GdkPixbuf *pix_op;
-GdkPixbuf *pix_hop;
-GdkPixbuf *pix_voice;
+GdkPixbuf *pix_ulist_voice;
+GdkPixbuf *pix_ulist_halfop;
+GdkPixbuf *pix_ulist_op;
+GdkPixbuf *pix_ulist_owner;
+GdkPixbuf *pix_ulist_founder;
+GdkPixbuf *pix_ulist_netop;
+
 
 GdkPixbuf *pix_tray_msg;
 GdkPixbuf *pix_tray_hilight;
@@ -127,12 +128,12 @@ pixmaps_init (void)
 	pix_xchat = load_pixmap ("hexchat", hexchatpng, 1);
 
 	/* userlist icons, with inlined defaults */
-	pix_hop = load_pixmap ("hop", hoppng, 1);
-	pix_orange = load_pixmap ("orange", orangepng, 1);
-	pix_purple = load_pixmap ("purple", purplepng, 1);
-	pix_red = load_pixmap ("red", redpng, 1);
-	pix_op = load_pixmap ("op", oppng, 1);
-	pix_voice = load_pixmap ("voice", voicepng, 1);
+	pix_ulist_voice = load_pixmap ("ulist_voice", png_ulist_voice, 1);
+	pix_ulist_halfop = load_pixmap ("ulist_halfop", png_ulist_halfop, 1);
+	pix_ulist_op = load_pixmap ("ulist_op", png_ulist_op, 1);
+	pix_ulist_owner = load_pixmap ("ulist_owner", png_ulist_owner, 1);
+	pix_ulist_founder = load_pixmap ("ulist_founder", png_ulist_founder, 1);
+	pix_ulist_netop = load_pixmap ("ulist_netop", png_ulist_netop, 1);
 
 	/* tray icons, with inlined defaults */
 	pix_tray_msg = load_pixmap ("message", traymsgpng, 1);
