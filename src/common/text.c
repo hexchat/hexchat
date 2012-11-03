@@ -1169,6 +1169,20 @@ static char * const pevt_privmsg_help[] = {
 	N_("Identified text")
 };
 
+static char * const pevt_capack_help[] = {
+	N_("Server Name"),
+	N_("Acknowledged Capability")
+};
+
+static char * const pevt_caplist_help[] = {
+	N_("Server Name"),
+	N_("Server Capabilities")
+};
+
+static char * const pevt_capreq_help[] = {
+	N_("Requested Capability")
+};
+
 static char * const pevt_changenick_help[] = {
 	N_("Old nickname"),
 	N_("New nickname"),
@@ -1420,11 +1434,6 @@ static char * const pevt_saslresponse_help[] = {
 	N_("Raw Numeric or Identifier"),
 	N_("Username"),
 	N_("Message")
-};
-
-static char * const pevt_servercap_help[] = {
-	N_("Server Name"),
-	N_("Server Capabilities")
 };
 
 static char * const pevt_servertext_help[] = {

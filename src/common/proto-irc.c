@@ -1138,6 +1138,9 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 			case WORDL('C','A','P','\0'):
 				if (strncasecmp (word[4], "ACK", 3) == 0)
 				{
+					/* should acknowledge only one at a time, but just make sure we don't miss anything, use word_eol */
+					EMIT_SIGNAL (XP_TE_CAPACK, sess->server->server_session, word[1], ++word_eol[5], NULL, NULL, 0);
+
 					if (strncasecmp (word[5][0]==':' ? word[5] + 1 : word[5], "identify-msg", 12) == 0)
 					{
 						serv->have_idmsg = TRUE;
@@ -1155,15 +1158,18 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)
 				{
-					EMIT_SIGNAL (XP_TE_SERVERCAP, serv->server_session, word[1], ++word_eol[5], NULL, NULL, 0);
+					EMIT_SIGNAL (XP_TE_CAPLIST, serv->server_session, word[1], ++word_eol[5], NULL, NULL, 0);
+
 					if (strstr (word_eol[5], "identify-msg") != 0)
 					{
+						EMIT_SIGNAL (XP_TE_CAPREQ, sess->server->server_session, "identify-msg", NULL, NULL, NULL, 0);
 						tcp_send_len (serv, "CAP REQ :identify-msg\r\n", 23);
 					}
 
 					/* if the SASL password is set, request SASL auth */
 					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->saslpassword) != 0)
 					{
+						EMIT_SIGNAL (XP_TE_CAPREQ, sess->server->server_session, "sasl", NULL, NULL, NULL, 0);
 						tcp_send_len (serv, "CAP REQ :sasl\r\n", 23);
 					}
 					else
