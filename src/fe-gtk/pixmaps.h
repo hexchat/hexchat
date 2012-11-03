@@ -5,14 +5,14 @@ extern GdkPixbuf *pix_ulist_owner;
 extern GdkPixbuf *pix_ulist_founder;
 extern GdkPixbuf *pix_ulist_netop;
 
-extern GdkPixbuf *pix_tray_msg;
-extern GdkPixbuf *pix_tray_hilight;
-extern GdkPixbuf *pix_tray_file;
+extern GdkPixbuf *pix_tray_fileoffer;
+extern GdkPixbuf *pix_tray_highlight;
+extern GdkPixbuf *pix_tray_message;
 
-extern GdkPixbuf *pix_channel;
-extern GdkPixbuf *pix_dialog;
-extern GdkPixbuf *pix_server;
-extern GdkPixbuf *pix_util;
+extern GdkPixbuf *pix_tree_channel;
+extern GdkPixbuf *pix_tree_dialog;
+extern GdkPixbuf *pix_tree_server;
+extern GdkPixbuf *pix_tree_util;
 
 extern GdkPixbuf *pix_book;
 extern GdkPixbuf *pix_hexchat;

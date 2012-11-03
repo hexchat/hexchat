@@ -1737,13 +1737,13 @@ mg_add_chan (session *sess)
 	switch (sess->type)
 	{
 	case SESS_CHANNEL:
-		icon = pix_channel;
+		icon = pix_tree_channel;
 		break;
 	case SESS_SERVER:
-		icon = pix_server;
+		icon = pix_tree_server;
 		break;
 	default:
-		icon = pix_dialog;
+		icon = pix_tree_dialog;
 	}
 
 	sess->res->tab = chanview_add (sess->gui->chanview, name, sess->server, sess,
@@ -2923,7 +2923,7 @@ mg_create_tabs (session_gui *gui)
 
 	/* if any one of these PNGs exist, the chanview will create
 	 * the extra column for icons. */
-	if (prefs.hex_gui_tab_icons && (pix_channel || pix_dialog || pix_server || pix_util))
+	if (prefs.hex_gui_tab_icons && (pix_tree_channel || pix_tree_dialog || pix_tree_server || pix_tree_util))
 	{
 		use_icons = TRUE;
 	}
@@ -3187,7 +3187,7 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 	gtk_notebook_append_page (GTK_NOTEBOOK (mg_gui->note_book), box, NULL);
 	gtk_widget_show (box);
 
-	ch = chanview_add (mg_gui->chanview, name, NULL, box, TRUE, TAG_UTIL, pix_util);
+	ch = chanview_add (mg_gui->chanview, name, NULL, box, TRUE, TAG_UTIL, pix_tree_util);
 	chan_set_color (ch, plain_list);
 	/* FIXME: memory leak */
 	g_object_set_data (G_OBJECT (box), "title", strdup (title));

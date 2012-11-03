@@ -38,14 +38,14 @@ GdkPixbuf *pix_ulist_owner;
 GdkPixbuf *pix_ulist_founder;
 GdkPixbuf *pix_ulist_netop;
 
-GdkPixbuf *pix_tray_msg;
-GdkPixbuf *pix_tray_hilight;
-GdkPixbuf *pix_tray_file;
+GdkPixbuf *pix_tray_fileoffer;
+GdkPixbuf *pix_tray_highlight;
+GdkPixbuf *pix_tray_message;
 
-GdkPixbuf *pix_channel;
-GdkPixbuf *pix_dialog;
-GdkPixbuf *pix_server;
-GdkPixbuf *pix_util;
+GdkPixbuf *pix_tree_channel;
+GdkPixbuf *pix_tree_dialog;
+GdkPixbuf *pix_tree_server;
+GdkPixbuf *pix_tree_util;
 
 GdkPixbuf *pix_book;
 GdkPixbuf *pix_hexchat;
@@ -129,22 +129,22 @@ pixmaps_init (void)
 	pix_ulist_netop = load_pixmap ("ulist_netop", png_ulist_netop, 1);
 
 	/* tray icons, with inlined defaults */
-	pix_tray_msg = load_pixmap ("message", traymsgpng, 1);
-	pix_tray_hilight = load_pixmap ("highlight", trayhilightpng, 1);
-	pix_tray_file = load_pixmap ("fileoffer", trayfilepng, 1);
+	pix_tray_fileoffer = load_pixmap ("tray_fileoffer", png_tray_fileoffer, 1);
+	pix_tray_highlight = load_pixmap ("highlight", png_tray_highlight, 1);
+	pix_tray_message = load_pixmap ("message", png_tray_message, 1);
 
 #if 0
 	/* treeview icons, no defaults, load from disk only */
-	pix_channel = load_pixmap ("channel", NULL, 0);
-	pix_dialog = load_pixmap ("dialog", NULL, 0);
-	pix_server = load_pixmap ("server", NULL, 0);
-	pix_util = load_pixmap ("util", NULL, 0);
+	pix_tree_channel = load_pixmap ("tree_channel", NULL, 0);
+	pix_tree_dialog = load_pixmap ("tree_dialog", NULL, 0);
+	pix_tree_server = load_pixmap ("tree_server", NULL, 0);
+	pix_tree_util = load_pixmap ("tree_util", NULL, 0);
 #endif
 	/* provide inline defaults for these coz they are nice! */
-	pix_channel = load_pixmap ("channel", channelpng, 1);
-	pix_dialog = load_pixmap ("dialog", dialogpng, 1);
-	pix_server = load_pixmap ("server", serverpng, 1);
-	pix_util = load_pixmap ("util", utilpng, 1);
+	pix_tree_channel = load_pixmap ("tree_channel", png_tree_channel, 1);
+	pix_tree_dialog = load_pixmap ("tree_dialog", png_tree_dialog, 1);
+	pix_tree_server = load_pixmap ("tree_server", png_tree_server, 1);
+	pix_tree_util = load_pixmap ("tree_util", png_tree_util, 1);
 
 	/* non-replaceable book pixmap */
 	pix_book = gdk_pixbuf_new_from_inline (-1, png_book, FALSE, 0);
