@@ -1171,7 +1171,7 @@ static char * const pevt_privmsg_help[] = {
 
 static char * const pevt_capack_help[] = {
 	N_("Server Name"),
-	N_("Acknowledged Capability")
+	N_("Acknowledged Capabilities")
 };
 
 static char * const pevt_caplist_help[] = {
@@ -1180,7 +1180,7 @@ static char * const pevt_caplist_help[] = {
 };
 
 static char * const pevt_capreq_help[] = {
-	N_("Requested Capability")
+	N_("Requested Capabilities")
 };
 
 static char * const pevt_changenick_help[] = {
