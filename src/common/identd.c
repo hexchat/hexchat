@@ -58,7 +58,11 @@ identd (char *username)
 
 	identd_is_running = FALSE;
 
+#if 0	/* causes random crashes, probably due to CreateThread */
 	EMIT_SIGNAL (XP_TE_IDENTD, current_sess, inet_ntoa (addr.sin_addr), username, NULL, NULL, 0);
+#endif
+	snprintf (outbuf, sizeof (outbuf), "*\tServicing ident request from %s as %s\n", inet_ntoa (addr.sin_addr), username);
+	PrintText (current_sess, outbuf);
 
 	recv (read_sok, buf, sizeof (buf) - 1, 0);
 	buf[sizeof (buf) - 1] = 0;	  /* ensure null termination */
@@ -141,7 +145,11 @@ identd_ipv6 (char *username)
 		snprintf (ipv6buf, sizeof (ipv6buf) - 1, "[SOCKET ERROR: 0x%X]", WSAGetLastError ());
 	}
 
+#if 0	/* causes random crashes, probably due to CreateThread */
 	EMIT_SIGNAL (XP_TE_IDENTD, current_sess, ipv6buf, username, NULL, NULL, 0);
+#endif
+	snprintf (outbuf, sizeof (outbuf), "*\tServicing ident request from %s as %s\n", ipv6buf, username);
+	PrintText (current_sess, outbuf);
 
 	recv (read_sok, buf, sizeof (buf) - 1, 0);
 	buf[sizeof (buf) - 1] = 0;	  /* ensure null termination */

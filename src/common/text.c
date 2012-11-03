@@ -1143,10 +1143,12 @@ static char * const pevt_genmsg_help[] = {
 	N_("Right message"),
 };
 
+#if 0
 static char * const pevt_identd_help[] = {
 	N_("IP address"),
 	N_("Username")
 };
+#endif
 
 static char * const pevt_join_help[] = {
 	N_("The nick of the joining person"),
