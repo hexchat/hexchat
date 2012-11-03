@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-11-03 19:21+0100\n"
-"PO-Revision-Date: 2012-11-03 18:22+0000\n"
+"POT-Creation-Date: 2012-11-03 21:30+0100\n"
+"PO-Revision-Date: 2012-11-03 20:31+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -59,9 +59,9 @@ msgstr "Перарвана"
 msgid "Cannot access %s\n"
 msgstr "Няма доступу да %s\n"
 
-#: src/common/dcc.c:1899 src/common/text.c:1472 src/common/text.c:1510
-#: src/common/text.c:1521 src/common/text.c:1528 src/common/text.c:1541
-#: src/common/text.c:1558 src/common/text.c:1658 src/common/util.c:358
+#: src/common/dcc.c:1899 src/common/text.c:1474 src/common/text.c:1512
+#: src/common/text.c:1523 src/common/text.c:1530 src/common/text.c:1543
+#: src/common/text.c:1560 src/common/text.c:1660 src/common/util.c:358
 msgid "Error"
 msgstr "Памылка"
 
@@ -1023,221 +1023,217 @@ msgid "%C24*%O$tFound your IP: %C30[%C24$1%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:219
-msgid "%C23*%O$tServicing ident request from %C23$1%O as %C18$2%O"
-msgstr ""
-
-#: src/common/textevents.h:222
 msgid "%O%C18$1%O added to ignore list."
 msgstr ""
 
-#: src/common/textevents.h:225
+#: src/common/textevents.h:222
 msgid "%OIgnore on %C18$1%O changed."
 msgstr ""
 
-#: src/common/textevents.h:228
+#: src/common/textevents.h:225
 #, c-format
 msgid "%C16,17                                                              "
 msgstr ""
 
-#: src/common/textevents.h:231
+#: src/common/textevents.h:228
 #, c-format
 msgid "%C16,17 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
 msgstr ""
 
-#: src/common/textevents.h:234
+#: src/common/textevents.h:231
 msgid "%O%C18$1%O removed from ignore list."
 msgstr ""
 
-#: src/common/textevents.h:237
+#: src/common/textevents.h:234
 msgid "%OIgnore list is empty."
 msgstr ""
 
-#: src/common/textevents.h:240
+#: src/common/textevents.h:237
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Channel is invite only%O)"
 msgstr ""
 
-#: src/common/textevents.h:243
+#: src/common/textevents.h:240
 msgid "%C24*%O$tYou have been invited to %C22$1%O by %C18$2%O (%C29$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:246
+#: src/common/textevents.h:243
 #, c-format
 msgid "%C23*$t$1 ($3) has joined"
 msgstr ""
 
-#: src/common/textevents.h:249
+#: src/common/textevents.h:246
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Requires keyword%O)"
 msgstr ""
 
-#: src/common/textevents.h:252
+#: src/common/textevents.h:249
 msgid "%C22*%O$t%C26$1%C has kicked %C18$2%C from %C22$3%C (%C24$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:255
+#: src/common/textevents.h:252
 msgid "%C19*%O$t%C19You have been killed by %C26$1%C (%C20$2%O)"
 msgstr ""
 
-#: src/common/textevents.h:264
+#: src/common/textevents.h:261
 msgid "%C29*%O$t%C29MOTD Skipped%O"
 msgstr ""
 
-#: src/common/textevents.h:267
+#: src/common/textevents.h:264
 msgid "%C23*%O$t%C28$1%C already in use. Retrying with %C18$2%O..."
 msgstr ""
 
-#: src/common/textevents.h:270
+#: src/common/textevents.h:267
 msgid "%C20*%O$tNickname already in use. Use /NICK to try another."
 msgstr ""
 
-#: src/common/textevents.h:273
+#: src/common/textevents.h:270
 msgid "%C20*%O$tNo such DCC."
 msgstr ""
 
-#: src/common/textevents.h:276
+#: src/common/textevents.h:273
 msgid "%C23*%O$tNo process is currently running"
 msgstr ""
 
-#: src/common/textevents.h:285
+#: src/common/textevents.h:282
 msgid "$tNotify list is empty."
 msgstr "$tСпіс абвяшчэнняў пусты."
 
-#: src/common/textevents.h:288
+#: src/common/textevents.h:285
 #, c-format
 msgid "%C16,17  Notify List                           "
 msgstr ""
 
-#: src/common/textevents.h:291
+#: src/common/textevents.h:288
 msgid "%C23*%O$t%C23$1%O users in notify list."
 msgstr ""
 
-#: src/common/textevents.h:294
+#: src/common/textevents.h:291
 msgid "%C23*%O$tNotify: %C18$1%C is offline (%C29$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:297
+#: src/common/textevents.h:294
 msgid "%C23*%O$tNotify: %C18$1%C is online (%C29$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:303
+#: src/common/textevents.h:300
 #, c-format
 msgid "%C24*$t$1 has left"
 msgstr ""
 
-#: src/common/textevents.h:306
+#: src/common/textevents.h:303
 msgid "%C24*%O$t%C18$1%C ($2) has left (%C24$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:309
+#: src/common/textevents.h:306
 msgid "%C24*%O$tPing reply from%C18 $1%C: %C24$2%O second(s)"
 msgstr ""
 
-#: src/common/textevents.h:312
+#: src/common/textevents.h:309
 msgid "%C20*%O$tNo ping reply for %C24$1%O seconds, disconnecting."
 msgstr ""
 
-#: src/common/textevents.h:327
+#: src/common/textevents.h:324
 msgid "%C24*%O$tA process is already running"
 msgstr ""
 
-#: src/common/textevents.h:330
+#: src/common/textevents.h:327
 #, c-format
 msgid "%C24*$t$1 has quit ($2)"
 msgstr ""
 
-#: src/common/textevents.h:333
+#: src/common/textevents.h:330
 msgid "%C24*%O$t%C26$1%C sets modes %C30[%C24$2%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:336
+#: src/common/textevents.h:333
 msgid "%O-%C29$1/Wallops%O-$t$2"
 msgstr ""
 
-#: src/common/textevents.h:339
+#: src/common/textevents.h:336
 msgid "%C24*%O$tLooking up IP number for %C18$1%O..."
 msgstr ""
 
-#: src/common/textevents.h:342
+#: src/common/textevents.h:339
 msgid "%C23*%O$tAuthenticating via SASL as %C18$1%O"
 msgstr ""
 
-#: src/common/textevents.h:348
+#: src/common/textevents.h:345
 msgid "%C29*%O$tConnected."
 msgstr ""
 
-#: src/common/textevents.h:354
+#: src/common/textevents.h:351
 msgid "%C29*%O$tLooking up %C29$1%O"
 msgstr ""
 
-#: src/common/textevents.h:366
+#: src/common/textevents.h:363
 msgid "%C23*%O$tStopped previous connection attempt (%C24$1%O)"
 msgstr ""
 
-#: src/common/textevents.h:369
+#: src/common/textevents.h:366
 msgid "%C22*%O$tTopic for %C22$1%C is: $2%O"
 msgstr ""
 
-#: src/common/textevents.h:372
+#: src/common/textevents.h:369
 msgid "%C22*%O$t%C26$1%C has changed the topic to: $2%O"
 msgstr ""
 
-#: src/common/textevents.h:375
+#: src/common/textevents.h:372
 msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:378
+#: src/common/textevents.h:375
 msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
 msgstr ""
 
-#: src/common/textevents.h:381
+#: src/common/textevents.h:378
 msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
 msgstr ""
 
-#: src/common/textevents.h:384
+#: src/common/textevents.h:381
 msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
 msgstr ""
 
-#: src/common/textevents.h:390
+#: src/common/textevents.h:387
 msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
 msgstr ""
 
-#: src/common/textevents.h:396
+#: src/common/textevents.h:393
 msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
 msgstr ""
 
-#: src/common/textevents.h:402
+#: src/common/textevents.h:399
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O"
 msgstr ""
 
-#: src/common/textevents.h:405
+#: src/common/textevents.h:402
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
 msgstr ""
 
-#: src/common/textevents.h:411
+#: src/common/textevents.h:408
 msgid ""
 "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:420
+#: src/common/textevents.h:417
 msgid "%C19*%O$tNow talking on %C22$2%O"
 msgstr ""
 
-#: src/common/textevents.h:423
+#: src/common/textevents.h:420
 msgid "%C19*%O$tYou have been kicked from %C22$2%C by %C26$3%O (%C20$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:426
+#: src/common/textevents.h:423
 msgid "%C19*%O$tYou have left channel %C22$3%O"
 msgstr ""
 
-#: src/common/textevents.h:429
+#: src/common/textevents.h:426
 msgid "%C19*%O$tYou have left channel %C22$3%C (%C24$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:435
+#: src/common/textevents.h:432
 msgid "%C20*%O$tYou've invited %C18$1%O to %C22$2%O (%C24$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:441
+#: src/common/textevents.h:438
 msgid "%C20*%O$tYou are now known as %C18$2%O"
 msgstr ""
 
@@ -1270,472 +1266,472 @@ msgstr "Левае паведамленне"
 msgid "Right message"
 msgstr "Правае паведамленне"
 
-#: src/common/text.c:1147 src/common/text.c:1508 src/common/text.c:1546
-#: src/common/text.c:1551 src/common/text.c:1592
+#: src/common/text.c:1148 src/common/text.c:1510 src/common/text.c:1548
+#: src/common/text.c:1553 src/common/text.c:1594
 msgid "IP address"
 msgstr "IP адрас"
 
-#: src/common/text.c:1148 src/common/text.c:1375 src/common/text.c:1434
-#: src/common/text.c:1440
+#: src/common/text.c:1149 src/common/text.c:1377 src/common/text.c:1436
+#: src/common/text.c:1442
 msgid "Username"
 msgstr "Імя карыстальніка"
 
-#: src/common/text.c:1152
+#: src/common/text.c:1154
 msgid "The nick of the joining person"
 msgstr "Мянушка ўваходзячай асобы"
 
-#: src/common/text.c:1153
+#: src/common/text.c:1155
 msgid "The channel being joined"
 msgstr "Канал для ўваходу"
 
-#: src/common/text.c:1154 src/common/text.c:1216 src/common/text.c:1267
+#: src/common/text.c:1156 src/common/text.c:1218 src/common/text.c:1269
 msgid "The host of the person"
 msgstr "Хост гэтай асобы"
 
-#: src/common/text.c:1158 src/common/text.c:1165 src/common/text.c:1172
-#: src/common/text.c:1374 src/common/text.c:1381 src/common/text.c:1386
-#: src/common/text.c:1391 src/common/text.c:1396 src/common/text.c:1402
-#: src/common/text.c:1407 src/common/text.c:1411 src/common/text.c:1417
-#: src/common/text.c:1423 src/common/text.c:1486 src/common/text.c:1497
-#: src/common/text.c:1502 src/common/text.c:1507 src/common/text.c:1516
-#: src/common/text.c:1527 src/common/text.c:1534 src/common/text.c:1540
-#: src/common/text.c:1545 src/common/text.c:1550 src/common/text.c:1557
-#: src/common/text.c:1563 src/common/text.c:1569 src/common/text.c:1574
-#: src/common/text.c:1579 src/common/text.c:1583 src/common/text.c:1589
-#: src/common/text.c:1597 src/common/text.c:1631 src/common/text.c:1636
+#: src/common/text.c:1160 src/common/text.c:1167 src/common/text.c:1174
+#: src/common/text.c:1376 src/common/text.c:1383 src/common/text.c:1388
+#: src/common/text.c:1393 src/common/text.c:1398 src/common/text.c:1404
+#: src/common/text.c:1409 src/common/text.c:1413 src/common/text.c:1419
+#: src/common/text.c:1425 src/common/text.c:1488 src/common/text.c:1499
+#: src/common/text.c:1504 src/common/text.c:1509 src/common/text.c:1518
+#: src/common/text.c:1529 src/common/text.c:1536 src/common/text.c:1542
+#: src/common/text.c:1547 src/common/text.c:1552 src/common/text.c:1559
+#: src/common/text.c:1565 src/common/text.c:1571 src/common/text.c:1576
+#: src/common/text.c:1581 src/common/text.c:1585 src/common/text.c:1591
+#: src/common/text.c:1599 src/common/text.c:1633 src/common/text.c:1638
 msgid "Nickname"
 msgstr "Мянушка"
 
-#: src/common/text.c:1159
+#: src/common/text.c:1161
 msgid "The action"
 msgstr "Дзеянне"
 
-#: src/common/text.c:1160 src/common/text.c:1167
+#: src/common/text.c:1162 src/common/text.c:1169
 msgid "Mode char"
 msgstr "Знак рэжыму"
 
-#: src/common/text.c:1161 src/common/text.c:1168 src/common/text.c:1174
+#: src/common/text.c:1163 src/common/text.c:1170 src/common/text.c:1176
 msgid "Identified text"
 msgstr "Вылучаны тэкст"
 
-#: src/common/text.c:1166
+#: src/common/text.c:1168
 msgid "The text"
 msgstr "Тэкст"
 
-#: src/common/text.c:1173 src/common/text.c:1244 src/common/text.c:1250
+#: src/common/text.c:1175 src/common/text.c:1246 src/common/text.c:1252
 msgid "The message"
 msgstr "Паведамленне"
 
-#: src/common/text.c:1178 src/common/text.c:1183 src/common/text.c:1438
-#: src/common/text.c:1446 src/common/text.c:1452 src/common/text.c:1458
-#: src/common/text.c:1487 src/common/text.c:1605 src/common/text.c:1647
+#: src/common/text.c:1180 src/common/text.c:1185 src/common/text.c:1440
+#: src/common/text.c:1448 src/common/text.c:1454 src/common/text.c:1460
+#: src/common/text.c:1489 src/common/text.c:1607 src/common/text.c:1649
 msgid "Server Name"
 msgstr "Назва сервера"
 
-#: src/common/text.c:1179
+#: src/common/text.c:1181
 msgid "Acknowledged Capabilities"
 msgstr ""
 
-#: src/common/text.c:1184
+#: src/common/text.c:1186
 msgid "Server Capabilities"
 msgstr ""
 
-#: src/common/text.c:1188
+#: src/common/text.c:1190
 msgid "Requested Capabilities"
 msgstr ""
 
-#: src/common/text.c:1192 src/common/text.c:1254
+#: src/common/text.c:1194 src/common/text.c:1256
 msgid "Old nickname"
 msgstr "Старая мянушка"
 
-#: src/common/text.c:1193 src/common/text.c:1255
+#: src/common/text.c:1195 src/common/text.c:1257
 msgid "New nickname"
 msgstr "Новая мянушка"
 
-#: src/common/text.c:1197
+#: src/common/text.c:1199
 msgid "Nick of person who changed the topic"
 msgstr "Мянушка асобы, якая змяніла тэму"
 
-#: src/common/text.c:1198 src/common/text.c:1204 src/fe-gtk/chanlist.c:788
+#: src/common/text.c:1200 src/common/text.c:1206 src/fe-gtk/chanlist.c:788
 #: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:357
 msgid "Topic"
 msgstr "Тэма"
 
-#: src/common/text.c:1199 src/common/text.c:1203 src/common/text.c:1651
+#: src/common/text.c:1201 src/common/text.c:1205 src/common/text.c:1653
 #: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
 #: src/fe-gtk/servlistgui.c:894
 msgid "Channel"
 msgstr "Канал"
 
-#: src/common/text.c:1208 src/common/text.c:1261
+#: src/common/text.c:1210 src/common/text.c:1263
 msgid "The nickname of the kicker"
 msgstr "Мянушка асобы, якая выпхнула вас"
 
-#: src/common/text.c:1209 src/common/text.c:1259
+#: src/common/text.c:1211 src/common/text.c:1261
 msgid "The person being kicked"
 msgstr "Асоба, якую выпхнулі"
 
-#: src/common/text.c:1210 src/common/text.c:1217 src/common/text.c:1221
-#: src/common/text.c:1226 src/common/text.c:1260 src/common/text.c:1268
-#: src/common/text.c:1275
+#: src/common/text.c:1212 src/common/text.c:1219 src/common/text.c:1223
+#: src/common/text.c:1228 src/common/text.c:1262 src/common/text.c:1270
+#: src/common/text.c:1277
 msgid "The channel"
 msgstr "Канал"
 
-#: src/common/text.c:1211 src/common/text.c:1262 src/common/text.c:1269
+#: src/common/text.c:1213 src/common/text.c:1264 src/common/text.c:1271
 msgid "The reason"
 msgstr "Прычына"
 
-#: src/common/text.c:1215 src/common/text.c:1266
+#: src/common/text.c:1217 src/common/text.c:1268
 msgid "The nick of the person leaving"
 msgstr "Мянушка асобы, што выходзіць"
 
-#: src/common/text.c:1222 src/common/text.c:1228
+#: src/common/text.c:1224 src/common/text.c:1230
 msgid "The time"
 msgstr "Час"
 
-#: src/common/text.c:1227
+#: src/common/text.c:1229
 msgid "The creator"
 msgstr "Стваральнік"
 
-#: src/common/text.c:1232 src/fe-gtk/dccgui.c:768 src/fe-gtk/dccgui.c:1001
+#: src/common/text.c:1234 src/fe-gtk/dccgui.c:768 src/fe-gtk/dccgui.c:1001
 msgid "Nick"
 msgstr "Мянушка"
 
-#: src/common/text.c:1233 src/common/text.c:1503
+#: src/common/text.c:1235 src/common/text.c:1505
 msgid "Reason"
 msgstr "Прычына"
 
-#: src/common/text.c:1234 src/common/text.c:1376 src/common/text.c:1476
+#: src/common/text.c:1236 src/common/text.c:1378 src/common/text.c:1478
 msgid "Host"
 msgstr "Хост"
 
-#: src/common/text.c:1238 src/common/text.c:1243 src/common/text.c:1248
+#: src/common/text.c:1240 src/common/text.c:1245 src/common/text.c:1250
 msgid "Who it's from"
 msgstr "Адкуль"
 
-#: src/common/text.c:1239
+#: src/common/text.c:1241
 msgid "The time in x.x format (see below)"
 msgstr "Час у фармаце x.x (глядзі ніжэй)"
 
-#: src/common/text.c:1249 src/common/text.c:1286
+#: src/common/text.c:1251 src/common/text.c:1288
 msgid "The Channel it's going to"
 msgstr "Спіс каналаў"
 
-#: src/common/text.c:1273
+#: src/common/text.c:1275
 msgid "The sound"
 msgstr "Гук"
 
-#: src/common/text.c:1274 src/common/text.c:1280 src/common/text.c:1285
+#: src/common/text.c:1276 src/common/text.c:1282 src/common/text.c:1287
 msgid "The nick of the person"
 msgstr "Мянушка гэтай асобы"
 
-#: src/common/text.c:1279 src/common/text.c:1284
+#: src/common/text.c:1281 src/common/text.c:1286
 msgid "The CTCP event"
 msgstr "CTCP падзея"
 
-#: src/common/text.c:1290
+#: src/common/text.c:1292
 msgid "The nick of the person who set the key"
 msgstr "Мянушка асобы, якая ўсталявала ключ"
 
-#: src/common/text.c:1291
+#: src/common/text.c:1293
 msgid "The key"
 msgstr "Ключ"
 
-#: src/common/text.c:1295
+#: src/common/text.c:1297
 msgid "The nick of the person who set the limit"
 msgstr "Мянушка асобы, якая ўсталявала абмежаванне"
 
-#: src/common/text.c:1296
+#: src/common/text.c:1298
 msgid "The limit"
 msgstr "Абмежаванне"
 
-#: src/common/text.c:1300
+#: src/common/text.c:1302
 msgid "The nick of the person who did the op'ing"
 msgstr "Мянушка асобы, якая дала статус аператара"
 
-#: src/common/text.c:1301
+#: src/common/text.c:1303
 msgid "The nick of the person who has been op'ed"
 msgstr "Мянушка асобы, якая атрымала статус аператара"
 
-#: src/common/text.c:1305
+#: src/common/text.c:1307
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Мянушка асобы, якая атрымала статус паў-аператара"
 
-#: src/common/text.c:1306
+#: src/common/text.c:1308
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Мянушка асобы, якая дала статус паў-аператара"
 
-#: src/common/text.c:1310
+#: src/common/text.c:1312
 msgid "The nick of the person who did the voice'ing"
 msgstr "Мянушка асобы, якая дала голас"
 
-#: src/common/text.c:1311
+#: src/common/text.c:1313
 msgid "The nick of the person who has been voice'ed"
 msgstr "Мянушка асобы, якая атрымала голас"
 
-#: src/common/text.c:1315
+#: src/common/text.c:1317
 msgid "The nick of the person who did the banning"
 msgstr "Мянушка асобы, якая ўсталявала забарону"
 
-#: src/common/text.c:1316 src/common/text.c:1343
+#: src/common/text.c:1318 src/common/text.c:1345
 msgid "The ban mask"
 msgstr "Маска забароны"
 
-#: src/common/text.c:1320
+#: src/common/text.c:1322
 msgid "The nick who removed the key"
 msgstr "Мянушка, якая выдаліла ключ"
 
-#: src/common/text.c:1324
+#: src/common/text.c:1326
 msgid "The nick who removed the limit"
 msgstr "Мянушка, якая выдаліла абмежаванне"
 
-#: src/common/text.c:1328
+#: src/common/text.c:1330
 msgid "The nick of the person of did the deop'ing"
 msgstr "Мянушка асобы, якая адабрала статус аператара"
 
-#: src/common/text.c:1329
+#: src/common/text.c:1331
 msgid "The nick of the person who has been deop'ed"
 msgstr "Мянушка асобы, у якой быў адабраны статус аператара"
 
-#: src/common/text.c:1332
+#: src/common/text.c:1334
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Мянушка асобы, якая адабрала статус паў-аператара"
 
-#: src/common/text.c:1333
+#: src/common/text.c:1335
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Мянушка асобы, у якой быў адабраны статус паў-аператара"
 
-#: src/common/text.c:1337
+#: src/common/text.c:1339
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Мянушка асобы, якая адабрала голас"
 
-#: src/common/text.c:1338
+#: src/common/text.c:1340
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Мянушка асобы, у якой быў адабраны голас"
 
-#: src/common/text.c:1342
+#: src/common/text.c:1344
 msgid "The nick of the person of did the unban'ing"
 msgstr "Мянушка асобы, якая зняла забарону"
 
-#: src/common/text.c:1347
+#: src/common/text.c:1349
 msgid "The nick of the person who did the exempt"
 msgstr "Мянушка асобы, якая ўсталявала выключэнне"
 
-#: src/common/text.c:1348 src/common/text.c:1353
+#: src/common/text.c:1350 src/common/text.c:1355
 msgid "The exempt mask"
 msgstr "Маска выключэння"
 
-#: src/common/text.c:1352
+#: src/common/text.c:1354
 msgid "The nick of the person removed the exempt"
 msgstr "Мянушка асобы, якая выдаліла выключэнне"
 
-#: src/common/text.c:1357
+#: src/common/text.c:1359
 msgid "The nick of the person who did the invite"
 msgstr "Мянушка асобы, якая зрабіла запрашэнне"
 
-#: src/common/text.c:1358 src/common/text.c:1363
+#: src/common/text.c:1360 src/common/text.c:1365
 msgid "The invite mask"
 msgstr "Маска запрашэння"
 
-#: src/common/text.c:1362
+#: src/common/text.c:1364
 msgid "The nick of the person removed the invite"
 msgstr "Мянушка асобы, якая выдаліла запрашэнне"
 
-#: src/common/text.c:1367
+#: src/common/text.c:1369
 msgid "The nick of the person setting the mode"
 msgstr "Мянушка асобы, якая ўсталявала рэжым"
 
-#: src/common/text.c:1368
+#: src/common/text.c:1370
 msgid "The mode's sign (+/-)"
 msgstr "Знак рэжыму (+/-)"
 
-#: src/common/text.c:1369
+#: src/common/text.c:1371
 msgid "The mode letter"
 msgstr "Сімвал рэжыму"
 
-#: src/common/text.c:1370
+#: src/common/text.c:1372
 msgid "The channel it's being set on"
 msgstr "Канал для ўжыцця"
 
-#: src/common/text.c:1377
+#: src/common/text.c:1379
 msgid "Full name"
 msgstr "Поўнае імя"
 
-#: src/common/text.c:1382
+#: src/common/text.c:1384
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Член канала /\"аператар IRC\""
 
-#: src/common/text.c:1387
+#: src/common/text.c:1389
 msgid "Server Information"
 msgstr "Інфармацыя аб серверы"
 
-#: src/common/text.c:1392 src/common/text.c:1397
+#: src/common/text.c:1394 src/common/text.c:1399
 msgid "Idle time"
 msgstr "Час бяздзеяння"
 
-#: src/common/text.c:1398
+#: src/common/text.c:1400
 msgid "Signon time"
 msgstr "Час з уваходу"
 
-#: src/common/text.c:1403
+#: src/common/text.c:1405
 msgid "Away reason"
 msgstr "Прычына адыходу"
 
-#: src/common/text.c:1412 src/common/text.c:1418 src/common/text.c:1426
-#: src/common/text.c:1441 src/common/text.c:1623
+#: src/common/text.c:1414 src/common/text.c:1420 src/common/text.c:1428
+#: src/common/text.c:1443 src/common/text.c:1625
 msgid "Message"
 msgstr "Паведамленне"
 
-#: src/common/text.c:1419
+#: src/common/text.c:1421
 msgid "Account"
 msgstr "Рахунак"
 
-#: src/common/text.c:1424
+#: src/common/text.c:1426
 msgid "Real user@host"
 msgstr "Сапраўдны user@host"
 
-#: src/common/text.c:1425
+#: src/common/text.c:1427
 msgid "Real IP"
 msgstr "Сапраўдны IP"
 
-#: src/common/text.c:1430 src/common/text.c:1456 src/common/text.c:1462
-#: src/common/text.c:1492 src/common/text.c:1646
+#: src/common/text.c:1432 src/common/text.c:1458 src/common/text.c:1464
+#: src/common/text.c:1494 src/common/text.c:1648
 msgid "Channel Name"
 msgstr "Назва канала"
 
-#: src/common/text.c:1439 src/common/text.c:1447
+#: src/common/text.c:1441 src/common/text.c:1449
 msgid "Raw Numeric or Identifier"
 msgstr ""
 
-#: src/common/text.c:1445 src/common/text.c:1451 src/common/text.c:1609
+#: src/common/text.c:1447 src/common/text.c:1453 src/common/text.c:1611
 #: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
 #: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Тэкст"
 
-#: src/common/text.c:1457
+#: src/common/text.c:1459
 msgid "Nick of person who invited you"
 msgstr "Мянушка асобы, якая запрасіла вас"
 
-#: src/common/text.c:1463 src/fe-gtk/chanlist.c:787
+#: src/common/text.c:1465 src/fe-gtk/chanlist.c:787
 msgid "Users"
 msgstr "Карыстальнікі"
 
-#: src/common/text.c:1467
+#: src/common/text.c:1469
 msgid "Nickname in use"
 msgstr "Мянушка выкарыстоўваецца"
 
-#: src/common/text.c:1468
+#: src/common/text.c:1470
 msgid "Nick being tried"
 msgstr "Спрабуемая мянушка"
 
-#: src/common/text.c:1477 src/common/text.c:1613
+#: src/common/text.c:1479 src/common/text.c:1615
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:1478 src/common/text.c:1509
+#: src/common/text.c:1480 src/common/text.c:1511
 msgid "Port"
 msgstr "Порт"
 
-#: src/common/text.c:1488 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
+#: src/common/text.c:1490 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
 msgid "Network"
 msgstr "Сеціва"
 
-#: src/common/text.c:1493 src/common/text.c:1498
+#: src/common/text.c:1495 src/common/text.c:1500
 msgid "Modes string"
 msgstr "Радок рэжымаў"
 
-#: src/common/text.c:1514 src/common/text.c:1539
+#: src/common/text.c:1516 src/common/text.c:1541
 msgid "DCC Type"
 msgstr "Тып DCC"
 
-#: src/common/text.c:1515 src/common/text.c:1520 src/common/text.c:1525
-#: src/common/text.c:1532 src/common/text.c:1552 src/common/text.c:1556
-#: src/common/text.c:1562 src/common/text.c:1568 src/common/text.c:1575
-#: src/common/text.c:1584 src/common/text.c:1590
+#: src/common/text.c:1517 src/common/text.c:1522 src/common/text.c:1527
+#: src/common/text.c:1534 src/common/text.c:1554 src/common/text.c:1558
+#: src/common/text.c:1564 src/common/text.c:1570 src/common/text.c:1577
+#: src/common/text.c:1586 src/common/text.c:1592
 msgid "Filename"
 msgstr "Імя файла"
 
-#: src/common/text.c:1526 src/common/text.c:1533
+#: src/common/text.c:1528 src/common/text.c:1535
 msgid "Destination filename"
 msgstr "Назва файла ў атрымальніка"
 
-#: src/common/text.c:1535 src/common/text.c:1564
+#: src/common/text.c:1537 src/common/text.c:1566
 msgid "CPS"
 msgstr "CPS(знакаў у секунду)"
 
-#: src/common/text.c:1570
+#: src/common/text.c:1572
 msgid "Pathname"
 msgstr "Шлях"
 
-#: src/common/text.c:1585 src/fe-gtk/dccgui.c:764
+#: src/common/text.c:1587 src/fe-gtk/dccgui.c:764
 msgid "Position"
 msgstr "Пазіцыя"
 
-#: src/common/text.c:1591 src/fe-gtk/dccgui.c:763
+#: src/common/text.c:1593 src/fe-gtk/dccgui.c:763
 msgid "Size"
 msgstr "Памер"
 
-#: src/common/text.c:1596
+#: src/common/text.c:1598
 msgid "DCC String"
 msgstr "Радок DCC"
 
-#: src/common/text.c:1601
+#: src/common/text.c:1603
 msgid "Number of notify items"
 msgstr "Колькасць абвяшчэнняў"
 
-#: src/common/text.c:1617
+#: src/common/text.c:1619
 msgid "Old Filename"
 msgstr "Старое імя файла"
 
-#: src/common/text.c:1618
+#: src/common/text.c:1620
 msgid "New Filename"
 msgstr "Новае імя файла"
 
-#: src/common/text.c:1622
+#: src/common/text.c:1624
 msgid "Receiver"
 msgstr "Атрымальнік"
 
-#: src/common/text.c:1627
+#: src/common/text.c:1629
 msgid "Hostmask"
 msgstr "Маска камп'ютэра"
 
-#: src/common/text.c:1632
+#: src/common/text.c:1634
 msgid "Hostname"
 msgstr "Назва камп'ютэра"
 
-#: src/common/text.c:1637
+#: src/common/text.c:1639
 msgid "The Packet"
 msgstr "Пакет"
 
-#: src/common/text.c:1641
+#: src/common/text.c:1643
 msgid "Seconds"
 msgstr "Секунды"
 
-#: src/common/text.c:1645
+#: src/common/text.c:1647
 msgid "Nick of person who have been invited"
 msgstr "Мянушка запрошанай асобы"
 
-#: src/common/text.c:1652
+#: src/common/text.c:1654
 msgid "Banmask"
 msgstr "Маска забароны"
 
-#: src/common/text.c:1653
+#: src/common/text.c:1655
 msgid "Who set the ban"
 msgstr "Хто ўсталяваў забарону"
 
-#: src/common/text.c:1654
+#: src/common/text.c:1656
 msgid "Ban time"
 msgstr "Час забароны"
 
-#: src/common/text.c:1694
+#: src/common/text.c:1696
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
 msgstr "Памылка апрацоўкі падзеі %s.\nУжываем стандартныя паводзіны."
 
-#: src/common/text.c:2461
+#: src/common/text.c:2463
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
