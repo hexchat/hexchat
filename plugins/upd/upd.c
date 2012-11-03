@@ -47,7 +47,7 @@ check_version ()
 	}
 
 	hFile = InternetOpenUrl (hINet,
-							"https://raw.github.com/hexchat/hexchat/master/version.txt",
+							"https://raw.github.com/hexchat/hexchat/master/win32/version.txt",
 							NULL,
 							0,
 							INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD,
@@ -117,7 +117,7 @@ check_version ()
 
 	hResource = HttpOpenRequest (hConnect,
 								TEXT ("GET"),
-								TEXT ("/hexchat/hexchat/master/version.txt"),
+								TEXT ("/hexchat/hexchat/master/win32/version.txt"),
 								TEXT ("HTTP/1.0"),
 								NULL,
 								NULL,

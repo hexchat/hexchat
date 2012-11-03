@@ -113,7 +113,8 @@ main (int argc, char *argv[])
 		else if (!strcmp (argv[1], "-v"))	/* version.txt */
 		{
 			printf ("%s", PACKAGE_VERSION);
-		} else
+		}
+		else
 		{
 			printf ("usage:\n\t-a\thexchat.iss/AppVerName\n\t-i\thexchat.iss/VersionInfoVersion\n\t-o\thexchat.iss/OutputBaseFilename\n\t-r\thexchat.rc/FILEVERSION, PRODUCTVERSION\n\t-v\thexchat.iss/AppVersion\n");
 		}
