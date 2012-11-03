@@ -147,7 +147,7 @@ static void
 url_button_save (void)
 {
 	gtkutil_file_req (_("Select an output filename"),
-							url_save_callback, NULL, get_xdir_utf8 (), NULL, FRF_WRITE|FRF_FILTERISINITIAL);
+							url_save_callback, NULL, get_xdir (), NULL, FRF_WRITE|FRF_FILTERISINITIAL);
 }
 
 void

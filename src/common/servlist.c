@@ -1159,7 +1159,7 @@ int
 servlist_save (void)
 {
 	FILE *fp;
-	char buf[256];
+	char *buf;
 	ircnet *net;
 	ircserver *serv;
 	GSList *list;
@@ -1167,20 +1167,27 @@ servlist_save (void)
 #ifndef WIN32
 	int first = FALSE;
 
-	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir_fs ());
-	if (access (buf, F_OK) != 0)
+	buf = g_strdup_printf ("%s/servlist_.conf", get_xdir ());
+	if (g_access (buf, F_OK) != 0)
 		first = TRUE;
 #endif
 
 	fp = hexchat_fopen_file ("servlist_.conf", "w", 0);
 	if (!fp)
+	{
+#ifndef WIN32
+		g_free (buf);
+#endif
 		return FALSE;
+	}
 
 #ifndef WIN32
 	if (first)
-		chmod (buf, 0600);
+		g_chmod (buf, 0600);
+
+	g_free (buf);
 #endif
-	fprintf (fp, "v="PACKAGE_VERSION"\n\n");
+	fprintf (fp, "v=" PACKAGE_VERSION "\n\n");
 
 	list = network_list;
 	while (list)
@@ -1210,9 +1217,10 @@ servlist_save (void)
 			fprintf (fp, "E=%s\n", net->encoding);
 			if (!servlist_check_encoding (net->encoding))
 			{
-				snprintf (buf, sizeof (buf), _("Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."),
+				buf = g_strdup_printf (_("Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."),
 							 net->encoding, net->name);
 				fe_message (buf, FE_MSG_WARN);
+				g_free (buf);
 			}
 		}
 

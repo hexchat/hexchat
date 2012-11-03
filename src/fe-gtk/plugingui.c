@@ -147,30 +147,18 @@ plugingui_load_cb (session *sess, char *file)
 void
 plugingui_load (void)
 {
-	/* let's do it the Perl way */
-	const char *xdir;
 	char *sub_dir;
 
-	xdir = get_xdir_utf8 ();
-	sub_dir = malloc (strlen (xdir) + 8);
-	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/addons");
+	sub_dir = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "addons", get_xdir());
 
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
-#if 0	/* native file dialogs */
-#ifdef WIN32
-							"Plugins and Scripts\0*.dll;*.lua;*.pl;*.py;*.tcl\0"
-							"All files\0*.*\0\0", 0);
-#else
-#endif
-#endif	/* native file dialogs */
 #ifdef WIN32
 							sub_dir, "*.dll;*.lua;*.pl;*.py;*.tcl", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 #else
 							sub_dir, "*.so;*.lua;*.pl;*.py;*.tcl", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 #endif
 
-	free (sub_dir);
+	g_free (sub_dir);
 }
 
 static void

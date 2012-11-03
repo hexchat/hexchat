@@ -162,7 +162,6 @@ fe_args (int argc, char *argv[])
 	GError *error = NULL;
 	GOptionContext *context;
 #ifdef WIN32
-#define ARGBUF_SIZE 2048
 	char *buffer;
 #endif
 
@@ -187,35 +186,26 @@ fe_args (int argc, char *argv[])
 		{
 			if (strstr (error->message, "--help-all") != NULL)
 			{
-				buffer = (char*) malloc (ARGBUF_SIZE);
-				if (snprintf (buffer, ARGBUF_SIZE, g_option_context_get_help (context, FALSE, NULL)))
-				{
-					gtk_init (&argc, &argv);
-					create_msg_dialog ("Long Help", buffer);
-				}
-				free (buffer);
+				buffer = g_strdup_printf (g_option_context_get_help (context, FALSE, NULL));
+				gtk_init (&argc, &argv);
+				create_msg_dialog ("Long Help", buffer);
+				g_free (buffer);
 				return 0;
 			}
 			else if (strstr (error->message, "--help") != NULL || strstr (error->message, "-?") != NULL)
 			{
-				buffer = (char*) malloc (ARGBUF_SIZE);
-				if (snprintf (buffer, ARGBUF_SIZE, g_option_context_get_help (context, TRUE, NULL)))
-				{
-					gtk_init (&argc, &argv);
-					create_msg_dialog ("Help", buffer);
-				}
-				free (buffer);
+				buffer = g_strdup_printf (g_option_context_get_help (context, TRUE, NULL));
+				gtk_init (&argc, &argv);
+				create_msg_dialog ("Help", buffer);
+				g_free (buffer);
 				return 0;
 			}
 			else 
 			{
-				buffer = (char*) malloc (ARGBUF_SIZE);
-				if (snprintf (buffer, ARGBUF_SIZE, "%s\n", error->message))
-				{
-					gtk_init (&argc, &argv);
-					create_msg_dialog ("Error", buffer);
-				}
-				free (buffer);
+				buffer = g_strdup_printf ("%s\n", error->message);
+				gtk_init (&argc, &argv);
+				create_msg_dialog ("Error", buffer);
+				g_free (buffer);
 				return 1;
 			}
 		}
@@ -234,13 +224,10 @@ fe_args (int argc, char *argv[])
 	if (arg_show_version)
 	{
 #ifdef WIN32
-		buffer = (char*) malloc (ARGBUF_SIZE);
-		if (snprintf (buffer, ARGBUF_SIZE, DISPLAY_NAME" "PACKAGE_VERSION"\n"))
-		{
-			gtk_init (&argc, &argv);
-			create_msg_dialog ("Version Information", buffer);
-		}
-		free (buffer);
+		buffer = g_strdup_printf (DISPLAY_NAME " " PACKAGE_VERSION "\n");
+		gtk_init (&argc, &argv);
+		create_msg_dialog ("Version Information", buffer);
+		g_free (buffer);
 #else
 		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
 #endif
@@ -253,25 +240,20 @@ fe_args (int argc, char *argv[])
 		/* see the chdir() below */
 		char *sl, *exe = strdup (argv[0]);
 		sl = strrchr (exe, '\\');
-		buffer = (char*) malloc (ARGBUF_SIZE);
 		if (sl)
 		{
 			*sl = 0;
-			if (snprintf (buffer, ARGBUF_SIZE, "%s\\plugins\n", exe))
-			{
-				gtk_init (&argc, &argv);
-				create_msg_dialog ("Plugin Auto-load Directory", buffer);
-			}
+			buffer = g_strdup_printf ("%s\\plugins\n", exe);
+			gtk_init (&argc, &argv);
+			create_msg_dialog ("Plugin Auto-load Directory", buffer);
 		}
 		else
 		{
-			if (snprintf (buffer, ARGBUF_SIZE, ".\\plugins\n"))
-			{
-				gtk_init (&argc, &argv);
-				create_msg_dialog ("Plugin Auto-load Directory", buffer);
-			}
+			buffer = g_strdup(".\\plugins\n");
+			gtk_init (&argc, &argv);
+			create_msg_dialog ("Plugin Auto-load Directory", buffer);
 		}
-		free (buffer);
+		g_free (buffer);
 #else
 		printf ("%s\n", HEXCHATLIBDIR"/plugins");
 #endif
@@ -281,15 +263,12 @@ fe_args (int argc, char *argv[])
 	if (arg_show_config)
 	{
 #ifdef WIN32
-		buffer = (char*) malloc (ARGBUF_SIZE);
-		if (snprintf (buffer, ARGBUF_SIZE, "%s\n", get_xdir_fs ()))
-		{
-			gtk_init (&argc, &argv);
-			create_msg_dialog ("User Config Directory", buffer);
-		}
-		free (buffer);
+		buffer = g_strdup_printf ("%s\n", get_xdir ());
+		gtk_init (&argc, &argv);
+		create_msg_dialog ("User Config Directory", buffer);
+		g_free (buffer);
 #else
-		printf ("%s\n", get_xdir_fs ());
+		printf ("%s\n", get_xdir ());
 #endif
 		return 0;
 	}
@@ -313,12 +292,14 @@ fe_args (int argc, char *argv[])
 	}
 #endif
 
-	if (arg_cfgdir)	/* we want filesystem encoding */
+	if (arg_cfgdir)
 	{
-		xdir_fs = strdup (arg_cfgdir);
-		if (xdir_fs[strlen (xdir_fs) - 1] == '/')
+		if (xdir)
+			g_free (xdir);
+		xdir = strdup (arg_cfgdir);
+		if (xdir[strlen (xdir) - 1] == '/')
 		{
-			xdir_fs[strlen (xdir_fs) - 1] = 0;
+			xdir[strlen (xdir) - 1] = 0;
 		}
 		g_free (arg_cfgdir);
 	}

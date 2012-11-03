@@ -45,9 +45,6 @@
 #include <unistd.h>
 #endif
 
-#include <glib.h>
-#include <glib/gstdio.h>
-
 #include "hexchat.h"
 #include "util.h"
 #include "fe.h"
@@ -401,7 +398,7 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 			if(dcc->type == TYPE_RECV)
 			{			
 				/* mgl: change this to handle the case where dccwithnick is set */
-				move_file_utf8 (prefs.hex_dcc_dir, prefs.hex_dcc_completed_dir, 
+				move_file (prefs.hex_dcc_dir, prefs.hex_dcc_completed_dir, 
 									 file_part (dcc->destfile), prefs.hex_dcc_permissions);
 			}
 
@@ -696,7 +693,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	{
 
 		/* try to create the download dir (even if it exists, no harm) */
-		mkdir_utf8 (prefs.hex_dcc_dir);
+		g_mkdir (prefs.hex_dcc_dir, 0700);
 
 		if (dcc->resumable)
 		{
@@ -1773,18 +1770,15 @@ void
 dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 {
 	char outbuf[512];
-	struct stat st;
+	GStatBuf st;
 	struct DCC *dcc;
-	char *file_fs;
 
-	/* this is utf8 */
 	file = expand_homedir (file);
 
 	if (!recursive && (strchr (file, '*') || strchr (file, '?')))
 	{
 		char path[256];
 		char wild[256];
-		char *path_fs;	/* local filesystem encoding */
 
 		safe_strcpy (wild, file_part (file), sizeof (wild));
 		path_part (file, path, sizeof (path));
@@ -1797,15 +1791,9 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 
 		free (file);
 
-		/* for_files() will use opendir, so we need local FS encoding */
-		path_fs = hexchat_filename_from_utf8 (path, -1, 0, 0, 0);
-		if (path_fs)
-		{
-			recursive = TRUE;
-			for_files (path_fs, wild, dcc_send_wild);
-			recursive = FALSE;
-			g_free (path_fs);
-		}
+		recursive = TRUE;
+		for_files (path, wild, dcc_send_wild);
+		recursive = FALSE;
 
 		return;
 	}
@@ -1816,10 +1804,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 	dcc->file = file;
 	dcc->maxcps = maxcps;
 
-	/* get the local filesystem encoding */
-	file_fs = hexchat_filename_from_utf8 (file, -1, 0, 0, 0);
-
-	if (stat (file_fs, &st) != -1)
+	if (g_stat (file, &st) != -1)
 	{
 
 #ifndef USE_DCC64
@@ -1830,7 +1815,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		}
 #endif
 
-		if (!(*file_part (file_fs)) || S_ISDIR (st.st_mode) || st.st_size < 1)
+		if (!(*file_part (file)) || S_ISDIR (st.st_mode) || st.st_size < 1)
 		{
 			PrintText (sess, "Cannot send directories or empty files.\n");
 			goto xit;
@@ -1841,10 +1826,10 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		dcc->dccstat = STAT_QUEUED;
 		dcc->size = st.st_size;
 		dcc->type = TYPE_SEND;
-		dcc->fp = g_open (file_fs, OFLAGS | O_RDONLY, 0);
+		dcc->fp = g_open (file, OFLAGS | O_RDONLY, 0);
 		if (dcc->fp != -1)
 		{
-			g_free (file_fs);
+			g_free (file);
 			if (passive || dcc_listen_init (dcc, sess))
 			{
 				char havespaces = 0;
@@ -1898,7 +1883,6 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 	PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
 	PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
 xit:
-	g_free (file_fs);
 	dcc_close (dcc, 0, TRUE);
 }
 
