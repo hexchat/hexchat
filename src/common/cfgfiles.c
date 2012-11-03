@@ -772,7 +772,7 @@ load_config (void)
 	snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s/downloads", get_xdir_utf8 ());
 #endif
 	strcpy (prefs.hex_dnsprogram, "host");
-	strcpy (prefs.hex_gui_ulist_doubleclick, "QUOTE WHOIS %s %s");
+	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
 	strcpy (prefs.hex_input_command_char, "/");
 	strcpy (prefs.hex_irc_logmask, "%n-%c.log");
 	strcpy (prefs.hex_irc_nick1, username);
