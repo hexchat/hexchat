@@ -1411,6 +1411,22 @@ static char * const pevt_generic_channel_help[] = {
 	N_("Channel Name"),
 };
 
+static char * const pevt_saslauth_help[] = {
+	N_("Username")
+};
+
+static char * const pevt_saslresponse_help[] = {
+	N_("Server Name"),
+	N_("Raw Numeric or Identifier"),
+	N_("Username"),
+	N_("Message")
+};
+
+static char * const pevt_servercap_help[] = {
+	N_("Server Name"),
+	N_("Server Capabilities")
+};
+
 static char * const pevt_servertext_help[] = {
 	N_("Text"),
 	N_("Server Name"),
