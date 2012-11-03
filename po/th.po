@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-11-03 05:19+0100\n"
-"PO-Revision-Date: 2012-11-03 04:25+0000\n"
+"POT-Creation-Date: 2012-11-03 19:21+0100\n"
+"PO-Revision-Date: 2012-11-03 18:22+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -55,14 +55,14 @@ msgstr "เชื่อมต่อ"
 msgid "Aborted"
 msgstr "ถูกยกเลิกกลางคัน"
 
-#: src/common/dcc.c:1898 src/common/outbound.c:2508
+#: src/common/dcc.c:1898 src/common/outbound.c:2530
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "ไม่สามารถเข้าถึง %s\n"
 
-#: src/common/dcc.c:1899 src/common/text.c:1458 src/common/text.c:1496
-#: src/common/text.c:1507 src/common/text.c:1514 src/common/text.c:1527
-#: src/common/text.c:1544 src/common/text.c:1644 src/common/util.c:358
+#: src/common/dcc.c:1899 src/common/text.c:1472 src/common/text.c:1510
+#: src/common/text.c:1521 src/common/text.c:1528 src/common/text.c:1541
+#: src/common/text.c:1558 src/common/text.c:1658 src/common/util.c:358
 msgid "Error"
 msgstr "ข้อผิดพลาด"
 
@@ -266,107 +266,107 @@ msgstr "ทำเครื่องหมายว่ากลับมาแล
 msgid "I need /bin/sh to run!\n"
 msgstr "ฉันจำเป็นต้องมี /bin/sh เพื่อทำงาน!\n"
 
-#: src/common/outbound.c:2181
+#: src/common/outbound.c:2203
 msgid "Commands Available:"
 msgstr "คำสั่งที่มี:"
 
-#: src/common/outbound.c:2195
+#: src/common/outbound.c:2217
 msgid "User defined commands:"
 msgstr "คำสั่งที่ผู้ใช้นิยามขึ้น:"
 
-#: src/common/outbound.c:2211
+#: src/common/outbound.c:2233
 msgid "Plugin defined commands:"
 msgstr "คำสั่งที่ปลั๊กอินนิยามขึ้น:"
 
-#: src/common/outbound.c:2222
+#: src/common/outbound.c:2244
 msgid "Type /HELP <command> for more information, or /HELP -l"
 msgstr "พิมพ์ /HELP <คำสั่ง> สำหรับรายละเอียดที่มากขึ้น, หรือ /HELP -l"
 
-#: src/common/outbound.c:2306
+#: src/common/outbound.c:2328
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "อาร์กิวเมนต์ที่ไม่รู้จัก '%s' ถูกเพิกเฉย."
 
-#: src/common/outbound.c:3280
+#: src/common/outbound.c:3302
 msgid "No such plugin found.\n"
 msgstr "ไม่พบปลั๊กอินใดๆ\n"
 
-#: src/common/outbound.c:3285 src/fe-gtk/plugingui.c:207
+#: src/common/outbound.c:3307 src/fe-gtk/plugingui.c:207
 msgid "That plugin is refusing to unload.\n"
 msgstr "ปลั๊กอินนั้นกำลังปฎิเสธการโหลดออก.\n"
 
-#: src/common/outbound.c:3554
+#: src/common/outbound.c:3576
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "ADDBUTTON <ชื่อ> <ปฏิบัติการ>, เพิ่มปุ่มภายใต้รายชื่อผู้ใช้งาน"
 
-#: src/common/outbound.c:3555
+#: src/common/outbound.c:3577
 msgid ""
 "ADDSERVER <New Network> <newserver/6667>, adds a new network with a new "
 "server to the network list"
 msgstr ""
 
-#: src/common/outbound.c:3557
+#: src/common/outbound.c:3579
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <คำสั่ง>, ส่งคำสั่งไปยังทุกแชนแนลที่คุณเข้าอยู่"
 
-#: src/common/outbound.c:3559
+#: src/common/outbound.c:3581
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
 msgstr ""
 
-#: src/common/outbound.c:3561
+#: src/common/outbound.c:3583
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "ALLSERV <คำสั่ง>, ส่งคำสั่งไปยังทุกเซิร์ฟเวอร์ที่คุณเข้าอยู่"
 
-#: src/common/outbound.c:3562
+#: src/common/outbound.c:3584
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<เหตุผล>], ตั้งค่าให้คุณไม่อยู่"
 
-#: src/common/outbound.c:3563
+#: src/common/outbound.c:3585
 msgid "BACK, sets you back (not away)"
 msgstr "BACK, ตั้งค่าให้คุณกลับมา (ไม่ใช่ไม่อยู่)"
 
-#: src/common/outbound.c:3565
+#: src/common/outbound.c:3587
 msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
 msgstr "BAN <มาสก์> [<รูปแบบการแบน>], ประกาศสั่งห้ามทุก ๆ คนที่ตรงกับมาสก์จากแชนแนลปัจจุบัน. ถ้าพวกเขาอยู่ที่แชนแนลนี้แล้ว นี่จะไม่ได้เตะพวกเขาออกไป (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3566
+#: src/common/outbound.c:3588
 msgid "CHANOPT [-quiet] <variable> [<value>]"
 msgstr ""
 
-#: src/common/outbound.c:3567
+#: src/common/outbound.c:3589
 msgid ""
 "CHARSET [<encoding>], get or set the encoding used for the current "
 "connection"
 msgstr ""
 
-#: src/common/outbound.c:3568
+#: src/common/outbound.c:3590
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
 msgstr "CLEAR [ALL|HISTORY], ล้างหน้าต่างข้อความ หรือประวัติคำสั่งปัจจุบัน "
 
-#: src/common/outbound.c:3569
+#: src/common/outbound.c:3591
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, ปิดหน้าต่าง/แท็บปัจจุบัน"
 
-#: src/common/outbound.c:3572
+#: src/common/outbound.c:3594
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
 msgstr "COUNTRY [-s] <รหัส|ไวลด์การ์ด>, ค้นหารหัสประเทศ, เช่น: au = ออสเตรเลีย"
 
-#: src/common/outbound.c:3574
+#: src/common/outbound.c:3596
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
 msgstr "CTCP <ชื่อเล่น> <ข้อความ>, ส่งข้อความ CTCP ไปยัง 'ชื่อเล่น', ข้อความโดยปกติได้แก่ VERSION และ USERINFO"
 
-#: src/common/outbound.c:3576
+#: src/common/outbound.c:3598
 msgid ""
 "CYCLE [<channel>], parts the current or given channel and immediately "
 "rejoins"
 msgstr "CYCLE [<channel>], แยกแชนแนลปัจจุบันหรือที่เสนอให้ และกลับเข้าร่วมในทันที"
 
-#: src/common/outbound.c:3578
+#: src/common/outbound.c:3600
 msgid ""
 "\n"
 "DCC GET <nick>                      - accept an offered file\n"
@@ -379,85 +379,89 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr "\nDCC GET <ชื่อเล่น>                      - ยอมรับไฟล์ที่ได้รับการเสนอให้\nDCC SEND [-maxcps=#] <ชื่อเล่น> [ไฟล์]  - ส่งไฟล์ไปหาใครซักคน\nDCC PSEND [-maxcps=#] <ชื่อเล่น> [ไฟล์] - ส่งไฟล์ซักไฟล์โดยใช้โหมด passive\nDCC LIST                            - show DCC list\nDCC CHAT <ชื่อเล่น>                     - เสนอ DCC CHAT ให้กับใครซักคน\nDCC PCHAT <ชื่อเล่น>                    - เสนอ DCC CHAT โดยใช้โหมด passive\nDCC CLOSE <รูปแบบ> <ชื่อเล่น> <ไฟล์>         ตัวอย่าง:\n         /dcc close send johnsmith file.tar.gz"
 
-#: src/common/outbound.c:3590
+#: src/common/outbound.c:3612
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
 msgstr "DEHOP <ชื่อเล่น>, ลบสถานะ chanhalf-op จาก 'ชื่อเล่น' ในแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3592
+#: src/common/outbound.c:3614
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <ชื่อ>, ลบปุ่มภายใต้รายชื่อผู้ใช้"
 
-#: src/common/outbound.c:3594
+#: src/common/outbound.c:3616
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
 msgstr "DEOP <ชื่อเล่น>, ลบสถานะ chanop จาก 'ชื่อเล่น' ในแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3596
+#: src/common/outbound.c:3618
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
 msgstr "DEVOICE <nick>, สบสถานะประกาศจาก 'ชื่อเล่น' ในแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3597
+#: src/common/outbound.c:3619
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, ตัดการเชื่อมต่อจากเซิร์ฟเวอร์"
 
-#: src/common/outbound.c:3598
+#: src/common/outbound.c:3620
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <ชื่อเล่น|โฮสต์|ไอพี>, ค้นหาหมายเลขไอพีของผู้ใช้งาน"
 
-#: src/common/outbound.c:3599
+#: src/common/outbound.c:3621
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <ข้อความ>, พิมพ์ข้อความแบบโลคอล"
 
-#: src/common/outbound.c:3602
+#: src/common/outbound.c:3624
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
 msgstr "EXEC [-o] <คำสั่ง>, เรียกใช้คำสั่ง. ถ้าใช้เครื่องหมาย -o แล้วผลที่ได้จะถูกส่งไปยังแชนแนลปัจจุบัน, ไม่ก็จะถูกพิมพ์ไปยังกล่องข้อความปัจจุบัน"
 
-#: src/common/outbound.c:3604
+#: src/common/outbound.c:3626
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, ส่ง SIGCONT ไปยังโพรเซส"
 
-#: src/common/outbound.c:3607
+#: src/common/outbound.c:3629
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
 msgstr "EXECKILL [-9], ฆ่า exec ที่กำลังทำงานในวาระปัจจุบัน. ถ้าใช้เครื่องหมาย -9 โพรเซสจะถูก SIGKILL"
 
-#: src/common/outbound.c:3609
+#: src/common/outbound.c:3631
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, ส่ง SIGSTOP ไปยังโพรเซส"
 
-#: src/common/outbound.c:3610
+#: src/common/outbound.c:3632
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "EXECWRITE, ส่งข้อมูลไปยังทางป้อนข้อมูลมาตรฐานของโพรเซส"
 
-#: src/common/outbound.c:3614
+#: src/common/outbound.c:3636
+msgid "EXPORTCONF, exports HexChat settings"
+msgstr ""
+
+#: src/common/outbound.c:3639
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "FLUSHQ, ล้างคิวการส่งปัจจุบันของเซิร์ฟเวอร์"
 
-#: src/common/outbound.c:3616
+#: src/common/outbound.c:3641
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr "GATE <โฮสต์> [<พอร์ต>], พร็อกซี่ไปยังโฮต์, ค่าพอร์ตมาตรฐานเป็น 23"
 
-#: src/common/outbound.c:3620
+#: src/common/outbound.c:3645
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
 msgstr ""
 
-#: src/common/outbound.c:3625
+#: src/common/outbound.c:3650
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "HOP <ชื่อเล่น>, ให้สถานะ chanhalf-op กับ 'ชื่อเล่น' (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3626
+#: src/common/outbound.c:3651
 msgid "ID <password>, identifies yourself to nickserv"
 msgstr "ID <รหัสผ่าน>, ระบุตัวตนของคุณเองไปยังเซิร์ฟเวอร์ชื่อเล่น"
 
-#: src/common/outbound.c:3628
+#: src/common/outbound.c:3653
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -466,31 +470,31 @@ msgid ""
 "    options - NOSAVE, QUIET"
 msgstr "IGNORE <มาสก์> <รูปแบบ..> <ตัวเลือก..>\n    มาสก์ - มาสก์ของโฮสต์ที่จะเพิกเฉย, เช่น: *!*@*.aol.com\n    รูปแบบ - ชนิดรูปแบบของข้อมูลที่จะเพิกเฉย, อย่างหนึ่งหรือทั้งหมดของ:\n            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n    options - NOSAVE, QUIET"
 
-#: src/common/outbound.c:3635
+#: src/common/outbound.c:3660
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
 msgstr "INVITE <ชื่อเล่น> [<แชนแนล>], เชิญชวนใครซักคนเข้าสู่แชนแนลหนึ่ง ๆ, โดยปกติคือแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3636
+#: src/common/outbound.c:3661
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <แชนแนล>, เข้าร่วม 'แชนแนล'"
 
-#: src/common/outbound.c:3638
+#: src/common/outbound.c:3663
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <ชื่อเล่น>, เตะ 'ชื่อเล่น' ออกจากแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3640
+#: src/common/outbound.c:3665
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
 msgstr "KICKBAN <ชื่อเล่น>, แบนและเตะ 'ชื่อเล่น' ออกจากแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3643
+#: src/common/outbound.c:3668
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, บังคับการตรวจสอบอย่างช้าใหม่"
 
-#: src/common/outbound.c:3645
+#: src/common/outbound.c:3670
 msgid ""
 "LASTLOG [-h] [-m] [-r] [--] <string>, searches for a string in the buffer\n"
 "    Use -h to highlight the found string(s)\n"
@@ -499,162 +503,162 @@ msgid ""
 "    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
 msgstr ""
 
-#: src/common/outbound.c:3651
+#: src/common/outbound.c:3676
 msgid "LOAD [-e] <file>, loads a plugin or script"
 msgstr "LOAD [-e] <ไฟล์>, โหลดปลั๊กอินหรือสคริป"
 
-#: src/common/outbound.c:3654
+#: src/common/outbound.c:3679
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr "MDEHOP, Mass deop ของ chanhalf-ops ทั้งหมดในแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3656
+#: src/common/outbound.c:3681
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr "MDEOP, Mass deop ของ chanops ทั้งหมดในแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3658
+#: src/common/outbound.c:3683
 msgid ""
 "ME <action>, sends the action to the current channel (actions are written in"
 " the 3rd person, like /me jumps)"
 msgstr "ME <ปฏิบัติการ>, ส่งการปฏิบัติการไปยังแชนแนลปัจจุบัน (การปฏิบิการถูกเขียนขึ้นโดยบุคคลที่ 3, อย่างเช่น /me jumps)"
 
-#: src/common/outbound.c:3662
+#: src/common/outbound.c:3687
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr "MKICK, เตะทุกคนออกจากแชนแนลปัจจุบันยกเว้นคุณ (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3665
+#: src/common/outbound.c:3690
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
 msgstr "MOP, Mass op ของผู้ใช้ทั้งหมดในแชนแนลปัจจุบัน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3666
+#: src/common/outbound.c:3691
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <ชื่อเล่น> <ข้อความ>, ส่งข้อความส่วนตัว"
 
-#: src/common/outbound.c:3669
+#: src/common/outbound.c:3694
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, แสดงรายชื่อชื่อเล่นบนแชนแนลปัจจุบัน"
 
-#: src/common/outbound.c:3671
+#: src/common/outbound.c:3696
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <ชื่อเล่น> <ข้อความ>, ส่งประกาศ CTCP"
 
-#: src/common/outbound.c:3672
+#: src/common/outbound.c:3697
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
 msgstr "NEWSERVER [-noconnect] <ชื่อโฮต์> [<พอร์ต>]"
 
-#: src/common/outbound.c:3673
+#: src/common/outbound.c:3698
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <ชื่อเล่น>, ตั้งชื่อเล่นของคุณ"
 
-#: src/common/outbound.c:3676
+#: src/common/outbound.c:3701
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
 msgstr "OTICE <nick/channel> <message>, ส่งประกาศ. ประกาศเป็นชนิดของข้อความที่ควรจะตอบสนองกลับอัตโนมัติ"
 
-#: src/common/outbound.c:3678
+#: src/common/outbound.c:3703
 msgid ""
 "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or "
 "adds someone to it"
 msgstr "NOTIFY [-n เครือข่าย1[,เครือข่าย2,...]] [<ชื่อเล่น>], แสดงรายการแจ้งเตือนของคุณหรือเพิ่มบางคนไปยังรายการ"
 
-#: src/common/outbound.c:3680
+#: src/common/outbound.c:3705
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <ชื่อเล่น>, ให้สถานะ chanop กับ 'ชื่อเล่น' (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3682
+#: src/common/outbound.c:3707
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<แชนแนล>] [<เหตุผล>], ออกจากแชนแนล, โดยปกติคือหนึ่งแชนแนลปัจจุบัน"
 
-#: src/common/outbound.c:3684
+#: src/common/outbound.c:3709
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <nick | channel>, ส่ง CTCP เพื่อ ping ชื่อเล่นหรือแชนแนล"
 
-#: src/common/outbound.c:3686
+#: src/common/outbound.c:3711
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
 msgstr "QUERY [-nofocus] <ชื่อเล่น>, เปิดหน้าต่างข้อความส่วนตัวกับใครบางคน"
 
-#: src/common/outbound.c:3688
+#: src/common/outbound.c:3713
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<เหตุผล>], ตัดการเชื่อมต่อจากเซิร์ฟเวอร์ปัจจุบัน"
 
-#: src/common/outbound.c:3690
+#: src/common/outbound.c:3715
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <ข้อความ>, ส่งข้อความในรูปแบบข้อมูลดิบไปยังเซิร์ฟเวอร์"
 
-#: src/common/outbound.c:3693
+#: src/common/outbound.c:3718
 msgid ""
 "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as "
 "/RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
 msgstr "RECONNECT [-ssl] [<โฮสต์>] [<พอร์ต>] [<รหัสผ่าน>], สามารถเรียกเพียง /RECONNECT เพื่อที่จะทำการเชื่อมต่ออีกครั้งกับเซิร์ฟเวอร์ปัจจุบัน หรือด้วย /RECONNECT ALL สำหรับทำการเชื่อมต่ออีกครั้งกับเซิร์ฟเวอร์ทั้งหมดที่เปิดอยู่"
 
-#: src/common/outbound.c:3696
+#: src/common/outbound.c:3721
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
 msgstr "RECONNECT [<โฮสต์>] [<พอร์ต>] [<รหัสผ่าน>], สามารถถูกเรียกเพียง /RECONNECT เพื่อที่จะทำการเชื่อมต่ออีกครั้งกับเซิร์ฟเวอร์ปัจจุบัน หรือด้วย /RECONNECT ALL สำหรับทำการเชื่อมต่ออีกครั้งกับเซิร์ฟเวอร์ทั้งหมดที่เปิดอยู่"
 
-#: src/common/outbound.c:3698
+#: src/common/outbound.c:3723
 msgid ""
 "RECV <text>, send raw data to HexChat, as if it was received from the IRC "
 "server"
 msgstr ""
 
-#: src/common/outbound.c:3701
+#: src/common/outbound.c:3726
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <ข้อความ>, ส่งข้อความไปยังวัตถุในหน้าต่างปัจจุบัน"
 
-#: src/common/outbound.c:3702
+#: src/common/outbound.c:3727
 msgid "SEND <nick> [<file>]"
 msgstr "SEND <ชื่อเล่น> [<ไฟล์>]"
 
-#: src/common/outbound.c:3705
+#: src/common/outbound.c:3730
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN [-ssl] <โฮสต์> <พอร์ต> <แชนแนล>, เชื่อมต่อและเข้าร่วมแชนแนล"
 
-#: src/common/outbound.c:3708
+#: src/common/outbound.c:3733
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <โฮสต์> <พอร์ต> <แชนแนล>, เชื่อมต่อและเข้าร่วมแชนแนล"
 
-#: src/common/outbound.c:3712
+#: src/common/outbound.c:3737
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 6697 for ssl connections"
 msgstr ""
 
-#: src/common/outbound.c:3715
+#: src/common/outbound.c:3740
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
 msgstr "SERVER <host> [พอร์ต>] [<รหัสผ่าน>], เชื่อมต่อไปยังเซิร์ฟเวอร์, พอร์ตมาตรฐานคือ 6667"
 
-#: src/common/outbound.c:3717
+#: src/common/outbound.c:3742
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
 msgstr ""
 
-#: src/common/outbound.c:3718
+#: src/common/outbound.c:3743
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
 msgstr ""
 
-#: src/common/outbound.c:3719
+#: src/common/outbound.c:3744
 msgid "SETTAB <new name>, change a tab's name, tab_trunc limit still applies"
 msgstr ""
 
-#: src/common/outbound.c:3720
+#: src/common/outbound.c:3745
 msgid "SETTEXT <new text>, replace the text in the input box"
 msgstr ""
 
-#: src/common/outbound.c:3723
+#: src/common/outbound.c:3748
 msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current "
 "topic"
 msgstr "TOPIC [<หัวเรื่อง>], ตั้งหัวเรื่องถ้าบางคนได้รับมา, หรือแสดงหัวเรื่องปัจจุบัน"
 
-#: src/common/outbound.c:3725
+#: src/common/outbound.c:3750
 msgid ""
 "\n"
 "TRAY -f <timeout> <file1> [<file2>] Blink tray between two icons.\n"
@@ -664,65 +668,65 @@ msgid ""
 "TRAY -b <title> <text>              Set the tray balloon."
 msgstr "\nTRAY -f <เวลาหมด> <ไฟล์1> [<ไฟล์2>] กระพริบถามระหว่างสองไอคอน.\nTRAY -f <ชื่อไฟล์>                      ตั้งถามสำหรับไอคอนที่ถูกตรึง.\nTRAY -i <ตัวเลข>                       กระพริบถาดด้วยไอคอนภายใน.\nTRAY -t <ข้อความ>                     ตั้งค่าข้อความช่วยเหลือของถาด.\nTRAY -b <ชื่อเรื่อง> <ข้อความ>              ตั้งค่าบอลลูนของถาด."
 
-#: src/common/outbound.c:3732
+#: src/common/outbound.c:3757
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "UNBAN <mask> [<mask>...], ยกเลิกแบนสำหรับมาสก์ที่กำหนด."
 
-#: src/common/outbound.c:3733
+#: src/common/outbound.c:3758
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <มาสก์> [QUIET]"
 
-#: src/common/outbound.c:3734
+#: src/common/outbound.c:3759
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <ชื่อ>, โหลดปลั๊กอินหรือสคริปออกไป"
 
-#: src/common/outbound.c:3735
+#: src/common/outbound.c:3760
 msgid "URL <url>, opens a URL in your browser"
 msgstr "URL <url>, เปิด URL ในบราวเซอร์ของคุณ"
 
-#: src/common/outbound.c:3737
+#: src/common/outbound.c:3762
 msgid ""
 "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel "
 "userlist"
 msgstr "USELECT [-a] [-s] <ชื่อเล่น1> <ชื่อเล่น2> etc, เน้นชื่อเล่น(s) ในรายชื่อผู้ใช้ของแชนแนล"
 
-#: src/common/outbound.c:3740
+#: src/common/outbound.c:3765
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <ชื่อเล่น>, ให้สถานะประกาศกับใครบางคน (จำเป็นต้องมี chanop)"
 
-#: src/common/outbound.c:3742
+#: src/common/outbound.c:3767
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <ข้อความ>, เขียนข้อความไปยังแชนแนลทั้งหมด"
 
-#: src/common/outbound.c:3744
+#: src/common/outbound.c:3769
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <ข้อความ>, ส่งข้อความไปยัง chanops ทั้งหมดในแชนแนลปัจจุบัน"
 
-#: src/common/outbound.c:3777
+#: src/common/outbound.c:3802
 #, c-format
 msgid "Usage: %s\n"
 msgstr "วิธีใช้: %s\n"
 
-#: src/common/outbound.c:3782
+#: src/common/outbound.c:3807
 msgid ""
 "\n"
 "No help available on that command.\n"
 msgstr "\nไม่มีข้อความช่วยเหลือสำหรับคำสั่งนั้น.\n"
 
-#: src/common/outbound.c:3788
+#: src/common/outbound.c:3813
 msgid "No such command.\n"
 msgstr "ไม่ใช่คำสั่ง.\n"
 
-#: src/common/outbound.c:4119
+#: src/common/outbound.c:4144
 msgid "Bad arguments for user command.\n"
 msgstr "อาร์กิวเมนต์ไม่ถูกต้องสำหรับคำสั่งผู้ใช้งาน.\n"
 
-#: src/common/outbound.c:4279
+#: src/common/outbound.c:4304
 msgid "Too many recursive usercommands, aborting."
 msgstr "คำสั่งเรียกตัวเองซ้ำซ้อนมากเกินไป, ทำการยกเลิกกลางคัน."
 
-#: src/common/outbound.c:4362
+#: src/common/outbound.c:4387
 msgid "Unknown Command. Try /help\n"
 msgstr "คำสั่งที่ไม่รู้จัก. ลอง /help\n"
 
@@ -770,459 +774,471 @@ msgid "%C22*%O$tCannot join%C22 $1 %O(%C20You are banned%O)."
 msgstr ""
 
 #: src/common/textevents.h:18
-msgid "%C24*%O$t%C28$1%O is now known as%C18 $2%O"
+msgid "%C29*%O$tCapabilities acknowledged: %C29$2%O"
+msgstr ""
+
+#: src/common/textevents.h:21
+msgid "%C23*%O$tCapabilities supported: %C29$2%O"
+msgstr ""
+
+#: src/common/textevents.h:24
+msgid "%C23*%O$tCapabilities requested: %C29$1%O"
 msgstr ""
 
 #: src/common/textevents.h:27
-msgid "%C22*%O$t%C26$1%O sets ban on %C18$2%O"
-msgstr ""
-
-#: src/common/textevents.h:30
-msgid "%C22*%O$tChannel %C22$1%O created"
-msgstr ""
-
-#: src/common/textevents.h:33
-msgid "%C22*%O$t%C26$1%O removes channel half-operator status from %C18$2%O"
+msgid "%C24*%O$t%C28$1%O is now known as%C18 $2%O"
 msgstr ""
 
 #: src/common/textevents.h:36
-msgid "%C22*%O$t%C26$1%O removes channel operator status from %C18$2%O"
+msgid "%C22*%O$t%C26$1%O sets ban on %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:39
-msgid "%C22*%O$t%C26$1%O removes voice from %C18$2%O"
+msgid "%C22*%O$tChannel %C22$1%O created"
 msgstr ""
 
 #: src/common/textevents.h:42
-msgid "%C22*%O$t%C26 $1%C sets exempt on %C18$2%O"
+msgid "%C22*%O$t%C26$1%O removes channel half-operator status from %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:45
-msgid "%C22*%O$t%C26$1%O gives channel half-operator status to %C18$2%O"
+msgid "%C22*%O$t%C26$1%O removes channel operator status from %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:48
-msgid "%C22*%O$t%C26 $1%C sets invite on %C18$2%O"
+msgid "%C22*%O$t%C26$1%O removes voice from %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:51
-msgid "%UChannel          Users   Topic"
-msgstr "%Uแชนแนล          ผู้ใช้   หัวข้อ"
+msgid "%C22*%O$t%C26 $1%C sets exempt on %C18$2%O"
+msgstr ""
+
+#: src/common/textevents.h:54
+msgid "%C22*%O$t%C26$1%O gives channel half-operator status to %C18$2%O"
+msgstr ""
 
 #: src/common/textevents.h:57
-msgid "%C22*%O$t%C26$1%O sets mode %C24$2$3%O on %C22$4%O"
+msgid "%C22*%O$t%C26 $1%C sets invite on %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:60
-msgid "%C22*%O$tChannel %C22$1%O modes: %C24$2"
+msgid "%UChannel          Users   Topic"
+msgstr "%Uแชนแนล          ผู้ใช้   หัวข้อ"
+
+#: src/common/textevents.h:66
+msgid "%C22*%O$t%C26$1%O sets mode %C24$2$3%O on %C22$4%O"
 msgstr ""
 
 #: src/common/textevents.h:69
-msgid "%C22*%O$t%C26$1%O gives channel operator status to %C18$2%O"
-msgstr ""
-
-#: src/common/textevents.h:72
-msgid "%C22*%O$t%C26$1%O removes exempt on %C18$2%O"
-msgstr ""
-
-#: src/common/textevents.h:75
-msgid "%C22*%O$t%C26 $1%O removes invite on %C18$2%O"
+msgid "%C22*%O$tChannel %C22$1%O modes: %C24$2"
 msgstr ""
 
 #: src/common/textevents.h:78
-msgid "%C22*%O$t%C26$1%O removes channel keyword"
+msgid "%C22*%O$t%C26$1%O gives channel operator status to %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:81
-msgid "%C22*%O$t%C26$1%O removes user limit"
+msgid "%C22*%O$t%C26$1%O removes exempt on %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:84
-msgid "%C22*%O$t$1 sets channel keyword to %C24$2%O"
+msgid "%C22*%O$t%C26 $1%O removes invite on %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:87
-msgid "%C22*%O$t%C26$1%O sets channel limit to %C24$2%O"
+msgid "%C22*%O$t%C26$1%O removes channel keyword"
 msgstr ""
 
 #: src/common/textevents.h:90
-msgid "%C22*%O$t%C26$1%O removes ban on %C24$2%O"
+msgid "%C22*%O$t%C26$1%O removes user limit"
 msgstr ""
 
 #: src/common/textevents.h:93
-msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
+msgid "%C22*%O$t$1 sets channel keyword to %C24$2%O"
 msgstr ""
 
 #: src/common/textevents.h:96
-msgid "%C23*%O$tConnected. Now logging in."
+msgid "%C22*%O$t%C26$1%O sets channel limit to %C24$2%O"
 msgstr ""
 
 #: src/common/textevents.h:99
-msgid "%C23*%O$tConnecting to %C29$1%C (%C23$2:$3%O)"
+msgid "%C22*%O$t%C26$1%O removes ban on %C24$2%O"
 msgstr ""
 
 #: src/common/textevents.h:102
-msgid "%C20*%O$tConnection failed (%C20$1%O)"
+msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:105
-msgid "%C24*%O$tReceived a CTCP %C24$1%C from %C18$2%O"
+msgid "%C23*%O$tConnected. Now logging in."
 msgstr ""
 
 #: src/common/textevents.h:108
-msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
+msgid "%C23*%O$tConnecting to %C29$1%C (%C23$2:$3%O)"
+msgstr ""
+
+#: src/common/textevents.h:111
+msgid "%C20*%O$tConnection failed (%C20$1%O)"
 msgstr ""
 
 #: src/common/textevents.h:114
-msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%O"
+msgid "%C24*%O$tReceived a CTCP %C24$1%C from %C18$2%O"
 msgstr ""
 
 #: src/common/textevents.h:117
-msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%C (to %C22$3%O)"
-msgstr ""
-
-#: src/common/textevents.h:120
-msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
+msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
 msgstr ""
 
 #: src/common/textevents.h:123
+msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%O"
+msgstr ""
+
+#: src/common/textevents.h:126
+msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%C (to %C22$3%O)"
+msgstr ""
+
+#: src/common/textevents.h:129
+msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
+msgstr ""
+
+#: src/common/textevents.h:132
 msgid ""
 "%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:126
+#: src/common/textevents.h:135
 msgid "%C20*%O$tDCC CHAT to %C18$1%O lost (%C20$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:129
+#: src/common/textevents.h:138
 msgid "%C24*%O$tReceived a DCC CHAT offer from %C18$1%O"
 msgstr ""
 
-#: src/common/textevents.h:132
+#: src/common/textevents.h:141
 msgid "%C24*%O$tOffering DCC CHAT to %C18$1%O"
 msgstr ""
 
-#: src/common/textevents.h:135
+#: src/common/textevents.h:144
 msgid "%C24*%O$tAlready offering CHAT to %C18$1%O"
 msgstr ""
 
-#: src/common/textevents.h:138
+#: src/common/textevents.h:147
 msgid "%C20*%O$tDCC $1 connect attempt to %C18$2%O failed (%C20$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:141
+#: src/common/textevents.h:150
 msgid "%C23*%O$tReceived '%C23$1%C' from %C18$2%O"
 msgstr ""
 
-#: src/common/textevents.h:144
+#: src/common/textevents.h:153
 #, c-format
 msgid "%C16,17 Type  To/From    Status  Size    Pos     File         "
 msgstr ""
 
-#: src/common/textevents.h:147
+#: src/common/textevents.h:156
 msgid ""
 "%C20*%O$tReceived a malformed DCC request from "
 "%C18$1%O.%010%C23*%O$tContents of packet: %C23$2%O"
 msgstr ""
 
-#: src/common/textevents.h:150
+#: src/common/textevents.h:159
 msgid "%C24*%O$tOffering '%C24$1%O' to %C18$2%O"
 msgstr ""
 
-#: src/common/textevents.h:153
+#: src/common/textevents.h:162
 msgid "%C23*%O$tNo such DCC offer."
 msgstr ""
 
-#: src/common/textevents.h:156
+#: src/common/textevents.h:165
 msgid "%C23*%O$tDCC RECV '%C23$2%O' to %C18$1%O aborted."
 msgstr ""
 
-#: src/common/textevents.h:159
+#: src/common/textevents.h:168
 msgid ""
 "%C24*%O$tDCC RECV '%C23$1%O' from %C18$3%O complete %C30[%C24$4%O cps%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:162
+#: src/common/textevents.h:171
 msgid ""
 "%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:165
+#: src/common/textevents.h:174
 msgid "%C20*%O$tDCC RECV '%C23$1%O' from %C18$3%O failed (%C20$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:168
+#: src/common/textevents.h:177
 msgid "%C20*%O$tDCC RECV: Cannot open '%C23$1%C' for writing (%C20$2%O)"
 msgstr ""
 
-#: src/common/textevents.h:171
+#: src/common/textevents.h:180
 msgid ""
 "%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' "
 "instead."
 msgstr ""
 
-#: src/common/textevents.h:174
+#: src/common/textevents.h:183
 msgid "%C24*%O$t%C18$1%C has requested to resume '%C23$2%C' from %C24$3%O."
 msgstr ""
 
-#: src/common/textevents.h:177
+#: src/common/textevents.h:186
 msgid "%C23*%O$tDCC SEND '%C23$2%C' to %C18$1%O aborted."
 msgstr ""
 
-#: src/common/textevents.h:180
+#: src/common/textevents.h:189
 msgid ""
 "%C24*%O$tDCC SEND '%C23$1%C' to %C18$2%C complete %C30[%C24$3%C cps%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:183
+#: src/common/textevents.h:192
 msgid ""
 "%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:186
+#: src/common/textevents.h:195
 msgid "%C20*%O$tDCC SEND '%C23$1%C' to %C18$2%C failed (%C20$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:189
+#: src/common/textevents.h:198
 msgid "%C24*%O$t%C18$1%C has offered '%C23$2%C' (%C24$3%O bytes)"
 msgstr ""
 
-#: src/common/textevents.h:192
+#: src/common/textevents.h:201
 msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O stalled, aborting."
 msgstr ""
 
-#: src/common/textevents.h:195
+#: src/common/textevents.h:204
 msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O timed out, aborting."
 msgstr ""
 
-#: src/common/textevents.h:198
+#: src/common/textevents.h:207
 msgid "%C24*%O$t%C18$1%O deleted from notify list."
 msgstr ""
 
-#: src/common/textevents.h:201
+#: src/common/textevents.h:210
 msgid "%C20*%O$tDisconnected (%C20$1%O)"
 msgstr ""
 
-#: src/common/textevents.h:204
+#: src/common/textevents.h:213
 msgid "%C24*%O$tFound your IP: %C30[%C24$1%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:210
+#: src/common/textevents.h:219
+msgid "%C23*%O$tServicing ident request from %C23$1%O as %C18$2%O"
+msgstr ""
+
+#: src/common/textevents.h:222
 msgid "%O%C18$1%O added to ignore list."
 msgstr ""
 
-#: src/common/textevents.h:213
+#: src/common/textevents.h:225
 msgid "%OIgnore on %C18$1%O changed."
 msgstr ""
 
-#: src/common/textevents.h:216
+#: src/common/textevents.h:228
 #, c-format
 msgid "%C16,17                                                              "
 msgstr ""
 
-#: src/common/textevents.h:219
+#: src/common/textevents.h:231
 #, c-format
 msgid "%C16,17 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
 msgstr ""
 
-#: src/common/textevents.h:222
+#: src/common/textevents.h:234
 msgid "%O%C18$1%O removed from ignore list."
 msgstr ""
 
-#: src/common/textevents.h:225
+#: src/common/textevents.h:237
 msgid "%OIgnore list is empty."
 msgstr ""
 
-#: src/common/textevents.h:228
+#: src/common/textevents.h:240
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Channel is invite only%O)"
 msgstr ""
 
-#: src/common/textevents.h:231
+#: src/common/textevents.h:243
 msgid "%C24*%O$tYou have been invited to %C22$1%O by %C18$2%O (%C29$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:234
+#: src/common/textevents.h:246
 #, c-format
 msgid "%C23*$t$1 ($3) has joined"
 msgstr ""
 
-#: src/common/textevents.h:237
+#: src/common/textevents.h:249
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Requires keyword%O)"
 msgstr ""
 
-#: src/common/textevents.h:240
+#: src/common/textevents.h:252
 msgid "%C22*%O$t%C26$1%C has kicked %C18$2%C from %C22$3%C (%C24$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:243
+#: src/common/textevents.h:255
 msgid "%C19*%O$t%C19You have been killed by %C26$1%C (%C20$2%O)"
 msgstr ""
 
-#: src/common/textevents.h:252
+#: src/common/textevents.h:264
 msgid "%C29*%O$t%C29MOTD Skipped%O"
 msgstr ""
 
-#: src/common/textevents.h:255
+#: src/common/textevents.h:267
 msgid "%C23*%O$t%C28$1%C already in use. Retrying with %C18$2%O..."
 msgstr ""
 
-#: src/common/textevents.h:258
+#: src/common/textevents.h:270
 msgid "%C20*%O$tNickname already in use. Use /NICK to try another."
 msgstr ""
 
-#: src/common/textevents.h:261
+#: src/common/textevents.h:273
 msgid "%C20*%O$tNo such DCC."
 msgstr ""
 
-#: src/common/textevents.h:264
+#: src/common/textevents.h:276
 msgid "%C23*%O$tNo process is currently running"
 msgstr ""
 
-#: src/common/textevents.h:273
+#: src/common/textevents.h:285
 msgid "$tNotify list is empty."
 msgstr "$tรายการแจ้งเตือนว่างเปล่า."
 
-#: src/common/textevents.h:276
+#: src/common/textevents.h:288
 #, c-format
 msgid "%C16,17  Notify List                           "
 msgstr ""
 
-#: src/common/textevents.h:279
+#: src/common/textevents.h:291
 msgid "%C23*%O$t%C23$1%O users in notify list."
 msgstr ""
 
-#: src/common/textevents.h:282
+#: src/common/textevents.h:294
 msgid "%C23*%O$tNotify: %C18$1%C is offline (%C29$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:285
+#: src/common/textevents.h:297
 msgid "%C23*%O$tNotify: %C18$1%C is online (%C29$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:291
+#: src/common/textevents.h:303
 #, c-format
 msgid "%C24*$t$1 has left"
 msgstr ""
 
-#: src/common/textevents.h:294
+#: src/common/textevents.h:306
 msgid "%C24*%O$t%C18$1%C ($2) has left (%C24$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:297
+#: src/common/textevents.h:309
 msgid "%C24*%O$tPing reply from%C18 $1%C: %C24$2%O second(s)"
 msgstr ""
 
-#: src/common/textevents.h:300
+#: src/common/textevents.h:312
 msgid "%C20*%O$tNo ping reply for %C24$1%O seconds, disconnecting."
 msgstr ""
 
-#: src/common/textevents.h:315
+#: src/common/textevents.h:327
 msgid "%C24*%O$tA process is already running"
 msgstr ""
 
-#: src/common/textevents.h:318
+#: src/common/textevents.h:330
 #, c-format
 msgid "%C24*$t$1 has quit ($2)"
 msgstr ""
 
-#: src/common/textevents.h:321
+#: src/common/textevents.h:333
 msgid "%C24*%O$t%C26$1%C sets modes %C30[%C24$2%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:324
+#: src/common/textevents.h:336
 msgid "%O-%C29$1/Wallops%O-$t$2"
 msgstr ""
 
-#: src/common/textevents.h:327
+#: src/common/textevents.h:339
 msgid "%C24*%O$tLooking up IP number for %C18$1%O..."
 msgstr ""
 
-#: src/common/textevents.h:330
+#: src/common/textevents.h:342
 msgid "%C23*%O$tAuthenticating via SASL as %C18$1%O"
 msgstr ""
 
-#: src/common/textevents.h:336
-msgid "%C23*%O$tCapabilities supported by the server: %C29$2%O"
-msgstr ""
-
-#: src/common/textevents.h:339
+#: src/common/textevents.h:348
 msgid "%C29*%O$tConnected."
 msgstr ""
 
-#: src/common/textevents.h:345
+#: src/common/textevents.h:354
 msgid "%C29*%O$tLooking up %C29$1%O"
 msgstr ""
 
-#: src/common/textevents.h:357
+#: src/common/textevents.h:366
 msgid "%C23*%O$tStopped previous connection attempt (%C24$1%O)"
 msgstr ""
 
-#: src/common/textevents.h:360
+#: src/common/textevents.h:369
 msgid "%C22*%O$tTopic for %C22$1%C is: $2%O"
 msgstr ""
 
-#: src/common/textevents.h:363
+#: src/common/textevents.h:372
 msgid "%C22*%O$t%C26$1%C has changed the topic to: $2%O"
 msgstr ""
 
-#: src/common/textevents.h:366
+#: src/common/textevents.h:375
 msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:369
+#: src/common/textevents.h:378
 msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
 msgstr ""
 
-#: src/common/textevents.h:372
+#: src/common/textevents.h:381
 msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
 msgstr ""
 
-#: src/common/textevents.h:375
+#: src/common/textevents.h:384
 msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
 msgstr ""
 
-#: src/common/textevents.h:381
+#: src/common/textevents.h:390
 msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
 msgstr ""
 
-#: src/common/textevents.h:387
+#: src/common/textevents.h:396
 msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
 msgstr ""
 
-#: src/common/textevents.h:393
+#: src/common/textevents.h:402
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O"
 msgstr ""
 
-#: src/common/textevents.h:396
+#: src/common/textevents.h:405
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
 msgstr ""
 
-#: src/common/textevents.h:402
+#: src/common/textevents.h:411
 msgid ""
 "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
 msgstr ""
 
-#: src/common/textevents.h:411
+#: src/common/textevents.h:420
 msgid "%C19*%O$tNow talking on %C22$2%O"
 msgstr ""
 
-#: src/common/textevents.h:414
+#: src/common/textevents.h:423
 msgid "%C19*%O$tYou have been kicked from %C22$2%C by %C26$3%O (%C20$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:417
+#: src/common/textevents.h:426
 msgid "%C19*%O$tYou have left channel %C22$3%O"
 msgstr ""
 
-#: src/common/textevents.h:420
+#: src/common/textevents.h:429
 msgid "%C19*%O$tYou have left channel %C22$3%C (%C24$4%O)"
 msgstr ""
 
-#: src/common/textevents.h:426
+#: src/common/textevents.h:435
 msgid "%C20*%O$tYou've invited %C18$1%O to %C22$2%O (%C24$3%O)"
 msgstr ""
 
-#: src/common/textevents.h:432
+#: src/common/textevents.h:441
 msgid "%C20*%O$tYou are now known as %C18$2%O"
 msgstr ""
 
@@ -1255,463 +1271,472 @@ msgstr "ข้อความทางซ้าย"
 msgid "Right message"
 msgstr "ข้อความทางขวา"
 
-#: src/common/text.c:1147
+#: src/common/text.c:1147 src/common/text.c:1508 src/common/text.c:1546
+#: src/common/text.c:1551 src/common/text.c:1592
+msgid "IP address"
+msgstr "ที่อยู่ไอพี"
+
+#: src/common/text.c:1148 src/common/text.c:1375 src/common/text.c:1434
+#: src/common/text.c:1440
+msgid "Username"
+msgstr "ชื่อผู้ใช้"
+
+#: src/common/text.c:1152
 msgid "The nick of the joining person"
 msgstr "ชื่อเล่นของคนที่เข้าร่วม"
 
-#: src/common/text.c:1148
+#: src/common/text.c:1153
 msgid "The channel being joined"
 msgstr "แชนแนลที่ถูกเข้าร่วม"
 
-#: src/common/text.c:1149 src/common/text.c:1197 src/common/text.c:1248
+#: src/common/text.c:1154 src/common/text.c:1216 src/common/text.c:1267
 msgid "The host of the person"
 msgstr "โฮสต์ของบุคคล"
 
-#: src/common/text.c:1153 src/common/text.c:1160 src/common/text.c:1167
-#: src/common/text.c:1355 src/common/text.c:1362 src/common/text.c:1367
-#: src/common/text.c:1372 src/common/text.c:1377 src/common/text.c:1383
-#: src/common/text.c:1388 src/common/text.c:1392 src/common/text.c:1398
-#: src/common/text.c:1404 src/common/text.c:1472 src/common/text.c:1483
-#: src/common/text.c:1488 src/common/text.c:1493 src/common/text.c:1502
-#: src/common/text.c:1513 src/common/text.c:1520 src/common/text.c:1526
-#: src/common/text.c:1531 src/common/text.c:1536 src/common/text.c:1543
-#: src/common/text.c:1549 src/common/text.c:1555 src/common/text.c:1560
-#: src/common/text.c:1565 src/common/text.c:1569 src/common/text.c:1575
-#: src/common/text.c:1583 src/common/text.c:1617 src/common/text.c:1622
+#: src/common/text.c:1158 src/common/text.c:1165 src/common/text.c:1172
+#: src/common/text.c:1374 src/common/text.c:1381 src/common/text.c:1386
+#: src/common/text.c:1391 src/common/text.c:1396 src/common/text.c:1402
+#: src/common/text.c:1407 src/common/text.c:1411 src/common/text.c:1417
+#: src/common/text.c:1423 src/common/text.c:1486 src/common/text.c:1497
+#: src/common/text.c:1502 src/common/text.c:1507 src/common/text.c:1516
+#: src/common/text.c:1527 src/common/text.c:1534 src/common/text.c:1540
+#: src/common/text.c:1545 src/common/text.c:1550 src/common/text.c:1557
+#: src/common/text.c:1563 src/common/text.c:1569 src/common/text.c:1574
+#: src/common/text.c:1579 src/common/text.c:1583 src/common/text.c:1589
+#: src/common/text.c:1597 src/common/text.c:1631 src/common/text.c:1636
 msgid "Nickname"
 msgstr "ชื่อเล่น"
 
-#: src/common/text.c:1154
+#: src/common/text.c:1159
 msgid "The action"
 msgstr "การปฏิบัติการ"
 
-#: src/common/text.c:1155 src/common/text.c:1162
+#: src/common/text.c:1160 src/common/text.c:1167
 msgid "Mode char"
 msgstr "ตัวหนังสือโหมด"
 
-#: src/common/text.c:1156 src/common/text.c:1163 src/common/text.c:1169
+#: src/common/text.c:1161 src/common/text.c:1168 src/common/text.c:1174
 msgid "Identified text"
 msgstr "ข้อความแสดงตัว"
 
-#: src/common/text.c:1161
+#: src/common/text.c:1166
 msgid "The text"
 msgstr "ข้อความ"
 
-#: src/common/text.c:1168 src/common/text.c:1225 src/common/text.c:1231
+#: src/common/text.c:1173 src/common/text.c:1244 src/common/text.c:1250
 msgid "The message"
 msgstr "ข้อความ"
 
-#: src/common/text.c:1173 src/common/text.c:1235
+#: src/common/text.c:1178 src/common/text.c:1183 src/common/text.c:1438
+#: src/common/text.c:1446 src/common/text.c:1452 src/common/text.c:1458
+#: src/common/text.c:1487 src/common/text.c:1605 src/common/text.c:1647
+msgid "Server Name"
+msgstr "ชื่อเซิร์ฟเวอร์"
+
+#: src/common/text.c:1179
+msgid "Acknowledged Capabilities"
+msgstr ""
+
+#: src/common/text.c:1184
+msgid "Server Capabilities"
+msgstr ""
+
+#: src/common/text.c:1188
+msgid "Requested Capabilities"
+msgstr ""
+
+#: src/common/text.c:1192 src/common/text.c:1254
 msgid "Old nickname"
 msgstr "ชื่อเล่นเดิม"
 
-#: src/common/text.c:1174 src/common/text.c:1236
+#: src/common/text.c:1193 src/common/text.c:1255
 msgid "New nickname"
 msgstr "ชื่อเล่นใหม่"
 
-#: src/common/text.c:1178
+#: src/common/text.c:1197
 msgid "Nick of person who changed the topic"
 msgstr "ชื่อเล่นของคนที่เปลี่ยนหัวข้อ"
 
-#: src/common/text.c:1179 src/common/text.c:1185 src/fe-gtk/chanlist.c:788
+#: src/common/text.c:1198 src/common/text.c:1204 src/fe-gtk/chanlist.c:788
 #: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:357
 msgid "Topic"
 msgstr "หัวข้อ"
 
-#: src/common/text.c:1180 src/common/text.c:1184 src/common/text.c:1637
+#: src/common/text.c:1199 src/common/text.c:1203 src/common/text.c:1651
 #: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
 #: src/fe-gtk/servlistgui.c:894
 msgid "Channel"
 msgstr "แชนแนล"
 
-#: src/common/text.c:1189 src/common/text.c:1242
+#: src/common/text.c:1208 src/common/text.c:1261
 msgid "The nickname of the kicker"
 msgstr "ชื่อของคนที่เตะ"
 
-#: src/common/text.c:1190 src/common/text.c:1240
+#: src/common/text.c:1209 src/common/text.c:1259
 msgid "The person being kicked"
 msgstr "คนที่กำลังถูกเตะ"
 
-#: src/common/text.c:1191 src/common/text.c:1198 src/common/text.c:1202
-#: src/common/text.c:1207 src/common/text.c:1241 src/common/text.c:1249
-#: src/common/text.c:1256
+#: src/common/text.c:1210 src/common/text.c:1217 src/common/text.c:1221
+#: src/common/text.c:1226 src/common/text.c:1260 src/common/text.c:1268
+#: src/common/text.c:1275
 msgid "The channel"
 msgstr "แชนแนล"
 
-#: src/common/text.c:1192 src/common/text.c:1243 src/common/text.c:1250
+#: src/common/text.c:1211 src/common/text.c:1262 src/common/text.c:1269
 msgid "The reason"
 msgstr "เหตุผล"
 
-#: src/common/text.c:1196 src/common/text.c:1247
+#: src/common/text.c:1215 src/common/text.c:1266
 msgid "The nick of the person leaving"
 msgstr "ชื่อเล่นของคนที่กำลังจากไป"
 
-#: src/common/text.c:1203 src/common/text.c:1209
+#: src/common/text.c:1222 src/common/text.c:1228
 msgid "The time"
 msgstr "เวลา"
 
-#: src/common/text.c:1208
+#: src/common/text.c:1227
 msgid "The creator"
 msgstr "ผู้สร้าง"
 
-#: src/common/text.c:1213 src/fe-gtk/dccgui.c:768 src/fe-gtk/dccgui.c:1001
+#: src/common/text.c:1232 src/fe-gtk/dccgui.c:768 src/fe-gtk/dccgui.c:1001
 msgid "Nick"
 msgstr "ชื่อเล่น"
 
-#: src/common/text.c:1214 src/common/text.c:1489
+#: src/common/text.c:1233 src/common/text.c:1503
 msgid "Reason"
 msgstr "เหตุผล"
 
-#: src/common/text.c:1215 src/common/text.c:1357 src/common/text.c:1462
+#: src/common/text.c:1234 src/common/text.c:1376 src/common/text.c:1476
 msgid "Host"
 msgstr "โฮสต์"
 
-#: src/common/text.c:1219 src/common/text.c:1224 src/common/text.c:1229
+#: src/common/text.c:1238 src/common/text.c:1243 src/common/text.c:1248
 msgid "Who it's from"
 msgstr "ใครที่มันมาจาก"
 
-#: src/common/text.c:1220
+#: src/common/text.c:1239
 msgid "The time in x.x format (see below)"
 msgstr "เวลาในรูปแบบ x.x  (ดูด้านล่าง)"
 
-#: src/common/text.c:1230 src/common/text.c:1267
+#: src/common/text.c:1249 src/common/text.c:1286
 msgid "The Channel it's going to"
 msgstr "แชนแนลที่มันกำลังไป"
 
-#: src/common/text.c:1254
+#: src/common/text.c:1273
 msgid "The sound"
 msgstr "เสียง"
 
-#: src/common/text.c:1255 src/common/text.c:1261 src/common/text.c:1266
+#: src/common/text.c:1274 src/common/text.c:1280 src/common/text.c:1285
 msgid "The nick of the person"
 msgstr "ชื่อเล่นของบุคคล"
 
-#: src/common/text.c:1260 src/common/text.c:1265
+#: src/common/text.c:1279 src/common/text.c:1284
 msgid "The CTCP event"
 msgstr "เหตุการณ์ CTCP"
 
-#: src/common/text.c:1271
+#: src/common/text.c:1290
 msgid "The nick of the person who set the key"
 msgstr "ชื่อเล่นของคนที่ตั้งค่ากุญแจ"
 
-#: src/common/text.c:1272
+#: src/common/text.c:1291
 msgid "The key"
 msgstr "กุญแจ"
 
-#: src/common/text.c:1276
+#: src/common/text.c:1295
 msgid "The nick of the person who set the limit"
 msgstr "ชื่อเล่นของคนที่ตั้งค่าขีดจำกัด"
 
-#: src/common/text.c:1277
+#: src/common/text.c:1296
 msgid "The limit"
 msgstr "ขีดจำกัด"
 
-#: src/common/text.c:1281
+#: src/common/text.c:1300
 msgid "The nick of the person who did the op'ing"
 msgstr "ชื่อเล่นของคนที่ทำการ op'ing"
 
-#: src/common/text.c:1282
+#: src/common/text.c:1301
 msgid "The nick of the person who has been op'ed"
 msgstr "ชื่อเล่นของคนที่ได้ถูก op"
 
-#: src/common/text.c:1286
+#: src/common/text.c:1305
 msgid "The nick of the person who has been halfop'ed"
 msgstr "ชื่อเล่นของคนที่ได้ถูก halfop"
 
-#: src/common/text.c:1287
+#: src/common/text.c:1306
 msgid "The nick of the person who did the halfop'ing"
 msgstr "ชื่อเล่นของคนที่ทำการ halfop"
 
-#: src/common/text.c:1291
+#: src/common/text.c:1310
 msgid "The nick of the person who did the voice'ing"
 msgstr "ชื่อเล่นของคนที่ทำการประกาศ"
 
-#: src/common/text.c:1292
+#: src/common/text.c:1311
 msgid "The nick of the person who has been voice'ed"
 msgstr "ชื่อเล่นของคนที่ได้ถูกประกาศ"
 
-#: src/common/text.c:1296
+#: src/common/text.c:1315
 msgid "The nick of the person who did the banning"
 msgstr "ชื่อเล่นของคนที่ทำการแบน"
 
-#: src/common/text.c:1297 src/common/text.c:1324
+#: src/common/text.c:1316 src/common/text.c:1343
 msgid "The ban mask"
 msgstr "มาสก์การแบน"
 
-#: src/common/text.c:1301
+#: src/common/text.c:1320
 msgid "The nick who removed the key"
 msgstr "ชื่อเล่นของคนที่ลบกุญแจ"
 
-#: src/common/text.c:1305
+#: src/common/text.c:1324
 msgid "The nick who removed the limit"
 msgstr "ชื่อเล่นของคนที่ลบขีดจำกัด"
 
-#: src/common/text.c:1309
+#: src/common/text.c:1328
 msgid "The nick of the person of did the deop'ing"
 msgstr "ชื่อเล่นของคนที่ทำการ deop"
 
-#: src/common/text.c:1310
+#: src/common/text.c:1329
 msgid "The nick of the person who has been deop'ed"
 msgstr "ชื่อเล่นของคนที่ได้ทำการ deop"
 
-#: src/common/text.c:1313
+#: src/common/text.c:1332
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "ชื่อเล่นของคนที่ทำการ dehalfop"
 
-#: src/common/text.c:1314
+#: src/common/text.c:1333
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "ชื่อเล่นของคนที่ได้ทำการ dehalfop"
 
-#: src/common/text.c:1318
+#: src/common/text.c:1337
 msgid "The nick of the person of did the devoice'ing"
 msgstr "ชื่อเล่นของคนที่ทำการ devoice"
 
-#: src/common/text.c:1319
+#: src/common/text.c:1338
 msgid "The nick of the person who has been devoice'ed"
 msgstr "ชื่อเล่นของคนที่ได้ทำการ devoice"
 
-#: src/common/text.c:1323
+#: src/common/text.c:1342
 msgid "The nick of the person of did the unban'ing"
 msgstr "ชื่อเล่นของคนที่ทำการ unban"
 
-#: src/common/text.c:1328
+#: src/common/text.c:1347
 msgid "The nick of the person who did the exempt"
 msgstr "ชื่อเล่นของคนที่ทำการยกเว้น"
 
-#: src/common/text.c:1329 src/common/text.c:1334
+#: src/common/text.c:1348 src/common/text.c:1353
 msgid "The exempt mask"
 msgstr "มาสก์ที่ยกเว้น"
 
-#: src/common/text.c:1333
+#: src/common/text.c:1352
 msgid "The nick of the person removed the exempt"
 msgstr "ชื่อเล่นของคนที่ลบการยกเว้น"
 
-#: src/common/text.c:1338
+#: src/common/text.c:1357
 msgid "The nick of the person who did the invite"
 msgstr "ชื่อเล่นของคนที่ทำการเชิญชวน"
 
-#: src/common/text.c:1339 src/common/text.c:1344
+#: src/common/text.c:1358 src/common/text.c:1363
 msgid "The invite mask"
 msgstr "มาสก์เชิญชวน"
 
-#: src/common/text.c:1343
+#: src/common/text.c:1362
 msgid "The nick of the person removed the invite"
 msgstr "ชื่อเล่นของคนที่ลบการเชิญชวน"
 
-#: src/common/text.c:1348
+#: src/common/text.c:1367
 msgid "The nick of the person setting the mode"
 msgstr "ชื่อเล่นของคนที่ตั้งค่าโหมด"
 
-#: src/common/text.c:1349
+#: src/common/text.c:1368
 msgid "The mode's sign (+/-)"
 msgstr "สัญญาณของโหมด (+/-)"
 
-#: src/common/text.c:1350
+#: src/common/text.c:1369
 msgid "The mode letter"
 msgstr "ตัวอักษรของโหมด"
 
-#: src/common/text.c:1351
+#: src/common/text.c:1370
 msgid "The channel it's being set on"
 msgstr "แชนแนลที่มันกำลังตั้งค่า"
 
-#: src/common/text.c:1356 src/common/text.c:1415 src/common/text.c:1421
-msgid "Username"
-msgstr "ชื่อผู้ใช้"
-
-#: src/common/text.c:1358
+#: src/common/text.c:1377
 msgid "Full name"
 msgstr "ชื่อเต็ม"
 
-#: src/common/text.c:1363
+#: src/common/text.c:1382
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "ความเป็นสมาชิกของแชนแนล/\"เป็นผู้จัดการ IRC คนหนึ่ง\""
 
-#: src/common/text.c:1368
+#: src/common/text.c:1387
 msgid "Server Information"
 msgstr "ข้อมูลของเซิร์ฟเวอร์"
 
-#: src/common/text.c:1373 src/common/text.c:1378
+#: src/common/text.c:1392 src/common/text.c:1397
 msgid "Idle time"
 msgstr "เวลาว่าง"
 
-#: src/common/text.c:1379
+#: src/common/text.c:1398
 msgid "Signon time"
 msgstr "เวลาเข้าสู่ระบบ"
 
-#: src/common/text.c:1384
+#: src/common/text.c:1403
 msgid "Away reason"
 msgstr "เหตุผลที่ไม่อยู่"
 
-#: src/common/text.c:1393 src/common/text.c:1399 src/common/text.c:1407
-#: src/common/text.c:1422 src/common/text.c:1609
+#: src/common/text.c:1412 src/common/text.c:1418 src/common/text.c:1426
+#: src/common/text.c:1441 src/common/text.c:1623
 msgid "Message"
 msgstr "ข้อความ"
 
-#: src/common/text.c:1400
+#: src/common/text.c:1419
 msgid "Account"
 msgstr "บัญชี"
 
-#: src/common/text.c:1405
+#: src/common/text.c:1424
 msgid "Real user@host"
 msgstr "ชื่อผู้ใช้@โฮสต์ จริง"
 
-#: src/common/text.c:1406
+#: src/common/text.c:1425
 msgid "Real IP"
 msgstr "ไอพีจริง"
 
-#: src/common/text.c:1411 src/common/text.c:1442 src/common/text.c:1448
-#: src/common/text.c:1478 src/common/text.c:1632
+#: src/common/text.c:1430 src/common/text.c:1456 src/common/text.c:1462
+#: src/common/text.c:1492 src/common/text.c:1646
 msgid "Channel Name"
 msgstr "ชื่อแชนแนล"
 
-#: src/common/text.c:1419 src/common/text.c:1426 src/common/text.c:1432
-#: src/common/text.c:1438 src/common/text.c:1444 src/common/text.c:1473
-#: src/common/text.c:1591 src/common/text.c:1633
-msgid "Server Name"
-msgstr "ชื่อเซิร์ฟเวอร์"
-
-#: src/common/text.c:1420 src/common/text.c:1433
+#: src/common/text.c:1439 src/common/text.c:1447
 msgid "Raw Numeric or Identifier"
 msgstr ""
 
-#: src/common/text.c:1427
-msgid "Server Capabilities"
-msgstr ""
-
-#: src/common/text.c:1431 src/common/text.c:1437 src/common/text.c:1595
+#: src/common/text.c:1445 src/common/text.c:1451 src/common/text.c:1609
 #: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
 #: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "ข้อความ"
 
-#: src/common/text.c:1443
+#: src/common/text.c:1457
 msgid "Nick of person who invited you"
 msgstr "ชื่อเล่นของคนที่เชิญชวนคุณ"
 
-#: src/common/text.c:1449 src/fe-gtk/chanlist.c:787
+#: src/common/text.c:1463 src/fe-gtk/chanlist.c:787
 msgid "Users"
 msgstr "ผู้ใช้"
 
-#: src/common/text.c:1453
+#: src/common/text.c:1467
 msgid "Nickname in use"
 msgstr "ชื่อเล่นถูกใช้อยู่"
 
-#: src/common/text.c:1454
+#: src/common/text.c:1468
 msgid "Nick being tried"
 msgstr "ชื่อเล่นกำลังถูกลองใช้"
 
-#: src/common/text.c:1463 src/common/text.c:1599
+#: src/common/text.c:1477 src/common/text.c:1613
 msgid "IP"
 msgstr "ไอพี"
 
-#: src/common/text.c:1464 src/common/text.c:1495
+#: src/common/text.c:1478 src/common/text.c:1509
 msgid "Port"
 msgstr "พอร์ต"
 
-#: src/common/text.c:1474 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
+#: src/common/text.c:1488 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
 msgid "Network"
 msgstr "เครือข่าย"
 
-#: src/common/text.c:1479 src/common/text.c:1484
+#: src/common/text.c:1493 src/common/text.c:1498
 msgid "Modes string"
 msgstr "สตริงแสดงโหมด"
 
-#: src/common/text.c:1494 src/common/text.c:1532 src/common/text.c:1537
-#: src/common/text.c:1578
-msgid "IP address"
-msgstr "ที่อยู่ไอพี"
-
-#: src/common/text.c:1500 src/common/text.c:1525
+#: src/common/text.c:1514 src/common/text.c:1539
 msgid "DCC Type"
 msgstr "ชนิด DCC"
 
-#: src/common/text.c:1501 src/common/text.c:1506 src/common/text.c:1511
-#: src/common/text.c:1518 src/common/text.c:1538 src/common/text.c:1542
-#: src/common/text.c:1548 src/common/text.c:1554 src/common/text.c:1561
-#: src/common/text.c:1570 src/common/text.c:1576
+#: src/common/text.c:1515 src/common/text.c:1520 src/common/text.c:1525
+#: src/common/text.c:1532 src/common/text.c:1552 src/common/text.c:1556
+#: src/common/text.c:1562 src/common/text.c:1568 src/common/text.c:1575
+#: src/common/text.c:1584 src/common/text.c:1590
 msgid "Filename"
 msgstr "ชื่อไฟล์"
 
-#: src/common/text.c:1512 src/common/text.c:1519
+#: src/common/text.c:1526 src/common/text.c:1533
 msgid "Destination filename"
 msgstr "ชื่อไฟล์ปลายทาง"
 
-#: src/common/text.c:1521 src/common/text.c:1550
+#: src/common/text.c:1535 src/common/text.c:1564
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:1556
+#: src/common/text.c:1570
 msgid "Pathname"
 msgstr "ชื่อเส้นทาง"
 
-#: src/common/text.c:1571 src/fe-gtk/dccgui.c:764
+#: src/common/text.c:1585 src/fe-gtk/dccgui.c:764
 msgid "Position"
 msgstr "ตำแหน่ง"
 
-#: src/common/text.c:1577 src/fe-gtk/dccgui.c:763
+#: src/common/text.c:1591 src/fe-gtk/dccgui.c:763
 msgid "Size"
 msgstr "ขนาด"
 
-#: src/common/text.c:1582
+#: src/common/text.c:1596
 msgid "DCC String"
 msgstr "ข้อความ DCC"
 
-#: src/common/text.c:1587
+#: src/common/text.c:1601
 msgid "Number of notify items"
 msgstr "หมายเลขของการแจ้งเตือนรายการ"
 
-#: src/common/text.c:1603
+#: src/common/text.c:1617
 msgid "Old Filename"
 msgstr "ชื่อไฟล์เดิม"
 
-#: src/common/text.c:1604
+#: src/common/text.c:1618
 msgid "New Filename"
 msgstr "ชื่อไฟล์ใหม่"
 
-#: src/common/text.c:1608
+#: src/common/text.c:1622
 msgid "Receiver"
 msgstr "ตัวรับ"
 
-#: src/common/text.c:1613
+#: src/common/text.c:1627
 msgid "Hostmask"
 msgstr "มาสก์ของโฮสต์"
 
-#: src/common/text.c:1618
+#: src/common/text.c:1632
 msgid "Hostname"
 msgstr "ชื่อโฮสต์"
 
-#: src/common/text.c:1623
+#: src/common/text.c:1637
 msgid "The Packet"
 msgstr "แพ็กเก็ต"
 
-#: src/common/text.c:1627
+#: src/common/text.c:1641
 msgid "Seconds"
 msgstr "วินาที"
 
-#: src/common/text.c:1631
+#: src/common/text.c:1645
 msgid "Nick of person who have been invited"
 msgstr "ชื่อของคนที่ได้ถูกเชิญ"
 
-#: src/common/text.c:1638
+#: src/common/text.c:1652
 msgid "Banmask"
 msgstr "มาสก์การแบน"
 
-#: src/common/text.c:1639
+#: src/common/text.c:1653
 msgid "Who set the ban"
 msgstr "ใครคนที่ตั้งการแบน"
 
-#: src/common/text.c:1640
+#: src/common/text.c:1654
 msgid "Ban time"
 msgstr "เวลาแบน"
 
-#: src/common/text.c:1680
+#: src/common/text.c:1694
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
 msgstr "เกิดเหตุการณ์ข้อผิดพลาดในวิเคราะห์ %s.\nโหลดค่ามาตรฐาน."
 
-#: src/common/text.c:2447
+#: src/common/text.c:2461
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
