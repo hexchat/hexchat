@@ -259,6 +259,21 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////
+procedure MigrateConf();
+begin
+  FileCopy(ExpandConstant('{userappdata}\HexChat\xchat.conf'), ExpandConstant('{userappdata}\HexChat\hexchat.conf'), True);
+end;
+
+/////////////////////////////////////////////////////////////////////
+function ConfExistCheck(): Boolean;
+begin
+  if FileExists(ExpandConstant('{userappdata}\HexChat\xchat.conf')) then
+    Result := True
+  else
+    Result := False
+end;
+
+/////////////////////////////////////////////////////////////////////
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
 	if not (IsTaskSelected('portable')) then
@@ -270,6 +285,14 @@ begin
 				UnInstallOldVersion();
 			end;
 			DeleteFile(ExpandConstant('{app}\portable-mode'));
+		end;
+
+		if (CurStep=ssPostInstall) then
+		begin
+			if ConfExistCheck() then begin
+				if SuppressibleMsgBox('Would you like to copy your old HexChat configuration file (xchat.conf) to the new name (hexchat.conf)? Make sure you remove xchat.conf when you no longer need it.', mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES then
+					MigrateConf();
+			end;
 		end;
 	end;
 end;
