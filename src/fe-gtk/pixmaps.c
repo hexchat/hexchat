@@ -31,16 +31,12 @@
 
 #include "../pixmaps/inline_pngs.h"
 
-GdkPixbuf *pix_xchat;
-GdkPixbuf *pix_book;
-
 GdkPixbuf *pix_ulist_voice;
 GdkPixbuf *pix_ulist_halfop;
 GdkPixbuf *pix_ulist_op;
 GdkPixbuf *pix_ulist_owner;
 GdkPixbuf *pix_ulist_founder;
 GdkPixbuf *pix_ulist_netop;
-
 
 GdkPixbuf *pix_tray_msg;
 GdkPixbuf *pix_tray_hilight;
@@ -51,6 +47,8 @@ GdkPixbuf *pix_dialog;
 GdkPixbuf *pix_server;
 GdkPixbuf *pix_util;
 
+GdkPixbuf *pix_book;
+GdkPixbuf *pix_hexchat;
 
 static GdkPixmap *
 pixmap_load_from_file_real (char *file)
@@ -122,11 +120,6 @@ load_pixmap (const char *filename, const char *name, int has_inline)
 void
 pixmaps_init (void)
 {
-	pix_book = gdk_pixbuf_new_from_inline (-1, bookpng, FALSE, 0);
-
-	/* used in About window, tray icon and WindowManager icon. */
-	pix_xchat = load_pixmap ("hexchat", hexchatpng, 1);
-
 	/* userlist icons, with inlined defaults */
 	pix_ulist_voice = load_pixmap ("ulist_voice", png_ulist_voice, 1);
 	pix_ulist_halfop = load_pixmap ("ulist_halfop", png_ulist_halfop, 1);
@@ -152,4 +145,9 @@ pixmaps_init (void)
 	pix_dialog = load_pixmap ("dialog", dialogpng, 1);
 	pix_server = load_pixmap ("server", serverpng, 1);
 	pix_util = load_pixmap ("util", utilpng, 1);
+
+	/* non-replaceable book pixmap */
+	pix_book = gdk_pixbuf_new_from_inline (-1, png_book, FALSE, 0);
+	/* used in About window, tray icon and WindowManager icon. */
+	pix_hexchat = load_pixmap ("hexchat", png_hexchat, 1);
 }

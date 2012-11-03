@@ -154,7 +154,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	gtk_box_pack_start (GTK_BOX (hbox_main), vbox_logo, 0, 0, 10);
 
 	/* the actual image */
-	wid = gtk_image_new_from_pixbuf (pix_xchat);
+	wid = gtk_image_new_from_pixbuf (pix_hexchat);
 	gtk_box_pack_start (GTK_BOX (vbox_logo), wid, 0, 0, 10);
 
 	/* our close button on the bottom right */

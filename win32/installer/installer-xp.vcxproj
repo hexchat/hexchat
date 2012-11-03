@@ -69,7 +69,7 @@ echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDi
 "$(OutDir)\version" -v &gt;&gt; "$(OutDir)\hexchat-xp-x86.iss"
 "$(OutDir)\version" -i &gt;&gt; "$(OutDir)\hexchat-xp-x86.iss"
 "$(OutDir)\version" -o &gt;&gt; "$(OutDir)\hexchat-xp-x86.iss"
-echo SetupIconFile="$(SolutionDir)\..\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-xp-x86.iss"
+echo SetupIconFile="$(SolutionDir)\..\share\icons\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-xp-x86.iss"
 type hexchat-xp-x86.skel.iss &gt;&gt; "$(OutDir)\hexchat-xp-x86.iss"
 "$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\hexchat-xp-x86.iss"</Command>
     </PreBuildEvent>
@@ -93,7 +93,7 @@ echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDi
 "$(OutDir)\version" -v &gt;&gt; "$(OutDir)\hexchat-xp-x64.iss"
 "$(OutDir)\version" -i &gt;&gt; "$(OutDir)\hexchat-xp-x64.iss"
 "$(OutDir)\version" -o &gt;&gt; "$(OutDir)\hexchat-xp-x64.iss"
-echo SetupIconFile="$(SolutionDir)\..\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-xp-x64.iss"
+echo SetupIconFile="$(SolutionDir)\..\share\icons\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-xp-x64.iss"
 type hexchat-xp-x64.skel.iss &gt;&gt; "$(OutDir)\hexchat-xp-x64.iss"
 "$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\hexchat-xp-x64.iss"</Command>
     </PreBuildEvent>

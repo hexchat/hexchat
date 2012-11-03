@@ -9,14 +9,14 @@ LIST =		png_ulist_voice $(srcdir)/ulist_voice.png \
 			traymsgpng $(srcdir)/message.png \
 			trayhilightpng $(srcdir)/highlight.png \
 			trayfilepng $(srcdir)/fileoffer.png \
-			bookpng $(srcdir)/book.png \
 			channelpng $(srcdir)/channel.png \
 			dialogpng $(srcdir)/dialog.png \
 			serverpng $(srcdir)/server.png \
 			utilpng $(srcdir)/util.png \
-			hexchatpng $(srcdir)/../../hexchat.png
+			png_book $(srcdir)/book.png \
+			png_hexchat $(srcdir)/hexchat.png
 
-PNGS = ulist_voice.png ulist_halfop.png ulist_op.png ulist_owner.png ulist_founder.png ulist_netop.png message.png highlight.png fileoffer.png book.png channel.png dialog.png server.png util.png
+PNGS = ulist_voice.png ulist_halfop.png ulist_op.png ulist_owner.png ulist_founder.png ulist_netop.png message.png highlight.png fileoffer.png channel.png dialog.png server.png util.png book.png
 noinst_HEADERS = inline_pngs.h
 CLEANFILES = $(noinst_HEADERS)
 EXTRA_DIST = $(PNGS)

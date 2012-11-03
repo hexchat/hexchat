@@ -820,7 +820,7 @@ show_and_unfocus (GtkWidget * wid)
 void
 gtkutil_set_icon (GtkWidget *win)
 {
-	gtk_window_set_icon (GTK_WINDOW (win), pix_xchat);
+	gtk_window_set_icon (GTK_WINDOW (win), pix_hexchat);
 }
 
 extern GtkWidget *parent_window;	/* maingui.c */
