@@ -23,6 +23,8 @@
 #include <windows.h>
 #include <wininet.h>
 
+#include <glib.h>
+
 #include "hexchat-plugin.h"
 
 #define DEFAULT_DELAY 10	/* 10 seconds */

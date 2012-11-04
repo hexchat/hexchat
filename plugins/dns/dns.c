@@ -37,6 +37,7 @@
 #else
 #include <winsock2.h>
 #endif
+#include <io.h>
 #else
 #include <unistd.h>
 #include <netdb.h>

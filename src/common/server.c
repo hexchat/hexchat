@@ -1718,21 +1718,21 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 #ifdef USE_OPENSSL
 	if (serv->use_ssl)
 	{
-		char cert_file[256];
+		char *cert_file;
 
 		/* first try network specific cert/key */
-		snprintf (cert_file, sizeof (cert_file), "%s/%s.pem",
-					 get_xdir_fs (), server_get_network (serv, TRUE));
+		cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.pem",
+					 get_xdir (), server_get_network (serv, TRUE));
 		if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
 			SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
 		else
 		{
-			/* if that doesn't exist, try ~/.xchat2/client.pem */
-			snprintf (cert_file, sizeof (cert_file), "%s/%s.pem",
-						 get_xdir_fs (), "client");
+			/* if that doesn't exist, try <xdir>/client.pem */
+			cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "client.pem", get_xdir ());
 			if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
 				SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
 		}
+		g_free (cert_file);
 	}
 #endif
 
@@ -1903,6 +1903,7 @@ server_set_defaults (server *serv)
 	serv->have_whox = FALSE;
 	serv->have_capab = FALSE;
 	serv->have_idmsg = FALSE;
+	serv->have_sasl = FALSE;
 	serv->have_except = FALSE;
 }
 

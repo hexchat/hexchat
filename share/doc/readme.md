@@ -105,5 +105,5 @@ Referred to as &lt;config> from now. HexChat automatically loads, at startup:
 
 %Cforeground,background will produce a color code, e.g.: %C03,10
 
-These are now disabled by default (see Settings > Preferences > Input Box).  
+These are now disabled by default (see _Settings_ `->` _Preferences_ `->` _Input Box_).  
 Instead you can insert the real codes via ctrl-k, ctrl-b and ctrl-o.

@@ -254,14 +254,14 @@ file_part (char *file)
 	{
 		switch (*file)
 		{
-		case 0:
-			return (filepart);
-		case '/':
+			case 0:
+				return (filepart);
+			case '/':
 #ifdef WIN32
-		case '\\':
+			case '\\':
 #endif
-			filepart = file + 1;
-			break;
+				filepart = file + 1;
+				break;
 		}
 		file++;
 	}
@@ -451,7 +451,7 @@ expand_homedir (char *file)
 		return ret;
 	}
 #endif
-	return strdup (file);
+	return g_strdup (file);
 }
 
 gchar *
@@ -924,7 +924,7 @@ for_files (char *dirname, char *mask, void callback (char *file))
 				if (match (mask, ent->d_name))
 				{
 					buf = malloc (strlen (dirname) + strlen (ent->d_name) + 2);
-					sprintf (buf, "%s/%s", dirname, ent->d_name);
+					sprintf (buf, "%s" G_DIR_SEPARATOR_S "%s", dirname, ent->d_name);
 					callback (buf);
 					free (buf);
 				}
@@ -1601,20 +1601,9 @@ unlink_utf8 (char *fname)
 }*/
 
 static gboolean
-file_exists_utf8 (char *fname)
+file_exists (char *fname)
 {
-	int res;
-	char *fs;
-
-	fs = hexchat_filename_from_utf8 (fname, -1, 0, 0, 0);
-	if (!fs)
-		return FALSE;
-
-	res = access (fs, F_OK);
-	g_free (fs);
-	if (res == 0)
-		return TRUE;
-	return FALSE;
+	return (g_access (fname, F_OK) == 0) ? TRUE : FALSE;
 }
 
 static gboolean
@@ -1681,79 +1670,48 @@ copy_file (char *dl_src, char *dl_dest, int permissions)	/* FS encoding */
 	return ok;
 }
 
-/* Takes care of moving a file from a temporary download location to a completed location. Now in UTF-8. */
+/* Takes care of moving a file from a temporary download location to a completed location. */
 void
-move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
+move_file (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
 {
-	char src[4096];
-	char dst[4096];
+	char *src;
+	char *dst;
 	int res, i;
-	char *src_fs;	/* FileSystem encoding */
-	char *dst_fs;
 
 	/* if dcc_dir and dcc_completed_dir are the same then we are done */
 	if (0 == strcmp (src_dir, dst_dir) ||
 		 0 == dst_dir[0])
 		return;			/* Already in "completed dir" */
 
-	snprintf (src, sizeof (src), "%s/%s", src_dir, fname);
-	snprintf (dst, sizeof (dst), "%s/%s", dst_dir, fname);
+	src = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", src_dir, fname);
+	dst = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", dst_dir, fname);
 
 	/* already exists in completed dir? Append a number */
-	if (file_exists_utf8 (dst))
+	if (file_exists (dst))
 	{
 		for (i = 0; ; i++)
 		{
-			snprintf (dst, sizeof (dst), "%s/%s.%d", dst_dir, fname, i);
-			if (!file_exists_utf8 (dst))
+			g_free (dst);
+			dst = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.%d", dst_dir, fname, i);
+			if (!file_exists (dst))
 				break;
 		}
 	}
 
-	/* convert UTF-8 to filesystem encoding */
-	src_fs = hexchat_filename_from_utf8 (src, -1, 0, 0, 0);
-	if (!src_fs)
-		return;
-	dst_fs = hexchat_filename_from_utf8 (dst, -1, 0, 0, 0);
-	if (!dst_fs)
-	{
-		g_free (src_fs);
-		return;
-	}
-
 	/* first try a simple rename move */
-	res = rename (src_fs, dst_fs);
+	res = g_rename (src, dst);
 
 	if (res == -1 && (errno == EXDEV || errno == EPERM))
 	{
 		/* link failed because either the two paths aren't on the */
 		/* same filesystem or the filesystem doesn't support hard */
 		/* links, so we have to do a copy. */
-		if (copy_file (src_fs, dst_fs, dccpermissions))
-			unlink (src_fs);
+		if (copy_file (src, dst, dccpermissions))
+			g_unlink (src);
 	}
 
-	g_free (dst_fs);
-	g_free (src_fs);
-}
-
-int
-mkdir_utf8 (char *dir)
-{
-	int ret;
-
-	dir = hexchat_filename_from_utf8 (dir, -1, 0, 0, 0);
-	if (!dir)
-		return -1;
-
-#ifdef WIN32
-	ret = mkdir (dir);
-#else
-	ret = mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR);
-#endif
-	g_free (dir);
-
-	return ret;
+	g_free (dst);
+	g_free (src);
 }
 
 /* separates a string according to a 'sep' char, then calls the callback

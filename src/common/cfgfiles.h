@@ -5,8 +5,7 @@
 
 #include "hexchat.h"
 
-extern char *xdir_fs;
-extern char *xdir_utf;
+extern char *xdir;
 
 char *cfg_get_str (char *cfg, const char *var, char *dest, int dest_len);
 int cfg_get_bool (char *var);
@@ -15,8 +14,7 @@ int cfg_get_int (char *cfg, char *var);
 int cfg_put_int (int fh, int value, char *var);
 int cfg_get_color (char *cfg, char *var, int *r, int *g, int *b);
 int cfg_put_color (int fh, int r, int g, int b, char *var);
-char *get_xdir_fs (void);
-char *get_xdir_utf8 (void);
+char *get_xdir (void);
 void load_config (void);
 int save_config (void);
 void list_free (GSList ** list);

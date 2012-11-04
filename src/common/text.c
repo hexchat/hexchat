@@ -56,24 +56,24 @@ struct pevt_stage1
 };
 
 
-static void mkdir_p (char *dir);
+static void mkdir_p (char *filename);
 static char *log_create_filename (char *channame);
 
-
 static char *
-scrollback_get_filename (session *sess, char *buf, int max)
+scrollback_get_filename (session *sess)
 {
-	char *net, *chan;
+	char *net, *chan, *buf;
 
 	net = server_get_network (sess->server, FALSE);
 	if (!net)
 		return NULL;
 
-	snprintf (buf, max, "%s/scrollback/%s/%s.txt", get_xdir_fs (), net, "");
+	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, "");
 	mkdir_p (buf);
+	g_free (buf);
 
 	chan = log_create_filename (sess->channel);
-	snprintf (buf, max, "%s/scrollback/%s/%s.txt", get_xdir_fs (), net, chan);
+	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, chan);
 	free (chan);
 
 	return buf;
@@ -126,44 +126,12 @@ scrollback_close (session *sess)
 	}
 }
 
-static char *
-file_to_buffer (char *file, int *len)
-{
-	int fh;
-	char *buf;
-	struct stat st;
-
-	fh = open (file, O_RDONLY | OFLAGS);
-	if (fh == -1)
-		return NULL;
-
-	fstat (fh, &st);
-
-	buf = malloc (st.st_size);
-	if (!buf)
-	{
-		close (fh);
-		return NULL;
-	}
-
-	if (read (fh, buf, st.st_size) != st.st_size)
-	{
-		free (buf);
-		close (fh);
-		return NULL;
-	}
-
-	*len = st.st_size;
-	close (fh);
-	return buf;
-}
-
 /* shrink the file to roughly prefs.hex_text_max_lines */
 
 static void
 scrollback_shrink (session *sess)
 {
-	char file[1024];
+	char *file;
 	char *buf;
 	int fh;
 	int lines;
@@ -175,12 +143,17 @@ scrollback_shrink (session *sess)
 	sess->scrollwritten = 0;
 	lines = 0;
 
-	if (scrollback_get_filename (sess, file, sizeof (file)) == NULL)
+	if ((file = scrollback_get_filename (sess)) == NULL)
+	{
+		g_free (file);
 		return;
+	}
 
-	buf = file_to_buffer (file, &len);
-	if (!buf)
+	if (!g_file_get_contents (file, &buf, &len, NULL))
+	{
+		g_free (file);
 		return;
+	}
 
 	/* count all lines */
 	p = buf;
@@ -191,7 +164,8 @@ scrollback_shrink (session *sess)
 		p++;
 	}
 
-	fh = open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
+	fh = g_open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
+	g_free (file);
 	if (fh == -1)
 	{
 		free (buf);
@@ -223,7 +197,7 @@ scrollback_shrink (session *sess)
 static void
 scrollback_save (session *sess, char *text)
 {
-	char buf[512 * 4];
+	char *buf;
 	time_t stamp;
 	int len;
 
@@ -243,19 +217,22 @@ scrollback_save (session *sess, char *text)
 
 	if (sess->scrollfd == -1)
 	{
-		if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
+		if ((buf = scrollback_get_filename (sess)) == NULL)
 			return;
 
-		sess->scrollfd = open (buf, O_CREAT | O_APPEND | O_WRONLY, 0644);
+		sess->scrollfd = g_open (buf, O_CREAT | O_APPEND | O_WRONLY, 0644);
+		g_free (buf);
 		if (sess->scrollfd == -1)
 			return;
 	}
 
 	stamp = time (0);
 	if (sizeof (stamp) == 4)	/* gcc will optimize one of these out */
-		write (sess->scrollfd, buf, snprintf (buf, sizeof (buf), "T %d ", (int)stamp));
+		buf = g_strdup_printf ("T %d", (int) stamp);
 	else
-		write (sess->scrollfd, buf, snprintf (buf, sizeof (buf), "T %"G_GINT64_FORMAT" ", (gint64)stamp));
+		buf = g_strdup_printf ("T %" G_GINT64_FORMAT " ", (gint64)stamp);
+	write (sess->scrollfd, buf, strlen (buf));
+	g_free (buf);
 
 	len = strlen (text);
 	write (sess->scrollfd, text, len);
@@ -272,18 +249,15 @@ scrollback_save (session *sess, char *text)
 void
 scrollback_load (session *sess)
 {
-	int fh;
-	char buf[512 * 4];
+	char *buf;
 	char *text;
 	time_t stamp;
 	int lines;
+	GIOChannel *io;
+	GError *file_error = NULL;
+	GError *io_err = NULL;
 
-#ifdef WIN32
-#if 0
-	char *cleaned_text;
-	int cleaned_len;
-#endif
-#else
+#ifndef WIN32
 	char *map, *end_map;
 	struct stat statbuf;
 	const char *begin, *eol;
@@ -300,115 +274,76 @@ scrollback_load (session *sess)
 			return;
 	}
 
-	if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
+	if ((buf = scrollback_get_filename (sess)) == NULL)
 		return;
 
-	fh = open (buf, O_RDONLY | OFLAGS);
-	if (fh == -1)
+	io = g_io_channel_new_file (buf, "r", &file_error);
+	g_free (buf);
+	if (!io)
 		return;
-
-#ifndef WIN32
-	if (fstat (fh, &statbuf) < 0)
-		return;
-
-	map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
-	if (map == MAP_FAILED)
-		return;
-
-	end_map = map + statbuf.st_size;
 
 	lines = 0;
-	begin = map;
-	while (begin < end_map)
+
+	while (1)
 	{
-		int n_bytes;
+		gsize n_bytes;
+		GIOStatus io_status;
 
-		eol = memchr (begin, '\n', end_map - begin);
-
-		if (!eol)
-			eol = end_map;
-
-		n_bytes = MIN (eol - begin, sizeof (buf) - 1);
-
-		strncpy (buf, begin, n_bytes);
-
-		buf[n_bytes] = 0;
-
-		if (buf[0] == 'T')
+		io_status = g_io_channel_read_line (io, &buf, &n_bytes, NULL, &io_err);
+		
+		if (io_status == G_IO_STATUS_NORMAL)
 		{
-			if (sizeof (time_t) == 4)
-				stamp = strtoul (buf + 2, NULL, 10);
-			else
-				stamp = strtoull (buf + 2, NULL, 10); /* just incase time_t is 64 bits */
-			text = strchr (buf + 3, ' ');
-			if (text)
+			char *buf_tmp;
+
+			n_bytes--;
+			buf_tmp = buf;
+			buf = g_strndup (buf_tmp, n_bytes);
+			g_free (buf_tmp);
+
+			if (buf[0] == 'T')
 			{
-				if (prefs.hex_text_stripcolor_replay)
+				if (sizeof (time_t) == 4)
+					stamp = strtoul (buf + 2, NULL, 10);
+				else
+					stamp = strtoull (buf + 2, NULL, 10); /* in case time_t is 64 bits */
+				text = strchr (buf + 3, ' ');
+				if (text)
 				{
-					text = strip_color (text + 1, -1, STRIP_COLOR);
-				}
-				fe_print_text (sess, text, stamp);
-				if (prefs.hex_text_stripcolor_replay)
-				{
-					g_free (text);
-				}
-			}
-			lines++;
-		}
-
-		begin = eol + 1;
-	}
-
-	sess->scrollwritten = lines;
-
-	if (lines)
-	{
-		text = ctime (&stamp);
-		text[24] = 0;	/* get rid of the \n */
-		snprintf (buf, sizeof (buf), "\n*\t%s %s\n\n", _("Loaded log from"), text);
-		fe_print_text (sess, buf, 0);
-		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
-	}
-
-	munmap (map, statbuf.st_size);
-#else
-	lines = 0;
-	while (waitline (fh, buf, sizeof buf, FALSE) != -1)
-	{
-		if (buf[0] == 'T')
-		{
-			if (sizeof (time_t) == 4)
-				stamp = strtoul (buf + 2, NULL, 10);
-			else
-				stamp = strtoull (buf + 2, NULL, 10); /* just incase time_t is 64 bits */
-			text = strchr (buf + 3, ' ');
-			if (text)
-			{
-				if (prefs.hex_text_stripcolor_replay)
-				{
-					text = strip_color (text + 1, -1, STRIP_COLOR);
-				}
+					if (prefs.hex_text_stripcolor_replay)
+					{
+						text = strip_color (text + 1, -1, STRIP_COLOR);
+					}
+#ifdef WIN32
 #if 0
-				cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
-				if (cleaned_text != NULL)
-				{
+					cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
+					if (cleaned_text != NULL)
+					{
+						if (prefs.hex_text_stripcolor_replay)
+						{
+							g_free (text);
+						}
+						text = cleaned_text;
+					}
+#endif
+					text_replace_non_bmp2 (text);
+#endif
+					fe_print_text (sess, text, stamp);
 					if (prefs.hex_text_stripcolor_replay)
 					{
 						g_free (text);
 					}
-					text = cleaned_text;
 				}
-#endif
-				text_replace_non_bmp2 (text);
-				fe_print_text (sess, text, stamp);
-				if (prefs.hex_text_stripcolor_replay)
-				{
-					g_free (text);
-				}
+				lines++;
 			}
-			lines++;
+
+			g_free (buf);
 		}
+
+		else
+			break;
 	}
+
+	g_io_channel_unref (io);
 
 	sess->scrollwritten = lines;
 
@@ -416,13 +351,11 @@ scrollback_load (session *sess)
 	{
 		text = ctime (&stamp);
 		text[24] = 0;	/* get rid of the \n */
-		snprintf (buf, sizeof (buf), "\n*\t%s %s\n\n", _("Loaded log from"), text);
+		buf = g_strdup_printf ("\n*\t%s %s\n\n", _("Loaded log from"), text);
 		fe_print_text (sess, buf, 0);
+		g_free (buf);
 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
 	}
-#endif
-
-	close (fh);
 }
 
 void
@@ -443,32 +376,15 @@ log_close (session *sess)
 }
 
 static void
-mkdir_p (char *dir)	/* like "mkdir -p" from a shell, FS encoding */
+mkdir_p (char *filename)
 {
-	char *start = dir;
+	char *dirname;
+	
+	dirname = g_path_get_dirname (filename);
 
-	/* the whole thing already exists? */
-	if (access (dir, F_OK) == 0)
-		return;
+	g_mkdir_with_parents (dirname, 0700);
 
-	while (*dir)
-	{
-#ifdef WIN32
-		if (dir != start && (*dir == '/' || *dir == '\\'))
-#else
-		if (dir != start && *dir == '/')
-#endif
-		{
-			*dir = 0;
-#ifdef WIN32
-			mkdir (start);
-#else
-			mkdir (start, S_IRUSR | S_IWUSR | S_IXUSR);
-#endif
-			*dir = '/';
-		}
-		dir++;
-	}
+	g_free (dirname);
 }
 
 static char *
@@ -609,7 +525,6 @@ log_create_pathname (char *servname, char *channame, char *netname)
 {
 	char fname[384];
 	char fnametime[384];
-	char *fs;
 	struct tm *tm;
 	time_t now;
 
@@ -643,19 +558,13 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	}
 	else	/* relative path */
 	{
-		snprintf (fname, sizeof (fname), "%s/logs/%s", get_xdir_utf8 (), fnametime);
+		snprintf (fname, sizeof (fname), "%s" G_DIR_SEPARATOR_S "logs" G_DIR_SEPARATOR_S "%s", get_xdir (), fnametime);
 	}
-
-	/* now we need it in FileSystem encoding */
-	fs = hexchat_filename_from_utf8 (fname, -1, 0, 0, 0);
 
 	/* create all the subdirectories */
-	if (fs)
-	{
-		mkdir_p (fs);
-	}
+	mkdir_p (fname);
 
-	return fs;
+	return g_strdup(fname);
 }
 
 static int
@@ -671,9 +580,9 @@ log_open_file (char *servname, char *channame, char *netname)
 		return -1;
 
 #ifdef WIN32
-	fd = open (file, O_CREAT | O_APPEND | O_WRONLY, S_IREAD|S_IWRITE);
+	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY, S_IREAD|S_IWRITE);
 #else
-	fd = open (file, O_CREAT | O_APPEND | O_WRONLY, 0644);
+	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY, 0644);
 #endif
 	g_free (file);
 
@@ -698,12 +607,14 @@ log_open (session *sess)
 
 	if (!log_error && sess->logfd == -1)
 	{
-		char message[512];
+		char *message;
 
-		snprintf (message, sizeof (message), _("* Can't open log file(s) for writing. Check the\npermissions on %s"),
+		message = g_strdup_printf (_("* Can't open log file(s) for writing. Check the\npermissions on %s"),
 			log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE)));
 
 		fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
+
+		g_free (message);
 		log_error = TRUE;
 	}
 }
@@ -1143,6 +1054,13 @@ static char * const pevt_genmsg_help[] = {
 	N_("Right message"),
 };
 
+#if 0
+static char * const pevt_identd_help[] = {
+	N_("IP address"),
+	N_("Username")
+};
+#endif
+
 static char * const pevt_join_help[] = {
 	N_("The nick of the joining person"),
 	N_("The channel being joined"),
@@ -1167,6 +1085,20 @@ static char * const pevt_privmsg_help[] = {
 	N_("Nickname"),
 	N_("The message"),
 	N_("Identified text")
+};
+
+static char * const pevt_capack_help[] = {
+	N_("Server Name"),
+	N_("Acknowledged Capabilities")
+};
+
+static char * const pevt_caplist_help[] = {
+	N_("Server Name"),
+	N_("Server Capabilities")
+};
+
+static char * const pevt_capreq_help[] = {
+	N_("Requested Capabilities")
 };
 
 static char * const pevt_changenick_help[] = {
@@ -1420,11 +1352,6 @@ static char * const pevt_saslresponse_help[] = {
 	N_("Raw Numeric or Identifier"),
 	N_("Username"),
 	N_("Message")
-};
-
-static char * const pevt_servercap_help[] = {
-	N_("Server Name"),
-	N_("Server Capabilities")
 };
 
 static char * const pevt_servertext_help[] = {
@@ -2360,9 +2287,8 @@ sound_find_command (void)
 void
 sound_play (const char *file, gboolean quiet)
 {
-	char buf[512];
-	char wavfile[512];
-	char *file_fs;
+	char *buf;
+	char *wavfile;
 	char *cmd;
 #if 0
 	LPSTR lpRes;
@@ -2374,34 +2300,27 @@ sound_play (const char *file, gboolean quiet)
 		return;
 
 #ifdef WIN32
-	/* check for fullpath, windows style */
-	if (strlen (file) > 3 &&
-		 file[1] == ':' && (file[2] == '\\' || file[2] == '/') )
-	{
-		strncpy (wavfile, file, sizeof (wavfile));
-	} else
-#endif
+	/* check for fullpath */
+	if (file[0] == '\\' || (((file[0] >= 'A' && file[0] <= 'Z') || (file[0] >= 'a' && file[0] <= 'z')) && file[1] == ':'))
+#else
 	if (file[0] != '/')
+#endif
 	{
-		snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.hex_sound_dir, file);
-	} else
-	{
-		strncpy (wavfile, file, sizeof (wavfile));
+		wavfile = g_strdup (file);
 	}
-	wavfile[sizeof (wavfile) - 1] = 0;	/* ensure termination */
+	else
+	{
+		wavfile = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", prefs.hex_sound_dir, file);
+	}
 
-	file_fs = hexchat_filename_from_utf8 (wavfile, -1, 0, 0, 0);
-	if (!file_fs)
-		return;
-
-	if (access (file_fs, R_OK) == 0)
+	if (g_access (wavfile, R_OK) == 0)
 	{
 		cmd = sound_find_command ();
 
 #ifdef WIN32
 		if (cmd == NULL || strcmp (cmd, "esdplay") == 0)
 		{
-			PlaySound (file_fs, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
+			PlaySound (wavfile, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
 #if 0			/* this would require the wav file to be added to the executable as resource */
 			hResInfo = FindResource (NULL, file_fs, "WAVE");
 			if (hResInfo != NULL)
@@ -2423,33 +2342,33 @@ sound_play (const char *file, gboolean quiet)
 				}
 			}
 #endif
-		} else
+		}
+		else
 #endif
 		{
 			if (cmd)
 			{
-				if (strchr (file_fs, ' '))
-					snprintf (buf, sizeof (buf), "%s \"%s\"", cmd, file_fs);
-				else
-					snprintf (buf, sizeof (buf), "%s %s", cmd, file_fs);
-				buf[sizeof (buf) - 1] = '\0';
+				buf = g_strdup_printf ("%s \"%s\"", cmd, wavfile);
 				hexchat_exec (buf);
+				g_free (buf);
 			}
 		}
 
 		if (cmd)
 			g_free (cmd);
 
-	} else
+	}
+	else
 	{
 		if (!quiet)
 		{
-			snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"), wavfile);
+			buf = g_strdup_printf (_("Cannot read sound file:\n%s"), wavfile);
 			fe_message (buf, FE_MSG_ERROR);
+			g_free (buf);
 		}
 	}
 
-	g_free (file_fs);
+	g_free (wavfile);
 }
 
 void

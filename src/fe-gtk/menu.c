@@ -286,8 +286,8 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 				img = gtk_image_new_from_file (icon);
 			else
 			{
-				/* try relative to ~/.xchat2 */
-				path = g_strdup_printf ("%s/%s", get_xdir_fs (), icon);
+				/* try relative to <xdir> */
+				path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), icon);
 				if (access (path, R_OK) == 0)
 					img = gtk_image_new_from_file (path);
 				else

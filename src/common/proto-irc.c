@@ -1130,7 +1130,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 	else if (len == 3)
 	{
 		guint32 t;
-		char *pass;
+		guint32 want_cap;		/* format the CAP REQ string based on previous capabilities being requested or not */
+		guint32 want_sasl;		/* CAP END shouldn't be sent when SASL is requested, it needs further responses */
+		char *pass;				/* buffer for SASL password */
+		char buffer[256];		/* buffer for requesting capabilities and emitting the signal */
 
 		t = WORDL((guint8)type[0], (guint8)type[1], (guint8)type[2], (guint8)type[3]);
 		switch (t)
@@ -1138,11 +1141,19 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 			case WORDL('C','A','P','\0'):
 				if (strncasecmp (word[4], "ACK", 3) == 0)
 				{
-					if (strncasecmp (word[5][0]==':' ? word[5] + 1 : word[5], "identify-msg", 12) == 0)
+					EMIT_SIGNAL (XP_TE_CAPACK, sess->server->server_session, word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5], NULL, NULL, 0);
+
+					if (strstr (word_eol[5], "identify-msg") != 0)
 					{
 						serv->have_idmsg = TRUE;
 					}
-					if (strncasecmp (word[5][0]==':' ? word[5] + 1 : word[5], "sasl", 12) == 0)
+
+					if (strstr (word_eol[5], "multi-prefix") != 0)
+					{
+						serv->have_namesx = TRUE;
+					}
+
+					if (strstr (word_eol[5], "sasl") != 0)
 					{
 						serv->have_sasl = TRUE;
 						EMIT_SIGNAL (XP_TE_SASLAUTH, serv->server_session, sess->server->sasluser, NULL, NULL, NULL, 0);
@@ -1155,18 +1166,34 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)
 				{
-					EMIT_SIGNAL (XP_TE_SERVERCAP, serv->server_session, word[1], ++word_eol[5], NULL, NULL, 0);
+					EMIT_SIGNAL (XP_TE_CAPLIST, serv->server_session, word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5], NULL, NULL, 0);
+					want_cap = 0;
+					want_sasl = 0;
+
 					if (strstr (word_eol[5], "identify-msg") != 0)
 					{
-						tcp_send_len (serv, "CAP REQ :identify-msg\r\n", 23);
+						strcpy (buffer, "CAP REQ :identify-msg");
+						want_cap = 1;
 					}
-
+					if (strstr (word_eol[5], "multi-prefix") != 0)
+					{
+						want_cap ? strcat (buffer, " multi-prefix") : strcpy (buffer, "CAP REQ :multi-prefix");
+						want_cap = 1;
+					}
 					/* if the SASL password is set, request SASL auth */
 					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->saslpassword) != 0)
 					{
-						tcp_send_len (serv, "CAP REQ :sasl\r\n", 23);
+						want_cap ? strcat (buffer, " sasl") : strcpy (buffer, "CAP REQ :sasl");
+						want_sasl = 1;
 					}
-					else
+
+					if (want_cap)
+					{
+						/* buffer + 9 = emit buffer without "CAP REQ :" */
+						EMIT_SIGNAL (XP_TE_CAPREQ, sess->server->server_session, buffer + 9, NULL, NULL, NULL, 0);
+						tcp_sendf (serv, "%s\r\n", buffer);
+					}
+					if (!want_sasl)
 					{
 						/* if we use SASL, CAP END is dealt via raw numerics */
 						tcp_send_len (serv, "CAP END\r\n", 9);

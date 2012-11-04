@@ -106,28 +106,30 @@ list_load_from_data (GSList ** list, char *ibuf, int size)
 void
 list_loadconf (char *file, GSList ** list, char *defaultconf)
 {
-	char filebuf[256];
+	char *filebuf;
 	char *ibuf;
-	int fh;
+	int fd;
 	struct stat st;
 
-	snprintf (filebuf, sizeof (filebuf), "%s/%s", get_xdir_fs (), file);
-	fh = open (filebuf, O_RDONLY | OFLAGS);
-	if (fh == -1)
+	filebuf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), file);
+	fd = g_open (filebuf, O_RDONLY | OFLAGS, 0);
+	g_free (filebuf);
+
+	if (fd == -1)
 	{
 		if (defaultconf)
 			list_load_from_data (list, defaultconf, strlen (defaultconf));
 		return;
 	}
-	if (fstat (fh, &st) != 0)
+	if (fstat (fd, &st) != 0)
 	{
 		perror ("fstat");
 		abort ();
 	}
 
 	ibuf = malloc (st.st_size);
-	read (fh, ibuf, st.st_size);
-	close (fh);
+	read (fd, ibuf, st.st_size);
+	close (fd);
 
 	list_load_from_data (list, ibuf, st.st_size);
 
@@ -280,8 +282,7 @@ cfg_get_int (char *cfg, char *var)
 	return atoi (str);
 }
 
-char *xdir_fs = NULL;	/* file system encoding */
-char *xdir_utf = NULL;	/* utf-8 encoding */
+char *xdir = NULL;	/* utf-8 encoding */
 
 #ifdef WIN32
 
@@ -311,65 +312,51 @@ get_reg_str (const char *sub, const char *name, char *out, DWORD len)
 }
 
 char *
-get_xdir_fs (void)
+get_xdir (void)
 {
-	if (!xdir_fs)
+	if (!xdir)
 	{
 			char out[256];
 
 			if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
 			{
-				xdir_fs = ".\\config";
+				xdir = g_strdup (".\\config");
 			}
 			else
 			{
-				xdir_fs = g_strdup_printf ("%s\\" "HexChat", out);
+				xdir = g_strdup_printf ("%s\\" "HexChat", out);
 			}
 	}
 
-	return xdir_fs;
+	return xdir;
 }
 
 #else
 
 char *
-get_xdir_fs (void)
+get_xdir (void)
 {
-	if (!xdir_fs)
-		xdir_fs = g_strdup_printf ("%s/.config/" HEXCHAT_DIR, g_get_home_dir ());
+	if (!xdir)
+		xdir = g_strdup_printf ("%s/.config/" HEXCHAT_DIR, g_get_home_dir ());
 
-	return xdir_fs;
+	return xdir;
 }
 
 #endif	/* !WIN32 */
 
-char *
-get_xdir_utf8 (void)
-{
-	if (!xdir_utf)	/* never free this, keep it for program life time */
-		xdir_utf = hexchat_filename_to_utf8 (get_xdir_fs (), -1, 0, 0, 0);
-
-	return xdir_utf;
-}
-
 static void
 check_prefs_dir (void)
 {
-	char *dir = get_xdir_fs ();
-	static char *msg = NULL;
+	char *dir = get_xdir ();
+	char *msg;
 
-	if (access (dir, F_OK) != 0)
+	if (g_access (dir, F_OK) != 0)
 	{
-#ifdef WIN32
-		if (mkdir (dir) != 0)
-#else
-		if (mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
-#endif
+		if (g_mkdir (dir, 0700) != 0)
 		{
-			msg = malloc (strlen (get_xdir_fs ()) + 15);
-			sprintf (msg, "Cannot create %s", get_xdir_fs ());
+			msg = g_strdup_printf ("Cannot create %s", get_xdir ());
 			fe_message (msg, FE_MSG_ERROR);
-			free (msg);
+			g_free (msg);
 		}
 	}
 }
@@ -377,12 +364,11 @@ check_prefs_dir (void)
 static char *
 default_file (void)
 {
-	static char *dfile = 0;
+	static char *dfile = NULL;
 
 	if (!dfile)
 	{
-		dfile = malloc (strlen (get_xdir_fs ()) + 14);
-		sprintf (dfile, "%s/hexchat.conf", get_xdir_fs ());
+		dfile = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "hexchat.conf", get_xdir ());
 	}
 	return dfile;
 }
@@ -635,10 +621,9 @@ convert_with_fallback (const char *str, const char *fallback)
 void
 load_config (void)
 {
-	struct stat st;
 	char *cfg, *sp;
 	const char *username, *realname;
-	int res, val, i, fh;
+	int res, val, i;
 #ifdef WIN32
 	char out[256];
 #endif
@@ -762,17 +747,17 @@ load_config (void)
 #ifdef WIN32
 	if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
 	{
-		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir_utf8 ());
+		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
 	}
 	else
 	{
 		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
 	}
 #else
-	snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s/downloads", get_xdir_utf8 ());
+	snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s/downloads", get_xdir ());
 #endif
 	strcpy (prefs.hex_dnsprogram, "host");
-	strcpy (prefs.hex_gui_ulist_doubleclick, "QUOTE WHOIS %s %s");
+	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
 	strcpy (prefs.hex_input_command_char, "/");
 	strcpy (prefs.hex_irc_logmask, "%n-%c.log");
 	strcpy (prefs.hex_irc_nick1, username);
@@ -785,11 +770,7 @@ load_config (void)
 	strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason);
 	strcpy (prefs.hex_irc_real_name, realname);
 	strcpy (prefs.hex_irc_user_name, username);
-#ifdef WIN32
-	strcpy (prefs.hex_sound_dir, "./sounds");
-#else
-	snprintf (prefs.hex_sound_dir, sizeof (prefs.hex_sound_dir), "%s/sounds", get_xdir_utf8 ());
-#endif
+	snprintf (prefs.hex_sound_dir, sizeof (prefs.hex_sound_dir), "%s" G_DIR_SEPARATOR_S "sounds", get_xdir ());
 	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
 #ifdef WIN32
@@ -816,16 +797,8 @@ load_config (void)
 	g_free ((char *)username);
 	g_free ((char *)realname);
 
-	fh = open (default_file (), OFLAGS | O_RDONLY);
-	if (fh != -1)
+	if (g_file_get_contents (default_file (), &cfg, NULL, NULL))
 	{
-		fstat (fh, &st);
-		cfg = malloc (st.st_size + 1);
-		cfg[0] = '\0';
-		i = read (fh, cfg, st.st_size);
-		if (i >= 0)
-			cfg[i] = '\0';					/* make sure cfg is NULL terminated */
-		close (fh);
 		i = 0;
 		do
 		{
@@ -846,7 +819,7 @@ load_config (void)
 		}
 		while (vars[i].name);
 
-		free (cfg);
+		g_free (cfg);
 
 	} else
 	{
@@ -859,8 +832,8 @@ load_config (void)
 #endif
 #endif /* !WIN32 */
 
-		mkdir_utf8 (prefs.hex_dcc_dir);
-		mkdir_utf8 (prefs.hex_dcc_completed_dir);
+		g_mkdir (prefs.hex_dcc_dir, 0700);
+		g_mkdir (prefs.hex_dcc_completed_dir, 0700);
 	}
 	if (prefs.hex_gui_win_height < 138)
 		prefs.hex_gui_win_height = 138;
@@ -1175,31 +1148,45 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 int
 hexchat_open_file (char *file, int flags, int mode, int xof_flags)
 {
-	char buf[1024];
+	char *buf;
+	int fd;
 
 	if (xof_flags & XOF_FULLPATH)
 	{
 		if (xof_flags & XOF_DOMODE)
-			return open (file, flags | OFLAGS, mode);
+			return g_open (file, flags | OFLAGS, mode);
 		else
-			return open (file, flags | OFLAGS);
+			return g_open (file, flags | OFLAGS, 0);
 	}
 
-	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
+	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), file);
+
 	if (xof_flags & XOF_DOMODE)
-		return open (buf, flags | OFLAGS, mode);
+	{
+		fd = g_open (buf, flags | OFLAGS, mode);
+	}
 	else
-		return open (buf, flags | OFLAGS);
+	{
+		fd = g_open (buf, flags | OFLAGS, 0);
+	}
+
+	g_free (buf);
+
+	return fd;
 }
 
 FILE *
 hexchat_fopen_file (const char *file, const char *mode, int xof_flags)
 {
-	char buf[1024];
+	char *buf;
+	FILE *fh;
 
 	if (xof_flags & XOF_FULLPATH)
 		return fopen (file, mode);
 
-	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
-	return fopen (buf, mode);
+	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), file);
+	fh = g_fopen (buf, mode);
+	g_free (buf);
+
+	return fh;
 }

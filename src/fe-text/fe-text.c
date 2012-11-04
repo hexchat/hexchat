@@ -23,6 +23,7 @@
 #include <strings.h>
 #endif
 #ifdef WIN32
+#include <io.h>
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
 #else
@@ -513,15 +514,17 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_config)
 	{
-		printf ("%s\n", get_xdir_fs ());
+		printf ("%s\n", get_xdir ());
 		return 0;
 	}
 
 	if (arg_cfgdir)	/* we want filesystem encoding */
 	{
-		xdir_fs = strdup (arg_cfgdir);
-		if (xdir_fs[strlen (xdir_fs) - 1] == '/')
-			xdir_fs[strlen (xdir_fs) - 1] = 0;
+		if (xdir)
+			g_free (xdir);
+		xdir = strdup (arg_cfgdir);
+		if (xdir[strlen (xdir) - 1] == '/')
+			xdir[strlen (xdir) - 1] = 0;
 		g_free (arg_cfgdir);
 	}
 

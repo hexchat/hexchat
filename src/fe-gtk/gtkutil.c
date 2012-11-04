@@ -186,192 +186,6 @@ gtkutil_file_req_response (GtkWidget *dialog, gint res, struct file_req *freq)
 	}
 }
 
-#if 0	/* native file dialogs */
-#ifdef WIN32
-static int
-win32_openfile (char *file_buf, int file_buf_len, char *title_text, char *filter,
-			   int multiple)
-{
-	OPENFILENAME o;
-
-	memset (&o, 0, sizeof (o));
-
-	o.lStructSize = sizeof (o);
-	o.lpstrFilter = filter;
-	o.lpstrFile = file_buf;
-	o.nMaxFile = file_buf_len;
-	o.lpstrTitle = title_text;
-	o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
-				OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
-	if (multiple)
-	{
-		o.Flags |= OFN_ALLOWMULTISELECT;
-	}
-
-	return GetOpenFileName (&o);
-}
-
-static int
-win32_savefile (char *file_buf, int file_buf_len, char *title_text, char *filter,
-               int multiple)
-{
-	/* we need the filter to get the default filename. it is from fe-gtk.c (fe_confirm);
-	 * but that filter is actually the whole filename, so apply an empty filter and all good.
-	 * in win32_thread2 we copy the filter ( = the filename) after the last dir into our
-	 * LPTSTR file buffer to make it actually work. the docs for this amazingly retard api:
-	 *
-	 * http://msdn.microsoft.com/en-us/library/ms646839%28VS.85%29.aspx
-	 */
-
-	OPENFILENAME o;
-
-	memset (&o, 0, sizeof (o));
-
-	o.lStructSize = sizeof (o);
-	o.lpstrFilter = "All files\0*.*\0\0";
-	o.lpstrFile = file_buf;
-	o.nMaxFile = file_buf_len;
-	o.lpstrTitle = title_text;
-	o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
-				OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
-	if (multiple)
-	{
-		o.Flags |= OFN_ALLOWMULTISELECT;
-	}
-
-	return GetSaveFileName (&o);
-}
-
-static void *
-win32_thread (struct file_req *freq)
-{
-	char buf[1024 + 32];
-	char file[1024];
-
-	memset (file, 0, sizeof (file));
-	safe_strcpy (file, last_dir, sizeof (file));
-
-	if (win32_openfile (file, sizeof (file), freq->title, freq->filter, freq->multiple))
-	{
-		if (freq->multiple)
-		{
-			char *f = file;
-
-			if (f[strlen (f) + 1] == 0)	/* only selected one file */
-			{
-				snprintf (buf, sizeof (buf), "1\n%s\n", file);
-				write (freq->th->pipe_fd[1], buf, strlen (buf));
-			} else
-			{
-				f += strlen (f) + 1; /* skip first, it's only the dir */
-				while (f[0])
-				{
-					snprintf (buf, sizeof (buf), "1\n%s\\%s\n", /*dir!*/file, f);
-					write (freq->th->pipe_fd[1], buf, strlen (buf));
-					f += strlen (f) + 1;
-				}
-			}
-
-		} else
-		{
-			snprintf (buf, sizeof (buf), "1\n%s\n", file);
-			write (freq->th->pipe_fd[1], buf, strlen (buf));
-		}
-	}
-
-	write (freq->th->pipe_fd[1], "0\n", 2);
-	Sleep (2000);
-
-	return NULL;
-}
-
-static void *
-win32_thread2 (struct file_req *freq)
-{
-	char buf[1024 + 32];
-	char file[1024];
-
-	memset (file, 0, sizeof (file));
-	safe_strcpy (file, last_dir, sizeof (file));
-	safe_strcpy (file, freq->filter, sizeof (file));
-
-	if (win32_savefile (file, sizeof (file), freq->title, NULL, freq->multiple))
-	{
-		if (freq->multiple)
-		{
-			char *f = file;
-
-			if (f[strlen (f) + 1] == 0)    /* only selected one file */
-			{
-				snprintf (buf, sizeof (buf), "1\n%s\n", file);
-				write (freq->th->pipe_fd[1], buf, strlen (buf));
-			} else
-			{
-				f += strlen (f) + 1; /* skip first, it's only the dir */
-				while (f[0])
-				{
-					snprintf (buf, sizeof (buf), "1\n%s\\%s\n", /*dir!*/file, f);
-					write (freq->th->pipe_fd[1], buf, strlen (buf));
-					f += strlen (f) + 1;
-				}
-			}
-
-		} else
-		{
-			snprintf (buf, sizeof (buf), "1\n%s\n", file);
-			write (freq->th->pipe_fd[1], buf, strlen (buf));
-		}
-	}
-
-	write (freq->th->pipe_fd[1], "0\n", 2);
-	Sleep (2000);
-
-	return NULL;
-}
-
-static gboolean
-win32_close_pipe (int fd)
-{
-	close (fd);
-	return 0;
-}
-
-static gboolean
-win32_read_thread (GIOChannel *source, GIOCondition cond, struct file_req *freq)
-{
-	char buf[512];
-	char *file;
-
-	waitline2 (source, buf, sizeof buf);
-
-	switch (buf[0])
-	{
-	case '0':	/* filedialog has closed */
-		freq->callback (freq->userdata, NULL);
-		break;
-
-	case '1':	/* got a filename! */
-		waitline2 (source, buf, sizeof buf);
-		file = g_filename_to_utf8 (buf, -1, 0, 0, 0);
-		freq->callback (freq->userdata, file);
-		g_free (file);
-		return TRUE;
-	}
-
-	/* it doesn't work to close them here, because of the weird
-		way giowin32 works. We must _return_ before closing them */
-	g_timeout_add(3000, (GSourceFunc)win32_close_pipe, freq->th->pipe_fd[0]);
-	g_timeout_add(2000, (GSourceFunc)win32_close_pipe, freq->th->pipe_fd[1]);
-
-	g_free (freq->title);
-	free (freq->th);
-	free (freq);
-
-	return FALSE;
-}
-#endif
-#endif	/* native file dialogs */
-
 void
 gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter, char *extensions,
 						int flags)
@@ -467,7 +281,7 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), last_dir);
 	if (flags & FRF_ADDFOLDER)
 		gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
-														  get_xdir_fs (), NULL);
+														  get_xdir (), NULL);
 	if (flags & FRF_CHOOSEFOLDER)
 	{
 		gtk_file_chooser_set_action (GTK_FILE_CHOOSER (dialog), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
@@ -491,7 +305,7 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 		/* by default, open the config folder */
 		else
 		{
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), get_xdir_fs ());
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), get_xdir ());
 		}
 	}
 
@@ -820,7 +634,12 @@ show_and_unfocus (GtkWidget * wid)
 void
 gtkutil_set_icon (GtkWidget *win)
 {
+#ifndef WIN32
+	/* FIXME: Magically breaks icon rendering in most
+	 * (sub)windows, but OFC only on Windows. GTK <3
+	 */
 	gtk_window_set_icon (GTK_WINDOW (win), pix_hexchat);
+#endif
 }
 
 extern GtkWidget *parent_window;	/* maingui.c */

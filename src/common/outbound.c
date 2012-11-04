@@ -1891,6 +1891,28 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 #endif
 
+#if 0
+/* export config stub */
+static int
+cmd_exportconf (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	/* this is pretty much the same as in hexchat_exit() */
+	save_config ();
+	if (prefs.save_pevents)
+	{
+		pevent_save (NULL);
+	}
+	sound_save ();
+	notify_save ();
+	ignore_save ();
+	free_sessions ();
+	chanopt_save_all ();
+
+	return TRUE;		/* success */
+	return FALSE;		/* fail */
+}
+#endif
+
 static int
 cmd_flushq (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
@@ -3609,6 +3631,9 @@ const struct commands xc_cmds[] = {
 	{"EXECSTOP", cmd_execs, 0, 0, 1, N_("EXECSTOP, sends the process SIGSTOP")},
 	{"EXECWRITE", cmd_execw, 0, 0, 1, N_("EXECWRITE, sends data to the processes stdin")},
 #endif
+#endif
+#if 0
+	{"EXPORTCONF", cmd_exportconf, 0, 0, 1, N_("EXPORTCONF, exports HexChat settings")},
 #endif
 	{"FLUSHQ", cmd_flushq, 0, 0, 1,
 	 N_("FLUSHQ, flushes the current server's send queue")},
