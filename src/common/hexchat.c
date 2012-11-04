@@ -303,7 +303,7 @@ static void
 irc_init (session *sess)
 {
 	static int done_init = FALSE;
-	char buf[512];
+	char *buf;
 
 	if (done_init)
 		return;
@@ -330,9 +330,10 @@ irc_init (session *sess)
 
 	if (arg_url != NULL)
 	{
-		snprintf (buf, sizeof (buf), "server %s", arg_url);
-		handle_command (sess, buf, FALSE);
+		buf = g_strdup_printf ("server %s", arg_url);
 		g_free (arg_url);	/* from GOption */
+		handle_command (sess, buf, FALSE);
+		g_free (buf);
 	}
 
 	if (arg_command != NULL)
@@ -340,9 +341,10 @@ irc_init (session *sess)
 		g_free (arg_command);
 	}
 
-	/* load -e ~/.xchat2/startup.txt */
-	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), "startup.txt");
+	/* load -e <xdir>/startup.txt */
+	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "startup.txt", get_xdir ());
 	load_perform_file (sess, buf);
+	g_free (buf);
 }
 
 static session *

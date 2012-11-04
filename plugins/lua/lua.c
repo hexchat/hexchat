@@ -46,9 +46,12 @@
 #include <errno.h>
 #include <ctype.h>
 
+#include <glib.h>
+
 #ifdef _WIN32
 #include <direct.h>	/* for getcwd */
 #include "../../src/dirent/dirent-win32.h"
+#include "../../src/common/typedef.h"
 #endif
 
 #if !( defined(_WIN32) || defined(LXC_XCHAT_GETTEXT) )
@@ -429,7 +432,7 @@ lxc_autoload_from_path(const char *path)
 						strerror(errno));
 					break;
 				}
-				sprintf(file, "%s/%s", path, ent->d_name);
+				sprintf(file, "%s" G_DIR_SEPARATOR_S "%s", path, ent->d_name);
 				(void)lxc_load_file((const char *)file);
 				free(file);
 			}
@@ -510,22 +513,19 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 
  	len = strlen(word[2]);
 	if (len > 4 && strcasecmp (".lua", word[2] + len - 4) == 0) {
-#ifdef WIN32
-		if (strrchr(word[2], '\\') != NULL)
-#else
-		if (strrchr(word[2], '/') != NULL)
-#endif
+		if (strrchr(word[2], G_DIR_SEPARATOR) != NULL)
 			strncpy(file, word[2], PATH_MAX);
-		else {
+		else
+		{
 			if (stat(word[2], st) == 0)
 			{
 				xdir = getcwd (buf, PATH_MAX);
-				snprintf (file, PATH_MAX, "%s/%s", xdir, word[2]);
+				snprintf (file, PATH_MAX, "%s" G_DIR_SEPARATOR_S "%s", xdir, word[2]);
 			}
 			else
 			{
 				xdir = hexchat_get_info (ph, "hexchatdirfs");
-				snprintf (file, PATH_MAX, "%s/addons/%s", xdir, word[2]);
+				snprintf (file, PATH_MAX, "%s" G_DIR_SEPARATOR_S "addons" G_DIR_SEPARATOR_S "%s", xdir, word[2]);
 			}
 		}
 

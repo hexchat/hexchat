@@ -458,48 +458,43 @@ plugin_auto_load_cb (char *filename)
 void
 plugin_auto_load (session *sess)
 {
-	/* let's do it the Perl way */
-	const char *xdir;
 	char *sub_dir;
 	ps = sess;
 
-	xdir = get_xdir_fs ();
-	sub_dir = malloc (strlen (xdir) + 8);
-	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/addons");
+	sub_dir = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "addons", get_xdir ());
 
 #ifdef WIN32
 	/* a long list of bundled plugins that should be loaded automatically,
 	 * user plugins should go to <config>, leave Program Files alone! */
-	for_files ("./plugins", "hcchecksum.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcdns.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcdoat.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcexec.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcfishlim.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hchextray.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hclua.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcmpcinfo.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcperl.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcpython.dll", plugin_auto_load_cb);
-	/* for_files ("./plugins", "hcsasl.dll", plugin_auto_load_cb); we have this built-in */
-	for_files ("./plugins", "hctcl.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcupd.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcwinamp.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcsysinfo.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcwmpa.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcchecksum.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcdns.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcdoat.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcexec.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcfishlim.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hchextray.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hclua.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcmpcinfo.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcperl.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcpython.dll", plugin_auto_load_cb);
+	/* for_files (".\\plugins", "hcsasl.dll", plugin_auto_load_cb); we have this built-in */
+	for_files (".\\plugins", "hctcl.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcupd.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcwinamp.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcsysinfo.dll", plugin_auto_load_cb);
+	for_files (".\\plugins", "hcwmpa.dll", plugin_auto_load_cb);
 
 	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
 #else
 #if defined(__hpux)
-	for_files (HEXCHATLIBDIR"/plugins", "*.sl", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR "/plugins", "*.sl", plugin_auto_load_cb);
 	for_files (sub_dir, "*.sl", plugin_auto_load_cb);
 #else
-	for_files (HEXCHATLIBDIR"/plugins", "*.so", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR "/plugins", "*.so", plugin_auto_load_cb);
 	for_files (sub_dir, "*.so", plugin_auto_load_cb);
 #endif
 #endif
 
-	free (sub_dir);
+	g_free (sub_dir);
 }
 
 #endif
@@ -1056,11 +1051,11 @@ hexchat_get_info (hexchat_plugin *ph, const char *id)
 
 	case 0xdd9b1abd:	/* xchatdir */
 	case 0x9a70daba:	/* hexchatdir */
-		return get_xdir_utf8 ();
+		return get_xdir ();
 
 	case 0xe33f6c4a:	/* xchatdirfs */
 	case 0xc1a52107:	/* hexchatdirfs */
-		return get_xdir_fs ();
+		return get_xdir ();
 	}
 
 	sess = ph->context;
@@ -1632,46 +1627,56 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	FILE *fpIn;
 	int fhOut;
 	int prevSetting;
-	char confname[64];
-	char confname_tmp[69];
-	char buffer[512];		/* the same as in cfg_put_str */
-	char buffer_tmp[512];
+	char *confname;
+	char *confname_tmp;
+	char *buffer;
+	char *buffer_tmp;
+	char line_buffer[512];		/* the same as in cfg_put_str */
 	char *canon;
 
 	canon = g_strdup (pl->name);
 	canonalize_key (canon);
-	sprintf (confname, "addon_%s.conf", canon);
+	confname = g_strdup_printf ("addon_%s.conf", canon);
 	g_free (canon);
-	sprintf (confname_tmp, "%s.new", confname);
+	confname_tmp = g_strdup_printf ("%s.new", confname);
 
 	fhOut = hexchat_open_file (confname_tmp, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	fpIn = hexchat_fopen_file (confname, "r", 0);
 
 	if (fhOut == -1)		/* unable to save, abort */
 	{
+		g_free (confname);
+		g_free (confname_tmp);
 		return 0;
 	}
 	else if (fpIn == NULL)	/* no previous config file, no parsing */
 	{
 		if (mode)
 		{
-			sprintf (buffer, "%s = %s\n", var, value);
+			buffer = g_strdup_printf ("%s = %s\n", var, value);
 			write (fhOut, buffer, strlen (buffer));
+			g_free (buffer);
 			close (fhOut);
 
-			sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
-			sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
+			buffer = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), confname);
+			g_free (confname);
+			buffer_tmp = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), confname_tmp);
+			g_free (confname_tmp);
 
 #ifdef WIN32
-			unlink (buffer);
+			g_unlink (buffer);
 #endif
 
-			if (rename (buffer_tmp, buffer) == 0)
+			if (g_rename (buffer_tmp, buffer) == 0)
 			{
+				g_free (buffer);
+				g_free (buffer_tmp);
 				return 1;
 			}
 			else
 			{
+				g_free (buffer);
+				g_free (buffer_tmp);
 				return 0;
 			}
 		}
@@ -1679,6 +1684,8 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 		{
 			/* mode = 0, we want to delete but the config file and thus the given setting does not exist, we're ready */
 			close (fhOut);
+			g_free (confname);
+			g_free (confname_tmp);
 			return 1;
 		}
 	}
@@ -1686,54 +1693,64 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	{
 		prevSetting = 0;
 
-		while (fscanf (fpIn, " %[^\n]", &buffer) != EOF)	/* read whole lines including whitespaces */
+		while (fscanf (fpIn, " %[^\n]", &line_buffer) != EOF)	/* read whole lines including whitespaces */
 		{
-			sprintf (buffer_tmp, "%s ", var);				/* add one space, this way it works against var - var2 checks too */
+			buffer_tmp = g_strdup_printf ("%s ", var);	/* add one space, this way it works against var - var2 checks too */
 
-			if (strncmp (buffer_tmp, buffer, strlen (var) + 1) == 0)	/* given setting already exists */
+			if (strncmp (buffer_tmp, line_buffer, strlen (var) + 1) == 0)	/* given setting already exists */
 			{
 				if (mode)									/* overwrite the existing matching setting if we are in save mode */
 				{
-					sprintf (buffer, "%s = %s\n", var, value);
+					buffer = g_strdup_printf ("%s = %s\n", var, value);
 				}
 				else										/* erase the setting in delete mode */
 				{
-					strcpy (buffer, "");
+					buffer = g_strdup ("");
 				}
 
 				prevSetting = 1;
 			}
 			else
 			{
-				strcat (buffer, "\n");						/* preserve the existing different settings */
+				buffer = g_strdup_printf ("%s\n", line_buffer);	/* preserve the existing different settings */
 			}
 
 			write (fhOut, buffer, strlen (buffer));
+
+			g_free (buffer);
+			g_free (buffer_tmp);
 		}
 
 		fclose (fpIn);
 
 		if (!prevSetting && mode)	/* var doesn't exist currently, append if we're in save mode */
 		{
-			sprintf (buffer, "%s = %s\n", var, value);
+			buffer = g_strdup_printf ("%s = %s\n", var, value);
 			write (fhOut, buffer, strlen (buffer));
+			g_free (buffer);
 		}
 
 		close (fhOut);
 
-		sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
-		sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
+		buffer = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), confname);
+		g_free (confname);
+		buffer_tmp = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), confname_tmp);
+		g_free (confname_tmp);
 
 #ifdef WIN32
-		unlink (buffer);
+		g_unlink (buffer);
 #endif
 
-		if (rename (buffer_tmp, buffer) == 0)
+		if (g_rename (buffer_tmp, buffer) == 0)
 		{
+			g_free (buffer);
+			g_free (buffer_tmp);
 			return 1;
 		}
 		else
 		{
+			g_free (buffer);
+			g_free (buffer_tmp);
 			return 0;
 		}
 	}
