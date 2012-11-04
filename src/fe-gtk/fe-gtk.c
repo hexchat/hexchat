@@ -151,6 +151,13 @@ create_msg_dialog (gchar *title, gchar *message)
 
 	dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, message);
 	gtk_window_set_title (GTK_WINDOW (dialog), title);
+
+/* On Win32 we automatically have the icon. If we try to load it explicitly, it will look ugly for some reason. */
+#ifndef WIN32
+	pixmaps_init ();
+	gtk_window_set_icon (GTK_WINDOW (dialog), pix_hexchat);
+#endif
+
 	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);
 }
