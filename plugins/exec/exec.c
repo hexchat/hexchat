@@ -51,6 +51,8 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	secattr.nLength = sizeof (secattr);
 	secattr.bInheritHandle = TRUE;
 
+	timeElapsed = 0.0;
+
 	if (strlen (word[2]) > 0)
 	{
 		strcpy (commandLine, "cmd.exe /c ");

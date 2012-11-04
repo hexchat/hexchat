@@ -52,8 +52,7 @@ int find_font (const char *fontname);
 #define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
 #endif
 unsigned long make_ping_time (void);
-void move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions);
-int mkdir_utf8 (char *dir);
+void move_file (char *src_dir, char *dst_dir, char *fname, int dccpermissions);
 int token_foreach (char *str, char sep, int (*callback) (char *str, void *ud), void *ud);
 guint32 str_hash (const char *key);
 guint32 str_ihash (const unsigned char *key);

@@ -1245,7 +1245,7 @@ setup_create_frame (GtkWidget **left, GtkWidget *box)
 static void
 open_data_cb (GtkWidget *button, gpointer data)
 {
-	fe_open_url (get_xdir_utf8 ());
+	fe_open_url (get_xdir ());
 }
 
 static GtkWidget *
@@ -2135,8 +2135,8 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 	unslash (prefs.hex_dcc_dir);
 	unslash (prefs.hex_dcc_completed_dir);
 
-	mkdir_utf8 (prefs.hex_dcc_dir);
-	mkdir_utf8 (prefs.hex_dcc_completed_dir);
+	g_mkdir (prefs.hex_dcc_dir, 0700);
+	g_mkdir (prefs.hex_dcc_completed_dir, 0700);
 
 	if (new_pix)
 	{

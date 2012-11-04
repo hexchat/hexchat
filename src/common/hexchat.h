@@ -5,6 +5,8 @@
 #endif
 
 #include <glib.h>
+#include <glib/gstdio.h>
+
 #include <time.h>			/* need time_t */
 
 #ifndef HEXCHAT_H
