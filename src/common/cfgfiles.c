@@ -310,39 +310,31 @@ get_reg_str (const char *sub, const char *name, char *out, DWORD len)
 
 	return FALSE;
 }
+#endif
 
 char *
 get_xdir (void)
 {
 	if (!xdir)
 	{
-			char out[256];
+#ifdef WIN32
+		char out[256];
 
-			if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
-			{
-				xdir = g_strdup (".\\config");
-			}
-			else
-			{
-				xdir = g_strdup_printf ("%s\\" "HexChat", out);
-			}
+		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+		{
+			xdir = g_strdup (".\\config");
+		}
+		else
+		{
+			xdir = g_strdup_printf ("%s\\" "HexChat", out);
+		}
+#else
+		xdir = g_strdup_printf ("%s/.config/" HEXCHAT_DIR, g_get_home_dir ());
+#endif
 	}
 
 	return xdir;
 }
-
-#else
-
-char *
-get_xdir (void)
-{
-	if (!xdir)
-		xdir = g_strdup_printf ("%s/.config/" HEXCHAT_DIR, g_get_home_dir ());
-
-	return xdir;
-}
-
-#endif	/* !WIN32 */
 
 static void
 check_prefs_dir (void)
