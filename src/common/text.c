@@ -249,13 +249,13 @@ scrollback_save (session *sess, char *text)
 void
 scrollback_load (session *sess)
 {
-	int fh;
 	char *buf;
 	char *text;
 	time_t stamp;
 	int lines;
 	GIOChannel *io;
-	GError* io_err;
+	GError *file_error = NULL;
+	GError *io_err = NULL;
 
 #ifndef WIN32
 	char *map, *end_map;
@@ -277,22 +277,16 @@ scrollback_load (session *sess)
 	if ((buf = scrollback_get_filename (sess)) == NULL)
 		return;
 
-	fh = g_open (buf, O_RDONLY | OFLAGS, 0);
+	io = g_io_channel_new_file (buf, "r", &file_error);
 	g_free (buf);
-	if (fh == -1)
+	if (!io)
 		return;
-
-#ifndef WIN32
-	io = g_io_channel_unix_new (fh);
-#else
-	io = g_io_channel_win32_new_fd (fh);
-#endif
 
 	lines = 0;
 
 	while (1)
 	{
-		int n_bytes;
+		gsize n_bytes;
 		GIOStatus io_status;
 
 		io_status = g_io_channel_read_line (io, &buf, &n_bytes, NULL, &io_err);
@@ -350,8 +344,6 @@ scrollback_load (session *sess)
 	}
 
 	g_io_channel_unref (io);
-	g_io_channel_shutdown (io, TRUE, NULL);
-	close (fh);
 
 	sess->scrollwritten = lines;
 
