@@ -705,7 +705,7 @@ log_write (session *sess, char *text)
 										 server_get_network (sess->server, FALSE));
 	if (file)
 	{
-		if (access (file, F_OK) != 0)
+		if (g_access (file, F_OK) != 0)
 		{
 			close (sess->logfd);
 			sess->logfd = log_open_file (sess->server->servername, sess->channel,
