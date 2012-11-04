@@ -254,14 +254,14 @@ file_part (char *file)
 	{
 		switch (*file)
 		{
-		case 0:
-			return (filepart);
-		case '/':
+			case 0:
+				return (filepart);
+			case '/':
 #ifdef WIN32
-		case '\\':
+			case '\\':
 #endif
-			filepart = file + 1;
-			break;
+				filepart = file + 1;
+				break;
 		}
 		file++;
 	}
