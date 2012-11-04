@@ -155,13 +155,20 @@ context. At the moment of this writing, the following information types
 are available to be queried:
 
  * **away:** Away reason or None if you are not away.
- * **channels** Channel of the current context.
+ * **channel:** Channel name of the current context.
+ * **charset:** Charset in current context.
+ * **event_name NAME:** Returns text event string for requested event.
+ * **gtkwin_ptr:** Current Gtk Window.
  * **hexchatdir:** HexChat config directory e.g.: "~/.config/hexchat".
- * **hostname:** Real hostname of the server you connected to.
+ * **host:** Real hostname of the server you connected to.
+ * **inputbox:** Contents of inputbox.
  * **network:** Current network name or None.
  * **nick:** Your current nick name.
+ * **nickserv:** Current networks nickserv password or None.
+ * **modes:** Current channel modes or None.
  * **server:** Current server name (what the server claims to be) or None if you are not connected.
  * **topic:** Current channel topic.
+ * **win_status:** Returns status of window: 'active', 'hidden', or 'normal'.
  * **version:** HexChat version number.
 
 Example:
