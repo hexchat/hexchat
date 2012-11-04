@@ -1051,8 +1051,6 @@ hexchat_get_info (hexchat_plugin *ph, const char *id)
 
 	case 0xdd9b1abd:	/* xchatdir */
 	case 0x9a70daba:	/* hexchatdir */
-		return get_xdir ();
-
 	case 0xe33f6c4a:	/* xchatdirfs */
 	case 0xc1a52107:	/* hexchatdirfs */
 		return get_xdir ();
