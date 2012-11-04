@@ -8,7 +8,6 @@
 #define HAVE_ISO_CODES
 #define PACKAGE_NAME "hexchat"
 #define PACKAGE_VERSION "2.9.3"
-#define XCHAT_REVISION "1521"
 #define HEXCHATLIBDIR "."
 #define HEXCHATSHAREDIR "."
 #define OLD_PERL
