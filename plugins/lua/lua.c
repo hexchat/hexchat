@@ -46,9 +46,12 @@
 #include <errno.h>
 #include <ctype.h>
 
+#include <glib.h>
+
 #ifdef _WIN32
 #include <direct.h>	/* for getcwd */
 #include "../../src/dirent/dirent-win32.h"
+#include "../../src/common/typedef.h"
 #endif
 
 #if !( defined(_WIN32) || defined(LXC_XCHAT_GETTEXT) )

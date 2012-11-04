@@ -23,6 +23,7 @@
 #include <strings.h>
 #endif
 #ifdef WIN32
+#include <io.h>
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
 #else

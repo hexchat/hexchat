@@ -30,6 +30,7 @@ static char RCSID[] = "$Id: tclplugin.c,v 1.65 2012/07/26 20:02:12 mooooooo Exp 
 
 #ifdef WIN32
 #include <windows.h>
+#include "../../src/common/typedef.h"
 #define bzero(mem, sz) memset((mem), 0, (sz))
 #define bcopy(src, dest, count) memmove((dest), (src), (count))
 #else
