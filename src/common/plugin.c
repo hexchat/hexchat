@@ -1043,17 +1043,17 @@ hexchat_get_info (hexchat_plugin *ph, const char *id)
 	/* do the session independant ones first */
 	switch (hash)
 	{
-	case 0x325acab5:	/* libdirfs */
-		return HEXCHATLIBDIR;
+		case 0x325acab5:	/* libdirfs */
+			return HEXCHATLIBDIR;
 
-	case 0x14f51cd8: /* version */
-		return PACKAGE_VERSION;
+		case 0x14f51cd8: /* version */
+			return PACKAGE_VERSION;
 
-	case 0xdd9b1abd:	/* xchatdir */
-	case 0x9a70daba:	/* hexchatdir */
-	case 0xe33f6c4a:	/* xchatdirfs */
-	case 0xc1a52107:	/* hexchatdirfs */
-		return get_xdir ();
+		case 0xdd9b1abd:	/* xchatdir */
+		case 0x9a70daba:	/* hexchatdir */
+		case 0xe33f6c4a:	/* xchatdirfs */
+		case 0xc1a52107:	/* hexchatdirfs */
+			return get_xdir ();
 	}
 
 	sess = ph->context;
