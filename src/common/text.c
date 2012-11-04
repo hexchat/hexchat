@@ -251,7 +251,6 @@ scrollback_load (session *sess)
 {
 	int fh;
 	char *buf;
-	char line_buf[512 * 4];
 	char *text;
 	time_t stamp;
 	int lines;
@@ -534,7 +533,6 @@ log_create_pathname (char *servname, char *channame, char *netname)
 {
 	char fname[384];
 	char fnametime[384];
-	char *fs;
 	struct tm *tm;
 	time_t now;
 

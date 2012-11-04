@@ -621,10 +621,9 @@ convert_with_fallback (const char *str, const char *fallback)
 void
 load_config (void)
 {
-	struct stat st;
 	char *cfg, *sp;
 	const char *username, *realname;
-	int res, val, i, fh;
+	int res, val, i;
 #ifdef WIN32
 	char out[256];
 #endif
