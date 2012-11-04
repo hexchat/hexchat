@@ -148,6 +148,7 @@ static void
 create_msg_dialog (gchar *title, gchar *message)
 {
 	GtkWidget *dialog;
+
 	dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, message);
 	gtk_window_set_title (GTK_WINDOW (dialog), title);
 	gtk_dialog_run (GTK_DIALOG (dialog));
