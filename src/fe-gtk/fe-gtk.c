@@ -161,9 +161,7 @@ fe_args (int argc, char *argv[])
 {
 	GError *error = NULL;
 	GOptionContext *context;
-#ifdef WIN32
 	char *buffer;
-#endif
 
 #ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
