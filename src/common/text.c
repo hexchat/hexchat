@@ -228,7 +228,7 @@ scrollback_save (session *sess, char *text)
 
 	stamp = time (0);
 	if (sizeof (stamp) == 4)	/* gcc will optimize one of these out */
-		buf = g_strdup_printf ("T %d", (int) stamp);
+		buf = g_strdup_printf ("T %d ", (int) stamp);
 	else
 		buf = g_strdup_printf ("T %" G_GINT64_FORMAT " ", (gint64)stamp);
 	write (sess->scrollfd, buf, strlen (buf));
@@ -705,7 +705,7 @@ log_write (session *sess, char *text)
 										 server_get_network (sess->server, FALSE));
 	if (file)
 	{
-		if (access (file, F_OK) != 0)
+		if (g_access (file, F_OK) != 0)
 		{
 			close (sess->logfd);
 			sess->logfd = log_open_file (sess->server->servername, sess->channel,
