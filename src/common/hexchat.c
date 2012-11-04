@@ -952,11 +952,11 @@ enum_windows_impl (HWND current_window, LPARAM lParam)
 int
 main (int argc, char *argv[])
 {
+	int i;
 	int ret;
 
 #ifdef WIN32
 	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of hex_gui_lang and trailing \0 */
-	int i;
 	HANDLE mutex;
 #endif
 
