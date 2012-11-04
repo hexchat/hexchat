@@ -144,7 +144,6 @@ static const GOptionEntry gopt_entries[] =
  {NULL}
 };
 
-#ifdef WIN32
 static void
 create_msg_dialog (gchar *title, gchar *message)
 {
@@ -154,7 +153,6 @@ create_msg_dialog (gchar *title, gchar *message)
 	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);
 }
-#endif
 
 int
 fe_args (int argc, char *argv[])
