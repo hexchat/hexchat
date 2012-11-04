@@ -93,7 +93,7 @@ static char unknown[] = {
 /* don't pollute the filesystem with script files, this only causes misuse of the folders
  * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
 static char sourcedirs[] = {
-    "set files [lsort [glob -nocomplain -directory [hexchatdir] \"/addons/*.tcl\"]]\n"
+    "set files [lsort [glob -nocomplain -directory [configdir] \"/addons/*.tcl\"]]\n"
         "set init [lsearch -glob $files \"*/init.tcl\"]\n"
         "if { $init > 0 } {\n"
         "set initfile [lindex $files $init]\n"
@@ -122,8 +122,7 @@ static char inlinetcl[] = {
 "proc ::server { args } { return [eval [join [list getinfo $args server]]] }\n"
 "proc ::version { args } { return [eval [join [list getinfo $args version]]] }\n"
 "proc ::win_status { args } { return [eval [join [list getinfo $args win_status]]] }\n"
-"proc ::hexchatdir { args } { return [eval [join [list getinfo $args hexchatdir]]] }\n"
-"proc ::hexchatdirfs { args } { return [eval [join [list getinfo $args hexchatdirfs]]] }\n"
+"proc ::configdir { args } { return [eval [join [list getinfo $args configdir]]] }\n"
 
 "proc ::color { {arg {}} } { return \"\\003$arg\" }\n"
 "proc ::bold { } { return \"\\002\" }\n"
@@ -2031,7 +2030,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
     if (len > 4 && strcasecmp(".tcl", word[2] + len - 4) == 0) {
 
-        hexchatdir = hexchat_get_info(ph, "hexchatdir");
+        hexchatdir = hexchat_get_info(ph, "configdir");
 
         Tcl_DStringInit(&ds);
 
@@ -2137,7 +2136,7 @@ static void Tcl_Plugin_Init()
     for (x = 0; x < XC_SIZE; x++)
         xc[x].hook = NULL;
 
-    hexchatdir = hexchat_get_info(ph, "hexchatdir");
+    hexchatdir = hexchat_get_info(ph, "configdir");
 
     if (Tcl_Eval(interp, unknown) == TCL_ERROR) {
         hexchat_printf(ph, "Error sourcing internal 'unknown' (%s)\n", Tcl_GetStringResult(interp));

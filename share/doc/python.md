@@ -157,9 +157,9 @@ are available to be queried:
  * **away:** Away reason or None if you are not away.
  * **channel:** Channel name of the current context.
  * **charset:** Charset in current context.
+ * **configdir:** HexChat config directory e.g.: "~/.config/hexchat".
  * **event_name NAME:** Returns text event string for requested event.
  * **gtkwin_ptr:** Current Gtk Window.
- * **hexchatdir:** HexChat config directory e.g.: "~/.config/hexchat".
  * **host:** Real hostname of the server you connected to.
  * **inputbox:** Contents of inputbox.
  * **network:** Current network name or None.
