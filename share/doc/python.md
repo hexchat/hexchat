@@ -224,13 +224,34 @@ The channels list type gives you access to the channels, queries and
 their servers. The folloing attributes are available in each list item:
 
  * **channel:** Channel or query name.
+ * **chantypes:** Channel types e.g. #!&.
  * **context:** A context object, giving access to that channel/server.
+ * **id:** Unique server id.
+ * **lag:** Latency in milliseconds.
+ * **maxmodes:** Max modes per line.
  * **network:** Network name to which this channel belongs.
+ * **nickprefixes:** Nickname prefixes e.g. @%+.
+ * **nickmodes:** Nickname mode chars e.g. ov.
+ * **queue:** Number of bytes in the send-queue.  
  * **server:** Server name to which this channel belongs.
+ * **users:** Number of users in the channel.
  * **type:** Type of context.
 	* 1: Server
 	* 2: Channel
 	* 3: Dialog
+
+ * **flags:** Bit field of flags:
+    * 0: Connected
+    * 1: Connecting
+    * 2: Away
+    * 3: End of MOTD (Login Complete)
+    * 4: Has WHOX
+    * 5: Has IDMSG
+    * 6: Join/Parts hidden
+    * 7: Unused
+    * 8: Beep on Message
+    * 9: Blink Tray
+    * 10: Blink Task Bar
 
 
 ##### dcc
@@ -266,9 +287,13 @@ following attributes are available in each list item:
 The users list type gives you access to a list of users in the current
 channel. The following attributes are available in each list item:
 
- * **nick:** Nick name.
+ * **away:** Away status.
+ * **lasttalk:** Last time the user was seen talking.
  * **host:** Host name in the form user@host (or None, if not known).
+ * **nick:** Nick name.
  * **prefix:** Prefix character, .e.g: @ or +. Points to a single char.
+ * **realname:** Real name.
+ * **selected:** Selected status in the userlist.
 
 
 ##### ignore
@@ -285,7 +310,7 @@ following attributes are available in each list item:
 	* 4: invite
 	* 5: unignore
 	* 6: nosave
-	* 7:dcc
+	* 7: dcc
 
 
 ### Hook functions
