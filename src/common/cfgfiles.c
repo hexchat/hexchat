@@ -320,7 +320,7 @@ get_xdir (void)
 
 			if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
 			{
-				xdir = ".\\config";
+				xdir = g_strdup (".\\config");
 			}
 			else
 			{
