@@ -1,7 +1,7 @@
 :: run this from a VS x86 command prompt
 @echo off
 
-SET PACKAGE_NAME=win-iconv-0.0.4
+SET PACKAGE_NAME=win-iconv-0.0.6
 
 set ICONV_SRC=%cd%
 set ICONV_DEST=%cd%-x86
