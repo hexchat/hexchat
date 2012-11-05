@@ -808,10 +808,9 @@ Changed in 2.6.1. If _servname_ is NULL, it finds the channel (or query) by the 
 	* **away:** away reason or NULL if you are not away.
 	* **channel:** current channel name.
 	* **charset:** character-set used in the current context.
+	* **configdir:** HexChat config directory, e.g.: `/home/user/.config/hexchat`. This string is encoded in UTF-8.
 	* **event\_text &lt;name>:** text event format string for _name_.
 	* **gtkwin\_ptr:** (GtkWindow \*).
-	* **hexchatdir:** HexChat config directory, e.g.: /home/user/.config/hexchat. This string is encoded in UTF-8, which means you **should** convert it to "locale" encoding before using functions like open() or OpenFile(). For best Unicode support on Linux, convert this string using g\_filename\_from\_utf8 and on Windows convert this string to UTF-16LE (wide) and use OpenFileW() etc.
-	* **hexchatdirfs:** HexChat config directory, e.g.: /home/user/.config/hexchat. This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile(). For real Unicode support on Windows, it's best not to use hexchatdirfs, but hexchatdir instead.
 	* **host:** real hostname of the server you connected to.
 	* **inputbox:** the input-box contents, what the user has typed.
 	* **libdirfs:** library directory. e.g. /usr/lib/hexchat. The same directory used for auto-loading plugins. This string isn't necessarily UTF-8, but local file system encoding.

@@ -56,8 +56,6 @@ AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
 AH_VERBATIM([socklen_t],[#undef socklen_t])
 AH_VERBATIM([USE_DBUS],[#undef USE_DBUS])
 
-AC_DEFINE([XCHAT_REVISION],["1521"],[XChat SVN Revision])
-
 AC_PATH_PROG(sedpath, sed)
 if test "_$sedpath" = _; then
 	AC_MSG_ERROR(Cannot find sed: I need it!)

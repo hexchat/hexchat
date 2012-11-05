@@ -132,7 +132,7 @@ static const GOptionEntry gopt_entries[] =
  {"no-auto",	'a', 0, G_OPTION_ARG_NONE,	&arg_dont_autoconnect, N_("Don't auto connect to servers"), NULL},
  {"cfgdir",	'd', 0, G_OPTION_ARG_STRING,	&arg_cfgdir, N_("Use a different config directory"), "PATH"},
  {"no-plugins",	'n', 0, G_OPTION_ARG_NONE,	&arg_skip_plugins, N_("Don't auto load any plugins"), NULL},
- {"plugindir",	'p', 0, G_OPTION_ARG_NONE,	&arg_show_autoload, N_("Show plugin auto-load directory"), NULL},
+ {"plugindir",	'p', 0, G_OPTION_ARG_NONE,	&arg_show_autoload, N_("Show plugin/script auto-load directory"), NULL},
  {"configdir",	'u', 0, G_OPTION_ARG_NONE,	&arg_show_config, N_("Show user config directory"), NULL},
  {"url",	 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
 #ifndef WIN32	/* uses DBUS */
@@ -144,26 +144,30 @@ static const GOptionEntry gopt_entries[] =
  {NULL}
 };
 
-#ifdef WIN32
 static void
 create_msg_dialog (gchar *title, gchar *message)
 {
 	GtkWidget *dialog;
+
 	dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, message);
 	gtk_window_set_title (GTK_WINDOW (dialog), title);
+
+/* On Win32 we automatically have the icon. If we try to load it explicitly, it will look ugly for some reason. */
+#ifndef WIN32
+	pixmaps_init ();
+	gtk_window_set_icon (GTK_WINDOW (dialog), pix_hexchat);
+#endif
+
 	gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);
 }
-#endif
 
 int
 fe_args (int argc, char *argv[])
 {
 	GError *error = NULL;
 	GOptionContext *context;
-#ifdef WIN32
 	char *buffer;
-#endif
 
 #ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -223,53 +227,31 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_version)
 	{
-#ifdef WIN32
 		buffer = g_strdup_printf (DISPLAY_NAME " " PACKAGE_VERSION "\n");
 		gtk_init (&argc, &argv);
 		create_msg_dialog ("Version Information", buffer);
 		g_free (buffer);
-#else
-		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
-#endif
+
 		return 0;
 	}
 
 	if (arg_show_autoload)
 	{
-#ifdef WIN32
-		/* see the chdir() below */
-		char *sl, *exe = strdup (argv[0]);
-		sl = strrchr (exe, '\\');
-		if (sl)
-		{
-			*sl = 0;
-			buffer = g_strdup_printf ("%s\\plugins\n", exe);
-			gtk_init (&argc, &argv);
-			create_msg_dialog ("Plugin Auto-load Directory", buffer);
-		}
-		else
-		{
-			buffer = g_strdup(".\\plugins\n");
-			gtk_init (&argc, &argv);
-			create_msg_dialog ("Plugin Auto-load Directory", buffer);
-		}
+		buffer = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "addons\n", get_xdir ());
+		gtk_init (&argc, &argv);
+		create_msg_dialog ("Plugin/Script Auto-load Directory", buffer);
 		g_free (buffer);
-#else
-		printf ("%s\n", HEXCHATLIBDIR"/plugins");
-#endif
+
 		return 0;
 	}
 
 	if (arg_show_config)
 	{
-#ifdef WIN32
-		buffer = g_strdup_printf ("%s\n", get_xdir ());
+		buffer = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "\n", get_xdir ());
 		gtk_init (&argc, &argv);
 		create_msg_dialog ("User Config Directory", buffer);
 		g_free (buffer);
-#else
-		printf ("%s\n", get_xdir ());
-#endif
+
 		return 0;
 	}
 
@@ -282,7 +264,7 @@ fe_args (int argc, char *argv[])
 		char *tmp = strdup (argv[0]);
 		char *sl;
 
-		sl = strrchr (tmp, '\\');
+		sl = strrchr (tmp, G_DIR_SEPARATOR);
 		if (sl)
 		{
 			*sl = 0;
@@ -291,18 +273,6 @@ fe_args (int argc, char *argv[])
 		free (tmp);
 	}
 #endif
-
-	if (arg_cfgdir)
-	{
-		if (xdir)
-			g_free (xdir);
-		xdir = strdup (arg_cfgdir);
-		if (xdir[strlen (xdir) - 1] == '/')
-		{
-			xdir[strlen (xdir) - 1] = 0;
-		}
-		g_free (arg_cfgdir);
-	}
 
 	gtk_init (&argc, &argv);
 

@@ -144,7 +144,7 @@ perl_auto_load (void *unused)
 #endif
 
 	/* get the dir in local filesystem encoding (what opendir() expects!) */
-	xdir = hexchat_get_info (ph, "hexchatdirfs");
+	xdir = hexchat_get_info (ph, "configdir");
 
 	/* don't pollute the filesystem with script files, this only causes misuse of the folders
 	 * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
@@ -794,7 +794,8 @@ XS (XS_Xchat_get_info)
 			
 			if (
 				!strncmp ("libdirfs", SvPV_nolen (id), 8) ||
-				!strncmp ("hexchatdirfs", SvPV_nolen (id), 10)
+				!strncmp ("xchatdirfs", SvPV_nolen (id), 10) ||
+				!strncmp ("configdir", SvPV_nolen (id), 9)
 			) {
 				XSRETURN_PV (RETVAL);
 			} else {

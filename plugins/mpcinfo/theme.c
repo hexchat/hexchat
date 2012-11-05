@@ -87,7 +87,7 @@ void loadThemes(){
 	FILE *f;
 	hexchat_print(ph,"loading themes\n");
     hDir=(char*)calloc(1024,sizeof(char));
-    strcpy(hDir,hexchat_get_info(ph,"hexchatdirfs"));
+    strcpy(hDir,hexchat_get_info(ph,"configdir"));
     hFile=str3cat(hDir,"\\","mpcInfo.theme.txt");
     f = fopen(hFile,"r");
     if(f==NULL)

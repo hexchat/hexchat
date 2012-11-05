@@ -362,8 +362,16 @@ Returns true on success, false on failure.
       <td>charset</td>
       <td>character-set used in the current context</td>
       <td>CHARSET</td>
-   </tr>   <tr>
-      <td>event\_text &lt;Event Name&gt;</td> <td>text event format string for &lt;Event name&gt;<br />
+   </tr>
+<tr>
+   <td>configdir</td> <td>HexChat config directory encoded in UTF-8. Examples:<br />
+                     /home/user/.config/hexchat<br />
+                     C:\Users\user\Appdata\Roaming\HexChat
+                     </td>
+   <td></td>
+</tr>
+<tr>
+      <td>event_text &lt;Event Name&gt;</td> <td>text event format string for &lt;Event name&gt;<br />
       Example:
    <div class="example synNormal"><div class='line_number'>
 <div>1</div>
@@ -441,17 +449,6 @@ Returns true on success, false on failure.
   <td>gtkwin_ptr</td>
   <td>similar to win_ptr except it will always be a GtkWindow *</td>
   <td></td>
-</tr>
-<tr>
-   <td>hexchatdir</td> <td>HexChat config directory encoded in UTF-8<br />
-                     examples:<br />
-                     /home/user/.config/hexchat<br />
-                     C:\Users\user\Appdata\Roaming\HexChat
-                     </td>
-   <td></td>
-</tr><tr>
-   <td>hexchatdirfs</td>  <td>same as hexchatdir except encoded in the locale file system encoding</td>
-   <td></td>
 </tr>
 </table>
 

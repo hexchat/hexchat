@@ -6,7 +6,7 @@ my $last_modified;
 my @servers;
 
 sub get {
-	my $server_file = Xchat::get_info( "hexchatdirfs" ) . "/servlist_.conf";
+	my $server_file = Xchat::get_info( "configdir" ) . "/servlist_.conf";
 
 	# recreate the list only if the server list file has changed
 	if( -f $server_file && 
