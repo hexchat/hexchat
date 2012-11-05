@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-11-04 21:54+0100\n"
-"PO-Revision-Date: 2012-11-04 21:03+0000\n"
+"PO-Revision-Date: 2012-11-05 00:00+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/hexchat/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -1058,7 +1058,7 @@ msgstr ""
 
 #: src/common/textevents.h:240
 msgid "%C24*%O$tYou have been invited to %C22$1%O by %C18$2%O (%C29$3%O)"
-msgstr ""
+msgstr "%C24*%O$t%C18$2%O meghívott téged a %C22$1%O szobába (%C29$3%O)"
 
 #: src/common/textevents.h:243
 #, c-format
@@ -1067,7 +1067,7 @@ msgstr "%C23*$t$1 ($3) belépett"
 
 #: src/common/textevents.h:246
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Requires keyword%O)"
-msgstr ""
+msgstr "%C20*%O$tNem tudok a %C22$1%C szobába belépni (%C20kulcsszó szükséges%O)"
 
 #: src/common/textevents.h:249
 msgid "%C22*%O$t%C26$1%C has kicked %C18$2%C from %C22$3%C (%C24$4%O)"
@@ -1075,7 +1075,7 @@ msgstr ""
 
 #: src/common/textevents.h:252
 msgid "%C19*%O$t%C19You have been killed by %C26$1%C (%C20$2%O)"
-msgstr ""
+msgstr "%C19*%O$t%C19%C26$1%C legyilkolt téged (%C20$2%O)"
 
 #: src/common/textevents.h:261
 msgid "%C29*%O$t%C29MOTD Skipped%O"
@@ -1083,7 +1083,7 @@ msgstr "%C29*%O$t%C29MOTD kihagyva%O"
 
 #: src/common/textevents.h:264
 msgid "%C23*%O$t%C28$1%C already in use. Retrying with %C18$2%O..."
-msgstr ""
+msgstr "%C23*%O$t%C28$1%C már foglalt. Újrapróbálom %C18$2%O néven..."
 
 #: src/common/textevents.h:267
 msgid "%C20*%O$tNickname already in use. Use /NICK to try another."
@@ -3401,14 +3401,14 @@ msgstr "Hiba a billentyű-konfigurációs fájl megnyitásakor \n"
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s"
-msgstr "Ismeretlen billentyű (%s) a billentyűkombinációs fájlban\nBetöltés sikertelen, kérlek javítsd: %s"
+msgstr "Ismeretlen billentyű (%s) a billentyűkombinációs fájlban\nBetöltés sikertelen, kérlek javítsd a %s fájlt"
 
 #: src/fe-gtk/fkeys.c:1060
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s"
-msgstr "Ismeretlen művelet (%s) a billentyűkombinációs fájlban\nBetöltés sikertelen, kérlek javítsd: %s"
+msgstr "Ismeretlen művelet (%s) a billentyűkombinációs fájlban\nBetöltés sikertelen, kérlek javítsd a %s fájlt"
 
 #: src/fe-gtk/fkeys.c:1081
 #, c-format
@@ -3417,14 +3417,14 @@ msgid ""
 "%s\n"
 "\n"
 "Load aborted, Please fix %s"
-msgstr "Adatsort vártam (Dx{:|!} kezdettel) de ezt kaptam:\n%s\nBetöltés sikertelen, kérlek javítsd: %s"
+msgstr "Adatsort vártam (Dx{:|!} kezdettel) de ezt kaptam:\n%s\nBetöltés sikertelen, kérlek javítsd a %s fájlt"
 
 #: src/fe-gtk/fkeys.c:1150
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s"
-msgstr "A billentyűkombinációs fájl sérült, betöltés sikertelen\nKérlek javítsd: %s"
+msgstr "A billentyűkombinációs fájl sérült, betöltés sikertelen\nKérlek javítsd a %s fájlt"
 
 #: src/fe-gtk/gtkutil.c:139
 msgid "Cannot write to that file."
