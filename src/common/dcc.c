@@ -1829,11 +1829,9 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		dcc->fp = g_open (file, OFLAGS | O_RDONLY, 0);
 		if (dcc->fp != -1)
 		{
-			g_free (file);
 			if (passive || dcc_listen_init (dcc, sess))
 			{
 				char havespaces = 0;
-				file = dcc->file;
 				while (*file)
 				{
 					if (*file == ' ')
@@ -1857,11 +1855,12 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 				{
 					dcc->pasvid = new_id();
 					snprintf (outbuf, sizeof (outbuf), (havespaces) ?
-							"DCC SEND \"%s\" 199 0 %"DCC_SFMT" %d" :
-							"DCC SEND %s 199 0 %"DCC_SFMT" %d",
+							"DCC SEND \"%s\" 199 0 %" DCC_SFMT " %d" :
+							"DCC SEND %s 199 0 %" DCC_SFMT " %d",
 							file_part (dcc->file),
 							dcc->size, dcc->pasvid);
-				} else
+				}
+				else
 				{
 					snprintf (outbuf, sizeof (outbuf), (havespaces) ?
 							"DCC SEND \"%s\" %u %d %"DCC_SFMT :
@@ -1883,7 +1882,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 	PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
 	PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
 xit:
-	dcc_close (dcc, 0, TRUE);
+	dcc_close (dcc, 0, TRUE);		/* dcc_close will free dcc->file */
 }
 
 static struct DCC *
