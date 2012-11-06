@@ -62,7 +62,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-	  <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+	  <DisableSpecificWarnings>4244;4267;4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -84,7 +84,7 @@
       <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_WINDOWS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-	  <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+	  <DisableSpecificWarnings>4244;4267;4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
