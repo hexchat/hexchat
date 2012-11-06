@@ -504,7 +504,7 @@ mg_windowstate_cb (GtkWindow *wid, GdkEventWindowState *event, gpointer userdata
 
 	if ((event->changed_mask & GDK_WINDOW_STATE_ICONIFIED) &&
 		 (event->new_window_state & GDK_WINDOW_STATE_ICONIFIED) &&
-		 (prefs.hex_gui_tray_flags & 4))
+		 (prefs.hex_gui_tray_onminimize))
 	{
 		tray_toggle_visibility (TRUE);
 		gtk_window_deiconify (wid);
@@ -1325,7 +1325,7 @@ mg_open_quit_dialog (gboolean minimize_button)
 	case 1: /* minimize to tray */
 		if (GTK_TOGGLE_BUTTON (checkbutton1)->active)
 		{
-			prefs.hex_gui_tray_flags |= 1;
+			prefs.hex_gui_tray_onexit = 1;
 			/*prefs.hex_gui_quit_dialog = 0;*/
 		}
 		/* force tray icon ON, if not already */
@@ -3074,7 +3074,7 @@ mg_tabwindow_de_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	GSList *list;
 	session *sess;
 
-	if ((prefs.hex_gui_tray_flags & 1) && tray_toggle_visibility (FALSE))
+	if ((prefs.hex_gui_tray_onexit) && tray_toggle_visibility (FALSE))
 		return TRUE;
 
 	/* check for remaining toplevel windows */

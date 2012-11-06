@@ -152,6 +152,8 @@ struct hexchatprefs
 	unsigned int hex_gui_tab_utils;
 	unsigned int hex_gui_topicbar;
 	unsigned int hex_gui_tray;
+	unsigned int hex_gui_tray_onexit;
+	unsigned int hex_gui_tray_onminimize;
 	unsigned int hex_gui_ulist_buttons;
 	unsigned int hex_gui_ulist_count;
 	unsigned int hex_gui_ulist_hide;
@@ -168,6 +170,7 @@ struct hexchatprefs
 	unsigned int hex_input_balloon_chans;
 	unsigned int hex_input_balloon_hilight;
 	unsigned int hex_input_balloon_priv;
+	unsigned int hex_input_balloon_trayonly;
 	unsigned int hex_input_beep_chans;
 	unsigned int hex_input_beep_hilight;
 	unsigned int hex_input_beep_priv;
@@ -259,7 +262,6 @@ struct hexchatprefs
 	int hex_gui_tab_small;
 	int hex_gui_tab_trunc;
 	int hex_gui_throttlemeter;
-	int hex_gui_tray_flags;
 	int hex_gui_ulist_pos;
 	int hex_gui_ulist_sort;
 	int hex_gui_url_mod;
