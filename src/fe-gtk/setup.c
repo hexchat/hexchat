@@ -226,7 +226,8 @@ static const setting inputbox_settings[] =
 
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
 	{ST_TOGGLE, N_("Automatic nick completion (without TAB key)"), P_OFFINTNL(hex_completion_auto),
-					0,0,0},
+					0,0,0},	
+	{ST_TOGGLE,     N_("Append space after completing nick"), P_OFFINTNL(hex_completion_space), 0, 0, 0},
 	{ST_ENTRY,	N_("Nick completion suffix:"), P_OFFSETNL(hex_completion_suffix),0,0,sizeof prefs.hex_completion_suffix},
 	{ST_MENU,	N_("Nick completion sorted:"), P_OFFINTNL(hex_completion_sort), 0, tabcompmenu, 0},
 
