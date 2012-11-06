@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-11-04 21:54+0100\n"
-"PO-Revision-Date: 2012-11-05 00:00+0000\n"
+"PO-Revision-Date: 2012-11-06 17:20+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/hexchat/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -890,15 +890,15 @@ msgstr "%C24*%O$tCTCP %C24$1%C érkezett %C18$2%O felől"
 
 #: src/common/textevents.h:117
 msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
-msgstr ""
+msgstr "%C24*%C$tCTCP %C24$1%C érkezett %C18$2%C felől (%C22$3%C szobában)%O"
 
 #: src/common/textevents.h:123
 msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%O"
-msgstr ""
+msgstr "%C24*%O$tCTCP Sound %C24$1%C érkezett %C18$2%O felől"
 
 #: src/common/textevents.h:126
 msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%C (to %C22$3%O)"
-msgstr ""
+msgstr "%C24*%O$tCTCP Sound %C24$1%C érkezett %C18$2%C felől (%C22$3%O szobában)"
 
 #: src/common/textevents.h:129
 msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
@@ -907,11 +907,11 @@ msgstr "%C23*%O$t%C18$1%O DCC CHAT-je megszakítva."
 #: src/common/textevents.h:132
 msgid ""
 "%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
-msgstr ""
+msgstr "%C24*%OLétrejött a DCC CHAT kapcsolat $t%C18$1%C felé %C30[%C24$2%C30]%O"
 
 #: src/common/textevents.h:135
 msgid "%C20*%O$tDCC CHAT to %C18$1%O lost (%C20$4%O)"
-msgstr ""
+msgstr "%C20*%O$tA %C18$1%O felé nyitott DCC CHAT megszakadt (%C20$4%O)"
 
 #: src/common/textevents.h:138
 msgid "%C24*%O$tReceived a DCC CHAT offer from %C18$1%O"
@@ -927,7 +927,7 @@ msgstr "%C24*%O$tMár kezdeményeztél CHAT-et %C18$1%O felé"
 
 #: src/common/textevents.h:147
 msgid "%C20*%O$tDCC $1 connect attempt to %C18$2%O failed (%C20$3%O)"
-msgstr ""
+msgstr "%C20*%OA kezdeményezett $tDCC $1 kapcsolódási kísérlet kudarcba fulladt %C18$2%O felé (%C20$3%O)"
 
 #: src/common/textevents.h:150
 msgid "%C23*%O$tReceived '%C23$1%C' from %C18$2%O"
@@ -942,11 +942,11 @@ msgstr "%C16,17 Típus  -Nak/-Tól    Állapot  Méret    Poz     Fájl         
 msgid ""
 "%C20*%O$tReceived a malformed DCC request from "
 "%C18$1%O.%010%C23*%O$tContents of packet: %C23$2%O"
-msgstr ""
+msgstr "%C20*%O$tÉrvénytelen formátumú DCC kérés érkezett %C18$1%O felől.%010%C23*%O$tA csomag tartalma: %C23$2%O"
 
 #: src/common/textevents.h:159
 msgid "%C24*%O$tOffering '%C24$1%O' to %C18$2%O"
-msgstr ""
+msgstr "%C24*%O$t'%C24$1%O' felajánlása %C18$2%O részére"
 
 #: src/common/textevents.h:162
 msgid "%C23*%O$tNo such DCC offer."
@@ -954,7 +954,7 @@ msgstr "%C23*%O$tNincs ilyen DCC ajánlat."
 
 #: src/common/textevents.h:165
 msgid "%C23*%O$tDCC RECV '%C23$2%O' to %C18$1%O aborted."
-msgstr ""
+msgstr "%C23*%O$t%C18$1%O felé küldött DCC RECV '%C23$2%O' megszakítva."
 
 #: src/common/textevents.h:168
 msgid ""
@@ -964,21 +964,21 @@ msgstr ""
 #: src/common/textevents.h:171
 msgid ""
 "%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
-msgstr ""
+msgstr "%C24*%O$tA DCC RECV kapcsolat létrejött %C18$1 felé %C30[%O%C24$2%C30]%O"
 
 #: src/common/textevents.h:174
 msgid "%C20*%O$tDCC RECV '%C23$1%O' from %C18$3%O failed (%C20$4%O)"
-msgstr ""
+msgstr "%C20*%O$t%C18$3%O felől érkező DCC RECV '%C23$1%O' sikertelen (%C20$4%O)"
 
 #: src/common/textevents.h:177
 msgid "%C20*%O$tDCC RECV: Cannot open '%C23$1%C' for writing (%C20$2%O)"
-msgstr ""
+msgstr "%C20*%O$tDCC RECV: '%C23$1%C' írása sikertelen (%C20$2%O)"
 
 #: src/common/textevents.h:180
 msgid ""
 "%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' "
 "instead."
-msgstr ""
+msgstr "%C23*%O$tMár létezik '%C24$1%C' nevű fájl, mentés '%C23$2%O' néven."
 
 #: src/common/textevents.h:183
 msgid "%C24*%O$t%C18$1%C has requested to resume '%C23$2%C' from %C24$3%O."
@@ -986,7 +986,7 @@ msgstr ""
 
 #: src/common/textevents.h:186
 msgid "%C23*%O$tDCC SEND '%C23$2%C' to %C18$1%O aborted."
-msgstr ""
+msgstr "%C23*%O$t%C18$1%O felé küldött DCC SEND '%C23$2%C' megszakítva."
 
 #: src/common/textevents.h:189
 msgid ""
@@ -996,7 +996,7 @@ msgstr ""
 #: src/common/textevents.h:192
 msgid ""
 "%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
-msgstr ""
+msgstr "%C24*%O$tDCC SEND kapcsolat kiépítve %C18$1 felé %C30[%O%C24$2%C30]%O"
 
 #: src/common/textevents.h:195
 msgid "%C20*%O$tDCC SEND '%C23$1%C' to %C18$2%C failed (%C20$3%O)"
@@ -1004,7 +1004,7 @@ msgstr ""
 
 #: src/common/textevents.h:198
 msgid "%C24*%O$t%C18$1%C has offered '%C23$2%C' (%C24$3%O bytes)"
-msgstr ""
+msgstr "%C24*%O$t%C18$1%C felajánlotta: '%C23$2%C' (%C24$3%O bájt)"
 
 #: src/common/textevents.h:201
 msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O stalled, aborting."
@@ -1054,7 +1054,7 @@ msgstr "%OA mellőzési lista üres."
 
 #: src/common/textevents.h:237
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Channel is invite only%O)"
-msgstr ""
+msgstr "%C20*%O$t%C22$1%C szobához csatlakozás sikertelen (%C20Meghívás szükséges%O)"
 
 #: src/common/textevents.h:240
 msgid "%C24*%O$tYou have been invited to %C22$1%O by %C18$2%O (%C29$3%O)"
@@ -1129,11 +1129,11 @@ msgstr "%C24*%O$t%C18$1%C ($2) kilépett (%C24$4%O)"
 
 #: src/common/textevents.h:306
 msgid "%C24*%O$tPing reply from%C18 $1%C: %C24$2%O second(s)"
-msgstr ""
+msgstr "%C24*%O$tPing válasz %C18 $1%C felől: %C24$2%O másodperc"
 
 #: src/common/textevents.h:309
 msgid "%C20*%O$tNo ping reply for %C24$1%O seconds, disconnecting."
-msgstr ""
+msgstr "%C20*%O$tNem érkezett ping válasz %C24$1%O másodpercig, szétkapcsolódás."
 
 #: src/common/textevents.h:324
 msgid "%C24*%O$tA process is already running"
@@ -1146,11 +1146,11 @@ msgstr "%C24*$t$1 kijelentkezett ($2)"
 
 #: src/common/textevents.h:330
 msgid "%C24*%O$t%C26$1%C sets modes %C30[%C24$2%C30]%O"
-msgstr ""
+msgstr "%C24*%O$t%C26$1%C beállítja a módokat %C30[%C24$2%C30]%O"
 
 #: src/common/textevents.h:333
 msgid "%O-%C29$1/Wallops%O-$t$2"
-msgstr ""
+msgstr "%O-%C29$1/Wallops%O-$t$2"
 
 #: src/common/textevents.h:336
 msgid "%C24*%O$tLooking up IP number for %C18$1%O..."
@@ -1182,7 +1182,7 @@ msgstr "%C22*%O$t%C26$1%C megváltoztatta a csatorna témáját erre: $2%O"
 
 #: src/common/textevents.h:372
 msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
-msgstr ""
+msgstr "%C22*%O$t%C22$1%C témája beállítva %C26$2%C által (%C24$3%O)"
 
 #: src/common/textevents.h:375
 msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
@@ -1190,7 +1190,7 @@ msgstr "%C20*%O$tIsmeretlen gép. Talán elírtad?"
 
 #: src/common/textevents.h:378
 msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
-msgstr ""
+msgstr "%C20*%O$tSikertelen a csatlakozás %C22$1%C szobához (%C20Túllépett létszámkorlát%O)"
 
 #: src/common/textevents.h:381
 msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
@@ -1206,16 +1206,16 @@ msgstr "%C23*%O$t%C28[%C18$1%C28] %OWHOIS lista vége."
 
 #: src/common/textevents.h:399
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O"
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28]%O %C23$2%O óta tétlen"
 
 #: src/common/textevents.h:402
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28]%O %C23$2%O óta tétlen, belépett: %C23$3%O"
 
 #: src/common/textevents.h:408
 msgid ""
 "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28]%O Valódi gépnév: %C23$2%O, Valódi IP: %C30[%C23$3%C30]%O"
 
 #: src/common/textevents.h:417
 msgid "%C19*%O$tNow talking on %C22$2%O"
