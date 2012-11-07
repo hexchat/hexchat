@@ -381,6 +381,7 @@ const struct prefs vars[] =
 	{"completion_amount", P_OFFINT (hex_completion_amount), TYPE_INT},
 	{"completion_auto", P_OFFINT (hex_completion_auto), TYPE_BOOL},
 	{"completion_sort", P_OFFINT (hex_completion_sort), TYPE_INT},
+	{"completion_space", P_OFFINT (hex_completion_space), TYPE_BOOL},
 	{"completion_suffix", P_OFFSET (hex_completion_suffix), TYPE_STR},
 
 	{"dcc_auto_chat", P_OFFINT (hex_dcc_auto_chat), TYPE_BOOL},
@@ -641,6 +642,7 @@ load_config (void)
 	/* BOOLEANS */
 	prefs.hex_away_show_once = 1;
 	prefs.hex_away_track = 1;
+	prefs.hex_completion_space = 1;
 	prefs.hex_dcc_auto_resume = 1;
 #ifndef WIN32
 	prefs.hex_dcc_fast_send = 1;

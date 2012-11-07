@@ -119,6 +119,7 @@ struct hexchatprefs
 	unsigned int hex_away_show_once;
 	unsigned int hex_away_track;
 	unsigned int hex_completion_auto;
+	unsigned int hex_completion_space;
 	unsigned int hex_dcc_auto_chat;
 	unsigned int hex_dcc_auto_resume;
 	unsigned int hex_dcc_fast_send;
