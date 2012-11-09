@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([HexChat],[2.9.3],[http://www.hexchat.org/],[hexchat])
+AC_INIT([HexChat],[2.9.3],[https://github.com/hexchat/hexchat/issues],[hexchat][http://www.hexchat.org/])
 
 AC_PREREQ([2.60])
 AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
