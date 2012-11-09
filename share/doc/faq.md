@@ -305,6 +305,13 @@ team via the web interface. Approvals are done manually so it might take a few d
 for you to be approved. Also bear in mind that the email address with which you
 register on Transifex will be visible in the translation files.
 
+If you want to test your translation in action:
+
+ * Download your translation from Transifex
+ * Open the downloaded _.po_ file with [Poedit](http://www.poedit.net/)
+ * Simply press _Save_ in Poedit, which causes it to generate a _.mo_ file next to the _.po_ file
+ * Copy the generated _.mo_ file to _HexChat \ locale \ &lt;language code> \ LC\_MESSAGES \ hexchat.mo_
+ * Restart HexChat
 
 ***
 
