@@ -83,103 +83,103 @@ dnl ** configure switches ***********************************************
 dnl *********************************************************************
 
 AC_ARG_ENABLE(socks,
-[  --enable-socks          link with SOCKS5 library (default: no)],
+	[AS_HELP_STRING([--enable-socks],[link with SOCKS5 library (default: no)])],
         socks=$enableval, socks=no)
 
 AC_ARG_ENABLE(ipv6,
-[  --enable-ipv6           enable IPv6 (default: no)],
+	[AS_HELP_STRING([--enable-ipv6],[enable IPv6 (default: no)])],
         ipv6=$enableval, ipv6=no)
 
 AC_ARG_ENABLE(xft,
-[  --enable-xft            enable use of Xft directly (default: no)],
+	[AS_HELP_STRING([--enable-xft],[enable use of Xft directly (default: no)])],
         xft=$enableval, xft=no)
 
 AC_ARG_ENABLE(openssl,
-[  --enable-openssl[=PATH]   enable use of openSSL],
+	[AS_HELP_STRING([--enable-openssl[=PATH]],[enable use of openSSL])],
         openssl=$enableval, openssl=yes)
 
 AC_ARG_ENABLE(gtkfe,
-[  --disable-gtkfe         disable building gtk frontend],
+	[AS_HELP_STRING([--disable-gtkfe],[disable building gtk frontend])],
         gtkfe=$enableval, gtkfe=yes)
 
 AC_ARG_ENABLE(textfe,
-[  --enable-textfe         build the text frontend (default: no)],
+	[AS_HELP_STRING([--enable-textfe],[build the text frontend (default: no)])],
         textfe=$enableval, textfe=no)
 
 dnl AC_ARG_ENABLE(gnome,
-dnl [  --disable-gnome         disable use of gnome],
+dnl 	[AS_HELP_STRING([--disable-gnome],[disable use of gnome])],
 dnl        gnome=$enableval, gnome=yes)
 
 AC_ARG_ENABLE(xlib,
-[  --disable-xlib          disable use of xlib (for non X11 systems)],
+	[AS_HELP_STRING([--disable-xlib],[disable use of xlib (for non X11 systems)])],
         xlib=$enableval, xlib=yes)
 
 AC_ARG_ENABLE(python,
-[  --disable-python        don't build the python plugin],
+	[AS_HELP_STRING([--disable-python],[don't build the python plugin])],
         python=$enableval, python=yes)
 
 AC_ARG_ENABLE(perl,
-[  --disable-perl          don't build the perl plugin],
+	[AS_HELP_STRING([--disable-perl],[don't build the perl plugin])],
         perl=$enableval, perl=yes)
 
 AC_ARG_ENABLE(perl_old,
-[  --disable-perl_old      no backwards compatibility for perl plugin],
+	[AS_HELP_STRING([--disable-perl_old],[no backwards compatibility for perl plugin])],
         perl_old=$enableval, perl_old=yes)
 
 AC_ARG_ENABLE(tcl,
-[  --enable-tcl[=PATH]       directory with Tcl config file: tclConfig.sh],
+	[AS_HELP_STRING([--enable-tcl[=PATH]],[directory with Tcl config file: tclConfig.sh])],
         tcl=$enableval, tcl=yes)
 
 AC_ARG_ENABLE(plugin,
-[  --disable-plugin        disable plugin support],
+	[AS_HELP_STRING([--disable-plugin],[disable plugin support])],
         plugin=$enableval, plugin=yes)
 
 AC_ARG_ENABLE(checksum,
-[  --disable-checksum      disable the Checksum plugin],
+	[AS_HELP_STRING([--disable-checksum],[disable the Checksum plugin])],
         checksum=$enableval, checksum=yes)
 
 AC_ARG_ENABLE(doat,
-[  --disable-doat          disable the Do At plugin],
+	[AS_HELP_STRING([--disable-doat],[disable the Do At plugin])],
         doat=$enableval, doat=yes)
 
 AC_ARG_ENABLE(fishlim,
-[  --disable-fishlim       disable the FiSHLiM plugin],
+	[AS_HELP_STRING([--disable-fishlim],[disable the FiSHLiM plugin])],
         fishlim=$enableval, fishlim=yes)
 
 dnl AC_ARG_ENABLE(sasl,
-dnl [  --disable-sasl          disable the SASL plugin],
+dnl 	[AS_HELP_STRING([--disable-sasl],[disable the SASL plugin])],
 dnl         sasl=$enableval, sasl=yes)
 
 AC_ARG_ENABLE(sysinfo,
-[  --disable-sysinfo       disable the SysInfo plugin],
+	[AS_HELP_STRING([--disable-sysinfo],[disable the SysInfo plugin])],
         sysinfo=$enableval, sysinfo=yes)
 
 AC_ARG_ENABLE(dbus,
-[  --disable-dbus          disable DBUS support],
+	[AS_HELP_STRING([--disable-dbus],[disable DBUS support])],
         dbus=$enableval, dbus=yes)
 
 AC_ARG_ENABLE(libnotify,
-[  --disable-libnotify     disable libnotify support],
+	[AS_HELP_STRING([--disable-libnotify],[disable libnotify support])],
         libnotify=$enableval, libnotify=yes)
 
 AC_ARG_ENABLE(mmx,
-[  --disable-mmx           disable MMX assembly routines],
+	[AS_HELP_STRING([--disable-mmx],[disable MMX assembly routines])],
         mmx=$enableval, mmx=yes)
 
 AC_ARG_ENABLE(shm,
-[  --enable-shm            enable use of XShm for fast tinting (default: no)],
+	[AS_HELP_STRING([--enable-shm],[enable use of XShm for fast tinting (default: no)])],
         shm=$enableval, shm=no)
 
 AC_ARG_ENABLE(spell,
-[  --enable-spell=type     enable spelling type: none static libsexy gtkspell],
+	[AS_HELP_STRING([--enable-spell=type],[enable spelling type: none static libsexy gtkspell])],
 		  spell=$enableval, spell=static)
 
 AC_ARG_ENABLE(ntlm,
-[  --enable-ntlm           enable Microsoft's NTLM auth (libntlm) library support (default: no)],
+	[AS_HELP_STRING([--enable-ntlm],[enable Microsoft's NTLM auth (libntlm) library support (default: no)])],
 	ntlm=$enableval, ntlm=no)
 
 AC_ARG_ENABLE(libproxy,
-[  --disable-libproxy      disable libproxy support (default: auto)],
+	[AS_HELP_STRING([--disable-libproxy],[disable libproxy support (default: auto)])],
         libproxy=$enableval, libproxy=auto)
 
 
