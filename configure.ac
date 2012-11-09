@@ -9,7 +9,9 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE([1.9 dist-bzip2 subdir-objects no-define foreign])
+AM_INIT_AUTOMAKE([1.11 dist-bzip2 subdir-objects no-define foreign])
+
+AM_SILENT_RULES([yes])
 
 AC_USE_SYSTEM_EXTENSIONS
 AM_MAINTAINER_MODE
