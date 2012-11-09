@@ -11,6 +11,8 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([1.9 dist-bzip2 subdir-objects no-define foreign])
 
+AM_SILENT_RULES([yes])
+
 AC_USE_SYSTEM_EXTENSIONS
 AM_MAINTAINER_MODE
 AC_PROG_CC
