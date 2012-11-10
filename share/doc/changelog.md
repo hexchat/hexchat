@@ -1,5 +1,48 @@
 # HexChat ChangeLog
 
+
+## 2.9.4 (2012-11-10)
+
+ * fix alerts when omit alerts in away option is set
+ * fix dialog icon in userlist popup
+ * fix opening links on Mac
+ * fix default network in the Network List
+ * fix initial folder in file dialogs
+ * fix positioning the nick change dialog
+ * fix error message for busy servers
+ * fix filename encoding errors
+ * fix Fedora spec file
+ * fix Raw Log content being impossible to copy when auto-copy is disabled
+ * fix rough icon rendering in most windows on Windows
+ * fix config folder when specified with -d argument
+ * add built-in support for SASL authentication via CAP
+ * add support for identify-msg/multi-prefix server capabilities
+ * add text events for CAP related messages
+ * add support for the SysInfo plugin on Unix
+ * add option to change update check frequency and delay for first check
+ * add option to change GUI language on Windows
+ * add Ignore entry to userlist popup
+ * add Afrikaans, Asturian, Danish, Gujarati, Indonesian, Kinyarwanda and Malayalam translations
+ * add ChangeLog and ReadMe links to Start Menu during installation on Windows
+ * add manual page on Unix
+ * add icon support for 3 levels above op user mode
+ * change default colors, text events and user list/channel tree icons
+ * make Esc key close the Raw Log window
+ * use Consolas as the default font where available
+ * open dialog window for double-clicking in the user list by default
+ * variable separation, cleanup and renaming
+ * check in the installers whether Windows release is supported by HexChat
+ * display previous value after /SET
+ * reorganize the Settings menu and add new options
+ * redesign the About dialog
+ * show certain help messages in GTK+ dialogs instead of command line
+ * build system cosmetics on Unix
+ * reorganize repo file structure
+ * rebranding
+ * update translations
+ * update the network list
+
+
 ## 2.9.3 (2012-10-14)
 
  * fix various URL detection bugs
