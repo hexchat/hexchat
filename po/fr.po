@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-11-04 21:54+0100\n"
-"PO-Revision-Date: 2012-11-04 20:59+0000\n"
+"POT-Creation-Date: 2012-11-10 17:02+0100\n"
+"PO-Revision-Date: 2012-11-10 17:30+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/hexchat/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -56,23 +56,23 @@ msgstr "Connecter"
 msgid "Aborted"
 msgstr "Interrompu"
 
-#: src/common/dcc.c:1883 src/common/outbound.c:2530
+#: src/common/dcc.c:1882 src/common/outbound.c:2530
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Impossible d'accéder à %s\n"
 
-#: src/common/dcc.c:1884 src/common/text.c:1385 src/common/text.c:1423
+#: src/common/dcc.c:1883 src/common/text.c:1385 src/common/text.c:1423
 #: src/common/text.c:1434 src/common/text.c:1441 src/common/text.c:1454
 #: src/common/text.c:1471 src/common/text.c:1571 src/common/util.c:358
 msgid "Error"
 msgstr "Erreur"
 
-#: src/common/dcc.c:2362
+#: src/common/dcc.c:2361
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
 msgstr "%s vous propose « %s ». Voulez-vous l'accepter ?"
 
-#: src/common/dcc.c:2577
+#: src/common/dcc.c:2576
 msgid "No active DCCs\n"
 msgstr "Aucun DCC actif\n"
 
@@ -302,9 +302,9 @@ msgstr "ADDBUTTON <nom> <action>, ajouter un bouton au-dessous de la liste des u
 
 #: src/common/outbound.c:3577
 msgid ""
-"ADDSERVER <New Network> <newserver/6667>, adds a new network with a new "
+"ADDSERVER <NewNetwork> <newserver/6667>, adds a new network with a new "
 "server to the network list"
-msgstr "ADDSERVER <Nouveau réseau> <nouveauserveur/6667>, ajoute un nouveau réseau et un nouveau serveur à la liste des réseaux"
+msgstr ""
 
 #: src/common/outbound.c:3579
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
@@ -440,7 +440,7 @@ msgstr "EXECWRITE, envoyer des données à l'entrée standard des processus"
 
 #: src/common/outbound.c:3636
 msgid "EXPORTCONF, exports HexChat settings"
-msgstr ""
+msgstr "EXPORTCONF, exporte les paramètres d'HexChat"
 
 #: src/common/outbound.c:3639
 msgid "FLUSHQ, flushes the current server's send queue"
@@ -776,19 +776,19 @@ msgstr "%C22*%O$tNe peut rejoindre%C22 $1 %O(%C20Vous êtes banni%O)."
 
 #: src/common/textevents.h:18
 msgid "%C29*%O$tCapabilities acknowledged: %C29$2%O"
-msgstr ""
+msgstr "%C29*%O$tAutorisations bien reçues : %C29$2%O"
 
 #: src/common/textevents.h:21
 msgid "%C23*%O$tCapabilities supported: %C29$2%O"
-msgstr ""
+msgstr "%C23*%O$tAutorisations disponibles :%C29$2%O"
 
 #: src/common/textevents.h:24
 msgid "%C23*%O$tCapabilities requested: %C29$1%O"
-msgstr ""
+msgstr "%C23*%O$tAutorisations demandées :%C29$1%O"
 
 #: src/common/textevents.h:27
 msgid "%C24*%O$t%C28$1%O is now known as %C18$2%O"
-msgstr ""
+msgstr "%C24*%O$t%C28$1%O est maintenant connu sous le nom %C18$2%O"
 
 #: src/common/textevents.h:36
 msgid "%C22*%O$t%C26$1%O sets ban on %C18$2%O"
@@ -1135,109 +1135,109 @@ msgstr "%C20*%O$tPas de réponse au ping pendant %C24$1%O secondes, déconnexion
 
 #: src/common/textevents.h:324
 msgid "%C24*%O$tA process is already running"
-msgstr ""
+msgstr "%C24*%O$tLe processus tourne déjà"
 
 #: src/common/textevents.h:327
 #, c-format
 msgid "%C24*$t$1 has quit ($2)"
-msgstr ""
+msgstr "%C24*$t$1 a quitté ($2)"
 
 #: src/common/textevents.h:330
 msgid "%C24*%O$t%C26$1%C sets modes %C30[%C24$2%C30]%O"
-msgstr ""
+msgstr "%C24*%O$t%C26$1%C a activé le mode %C30[%C24$2%C30]%O"
 
 #: src/common/textevents.h:333
 msgid "%O-%C29$1/Wallops%O-$t$2"
-msgstr ""
+msgstr "%O-%C29$1/Wallops%O-$t$2"
 
 #: src/common/textevents.h:336
 msgid "%C24*%O$tLooking up IP number for %C18$1%O..."
-msgstr ""
+msgstr "%C24*%O$tRecherche de l'adresse IP de %C18$1%O..."
 
 #: src/common/textevents.h:339
 msgid "%C23*%O$tAuthenticating via SASL as %C18$1%O"
-msgstr ""
+msgstr "%C23*%O$tAuthentification via SASL en tant que %C18$1%O"
 
 #: src/common/textevents.h:345
 msgid "%C29*%O$tConnected."
-msgstr ""
+msgstr "%C29*%O$tConnecté."
 
 #: src/common/textevents.h:351
 msgid "%C29*%O$tLooking up %C29$1%O"
-msgstr ""
+msgstr "%C29*%O$tRecherche de %C29$1%O"
 
 #: src/common/textevents.h:363
 msgid "%C23*%O$tStopped previous connection attempt (%C24$1%O)"
-msgstr ""
+msgstr "%C23*%O$tArrêt de la tentative de connexion précédente (%C24$1%O)"
 
 #: src/common/textevents.h:366
 msgid "%C22*%O$tTopic for %C22$1%C is: $2%O"
-msgstr ""
+msgstr "%C22*%O$tLe sujet de %C22$1%C est : $2%O"
 
 #: src/common/textevents.h:369
 msgid "%C22*%O$t%C26$1%C has changed the topic to: $2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%C a modifié le sujet pour : $2%O"
 
 #: src/common/textevents.h:372
 msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
-msgstr ""
+msgstr "%C22*%O$tSujet de %C22$1%C choisi par %C26$2%C (%C24$3%O)"
 
 #: src/common/textevents.h:375
 msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
-msgstr ""
+msgstr "%C20*%O$tHôte inconnu. Peut-être l'avez-vous mal orthographié ?"
 
 #: src/common/textevents.h:378
 msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
-msgstr ""
+msgstr "%C20*%O$tImpossible de rejoindre %C22$1%C (%C20La limite d'utilisateurs est atteinte%O)"
 
 #: src/common/textevents.h:381
 msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$tUtilisateurs sur %C22$1%C : %C24$2%O"
 
 #: src/common/textevents.h:387
-msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
+msgid "%C23*%O$t%C28[%C18$1%C28]%C is away %C30(%C23$2%O%C30)%O"
 msgstr ""
 
 #: src/common/textevents.h:393
 msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28] %OFin de la liste WHOIS."
 
 #: src/common/textevents.h:399
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O"
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28]%O inactif %C23$2%O"
 
 #: src/common/textevents.h:402
 msgid "%C23*%O$t%C28[%C18$1%C28]%O idle %C23$2%O, signon: %C23$3%O"
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28]%O inactif %C23$2%O, connexion : %C23$3%O"
 
 #: src/common/textevents.h:408
 msgid ""
 "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C30]%O"
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28]%O Hôte réel : %C23$2%O, IP réelle : %C30[%C23$3%C30]%O"
 
 #: src/common/textevents.h:417
 msgid "%C19*%O$tNow talking on %C22$2%O"
-msgstr ""
+msgstr "%C19*%O$tVous parlez maintenant sur %C22$2%O"
 
 #: src/common/textevents.h:420
 msgid "%C19*%O$tYou have been kicked from %C22$2%C by %C26$3%O (%C20$4%O)"
-msgstr ""
+msgstr "%C19*%O$tVous avez été expulsé de %C22$2%C par %C26$3%O (%C20$4%O)"
 
 #: src/common/textevents.h:423
 msgid "%C19*%O$tYou have left channel %C22$3%O"
-msgstr ""
+msgstr "%C19*%O$tVous avez quitté le canal %C22$3%O"
 
 #: src/common/textevents.h:426
 msgid "%C19*%O$tYou have left channel %C22$3%C (%C24$4%O)"
-msgstr ""
+msgstr "%C19*%O$tVous avez quitté le canal %C22$3%C (%C24$4%O)"
 
 #: src/common/textevents.h:432
 msgid "%C20*%O$tYou've invited %C18$1%O to %C22$2%O (%C24$3%O)"
-msgstr ""
+msgstr "%C20*%O$tVous avez invité %C18$1%O sur le canal %C22$2%O (%C24$3%O)"
 
 #: src/common/textevents.h:438
 msgid "%C20*%O$tYou are now known as %C18$2%O"
-msgstr ""
+msgstr "%C20*%O$tVotre pseudonyme est maintenant %C18$2%O"
 
 #: src/common/text.c:354
 msgid "Loaded log from"
@@ -1332,15 +1332,15 @@ msgstr "Nom du serveur"
 
 #: src/common/text.c:1092
 msgid "Acknowledged Capabilities"
-msgstr ""
+msgstr "Autorisations reçues"
 
 #: src/common/text.c:1097
 msgid "Server Capabilities"
-msgstr ""
+msgstr "Autorisations du serveur"
 
 #: src/common/text.c:1101
 msgid "Requested Capabilities"
-msgstr ""
+msgstr "Autorisations demandées"
 
 #: src/common/text.c:1105 src/common/text.c:1167
 msgid "Old nickname"
@@ -3205,7 +3205,7 @@ msgstr "Ne charger aucun greffon automatiquement"
 
 #: src/fe-gtk/fe-gtk.c:135
 msgid "Show plugin/script auto-load directory"
-msgstr ""
+msgstr "Afficher le répertoire de chargement automatique des greffons/scripts"
 
 #: src/fe-gtk/fe-gtk.c:136
 msgid "Show user config directory"
@@ -3235,7 +3235,7 @@ msgstr "niveau"
 msgid "Show version information"
 msgstr "Afficher la version"
 
-#: src/fe-gtk/fe-gtk.c:303
+#: src/fe-gtk/fe-gtk.c:310
 #, c-format
 msgid ""
 "Failed to open font:\n"
@@ -3243,16 +3243,16 @@ msgid ""
 "%s"
 msgstr "L'ouverture de la police a échoué :\n\n%s"
 
-#: src/fe-gtk/fe-gtk.c:693
+#: src/fe-gtk/fe-gtk.c:700
 msgid "Search buffer is empty.\n"
 msgstr "Le tampon de recherche est vide.\n"
 
-#: src/fe-gtk/fe-gtk.c:802
+#: src/fe-gtk/fe-gtk.c:809
 #, c-format
 msgid "%d bytes"
 msgstr "%d octets"
 
-#: src/fe-gtk/fe-gtk.c:803
+#: src/fe-gtk/fe-gtk.c:810
 #, c-format
 msgid "Network send queue: %d bytes"
 msgstr "File d'envoi du serveur : %d octets"
@@ -3399,14 +3399,14 @@ msgstr "Erreur d'ouverture du fichier des raccourcis clavier\n"
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s"
-msgstr ""
+msgstr "Nom de touche %s inconnue dans le fichier de configuration des raccourcis clavier\nChargement annulé, merci de corriger %s"
 
 #: src/fe-gtk/fkeys.c:1060
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s"
-msgstr ""
+msgstr "Action %s inconnue dans le fichier de configuration des raccourcis clavier\nChargement annulé, merci de corriger %s"
 
 #: src/fe-gtk/fkeys.c:1081
 #, c-format
@@ -3415,14 +3415,14 @@ msgid ""
 "%s\n"
 "\n"
 "Load aborted, Please fix %s"
-msgstr ""
+msgstr "Une ligne de données était attendue (commençant par Dx{:|!}) mais j'ai eu :\n%s\n\nChargement annulé, merci de corriger %s"
 
 #: src/fe-gtk/fkeys.c:1150
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s"
-msgstr ""
+msgstr "Le fichier de configuration des raccourcis clavier est corrompu, chargement annulé\nMerci de corriger %s"
 
 #: src/fe-gtk/gtkutil.c:139
 msgid "Cannot write to that file."
@@ -3818,7 +3818,7 @@ msgid ""
 "\n"
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
-msgstr ""
+msgstr "Commandes utilisateur - Codes d'échappement :\n\n%c  =  canal actuel\n%e  =  nom du réseau actuel\n%m  =  informations de la machine\n%n  =  votre pseudo\n%t  =  heure/date\n%v  =  version de HexChat\n%2  =  mot 2\n%3  =  mot 3\n&2  =  du 2ème mot à la fin de la ligne\n&3  =  du 3ème mot à la fin de la ligne\n\nexemple :\n/cmd yves bonjour\n\n%2 sera \"yves\"\n&2 sera \"yves bonjour\"."
 
 #: src/fe-gtk/menu.c:1406
 msgid ""
@@ -3832,7 +3832,7 @@ msgid ""
 "%n  =  your nick\n"
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
-msgstr "Boutons de la liste des utilisateurs - code d'échappement : \n\n%a  =  tous les pseudos sélectionnés\n%c  =  canal actuel\n%e  =  réseau actuel\n%h  =  nom d'hôte du pseudo sélectionné\n%m  =  informations sur la machine\n%n  =  votre pseudo\n%s  =  le pseudo sélectionné\n%t  =  date/heure\n"
+msgstr "Boutons de la liste des utilisateurs - Codes d'échappement : \n\n%a  =  tous les pseudos sélectionnés\n%c  =  canal actuel\n%e  =  réseau actuel\n%h  =  nom d'hôte du pseudo sélectionné\n%m  =  informations sur la machine\n%n  =  votre pseudo\n%s  =  le pseudo sélectionné\n%t  =  date/heure\n"
 
 #: src/fe-gtk/menu.c:1416
 msgid ""
@@ -3874,7 +3874,7 @@ msgid ""
 "Putting a ! in front of the command\n"
 "indicates it should be sent to a\n"
 "shell instead of HexChat"
-msgstr ""
+msgstr "Gestionnaire d'URL - Codes d'échappement :\n\n%s  =  la chaîne URL\n\nSi vous mettez un ! devant la commande\ncela signifie qu'elle sera envoyée\nau terminal plutôt qu'à HexChat."
 
 #: src/fe-gtk/menu.c:1446
 msgid ": User Defined Commands"
@@ -4314,11 +4314,11 @@ msgstr "Enregistrer sous..."
 #: src/fe-gtk/rawlog.c:123
 #, c-format
 msgid ": Raw Log (%s)"
-msgstr ""
+msgstr " : journal brut (%s)"
 
 #: src/fe-gtk/rawlog.c:153
 msgid "Clear Raw Log"
-msgstr ""
+msgstr "Effacer le journal brut"
 
 #: src/fe-gtk/search.c:61
 msgid "The window you opened this Search for doesn't exist anymore."
@@ -4719,7 +4719,7 @@ msgstr "Portugais (du Brésil)"
 
 #: src/fe-gtk/setup.c:146
 msgid "Punjabi"
-msgstr ""
+msgstr "Punjabi"
 
 #: src/fe-gtk/setup.c:147
 msgid "Russian"
@@ -4755,7 +4755,7 @@ msgstr "Ukrainien"
 
 #: src/fe-gtk/setup.c:155
 msgid "Vietnamese"
-msgstr ""
+msgstr "Viétnamien"
 
 #: src/fe-gtk/setup.c:156
 msgid "Walloon"
@@ -4883,7 +4883,7 @@ msgstr "Afficher la boite de pseudonyme"
 
 #: src/fe-gtk/setup.c:216
 msgid "Show user mode icon in nick box"
-msgstr ""
+msgstr "Afficher l'icône utilisateur dans la liste des pseudos"
 
 #: src/fe-gtk/setup.c:218
 msgid "Spell checking"
@@ -5768,29 +5768,29 @@ msgstr "XChat : préférences"
 
 #: src/fe-gtk/sexy-spell-entry.c:465
 msgid "<i>(no suggestions)</i>"
-msgstr ""
+msgstr "<i>(pas de suggestion)</i>"
 
 #: src/fe-gtk/sexy-spell-entry.c:479
 msgid "More..."
-msgstr ""
+msgstr "Plus..."
 
 #: src/fe-gtk/sexy-spell-entry.c:548
 #, c-format
 msgid "Add \"%s\" to Dictionary"
-msgstr ""
+msgstr "Ajouter « %s » au dictionnaire"
 
 #: src/fe-gtk/sexy-spell-entry.c:590
 msgid "Ignore All"
-msgstr ""
+msgstr "Ignorer tout"
 
 #: src/fe-gtk/sexy-spell-entry.c:625
 msgid "Spelling Suggestions"
-msgstr ""
+msgstr "Suggestion d'orthographe"
 
 #: src/fe-gtk/sexy-spell-entry.c:1071
 #, c-format
 msgid "enchant error for language: %s"
-msgstr ""
+msgstr "Erreur Enchant pour la langue %s"
 
 #: src/fe-gtk/textgui.c:180
 msgid "There was an error parsing the string"

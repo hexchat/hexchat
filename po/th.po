@@ -3,14 +3,15 @@
 # 
 # Translators:
 # Seksan Poltree <seksan.poltree@gmail.com>, 2007.
+# Suttiwit Sukpinit <ormie.suttiwit@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-11-04 21:54+0100\n"
-"PO-Revision-Date: 2012-11-04 20:59+0000\n"
+"POT-Creation-Date: 2012-11-10 17:02+0100\n"
+"PO-Revision-Date: 2012-11-10 17:30+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Thai (http://www.transifex.com/projects/p/hexchat/language/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -55,41 +56,41 @@ msgstr "เชื่อมต่อ"
 msgid "Aborted"
 msgstr "ถูกยกเลิกกลางคัน"
 
-#: src/common/dcc.c:1883 src/common/outbound.c:2530
+#: src/common/dcc.c:1882 src/common/outbound.c:2530
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "ไม่สามารถเข้าถึง %s\n"
 
-#: src/common/dcc.c:1884 src/common/text.c:1385 src/common/text.c:1423
+#: src/common/dcc.c:1883 src/common/text.c:1385 src/common/text.c:1423
 #: src/common/text.c:1434 src/common/text.c:1441 src/common/text.c:1454
 #: src/common/text.c:1471 src/common/text.c:1571 src/common/util.c:358
 msgid "Error"
 msgstr "ข้อผิดพลาด"
 
-#: src/common/dcc.c:2362
+#: src/common/dcc.c:2361
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
 msgstr "%s ได้เสนอ \"%s\". คุณต้องการยอมรับหรือไม่?"
 
-#: src/common/dcc.c:2577
+#: src/common/dcc.c:2576
 msgid "No active DCCs\n"
 msgstr "ไม่มี DCCs ที่ทำงานอยู่\n"
 
 #: src/common/hexchat.c:743
 msgid "_Open Dialog Window"
-msgstr ""
+msgstr "เปิดการสนทนาส่วนตัว"
 
 #: src/common/hexchat.c:744
 msgid "_Send a File"
-msgstr ""
+msgstr "ส่งไฟล์"
 
 #: src/common/hexchat.c:745
 msgid "_User Info (WhoIs)"
-msgstr ""
+msgstr "ข้อมูลของคนนี้"
 
 #: src/common/hexchat.c:746
 msgid "_Add to Friends List"
-msgstr ""
+msgstr "เพิ่มเป็นเพื่อน"
 
 #: src/common/hexchat.c:747
 msgid "_Ignore"
@@ -97,7 +98,7 @@ msgstr ""
 
 #: src/common/hexchat.c:748
 msgid "O_perator Actions"
-msgstr ""
+msgstr "คำสั่งสำหรับ Operator"
 
 #: src/common/hexchat.c:750
 msgid "Give Ops"
@@ -246,12 +247,12 @@ msgstr "ไม่ได้เชื่อมต่อ. ลอง /server <โฮ
 #: src/common/outbound.c:281
 #, c-format
 msgid "Server %s already exists on network %s.\n"
-msgstr ""
+msgstr "เซิฟเวอร์ %s มีอยู่ในเน็ตเวิร์ค %s เเล้ว\n"
 
 #: src/common/outbound.c:287
 #, c-format
 msgid "Added server %s to network %s.\n"
-msgstr ""
+msgstr "เซิฟเวอร์ %s ได้ถูกบันทึกไว้ในรายชื่อเซิฟเวอร์ของเน็ตเวิร์ค %s แล้ว\n"
 
 #: src/common/outbound.c:373
 #, c-format
@@ -301,7 +302,7 @@ msgstr "ADDBUTTON <ชื่อ> <ปฏิบัติการ>, เพิ่�
 
 #: src/common/outbound.c:3577
 msgid ""
-"ADDSERVER <New Network> <newserver/6667>, adds a new network with a new "
+"ADDSERVER <NewNetwork> <newserver/6667>, adds a new network with a new "
 "server to the network list"
 msgstr ""
 
@@ -311,7 +312,7 @@ msgstr "ALLCHAN <คำสั่ง>, ส่งคำสั่งไปยัง
 
 #: src/common/outbound.c:3581
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
-msgstr ""
+msgstr "ซินแท็กซ์ของคำสั่งนี้: ALLCHANL <คำสั่งใน IRC>, ส่งคำสั่งของ IRC ไปทุกๆ ชาแนล์ที่เปิดอยู่บนเน็ตเวิร์คนี้"
 
 #: src/common/outbound.c:3583
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
@@ -334,13 +335,13 @@ msgstr "BAN <มาสก์> [<รูปแบบการแบน>], ปร�
 
 #: src/common/outbound.c:3588
 msgid "CHANOPT [-quiet] <variable> [<value>]"
-msgstr ""
+msgstr "ซินแทกซ์ของคำสั่งนี้: CHANOPT [-quiet] <ชื่อตัวแปล> [<ข้อมูลของตัวแปล>]"
 
 #: src/common/outbound.c:3589
 msgid ""
 "CHARSET [<encoding>], get or set the encoding used for the current "
 "connection"
-msgstr ""
+msgstr "ซินแทกซ์ของคำสั่งนี้: CHARSET [<รหัสภาษา>], บอกหรือเปลี่ยนรหัสภาษาที่ใช้แสดงผล"
 
 #: src/common/outbound.c:3590
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
@@ -451,7 +452,7 @@ msgstr "GATE <โฮสต์> [<พอร์ต>], พร็อกซี่ไ�
 
 #: src/common/outbound.c:3645
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
-msgstr ""
+msgstr "ซินแทกซ์ของคำสั่งนี้: GHOST <ชื่อ IRC> [รหัสผ่าน NickServ], เวลา Lag ใช้คำสั่งนี้ในการให้ชื่อเล่นที่ Lag อยู่ แล้วจะสามารถใช้ชื่อเล่นเดิมได้"
 
 #: src/common/outbound.c:3650
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
@@ -501,7 +502,7 @@ msgid ""
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
 "    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
-msgstr ""
+msgstr "ซินแทกซ์ของคำสั่งนี้: LASTLOG [-h] [-m] [-r] [--] <ข้อความสั้น>, ค้นหาข้อความในสนทนาที่ผ่านมา\nเพิ่ม -h ก่อนเติมข้อความสั้นเพื่อ เน้นข้อความที่ตรงกับข้อความสั้น\nเพิ่ม -m ก่อนเติมข้อความสั้นเพื่อ หาข้อความที่มีตัวพิมพ์เล็กหรือใหญ่เหมือนข้อความสั้น\nเพิ่ม -r ก่อนเติมข้อความสั้นเพื่อ ใช้วิธีการหาข้อความสั้นในสนทนาแบบ Regex Expression.\nเพิ่ม -- ก่อนเติมข้อความสั้นเพื่อที่จะสามารถเติมข้อความสั้นได้"
 
 #: src/common/outbound.c:3676
 msgid "LOAD [-e] <file>, loads a plugin or script"
@@ -628,7 +629,7 @@ msgstr "SERVCHAN <โฮสต์> <พอร์ต> <แชนแนล>, เ�
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 6697 for ssl connections"
-msgstr ""
+msgstr "ซินแท็กซ์ของคำสั่งนี้: SERVER [-ssl] <URL ของเซิฟเวอร์> [<พอร์ด>] [<รหัสผ่านในการใช้เซิฟเวอร์>], เข้าถึงเซิฟเวอร์ที่ระบุไว้\nถ้าพอร์ดไม่ได้ระบุไว้ จะเข้าเซิฟเวอร์โดยใช้พอร์ด 6667.\nถ้าระบุ \"-ssl\" แต่ไม่ได้ระบุพอร์ด พอร์ดจะเป็น 6697 โดยอัตโนมัติ\nไม่ต้องระบุรหัสผ่านถ้าเซิฟเวิอร์ไม่ต้องใช้รหัสผ่านในการเข้าถึง"
 
 #: src/common/outbound.c:3740
 msgid ""
@@ -638,19 +639,19 @@ msgstr "SERVER <host> [พอร์ต>] [<รหัสผ่าน>], เชื
 
 #: src/common/outbound.c:3742
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
-msgstr ""
+msgstr "ซินแท็กซ์ของคำสั่งนี้: SET [-e] [-off|-on] [-quiet] [ชื่อตัวแปร] [<ข้อมูลใหม่เพื่อที่จะใส่ในตัวแปร>]\n* off = ปิด, ตั้งค่าเป็น True. \n   on = เปิด, ตั้งค่าเป็น False."
 
 #: src/common/outbound.c:3743
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
-msgstr ""
+msgstr "ซินแท็กซ์ของคำสั่งนี้: SETCURSOR [-|+] <ตำแหน่งของเคอเซอร์>, ปรับเปลี่ยนตำแหน่งของเคอเซอร์ใน InputBox."
 
 #: src/common/outbound.c:3744
 msgid "SETTAB <new name>, change a tab's name, tab_trunc limit still applies"
-msgstr ""
+msgstr "ซินแท็กซ์ของคำสั่งนี้: SETTAB <ชื่อใหม่ของแท็บ>, ปรัปเปลี่ยนชื่อของแท็บนี้"
 
 #: src/common/outbound.c:3745
 msgid "SETTEXT <new text>, replace the text in the input box"
-msgstr ""
+msgstr "ซินแท็กซ์ของคำสั่งนี้: SETTEXT <คำใหม่>, เปลี่ยนคำใน InputBox ให้เป็นคำใหม่"
 
 #: src/common/outbound.c:3748
 msgid ""
@@ -763,7 +764,7 @@ msgstr "คำเตือน: ไม่รู้จักชุดอักข�
 
 #: src/common/textevents.h:6
 msgid "%C18*%O$t%C18$1%O added to notify list."
-msgstr ""
+msgstr "%C18*%O$t%C18$1%O ได้ถูกเพิ่มเข้าไปในรายชื่อแจ้งเตือน"
 
 #: src/common/textevents.h:9
 msgid "%C22*%O$t%C22$1%O Banlist: %C18$2%O for %C24$4%O by %C26$3%O"
@@ -771,7 +772,7 @@ msgstr ""
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join%C22 $1 %O(%C20You are banned%O)."
-msgstr ""
+msgstr "%C22*%O$tไม่สามารถเข้าห้องสนทนานี้%C22 $1 %O(%C20คุณถูกแบน%O)."
 
 #: src/common/textevents.h:18
 msgid "%C29*%O$tCapabilities acknowledged: %C29$2%O"
@@ -791,35 +792,35 @@ msgstr ""
 
 #: src/common/textevents.h:36
 msgid "%C22*%O$t%C26$1%O sets ban on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O แบน %C18$2%O"
 
 #: src/common/textevents.h:39
 msgid "%C22*%O$tChannel %C22$1%O created"
-msgstr ""
+msgstr "%C22*%O$tห้องสนทนา %C22$1%O ได้ถูกสร้างขึ้นมาแล้ว"
 
 #: src/common/textevents.h:42
 msgid "%C22*%O$t%C26$1%O removes channel half-operator status from %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ลบสถานะ Half-Operator จาก %C18$2%O"
 
 #: src/common/textevents.h:45
 msgid "%C22*%O$t%C26$1%O removes channel operator status from %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ลบสถานะ Operator จาก %C18$2%O"
 
 #: src/common/textevents.h:48
 msgid "%C22*%O$t%C26$1%O removes voice from %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ลบสถานะ Voice จาก %C18$2%O"
 
 #: src/common/textevents.h:51
 msgid "%C22*%O$t%C26 $1%C sets exempt on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26 $1%C ปกป้อง %C18$2%O"
 
 #: src/common/textevents.h:54
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ให้สถานะ Half-Operator กับ %C18$2%O"
 
 #: src/common/textevents.h:57
 msgid "%C22*%O$t%C26 $1%C sets invite on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26 $1%C ให้สถานะ ชักชวนกับ %C18$2%O"
 
 #: src/common/textevents.h:60
 msgid "%UChannel          Users   Topic"
@@ -827,88 +828,88 @@ msgstr "%Uแชนแนล          ผู้ใช้   หัวข้อ"
 
 #: src/common/textevents.h:66
 msgid "%C22*%O$t%C26$1%O sets mode %C24$2$3%O on %C22$4%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ตั้งค่าโหมด %C24$2$3%O บน %C22$4%O"
 
 #: src/common/textevents.h:69
 msgid "%C22*%O$tChannel %C22$1%O modes: %C24$2"
-msgstr ""
+msgstr "%C22*%O$tห้องสนทนา %C22$1%O มีโหมด: %C24$2"
 
 #: src/common/textevents.h:78
 msgid "%C22*%O$t%C26$1%O gives channel operator status to %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ให้สถานะ Operator กับ %C18$2%O"
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t%C26$1%O removes exempt on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ลบการปกป้องจาก %C18$2%O"
 
 #: src/common/textevents.h:84
 msgid "%C22*%O$t%C26 $1%O removes invite on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26 $1%O ลบสถานะ ชักชวนกับ %C18$2%O"
 
 #: src/common/textevents.h:87
 msgid "%C22*%O$t%C26$1%O removes channel keyword"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ลบรหัสผ่านของห้องสนทนา"
 
 #: src/common/textevents.h:90
 msgid "%C22*%O$t%C26$1%O removes user limit"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ลบเลขจำกัดคนในห้องสนทนา"
 
 #: src/common/textevents.h:93
 msgid "%C22*%O$t$1 sets channel keyword to %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$t$1 ตั้งรหัสผ่านของห้องสนทนาเป็น %C24$2%O"
 
 #: src/common/textevents.h:96
 msgid "%C22*%O$t%C26$1%O sets channel limit to %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ตั้งเลขจำกัดคนในห้องสนทนาเป็น %C24$2%O"
 
 #: src/common/textevents.h:99
 msgid "%C22*%O$t%C26$1%O removes ban on %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ลบแบนจาก %C24$2%O"
 
 #: src/common/textevents.h:102
 msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ให้สถานะ Voice กับ %C18$2%O"
 
 #: src/common/textevents.h:105
 msgid "%C23*%O$tConnected. Now logging in."
-msgstr ""
+msgstr "%C23*%O$tเชื่อมต่อเสร็จแล้ว กำลังล็อกอิน"
 
 #: src/common/textevents.h:108
 msgid "%C23*%O$tConnecting to %C29$1%C (%C23$2:$3%O)"
-msgstr ""
+msgstr "%C23*%O$tกำลังเชื่อมต่อไปที่เซิฟเวอร์ %C29$1%C (%C23$2:$3%O)"
 
 #: src/common/textevents.h:111
 msgid "%C20*%O$tConnection failed (%C20$1%O)"
-msgstr ""
+msgstr "%C20*%O$tการเชื่อมต่อไม่สำเร็จ (%C20$1%O)"
 
 #: src/common/textevents.h:114
 msgid "%C24*%O$tReceived a CTCP %C24$1%C from %C18$2%O"
-msgstr ""
+msgstr "%C24*%O$tได้รับข้อความ CTCP %C24$1%C จาก %C18$2%O"
 
 #: src/common/textevents.h:117
 msgid "%C24*%C$tReceived a CTCP %C24$1%C from %C18$2%C (to %C22$3%C)%O"
-msgstr ""
+msgstr "%C24*%C$tได้รับข้อความ CTCP %C24$1%C จาก %C18$2%C (ถึง %C22$3%C)%O"
 
 #: src/common/textevents.h:123
 msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%O"
-msgstr ""
+msgstr "%C24*%O$tได้รับข้อความ CTCP Sound %C24$1%C จาก %C18$2%O"
 
 #: src/common/textevents.h:126
 msgid "%C24*%O$tReceived a CTCP Sound %C24$1%C from %C18$2%C (to %C22$3%O)"
-msgstr ""
+msgstr "%C24*%O$tได้รับข้อความ CTCP Sound %C24$1%C จาก %C18$2%C (ถึง %C22$3%O)"
 
 #: src/common/textevents.h:129
 msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
-msgstr ""
+msgstr "%C23*%O$tDCC CHAT ถึง %C18$1%O ได้ถูกยกเลิก"
 
 #: src/common/textevents.h:132
 msgid ""
 "%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
-msgstr ""
+msgstr "%C24*%O$tDCC CHAT เชื่อมต่อได้แล้วกับ %C18$1%C %C30[%C24$2%C30]%O"
 
 #: src/common/textevents.h:135
 msgid "%C20*%O$tDCC CHAT to %C18$1%O lost (%C20$4%O)"
-msgstr ""
+msgstr "%C20*%O$tDCC CHAT กับ %C18$1%O ล้มเหลว (%C20$4%O)"
 
 #: src/common/textevents.h:138
 msgid "%C24*%O$tReceived a DCC CHAT offer from %C18$1%O"
@@ -1194,7 +1195,7 @@ msgid "%C22*%O$tUsers on %C22$1%C: %C24$2%O"
 msgstr ""
 
 #: src/common/textevents.h:387
-msgid "%C23*%O$t%C28[%C18$1%C28] %Cis away %C30(%C23$2%O%C30)%O"
+msgid "%C23*%O$t%C28[%C18$1%C28]%C is away %C30(%C23$2%O%C30)%O"
 msgstr ""
 
 #: src/common/textevents.h:393
@@ -1257,7 +1258,7 @@ msgstr "**** เริ่มบันทึกการทำงานที่ 
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
-msgstr ""
+msgstr "* ไม่สามารถเขียนไฟล์ล็อกได้ โปรดตรวจสอบว่าคุณได้รับอนุญาตในการเขียนไฟล์บน \"%s\" แล้วหรือไม่"
 
 #: src/common/text.c:1053
 msgid "Left message"
@@ -1602,7 +1603,7 @@ msgstr "ชื่อแชนแนล"
 
 #: src/common/text.c:1352 src/common/text.c:1360
 msgid "Raw Numeric or Identifier"
-msgstr ""
+msgstr "Raw Numeric หรือ Identifier"
 
 #: src/common/text.c:1358 src/common/text.c:1364 src/common/text.c:1522
 #: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
@@ -1769,7 +1770,7 @@ msgstr "เกาะ Ascension"
 
 #: src/common/util.c:961
 msgid "Andorra"
-msgstr ""
+msgstr "Andorra"
 
 #: src/common/util.c:962
 msgid "United Arab Emirates"
@@ -1777,7 +1778,7 @@ msgstr "สหรัฐอาหรับอิมิเรตส์"
 
 #: src/common/util.c:963
 msgid "Aviation-Related Fields"
-msgstr ""
+msgstr "Aviation-Related Fields"
 
 #: src/common/util.c:964
 msgid "Afghanistan"
@@ -1789,7 +1790,7 @@ msgstr "Antigua และ Barbuda"
 
 #: src/common/util.c:966
 msgid "Anguilla"
-msgstr ""
+msgstr "Anguilla"
 
 #: src/common/util.c:967
 msgid "Albania"
@@ -1801,15 +1802,15 @@ msgstr "อาร์เมเนีย"
 
 #: src/common/util.c:969
 msgid "Netherlands Antilles"
-msgstr ""
+msgstr "Netherlands Antilles"
 
 #: src/common/util.c:970
 msgid "Angola"
-msgstr ""
+msgstr "Angola"
 
 #: src/common/util.c:971
 msgid "Antarctica"
-msgstr ""
+msgstr "Antarctica"
 
 #: src/common/util.c:972
 msgid "Argentina"
@@ -1821,11 +1822,11 @@ msgstr "รีเวิร์ส DNS"
 
 #: src/common/util.c:974
 msgid "American Samoa"
-msgstr ""
+msgstr "American Samoa"
 
 #: src/common/util.c:975
 msgid "Asia-Pacific Region"
-msgstr ""
+msgstr "Asia-Pacific Region"
 
 #: src/common/util.c:976
 msgid "Austria"
@@ -1833,7 +1834,7 @@ msgstr "ออสเตรีย"
 
 #: src/common/util.c:977
 msgid "Nato Fiel"
-msgstr ""
+msgstr "Nato Fiel"
 
 #: src/common/util.c:978
 msgid "Australia"
@@ -1841,11 +1842,11 @@ msgstr "ออสเตรเลีย"
 
 #: src/common/util.c:979
 msgid "Aruba"
-msgstr ""
+msgstr "Aruba"
 
 #: src/common/util.c:980
 msgid "Aland Islands"
-msgstr ""
+msgstr "Aland Islands"
 
 #: src/common/util.c:981
 msgid "Azerbaijan"
@@ -1853,15 +1854,15 @@ msgstr "อาร์เซอร์ไบจัน"
 
 #: src/common/util.c:982
 msgid "Bosnia and Herzegovina"
-msgstr ""
+msgstr "Bosnia and Herzegovina"
 
 #: src/common/util.c:983
 msgid "Barbados"
-msgstr ""
+msgstr "Barbados"
 
 #: src/common/util.c:984
 msgid "Bangladesh"
-msgstr ""
+msgstr "Bangladesh"
 
 #: src/common/util.c:985
 msgid "Belgium"
@@ -1869,7 +1870,7 @@ msgstr "เบลเยี่ยม"
 
 #: src/common/util.c:986
 msgid "Burkina Faso"
-msgstr ""
+msgstr "Burkina Faso"
 
 #: src/common/util.c:987
 msgid "Bulgaria"
@@ -1877,11 +1878,11 @@ msgstr "บัลแกเรีย"
 
 #: src/common/util.c:988
 msgid "Bahrain"
-msgstr ""
+msgstr "Bahrain"
 
 #: src/common/util.c:989
 msgid "Burundi"
-msgstr ""
+msgstr "Burundi"
 
 #: src/common/util.c:990
 msgid "Businesses"
@@ -1889,15 +1890,15 @@ msgstr "ยุ่งอยู่"
 
 #: src/common/util.c:991
 msgid "Benin"
-msgstr ""
+msgstr "Benin"
 
 #: src/common/util.c:992
 msgid "Bermuda"
-msgstr ""
+msgstr "Bermuda"
 
 #: src/common/util.c:993
 msgid "Brunei Darussalam"
-msgstr ""
+msgstr "Brunei Darussalam"
 
 #: src/common/util.c:994
 msgid "Bolivia"
@@ -1909,7 +1910,7 @@ msgstr "บราซิล"
 
 #: src/common/util.c:996
 msgid "Bahamas"
-msgstr ""
+msgstr "Bahamas"
 
 #: src/common/util.c:997
 msgid "Bhutan"
@@ -1917,19 +1918,19 @@ msgstr "ภูฏาน"
 
 #: src/common/util.c:998
 msgid "Bouvet Island"
-msgstr ""
+msgstr "Bouvet Island"
 
 #: src/common/util.c:999
 msgid "Botswana"
-msgstr ""
+msgstr "Botswana"
 
 #: src/common/util.c:1000
 msgid "Belarus"
-msgstr ""
+msgstr "Belarus"
 
 #: src/common/util.c:1001
 msgid "Belize"
-msgstr ""
+msgstr "Belize"
 
 #: src/common/util.c:1002
 msgid "Canada"
@@ -1937,19 +1938,19 @@ msgstr "แคนาดา"
 
 #: src/common/util.c:1003 src/fe-gtk/setup.c:113
 msgid "Catalan"
-msgstr ""
+msgstr "Catalan"
 
 #: src/common/util.c:1004
 msgid "Cocos Islands"
-msgstr ""
+msgstr "Cocos Islands"
 
 #: src/common/util.c:1005
 msgid "Democratic Republic of Congo"
-msgstr ""
+msgstr "Democratic Republic of Congo"
 
 #: src/common/util.c:1006
 msgid "Central African Republic"
-msgstr ""
+msgstr "Central African Republic"
 
 #: src/common/util.c:1007
 msgid "Congo"
@@ -1961,7 +1962,7 @@ msgstr "สวิซเซอร์แลนด์"
 
 #: src/common/util.c:1009
 msgid "Cote d'Ivoire"
-msgstr ""
+msgstr "Cote d'Ivoire"
 
 #: src/common/util.c:1010
 msgid "Cook Islands"
@@ -1985,19 +1986,19 @@ msgstr "โคลัมเบีย"
 
 #: src/common/util.c:1015
 msgid "Internic Commercial"
-msgstr ""
+msgstr "Internic Commercial"
 
 #: src/common/util.c:1016
 msgid "Cooperatives"
-msgstr ""
+msgstr "Cooperatives"
 
 #: src/common/util.c:1017
 msgid "Costa Rica"
-msgstr ""
+msgstr "Costa Rica"
 
 #: src/common/util.c:1018
 msgid "Serbia and Montenegro"
-msgstr ""
+msgstr "Serbia and Montenegro"
 
 #: src/common/util.c:1019
 msgid "Cuba"
@@ -2005,11 +2006,11 @@ msgstr "คิวบา"
 
 #: src/common/util.c:1020
 msgid "Cape Verde"
-msgstr ""
+msgstr "Cape Verde"
 
 #: src/common/util.c:1021
 msgid "Christmas Island"
-msgstr ""
+msgstr "Christmas Island"
 
 #: src/common/util.c:1022
 msgid "Cyprus"
@@ -2017,11 +2018,11 @@ msgstr "ไซปรัส"
 
 #: src/common/util.c:1023
 msgid "Czech Republic"
-msgstr ""
+msgstr "Czech Republic"
 
 #: src/common/util.c:1024
 msgid "East Germany"
-msgstr ""
+msgstr "East Germany"
 
 #: src/common/util.c:1025
 msgid "Germany"
@@ -2029,7 +2030,7 @@ msgstr "เยอรมันนี"
 
 #: src/common/util.c:1026
 msgid "Djibouti"
-msgstr ""
+msgstr "Djibouti"
 
 #: src/common/util.c:1027
 msgid "Denmark"
@@ -2041,15 +2042,15 @@ msgstr "โดมินิกา"
 
 #: src/common/util.c:1029
 msgid "Dominican Republic"
-msgstr ""
+msgstr "Dominican Republic"
 
 #: src/common/util.c:1030
 msgid "Algeria"
-msgstr ""
+msgstr "Algeria"
 
 #: src/common/util.c:1031
 msgid "Ecuador"
-msgstr ""
+msgstr "Ecuador"
 
 #: src/common/util.c:1032
 msgid "Educational Institution"
@@ -2057,7 +2058,7 @@ msgstr "สถาบันการศึกษา"
 
 #: src/common/util.c:1033
 msgid "Estonia"
-msgstr ""
+msgstr "Estonia"
 
 #: src/common/util.c:1034
 msgid "Egypt"
@@ -2065,11 +2066,11 @@ msgstr "อียิปต์"
 
 #: src/common/util.c:1035
 msgid "Western Sahara"
-msgstr ""
+msgstr "Western Sahara"
 
 #: src/common/util.c:1036
 msgid "Eritrea"
-msgstr ""
+msgstr "Eritrea"
 
 #: src/common/util.c:1037
 msgid "Spain"
@@ -2077,11 +2078,11 @@ msgstr "สเปน"
 
 #: src/common/util.c:1038
 msgid "Ethiopia"
-msgstr ""
+msgstr "Ethiopia"
 
 #: src/common/util.c:1039
 msgid "European Union"
-msgstr ""
+msgstr "European Union"
 
 #: src/common/util.c:1040
 msgid "Finland"
@@ -2093,15 +2094,15 @@ msgstr "ฟิจิ"
 
 #: src/common/util.c:1042
 msgid "Falkland Islands"
-msgstr ""
+msgstr "Falkland Islands"
 
 #: src/common/util.c:1043
 msgid "Micronesia"
-msgstr ""
+msgstr "Micronesia"
 
 #: src/common/util.c:1044
 msgid "Faroe Islands"
-msgstr ""
+msgstr "Faroe Islands"
 
 #: src/common/util.c:1045
 msgid "France"
@@ -2109,15 +2110,15 @@ msgstr "ฝรั่งเศส"
 
 #: src/common/util.c:1046
 msgid "Gabon"
-msgstr ""
+msgstr "Gabon"
 
 #: src/common/util.c:1047
 msgid "Great Britain"
-msgstr ""
+msgstr "Great Britain"
 
 #: src/common/util.c:1048
 msgid "Grenada"
-msgstr ""
+msgstr "Grenada"
 
 #: src/common/util.c:1049
 msgid "Georgia"
@@ -2125,11 +2126,11 @@ msgstr "จอร์เจีย"
 
 #: src/common/util.c:1050
 msgid "French Guiana"
-msgstr ""
+msgstr "French Guiana"
 
 #: src/common/util.c:1051
 msgid "British Channel Isles"
-msgstr ""
+msgstr "British Channel Isles"
 
 #: src/common/util.c:1052
 msgid "Ghana"
@@ -2137,7 +2138,7 @@ msgstr "กานา"
 
 #: src/common/util.c:1053
 msgid "Gibraltar"
-msgstr ""
+msgstr "Gibraltar"
 
 #: src/common/util.c:1054
 msgid "Greenland"
@@ -2145,11 +2146,11 @@ msgstr "กรีนแลนด์"
 
 #: src/common/util.c:1055
 msgid "Gambia"
-msgstr ""
+msgstr "Gambia"
 
 #: src/common/util.c:1056
 msgid "Guinea"
-msgstr ""
+msgstr "Guinea"
 
 #: src/common/util.c:1057
 msgid "Government"
@@ -2157,11 +2158,11 @@ msgstr "ราชการ"
 
 #: src/common/util.c:1058
 msgid "Guadeloupe"
-msgstr ""
+msgstr "Guadeloupe"
 
 #: src/common/util.c:1059
 msgid "Equatorial Guinea"
-msgstr ""
+msgstr "Equatorial Guinea"
 
 #: src/common/util.c:1060
 msgid "Greece"
@@ -2169,23 +2170,23 @@ msgstr "กรีซ"
 
 #: src/common/util.c:1061
 msgid "S. Georgia and S. Sandwich Isles"
-msgstr ""
+msgstr "S. Georgia and S. Sandwich Isles"
 
 #: src/common/util.c:1062
 msgid "Guatemala"
-msgstr ""
+msgstr "Guatemala"
 
 #: src/common/util.c:1063
 msgid "Guam"
-msgstr ""
+msgstr "Guam"
 
 #: src/common/util.c:1064
 msgid "Guinea-Bissau"
-msgstr ""
+msgstr "Guinea-Bissau"
 
 #: src/common/util.c:1065
 msgid "Guyana"
-msgstr ""
+msgstr "Guyana"
 
 #: src/common/util.c:1066
 msgid "Hong Kong"
@@ -2193,23 +2194,23 @@ msgstr "ฮ่องกง"
 
 #: src/common/util.c:1067
 msgid "Heard and McDonald Islands"
-msgstr ""
+msgstr "Heard and McDonald Islands"
 
 #: src/common/util.c:1068
 msgid "Honduras"
-msgstr ""
+msgstr "Honduras"
 
 #: src/common/util.c:1069
 msgid "Croatia"
-msgstr ""
+msgstr "Croatia"
 
 #: src/common/util.c:1070
 msgid "Haiti"
-msgstr ""
+msgstr "Haiti"
 
 #: src/common/util.c:1071
 msgid "Hungary"
-msgstr ""
+msgstr "Hungary"
 
 #: src/common/util.c:1072
 msgid "Indonesia"
@@ -2225,7 +2226,7 @@ msgstr "อิสราเอล"
 
 #: src/common/util.c:1075
 msgid "Isle of Man"
-msgstr ""
+msgstr "Isle of Man"
 
 #: src/common/util.c:1076
 msgid "India"
@@ -2241,7 +2242,7 @@ msgstr "นานาชาติ"
 
 #: src/common/util.c:1079
 msgid "British Indian Ocean Territory"
-msgstr ""
+msgstr "British Indian Ocean Territory"
 
 #: src/common/util.c:1080
 msgid "Iraq"
@@ -2261,11 +2262,11 @@ msgstr "อิตาลี"
 
 #: src/common/util.c:1084
 msgid "Jersey"
-msgstr ""
+msgstr "Jersey"
 
 #: src/common/util.c:1085
 msgid "Jamaica"
-msgstr ""
+msgstr "Jamaica"
 
 #: src/common/util.c:1086
 msgid "Jordan"
@@ -2273,7 +2274,7 @@ msgstr "จอร์แดน"
 
 #: src/common/util.c:1087
 msgid "Company Jobs"
-msgstr ""
+msgstr "อาชีพที่บริษัท"
 
 #: src/common/util.c:1088
 msgid "Japan"
@@ -2285,7 +2286,7 @@ msgstr "เคนย่า"
 
 #: src/common/util.c:1090
 msgid "Kyrgyzstan"
-msgstr ""
+msgstr "Kyrgyzstan"
 
 #: src/common/util.c:1091
 msgid "Cambodia"
@@ -2293,15 +2294,15 @@ msgstr "กัมพูชา"
 
 #: src/common/util.c:1092
 msgid "Kiribati"
-msgstr ""
+msgstr "Kiribati"
 
 #: src/common/util.c:1093
 msgid "Comoros"
-msgstr ""
+msgstr "Comoros"
 
 #: src/common/util.c:1094
 msgid "St. Kitts and Nevis"
-msgstr ""
+msgstr "St. Kitts and Nevis"
 
 #: src/common/util.c:1095
 msgid "North Korea"
@@ -2317,11 +2318,11 @@ msgstr "คูเวต"
 
 #: src/common/util.c:1098
 msgid "Cayman Islands"
-msgstr ""
+msgstr "Cayman Islands"
 
 #: src/common/util.c:1099
 msgid "Kazakhstan"
-msgstr ""
+msgstr "Kazakhstan"
 
 #: src/common/util.c:1100
 msgid "Laos"
@@ -2329,15 +2330,15 @@ msgstr "ลาว"
 
 #: src/common/util.c:1101
 msgid "Lebanon"
-msgstr ""
+msgstr "Lebanon"
 
 #: src/common/util.c:1102
 msgid "Saint Lucia"
-msgstr ""
+msgstr "Saint Lucia"
 
 #: src/common/util.c:1103
 msgid "Liechtenstein"
-msgstr ""
+msgstr "Liechtenstein"
 
 #: src/common/util.c:1104
 msgid "Sri Lanka"
@@ -2345,31 +2346,31 @@ msgstr "ศรีลังกา"
 
 #: src/common/util.c:1105
 msgid "Liberia"
-msgstr ""
+msgstr "Liberia"
 
 #: src/common/util.c:1106
 msgid "Lesotho"
-msgstr ""
+msgstr "Lesotho"
 
 #: src/common/util.c:1107
 msgid "Lithuania"
-msgstr ""
+msgstr "Lithuania"
 
 #: src/common/util.c:1108
 msgid "Luxembourg"
-msgstr ""
+msgstr "Luxembourg"
 
 #: src/common/util.c:1109
 msgid "Latvia"
-msgstr ""
+msgstr "Latvia"
 
 #: src/common/util.c:1110
 msgid "Libya"
-msgstr ""
+msgstr "Libya"
 
 #: src/common/util.c:1111
 msgid "Morocco"
-msgstr ""
+msgstr "Morocco"
 
 #: src/common/util.c:1112
 msgid "Monaco"
@@ -2377,31 +2378,31 @@ msgstr "โมนาโก"
 
 #: src/common/util.c:1113
 msgid "Moldova"
-msgstr ""
+msgstr "Moldova"
 
 #: src/common/util.c:1114
 msgid "Montenegro"
-msgstr ""
+msgstr "Montenegro"
 
 #: src/common/util.c:1115
 msgid "United States Medical"
-msgstr ""
+msgstr "United States Medical"
 
 #: src/common/util.c:1116
 msgid "Madagascar"
-msgstr ""
+msgstr "Madagascar"
 
 #: src/common/util.c:1117
 msgid "Marshall Islands"
-msgstr ""
+msgstr "Marshall Islands"
 
 #: src/common/util.c:1118
 msgid "Military"
-msgstr ""
+msgstr "ทหาร"
 
 #: src/common/util.c:1119
 msgid "Macedonia"
-msgstr ""
+msgstr "Macedonia"
 
 #: src/common/util.c:1120
 msgid "Mali"
@@ -2417,47 +2418,47 @@ msgstr "มองโกเลีย"
 
 #: src/common/util.c:1123
 msgid "Macau"
-msgstr ""
+msgstr "Macau"
 
 #: src/common/util.c:1124
 msgid "Mobile Devices"
-msgstr ""
+msgstr "ของใช้พกพา"
 
 #: src/common/util.c:1125
 msgid "Northern Mariana Islands"
-msgstr ""
+msgstr "Northern Mariana Islands"
 
 #: src/common/util.c:1126
 msgid "Martinique"
-msgstr ""
+msgstr "Martinique"
 
 #: src/common/util.c:1127
 msgid "Mauritania"
-msgstr ""
+msgstr "Mauritania"
 
 #: src/common/util.c:1128
 msgid "Montserrat"
-msgstr ""
+msgstr "Montserrat"
 
 #: src/common/util.c:1129
 msgid "Malta"
-msgstr ""
+msgstr "Malta"
 
 #: src/common/util.c:1130
 msgid "Mauritius"
-msgstr ""
+msgstr "Mauritius"
 
 #: src/common/util.c:1131
 msgid "Museums"
-msgstr ""
+msgstr "พิพิธพันธ์"
 
 #: src/common/util.c:1132
 msgid "Maldives"
-msgstr ""
+msgstr "Maldives"
 
 #: src/common/util.c:1133
 msgid "Malawi"
-msgstr ""
+msgstr "Malawi"
 
 #: src/common/util.c:1134
 msgid "Mexico"
@@ -2469,23 +2470,23 @@ msgstr "มาเลเซีย"
 
 #: src/common/util.c:1136
 msgid "Mozambique"
-msgstr ""
+msgstr "Mozambique"
 
 #: src/common/util.c:1137
 msgid "Namibia"
-msgstr ""
+msgstr "Namibia"
 
 #: src/common/util.c:1138
 msgid "Individual's Names"
-msgstr ""
+msgstr "ชื่อคน 1 คน"
 
 #: src/common/util.c:1139
 msgid "New Caledonia"
-msgstr ""
+msgstr "New Caledonia"
 
 #: src/common/util.c:1140
 msgid "Niger"
-msgstr ""
+msgstr "Niger"
 
 #: src/common/util.c:1141
 msgid "Internic Network"
@@ -2493,7 +2494,7 @@ msgstr "เครือข่าย Internic"
 
 #: src/common/util.c:1142
 msgid "Norfolk Island"
-msgstr ""
+msgstr "Norfolk Island"
 
 #: src/common/util.c:1143
 msgid "Nigeria"
@@ -2501,11 +2502,11 @@ msgstr "ไนจีเรีย"
 
 #: src/common/util.c:1144
 msgid "Nicaragua"
-msgstr ""
+msgstr "Nicaragua"
 
 #: src/common/util.c:1145
 msgid "Netherlands"
-msgstr ""
+msgstr "Netherlands"
 
 #: src/common/util.c:1146
 msgid "Norway"
@@ -2517,11 +2518,11 @@ msgstr "เนปาล"
 
 #: src/common/util.c:1148
 msgid "Nauru"
-msgstr ""
+msgstr "Nauru"
 
 #: src/common/util.c:1149
 msgid "Niue"
-msgstr ""
+msgstr "Niue"
 
 #: src/common/util.c:1150
 msgid "New Zealand"
@@ -2533,11 +2534,11 @@ msgstr "โอมาน"
 
 #: src/common/util.c:1152
 msgid "Internic Non-Profit Organization"
-msgstr ""
+msgstr "Internic Non-Profit Organization"
 
 #: src/common/util.c:1153
 msgid "Panama"
-msgstr ""
+msgstr "Panama"
 
 #: src/common/util.c:1154
 msgid "Peru"
@@ -2545,11 +2546,11 @@ msgstr "เปรู"
 
 #: src/common/util.c:1155
 msgid "French Polynesia"
-msgstr ""
+msgstr "French Polynesia"
 
 #: src/common/util.c:1156
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "Papua New Guinea"
 
 #: src/common/util.c:1157
 msgid "Philippines"
@@ -2565,35 +2566,35 @@ msgstr "โปแลนด์"
 
 #: src/common/util.c:1160
 msgid "St. Pierre and Miquelon"
-msgstr ""
+msgstr "St. Pierre and Miquelon"
 
 #: src/common/util.c:1161
 msgid "Pitcairn"
-msgstr ""
+msgstr "Pitcairn"
 
 #: src/common/util.c:1162
 msgid "Puerto Rico"
-msgstr ""
+msgstr "Puerto Rico"
 
 #: src/common/util.c:1163
 msgid "Professions"
-msgstr ""
+msgstr "ความสำเร็จ"
 
 #: src/common/util.c:1164
 msgid "Palestinian Territory"
-msgstr ""
+msgstr "ดินแดนของ Palestinian"
 
 #: src/common/util.c:1165
 msgid "Portugal"
-msgstr ""
+msgstr "Portugal"
 
 #: src/common/util.c:1166
 msgid "Palau"
-msgstr ""
+msgstr "Palau"
 
 #: src/common/util.c:1167
 msgid "Paraguay"
-msgstr ""
+msgstr "Paraguay"
 
 #: src/common/util.c:1168
 msgid "Qatar"
@@ -2601,7 +2602,7 @@ msgstr "กาตาร์"
 
 #: src/common/util.c:1169
 msgid "Reunion"
-msgstr ""
+msgstr "Reunion"
 
 #: src/common/util.c:1170
 msgid "Romania"
@@ -2613,27 +2614,27 @@ msgstr "โรงเรียน ARPAnet เดิม"
 
 #: src/common/util.c:1172
 msgid "Serbia"
-msgstr ""
+msgstr "Serbia"
 
 #: src/common/util.c:1173
 msgid "Russian Federation"
-msgstr ""
+msgstr "Russian Federation"
 
 #: src/common/util.c:1174
 msgid "Rwanda"
-msgstr ""
+msgstr "Rwanda"
 
 #: src/common/util.c:1175
 msgid "Saudi Arabia"
-msgstr ""
+msgstr "Saudi Arabia"
 
 #: src/common/util.c:1176
 msgid "Solomon Islands"
-msgstr ""
+msgstr "Solomon Islands"
 
 #: src/common/util.c:1177
 msgid "Seychelles"
-msgstr ""
+msgstr "Seychelles"
 
 #: src/common/util.c:1178
 msgid "Sudan"
@@ -2649,67 +2650,67 @@ msgstr "สิงคโปร์"
 
 #: src/common/util.c:1181
 msgid "St. Helena"
-msgstr ""
+msgstr "St. Helena"
 
 #: src/common/util.c:1182
 msgid "Slovenia"
-msgstr ""
+msgstr "Slovenia"
 
 #: src/common/util.c:1183
 msgid "Svalbard and Jan Mayen Islands"
-msgstr ""
+msgstr "Svalbard and Jan Mayen Islands"
 
 #: src/common/util.c:1184
 msgid "Slovak Republic"
-msgstr ""
+msgstr "Slovak Republic"
 
 #: src/common/util.c:1185
 msgid "Sierra Leone"
-msgstr ""
+msgstr "Sierra Leone"
 
 #: src/common/util.c:1186
 msgid "San Marino"
-msgstr ""
+msgstr "San Marino"
 
 #: src/common/util.c:1187
 msgid "Senegal"
-msgstr ""
+msgstr "Senegal"
 
 #: src/common/util.c:1188
 msgid "Somalia"
-msgstr ""
+msgstr "Somalia"
 
 #: src/common/util.c:1189
 msgid "Suriname"
-msgstr ""
+msgstr "Suriname"
 
 #: src/common/util.c:1190
 msgid "South Sudan"
-msgstr ""
+msgstr "South Sudan"
 
 #: src/common/util.c:1191
 msgid "Sao Tome and Principe"
-msgstr ""
+msgstr "Sao Tome and Principe"
 
 #: src/common/util.c:1192
 msgid "Former USSR"
-msgstr ""
+msgstr "Former USSR"
 
 #: src/common/util.c:1193
 msgid "El Salvador"
-msgstr ""
+msgstr "Republic of Savior"
 
 #: src/common/util.c:1194
 msgid "Syria"
-msgstr ""
+msgstr "Syria"
 
 #: src/common/util.c:1195
 msgid "Swaziland"
-msgstr ""
+msgstr "Swaziland"
 
 #: src/common/util.c:1196
 msgid "Turks and Caicos Islands"
-msgstr ""
+msgstr "Turks and Caicos Islands"
 
 #: src/common/util.c:1197
 msgid "Chad"
@@ -2903,7 +2904,7 @@ msgstr "ผิดพลาดในการร้องขอ %s: %s\n"
 
 #: src/fe-gtk/about.c:83
 msgid "About "
-msgstr ""
+msgstr "เกี่ยวกับ"
 
 #: src/fe-gtk/about.c:111
 msgid "<b>A multiplatform IRC Client</b>"
@@ -3234,7 +3235,7 @@ msgstr "รดับ"
 msgid "Show version information"
 msgstr "แสดงข้อมูลเวอร์ชั่น"
 
-#: src/fe-gtk/fe-gtk.c:303
+#: src/fe-gtk/fe-gtk.c:310
 #, c-format
 msgid ""
 "Failed to open font:\n"
@@ -3242,19 +3243,19 @@ msgid ""
 "%s"
 msgstr "ล้มเหลวในการเปิดฟอนต์:\n\n%s"
 
-#: src/fe-gtk/fe-gtk.c:693
+#: src/fe-gtk/fe-gtk.c:700
 msgid "Search buffer is empty.\n"
 msgstr "การค้นหาบัฟเฟอร์ว่างเปล่า.\n"
 
-#: src/fe-gtk/fe-gtk.c:802
+#: src/fe-gtk/fe-gtk.c:809
 #, c-format
 msgid "%d bytes"
-msgstr ""
+msgstr "%d ไบต์"
 
-#: src/fe-gtk/fe-gtk.c:803
+#: src/fe-gtk/fe-gtk.c:810
 #, c-format
 msgid "Network send queue: %d bytes"
-msgstr ""
+msgstr "ข้อมูลที่จะส่งไปที่เซิฟเวอร์มีขนาด: %d ไบต์"
 
 #: src/fe-gtk/fkeys.c:162
 msgid ""
@@ -3564,7 +3565,7 @@ msgstr "เซิร์ฟเวอร์นี้ยังคงมี %d แ�
 
 #: src/fe-gtk/maingui.c:1252
 msgid "Quit HexChat?"
-msgstr ""
+msgstr "คุณต้องการออกจาก HexChat หรือไม่?"
 
 #: src/fe-gtk/maingui.c:1273
 msgid "Don't ask next time."
@@ -3613,15 +3614,15 @@ msgstr "สี 8-15"
 
 #: src/fe-gtk/maingui.c:1581
 msgid "_Settings"
-msgstr ""
+msgstr "ตั้งค่า"
 
 #: src/fe-gtk/maingui.c:1583
 msgid "_Log to Disk"
-msgstr ""
+msgstr "เก็บการสนทนาไว้ในไฟล์"
 
 #: src/fe-gtk/maingui.c:1584
 msgid "_Reload Scrollback"
-msgstr ""
+msgstr "โหลดสนทนาที่ผ่านมา"
 
 #: src/fe-gtk/maingui.c:1586
 msgid "_Hide Join/Part Messages"
@@ -4207,11 +4208,11 @@ msgstr ": เชื่อมต่อไปยังเครือข่าย 
 
 #: src/fe-gtk/plugin-tray.c:516
 msgid "_Restore Window"
-msgstr ""
+msgstr "เรียกคืนหน้าต่าง"
 
 #: src/fe-gtk/plugin-tray.c:518
 msgid "_Hide Window"
-msgstr ""
+msgstr "ซ่อนหน้าต่างนี้"
 
 #: src/fe-gtk/plugin-tray.c:522
 msgid "_Blink on"
@@ -4231,15 +4232,15 @@ msgstr "ข้อความที่ถูกเน้น"
 
 #: src/fe-gtk/plugin-tray.c:528
 msgid "_Change status"
-msgstr ""
+msgstr "เปลี่ยนสถานะ"
 
 #: src/fe-gtk/plugin-tray.c:530
 msgid "_Away"
-msgstr ""
+msgstr "ออกไป"
 
 #: src/fe-gtk/plugin-tray.c:533
 msgid "_Back"
-msgstr ""
+msgstr "กลับมา"
 
 #: src/fe-gtk/plugin-tray.c:588 src/fe-gtk/plugin-tray.c:596
 #, c-format
@@ -4341,15 +4342,15 @@ msgstr "ค้นหา_ย้อนกลับ"
 
 #: src/fe-gtk/search.c:213
 msgid "_Highlight all"
-msgstr ""
+msgstr "เน้นข้อความทั้งหมด"
 
 #: src/fe-gtk/search.c:221
 msgid "R_egular expression"
-msgstr ""
+msgstr "ค้นหาโดยใช้ R_egular expression"
 
 #: src/fe-gtk/search.c:237
 msgid "Close and _Reset"
-msgstr ""
+msgstr "ปิดแล้วเริ่มใหม่"
 
 #: src/fe-gtk/servlistgui.c:174 src/fe-gtk/servlistgui.c:283
 msgid "New Network"
@@ -4362,20 +4363,20 @@ msgstr "จะลบ \"%s\" และเซิร์ฟเวอร์ทั้�
 
 #: src/fe-gtk/servlistgui.c:738
 msgid "#channel"
-msgstr ""
+msgstr "#channel"
 
 #: src/fe-gtk/servlistgui.c:848
 msgid ": Favorite Channels (Auto-Join List)"
-msgstr ""
+msgstr "ห้องสนทนาที่ชอบ"
 
 #: src/fe-gtk/servlistgui.c:861
 #, c-format
 msgid "These channels will be joined whenever you connect to %s."
-msgstr ""
+msgstr "ห้องสนทนาเหล่านี้จะถูกเปิดขึ้นทุกครั้งที่คุณเชื่อมต่อกับ %s"
 
 #: src/fe-gtk/servlistgui.c:904
 msgid "Key (Password)"
-msgstr ""
+msgstr "รหัสผ่าน"
 
 #: src/fe-gtk/servlistgui.c:935 src/fe-gtk/servlistgui.c:1581
 msgid "_Edit"
@@ -4384,12 +4385,12 @@ msgstr "แก้ไ_ข"
 #: src/fe-gtk/servlistgui.c:971
 #, c-format
 msgid "%s has been removed."
-msgstr ""
+msgstr "%s ได้ถูกลบทิ้งแล้ว"
 
 #: src/fe-gtk/servlistgui.c:991
 #, c-format
 msgid "%s has been added."
-msgstr ""
+msgstr "%s ได้ถูกเพิ่มแล้ว"
 
 #: src/fe-gtk/servlistgui.c:1015
 msgid "User name and Real name cannot be left blank."
@@ -4447,7 +4448,7 @@ msgstr "เชื่อมต่อไปยังเครือข่ายน
 
 #: src/fe-gtk/servlistgui.c:1471
 msgid "Bypass proxy server"
-msgstr ""
+msgstr "Bypass proxy server"
 
 #: src/fe-gtk/servlistgui.c:1473
 msgid "Use SSL for all the servers on this network"
@@ -4459,7 +4460,7 @@ msgstr "ไดั้รับหนังสือรับรอง SSL ที�
 
 #: src/fe-gtk/servlistgui.c:1484
 msgid "_Favorite channels:"
-msgstr ""
+msgstr "ห้องสนทนาที่ชอบ"
 
 #: src/fe-gtk/servlistgui.c:1486
 msgid "Channels to join, separated by commas, but not spaces!"
@@ -4496,11 +4497,11 @@ msgstr "รหัสผ่านสำหรับเซิร์ฟเวอร
 
 #: src/fe-gtk/servlistgui.c:1506
 msgid "SASL password:"
-msgstr ""
+msgstr "รหัสผ่าน SASL:"
 
 #: src/fe-gtk/servlistgui.c:1508
 msgid "Password for SASL authentication, if in doubt, leave blank."
-msgstr ""
+msgstr "รหัสผ่านสำหรับการเชื่อมต่อ SASL, ถ้าไม่แน่ใจก็ไม่ต้องใส่อะไร"
 
 #: src/fe-gtk/servlistgui.c:1511
 msgid "Character set:"
@@ -4528,7 +4529,7 @@ msgstr "ข้ามรายชื่อเครือข่ายตอนเ
 
 #: src/fe-gtk/servlistgui.c:1819
 msgid "Show favorites only"
-msgstr ""
+msgstr "แสดงห้องสนทนาที่ชอบ"
 
 #: src/fe-gtk/servlistgui.c:1849
 msgid "_Edit..."
@@ -4546,11 +4547,11 @@ msgstr "เรียงรายชื่อเครือข่ายตาม
 
 #: src/fe-gtk/servlistgui.c:1865
 msgid "_Favor"
-msgstr ""
+msgstr "ชอบ"
 
 #: src/fe-gtk/servlistgui.c:1866
 msgid "Mark or unmark this network as a favorite."
-msgstr ""
+msgstr "ทำให้เน็ตเวิร์คนี้เป็นเน็ตเวิร์คที่ชอบ"
 
 #: src/fe-gtk/servlistgui.c:1890
 msgid "C_onnect"
@@ -4562,11 +4563,11 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:106
 msgid "Albanian"
-msgstr ""
+msgstr "Albanian"
 
 #: src/fe-gtk/setup.c:107
 msgid "Amharic"
-msgstr ""
+msgstr "Amharic"
 
 #: src/fe-gtk/setup.c:108
 msgid "Asturian"
@@ -4574,31 +4575,31 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:109
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azerbaijani"
 
 #: src/fe-gtk/setup.c:110
 msgid "Basque"
-msgstr ""
+msgstr "Basque"
 
 #: src/fe-gtk/setup.c:111
 msgid "Belarusian"
-msgstr ""
+msgstr "Belarusian"
 
 #: src/fe-gtk/setup.c:112
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bulgarian"
 
 #: src/fe-gtk/setup.c:114
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "จีน (ปัจจุบัน)"
 
 #: src/fe-gtk/setup.c:115
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "จีน (โบราณ)"
 
 #: src/fe-gtk/setup.c:116
 msgid "Czech"
-msgstr ""
+msgstr "Czech"
 
 #: src/fe-gtk/setup.c:117
 msgid "Danish"
@@ -4606,7 +4607,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:118
 msgid "Dutch"
-msgstr ""
+msgstr "Dutch"
 
 #: src/fe-gtk/setup.c:119
 msgid "English (Brisith)"
@@ -4618,27 +4619,27 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:121
 msgid "Estonian"
-msgstr ""
+msgstr "Estonian"
 
 #: src/fe-gtk/setup.c:122
 msgid "Finnish"
-msgstr ""
+msgstr "Finnish"
 
 #: src/fe-gtk/setup.c:123
 msgid "French"
-msgstr ""
+msgstr "French"
 
 #: src/fe-gtk/setup.c:124
 msgid "Galician"
-msgstr ""
+msgstr "Galician"
 
 #: src/fe-gtk/setup.c:125
 msgid "German"
-msgstr ""
+msgstr "German"
 
 #: src/fe-gtk/setup.c:126
 msgid "Greek"
-msgstr ""
+msgstr "Greek"
 
 #: src/fe-gtk/setup.c:127
 msgid "Gujarati"
@@ -4646,11 +4647,11 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:128
 msgid "Hindi"
-msgstr ""
+msgstr "Hindi"
 
 #: src/fe-gtk/setup.c:129
 msgid "Hungarian"
-msgstr ""
+msgstr "Hungarian"
 
 #: src/fe-gtk/setup.c:130
 msgid "Indonesian"
@@ -4658,15 +4659,15 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:131
 msgid "Italian"
-msgstr ""
+msgstr "Italian"
 
 #: src/fe-gtk/setup.c:132
 msgid "Japanese"
-msgstr ""
+msgstr "Japanese"
 
 #: src/fe-gtk/setup.c:133
 msgid "Kannada"
-msgstr ""
+msgstr "Kannada"
 
 #: src/fe-gtk/setup.c:134
 msgid "Kinyarwanda"
@@ -4674,91 +4675,91 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:135
 msgid "Korean"
-msgstr ""
+msgstr "Korean"
 
 #: src/fe-gtk/setup.c:136
 msgid "Latvian"
-msgstr ""
+msgstr "Latvian"
 
 #: src/fe-gtk/setup.c:137
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lithuanian"
 
 #: src/fe-gtk/setup.c:138
 msgid "Macedonian"
-msgstr ""
+msgstr "Macedonian"
 
 #: src/fe-gtk/setup.c:139
 msgid "Malay"
-msgstr ""
+msgstr "Malay"
 
 #: src/fe-gtk/setup.c:140
 msgid "Malayalam"
-msgstr ""
+msgstr "Malayalam"
 
 #: src/fe-gtk/setup.c:141
 msgid "Norwegian (Bokmal)"
-msgstr ""
+msgstr "Norwegian (Bokmal)"
 
 #: src/fe-gtk/setup.c:142
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "Norwegian (Nynorsk)"
 
 #: src/fe-gtk/setup.c:143
 msgid "Polish"
-msgstr ""
+msgstr "Polish"
 
 #: src/fe-gtk/setup.c:144
 msgid "Portuguese"
-msgstr ""
+msgstr "Portuguese"
 
 #: src/fe-gtk/setup.c:145
 msgid "Portuguese (Brazilian)"
-msgstr ""
+msgstr "Portuguese (Brazilian)"
 
 #: src/fe-gtk/setup.c:146
 msgid "Punjabi"
-msgstr ""
+msgstr "Punjabi"
 
 #: src/fe-gtk/setup.c:147
 msgid "Russian"
-msgstr ""
+msgstr "Russian"
 
 #: src/fe-gtk/setup.c:148
 msgid "Serbian"
-msgstr ""
+msgstr "Serbian"
 
 #: src/fe-gtk/setup.c:149
 msgid "Slovak"
-msgstr ""
+msgstr "Slovak"
 
 #: src/fe-gtk/setup.c:150
 msgid "Slovenian"
-msgstr ""
+msgstr "Slovenian"
 
 #: src/fe-gtk/setup.c:151
 msgid "Spanish"
-msgstr ""
+msgstr "Spanish"
 
 #: src/fe-gtk/setup.c:152
 msgid "Swedish"
-msgstr ""
+msgstr "Swedish"
 
 #: src/fe-gtk/setup.c:153
 msgid "Thai"
-msgstr ""
+msgstr "ไทย"
 
 #: src/fe-gtk/setup.c:154
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukrainian"
 
 #: src/fe-gtk/setup.c:155
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnamese"
 
 #: src/fe-gtk/setup.c:156
 msgid "Walloon"
-msgstr ""
+msgstr "Walloon"
 
 #: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1899
 msgid "General"
@@ -4766,11 +4767,11 @@ msgstr "ทั่วไป"
 
 #: src/fe-gtk/setup.c:165
 msgid "Language:"
-msgstr ""
+msgstr "ภาษา:"
 
 #: src/fe-gtk/setup.c:166
 msgid "Main font:"
-msgstr ""
+msgstr "ฟอนต์หลัก:"
 
 #: src/fe-gtk/setup.c:168
 msgid "Font:"
@@ -4778,7 +4779,7 @@ msgstr "ฟอนต์:"
 
 #: src/fe-gtk/setup.c:171
 msgid "Text Box"
-msgstr ""
+msgstr "Text Box"
 
 #: src/fe-gtk/setup.c:172
 msgid "Colored nick names"
@@ -4842,7 +4843,7 @@ msgstr "รูปแบบการประทับเวลา"
 
 #: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:559
 msgid "See the strftime MSDN article for details."
-msgstr ""
+msgstr "See the strftime MSDN article for details."
 
 #: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:561
 msgid "See the strftime manpage for details."
@@ -4933,7 +4934,7 @@ msgstr "แปลง %C, %B เป็นสี, ตัวหนา และอ�
 
 #: src/fe-gtk/setup.c:245
 msgid "Graphical"
-msgstr ""
+msgstr "กราฟิก"
 
 #: src/fe-gtk/setup.c:253
 msgid "A-Z, Ops first"
@@ -4989,15 +4990,15 @@ msgstr "แสดงชื่อโฮสต์ในรายชื่อผู
 
 #: src/fe-gtk/setup.c:287
 msgid "Show icons for user modes"
-msgstr ""
+msgstr "แสดงไอค่อนของ User modes"
 
 #: src/fe-gtk/setup.c:287
 msgid "Use graphical icons instead of text symbols in the user list."
-msgstr ""
+msgstr "ใช้ไอค่อนกราฟิกแทนที่ตัวอักษรในรายชื่อบุคคล"
 
 #: src/fe-gtk/setup.c:288
 msgid "Show user count in channels"
-msgstr ""
+msgstr "แสดงจำนวนคนที่อยู่ในห้องสนทนา"
 
 #: src/fe-gtk/setup.c:290
 msgid "User list sorted by:"
@@ -5033,7 +5034,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:302
 msgid "Throttle meter:"
-msgstr ""
+msgstr "ข้อมูลทั้งหมดที่จะส่งไปยังเซิฟเวอร์:"
 
 #: src/fe-gtk/setup.c:309
 msgid "Windows"
@@ -5081,7 +5082,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:339
 msgid "Show dotted lines in the channel tree"
-msgstr ""
+msgstr "แสดงเส้นประในรายชื่อห้องสนทนา"
 
 #: src/fe-gtk/setup.c:340
 msgid "Smaller text"
@@ -5133,15 +5134,15 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:364
 msgid "Ask for confirmation"
-msgstr ""
+msgstr "ยืนยัน"
 
 #: src/fe-gtk/setup.c:365
 msgid "Ask for download folder"
-msgstr ""
+msgstr "ถามโฟลเดอล์ที่จะเก็บดาวน์โหลด"
 
 #: src/fe-gtk/setup.c:366
 msgid "Save without interaction"
-msgstr ""
+msgstr "บันทึกโดยที่ไม่ถามอะไรเลย"
 
 #: src/fe-gtk/setup.c:372
 msgid "Files and Directories"
@@ -5306,7 +5307,7 @@ msgstr "แจ้งข้อความไม่อยู่"
 
 #: src/fe-gtk/setup.c:476
 msgid "Announce your away messages to all channels."
-msgstr ""
+msgstr "แจ้งข้อความไม่อยู่ของคุณไปยังทุกห้องสนทนา"
 
 #: src/fe-gtk/setup.c:477
 msgid "Show away once"
@@ -5314,7 +5315,7 @@ msgstr "แสดงสถานะไม่อยู่ครั้งเดี
 
 #: src/fe-gtk/setup.c:477
 msgid "Show identical away messages only once."
-msgstr ""
+msgstr "แสดงข้อความไม่อยู่อย่างเดียวกันเพียงครั้งเดียว"
 
 #: src/fe-gtk/setup.c:478
 msgid "Automatically unmark away"
@@ -5322,7 +5323,7 @@ msgstr "เลิกทำเครื่องหมายว่าไม่อ
 
 #: src/fe-gtk/setup.c:478
 msgid "Unmark yourself as away before sending messages."
-msgstr ""
+msgstr "เลิกการอยู่ในสถานะที่ไม่อยู่ก่อนที่จะส่งข้อความ"
 
 #: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:517
 msgid "Advanced Settings"
@@ -5346,7 +5347,7 @@ msgstr "Whois เมื่อมีการแจ้งเตือน"
 
 #: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Sends a /WHOIS when a user comes online in your notify list."
-msgstr ""
+msgstr "ส่งข้อความ /WHOIS เวลาที่คนที่อยู่ในรายชื่อแจ้งเตือนได้ออนไลน์"
 
 #: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide join and part messages"
@@ -5354,15 +5355,15 @@ msgstr "ซ่อนแชนแนลเข้าร่วม/ส่วนข�
 
 #: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide channel join/part messages by default."
-msgstr ""
+msgstr "ซ่อนข้อความจากการที่เข้าร่วมหรือออกห้องสนทนาโดยอัตโนมัติ"
 
 #: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
 msgid "Display lists in compact mode"
-msgstr ""
+msgstr "แสดงรายการในโหมดคอมแพ็กต์"
 
 #: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
 msgid "Use less spacing between user list/channel tree rows."
-msgstr ""
+msgstr "ใช้ช่องว่างน้อยกว่าระหว่างรายการผู้สนทนา/รายการห้องสนทนา"
 
 #: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
 msgid "Auto Open DCC Windows"
