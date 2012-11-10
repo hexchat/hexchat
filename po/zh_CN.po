@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-11-10 17:02+0100\n"
-"PO-Revision-Date: 2012-11-10 17:30+0000\n"
+"POT-Creation-Date: 2012-11-10 19:31+0100\n"
+"PO-Revision-Date: 2012-11-10 18:32+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,15 +26,15 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/common/cfgfiles.c:737
+#: src/common/cfgfiles.c:740
 msgid "I'm busy"
 msgstr "我很忙"
 
-#: src/common/cfgfiles.c:761
+#: src/common/cfgfiles.c:764
 msgid "Leaving"
 msgstr "离开"
 
-#: src/common/cfgfiles.c:822
+#: src/common/cfgfiles.c:825
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -69,9 +69,9 @@ msgstr "中止"
 msgid "Cannot access %s\n"
 msgstr "无法获取 %s\n"
 
-#: src/common/dcc.c:1883 src/common/text.c:1385 src/common/text.c:1423
-#: src/common/text.c:1434 src/common/text.c:1441 src/common/text.c:1454
-#: src/common/text.c:1471 src/common/text.c:1571 src/common/util.c:358
+#: src/common/dcc.c:1883 src/common/text.c:1379 src/common/text.c:1417
+#: src/common/text.c:1428 src/common/text.c:1435 src/common/text.c:1448
+#: src/common/text.c:1465 src/common/text.c:1565 src/common/util.c:358
 msgid "Error"
 msgstr "错误"
 
@@ -150,7 +150,7 @@ msgstr "离开频道"
 msgid "Join Channel..."
 msgstr "进入频道..."
 
-#: src/common/hexchat.c:777 src/fe-gtk/menu.c:1337
+#: src/common/hexchat.c:777 src/fe-gtk/menu.c:1336
 msgid "Enter Channel to Join:"
 msgstr "输入要进入的频道："
 
@@ -731,11 +731,11 @@ msgstr "无此命令。\n"
 msgid "Bad arguments for user command.\n"
 msgstr "用户命令的参数不对。\n"
 
-#: src/common/outbound.c:4304
+#: src/common/outbound.c:4305
 msgid "Too many recursive usercommands, aborting."
 msgstr "太多递归的用户命令，中止。"
 
-#: src/common/outbound.c:4387
+#: src/common/outbound.c:4388
 msgid "Unknown Command. Try /help\n"
 msgstr "未知命令。请尝试 /help\n"
 
@@ -1247,501 +1247,501 @@ msgstr ""
 msgid "%C20*%O$tYou are now known as %C18$2%O"
 msgstr ""
 
-#: src/common/text.c:354
+#: src/common/text.c:348
 msgid "Loaded log from"
 msgstr "从以下位置载入聊天记录："
 
-#: src/common/text.c:371
+#: src/common/text.c:365
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** 结束聊天记录于 %s\n"
 
-#: src/common/text.c:593
+#: src/common/text.c:587
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** 开始聊天记录记录于 %s\n"
 
-#: src/common/text.c:612
+#: src/common/text.c:606
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
 msgstr ""
 
-#: src/common/text.c:1053
+#: src/common/text.c:1047
 msgid "Left message"
 msgstr "左边的信息"
 
-#: src/common/text.c:1054
+#: src/common/text.c:1048
 msgid "Right message"
 msgstr "右边的信息"
 
-#: src/common/text.c:1059 src/common/text.c:1421 src/common/text.c:1459
-#: src/common/text.c:1464 src/common/text.c:1505
+#: src/common/text.c:1053 src/common/text.c:1415 src/common/text.c:1453
+#: src/common/text.c:1458 src/common/text.c:1499
 msgid "IP address"
 msgstr "IP 地址"
 
-#: src/common/text.c:1060 src/common/text.c:1288 src/common/text.c:1347
-#: src/common/text.c:1353
+#: src/common/text.c:1054 src/common/text.c:1282 src/common/text.c:1341
+#: src/common/text.c:1347
 msgid "Username"
 msgstr "用户名"
 
-#: src/common/text.c:1065
+#: src/common/text.c:1059
 msgid "The nick of the joining person"
 msgstr "进入的用户"
 
-#: src/common/text.c:1066
+#: src/common/text.c:1060
 msgid "The channel being joined"
 msgstr "进入的频道"
 
-#: src/common/text.c:1067 src/common/text.c:1129 src/common/text.c:1180
+#: src/common/text.c:1061 src/common/text.c:1123 src/common/text.c:1174
 msgid "The host of the person"
 msgstr "此人的主机名"
 
-#: src/common/text.c:1071 src/common/text.c:1078 src/common/text.c:1085
-#: src/common/text.c:1287 src/common/text.c:1294 src/common/text.c:1299
-#: src/common/text.c:1304 src/common/text.c:1309 src/common/text.c:1315
-#: src/common/text.c:1320 src/common/text.c:1324 src/common/text.c:1330
-#: src/common/text.c:1336 src/common/text.c:1399 src/common/text.c:1410
-#: src/common/text.c:1415 src/common/text.c:1420 src/common/text.c:1429
-#: src/common/text.c:1440 src/common/text.c:1447 src/common/text.c:1453
-#: src/common/text.c:1458 src/common/text.c:1463 src/common/text.c:1470
-#: src/common/text.c:1476 src/common/text.c:1482 src/common/text.c:1487
-#: src/common/text.c:1492 src/common/text.c:1496 src/common/text.c:1502
-#: src/common/text.c:1510 src/common/text.c:1544 src/common/text.c:1549
+#: src/common/text.c:1065 src/common/text.c:1072 src/common/text.c:1079
+#: src/common/text.c:1281 src/common/text.c:1288 src/common/text.c:1293
+#: src/common/text.c:1298 src/common/text.c:1303 src/common/text.c:1309
+#: src/common/text.c:1314 src/common/text.c:1318 src/common/text.c:1324
+#: src/common/text.c:1330 src/common/text.c:1393 src/common/text.c:1404
+#: src/common/text.c:1409 src/common/text.c:1414 src/common/text.c:1423
+#: src/common/text.c:1434 src/common/text.c:1441 src/common/text.c:1447
+#: src/common/text.c:1452 src/common/text.c:1457 src/common/text.c:1464
+#: src/common/text.c:1470 src/common/text.c:1476 src/common/text.c:1481
+#: src/common/text.c:1486 src/common/text.c:1490 src/common/text.c:1496
+#: src/common/text.c:1504 src/common/text.c:1538 src/common/text.c:1543
 msgid "Nickname"
 msgstr "昵称"
 
-#: src/common/text.c:1072
+#: src/common/text.c:1066
 msgid "The action"
 msgstr "动作"
 
-#: src/common/text.c:1073 src/common/text.c:1080
+#: src/common/text.c:1067 src/common/text.c:1074
 msgid "Mode char"
 msgstr "模式"
 
-#: src/common/text.c:1074 src/common/text.c:1081 src/common/text.c:1087
+#: src/common/text.c:1068 src/common/text.c:1075 src/common/text.c:1081
 msgid "Identified text"
 msgstr "验证文本"
 
-#: src/common/text.c:1079
+#: src/common/text.c:1073
 msgid "The text"
 msgstr "文本"
 
-#: src/common/text.c:1086 src/common/text.c:1157 src/common/text.c:1163
+#: src/common/text.c:1080 src/common/text.c:1151 src/common/text.c:1157
 msgid "The message"
 msgstr "信息"
 
-#: src/common/text.c:1091 src/common/text.c:1096 src/common/text.c:1351
-#: src/common/text.c:1359 src/common/text.c:1365 src/common/text.c:1371
-#: src/common/text.c:1400 src/common/text.c:1518 src/common/text.c:1560
+#: src/common/text.c:1085 src/common/text.c:1090 src/common/text.c:1345
+#: src/common/text.c:1353 src/common/text.c:1359 src/common/text.c:1365
+#: src/common/text.c:1394 src/common/text.c:1512 src/common/text.c:1554
 msgid "Server Name"
 msgstr "服务器名"
 
-#: src/common/text.c:1092
+#: src/common/text.c:1086
 msgid "Acknowledged Capabilities"
 msgstr ""
 
-#: src/common/text.c:1097
+#: src/common/text.c:1091
 msgid "Server Capabilities"
 msgstr ""
 
-#: src/common/text.c:1101
+#: src/common/text.c:1095
 msgid "Requested Capabilities"
 msgstr ""
 
-#: src/common/text.c:1105 src/common/text.c:1167
+#: src/common/text.c:1099 src/common/text.c:1161
 msgid "Old nickname"
 msgstr "原昵称"
 
-#: src/common/text.c:1106 src/common/text.c:1168
+#: src/common/text.c:1100 src/common/text.c:1162
 msgid "New nickname"
 msgstr "新昵称"
 
-#: src/common/text.c:1110
+#: src/common/text.c:1104
 msgid "Nick of person who changed the topic"
 msgstr "更改主题的用户"
 
-#: src/common/text.c:1111 src/common/text.c:1117 src/fe-gtk/chanlist.c:788
+#: src/common/text.c:1105 src/common/text.c:1111 src/fe-gtk/chanlist.c:788
 #: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:357
 msgid "Topic"
 msgstr "主题"
 
-#: src/common/text.c:1112 src/common/text.c:1116 src/common/text.c:1564
+#: src/common/text.c:1106 src/common/text.c:1110 src/common/text.c:1558
 #: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
 #: src/fe-gtk/servlistgui.c:894
 msgid "Channel"
 msgstr "频道"
 
-#: src/common/text.c:1121 src/common/text.c:1174
+#: src/common/text.c:1115 src/common/text.c:1168
 msgid "The nickname of the kicker"
 msgstr "能踢人的用户"
 
-#: src/common/text.c:1122 src/common/text.c:1172
+#: src/common/text.c:1116 src/common/text.c:1166
 msgid "The person being kicked"
 msgstr "被踢者"
 
-#: src/common/text.c:1123 src/common/text.c:1130 src/common/text.c:1134
-#: src/common/text.c:1139 src/common/text.c:1173 src/common/text.c:1181
-#: src/common/text.c:1188
+#: src/common/text.c:1117 src/common/text.c:1124 src/common/text.c:1128
+#: src/common/text.c:1133 src/common/text.c:1167 src/common/text.c:1175
+#: src/common/text.c:1182
 msgid "The channel"
 msgstr "频道"
 
-#: src/common/text.c:1124 src/common/text.c:1175 src/common/text.c:1182
+#: src/common/text.c:1118 src/common/text.c:1169 src/common/text.c:1176
 msgid "The reason"
 msgstr "原因"
 
-#: src/common/text.c:1128 src/common/text.c:1179
+#: src/common/text.c:1122 src/common/text.c:1173
 msgid "The nick of the person leaving"
 msgstr "离开的用户"
 
-#: src/common/text.c:1135 src/common/text.c:1141
+#: src/common/text.c:1129 src/common/text.c:1135
 msgid "The time"
 msgstr "时间"
 
-#: src/common/text.c:1140
+#: src/common/text.c:1134
 msgid "The creator"
 msgstr "建立者"
 
-#: src/common/text.c:1145 src/fe-gtk/dccgui.c:768 src/fe-gtk/dccgui.c:1001
+#: src/common/text.c:1139 src/fe-gtk/dccgui.c:768 src/fe-gtk/dccgui.c:1001
 msgid "Nick"
 msgstr "昵称"
 
-#: src/common/text.c:1146 src/common/text.c:1416
+#: src/common/text.c:1140 src/common/text.c:1410
 msgid "Reason"
 msgstr "原因"
 
-#: src/common/text.c:1147 src/common/text.c:1289 src/common/text.c:1389
+#: src/common/text.c:1141 src/common/text.c:1283 src/common/text.c:1383
 msgid "Host"
 msgstr "主机"
 
-#: src/common/text.c:1151 src/common/text.c:1156 src/common/text.c:1161
+#: src/common/text.c:1145 src/common/text.c:1150 src/common/text.c:1155
 msgid "Who it's from"
 msgstr "来自者"
 
-#: src/common/text.c:1152
+#: src/common/text.c:1146
 msgid "The time in x.x format (see below)"
 msgstr "时间格式为 x.x(见下)"
 
-#: src/common/text.c:1162 src/common/text.c:1199
+#: src/common/text.c:1156 src/common/text.c:1193
 msgid "The Channel it's going to"
 msgstr "要进入的频道"
 
-#: src/common/text.c:1186
+#: src/common/text.c:1180
 msgid "The sound"
 msgstr "声音"
 
-#: src/common/text.c:1187 src/common/text.c:1193 src/common/text.c:1198
+#: src/common/text.c:1181 src/common/text.c:1187 src/common/text.c:1192
 msgid "The nick of the person"
 msgstr "此人的昵称"
 
-#: src/common/text.c:1192 src/common/text.c:1197
+#: src/common/text.c:1186 src/common/text.c:1191
 msgid "The CTCP event"
 msgstr "CTCP 事件"
 
-#: src/common/text.c:1203
+#: src/common/text.c:1197
 msgid "The nick of the person who set the key"
 msgstr "设置密码的用户"
 
-#: src/common/text.c:1204
+#: src/common/text.c:1198
 msgid "The key"
 msgstr "密码"
 
-#: src/common/text.c:1208
+#: src/common/text.c:1202
 msgid "The nick of the person who set the limit"
 msgstr "设置限制的用户"
 
-#: src/common/text.c:1209
+#: src/common/text.c:1203
 msgid "The limit"
 msgstr "限制"
 
-#: src/common/text.c:1213
+#: src/common/text.c:1207
 msgid "The nick of the person who did the op'ing"
 msgstr "使用了 op 命令的用户"
 
-#: src/common/text.c:1214
+#: src/common/text.c:1208
 msgid "The nick of the person who has been op'ed"
 msgstr "被授予管理员身份的用户"
 
-#: src/common/text.c:1218
+#: src/common/text.c:1212
 msgid "The nick of the person who has been halfop'ed"
 msgstr "被授予副管理员身份的用户"
 
-#: src/common/text.c:1219
+#: src/common/text.c:1213
 msgid "The nick of the person who did the halfop'ing"
 msgstr "使用 halfop 命令的用户"
 
-#: src/common/text.c:1223
+#: src/common/text.c:1217
 msgid "The nick of the person who did the voice'ing"
 msgstr "使用 voice 命令的用户"
 
-#: src/common/text.c:1224
+#: src/common/text.c:1218
 msgid "The nick of the person who has been voice'ed"
 msgstr "被赋予发言权的用户"
 
-#: src/common/text.c:1228
+#: src/common/text.c:1222
 msgid "The nick of the person who did the banning"
 msgstr "使用 ban 命令的用户"
 
-#: src/common/text.c:1229 src/common/text.c:1256
+#: src/common/text.c:1223 src/common/text.c:1250
 msgid "The ban mask"
 msgstr "屏蔽掩码"
 
-#: src/common/text.c:1233
+#: src/common/text.c:1227
 msgid "The nick who removed the key"
 msgstr "取消密码的用户"
 
-#: src/common/text.c:1237
+#: src/common/text.c:1231
 msgid "The nick who removed the limit"
 msgstr "取消用户限制的用户"
 
-#: src/common/text.c:1241
+#: src/common/text.c:1235
 msgid "The nick of the person of did the deop'ing"
 msgstr "使用 deop 命令的用户"
 
-#: src/common/text.c:1242
+#: src/common/text.c:1236
 msgid "The nick of the person who has been deop'ed"
 msgstr "被取消管理员身份的用户"
 
-#: src/common/text.c:1245
+#: src/common/text.c:1239
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "使用 dehalfop 命令的用户"
 
-#: src/common/text.c:1246
+#: src/common/text.c:1240
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "被取消副管理员身份的用户"
 
-#: src/common/text.c:1250
+#: src/common/text.c:1244
 msgid "The nick of the person of did the devoice'ing"
 msgstr "使用 devoice 命令的用户"
 
-#: src/common/text.c:1251
+#: src/common/text.c:1245
 msgid "The nick of the person who has been devoice'ed"
 msgstr "被取消发言权的用户"
 
-#: src/common/text.c:1255
+#: src/common/text.c:1249
 msgid "The nick of the person of did the unban'ing"
 msgstr "使用 unban 命令的用户"
 
-#: src/common/text.c:1260
+#: src/common/text.c:1254
 msgid "The nick of the person who did the exempt"
 msgstr "使用 exempt 命令的用户"
 
-#: src/common/text.c:1261 src/common/text.c:1266
+#: src/common/text.c:1255 src/common/text.c:1260
 msgid "The exempt mask"
 msgstr "exempt 掩码"
 
-#: src/common/text.c:1265
+#: src/common/text.c:1259
 msgid "The nick of the person removed the exempt"
 msgstr "取消 exempt 的用户"
 
-#: src/common/text.c:1270
+#: src/common/text.c:1264
 msgid "The nick of the person who did the invite"
 msgstr "使用 invite 命令的用户"
 
-#: src/common/text.c:1271 src/common/text.c:1276
+#: src/common/text.c:1265 src/common/text.c:1270
 msgid "The invite mask"
 msgstr "invite 掩码"
 
-#: src/common/text.c:1275
+#: src/common/text.c:1269
 msgid "The nick of the person removed the invite"
 msgstr "取消 invite 的用户"
 
-#: src/common/text.c:1280
+#: src/common/text.c:1274
 msgid "The nick of the person setting the mode"
 msgstr "设置模式的用户"
 
-#: src/common/text.c:1281
+#: src/common/text.c:1275
 msgid "The mode's sign (+/-)"
 msgstr "模式符号(+/-)"
 
-#: src/common/text.c:1282
+#: src/common/text.c:1276
 msgid "The mode letter"
 msgstr "模式字母"
 
-#: src/common/text.c:1283
+#: src/common/text.c:1277
 msgid "The channel it's being set on"
 msgstr "被设置的频道"
 
-#: src/common/text.c:1290
+#: src/common/text.c:1284
 msgid "Full name"
 msgstr "全名"
 
-#: src/common/text.c:1295
+#: src/common/text.c:1289
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "频道成员/“是 IRC 管理员”"
 
-#: src/common/text.c:1300
+#: src/common/text.c:1294
 msgid "Server Information"
 msgstr "服务器信息"
 
-#: src/common/text.c:1305 src/common/text.c:1310
+#: src/common/text.c:1299 src/common/text.c:1304
 msgid "Idle time"
 msgstr "发呆时间"
 
-#: src/common/text.c:1311
+#: src/common/text.c:1305
 msgid "Signon time"
 msgstr "登录时间"
 
-#: src/common/text.c:1316
+#: src/common/text.c:1310
 msgid "Away reason"
 msgstr "离开原因"
 
-#: src/common/text.c:1325 src/common/text.c:1331 src/common/text.c:1339
-#: src/common/text.c:1354 src/common/text.c:1536
+#: src/common/text.c:1319 src/common/text.c:1325 src/common/text.c:1333
+#: src/common/text.c:1348 src/common/text.c:1530
 msgid "Message"
 msgstr "信息"
 
-#: src/common/text.c:1332
+#: src/common/text.c:1326
 msgid "Account"
 msgstr "帐户"
 
-#: src/common/text.c:1337
+#: src/common/text.c:1331
 msgid "Real user@host"
 msgstr "真实 user@host"
 
-#: src/common/text.c:1338
+#: src/common/text.c:1332
 msgid "Real IP"
 msgstr "真实 IP"
 
-#: src/common/text.c:1343 src/common/text.c:1369 src/common/text.c:1375
-#: src/common/text.c:1405 src/common/text.c:1559
+#: src/common/text.c:1337 src/common/text.c:1363 src/common/text.c:1369
+#: src/common/text.c:1399 src/common/text.c:1553
 msgid "Channel Name"
 msgstr "频道名"
 
-#: src/common/text.c:1352 src/common/text.c:1360
+#: src/common/text.c:1346 src/common/text.c:1354
 msgid "Raw Numeric or Identifier"
 msgstr ""
 
-#: src/common/text.c:1358 src/common/text.c:1364 src/common/text.c:1522
-#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
+#: src/common/text.c:1352 src/common/text.c:1358 src/common/text.c:1516
+#: src/fe-gtk/menu.c:1459 src/fe-gtk/menu.c:1647 src/fe-gtk/setup.c:246
 #: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "文本"
 
-#: src/common/text.c:1370
+#: src/common/text.c:1364
 msgid "Nick of person who invited you"
 msgstr "邀请您的用户"
 
-#: src/common/text.c:1376 src/fe-gtk/chanlist.c:787
+#: src/common/text.c:1370 src/fe-gtk/chanlist.c:787
 msgid "Users"
 msgstr "用户"
 
-#: src/common/text.c:1380
+#: src/common/text.c:1374
 msgid "Nickname in use"
 msgstr "昵称已被使用"
 
-#: src/common/text.c:1381
+#: src/common/text.c:1375
 msgid "Nick being tried"
 msgstr "已试过的昵称"
 
-#: src/common/text.c:1390 src/common/text.c:1526
+#: src/common/text.c:1384 src/common/text.c:1520
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:1391 src/common/text.c:1422
+#: src/common/text.c:1385 src/common/text.c:1416
 msgid "Port"
 msgstr "端口"
 
-#: src/common/text.c:1401 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
+#: src/common/text.c:1395 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1914
 msgid "Network"
 msgstr "网络"
 
-#: src/common/text.c:1406 src/common/text.c:1411
+#: src/common/text.c:1400 src/common/text.c:1405
 msgid "Modes string"
 msgstr "模式"
 
-#: src/common/text.c:1427 src/common/text.c:1452
+#: src/common/text.c:1421 src/common/text.c:1446
 msgid "DCC Type"
 msgstr "DCC 类型"
 
-#: src/common/text.c:1428 src/common/text.c:1433 src/common/text.c:1438
-#: src/common/text.c:1445 src/common/text.c:1465 src/common/text.c:1469
-#: src/common/text.c:1475 src/common/text.c:1481 src/common/text.c:1488
-#: src/common/text.c:1497 src/common/text.c:1503
+#: src/common/text.c:1422 src/common/text.c:1427 src/common/text.c:1432
+#: src/common/text.c:1439 src/common/text.c:1459 src/common/text.c:1463
+#: src/common/text.c:1469 src/common/text.c:1475 src/common/text.c:1482
+#: src/common/text.c:1491 src/common/text.c:1497
 msgid "Filename"
 msgstr "文件名"
 
-#: src/common/text.c:1439 src/common/text.c:1446
+#: src/common/text.c:1433 src/common/text.c:1440
 msgid "Destination filename"
 msgstr "目标文件名"
 
-#: src/common/text.c:1448 src/common/text.c:1477
+#: src/common/text.c:1442 src/common/text.c:1471
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:1483
+#: src/common/text.c:1477
 msgid "Pathname"
 msgstr "路径名"
 
-#: src/common/text.c:1498 src/fe-gtk/dccgui.c:764
+#: src/common/text.c:1492 src/fe-gtk/dccgui.c:764
 msgid "Position"
 msgstr "位置"
 
-#: src/common/text.c:1504 src/fe-gtk/dccgui.c:763
+#: src/common/text.c:1498 src/fe-gtk/dccgui.c:763
 msgid "Size"
 msgstr "大小"
 
-#: src/common/text.c:1509
+#: src/common/text.c:1503
 msgid "DCC String"
 msgstr "DCC 字符串"
 
-#: src/common/text.c:1514
+#: src/common/text.c:1508
 msgid "Number of notify items"
 msgstr "通知条目数"
 
-#: src/common/text.c:1530
+#: src/common/text.c:1524
 msgid "Old Filename"
 msgstr "原文件名"
 
-#: src/common/text.c:1531
+#: src/common/text.c:1525
 msgid "New Filename"
 msgstr "新文件名"
 
-#: src/common/text.c:1535
+#: src/common/text.c:1529
 msgid "Receiver"
 msgstr "接收者"
 
-#: src/common/text.c:1540
+#: src/common/text.c:1534
 msgid "Hostmask"
 msgstr "主机掩码"
 
-#: src/common/text.c:1545
+#: src/common/text.c:1539
 msgid "Hostname"
 msgstr "主机名"
 
-#: src/common/text.c:1550
+#: src/common/text.c:1544
 msgid "The Packet"
 msgstr "包"
 
-#: src/common/text.c:1554
+#: src/common/text.c:1548
 msgid "Seconds"
 msgstr "秒"
 
-#: src/common/text.c:1558
+#: src/common/text.c:1552
 msgid "Nick of person who have been invited"
 msgstr "被邀请的用户"
 
-#: src/common/text.c:1565
+#: src/common/text.c:1559
 msgid "Banmask"
 msgstr "屏蔽掩码"
 
-#: src/common/text.c:1566
+#: src/common/text.c:1560
 msgid "Who set the ban"
 msgstr "设置屏蔽的用户"
 
-#: src/common/text.c:1567
+#: src/common/text.c:1561
 msgid "Ban time"
 msgstr "屏蔽时间"
 
-#: src/common/text.c:1607
+#: src/common/text.c:1601
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
 msgstr "解析事件 %s 出错。\n载入默认值。"
 
-#: src/common/text.c:2365
+#: src/common/text.c:2359
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -2974,7 +2974,7 @@ msgstr "刷新"
 msgid "Displaying %d/%d users on %d/%d channels."
 msgstr "显示在 %3$d/%4$d 个频道中的 %1$d/%2$d 用户。"
 
-#: src/fe-gtk/chanlist.c:532 src/fe-gtk/menu.c:1273 src/fe-gtk/urlgrab.c:149
+#: src/fe-gtk/chanlist.c:532 src/fe-gtk/menu.c:1272 src/fe-gtk/urlgrab.c:149
 msgid "Select an output filename"
 msgstr "选择输出文件名"
 
@@ -3094,7 +3094,7 @@ msgstr "文件"
 msgid "ETA"
 msgstr "剩余时间"
 
-#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:247
+#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:247
 msgid "Both"
 msgstr "两者"
 
@@ -3652,11 +3652,11 @@ msgstr "闪烁托盘图标(_I)"
 msgid "Blink Task _Bar"
 msgstr "闪烁任务栏图标(_B)"
 
-#: src/fe-gtk/maingui.c:1641 src/fe-gtk/menu.c:2182
+#: src/fe-gtk/maingui.c:1641 src/fe-gtk/menu.c:2181
 msgid "_Detach"
 msgstr "分离(_D)"
 
-#: src/fe-gtk/maingui.c:1643 src/fe-gtk/menu.c:2183 src/fe-gtk/menu.c:2188
+#: src/fe-gtk/maingui.c:1643 src/fe-gtk/menu.c:2182 src/fe-gtk/menu.c:2187
 #: src/fe-gtk/plugingui.c:245 src/fe-gtk/search.c:234
 msgid "_Close"
 msgstr "关闭(_C)"
@@ -3770,7 +3770,7 @@ msgstr "在浏览器中打开链接"
 msgid "Copy Selected Link"
 msgstr "复制选取的链接"
 
-#: src/fe-gtk/menu.c:1008 src/fe-gtk/menu.c:1320
+#: src/fe-gtk/menu.c:1008 src/fe-gtk/menu.c:1319
 msgid "Join Channel"
 msgstr "进入频道"
 
@@ -3802,11 +3802,11 @@ msgstr "编辑此菜单..."
 msgid "Search hit end, not found."
 msgstr "已搜索到尾部，未找到符合条件的结果。"
 
-#: src/fe-gtk/menu.c:1322
+#: src/fe-gtk/menu.c:1321
 msgid "Retrieve channel list..."
 msgstr "获取频道列表..."
 
-#: src/fe-gtk/menu.c:1390
+#: src/fe-gtk/menu.c:1389
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -3828,7 +3828,7 @@ msgid ""
 "&2 would be \"john hello\"."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1406
+#: src/fe-gtk/menu.c:1405
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -3842,7 +3842,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr "用户列表按钮 - 特殊编码：\n\n%a  =  所有选取的用户\n%c  =  当前频道\n%e  =  当前网络名称\n%h  =  选取的昵称的主机名\n%m  =  机器信息\n%n  =  您的昵称\n%s  =  选取的昵称\n%t  =  时间/日期\n"
 
-#: src/fe-gtk/menu.c:1416
+#: src/fe-gtk/menu.c:1415
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3856,7 +3856,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr "对话按钮 - 特殊编码:\n\n%a  =  所有选取的用户\n%c  =  当前频道\n%e  =  当前网络名称\n%h  =  选取的昵称的主机名\n%m  =  机器信息\n%n  =  您的昵称\n%s  =  选取的昵称\n%t  =  时间/日期\n"
 
-#: src/fe-gtk/menu.c:1426
+#: src/fe-gtk/menu.c:1425
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3872,7 +3872,7 @@ msgid ""
 "\n"
 msgstr "CTCP 回应 - 特殊编码:\n\n%d  =  数据 (全部 ctcp)\n%e  =  当前网络名称\n%m  =  机器信息\n%s  =  发送 ctcp 的用户\n%t  =  时间/日期\n%2  =  第 2 个词\n%3  =  第 3 个词\n&2  =  从第 2 个词到行末\n&3  =  从第 3 个词到行末\n\n"
 
-#: src/fe-gtk/menu.c:1437
+#: src/fe-gtk/menu.c:1436
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3884,287 +3884,287 @@ msgid ""
 "shell instead of HexChat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1446
+#: src/fe-gtk/menu.c:1445
 msgid ": User Defined Commands"
 msgstr "：用户自定义命令"
 
-#: src/fe-gtk/menu.c:1453
+#: src/fe-gtk/menu.c:1452
 msgid ": Userlist Popup menu"
 msgstr "：用户列表弹出菜单"
 
-#: src/fe-gtk/menu.c:1460
+#: src/fe-gtk/menu.c:1459
 msgid "Replace with"
 msgstr "使用以下替换"
 
-#: src/fe-gtk/menu.c:1460
+#: src/fe-gtk/menu.c:1459
 msgid ": Replace"
 msgstr "：替换"
 
-#: src/fe-gtk/menu.c:1467
+#: src/fe-gtk/menu.c:1466
 msgid ": URL Handlers"
 msgstr "：URL 处理程序"
 
-#: src/fe-gtk/menu.c:1486
+#: src/fe-gtk/menu.c:1485
 msgid ": Userlist buttons"
 msgstr "：用户列表按钮"
 
-#: src/fe-gtk/menu.c:1493
+#: src/fe-gtk/menu.c:1492
 msgid ": Dialog buttons"
 msgstr "：对话按钮"
 
-#: src/fe-gtk/menu.c:1500
+#: src/fe-gtk/menu.c:1499
 msgid ": CTCP Replies"
 msgstr "：CTCP 回应"
 
-#: src/fe-gtk/menu.c:1606
+#: src/fe-gtk/menu.c:1605
 msgid "He_xChat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1607
+#: src/fe-gtk/menu.c:1606
 msgid "Network Li_st..."
 msgstr "网络列表(_S)..."
 
-#: src/fe-gtk/menu.c:1610
+#: src/fe-gtk/menu.c:1609
 msgid "_New"
 msgstr "添加(_N)"
 
-#: src/fe-gtk/menu.c:1611
+#: src/fe-gtk/menu.c:1610
 msgid "Server Tab..."
 msgstr "服务器标签页..."
 
-#: src/fe-gtk/menu.c:1612
+#: src/fe-gtk/menu.c:1611
 msgid "Channel Tab..."
 msgstr "频道标签页..."
 
-#: src/fe-gtk/menu.c:1613
+#: src/fe-gtk/menu.c:1612
 msgid "Server Window..."
 msgstr "服务器窗口..."
 
-#: src/fe-gtk/menu.c:1614
+#: src/fe-gtk/menu.c:1613
 msgid "Channel Window..."
 msgstr "频道窗口..."
 
-#: src/fe-gtk/menu.c:1619 src/fe-gtk/menu.c:1621
+#: src/fe-gtk/menu.c:1618 src/fe-gtk/menu.c:1620
 msgid "_Load Plugin or Script..."
 msgstr "载入插件或脚本(_L)..."
 
-#: src/fe-gtk/menu.c:1629 src/fe-gtk/plugin-tray.c:540
+#: src/fe-gtk/menu.c:1628 src/fe-gtk/plugin-tray.c:540
 msgid "_Quit"
 msgstr "离开(_Q)"
 
-#: src/fe-gtk/menu.c:1631
+#: src/fe-gtk/menu.c:1630
 msgid "_View"
 msgstr "查看(_V)"
 
-#: src/fe-gtk/menu.c:1633
+#: src/fe-gtk/menu.c:1632
 msgid "_Menu Bar"
 msgstr "菜单栏(_M)"
 
-#: src/fe-gtk/menu.c:1634
+#: src/fe-gtk/menu.c:1633
 msgid "_Topic Bar"
 msgstr "主题栏(_T)"
 
-#: src/fe-gtk/menu.c:1635
+#: src/fe-gtk/menu.c:1634
 msgid "_User List"
 msgstr "用户菜单(_U)"
 
-#: src/fe-gtk/menu.c:1636
+#: src/fe-gtk/menu.c:1635
 msgid "U_serlist Buttons"
 msgstr "用户列表按钮(_U)..."
 
-#: src/fe-gtk/menu.c:1637
+#: src/fe-gtk/menu.c:1636
 msgid "M_ode Buttons"
 msgstr "模式按钮(_O)"
 
-#: src/fe-gtk/menu.c:1639
+#: src/fe-gtk/menu.c:1638
 msgid "_Channel Switcher"
 msgstr "频道转换器(_C)"
 
-#: src/fe-gtk/menu.c:1641
+#: src/fe-gtk/menu.c:1640
 msgid "_Tabs"
 msgstr "标签页(_T)"
 
-#: src/fe-gtk/menu.c:1642
+#: src/fe-gtk/menu.c:1641
 msgid "T_ree"
 msgstr "树状图(_R)"
 
-#: src/fe-gtk/menu.c:1644
+#: src/fe-gtk/menu.c:1643
 msgid "_Network Meters"
 msgstr "网络流量(_N)"
 
-#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:244
+#: src/fe-gtk/menu.c:1645 src/fe-gtk/setup.c:244
 msgid "Off"
 msgstr "离线"
 
-#: src/fe-gtk/menu.c:1647
+#: src/fe-gtk/menu.c:1646
 msgid "Graph"
 msgstr "图形"
 
-#: src/fe-gtk/menu.c:1652
+#: src/fe-gtk/menu.c:1651
 msgid "_Server"
 msgstr "服务器(_S)"
 
-#: src/fe-gtk/menu.c:1653
+#: src/fe-gtk/menu.c:1652
 msgid "_Disconnect"
 msgstr "断开连接(_D)"
 
-#: src/fe-gtk/menu.c:1654
+#: src/fe-gtk/menu.c:1653
 msgid "_Reconnect"
 msgstr "重新连接(_R)"
 
-#: src/fe-gtk/menu.c:1655
+#: src/fe-gtk/menu.c:1654
 msgid "Join a Channel..."
 msgstr "进入频道..."
 
-#: src/fe-gtk/menu.c:1656
+#: src/fe-gtk/menu.c:1655
 msgid "List of Channels..."
 msgstr "频道列表..."
 
-#: src/fe-gtk/menu.c:1659
+#: src/fe-gtk/menu.c:1658
 msgid "Marked Away"
 msgstr "标记为离开"
 
-#: src/fe-gtk/menu.c:1661
+#: src/fe-gtk/menu.c:1660
 msgid "_Usermenu"
 msgstr "用户菜单(_U)"
 
-#: src/fe-gtk/menu.c:1663
+#: src/fe-gtk/menu.c:1662
 msgid "S_ettings"
 msgstr "设置(_E)"
 
-#: src/fe-gtk/menu.c:1664
+#: src/fe-gtk/menu.c:1663
 msgid "_Preferences"
 msgstr "首选项(_P)"
 
-#: src/fe-gtk/menu.c:1666
+#: src/fe-gtk/menu.c:1665
 msgid "Auto Replace..."
 msgstr "自动替换..."
 
-#: src/fe-gtk/menu.c:1667
+#: src/fe-gtk/menu.c:1666
 msgid "CTCP Replies..."
 msgstr "CTCP 回应..."
 
-#: src/fe-gtk/menu.c:1668
+#: src/fe-gtk/menu.c:1667
 msgid "Dialog Buttons..."
 msgstr "对话框按钮..."
 
-#: src/fe-gtk/menu.c:1669
+#: src/fe-gtk/menu.c:1668
 msgid "Keyboard Shortcuts..."
 msgstr "键盘快捷键..."
 
-#: src/fe-gtk/menu.c:1670
+#: src/fe-gtk/menu.c:1669
 msgid "Text Events..."
 msgstr "文本事件..."
 
-#: src/fe-gtk/menu.c:1671
+#: src/fe-gtk/menu.c:1670
 msgid "URL Handlers..."
 msgstr "URL 处理程序..."
 
-#: src/fe-gtk/menu.c:1672
+#: src/fe-gtk/menu.c:1671
 msgid "User Commands..."
 msgstr "用户命令..."
 
-#: src/fe-gtk/menu.c:1673
+#: src/fe-gtk/menu.c:1672
 msgid "Userlist Buttons..."
 msgstr "用户列表按钮..."
 
-#: src/fe-gtk/menu.c:1674
+#: src/fe-gtk/menu.c:1673
 msgid "Userlist Popup..."
 msgstr "用户列表弹出菜单..."
 
-#: src/fe-gtk/menu.c:1676
+#: src/fe-gtk/menu.c:1675
 msgid "_Window"
 msgstr "窗口(_W)"
 
-#: src/fe-gtk/menu.c:1677
+#: src/fe-gtk/menu.c:1676
 msgid "Ban List..."
 msgstr "屏蔽列表..."
 
-#: src/fe-gtk/menu.c:1678
+#: src/fe-gtk/menu.c:1677
 msgid "Character Chart..."
 msgstr "特殊字符..."
 
-#: src/fe-gtk/menu.c:1679
+#: src/fe-gtk/menu.c:1678
 msgid "Direct Chat..."
 msgstr "直连聊天..."
 
-#: src/fe-gtk/menu.c:1680
+#: src/fe-gtk/menu.c:1679
 msgid "File Transfers..."
 msgstr "文件传输..."
 
-#: src/fe-gtk/menu.c:1681
+#: src/fe-gtk/menu.c:1680
 msgid "Friends List..."
 msgstr "好友列表"
 
-#: src/fe-gtk/menu.c:1682
+#: src/fe-gtk/menu.c:1681
 msgid "Ignore List..."
 msgstr "忽略列表..."
 
-#: src/fe-gtk/menu.c:1683
+#: src/fe-gtk/menu.c:1682
 msgid "Plugins and Scripts..."
 msgstr "插件和脚本..."
 
-#: src/fe-gtk/menu.c:1684
+#: src/fe-gtk/menu.c:1683
 msgid "Raw Log..."
 msgstr "原始记录..."
 
-#: src/fe-gtk/menu.c:1685
+#: src/fe-gtk/menu.c:1684
 msgid "URL Grabber..."
 msgstr "URL 抓取程序..."
 
-#: src/fe-gtk/menu.c:1687
+#: src/fe-gtk/menu.c:1686
 msgid "Reset Marker Line"
 msgstr "重置标记线"
 
-#: src/fe-gtk/menu.c:1688
+#: src/fe-gtk/menu.c:1687
 msgid "_Copy Selection"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1689
+#: src/fe-gtk/menu.c:1688
 msgid "C_lear Text"
 msgstr "清空文本(_L)"
 
-#: src/fe-gtk/menu.c:1690
+#: src/fe-gtk/menu.c:1689
 msgid "Save Text..."
 msgstr "保存文本..."
 
-#: src/fe-gtk/menu.c:1692
+#: src/fe-gtk/menu.c:1691
 msgid "Search"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1693
+#: src/fe-gtk/menu.c:1692
 msgid "Search Text..."
 msgstr "搜索文本..."
 
-#: src/fe-gtk/menu.c:1694
+#: src/fe-gtk/menu.c:1693
 msgid "Reset Search"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1695
+#: src/fe-gtk/menu.c:1694
 msgid "Search Next"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1696
+#: src/fe-gtk/menu.c:1695
 msgid "Search Previous"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1699 src/fe-gtk/menu.c:2174
+#: src/fe-gtk/menu.c:1698 src/fe-gtk/menu.c:2173
 msgid "_Help"
 msgstr "帮助(_H)"
 
-#: src/fe-gtk/menu.c:1701
+#: src/fe-gtk/menu.c:1700
 msgid "_Contents"
 msgstr "内容(_C)"
 
-#: src/fe-gtk/menu.c:1703
+#: src/fe-gtk/menu.c:1702
 msgid "Check for updates"
 msgstr "检查更新"
 
-#: src/fe-gtk/menu.c:1705
+#: src/fe-gtk/menu.c:1704
 msgid "_About"
 msgstr "关于(_A)"
 
-#: src/fe-gtk/menu.c:2187
+#: src/fe-gtk/menu.c:2186
 msgid "_Attach"
 msgstr "整合(_A)"
 
@@ -4226,15 +4226,15 @@ msgstr ""
 msgid "_Blink on"
 msgstr "闪烁于(_B)"
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:655
+#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:662
 msgid "Channel Message"
 msgstr "频道消息"
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:656
+#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:663
 msgid "Private Message"
 msgstr "私聊消息"
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:657
+#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:664
 msgid "Highlighted Message"
 msgstr "高亮显示的消息"
 
@@ -4769,7 +4769,7 @@ msgstr ""
 msgid "Walloon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1899
+#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1909
 msgid "General"
 msgstr "一般"
 
@@ -4837,7 +4837,7 @@ msgstr "绿："
 msgid "Blue:"
 msgstr "蓝："
 
-#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:555
+#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:562
 msgid "Time Stamps"
 msgstr "时间戳"
 
@@ -4849,11 +4849,11 @@ msgstr "启用时间戳"
 msgid "Time stamp format:"
 msgstr "时间戳格式："
 
-#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:559
+#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:566
 msgid "See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:561
+#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:568
 msgid "See the strftime manpage for details."
 msgstr ""
 
@@ -5234,7 +5234,7 @@ msgstr "所有文件的最大速度"
 msgid "All downloads combined:"
 msgstr "所有下载"
 
-#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:448 src/fe-gtk/setup.c:1898
+#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:455 src/fe-gtk/setup.c:1908
 msgid "Alerts"
 msgstr "提示"
 
@@ -5246,523 +5246,539 @@ msgstr "显示托盘气泡提示于："
 msgid "Blink tray icon on:"
 msgstr "闪烁托盘图标于："
 
-#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
+#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:458
 msgid "Blink task bar on:"
 msgstr "闪烁任务栏图标于："
 
-#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:452
+#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:459
 msgid "Make a beep sound on:"
 msgstr "响铃于："
 
-#: src/fe-gtk/setup.c:432
-msgid "Enable system tray icon"
-msgstr "激活系统托盘图标"
-
-#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:454
+#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:461
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
+#: src/fe-gtk/setup.c:434
+msgid "Tray Behavior"
+msgstr ""
+
+#: src/fe-gtk/setup.c:435
+msgid "Enable system tray icon"
+msgstr "激活系统托盘图标"
+
+#: src/fe-gtk/setup.c:436
+msgid "Minimize to tray"
+msgstr ""
+
+#: src/fe-gtk/setup.c:437
+msgid "Close to tray"
+msgstr ""
+
+#: src/fe-gtk/setup.c:439
+msgid "Only show tray balloons when hidden or iconified"
+msgstr ""
+
+#: src/fe-gtk/setup.c:442 src/fe-gtk/setup.c:463
 msgid "Highlighted Messages"
 msgstr "高亮显示消息"
 
-#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
+#: src/fe-gtk/setup.c:443 src/fe-gtk/setup.c:464
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr "高亮消息是当您的昵称被提到时所显示的消息，同时还包括："
 
-#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:445 src/fe-gtk/setup.c:466
 msgid "Extra words to highlight:"
 msgstr "需要高亮显示的其他单词："
 
-#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:446 src/fe-gtk/setup.c:467
 msgid "Nick names not to highlight:"
 msgstr "不高亮显示的昵称："
 
-#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
+#: src/fe-gtk/setup.c:447 src/fe-gtk/setup.c:468
 msgid "Nick names to always highlight:"
 msgstr "总是高亮显示的昵称："
 
-#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
+#: src/fe-gtk/setup.c:448 src/fe-gtk/setup.c:469
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr "请用逗号分隔多个词组。\n可以使用通配符。"
 
-#: src/fe-gtk/setup.c:469
+#: src/fe-gtk/setup.c:476
 msgid "Default Messages"
 msgstr "默认信息"
 
-#: src/fe-gtk/setup.c:470
+#: src/fe-gtk/setup.c:477
 msgid "Quit:"
 msgstr "退出："
 
-#: src/fe-gtk/setup.c:471
+#: src/fe-gtk/setup.c:478
 msgid "Leave channel:"
 msgstr "离开频道："
 
-#: src/fe-gtk/setup.c:472
+#: src/fe-gtk/setup.c:479
 msgid "Away:"
 msgstr "离开："
 
-#: src/fe-gtk/setup.c:474
+#: src/fe-gtk/setup.c:481
 msgid "Away"
 msgstr "离开"
 
-#: src/fe-gtk/setup.c:475
+#: src/fe-gtk/setup.c:482
 msgid "Announce away messages"
 msgstr "发布离开信息"
 
-#: src/fe-gtk/setup.c:476
+#: src/fe-gtk/setup.c:483
 msgid "Announce your away messages to all channels."
 msgstr ""
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:484
 msgid "Show away once"
 msgstr "只显示离开一次"
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:484
 msgid "Show identical away messages only once."
 msgstr ""
 
-#: src/fe-gtk/setup.c:478
+#: src/fe-gtk/setup.c:485
 msgid "Automatically unmark away"
 msgstr "自动取消离开状态"
 
-#: src/fe-gtk/setup.c:478
+#: src/fe-gtk/setup.c:485
 msgid "Unmark yourself as away before sending messages."
 msgstr ""
 
-#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:517
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:524
 msgid "Advanced Settings"
 msgstr "高级设置"
 
-#: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:518
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
 msgid "Alternative fonts:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:526
 msgid "Auto reconnect delay:"
 msgstr "自动重连间隔："
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:527
 msgid "Display MODEs in raw form"
 msgstr "使用原始格式显示模式"
 
-#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:528
 msgid "Whois on notify"
 msgstr "通知列表 Whois"
 
-#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:528
 msgid "Sends a /WHOIS when a user comes online in your notify list."
 msgstr ""
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:529
 msgid "Hide join and part messages"
 msgstr "隐藏进入/离开信息"
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:529
 msgid "Hide channel join/part messages by default."
 msgstr ""
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:531
 msgid "Display lists in compact mode"
 msgstr ""
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:531
 msgid "Use less spacing between user list/channel tree rows."
 msgstr ""
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
+#: src/fe-gtk/setup.c:501 src/fe-gtk/setup.c:532
 msgid "Auto Open DCC Windows"
 msgstr "自动打开 DDC 窗口"
 
-#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
+#: src/fe-gtk/setup.c:502 src/fe-gtk/setup.c:533
 msgid "Send window"
 msgstr "发送窗口"
 
-#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
+#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
 msgid "Receive window"
 msgstr "接收窗口"
 
-#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
+#: src/fe-gtk/setup.c:504 src/fe-gtk/setup.c:535
 msgid "Chat window"
 msgstr "聊天窗口"
 
-#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
+#: src/fe-gtk/setup.c:505 src/fe-gtk/setup.c:536
 msgid "Auto Copy Behavior"
 msgstr ""
 
-#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
 msgid "Automatically copy selected text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:531
+#: src/fe-gtk/setup.c:507 src/fe-gtk/setup.c:538
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
+#: src/fe-gtk/setup.c:510 src/fe-gtk/setup.c:541
 msgid "Automatically include time stamps"
 msgstr ""
 
-#: src/fe-gtk/setup.c:504 src/fe-gtk/setup.c:535
+#: src/fe-gtk/setup.c:511 src/fe-gtk/setup.c:542
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
+#: src/fe-gtk/setup.c:513 src/fe-gtk/setup.c:544
 msgid "Automatically include color information"
 msgstr ""
 
-#: src/fe-gtk/setup.c:507 src/fe-gtk/setup.c:538
+#: src/fe-gtk/setup.c:514 src/fe-gtk/setup.c:545
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:530
 msgid "Allow only one instance of HexChat to run"
 msgstr ""
 
-#: src/fe-gtk/setup.c:548 src/fe-gtk/setup.c:1900
+#: src/fe-gtk/setup.c:555 src/fe-gtk/setup.c:1910
 msgid "Logging"
 msgstr "聊天记录"
 
-#: src/fe-gtk/setup.c:549
+#: src/fe-gtk/setup.c:556
 msgid "Display scrollback from previous session"
 msgstr "显示上一会话时的信息会滚"
 
-#: src/fe-gtk/setup.c:550
+#: src/fe-gtk/setup.c:557
 msgid "Scrollback lines:"
 msgstr "回滚行数："
 
-#: src/fe-gtk/setup.c:551
+#: src/fe-gtk/setup.c:558
 msgid "Enable logging of conversations to disk"
 msgstr "允许记录对话内容到磁盘"
 
-#: src/fe-gtk/setup.c:552
+#: src/fe-gtk/setup.c:559
 msgid "Log filename:"
 msgstr "聊天记录文件名称："
 
-#: src/fe-gtk/setup.c:553
+#: src/fe-gtk/setup.c:560
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=服务器 %c=频道 %n=网络。"
 
-#: src/fe-gtk/setup.c:556
+#: src/fe-gtk/setup.c:563
 msgid "Insert timestamps in logs"
 msgstr "在聊天记录中进入时间戳"
 
-#: src/fe-gtk/setup.c:557
+#: src/fe-gtk/setup.c:564
 msgid "Log timestamp format:"
 msgstr "聊天记录时间戳格式："
 
-#: src/fe-gtk/setup.c:564
+#: src/fe-gtk/setup.c:571
 msgid "URLs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:565
+#: src/fe-gtk/setup.c:572
 msgid "Enable logging of URLs to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:566
+#: src/fe-gtk/setup.c:573
 msgid "Enable URL grabber"
 msgstr ""
 
-#: src/fe-gtk/setup.c:567
+#: src/fe-gtk/setup.c:574
 msgid "Maximum number of URLs to grab:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:574
+#: src/fe-gtk/setup.c:581
 msgid "(Disabled)"
 msgstr "(已禁用)"
 
-#: src/fe-gtk/setup.c:575
+#: src/fe-gtk/setup.c:582
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:576
+#: src/fe-gtk/setup.c:583
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:577
+#: src/fe-gtk/setup.c:584
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:578
+#: src/fe-gtk/setup.c:585
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:580
+#: src/fe-gtk/setup.c:587
 msgid "MS Proxy (ISA)"
 msgstr "MS Proxy (ISA)"
 
-#: src/fe-gtk/setup.c:583
+#: src/fe-gtk/setup.c:590
 msgid "Auto"
 msgstr ""
 
-#: src/fe-gtk/setup.c:590
+#: src/fe-gtk/setup.c:597
 msgid "All Connections"
 msgstr "所有连接"
 
-#: src/fe-gtk/setup.c:591
+#: src/fe-gtk/setup.c:598
 msgid "IRC Server Only"
 msgstr "仅 IRC 服务器"
 
-#: src/fe-gtk/setup.c:592
+#: src/fe-gtk/setup.c:599
 msgid "DCC Get Only"
 msgstr "仅 DCC Get"
 
-#: src/fe-gtk/setup.c:598
+#: src/fe-gtk/setup.c:605
 msgid "Your Address"
 msgstr "您的地址"
 
-#: src/fe-gtk/setup.c:599
+#: src/fe-gtk/setup.c:606
 msgid "Bind to:"
 msgstr "绑定到："
 
-#: src/fe-gtk/setup.c:600
+#: src/fe-gtk/setup.c:607
 msgid "Only useful for computers with multiple addresses."
 msgstr "只对有多个地址的计算机有用。"
 
-#: src/fe-gtk/setup.c:602
+#: src/fe-gtk/setup.c:609
 msgid "Proxy Server"
 msgstr "代理服务器"
 
-#: src/fe-gtk/setup.c:603
+#: src/fe-gtk/setup.c:610
 msgid "Hostname:"
 msgstr "主机名："
 
-#: src/fe-gtk/setup.c:604
+#: src/fe-gtk/setup.c:611
 msgid "Port:"
 msgstr "端口："
 
-#: src/fe-gtk/setup.c:605
+#: src/fe-gtk/setup.c:612
 msgid "Type:"
 msgstr "类型："
 
-#: src/fe-gtk/setup.c:606
+#: src/fe-gtk/setup.c:613
 msgid "Use proxy for:"
 msgstr "应用代理于："
 
-#: src/fe-gtk/setup.c:608
+#: src/fe-gtk/setup.c:615
 msgid "Proxy Authentication"
 msgstr "代理服务器验证"
 
-#: src/fe-gtk/setup.c:610
+#: src/fe-gtk/setup.c:617
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "使用验证(仅支持 HTTP，Socks5 或 MS Proxy 代理服务器)"
 
-#: src/fe-gtk/setup.c:612
+#: src/fe-gtk/setup.c:619
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "使用验证(仅支持 HTTP 或 Socks5 代理服务器)"
 
-#: src/fe-gtk/setup.c:614
+#: src/fe-gtk/setup.c:621
 msgid "Username:"
 msgstr "用户名："
 
-#: src/fe-gtk/setup.c:615
+#: src/fe-gtk/setup.c:622
 msgid "Password:"
 msgstr "密码："
 
-#: src/fe-gtk/setup.c:1046
+#: src/fe-gtk/setup.c:1056
 msgid "Select an Image File"
 msgstr "选择一个图像文件"
 
-#: src/fe-gtk/setup.c:1081
+#: src/fe-gtk/setup.c:1091
 msgid "Select Download Folder"
 msgstr "选择下载目录"
 
-#: src/fe-gtk/setup.c:1090
+#: src/fe-gtk/setup.c:1100
 msgid "Select font"
 msgstr "选择字体"
 
-#: src/fe-gtk/setup.c:1190
+#: src/fe-gtk/setup.c:1200
 msgid "Browse..."
 msgstr "浏览..."
 
-#: src/fe-gtk/setup.c:1328
+#: src/fe-gtk/setup.c:1338
 msgid "Mark identified users with:"
 msgstr "标记验证过的用户为："
 
-#: src/fe-gtk/setup.c:1330
+#: src/fe-gtk/setup.c:1340
 msgid "Mark not-identified users with:"
 msgstr "标记未验证过的用户为："
 
-#: src/fe-gtk/setup.c:1337
+#: src/fe-gtk/setup.c:1347
 msgid "Open Data Folder"
 msgstr "打开数据目录"
 
-#: src/fe-gtk/setup.c:1391
+#: src/fe-gtk/setup.c:1401
 msgid "Select color"
 msgstr "选择颜色"
 
-#: src/fe-gtk/setup.c:1471
+#: src/fe-gtk/setup.c:1481
 msgid "Text Colors"
 msgstr "文本颜色"
 
-#: src/fe-gtk/setup.c:1473
+#: src/fe-gtk/setup.c:1483
 msgid "mIRC colors:"
 msgstr "mIRC 颜色："
 
-#: src/fe-gtk/setup.c:1481
+#: src/fe-gtk/setup.c:1491
 msgid "Local colors:"
 msgstr "本地颜色："
 
-#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
+#: src/fe-gtk/setup.c:1499 src/fe-gtk/setup.c:1504
 msgid "Foreground:"
 msgstr "前景："
 
-#: src/fe-gtk/setup.c:1490 src/fe-gtk/setup.c:1495
+#: src/fe-gtk/setup.c:1500 src/fe-gtk/setup.c:1505
 msgid "Background:"
 msgstr "背景："
 
-#: src/fe-gtk/setup.c:1492
+#: src/fe-gtk/setup.c:1502
 msgid "Selected Text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1497
+#: src/fe-gtk/setup.c:1507
 msgid "Interface Colors"
 msgstr "界面颜色"
 
-#: src/fe-gtk/setup.c:1499
+#: src/fe-gtk/setup.c:1509
 msgid "New data:"
 msgstr "新数据："
 
-#: src/fe-gtk/setup.c:1500
+#: src/fe-gtk/setup.c:1510
 msgid "Marker line:"
 msgstr "标记线："
 
-#: src/fe-gtk/setup.c:1501
+#: src/fe-gtk/setup.c:1511
 msgid "New message:"
 msgstr "新信息："
 
-#: src/fe-gtk/setup.c:1502
+#: src/fe-gtk/setup.c:1512
 msgid "Away user:"
 msgstr "离开的用户："
 
-#: src/fe-gtk/setup.c:1503
+#: src/fe-gtk/setup.c:1513
 msgid "Highlight:"
 msgstr "高亮显示："
 
-#: src/fe-gtk/setup.c:1505
+#: src/fe-gtk/setup.c:1515
 msgid "Spell checker:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1508
+#: src/fe-gtk/setup.c:1518
 msgid "Color Stripping"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1614 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1624 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "事件"
 
-#: src/fe-gtk/setup.c:1620
+#: src/fe-gtk/setup.c:1630
 msgid "Sound file"
 msgstr "声音文件"
 
-#: src/fe-gtk/setup.c:1655
+#: src/fe-gtk/setup.c:1665
 msgid "Select a sound file"
 msgstr "选择声音文件"
 
-#: src/fe-gtk/setup.c:1727
+#: src/fe-gtk/setup.c:1737
 msgid "Sound playing method:"
 msgstr "声音播放方式："
 
-#: src/fe-gtk/setup.c:1735
+#: src/fe-gtk/setup.c:1745
 msgid "External sound playing _program:"
 msgstr "外部声音播放程序(_P)："
 
-#: src/fe-gtk/setup.c:1753
+#: src/fe-gtk/setup.c:1763
 msgid "_External program"
 msgstr "外部程序(_E)"
 
-#: src/fe-gtk/setup.c:1763
+#: src/fe-gtk/setup.c:1773
 msgid "_Automatic"
 msgstr "自动(_A)"
 
-#: src/fe-gtk/setup.c:1776
+#: src/fe-gtk/setup.c:1786
 msgid "Sound files _directory:"
 msgstr "声音文件目录(_D):"
 
-#: src/fe-gtk/setup.c:1815
+#: src/fe-gtk/setup.c:1825
 msgid "Sound file:"
 msgstr "声音文件:"
 
-#: src/fe-gtk/setup.c:1830
+#: src/fe-gtk/setup.c:1840
 msgid "_Browse..."
 msgstr "浏览(_B)..."
 
-#: src/fe-gtk/setup.c:1841
+#: src/fe-gtk/setup.c:1851
 msgid "_Play"
 msgstr "播放(_P)"
 
-#: src/fe-gtk/setup.c:1890
+#: src/fe-gtk/setup.c:1900
 msgid "Interface"
 msgstr "界面"
 
-#: src/fe-gtk/setup.c:1891
+#: src/fe-gtk/setup.c:1901
 msgid "Appearance"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1892
+#: src/fe-gtk/setup.c:1902
 msgid "Input box"
 msgstr "输入框"
 
-#: src/fe-gtk/setup.c:1893
+#: src/fe-gtk/setup.c:1903
 msgid "User list"
 msgstr "用户列表"
 
-#: src/fe-gtk/setup.c:1894
+#: src/fe-gtk/setup.c:1904
 msgid "Channel switcher"
 msgstr "频道转换器"
 
-#: src/fe-gtk/setup.c:1895
+#: src/fe-gtk/setup.c:1905
 msgid "Colors"
 msgstr "颜色"
 
-#: src/fe-gtk/setup.c:1897
+#: src/fe-gtk/setup.c:1907
 msgid "Chatting"
 msgstr "聊天"
 
-#: src/fe-gtk/setup.c:1901
+#: src/fe-gtk/setup.c:1911
 msgid "Sound"
 msgstr "声音"
 
-#: src/fe-gtk/setup.c:1902
+#: src/fe-gtk/setup.c:1912
 msgid "Advanced"
 msgstr "高级"
 
-#: src/fe-gtk/setup.c:1905
+#: src/fe-gtk/setup.c:1915
 msgid "Network setup"
 msgstr "网络设置"
 
-#: src/fe-gtk/setup.c:1906
+#: src/fe-gtk/setup.c:1916
 msgid "File transfers"
 msgstr "文件传输"
 
-#: src/fe-gtk/setup.c:2037
+#: src/fe-gtk/setup.c:2047
 msgid "Categories"
 msgstr "类别"
 
-#: src/fe-gtk/setup.c:2246
+#: src/fe-gtk/setup.c:2256
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr "您不能把树状图放置于顶部或底部！\n请在 <b>视图</b> 菜单中的 <b>标签页</b> 样式中进行调整。"
 
-#: src/fe-gtk/setup.c:2273
+#: src/fe-gtk/setup.c:2283
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:2280
+#: src/fe-gtk/setup.c:2290
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "有些设置需要重新启动 xchat 才会生效。"
 
-#: src/fe-gtk/setup.c:2288
+#: src/fe-gtk/setup.c:2298
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5770,7 +5786,7 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr "*警告*\n自动接收 DCC 到您的主目录中是危险之举，\n且有被盗用的可能性。例如：\n某人可能会给您发送一份 .bash_profile 文件"
 
-#: src/fe-gtk/setup.c:2321
+#: src/fe-gtk/setup.c:2331
 msgid ": Preferences"
 msgstr "：首选项"
 
@@ -5795,7 +5811,7 @@ msgstr ""
 msgid "Spelling Suggestions"
 msgstr ""
 
-#: src/fe-gtk/sexy-spell-entry.c:1071
+#: src/fe-gtk/sexy-spell-entry.c:1073
 #, c-format
 msgid "enchant error for language: %s"
 msgstr ""
