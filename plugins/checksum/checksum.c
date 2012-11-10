@@ -68,6 +68,7 @@ sha256_hash_string (unsigned char hash[SHA256_DIGEST_LENGTH], char outputBuffer[
 	outputBuffer[64] = 0;
 }
 
+#if 0
 static void
 sha256 (char *string, char outputBuffer[65])
 {
@@ -85,6 +86,7 @@ sha256 (char *string, char outputBuffer[65])
 	}
 	outputBuffer[64] = 0;
 }
+#endif
 
 static int
 sha256_file (char *path, char outputBuffer[65])
