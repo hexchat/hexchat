@@ -148,7 +148,7 @@ fe_tray_set_balloon (const char *title, const char *text)
 		return;
 
 	/* bit 1 of flags means "no balloons unless hidden/iconified" */
-	if (ws != WS_HIDDEN && (prefs.hex_gui_tray_flags & 2))
+	if (ws != WS_HIDDEN && prefs.hex_gui_tray_quiet)
 		return;
 
 	/* FIXME: this should close the current balloon */

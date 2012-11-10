@@ -152,6 +152,9 @@ struct hexchatprefs
 	unsigned int hex_gui_tab_utils;
 	unsigned int hex_gui_topicbar;
 	unsigned int hex_gui_tray;
+	unsigned int hex_gui_tray_close;
+	unsigned int hex_gui_tray_minimize;
+	unsigned int hex_gui_tray_quiet;
 	unsigned int hex_gui_ulist_buttons;
 	unsigned int hex_gui_ulist_count;
 	unsigned int hex_gui_ulist_hide;
@@ -259,7 +262,6 @@ struct hexchatprefs
 	int hex_gui_tab_small;
 	int hex_gui_tab_trunc;
 	int hex_gui_throttlemeter;
-	int hex_gui_tray_flags;
 	int hex_gui_ulist_pos;
 	int hex_gui_ulist_sort;
 	int hex_gui_url_mod;
