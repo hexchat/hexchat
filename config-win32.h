@@ -7,12 +7,12 @@
 #define USE_IPV6
 #define HAVE_ISO_CODES
 #define PACKAGE_NAME "hexchat"
-#define PACKAGE_VERSION "2.9.3"
+#define PACKAGE_VERSION "2.9.4"
 #define HEXCHATLIBDIR "."
 #define HEXCHATSHAREDIR "."
 #define OLD_PERL
 #define GETTEXT_PACKAGE "hexchat"
-#define PACKAGE_TARNAME "hexchat-2.9.3"
+#define PACKAGE_TARNAME "hexchat-2.9.4"
 #ifndef USE_IPV6
 #define socklen_t int
 #endif
