@@ -89,7 +89,7 @@ static int Command_Alias(char *word[], char *word_eol[], void *userdata);
 static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata);
 static int Command_TCL(char *word[], char *word_eol[], void *userdata);
 static int Command_Source(char *word[], char *word_eol[], void *userdata);
-static int Command_Reload(char *word[], char *word_eol[], void *userdata);
+/* static int Command_Reload(char *word[], char *word_eol[], void *userdata); */
 static int TCL_Event_Handler(void *userdata);
 static void Tcl_Plugin_Init();
 static void Tcl_Plugin_DeInit();
