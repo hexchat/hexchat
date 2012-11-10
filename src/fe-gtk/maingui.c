@@ -504,7 +504,7 @@ mg_windowstate_cb (GtkWindow *wid, GdkEventWindowState *event, gpointer userdata
 
 	if ((event->changed_mask & GDK_WINDOW_STATE_ICONIFIED) &&
 		 (event->new_window_state & GDK_WINDOW_STATE_ICONIFIED) &&
-		 prefs.hex_gui_tray_minimize)
+		 prefs.hex_gui_tray_minimize && !hextray_mode ())
 	{
 		tray_toggle_visibility (TRUE);
 		gtk_window_deiconify (wid);
@@ -3074,7 +3074,7 @@ mg_tabwindow_de_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	GSList *list;
 	session *sess;
 
-	if (prefs.hex_gui_tray_close && tray_toggle_visibility (FALSE))
+	if (tray_toggle_visibility (FALSE) && prefs.hex_gui_tray_close && !hextray_mode ())
 		return TRUE;
 
 	/* check for remaining toplevel windows */
