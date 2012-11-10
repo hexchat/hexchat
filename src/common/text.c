@@ -257,12 +257,6 @@ scrollback_load (session *sess)
 	GError *file_error = NULL;
 	GError *io_err = NULL;
 
-#ifndef WIN32
-	char *map, *end_map;
-	struct stat statbuf;
-	const char *begin, *eol;
-#endif
-
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
 		if (!prefs.hex_text_replay)

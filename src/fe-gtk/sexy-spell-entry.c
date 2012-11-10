@@ -935,6 +935,7 @@ sexy_spell_entry_changed(GtkEditable *editable, gpointer data)
 	sexy_spell_entry_recheck_all(entry);
 }
 
+#if 0
 static gboolean
 enchant_has_lang(const gchar *lang, GSList *langs) {
 	GSList *i;
@@ -945,6 +946,7 @@ enchant_has_lang(const gchar *lang, GSList *langs) {
 	}
 	return FALSE;
 }
+#endif
 
 /**
  * sexy_spell_entry_activate_default_languages:
