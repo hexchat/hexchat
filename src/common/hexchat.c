@@ -1168,10 +1168,9 @@ main (int argc, char *argv[])
 
 		if (error == ERROR_ALREADY_EXISTS || mutex == NULL)
 		{
-			/* restoring the HexChat window from the tray via the taskbar icon
-			 * only works correctly when HexTray is used, but it's not a big deal
-			 * since you can only minimize HexChat to tray via the taskbar if you
-			 * use HexTray*/
+			/* Restoring the HexChat window from the tray via the taskbar icon.
+			 * Only works correctly when HexTray is used.
+			 */
 			if (hextray_mode ())
 			{
 				/* FindWindow() doesn't support wildcards so we check all the open windows */
