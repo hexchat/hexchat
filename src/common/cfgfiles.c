@@ -45,7 +45,8 @@ void
 list_addentry (GSList ** list, char *cmd, char *name)
 {
 	struct popup *pop;
-	int cmd_len = 1, name_len;
+	size_t name_len;
+	size_t cmd_len = 1;
 
 	/* remove <2.8.0 stuff */
 	if (!strcmp (cmd, "away") && !strcmp (name, "BACK"))
@@ -909,35 +910,49 @@ save_config (void)
 static void
 set_showval (session *sess, const struct prefs *var, char *tbuf)
 {
-	int len, dots, j;
+	size_t len;
+	size_t dots;
+	size_t j;
 
 	len = strlen (var->name);
 	memcpy (tbuf, var->name, len);
 	dots = 29 - len;
+
 	if (dots < 0)
+	{
 		dots = 0;
+	}
+
 	tbuf[len++] = '\003';
 	tbuf[len++] = '2';
-	for (j=0;j<dots;j++)
+
+	for (j = 0; j < dots; j++)
+	{
 		tbuf[j + len] = '.';
+	}
+
 	len += j;
+
 	switch (var->type)
 	{
-	case TYPE_STR:
-		sprintf (tbuf + len, "\0033:\017 %s\n",
-					(char *) &prefs + var->offset);
-		break;
-	case TYPE_INT:
-		sprintf (tbuf + len, "\0033:\017 %d\n",
-					*((int *) &prefs + var->offset));
-		break;
-	case TYPE_BOOL:
-		if (*((int *) &prefs + var->offset))
-			sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
-		else
-			sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
-		break;
+		case TYPE_STR:
+			sprintf (tbuf + len, "\0033:\017 %s\n", (char *) &prefs + var->offset);
+			break;
+		case TYPE_INT:
+			sprintf (tbuf + len, "\0033:\017 %d\n", *((int *) &prefs + var->offset));
+			break;
+		case TYPE_BOOL:
+			if (*((int *) &prefs + var->offset))
+			{
+				sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
+			}
+			else
+			{
+				sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
+			}
+			break;
 	}
+
 	PrintText (sess, tbuf);
 }
 

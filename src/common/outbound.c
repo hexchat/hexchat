@@ -4241,7 +4241,8 @@ handle_say (session *sess, char *text, int check_spch)
 
 		if (strlen (text) > max)
 		{
-			int i = 0, size;
+			unsigned int i = 0;
+			int size;
 
 			/* traverse the utf8 string and find the nearest cut point that
 				doesn't split 1 char in half */

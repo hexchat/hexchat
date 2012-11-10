@@ -837,9 +837,12 @@ setup_hscale_cb (GtkHScale *wid, const setting *set)
 {
 	static int tag = 0;
 
-	setup_set_int (&setup_prefs, set, gtk_range_get_value(GTK_RANGE(wid)));
-	if(tag == 0)
-		tag = g_idle_add ((GSourceFunc)setup_apply_tint, &tag);
+	setup_set_int (&setup_prefs, set, (int) gtk_range_get_value (GTK_RANGE (wid)));
+
+	if (tag == 0)
+	{
+		tag = g_idle_add ((GSourceFunc) setup_apply_tint, &tag);
+	}
 }
 
 static void
