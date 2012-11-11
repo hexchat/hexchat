@@ -36,6 +36,7 @@
  * reorganize the Settings menu and add new options
  * redesign the About dialog
  * show certain help messages in GTK+ dialogs instead of command line
+ * disable faulty one instance option
  * build system cosmetics on Unix
  * reorganize repo file structure
  * rebranding
