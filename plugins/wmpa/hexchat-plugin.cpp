@@ -472,7 +472,7 @@ CString wmpaGetSongTitle(void)
    CWMPMedia media      = wmp->GetCurrentMedia();
    if (media == NULL) {
       hexchat_printf(ph, "WMPA: Could not get current media");
-      return(HEXCHAT_EAT_ALL);
+      return(CString ("%d", HEXCHAT_EAT_ALL));
    }
 
    CString artist       = media.getItemInfo("Artist");
