@@ -293,7 +293,7 @@ const char cursor_color_rc[] =
 		"GtkEntry::cursor-color=\"#%02x%02x%02x\""
 #endif
 	"}"
-	"widget \"*.xchat-inputbox\" style : application \"xc-ib-st\"";
+	"widget \"*.hexchat-inputbox\" style : application \"xc-ib-st\"";
 
 GtkStyle *
 create_input_style (GtkStyle *style)

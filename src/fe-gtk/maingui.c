@@ -2116,7 +2116,7 @@ mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 
 	gui->flag_k = mg_create_flagbutton (_("Keyword"), box, "K");
 	gui->key_entry = gtk_entry_new ();
-	gtk_widget_set_name (gui->key_entry, "xchat-inputbox");
+	gtk_widget_set_name (gui->key_entry, "hexchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->key_entry), 16);
 	gtk_widget_set_size_request (gui->key_entry, 30, -1);
 	gtk_box_pack_start (GTK_BOX (box), gui->key_entry, 0, 0, 0);
@@ -2128,7 +2128,7 @@ mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 
 	gui->flag_l = mg_create_flagbutton (_("User Limit"), box, "L");
 	gui->limit_entry = gtk_entry_new ();
-	gtk_widget_set_name (gui->limit_entry, "xchat-inputbox");
+	gtk_widget_set_name (gui->limit_entry, "hexchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->limit_entry), 10);
 	gtk_widget_set_size_request (gui->limit_entry, 30, -1);
 	gtk_box_pack_start (GTK_BOX (box), gui->limit_entry, 0, 0, 0);
@@ -2218,7 +2218,7 @@ mg_create_topicbar (session *sess, GtkWidget *box)
 		sess->res->tab = NULL;
 
 	gui->topic_entry = topic = gtk_entry_new ();
-	gtk_widget_set_name (topic, "xchat-inputbox");
+	gtk_widget_set_name (topic, "hexchat-inputbox");
 	gtk_container_add (GTK_CONTAINER (hbox), topic);
 	g_signal_connect (G_OBJECT (topic), "activate",
 							G_CALLBACK (mg_topic_cb), 0);
@@ -2859,7 +2859,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 	gtk_container_add (GTK_CONTAINER (hbox), entry);
 #endif
 
-	gtk_widget_set_name (entry, "xchat-inputbox");
+	gtk_widget_set_name (entry, "hexchat-inputbox");
 	g_signal_connect (G_OBJECT (entry), "key_press_event",
 							G_CALLBACK (key_handle_key_press), NULL);
 	g_signal_connect (G_OBJECT (entry), "focus_in_event",

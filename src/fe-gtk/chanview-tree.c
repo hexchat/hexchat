@@ -94,7 +94,7 @@ cv_tree_init (chanview *cv)
 	gtk_widget_show (win);
 
 	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (cv->store));
-	gtk_widget_set_name (view, "xchat-tree");
+	gtk_widget_set_name (view, "hexchat-tree");
 	if (cv->style)
 		gtk_widget_set_style (view, cv->style);
 	/*gtk_widget_modify_base (view, GTK_STATE_NORMAL, &colors[COL_BG]);*/

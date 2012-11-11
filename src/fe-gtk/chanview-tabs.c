@@ -524,7 +524,7 @@ cv_tabs_add (chanview *cv, chan *ch, char *name, GtkTreeIter *parent)
 	GtkWidget *but;
 
 	but = gtk_toggle_button_new_with_label (name);
-	gtk_widget_set_name (but, "xchat-tab");
+	gtk_widget_set_name (but, "hexchat-tab");
 	g_object_set_data (G_OBJECT (but), "c", ch);
 	/* used to trap right-clicks */
 	g_signal_connect (G_OBJECT (but), "button_press_event",

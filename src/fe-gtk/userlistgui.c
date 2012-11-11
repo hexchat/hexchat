@@ -632,7 +632,7 @@ userlist_create (GtkWidget *box)
 	gtk_widget_show (sw);
 
 	treeview = gtk_tree_view_new ();
-	gtk_widget_set_name (treeview, "xchat-userlist");
+	gtk_widget_set_name (treeview, "hexchat-userlist");
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
 	gtk_tree_selection_set_mode (gtk_tree_view_get_selection
 										  (GTK_TREE_VIEW (treeview)),
