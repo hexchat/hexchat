@@ -1,7 +1,7 @@
 # HexChat ChangeLog
 
 
-## 2.9.4 (2012-11-10)
+## 2.9.4 (2012-11-11)
 
  * fix alerts when omit alerts in away option is set
  * fix dialog icon in userlist popup
