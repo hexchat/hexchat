@@ -139,7 +139,7 @@ struct hexchatprefs
 	unsigned int hex_gui_join_dialog;
 	unsigned int hex_gui_mode_buttons;
 	unsigned int hex_gui_quit_dialog;
-	unsigned int hex_gui_single;
+	/* unsigned int hex_gui_single; */
 	unsigned int hex_gui_slist_fav;
 	unsigned int hex_gui_slist_skip;
 	unsigned int hex_gui_tab_chans;
