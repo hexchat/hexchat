@@ -4,7 +4,7 @@ AppPublisherURL=http://www.hexchat.org/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
 AppSupportURL=https://github.com/hexchat/hexchat/issues
 AppUpdatesURL=http://www.hexchat.org/home/downloads
-LicenseFile=COPYING
+LicenseFile=share\doc\hexchat\COPYING
 UninstallDisplayIcon={app}\hexchat.exe
 UninstallDisplayName=HexChat (x64)
 DefaultDirName={pf}\HexChat
@@ -35,7 +35,6 @@ Name: "xctext"; Description: "HexChat-Text"; Types: custom; Flags: disablenounin
 Name: "xtm"; Description: "HexChat Theme Manager (Requires .NET 4.0)"; Types: custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal custom; Flags: disablenouninstallwarning
 ;obs Name: "gtkengines"; Description: "GTK+ Engines"; Types: custom; Flags: disablenouninstallwarning
-;Name: "spelling"; Description: "Spelling Dictionaries"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\checksum"; Description: "Checksum"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\dns"; Description: "DNS"; Types: custom; Flags: disablenouninstallwarning
@@ -44,7 +43,6 @@ Name: "plugins\exec"; Description: "Exec"; Types: custom; Flags: disablenouninst
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\hextray"; Description: "HexTray"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disablenouninstallwarning
-;Name: "plugins\sasl"; Description: "SASL"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
@@ -94,59 +92,42 @@ Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 Source: "changelog.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "readme.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "LICENSE.ZLIB"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "LICENSE.GTK"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "LICENSE.CAIRO"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "LICENSE.LUA"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "LICENSE.LIBXML"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: gtktheme
 ;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: libs and not gtkengines
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
+Source: "share\doc\*"; DestDir: "{app}\share\doc"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
-;Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: spelling
 
-Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libcairo-2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "atk-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "cairo.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "fontconfig.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gdk_pixbuf-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gdk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gio-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "glib-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gmodule-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gobject-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gthread-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gtk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libexpat-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-;obs Source: "libffi-5.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libfreetype-6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libfontconfig-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libgdk-win32-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libgio-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libglib-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libgmodule-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libintl-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-;obs Source: "libjasper-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-;obs Source: "libjpeg-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libpangocairo-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libpangoft2-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libpangowin32-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-;obs Source: "libpixman-1-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-;obs Source: "libtiff-3.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libpng14-14.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-;obs Source: "libpng15-15.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libintl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libpng15.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pango-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangocairo-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangoft2-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangowin32-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pixman-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-;obs Source: "libxml2-2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 
 Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Flags: ignoreversion; Components: libs
 
-Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: libs
 Source: "lib\gtk-2.0\2.10.0\engines\libwimp.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: libs
-Source: "lib\gtk-2.0\modules\libgail.dll"; DestDir: "{app}\lib\gtk-2.0\modules"; Flags: ignoreversion; Components: libs
 
 ;obs Source: "etc\gtkpref.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: gtkengines
 ;obs Source: "lib\gtk-2.0\2.10.0\engines\libclearlooks.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
@@ -174,7 +155,6 @@ Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Com
 Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
 Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
-;Source: "plugins\hcsasl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sasl
 Source: "plugins\hchextray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\hextray
 Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
