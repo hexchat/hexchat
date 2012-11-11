@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-11-10 19:31+0100\n"
-"PO-Revision-Date: 2012-11-10 18:34+0000\n"
+"POT-Creation-Date: 2012-11-11 17:23+0100\n"
+"PO-Revision-Date: 2012-11-11 16:38+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/hexchat/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -769,8 +769,8 @@ msgid "%C18*%O$t%C18$1%O added to notify list."
 msgstr "%C18*%O$t%C18$1%O az értesítési listához adva."
 
 #: src/common/textevents.h:9
-msgid "%C22*%O$t%C22$1%O Banlist: %C18$2%O for %C24$4%O by %C26$3%O"
-msgstr ""
+msgid "%C22*%O$t%C22$1%O Banlist: %C18$2%O on %C24$4%O by %C26$3%O"
+msgstr "%C22*%O$t%C22$1%O Tiltólista: %C18$2%O %C24$4%O dátummal %C26$3%O által"
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join%C22 $1 %O(%C20You are banned%O)."
@@ -959,7 +959,7 @@ msgstr "%C23*%O$t%C18$1%O felé küldött DCC RECV '%C23$2%O' megszakítva."
 #: src/common/textevents.h:168
 msgid ""
 "%C24*%O$tDCC RECV '%C23$1%O' from %C18$3%O complete %C30[%C24$4%O cps%C30]%O"
-msgstr ""
+msgstr "%C24*%O$tDCC RECV '%C23$1%O' %C18$3%O felől befejeződött %C30[%C24$4%O cps%C30]%O"
 
 #: src/common/textevents.h:171
 msgid ""
@@ -982,7 +982,7 @@ msgstr "%C23*%O$tMár létezik '%C24$1%C' nevű fájl, mentés '%C23$2%O' néven
 
 #: src/common/textevents.h:183
 msgid "%C24*%O$t%C18$1%C has requested to resume '%C23$2%C' from %C24$3%O."
-msgstr ""
+msgstr "%C24*%O$t%C18$1%C '%C23$2%C' folytatását kérte innen: %C24$3%O."
 
 #: src/common/textevents.h:186
 msgid "%C23*%O$tDCC SEND '%C23$2%C' to %C18$1%O aborted."
@@ -991,7 +991,7 @@ msgstr "%C23*%O$t%C18$1%O felé küldött DCC SEND '%C23$2%C' megszakítva."
 #: src/common/textevents.h:189
 msgid ""
 "%C24*%O$tDCC SEND '%C23$1%C' to %C18$2%C complete %C30[%C24$3%C cps%C30]%O"
-msgstr ""
+msgstr "%C24*%O$tDCC SEND '%C23$1%C' %C18$2%C felé befejeződött %C30[%C24$3%C cps%C30]%O"
 
 #: src/common/textevents.h:192
 msgid ""
@@ -1000,7 +1000,7 @@ msgstr "%C24*%O$tDCC SEND kapcsolat kiépítve %C18$1 felé %C30[%O%C24$2%C30]%O
 
 #: src/common/textevents.h:195
 msgid "%C20*%O$tDCC SEND '%C23$1%C' to %C18$2%C failed (%C20$3%O)"
-msgstr ""
+msgstr "%C20*%O$tDCC SEND '%C23$1%C' %C18$2%C felé sikertelen (%C20$3%O)"
 
 #: src/common/textevents.h:198
 msgid "%C24*%O$t%C18$1%C has offered '%C23$2%C' (%C24$3%O bytes)"
@@ -1008,11 +1008,11 @@ msgstr "%C24*%O$t%C18$1%C felajánlotta: '%C23$2%C' (%C24$3%O bájt)"
 
 #: src/common/textevents.h:201
 msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O stalled, aborting."
-msgstr ""
+msgstr "%C20*%O$tDCC $1 '%C23$2%C' %C18$3%O felé megakadt, leállítás."
 
 #: src/common/textevents.h:204
 msgid "%C20*%O$tDCC $1 '%C23$2%C' to %C18$3%O timed out, aborting."
-msgstr ""
+msgstr "%C20*%O$tDCC $1 '%C23$2%C' %C18$3%O felé túllépte az időkorlátot, leállítás."
 
 #: src/common/textevents.h:207
 msgid "%C24*%O$t%C18$1%O deleted from notify list."
@@ -1198,7 +1198,7 @@ msgstr "%C22*%O$t%C22$1%C felhasználói: %C24$2%O"
 
 #: src/common/textevents.h:387
 msgid "%C23*%O$t%C28[%C18$1%C28]%C is away %C30(%C23$2%O%C30)%O"
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28]%C távol van %C30(%C23$2%O%C30)%O"
 
 #: src/common/textevents.h:393
 msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
@@ -3820,7 +3820,7 @@ msgid ""
 "\n"
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
-msgstr ""
+msgstr "Felhasználói parancsok - Speciális kódok:\n\n%c  =  jelenlegi csatorna\n%e  =  jelenlegi hálózat neve\n%m  =  gép információ\n%n  =  a beceneved\n%t  =  idő/dátum\n%v  =  HexChat verzió\n%2  =  2. szó\n%3  =  3. szó\n&2  =  2. szótól a sor végéig\n&3  =  3. szótól a sor végéig\n\npl.:\n/cmd john hello\n\n%2 lenne \"john\"\n&2 lenne \"john hello\"."
 
 #: src/fe-gtk/menu.c:1405
 msgid ""
@@ -3876,7 +3876,7 @@ msgid ""
 "Putting a ! in front of the command\n"
 "indicates it should be sent to a\n"
 "shell instead of HexChat"
-msgstr ""
+msgstr "URL kezelők - Speciális kódok:\n\n%s = az URL szöveg\n\nA parancs elé !-t téve a HexChat\nhelyett egy shell kapja meg"
 
 #: src/fe-gtk/menu.c:1445
 msgid ": User Defined Commands"
@@ -5432,10 +5432,6 @@ msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr "Automatikusan másolja a színkódokat is a másolt szöveggel. Különben a színkódok másolása a CONTROL billentyű lenyomva tartásakor."
-
-#: src/fe-gtk/setup.c:530
-msgid "Allow only one instance of HexChat to run"
-msgstr "Egyetlen HexChat példány futtatásának engedélyezése"
 
 #: src/fe-gtk/setup.c:555 src/fe-gtk/setup.c:1910
 msgid "Logging"
