@@ -72,27 +72,12 @@ copy "$(DepsRoot)\bin\pangocairo-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangoft2-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangowin32-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pixman-1.dll" "$(HexChatRel)"
-::xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\2.10.0\engines" "$(HexChatRel)\lib\gtk-2.0\2.10.0\engines"
+xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\2.10.0\engines" "$(HexChatRel)\lib\gtk-2.0\2.10.0\engines"
 ::xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\modules\libgail.dll" "$(HexChatRel)\lib\gtk-2.0\modules\"
 xcopy /q /s /i etc "$(HexChatRel)\etc"
 xcopy /q /s /i share "$(HexChatRel)\share"
-copy "..\..\share\doc\COPYING" "$(HexChatRel)"
-copy "$(DepsRoot)\LICENSE.ATK" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.CAIRO" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.ENCHANT" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.FONTCONFIG" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.FREETYPE" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.GDKPIXBUF" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.GETTEXT" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.GLIB" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.GTK" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.LIBFFI" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.LIBPNG" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.LIBXML2" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.OPENSSL" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.PANGO" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.PIXMAN" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.ZLIB" "$(HexChatRel)\share"
+xcopy /q /s /i "..\..\share\doc\COPYING" "$(HexChatRel)\share\doc\hexchat\"
+xcopy /q /s /i "$(DepsRoot)\share\doc" "$(HexChatRel)\share\doc"
 copy "$(DepsRoot)\bin\libeay32.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\ssleay32.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\zlib1.dll" "$(HexChatRel)"
@@ -126,6 +111,7 @@ copy "$(ProgramFiles)\Codejock Software\ISSkin\ISSkinU.dll" "$(HexChatRel)"
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
 
