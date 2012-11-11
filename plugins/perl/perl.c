@@ -1350,7 +1350,7 @@ perl_init (void)
 	char *perl_args[] = { "", "-e", "0", "-w" };
 	char *env[] = { "" };
 	static const char xchat_definitions[] = {
-		/* Redefine the $SIG{__WARN__} handler to have XChat
+		/* Redefine the $SIG{__WARN__} handler to have HexChat
 		   printing warnings in the main window. (TheHobbit) */
 #include "xchat.pm.h"
 	};

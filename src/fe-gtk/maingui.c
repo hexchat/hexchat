@@ -2996,10 +2996,10 @@ mg_create_topwindow (session *sess)
 	GtkWidget *table;
 
 	if (sess->type == SESS_DIALOG)
-		win = gtkutil_window_new ("XChat", NULL,
+		win = gtkutil_window_new ("HexChat", NULL,
 										  prefs.hex_gui_dialog_width, prefs.hex_gui_dialog_height, 0);
 	else
-		win = gtkutil_window_new ("XChat", NULL,
+		win = gtkutil_window_new ("HexChat", NULL,
 										  prefs.hex_gui_win_width,
 										  prefs.hex_gui_win_height, 0);
 	sess->gui->window = win;
@@ -3097,7 +3097,7 @@ mg_create_tabwindow (session *sess)
 	GtkWidget *win;
 	GtkWidget *table;
 
-	win = gtkutil_window_new ("XChat", NULL, prefs.hex_gui_win_width,
+	win = gtkutil_window_new ("HexChat", NULL, prefs.hex_gui_win_width,
 									  prefs.hex_gui_win_height, 0);
 	sess->gui->window = win;
 	gtk_window_move (GTK_WINDOW (win), prefs.hex_gui_win_left,

@@ -537,7 +537,7 @@ Callback_Print(char *word[], void *userdata)
 	/* Cut off the message identifier. */
 	word += 1;
 
-	/* XChat doesn't provide a word_eol for print events, so we
+	/* HexChat doesn't provide a word_eol for print events, so we
 	 * build our own here. */
 	while (word[listsize] && word[listsize][0])
 		listsize++;

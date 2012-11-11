@@ -1609,7 +1609,7 @@ pevent_make_pntevts ()
 			if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
 			{
 				fprintf (stderr,
-							"XChat CRITICAL *** default event text failed to build!\n");
+							"HexChat CRITICAL *** default event text failed to build!\n");
 				abort ();
 			}
 		}
@@ -1847,7 +1847,7 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo, unsig
 			if (a > numargs)
 			{
 				fprintf (stderr,
-							"XChat DEBUG: display_event: arg > numargs (%d %d %s)\n",
+							"HexChat DEBUG: display_event: arg > numargs (%d %d %s)\n",
 							a, numargs, i);
 				break;
 			}
