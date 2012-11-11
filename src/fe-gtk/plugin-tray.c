@@ -547,7 +547,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (tray_menu_destroy), NULL);
 
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, gtk_status_icon_position_menu,
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL,
 						 userdata, button, time);
 }
 
@@ -563,10 +563,9 @@ tray_init (void)
 	if (!sticon)
 		return;
 
-#ifndef WIN32
+
 	g_signal_connect (G_OBJECT (sticon), "popup-menu",
 							G_CALLBACK (tray_menu_cb), sticon);
-#endif
 
 	g_signal_connect (G_OBJECT (sticon), "activate",
 							G_CALLBACK (tray_menu_restore_cb), NULL);
