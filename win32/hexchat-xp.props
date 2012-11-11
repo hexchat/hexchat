@@ -104,7 +104,7 @@ copy "$(HexChatBin)hcwinamp.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcsysinfo.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcwmpa.dll" "$(HexChatRel)\plugins"
 copy "$(DepsRoot)\bin\lua51.dll" "$(HexChatRel)"
-xcopy /q /s /i "$(HexChatBin)locale" "$(HexChatRel)\locale"
+xcopy /q /s /i "$(HexChatBin)locale" "$(HexChatRel)\share\locale"
 xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
 copy "$(ProgramFiles)\Codejock Software\ISSkin\ISSkinU.dll" "$(HexChatRel)"
 	</HexChatCopy>

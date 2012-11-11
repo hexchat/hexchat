@@ -1,4 +1,4 @@
-#define LOCALEDIR "./locale"
+#define LOCALEDIR ".\\share\\locale"
 #define ENABLE_NLS
 #define USE_GMODULE
 #define USE_PLUGIN
