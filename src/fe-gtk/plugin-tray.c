@@ -165,7 +165,7 @@ fe_tray_set_balloon (const char *title, const char *text)
 	notify_text = strip_color (text, -1, STRIP_ALL|STRIP_ESCMARKUP);
 	notify_title = strip_color (title, -1, STRIP_ALL);
 
-	notification = XC_NOTIFY_NEW (notify_title, notify_text, HEXCHATSHAREDIR"/pixmaps/hexchat.png", NULL);
+	notification = XC_NOTIFY_NEW (notify_title, notify_text, HEXCHATSHAREDIR "/pixmaps/hexchat.png", NULL);
 
 	g_free ((char *)notify_title);
 	g_free ((char *)notify_text);
@@ -563,10 +563,8 @@ tray_init (void)
 	if (!sticon)
 		return;
 
-#ifndef WIN32
 	g_signal_connect (G_OBJECT (sticon), "popup-menu",
 							G_CALLBACK (tray_menu_cb), sticon);
-#endif
 
 	g_signal_connect (G_OBJECT (sticon), "activate",
 							G_CALLBACK (tray_menu_restore_cb), NULL);
