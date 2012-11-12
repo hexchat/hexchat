@@ -1614,7 +1614,7 @@ copy_file (char *dl_src, char *dl_dest, int permissions)
 	char dl_tmp[4096];
 	int return_tmp, return_tmp2;
 
-	if ((tmp_src = g_open (dl_src, O_RDONLY | OFLAGS)) == -1)
+	if ((tmp_src = g_open (dl_src, O_RDONLY | OFLAGS, 0600)) == -1)
 	{
 		g_fprintf (stderr, "Unable to open() file '%s' (%s) !", dl_src,
 				  strerror (errno));
@@ -1622,7 +1622,7 @@ copy_file (char *dl_src, char *dl_dest, int permissions)
 	}
 
 	if ((tmp_dest =
-		 g_fprintf (dl_dest, O_WRONLY | O_CREAT | O_TRUNC | OFLAGS, permissions)) < 0)
+		 g_open (dl_dest, O_WRONLY | O_CREAT | O_TRUNC | OFLAGS, permissions)) < 0)
 	{
 		close (tmp_src);
 		g_fprintf (stderr, "Unable to create file '%s' (%s) !", dl_src,
