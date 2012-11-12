@@ -1420,20 +1420,19 @@ perl_load_file (char *filename)
 				if (lib) {
 					FreeLibrary (lib);
 					lib = NULL;
-					thread_mbox ("Cannot open " PERL_DLL "\n\n"
-									 "You must have either ActivePerl or Straberry Perl"
-									 PERL_REQUIRED_VERSION
-									 " installed in order to\n"
-									 "run perl scripts.\n\n"
+					thread_mbox ("Cannot open " PERL_DLL "!\n\n"
+									 "You must have a Visual C++ build of Perl "
+									 PERL_REQUIRED_VERSION " installed in order to\n"
+									 "run Perl scripts.\n\n"
+									 "https://github.com/hexchat/hexchat/downloads\n\n"
 									 "I have found Perl 5.6, but that is too old.");
 				} else {
-					thread_mbox ("Cannot open " PERL_DLL "\n\n"
-									 "You must have either ActivePerl or Strawberry Perl "
+					thread_mbox ("Cannot open " PERL_DLL "!\n\n"
+									 "You must have a Visual C++ build of Perl "
 									 PERL_REQUIRED_VERSION " installed in order to\n"
-									 "run perl scripts.\n\n"
-									 "http://www.activestate.com/ActivePerl/\n"
-									 "http://strawberryperl.com/\n"
-									 "Make sure perl's bin directory is in your PATH.");
+									 "run Perl scripts.\n\n"
+									 "https://github.com/hexchat/hexchat/downloads\n\n"
+									 "Make sure Perl's bin directory is in your PATH.");
 				}
 			}
 			/* failure */
