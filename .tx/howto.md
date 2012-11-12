@@ -18,7 +18,7 @@ tx push --source --translation
 
 ## Updating online translations with the template
 
-Regenerate the source file (_hexchat.pot_) on a Unix machine:
+Regenerate the source file ( _hexchat.pot_ ) on a Unix machine:
 
 <pre>
 rm po/hexchat.pot && ./autogen.sh && ./configure --enable-nls && make
