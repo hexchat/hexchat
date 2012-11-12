@@ -849,7 +849,7 @@ save_config (void)
 	check_prefs_dir ();
 
 	config = default_file ();
-	new_config = g_strdup_printf (config, ".new");
+	new_config = g_strdup_printf ("%s.new", config);
 	
 	fh = g_open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
 	if (fh == -1)
