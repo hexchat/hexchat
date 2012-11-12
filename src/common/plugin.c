@@ -472,12 +472,9 @@ plugin_auto_load (session *sess)
 	for_files (".\\plugins", "hcexec.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcfishlim.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hchextray.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hclua.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcmpcinfo.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcperl.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcpython.dll", plugin_auto_load_cb);
-	/* for_files (".\\plugins", "hcsasl.dll", plugin_auto_load_cb); we have this built-in */
-	for_files (".\\plugins", "hctcl.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcupd.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcwinamp.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcsysinfo.dll", plugin_auto_load_cb);
