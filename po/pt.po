@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-11-11 17:23+0100\n"
-"PO-Revision-Date: 2012-11-11 16:27+0000\n"
-"Last-Translator: bviktor <bviktor@hexchat.org>\n"
+"PO-Revision-Date: 2012-11-11 21:16+0000\n"
+"Last-Translator: artur_pt <artursimoes.pt@gmail.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/projects/p/hexchat/language/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -118,21 +118,21 @@ msgstr "Retirar Voz"
 
 #: src/common/hexchat.c:755
 msgid "Kick/Ban"
-msgstr "Expulsar/Interditar"
+msgstr "Kick/Ban"
 
 #: src/common/hexchat.c:756 src/common/hexchat.c:793
 msgid "Kick"
-msgstr "Expulsar"
+msgstr "Kick"
 
 #: src/common/hexchat.c:757 src/common/hexchat.c:758 src/common/hexchat.c:759
 #: src/common/hexchat.c:760 src/common/hexchat.c:761 src/common/hexchat.c:792
 msgid "Ban"
-msgstr "Interditar"
+msgstr "Ban"
 
 #: src/common/hexchat.c:762 src/common/hexchat.c:763 src/common/hexchat.c:764
 #: src/common/hexchat.c:765
 msgid "KickBan"
-msgstr "ExpulsarInterditar"
+msgstr "KickBan"
 
 #: src/common/hexchat.c:775
 msgid "Leave Channel"
@@ -304,7 +304,7 @@ msgstr "ADDBUTTON <nome> <acção>, adiciona um botão à lista de utilizadores"
 msgid ""
 "ADDSERVER <NewNetwork> <newserver/6667>, adds a new network with a new "
 "server to the network list"
-msgstr ""
+msgstr "ADDSERVER <NovaRede> <novoservidor/6667>, junta uma nova rede e novo servidor à lista de redes"
 
 #: src/common/outbound.c:3579
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
@@ -456,7 +456,7 @@ msgstr "GHOST <nick> [palavrapasse], exclui um nick fantasma"
 
 #: src/common/outbound.c:3650
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr "HOP <nick>, dá o estauto semi-operador ao nick(necessita do estatuto operador)"
+msgstr "HOP <nick>, dá o estatuto semi-operador ao nick(necessita do estatuto operador)"
 
 #: src/common/outbound.c:3651
 msgid "ID <password>, identifies yourself to nickserv"
@@ -764,15 +764,15 @@ msgstr "Aviso: o carácter \"%s\" é desconhecido. Não vai ser aplicada convers
 
 #: src/common/textevents.h:6
 msgid "%C18*%O$t%C18$1%O added to notify list."
-msgstr "%C18*%O$t%C18$1%O juntar lista de notificação."
+msgstr "%C18*%O$t%C18$1%O juntar a lista de notificação."
 
 #: src/common/textevents.h:9
 msgid "%C22*%O$t%C22$1%O Banlist: %C18$2%O on %C24$4%O by %C26$3%O"
-msgstr ""
+msgstr "%C22*%O$t%C22$1%O ListaInterditos: %C18$2%O em %C24$4%O por %C26$3%O"
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join%C22 $1 %O(%C20You are banned%O)."
-msgstr "%C22*%O$tEntrada Interdita%C22 $1 %O(%C20Foi banido%O)."
+msgstr "%C22*%O$tEntrada Interdita%C22 $1 %O(%C20Banido%O)."
 
 #: src/common/textevents.h:18
 msgid "%C29*%O$tCapabilities acknowledged: %C29$2%O"
@@ -804,7 +804,7 @@ msgstr "%C22*%O$t%C26$1%O remover canal estatuto half-operator de %C18$2%O"
 
 #: src/common/textevents.h:45
 msgid "%C22*%O$t%C26$1%O removes channel operator status from %C18$2%O"
-msgstr "%C22*%O$t%C26$1%O remover canal operator status de %C18$2%O"
+msgstr "%C22*%O$t%C26$1%O remover canal estatuto operator de %C18$2%O"
 
 #: src/common/textevents.h:48
 msgid "%C22*%O$t%C26$1%O removes voice from %C18$2%O"
@@ -816,7 +816,7 @@ msgstr "%C22*%O$t%C26 $1%C isenção em %C18$2%O"
 
 #: src/common/textevents.h:54
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to %C18$2%O"
-msgstr "%C22*%O$t%C26$1%O dar canal half-operator status a %C18$2%O"
+msgstr "%C22*%O$t%C26$1%OCanal estatuto half-operator a %C18$2%O"
 
 #: src/common/textevents.h:57
 msgid "%C22*%O$t%C26 $1%C sets invite on %C18$2%O"
@@ -836,7 +836,7 @@ msgstr "%C22*%O$tCanal %C22$1%O modos: %C24$2"
 
 #: src/common/textevents.h:78
 msgid "%C22*%O$t%C26$1%O gives channel operator status to %C18$2%O"
-msgstr "%C22*%O$t%C26$1%O dar canal operator status a %C18$2%O"
+msgstr "%C22*%O$t%C26$1%OCanal estatuto operator a %C18$2%O"
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t%C26$1%O removes exempt on %C18$2%O"
@@ -868,7 +868,7 @@ msgstr "%C22*%O$t%C26$1%O remover ban em %C24$2%O"
 
 #: src/common/textevents.h:102
 msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
-msgstr "%C22*%O$t%C26$1%O dar voice a %C18$2%O"
+msgstr "%C22*%O$t%C26$1%Ovoice a %C18$2%O"
 
 #: src/common/textevents.h:105
 msgid "%C23*%O$tConnected. Now logging in."
@@ -940,7 +940,7 @@ msgstr "%C16,17 Tipo  Para/De    Estado  Tam    Pos     Ficheiro         "
 msgid ""
 "%C20*%O$tReceived a malformed DCC request from "
 "%C18$1%O.%010%C23*%O$tContents of packet: %C23$2%O"
-msgstr "%C20*%O$tRecebido mal-formado pedido DCC de %C18$1%O.%010%C23*%O$tConteúdo do pacote: %C23$2%O"
+msgstr "%C20*%O$tRecebido pedido mal-formado DCC de %C18$1%O.%010%C23*%O$tConteúdo do pacote: %C23$2%O"
 
 #: src/common/textevents.h:159
 msgid "%C24*%O$tOffering '%C24$1%O' to %C18$2%O"
@@ -1014,7 +1014,7 @@ msgstr "%C20*%O$tDCC $1 '%C23$2%C' a %C18$3%O limite, abortado."
 
 #: src/common/textevents.h:207
 msgid "%C24*%O$t%C18$1%O deleted from notify list."
-msgstr "%C24*%O$t%C18$1%O apagado lista notificações."
+msgstr "%C24*%O$t%C18$1%O apagado da lista notificações."
 
 #: src/common/textevents.h:210
 msgid "%C20*%O$tDisconnected (%C20$1%O)"
@@ -1026,7 +1026,7 @@ msgstr "%C24*%O$tEncontrado IP: %C30[%C24$1%C30]%O"
 
 #: src/common/textevents.h:219
 msgid "%O%C18$1%O added to ignore list."
-msgstr "%O%C18$1%O junto lista ignorados."
+msgstr "%O%C18$1%O junto a lista ignorados."
 
 #: src/common/textevents.h:222
 msgid "%OIgnore on %C18$1%O changed."
@@ -1044,7 +1044,7 @@ msgstr "%C16,17 Hostmask PRIV NOTI CHAN CTCP DCC INVI UNIG"
 
 #: src/common/textevents.h:231
 msgid "%O%C18$1%O removed from ignore list."
-msgstr "%O%C18$1%O remover lista ignorados."
+msgstr "%O%C18$1%O remover da lista ignorados."
 
 #: src/common/textevents.h:234
 msgid "%OIgnore list is empty."
@@ -1069,11 +1069,11 @@ msgstr "%C20*%O$tEntrada Interdita %C22$1%C (%C20Precisa keyword%O)"
 
 #: src/common/textevents.h:249
 msgid "%C22*%O$t%C26$1%C has kicked %C18$2%C from %C22$3%C (%C24$4%O)"
-msgstr "%C22*%O$t%C26$1%C foi kicked %C18$2%C de %C22$3%C (%C24$4%O)"
+msgstr "%C22*%O$t%C26$1%C Kicked %C18$2%C de %C22$3%C (%C24$4%O)"
 
 #: src/common/textevents.h:252
 msgid "%C19*%O$t%C19You have been killed by %C26$1%C (%C20$2%O)"
-msgstr "%C19*%O$t%C19Foi eliminado por %C26$1%C (%C20$2%O)"
+msgstr "%C19*%O$t%C19Eliminado por %C26$1%C (%C20$2%O)"
 
 #: src/common/textevents.h:261
 msgid "%C29*%O$t%C29MOTD Skipped%O"
@@ -1180,7 +1180,7 @@ msgstr "%C22*%O$t%C26$1%C trocou o topico para: $2%O"
 
 #: src/common/textevents.h:372
 msgid "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
-msgstr "%C22*%O$tTopico para %C22$1%C por %C26$2%C (%C24$3%O)"
+msgstr "%C22*%O$tTopico %C22$1%C por %C26$2%C (%C24$3%O)"
 
 #: src/common/textevents.h:375
 msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
@@ -1196,7 +1196,7 @@ msgstr "%C22*%O$tUtilizadores %C22$1%C: %C24$2%O"
 
 #: src/common/textevents.h:387
 msgid "%C23*%O$t%C28[%C18$1%C28]%C is away %C30(%C23$2%O%C30)%O"
-msgstr ""
+msgstr "%C23*%O$t%C28[%C18$1%C28]%C ausente %C30(%C23$2%O%C30)%O"
 
 #: src/common/textevents.h:393
 msgid "%C23*%O$t%C28[%C18$1%C28] %OEnd of WHOIS list."
@@ -1217,11 +1217,11 @@ msgstr "%C23*%O$t%C28[%C18$1%C28]%O Real Host: %C23$2%O, Real IP: %C30[%C23$3%C3
 
 #: src/common/textevents.h:417
 msgid "%C19*%O$tNow talking on %C22$2%O"
-msgstr "%C19*%O$tEm conversa em %C22$2%O"
+msgstr "%C19*%O$tA conversar em %C22$2%O"
 
 #: src/common/textevents.h:420
 msgid "%C19*%O$tYou have been kicked from %C22$2%C by %C26$3%O (%C20$4%O)"
-msgstr "%C19*%O$tFoi kicked de %C22$2%C by %C26$3%O (%C20$4%O)"
+msgstr "%C19*%O$tKicked de %C22$2%C por %C26$3%O (%C20$4%O)"
 
 #: src/common/textevents.h:423
 msgid "%C19*%O$tYou have left channel %C22$3%O"
@@ -2942,7 +2942,7 @@ msgstr "Data"
 
 #: src/fe-gtk/banlist.c:387
 msgid "You can only open the Ban List window while in a channel tab."
-msgstr "Você só pode abrir a Lista de Ban, em separador de canal."
+msgstr "Você só pode abrir a Lista de Expulsões, em separador de canal."
 
 #: src/fe-gtk/banlist.c:391
 #, c-format
@@ -3954,7 +3954,7 @@ msgstr "_Barra Menu"
 
 #: src/fe-gtk/menu.c:1633
 msgid "_Topic Bar"
-msgstr "_Barra Topico"
+msgstr "Barra _Topico"
 
 #: src/fe-gtk/menu.c:1634
 msgid "_User List"
@@ -3962,7 +3962,7 @@ msgstr "_Lista Utilizador"
 
 #: src/fe-gtk/menu.c:1635
 msgid "U_serlist Buttons"
-msgstr "U_serlist Botões"
+msgstr " B_otões UtilzLista"
 
 #: src/fe-gtk/menu.c:1636
 msgid "M_ode Buttons"
@@ -4683,11 +4683,11 @@ msgstr "Latvian"
 
 #: src/fe-gtk/setup.c:137
 msgid "Lithuanian"
-msgstr "Lithuanian"
+msgstr "Lituano"
 
 #: src/fe-gtk/setup.c:138
 msgid "Macedonian"
-msgstr "Macedonian"
+msgstr "Macedonio"
 
 #: src/fe-gtk/setup.c:139
 msgid "Malay"
@@ -4699,11 +4699,11 @@ msgstr "Malayalam"
 
 #: src/fe-gtk/setup.c:141
 msgid "Norwegian (Bokmal)"
-msgstr "Norwegian (Bokmal)"
+msgstr "Norueguês (Bokmal)"
 
 #: src/fe-gtk/setup.c:142
 msgid "Norwegian (Nynorsk)"
-msgstr "Norwegian (Nynorsk)"
+msgstr "Norueguês (Nynorsk)"
 
 #: src/fe-gtk/setup.c:143
 msgid "Polish"
@@ -4743,7 +4743,7 @@ msgstr "Espanhol"
 
 #: src/fe-gtk/setup.c:152
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Sueco"
 
 #: src/fe-gtk/setup.c:153
 msgid "Thai"
@@ -4751,11 +4751,11 @@ msgstr "Thai"
 
 #: src/fe-gtk/setup.c:154
 msgid "Ukrainian"
-msgstr "Ukrainian"
+msgstr "Ucraniano"
 
 #: src/fe-gtk/setup.c:155
 msgid "Vietnamese"
-msgstr "Vietnamese"
+msgstr "Vietenamita"
 
 #: src/fe-gtk/setup.c:156
 msgid "Walloon"
@@ -4917,7 +4917,7 @@ msgstr "Sufixo para completar nick:"
 
 #: src/fe-gtk/setup.c:231
 msgid "Nick completion sorted:"
-msgstr "Ordem com quem o nick é completo"
+msgstr "Nick classificados por:"
 
 #: src/fe-gtk/setup.c:234
 msgid "Input Box Codes"
@@ -5252,7 +5252,7 @@ msgstr "Omitir alertas quando ausente"
 
 #: src/fe-gtk/setup.c:434
 msgid "Tray Behavior"
-msgstr ""
+msgstr "Comportamento Tabuleiro"
 
 #: src/fe-gtk/setup.c:435
 msgid "Enable system tray icon"
@@ -5260,15 +5260,15 @@ msgstr "Ativar icon tarefa de sistema"
 
 #: src/fe-gtk/setup.c:436
 msgid "Minimize to tray"
-msgstr ""
+msgstr "Minimiza para tabuleiro"
 
 #: src/fe-gtk/setup.c:437
 msgid "Close to tray"
-msgstr ""
+msgstr "Fecha para tabuleiro"
 
 #: src/fe-gtk/setup.c:439
 msgid "Only show tray balloons when hidden or iconified"
-msgstr ""
+msgstr "Mostar balões tabuleiro escondido ou minimizado"
 
 #: src/fe-gtk/setup.c:442 src/fe-gtk/setup.c:463
 msgid "Highlighted Messages"
@@ -5299,7 +5299,7 @@ msgstr "Separe múltiplas palavras com vírgulas. caracteres universais ⏎ são
 
 #: src/fe-gtk/setup.c:476
 msgid "Default Messages"
-msgstr "Mensagens por Defeito"
+msgstr "Mensagens por Omissão"
 
 #: src/fe-gtk/setup.c:477
 msgid "Quit:"
@@ -5722,7 +5722,7 @@ msgstr "Lista de utilizadores"
 
 #: src/fe-gtk/setup.c:1904
 msgid "Channel switcher"
-msgstr "mudar de canal"
+msgstr "Mudar de canal"
 
 #: src/fe-gtk/setup.c:1905
 msgid "Colors"
