@@ -1258,7 +1258,7 @@ savebuffer_req_done (session *sess, char *file)
 	if (!file)
 		return;
 
-	fh = open (file, O_TRUNC | O_WRONLY | O_CREAT, 0600);
+	fh = g_open (file, O_TRUNC | O_WRONLY | O_CREAT, 0600);
 	if (fh != -1)
 	{
 		gtk_xtext_save (GTK_XTEXT (sess->gui->xtext), fh);

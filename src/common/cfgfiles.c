@@ -849,11 +849,9 @@ save_config (void)
 	check_prefs_dir ();
 
 	config = default_file ();
-	new_config = malloc (strlen (config) + 5);
-	strcpy (new_config, config);
-	strcat (new_config, ".new");
+	new_config = g_strdup_printf (config, ".new");
 	
-	fh = open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
+	fh = g_open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
 	if (fh == -1)
 	{
 		free (new_config);
