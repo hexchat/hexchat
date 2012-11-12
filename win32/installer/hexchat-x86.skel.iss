@@ -47,11 +47,11 @@ Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags:
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\lua"; Description: "Lua"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: custom; Flags: disablenouninstallwarning
+;Name: "langs\lua"; Description: "Lua"; Types: custom; Flags: disablenouninstallwarning
+;Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\perl"; Description: "Perl"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\python"; Description: "Python"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\tcl"; Description: "Tcl"; Types: custom; Flags: disablenouninstallwarning
+;Name: "langs\tcl"; Description: "Tcl"; Types: custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
@@ -114,7 +114,7 @@ Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: li
 Source: "libintl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libpng15.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pango-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pangocairo-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pangoft2-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -156,9 +156,9 @@ Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion;
 Source: "plugins\hchextray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\hextray
 Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
-Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
+;Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
 Source: "plugins\hcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
-Source: "plugins\hctcl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\tcl
+;Source: "plugins\hctcl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\tcl
 
 ;Source: "plugins\hcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl512
 ;Source: "plugins\hcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514

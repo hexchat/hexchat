@@ -126,9 +126,9 @@ AC_ARG_ENABLE(perl_old,
 	[AS_HELP_STRING([--disable-perl_old],[no backwards compatibility for perl plugin])],
         perl_old=$enableval, perl_old=yes)
 
-AC_ARG_ENABLE(tcl,
-	[AS_HELP_STRING([--enable-tcl[=PATH]],[directory with Tcl config file: tclConfig.sh])],
-        tcl=$enableval, tcl=yes)
+dnl AC_ARG_ENABLE(tcl,
+dnl 	[AS_HELP_STRING([--enable-tcl[=PATH]],[directory with Tcl config file: tclConfig.sh])],
+dnl         tcl=$enableval, tcl=yes)
 
 AC_ARG_ENABLE(plugin,
 	[AS_HELP_STRING([--disable-plugin],[disable plugin support])],
@@ -368,26 +368,26 @@ dnl *********************************************************************
 dnl ** TCL **************************************************************
 dnl *********************************************************************
 
-AC_MSG_CHECKING(for location of tclConfig.sh)
-dirs="$tcl /lib /usr/lib /usr/tcl/lib /usr/lib/tcl8.4 /usr/local/lib /usr/local/tcl-8.4/lib /usr/local/tcl/lib /opt/lib /usr/lib/tcl8.3"
-found=0
-if test "$tcl" != "no"; then
-	tcl=no
-	for try in $dirs; do
-		if test -f $try/tclConfig.sh; then
-			found=1
-			. $try/tclConfig.sh
-			TCL_LIBS="$TCL_LIB_SPEC $TCL_LIBS"
-			TCL_CFLAGS="-I${TCL_PREFIX}/include $TCL_INCLUDE_SPEC"
-			tcl=yes
-			AC_MSG_RESULT($try/tclConfig.sh)
-			break
-		fi
-	done
-	if test "$found" -eq 0 ; then
-		AC_MSG_RESULT([tclConfig.sh not found - use the --enable-tcl option])
-	fi
-fi
+dnl AC_MSG_CHECKING(for location of tclConfig.sh)
+dnl dirs="$tcl /lib /usr/lib /usr/tcl/lib /usr/lib/tcl8.4 /usr/local/lib /usr/local/tcl-8.4/lib /usr/local/tcl/lib /opt/lib /usr/lib/tcl8.3"
+dnl found=0
+dnl if test "$tcl" != "no"; then
+dnl 	tcl=no
+dnl 	for try in $dirs; do
+dnl 		if test -f $try/tclConfig.sh; then
+dnl 			found=1
+dnl 			. $try/tclConfig.sh
+dnl 			TCL_LIBS="$TCL_LIB_SPEC $TCL_LIBS"
+dnl 			TCL_CFLAGS="-I${TCL_PREFIX}/include $TCL_INCLUDE_SPEC"
+dnl 			tcl=yes
+dnl 			AC_MSG_RESULT($try/tclConfig.sh)
+dnl 			break
+dnl 		fi
+dnl 	done
+dnl 	if test "$found" -eq 0 ; then
+dnl 		AC_MSG_RESULT([tclConfig.sh not found - use the --enable-tcl option])
+dnl 	fi
+dnl fi
 
 dnl *********************************************************************
 dnl ** IPv6 *************************************************************
@@ -692,7 +692,7 @@ AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
 AM_CONDITIONAL(DO_GTK, test "x$gtkfe" = "xyes")
 AM_CONDITIONAL(DO_PERL, test "x$perl" = "xyes")
 AM_CONDITIONAL(DO_PYTHON, test "x$python" = "xyes")
-AM_CONDITIONAL(DO_TCL, test "x$tcl" = "xyes")
+dnl AM_CONDITIONAL(DO_TCL, test "x$tcl" = "xyes")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
 AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
@@ -923,8 +923,8 @@ AC_SUBST(PERL_CFLAGS)
 AC_SUBST(PERL_LDFLAGS)
 AC_SUBST(PY_CFLAGS)
 AC_SUBST(PY_LIBS)
-AC_SUBST(TCL_LIBS)
-AC_SUBST(TCL_CFLAGS)
+dnl AC_SUBST(TCL_LIBS)
+dnl AC_SUBST(TCL_CFLAGS)
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 
@@ -959,7 +959,6 @@ src/pixmaps/Makefile
 plugins/Makefile
 plugins/python/Makefile
 plugins/perl/Makefile
-plugins/tcl/Makefile
 plugins/checksum/Makefile
 plugins/doat/Makefile
 plugins/fishlim/Makefile
@@ -968,6 +967,7 @@ intl/Makefile
 po/Makefile.in
 man/Makefile
 ])
+dnl plugins/tcl/Makefile
 dnl plugins/sasl/Makefile
 
 echo
@@ -995,7 +995,7 @@ echo libproxy support ...... : $libproxy
 echo
 echo Perl .................. : $perl
 echo Python ................ : $python
-echo Tcl ................... : $tcl
+dnl echo Tcl ................... : $tcl
 echo
 echo Checksum .............. : $checksum
 echo Do At ................. : $doat
