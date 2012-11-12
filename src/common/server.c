@@ -1727,14 +1727,14 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 		char *cert_file;
 
 		/* first try network specific cert/key */
-		cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.pem",
+		cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "certs" G_DIR_SEPARATOR_S "%s.pem",
 					 get_xdir (), server_get_network (serv, TRUE));
 		if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
 			SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
 		else
 		{
-			/* if that doesn't exist, try <xdir>/client.pem */
-			cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "client.pem", get_xdir ());
+			/* if that doesn't exist, try <config>/certs/client.pem */
+			cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "certs" G_DIR_SEPARATOR_S "client.pem", get_xdir ());
 			if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
 				SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
 		}
