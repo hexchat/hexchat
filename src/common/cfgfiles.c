@@ -844,23 +844,23 @@ int
 save_config (void)
 {
 	int fh, i;
-	char *new_config, *config;
+	char *config, *new_config;
 
 	check_prefs_dir ();
 
 	config = default_file ();
-	new_config = g_strdup_printf ("%s.new", config);
+	new_config = g_strconcat (config, ".new");
 	
 	fh = g_open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
 	if (fh == -1)
 	{
-		free (new_config);
+		g_free (new_config);
 		return 0;
 	}
 
 	if (!cfg_put_str (fh, "version", PACKAGE_VERSION))
 	{
-		free (new_config);
+		g_free (new_config);
 		return 0;
 	}
 		
@@ -872,7 +872,7 @@ save_config (void)
 		case TYPE_STR:
 			if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
 			{
-				free (new_config);
+				g_free (new_config);
 				return 0;
 			}
 			break;
@@ -880,7 +880,7 @@ save_config (void)
 		case TYPE_BOOL:
 			if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
 			{
-				free (new_config);
+				g_free (new_config);
 				return 0;
 			}
 		}
@@ -890,19 +890,19 @@ save_config (void)
 
 	if (close (fh) == -1)
 	{
-		free (new_config);
+		g_free (new_config);
 		return 0;
 	}
 
 #ifdef WIN32
-	unlink (config);	/* win32 can't rename to an existing file */
+	g_unlink (config);	/* win32 can't rename to an existing file */
 #endif
-	if (rename (new_config, config) == -1)
+	if (g_rename (new_config, config) == -1)
 	{
-		free (new_config);
+		g_free (new_config);
 		return 0;
 	}
-	free (new_config);
+	g_free (new_config);
 
 	return 1;
 }
