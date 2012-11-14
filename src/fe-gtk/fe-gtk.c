@@ -227,11 +227,14 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_version)
 	{
+		#ifdef WIN32
 		buffer = g_strdup_printf (DISPLAY_NAME " " PACKAGE_VERSION "\n");
 		gtk_init (&argc, &argv);
 		create_msg_dialog ("Version Information", buffer);
 		g_free (buffer);
-
+		#else
+		printf(PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
+		#endif
 		return 0;
 	}
 
