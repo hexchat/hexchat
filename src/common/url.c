@@ -331,12 +331,53 @@ url_check_word (const char *word, int len)
 	return 0;
 }
 
+/* List of IRC commands for which contents (and thus possible URLs)
+ * are visible to the user.  NOTE:  Trailing blank required in each. */
+static char *commands[] = {
+	"NOTICE ",
+	"PRIVMSG ",
+	"TOPIC ",
+	"332 ",		/* RPL_TOPIC */
+	"372 "		/* RPL_MOTD */
+};
+
+#define ARRAY_SIZE(a) (sizeof (a) / sizeof ((a)[0]))
+
 void
 url_check_line (char *buf, int len)
 {
 	char *po = buf;
 	char *start;
-	int wlen;
+	int i, wlen;
+
+	/* Skip over message prefix */
+	if (*po == ':')
+	{
+		po = strchr (po, ' ');
+		if (!po)
+			return;
+		po++;
+	}
+	/* Allow only commands from the above list */
+	for (i = 0; i < ARRAY_SIZE (commands); i++)
+	{
+		char *cmd = commands[i];
+		int len = strlen (cmd);
+
+		if (strncmp (cmd, po, len) == 0)
+		{
+			po += len;
+			break;
+		}
+	}
+	if (i == ARRAY_SIZE (commands))
+		return;
+
+	/* Skip past the channel name or user nick */
+	po = strchr (po, ' ');
+	if (!po)
+		return;
+	po++;
 
 	if (buf[0] == ':' && buf[1] != 0)
 		po++;
@@ -350,6 +391,7 @@ url_check_line (char *buf, int len)
 		{
 		case 0:
 		case ' ':
+		case '\r':
 
 			wlen = po - start;
 			if (wlen > 2)
