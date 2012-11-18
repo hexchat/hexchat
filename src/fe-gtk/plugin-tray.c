@@ -499,7 +499,7 @@ tray_menu_destroy (GtkWidget *menu, gpointer userdata)
 static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
-	GtkWidget *menu;
+	static GtkWidget *menu;
 #ifndef WIN32
 	GtkWidget *submenu;
 	GtkWidget *item;
@@ -508,6 +508,9 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 
 	/* ph may have an invalid context now */
 	hexchat_set_context (ph, hexchat_find_context (ph, NULL, NULL));
+
+	/* close any old menu */
+	tray_menu_destroy (menu, NULL);
 
 	menu = gtk_menu_new ();
 	/*gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));*/
