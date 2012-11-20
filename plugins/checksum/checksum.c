@@ -173,13 +173,22 @@ dccrecv_cb (char *word[], void *userdata)
 	int result;
 	struct stat64 buffer;									/* buffer for storing file info */
 	char sum[65];											/* buffer for checksum */
+	char *file;
+	if (hexchat_get_prefs (ph, "dcc_completed_dir", &file, NULL) == 1 && file[0] != 0)
+	{
+		file = g_strconcat (file, G_DIR_SEPARATOR_S, word[1], NULL);
+	}
+	else
+	{
+		file = word[2];
+	}
 
-	result = stat64 (word[2], &buffer);
+	result = stat64 (file, &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
 		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
 		{
-			sha256_file (word[2], sum);						/* word[2] is the full filename */
+			sha256_file (file, sum);						/* file is the full filename even if completed dir set */
 			/* try to print the checksum in the privmsg tab of the sender */
 			hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
 			hexchat_printf (ph, "SHA-256 checksum for %s (local):  %s\n", word[1], sum);
@@ -195,6 +204,7 @@ dccrecv_cb (char *word[], void *userdata)
 		hexchat_printf (ph, "File access error!\n");
 	}
 
+	g_free (file);
 	return HEXCHAT_EAT_NONE;
 }
 
