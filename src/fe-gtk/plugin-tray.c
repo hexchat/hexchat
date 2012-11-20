@@ -540,7 +540,10 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	hexchat_set_context (ph, hexchat_find_context (ph, NULL, NULL));
 
 	/* close any old menu */
-	tray_menu_destroy (menu, NULL);
+	if (G_IS_OBJECT (menu))
+	{
+		tray_menu_destroy (menu, NULL);
+	}
 
 	menu = gtk_menu_new ();
 	/*gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));*/
