@@ -60,8 +60,10 @@ typedef GdkPixbuf* TrayIcon;
 static GtkStatusIcon *sticon;
 static gint flash_tag;
 static TrayStatus tray_status;
+#ifdef WIN32
 static guint tray_menu_timer;
 static gint64 tray_menu_inactivetime;
+#endif
 static hexchat_plugin *ph;
 
 static TrayIcon custom_icon1;
@@ -585,8 +587,6 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 
 	tray_menu_timer = g_timeout_add(500, (GSourceFunc) tray_check_hide, menu);
 #endif
-
-
 
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, gtk_status_icon_position_menu,
 						 userdata, button, time);
