@@ -180,7 +180,7 @@ dccrecv_cb (char *word[], void *userdata)
 	}
 	else
 	{
-		file = word[2];
+		file = g_strdup(word[2]);
 	}
 
 	result = stat64 (file, &buffer);
