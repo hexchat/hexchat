@@ -60,6 +60,10 @@ typedef GdkPixbuf* TrayIcon;
 static GtkStatusIcon *sticon;
 static gint flash_tag;
 static TrayStatus tray_status;
+#ifdef WIN32
+static guint tray_menu_timer;
+static gint64 tray_menu_inactivetime;
+#endif
 static hexchat_plugin *ph;
 
 static TrayIcon custom_icon1;
@@ -494,12 +498,38 @@ tray_menu_destroy (GtkWidget *menu, gpointer userdata)
 {
 	gtk_widget_destroy (menu);
 	g_object_unref (menu);
+#ifdef WIN32
+	g_source_remove (tray_menu_timer);
+#endif
 }
+
+#ifdef WIN32
+static void
+tray_menu_enter_cb (GtkWidget *menu)
+{
+	tray_menu_inactivetime = 0;
+}
+
+static void
+tray_menu_left_cb (GtkWidget *menu)
+{
+	tray_menu_inactivetime = g_get_real_time ();
+}
+
+static void
+tray_check_hide (GtkWidget *menu)
+{
+	if (tray_menu_inactivetime && g_get_real_time () - tray_menu_inactivetime  >= 2000000)
+	{
+		tray_menu_destroy (menu, NULL);
+	}
+}
+#endif
 
 static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
-	GtkWidget *menu;
+	static GtkWidget *menu;
 #ifndef WIN32
 	GtkWidget *submenu;
 	GtkWidget *item;
@@ -508,6 +538,12 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 
 	/* ph may have an invalid context now */
 	hexchat_set_context (ph, hexchat_find_context (ph, NULL, NULL));
+
+	/* close any old menu */
+	if (G_IS_OBJECT (menu))
+	{
+		tray_menu_destroy (menu, NULL);
+	}
 
 	menu = gtk_menu_new ();
 	/*gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));*/
@@ -546,6 +582,14 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	g_object_unref (menu);
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (tray_menu_destroy), NULL);
+#ifdef WIN32
+	g_signal_connect (G_OBJECT (menu), "leave-notify-event",
+							G_CALLBACK (tray_menu_left_cb), NULL);
+	g_signal_connect (G_OBJECT (menu), "enter-notify-event",
+							G_CALLBACK (tray_menu_enter_cb), NULL);
+
+	tray_menu_timer = g_timeout_add(500, (GSourceFunc) tray_check_hide, menu);
+#endif
 
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, gtk_status_icon_position_menu,
 						 userdata, button, time);
