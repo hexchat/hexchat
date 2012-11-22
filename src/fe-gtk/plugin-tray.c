@@ -527,6 +527,13 @@ tray_check_hide (GtkWidget *menu)
 #endif
 
 static void
+tray_menu_settings (GtkWidget * wid, gpointer none)
+{
+	extern void setup_open (void);
+	setup_open ();
+}
+
+static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
 	static GtkWidget *menu;
@@ -573,6 +580,8 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 #endif
 
+	mg_create_icon_item (_("_Preferences"), GTK_STOCK_PREFERENCES, menu, tray_menu_settings, NULL);
+	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
