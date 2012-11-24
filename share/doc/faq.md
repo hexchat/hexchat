@@ -276,11 +276,11 @@ to modify the global real name, just issue the following command:
 
  * Windows
 
-> 1. Copy *%APPDATA%\\X-Chat 2 to %APPDATA%\\HexChat
-> 2. Rename *%APPDATA%\\HexChat\\xchat.conf to %APPDATA%\\HexChat\\hexchat.conf
-> 3. Rename *%APPDATA%\\HexChat\\xchatlogs to %APPDATA%\\HexChat\\logs
+> 1. Copy %APPDATA%\\X-Chat 2 to %APPDATA%\\HexChat
+> 2. Rename %APPDATA%\\HexChat\\xchat.conf to %APPDATA%\\HexChat\\hexchat.conf
+> 3. Rename %APPDATA%\\HexChat\\xchatlogs to %APPDATA%\\HexChat\\logs
 > 4. Move all your 3rd party addons to %APPDATA%\\HexChat\\addons
-> 5. Rename *%APPDATA%\\HexChat\\plugin\_\*.conf to %APPDATA%\\HexChat\\addon\_\*.conf
+> 5. Rename %APPDATA%\\HexChat\\plugin\_\*.conf to %APPDATA%\\HexChat\\addon\_\*.conf
 
 
 ## Contributions, Development and Bugs.
