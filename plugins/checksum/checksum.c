@@ -250,7 +250,7 @@ checksum (char *word[], char *word_eol[], void *userdata)
 	}
 	else
 	{
-		hexchat_printf (ph, "Usage: /CHECKSUM GET|INC|DEC\n");
+		hexchat_printf (ph, "Usage: /CHECKSUM GET|SET\n");
 		hexchat_printf (ph, "  GET - print the maximum file size (in MiB) to be hashed\n");
 		hexchat_printf (ph, "  SET <filesize> - set the maximum file size (in MiB) to be hashed\n");
 	}
