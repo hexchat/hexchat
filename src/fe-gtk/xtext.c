@@ -2165,8 +2165,9 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 	str = gtk_xtext_selection_get_text (GTK_XTEXT (xtext), &len);
 	if (str)
 	{
-		gtk_clipboard_set_text (gtk_widget_get_clipboard (xtext, GDK_SELECTION_CLIPBOARD),
-										str, len);
+		if (str[0])
+			gtk_clipboard_set_text (gtk_widget_get_clipboard (xtext, GDK_SELECTION_CLIPBOARD),
+											str, len);
 		free (str);
 	}
 
