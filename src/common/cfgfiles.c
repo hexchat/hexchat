@@ -435,6 +435,7 @@ const struct prefs vars[] =
 	{"gui_lagometer", P_OFFINT (hex_gui_lagometer), TYPE_INT},
 	{"gui_lang", P_OFFINT (hex_gui_lang), TYPE_INT},
 	{"gui_mode_buttons", P_OFFINT (hex_gui_mode_buttons), TYPE_BOOL},
+	{"gui_pane_height", P_OFFINT (hex_gui_pane_height), TYPE_INT},
 	{"gui_pane_left_size", P_OFFINT (hex_gui_pane_left_size), TYPE_INT},
 	{"gui_pane_right_size", P_OFFINT (hex_gui_pane_right_size), TYPE_INT},
 	{"gui_pane_right_size_min", P_OFFINT (hex_gui_pane_right_size_min), TYPE_INT},
