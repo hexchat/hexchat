@@ -43,6 +43,7 @@ typedef struct session hexchat_context;
 #include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "gtkutil.h"
+#include "maingui.h"
 
 /* model for the plugin treeview */
 enum
@@ -213,38 +214,39 @@ void
 plugingui_open (void)
 {
 	GtkWidget *view;
-	GtkWidget *vbox, *action_area;
+	GtkWidget *vbox, *hbox;
 
 	if (plugin_window)
 	{
-		gtk_window_present (GTK_WINDOW (plugin_window));
+		mg_bring_tofront (plugin_window);
 		return;
 	}
 
-	plugin_window = gtk_dialog_new ();
-	g_signal_connect (G_OBJECT (plugin_window), "destroy",
-							G_CALLBACK (plugingui_close), 0);
-	gtk_window_set_default_size (GTK_WINDOW (plugin_window), 500, 250);
-	vbox = GTK_DIALOG (plugin_window)->vbox;
-	action_area = GTK_DIALOG (plugin_window)->action_area;
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
-	gtk_window_set_position (GTK_WINDOW (plugin_window), GTK_WIN_POS_CENTER);
-	gtk_window_set_title (GTK_WINDOW (plugin_window), _(DISPLAY_NAME": Plugins and Scripts"));
+	plugin_window = mg_create_generic_tab ("Addons", _(DISPLAY_NAME": Plugins and Scripts"),
+														 FALSE, TRUE, plugingui_close, NULL,
+														 500, 250, &vbox, 0);
 
 	view = plugingui_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (plugin_window), "view", view);
 
-	gtkutil_button (action_area, GTK_STOCK_REVERT_TO_SAVED, NULL,
+
+	hbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_SPREAD);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
+	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
+
+	gtkutil_button (hbox, GTK_STOCK_REVERT_TO_SAVED, NULL,
 	                plugingui_loadbutton_cb, NULL, _("_Load..."));
 
-	gtkutil_button (action_area, GTK_STOCK_DELETE, NULL,
+	gtkutil_button (hbox, GTK_STOCK_DELETE, NULL,
 	                plugingui_unload, NULL, _("_UnLoad"));
 
-	gtkutil_button (action_area,
-						 GTK_STOCK_CLOSE, NULL, plugingui_close_button,
-						 NULL, _("_Close"));
+	if (!prefs.hex_gui_tab_utils)
+		gtkutil_button (hbox,
+							 GTK_STOCK_CLOSE, NULL, plugingui_close_button,
+							 NULL, _("_Close"));
  
 	fe_pluginlist_update ();
 
-	gtk_widget_show (plugin_window);
+	gtk_widget_show_all (plugin_window);
 }
