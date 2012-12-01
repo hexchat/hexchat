@@ -3074,7 +3074,7 @@ mg_tabwindow_de_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	GSList *list;
 	session *sess;
 
-	if (tray_toggle_visibility (FALSE) && prefs.hex_gui_tray_close && !hextray_mode ())
+	if (prefs.hex_gui_tray_close && !hextray_mode () && tray_toggle_visibility (FALSE))
 		return TRUE;
 
 	/* check for remaining toplevel windows */
