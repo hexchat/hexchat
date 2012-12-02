@@ -2545,7 +2545,7 @@ mg_create_userlist (session_gui *gui, GtkWidget *box)
 static void
 mg_vpane_cb (GtkPaned *pane, GParamSpec *param, session_gui *gui)
 {
-	prefs.hex_gui_pane_height = gtk_paned_get_position (pane);
+	prefs.hex_gui_pane_divider_position = gtk_paned_get_position (pane);
 }
 
 static void
@@ -2766,10 +2766,10 @@ mg_place_userlist_and_chanview_real (session_gui *gui, GtkWidget *userlist, GtkW
 		}
 	}
 
-	if (mg_is_userlist_and_tree_combined () && prefs.hex_gui_pane_height != 0)
+	if (mg_is_userlist_and_tree_combined () && prefs.hex_gui_pane_divider_position != 0)
 	{
-		gtk_paned_set_position (GTK_PANED (gui->vpane_left), prefs.hex_gui_pane_height);
-		gtk_paned_set_position (GTK_PANED (gui->vpane_right), prefs.hex_gui_pane_height);
+		gtk_paned_set_position (GTK_PANED (gui->vpane_left), prefs.hex_gui_pane_divider_position);
+		gtk_paned_set_position (GTK_PANED (gui->vpane_right), prefs.hex_gui_pane_divider_position);
 	}
 
 	if (unref_chanview)
