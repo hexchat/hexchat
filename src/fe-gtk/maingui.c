@@ -2543,6 +2543,12 @@ mg_create_userlist (session_gui *gui, GtkWidget *box)
 }
 
 static void
+mg_vpane_cb (GtkPaned *pane, GParamSpec *param, session_gui *gui)
+{
+	prefs.hex_gui_pane_divider_position = gtk_paned_get_position (pane);
+}
+
+static void
 mg_leftpane_cb (GtkPaned *pane, GParamSpec *param, session_gui *gui)
 {
 	prefs.hex_gui_pane_left_size = gtk_paned_get_position (pane);
@@ -2570,6 +2576,10 @@ mg_add_pane_signals (session_gui *gui)
 							G_CALLBACK (mg_rightpane_cb), gui);
 	g_signal_connect (G_OBJECT (gui->hpane_left), "notify::position",
 							G_CALLBACK (mg_leftpane_cb), gui);
+	g_signal_connect (G_OBJECT (gui->vpane_left), "notify::position",
+							G_CALLBACK (mg_vpane_cb), gui);
+	g_signal_connect (G_OBJECT (gui->vpane_right), "notify::position",
+							G_CALLBACK (mg_vpane_cb), gui);
 	return FALSE;
 }
 
@@ -2754,6 +2764,12 @@ mg_place_userlist_and_chanview_real (session_gui *gui, GtkWidget *userlist, GtkW
 		default:/* POS_TOPRIGHT */
 			gtk_paned_pack1 (GTK_PANED (gui->vpane_right), userlist, FALSE, TRUE);
 		}
+	}
+
+	if (mg_is_userlist_and_tree_combined () && prefs.hex_gui_pane_divider_position != 0)
+	{
+		gtk_paned_set_position (GTK_PANED (gui->vpane_left), prefs.hex_gui_pane_divider_position);
+		gtk_paned_set_position (GTK_PANED (gui->vpane_right), prefs.hex_gui_pane_divider_position);
 	}
 
 	if (unref_chanview)
