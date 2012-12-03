@@ -524,7 +524,6 @@ tray_check_hide (GtkWidget *menu)
 		tray_menu_destroy (menu, NULL);
 	}
 }
-#endif
 
 static void
 tray_menu_settings (GtkWidget * wid, gpointer none)
@@ -532,6 +531,7 @@ tray_menu_settings (GtkWidget * wid, gpointer none)
 	extern void setup_open (void);
 	setup_open ();
 }
+#endif
 
 static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
@@ -580,8 +580,10 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		gtk_widget_set_sensitive (item, FALSE);
 
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
+#ifdef WIN32
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 	mg_create_icon_item (_("_Preferences"), GTK_STOCK_PREFERENCES, menu, tray_menu_settings, NULL);
+#endif
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 
