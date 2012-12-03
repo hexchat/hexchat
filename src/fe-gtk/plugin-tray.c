@@ -524,17 +524,22 @@ tray_check_hide (GtkWidget *menu)
 		tray_menu_destroy (menu, NULL);
 	}
 }
+
+static void
+tray_menu_settings (GtkWidget * wid, gpointer none)
+{
+	extern void setup_open (void);
+	setup_open ();
+}
 #endif
 
 static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
 	static GtkWidget *menu;
-#ifndef WIN32
 	GtkWidget *submenu;
 	GtkWidget *item;
 	int away_status;
-#endif
 
 	/* ph may have an invalid context now */
 	hexchat_set_context (ph, hexchat_find_context (ph, NULL, NULL));
@@ -554,7 +559,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		tray_make_item (menu, _("_Hide Window"), tray_menu_restore_cb, NULL);
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 
-#ifndef WIN32 /* somehow this is broken on win32 */
+#ifndef WIN32 /* submenus are buggy on win32 */
 	submenu = mg_submenu (menu, _("_Blink on"));
 	blink_item (&prefs.hex_input_tray_chans, submenu, _("Channel Message"));
 	blink_item (&prefs.hex_input_tray_priv, submenu, _("Private Message"));
@@ -562,6 +567,10 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	/*blink_item (BIT_FILEOFFER, submenu, _("File Offer"));*/
 
 	submenu = mg_submenu (menu, _("_Change status"));
+#else /* so show away/back in main tray menu */
+	submenu = menu;
+#endif
+
 	away_status = tray_find_away_status ();
 	item = tray_make_item (submenu, _("_Away"), tray_foreach_server, "away");
 	if (away_status == 1)
@@ -570,12 +579,13 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	if (away_status == 2)
 		gtk_widget_set_sensitive (item, FALSE);
 
-	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
-#endif
-
-	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
-
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
+#ifdef WIN32
+	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
+	mg_create_icon_item (_("_Preferences"), GTK_STOCK_PREFERENCES, menu, tray_menu_settings, NULL);
+#endif
+	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
+	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 
 	g_object_ref (menu);
 	g_object_ref_sink (menu);
