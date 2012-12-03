@@ -209,7 +209,7 @@ You may need to create the _addons_ folder manually.
 
 On both Unix and Windows there is an included tray plugin. To enable minimizing to tray on exit:
 
-> /set gui\_tray\_exit on
+> /set gui\_tray\_close on
 
 For minimizing to tray on minimize:
 
