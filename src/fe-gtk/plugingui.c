@@ -79,7 +79,6 @@ plugingui_treeview_new (GtkWidget *box)
 	     col_id++)
 			gtk_tree_view_column_set_alignment (col, 0.5);
 
-	gtk_widget_show (view);
 	return view;
 }
 
