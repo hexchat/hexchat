@@ -84,12 +84,6 @@ plugingui_treeview_new (GtkWidget *box)
 }
 
 static void
-plugingui_close_button (GtkWidget * wid, gpointer a)
-{
-	gtk_widget_destroy (plugin_window);
-}
-
-static void
 plugingui_close (GtkWidget * wid, gpointer a)
 {
 	plugin_window = NULL;
@@ -241,11 +235,6 @@ plugingui_open (void)
 	gtkutil_button (hbox, GTK_STOCK_DELETE, NULL,
 	                plugingui_unload, NULL, _("_UnLoad"));
 
-	if (!prefs.hex_gui_tab_utils)
-		gtkutil_button (hbox,
-							 GTK_STOCK_CLOSE, NULL, plugingui_close_button,
-							 NULL, _("_Close"));
- 
 	fe_pluginlist_update ();
 
 	gtk_widget_show_all (plugin_window);
