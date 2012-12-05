@@ -87,7 +87,7 @@ AC_ARG_ENABLE(socks,
         socks=$enableval, socks=no)
 
 AC_ARG_ENABLE(ipv6,
-	[AS_HELP_STRING([--disable-ipv6],[enable IPv6])],
+	[AS_HELP_STRING([--disable-ipv6],[disable IPv6])],
         ipv6=$enableval, ipv6=yes)
 
 AC_ARG_ENABLE(xft,
