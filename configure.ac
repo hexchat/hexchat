@@ -87,8 +87,8 @@ AC_ARG_ENABLE(socks,
         socks=$enableval, socks=no)
 
 AC_ARG_ENABLE(ipv6,
-	[AS_HELP_STRING([--enable-ipv6],[enable IPv6 (default: no)])],
-        ipv6=$enableval, ipv6=no)
+	[AS_HELP_STRING([--disable-ipv6],[enable IPv6])],
+        ipv6=$enableval, ipv6=yes)
 
 AC_ARG_ENABLE(xft,
 	[AS_HELP_STRING([--enable-xft],[enable use of Xft directly (default: no)])],
