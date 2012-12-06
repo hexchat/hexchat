@@ -130,8 +130,8 @@ pixmaps_init (void)
 
 	/* tray icons, with inlined defaults */
 	pix_tray_fileoffer = load_pixmap ("tray_fileoffer", png_tray_fileoffer, 1);
-	pix_tray_highlight = load_pixmap ("highlight", png_tray_highlight, 1);
-	pix_tray_message = load_pixmap ("message", png_tray_message, 1);
+	pix_tray_highlight = load_pixmap ("tray_highlight", png_tray_highlight, 1);
+	pix_tray_message = load_pixmap ("tray_message", png_tray_message, 1);
 
 #if 0
 	/* treeview icons, no defaults, load from disk only */
