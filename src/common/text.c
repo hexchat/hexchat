@@ -2297,7 +2297,7 @@ sound_play (const char *file, gboolean quiet)
 	/* check for fullpath */
 	if (file[0] == '\\' || (((file[0] >= 'A' && file[0] <= 'Z') || (file[0] >= 'a' && file[0] <= 'z')) && file[1] == ':'))
 #else
-	if (file[0] != '/')
+	if (file[0] == '/')
 #endif
 	{
 		wavfile = g_strdup (file);
