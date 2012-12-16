@@ -372,6 +372,7 @@ tray_toggle_visibility (gboolean force_hide)
 {
 	static int x, y;
 	static GdkScreen *screen;
+	static int maximized;
 	GtkWindow *win;
 
 	if (!sticon)
@@ -396,14 +397,18 @@ tray_toggle_visibility (gboolean force_hide)
 	{
 		gtk_window_get_position (win, &x, &y);
 		screen = gtk_window_get_screen (win);
+		maximized = prefs.hex_gui_win_state;
 		gtk_widget_hide (GTK_WIDGET (win));
 	}
 	else
 	{
 		gtk_window_set_screen (win, screen);
 		gtk_window_move (win, x, y);
+		if (maximized)
+			gtk_window_maximize (win);
 		gtk_widget_show (GTK_WIDGET (win));
 		gtk_window_present (win);
+
 	}
 
 	return TRUE;
