@@ -950,6 +950,9 @@ AC_SUBST(hexchatlibdir)
 
 AC_OUTPUT([
 Makefile
+share/Makefile
+share/icons/Makefile
+share/misc/Makefile
 src/Makefile
 src/common/Makefile
 src/common/dbus/Makefile
