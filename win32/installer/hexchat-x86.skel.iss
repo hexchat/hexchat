@@ -40,7 +40,6 @@ Name: "plugins\dns"; Description: "DNS"; Types: custom; Flags: disablenouninstal
 Name: "plugins\doat"; Description: "Do At"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\exec"; Description: "Exec"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disablenouninstallwarning
-Name: "plugins\hextray"; Description: "HexTray"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
@@ -153,7 +152,6 @@ Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Com
 Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
 Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
-Source: "plugins\hchextray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\hextray
 Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
 ;Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
