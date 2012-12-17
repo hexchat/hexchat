@@ -1,5 +1,5 @@
 icon_DATA = ../../src/pixmaps/hexchat.png
-icondir = $(datadir)/pixmaps
+icondir = $(datadir)/icons/hicolor/48x48/apps
 
 hicolor_DATA = hexchat.svg
 hicolordir = $(datadir)/icons/hicolor/scalable/apps
