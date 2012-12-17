@@ -46,7 +46,7 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
        char *tTitle, *zero, *oggLine, *line;
 	   struct tagInfo info;
 	   HWND hwnd = FindWindow("MediaPlayerClassicW",NULL);
-       if (hwnd==0) {hexchat_command(ph, randomLine(notRunTheme));return HEXCHAT_EAT_ALL;}
+       if (hwnd==0) {hexchat_print(ph, randomLine(notRunTheme));return HEXCHAT_EAT_ALL;}
        
        tTitle=(char*)malloc(sizeof(char)*1024);
        GetWindowText(hwnd, tTitle, 1024);

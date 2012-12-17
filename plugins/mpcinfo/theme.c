@@ -120,7 +120,7 @@ void loadThemes(){
 		fclose(f);
 		hexchat_print(ph, "theme loaded successfull\n");
 	}
-	if (notRunTheme.size==0) notRunTheme=themeAdd(notRunTheme,"say Media Player Classic not running");
+	if (notRunTheme.size==0) notRunTheme=themeAdd(notRunTheme,"Media Player Classic not running");
 	if (titleTheme.size==0) titleTheme=themeAdd(titleTheme,"say Playing %title in Media Player Classic");
 	if (mp3Theme.size==0) mp3Theme=themeAdd(mp3Theme,"me listens to %art with %tit from %alb [%gen|%br kbps|%frq kHz|%mode] in Media Player Classic ");
 	if (oggTheme.size==0) oggTheme=themeAdd(oggTheme,"me listens to %art with %tit from %alb [%gen|%br kbps|%frq kHz|%chan channels] in Media Player Classic ");
