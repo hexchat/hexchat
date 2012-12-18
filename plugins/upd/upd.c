@@ -34,7 +34,7 @@ static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "Update Checker";
 static char desc[] = "Check for HexChat updates automatically";
 static char version[] = "4.0";
-static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexChat updates\n  /UPDCHK SET delay|format, set startup delay or check frequency\n";
+static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexChat updates\n  /UPDCHK SET delay|freq, set startup delay or check frequency\n";
 
 static char*
 check_version ()
