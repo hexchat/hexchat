@@ -220,7 +220,7 @@ print_version (char *word[], char *word_eol[], void *userdata)
 		{
 			hexchat_printf (ph, "%s\tYou have the latest version of HexChat installed!\n", name);
 		}
-		else if (strcmp (version, "Unknown") == 0)
+		else if (strcmp (version, "Unknown") == 0 || strlen (version) != 5)
 		{
 			hexchat_printf (ph, "%s\tUnable to check for HexChat updates!\n", name);
 		}
