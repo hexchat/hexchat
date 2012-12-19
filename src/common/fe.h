@@ -51,6 +51,7 @@ void fe_idle_add (void *func, void *data);
 void fe_set_topic (struct session *sess, char *topic, char *stripped_topic);
 void fe_set_hilight (struct session *sess);
 void fe_set_tab_color (struct session *sess, int col);
+void fe_set_tab (char *tab);
 void fe_flash_window (struct session *sess);
 void fe_update_mode_buttons (struct session *sess, char mode, char sign);
 void fe_update_channel_key (struct session *sess);

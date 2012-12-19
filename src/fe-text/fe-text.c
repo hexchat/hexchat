@@ -616,6 +616,10 @@ fe_set_tab_color (struct session *sess, int col)
 {
 }
 void
+fe_set_tab (char *tab)
+{
+}
+void
 fe_update_mode_buttons (struct session *sess, char mode, char sign)
 {
 }
