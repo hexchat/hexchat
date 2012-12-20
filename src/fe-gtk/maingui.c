@@ -498,10 +498,6 @@ fe_set_title (session *sess)
 static gboolean
 mg_windowstate_cb (GtkWindow *wid, GdkEventWindowState *event, gpointer userdata)
 {
-	prefs.hex_gui_win_state = 0;
-	if (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED)
-		prefs.hex_gui_win_state = 1;
-
 	if ((event->changed_mask & GDK_WINDOW_STATE_ICONIFIED) &&
 		 (event->new_window_state & GDK_WINDOW_STATE_ICONIFIED) &&
 		 prefs.hex_gui_tray_minimize && !hextray_mode ())
@@ -509,6 +505,10 @@ mg_windowstate_cb (GtkWindow *wid, GdkEventWindowState *event, gpointer userdata
 		tray_toggle_visibility (TRUE);
 		gtk_window_deiconify (wid);
 	}
+
+	prefs.hex_gui_win_state = 0;
+	if (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED)
+		prefs.hex_gui_win_state = 1;
 
 	return FALSE;
 }
