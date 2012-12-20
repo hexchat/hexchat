@@ -408,7 +408,6 @@ tray_toggle_visibility (gboolean force_hide)
 			gtk_window_maximize (win);
 		gtk_widget_show (GTK_WIDGET (win));
 		gtk_window_present (win);
-
 	}
 
 	return TRUE;
