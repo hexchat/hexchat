@@ -385,6 +385,9 @@ static const struct defaultserver def[] =
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
 
+	{"Moznet",		0},
+	{0,			"irc.mozilla.org"},
+
 	{"NeverNET",	0},
 	{0,			"irc.nevernet.net"},
 	{0,			"imagine.nevernet.net"},
