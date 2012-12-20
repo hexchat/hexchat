@@ -264,6 +264,9 @@ static const struct defaultserver def[] =
 /*	{0,			"sprynet.us.galaxynet.org"},
 	{0,			"atlanta.ga.us.galaxynet.org"},*/
 
+	{"GameSurge",	0},
+	{0,			"irc.gamesurge.net"},
+	
 /*	{"GamesNET",	0},
 	{0,				"irc.gamesnet.net"},
 	{0,				"irc.us.gamesnet.net"},
