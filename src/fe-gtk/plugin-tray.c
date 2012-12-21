@@ -301,7 +301,8 @@ tray_set_flash (TrayIcon icon)
 	tray_stop_flash ();
 
 	gtk_status_icon_set_from_pixbuf (sticon, icon);
-	flash_tag = g_timeout_add (TIMEOUT, (GSourceFunc) tray_timeout_cb, icon);
+	if (prefs.hex_gui_tray_blink)
+		flash_tag = g_timeout_add (TIMEOUT, (GSourceFunc) tray_timeout_cb, icon);
 }
 
 void
