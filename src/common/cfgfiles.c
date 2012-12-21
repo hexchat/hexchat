@@ -460,6 +460,7 @@ const struct prefs vars[] =
 	{"gui_throttlemeter", P_OFFINT (hex_gui_throttlemeter), TYPE_INT},
 	{"gui_topicbar", P_OFFINT (hex_gui_topicbar), TYPE_BOOL},
 	{"gui_tray", P_OFFINT (hex_gui_tray), TYPE_BOOL},
+	{"gui_tray_away", P_OFFINT (hex_gui_tray_away), TYPE_BOOL},
 	{"gui_tray_close", P_OFFINT (hex_gui_tray_close), TYPE_BOOL},
 	{"gui_tray_minimize", P_OFFINT (hex_gui_tray_minimize), TYPE_BOOL},
 	{"gui_tray_quiet", P_OFFINT (hex_gui_tray_quiet), TYPE_BOOL},

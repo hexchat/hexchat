@@ -394,12 +394,16 @@ tray_toggle_visibility (gboolean force_hide)
 	if (force_hide || GTK_WIDGET_VISIBLE (win))
 #endif
 	{
+		if (prefs.hex_gui_tray_away)
+			hexchat_command (ph, "ALLSERV AWAY");
 		gtk_window_get_position (win, &x, &y);
 		screen = gtk_window_get_screen (win);
 		gtk_widget_hide (GTK_WIDGET (win));
 	}
 	else
 	{
+		if (prefs.hex_gui_tray_away)
+			hexchat_command (ph, "ALLSERV BACK");
 		gtk_window_set_screen (win, screen);
 		gtk_window_move (win, x, y);
 		gtk_widget_show (GTK_WIDGET (win));
