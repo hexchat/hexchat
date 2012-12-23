@@ -69,7 +69,10 @@ check_version ()
 
 		InternetCloseHandle (hFile);
 		InternetCloseHandle (hINet);
-		return buffer;
+		if (strlen (buffer) == 5)
+			return buffer;
+		else
+			return "Unknown";
 	}
 
 	InternetCloseHandle (hINet);
@@ -220,7 +223,7 @@ print_version (char *word[], char *word_eol[], void *userdata)
 		{
 			hexchat_printf (ph, "%s\tYou have the latest version of HexChat installed!\n", name);
 		}
-		else if (strcmp (version, "Unknown") == 0 || strlen (version) != 5)
+		else if (strcmp (version, "Unknown") == 0)
 		{
 			hexchat_printf (ph, "%s\tUnable to check for HexChat updates!\n", name);
 		}
