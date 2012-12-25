@@ -97,7 +97,7 @@ void fe_set_title (struct session *sess);
 void fe_set_nonchannel (struct session *sess, int state);
 void fe_set_nick (struct server *serv, char *newnick);
 void fe_ignore_update (int level);
-void fe_beep (void);
+void fe_beep (session *sess);
 void fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gtk_xtext_search_flags flags);
 void fe_set_lag (server *serv, int lag);
 void fe_set_throttle (server *serv);

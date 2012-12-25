@@ -682,9 +682,10 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 }
 
 void
-fe_beep (void)
+fe_beep (session *sess)
 {
-	gdk_beep ();
+	if (fe_gui_info (sess, 0) != 1)
+		gdk_beep ();
 }
 
 void
