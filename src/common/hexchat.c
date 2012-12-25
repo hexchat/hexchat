@@ -77,6 +77,24 @@ GSList *usermenu_list = 0;
 GSList *urlhandler_list = 0;
 GSList *tabmenu_list = 0;
 
+/*
+ * This array contains 5 double linked lists, one for each priority in the
+ * "interesting session" queue ("channel" stands for everything but
+ * SESS_DIALOG):
+ *
+ * [0] queries with hilight
+ * [1] queries
+ * [2] channels with hilight
+ * [3] channels with dialogue
+ * [4] channels with other data
+ *
+ * Each time activity happens the corresponding session is put at the
+ * beginning of one of the lists.  The aim is to be able to switch to the
+ * session with the most important/recent activity.
+ */
+GList *sess_list_by_lastact[5] = {NULL, NULL, NULL, NULL, NULL};
+
+
 static int in_hexchat_exit = FALSE;
 int hexchat_is_quitting = FALSE;
 /* command-line args */
@@ -102,6 +120,106 @@ SSL_CTX *ctx = NULL;
 #ifdef USE_LIBPROXY
 pxProxyFactory *libproxy_factory;
 #endif
+
+/*
+ * Update the priority queue of the "interesting sessions"
+ * (sess_list_by_lastact).
+ */
+void
+lastact_update(session *sess)
+{
+	int newidx;
+
+	/* Find the priority (for the order see before) */
+	if (sess->type == SESS_DIALOG)
+	{
+		if (sess->nick_said)
+			newidx = LACT_QUERY_HI;
+		else if (sess->msg_said)
+			newidx = LACT_QUERY;
+		else if (sess->new_data)
+			newidx = LACT_QUERY;
+		else
+			newidx = LACT_NONE;
+	}
+	else
+	{
+		if (sess->nick_said)
+			newidx = LACT_CHAN_HI;
+		else if (sess->msg_said)
+			newidx = LACT_CHAN;
+		else if (sess->new_data)
+			newidx = LACT_CHAN_DATA;		
+		else
+			newidx = LACT_NONE;
+	}
+
+	/* Check if this update is a no-op */
+	if (sess->lastact_idx == newidx && 
+			((newidx != LACT_NONE && sess->lastact_elem == sess_list_by_lastact[newidx]) ||
+			 (newidx == LACT_NONE)))
+		return;
+
+	/* Remove from the old position (and, if no new position, return */
+	else if (sess->lastact_idx != LACT_NONE && sess->lastact_elem)
+	{
+		sess_list_by_lastact[sess->lastact_idx] = g_list_remove_link(
+				sess_list_by_lastact[sess->lastact_idx],
+				sess->lastact_elem);
+		if (newidx == LACT_NONE)
+		{
+			sess->lastact_idx = newidx;
+			return;
+		}
+	}
+
+	/* No previous position, allocate new */
+	else if (!sess->lastact_elem)
+		sess->lastact_elem = g_list_prepend(sess->lastact_elem, sess);
+
+	sess->lastact_idx = newidx;
+	sess_list_by_lastact[newidx] = g_list_concat(
+		sess->lastact_elem, sess_list_by_lastact[newidx]);
+}
+
+/*
+ * Extract the first session from the priority queue of sessions with recent
+ * activity. Return NULL if no such session can be found.
+ *
+ * If filter is specified, skip a session if filter(session) returns 0. This
+ * can be used for UI-specific needs, e.g. in fe-gtk we want to filter out
+ * detached sessions.
+ */
+session *
+lastact_getfirst(int (*filter) (session *sess))
+{
+	int i;
+	session *sess = NULL;
+	GList *curitem;
+
+	/* 5 is the number of priority classes LACT_ */
+	for (i = 0; i < 5 && !sess; i++)
+	{
+		curitem = sess_list_by_lastact[i];
+		while (curitem && !sess)
+		{
+			sess = g_list_nth_data(curitem, 0);
+			if (!sess || (filter && !filter(sess)))
+			{
+				sess = NULL;
+				curitem = g_list_next(curitem);
+			}
+		}
+
+		if (sess)
+		{
+			sess_list_by_lastact[i] = g_list_remove_link(sess_list_by_lastact[i], curitem);
+			sess->lastact_idx = LACT_NONE;
+		}
+	}
+	
+	return sess;
+}
 
 int
 is_session (session * sess)
@@ -372,6 +490,9 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->text_logging = SET_DEFAULT;
 	sess->text_scrollback = SET_DEFAULT;
 
+	sess->lastact_elem = NULL;
+	sess->lastact_idx = LACT_NONE;
+
 	if (from != NULL)
 		safe_strcpy (sess->channel, from, CHANLEN);
 
@@ -524,6 +645,16 @@ session_free (session *killsess)
 
 	if (killsess->type == SESS_CHANNEL)
 		userlist_free (killsess);
+
+	if (killsess->lastact_elem)
+	{
+		if (killsess->lastact_idx != LACT_NONE)
+				sess_list_by_lastact[killsess->lastact_idx] = g_list_delete_link(
+					sess_list_by_lastact[killsess->lastact_idx],
+					killsess->lastact_elem);
+		else
+			g_list_free_1(killsess->lastact_elem);
+	}
 
 	exec_notify_kill (killsess);
 

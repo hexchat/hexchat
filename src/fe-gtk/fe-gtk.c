@@ -674,6 +674,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 		 sess->gui->is_tab && !sess->nick_said && stamp == 0)
 	{
 		sess->new_data = TRUE;
+		lastact_update (sess);
 		if (sess->msg_said)
 			fe_set_tab_color (sess, 2);
 		else
