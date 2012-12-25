@@ -1021,21 +1021,26 @@ fe_open_url_inner (const char *url)
 #elif defined __APPLE__
 	try_browser ("open", NULL, url);				/* on Mac you can just 'open http://foo.bar/' */
 #else
+
+	/* lets try what gtk has built in first. */
+	if (gtk_show_uri (NULL, url, GDK_CURRENT_TIME, NULL))
+		return;
+		
 	/* universal desktop URL opener (from xdg-utils). Supports gnome,kde,xfce4. */
 	if (try_browser ("xdg-open", NULL, url))
 		return;
 
-	/* try to detect GNOME */
+	/* try to detect GNOME (this env variable is depreciated) */
 	if (g_getenv ("GNOME_DESKTOP_SESSION_ID"))
 	{
-		if (try_browser ("gnome-open", NULL, url)) /* Gnome 2.4+ has this */
+		if (try_browser ("gvfs-open", NULL, url))
 			return;
 	}
 
 	/* try to detect KDE */
 	if (g_getenv ("KDE_FULL_SESSION"))
 	{
-		if (try_browser ("kfmclient", "exec", url))
+		if (try_browser ("kde-open", NULL, url))
 			return;
 	}
 
@@ -1043,8 +1048,8 @@ fe_open_url_inner (const char *url)
 	if (try_browser ("firefox", NULL, url))
 		return;
 
-	/* fresh out of ideas... */
-	try_browser ("mozilla", NULL, url);
+	/* fresh out of ideas... i hear chromium is popular */
+	try_browser ("chromium", NULL, url);
 #endif
 }
 
