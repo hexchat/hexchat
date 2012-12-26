@@ -2253,7 +2253,7 @@ sound_beep (session *sess)
 		sound_play_event (XP_TE_BEEP);
 	else
 		/* system beep */
-		fe_beep ();
+		fe_beep (sess);
 }
 
 static char *
