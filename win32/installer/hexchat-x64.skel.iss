@@ -77,6 +77,7 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 
 [Run]
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
+Filename: "https://github.com/hexchat/hexchat/blob/master/share/doc/changelog.md"; Description: "Open online changelog"; Flags: shellexec runasoriginaluser postinstall skipifsilent
 
 [Files]
 ; Add the ISSkin DLL used for skinning Inno Setup installations.
