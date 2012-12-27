@@ -3045,6 +3045,16 @@ cmd_settext (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_tab (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (*word_eol[2])
+	{
+		fe_set_tab (word_eol[2]);
+	}
+	return TRUE;
+}
+
+static int
 cmd_splay (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (*word[2])
@@ -3744,6 +3754,7 @@ const struct commands xc_cmds[] = {
 	{"SETTAB", cmd_settab, 0, 0, 1, N_("SETTAB <new name>, change a tab's name, tab_trunc limit still applies")},
 	{"SETTEXT", cmd_settext, 0, 0, 1, N_("SETTEXT <new text>, replace the text in the input box")},
 	{"SPLAY", cmd_splay, 0, 0, 1, "SPLAY <soundfile>"},
+	{"TAB", cmd_tab, 0, 0, 0, N_("TAB <number>, change tab focus")},
 	{"TOPIC", cmd_topic, 1, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
 	{"TRAY", cmd_tray, 0, 0, 1,

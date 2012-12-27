@@ -615,7 +615,8 @@ static char defaultconf_commands[] =
 	"NAME VER\n"			"CMD ctcp %2 VERSION\n\n"\
 	"NAME VERSION\n"		"CMD ctcp %2 VERSION\n\n"\
 	"NAME WALLOPS\n"		"CMD quote WALLOPS :&2\n\n"\
-	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n";
+	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n"\
+	"NAME WIN\n"			"CMD tab %2\n\n";
 
 static char defaultconf_urlhandlers[] =
 		"NAME Open Link in Opera\n"		"CMD !opera -remote 'openURL(%s)'\n\n";

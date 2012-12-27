@@ -1046,6 +1046,13 @@ mg_bring_tofront (GtkWidget *vbox)	/* non-IRC tab or window */
 }
 
 void
+fe_set_tab (char *tab)
+{
+	/* start tab numbers from 1 and ignore failed atoi */
+	mg_switch_page (0, atoi (tab) - 1);
+}
+
+void
 mg_switch_page (int relative, int num)
 {
 	if (mg_gui)
