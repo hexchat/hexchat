@@ -679,6 +679,7 @@ load_config (void)
 	prefs.hex_input_tray_hilight = 1;
 	prefs.hex_input_tray_priv = 1;
 	/* prefs.hex_irc_who_join = 1; prevent kicks and bans caused by overwhelming who'ing after reconnects */
+	prefs.hex_irc_whois_front = 1;
 	prefs.hex_net_auto_reconnect = 1;
 	prefs.hex_net_throttle = 1;
 	prefs.hex_stamp_log = 1;
