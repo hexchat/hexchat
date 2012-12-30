@@ -25,6 +25,7 @@
 #include <gtk/gtkdialog.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkbox.h>
+#include <gtk/gtkhbbox.h>
 #include <gtk/gtkscrolledwindow.h>
 
 #include <gtk/gtkliststore.h>
