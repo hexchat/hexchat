@@ -209,6 +209,7 @@ url_check_word (const char *word)
 			case WORD_URL:
 			case WORD_HOST:
 			case WORD_CHANNEL:
+			case WORD_PATH:
 				return lasttype;
 			default:
 				return 0;	/* Should not occur */
