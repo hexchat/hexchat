@@ -396,19 +396,30 @@ re_url (void)
 	scheme = g_strjoinv ("|", prefix);
 	grist = g_strdup_printf (
 		"("	/* URL or HOST */
-			SCHEME HOST OPT_PORT
-			"("	/* Optional "/path?query_string#fragment_id" */
-				"/"	/* Must start with slash */
-				"("	
-					"(" LPAR NOPARENS RPAR ")"
-					"|"
-					"(" NOPARENS ")"
-				")*"	/* Zero or more occurrences of either of these */
-				"(?<![.,?!\\]])"	/* Not allowed to end with these */
-			")?"	/* Zero or one of this /path?query_string#fragment_id thing */
-
+			"("
+				SCHEME HOST OPT_PORT
+				"("	/* Optional "/path?query_string#fragment_id" */
+					"/"	/* Must start with slash */
+					"("	
+						"(" LPAR NOPARENS RPAR ")"
+						"|"
+						"(" NOPARENS ")"
+					")*"	/* Zero or more occurrences of either of these */
+					"(?<![.,?!\\]])"	/* Not allowed to end with these */
+				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
+			")|("
+				HOST OPT_PORT "/"
+				"("	/* Optional "path?query_string#fragment_id" */
+					"("
+						"(" LPAR NOPARENS RPAR ")"
+						"|"
+						"(" NOPARENS ")"
+					")*"	/* Zero or more occurrences of either of these */
+					"(?<![.,?!\\]])"	/* Not allowed to end with these */
+				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
+			")"
 		")"
-	, scheme
+		, scheme
 	);
 	url_ret = make_re (grist, "re_url");
 	g_free (scheme);
