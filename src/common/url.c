@@ -454,7 +454,7 @@ re_email (void)
 /*	Note for NICKSPE:  \\\\ boils down to a single \ */
 #define NICKSPE	"\\[\\]\\\\`_^{|}"
 #define NICK0 "[" NICKPRE "]?[" NICKLET NICKSPE "]"
-#define NICK1 "[" NICKHYP NICKLET NICKDIG NICKSPE "]+"
+#define NICK1 "[" NICKHYP NICKLET NICKDIG NICKSPE "]*"
 #define NICK	NICK0 NICK1
 
 static GRegex *
