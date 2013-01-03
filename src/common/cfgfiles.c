@@ -330,7 +330,7 @@ get_xdir (void)
 			xdir = g_strdup_printf ("%s\\" "HexChat", out);
 		}
 #else
-		xdir = g_strdup_printf ("%s/.config/" HEXCHAT_DIR, g_get_home_dir ());
+		xdir = g_strdup_printf ("%s/" HEXCHAT_DIR, g_get_user_config_dir ());
 #endif
 	}
 
