@@ -427,29 +427,29 @@ tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
 static void
 tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
 {
-    if (sticon && strcmp (pspec->name, "embedded") == 0)
-    {
-        if (!gtk_status_icon_is_embedded (sticon))
-        {
-            tray_restore_timer = g_timeout_add(500, (GSourceFunc)tray_menu_try_restore, NULL);
-        }
-        else
-        {
-            if (tray_restore_timer)
-            {
-                g_source_remove (tray_restore_timer);
-                tray_restore_timer = 0;
-            }
-        }
-    }
+	if (sticon && strcmp (pspec->name, "embedded") == 0)
+	{
+		if (!gtk_status_icon_is_embedded (sticon))
+		{
+			tray_restore_timer = g_timeout_add(500, (GSourceFunc)tray_menu_try_restore, NULL);
+		}
+		else
+		{
+			if (tray_restore_timer)
+			{
+				g_source_remove (tray_restore_timer);
+				tray_restore_timer = 0;
+			}
+		}
+	}
 }
 
 static gboolean
 tray_menu_try_restore ()
 {
-    tray_cleanup();
-    tray_init();
-    return TRUE;
+	tray_cleanup();
+	tray_init();
+	return TRUE;
 }
 
 
@@ -661,7 +661,7 @@ tray_init (void)
 	g_signal_connect (G_OBJECT (sticon), "activate",
 							G_CALLBACK (tray_menu_restore_cb), NULL);
 
-    g_signal_connect (G_OBJECT (sticon), "notify",
+	g_signal_connect (G_OBJECT (sticon), "notify",
 							G_CALLBACK (tray_menu_notify_cb), NULL);
 }
 
