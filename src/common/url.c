@@ -453,7 +453,7 @@ re_email (void)
 #define NICKDIG "0-9"
 /*	Note for NICKSPE:  \\\\ boils down to a single \ */
 #define NICKSPE	"\\[\\]\\\\`_^{|}"
-#define NICK0 "[" NICKPRE "]?[" NICKLET NICKDIG "]"
+#define NICK0 "[" NICKPRE "]?[" NICKLET NICKSPE "]"
 #define NICK1 "[" NICKHYP NICKLET NICKDIG NICKSPE "]+"
 #define NICK	NICK0 NICK1
 
