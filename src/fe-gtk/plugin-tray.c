@@ -427,7 +427,7 @@ tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
 static void
 tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
 {
-	if (sticon && strcmp (pspec->name, "embedded") == 0)
+	if (sticon)
 	{
 		if (!gtk_status_icon_is_embedded (sticon))
 		{
@@ -451,7 +451,6 @@ tray_menu_try_restore ()
 	tray_init();
 	return TRUE;
 }
-
 
 static void
 tray_menu_quit_cb (GtkWidget *item, gpointer userdata)
@@ -661,7 +660,7 @@ tray_init (void)
 	g_signal_connect (G_OBJECT (sticon), "activate",
 							G_CALLBACK (tray_menu_restore_cb), NULL);
 
-	g_signal_connect (G_OBJECT (sticon), "notify",
+	g_signal_connect (G_OBJECT (sticon), "notify::embedded",
 							G_CALLBACK (tray_menu_notify_cb), NULL);
 }
 
