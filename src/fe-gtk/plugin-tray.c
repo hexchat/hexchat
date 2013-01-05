@@ -73,9 +73,13 @@ static int tray_priv_count = 0;
 static int tray_pub_count = 0;
 static int tray_hilight_count = 0;
 static int tray_file_count = 0;
+static int tray_restore_timer = 0;
 
 
 void tray_apply_setup (void);
+static gboolean tray_menu_try_restore ();
+static void tray_cleanup (void);
+static void tray_init (void);
 
 
 static WinStatus
@@ -301,7 +305,8 @@ tray_set_flash (TrayIcon icon)
 	tray_stop_flash ();
 
 	gtk_status_icon_set_from_pixbuf (sticon, icon);
-	flash_tag = g_timeout_add (TIMEOUT, (GSourceFunc) tray_timeout_cb, icon);
+	if (prefs.hex_gui_tray_blink)
+		flash_tag = g_timeout_add (TIMEOUT, (GSourceFunc) tray_timeout_cb, icon);
 }
 
 void
@@ -395,6 +400,8 @@ tray_toggle_visibility (gboolean force_hide)
 	if (force_hide || GTK_WIDGET_VISIBLE (win))
 #endif
 	{
+		if (prefs.hex_gui_tray_away)
+			hexchat_command (ph, "ALLSERV AWAY");
 		gtk_window_get_position (win, &x, &y);
 		screen = gtk_window_get_screen (win);
 		maximized = prefs.hex_gui_win_state;
@@ -402,6 +409,8 @@ tray_toggle_visibility (gboolean force_hide)
 	}
 	else
 	{
+		if (prefs.hex_gui_tray_away)
+			hexchat_command (ph, "ALLSERV BACK");
 		gtk_window_set_screen (win, screen);
 		gtk_window_move (win, x, y);
 		if (maximized)
@@ -417,6 +426,34 @@ static void
 tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
 {
 	tray_toggle_visibility (FALSE);
+}
+
+static void
+tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
+{
+	if (sticon)
+	{
+		if (!gtk_status_icon_is_embedded (sticon))
+		{
+			tray_restore_timer = g_timeout_add(500, (GSourceFunc)tray_menu_try_restore, NULL);
+		}
+		else
+		{
+			if (tray_restore_timer)
+			{
+				g_source_remove (tray_restore_timer);
+				tray_restore_timer = 0;
+			}
+		}
+	}
+}
+
+static gboolean
+tray_menu_try_restore ()
+{
+	tray_cleanup();
+	tray_init();
+	return TRUE;
 }
 
 static void
@@ -626,6 +663,9 @@ tray_init (void)
 
 	g_signal_connect (G_OBJECT (sticon), "activate",
 							G_CALLBACK (tray_menu_restore_cb), NULL);
+
+	g_signal_connect (G_OBJECT (sticon), "notify::embedded",
+							G_CALLBACK (tray_menu_notify_cb), NULL);
 }
 
 static int

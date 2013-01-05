@@ -460,6 +460,8 @@ const struct prefs vars[] =
 	{"gui_throttlemeter", P_OFFINT (hex_gui_throttlemeter), TYPE_INT},
 	{"gui_topicbar", P_OFFINT (hex_gui_topicbar), TYPE_BOOL},
 	{"gui_tray", P_OFFINT (hex_gui_tray), TYPE_BOOL},
+	{"gui_tray_away", P_OFFINT (hex_gui_tray_away), TYPE_BOOL},
+	{"gui_tray_blink", P_OFFINT (hex_gui_tray_blink), TYPE_BOOL},
 	{"gui_tray_close", P_OFFINT (hex_gui_tray_close), TYPE_BOOL},
 	{"gui_tray_minimize", P_OFFINT (hex_gui_tray_minimize), TYPE_BOOL},
 	{"gui_tray_quiet", P_OFFINT (hex_gui_tray_quiet), TYPE_BOOL},
@@ -668,6 +670,7 @@ load_config (void)
 	prefs.hex_gui_tab_sort = 1;
 	prefs.hex_gui_topicbar = 1;
 	prefs.hex_gui_tray = 1;
+	prefs.hex_gui_tray_blink = 1;
 	prefs.hex_gui_ulist_count = 1;
 	prefs.hex_gui_ulist_icons = 1;
 	prefs.hex_gui_ulist_resizable = 1;
