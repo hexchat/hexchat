@@ -301,8 +301,10 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 	{
 		g_free (text);
 		if (sess != current_tab)
+		{
 			sess->nick_said = TRUE;
 			lastact_update (sess);
+		}
 		fe_set_hilight (sess);
 		return 1;
 	}
