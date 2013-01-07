@@ -350,6 +350,15 @@ struct hexchatprefs
 #define SET_ON 1
 #define SET_DEFAULT 2 /* use global setting */
 
+/* Priorities in the "interesting sessions" priority queue
+ * (see xchat.c:sess_list_by_lastact) */
+#define LACT_NONE		-1		/* no queues */
+#define LACT_QUERY_HI	0		/* query with hilight */
+#define LACT_QUERY		1		/* query with messages */
+#define LACT_CHAN_HI	2		/* channel with hilight */
+#define LACT_CHAN		3		/* channel with messages */
+#define LACT_CHAN_DATA	4		/* channel with other data */
+
 /* Moved from fe-gtk for use in outbound.c as well -- */
 typedef enum gtk_xtext_search_flags_e {
 	case_match = 1,
@@ -407,6 +416,9 @@ typedef struct session
 	struct restore_gui *res;
 
 	int type;					/* SESS_* */
+
+	int lastact_idx;		/* the sess_list_by_lastact[] index of the list we're in.
+							 * For valid values, see defines of LACT_*. */
 
 	int new_data:1;			/* new data avail? (purple tab) */
 	int nick_said:1;		/* your nick mentioned? (blue tab) */

@@ -77,6 +77,24 @@ GSList *usermenu_list = 0;
 GSList *urlhandler_list = 0;
 GSList *tabmenu_list = 0;
 
+/*
+ * This array contains 5 double linked lists, one for each priority in the
+ * "interesting session" queue ("channel" stands for everything but
+ * SESS_DIALOG):
+ *
+ * [0] queries with hilight
+ * [1] queries
+ * [2] channels with hilight
+ * [3] channels with dialogue
+ * [4] channels with other data
+ *
+ * Each time activity happens the corresponding session is put at the
+ * beginning of one of the lists.  The aim is to be able to switch to the
+ * session with the most important/recent activity.
+ */
+GList *sess_list_by_lastact[5] = {NULL, NULL, NULL, NULL, NULL};
+
+
 static int in_hexchat_exit = FALSE;
 int hexchat_is_quitting = FALSE;
 /* command-line args */
@@ -102,6 +120,79 @@ SSL_CTX *ctx = NULL;
 #ifdef USE_LIBPROXY
 pxProxyFactory *libproxy_factory;
 #endif
+
+/*
+ * Update the priority queue of the "interesting sessions"
+ * (sess_list_by_lastact).
+ */
+void
+lastact_update(session *sess)
+{
+	int oldidx = sess->lastact_idx;
+	int newidx = LACT_NONE;
+	int dia = (sess->type == SESS_DIALOG);
+
+	if (sess->nick_said)
+		newidx = dia? LACT_QUERY_HI: LACT_CHAN_HI;
+	else if (sess->msg_said)
+		newidx = dia? LACT_QUERY: LACT_CHAN;
+	else if (sess->new_data)
+		newidx = dia? LACT_QUERY: LACT_CHAN_DATA;
+
+	/* If already first at the right position, just return */
+	if (oldidx == newidx &&
+		 (newidx == LACT_NONE || g_list_index(sess_list_by_lastact[newidx], sess) == 0))
+		return;
+
+	/* Remove from the old position */
+	if (oldidx != LACT_NONE)
+		sess_list_by_lastact[oldidx] = g_list_remove(sess_list_by_lastact[oldidx], sess);
+
+	/* Add at the new position */
+	sess->lastact_idx = newidx;
+	if (newidx != LACT_NONE)
+		sess_list_by_lastact[newidx] = g_list_prepend(sess_list_by_lastact[newidx], sess);
+	return;
+}
+
+/*
+ * Extract the first session from the priority queue of sessions with recent
+ * activity. Return NULL if no such session can be found.
+ *
+ * If filter is specified, skip a session if filter(session) returns 0. This
+ * can be used for UI-specific needs, e.g. in fe-gtk we want to filter out
+ * detached sessions.
+ */
+session *
+lastact_getfirst(int (*filter) (session *sess))
+{
+	int i;
+	session *sess = NULL;
+	GList *curitem;
+
+	/* 5 is the number of priority classes LACT_ */
+	for (i = 0; i < 5 && !sess; i++)
+	{
+		curitem = sess_list_by_lastact[i];
+		while (curitem && !sess)
+		{
+			sess = g_list_nth_data(curitem, 0);
+			if (!sess || (filter && !filter(sess)))
+			{
+				sess = NULL;
+				curitem = g_list_next(curitem);
+			}
+		}
+
+		if (sess)
+		{
+			sess_list_by_lastact[i] = g_list_remove(sess_list_by_lastact[i], sess);
+			sess->lastact_idx = LACT_NONE;
+		}
+	}
+	
+	return sess;
+}
 
 int
 is_session (session * sess)
@@ -372,6 +463,8 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->text_logging = SET_DEFAULT;
 	sess->text_scrollback = SET_DEFAULT;
 
+	sess->lastact_idx = LACT_NONE;
+
 	if (from != NULL)
 		safe_strcpy (sess->channel, from, CHANLEN);
 
@@ -489,6 +582,7 @@ session_free (session *killsess)
 	server *killserv = killsess->server;
 	session *sess;
 	GSList *list;
+	int oldidx;
 
 	plugin_emit_dummy_print (killsess, "Close Context");
 
@@ -524,6 +618,10 @@ session_free (session *killsess)
 
 	if (killsess->type == SESS_CHANNEL)
 		userlist_free (killsess);
+
+	oldidx = killsess->lastact_idx;
+	if (oldidx != LACT_NONE)
+		sess_list_by_lastact[oldidx] = g_list_remove(sess_list_by_lastact[oldidx], killsess);
 
 	exec_notify_kill (killsess);
 
