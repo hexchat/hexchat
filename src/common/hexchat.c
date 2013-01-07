@@ -128,58 +128,31 @@ pxProxyFactory *libproxy_factory;
 void
 lastact_update(session *sess)
 {
-	int newidx;
+	int oldidx = sess->lastact_idx;
+	int newidx = LACT_NONE;
+	int dia = (sess->type == SESS_DIALOG);
 
-	/* Find the priority (for the order see before) */
-	if (sess->type == SESS_DIALOG)
-	{
-		if (sess->nick_said)
-			newidx = LACT_QUERY_HI;
-		else if (sess->msg_said)
-			newidx = LACT_QUERY;
-		else if (sess->new_data)
-			newidx = LACT_QUERY;
-		else
-			newidx = LACT_NONE;
-	}
-	else
-	{
-		if (sess->nick_said)
-			newidx = LACT_CHAN_HI;
-		else if (sess->msg_said)
-			newidx = LACT_CHAN;
-		else if (sess->new_data)
-			newidx = LACT_CHAN_DATA;		
-		else
-			newidx = LACT_NONE;
-	}
+	if (sess->nick_said)
+		newidx = dia? LACT_QUERY_HI: LACT_CHAN_HI;
+	else if (sess->msg_said)
+		newidx = dia? LACT_QUERY: LACT_CHAN;
+	else if (sess->new_data)
+		newidx = dia? LACT_QUERY: LACT_CHAN_DATA;
 
-	/* Check if this update is a no-op */
-	if (sess->lastact_idx == newidx && 
-			((newidx != LACT_NONE && sess->lastact_elem == sess_list_by_lastact[newidx]) ||
-			 (newidx == LACT_NONE)))
+	/* If already first at the right position, just return */
+	if (oldidx == newidx &&
+		 (newidx == LACT_NONE || g_list_index(sess_list_by_lastact[newidx], sess) == 0))
 		return;
 
-	/* Remove from the old position (and, if no new position, return */
-	else if (sess->lastact_idx != LACT_NONE && sess->lastact_elem)
-	{
-		sess_list_by_lastact[sess->lastact_idx] = g_list_remove_link(
-				sess_list_by_lastact[sess->lastact_idx],
-				sess->lastact_elem);
-		if (newidx == LACT_NONE)
-		{
-			sess->lastact_idx = newidx;
-			return;
-		}
-	}
+	/* Remove from the old position */
+	if (oldidx != LACT_NONE)
+		sess_list_by_lastact[oldidx] = g_list_remove(sess_list_by_lastact[oldidx], sess);
 
-	/* No previous position, allocate new */
-	else if (!sess->lastact_elem)
-		sess->lastact_elem = g_list_prepend(sess->lastact_elem, sess);
-
+	/* Add at the new position */
 	sess->lastact_idx = newidx;
-	sess_list_by_lastact[newidx] = g_list_concat(
-		sess->lastact_elem, sess_list_by_lastact[newidx]);
+	if (newidx != LACT_NONE)
+		sess_list_by_lastact[newidx] = g_list_prepend(sess_list_by_lastact[newidx], sess);
+	return;
 }
 
 /*
@@ -213,7 +186,7 @@ lastact_getfirst(int (*filter) (session *sess))
 
 		if (sess)
 		{
-			sess_list_by_lastact[i] = g_list_remove_link(sess_list_by_lastact[i], curitem);
+			sess_list_by_lastact[i] = g_list_remove(sess_list_by_lastact[i], sess);
 			sess->lastact_idx = LACT_NONE;
 		}
 	}
@@ -490,7 +463,6 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->text_logging = SET_DEFAULT;
 	sess->text_scrollback = SET_DEFAULT;
 
-	sess->lastact_elem = NULL;
 	sess->lastact_idx = LACT_NONE;
 
 	if (from != NULL)
@@ -610,6 +582,7 @@ session_free (session *killsess)
 	server *killserv = killsess->server;
 	session *sess;
 	GSList *list;
+	int oldidx;
 
 	plugin_emit_dummy_print (killsess, "Close Context");
 
@@ -646,15 +619,9 @@ session_free (session *killsess)
 	if (killsess->type == SESS_CHANNEL)
 		userlist_free (killsess);
 
-	if (killsess->lastact_elem)
-	{
-		if (killsess->lastact_idx != LACT_NONE)
-				sess_list_by_lastact[killsess->lastact_idx] = g_list_delete_link(
-					sess_list_by_lastact[killsess->lastact_idx],
-					killsess->lastact_elem);
-		else
-			g_list_free_1(killsess->lastact_elem);
-	}
+	oldidx = killsess->lastact_idx;
+	if (oldidx != LACT_NONE)
+		sess_list_by_lastact[oldidx] = g_list_remove(sess_list_by_lastact[oldidx], killsess);
 
 	exec_notify_kill (killsess);
 

@@ -1202,7 +1202,7 @@ key_action_handle_command (GtkWidget * wid, GdkEventKey * evt, char *d1,
 
 /*
  * Check if the given session is inside the main window. This predicate
- * is passed to lastact_pop as a way to filter out detached sessions.
+ * is passed to lastact_getfirst() as a way to filter out detached sessions.
  * XXX: Consider moving this in a different file?
  */
 static int

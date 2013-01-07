@@ -415,7 +415,6 @@ typedef struct session
 
 	int type;					/* SESS_* */
 
-	GList *lastact_elem;	/* our GList element in sess_list_by_lastact */
 	int lastact_idx;		/* the sess_list_by_lastact[] index of the list we're in.
 							 * For valid values, see defines of LACT_*. */
 
