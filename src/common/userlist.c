@@ -192,7 +192,7 @@ find_cmp (const char *name, struct User *user, server *serv)
 }
 
 struct User *
-userlist_find (struct session *sess, char *name)
+userlist_find (struct session *sess, const char *name)
 {
 	int pos;
 

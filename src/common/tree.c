@@ -142,7 +142,7 @@ mybsearch (const void *key, void **array, size_t nmemb,
 }
 
 void *
-tree_find (tree *t, void *key, tree_cmp_func *cmp, void *data, int *pos)
+tree_find (tree *t, const void *key, tree_cmp_func *cmp, void *data, int *pos)
 {
 	if (!t || !t->array)
 		return NULL;

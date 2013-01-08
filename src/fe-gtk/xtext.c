@@ -73,6 +73,7 @@
 #include "../common/fe.h"
 #include "../common/util.h"
 #include "../common/hexchatc.h"
+#include "../common/url.h"
 #include "fe-gtk.h"
 #include "xtext.h"
 #include "fkeys.h"
@@ -1901,7 +1902,7 @@ gtk_xtext_selection_update (GtkXText * xtext, GdkEventMotion * event, int p_y, g
 
 static char *
 gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
-						  int *ret_off, int *ret_len)
+						  int *ret_off, int *ret_len, GSList **slp)
 {
 	textentry *ent;
 	int offset;
@@ -1950,9 +1951,9 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	if (ret_off)
 		*ret_off = word - ent->str;
 	if (ret_len)
-		*ret_len = str - word;
+		*ret_len = len;		/* Length before stripping */
 
-	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL, NULL, FALSE);
+	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL, slp, FALSE);
 }
 
 #ifdef MOTION_MONITOR
@@ -2028,14 +2029,62 @@ gtk_xtext_check_mark_stamp (GtkXText *xtext, GdkModifierType mask)
 	return redraw;
 }
 
+static int
+gtk_xtext_get_word_adjust (GtkXText *xtext, int x, int y, textentry **word_ent, int *offset, int *len)
+{
+	GSList *slp = NULL;
+	unsigned char *word;
+	int word_type = 0;
+
+	word = gtk_xtext_get_word (xtext, x, y, word_ent, offset, len, &slp);
+	if (word)
+	{
+		int laststart, lastend;
+
+		word_type = xtext->urlcheck_function (GTK_WIDGET (xtext), word);
+		if (word_type > 0)
+		{
+			if (url_last (&laststart, &lastend))
+			{
+				int cumlen, startadj = 0, endadj = 0;
+				offlen_t o;
+				GSList *sl;
+
+				for (sl = slp, cumlen = 0; sl; sl = g_slist_next (sl))
+				{
+					o.u = GPOINTER_TO_UINT (sl->data);
+					startadj = o.o.off - cumlen;
+					cumlen += o.o.len;
+					if (laststart < cumlen)
+						break;
+				}
+				for (sl = slp, cumlen = 0; sl; sl = g_slist_next (sl))
+				{
+					o.u = GPOINTER_TO_UINT (sl->data);
+					endadj = o.o.off - cumlen;
+					cumlen += o.o.len;
+					if (lastend < cumlen)
+						break;
+				}
+				laststart += startadj;
+				*offset += laststart;
+				*len = lastend + endadj - laststart;
+			}
+		}
+	}
+	g_slist_free (slp);
+
+	return word_type;
+}
+
 static gboolean
 gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 {
 	GtkXText *xtext = GTK_XTEXT (widget);
 	GdkModifierType mask;
 	int redraw, tmp, x, y, offset, len, line_x;
-	unsigned char *word;
 	textentry *word_ent;
+	int word_type;
 
 	gdk_window_get_pointer (widget->window, &x, &y, &mask);
 
@@ -2104,43 +2153,40 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 	if (xtext->urlcheck_function == NULL)
 		return FALSE;
 
-	word = gtk_xtext_get_word (xtext, x, y, &word_ent, &offset, &len);
-	if (word)
+	word_type = gtk_xtext_get_word_adjust (xtext, x, y, &word_ent, &offset, &len);
+	if (word_type > 0)
 	{
-		if (xtext->urlcheck_function (GTK_WIDGET (xtext), word, len) > 0)
+		if (!xtext->cursor_hand ||
+			 xtext->hilight_ent != word_ent ||
+			 xtext->hilight_start != offset ||
+			 xtext->hilight_end != offset + len)
 		{
-			if (!xtext->cursor_hand ||
-				 xtext->hilight_ent != word_ent ||
-				 xtext->hilight_start != offset ||
-				 xtext->hilight_end != offset + len)
+			if (!xtext->cursor_hand)
 			{
-				if (!xtext->cursor_hand)
-				{
-					gdk_window_set_cursor (GTK_WIDGET (xtext)->window,
-											  		xtext->hand_cursor);
-					xtext->cursor_hand = TRUE;
-				}
-
-				/* un-render the old hilight */
-				if (xtext->hilight_ent)
-					gtk_xtext_unrender_hilight (xtext);
-
-				xtext->hilight_ent = word_ent;
-				xtext->hilight_start = offset;
-				xtext->hilight_end = offset + len;
-
-				xtext->skip_border_fills = TRUE;
-				xtext->render_hilights_only = TRUE;
-				xtext->skip_stamp = TRUE;
-
-				gtk_xtext_render_ents (xtext, word_ent, NULL);
-
-				xtext->skip_border_fills = FALSE;
-				xtext->render_hilights_only = FALSE;
-				xtext->skip_stamp = FALSE;
+				gdk_window_set_cursor (GTK_WIDGET (xtext)->window,
+										  		xtext->hand_cursor);
+				xtext->cursor_hand = TRUE;
 			}
-			return FALSE;
+
+			/* un-render the old hilight */
+			if (xtext->hilight_ent)
+				gtk_xtext_unrender_hilight (xtext);
+
+			xtext->hilight_ent = word_ent;
+			xtext->hilight_start = offset;
+			xtext->hilight_end = offset + len;
+
+			xtext->skip_border_fills = TRUE;
+			xtext->render_hilights_only = TRUE;
+			xtext->skip_stamp = TRUE;
+
+			gtk_xtext_render_ents (xtext, word_ent, NULL);
+
+			xtext->skip_border_fills = FALSE;
+			xtext->render_hilights_only = FALSE;
+			xtext->skip_stamp = FALSE;
 		}
+		return FALSE;
 	}
 
 	gtk_xtext_leave_notify (widget, NULL);
@@ -2280,14 +2326,13 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 
 		if (!xtext->hilighting)
 		{
-			word = gtk_xtext_get_word (xtext, event->x, event->y, 0, 0, 0);
+			word = gtk_xtext_get_word (xtext, event->x, event->y, 0, 0, 0, 0);
 			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0, word ? word : NULL, event);
 		} else
 		{
 			xtext->hilighting = FALSE;
 		}
 	}
-
 
 	return FALSE;
 }
@@ -2305,7 +2350,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 
 	if (event->button == 3 || event->button == 2) /* right/middle click */
 	{
-		word = gtk_xtext_get_word (xtext, x, y, 0, 0, 0);
+		word = gtk_xtext_get_word (xtext, x, y, 0, 0, 0, 0);
 		if (word)
 		{
 			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0,
@@ -2322,7 +2367,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 	if (event->type == GDK_2BUTTON_PRESS)	/* WORD select */
 	{
 		gtk_xtext_check_mark_stamp (xtext, mask);
-		if (gtk_xtext_get_word (xtext, x, y, &ent, &offset, &len))
+		if (gtk_xtext_get_word (xtext, x, y, &ent, &offset, &len, 0))
 		{
 			if (len == 0)
 				return FALSE;
@@ -2343,7 +2388,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 	if (event->type == GDK_3BUTTON_PRESS)	/* LINE select */
 	{
 		gtk_xtext_check_mark_stamp (xtext, mask);
-		if (gtk_xtext_get_word (xtext, x, y, &ent, 0, 0))
+		if (gtk_xtext_get_word (xtext, x, y, &ent, 0, 0, 0))
 		{
 			gtk_xtext_selection_clear (xtext->buffer);
 			ent->mark_start = 0;
@@ -2852,7 +2897,7 @@ gtk_xtext_render_flush (GtkXText * xtext, int x, int y, unsigned char *str,
 {
 	int str_width, dofill;
 	GdkDrawable *pix = NULL;
-	int dest_x, dest_y;
+	int dest_x = 0, dest_y = 0;
 
 	if (xtext->dont_render || len < 1 || xtext->hidden)
 		return 0;
@@ -5904,7 +5949,7 @@ gtk_xtext_set_tint (GtkXText *xtext, int tint_red, int tint_green, int tint_blue
 }
 
 void
-gtk_xtext_set_urlcheck_function (GtkXText *xtext, int (*urlcheck_function) (GtkWidget *, char *, int))
+gtk_xtext_set_urlcheck_function (GtkXText *xtext, int (*urlcheck_function) (GtkWidget *, char *))
 {
 	xtext->urlcheck_function = urlcheck_function;
 }
