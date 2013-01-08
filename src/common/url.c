@@ -32,6 +32,13 @@
 
 void *url_tree = NULL;
 GTree *url_btree = NULL;
+static int do_an_re (const char *word, int *start, int *end, int *type);
+static GRegex *re_url (void);
+static GRegex *re_host (void);
+static GRegex *re_email (void);
+static GRegex *re_nick (void);
+static GRegex *re_channel (void);
+static GRegex *re_path (void);
 
 
 static int
@@ -177,158 +184,39 @@ url_add (char *urltext, int len)
    keep it FAST! This new version was found to be almost 3x faster than
    2.4.4 release. */
 
+static int laststart = 0;
+static int lastend = 0;
+static int lasttype = 0;
+
 int
-url_check_word (const char *word, int len)
+url_check_word (const char *word)
 {
-#define D(x) (x), ((sizeof (x)) - 1)
-	static const struct {
-		const char *s;
-		int len;
-	}
-	prefix[] = {
-		{ D("irc.") },
-		{ D("ftp.") },
-		{ D("www.") },
-		{ D("irc://") },
-		{ D("ftp://") },
-		{ D("http://") },
-		{ D("https://") },
-		{ D("file://") },
-		{ D("rtsp://") },
-		{ D("ut2004://") },
-	},
-	suffix[] = {
-		{ D(".org") },
-		{ D(".net") },
-		{ D(".com") },
-		{ D(".edu") },
-		{ D(".html") },
-		{ D(".info") },
-		{ D(".name") },
-		/* Some extra common suffixes.
-		foo.blah/baz.php etc should work now, rather than
-		needing  http:// at the beginning. */
-		{ D(".php") },
-		{ D(".htm") },
-		{ D(".aero") },
-		{ D(".asia") },
-		{ D(".biz") },
-		{ D(".cat") },
-		{ D(".coop") },
-		{ D(".int") },
-		{ D(".jobs") },
-		{ D(".mobi") },
-		{ D(".museum") },
-		{ D(".pro") },
-		{ D(".tel") },
-		{ D(".travel") },
-		{ D(".xxx") },
-		{ D(".asp") },
-		{ D(".aspx") },
-		{ D(".shtml") },
-		{ D(".xml") },
-	};
-#undef D
-	const char *at, *dot;
-	int i, dots;
-
-	/* this is pretty much the same as in logmask_is_fullpath() except with length checks and .\ for portable mode */
-#ifdef WIN32
-	if ((len > 1 && word[0] == '\\') ||
-		(len > 2 && word[0] == '.' && word[1] == '\\') ||
-		(len > 2 && (((word[0] >= 'A' && word[0] <= 'Z') || (word[0] >= 'a' && word[0] <= 'z')) && word[1] == ':')))
-#else
-	if (len > 1 && word[0] == '/')
-#endif
+	laststart = lastend = lasttype = 0;
+	if (do_an_re (word, &laststart, &lastend, &lasttype))
 	{
-		return WORD_PATH;
-	}
-
-	if (len > 1 && word[1] == '#' && strchr("@+^%*#", word[0]))
-		return WORD_CHANNEL;
-
-	if ((word[0] == '#' || word[0] == '&') && word[1] != '#' && word[1] != 0)
-		return WORD_CHANNEL;
-
-	for (i = 0; i < G_N_ELEMENTS(prefix); i++)
-	{
-		int l;
-
-		l = prefix[i].len;
-		if (len > l)
+		switch (lasttype)
 		{
-			int j;
-
-			/* This is pretty much g_ascii_strncasecmp(). */
-			for (j = 0; j < l; j++)
-			{
-				unsigned char c = word[j];
-				if (tolower(c) != prefix[i].s[j])
-					break;
-			}
-			if (j == l)
-				return WORD_URL;
+			case WORD_NICK:
+				if (!isalnum (word[laststart]))
+					laststart++;
+				if (!userlist_find (current_sess, &word[laststart]))
+					lasttype = 0;
+				return lasttype;
+			case WORD_EMAIL:
+				if (!isalnum (word[laststart]))
+					laststart++;
+				/* Fall through */
+			case WORD_URL:
+			case WORD_HOST:
+			case WORD_CHANNEL:
+			case WORD_PATH:
+				return lasttype;
+			default:
+				return 0;	/* Should not occur */
 		}
 	}
-
-	at = strchr (word, '@');	  /* check for email addy */
-	dot = strrchr (word, '.');
-	if (at && dot)
-	{
-		if (at < dot)
-		{
-			if (strchr (word, '*'))
-				return WORD_HOST;
-			else
-				return WORD_EMAIL;
-		}
-	}
- 
-	/* check if it's an IP number */
-	dots = 0;
-	for (i = 0; i < len; i++)
-	{
-		if (word[i] == '.' && i > 0)
-			dots++;	/* allow 127.0.0.1:80 */
-		else if (!isdigit ((unsigned char) word[i]) && word[i] != ':')
-		{
-			dots = 0;
-			break;
-		}
-	}
-	if (dots == 3)
-		return WORD_HOST;
-
-	if (len > 5)
-	{
-		for (i = 0; i < G_N_ELEMENTS(suffix); i++)
-		{
-			int l;
-
-			l = suffix[i].len;
-			if (len > l)
-			{
-				const unsigned char *p = &word[len - l];
-				int j;
-
-				/* This is pretty much g_ascii_strncasecmp(). */
-				for (j = 0; j < l; j++)
-				{
-					if (tolower(p[j]) != suffix[i].s[j])
-						break;
-				}
-				if (j == l)
-					return WORD_HOST;
-			}
-		}
-
-		if (word[len - 3] == '.' &&
-			 isalpha ((unsigned char) word[len - 2]) &&
-				isalpha ((unsigned char) word[len - 1]))
-			return WORD_HOST;
-	}
-
-	return 0;
+	else
+		return 0;
 }
 
 /* List of IRC commands for which contents (and thus possible URLs)
@@ -346,9 +234,10 @@ static char *commands[] = {
 void
 url_check_line (char *buf, int len)
 {
+	GRegex *re(void);
+	GMatchInfo *gmi;
 	char *po = buf;
-	char *start;
-	int i, wlen;
+	int i;
 
 	/* Skip over message prefix */
 	if (*po == ':')
@@ -379,50 +268,255 @@ url_check_line (char *buf, int len)
 		return;
 	po++;
 
-	if (buf[0] == ':' && buf[1] != 0)
-		po++;
-
-	start = po;
-
-	/* check each "word" (space separated) */
-	while (1)
+	g_regex_match(re_url(), po, 0, &gmi);
+	while (g_match_info_matches(gmi))
 	{
-		switch (po[0])
-		{
-		case 0:
-		case ' ':
-		case '\r':
+		int start, end;
 
-			wlen = po - start;
-			if (wlen > 2)
-			{
-				/* HACK! :( */
-				/* This is to work around not being able to detect URLs that are at
-				   the start of messages. */
-				if (start[0] == ':')
-				{
-					start++;
-					wlen--;
-				}
-				if (start[0] == '+' || start[0] == '-')
-				{
-					start++;
-					wlen--;
-				}
-
-				if (wlen > 2 && url_check_word (start, wlen) == WORD_URL)
-				{
-					url_add (start, wlen);
-				}
-			}
-			if (po[0] == 0)
-				return;
-			po++;
-			start = po;
-			break;
-
-		default:
-			po++;
-		}
+		g_match_info_fetch_pos(gmi, 0, &start, &end);
+		if (po[end - 1] == '\r')
+			po[--end] = 0;
+		if (g_strstr_len (po + start, end - start, "://"))
+			url_add(po + start, end - start);
+		g_match_info_next(gmi, NULL);
 	}
+	g_match_info_free(gmi);
+}
+
+int
+url_last (int *lstart, int *lend)
+{
+	*lstart = laststart;
+	*lend = lastend;
+	return lasttype;
+}
+
+static int
+do_an_re(const char *word,int *start, int *end, int *type)
+{
+	typedef struct func_s {
+		GRegex *(*fn)(void);
+		int type;
+	} func_t;
+	func_t funcs[] =
+	{
+		{ re_email, WORD_EMAIL },
+		{ re_url, WORD_URL },
+		{ re_host, WORD_HOST },
+		{ re_channel, WORD_CHANNEL },
+		{ re_path, WORD_PATH },
+		{ re_nick, WORD_NICK }
+	};
+
+	GMatchInfo *gmi;
+	int k;
+
+	for (k = 0; k < sizeof funcs / sizeof (func_t); k++)
+	{
+		g_regex_match (funcs[k].fn(), word, 0, &gmi);
+		if (!g_match_info_matches (gmi))
+		{
+			g_match_info_free (gmi);
+			continue;
+		}
+		while (g_match_info_matches (gmi))
+		{
+			g_match_info_fetch_pos (gmi, 0, start, end);
+			g_match_info_next (gmi, NULL);
+		}
+		g_match_info_free (gmi);
+		*type = funcs[k].type;
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+/*	Miscellaneous description --- */
+#define DOMAIN "[-a-z0-9]+(\\.[-a-z0-9]+)*\\.[a-z]+"
+#define IPADDR "[0-9]+(\\.[0-9]+){3}"
+#define HOST "(" DOMAIN "|" IPADDR ")"
+#define OPT_PORT "(:[1-9][0-9]{0,4})?"
+
+GRegex *
+make_re(char *grist, char *type)
+{
+	GRegex *ret;
+	GError *err = NULL;
+
+	ret = g_regex_new (grist, G_REGEX_CASELESS + G_REGEX_OPTIMIZE, 0, &err);
+	g_free (grist);
+	return ret;
+}
+
+/*	HOST description --- */
+/* (see miscellaneous above) */
+static GRegex *
+re_host (void)
+{
+	static GRegex *host_ret;
+	char *grist;
+	grist = g_strdup_printf (
+		"("	/* HOST */
+			HOST OPT_PORT
+		")"
+	);
+	host_ret = make_re (grist, "re_host");
+	return host_ret;
+}
+
+/*	URL description --- */
+#define SCHEME "(%s)"
+#define LPAR "\\("
+#define RPAR "\\)"
+#define NOPARENS "[^() \t]*"
+
+char *prefix[] = {
+	"irc\\.",
+	"ftp\\.",
+	"www\\.",
+	"irc://",
+	"ircs://",
+	"ftp://",
+	"http://",
+	"https://",
+	"file://",
+	"rtsp://",
+	NULL
+};
+
+static GRegex *
+re_url (void)
+{
+	static GRegex *url_ret;
+	char *grist;
+	char *scheme;
+
+	if (url_ret) return url_ret;
+
+	scheme = g_strjoinv ("|", prefix);
+	grist = g_strdup_printf (
+		"("	/* URL or HOST */
+			"("
+				SCHEME HOST OPT_PORT
+				"("	/* Optional "/path?query_string#fragment_id" */
+					"/"	/* Must start with slash */
+					"("	
+						"(" LPAR NOPARENS RPAR ")"
+						"|"
+						"(" NOPARENS ")"
+					")*"	/* Zero or more occurrences of either of these */
+					"(?<![.,?!\\]])"	/* Not allowed to end with these */
+				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
+			")|("
+				HOST OPT_PORT "/"
+				"("	/* Optional "path?query_string#fragment_id" */
+					"("
+						"(" LPAR NOPARENS RPAR ")"
+						"|"
+						"(" NOPARENS ")"
+					")*"	/* Zero or more occurrences of either of these */
+					"(?<![.,?!\\]])"	/* Not allowed to end with these */
+				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
+			")"
+		")"
+		, scheme
+	);
+	url_ret = make_re (grist, "re_url");
+	g_free (scheme);
+	return url_ret;
+}
+
+/*	EMAIL description --- */
+#define EMAIL "[a-z][-_a-z0-9]+@" "(" HOST ")"
+
+static GRegex *
+re_email (void)
+{
+	static GRegex *email_ret;
+	char *grist;
+
+	if (email_ret) return email_ret;
+
+	grist = g_strdup_printf (
+		"("	/* EMAIL */
+			EMAIL
+		")"
+	);
+	email_ret = make_re (grist, "re_email");
+	return email_ret;
+}
+
+/*	NICK description --- */
+#define NICKPRE "~+!@%%&"
+#define NICKHYP	"-"
+#define NICKLET "a-z"
+#define NICKDIG "0-9"
+/*	Note for NICKSPE:  \\\\ boils down to a single \ */
+#define NICKSPE	"\\[\\]\\\\`_^{|}"
+#define NICK0 "[" NICKPRE "]?[" NICKLET NICKSPE "]"
+#define NICK1 "[" NICKHYP NICKLET NICKDIG NICKSPE "]*"
+#define NICK	NICK0 NICK1
+
+static GRegex *
+re_nick (void)
+{
+	static GRegex *nick_ret;
+	char *grist;
+
+	if (nick_ret) return nick_ret;
+
+	grist = g_strdup_printf (
+		"("	/* NICK */
+			NICK
+		")"
+	);
+	nick_ret = make_re (grist, "re_nick");
+	return nick_ret;
+}
+
+/*	CHANNEL description --- */
+#define CHANNEL "#[^ \t\a,:]+"
+
+static GRegex *
+re_channel (void)
+{
+	static GRegex *channel_ret;
+	char *grist;
+
+	if (channel_ret) return channel_ret;
+
+	grist = g_strdup_printf (
+		"("	/* CHANNEL */
+			CHANNEL
+		")"
+	);
+	channel_ret = make_re (grist, "re_channel");
+	return channel_ret;
+}
+
+/*	PATH description --- */
+#ifdef WIN32
+/* Windows path can be \ or .\ or ..\ or e.g. C: etc */
+#define PATH "^(\\\\|\\.{1,2}\\\\|[a-z]:).*"
+#else
+/* Linux path can be / or ./ or ../ etc */
+#define PATH "^(/|\\./|\\.\\./).*"
+#endif
+
+static GRegex *
+re_path (void)
+{
+	static GRegex *path_ret;
+	char *grist;
+
+	if (path_ret) return path_ret;
+
+	grist = g_strdup_printf (
+		"("	/* PATH */
+			PATH
+		")"
+	);
+	path_ret = make_re (grist, "re_path");
+	return path_ret;
 }

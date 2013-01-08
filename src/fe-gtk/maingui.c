@@ -2244,20 +2244,14 @@ mg_create_topicbar (session *sess, GtkWidget *box)
 /* check if a word is clickable */
 
 static int
-mg_word_check (GtkWidget * xtext, char *word, int len)
+mg_word_check (GtkWidget * xtext, char *word)
 {
 	session *sess = current_sess;
 	int ret;
 
-	ret = url_check_word (word, len);	/* common/url.c */
-	if (ret == 0)
-	{
-		if (( (word[0]=='@' || word[0]=='+' || word[0]=='%') && userlist_find (sess, word+1)) || userlist_find (sess, word))
-			return WORD_NICK;
-
-		if (sess->type == SESS_DIALOG)
-			return WORD_DIALOG;
-	}
+	ret = url_check_word (word);
+	if (ret == 0 && sess->type == SESS_DIALOG)
+		return WORD_DIALOG;
 
 	return ret;
 }
@@ -2268,23 +2262,28 @@ static void
 mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 {
 	session *sess = current_sess;
+	int word_type, start, end;
+	char *tmp;
 
-	if (even->button == 1)			/* left button */
+	if (word == NULL)
 	{
-		if (word == NULL)
-		{
+		if (even->button == 1)		/* left button */
 			mg_focus (sess);
-			return;
-		}
+		return;
+	}
 
-		if ((even->state & 13) == prefs.hex_gui_url_mod)
+	word_type = mg_word_check (xtext, word);
+	url_last (&start, &end);
+
+	if (even->button == 1 && (even->state & 13) == prefs.hex_gui_url_mod)
+	{
+		switch (word_type)
 		{
-			switch (mg_word_check (xtext, word, strlen (word)))
-			{
-			case WORD_URL:
-			case WORD_HOST:
-				fe_open_url (word);
-			}
+		case WORD_URL:
+		case WORD_HOST:
+			word[end] = 0;
+			word += start;
+			fe_open_url (word);
 		}
 		return;
 	}
@@ -2298,7 +2297,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 		return;
 	}
 
-	switch (mg_word_check (xtext, word, strlen (word)))
+	switch (word_type)
 	{
 	case 0:
 	case WORD_PATH:
@@ -2306,26 +2305,22 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 		break;
 	case WORD_URL:
 	case WORD_HOST:
+		word[end] = 0;
+		word += start;
 		menu_urlmenu (even, word);
 		break;
 	case WORD_NICK:
-		menu_nickmenu (sess, even, (word[0]=='@' || word[0]=='+' || word[0]=='%') ?
-			word+1 : word, FALSE);
+		menu_nickmenu (sess, even, word + (ispunct (*word)? 1: 0), FALSE);
 		break;
 	case WORD_CHANNEL:
-		if (*word == '@' || *word == '+' || *word=='^' || *word=='%' || *word=='*')
-			word++;
 		menu_chanmenu (sess, even, word);
 		break;
 	case WORD_EMAIL:
-		{
-			char *newword = malloc (strlen (word) + 10);
-			if (*word == '~')
-				word++;
-			sprintf (newword, "mailto:%s", word);
-			menu_urlmenu (even, newword);
-			free (newword);
-		}
+		word[end] = 0;
+		word += start;
+		tmp = g_strdup_printf("mailto:%s", word + (ispunct (*word)? 1: 0));
+		menu_urlmenu (even, tmp);
+		g_free (tmp);
 		break;
 	case WORD_DIALOG:
 		menu_nickmenu (sess, even, sess->channel, FALSE);
