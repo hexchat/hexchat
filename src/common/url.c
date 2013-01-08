@@ -376,6 +376,7 @@ char *prefix[] = {
 	"ftp\\.",
 	"www\\.",
 	"irc://",
+	"ircs://",
 	"ftp://",
 	"http://",
 	"https://",
