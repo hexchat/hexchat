@@ -1319,7 +1319,7 @@ int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr) {
 	    if (*argv[argc]) {
 		buf++, argc++;
 		if (argc == argvAlloced) {
-		    char *temp[];
+		    char **temp;
 		    argvAlloced += POPT_ARGV_ARRAY_GROW_DELTA;
 		    temp = realloc(argv, sizeof(*argv) * argvAlloced);
 		    if (temp)
