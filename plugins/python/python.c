@@ -2137,6 +2137,7 @@ Command_PyReload(char *name)
 		char *filename = strdup(plugin->filename);
 		Command_PyUnload(filename);
 		Command_PyLoad(filename);
+		/* cppcheck-suppress deallocDealloc */
 		g_free(filename);
 	}
 }

@@ -1646,7 +1646,8 @@ mg_create_tabmenu (session *sess, GdkEventButton *event, chan *ch)
 								mg_destroy_tab_cb, ch);
 	if (sess && tabmenu_list)
 		menu_create (menu, tabmenu_list, sess->channel, FALSE);
-	menu_add_plugin_items (menu, "\x4$TAB", sess->channel);
+	if (sess)
+		menu_add_plugin_items (menu, "\x4$TAB", sess->channel);
 
 	if (event->window)
 		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));

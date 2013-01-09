@@ -37,7 +37,6 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
 	free_space = *free_k;
 	total_space = *total_k;
         result = malloc(bsize * sizeof(char));
-        bytesize = malloc(3 * sizeof(char));
 	const char *quantities = "KB\0MB\0GB\0TB\0PB\0EB\0ZB\0YB\0";
 	int i=0;
 	if (total_space == 0)
@@ -45,6 +44,7 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
 		snprintf(result, bsize, "%s: none", desc);
 		return result;
 	}
+        bytesize = malloc(3 * sizeof(char));
 	while (total_space > 1023 && i <= 14)
 	{
 		i=i+3;
@@ -61,6 +61,7 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
 	else
 		snprintf(result, bsize, "%s: %.1f%s/%.1f%s free",
 		desc, free_space, bytesize, total_space, bytesize);
+	free (bytesize);
         return result;
 }
 
