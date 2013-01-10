@@ -116,7 +116,6 @@ fe_new_window (struct session *sess, int focus)
 #endif
 	"\n\n", 0);
 	fflush (stdout);
-	fflush (stdin);
 }
 
 static int
@@ -506,6 +505,7 @@ fe_args (int argc, char *argv[])
 			*sl = 0;
 			printf ("%s\\plugins\n", exe);
 		}
+		free (exe);
 #else
 		printf ("%s\n", HEXCHATLIBDIR"/plugins");
 #endif

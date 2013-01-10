@@ -1678,6 +1678,7 @@ xit:
 #endif
 
 	return 0;
+	/* cppcheck-suppress memleak */
 }
 
 static void

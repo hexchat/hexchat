@@ -105,6 +105,7 @@ sha256_file (char *path, char outputBuffer[65])
 
 	if (!buffer)
 	{
+		fclose (file);
 		return ENOMEM;
 	}
 

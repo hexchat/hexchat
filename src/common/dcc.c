@@ -322,6 +322,7 @@ dcc_lookup_proxy (char *host, struct sockaddr_in *addr)
 		memcpy (&addr->sin_addr, h->h_addr, 4);
 		memcpy (&cache_addr, h->h_addr, 4);
 		cache_host = strdup (host);
+		/* cppcheck-suppress memleak */
 		return TRUE;
 	}
 
@@ -788,6 +789,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 			dcc_send_ack (dcc);
 			dcc_close (dcc, STAT_DONE, FALSE);
 			dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
+			/* cppcheck-suppress deallocuse */
 			sprintf (buf, "%d", dcc->cps);
 			EMIT_SIGNAL (XP_TE_DCCRECVCOMP, dcc->serv->front_session,
 							 dcc->file, dcc->destfile, dcc->nick, buf, 0);
@@ -1533,6 +1535,7 @@ dcc_handle_new_ack (struct DCC *dcc)
 		dcc->ack = dcc->size;	/* force 100% ack for >4 GB */
 		dcc_close (dcc, STAT_DONE, FALSE);
 		dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
+		/* cppcheck-suppress deallocuse */
 		sprintf (buf, "%d", dcc->cps);
 		EMIT_SIGNAL (XP_TE_DCCSENDCOMP, dcc->serv->front_session,
 						 file_part (dcc->file), dcc->nick, buf, NULL, 0);

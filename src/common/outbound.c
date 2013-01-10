@@ -1866,7 +1866,6 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			/* not reached unless error */
 			/*printf("exec error\n");*/
 			fflush (stdout);
-			fflush (stdin);
 			_exit (0);
 		}
 		if (pid == -1)
@@ -1876,6 +1875,7 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			PrintText (sess, "Error in fork(2)\n");
 			close(fds[0]);
 			close(fds[1]);
+			free (s);
 		} else
 		{
 			/* Parent path */
@@ -3350,6 +3350,8 @@ static void
 url_join_only (server *serv, char *tbuf, char *channel)
 {
 	/* already connected, JOIN only. FIXME: support keys? */
+	if (channel == NULL)
+		return;
 	tbuf[0] = '#';
 	/* tbuf is 4kb */
 	safe_strcpy ((tbuf + 1), channel, 256);
