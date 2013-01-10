@@ -394,6 +394,7 @@ int xs_parse_distro(char *name)
 		char keywords[bsize];
 		while(fgets(buffer, bsize, fp) != NULL)
 			find_match_char(buffer, "ACCEPT_KEYWORDS", keywords);
+		/* cppcheck-suppress uninitvar */
 		if (strstr(keywords, "\"") == NULL)
 			snprintf(buffer, bsize, "Gentoo Linux (stable)");
 		else
@@ -440,16 +441,14 @@ int xs_parse_hwmon_chip(char *chip)
 
 int xs_parse_hwmon_temp(char *temp, unsigned int *sensor)
 {
-	unsigned int *value;
+	unsigned int value;
 	float celsius;
-        value = malloc(sizeof(int));
 
 	if (!hwmon_chip_present())
 		return 1;
 	else
-		get_hwmon_temp(value, sensor);
-		celsius = (float)*value;
+		get_hwmon_temp(&value, sensor);
+		celsius = (float)value;
 		snprintf(temp, bsize, "%.1fC", celsius/1000.0);
-		free(value);
 	return 0;
 }
