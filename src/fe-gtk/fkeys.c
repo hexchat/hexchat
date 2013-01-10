@@ -1153,6 +1153,7 @@ key_load_kbs (char *filename)
 						 get_xdir ());
 	fe_message (ibuf, FE_MSG_ERROR);
 	free (ibuf);
+	free (kb);
 	return 5;
 }
 
