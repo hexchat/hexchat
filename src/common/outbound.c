@@ -3350,6 +3350,8 @@ static void
 url_join_only (server *serv, char *tbuf, char *channel)
 {
 	/* already connected, JOIN only. FIXME: support keys? */
+	if (channel == NULL)
+		return;
 	tbuf[0] = '#';
 	/* tbuf is 4kb */
 	safe_strcpy ((tbuf + 1), channel, 256);
