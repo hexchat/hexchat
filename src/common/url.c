@@ -188,6 +188,16 @@ static int laststart = 0;
 static int lastend = 0;
 static int lasttype = 0;
 
+static int
+strchrs (char c, char *s)
+{
+	while (*s)
+		if (c == *s++)
+			return TRUE;
+	return FALSE;
+}
+
+#define NICKPRE "~+!@%%&"
 int
 url_check_word (const char *word)
 {
@@ -196,11 +206,15 @@ url_check_word (const char *word)
 	{
 		switch (lasttype)
 		{
+			char *str;
+
 			case WORD_NICK:
-				if (!isalnum (word[laststart]))
+				if (strchrs (word[laststart], NICKPRE))
 					laststart++;
-				if (!userlist_find (current_sess, &word[laststart]))
+				str = strndup (&word[laststart], lastend - laststart);
+				if (!userlist_find (current_sess, str))
 					lasttype = 0;
+				free (str);
 				return lasttype;
 			case WORD_EMAIL:
 				if (!isalnum (word[laststart]))
@@ -448,7 +462,7 @@ re_email (void)
 }
 
 /*	NICK description --- */
-#define NICKPRE "~+!@%%&"
+/* For NICKPRE see before url_check_word() */
 #define NICKHYP	"-"
 #define NICKLET "a-z"
 #define NICKDIG "0-9"
