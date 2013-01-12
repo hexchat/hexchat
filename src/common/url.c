@@ -211,10 +211,10 @@ url_check_word (const char *word)
 			case WORD_NICK:
 				if (strchrs (word[laststart], NICKPRE))
 					laststart++;
-				str = strndup (&word[laststart], lastend - laststart);
+				str = g_strndup (&word[laststart], lastend - laststart);
 				if (!userlist_find (current_sess, str))
 					lasttype = 0;
-				free (str);
+				g_free (str);
 				return lasttype;
 			case WORD_EMAIL:
 				if (!isalnum (word[laststart]))
