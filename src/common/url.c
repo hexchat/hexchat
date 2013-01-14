@@ -333,9 +333,10 @@ do_an_re(const char *word,int *start, int *end, int *type)
 }
 
 /*	Miscellaneous description --- */
-#define DOMAIN "[-a-z0-9]+(\\.[-a-z0-9]+)*\\.[a-z]+"
+#define DOMAIN "[-a-z0-9]+(\\.[-a-z0-9]+)*\\."
+#define TLD "[a-z][-a-z0-9]*[a-z]"
 #define IPADDR "[0-9]+(\\.[0-9]+){3}"
-#define HOST "(" DOMAIN "|" IPADDR ")"
+#define HOST "(" DOMAIN TLD "|" IPADDR ")"
 #define OPT_PORT "(:[1-9][0-9]{0,4})?"
 
 GRegex *
