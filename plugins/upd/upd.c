@@ -154,7 +154,10 @@ check_version ()
 		InternetCloseHandle (hResource);
 		InternetCloseHandle (hConnect);
 		InternetCloseHandle (hOpen);
-		return buffer;
+		if (strlen (buffer) == 5)
+			return buffer;
+		else
+			return "Unknown";
 	}
 }
 
