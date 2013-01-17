@@ -590,7 +590,7 @@ fe_close_window (struct session *sess)
 }
 
 void
-fe_beep (void)
+fe_beep (session *sess)
 {
 	putchar (7);
 }
