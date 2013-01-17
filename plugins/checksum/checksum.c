@@ -23,9 +23,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <malloc.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <openssl/sha.h>
 #include <glib.h>
 
@@ -33,9 +33,7 @@
 #ifndef snprintf
 #define snprintf _snprintf
 #endif
-#ifndef stat64
-#define stat64 _stat64
-#endif
+#define stat _stat64
 #else
 /* for INT_MAX */
 #include <limits.h>
@@ -43,8 +41,6 @@
 #define _LARGEFILE_SOURCE
 #define _LARGEFILE64_SOURCE
 #endif
-
-#include <sys/stat.h>
 
 #include "hexchat-plugin.h"
 
@@ -172,7 +168,7 @@ static int
 dccrecv_cb (char *word[], void *userdata)
 {
 	int result;
-	struct stat64 buffer;									/* buffer for storing file info */
+	struct stat buffer;									/* buffer for storing file info */
 	char sum[65];											/* buffer for checksum */
 	char *file;
 	if (hexchat_get_prefs (ph, "dcc_completed_dir", &file, NULL) == 1 && file[0] != 0)
@@ -184,7 +180,7 @@ dccrecv_cb (char *word[], void *userdata)
 		file = g_strdup(word[2]);
 	}
 
-	result = stat64 (file, &buffer);
+	result = stat (file, &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
 		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
@@ -213,10 +209,10 @@ static int
 dccoffer_cb (char *word[], void *userdata)
 {
 	int result;
-	struct stat64 buffer;									/* buffer for storing file info */
+	struct stat buffer;									/* buffer for storing file info */
 	char sum[65];											/* buffer for checksum */
 
-	result = stat64 (word[3], &buffer);
+	result = stat (word[3], &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
 		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
