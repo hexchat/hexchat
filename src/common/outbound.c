@@ -1257,7 +1257,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int idx = 2;
 	int len;
 	int pos = 0xffff;
-	int state;
+	int state = 0;
 	int toggle = FALSE;
 	int enable = TRUE;
 	int markup = FALSE;

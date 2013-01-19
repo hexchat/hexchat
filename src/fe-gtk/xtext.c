@@ -3729,13 +3729,13 @@ static void
 shade_image (GdkVisual *visual, void *data, int bpl, int bpp, int w, int h,
 				 int rm, int gm, int bm, int bg, int depth)
 {
+#ifdef USE_MMX
 	int bg_r, bg_g, bg_b;
 
 	bg_r = bg & visual->red_mask;
 	bg_g = bg & visual->green_mask;
 	bg_b = bg & visual->blue_mask;
 
-#ifdef USE_MMX
 	/* the MMX routines are about 50% faster at 16-bit. */
 	/* only use MMX routines with a pure black background */
 	if (bg_r == 0 && bg_g == 0 && bg_b == 0 && have_mmx ())	/* do a runtime check too! */

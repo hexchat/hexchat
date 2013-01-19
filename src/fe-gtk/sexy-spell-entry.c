@@ -191,7 +191,6 @@ sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 	GObjectClass *gobject_class;
 	GtkObjectClass *object_class;
 	GtkWidgetClass *widget_class;
-	GtkEntryClass *entry_class;
 
 	initialize_enchant();
 
@@ -200,7 +199,6 @@ sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 	gobject_class = G_OBJECT_CLASS(klass);
 	object_class  = GTK_OBJECT_CLASS(klass);
 	widget_class  = GTK_WIDGET_CLASS(klass);
-	entry_class   = GTK_ENTRY_CLASS(klass);
 
 	if (have_enchant)
 		klass->word_check = default_word_check;
@@ -695,10 +693,6 @@ sexy_spell_entry_finalize(GObject *obj)
 static void
 sexy_spell_entry_destroy(GtkObject *obj)
 {
-	SexySpellEntry *entry;
-
-	entry = SEXY_SPELL_ENTRY(obj);
-
 	if (GTK_OBJECT_CLASS(parent_class)->destroy)
 		GTK_OBJECT_CLASS(parent_class)->destroy(obj);
 }
