@@ -881,14 +881,11 @@ static int ul_tag = 0;
 static gboolean
 mg_populate_userlist (session *sess)
 {
-	session_gui *gui;
-
 	if (!sess)
 		sess = current_tab;
 
 	if (is_session (sess))
 	{
-		gui = sess->gui;
 		if (sess->type == SESS_DIALOG)
 			mg_set_access_icon (sess->gui, NULL, sess->server->is_away);
 		else

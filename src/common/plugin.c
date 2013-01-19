@@ -1626,6 +1626,7 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	char *buffer;
 	char *buffer_tmp;
 	char line_buffer[512];		/* the same as in cfg_put_str */
+	char *line_bufp = line_buffer;
 	char *canon;
 
 	canon = g_strdup (pl->name);
@@ -1687,7 +1688,7 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	{
 		prevSetting = 0;
 
-		while (fscanf (fpIn, " %[^\n]", &line_buffer) != EOF)	/* read whole lines including whitespaces */
+		while (fscanf (fpIn, " %[^\n]", line_bufp) != EOF)	/* read whole lines including whitespaces */
 		{
 			buffer_tmp = g_strdup_printf ("%s ", var);	/* add one space, this way it works against var - var2 checks too */
 
@@ -1844,6 +1845,7 @@ hexchat_pluginpref_list (hexchat_plugin *pl, char* dest)
 	FILE *fpIn;
 	char confname[64];
 	char buffer[512];										/* the same as in cfg_put_str */
+	char *bufp = buffer;
 	char *token;
 
 	token = g_strdup (pl->name);
@@ -1860,7 +1862,7 @@ hexchat_pluginpref_list (hexchat_plugin *pl, char* dest)
 	else													/* existing config file, get list of settings */
 	{
 		strcpy (dest, "");									/* clean up garbage */
-		while (fscanf (fpIn, " %[^\n]", &buffer) != EOF)	/* read whole lines including whitespaces */
+		while (fscanf (fpIn, " %[^\n]", bufp) != EOF)	/* read whole lines including whitespaces */
 		{
 			token = strtok (buffer, "=");
 			strncat (dest, token, strlen (token) - 1);

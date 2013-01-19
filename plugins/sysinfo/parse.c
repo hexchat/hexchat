@@ -37,9 +37,13 @@
 
 int xs_parse_cpu(char *model, char *vendor, double *freq, char *cache, unsigned int *count)
 {
-	char buffer[bsize], *pos;
+#if defined(__i386__) || defined(__x86_64__) || defined(__powerpc__) || defined(__alpha__) || defined(__ia64__) || defined(__parisc__) || defined(__sparc__)
+	char buffer[bsize];
+#endif
+#if defined(__powerpc__)
+	char *pos = NULL;
+#endif
 	FILE *fp = fopen("/proc/cpuinfo", "r");
-	pos = NULL;
 	if(fp == NULL)
 		return 1;
 	if(count != NULL) *count = 0;
