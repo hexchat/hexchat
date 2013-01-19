@@ -990,9 +990,9 @@ fe_set_inputbox_contents (session *sess, char *text)
 #ifndef WIN32
 
 static gboolean
-try_browser (const char *browser, const char *arg, const char *url)
+try_browser (const char *browser, char *arg, const char *url)
 {
-	const char *argv[4];
+	char *argv[4];
 	char *path;
 
 	path = g_find_program_in_path (browser);
@@ -1000,12 +1000,12 @@ try_browser (const char *browser, const char *arg, const char *url)
 		return 0;
 
 	argv[0] = path;
-	argv[1] = url;
+	argv[1] = (char *)url;
 	argv[2] = NULL;
 	if (arg)
 	{
 		argv[1] = arg;
-		argv[2] = url;
+		argv[2] = (char *)url;
 		argv[3] = NULL;
 	}
 	hexchat_execv (argv);

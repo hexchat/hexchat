@@ -136,7 +136,7 @@ scrollback_shrink (session *sess)
 	int fh;
 	int lines;
 	int line;
-	int len;
+	gsize len;
 	char *p;
 
 	scrollback_close (sess);
