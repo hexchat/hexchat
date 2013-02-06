@@ -642,7 +642,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	tray_menu_timer = g_timeout_add(500, (GSourceFunc) tray_check_hide, menu);
 #endif
 
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, gtk_status_icon_position_menu,
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL,
 						 userdata, button, time);
 }
 
