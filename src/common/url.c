@@ -371,6 +371,9 @@ re_host (void)
 {
 	static GRegex *host_ret;
 	char *grist;
+
+	if (host_ret) return host_ret;
+
 	grist = g_strdup_printf (
 		"("	/* HOST */
 			HOST OPT_PORT
