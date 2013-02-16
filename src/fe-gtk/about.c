@@ -143,7 +143,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	gtk_label_set_markup (GTK_LABEL (label_info), buf);
 
 	/* label for copyright notices */
-	snprintf (buf, sizeof (buf), "<small>\302\251 1998-2010 Peter \305\275elezn\303\275\n\302\251 2009-2012 Berke Viktor</small>");
+	snprintf (buf, sizeof (buf), "<small>\302\251 1998-2010 Peter \305\275elezn\303\275\n\302\251 2009-2013 Berke Viktor</small>");
 	label_copyright = gtk_label_new (NULL);
 	gtk_misc_set_alignment (GTK_MISC (label_copyright), 0, 0);
 	gtk_box_pack_start (GTK_BOX (vbox_text), label_copyright, 0, 0, 10);
