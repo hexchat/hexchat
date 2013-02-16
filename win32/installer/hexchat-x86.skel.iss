@@ -125,7 +125,7 @@ Source: "zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 
 Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Flags: ignoreversion; Components: libs
 
-Source: "lib\gtk-2.0\2.10.0\engines\libwimp.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: libs
+Source: "lib\gtk-2.0\i686-pc-vs10\engines\libwimp.dll"; DestDir: "{app}\lib\gtk-2.0\i686-pc-vs10\engines"; Flags: ignoreversion; Components: libs
 
 ;obs Source: "etc\gtkpref.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: gtkengines
 ;obs Source: "lib\gtk-2.0\2.10.0\engines\libclearlooks.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
