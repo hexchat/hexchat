@@ -619,7 +619,7 @@ convert_with_fallback (const char *str, const char *fallback)
 void
 load_config (void)
 {
-	char *cfg, *sp;
+	char *cfg, *sp, *buf;
 	const char *username, *realname;
 	int res, val, i;
 #ifdef WIN32
@@ -834,6 +834,10 @@ load_config (void)
 
 		g_mkdir (prefs.hex_dcc_dir, 0700);
 		g_mkdir (prefs.hex_dcc_completed_dir, 0700);
+
+		buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "addons", get_xdir ());
+		g_mkdir (buf, 0700);
+		g_free (buf);
 	}
 	if (prefs.hex_gui_win_height < 138)
 		prefs.hex_gui_win_height = 138;
