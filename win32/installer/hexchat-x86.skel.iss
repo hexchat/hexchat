@@ -109,6 +109,7 @@ Source: "gmodule-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: l
 Source: "gobject-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gthread-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gtk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "harfbuzz.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
