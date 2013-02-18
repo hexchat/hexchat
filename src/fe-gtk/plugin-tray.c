@@ -175,6 +175,10 @@ fe_tray_set_balloon (const char *title, const char *text)
 
 	notification = XC_NOTIFY_NEW (notify_title, notify_text, HEXCHATSHAREDIR "/icons/hicolor/scalable/apps/hexchat.svg", NULL);
 
+#if NOTIFY_CHECK_VERSION(0,7,0)
+	notify_notification_set_hint (notification, "desktop-entry", g_variant_new_string ("hexchat"));
+#endif
+
 	g_free ((char *)notify_title);
 	g_free ((char *)notify_text);
 
