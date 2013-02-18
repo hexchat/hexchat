@@ -338,6 +338,9 @@ static const struct defaultserver def[] =
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
 
+	{"IRC-Hispano", 0},
+	{0,			"irc.irc-hispano.org"},
+
 	{"IronDust", 0},
 #ifdef USE_OPENSSL
 	{0,			"irc.irondust.net/+6697"},
