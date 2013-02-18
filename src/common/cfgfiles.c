@@ -754,7 +754,10 @@ load_config (void)
 		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
 	}
 #else
-	strcpy (prefs.hex_dcc_dir, g_get_user_special_dir(G_USER_DIRECTORY_DOWNLOAD));
+	if (g_get_user_special_dir(G_USER_DIRECTORY_DOWNLOAD))
+		strcpy (prefs.hex_dcc_dir, g_get_user_special_dir(G_USER_DIRECTORY_DOWNLOAD));
+	else
+		strcpy (prefs.hex_dcc_dir, g_build_filename (g_get_home_dir (), "Downloads", NULL));
 #endif
 	strcpy (prefs.hex_dnsprogram, "host");
 	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
