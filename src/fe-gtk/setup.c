@@ -216,11 +216,13 @@ static const setting inputbox_settings[] =
 	{ST_TOGGLE, N_("Show user mode icon in nick box"), P_OFFINTNL(hex_gui_input_icon),0,0,0},
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,2},
+#ifdef HAVE_ISO_CODES /* Defined with static spelling */
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(hex_text_spell_langs),0,0,sizeof prefs.hex_text_spell_langs},
 #ifdef WIN32
 	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
 #else
 	{ST_LABEL,	N_("Use language codes. Separate multiple entries with commas.")},
+#endif
 #endif
 #endif
 
@@ -1514,7 +1516,7 @@ setup_create_color_page (void)
 	setup_create_other_color (_("New message:"), COL_NEW_MSG, 10, tab);
 	setup_create_other_colorR (_("Away user:"), COL_AWAY, 10, tab);
 	setup_create_other_color (_("Highlight:"), COL_HILIGHT, 11, tab);
-#if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
+#ifdef HAVE_ISO_CODES /* Defined with static spelling */
 	setup_create_other_colorR (_("Spell checker:"), COL_SPELL, 11, tab);
 #endif
 
