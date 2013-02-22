@@ -2856,7 +2856,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 													 GTK_SHADOW_IN);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
 												GTK_POLICY_NEVER,
-												GTK_POLICY_NEVER);
+												GTK_POLICY_AUTOMATIC);
 	gtk_container_add (GTK_CONTAINER (sw), entry);
 	gtk_container_add (GTK_CONTAINER (hbox), sw);
 #else
