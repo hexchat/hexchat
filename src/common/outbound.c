@@ -2348,17 +2348,26 @@ static int
 cmd_join (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *chan = word[2];
+	session *sess_find;
 	if (*chan)
 	{
 		char *po, *pass = word[3];
-		sess->server->p_join (sess->server, chan, pass);
-		if (sess->channel[0] == 0 && sess->waitchannel[0])
+
+		sess_find = find_channel (sess->server, chan);
+		if (!sess_find)
 		{
-			po = strchr (chan, ',');
-			if (po)
-				*po = 0;
-			safe_strcpy (sess->waitchannel, chan, CHANLEN);
+			sess->server->p_join (sess->server, chan, pass);
+			if (sess->channel[0] == 0 && sess->waitchannel[0])
+			{
+				po = strchr (chan, ',');
+				if (po)
+					*po = 0;
+				safe_strcpy (sess->waitchannel, chan, CHANLEN);
+			}
 		}
+		else
+			fe_ctrl_gui (sess_find, 2, 0);	/* bring-to-front */
+		
 		return TRUE;
 	}
 	return FALSE;
