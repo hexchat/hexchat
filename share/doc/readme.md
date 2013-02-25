@@ -9,7 +9,7 @@ provide binary packages linked to the OpenSSL libraries, provided that
 all other requirements of the GPL are met.
 See file COPYING for details.
 
-For building instructions, see [Building](http://www.hexchat.org/developers/building).
+For building instructions, see [Building](http://docs.hexchat.org/en/latest/building.html).
 
 ## What is it?
 
