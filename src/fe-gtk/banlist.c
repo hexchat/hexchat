@@ -263,7 +263,7 @@ banlist_unban (GtkWidget * wid, struct session *sess)
 		return;
 	}
 
-	banlist_do_refresh (sess, view_mode); /* FIXME */
+	banlist_do_refresh (sess, view_mode);
 }
 
 static void
