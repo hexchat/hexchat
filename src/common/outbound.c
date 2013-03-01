@@ -2576,10 +2576,56 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return FALSE;
 }
 
+char *
+split_text(struct session *sess, char *text, char *splitted_text)
+{
+	unsigned int max;
+
+	/* maximum allowed message text */
+	/* :nickname!username@host.com PRIVMSG #channel :text\r\n */
+	max = 512;
+	max -= 16;	/* :, !, @, " PRIVMSG ", " ", :, \r, \n */
+	max -= strlen (sess->server->nick);
+	max -= strlen (sess->channel);
+	if (sess->me && sess->me->hostname)
+		max -= strlen (sess->me->hostname);
+	else
+	{
+		max -= 9;	/* username */
+		max -= 65;	/* max possible hostname and '@' */
+	}
+
+	if (strlen (text) > max)
+	{
+		unsigned int i = 0;
+		int size;
+
+		/* traverse the utf8 string and find the nearest cut point that
+			doesn't split 1 char in half */
+		while (1)
+		{
+			size = g_utf8_skip[((unsigned char *)text)[i]];
+			if ((i + size) >= max)
+				break;
+			i += size;
+		}
+		max = i;
+		
+		splitted_text = malloc (max + 1 * sizeof (*splitted_text));
+		snprintf(splitted_text, max +1, "%.*s", max, text);
+		
+		return splitted_text;
+	}
+
+	return NULL;
+}
+
 static int
 cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *act = word_eol[2];
+	char *splitted_text = NULL;
+	int offset = 0;
 
 	if (!(*act))
 		return FALSE;
@@ -2601,9 +2647,21 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		/* DCC CHAT failed, try through server */
 		if (sess->server->connected)
 		{
-			sess->server->p_action (sess->server, sess->channel, act);
+			while ((splitted_text = split_text (sess, act + offset, splitted_text)))
+			{
+				sess->server->p_action (sess->server, sess->channel, splitted_text);
+				/* print it to screen */
+				inbound_action (sess, sess->channel, sess->server->nick, "", splitted_text, TRUE, FALSE);
+				
+				if (*splitted_text)
+					offset += strlen(splitted_text);
+				
+				free(splitted_text);
+			}
+				
+			sess->server->p_action (sess->server, sess->channel, act + offset);
 			/* print it to screen */
-			inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE);
+			inbound_action (sess, sess->channel, sess->server->nick, "", act + offset, TRUE, FALSE);
 		} else
 		{
 			notc_msg (sess);
@@ -2769,10 +2827,26 @@ cmd_nick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_notice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
+	char *text = word_eol[3];
+	char *splitted_text = NULL;
+	int offset = 0;
+
 	if (*word[2] && *word_eol[3])
 	{
-		sess->server->p_notice (sess->server, word[2], word_eol[3]);
-		EMIT_SIGNAL (XP_TE_NOTICESEND, sess, word[2], word_eol[3], NULL, NULL, 0);
+		while ((splitted_text = split_text (sess, text + offset, splitted_text)))
+		{
+			sess->server->p_notice (sess->server, word[2], splitted_text);
+			EMIT_SIGNAL (XP_TE_NOTICESEND, sess, word[2], splitted_text, NULL, NULL, 0);
+			
+			if (*splitted_text)
+				offset += strlen(splitted_text);
+			
+			free(splitted_text);
+		}
+
+		sess->server->p_notice (sess->server, word[2], text + offset);
+		EMIT_SIGNAL (XP_TE_NOTICESEND, sess, word[2], text + offset, NULL, NULL, 0);
+
 		return TRUE;
 	}
 	return FALSE;
@@ -4233,52 +4307,24 @@ handle_say (session *sess, char *text, int check_spch)
 
 	if (sess->server->connected)
 	{
-		unsigned int max;
-		unsigned char t = 0;
+		char *splitted_text = NULL;
+		int offset = 0;
 
-		/* maximum allowed message text */
-		/* :nickname!username@host.com PRIVMSG #channel :text\r\n */
-		max = 512;
-		max -= 16;	/* :, !, @, " PRIVMSG ", " ", :, \r, \n */
-		max -= strlen (sess->server->nick);
-		max -= strlen (sess->channel);
-		if (sess->me && sess->me->hostname)
-			max -= strlen (sess->me->hostname);
-		else
+		while ((splitted_text = split_text (sess, text + offset, splitted_text)))
 		{
-			max -= 9;	/* username */
-			max -= 65;	/* max possible hostname and '@' */
-		}
-
-		if (strlen (text) > max)
-		{
-			unsigned int i = 0;
-			int size;
-
-			/* traverse the utf8 string and find the nearest cut point that
-				doesn't split 1 char in half */
-			while (1)
-			{
-				size = g_utf8_skip[((unsigned char *)text)[i]];
-				if ((i + size) >= max)
-					break;
-				i += size;
-			}
-			max = i;
-			t = text[max];
-			text[max] = 0;			  /* insert a NULL terminator to shorten it */
+			inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
+								  splitted_text, TRUE, FALSE);
+			sess->server->p_message (sess->server, sess->channel, splitted_text);
+			
+			if (*splitted_text)
+				offset += strlen(splitted_text);
+			
+			free(splitted_text);
 		}
 
 		inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
-							  text, TRUE, FALSE);
-		sess->server->p_message (sess->server, sess->channel, text);
-
-		if (t)
-		{
-			text[max] = t;
-			handle_say (sess, text + max, FALSE);
-		}
-
+							  text + offset, TRUE, FALSE);
+		sess->server->p_message (sess->server, sess->channel, text + offset);
 	} else
 	{
 		notc_msg (sess);
