@@ -66,6 +66,10 @@ typedef struct
 	int flags;
 } viewmode_banlist;
 
+static viewmode_banlist *viewmode_both;
+static viewmode_banlist *viewmode_ban;
+static viewmode_banlist *viewmode_exempt;
+
 static GtkTreeView *
 get_view (struct session *sess)
 {
@@ -147,11 +151,13 @@ banlist_do_refresh (struct session *sess, int flags)
 		store = get_store (sess);
 		gtk_list_store_clear (store);
 
-		if (flags & VIEW_BAN) {
+		if (flags & VIEW_BAN)
+		{
 			handle_command (sess, "ban", FALSE);
 		}
 
-		if (flags & VIEW_EXEMPT) {
+		if (flags & VIEW_EXEMPT)
+		{
 			if (supports_exempt (sess->server))
 			{
 				snprintf (tbuf, sizeof (tbuf), "quote mode %s +e", sess->channel);
@@ -403,7 +409,12 @@ static void
 banlist_closegui (GtkWidget *wid, session *sess)
 {
 	if (is_session (sess))
+	{
 		sess->res->banlist_window = 0;
+		free(viewmode_both);
+		free(viewmode_ban);
+		free(viewmode_exempt);
+	}
 }
 
 void
@@ -411,7 +422,7 @@ banlist_opengui (struct session *sess)
 {
 	GtkWidget *radio, *table, *vbox, *bbox;
 	GSList *group;
-	viewmode_banlist *viewmode_both = malloc(sizeof(viewmode_banlist)); /* FIXME */
+	viewmode_banlist *viewmode_both = malloc(sizeof(viewmode_banlist));
 	viewmode_banlist *viewmode_ban = malloc(sizeof(viewmode_banlist));
 	viewmode_banlist *viewmode_exempt = malloc(sizeof(viewmode_banlist));
 	char tbuf[256];
