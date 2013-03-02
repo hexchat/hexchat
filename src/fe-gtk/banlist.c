@@ -56,9 +56,9 @@ enum
 };
 
 static short view_mode;	/* 1=ban 2=exempt 3=both */
-#define VIEW_BAN 1
+#define VIEW_BAN    1
 #define VIEW_EXEMPT 2
-#define VIEW_BOTH VIEW_BAN | VIEW_EXEMPT
+#define VIEW_BOTH   (VIEW_BAN | VIEW_EXEMPT)
 
 typedef struct
 {
@@ -436,9 +436,9 @@ banlist_opengui (struct session *sess)
 		return;
 	}
 	
-	viewmode_banlist *viewmode_both = malloc(sizeof(viewmode_banlist));
-	viewmode_banlist *viewmode_ban = malloc(sizeof(viewmode_banlist));
-	viewmode_banlist *viewmode_exempt = malloc(sizeof(viewmode_banlist));
+	viewmode_banlist *viewmode_both = malloc (sizeof (viewmode_banlist));
+	viewmode_banlist *viewmode_ban = malloc (sizeof (viewmode_banlist));
+	viewmode_banlist *viewmode_exempt = malloc (sizeof (viewmode_banlist));
 	
 	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Ban List (%s)"),
 					sess->server->servername);
