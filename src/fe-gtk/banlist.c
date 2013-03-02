@@ -58,7 +58,7 @@ enum
 static short view_mode;	/* 1=ban 2=exempt 3=both */
 #define VIEW_BAN 1
 #define VIEW_EXEMPT 2
-#define VIEW_BOTH 3
+#define VIEW_BOTH VIEW_BAN | VIEW_EXEMPT
 
 typedef struct
 {
@@ -422,9 +422,6 @@ banlist_opengui (struct session *sess)
 {
 	GtkWidget *radio, *table, *vbox, *bbox;
 	GSList *group;
-	viewmode_banlist *viewmode_both = malloc(sizeof(viewmode_banlist));
-	viewmode_banlist *viewmode_ban = malloc(sizeof(viewmode_banlist));
-	viewmode_banlist *viewmode_exempt = malloc(sizeof(viewmode_banlist));
 	char tbuf[256];
 
 	if (sess->res->banlist_window)
@@ -438,6 +435,10 @@ banlist_opengui (struct session *sess)
 		fe_message (_("You can only open the Ban List window while in a channel tab."), FE_MSG_ERROR);
 		return;
 	}
+	
+	viewmode_banlist *viewmode_both = malloc(sizeof(viewmode_banlist));
+	viewmode_banlist *viewmode_ban = malloc(sizeof(viewmode_banlist));
+	viewmode_banlist *viewmode_exempt = malloc(sizeof(viewmode_banlist));
 	
 	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Ban List (%s)"),
 					sess->server->servername);
