@@ -948,7 +948,7 @@ dnl for plugins/xxx/Makefile.am
 hexchatlibdir=${libdir}/hexchat
 AC_SUBST(hexchatlibdir)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 share/Makefile
 share/icons/Makefile
@@ -972,6 +972,8 @@ man/Makefile
 ])
 dnl plugins/tcl/Makefile
 dnl plugins/sasl/Makefile
+
+AC_OUTPUT
 
 echo
 echo HexChat $VERSION
