@@ -7,7 +7,6 @@ AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([configure.ac])
-AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([1.11 dist-bzip2 subdir-objects no-define foreign])
 
@@ -28,9 +27,9 @@ dnl -----------------------------------------------------------
 GETTEXT_PACKAGE=hexchat
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
-
-ALL_LINGUAS="af am ast az be bg ca cs da de el en_GB es et eu fi fr gl gu hi hu id it ja kn ko lt lv mk ml ms nb nl no pa pl pt pt_BR ru rw sk sl sq sr sv th uk vi wa zh_CN zh_TW"
 AM_GNU_GETTEXT
+AM_GNU_GETTEXT_VERSION([0.18.2])
+
 
 dnl displaced from acconfig.h
 AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
@@ -910,7 +909,6 @@ AC_EGREP_CPP(lookupd, dnl
 #endif], AC_DEFINE([LOOKUPD],1,[Define to 1 if the system uses lookupd]))
 
 dnl freebsd needs this
-LIBS="$LIBS $INTLLIBS"
 CFLAGS="$CFLAGS $CPPFLAGS"
 
 GUI_LIBS="$GUI_LIBS $COMMON_LIBS"
@@ -949,7 +947,7 @@ dnl for plugins/xxx/Makefile.am
 hexchatlibdir=${libdir}/hexchat
 AC_SUBST(hexchatlibdir)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 share/Makefile
 share/icons/Makefile
@@ -967,12 +965,13 @@ plugins/checksum/Makefile
 plugins/doat/Makefile
 plugins/fishlim/Makefile
 plugins/sysinfo/Makefile
-intl/Makefile
 po/Makefile.in
 man/Makefile
 ])
 dnl plugins/tcl/Makefile
 dnl plugins/sasl/Makefile
+
+AC_OUTPUT
 
 echo
 echo HexChat $VERSION
