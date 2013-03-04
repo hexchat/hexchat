@@ -55,6 +55,21 @@ enum
 	N_COLUMNS
 };
 
+static short view_mode;	/* 1=ban 2=exempt 3=both */
+#define VIEW_BAN    1
+#define VIEW_EXEMPT 2
+#define VIEW_BOTH   (VIEW_BAN | VIEW_EXEMPT)
+
+typedef struct
+{
+	struct session *sess;
+	int flags;
+} viewmode_banlist;
+
+static viewmode_banlist *viewmode_both;
+static viewmode_banlist *viewmode_ban;
+static viewmode_banlist *viewmode_exempt;
+
 static GtkTreeView *
 get_view (struct session *sess)
 {
@@ -120,7 +135,7 @@ fe_ban_list_end (struct session *sess, int is_exemption)
  *  * Performs the actual refresh operations.
  *  */
 static void
-banlist_do_refresh (struct session *sess)
+banlist_do_refresh (struct session *sess, int flags)
 {
 	char tbuf[256];
 	if (sess->server->connected)
@@ -136,12 +151,18 @@ banlist_do_refresh (struct session *sess)
 		store = get_store (sess);
 		gtk_list_store_clear (store);
 
-		handle_command (sess, "ban", FALSE);
-
-		if (supports_exempt (sess->server))
+		if (flags & VIEW_BAN)
 		{
-			snprintf (tbuf, sizeof (tbuf), "quote mode %s +e", sess->channel);
-			handle_command (sess, tbuf, FALSE);
+			handle_command (sess, "ban", FALSE);
+		}
+
+		if (flags & VIEW_EXEMPT)
+		{
+			if (supports_exempt (sess->server))
+			{
+				snprintf (tbuf, sizeof (tbuf), "quote mode %s +e", sess->channel);
+				handle_command (sess, tbuf, FALSE);
+			}
 		}
 
 	} else
@@ -159,7 +180,7 @@ banlist_refresh (GtkWidget * wid, struct session *sess)
 	   *          * or apply for the first time if the list has not yet been
 	   *          * received.
 	   *          */
-	banlist_do_refresh (sess);
+	banlist_do_refresh (sess, view_mode);
 }
 
 static int
@@ -248,7 +269,7 @@ banlist_unban (GtkWidget * wid, struct session *sess)
 		return;
 	}
 
-	banlist_do_refresh (sess);
+	banlist_do_refresh (sess, view_mode);
 }
 
 static void
@@ -271,9 +292,19 @@ banlist_clear (GtkWidget * wid, struct session *sess)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_message_dialog_new (NULL, 0,
-								GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
-					_("Are you sure you want to remove all bans in %s?"), sess->channel);
+	if (view_mode == VIEW_BAN)
+		dialog = gtk_message_dialog_new (NULL, 0,
+									GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+						_("Are you sure you want to remove all bans in %s?"), sess->channel);
+	else if (view_mode == VIEW_EXEMPT)
+		dialog = gtk_message_dialog_new (NULL, 0,
+									GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+						_("Are you sure you want to remove all exempts in %s?"), sess->channel);
+	else
+		dialog = gtk_message_dialog_new (NULL, 0,
+									GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+						_("Are you sure you want to remove all bans and exempts in %s?"), sess->channel);
+						
 	g_signal_connect (G_OBJECT (dialog), "response",
 							G_CALLBACK (banlist_clear_cb), sess);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
@@ -327,6 +358,18 @@ banlist_crop (GtkWidget * wid, struct session *sess)
 		fe_message (_("You must select some bans."), FE_MSG_ERROR);
 }
 
+static void
+banlist_toggle (GtkWidget *item, gpointer data)
+{
+	viewmode_banlist *viewmode_bl = data;
+	
+	if (GTK_TOGGLE_BUTTON (item)->active)
+	{
+		view_mode = viewmode_bl->flags;
+		banlist_do_refresh (viewmode_bl->sess, view_mode);
+	}
+}
+
 static GtkWidget *
 banlist_treeview_new (GtkWidget *box)
 {
@@ -366,14 +409,19 @@ static void
 banlist_closegui (GtkWidget *wid, session *sess)
 {
 	if (is_session (sess))
+	{
 		sess->res->banlist_window = 0;
+		free(viewmode_both);
+		free(viewmode_ban);
+		free(viewmode_exempt);
+	}
 }
 
 void
 banlist_opengui (struct session *sess)
 {
-	GtkWidget *vbox1;
-	GtkWidget *bbox;
+	GtkWidget *radio, *table, *vbox, *bbox;
+	GSList *group;
 	char tbuf[256];
 
 	if (sess->res->banlist_window)
@@ -387,20 +435,54 @@ banlist_opengui (struct session *sess)
 		fe_message (_("You can only open the Ban List window while in a channel tab."), FE_MSG_ERROR);
 		return;
 	}
-
+	
+	viewmode_banlist *viewmode_both = malloc (sizeof (viewmode_banlist));
+	viewmode_banlist *viewmode_ban = malloc (sizeof (viewmode_banlist));
+	viewmode_banlist *viewmode_exempt = malloc (sizeof (viewmode_banlist));
+	
 	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Ban List (%s)"),
 					sess->server->servername);
 
 	sess->res->banlist_window = mg_create_generic_tab ("BanList", tbuf, FALSE,
-					TRUE, banlist_closegui, sess, 550, 200, &vbox1, sess->server);
+					TRUE, banlist_closegui, sess, 550, 200, &vbox, sess->server);
+
+	gtk_container_set_border_width (GTK_CONTAINER (sess->res->banlist_window), 3);
+	gtk_box_set_spacing (GTK_BOX (vbox), 3);
 
 	/* create banlist view */
-	sess->res->banlist_treeview = banlist_treeview_new (vbox1);
+	sess->res->banlist_treeview = banlist_treeview_new (vbox);
+
+	table = gtk_table_new (1, 3, FALSE);
+	gtk_table_set_col_spacings (GTK_TABLE (table), 16);
+	gtk_box_pack_start (GTK_BOX (vbox), table, 0, 0, 0);
+
+	viewmode_both->sess = sess;
+	viewmode_both->flags = VIEW_BOTH;
+	radio = gtk_radio_button_new_with_mnemonic (NULL, _("Both"));
+	g_signal_connect (G_OBJECT (radio), "toggled",
+							G_CALLBACK (banlist_toggle), viewmode_both);
+	gtk_table_attach (GTK_TABLE (table), radio, 3, 4, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
+	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
+
+	viewmode_ban->sess = sess;
+	viewmode_ban->flags = VIEW_BAN;
+	radio = gtk_radio_button_new_with_mnemonic (group, _("Bans"));
+	g_signal_connect (G_OBJECT (radio), "toggled",
+							G_CALLBACK (banlist_toggle), viewmode_ban);
+	gtk_table_attach (GTK_TABLE (table), radio, 1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
+	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
+
+	viewmode_exempt->sess = sess;
+	viewmode_exempt->flags = VIEW_EXEMPT;
+	radio = gtk_radio_button_new_with_mnemonic (group, _("Exempts"));
+	g_signal_connect (G_OBJECT (radio), "toggled",
+							G_CALLBACK (banlist_toggle), viewmode_exempt);
+	gtk_table_attach (GTK_TABLE (table), radio, 2, 3, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
 
 	bbox = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_SPREAD);
 	gtk_container_set_border_width (GTK_CONTAINER (bbox), 5);
-	gtk_box_pack_end (GTK_BOX (vbox1), bbox, 0, 0, 0);
+	gtk_box_pack_end (GTK_BOX (vbox), bbox, 0, 0, 0);
 	gtk_widget_show (bbox);
 
 	gtkutil_button (bbox, GTK_STOCK_REMOVE, 0, banlist_unban, sess,
@@ -412,7 +494,7 @@ banlist_opengui (struct session *sess)
 
 	sess->res->banlist_butRefresh = gtkutil_button (bbox, GTK_STOCK_REFRESH, 0, banlist_refresh, sess, _("Refresh"));
 
-	banlist_do_refresh (sess);
+	banlist_do_refresh (sess, VIEW_BOTH);
 
-	gtk_widget_show (sess->res->banlist_window);
+	gtk_widget_show_all (sess->res->banlist_window);
 }
