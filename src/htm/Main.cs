@@ -281,7 +281,7 @@ namespace thememan
 
             try
             {
-                using (Package zip = Package.Open(zipFile.FullName, FileMode.Open))
+                using (Package zip = Package.Open(zipFile.FullName, FileMode.Open, FileAccess.Read))
                 {
                     PackagePartCollection parts = zip.GetParts();
 
