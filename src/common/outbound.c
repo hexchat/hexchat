@@ -3166,6 +3166,8 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		sess->willjoinchannel[0] = '#';
 		safe_strcpy ((sess->willjoinchannel + 1), channel, (CHANLEN - 1));
+		if (key)
+			safe_strcpy (sess->channelkey, key, 64);
 	}
 
 	/* support +7000 style ports like mIRC */
