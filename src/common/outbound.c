@@ -2873,7 +2873,7 @@ open_query (server *serv, char *nick, gboolean focus_existing)
 
 	sess = find_dialog (serv, nick);
 	if (!sess)
-		new_ircwindow (serv, nick, SESS_DIALOG, 1);
+		new_ircwindow (serv, nick, SESS_DIALOG, focus_existing);
 	else if (focus_existing)
 		fe_ctrl_gui (sess, 2, 0);	/* bring-to-front */
 }
