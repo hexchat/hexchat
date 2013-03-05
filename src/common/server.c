@@ -1914,6 +1914,7 @@ server_set_defaults (server *serv)
 	serv->have_idmsg = FALSE;
 	serv->have_sasl = FALSE;
 	serv->have_except = FALSE;
+	serv->have_invite = FALSE;
 }
 
 char *

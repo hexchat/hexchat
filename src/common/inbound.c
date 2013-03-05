@@ -1258,12 +1258,14 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 }
 
 int
-inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int is_exemption)
+inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int rplcode)
 {
 	char *time_str = ctime (&stamp);
 	server *serv = sess->server;
+	char *nl;
 
-	time_str[19] = 0;	/* get rid of the \n */
+	if ((nl = strchr (time_str, '\n')))
+		*nl = 0;
 	if (stamp == 0)
 		time_str = "";
 
@@ -1274,18 +1276,17 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *bann
 		goto nowindow;
 	}
 
-   if (!fe_is_banwindow (sess))
+	if (!fe_add_ban_list (sess, mask, banner, time_str, rplcode))
 	{
 nowindow:
 		/* let proto-irc.c do the 'goto def' for exemptions */
-		if (is_exemption)
+		if (rplcode == 348)	/* RPL_EXCEPTLIST */
 			return FALSE;
 
 		EMIT_SIGNAL (XP_TE_BANLIST, sess, chan, mask, banner, time_str, 0);
 		return TRUE;
 	}
 
-	fe_add_ban_list (sess, mask, banner, time_str, is_exemption);
 	return TRUE;
 }
 

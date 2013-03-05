@@ -3530,8 +3530,8 @@ fe_server_callback (server *serv)
 void
 fe_session_callback (session *sess)
 {
-	if (sess->res->banlist_window)
-		mg_close_gen (NULL, sess->res->banlist_window);
+	if (sess->res->banlist && sess->res->banlist->window)
+		mg_close_gen (NULL, sess->res->banlist->window);
 
 	if (sess->res->input_text)
 		free (sess->res->input_text);

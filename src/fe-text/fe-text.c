@@ -641,17 +641,12 @@ void
 fe_chan_list_end (struct server *serv)
 {
 }
-int
-fe_is_banwindow (struct session *sess)
-{
-	return 0;
-}
-void
-fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is_exemption)
+gboolean
+fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rplcode)
 {
 }
-void
-fe_ban_list_end (struct session *sess, int is_exemption)
+gboolean
+fe_ban_list_end (struct session *sess, int rplcode)
 {
 }
 void
