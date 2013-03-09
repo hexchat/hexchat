@@ -321,6 +321,14 @@ static const char *const focusnewtabsmenu[] =
 	NULL
 };
 
+static const char *const noticeposmenu[] =
+{
+	N_("Automatic"),
+	N_("In an extra tab"),
+	N_("In the front tab"),
+	NULL
+};
+
 static const char *const swtype[] =
 {
 	N_("Tabs"),	/* 0 tabs */
@@ -334,13 +342,13 @@ static const setting tabs_settings[] =
 	/*{ST_HEADER,	N_("Channel Switcher"),0,0,0},*/
 	{ST_RADIO,  N_("Switcher type:"),P_OFFINTNL(hex_gui_tab_layout), 0, swtype, 0},
 	{ST_TOGGLE, N_("Open an extra tab for server messages"), P_OFFINTNL(hex_gui_tab_server), 0, 0, 0},
-	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(hex_gui_tab_notices), 0, 0, 0},
 	{ST_TOGGLE, N_("Open a new tab when you receive a private message"), P_OFFINTNL(hex_gui_autoopen_dialog), 0, 0, 0},
 	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(hex_gui_tab_sort), 0, 0, 0},
 	{ST_TOGGLE, N_("Show icons in the channel tree"), P_OFFINTNL(hex_gui_tab_icons), 0, 0, 0},
 	{ST_TOGGLE, N_("Show dotted lines in the channel tree"), P_OFFINTNL(hex_gui_tab_dots), 0, 0, 0},
 	{ST_TOGGLE, N_("Smaller text"), P_OFFINTNL(hex_gui_tab_small), 0, 0, 0},
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(hex_gui_tab_newtofront), 0, focusnewtabsmenu, 0},
+	{ST_MENU,	N_("Notice placement:"), P_OFFINTNL(hex_irc_notice_pos), 0, noticeposmenu, 0},
 	{ST_MENU,	N_("Show channel switcher at:"), P_OFFINTNL(hex_gui_tab_pos), 0, cspos, 1},
 	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(hex_gui_tab_trunc), 0, (const char **)N_("letters."), 99},
 
@@ -2220,7 +2228,7 @@ setup_apply (struct hexchatprefs *pr)
 	if (DIFF (hex_gui_compact))
 		noapply = TRUE;
 	if (DIFF (hex_gui_input_icon))
-		noapply = TRUE;	
+		noapply = TRUE;
 	if (DIFF (hex_gui_input_nick))
 		noapply = TRUE;
 	if (DIFF (hex_gui_lagometer))
