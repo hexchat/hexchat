@@ -466,6 +466,7 @@ const struct prefs vars[] =
 	{"gui_tray_minimize", P_OFFINT (hex_gui_tray_minimize), TYPE_BOOL},
 	{"gui_tray_quiet", P_OFFINT (hex_gui_tray_quiet), TYPE_BOOL},
 	{"gui_ulist_buttons", P_OFFINT (hex_gui_ulist_buttons), TYPE_BOOL},
+	{"gui_ulist_color", P_OFFINT (hex_gui_ulist_color), TYPE_BOOL},
 	{"gui_ulist_count", P_OFFINT (hex_gui_ulist_count), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (hex_gui_ulist_doubleclick), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hex_gui_ulist_hide), TYPE_BOOL},
