@@ -3066,7 +3066,7 @@ cmd_splay (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
-parse_irc_url (char *url, char *server_name[], char *port[], char *channel[], int *use_ssl)
+parse_irc_url (char *url, char *server_name[], char *port[], char *channel[], char *key[], int *use_ssl)
 {
 	char *co;
 #ifdef USE_OPENSSL
@@ -3104,6 +3104,15 @@ urlserv:
 				*channel = co;
 			
 		}
+		/* check for key - mirc style */
+		co = strchr (co + 1, '?');
+		if (co)
+		{
+			*co = 0;
+			co++;
+			*key = co;
+		}
+			
 		return TRUE;
 	}
 	return FALSE;
@@ -3117,6 +3126,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *port = NULL;
 	char *pass = NULL;
 	char *channel = NULL;
+	char *key = NULL;
 	int use_ssl = FALSE;
 	int is_url = TRUE;
 	server *serv = sess->server;
@@ -3130,7 +3140,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 #endif
 
-	if (!parse_irc_url (word[2 + offset], &server_name, &port, &channel, &use_ssl))
+	if (!parse_irc_url (word[2 + offset], &server_name, &port, &channel, &key, &use_ssl))
 	{
 		is_url = FALSE;
 		server_name = word[2 + offset];
@@ -3156,6 +3166,8 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		sess->willjoinchannel[0] = '#';
 		safe_strcpy ((sess->willjoinchannel + 1), channel, (CHANLEN - 1));
+		if (key)
+			safe_strcpy (sess->channelkey, key, 64);
 	}
 
 	/* support +7000 style ports like mIRC */
@@ -3356,15 +3368,18 @@ find_server_from_net (void *net)
 }
 
 static void
-url_join_only (server *serv, char *tbuf, char *channel)
+url_join_only (server *serv, char *tbuf, char *channel, char *key)
 {
-	/* already connected, JOIN only. FIXME: support keys? */
+	/* already connected, JOIN only. */
 	if (channel == NULL)
 		return;
 	tbuf[0] = '#';
 	/* tbuf is 4kb */
 	safe_strcpy ((tbuf + 1), channel, 256);
-	serv->p_join (serv, tbuf, "");
+	if (key)
+		serv->p_join (serv, tbuf, key);
+	else
+		serv->p_join (serv, tbuf, "");
 }
 
 static int
@@ -3375,12 +3390,13 @@ cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		char *server_name = NULL;
 		char *port = NULL;
 		char *channel = NULL;
+		char *key = NULL;
 		char *url = g_strdup (word[2]);
 		int use_ssl = FALSE;
 		void *net;
 		server *serv;
 
-		if (parse_irc_url (url, &server_name, &port, &channel, &use_ssl))
+		if (parse_irc_url (url, &server_name, &port, &channel, &key, &use_ssl))
 		{
 			/* maybe we're already connected to this net */
 
@@ -3396,7 +3412,7 @@ cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				serv = find_server_from_net (net);
 				if (serv)
 				{
-					url_join_only (serv, tbuf, channel);
+					url_join_only (serv, tbuf, channel, key);
 					g_free (url);
 					return TRUE;
 				}
@@ -3407,7 +3423,7 @@ cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				serv = find_server_from_hostname (server_name);
 				if (serv)
 				{
-					url_join_only (serv, tbuf, channel);
+					url_join_only (serv, tbuf, channel, key);
 					g_free (url);
 					return TRUE;
 				}
