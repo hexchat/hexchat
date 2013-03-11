@@ -1053,8 +1053,17 @@ check_autojoin_channels (server *serv)
 				if (po)
 					*po = 0;
 
-				channels = g_slist_append (channels, g_strdup (sess->waitchannel));
-				keys = g_slist_append (keys, g_strdup (sess->channelkey));
+				/* There can be no gap between keys, list keyed chans first. */
+				if (sess->channelkey[0] != 0)
+				{
+					channels = g_slist_prepend (channels, g_strdup (sess->waitchannel));
+					keys = g_slist_prepend (keys, g_strdup (sess->channelkey));
+				}
+				else
+				{
+					channels = g_slist_append (channels, g_strdup (sess->waitchannel));
+					keys = g_slist_append (keys, g_strdup (sess->channelkey));
+				}
 				i++;
 			}
 		}
