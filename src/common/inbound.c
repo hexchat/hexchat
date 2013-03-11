@@ -1030,6 +1030,7 @@ check_autojoin_channels (server *serv)
 
 		free (serv->autojoin);
 		serv->autojoin = NULL;
+		i++;
 	}
 
 	/* this is really only for re-connects when you
