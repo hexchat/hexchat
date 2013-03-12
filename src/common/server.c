@@ -1908,6 +1908,7 @@ server_set_defaults (server *serv)
 	serv->bad_prefix = FALSE;
 	serv->use_who = TRUE;
 	serv->have_namesx = FALSE;
+	serv->have_awaynotify = FALSE;
 	serv->have_uhnames = FALSE;
 	serv->have_whox = FALSE;
 	serv->have_capab = FALSE;

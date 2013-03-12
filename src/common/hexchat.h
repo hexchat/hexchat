@@ -569,6 +569,7 @@ typedef struct server
 	unsigned int supports_watch:1;	/* supports the WATCH command */
 	unsigned int bad_prefix:1;			/* gave us a bad PREFIX= 005 number */
 	unsigned int have_namesx:1;		/* 005 tokens NAMESX and UHNAMES */
+	unsigned int have_awaynotify:1;
 	unsigned int have_uhnames:1;
 	unsigned int have_whox:1;		/* have undernet's WHOX features */
 	unsigned int have_capab:1;		/* supports CAPAB (005 tells us) */

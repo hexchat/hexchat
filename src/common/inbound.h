@@ -23,6 +23,7 @@ void inbound_ping_reply (session *sess, char *timestring, char *from);
 void inbound_nameslist (server *serv, char *chan, char *names);
 int inbound_nameslist_end (server *serv, char *chan);
 void inbound_away (server *serv, char *nick, char *msg);
+void inbound_away_notify (server *serv, char *nick, char *reason);
 void inbound_login_start (session *sess, char *nick, char *servname);
 void inbound_login_end (session *sess, char *text);
 void inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text, char fromme, int id);

@@ -336,8 +336,8 @@ doover:
 		list = list->next;
 	}
 
-	/* done them all, reset done_away_check to FALSE and start over */
-	if (full)
+	/* done them all, reset done_away_check to FALSE and start over unless we have away-notify*/
+	if (full && !sess->server->have_awaynotify)
 	{
 		list = sess_list;
 		while (list)

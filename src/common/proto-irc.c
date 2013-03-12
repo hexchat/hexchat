@@ -1016,6 +1016,11 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 			inbound_quit (serv, nick, ip,
 							  (word_eol[3][0] == ':') ? word_eol[3] + 1 : word_eol[3]);
 			return;
+
+		case WORDL('A','W','A','Y'):
+			inbound_away_notify (serv, nick,
+						(word_eol[3][0] == ':') ? word_eol[3] + 1 : NULL);
+			return;
 		}
 
 		goto garbage;
@@ -1153,6 +1158,11 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						serv->have_namesx = TRUE;
 					}
 
+					if (strstr (word_eol[5], "away-notify") != 0)
+					{
+						serv->have_awaynotify = TRUE;
+					}
+
 					if (strstr (word_eol[5], "sasl") != 0)
 					{
 						serv->have_sasl = TRUE;
@@ -1178,6 +1188,11 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strstr (word_eol[5], "multi-prefix") != 0)
 					{
 						want_cap ? strcat (buffer, " multi-prefix") : strcpy (buffer, "CAP REQ :multi-prefix");
+						want_cap = 1;
+					}
+					if (strstr (word_eol[5], "away-notify") != 0)
+					{
+						want_cap ? strcat (buffer, " away-notify") : strcpy (buffer, "CAP REQ :away-notify");
 						want_cap = 1;
 					}
 					/* if the SASL password is set, request SASL auth */
