@@ -1610,12 +1610,15 @@ Module_hexchat_pluginpref_get(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:get_pluginpref", &var))
 		return NULL;
 	// This will always return numbers as integers.
-	retint = hexchat_pluginpref_get_int(ph, var);
 	if (hexchat_pluginpref_get_str(ph, var, retstr)) {
-		if ((retint == 0) && (strcmp(retstr, "0") != 0))
+		if (strlen (retstr) <= 12) {
+			retint = hexchat_pluginpref_get_int(ph, var);
+			if ((retint == 0) && (strcmp(retstr, "0") != 0))
+				ret = PyString_FromString(retstr);
+			else
+				ret = PyInt_FromLong(retint);
+		} else
 			ret = PyString_FromString(retstr);
-		else
-			ret = PyInt_FromLong(retint);
 	}
 	else
 		ret = Py_None;
