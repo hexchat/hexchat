@@ -336,14 +336,15 @@ doover:
 		list = list->next;
 	}
 
-	/* done them all, reset done_away_check to FALSE and start over unless we have away-notify*/
-	if (full && !sess->server->have_awaynotify)
+	/* done them all, reset done_away_check to FALSE and start over unless we have away-notify */
+	if (full)
 	{
 		list = sess_list;
 		while (list)
 		{
 			sess = list->data;
-			sess->done_away_check = FALSE;
+			if (!sess->server->have_awaynotify)
+				sess->done_away_check = FALSE;
 			list = list->next;
 		}
 		loop++;

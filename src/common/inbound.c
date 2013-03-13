@@ -988,10 +988,7 @@ inbound_away_notify (server *serv, char *nick, char *reason)
 	{
 		sess = list->data;
 		if (sess->server == serv)
-			if (!reason)
-				userlist_set_away (sess, nick, FALSE);
-			else
-				userlist_set_away (sess, nick, TRUE);
+			userlist_set_away (sess, nick, reason ? TRUE : FALSE);
 		list = list->next;
 	}
 }
