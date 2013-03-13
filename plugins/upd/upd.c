@@ -35,6 +35,7 @@ static char name[] = "Update Checker";
 static char desc[] = "Check for HexChat updates automatically";
 static char version[] = "4.0";
 static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexChat updates\n  /UPDCHK SET delay|freq, set startup delay or check frequency\n";
+static int legacy_os = 0;
 
 static char*
 check_version ()
@@ -120,14 +121,30 @@ check_version ()
 		return "Unknown";
 	}
 
-	hResource = HttpOpenRequest (hConnect,
-								TEXT ("GET"),
-								TEXT ("/hexchat/hexchat/master/win32/version.txt"),
-								TEXT ("HTTP/1.0"),
-								NULL,
-								NULL,
-								INTERNET_FLAG_SECURE | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
-								0);
+	if (legacy_os)
+	{
+		hResource = HttpOpenRequest (hConnect,
+									TEXT ("GET"),
+									TEXT ("/hexchat/hexchat/master/win32/version-xp.txt"),
+									TEXT ("HTTP/1.0"),
+									NULL,
+									NULL,
+									INTERNET_FLAG_SECURE | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
+									0);
+	}
+	else
+	{
+		hResource = HttpOpenRequest (hConnect,
+									TEXT ("GET"),
+									TEXT ("/hexchat/hexchat/master/win32/version.txt"),
+									TEXT ("HTTP/1.0"),
+									NULL,
+									NULL,
+									INTERNET_FLAG_SECURE | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
+									0);	
+	}
+
+
 	if (!hResource)
 	{
 		InternetCloseHandle (hConnect);
@@ -286,11 +303,20 @@ int
 hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	int delay;
+	OSVERSIONINFOEX osvi;
 	ph = plugin_handle;
 
 	*plugin_name = name;
 	*plugin_desc = desc;
 	*plugin_version = version;
+
+	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
+	GetVersionEx ((OSVERSIONINFO*) &osvi);
+
+	if (osvi.dwMajorVersion == 5)
+	{
+		legacy_os = 1;
+	}
 
 	/* these are required for the very first run */
 	delay = hexchat_pluginpref_get_int (ph, "delay");
