@@ -659,12 +659,12 @@ inbound_nameslist (server *serv, char *chan, char *names)
 		case 0:
 			name[pos] = 0;
 			if (pos != 0)
-				userlist_add (sess, name, 0);
+				userlist_add (sess, name, 0, NULL, NULL);
 			return;
 		case ' ':
 			name[pos] = 0;
 			pos = 0;
-			userlist_add (sess, name, 0);
+			userlist_add (sess, name, 0, NULL, NULL);
 			break;
 		default:
 			name[pos] = *names;
@@ -709,13 +709,13 @@ inbound_topicnew (server *serv, char *nick, char *chan, char *topic)
 }
 
 void
-inbound_join (server *serv, char *chan, char *user, char *ip)
+inbound_join (server *serv, char *chan, char *user, char *ip, char *account, char *realname)
 {
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
 		EMIT_SIGNAL (XP_TE_JOIN, sess, user, chan, ip, NULL, 0);
-		userlist_add (sess, user, ip);
+		userlist_add (sess, user, ip, account, realname);
 	}
 }
 
@@ -1264,9 +1264,6 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 		uhost = g_malloc (strlen (user) + strlen (host) + 2);
 		sprintf (uhost, "%s@%s", user, host);
 	}
-
-	if (strcmp (account, "*") == 0 || strcmp (account, ":0") == 0)
-		account = NULL;
 
 	if (chan)
 	{

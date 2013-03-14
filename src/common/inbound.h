@@ -12,7 +12,7 @@ void inbound_kick (server *serv, char *chan, char *user, char *kicker, char *rea
 void inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id);
 void inbound_quit (server *serv, char *nick, char *ip, char *reason);
 void inbound_topicnew (server *serv, char *nick, char *chan, char *topic);
-void inbound_join (server *serv, char *chan, char *user, char *ip);
+void inbound_join (server *serv, char *chan, char *user, char *ip, char *account, char *realname);
 void inbound_ujoin (server *serv, char *chan, char *nick, char *ip);
 void inbound_topictime (server *serv, char *chan, char *nick, time_t stamp);
 void inbound_topic (server *serv, char *chan, char *topic_text);

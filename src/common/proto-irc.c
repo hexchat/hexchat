@@ -953,13 +953,15 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 		case WORDL('J','O','I','N'):
 			{
 				char *chan = word[3];
+				char *account = word[4];
+				char *realname = word_eol[5] + 1;
 
 				if (*chan == ':')
 					chan++;
 				if (!serv->p_cmp (nick, serv->nick))
 					inbound_ujoin (serv, chan, nick, ip);
 				else
-					inbound_join (serv, chan, nick, ip);
+					inbound_join (serv, chan, nick, ip, account, realname);
 			}
 			return;
 
@@ -1164,6 +1166,11 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						serv->have_accountnotify = TRUE;
 					}
 
+					if (strstr (word_eol[5], "extended-join") != 0)
+					{
+						serv->have_extjoin = TRUE;
+					}
+
 					if (strstr (word_eol[5], "sasl") != 0)
 					{
 						serv->have_sasl = TRUE;
@@ -1195,6 +1202,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strstr (word_eol[5], "account-notify") != 0)
 					{
 						want_cap ? strcat (buffer, " account-notify") : strcpy (buffer, "CAP REQ :account-notify");
+						want_cap = 1;
+					}
+
+					if (strstr (word_eol[5], "extended-join") != 0)
+					{
+						want_cap ? strcat (buffer, " extended-join") : strcpy (buffer, "CAP REQ :extended-join");
 						want_cap = 1;
 					}
 					/* if the SASL password is set, request SASL auth */
