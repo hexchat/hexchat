@@ -113,9 +113,27 @@ userlist_set_away (struct session *sess, char *nick, unsigned int away)
 	}
 }
 
+void
+userlist_set_account (struct session *sess, char *nick, char *account)
+{
+	struct User *user;
+
+	user = userlist_find (sess, nick);
+	if (user)
+	{
+		if (strcmp (account, "*") == 0)
+			user->account = NULL;
+		else if (user->account != account)
+			user->account = strdup (account);
+			
+		/* gui doesnt currently reflect login status, maybe later
+		fe_userlist_rehash (sess, user); */
+	}
+}
+
 int
 userlist_add_hostname (struct session *sess, char *nick, char *hostname,
-							  char *realname, char *servername, unsigned int away)
+							  char *realname, char *servername, char *account, unsigned int away)
 {
 	struct User *user;
 
@@ -128,6 +146,8 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 			user->realname = strdup (realname);
 		if (!user->servername && servername)
 			user->servername = strdup (servername);
+		if (!user->account && account)
+			user->account = strdup (account);
 
 		if (away != 0xff)
 		{

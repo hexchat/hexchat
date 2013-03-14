@@ -636,6 +636,13 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 	g_signal_connect (G_OBJECT (item), "activate",
 							G_CALLBACK (copy_to_clipboard_cb), 
 							user->hostname ? user->hostname : unknown);
+	
+	snprintf (buf, sizeof (buf), fmt, _("Account:"),
+				 user->account ? user->account : unknown);
+	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	g_signal_connect (G_OBJECT (item), "activate",
+							G_CALLBACK (copy_to_clipboard_cb), 
+							user->account ? user->account : unknown);
 
 	snprintf (buf, sizeof (buf), fmt, _("Country:"),
 				 user->hostname ? country(user->hostname) : unknown);

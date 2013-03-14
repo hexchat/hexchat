@@ -9,6 +9,7 @@ struct User
 	char *hostname;
 	char *realname;
 	char *servername;
+	char *account;
 	time_t lasttalk;
 	unsigned int access;	/* axs bit field */
 	char prefix[2]; /* @ + % */
@@ -24,8 +25,9 @@ struct User
 
 int userlist_add_hostname (session *sess, char *nick,
 									char *hostname, char *realname,
-									char *servername, unsigned int away);
+									char *servername, char *account, unsigned int away);
 void userlist_set_away (session *sess, char *nick, unsigned int away);
+void userlist_set_account (session *sess, char *nick, char *account);
 struct User *userlist_find (session *sess, const char *name);
 struct User *userlist_find_global (server *serv, char *name);
 void userlist_clear (session *sess);

@@ -328,7 +328,7 @@ static void
 irc_away_status (server *serv, char *channel)
 {
 	if (serv->have_whox)
-		tcp_sendf (serv, "WHO %s %%ctnf,152\r\n", channel);
+		tcp_sendf (serv, "WHO %s %%chtsunfra,152\r\n", channel);
 	else
 		tcp_sendf (serv, "WHO %s\r\n", channel);
 }
@@ -568,7 +568,7 @@ process_numeric (session * sess, int n,
 		if (!serv->skip_next_whois)
 			EMIT_SIGNAL (XP_TE_WHOIS3, whois_sess, word[4], word_eol[5], NULL, NULL, 0);
 		else
-			inbound_user_info (sess, NULL, NULL, NULL, word[5], word[4], NULL, 0xff);
+			inbound_user_info (sess, NULL, NULL, NULL, word[5], word[4], NULL, NULL, 0xff);
 		break;
 
 	case 311:	/* WHOIS 1st line */
@@ -579,7 +579,7 @@ process_numeric (session * sess, int n,
 							 word[6], word_eol[8] + 1, 0);
 		else
 			inbound_user_info (sess, NULL, word[5], word[6], NULL, word[4],
-									 word_eol[8][0] == ':' ? word_eol[8] + 1 : word_eol[8], 0xff);
+									 word_eol[8][0] == ':' ? word_eol[8] + 1 : word_eol[8], NULL, 0xff);
 		break;
 
 	case 314:	/* WHOWAS */
@@ -724,7 +724,7 @@ process_numeric (session * sess, int n,
 				away = 1;
 
 			inbound_user_info (sess, word[4], word[5], word[6], word[7],
-									 word[8], word_eol[11], away);
+									 word[8], word_eol[11], word[10], away);
 
 			/* try to show only user initiated whos */
 			if (!who_sess || !who_sess->doing_who)
@@ -743,11 +743,12 @@ process_numeric (session * sess, int n,
 			{
 				who_sess = find_channel (serv, word[5]);
 
-				if (*word[7] == 'G')
+				if (*word[10] == 'G')
 					away = 1;
 
-				/* :SanJose.CA.us.undernet.org 354 z1 152 #zed1 z1 H@ */
-				inbound_user_info (sess, word[5], 0, 0, 0, word[6], 0, away);
+				/* :server 354 yournick 152 #channel ~ident host servname nick H account :realname */
+				inbound_user_info (sess, word[5], word[6], word[7], word[8],
+									 word[9], word_eol[12], word[11], away);
 
 				/* try to show only user initiated whos */
 				if (!who_sess || !who_sess->doing_who)
@@ -1029,6 +1030,11 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 		/* this should compile to a bunch of: CMP.L, JE ... nice & fast */
 		switch (t)
 		{
+
+		case WORDL('A','C','C','O'):
+			inbound_account (serv, nick, word[3]);
+			return;
+			
 		case WORDL('I','N','V','I'):
 			if (ignore_check (word[1], IG_INVI))
 				return;
@@ -1153,6 +1159,11 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						serv->have_namesx = TRUE;
 					}
 
+					if (strstr (word_eol[5], "account-notify") != 0)
+					{
+						serv->have_accountnotify = TRUE;
+					}
+
 					if (strstr (word_eol[5], "sasl") != 0)
 					{
 						serv->have_sasl = TRUE;
@@ -1178,6 +1189,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strstr (word_eol[5], "multi-prefix") != 0)
 					{
 						want_cap ? strcat (buffer, " multi-prefix") : strcpy (buffer, "CAP REQ :multi-prefix");
+						want_cap = 1;
+					}
+
+					if (strstr (word_eol[5], "account-notify") != 0)
+					{
+						want_cap ? strcat (buffer, " account-notify") : strcpy (buffer, "CAP REQ :account-notify");
 						want_cap = 1;
 					}
 					/* if the SASL password is set, request SASL auth */
