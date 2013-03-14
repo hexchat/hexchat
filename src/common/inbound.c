@@ -867,7 +867,27 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 	if (!sess)
 	{
 		ptr = 0;
-		if (prefs.hex_gui_tab_notices)
+		if (prefs.hex_irc_notice_pos == 0)
+		{
+											/* paranoia check */
+			if (msg[0] == '[' && (!serv->have_idmsg || id))
+			{
+				/* guess where chanserv meant to post this -sigh- */
+				if (!g_ascii_strcasecmp (nick, "ChanServ") && !find_dialog (serv, nick))
+				{
+					char *dest = strdup (msg + 1);
+					char *end = strchr (dest, ']');
+					if (end)
+					{
+						*end = 0;
+						sess = find_channel (serv, dest);
+					}
+					free (dest);
+				}
+			}
+			if (!sess)
+				sess = find_session_from_nick (nick, serv);
+		} else if (prefs.hex_irc_notice_pos == 1)
 		{
 			int stype = server_notice ? SESS_SNOTICES : SESS_NOTICES;
 			sess = find_session_from_type (stype, serv);
@@ -888,25 +908,9 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 				msg += 14;
 		} else
 		{
-											/* paranoia check */
-			if (msg[0] == '[' && (!serv->have_idmsg || id))
-			{
-				/* guess where chanserv meant to post this -sigh- */
-				if (!g_ascii_strcasecmp (nick, "ChanServ") && !find_dialog (serv, nick))
-				{
-					char *dest = strdup (msg + 1);
-					char *end = strchr (dest, ']');
-					if (end)
-					{
-						*end = 0;
-						sess = find_channel (serv, dest);
-					}
-					free (dest);
-				}
-			}
-			if (!sess)
-				sess = find_session_from_nick (nick, serv);
+			sess = serv->front_session;
 		}
+
 		if (!sess)
 		{
 			if (server_notice)	
