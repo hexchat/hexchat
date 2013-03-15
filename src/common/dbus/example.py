@@ -15,14 +15,14 @@ hexchat = dbus.Interface(proxy, 'org.hexchat.plugin')
 channels = hexchat.ListGet ("channels")
 while hexchat.ListNext (channels):
 	name = hexchat.ListStr (channels, "channel")
-	print "------- " + name + " -------"
+	print("------- " + name + " -------")
 	hexchat.SetContext (hexchat.ListInt (channels, "context"))
 	hexchat.EmitPrint ("Channel Message", ["John", "Hi there", "@"])
 	users = hexchat.ListGet ("users")
 	while hexchat.ListNext (users):
-		print "Nick: " + hexchat.ListStr (users, "nick")
+		print("Nick: " + hexchat.ListStr (users, "nick"))
 	hexchat.ListFree (users)
 hexchat.ListFree (channels)
 
-print hexchat.Strip ("\00312Blue\003 \002Bold!\002", -1, 1|2)
+print(hexchat.Strip ("\00312Blue\003 \002Bold!\002", -1, 1|2))
 
