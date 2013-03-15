@@ -307,21 +307,9 @@ scrollback_load (session *sess)
 					{
 						text = strip_color (text + 1, -1, STRIP_COLOR);
 					}
-#ifdef WIN32
-#if 0
-					cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
-					if (cleaned_text != NULL)
-					{
-						if (prefs.hex_text_stripcolor_replay)
-						{
-							g_free (text);
-						}
-						text = cleaned_text;
-					}
-#endif
-					text_replace_non_bmp2 (text);
-#endif
+
 					fe_print_text (sess, text, stamp);
+
 					if (prefs.hex_text_stripcolor_replay)
 					{
 						g_free (text);
@@ -832,71 +820,6 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 
 	return res;
 }
-
-#ifdef WIN32
-/* replace characters outside of the Basic Multilingual Plane with
- * replacement characters (0xFFFD) */
-#if 0
-char *
-text_replace_non_bmp (char *utf8_input, int input_length, glong *output_length)
-{
-	gunichar *ucs4_text;
-	gunichar suspect;
-	gchar *utf8_text;
-	glong ucs4_length;
-	glong index;
-
-	ucs4_text = g_utf8_to_ucs4_fast (utf8_input, input_length, &ucs4_length);
-
-	/* replace anything not in the Basic Multilingual Plane
-	 * (code points above 0xFFFF) with the replacement
-	 * character */
-	for (index = 0; index < ucs4_length; index++)
-	{
-		suspect = ucs4_text[index];
-		if ((suspect >= 0x1D173 && suspect <= 0x1D17A)
-			|| (suspect >= 0xE0001 && suspect <= 0xE007F))
-		{
-			ucs4_text[index] = 0xFFFD; /* replacement character */
-		}
-	}
-
-	utf8_text = g_ucs4_to_utf8 (
-		ucs4_text,
-		ucs4_length,
-		NULL,
-		output_length,
-		NULL
-	);
-	g_free (ucs4_text);
-
-	return utf8_text;
-}
-#endif
-
-void
-text_replace_non_bmp2 (char *utf8_input)
-{
-	char *tmp = utf8_input, *next;
-	gunichar suspect;
-
-	while (tmp != NULL && *tmp)
-	{
-		next = g_utf8_next_char(tmp);
-		suspect = g_utf8_get_char_validated(tmp, next - tmp);
-		if ((suspect >= 0x1D173 && suspect <= 0x1D17A) || (suspect >= 0xE0001 && suspect <= 0xE007F))
-		{
-			/* 0xFFFD - replacement character */
-			*tmp = 0xEF;
-			*(++tmp) = 0xBF;
-			*(++tmp) = 0xBD;
-			*(++tmp) = 0x1A;	/* ASCII Sub to fill the 4th non-BMP byte */
-		}
-
-		tmp = next;
-	}
-}
-#endif
 
 char *
 text_validate (char **text, int *len)
