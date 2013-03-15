@@ -501,6 +501,7 @@ static const setting general_settings[] =
 static const setting advanced_settings[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
+	{ST_ENTRY,  N_("Real name:"), P_OFFSETNL(hex_irc_real_name), 0, 0, sizeof prefs.hex_irc_real_name},
 #ifdef WIN32
 	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
 #endif
