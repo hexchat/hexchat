@@ -173,6 +173,7 @@ Source: "thememan.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xtm
 
 [Icons]
 Name: "{group}\HexChat (x64)"; Filename: "{app}\hexchat.exe"; Tasks: not portable
+Name: "{group}\HexChat (x64) Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable
 Name: "{group}\HexChat (x64) ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
 Name: "{group}\HexChat (x64) ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable
 Name: "{group}\HexChat-Text (x64)"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
