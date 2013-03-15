@@ -93,7 +93,6 @@ static GtkWidget *servlist_open_edit (GtkWidget *parent, ircnet *net);
 
 static const char *pages[]=
 {
-	"UTF-8 (Unicode)",
 	IRC_DEFAULT_CHARSET,
 	"ISO-8859-15 (Western Europe)",
 	"ISO-8859-2 (Central Europe)",
