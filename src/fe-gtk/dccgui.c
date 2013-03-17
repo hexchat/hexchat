@@ -745,6 +745,7 @@ fe_dcc_open_recv_win (int passive)
 	dccfwin.window = mg_create_generic_tab ("Transfers", _(DISPLAY_NAME": Uploads and Downloads"),
 														 FALSE, TRUE, close_dcc_file_window, NULL,
 														 win_width, win_height, &vbox, 0);
+	gtkutil_destroy_on_esc (dccfwin.window);
 	gtk_container_set_border_width (GTK_CONTAINER (dccfwin.window), 3);
 	gtk_box_set_spacing (GTK_BOX (vbox), 3);
 
@@ -989,6 +990,7 @@ fe_dcc_open_chat_win (int passive)
 	dcccwin.window =
 			  mg_create_generic_tab ("DCCChat", _(DISPLAY_NAME": DCC Chat List"),
 						FALSE, TRUE, dcc_chat_close_cb, NULL, 550, 180, &vbox, 0);
+	gtkutil_destroy_on_esc (dcccwin.window);
 	gtk_container_set_border_width (GTK_CONTAINER (dcccwin.window), 3);
 	gtk_box_set_spacing (GTK_BOX (vbox), 3);
 
