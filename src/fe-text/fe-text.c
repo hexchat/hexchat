@@ -62,7 +62,7 @@ handle_line (GIOChannel *channel, GIOCondition cond, gpointer data)
 	GIOStatus result;
 
 	result = g_io_channel_read_line(channel, &str_return, &length, &terminator_pos, &error);
-	if (result == G_IO_STATUS_ERROR) {
+	if (result == G_IO_STATUS_ERROR || result == G_IO_STATUS_EOF) {
 		return FALSE;
 	}
 	else {
