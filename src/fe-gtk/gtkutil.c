@@ -45,6 +45,7 @@
 #include <gtk/gtkcellrenderertoggle.h>
 #include <gtk/gtkversion.h>
 #include <gtk/gtkfilechooserdialog.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "../common/hexchat.h"
 #include "../common/fe.h"
@@ -336,6 +337,20 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	g_signal_connect (G_OBJECT (dialog), "destroy",
 						   G_CALLBACK (gtkutil_file_req_destroy), (gpointer) freq);
 	gtk_widget_show (dialog);
+}
+
+static gboolean
+gtkutil_esc_destroy (GtkWidget * win, GdkEventKey * key, gpointer userdata)
+{
+	if (key->keyval == GDK_Escape)
+		gtk_widget_destroy (win);
+	return FALSE;
+}
+
+void
+gtkutil_destroy_on_esc (GtkWidget *win)
+{
+	g_signal_connect (G_OBJECT (win), "key_press_event", G_CALLBACK (gtkutil_esc_destroy), win);
 }
 
 void

@@ -90,7 +90,6 @@ static const unsigned char table[]=
 0xd1,0x89,0xd1,0x8a,0xd1,0x8b,0xd1,0x8c,0xd1,0x8d,0xd1,0x8e,0xd1,0x8f,0
 };
 
-
 static gboolean
 ascii_enter (GtkWidget * wid, GdkEventCrossing *event, GtkWidget *label)
 {
@@ -133,6 +132,7 @@ ascii_open (void)
 	win = mg_create_generic_tab ("charmap", _("Character Chart"), TRUE, TRUE,
 										  NULL, NULL, 0, 0, &vbox, NULL);
 	gtk_container_set_border_width (GTK_CONTAINER (win), 5);
+	gtkutil_destroy_on_esc (win);
 
 	label = gtk_label_new (NULL);
 
