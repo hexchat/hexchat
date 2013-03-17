@@ -3289,6 +3289,12 @@ cmd_unignore (struct session *sess, char *tbuf, char *word[],
 	char *arg = word[3];
 	if (*mask)
 	{
+		if (strchr (mask, '?') == NULL && strchr (mask, '*') == NULL)
+		{
+			mask = tbuf;
+			snprintf (tbuf, TBUFSIZE, "%s!*@*", word[2]);
+		}
+		
 		if (ignore_del (mask, NULL))
 		{
 			if (g_ascii_strcasecmp (arg, "QUIET"))
