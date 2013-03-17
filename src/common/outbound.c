@@ -2272,7 +2272,7 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 	if (!*word[3])
-		return FALSE;
+		word[3] = "ALL";
 
 	i = 3;
 	while (1)
