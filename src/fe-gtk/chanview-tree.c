@@ -75,6 +75,7 @@ cv_tree_init (chanview *cv)
 {
 	GtkWidget *view, *win;
 	GtkCellRenderer *renderer;
+	int wid1, wid2;
 	static const GtkTargetEntry dnd_src_target[] =
 	{
 		{"HEXCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
@@ -105,6 +106,14 @@ cv_tree_init (chanview *cv)
 	{
 		gtk_tree_view_set_enable_tree_lines (GTK_TREE_VIEW (view), TRUE);
 	}
+	
+	/* Indented channels with no server looks silly, but we still want expanders */
+	if (!prefs.hex_gui_tab_server)
+	{
+		gtk_widget_style_get (view, "expander-size", &wid1, "horizontal-separator", &wid2, NULL);
+		gtk_tree_view_set_level_indentation (GTK_TREE_VIEW (view), -wid1 - wid2);
+	}
+
 
 	gtk_container_add (GTK_CONTAINER (win), view);
 
