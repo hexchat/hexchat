@@ -29,6 +29,7 @@
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkcontainer.h>
 #include <gtk/gtksignal.h>
+#include "banlist.h"
 
 #undef gtk_signal_connect
 #define gtk_signal_connect g_signal_connect
@@ -97,10 +98,7 @@ struct server_gui
 
 typedef struct restore_gui
 {
-	/* banlist stuff */
-	GtkWidget *banlist_window;
-	GtkWidget *banlist_treeview;
-	GtkWidget *banlist_butRefresh;
+	banlist_info *banlist;
 
 	void *tab;			/* (chan *) */
 

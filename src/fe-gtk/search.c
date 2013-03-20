@@ -143,6 +143,7 @@ search_highlight_cb (GtkToggleButton * but, session * sess)
 	search_search (sess, NULL);
 }
 
+int RBHesc = 0;
 void
 search_open (session * sess)
 {

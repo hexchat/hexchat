@@ -778,8 +778,18 @@ process_numeric (session * sess, int n,
 		}
 		break;
 
+	case 346:	/* +I-list entry */
+		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 346))
+			goto def;
+		break;
+
+	case 347:	/* end of invite list */
+		if (!fe_ban_list_end (sess, 347))
+			goto def;
+		break;
+
 	case 348:	/* +e-list entry */
-		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], TRUE))
+		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 348))
 			goto def;
 		break;
 
@@ -790,9 +800,8 @@ process_numeric (session * sess, int n,
 			sess = serv->front_session;
 			goto def;
 		}
-		if (!fe_is_banwindow (sess))
+		if (!fe_ban_list_end (sess, 349))
 			goto def;
-		fe_ban_list_end (sess, TRUE);
 		break;
 
 	case 353:						  /* NAMES */
@@ -806,7 +815,8 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 367: /* banlist entry */
-		inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], FALSE);
+		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 367))
+			goto def;
 		break;
 
 	case 368:
@@ -816,9 +826,8 @@ process_numeric (session * sess, int n,
 			sess = serv->front_session;
 			goto def;
 		}
-		if (!fe_is_banwindow (sess))
+		if (!fe_ban_list_end (sess, 368))
 			goto def;
-		fe_ban_list_end (sess, FALSE);
 		break;
 
 	case 369:	/* WHOWAS end */
@@ -879,6 +888,18 @@ process_numeric (session * sess, int n,
 	case 600:
 	case 604:
 		notify_set_online (serv, word[4]);
+		break;
+
+	case 728:	/* +q-list entry */
+		/* NOTE:  FREENODE returns these results inconsistent with e.g. +b */
+		/* Who else has imlemented MODE_QUIET, I wonder? */
+		if (!inbound_banlist (sess, atol (word[8]), word[4], word[6], word[7], 728))
+			goto def;
+		break;
+
+	case 729:	/* end of quiet list */
+		if (!fe_ban_list_end (sess, 729))
+			goto def;
 		break;
 
 	case 903:	/* successful SASL auth */
