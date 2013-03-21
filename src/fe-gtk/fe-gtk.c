@@ -604,14 +604,6 @@ fe_is_chanwindow (struct server *serv)
 	return 1;
 }
 
-int
-fe_is_banwindow (struct session *sess)
-{
-   if (!sess->res->banlist_window)
-     return 0;
-   return 1;
-}
-
 void
 fe_notify_update (char *name)
 {
