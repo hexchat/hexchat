@@ -1294,7 +1294,7 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *bann
 	{
 nowindow:
 		/* let proto-irc.c do the 'goto def' for exemptions */
-		if (rplcode == 348)	/* RPL_EXCEPTLIST */
+		if (rplcode != 367)	/* RPL_EXCEPTLIST */
 			return FALSE;
 
 		EMIT_SIGNAL (XP_TE_BANLIST, sess, chan, mask, banner, time_str, 0);
