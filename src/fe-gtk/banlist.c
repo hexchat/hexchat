@@ -36,6 +36,7 @@
 #include <gtk/gtkmessagedialog.h>
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreeselection.h>
+#include <glib.h>
 
 #include "../common/hexchat.h"
 #include "../common/fe.h"
@@ -45,6 +46,52 @@
 #include "gtkutil.h"
 #include "maingui.h"
 #include "banlist.h"
+
+/*
+ * These supports_* routines set capable, readable, writable bits */
+static void supports_bans (banlist_info *, int);
+static void supports_exempt (banlist_info *, int);
+static void supports_invite (banlist_info *, int);
+static void supports_quiet (banlist_info *, int);
+
+static mode_info modes[MODE_CT] = {
+	{
+		"Bans",
+		"(b) ",
+		'b',
+		RPL_BANLIST,
+		RPL_ENDOFBANLIST,
+		1<<MODE_BAN,
+		supports_bans
+	}
+	,{
+		"Exempts",
+		"(e) ",
+		'e',
+		RPL_EXCEPTLIST,
+		RPL_ENDOFEXCEPTLIST,
+		1<<MODE_EXEMPT,
+		supports_exempt
+	}
+	,{
+		"Invites",
+		"(I) ",
+		'I',
+		RPL_INVITELIST,
+		RPL_ENDOFINVITELIST,
+		1<<MODE_INVITE,
+		supports_invite
+	}
+	,{
+		"Quiets",
+		"(q) ",
+		'q',
+		RPL_QUIETLIST,
+		RPL_ENDOFQUIETLIST,
+		1<<MODE_QUIET,
+		supports_quiet
+	}
+};
 
 /* model for the banlist tree */
 enum
@@ -58,7 +105,7 @@ enum
 static GtkTreeView *
 get_view (struct session *sess)
 {
-	return GTK_TREE_VIEW (sess->res->banlist_treeview);
+	return GTK_TREE_VIEW (sess->res->banlist->treeview);
 }
 
 static GtkListStore *
@@ -67,91 +114,281 @@ get_store (struct session *sess)
 	return GTK_LIST_STORE (gtk_tree_view_get_model (get_view (sess)));
 }
 
-static gboolean
-supports_exempt (server *serv)
+static void
+supports_bans (banlist_info *banl, int i)
 {
+	int bit = 1<<i;
+
+	banl->capable |= bit;
+	banl->readable |= bit;
+	banl->writeable |= bit;
+	return;
+}
+
+static void
+supports_exempt (banlist_info *banl, int i)
+{
+	server *serv = banl->sess->server;
 	char *cm = serv->chanmodes;
+	int bit = 1<<i;
 
 	if (serv->have_except)
-		return TRUE;
+		goto yes;
 
 	if (!cm)
-		return FALSE;
+		return;
 
 	while (*cm)
 	{
 		if (*cm == ',')
 			break;
 		if (*cm == 'e')
-			return TRUE;
+			goto yes;
 		cm++;
 	}
+	return;
 
-	return FALSE;
+yes:
+	banl->capable |= bit;
+	banl->writeable |= bit;
 }
 
-void
-fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is_exempt)
+static void
+supports_invite (banlist_info *banl, int i)
 {
+	server *serv = banl->sess->server;
+	char *cm = serv->chanmodes;
+	int bit = 1<<i;
+
+	if (serv->have_invite)
+		goto yes;
+
+	if (!cm)
+		return;
+
+	while (*cm)
+	{
+		if (*cm == ',')
+			break;
+		if (*cm == 'I')
+			goto yes;
+		cm++;
+	}
+	return;
+
+yes:
+	banl->capable |= bit;
+	banl->writeable |= bit;
+}
+
+static void
+supports_quiet (banlist_info *banl, int i)
+{
+	server *serv = banl->sess->server;
+	char *cm = serv->chanmodes;
+	int bit = 1<<i;
+
+	if (!cm)
+		return;
+
+	while (*cm)
+	{
+		if (*cm == ',')
+			break;
+		if (*cm == modes[i].letter)
+			goto yes;
+		cm++;
+	}
+	return;
+
+yes:
+	banl->capable |= bit;
+	banl->readable |= bit;
+	banl->writeable |= bit;
+}
+
+/* fe_add_ban_list() and fe_ban_list_end() return TRUE if consumed, FALSE otherwise */
+gboolean
+fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rplcode)
+{
+	banlist_info *banl = sess->res->banlist;
+	int i;
 	GtkListStore *store;
 	GtkTreeIter iter;
 	char buf[512];
 
-	store = get_store (sess);
-	gtk_list_store_append (store, &iter);
+	if (!banl)
+		return FALSE;
 
-	if (is_exempt)
+	for (i = 0; i < MODE_CT; i++)
+		if (modes[i].code == rplcode)
+			break;
+	if (i == MODE_CT)
 	{
-		snprintf (buf, sizeof (buf), "(EX) %s", mask);
-		gtk_list_store_set (store, &iter, 0, buf, 1, who, 2, when, -1);
-	} else
-	{
-		gtk_list_store_set (store, &iter, 0, mask, 1, who, 2, when, -1);
+		/* printf ("Unexpected value in fe_add_ban_list:  %d\n", rplcode); */
+		return FALSE;
 	}
+	if (banl->pending & 1<<i)
+	{
+		store = get_store (sess);
+		gtk_list_store_append (store, &iter);
+
+		g_snprintf (buf, sizeof buf, "%s%s", modes[i].tag, mask);
+		gtk_list_store_set (store, &iter, 0, buf, 1, who, 2, when, -1);
+
+		banl->line_ct++;
+		return TRUE;
+	}
+	else return FALSE;
 }
 
-void
-fe_ban_list_end (struct session *sess, int is_exemption)
+/* Sensitize checkboxes and buttons as appropriate for the moment  */
+static void
+banlist_sensitize (banlist_info *banl)
 {
-	gtk_widget_set_sensitive (sess->res->banlist_butRefresh, TRUE);
+	int checkable, i;
+
+	/* CHECKBOXES -- */
+	checkable = banl->sess->me->op? banl->writeable: banl->readable;
+	for (i = 0; i < MODE_CT; i++)
+	{
+		if (banl->checkboxes[i] == NULL)
+			continue;
+		if ((checkable & 1<<i) == 0)
+		/* Checkbox is not checkable.  Grey it and uncheck it. */
+		{
+			gtk_widget_set_sensitive (banl->checkboxes[i], FALSE);
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (banl->checkboxes[i]), FALSE);
+		}
+		else
+		/* Checkbox is checkable.  Be sure it's sensitive. */
+		{
+			gtk_widget_set_sensitive (banl->checkboxes[i], TRUE);
+		}
+	}
+
+	/* BUTTONS --- */
+	if (banl->sess->me->op == 0 || banl->line_ct == 0)
+	{
+		/* If user is not op or list is empty, buttons should be all greyed */
+		gtk_widget_set_sensitive (banl->but_clear, FALSE);
+		gtk_widget_set_sensitive (banl->but_crop, FALSE);
+		gtk_widget_set_sensitive (banl->but_remove, FALSE);
+	}
+	else
+	{
+		/* If no lines are selected, only the CLEAR button should be sensitive */
+		if (banl->select_ct == 0)
+		{
+			gtk_widget_set_sensitive (banl->but_clear, TRUE);
+			gtk_widget_set_sensitive (banl->but_crop, FALSE);
+			gtk_widget_set_sensitive (banl->but_remove, FALSE);
+		}
+		/* If any lines are selected, only the REMOVE and CROP buttons should be sensitive */
+		else
+		{
+			gtk_widget_set_sensitive (banl->but_clear, FALSE);
+			gtk_widget_set_sensitive (banl->but_crop, TRUE);
+			gtk_widget_set_sensitive (banl->but_remove, TRUE);
+		}
+	}
+
+	/* Set "Refresh" sensitvity */
+	gtk_widget_set_sensitive (banl->but_refresh, banl->pending? FALSE: banl->checked? TRUE: FALSE);
+}
+/* fe_ban_list_end() returns TRUE if consumed, FALSE otherwise */
+gboolean
+fe_ban_list_end (struct session *sess, int rplcode)
+{
+	banlist_info *banl = sess->res->banlist;
+	int i;
+
+	if (!banl)
+		return FALSE;
+
+	for (i = 0; i < MODE_CT; i++)
+		if (modes[i].endcode == rplcode)
+			break;
+	if (i == MODE_CT)
+	{
+		/* printf ("Unexpected rplcode value in fe_ban_list_end:  %d\n", rplcode); */
+		return FALSE;
+	}
+	if (banl->pending & modes[i].bit)
+	{
+		banl->pending &= ~modes[i].bit;
+		if (!banl->pending)
+		{
+			gtk_widget_set_sensitive (banl->but_refresh, TRUE);
+			banlist_sensitize (banl);
+		}
+		return TRUE;
+	}
+	else return FALSE;
+}
+
+static void
+banlist_select_changed (GtkWidget *item, banlist_info *banl)
+{
+	GList *list;
+
+	if (banl->line_ct == 0)
+		banl->select_ct = 0;
+	else
+	{
+		list = gtk_tree_selection_get_selected_rows (GTK_TREE_SELECTION (item), NULL);
+		banl->select_ct = list? 1: 0;
+		g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
+		g_list_free (list);
+	}
+	banlist_sensitize (banl);
 }
 
 /**
  *  * Performs the actual refresh operations.
  *  */
 static void
-banlist_do_refresh (struct session *sess)
+banlist_do_refresh (banlist_info *banl)
 {
+	session *sess = banl->sess;
 	char tbuf[256];
+	int i;
+	char *tbufp;
+
+	banlist_sensitize (banl);
+
 	if (sess->server->connected)
 	{
 		GtkListStore *store;
 
-		gtk_widget_set_sensitive (sess->res->banlist_butRefresh, FALSE);
-
-		snprintf (tbuf, sizeof tbuf, DISPLAY_NAME": Ban List (%s, %s)",
+		g_snprintf (tbuf, sizeof tbuf, DISPLAY_NAME": Ban List (%s, %s)",
 						sess->channel, sess->server->servername);
-		mg_set_title (sess->res->banlist_window, tbuf);
+		mg_set_title (banl->window, tbuf);
 
 		store = get_store (sess);
 		gtk_list_store_clear (store);
-
-		handle_command (sess, "ban", FALSE);
-
-		if (supports_exempt (sess->server))
+		banl->line_ct = 0;
+		banl->pending = banl->checked;
+		if (banl->pending)
 		{
-			snprintf (tbuf, sizeof (tbuf), "quote mode %s +e", sess->channel);
+			tbufp = tbuf + g_snprintf (tbuf, sizeof tbuf, "quote mode %s +", sess->channel);
+			for (i = 0; i < MODE_CT; i++)
+				if (banl->pending & 1<<i)
+				{
+					*tbufp++ = modes[i].letter;
+				}
+			*tbufp = 0;
 			handle_command (sess, tbuf, FALSE);
 		}
-
-	} else
+	}
+	else
 	{
 		fe_message (_("Not connected."), FE_MSG_ERROR);
 	}
 }
 
 static void
-banlist_refresh (GtkWidget * wid, struct session *sess)
+banlist_refresh (GtkWidget * wid, banlist_info *banl)
 {
 	/* JG NOTE: Didn't see actual use of wid here, so just forwarding
 	   *          * this to chanlist_do_refresh because I use it without any widget
@@ -159,123 +396,106 @@ banlist_refresh (GtkWidget * wid, struct session *sess)
 	   *          * or apply for the first time if the list has not yet been
 	   *          * received.
 	   *          */
-	banlist_do_refresh (sess);
+	banlist_do_refresh (banl);
 }
 
 static int
-banlist_unban_inner (gpointer none, struct session *sess, int do_exempts)
+banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 {
+	session *sess = banl->sess;
 	GtkTreeModel *model;
 	GtkTreeSelection *sel;
 	GtkTreeIter iter;
 	char tbuf[2048];
-	char **masks, *tmp, *space;
-	int num_sel, i;
+	char **masks, *mask;
+	int num_sel, taglen, i;
+
 
 	/* grab the list of selected items */
 	model = GTK_TREE_MODEL (get_store (sess));
 	sel = gtk_tree_view_get_selection (get_view (sess));
-	num_sel = 0;
-	if (gtk_tree_model_get_iter_first (model, &iter))
-	{
-		do
-		{
-			if (gtk_tree_selection_iter_is_selected (sel, &iter))
-				num_sel++;
-		}
-		while (gtk_tree_model_iter_next (model, &iter));
-	}
 
-	if (num_sel < 1)
+	if (!gtk_tree_model_get_iter_first (model, &iter))
 		return 0;
 
-	/* create an array of all the masks */
-	masks = calloc (1, num_sel * sizeof (char *));
-
-	i = 0;
-	gtk_tree_model_get_iter_first (model, &iter);
+	taglen = strlen (modes[mode_num].tag);
+	masks = g_malloc (sizeof (char *) * banl->line_ct);
+	num_sel = 0;
 	do
 	{
 		if (gtk_tree_selection_iter_is_selected (sel, &iter))
 		{
-			gtk_tree_model_get (model, &iter, MASK_COLUMN, &masks[i], -1);
-			space = strchr (masks[i], ' ');
+			/* Get the mask part of this selected line */
+			gtk_tree_model_get (model, &iter, MASK_COLUMN, &mask, -1);
 
-			if (do_exempts)
-			{
-				if (space)
-				{
-					/* remove the "(EX) " */
-					tmp = masks[i];
-					masks[i] = g_strdup (space + 1);
-					g_free (tmp);
-					i++;
-				}
-			} else
-			{
-				if (!space)
-					i++;
-			}
+			/* If it's the wrong type of mask, just continue */
+			if (strncmp (modes[mode_num].tag, mask, taglen) != 0)
+				continue;
+
+			/* Otherwise add it to our array of mask pointers */
+			masks[num_sel++] = g_strdup (mask + taglen);
+			g_free (mask);
 		}
 	}
 	while (gtk_tree_model_iter_next (model, &iter));
 
 	/* and send to server */
-	if (do_exempts)
-		send_channel_modes (sess, tbuf, masks, 0, i, '-', 'e', 0);
-	else
-		send_channel_modes (sess, tbuf, masks, 0, i, '-', 'b', 0);
+	if (num_sel)
+		send_channel_modes (sess, tbuf, masks, 0, num_sel, '-', modes[mode_num].letter, 0);
 
-	/* now free everything, and refresh banlist */	
+	/* now free everything */
 	for (i=0; i < num_sel; i++)
 		g_free (masks[i]);
-	free (masks);
+	g_free (masks);
 
 	return num_sel;
 }
 
 static void
-banlist_unban (GtkWidget * wid, struct session *sess)
+banlist_unban (GtkWidget * wid, banlist_info *banl)
 {
-	int num = 0;
+	int i, num = 0;
 
-	num += banlist_unban_inner (wid, sess, FALSE);
-	num += banlist_unban_inner (wid, sess, TRUE);
+	for (i = 0; i < MODE_CT; i++)
+		num += banlist_unban_inner (wid, banl, i);
 
+	/* This really should not occur with the redesign */
 	if (num < 1)
 	{
 		fe_message (_("You must select some bans."), FE_MSG_ERROR);
 		return;
 	}
 
-	banlist_do_refresh (sess);
+	banlist_do_refresh (banl);
 }
 
 static void
-banlist_clear_cb (GtkDialog *dialog, gint response, gpointer sess)
+banlist_clear_cb (GtkDialog *dialog, gint response, gpointer data)
 {
+	banlist_info *banl = data;
 	GtkTreeSelection *sel;
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 
 	if (response == GTK_RESPONSE_OK)
 	{
-		sel = gtk_tree_view_get_selection (get_view (sess));
+		sel = gtk_tree_view_get_selection (get_view (banl->sess));
 		gtk_tree_selection_select_all (sel);
-		banlist_unban (NULL, sess);
+		banlist_unban (NULL, banl);
 	}
 }
 
 static void
-banlist_clear (GtkWidget * wid, struct session *sess)
+banlist_clear (GtkWidget * wid, banlist_info *banl)
 {
 	GtkWidget *dialog;
 
 	dialog = gtk_message_dialog_new (NULL, 0,
 								GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
-					_("Are you sure you want to remove all bans in %s?"), sess->channel);
+					_("Are you sure you want to remove all listed items in %s?"), banl->sess->channel);
+
 	g_signal_connect (G_OBJECT (dialog), "response",
-							G_CALLBACK (banlist_clear_cb), sess);
+							G_CALLBACK (banlist_clear_cb), banl);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
 	gtk_widget_show (dialog);
 }
@@ -298,8 +518,9 @@ banlist_add_selected_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *it
 }
 
 static void
-banlist_crop (GtkWidget * wid, struct session *sess)
+banlist_crop (GtkWidget * wid, banlist_info *banl)
 {
+	session *sess = banl->sess;
 	GtkTreeSelection *select;
 	GSList *list = NULL, *node;
 	int num_sel;
@@ -322,22 +543,112 @@ banlist_crop (GtkWidget * wid, struct session *sess)
 		g_slist_foreach (list, (GFunc)g_free, NULL);
 		g_slist_free (list);
 
-		banlist_unban (NULL, sess);
+		banlist_unban (NULL, banl);
 	} else
 		fe_message (_("You must select some bans."), FE_MSG_ERROR);
 }
 
+static void
+banlist_toggle (GtkWidget *item, gpointer data)
+{
+	banlist_info *banl = data;
+	int i, bit = 0;
+
+	for (i = 0; i < MODE_CT; i++)
+		if (banl->checkboxes[i] == item)
+		{
+			bit = 1<<i;
+			break;
+		}
+
+	if (bit)		/* Should be gassert() */
+	{
+		banl->checked &= ~bit;
+		banl->checked |= (GTK_TOGGLE_BUTTON (item)->active)? bit: 0;
+		banlist_do_refresh (banl);
+	}
+}
+
+/* NOTICE:  The official strptime() is not available on all platforms so
+ * I've implemented a special version here.  The official version is
+ * vastly more general than this:  it uses locales for weekday and month
+ * names and its second arg is a format character-string.  This special
+ * version depends on the format returned by ctime(3) whose manpage
+ * says it returns:
+ *     "a null-terminated string of the form "Wed Jun 30 21:49:08 1993\n"
+ *
+ * If the real strpftime() comes available, use this format string:
+ *		#define DATE_FORMAT "%a %b %d %T %Y"
+ */
+static void
+strptime (char *ti, struct tm *tm)
+{
+	/* Expect something like "Sat Mar 16 21:24:27 2013" */
+	static char *mon[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+								  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", NULL };
+	int M = -1, d = -1, h = -1, m = -1, s = -1, y = -1; 
+
+	if (*ti == 0)
+	{
+		memset (tm, 0, sizeof *tm);
+		return;
+	}
+	/* No need to supply tm->tm_wday; mktime() doesn't read it */
+	ti += 4;
+	while ((mon[++M]))
+		if (strncmp (ti, mon[M], 3) == 0)
+			break;
+	ti += 4;
+
+	d = strtol (ti, &ti, 10);
+	h = strtol (++ti, &ti, 10);
+	m = strtol (++ti, &ti, 10);
+	s = strtol (++ti, &ti, 10);
+	y = strtol (++ti, NULL, 10) - 1900;
+
+	tm->tm_sec = s;
+	tm->tm_min = m;
+	tm->tm_hour = h;
+	tm->tm_mday = d;
+	tm->tm_mon = M;
+	tm->tm_year = y;
+}
+
+gint
+banlist_date_sort (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data)
+{
+	struct tm tm1, tm2;
+	time_t t1, t2;
+	char *time1, *time2;
+
+	gtk_tree_model_get(model, a, 2, &time1, -1);
+	gtk_tree_model_get(model, b, 2, &time2, -1);
+	strptime (time1, &tm1);
+	strptime (time2, &tm2);
+	t1 = mktime (&tm1);
+	t2 = mktime (&tm2);
+
+	if (t1 < t2) return 1;
+	if (t1 == t2) return 0;
+	return -1;
+}
+
 static GtkWidget *
-banlist_treeview_new (GtkWidget *box)
+banlist_treeview_new (GtkWidget *box, banlist_info *banl)
 {
 	GtkListStore *store;
 	GtkWidget *view;
 	GtkTreeSelection *select;
 	GtkTreeViewColumn *col;
+	GtkTreeSortable *sortable;
 
 	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING,
 	                            G_TYPE_STRING);
 	g_return_val_if_fail (store != NULL, NULL);
+
+	sortable = GTK_TREE_SORTABLE (store);
+	gtk_tree_sortable_set_sort_func (sortable, 2, banlist_date_sort, GINT_TO_POINTER (2), NULL);
+
 	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
 	                             MASK_COLUMN, _("Mask"),
 	                             FROM_COLUMN, _("From"),
@@ -345,17 +656,25 @@ banlist_treeview_new (GtkWidget *box)
 
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), MASK_COLUMN);
 	gtk_tree_view_column_set_alignment (col, 0.5);
-	gtk_tree_view_column_set_min_width (col, 300);
+	gtk_tree_view_column_set_min_width (col, 100);
 	gtk_tree_view_column_set_sort_column_id (col, MASK_COLUMN);
+	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_resizable (col, TRUE);
 
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), FROM_COLUMN);
 	gtk_tree_view_column_set_alignment (col, 0.5);
 	gtk_tree_view_column_set_sort_column_id (col, FROM_COLUMN);
+	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_resizable (col, TRUE);
 
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), DATE_COLUMN);
 	gtk_tree_view_column_set_alignment (col, 0.5);
+	gtk_tree_view_column_set_sort_column_id (col, DATE_COLUMN);
+	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_resizable (col, TRUE);
 
 	select = gtk_tree_view_get_selection (GTK_TREE_VIEW (view));
+	g_signal_connect (G_OBJECT (select), "changed", G_CALLBACK (banlist_select_changed), banl);
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_MULTIPLE);
 
 	gtk_widget_show (view);
@@ -363,24 +682,24 @@ banlist_treeview_new (GtkWidget *box)
 }
 
 static void
-banlist_closegui (GtkWidget *wid, session *sess)
+banlist_closegui (GtkWidget *wid, banlist_info *banl)
 {
-	if (is_session (sess))
-		sess->res->banlist_window = 0;
+	session *sess = banl->sess;
+
+	if (sess->res->banlist == banl)
+	{
+		g_free (banl);
+		sess->res->banlist = NULL;
+	}
 }
 
 void
 banlist_opengui (struct session *sess)
 {
-	GtkWidget *vbox1;
-	GtkWidget *bbox;
+	banlist_info *banl;
+	int i;
+	GtkWidget *table, *vbox, *bbox;
 	char tbuf[256];
-
-	if (sess->res->banlist_window)
-	{
-		mg_bring_tofront (sess->res->banlist_window);
-		return;
-	}
 
 	if (sess->type != SESS_CHANNEL)
 	{
@@ -388,31 +707,74 @@ banlist_opengui (struct session *sess)
 		return;
 	}
 
-	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Ban List (%s)"),
+	if (!sess->res->banlist)
+	{
+		sess->res->banlist = g_malloc0 (sizeof (banlist_info));
+		if (!sess->res->banlist)
+		{
+			fe_message (_("Banlist initialization failed."), FE_MSG_ERROR);
+			return;
+		}
+	}
+	banl = sess->res->banlist;
+	if (banl->window)
+	{
+		mg_bring_tofront (banl->window);
+		return;
+	}
+
+	/* New banlist for this session -- Initialize it */
+	banl->sess = sess;
+	/* For each mode set its bit in capable/readable/writeable */
+	for (i = 0; i < MODE_CT; i++)
+		modes[i].tester (banl, i);
+	/* Force on the checkmark in the "Bans" box */
+	banl->checked = 1<<MODE_BAN;
+
+	g_snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Ban List (%s)"),
 					sess->server->servername);
 
-	sess->res->banlist_window = mg_create_generic_tab ("BanList", tbuf, FALSE,
-					TRUE, banlist_closegui, sess, 550, 200, &vbox1, sess->server);
+	banl->window = mg_create_generic_tab ("BanList", tbuf, FALSE,
+					TRUE, banlist_closegui, banl, 550, 200, &vbox, sess->server);
+	gtkutil_destroy_on_esc (banl->window);
+
+	gtk_container_set_border_width (GTK_CONTAINER (banl->window), 3);
+	gtk_box_set_spacing (GTK_BOX (vbox), 3);
 
 	/* create banlist view */
-	sess->res->banlist_treeview = banlist_treeview_new (vbox1);
+	banl->treeview = banlist_treeview_new (vbox, banl);
+
+	table = gtk_table_new (1, 3, FALSE);
+	gtk_table_set_col_spacings (GTK_TABLE (table), 16);
+	gtk_box_pack_start (GTK_BOX (vbox), table, 0, 0, 0);
+
+	for (i = 0; i < MODE_CT; i++)
+	{
+		if (!(banl->capable & 1<<i))
+			continue;
+		banl->checkboxes[i] = gtk_check_button_new_with_label (_(modes[i].name));
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (banl->checkboxes[i]), (banl->checked & 1<<i? TRUE: FALSE));
+		g_signal_connect (G_OBJECT (banl->checkboxes[i]), "toggled",
+								G_CALLBACK (banlist_toggle), banl);
+		gtk_table_attach (GTK_TABLE (table), banl->checkboxes[i], i+1, i+2, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
+	}
 
 	bbox = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_SPREAD);
 	gtk_container_set_border_width (GTK_CONTAINER (bbox), 5);
-	gtk_box_pack_end (GTK_BOX (vbox1), bbox, 0, 0, 0);
+	gtk_box_pack_end (GTK_BOX (vbox), bbox, 0, 0, 0);
 	gtk_widget_show (bbox);
 
-	gtkutil_button (bbox, GTK_STOCK_REMOVE, 0, banlist_unban, sess,
+	banl->but_remove = gtkutil_button (bbox, GTK_STOCK_REMOVE, 0, banlist_unban, banl,
 	                _("Remove"));
-	gtkutil_button (bbox, GTK_STOCK_REMOVE, 0, banlist_crop, sess,
+	banl->but_crop = gtkutil_button (bbox, GTK_STOCK_REMOVE, 0, banlist_crop, banl,
 	                _("Crop"));
-	gtkutil_button (bbox, GTK_STOCK_CLEAR, 0, banlist_clear, sess,
+	banl->but_clear = gtkutil_button (bbox, GTK_STOCK_CLEAR, 0, banlist_clear, banl,
 	                _("Clear"));
 
-	sess->res->banlist_butRefresh = gtkutil_button (bbox, GTK_STOCK_REFRESH, 0, banlist_refresh, sess, _("Refresh"));
+	banl->but_refresh = gtkutil_button (bbox, GTK_STOCK_REFRESH, 0, banlist_refresh, banl, _("Refresh"));
 
-	banlist_do_refresh (sess);
+	banlist_do_refresh (banl);
 
-	gtk_widget_show (sess->res->banlist_window);
+	gtk_widget_show_all (banl->window);
 }
