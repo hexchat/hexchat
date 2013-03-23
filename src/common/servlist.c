@@ -1046,17 +1046,18 @@ servlist_load (void)
 	int len;
 	char *tmp;
 	ircnet *net = NULL;
-	
-#ifndef G_OS_WIN32 /* simple migration we will keep for a short while */
-	char *oldfile = g_build_filename(get_xdir(), "servlist_.conf", NULL);
-	char *newfile = g_build_filename(get_xdir(), "servlist.conf", NULL);
 
-	if (g_file_test(oldfile, G_FILE_TEST_EXISTS) && !g_file_test(newfile, G_FILE_TEST_EXISTS))
+	/* simple migration we will keep for a short while */
+	char *oldfile = g_build_filename (get_xdir (), "servlist_.conf", NULL);
+	char *newfile = g_build_filename (get_xdir (), "servlist.conf", NULL);
+
+	if (g_file_test (oldfile, G_FILE_TEST_EXISTS) && !g_file_test (newfile, G_FILE_TEST_EXISTS))
+	{
 		g_rename (oldfile, newfile);
+	}
 
 	g_free (oldfile);
 	g_free (newfile);
-#endif
 
 	fp = hexchat_fopen_file ("servlist.conf", "r", 0);
 	if (!fp)
