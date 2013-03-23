@@ -155,6 +155,7 @@ void
 inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 {
 	session *sess;
+	struct User *user;
 	char idtext[64];
 
 	sess = find_dialog (serv, from);
@@ -197,6 +198,10 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 		return;
 	}
+	
+	user = userlist_find (sess, from);
+	if (user)
+		user->lasttalk = time (0);
 
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
