@@ -240,24 +240,6 @@ begin
 		Result := 1;
 end;
 
-
-/////////////////////////////////////////////////////////////////////
-procedure MigrateServlist();
-begin
-  FileCopy(ExpandConstant('{userappdata}\HexChat\servlist_.conf'), ExpandConstant('{userappdata}\HexChat\servlist.conf'), True);
-end;
-
-
-/////////////////////////////////////////////////////////////////////
-function OldServlistCheck(): Boolean;
-begin
-  if FileExists(ExpandConstant('{userappdata}\HexChat\servlist_.conf')) then
-    Result := True
-  else
-    Result := False
-end;
-
-
 /////////////////////////////////////////////////////////////////////
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
@@ -271,17 +253,8 @@ begin
 			end;
 			DeleteFile(ExpandConstant('{app}\portable-mode'));
 		end;
-
-		if (CurStep=ssPostInstall) then
-		begin
-			if OldServlistCheck() then begin
-				if SuppressibleMsgBox('Would you like to copy your old HexChat network list (servlist_.conf) to the new name (servlist.conf)? Make sure you remove servlist_.conf when you no longer need it.', mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES then
-					MigrateServlist();
-			end;
-		end;
 	end;
 end;
-
 
 /////////////////////////////////////////////////////////////////////
 // Importing LoadSkin API from ISSkin.DLL
