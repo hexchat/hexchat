@@ -1047,7 +1047,7 @@ servlist_load (void)
 	char *tmp;
 	ircnet *net = NULL;
 
-	fp = hexchat_fopen_file ("servlist_.conf", "r", 0);
+	fp = hexchat_fopen_file ("servlist.conf", "r", 0);
 	if (!fp)
 		return FALSE;
 
@@ -1178,12 +1178,12 @@ servlist_save (void)
 #ifndef WIN32
 	int first = FALSE;
 
-	buf = g_strdup_printf ("%s/servlist_.conf", get_xdir ());
+	buf = g_strdup_printf ("%s/servlist.conf", get_xdir ());
 	if (g_access (buf, F_OK) != 0)
 		first = TRUE;
 #endif
 
-	fp = hexchat_fopen_file ("servlist_.conf", "w", 0);
+	fp = hexchat_fopen_file ("servlist.conf", "w", 0);
 	if (!fp)
 	{
 #ifndef WIN32
