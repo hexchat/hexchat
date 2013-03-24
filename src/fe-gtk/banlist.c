@@ -54,9 +54,11 @@ static void supports_exempt (banlist_info *, int);
 static void supports_invite (banlist_info *, int);
 static void supports_quiet (banlist_info *, int);
 
+/* ref: http://www.gnu.org/software/gettext/manual/gettext.html#Special-cases */
+#define gettext_noop(s) s
 static mode_info modes[MODE_CT] = {
 	{
-		"Bans",
+		gettext_noop ("Bans"),
 		"(b) ",
 		'b',
 		RPL_BANLIST,
@@ -65,7 +67,7 @@ static mode_info modes[MODE_CT] = {
 		supports_bans
 	}
 	,{
-		"Exempts",
+		gettext_noop ("Exempts"),
 		"(e) ",
 		'e',
 		RPL_EXCEPTLIST,
@@ -74,7 +76,7 @@ static mode_info modes[MODE_CT] = {
 		supports_exempt
 	}
 	,{
-		"Invites",
+		gettext_noop ("Invites"),
 		"(I) ",
 		'I',
 		RPL_INVITELIST,
@@ -83,7 +85,7 @@ static mode_info modes[MODE_CT] = {
 		supports_invite
 	}
 	,{
-		"Quiets",
+		gettext_noop ("Quiets"),
 		"(q) ",
 		'q',
 		RPL_QUIETLIST,
