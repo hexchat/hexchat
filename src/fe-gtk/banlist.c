@@ -56,7 +56,7 @@ static void supports_quiet (banlist_info *, int);
 
 static mode_info modes[MODE_CT] = {
 	{
-		"Bans",
+		N_("Bans"),
 		"(b) ",
 		'b',
 		RPL_BANLIST,
@@ -65,7 +65,7 @@ static mode_info modes[MODE_CT] = {
 		supports_bans
 	}
 	,{
-		"Exempts",
+		N_("Exempts"),
 		"(e) ",
 		'e',
 		RPL_EXCEPTLIST,
@@ -74,7 +74,7 @@ static mode_info modes[MODE_CT] = {
 		supports_exempt
 	}
 	,{
-		"Invites",
+		N_("Invites"),
 		"(I) ",
 		'I',
 		RPL_INVITELIST,
@@ -83,7 +83,7 @@ static mode_info modes[MODE_CT] = {
 		supports_invite
 	}
 	,{
-		"Quiets",
+		N_("Quiets"),
 		"(q) ",
 		'q',
 		RPL_QUIETLIST,
