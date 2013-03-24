@@ -233,7 +233,7 @@ fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rp
 		store = get_store (sess);
 		gtk_list_store_append (store, &iter);
 
-		gtk_list_store_set (store, &iter, TYPE_COLUMN, modes[i].type, MASK_COLUMN, mask,
+		gtk_list_store_set (store, &iter, TYPE_COLUMN, _(modes[i].type), MASK_COLUMN, mask,
 						FROM_COLUMN, who, DATE_COLUMN, when, -1);
 
 		banl->line_ct++;
@@ -428,7 +428,7 @@ banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 			gtk_tree_model_get (model, &iter, TYPE_COLUMN, &type, MASK_COLUMN, &mask, -1);
 
 			/* If it's the wrong type of mask, just continue */
-			if (strcmp (modes[mode_num].type, type) != 0)
+			if (strcmp (_(modes[mode_num].type), type) != 0)
 				continue;
 
 			/* Otherwise add it to our array of mask pointers */
