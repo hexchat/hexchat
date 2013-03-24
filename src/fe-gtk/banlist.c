@@ -621,8 +621,8 @@ banlist_date_sort (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer
 	time_t t1, t2;
 	char *time1, *time2;
 
-	gtk_tree_model_get(model, a, 2, &time1, -1);
-	gtk_tree_model_get(model, b, 2, &time2, -1);
+	gtk_tree_model_get(model, a, DATE_COLUMN, &time1, -1);
+	gtk_tree_model_get(model, b, DATE_COLUMN, &time2, -1);
 	strptime (time1, &tm1);
 	strptime (time2, &tm2);
 	t1 = mktime (&tm1);
@@ -643,17 +643,17 @@ banlist_treeview_new (GtkWidget *box, banlist_info *banl)
 	GtkTreeSortable *sortable;
 
 	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING,
-	                            G_TYPE_STRING, G_TYPE_STRING);
+										 G_TYPE_STRING, G_TYPE_STRING);
 	g_return_val_if_fail (store != NULL, NULL);
 
 	sortable = GTK_TREE_SORTABLE (store);
-	gtk_tree_sortable_set_sort_func (sortable, 2, banlist_date_sort, GINT_TO_POINTER (2), NULL);
+	gtk_tree_sortable_set_sort_func (sortable, DATE_COLUMN, banlist_date_sort, GINT_TO_POINTER (DATE_COLUMN), NULL);
 
 	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
-	                             TYPE_COLUMN, _("Type"),
-	                             MASK_COLUMN, _("Mask"),
-	                             FROM_COLUMN, _("From"),
-	                             DATE_COLUMN, _("Date"), -1);
+										  TYPE_COLUMN, _("Type"),
+										  MASK_COLUMN, _("Mask"),
+										  FROM_COLUMN, _("From"),
+										  DATE_COLUMN, _("Date"), -1);
 
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), MASK_COLUMN);
 	gtk_tree_view_column_set_alignment (col, 0.5);
