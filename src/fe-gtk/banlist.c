@@ -57,7 +57,7 @@ static void supports_quiet (banlist_info *, int);
 static mode_info modes[MODE_CT] = {
 	{
 		N_("Bans"),
-		"(b) ",
+		N_("Ban"),
 		'b',
 		RPL_BANLIST,
 		RPL_ENDOFBANLIST,
@@ -66,7 +66,7 @@ static mode_info modes[MODE_CT] = {
 	}
 	,{
 		N_("Exempts"),
-		"(e) ",
+		N_("Exempt"),
 		'e',
 		RPL_EXCEPTLIST,
 		RPL_ENDOFEXCEPTLIST,
@@ -75,7 +75,7 @@ static mode_info modes[MODE_CT] = {
 	}
 	,{
 		N_("Invites"),
-		"(I) ",
+		N_("Invite"),
 		'I',
 		RPL_INVITELIST,
 		RPL_ENDOFINVITELIST,
@@ -84,7 +84,7 @@ static mode_info modes[MODE_CT] = {
 	}
 	,{
 		N_("Quiets"),
-		"(q) ",
+		N_("Quiet"),
 		'q',
 		RPL_QUIETLIST,
 		RPL_ENDOFQUIETLIST,
@@ -96,6 +96,7 @@ static mode_info modes[MODE_CT] = {
 /* model for the banlist tree */
 enum
 {
+	TYPE_COLUMN,
 	MASK_COLUMN,
 	FROM_COLUMN,
 	DATE_COLUMN,
@@ -215,7 +216,6 @@ fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rp
 	int i;
 	GtkListStore *store;
 	GtkTreeIter iter;
-	char buf[512];
 
 	if (!banl)
 		return FALSE;
@@ -233,8 +233,8 @@ fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rp
 		store = get_store (sess);
 		gtk_list_store_append (store, &iter);
 
-		g_snprintf (buf, sizeof buf, "%s%s", modes[i].tag, mask);
-		gtk_list_store_set (store, &iter, 0, buf, 1, who, 2, when, -1);
+		gtk_list_store_set (store, &iter, TYPE_COLUMN, _(modes[i].type), MASK_COLUMN, mask,
+						FROM_COLUMN, who, DATE_COLUMN, when, -1);
 
 		banl->line_ct++;
 		return TRUE;
@@ -407,8 +407,8 @@ banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 	GtkTreeSelection *sel;
 	GtkTreeIter iter;
 	char tbuf[2048];
-	char **masks, *mask;
-	int num_sel, taglen, i;
+	char **masks, *mask, *type;
+	int num_sel, i;
 
 
 	/* grab the list of selected items */
@@ -418,7 +418,6 @@ banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 	if (!gtk_tree_model_get_iter_first (model, &iter))
 		return 0;
 
-	taglen = strlen (modes[mode_num].tag);
 	masks = g_malloc (sizeof (char *) * banl->line_ct);
 	num_sel = 0;
 	do
@@ -426,15 +425,16 @@ banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 		if (gtk_tree_selection_iter_is_selected (sel, &iter))
 		{
 			/* Get the mask part of this selected line */
-			gtk_tree_model_get (model, &iter, MASK_COLUMN, &mask, -1);
+			gtk_tree_model_get (model, &iter, TYPE_COLUMN, &type, MASK_COLUMN, &mask, -1);
 
 			/* If it's the wrong type of mask, just continue */
-			if (strncmp (modes[mode_num].tag, mask, taglen) != 0)
+			if (strcmp (_(modes[mode_num].type), type) != 0)
 				continue;
 
 			/* Otherwise add it to our array of mask pointers */
-			masks[num_sel++] = g_strdup (mask + taglen);
+			masks[num_sel++] = g_strdup (mask);
 			g_free (mask);
+			g_free (type);
 		}
 	}
 	while (gtk_tree_model_iter_next (model, &iter));
@@ -539,7 +539,7 @@ banlist_crop (GtkWidget * wid, banlist_info *banl)
 
 		for (node = list; node; node = node->next)
 			gtk_tree_selection_unselect_iter (select, node->data);
-		
+
 		g_slist_foreach (list, (GFunc)g_free, NULL);
 		g_slist_free (list);
 
@@ -586,7 +586,7 @@ strptime (char *ti, struct tm *tm)
 	/* Expect something like "Sat Mar 16 21:24:27 2013" */
 	static char *mon[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 								  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", NULL };
-	int M = -1, d = -1, h = -1, m = -1, s = -1, y = -1; 
+	int M = -1, d = -1, h = -1, m = -1, s = -1, y = -1;
 
 	if (*ti == 0)
 	{
@@ -643,13 +643,14 @@ banlist_treeview_new (GtkWidget *box, banlist_info *banl)
 	GtkTreeSortable *sortable;
 
 	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING,
-	                            G_TYPE_STRING);
+	                            G_TYPE_STRING, G_TYPE_STRING);
 	g_return_val_if_fail (store != NULL, NULL);
 
 	sortable = GTK_TREE_SORTABLE (store);
 	gtk_tree_sortable_set_sort_func (sortable, 2, banlist_date_sort, GINT_TO_POINTER (2), NULL);
 
 	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
+	                             TYPE_COLUMN, _("Type"),
 	                             MASK_COLUMN, _("Mask"),
 	                             FROM_COLUMN, _("From"),
 	                             DATE_COLUMN, _("Date"), -1);
@@ -660,6 +661,10 @@ banlist_treeview_new (GtkWidget *box, banlist_info *banl)
 	gtk_tree_view_column_set_sort_column_id (col, MASK_COLUMN);
 	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 	gtk_tree_view_column_set_resizable (col, TRUE);
+
+	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), TYPE_COLUMN);
+	gtk_tree_view_column_set_alignment (col, 0.5);
+	gtk_tree_view_column_set_sort_column_id (col, TYPE_COLUMN);
 
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), FROM_COLUMN);
 	gtk_tree_view_column_set_alignment (col, 0.5);
