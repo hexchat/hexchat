@@ -313,13 +313,6 @@ server_inline (server *serv, char *line, int len)
 {
 	char *utf_line_allocated = NULL;
 
-#ifdef WIN32
-#if 0
-	char *cleaned_line;
-	int cleaned_len;
-#endif
-#endif
-
 	/* Checks whether we're set to use UTF-8 charset */
 	if (serv->using_irc ||				/* 1. using CP1252/UTF-8 Hybrid */
 		(serv->encoding == NULL && prefs.utf8_locale) || /* OR 2. using system default->UTF-8 */
@@ -406,27 +399,10 @@ server_inline (server *serv, char *line, int len)
 		}
 	}
 
-#ifdef WIN32
-#if 0
-	cleaned_line = text_replace_non_bmp (line, len, &cleaned_len);
-	if (cleaned_line != NULL ) {
-		line = cleaned_line;
-		len = cleaned_len;
-	}
-#endif
-	text_replace_non_bmp2 (line);
-#endif
-
 	fe_add_rawlog (serv, line, len, FALSE);
 
 	/* let proto-irc.c handle it */
 	serv->p_inline (serv, line, len);
-
-#ifdef WIN32
-#if 0
-	g_free (cleaned_line);
-#endif
-#endif
 
 	if (utf_line_allocated != NULL) /* only if a special copy was allocated */
 		g_free (utf_line_allocated);
@@ -1914,6 +1890,7 @@ server_set_defaults (server *serv)
 	serv->have_idmsg = FALSE;
 	serv->have_sasl = FALSE;
 	serv->have_except = FALSE;
+	serv->have_invite = FALSE;
 }
 
 char *

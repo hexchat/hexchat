@@ -146,7 +146,6 @@ struct hexchatprefs
 	unsigned int hex_gui_tab_dialogs;
 	unsigned int hex_gui_tab_dots;
 	unsigned int hex_gui_tab_icons;
-	unsigned int hex_gui_tab_notices;
 	unsigned int hex_gui_tab_server;
 	unsigned int hex_gui_tab_sort;
 	unsigned int hex_gui_tab_utils;
@@ -276,6 +275,7 @@ struct hexchatprefs
 	int hex_input_balloon_time;
 	int hex_irc_ban_type;
 	int hex_irc_join_delay;
+	int hex_irc_notice_pos;
 	int hex_net_ping_timeout;
 	int hex_net_proxy_port;
 	int hex_net_proxy_type;				/* 0=disabled, 1=wingate 2=socks4, 3=socks5, 4=http */
@@ -575,6 +575,7 @@ typedef struct server
 	unsigned int have_idmsg:1;		/* freenode's IDENTIFY-MSG */
 	unsigned int have_sasl:1;		/* SASL capability */
 	unsigned int have_except:1;	/* ban exemptions +e */
+	unsigned int have_invite:1;	/* invite exemptions +I */
 	unsigned int using_cp1255:1;	/* encoding is CP1255/WINDOWS-1255? */
 	unsigned int using_irc:1;		/* encoding is "IRC" (CP1252/UTF-8 hybrid)? */
 	unsigned int use_who:1;			/* whether to use WHO command to get dcc_ip */

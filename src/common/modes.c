@@ -824,6 +824,10 @@ inbound_005 (server * serv, char *word[])
 #ifndef WIN32
 			serv->have_except = TRUE;
 #endif
+		} else if (strcmp (word[w], "INVEX") == 0)
+		{
+			/* supports mode letter +I, default channel invite */
+			serv->have_invite = TRUE;
 		} else if (strncmp (word[w], "ELIST=", 6) == 0)
 		{
 			/* supports LIST >< min/max user counts? */

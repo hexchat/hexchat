@@ -155,6 +155,7 @@ void
 inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 {
 	session *sess;
+	struct User *user;
 	char idtext[64];
 
 	sess = find_dialog (serv, from);
@@ -197,6 +198,10 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 		return;
 	}
+	
+	user = userlist_find (sess, from);
+	if (user)
+		user->lasttalk = time (0);
 
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
@@ -867,7 +872,27 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 	if (!sess)
 	{
 		ptr = 0;
-		if (prefs.hex_gui_tab_notices)
+		if (prefs.hex_irc_notice_pos == 0)
+		{
+											/* paranoia check */
+			if (msg[0] == '[' && (!serv->have_idmsg || id))
+			{
+				/* guess where chanserv meant to post this -sigh- */
+				if (!g_ascii_strcasecmp (nick, "ChanServ") && !find_dialog (serv, nick))
+				{
+					char *dest = strdup (msg + 1);
+					char *end = strchr (dest, ']');
+					if (end)
+					{
+						*end = 0;
+						sess = find_channel (serv, dest);
+					}
+					free (dest);
+				}
+			}
+			if (!sess)
+				sess = find_session_from_nick (nick, serv);
+		} else if (prefs.hex_irc_notice_pos == 1)
 		{
 			int stype = server_notice ? SESS_SNOTICES : SESS_NOTICES;
 			sess = find_session_from_type (stype, serv);
@@ -888,25 +913,9 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 				msg += 14;
 		} else
 		{
-											/* paranoia check */
-			if (msg[0] == '[' && (!serv->have_idmsg || id))
-			{
-				/* guess where chanserv meant to post this -sigh- */
-				if (!g_ascii_strcasecmp (nick, "ChanServ") && !find_dialog (serv, nick))
-				{
-					char *dest = strdup (msg + 1);
-					char *end = strchr (dest, ']');
-					if (end)
-					{
-						*end = 0;
-						sess = find_channel (serv, dest);
-					}
-					free (dest);
-				}
-			}
-			if (!sess)
-				sess = find_session_from_nick (nick, serv);
+			sess = serv->front_session;
 		}
+
 		if (!sess)
 		{
 			if (server_notice)	
@@ -1030,6 +1039,7 @@ check_autojoin_channels (server *serv)
 
 		free (serv->autojoin);
 		serv->autojoin = NULL;
+		i++;
 	}
 
 	/* this is really only for re-connects when you
@@ -1053,8 +1063,17 @@ check_autojoin_channels (server *serv)
 				if (po)
 					*po = 0;
 
-				channels = g_slist_append (channels, g_strdup (sess->waitchannel));
-				keys = g_slist_append (keys, g_strdup (sess->channelkey));
+				/* There can be no gap between keys, list keyed chans first. */
+				if (sess->channelkey[0] != 0)
+				{
+					channels = g_slist_prepend (channels, g_strdup (sess->waitchannel));
+					keys = g_slist_prepend (keys, g_strdup (sess->channelkey));
+				}
+				else
+				{
+					channels = g_slist_append (channels, g_strdup (sess->waitchannel));
+					keys = g_slist_append (keys, g_strdup (sess->channelkey));
+				}
 				i++;
 			}
 		}
@@ -1258,12 +1277,14 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 }
 
 int
-inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int is_exemption)
+inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int rplcode)
 {
 	char *time_str = ctime (&stamp);
 	server *serv = sess->server;
+	char *nl;
 
-	time_str[19] = 0;	/* get rid of the \n */
+	if ((nl = strchr (time_str, '\n')))
+		*nl = 0;
 	if (stamp == 0)
 		time_str = "";
 
@@ -1274,18 +1295,17 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *bann
 		goto nowindow;
 	}
 
-   if (!fe_is_banwindow (sess))
+	if (!fe_add_ban_list (sess, mask, banner, time_str, rplcode))
 	{
 nowindow:
 		/* let proto-irc.c do the 'goto def' for exemptions */
-		if (is_exemption)
+		if (rplcode != 367)	/* RPL_EXCEPTLIST */
 			return FALSE;
 
 		EMIT_SIGNAL (XP_TE_BANLIST, sess, chan, mask, banner, time_str, 0);
 		return TRUE;
 	}
 
-	fe_add_ban_list (sess, mask, banner, time_str, is_exemption);
 	return TRUE;
 }
 

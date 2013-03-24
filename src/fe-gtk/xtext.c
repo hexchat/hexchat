@@ -90,15 +90,8 @@
 #endif
 
 /* is delimiter */
-#if 0
-/* () is used by Wikipedia */
 #define is_del(c) \
-	(c == ' ' || c == '\n' || c == ')' || c == '(' || \
-	 c == '>' || c == '<' || c == ATTR_RESET || c == ATTR_BOLD || c == 0)
-#endif
-#define is_del(c) \
-	(c == ' ' || c == '\n' || c == '>' || c == '<' || \
-	 c == ATTR_RESET || c == ATTR_BOLD || c == 0)
+	(c == ' ' || c == '\n' || c == '>' || c == '<' || c == 0)
 
 #ifdef SCROLL_HACK
 /* force scrolling off */

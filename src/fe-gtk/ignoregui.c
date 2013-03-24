@@ -273,13 +273,15 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 }
 
 static void
-ignore_clear_entry_clicked (GtkWidget * wid, gpointer unused)
+ignore_clear_cb (GtkDialog *dialog, gint response)
 {
 	GtkListStore *store = GTK_LIST_STORE (get_store ());
 	GtkTreeIter iter;
 	char *mask;
 
-	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter))
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter) && response == GTK_RESPONSE_OK)
 	{
 		/* remove from ignore_list */
 		do
@@ -294,6 +296,20 @@ ignore_clear_entry_clicked (GtkWidget * wid, gpointer unused)
 		/* remove from GUI */
 		gtk_list_store_clear (store);
 	}
+}
+
+static void
+ignore_clear_entry_clicked (GtkWidget * wid)
+{
+	GtkWidget *dialog;
+
+	dialog = gtk_message_dialog_new (NULL, 0,
+								GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+					_("Are you sure you want to remove all ignores?"));
+	g_signal_connect (G_OBJECT (dialog), "response",
+							G_CALLBACK (ignore_clear_cb), NULL);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_widget_show (dialog);
 }
 
 static void
@@ -349,6 +365,7 @@ ignore_gui_open ()
 			  mg_create_generic_tab ("IgnoreList", _(DISPLAY_NAME": Ignore list"),
 											FALSE, TRUE, close_ignore_gui_callback,
 											NULL, 600, 256, &vbox, 0);
+	gtkutil_destroy_on_esc (ignorewin);
 
 	view = ignore_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (ignorewin), "view", view);
