@@ -28,7 +28,7 @@ typedef struct banlist_info_s banlist_info;
 
 typedef struct mode_info_s {
 	char *name;		/* Checkbox name, e.g. "Bans" */
-	char *tag;		/* Prefix line with this, e.g. "(EX) " for MODE_EXEMPT */
+	char *type;    /* Type for type column, e.g. "Ban" */
 	char letter;	/* /mode-command letter, e.g. 'b' for MODE_BAN */
 	int code;		/* rfc RPL_foo code, e.g. 367 for RPL_BANLIST */
 	int endcode;	/* rfc RPL_ENDOFfoo code, e.g. 368 for RPL_ENDOFBANLIST */
