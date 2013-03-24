@@ -2006,8 +2006,8 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 
 static char rcolors[] = { 19, 20, 22, 24, 25, 26, 27, 28, 29 };
 
-static int
-color_of (char *name)
+int
+text_color_of (char *name)
 {
 	int i = 0, sum = 0;
 
@@ -2030,7 +2030,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 
 	if (prefs.hex_text_color_nicks && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
 	{
-		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (a), a);
+		snprintf (tbuf, sizeof (tbuf), "\003%d%s", text_color_of (a), a);
 		a = tbuf;
 		stripcolor_args &= ~ARG_FLAG(1);	/* don't strip color from this argument */
 	}
