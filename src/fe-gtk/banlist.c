@@ -539,7 +539,7 @@ banlist_crop (GtkWidget * wid, banlist_info *banl)
 
 		for (node = list; node; node = node->next)
 			gtk_tree_selection_unselect_iter (select, node->data);
-		
+
 		g_slist_foreach (list, (GFunc)g_free, NULL);
 		g_slist_free (list);
 
@@ -586,7 +586,7 @@ strptime (char *ti, struct tm *tm)
 	/* Expect something like "Sat Mar 16 21:24:27 2013" */
 	static char *mon[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
 								  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", NULL };
-	int M = -1, d = -1, h = -1, m = -1, s = -1, y = -1; 
+	int M = -1, d = -1, h = -1, m = -1, s = -1, y = -1;
 
 	if (*ti == 0)
 	{
@@ -650,7 +650,7 @@ banlist_treeview_new (GtkWidget *box, banlist_info *banl)
 	gtk_tree_sortable_set_sort_func (sortable, 2, banlist_date_sort, GINT_TO_POINTER (2), NULL);
 
 	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
-                                 TYPE_COLUMN, _("Type"),
+	                             TYPE_COLUMN, _("Type"),
 	                             MASK_COLUMN, _("Mask"),
 	                             FROM_COLUMN, _("From"),
 	                             DATE_COLUMN, _("Date"), -1);
