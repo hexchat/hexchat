@@ -1423,14 +1423,14 @@ perl_load_file (char *filename)
 					thread_mbox ("Cannot open " PERL_DLL "!\n\n"
 									 "You must have a Visual C++ build of Perl "
 									 PERL_REQUIRED_VERSION " installed in order to\n"
-									 "run Perl scripts. A reboot maybe required.\n\n"
+									 "run Perl scripts. A reboot may be required.\n\n"
 									 "http://hexchat.org/downloads.html\n\n"
 									 "I have found Perl 5.6, but that is too old.");
 				} else {
 					thread_mbox ("Cannot open " PERL_DLL "!\n\n"
 									 "You must have a Visual C++ build of Perl "
 									 PERL_REQUIRED_VERSION " installed in order to\n"
-									 "run Perl scripts. A reboot maybe required.\n\n"
+									 "run Perl scripts. A reboot may be required.\n\n"
 									 "http://hexchat.org/downloads.html\n\n"
 									 "Make sure Perl's bin directory is in your PATH.");
 				}
