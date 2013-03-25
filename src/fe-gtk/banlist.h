@@ -49,12 +49,10 @@ typedef struct banlist_info_s {
 		/* Not really; 1 if any are selected otherwise 0 */
 	GtkWidget *window;
 	GtkWidget *treeview;
-	GtkWidget *radios[MODE_CT];
 	GtkWidget *checkboxes[MODE_CT];
 	GtkWidget *but_remove;
 	GtkWidget *but_crop;
 	GtkWidget *but_clear;
 	GtkWidget *but_refresh;
-	GtkWidget *checkbox[MODE_CT];	/* Checkbox widget for mode */
 } banlist_info;
 #endif /* BANLIST_H */
