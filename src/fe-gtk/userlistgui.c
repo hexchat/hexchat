@@ -328,7 +328,7 @@ fe_userlist_rehash (session *sess, struct User *user)
 {
 	GtkTreeIter *iter;
 	int sel;
-	int nick_color = NULL;
+	int nick_color = 0;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
 						  sess->res->user_model, user, &sel);
@@ -353,7 +353,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	GdkPixbuf *pix = get_user_icon (sess->server, newuser);
 	GtkTreeIter iter;
 	char *nick;
-	int nick_color = NULL;
+	int nick_color = 0;
 
 	if (prefs.hex_away_track && prefs.hex_away_size_max && newuser->away)
 		nick_color = COL_AWAY;
