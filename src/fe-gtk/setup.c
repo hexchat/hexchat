@@ -1959,6 +1959,7 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[10], book, setup_create_page (logging_settings));
 	setup_add_page (cata[11], book, setup_create_sound_page ());
 
+#if 0	/* maybe sometime we'll have a working one-instance implementation, till then this is BS */
 #ifdef WIN32
 	if (portable_mode ())
 	{
@@ -1971,6 +1972,8 @@ setup_create_pages (GtkWidget *box)
 #else
 	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
 #endif
+#endif
+	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
 
 	setup_add_page (cata[14], book, setup_create_page (network_settings));
 	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
