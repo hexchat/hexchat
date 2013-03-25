@@ -24,18 +24,6 @@ typedef enum banlist_modes_e {
 	MODE_CT
 } banlist_modes;
 
-typedef struct banlist_info_s banlist_info;
-
-typedef struct mode_info_s {
-	char *name;		/* Checkbox name, e.g. "Bans" */
-	char *type;		/* Type for type column, e.g. "Ban" */
-	char letter;	/* /mode-command letter, e.g. 'b' for MODE_BAN */
-	int code;		/* rfc RPL_foo code, e.g. 367 for RPL_BANLIST */
-	int endcode;	/* rfc RPL_ENDOFfoo code, e.g. 368 for RPL_ENDOFBANLIST */
-	int bit;			/* Mask bit, e.g., 1<<MODE_BAN  */
-	void (*tester)(banlist_info *, int);	/* Function returns true to set bit into checkable */
-} mode_info;
-
 typedef struct banlist_info_s {
 	session *sess;
 	int capable;	/* MODE bitmask */
@@ -55,4 +43,14 @@ typedef struct banlist_info_s {
 	GtkWidget *but_clear;
 	GtkWidget *but_refresh;
 } banlist_info;
+
+typedef struct mode_info_s {
+	char *name;		/* Checkbox name, e.g. "Bans" */
+	char *type;		/* Type for type column, e.g. "Ban" */
+	char letter;	/* /mode-command letter, e.g. 'b' for MODE_BAN */
+	int code;		/* rfc RPL_foo code, e.g. 367 for RPL_BANLIST */
+	int endcode;	/* rfc RPL_ENDOFfoo code, e.g. 368 for RPL_ENDOFBANLIST */
+	int bit;			/* Mask bit, e.g., 1<<MODE_BAN  */
+	void (*tester)(banlist_info *, int);	/* Function returns true to set bit into checkable */
+} mode_info;
 #endif /* BANLIST_H */
