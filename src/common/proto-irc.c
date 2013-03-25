@@ -518,14 +518,6 @@ process_numeric (session * sess, int n,
 		}
 		goto def;
 
-	case 290:	/* CAPAB reply */
-		if (strstr (word_eol[1], "IDENTIFY-MSG"))
-		{
-			serv->have_idmsg = TRUE;
-			break;
-		}
-		goto def;
-
 	case 301:
 		inbound_away (serv, word[4],
 						(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5]);
