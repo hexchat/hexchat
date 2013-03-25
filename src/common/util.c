@@ -1877,6 +1877,17 @@ hextray_mode ()
 #endif
 }
 
+int
+unity_mode ()
+{
+#ifdef G_OS_UNIX
+	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
+	if (env && strcmp (env, "Unity") == 0)
+		return 1;
+#endif
+	return 0;
+}
+
 /* Routine for listing subfolders of a given folder. ALWAYS free correctly after use, e.g.
 void display_list (GSList *list)
 {

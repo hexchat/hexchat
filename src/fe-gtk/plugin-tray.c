@@ -837,7 +837,7 @@ tray_apply_setup (void)
 	}
 	else
 	{
-		if (prefs.hex_gui_tray && !hextray_mode ())
+		if (prefs.hex_gui_tray && !hextray_mode () && !unity_mode ())
 			tray_init ();
 	}
 }
@@ -869,7 +869,7 @@ tray_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 
 	hexchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
 
-	if (prefs.hex_gui_tray && !hextray_mode ())
+	if (prefs.hex_gui_tray && !hextray_mode () && !unity_mode ())
 		tray_init ();
 
 	return 1;       /* return 1 for success */

@@ -60,6 +60,7 @@ void safe_strcpy (char *dest, const char *src, int bytes_left);
 void canonalize_key (char *key);
 int portable_mode ();
 int hextray_mode ();
+int unity_mode ();
 GSList *get_subdirs (const char *path);
 char *encode_sasl_pass (char *user, char *pass);
 

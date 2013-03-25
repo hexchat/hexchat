@@ -462,6 +462,28 @@ static const setting alert_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const setting alert_settings_unity[] =
+{
+	{ST_HEADER,	N_("Alerts"),0,0,0},
+
+	{ST_ALERTHEAD},
+	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
+	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
+
+	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
+
+	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
+	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
+
+	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
+	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
+	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
 static const setting alert_settings_hextray[] =
 {
 	{ST_HEADER,	N_("Alerts"),0,0,0},
@@ -1949,6 +1971,10 @@ setup_create_pages (GtkWidget *box)
 	if (hextray_mode ())
 	{
 		setup_add_page (cata[8], book, setup_create_page (alert_settings_hextray));
+	}
+	else if (unity_mode ())
+	{
+		setup_add_page (cata[8], book, setup_create_page (alert_settings_unity));
 	}
 	else
 	{
