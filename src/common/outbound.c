@@ -3102,15 +3102,15 @@ urlserv:
 				*channel = co+1;
 			else
 				*channel = co;
-			
-		}
-		/* check for key - mirc style */
-		co = strchr (co + 1, '?');
-		if (co)
-		{
-			*co = 0;
-			co++;
-			*key = co;
+				
+			/* check for key - mirc style */
+			co = strchr (co + 1, '?');
+			if (co)
+			{
+				*co = 0;
+				co++;
+				*key = co;
+			}	
 		}
 			
 		return TRUE;
