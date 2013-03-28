@@ -21,7 +21,7 @@ tx push --source --translation
 Regenerate the source file ( _hexchat.pot_ ) on a Unix machine:
 
 <pre>
-rm po/hexchat.pot && ./autogen.sh && ./configure --enable-nls && make
+rm po/hexchat.pot && ./autogen.sh && ./configure --enable-nls && cd src/common && make textevents.h && cd../.. && make
 </pre>
 
 Push the updated source file to Transifex (this automatically updates all translation files):
