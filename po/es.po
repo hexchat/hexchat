@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2013-03-28 23:54+0100\n"
-"PO-Revision-Date: 2013-03-28 23:04+0000\n"
-"Last-Translator: bviktor <bviktor@hexchat.org>\n"
+"PO-Revision-Date: 2013-03-28 23:42+0000\n"
+"Last-Translator: VegaDark <vegadark89@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/hexchat/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -858,7 +858,7 @@ msgstr "%C22*%O$t%C26$1%O quita el límite de usuarios"
 
 #: src/common/textevents.h:93
 msgid "%C22*%O$t%C26$1%O sets channel keyword to %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O pone la contraseña del canal a %C24$2%O"
 
 #: src/common/textevents.h:96
 msgid "%C22*%O$t%C26$1%O sets channel limit to %C24$2%O"
@@ -866,7 +866,7 @@ msgstr "%C22*%O$t%C26$1%O pone el límite del canal a %C24$2%O"
 
 #: src/common/textevents.h:99
 msgid "%C22*%O$t%C26$1%O removes ban on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O quita el ban a %C18$2%O"
 
 #: src/common/textevents.h:102
 msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
@@ -2919,19 +2919,19 @@ msgstr "Lista de caracteres"
 
 #: src/fe-gtk/banlist.c:59
 msgid "Bans"
-msgstr ""
+msgstr "Baneos"
 
 #: src/fe-gtk/banlist.c:68
 msgid "Exempts"
-msgstr ""
+msgstr "Excepciones"
 
 #: src/fe-gtk/banlist.c:69
 msgid "Exempt"
-msgstr ""
+msgstr "Exento"
 
 #: src/fe-gtk/banlist.c:77
 msgid "Invites"
-msgstr ""
+msgstr "Invitados"
 
 #: src/fe-gtk/banlist.c:78 src/fe-gtk/ignoregui.c:179
 msgid "Invite"
@@ -2939,11 +2939,11 @@ msgstr "Invitar"
 
 #: src/fe-gtk/banlist.c:86
 msgid "Quiets"
-msgstr ""
+msgstr "Silenciados"
 
 #: src/fe-gtk/banlist.c:87
 msgid "Quiet"
-msgstr ""
+msgstr "Silenciado"
 
 #: src/fe-gtk/banlist.c:386 src/fe-gtk/chanlist.c:311
 #: src/fe-gtk/plugin-tray.c:241
@@ -2957,11 +2957,11 @@ msgstr "Debe seleccionar algún baneado"
 #: src/fe-gtk/banlist.c:495
 #, c-format
 msgid "Are you sure you want to remove all listed items in %s?"
-msgstr ""
+msgstr "¿Estás seguro que quieres borrar toda la lista en %s?"
 
 #: src/fe-gtk/banlist.c:653
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: src/fe-gtk/banlist.c:654 src/fe-gtk/ignoregui.c:173
 msgid "Mask"
@@ -2981,7 +2981,7 @@ msgstr "Sólo puedes abrir la lista de bans mientras hay pestaña de canal."
 
 #: src/fe-gtk/banlist.c:720
 msgid "Banlist initialization failed."
-msgstr ""
+msgstr "Falló la carga de la lista de baneos."
 
 #: src/fe-gtk/banlist.c:739
 #, c-format
@@ -3500,7 +3500,7 @@ msgstr "No ignorar"
 
 #: src/fe-gtk/ignoregui.c:308
 msgid "Are you sure you want to remove all ignores?"
-msgstr ""
+msgstr "¿Estás seguro que quieres borrar todos los ignorados?"
 
 #: src/fe-gtk/ignoregui.c:318
 msgid "Enter mask to ignore:"
@@ -5040,11 +5040,11 @@ msgstr "Usa íconos gráficos en lugar de símbolos en la lista de usuarios."
 
 #: src/fe-gtk/setup.c:290
 msgid "Color nicknames in userlist"
-msgstr ""
+msgstr "Colorear nicks en lista de usuarios"
 
 #: src/fe-gtk/setup.c:290
 msgid "Will color nicknames the same as in chat."
-msgstr ""
+msgstr "Coloreará los nicks al igual que en el chat."
 
 #: src/fe-gtk/setup.c:291
 msgid "Show user count in channels"
@@ -5104,15 +5104,15 @@ msgstr "Solo solapas solicitadas"
 
 #: src/fe-gtk/setup.c:327
 msgid "Automatic"
-msgstr ""
+msgstr "Automático"
 
 #: src/fe-gtk/setup.c:328
 msgid "In an extra tab"
-msgstr ""
+msgstr "En una pestaña extra"
 
 #: src/fe-gtk/setup.c:329
 msgid "In the front tab"
-msgstr ""
+msgstr "En la pestaña del frente"
 
 #: src/fe-gtk/setup.c:337
 msgid "Tree"
@@ -5152,7 +5152,7 @@ msgstr "Centrarse en nuevas solapas:"
 
 #: src/fe-gtk/setup.c:352
 msgid "Placement of notices:"
-msgstr ""
+msgstr "Colocación de avisos:"
 
 #: src/fe-gtk/setup.c:353
 msgid "Show channel switcher at:"
@@ -5335,7 +5335,7 @@ msgstr "Automáticamente marcar ausente/en línea"
 
 #: src/fe-gtk/setup.c:449
 msgid "Automatically change status when hiding to tray."
-msgstr ""
+msgstr "Cambiar automáticamente el estado cuando se oculte en la barra."
 
 #: src/fe-gtk/setup.c:451
 msgid "Only show tray balloons when hidden or iconified"
@@ -5418,7 +5418,7 @@ msgstr "Configuración avanzada"
 
 #: src/fe-gtk/setup.c:527
 msgid "Real name:"
-msgstr ""
+msgstr "Nombre real:"
 
 #: src/fe-gtk/setup.c:529 src/fe-gtk/setup.c:561
 msgid "Alternative fonts:"
