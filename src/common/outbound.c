@@ -4460,16 +4460,29 @@ handle_user_input (session *sess, char *text, int history, int nocommand)
 		return 1;
 	}
 
+#if 0 /* Who would remember all this? */
 	if (prefs.hex_input_command_char[0] == '/')
 	{
 		int i;
 		const char *unix_dirs [] = {
-			"/bin/", "/boot/", "/dev/",
-			"/etc/", "/home/", "/lib/",
-			"/lost+found/", "/mnt/", "/opt/",
-			"/proc/", "/root/", "/sbin/",
-			"/tmp/", "/usr/", "/var/",
-			"/gnome/", NULL};
+			"/bin/",
+			"/boot/",
+			"/dev/",
+			"/etc/",
+			"/home/",
+			"/lib/",
+			"/lost+found/",
+			"/mnt/",
+			"/opt/",
+			"/proc/",
+			"/root/",
+			"/sbin/",
+			"/tmp/",
+			"/usr/",
+			"/var/",
+			"/gnome/",
+			NULL
+		};
 		for (i = 0; unix_dirs[i] != NULL; i++)
 			if (strncmp (text, unix_dirs[i], strlen (unix_dirs[i]))==0)
 			{
@@ -4477,6 +4490,7 @@ handle_user_input (session *sess, char *text, int history, int nocommand)
 				return 1;
 			}
 	}
+#endif
 
 	return handle_command (sess, text + 1, TRUE);
 }
