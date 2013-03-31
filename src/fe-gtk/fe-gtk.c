@@ -149,7 +149,7 @@ create_msg_dialog (gchar *title, gchar *message)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, message);
+	dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, "%s", message);
 	gtk_window_set_title (GTK_WINDOW (dialog), title);
 
 /* On Win32 we automatically have the icon. If we try to load it explicitly, it will look ugly for some reason. */
