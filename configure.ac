@@ -199,14 +199,16 @@ dnl *********************************************************************
 dnl ** GTK **************************************************************
 dnl *********************************************************************
 
-AM_PATH_GTK_2_0(2.10.0, havegtk=yes, havegtk=no)
+# we might get undefined macro without this test
+if test "$gtkfe" = yes ; then
+	AM_PATH_GTK_2_0(2.10.0, havegtk=yes, havegtk=no)
 
-if test "$havegtk" = no; then
-	gtkfe=no
-	echo
-	echo Cannot find GTK\! Not building GTK FrontEnd.
-	echo
-fi
+	if test "$havegtk" = no; then
+		gtkfe=no
+		echo
+		echo Cannot find GTK\! Not building GTK FrontEnd.
+		echo
+	fi
 
 if test "$gtkfe" != yes; then
 	gnome=no
