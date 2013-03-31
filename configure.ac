@@ -223,7 +223,6 @@ dnl *********************************************************************
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
 
-gnome=no
 #if test "$gnome" = yes; then
 #	AC_PATH_PROG(pkgconfigpath, pkg-config)
 #	AC_MSG_CHECKING(Gnome2 compile flags)
@@ -241,7 +240,11 @@ gnome=no
 #fi
 
 # GConf
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+if test "$gnome" != no ; then
+	AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+else
+	GCONFTOOL=no
+fi
 
 dnl *********************************************************************
 dnl ** XFT **************************************************************
