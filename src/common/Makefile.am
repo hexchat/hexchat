@@ -52,6 +52,10 @@ libhexchatcommon_a_LIBADD =				\
 endif
 SUBDIRS = $(dbusdir) .
 
+if DO_PLUGIN
+include_HEADERS = hexchat-plugin.h
+endif
+
 libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c hexchat.c \
 	history.c ignore.c inbound.c modes.c msproxy.c network.c notify.c \
 	outbound.c plugin.c plugin-timer.c proto-irc.c server.c servlist.c \
