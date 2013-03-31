@@ -289,7 +289,7 @@ url_check_line (char *buf, int len)
 
 		g_match_info_fetch_pos(gmi, 0, &start, &end);
 		while (end > start && (po[end - 1] == '\r' || po[end - 1] == '\n'))
-			po[--end] = 0;
+			end--;
 		if (g_strstr_len (po + start, end - start, "://"))
 			url_add(po + start, end - start);
 		g_match_info_next(gmi, NULL);
