@@ -17,4 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_CHANLIST_H
+#define HEXCHAT_CHANLIST_H
+
 void chanlist_opengui (server *serv, int do_refresh);
+
+#endif

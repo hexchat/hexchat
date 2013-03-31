@@ -17,7 +17,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_MMX_CMOD_H
+#define HEXCHAT_MMX_CMOD_H
+
 void shade_ximage_15_mmx(void *data, int bpl, int w, int h, int rm, int gm, int bm);
 void shade_ximage_16_mmx(void *data, int bpl, int w, int h, int rm, int gm, int bm);
 void shade_ximage_32_mmx(void *data, int bpl, int w, int h, int rm, int gm, int bm);
 int have_mmx (void);
+
+#endif

@@ -17,5 +17,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_TEXTGUI_H
+#define HEXCHAT_TEXTGUI_H
+
 void PrintTextRaw (void *xtbuf, unsigned char *text, int indent, time_t stamp);
 void pevent_dialog_show (void);
+
+#endif

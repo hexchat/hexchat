@@ -14,5 +14,10 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#ifndef HEXCHAT_STRLUTIL_H
+#define HEXCHAT_STRLUTIL_H
+
 size_t strlcat(char *dst, const char *src, size_t siz);
 size_t strlcpy(char *dst, const char *src, size_t siz);
+
+#endif

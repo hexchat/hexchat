@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef __XTEXT_H__
-#define __XTEXT_H__
+#ifndef HEXCHAT_XTEXT_H
+#define HEXCHAT_XTEXT_H
 
 #include <gtk/gtkadjustment.h>
 #ifdef USE_XFT

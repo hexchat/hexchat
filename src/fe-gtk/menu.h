@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_MENU_H
+#define HEXCHAT_MENU_H
+
 GtkWidget *menu_create_main (void *accel_group, int bar, int away, int toplevel, GtkWidget **menu_widgets);
 void menu_urlmenu (GdkEventButton * event, char *url);
 void menu_chanmenu (session *sess, GdkEventButton * event, char *chan);
@@ -57,4 +60,6 @@ void menu_change_layout (void);
 
 #if (MENU_ID_NUM < MENU_ID_USERMENU)
 #error MENU_ID_NUM is set wrong
+#endif
+
 #endif

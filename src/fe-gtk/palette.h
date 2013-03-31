@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_PALETTE_H
+#define HEXCHAT_PALETTE_H
+
 extern GdkColor colors[];
 
 #define COL_MARK_FG 32
@@ -33,3 +36,5 @@ extern GdkColor colors[];
 void palette_alloc (GtkWidget * widget);
 void palette_load (void);
 void palette_save (void);
+
+#endif

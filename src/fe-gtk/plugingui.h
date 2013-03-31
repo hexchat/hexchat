@@ -17,5 +17,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_PLUGINGUI_H
+#define HEXCHAT_PLUGINGUI_H
+
 void plugingui_open (void);
 void plugingui_load (void);
+
+#endif

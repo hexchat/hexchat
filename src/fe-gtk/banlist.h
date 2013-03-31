@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef BANLIST_H
-#define BANLIST_H
+#ifndef HEXCHAT_BANLIST_H
+#define HEXCHAT_BANLIST_H
 
 #include "../common/hexchat.h"
 void banlist_opengui (session *sess);
@@ -72,4 +72,5 @@ typedef struct mode_info_s {
 	int bit;			/* Mask bit, e.g., 1<<MODE_BAN  */
 	void (*tester)(banlist_info *, int);	/* Function returns true to set bit into checkable */
 } mode_info;
-#endif /* BANLIST_H */
+
+#endif /* HEXCHAT_BANLIST_H */

@@ -19,6 +19,9 @@
 
 /* include stuff for internet */
 
+#ifndef HEXCHAT_INET_H
+#define HEXCHAT_INET_H
+
 #ifndef WIN32
 
 #ifdef WANTSOCKET
@@ -58,5 +61,7 @@
 										}
 #define would_block() (WSAGetLastError() == WSAEWOULDBLOCK)
 #define sock_error WSAGetLastError
+
+#endif
 
 #endif

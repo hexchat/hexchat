@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_THREAD_H
+#define HEXCHAT_THREAD_H
+
 #if 0	/* native file dialogs */
 #include <windows.h>
 
@@ -28,4 +31,6 @@ typedef struct
 
 thread *thread_new (void);
 int thread_start (thread *th, void *(*start_routine)(void *), void *arg);
+#endif
+
 #endif

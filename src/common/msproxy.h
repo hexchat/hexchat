@@ -21,6 +21,9 @@
  *      Inferno Nettverk A/S, Norway.  All rights reserved.
  */
 
+#ifndef HEXCHAT_MSPROXY_H
+#define HEXCHAT_MSPROXY_H
+
 #include "network.h"
 
 #define MSPROXY_EXECUTABLE 		"hexchat.exe"	/* This probably can be used for access control on the server side */
@@ -255,3 +258,5 @@ struct msproxy_response_t {
 
 int traverse_msproxy (int sok, char *serverAddr, int port, struct msproxy_state_t *state, netstore *ns_proxy, int csok4, int csok6, int *csok, char bound);
 void msproxy_keepalive (void);
+
+#endif

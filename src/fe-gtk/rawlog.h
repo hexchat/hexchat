@@ -17,4 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_RAWLOG_H
+#define HEXCHAT_RAWLOG_H
+
 void open_rawlog (server *serv);
+
+#endif

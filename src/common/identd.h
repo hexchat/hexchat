@@ -17,4 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_IDENTD_H
+#define HEXCHAT_IDENTD_H
+
 void identd_start (char *username);
+
+#endif

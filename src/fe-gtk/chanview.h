@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_CHANVIEW_H
+#define HEXCHAT_CHANVIEW_H
+
 typedef struct _chanview chanview;
 typedef struct _chan chan;
 
@@ -48,3 +51,5 @@ chan * chan_get_parent (chan *ch);
 #define FOCUS_NEW_ALL 1
 #define FOCUS_NEW_ONLY_ASKED 2
 #define FOCUS_NEW_NONE 0
+
+#endif

@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef HEXCHAT_FE_GTK_H
+#define HEXCHAT_FE_GTK_H
+
 #ifdef WIN32
 #include "../../config-win32.h"
 #else
@@ -208,4 +211,6 @@ void SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos);
 #define SPELL_ENTRY_GET_POS(e) gtk_editable_get_position(GTK_EDITABLE(e))
 #define SPELL_ENTRY_SET_POS(e,p) gtk_editable_set_position(GTK_EDITABLE(e),p);
 #define SPELL_ENTRY_INSERT(e,t,l,p) gtk_editable_insert_text(GTK_EDITABLE(e),t,l,p)
+#endif
+
 #endif
