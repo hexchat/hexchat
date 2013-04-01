@@ -17,11 +17,6 @@
     <DepsRoot>$(YourDepsPath)\$(PlatformName)</DepsRoot>
     <GendefPath>$(YourGendefPath)</GendefPath>
     <MsgfmtPath>$(YourMsgfmtPath)</MsgfmtPath>
-    <!--LuaLib>lua51</LuaLib>
-    <LuaOutput>hclua</LuaOutput>
-    <TclPath>$(YourTclPath)\$(PlatformName)</TclPath>
-    <TclLib>tcl85</TclLib>
-    <TclOutput>hctcl</TclOutput>
     <Perl512Path>$(YourPerl512Path)\$(PlatformName)</Perl512Path>
     <Perl512Lib>perl512</Perl512Lib>
     <Perl512Output>hcperl-512</Perl512Output>
@@ -71,7 +66,6 @@ copy "$(DepsRoot)\bin\libenchant.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\libintl.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\libpng15.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\libxml2.dll" "$(HexChatRel)"
-::copy "$(DepsRoot)\bin\lua51.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pango-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangocairo-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangoft2-1.0.dll" "$(HexChatRel)"
@@ -91,13 +85,11 @@ copy "$(HexChatBin)hcdoat.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcexec.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcfishlim.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hchextray.dll" "$(HexChatRel)\plugins"
-::copy "$(HexChatBin)hclua.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcmpcinfo.dll" "$(HexChatRel)\plugins"
 ::copy "$(HexChatBin)hcperl-512.dll" "$(HexChatRel)\plugins"
 ::copy "$(HexChatBin)hcperl-514.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcperl-516.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcpython.dll" "$(HexChatRel)\plugins"
-::copy "$(HexChatBin)hctcl.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcupd.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcwinamp.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcsysinfo.dll" "$(HexChatRel)\plugins"
