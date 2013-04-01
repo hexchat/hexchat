@@ -209,6 +209,7 @@ if test "$gtkfe" = yes ; then
 		echo Cannot find GTK\! Not building GTK FrontEnd.
 		echo
 	fi
+fi
 
 if test "$gtkfe" != yes; then
 	gnome=no
