@@ -75,8 +75,9 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
 Filename: "https://hexchat.readthedocs.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
 Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=13523"; Description: "Download Visual C++ Redistributable Package"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
-Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.16"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl
-Filename: "http://hexchat.org/downloads.html"; Description: "Download Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.16"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python and not langs\perl
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.16 and Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and langs\python
 
 [Files]
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
