@@ -47,8 +47,8 @@ Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags:
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\perl"; Description: "Perl"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\python"; Description: "Python"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\perl"; Description: "Perl (requires Perl 5.16)"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\python"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
@@ -75,6 +75,8 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
 Filename: "https://hexchat.readthedocs.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
 Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=13523"; Description: "Download Visual C++ Redistributable Package"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.16"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python
 
 [Files]
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
