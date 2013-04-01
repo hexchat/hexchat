@@ -36,6 +36,7 @@
 #include <gtk/gtkmessagedialog.h>
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreeselection.h>
+#include <gtk/gtktogglebutton.h>
 #include <glib.h>
 
 #include "../common/hexchat.h"
