@@ -114,8 +114,8 @@ AC_ARG_ENABLE(xlib,
         xlib=$enableval, xlib=yes)
 
 AC_ARG_ENABLE(python,
-	[AS_HELP_STRING([--disable-python],[don't build the python plugin])],
-        python=$enableval, python=yes)
+	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin (default on, python2)])],
+        python=$enableval, python=python2)
 
 AC_ARG_ENABLE(perl,
 	[AS_HELP_STRING([--disable-perl],[don't build the perl plugin])],
@@ -199,14 +199,16 @@ dnl *********************************************************************
 dnl ** GTK **************************************************************
 dnl *********************************************************************
 
-AM_PATH_GTK_2_0(2.10.0, havegtk=yes, havegtk=no)
+# we might get undefined macro without this test
+if test "$gtkfe" = yes ; then
+	AM_PATH_GTK_2_0(2.10.0, havegtk=yes, havegtk=no)
 
-if test "$havegtk" = no; then
-	gtkfe=no
-	echo
-	echo Cannot find GTK\! Not building GTK FrontEnd.
-	echo
-fi
+	if test "$havegtk" = no; then
+		gtkfe=no
+		echo
+		echo Cannot find GTK\! Not building GTK FrontEnd.
+		echo
+	fi
 
 if test "$gtkfe" != yes; then
 	gnome=no
@@ -221,7 +223,6 @@ dnl *********************************************************************
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
 
-gnome=no
 #if test "$gnome" = yes; then
 #	AC_PATH_PROG(pkgconfigpath, pkg-config)
 #	AC_MSG_CHECKING(Gnome2 compile flags)
@@ -239,7 +240,11 @@ gnome=no
 #fi
 
 # GConf
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+if test "$gnome" != no ; then
+	AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+else
+	GCONFTOOL=no
+fi
 
 dnl *********************************************************************
 dnl ** XFT **************************************************************
@@ -328,9 +333,13 @@ dnl *********************************************************************
 dnl ** PYTHON ***********************************************************
 dnl *********************************************************************
 
-if test "$python" = yes; then
-        AC_PATH_PROG(pythonpath, python2)
-        if test "_$pythonpath" = _ ; then
+if test "x$python" != xno ; then
+	if test "$python" = yes ; then
+		# default
+		python="python2"
+	fi
+	AC_PATH_PROG(pythonpath, $python)
+	if test "_$pythonpath" = _ ; then
                 AC_PATH_PROG(pythonpath, python)
         fi
         if test "_$pythonpath" = _ ; then
@@ -358,7 +367,7 @@ if test "$python" = yes; then
                                 AC_MSG_RESULT([Can't find Python.h])
                         fi
                 else
-                        echo "Python too old. Only 2.2 or above is supported."
+                        echo "Python is too old or too new. Only 2.2-2.7 are supported."
                         python=no
                 fi
         fi
@@ -691,7 +700,7 @@ AM_CONDITIONAL(USE_LIBNOTIFY, test "x$libnotify" = "xyes")
 AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
 AM_CONDITIONAL(DO_GTK, test "x$gtkfe" = "xyes")
 AM_CONDITIONAL(DO_PERL, test "x$perl" = "xyes")
-AM_CONDITIONAL(DO_PYTHON, test "x$python" = "xyes")
+AM_CONDITIONAL(DO_PYTHON, test "x$python" != "xno")
 dnl AM_CONDITIONAL(DO_TCL, test "x$tcl" = "xyes")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
