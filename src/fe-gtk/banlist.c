@@ -751,7 +751,7 @@ banlist_opengui (struct session *sess)
 	/* create banlist view */
 	banl->treeview = banlist_treeview_new (vbox, banl);
 
-	table = gtk_table_new (1, 3, FALSE);
+	table = gtk_table_new (1, MODE_CT, FALSE);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 16);
 	gtk_box_pack_start (GTK_BOX (vbox), table, 0, 0, 0);
 
