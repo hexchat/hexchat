@@ -35,6 +35,7 @@
 
 #include <gtk/gtkliststore.h>
 #include <gtk/gtktreeview.h>
+#include <gtk/gtkmessagedialog.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkcellrenderertoggle.h>
