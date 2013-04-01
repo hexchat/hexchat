@@ -348,17 +348,17 @@ if test "x$python" != xno ; then
         else
                 AC_MSG_CHECKING(Python version)
                 changequote(<<, >>)dnl
-                PY_VER=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_config_vars("VERSION")[0];'`
-                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_lib(standard_lib=1);'`
-                PY_INC=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_inc();'`
-                PYPLAT_INC=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_inc(plat_specific=True);'`
-                $pythonpath -c "import sys; map(int,sys.version[:3].split('.')) >= [2,2] or sys.exit(1)"
+                PY_VER=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_config_vars("VERSION")[0]);'`
+                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(standard_lib=1));'`
+                PY_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc());'`
+                PYPLAT_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc(plat_specific=True));'`
                 changequote([, ])dnl
                 AC_MSG_RESULT($PY_VER)
+                $pythonpath -c "import sys; float(sys.version[[:3]]) >= 2.2 and int(sys.version[[0]]) < 3 or sys.exit(1)"
                 if test "$?" != "1"; then
                         AC_MSG_CHECKING(Python compile flags)
-                        PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
-                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
+                        PY_PREFIX=`$pythonpath -c 'import sys; print(sys.prefix)'`
+                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print(sys.exec_prefix)'`
                         if test -f $PY_INC/Python.h || test -f $PYPLAT_INC/Python.h; then
                                 PY_LIBS="-L$PY_LIB/config -lpython$PY_VER -lpthread -lutil"
                                 PY_CFLAGS="-I$PY_INC -I$PYPLAT_INC"
