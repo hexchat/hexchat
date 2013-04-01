@@ -81,13 +81,6 @@ Filename: "https://hexchat.readthedocs.org/en/latest/changelog.html"; Descriptio
 Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=13523"; Description: "Download Visual C++ Redistributable Package"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
 
 [Files]
-; Add the ISSkin DLL used for skinning Inno Setup installations.
-Source: ISSkinU.dll; DestDir: {app}; Flags: dontcopy
-
-; Add the Visual Style resource contains resources used for skinning,
-; you can also use Microsoft Visual Styles (*.msstyles) resources.
-Source: watercolorlite-blue.cjstyles; DestDir: {tmp}; Flags: dontcopy
-
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 
 Source: "changelog.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -254,32 +247,4 @@ begin
 			DeleteFile(ExpandConstant('{app}\portable-mode'));
 		end;
 	end;
-end;
-
-/////////////////////////////////////////////////////////////////////
-// Importing LoadSkin API from ISSkin.DLL
-procedure LoadSkin(lpszPath: String; lpszIniFileName: String);
-external 'LoadSkin@files:isskinu.dll stdcall';
-
-// Importing UnloadSkin API from ISSkin.DLL
-procedure UnloadSkin();
-external 'UnloadSkin@files:isskinu.dll stdcall';
-
-// Importing ShowWindow Windows API from User32.DLL
-function ShowWindow(hWnd: Integer; uType: Integer): Integer;
-external 'ShowWindow@user32.dll stdcall';
-
-function InitializeSetup(): Boolean;
-begin
-  ExtractTemporaryFile('watercolorlite-blue.cjstyles');
-  LoadSkin(ExpandConstant('{tmp}\watercolorlite-blue.cjstyles'), '');
-  Result := True;
-end;
-
-procedure DeinitializeSetup();
-begin
-  // Hide Window before unloading skin so user does not get
-  // a glimpse of an unskinned window before it is closed.
-  ShowWindow(StrToInt(ExpandConstant('{wizardhwnd}')), 0);
-  UnloadSkin();
 end;
