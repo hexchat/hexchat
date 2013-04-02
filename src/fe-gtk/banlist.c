@@ -37,6 +37,7 @@
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtktogglebutton.h>
+#include <gtk/gtkcheckbutton.h>
 #include <gtk/gtktable.h>
 #include <glib.h>
 
