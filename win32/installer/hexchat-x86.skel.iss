@@ -20,7 +20,7 @@ ShowComponentSizes=no
 CreateUninstallRegKey=not IsTaskSelected('portable')
 Uninstallable=not IsTaskSelected('portable')
 ArchitecturesAllowed=x86 x64
-MinVersion=5.1
+MinVersion=6.0
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
