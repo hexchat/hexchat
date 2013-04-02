@@ -193,7 +193,7 @@ fi
 
 COMMON_CFLAGS="$GLIB_CFLAGS"
 COMMON_LIBS="$GLIB_LIBS"
-COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0"
+COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0 -lgobject-2.0"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
