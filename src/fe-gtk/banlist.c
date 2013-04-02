@@ -584,7 +584,7 @@ banlist_toggle (GtkWidget *item, gpointer data)
  *		#define DATE_FORMAT "%a %b %d %T %Y"
  */
 static void
-strptime (char *ti, struct tm *tm)
+banlist_strptime (char *ti, struct tm *tm)
 {
 	/* Expect something like "Sat Mar 16 21:24:27 2013" */
 	static char *mon[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -626,8 +626,8 @@ banlist_date_sort (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer
 
 	gtk_tree_model_get(model, a, DATE_COLUMN, &time1, -1);
 	gtk_tree_model_get(model, b, DATE_COLUMN, &time2, -1);
-	strptime (time1, &tm1);
-	strptime (time2, &tm2);
+	banlist_strptime (time1, &tm1);
+	banlist_strptime (time2, &tm2);
 	t1 = mktime (&tm1);
 	t2 = mktime (&tm2);
 
