@@ -1861,23 +1861,6 @@ portable_mode ()
 }
 
 int
-hextray_mode ()
-{
-#ifdef WIN32
-	if ((_access( "plugins/hchextray.dll", 0 )) != -1)
-	{
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
-#else
-	return 0;
-#endif
-}
-
-int
 unity_mode ()
 {
 #ifdef G_OS_UNIX

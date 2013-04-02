@@ -1008,46 +1008,6 @@ hexchat_execv (char * const argv[])
 #endif
 }
 
-#if 0 /* def WIN32 */
-static void
-xchat_restore_window (HWND hexchat_window)
-{
-	/* ShowWindow (hexchat_window, SW_RESTORE); another way, but works worse */
-	SendMessage (hexchat_window, WM_SYSCOMMAND, SC_RESTORE, 0);
-	SetForegroundWindow (hexchat_window);
-}
-
-BOOL CALLBACK
-enum_windows_impl (HWND current_window, LPARAM lParam)
-{
-	TCHAR window_name[8];
-	TCHAR module_path[1024];
-	ZeroMemory (&window_name, sizeof (window_name));
-
-	if (!current_window)
-	{
-		return TRUE;
-	}
-
-	GetWindowText (current_window, window_name, 8);		/* name length + 1 */
-	if (strcmp (window_name, "HexChat") == 0)
-	{
-		/* use a separate if block, this way we don't have to call GetWindowModuleFileName() for each hit */
-		ZeroMemory (&module_path, sizeof (module_path));
-		GetWindowModuleFileName (current_window, module_path, sizeof (module_path));
-
-		if (strstr (module_path, "hexchat.exe"))	/* We've found it, stop */
-		{
-			xchat_restore_window (current_window);
-			return FALSE;
-		}
-	}
-
-	return TRUE;								/* Keep searching */
-
-}
-#endif
-
 int
 main (int argc, char *argv[])
 {
@@ -1056,7 +1016,6 @@ main (int argc, char *argv[])
 
 #ifdef WIN32
 	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of hex_gui_lang and trailing \0 */
-	/* HANDLE mutex; */
 #endif
 
 	srand (time (0));	/* CL: do this only once! */
@@ -1257,33 +1216,6 @@ main (int argc, char *argv[])
 	}
 
 	putenv (hexchat_lang);
-
-#if 0
-	if (prefs.hex_gui_single && !portable_mode ())
-	{
-		DWORD error;
-
-		mutex = CreateMutex (NULL, TRUE, "Local\\hexchat");
-		error = GetLastError ();
-
-		if (error == ERROR_ALREADY_EXISTS || mutex == NULL)
-		{
-			/* Restoring the HexChat window from the tray via the taskbar icon.
-			 * Only works correctly when HexTray is used.
-			 */
-			if (hextray_mode ())
-			{
-				/* FindWindow() doesn't support wildcards so we check all the open windows */
-				EnumWindows (enum_windows_impl, (LPARAM) NULL);
-				return 0;
-			}
-			else
-			{
-				return 1;
-			}
-		}
-	}
-#endif
 #endif
 
 #ifdef SOCKS
@@ -1323,14 +1255,6 @@ main (int argc, char *argv[])
 
 #ifdef WIN32
 	WSACleanup ();
-
-#if 0
-	if (prefs.hex_gui_single && !portable_mode ())
-	{
-		ReleaseMutex (mutex);
-		CloseHandle (mutex);
-	}
-#endif
 #endif
 
 	return 0;

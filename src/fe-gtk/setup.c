@@ -498,27 +498,6 @@ static const setting alert_settings_unity[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const setting alert_settings_hextray[] =
-{
-	{ST_HEADER,	N_("Alerts"),0,0,0},
-
-	{ST_ALERTHEAD},
-	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
-	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
-
-	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
-
-	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
-	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
-
-	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
-	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
-	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
-	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
-
-	{ST_END, 0, 0, 0, 0, 0}
-};
-
 static const setting general_settings[] =
 {
 	{ST_HEADER,	N_("Default Messages"),0,0,0},
@@ -567,39 +546,6 @@ static const setting advanced_settings[] =
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
-
-#ifdef WIN32
-static const setting advanced_settings_oneinstance[] =
-{
-	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
-	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
-	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
-	{ST_NUMBER,	N_("Auto join delay:"), P_OFFINTNL(hex_irc_join_delay), 0, 0, 9999},
-	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
-	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list."), 0, 0},
-	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default."), 0, 0},
-	/* {ST_TOGGLE,	N_("Allow only one instance of HexChat to run"), P_OFFINTNL(hex_gui_single), 0, 0, 0}, */
-	{ST_TOGGLE,	N_("Display lists in compact mode"), P_OFFINTNL(hex_gui_compact), N_("Use less spacing between user list/channel tree rows."), 0, 0},
-	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
-	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
-	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
-	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
-	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
-	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(hex_text_autocopy_text),
-					N_("Copy selected text to clipboard when left mouse button is released. "
-						"Otherwise, CONTROL-SHIFT-C will copy the "
-						"selected text to the clipboard."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(hex_text_autocopy_stamp),
-					N_("Automatically include time stamps in copied lines of text. Otherwise, "
-						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(hex_text_autocopy_color),
-					N_("Automatically include color information in copied lines of text.  "
-						"Otherwise, include color information if the CONTROL key is held down "
-						"while selecting."), 0, 0},
-
-	{ST_END, 0, 0, 0, 0, 0}
-};
-#endif
 
 static const setting logging_settings[] =
 {
@@ -1982,11 +1928,7 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
 	setup_add_page (cata[5], book, setup_create_color_page ());
 
-	if (hextray_mode ())
-	{
-		setup_add_page (cata[8], book, setup_create_page (alert_settings_hextray));
-	}
-	else if (unity_mode ())
+	if (unity_mode ())
 	{
 		setup_add_page (cata[8], book, setup_create_page (alert_settings_unity));
 	}
@@ -1998,21 +1940,6 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[9], book, setup_create_page (general_settings));
 	setup_add_page (cata[10], book, setup_create_page (logging_settings));
 	setup_add_page (cata[11], book, setup_create_sound_page ());
-
-#if 0	/* maybe sometime we'll have a working one-instance implementation, till then this is BS */
-#ifdef WIN32
-	if (portable_mode ())
-	{
-		setup_add_page (cata[12], book, setup_create_page (advanced_settings));
-	}
-	else
-	{
-		setup_add_page (cata[12], book, setup_create_page (advanced_settings_oneinstance));
-	}
-#else
-	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
-#endif
-#endif
 	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
 
 	setup_add_page (cata[14], book, setup_create_page (network_settings));

@@ -471,7 +471,6 @@ plugin_auto_load (session *sess)
 	for_files (".\\plugins", "hcdoat.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcexec.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcfishlim.dll", plugin_auto_load_cb);
-	/* for_files (".\\plugins", "hchextray.dll", plugin_auto_load_cb); don't load HexTray until it's fixed */
 	for_files (".\\plugins", "hcmpcinfo.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcperl.dll", plugin_auto_load_cb);
 	for_files (".\\plugins", "hcpython.dll", plugin_auto_load_cb);
