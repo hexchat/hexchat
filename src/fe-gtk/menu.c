@@ -855,7 +855,7 @@ menu_bar_toggle_cb (void)
 	menu_bar_toggle ();
 	if (prefs.hex_gui_hide_menu)
 		fe_message (_("The Menubar is now hidden. You can show it again"
-						  " by pressing F9 or right-clicking in a blank part of"
+						  " by pressing Control+F9 or right-clicking in a blank part of"
 						  " the main text area."), FE_MSG_INFO);
 }
 
