@@ -22,6 +22,8 @@
 
 #include <gtk/gtk.h>
 
+GType custom_list_get_type (void);
+
 /* Some boilerplate GObject defines. 'klass' is used
  *   instead of 'class', because 'class' is a C++ keyword */
 
