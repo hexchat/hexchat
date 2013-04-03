@@ -113,9 +113,27 @@ userlist_set_away (struct session *sess, char *nick, unsigned int away)
 	}
 }
 
+void
+userlist_set_account (struct session *sess, char *nick, char *account)
+{
+	struct User *user;
+
+	user = userlist_find (sess, nick);
+	if (user)
+	{
+		if (strcmp (account, "*") == 0)
+			user->account = NULL;
+		else if (user->account != account)
+			user->account = strdup (account);
+			
+		/* gui doesnt currently reflect login status, maybe later
+		fe_userlist_rehash (sess, user); */
+	}
+}
+
 int
 userlist_add_hostname (struct session *sess, char *nick, char *hostname,
-							  char *realname, char *servername, unsigned int away)
+							  char *realname, char *servername, char *account, unsigned int away)
 {
 	struct User *user;
 
@@ -128,6 +146,8 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 			user->realname = strdup (realname);
 		if (!user->servername && servername)
 			user->servername = strdup (servername);
+		if (!user->account && account && strcmp (account, ":0") != 0)
+			user->account = strdup (account);
 
 		if (away != 0xff)
 		{
@@ -155,6 +175,8 @@ free_user (struct User *user, gpointer data)
 		free (user->hostname);
 	if (user->servername)
 		free (user->servername);
+	if (user->account)
+		free (user->account);
 	free (user);
 
 	return TRUE;
@@ -358,7 +380,7 @@ userlist_remove_user (struct session *sess, struct User *user)
 }
 
 void
-userlist_add (struct session *sess, char *name, char *hostname)
+userlist_add (struct session *sess, char *name, char *hostname, char *account, char *realname)
 {
 	struct User *user;
 	int row, prefix_chars;
@@ -384,6 +406,15 @@ userlist_add (struct session *sess, char *name, char *hostname)
 	/* is it me? */
 	if (!sess->server->p_cmp (user->nick, sess->server->nick))
 		user->me = TRUE;
+	/* extended join info */
+	if (sess->server->have_extjoin)
+	{
+		if (account && strcmp (account, "*") != 0)
+			user->account = strdup (account);
+		if (realname)
+			user->realname = strdup (realname);
+	}
+
 	row = userlist_insertname (sess, user);
 
 	/* duplicate? some broken servers trigger this */
@@ -391,6 +422,10 @@ userlist_add (struct session *sess, char *name, char *hostname)
 	{
 		if (user->hostname)
 			free (user->hostname);
+		if (user->account)
+			free (user->account);
+		if (user->realname)
+			free (user->realname);
 		free (user);
 		return;
 	}
