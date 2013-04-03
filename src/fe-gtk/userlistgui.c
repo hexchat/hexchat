@@ -22,16 +22,6 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkbox.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkdnd.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkcellrendererpixbuf.h>
-#include <gtk/gtkcellrenderertext.h>
-#include <gtk/gtkliststore.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "../common/hexchat.h"
@@ -49,11 +39,6 @@
 #include "pixmaps.h"
 #include "userlistgui.h"
 #include "fkeys.h"
-
-#ifdef USE_GTKSPELL
-#include <gtk/gtktextview.h>
-#endif
-
 
 enum
 {

@@ -21,29 +21,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#include <gtk/gtkversion.h>
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtkcellrenderertext.h>
-#include <gtk/gtkcomboboxentry.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkhseparator.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkliststore.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtktogglebutton.h>
-#include <gtk/gtktree.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtkvbbox.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkwindow.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "../common/hexchat.h"

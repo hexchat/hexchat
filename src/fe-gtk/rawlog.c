@@ -29,11 +29,6 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkvscrollbar.h>
-#include <gtk/gtkstock.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "../common/hexchat.h"

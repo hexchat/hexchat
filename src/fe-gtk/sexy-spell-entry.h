@@ -22,7 +22,7 @@ typedef struct _SexySpellEntry      SexySpellEntry;
 typedef struct _SexySpellEntryClass SexySpellEntryClass;
 typedef struct _SexySpellEntryPriv  SexySpellEntryPriv;
 
-#include <gtk/gtkentry.h>
+#include <gtk/gtk.h>
 
 #define SEXY_TYPE_SPELL_ENTRY            (sexy_spell_entry_get_type())
 #define SEXY_SPELL_ENTRY(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj), SEXY_TYPE_SPELL_ENTRY, SexySpellEntry))
