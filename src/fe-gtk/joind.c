@@ -31,18 +31,6 @@
 #include <unistd.h>
 #endif
 
-#include <gtk/gtk.h>
-#include <gtk/gtkbbox.h>
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkradiobutton.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkwindow.h>
-
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
 #include "../common/server.h"

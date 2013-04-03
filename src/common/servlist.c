@@ -27,8 +27,6 @@
 #endif
 
 #include "hexchat.h"
-#include <glib.h>
-
 #include "cfgfiles.h"
 #include "fe.h"
 #include "server.h"

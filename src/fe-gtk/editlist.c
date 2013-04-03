@@ -31,12 +31,6 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkstock.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkclist.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkvseparator.h>
-
 #include "../common/hexchat.h"
 #include "../common/cfgfiles.h"
 #include "../common/hexchatc.h"

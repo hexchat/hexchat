@@ -33,7 +33,6 @@
 #endif
 
 #include "hexchat.h"
-#include <glib.h>
 #include "cfgfiles.h"
 #include "chanopt.h"
 #include "plugin.h"

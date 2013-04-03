@@ -22,17 +22,9 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkmain.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkprogressbar.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtktogglebutton.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkversion.h>
-
 #ifdef WIN32
 #include <gdk/gdkwin32.h>
+#include <windows.h>
 #else
 #include <unistd.h>
 #endif
@@ -62,15 +54,6 @@
 
 #ifdef USE_XLIB
 #include <gdk/gdkx.h>
-#include <gtk/gtkinvisible.h>
-#endif
-
-#ifdef USE_GTKSPELL
-#include <gtk/gtktextview.h>
-#endif
-
-#ifdef WIN32
-#include <windows.h>
 #endif
 
 GdkPixmap *channelwin_pix;

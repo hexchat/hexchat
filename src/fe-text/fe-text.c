@@ -32,7 +32,6 @@
 #endif
 #include <sys/types.h>
 #include <ctype.h>
-#include <glib.h>
 #include <glib-object.h>
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"

@@ -20,7 +20,7 @@
 #ifndef HEXCHAT_XTEXT_H
 #define HEXCHAT_XTEXT_H
 
-#include <gtk/gtkadjustment.h>
+#include <gtk/gtk.h>
 #ifdef USE_XFT
 #include <X11/Xft/Xft.h>
 #endif

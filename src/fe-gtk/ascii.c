@@ -22,12 +22,6 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkeditable.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkbutton.h>
-
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
 #include "gtkutil.h"
