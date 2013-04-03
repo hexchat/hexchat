@@ -986,6 +986,22 @@ inbound_away (server *serv, char *nick, char *msg)
 	}
 }
 
+void
+inbound_away_notify (server *serv, char *nick, char *reason)
+{
+	session *sess = NULL;
+	GSList *list;
+
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		if (sess->server == serv)
+			userlist_set_away (sess, nick, reason ? TRUE : FALSE);
+		list = list->next;
+	}
+}
+
 int
 inbound_nameslist_end (server *serv, char *chan)
 {
