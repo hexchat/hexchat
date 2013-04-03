@@ -28,19 +28,6 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkliststore.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtktogglebutton.h>
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtktable.h>
-#include <glib.h>
-
 #include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/modes.h"

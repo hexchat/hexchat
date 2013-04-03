@@ -32,20 +32,6 @@
 
 #include "fe-gtk.h"
 
-#include <glib.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkeditable.h>
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtkoptionmenu.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkclist.h>
-#include <gtk/gtknotebook.h>
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkvscrollbar.h>
-
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
@@ -64,10 +50,6 @@
 #include "maingui.h"
 #include "textgui.h"
 #include "fkeys.h"
-
-#ifdef USE_GTKSPELL
-#include <gtk/gtktextview.h>
-#endif
 
 static void replace_handle (GtkWidget * wid);
 void key_action_tab_clean (void);

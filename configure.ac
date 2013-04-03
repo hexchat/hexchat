@@ -191,7 +191,7 @@ if test "$glib" = no; then
 	AC_MSG_ERROR(Cannot find GLib!)
 fi
 
-COMMON_CFLAGS="$GLIB_CFLAGS"
+COMMON_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
 COMMON_LIBS="$GLIB_LIBS"
 COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0 -lgobject-2.0"
 
@@ -222,7 +222,7 @@ dnl ** GNOME ************************************************************
 dnl *********************************************************************
 
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
-GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
+GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_CAST_CHECKS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
 
 #if test "$gnome" = yes; then
 #	AC_PATH_PROG(pkgconfigpath, pkg-config)

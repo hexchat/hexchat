@@ -29,7 +29,6 @@
 #include "pixmaps.h"
 #include "maingui.h"
 #include "menu.h"
-#include <gtk/gtk.h>
 
 #ifndef WIN32
 #include <unistd.h>

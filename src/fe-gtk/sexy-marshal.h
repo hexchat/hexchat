@@ -19,7 +19,7 @@
 #ifndef __sexy_marshal_MARSHAL_H__
 #define __sexy_marshal_MARSHAL_H__
 
-#include	<glib-object.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 

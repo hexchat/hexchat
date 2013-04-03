@@ -22,14 +22,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-
-#include "chanview.h"
 #include "gtkutil.h"
-
+#include "chanview.h"
 
 /* treeStore columns */
-
 #define COL_NAME 0		/* (char *) */
 #define COL_CHAN 1		/* (chan *) */
 #define COL_ATTR 2		/* (PangoAttrList *) */

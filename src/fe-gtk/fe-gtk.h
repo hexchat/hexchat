@@ -48,9 +48,7 @@
 #  define _(x) (x)
 #endif
 
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkcontainer.h>
-#include <gtk/gtksignal.h>
+#include <gtk/gtk.h>
 #include "banlist.h"
 
 #undef gtk_signal_connect

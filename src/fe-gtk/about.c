@@ -22,17 +22,6 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkmain.h>
-#include <gtk/gtkcontainer.h>
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkwindow.h>
-
 #ifdef USE_XLIB
 #include <gdk/gdkx.h>
 #endif

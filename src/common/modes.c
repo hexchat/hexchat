@@ -19,8 +19,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <glib.h>
-#include <glib/gprintf.h>
 
 #include "hexchat.h"
 #include "hexchatc.h"
@@ -33,6 +31,8 @@
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
+
+#include <glib/gprintf.h>
 
 typedef struct
 {

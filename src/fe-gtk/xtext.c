@@ -42,12 +42,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <time.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtksignal.h>
-#include <gtk/gtkselection.h>
-#include <gtk/gtkclipboard.h>
-#include <gtk/gtkversion.h>
-#include <gtk/gtkwindow.h>
 
 #ifdef HEXCHAT
 #ifdef WIN32

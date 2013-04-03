@@ -48,7 +48,6 @@
 #include <errno.h>
 #include "hexchat.h"
 #include "hexchatc.h"
-#include <glib.h>
 #include <ctype.h>
 #include "util.h"
 
