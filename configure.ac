@@ -222,7 +222,7 @@ dnl ** GNOME ************************************************************
 dnl *********************************************************************
 
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
-GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_CAST_CHECKS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
+GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
 
 #if test "$gnome" = yes; then
 #	AC_PATH_PROG(pkgconfigpath, pkg-config)
