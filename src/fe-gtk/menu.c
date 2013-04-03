@@ -113,6 +113,7 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 {
 	char *buf;
 	char *host = _("Host unknown");
+	char *account = _("Account unknown");
 	struct User *user;
 	int len;
 
@@ -125,8 +126,13 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 	} else*/
 	{
 		user = userlist_find (sess, nick);
-		if (user && user->hostname)
-			host = strchr (user->hostname, '@') + 1;
+		if (user)
+		{
+			if (user->hostname)
+				host = strchr (user->hostname, '@') + 1;
+			if (user->account)
+				account = user->account;
+		}
 	}
 
 	/* this can't overflow, since popup->cmd is only 256 */
@@ -135,7 +141,7 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 
 	auto_insert (buf, len, cmd, 0, 0, allnick, sess->channel, "",
 					 server_get_network (sess->server, TRUE), host,
-					 sess->server->nick, nick);
+					 sess->server->nick, nick, account);
 
 	nick_command (sess, buf);
 

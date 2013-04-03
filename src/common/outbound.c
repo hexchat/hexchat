@@ -3856,7 +3856,7 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
 int
 auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 				 char *word_eol[], char *a, char *c, char *d, char *e, char *h,
-				 char *n, char *s)
+				 char *n, char *s, char *u)
 {
 	int num;
 	char buf[32];
@@ -3953,6 +3953,8 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 					utf = ctime (&now);
 					utf[19] = 0;
 					break;
+				case 'u':
+					utf = u; break;
 				case 'v':
 					utf = PACKAGE_VERSION; break;
 					break;
@@ -4172,7 +4174,7 @@ user_command (session * sess, char *tbuf, char *cmd, char *word[],
 {
 	if (!auto_insert (tbuf, 2048, cmd, word, word_eol, "", sess->channel, "",
 							server_get_network (sess->server, TRUE), "",
-							sess->server->nick, ""))
+							sess->server->nick, "", ""))
 	{
 		PrintText (sess, _("Bad arguments for user command.\n"));
 		return;

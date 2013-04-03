@@ -2141,7 +2141,7 @@ mg_dialog_button_cb (GtkWidget *wid, char *cmd)
 
 	auto_insert (buf, sizeof (buf), cmd, 0, 0, "", "", "",
 					 server_get_network (current_sess->server, TRUE), host, "",
-					 current_sess->channel);
+					 current_sess->channel, "");
 
 	handle_command (current_sess, buf, TRUE);
 
