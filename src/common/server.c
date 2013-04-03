@@ -1888,6 +1888,8 @@ server_set_defaults (server *serv)
 	serv->have_uhnames = FALSE;
 	serv->have_whox = FALSE;
 	serv->have_idmsg = FALSE;
+	serv->have_accnotify = FALSE;
+	serv->have_extjoin = FALSE;
 	serv->have_sasl = FALSE;
 	serv->have_except = FALSE;
 	serv->have_invite = FALSE;

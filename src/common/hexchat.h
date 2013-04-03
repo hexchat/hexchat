@@ -593,6 +593,8 @@ typedef struct server
 	unsigned int have_uhnames:1;
 	unsigned int have_whox:1;		/* have undernet's WHOX features */
 	unsigned int have_idmsg:1;		/* freenode's IDENTIFY-MSG */
+	unsigned int have_accnotify:1; /* cap account-notify */
+	unsigned int have_extjoin:1;	/* cap extended-join */
 	unsigned int have_sasl:1;		/* SASL capability */
 	unsigned int have_except:1;	/* ban exemptions +e */
 	unsigned int have_invite:1;	/* invite exemptions +I */

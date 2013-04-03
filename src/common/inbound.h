@@ -23,6 +23,7 @@
 void inbound_next_nick (session *sess, char *nick);
 void inbound_uback (server *serv);
 void inbound_uaway (server *serv);
+void inbound_account (server *serv, char *nick, char *account);
 void inbound_part (server *serv, char *chan, char *user, char *ip, char *reason);
 void inbound_upart (server *serv, char *chan, char *ip, char *reason);
 void inbound_ukick (server *serv, char *chan, char *kicker, char *reason);
@@ -30,12 +31,12 @@ void inbound_kick (server *serv, char *chan, char *user, char *kicker, char *rea
 void inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id);
 void inbound_quit (server *serv, char *nick, char *ip, char *reason);
 void inbound_topicnew (server *serv, char *nick, char *chan, char *topic);
-void inbound_join (server *serv, char *chan, char *user, char *ip);
+void inbound_join (server *serv, char *chan, char *user, char *ip, char *account, char *realname);
 void inbound_ujoin (server *serv, char *chan, char *nick, char *ip);
 void inbound_topictime (server *serv, char *chan, char *nick, time_t stamp);
 void inbound_topic (server *serv, char *chan, char *topic_text);
 void inbound_user_info_start (session *sess, char *nick);
-void inbound_user_info (session *sess, char *chan, char *user, char *host, char *servname, char *nick, char *realname, unsigned int away);
+void inbound_user_info (session *sess, char *chan, char *user, char *host, char *servname, char *nick, char *realname, char *account, unsigned int away);
 void inbound_foundip (session *sess, char *ip);
 int inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int is_exemption);
 void inbound_ping_reply (session *sess, char *timestring, char *from);
