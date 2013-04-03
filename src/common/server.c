@@ -1881,6 +1881,7 @@ server_set_defaults (server *serv)
 	serv->end_of_motd = FALSE;
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;
+	serv->supports_monitor = FALSE;
 	serv->bad_prefix = FALSE;
 	serv->use_who = TRUE;
 	serv->have_namesx = FALSE;

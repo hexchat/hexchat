@@ -1391,7 +1391,7 @@ inbound_login_end (session *sess, char *text)
 															  check_autojoin_channels, serv);
 		else
 			check_autojoin_channels (serv);
-		if (serv->supports_watch)
+		if (serv->supports_watch || serv->supports_monitor)
 			notify_send_watches (serv);
 		serv->end_of_motd = TRUE;
 	}

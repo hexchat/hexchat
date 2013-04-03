@@ -466,6 +466,8 @@ process_numeric (session * sess, int n,
 	if (prefs.hex_irc_whois_front)
 		whois_sess = serv->front_session;
 
+	char *ex;
+	
 	switch (n)
 	{
 	case 1:
@@ -896,6 +898,20 @@ process_numeric (session * sess, int n,
 	case 729:	/* end of quiet list */
 		if (!fe_ban_list_end (sess, 729))
 			goto def;
+		break;
+
+	case 730: /* RPL_MONONLINE */
+		ex = strchr (word[4], '!'); /* only send the nick */
+		if (ex)
+			ex[0] = 0;
+		notify_set_online (serv, word[4] + 1);
+		break;
+
+	case 731: /* RPL_MONOFFLINE */
+		ex = strchr (word[4], '!'); /* only send the nick */
+		if (ex)
+			ex[0] = 0;
+		notify_set_offline (serv, word[4] + 1, FALSE);
 		break;
 
 	case 903:	/* successful SASL auth */

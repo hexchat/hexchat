@@ -776,6 +776,9 @@ inbound_005 (server * serv, char *word[])
 		} else if (strncmp (word[w], "WATCH=", 6) == 0)
 		{
 			serv->supports_watch = TRUE;
+		} else if (strncmp (word[w], "MONITOR=", 8) == 0)
+		{
+			serv->supports_monitor = TRUE;
 		} else if (strncmp (word[w], "NETWORK=", 8) == 0)
 		{
 /*			if (serv->networkname)
