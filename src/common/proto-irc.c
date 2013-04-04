@@ -462,12 +462,12 @@ process_numeric (session * sess, int n,
 	/* show whois is the server tab */
 	session *whois_sess = serv->server_session;
 
+	char *ex;
+	
 	/* unless this setting is on */
 	if (prefs.hex_irc_whois_front)
 		whois_sess = serv->front_session;
 
-	char *ex;
-	
 	switch (n)
 	{
 	case 1:
