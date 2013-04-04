@@ -149,7 +149,7 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 			user->realname = strdup (realname);
 		if (!user->servername && servername)
 			user->servername = strdup (servername);
-		if (!user->account && account && strcmp (account, ":0") != 0 && strcmp (account, "0") != 0)
+		if (!user->account && account && strcmp (account, "0") != 0)
 			user->account = strdup (account);
 
 		if (away != 0xff)

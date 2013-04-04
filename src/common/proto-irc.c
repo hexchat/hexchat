@@ -721,7 +721,7 @@ process_numeric (session * sess, int n,
 				away = 1;
 
 			inbound_user_info (sess, word[4], word[5], word[6], word[7],
-									 word[8], word_eol[11], word[10], away);
+									 word[8], word_eol[11], NULL, away);
 
 			/* try to show only user initiated whos */
 			if (!who_sess || !who_sess->doing_who)
