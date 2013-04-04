@@ -141,7 +141,7 @@ static struct key_binding *keys_root = NULL;
 static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 
 	{key_action_handle_command, "Run Command",
-	 N_("The \002Run Command\002 action runs the data in Data 1 as if it had been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \002\\n\002 characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \002\\\002 in the actual text run then enter \002\\\\\002")},
+	 N_("The \002Run Command\002 action runs the data in Data 1 as if it had been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \002\\n\002 characters in Data 1 are used to deliminate separate commands so it is possible to run more than one command. If you want a \002\\\002 in the actual text run then enter \002\\\\\002")},
 	{key_action_page_switch, "Change Page",
 	 N_("The \002Change Page\002 command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position. Set Data 1 to auto to switch to the page with the most recent and important activity (queries first, then channels with hilight, channels with dialogue, channels with other data)")},
 	{key_action_insert, "Insert in Buffer",
