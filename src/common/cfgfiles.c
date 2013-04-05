@@ -827,15 +827,6 @@ load_config (void)
 
 	} else
 	{
-#ifndef WIN32
-#ifndef __EMX__
-		/* OS/2 uses UID 0 all the time */
-		if (getuid () == 0)
-			fe_message (_("* Running IRC as root is stupid! You should\n"
-							"  create a User Account and use that to login.\n"), FE_MSG_WARN|FE_MSG_WAIT);
-#endif
-#endif /* !WIN32 */
-
 		g_mkdir (prefs.hex_dcc_dir, 0700);
 		g_mkdir (prefs.hex_dcc_completed_dir, 0700);
 
