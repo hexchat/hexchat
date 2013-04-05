@@ -2723,6 +2723,10 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *msg = word_eol[3];
 	struct session *newsess;
 
+	char *split_text = NULL;
+	int cmd_length = 13; /* " PRIVMSG ", " ", :, \r, \n */
+	int offset = 0;
+
 	if (*nick)
 	{
 		if (*msg)
@@ -2751,14 +2755,37 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					notc_msg (sess);
 					return TRUE;
 				}
-				sess->server->p_message (sess->server, nick, msg);
+
+				while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
+				{
+					sess->server->p_message (sess->server, nick, split_text);
+
+					if (*split_text)
+						offset += strlen(split_text);
+
+					g_free(split_text);
+				}
+				sess->server->p_message (sess->server, nick, msg + offset);
+				offset = 0;
 			}
 			newsess = find_dialog (sess->server, nick);
 			if (!newsess)
 				newsess = find_channel (sess->server, nick);
 			if (newsess)
+			{
+				while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
+				{
+					inbound_chanmsg (newsess->server, NULL, newsess->channel,
+										  newsess->server->nick, split_text, TRUE, FALSE);
+
+					if (*split_text)
+						offset += strlen(split_text);
+
+					g_free(split_text);
+				}
 				inbound_chanmsg (newsess->server, NULL, newsess->channel,
-									  newsess->server->nick, msg, TRUE, FALSE);
+									  newsess->server->nick, msg + offset, TRUE, FALSE);
+			}
 			else
 			{
 				/* mask out passwords */
