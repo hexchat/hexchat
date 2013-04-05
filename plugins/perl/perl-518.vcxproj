@@ -11,10 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{461DC24A-A410-4171-8C02-CCDBF3702C2A}</ProjectGuid>
+    <ProjectGuid>{D90BC3E3-1341-4849-9354-5F40489D39D1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>upd</RootNamespace>
-    <ProjectName>upd</ProjectName>
+    <RootNamespace>perl518</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -22,36 +21,34 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>WDK7</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>WDK7</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\win32\hexchat-xp.props" />
+    <Import Project="..\..\win32\hexchat.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\win32\hexchat-xp.props" />
+    <Import Project="..\..\win32\hexchat.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>hcupd</TargetName>
+    <TargetName>$(Perl518Output)</TargetName>
     <OutDir>$(HexChatBin)</OutDir>
     <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>hcupd</TargetName>
+    <TargetName>$(Perl518Output)</TargetName>
     <OutDir>$(HexChatBin)</OutDir>
     <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -62,19 +59,28 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;UPD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PERL518_EXPORTS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(Perl518Path)\lib\CORE;$(IntDir);..\..\src\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>..\..\src\common;$(Glib);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ModuleDefinitionFile>upd.def</ModuleDefinitionFile>
-      <AdditionalDependencies>$(DepLibs);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(DepsRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(Perl518Lib).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>perl.def</ModuleDefinitionFile>
+      <DelayLoadDLLs>$(Perl518Lib).dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(GendefPath)\gendef" "$(Perl518Path)\bin\$(Perl518Lib).dll"
+move $(Perl518Lib).def "$(IntDir)"
+lib /nologo /machine:x86 "/def:$(IntDir)$(Perl518Lib).def" "/out:$(OutDir)\$(Perl518Lib).lib"
+"$(Perl518Path)\bin\perl.exe" generate_header
+move irc.pm.h "$(IntDir)"
+move xchat.pm.h "$(IntDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -83,25 +89,34 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_WINDOWS;_USRDLL;UPD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_WINDOWS;_USRDLL;PERL518_EXPORTS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(Perl518Path)\lib\CORE;$(IntDir);..\..\src\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>..\..\src\common;$(Glib);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ModuleDefinitionFile>upd.def</ModuleDefinitionFile>
-      <AdditionalDependencies>$(DepLibs);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(DepsRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(Perl518Lib).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>perl.def</ModuleDefinitionFile>
+      <DelayLoadDLLs>$(Perl518Lib).dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(GendefPath)\gendef" "$(Perl518Path)\bin\$(Perl518Lib).dll"
+move $(Perl518Lib).def "$(IntDir)"
+lib /nologo /machine:x64 "/def:$(IntDir)$(Perl518Lib).def" "/out:$(OutDir)\$(Perl518Lib).lib"
+"$(Perl518Path)\bin\perl.exe" generate_header
+move irc.pm.h "$(IntDir)"
+move xchat.pm.h "$(IntDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="upd.def" />
+    <None Include="perl.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="upd.c" />
+    <ClCompile Include="perl.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

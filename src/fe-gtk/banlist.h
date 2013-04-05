@@ -1,5 +1,24 @@
-#ifndef BANLIST_H
-#define BANLIST_H
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
+#ifndef HEXCHAT_BANLIST_H
+#define HEXCHAT_BANLIST_H
 
 #include "../common/hexchat.h"
 void banlist_opengui (session *sess);
@@ -24,18 +43,6 @@ typedef enum banlist_modes_e {
 	MODE_CT
 } banlist_modes;
 
-typedef struct banlist_info_s banlist_info;
-
-typedef struct mode_info_s {
-	char *name;		/* Checkbox name, e.g. "Bans" */
-	char *tag;		/* Prefix line with this, e.g. "(EX) " for MODE_EXEMPT */
-	char letter;	/* /mode-command letter, e.g. 'b' for MODE_BAN */
-	int code;		/* rfc RPL_foo code, e.g. 367 for RPL_BANLIST */
-	int endcode;	/* rfc RPL_ENDOFfoo code, e.g. 368 for RPL_ENDOFBANLIST */
-	int bit;			/* Mask bit, e.g., 1<<MODE_BAN  */
-	void (*tester)(banlist_info *, int);	/* Function returns true to set bit into checkable */
-} mode_info;
-
 typedef struct banlist_info_s {
 	session *sess;
 	int capable;	/* MODE bitmask */
@@ -49,12 +56,21 @@ typedef struct banlist_info_s {
 		/* Not really; 1 if any are selected otherwise 0 */
 	GtkWidget *window;
 	GtkWidget *treeview;
-	GtkWidget *radios[MODE_CT];
 	GtkWidget *checkboxes[MODE_CT];
 	GtkWidget *but_remove;
 	GtkWidget *but_crop;
 	GtkWidget *but_clear;
 	GtkWidget *but_refresh;
-	GtkWidget *checkbox[MODE_CT];	/* Checkbox widget for mode */
 } banlist_info;
-#endif /* BANLIST_H */
+
+typedef struct mode_info_s {
+	char *name;		/* Checkbox name, e.g. "Bans" */
+	char *type;		/* Type for type column, e.g. "Ban" */
+	char letter;	/* /mode-command letter, e.g. 'b' for MODE_BAN */
+	int code;		/* rfc RPL_foo code, e.g. 367 for RPL_BANLIST */
+	int endcode;	/* rfc RPL_ENDOFfoo code, e.g. 368 for RPL_ENDOFBANLIST */
+	int bit;			/* Mask bit, e.g., 1<<MODE_BAN  */
+	void (*tester)(banlist_info *, int);	/* Function returns true to set bit into checkable */
+} mode_info;
+
+#endif /* HEXCHAT_BANLIST_H */

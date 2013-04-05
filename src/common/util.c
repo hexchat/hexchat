@@ -48,7 +48,6 @@
 #include <errno.h>
 #include "hexchat.h"
 #include "hexchatc.h"
-#include <glib.h>
 #include <ctype.h>
 #include "util.h"
 
@@ -1861,20 +1860,14 @@ portable_mode ()
 }
 
 int
-hextray_mode ()
+unity_mode ()
 {
-#ifdef WIN32
-	if ((_access( "plugins/hchextray.dll", 0 )) != -1)
-	{
+#ifdef G_OS_UNIX
+	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
+	if (env && strcmp (env, "Unity") == 0)
 		return 1;
-	}
-	else
-	{
-		return 0;
-	}
-#else
-	return 0;
 #endif
+	return 0;
 }
 
 /* Routine for listing subfolders of a given folder. ALWAYS free correctly after use, e.g.

@@ -30,18 +30,6 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkcheckmenuitem.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkimagemenuitem.h>
-#include <gtk/gtkradiomenuitem.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkmenubar.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkversion.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "../common/hexchat.h"
@@ -125,6 +113,7 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 {
 	char *buf;
 	char *host = _("Host unknown");
+	char *account = _("Account unknown");
 	struct User *user;
 	int len;
 
@@ -137,8 +126,13 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 	} else*/
 	{
 		user = userlist_find (sess, nick);
-		if (user && user->hostname)
-			host = strchr (user->hostname, '@') + 1;
+		if (user)
+		{
+			if (user->hostname)
+				host = strchr (user->hostname, '@') + 1;
+			if (user->account)
+				account = user->account;
+		}
 	}
 
 	/* this can't overflow, since popup->cmd is only 256 */
@@ -147,7 +141,7 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 
 	auto_insert (buf, len, cmd, 0, 0, allnick, sess->channel, "",
 					 server_get_network (sess->server, TRUE), host,
-					 sess->server->nick, nick);
+					 sess->server->nick, nick, account);
 
 	nick_command (sess, buf);
 
@@ -636,6 +630,13 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 	g_signal_connect (G_OBJECT (item), "activate",
 							G_CALLBACK (copy_to_clipboard_cb), 
 							user->hostname ? user->hostname : unknown);
+	
+	snprintf (buf, sizeof (buf), fmt, _("Account:"),
+				 user->account ? user->account : unknown);
+	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	g_signal_connect (G_OBJECT (item), "activate",
+							G_CALLBACK (copy_to_clipboard_cb), 
+							user->account ? user->account : unknown);
 
 	snprintf (buf, sizeof (buf), fmt, _("Country:"),
 				 user->hostname ? country(user->hostname) : unknown);
@@ -854,7 +855,7 @@ menu_bar_toggle_cb (void)
 	menu_bar_toggle ();
 	if (prefs.hex_gui_hide_menu)
 		fe_message (_("The Menubar is now hidden. You can show it again"
-						  " by pressing F9 or right-clicking in a blank part of"
+						  " by pressing Control+F9 or right-clicking in a blank part of"
 						  " the main text area."), FE_MSG_INFO);
 }
 
@@ -1609,7 +1610,7 @@ static struct mymenu mymenu[] = {
 	{N_("_New"), 0, GTK_STOCK_NEW, M_MENUSUB, 0, 0, 1},
 		{N_("Server Tab..."), menu_newserver_tab, 0, M_MENUITEM, 0, 0, 1, GDK_t},
 		{N_("Channel Tab..."), menu_newchannel_tab, 0, M_MENUITEM, 0, 0, 1},
-		{N_("Server Window..."), menu_newserver_window, 0, M_MENUITEM, 0, 0, 1},
+		{N_("Server Window..."), menu_newserver_window, 0, M_MENUITEM, 0, 0, 1, GDK_n},
 		{N_("Channel Window..."), menu_newchannel_window, 0, M_MENUITEM, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},
 	{0, 0, 0, M_SEP, 0, 0, 0},
@@ -1685,7 +1686,7 @@ static struct mymenu mymenu[] = {
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
 	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
-	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
+	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
 #define SEARCH_OFFSET 68
 	{N_("Search"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},

@@ -137,7 +137,7 @@ static void
 inbound_make_idtext (server *serv, char *idtext, int max, int id)
 {
 	idtext[0] = 0;
-	if (serv->have_idmsg)
+	if (serv->have_idmsg || serv->have_accnotify)
 	{
 		if (id)
 		{
@@ -157,6 +157,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 	session *sess;
 	struct User *user;
 	char idtext[64];
+	gboolean nodiag = FALSE;
 
 	sess = find_dialog (serv, from);
 
@@ -189,21 +190,24 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		return;
 	}
 
-	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
-
 	sess = find_session_from_nick (from, serv);
 	if (!sess)
 	{
 		sess = serv->front_session;
-		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
-		return;
+		nodiag = TRUE; /* We don't want it to look like a normal message in front sess */
 	}
-	
+
 	user = userlist_find (sess, from);
 	if (user)
+	{
 		user->lasttalk = time (0);
+		if (user->account)
+			id = TRUE;
+	}
+	
+	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
 
-	if (sess->type == SESS_DIALOG)
+	if (sess->type == SESS_DIALOG && !nodiag)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
 	else
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
@@ -380,6 +384,8 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int
 	{
 		nickchar[0] = user->prefix[0];
 		user->lasttalk = time (0);
+		if (user->account)
+			id = TRUE;
 	}
 
 	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
@@ -436,6 +442,8 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 	user = userlist_find (sess, from);
 	if (user)
 	{
+		if (user->account)
+			id = TRUE;
 		nickchar[0] = user->prefix[0];
 		user->lasttalk = time (0);
 	}
@@ -655,12 +663,12 @@ inbound_nameslist (server *serv, char *chan, char *names)
 		case 0:
 			name[pos] = 0;
 			if (pos != 0)
-				userlist_add (sess, name, 0);
+				userlist_add (sess, name, 0, NULL, NULL);
 			return;
 		case ' ':
 			name[pos] = 0;
 			pos = 0;
-			userlist_add (sess, name, 0);
+			userlist_add (sess, name, 0, NULL, NULL);
 			break;
 		default:
 			name[pos] = *names;
@@ -705,13 +713,13 @@ inbound_topicnew (server *serv, char *nick, char *chan, char *topic)
 }
 
 void
-inbound_join (server *serv, char *chan, char *user, char *ip)
+inbound_join (server *serv, char *chan, char *user, char *ip, char *account, char *realname)
 {
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
 		EMIT_SIGNAL (XP_TE_JOIN, sess, user, chan, ip, NULL, 0);
-		userlist_add (sess, user, ip);
+		userlist_add (sess, user, ip, account, realname);
 	}
 }
 
@@ -781,6 +789,22 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
 	}
 
 	notify_set_offline (serv, nick, was_on_front_session);
+}
+
+void
+inbound_account (server *serv, char *nick, char *account)
+{
+	session *sess = NULL;
+	GSList *list;
+
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		if (sess->server == serv)
+			userlist_set_account (sess, nick, account);
+		list = list->next;
+	}
 }
 
 void
@@ -982,6 +1006,22 @@ inbound_away (server *serv, char *nick, char *msg)
 		sess = list->data;
 		if (sess->server == serv)
 			userlist_set_away (sess, nick, TRUE);
+		list = list->next;
+	}
+}
+
+void
+inbound_away_notify (server *serv, char *nick, char *reason)
+{
+	session *sess = NULL;
+	GSList *list;
+
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		if (sess->server == serv)
+			userlist_set_away (sess, nick, reason ? TRUE : FALSE);
 		list = list->next;
 	}
 }
@@ -1236,7 +1276,7 @@ inbound_user_info_start (session *sess, char *nick)
 void
 inbound_user_info (session *sess, char *chan, char *user, char *host,
 						 char *servname, char *nick, char *realname,
-						 unsigned int away)
+						 char *account, unsigned int away)
 {
 	server *serv = sess->server;
 	session *who_sess;
@@ -1253,7 +1293,7 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 	{
 		who_sess = find_channel (serv, chan);
 		if (who_sess)
-			userlist_add_hostname (who_sess, nick, uhost, realname, servname, away);
+			userlist_add_hostname (who_sess, nick, uhost, realname, servname, account, away);
 		else
 		{
 			if (serv->doing_dns && nick && host)
@@ -1268,7 +1308,7 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 			sess = list->data;
 			if (sess->type == SESS_CHANNEL && sess->server == serv)
 			{
-				userlist_add_hostname (sess, nick, uhost, realname, servname, away);
+				userlist_add_hostname (sess, nick, uhost, realname, servname, account, away);
 			}
 		}
 	}
@@ -1351,7 +1391,7 @@ inbound_login_end (session *sess, char *text)
 															  check_autojoin_channels, serv);
 		else
 			check_autojoin_channels (serv);
-		if (serv->supports_watch)
+		if (serv->supports_watch || serv->supports_monitor)
 			notify_send_watches (serv);
 		serv->end_of_motd = TRUE;
 	}

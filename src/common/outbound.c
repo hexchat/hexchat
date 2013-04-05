@@ -3176,15 +3176,15 @@ urlserv:
 				*channel = co+1;
 			else
 				*channel = co;
-			
-		}
-		/* check for key - mirc style */
-		co = strchr (co + 1, '?');
-		if (co)
-		{
-			*co = 0;
-			co++;
-			*key = co;
+				
+			/* check for key - mirc style */
+			co = strchr (co + 1, '?');
+			if (co)
+			{
+				*co = 0;
+				co++;
+				*key = co;
+			}	
 		}
 			
 		return TRUE;
@@ -3930,7 +3930,7 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
 int
 auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 				 char *word_eol[], char *a, char *c, char *d, char *e, char *h,
-				 char *n, char *s)
+				 char *n, char *s, char *u)
 {
 	int num;
 	char buf[32];
@@ -4027,6 +4027,8 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 					utf = ctime (&now);
 					utf[19] = 0;
 					break;
+				case 'u':
+					utf = u; break;
 				case 'v':
 					utf = PACKAGE_VERSION; break;
 					break;
@@ -4246,7 +4248,7 @@ user_command (session * sess, char *tbuf, char *cmd, char *word[],
 {
 	if (!auto_insert (tbuf, 2048, cmd, word, word_eol, "", sess->channel, "",
 							server_get_network (sess->server, TRUE), "",
-							sess->server->nick, ""))
+							sess->server->nick, "", ""))
 	{
 		PrintText (sess, _("Bad arguments for user command.\n"));
 		return;
@@ -4506,16 +4508,29 @@ handle_user_input (session *sess, char *text, int history, int nocommand)
 		return 1;
 	}
 
+#if 0 /* Who would remember all this? */
 	if (prefs.hex_input_command_char[0] == '/')
 	{
 		int i;
 		const char *unix_dirs [] = {
-			"/bin/", "/boot/", "/dev/",
-			"/etc/", "/home/", "/lib/",
-			"/lost+found/", "/mnt/", "/opt/",
-			"/proc/", "/root/", "/sbin/",
-			"/tmp/", "/usr/", "/var/",
-			"/gnome/", NULL};
+			"/bin/",
+			"/boot/",
+			"/dev/",
+			"/etc/",
+			"/home/",
+			"/lib/",
+			"/lost+found/",
+			"/mnt/",
+			"/opt/",
+			"/proc/",
+			"/root/",
+			"/sbin/",
+			"/tmp/",
+			"/usr/",
+			"/var/",
+			"/gnome/",
+			NULL
+		};
 		for (i = 0; unix_dirs[i] != NULL; i++)
 			if (strncmp (text, unix_dirs[i], strlen (unix_dirs[i]))==0)
 			{
@@ -4523,6 +4538,7 @@ handle_user_input (session *sess, char *text, int history, int nocommand)
 				return 1;
 			}
 	}
+#endif
 
 	return handle_command (sess, text + 1, TRUE);
 }

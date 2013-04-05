@@ -21,29 +21,6 @@
 #include <stdio.h>
 #include <ctype.h>
 
-#include <gtk/gtkarrow.h>
-#include <gtk/gtktogglebutton.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkeventbox.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkhpaned.h>
-#include <gtk/gtkvpaned.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtkprogressbar.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtknotebook.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkcheckmenuitem.h>
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtkbbox.h>
-#include <gtk/gtkvscrollbar.h>
-
 #include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/server.h"
@@ -71,7 +48,6 @@
 #include "xtext.h"
 
 #ifdef USE_GTKSPELL
-#include <gtk/gtktextview.h>
 #include <gtkspell/gtkspell.h>
 #endif
 
@@ -501,7 +477,7 @@ mg_windowstate_cb (GtkWindow *wid, GdkEventWindowState *event, gpointer userdata
 {
 	if ((event->changed_mask & GDK_WINDOW_STATE_ICONIFIED) &&
 		 (event->new_window_state & GDK_WINDOW_STATE_ICONIFIED) &&
-		 prefs.hex_gui_tray_minimize && !hextray_mode ())
+		 prefs.hex_gui_tray_minimize && !unity_mode ())
 	{
 		tray_toggle_visibility (TRUE);
 		gtk_window_deiconify (wid);
@@ -1295,7 +1271,7 @@ mg_open_quit_dialog (gboolean minimize_button)
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
 										GTK_BUTTONBOX_END);
 
-	if (minimize_button && !hextray_mode ())
+	if (minimize_button && !unity_mode ())
 	{
 		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
 		gtk_widget_show (button);
@@ -1594,10 +1570,7 @@ mg_create_alertmenu (session *sess, GtkWidget *menu)
 
 	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.hex_input_beep_chans);
 
-	if (!hextray_mode ())		/*disable this context menu item when HexTray is loaded */
-	{
-		mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.hex_input_tray_chans);
-	}
+	mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.hex_input_tray_chans);
 
 	mg_perchan_menu_item (_("Blink Task _Bar"), submenu, &sess->alert_taskbar, prefs.hex_input_flash_chans);
 }
@@ -2168,7 +2141,7 @@ mg_dialog_button_cb (GtkWidget *wid, char *cmd)
 
 	auto_insert (buf, sizeof (buf), cmd, 0, 0, "", "", "",
 					 server_get_network (current_sess->server, TRUE), host, "",
-					 current_sess->channel);
+					 current_sess->channel, "");
 
 	handle_command (current_sess, buf, TRUE);
 
@@ -3087,7 +3060,7 @@ mg_tabwindow_de_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	GSList *list;
 	session *sess;
 
-	if (prefs.hex_gui_tray_close && !hextray_mode () && tray_toggle_visibility (FALSE))
+	if (prefs.hex_gui_tray_close && !unity_mode () && tray_toggle_visibility (FALSE))
 		return TRUE;
 
 	/* check for remaining toplevel windows */

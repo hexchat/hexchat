@@ -1,4 +1,20 @@
-/* Copyright (C) 2006-2007 Peter Zelezny. */
+/* X-Chat
+ * Copyright (C) 2006-2007 Peter Zelezny.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
 
 #include <string.h>
 #include "../common/hexchat-plugin.h"
@@ -13,7 +29,6 @@
 #include "pixmaps.h"
 #include "maingui.h"
 #include "menu.h"
-#include <gtk/gtk.h>
 
 #ifndef WIN32
 #include <unistd.h>
@@ -837,7 +852,7 @@ tray_apply_setup (void)
 	}
 	else
 	{
-		if (prefs.hex_gui_tray && !hextray_mode ())
+		if (prefs.hex_gui_tray && !unity_mode ())
 			tray_init ();
 	}
 }
@@ -869,7 +884,7 @@ tray_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 
 	hexchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
 
-	if (prefs.hex_gui_tray && !hextray_mode ())
+	if (prefs.hex_gui_tray && !unity_mode ())
 		tray_init ();
 
 	return 1;       /* return 1 for success */

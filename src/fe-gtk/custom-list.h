@@ -1,7 +1,28 @@
-#ifndef _custom_list_h_included_
-#define _custom_list_h_included_
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
+#ifndef HEXCHAT_CUSTOM_LIST_H
+#define HEXCHAT_CUSTOM_LIST_H
 
 #include <gtk/gtk.h>
+
+GType custom_list_get_type (void);
 
 /* Some boilerplate GObject defines. 'klass' is used
  *   instead of 'class', because 'class' is a C++ keyword */
@@ -82,4 +103,4 @@ void custom_list_append (CustomList *, chanlistrow *);
 void custom_list_resort (CustomList *);
 void custom_list_clear (CustomList *);
 
-#endif /* _custom_list_h_included_ */
+#endif /* HEXCHAT_CUSTOM_LIST_H */

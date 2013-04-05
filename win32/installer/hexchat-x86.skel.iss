@@ -20,7 +20,7 @@ ShowComponentSizes=no
 CreateUninstallRegKey=not IsTaskSelected('portable')
 Uninstallable=not IsTaskSelected('portable')
 ArchitecturesAllowed=x86 x64
-MinVersion=5.1
+MinVersion=6.0
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
@@ -46,18 +46,14 @@ Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags:
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
-;Name: "langs\lua"; Description: "Lua"; Types: custom; Flags: disablenouninstallwarning
-;Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\perl"; Description: "Perl"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\python"; Description: "Python"; Types: custom; Flags: disablenouninstallwarning
-;Name: "langs\tcl"; Description: "Tcl"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\perl"; Description: "Perl (requires Perl 5.16)"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\python"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
 
-;Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
-;Name: perl514; Description: "5.14"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
-;Name: perl516; Description: "5.16"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
+;Name: perl516; Description: "5.16"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
+;Name: perl518; Description: "5.18"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 
 [Registry]
 Root: HKCR; Subkey: "irc"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Tasks: not portable
@@ -76,17 +72,13 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 
 [Run]
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
-Filename: "https://hexchat.readthedocs.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
-Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=8328"; Description: "Download Visual C++ Redistributable Package"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
+Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=8328"; Description: "Download Visual C++ 2010 Redistributable Package"; Flags: shellexec runasoriginaluser postinstall skipifsilent
+Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.16"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python and not langs\perl
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.16 and Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and langs\python
 
 [Files]
-; Add the ISSkin DLL used for skinning Inno Setup installations.
-Source: ISSkinU.dll; DestDir: {app}; Flags: dontcopy
-
-; Add the Visual Style resource contains resources used for skinning,
-; you can also use Microsoft Visual Styles (*.msstyles) resources.
-Source: watercolorlite-green.cjstyles; DestDir: {tmp}; Flags: dontcopy
-
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 
 Source: "changelog.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -116,7 +108,6 @@ Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: li
 Source: "libintl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libpng15.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-;Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pango-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pangocairo-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pangoft2-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -157,14 +148,11 @@ Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components
 Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
-;Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
 Source: "plugins\hcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
-;Source: "plugins\hctcl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\tcl
 
-;Source: "plugins\hcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl512
-;Source: "plugins\hcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514
 Source: "plugins\hcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl
 ; Tasks: perl516
+;Source: "plugins\hcperl-518.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl518
 
 Source: "hexchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
@@ -253,32 +241,4 @@ begin
 			DeleteFile(ExpandConstant('{app}\portable-mode'));
 		end;
 	end;
-end;
-
-/////////////////////////////////////////////////////////////////////
-// Importing LoadSkin API from ISSkin.DLL
-procedure LoadSkin(lpszPath: String; lpszIniFileName: String);
-external 'LoadSkin@files:isskinu.dll stdcall';
-
-// Importing UnloadSkin API from ISSkin.DLL
-procedure UnloadSkin();
-external 'UnloadSkin@files:isskinu.dll stdcall';
-
-// Importing ShowWindow Windows API from User32.DLL
-function ShowWindow(hWnd: Integer; uType: Integer): Integer;
-external 'ShowWindow@user32.dll stdcall';
-
-function InitializeSetup(): Boolean;
-begin
-  ExtractTemporaryFile('watercolorlite-green.cjstyles');
-  LoadSkin(ExpandConstant('{tmp}\watercolorlite-green.cjstyles'), '');
-  Result := True;
-end;
-
-procedure DeinitializeSetup();
-begin
-  // Hide Window before unloading skin so user does not get
-  // a glimpse of an unskinned window before it is closed.
-  ShowWindow(StrToInt(ExpandConstant('{wizardhwnd}')), 0);
-  UnloadSkin();
 end;

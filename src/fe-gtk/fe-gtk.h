@@ -1,3 +1,25 @@
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
+#ifndef HEXCHAT_FE_GTK_H
+#define HEXCHAT_FE_GTK_H
+
 #ifdef WIN32
 #include "../../config-win32.h"
 #else
@@ -26,9 +48,7 @@
 #  define _(x) (x)
 #endif
 
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkcontainer.h>
-#include <gtk/gtksignal.h>
+#include <gtk/gtk.h>
 #include "banlist.h"
 
 #undef gtk_signal_connect
@@ -189,4 +209,6 @@ void SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos);
 #define SPELL_ENTRY_GET_POS(e) gtk_editable_get_position(GTK_EDITABLE(e))
 #define SPELL_ENTRY_SET_POS(e,p) gtk_editable_set_position(GTK_EDITABLE(e),p);
 #define SPELL_ENTRY_INSERT(e,t,l,p) gtk_editable_insert_text(GTK_EDITABLE(e),t,l,p)
+#endif
+
 #endif

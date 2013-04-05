@@ -1,5 +1,19 @@
 /* X-Chat
  * Copyright (C) 2004-2008 Peter Zelezny.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdlib.h>
@@ -7,29 +21,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#include <gtk/gtkversion.h>
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtkcellrenderertext.h>
-#include <gtk/gtkcomboboxentry.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkhseparator.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkliststore.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtktogglebutton.h>
-#include <gtk/gtktree.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtkvbbox.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkwindow.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "../common/hexchat.h"

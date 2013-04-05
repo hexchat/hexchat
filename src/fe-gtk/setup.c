@@ -1,5 +1,19 @@
 /* X-Chat
  * Copyright (C) 2004-2007 Peter Zelezny.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -23,36 +37,10 @@
 #include "menu.h"
 #include "plugin-tray.h"
 
-#include <gtk/gtkcolorseldialog.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkmisc.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkalignment.h>
-#include <gtk/gtknotebook.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtkfontsel.h>
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkspinbutton.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkhseparator.h>
-#include <gtk/gtkradiobutton.h>
-#include <gtk/gtkcombobox.h>
-#include <gtk/gtkliststore.h>
-#include <gtk/gtktreestore.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkcellrenderertext.h>
-#include <gtk/gtkhscale.h>
 #ifdef WIN32
 #include "../common/fe.h"
 #endif
 #ifdef USE_GTKSPELL
-#include <gtk/gtktextview.h>
 #include <gtkspell/gtkspell.h>
 #endif
 #ifdef USE_LIBSEXY
@@ -287,6 +275,7 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("Show hostnames in user list"), P_OFFINTNL(hex_gui_ulist_show_hosts), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_ulist_style),0,0,0},
 	{ST_TOGGLE, N_("Show icons for user modes"), P_OFFINTNL(hex_gui_ulist_icons), N_("Use graphical icons instead of text symbols in the user list."), 0, 0},
+	{ST_TOGGLE, N_("Color nicknames in userlist"), P_OFFINTNL(hex_gui_ulist_color), N_("Will color nicknames the same as in chat."), 0, 0},
 	{ST_TOGGLE, N_("Show user count in channels"), P_OFFINTNL(hex_gui_ulist_count), 0, 0, 0},
 /*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(hex_gui_ulist_resizable),0,0,0},*/
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(hex_gui_ulist_sort), 0, ulmenutext, 0},
@@ -445,7 +434,7 @@ static const setting alert_settings[] =
 	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 0},
 	{ST_TOGGLE,	N_("Minimize to tray"), P_OFFINTNL(hex_gui_tray_minimize), 0, 0, 0},
 	{ST_TOGGLE,	N_("Close to tray"), P_OFFINTNL(hex_gui_tray_close), 0, 0, 0},
-	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("When hiding to tray automatically change status."), 0, 0},
+	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("Automatically change status when hiding to tray."), 0, 0},
 #ifndef WIN32
 	{ST_TOGGLE,	N_("Only show tray balloons when hidden or iconified"), P_OFFINTNL(hex_gui_tray_quiet), 0, 0, 0},
 #endif
@@ -461,11 +450,12 @@ static const setting alert_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const setting alert_settings_hextray[] =
+static const setting alert_settings_unity[] =
 {
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
+	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
 
@@ -530,39 +520,6 @@ static const setting advanced_settings[] =
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
-
-#ifdef WIN32
-static const setting advanced_settings_oneinstance[] =
-{
-	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
-	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
-	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
-	{ST_NUMBER,	N_("Auto join delay:"), P_OFFINTNL(hex_irc_join_delay), 0, 0, 9999},
-	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
-	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list."), 0, 0},
-	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default."), 0, 0},
-	/* {ST_TOGGLE,	N_("Allow only one instance of HexChat to run"), P_OFFINTNL(hex_gui_single), 0, 0, 0}, */
-	{ST_TOGGLE,	N_("Display lists in compact mode"), P_OFFINTNL(hex_gui_compact), N_("Use less spacing between user list/channel tree rows."), 0, 0},
-	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
-	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
-	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
-	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
-	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
-	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(hex_text_autocopy_text),
-					N_("Copy selected text to clipboard when left mouse button is released. "
-						"Otherwise, CONTROL-SHIFT-C will copy the "
-						"selected text to the clipboard."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(hex_text_autocopy_stamp),
-					N_("Automatically include time stamps in copied lines of text. Otherwise, "
-						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(hex_text_autocopy_color),
-					N_("Automatically include color information in copied lines of text.  "
-						"Otherwise, include color information if the CONTROL key is held down "
-						"while selecting."), 0, 0},
-
-	{ST_END, 0, 0, 0, 0, 0}
-};
-#endif
 
 static const setting logging_settings[] =
 {
@@ -1945,9 +1902,9 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
 	setup_add_page (cata[5], book, setup_create_color_page ());
 
-	if (hextray_mode ())
+	if (unity_mode ())
 	{
-		setup_add_page (cata[8], book, setup_create_page (alert_settings_hextray));
+		setup_add_page (cata[8], book, setup_create_page (alert_settings_unity));
 	}
 	else
 	{
@@ -1957,19 +1914,7 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[9], book, setup_create_page (general_settings));
 	setup_add_page (cata[10], book, setup_create_page (logging_settings));
 	setup_add_page (cata[11], book, setup_create_sound_page ());
-
-#ifdef WIN32
-	if (portable_mode ())
-	{
-		setup_add_page (cata[12], book, setup_create_page (advanced_settings));
-	}
-	else
-	{
-		setup_add_page (cata[12], book, setup_create_page (advanced_settings_oneinstance));
-	}
-#else
 	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
-#endif
 
 	setup_add_page (cata[14], book, setup_create_page (network_settings));
 	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
@@ -2262,7 +2207,7 @@ setup_apply (struct hexchatprefs *pr)
 	if (DIFF (hex_gui_tab_layout))
 		do_layout = TRUE;
 
-	if (color_change || (DIFF (hex_away_size_max)) || (DIFF (hex_away_track)))
+	if (color_change || (DIFF (hex_gui_ulist_color)) || (DIFF (hex_away_size_max)) || (DIFF (hex_away_track)))
 		do_ulist = TRUE;
 
 	if ((pr->hex_gui_tab_pos == 5 || pr->hex_gui_tab_pos == 6) &&

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([HexChat],[2.9.4])
+AC_INIT([HexChat],[2.9.5])
 
 AC_PREREQ([2.60])
 AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
@@ -114,8 +114,8 @@ AC_ARG_ENABLE(xlib,
         xlib=$enableval, xlib=yes)
 
 AC_ARG_ENABLE(python,
-	[AS_HELP_STRING([--disable-python],[don't build the python plugin])],
-        python=$enableval, python=yes)
+	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin (default on, python2)])],
+        python=$enableval, python=python2)
 
 AC_ARG_ENABLE(perl,
 	[AS_HELP_STRING([--disable-perl],[don't build the perl plugin])],
@@ -186,26 +186,29 @@ dnl *********************************************************************
 dnl ** GLIB *************************************************************
 dnl *********************************************************************
 
-AM_PATH_GLIB_2_0(2.12.0, glib=yes, glib=no)
+AM_PATH_GLIB_2_0(2.14.0, glib=yes, glib=no)
 if test "$glib" = no; then
 	AC_MSG_ERROR(Cannot find GLib!)
 fi
 
-COMMON_CFLAGS="$GLIB_CFLAGS"
+COMMON_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
 COMMON_LIBS="$GLIB_LIBS"
-COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0"
+COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0 -lgobject-2.0"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
 dnl *********************************************************************
 
-AM_PATH_GTK_2_0(2.10.0, havegtk=yes, havegtk=no)
+# we might get undefined macro without this test
+if test "$gtkfe" = yes ; then
+	AM_PATH_GTK_2_0(2.14.0, havegtk=yes, havegtk=no)
 
-if test "$havegtk" = no; then
-	gtkfe=no
-	echo
-	echo Cannot find GTK\! Not building GTK FrontEnd.
-	echo
+	if test "$havegtk" = no; then
+		gtkfe=no
+		echo
+		echo Cannot find GTK\! Not building GTK FrontEnd.
+		echo
+	fi
 fi
 
 if test "$gtkfe" != yes; then
@@ -219,9 +222,8 @@ dnl ** GNOME ************************************************************
 dnl *********************************************************************
 
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
-GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
+GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
 
-gnome=no
 #if test "$gnome" = yes; then
 #	AC_PATH_PROG(pkgconfigpath, pkg-config)
 #	AC_MSG_CHECKING(Gnome2 compile flags)
@@ -239,7 +241,11 @@ gnome=no
 #fi
 
 # GConf
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+if test "$gnome" != no ; then
+	AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+else
+	GCONFTOOL=no
+fi
 
 dnl *********************************************************************
 dnl ** XFT **************************************************************
@@ -328,9 +334,13 @@ dnl *********************************************************************
 dnl ** PYTHON ***********************************************************
 dnl *********************************************************************
 
-if test "$python" = yes; then
-        AC_PATH_PROG(pythonpath, python2)
-        if test "_$pythonpath" = _ ; then
+if test "x$python" != xno ; then
+	if test "$python" = yes ; then
+		# default
+		python="python2"
+	fi
+	AC_PATH_PROG(pythonpath, $python)
+	if test "_$pythonpath" = _ ; then
                 AC_PATH_PROG(pythonpath, python)
         fi
         if test "_$pythonpath" = _ ; then
@@ -338,17 +348,17 @@ if test "$python" = yes; then
         else
                 AC_MSG_CHECKING(Python version)
                 changequote(<<, >>)dnl
-                PY_VER=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_config_vars("VERSION")[0];'`
-                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_lib(standard_lib=1);'`
-                PY_INC=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_inc();'`
-                PYPLAT_INC=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_inc(plat_specific=True);'`
-                $pythonpath -c "import sys; map(int,sys.version[:3].split('.')) >= [2,2] or sys.exit(1)"
+                PY_VER=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_config_vars("VERSION")[0]);'`
+                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(standard_lib=1));'`
+                PY_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc());'`
+                PYPLAT_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc(plat_specific=True));'`
                 changequote([, ])dnl
                 AC_MSG_RESULT($PY_VER)
+                $pythonpath -c "import sys; float(sys.version[[:3]]) >= 2.2 and int(sys.version[[0]]) < 3 or sys.exit(1)"
                 if test "$?" != "1"; then
                         AC_MSG_CHECKING(Python compile flags)
-                        PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
-                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
+                        PY_PREFIX=`$pythonpath -c 'import sys; print(sys.prefix)'`
+                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print(sys.exec_prefix)'`
                         if test -f $PY_INC/Python.h || test -f $PYPLAT_INC/Python.h; then
                                 PY_LIBS="-L$PY_LIB/config -lpython$PY_VER -lpthread -lutil"
                                 PY_CFLAGS="-I$PY_INC -I$PYPLAT_INC"
@@ -358,7 +368,7 @@ if test "$python" = yes; then
                                 AC_MSG_RESULT([Can't find Python.h])
                         fi
                 else
-                        echo "Python too old. Only 2.2 or above is supported."
+                        echo "Python is too old or too new. Only 2.2-2.7 are supported."
                         python=no
                 fi
         fi
@@ -691,7 +701,7 @@ AM_CONDITIONAL(USE_LIBNOTIFY, test "x$libnotify" = "xyes")
 AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
 AM_CONDITIONAL(DO_GTK, test "x$gtkfe" = "xyes")
 AM_CONDITIONAL(DO_PERL, test "x$perl" = "xyes")
-AM_CONDITIONAL(DO_PYTHON, test "x$python" = "xyes")
+AM_CONDITIONAL(DO_PYTHON, test "x$python" != "xno")
 dnl AM_CONDITIONAL(DO_TCL, test "x$tcl" = "xyes")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")

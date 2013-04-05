@@ -283,10 +283,18 @@ static void
 notify_watch (server * serv, char *nick, int add)
 {
 	char tbuf[256];
+	char addchar = '+';
 
-	snprintf (tbuf, sizeof (tbuf), "WATCH +%s", nick);
 	if (!add)
-		tbuf[6] = '-';
+		addchar = '-';
+
+	if (serv->supports_monitor)
+		snprintf (tbuf, sizeof (tbuf), "MONITOR %c %s", addchar, nick);
+	else if (serv->supports_watch)
+		snprintf (tbuf, sizeof (tbuf), "WATCH %c%s", addchar, nick);
+	else
+		return;
+
 	serv->p_raw (serv, tbuf);
 }
 
@@ -298,8 +306,7 @@ notify_watch_all (struct notify *notify, int add)
 	while (list)
 	{
 		serv = list->data;
-		if (serv->connected && serv->end_of_motd && serv->supports_watch &&
-			 notify_do_network (notify, serv))
+		if (serv->connected && serv->end_of_motd && notify_do_network (notify, serv))
 			notify_watch (serv, notify->name, add);
 		list = list->next;
 	}
@@ -312,13 +319,13 @@ notify_flush_watches (server * serv, GSList *from, GSList *end)
 	GSList *list;
 	struct notify *notify;
 
-	strcpy (tbuf, "WATCH");
+	serv->supports_monitor ? strcpy (tbuf, "MONITOR + ") : strcpy (tbuf, "WATCH");
 
 	list = from;
 	while (list != end)
 	{
 		notify = list->data;
-		strcat (tbuf, " +");
+		serv->supports_monitor ? strcat (tbuf, ",") : strcat (tbuf, " +");
 		strcat (tbuf, notify->name);
 		list = list->next;
 	}
@@ -343,11 +350,11 @@ notify_send_watches (server * serv)
 
 		if (notify_do_network (notify, serv))
 		{
-			len += strlen (notify->name) + 2 /* + and space */;
+			len += strlen (notify->name) + serv->supports_monitor ? 1 : 2; /* just , for monitor or + and space for watch */;
 			if (len > 500)
 			{
 				notify_flush_watches (serv, point, list);
-				len = strlen (notify->name) + 2;
+				len = strlen (notify->name) + serv->supports_monitor ? 1 : 2;
 				point = list;
 			}
 		}
@@ -450,7 +457,7 @@ notify_checklist (void)	/* check ISON list */
 	while (list)
 	{
 		serv = list->data;
-		if (serv->connected && serv->end_of_motd && !serv->supports_watch)
+		if (serv->connected && serv->end_of_motd && !serv->supports_watch && !serv->supports_monitor)
 		{
 			notify_checklist_for_server (serv);
 		}

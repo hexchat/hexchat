@@ -32,7 +32,6 @@
 #endif
 #include <sys/types.h>
 #include <ctype.h>
-#include <glib.h>
 #include <glib-object.h>
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
@@ -654,10 +653,12 @@ fe_chan_list_end (struct server *serv)
 gboolean
 fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rplcode)
 {
+	return 0;
 }
 gboolean
 fe_ban_list_end (struct session *sess, int rplcode)
 {
+	return 0;
 }
 void
 fe_notify_update (char *name)

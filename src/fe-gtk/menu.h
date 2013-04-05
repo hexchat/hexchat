@@ -1,3 +1,25 @@
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
+#ifndef HEXCHAT_MENU_H
+#define HEXCHAT_MENU_H
+
 GtkWidget *menu_create_main (void *accel_group, int bar, int away, int toplevel, GtkWidget **menu_widgets);
 void menu_urlmenu (GdkEventButton * event, char *url);
 void menu_chanmenu (session *sess, GdkEventButton * event, char *chan);
@@ -38,4 +60,6 @@ void menu_change_layout (void);
 
 #if (MENU_ID_NUM < MENU_ID_USERMENU)
 #error MENU_ID_NUM is set wrong
+#endif
+
 #endif

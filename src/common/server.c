@@ -1881,13 +1881,16 @@ server_set_defaults (server *serv)
 	serv->end_of_motd = FALSE;
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;
+	serv->supports_monitor = FALSE;
 	serv->bad_prefix = FALSE;
 	serv->use_who = TRUE;
 	serv->have_namesx = FALSE;
+	serv->have_awaynotify = FALSE;
 	serv->have_uhnames = FALSE;
 	serv->have_whox = FALSE;
-	serv->have_capab = FALSE;
 	serv->have_idmsg = FALSE;
+	serv->have_accnotify = FALSE;
+	serv->have_extjoin = FALSE;
 	serv->have_sasl = FALSE;
 	serv->have_except = FALSE;
 	serv->have_invite = FALSE;

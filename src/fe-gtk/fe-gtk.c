@@ -22,17 +22,9 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkmain.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkprogressbar.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtktogglebutton.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkversion.h>
-
 #ifdef WIN32
 #include <gdk/gdkwin32.h>
+#include <windows.h>
 #else
 #include <unistd.h>
 #endif
@@ -62,15 +54,6 @@
 
 #ifdef USE_XLIB
 #include <gdk/gdkx.h>
-#include <gtk/gtkinvisible.h>
-#endif
-
-#ifdef USE_GTKSPELL
-#include <gtk/gtktextview.h>
-#endif
-
-#ifdef WIN32
-#include <windows.h>
 #endif
 
 GdkPixmap *channelwin_pix;
@@ -134,7 +117,7 @@ static const GOptionEntry gopt_entries[] =
  {"no-plugins",	'n', 0, G_OPTION_ARG_NONE,	&arg_skip_plugins, N_("Don't auto load any plugins"), NULL},
  {"plugindir",	'p', 0, G_OPTION_ARG_NONE,	&arg_show_autoload, N_("Show plugin/script auto-load directory"), NULL},
  {"configdir",	'u', 0, G_OPTION_ARG_NONE,	&arg_show_config, N_("Show user config directory"), NULL},
- {"url",	 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
+ {"url",	 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel?key URL"), "URL"},
 #ifndef WIN32	/* uses DBUS */
  {"command",	'c', 0, G_OPTION_ARG_STRING,	&arg_command, N_("Execute command:"), "COMMAND"},
  {"existing",	'e', 0, G_OPTION_ARG_NONE,	&arg_existing, N_("Open URL or execute command in an existing HexChat"), NULL},
@@ -149,7 +132,7 @@ create_msg_dialog (gchar *title, gchar *message)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, message);
+	dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, "%s", message);
 	gtk_window_set_title (GTK_WINDOW (dialog), title);
 
 /* On Win32 we automatically have the icon. If we try to load it explicitly, it will look ugly for some reason. */

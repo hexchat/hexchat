@@ -1,7 +1,5 @@
-/*
- * @file libsexy/sexy-spell-entry.h Entry widget
- *
- * @Copyright (C) 2004-2006 Christian Hammond.
+/* libsexy
+ * Copyright (C) 2004-2006 Christian Hammond.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,8 +12,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 #ifndef _SEXY_SPELL_ENTRY_H_
 #define _SEXY_SPELL_ENTRY_H_
@@ -24,7 +22,7 @@ typedef struct _SexySpellEntry      SexySpellEntry;
 typedef struct _SexySpellEntryClass SexySpellEntryClass;
 typedef struct _SexySpellEntryPriv  SexySpellEntryPriv;
 
-#include <gtk/gtkentry.h>
+#include <gtk/gtk.h>
 
 #define SEXY_TYPE_SPELL_ENTRY            (sexy_spell_entry_get_type())
 #define SEXY_SPELL_ENTRY(obj)            (G_TYPE_CHECK_INSTANCE_CAST((obj), SEXY_TYPE_SPELL_ENTRY, SexySpellEntry))

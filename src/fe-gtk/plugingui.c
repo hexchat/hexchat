@@ -22,17 +22,6 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkscrolledwindow.h>
-
-#include <gtk/gtkliststore.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkcellrenderertext.h>
-
 #include "../common/hexchat.h"
 #define PLUGIN_C
 typedef struct session hexchat_context;

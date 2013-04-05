@@ -465,6 +465,7 @@ const struct prefs vars[] =
 	{"gui_tray_minimize", P_OFFINT (hex_gui_tray_minimize), TYPE_BOOL},
 	{"gui_tray_quiet", P_OFFINT (hex_gui_tray_quiet), TYPE_BOOL},
 	{"gui_ulist_buttons", P_OFFINT (hex_gui_ulist_buttons), TYPE_BOOL},
+	{"gui_ulist_color", P_OFFINT (hex_gui_ulist_color), TYPE_BOOL},
 	{"gui_ulist_count", P_OFFINT (hex_gui_ulist_count), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (hex_gui_ulist_doubleclick), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hex_gui_ulist_hide), TYPE_BOOL},
@@ -681,7 +682,7 @@ load_config (void)
 	prefs.hex_input_flash_priv = 1;
 	prefs.hex_input_tray_hilight = 1;
 	prefs.hex_input_tray_priv = 1;
-	/* prefs.hex_irc_who_join = 1; prevent kicks and bans caused by overwhelming who'ing after reconnects */
+	prefs.hex_irc_who_join = 1; /* Can kick with inordinate amount of channels, required for some of our features though, TODO: add cap like away check? */
 	prefs.hex_irc_whois_front = 1;
 	prefs.hex_net_auto_reconnect = 1;
 	prefs.hex_net_throttle = 1;

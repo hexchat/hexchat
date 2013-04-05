@@ -19,8 +19,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <glib.h>
-#include <glib/gprintf.h>
 
 #include "hexchat.h"
 #include "hexchatc.h"
@@ -33,6 +31,8 @@
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
+
+#include <glib/gprintf.h>
 
 typedef struct
 {
@@ -776,6 +776,9 @@ inbound_005 (server * serv, char *word[])
 		} else if (strncmp (word[w], "WATCH=", 6) == 0)
 		{
 			serv->supports_watch = TRUE;
+		} else if (strncmp (word[w], "MONITOR=", 8) == 0)
+		{
+			serv->supports_monitor = TRUE;
 		} else if (strncmp (word[w], "NETWORK=", 8) == 0)
 		{
 /*			if (serv->networkname)
@@ -813,12 +816,6 @@ inbound_005 (server * serv, char *word[])
 		} else if (strcmp (word[w], "WHOX") == 0)
 		{
 			serv->have_whox = TRUE;
-		} else if (strcmp (word[w], "CAPAB") == 0)
-		{
-			serv->have_capab = TRUE;
-									/* 12345678901234567890 */
-			tcp_send_len (serv, "CAPAB IDENTIFY-MSG\r\n", 20);
-			/* now wait for numeric 290 */	
 		} else if (strcmp (word[w], "EXCEPTS") == 0)
 		{
 #ifndef WIN32

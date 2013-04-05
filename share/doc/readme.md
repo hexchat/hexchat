@@ -19,8 +19,8 @@ in general. HexChat runs on most BSD and POSIX compliant operating systems.
 
 ## Requirements:
 
- * GTK+ 2.10
- * GLib 2.12
+ * GTK+ 2.14
+ * GLib 2.14
 
 HexChat is known to work on, at least:
 
@@ -44,7 +44,7 @@ If you need your packages to work on i386, you don't need to compile with
 
 ## Python Scripts:
 
-Scripts for XChat 1.8.x are not compatible, a brand new interface has been written. For more info, see the [HexChat Python Interface](https://github.com/hexchat/hexchat/blob/master/share/doc/python.md).
+Scripts for XChat 1.8.x are not compatible, a brand new interface has been written. For more info, see the [HexChat Python Interface](http://docs.hexchat.org/en/latest/script_python.html).
 
 Consider using the Python interface for your scripts, it's a very nice
 API, allows for loading/unloading individual scripts, and gives you
@@ -53,7 +53,7 @@ almost all the features of the C-Plugin API.
 
 ## Perl Scripts:
 
-Perl 5.8 or newer is required. For more info, see the [HexChat Perl Interface](https://github.com/hexchat/hexchat/blob/master/share/doc/perl.md).
+Perl 5.8 or newer is required. For more info, see the [HexChat Perl Interface](http://docs.hexchat.org/en/latest/script_perl.html).
 
 Scripts for XChat 1.8.x are compatible with the following exceptions:
 
