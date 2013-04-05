@@ -2577,14 +2577,15 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 char *
-split_text(struct session *sess, char *text, char *splitted_text)
+split_text(struct session *sess, char *text, int cmd_length, char *splitted_text)
 {
 	unsigned int max;
 
-	/* maximum allowed message text */
-	/* :nickname!username@host.com PRIVMSG #channel :text\r\n */
-	max = 512;
-	max -= 16;	/* :, !, @, " PRIVMSG ", " ", :, \r, \n */
+	/* maximum allowed text */
+	/* :nickname!username@host.com cmd_length */
+	max = 512; /* rfc 2812 */
+	max -= 3; /* :, !, @ */
+	max -= cmd_length;
 	max -= strlen (sess->server->nick);
 	max -= strlen (sess->channel);
 	if (sess->me && sess->me->hostname)
@@ -2610,9 +2611,8 @@ split_text(struct session *sess, char *text, char *splitted_text)
 			i += size;
 		}
 		max = i;
-		
-		splitted_text = malloc (max + 1 * sizeof (*splitted_text));
-		snprintf(splitted_text, max +1, "%.*s", max, text);
+
+		splitted_text = g_strdup_printf ("%.*s", max, text);
 		
 		return splitted_text;
 	}
@@ -2625,6 +2625,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *act = word_eol[2];
 	char *splitted_text = NULL;
+	int cmd_length = 22; /* " PRIVMSG ", " ", :, \001ACTION, " ", \001, \r, \n */
 	int offset = 0;
 
 	if (!(*act))
@@ -2647,7 +2648,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		/* DCC CHAT failed, try through server */
 		if (sess->server->connected)
 		{
-			while ((splitted_text = split_text (sess, act + offset, splitted_text)))
+			while ((splitted_text = split_text (sess, act + offset, cmd_length, splitted_text)))
 			{
 				sess->server->p_action (sess->server, sess->channel, splitted_text);
 				/* print it to screen */
@@ -2656,7 +2657,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				if (*splitted_text)
 					offset += strlen(splitted_text);
 				
-				free(splitted_text);
+				g_free(splitted_text);
 			}
 				
 			sess->server->p_action (sess->server, sess->channel, act + offset);
@@ -2829,11 +2830,12 @@ cmd_notice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *text = word_eol[3];
 	char *splitted_text = NULL;
+	int cmd_length = 12; /* " NOTICE ", " ", :, \r, \n */
 	int offset = 0;
 
 	if (*word[2] && *word_eol[3])
 	{
-		while ((splitted_text = split_text (sess, text + offset, splitted_text)))
+		while ((splitted_text = split_text (sess, text + offset, cmd_length, splitted_text)))
 		{
 			sess->server->p_notice (sess->server, word[2], splitted_text);
 			EMIT_SIGNAL (XP_TE_NOTICESEND, sess, word[2], splitted_text, NULL, NULL, 0);
@@ -2841,7 +2843,7 @@ cmd_notice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (*splitted_text)
 				offset += strlen(splitted_text);
 			
-			free(splitted_text);
+			g_free(splitted_text);
 		}
 
 		sess->server->p_notice (sess->server, word[2], text + offset);
@@ -4332,9 +4334,10 @@ handle_say (session *sess, char *text, int check_spch)
 	if (sess->server->connected)
 	{
 		char *splitted_text = NULL;
+		int cmd_length = 13; /* " PRIVMSG ", " ", :, \r, \n */
 		int offset = 0;
 
-		while ((splitted_text = split_text (sess, text + offset, splitted_text)))
+		while ((splitted_text = split_text (sess, text + offset, cmd_length, splitted_text)))
 		{
 			inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
 								  splitted_text, TRUE, FALSE);
@@ -4343,7 +4346,7 @@ handle_say (session *sess, char *text, int check_spch)
 			if (*splitted_text)
 				offset += strlen(splitted_text);
 			
-			free(splitted_text);
+			g_free(splitted_text);
 		}
 
 		inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
