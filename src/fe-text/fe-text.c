@@ -486,8 +486,6 @@ fe_args (int argc, char *argv[])
 	g_option_context_add_main_entries (context, gopt_entries, GETTEXT_PACKAGE);
 	g_option_context_parse (context, &argc, &argv, &error);
 	
-	g_type_init ();
-
 	if (error)
 	{
 		if (error->message)
@@ -536,6 +534,17 @@ fe_args (int argc, char *argv[])
 			xdir[strlen (xdir) - 1] = 0;
 		g_free (arg_cfgdir);
 	}
+
+	g_type_init ();
+	
+#ifndef WIN32
+#ifndef __EMX__
+		/* OS/2 uses UID 0 all the time */
+		if (getuid () == 0)
+			fe_message (_("* Running IRC as root is stupid! You should\n"
+							"  create a User Account and use that to login.\n"), FE_MSG_WARN|FE_MSG_WAIT);
+#endif
+#endif /* !WIN32 */
 
 	return -1;
 }
