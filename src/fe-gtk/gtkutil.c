@@ -323,8 +323,15 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 static gboolean
 gtkutil_esc_destroy (GtkWidget * win, GdkEventKey * key, gpointer userdata)
 {
+	GtkWidget *wid = win;
+
+	/* Kill the window of detached utils */
+	if (gtk_window_get_type_hint (GTK_WINDOW (gtk_widget_get_parent (win))) == GDK_WINDOW_TYPE_HINT_DIALOG)
+		wid = gtk_widget_get_parent (win);
+		
 	if (key->keyval == GDK_Escape)
-		gtk_widget_destroy (win);
+		gtk_widget_destroy (wid); /* FIXME: leaves empty tabs */
+
 	return FALSE;
 }
 
