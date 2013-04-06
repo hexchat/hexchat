@@ -472,7 +472,15 @@ re_email (void)
 #define NICKDIG "0-9"
 /*	Note for NICKSPE:  \\\\ boils down to a single \ */
 #define NICKSPE	"\\[\\]\\\\`_^{|}"
+#if 0
 #define NICK0 "[" NICKPRE "]?[" NICKLET NICKSPE "]"
+#else
+/* Allow violation of rfc 2812 by allowing digit as first char */
+/* Rationale is that do_an_re() above will anyway look up what */
+/* we find, and that WORD_NICK is the last item in the array */
+/* that do_an_re() runs through. */
+#define NICK0 "[" NICKPRE "]?[" NICKLET NICKDIG NICKSPE "]"
+#endif
 #define NICK1 "[" NICKHYP NICKLET NICKDIG NICKSPE "]*"
 #define NICK	NICK0 NICK1
 
