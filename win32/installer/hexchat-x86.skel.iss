@@ -44,9 +44,9 @@ Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disableno
 Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
-Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: custom; Flags: disablenouninstallwarning
+;Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\perl"; Description: "Perl (requires Perl 5.16)"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\perl"; Description: "Perl (requires Perl 5.18)"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\python"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning
 
 [Tasks]
@@ -74,9 +74,9 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
 Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=8328"; Description: "Download Visual C++ 2010 Redistributable Package"; Flags: shellexec runasoriginaluser postinstall skipifsilent
 Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
-Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.16"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.18"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
 Filename: "http://hexchat.org/downloads.html"; Description: "Download Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python and not langs\perl
-Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.16 and Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and langs\python
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.18 and Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and langs\python
 
 [Files]
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
@@ -106,7 +106,7 @@ Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libintl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libpng15.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libpng16.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pango-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pangocairo-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -146,13 +146,14 @@ Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Com
 Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
 Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
-Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
+;Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
 Source: "plugins\hcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
 
-Source: "plugins\hcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl
+;Source: "plugins\hcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl
 ; Tasks: perl516
-;Source: "plugins\hcperl-518.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl518
+Source: "plugins\hcperl-518.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl
+; Tasks: perl518
 
 Source: "hexchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
