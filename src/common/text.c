@@ -1145,6 +1145,11 @@ static char * const pevt_chanban_help[] = {
 	N_("The ban mask"),
 };
 
+static char * const pevt_chanquiet_help[] = {
+	N_("The nick of the person who did the quieting"),
+	N_("The quiet mask"),
+};
+
 static char * const pevt_chanrmkey_help[] = {
 	N_("The nick who removed the key"),
 };
@@ -1170,6 +1175,11 @@ static char * const pevt_chandevoice_help[] = {
 static char * const pevt_chanunban_help[] = {
 	N_("The nick of the person of did the unban'ing"),
 	N_("The ban mask"),
+};
+
+static char * const pevt_chanunquiet_help[] = {
+	N_("The nick of the person of did the unquiet'ing"),
+	N_("The quiet mask"),
 };
 
 static char * const pevt_chanexempt_help[] = {

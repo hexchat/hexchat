@@ -392,6 +392,8 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 	session *sess;
 	server *serv = mr->serv;
 	char outbuf[4];
+	char *cm = serv->chanmodes;
+	gboolean supportsq = FALSE;
 
 	outbuf[0] = sign;
 	outbuf[1] = 0;
@@ -416,6 +418,17 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 		if (!is_324 && !sess->ignore_mode && mode_chanmode_type(serv, mode) >= 1)
 			record_chan_mode (sess, sign, mode, arg);
 	}
+
+	/* Is q a chanmode on this server? */
+	if (cm)
+		while (*cm)
+		{
+			if (*cm == ',')
+				break;
+			if (*cm == 'q')
+				supportsq = TRUE;
+			cm++;
+		}
 
 	switch (sign)
 	{
@@ -460,6 +473,12 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 			if (!quiet)
 				EMIT_SIGNAL (XP_TE_CHANINVITE, sess, nick, arg, NULL, NULL, 0);
 			return;
+		case 'q':
+			if (!supportsq)
+				break; /* +q is owner on this server */
+			if (!quiet)
+				EMIT_SIGNAL (XP_TE_CHANQUIET, sess, nick, arg, NULL, NULL, 0);
+			return;
 		}
 		break;
 	case '-':
@@ -502,6 +521,12 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 		case 'I':
 			if (!quiet)
 				EMIT_SIGNAL (XP_TE_CHANRMINVITE, sess, nick, arg, NULL, NULL, 0);
+			return;
+		case 'q':
+			if (!supportsq)
+				break; /* -q is owner on this server */
+			if (!quiet)
+				EMIT_SIGNAL (XP_TE_CHANUNQUIET, sess, nick, arg, NULL, NULL, 0);
 			return;
 		}
 	}
