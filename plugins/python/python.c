@@ -1187,7 +1187,7 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	PyModule_AddIntConstant(xm, "PRI_LOW", HEXCHAT_PRI_LOW);
 	PyModule_AddIntConstant(xm, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
 	PyModule_AddIntConstant(hm, "EAT_NONE", HEXCHAT_EAT_NONE);
-	PyModule_AddIntConstant(hm, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
+	PyModule_AddIntConstant(hm, "EAT_HEXCHAT", HEXCHAT_EAT_HEXCHAT);
 	PyModule_AddIntConstant(hm, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
 	PyModule_AddIntConstant(hm, "EAT_ALL", HEXCHAT_EAT_ALL);
 	PyModule_AddIntConstant(hm, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
