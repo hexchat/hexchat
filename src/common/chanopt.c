@@ -165,17 +165,6 @@ chanopt_is_set (unsigned int global, guint8 per_chan_setting)
 	return per_chan_setting;
 }
 
-/* additive version */
-
-gboolean
-chanopt_is_set_a (unsigned int global, guint8 per_chan_setting)
-{
-	if (per_chan_setting == SET_DEFAULT)
-		return global;
-
-	return per_chan_setting || global;
-}
-
 /* === below is LOADING/SAVING stuff only === */
 
 typedef struct
