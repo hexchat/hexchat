@@ -505,8 +505,8 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	}
 
 	irc_init (sess);
-	scrollback_load (sess);
 	chanopt_load (sess);
+	scrollback_load (sess);
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
