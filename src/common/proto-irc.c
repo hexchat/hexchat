@@ -915,6 +915,9 @@ process_numeric (session * sess, int n,
 		notify_set_offline (serv, word[4] + 1, FALSE);
 		break;
 
+	case 900:	/* successful SASL 'logged in as ' */
+		EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, word_eol[6]+1, word[1], 900, NULL, 0);
+		break;
 	case 903:	/* successful SASL auth */
 	case 904:	/* aborted SASL auth */
 	case 905:	/* failed SASL auth */
