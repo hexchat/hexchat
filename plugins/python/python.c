@@ -1122,7 +1122,7 @@ static PyObject *
 Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 {
 	PluginObject *plugin = NULL;
-	PyObject *m, *o;
+	PyObject *m, *hm, *xm, *o;
 	char *argv[] = {"<xchat>", 0};
 
 	if (filename) {
@@ -1166,44 +1166,45 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	PySys_SetObject("stderr", xcoobj);
 
 	/* Add xchat module to the environment. */
-	m = Py_InitModule("xchat", xchat_methods);
-	if (m == NULL) {
+	xm = Py_InitModule("xchat", xchat_methods);
+	if (xm == NULL) {
 		hexchat_print(ph, "Can't create xchat module");
 		goto error;
 	}
-	
-	PyModule_AddIntConstant(m, "EAT_NONE", HEXCHAT_EAT_NONE);
-	PyModule_AddIntConstant(m, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
-	PyModule_AddIntConstant(m, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
-	PyModule_AddIntConstant(m, "EAT_ALL", HEXCHAT_EAT_ALL);
-	PyModule_AddIntConstant(m, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
-	PyModule_AddIntConstant(m, "PRI_HIGH", HEXCHAT_PRI_HIGH);
-	PyModule_AddIntConstant(m, "PRI_NORM", HEXCHAT_PRI_NORM);
-	PyModule_AddIntConstant(m, "PRI_LOW", HEXCHAT_PRI_LOW);
-	PyModule_AddIntConstant(m, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
-	
-	m = Py_InitModule("hexchat", xchat_methods);
-	if (m == NULL) {
+	hm = Py_InitModule("hexchat", xchat_methods);
+	if (hm == NULL) {
 		hexchat_print(ph, "Can't create hexchat module");
 		goto error;
 	}
+	
+	PyModule_AddIntConstant(xm, "EAT_NONE", HEXCHAT_EAT_NONE);
+	PyModule_AddIntConstant(xm, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
+	PyModule_AddIntConstant(xm, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
+	PyModule_AddIntConstant(xm, "EAT_ALL", HEXCHAT_EAT_ALL);
+	PyModule_AddIntConstant(xm, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
+	PyModule_AddIntConstant(xm, "PRI_HIGH", HEXCHAT_PRI_HIGH);
+	PyModule_AddIntConstant(xm, "PRI_NORM", HEXCHAT_PRI_NORM);
+	PyModule_AddIntConstant(xm, "PRI_LOW", HEXCHAT_PRI_LOW);
+	PyModule_AddIntConstant(xm, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
+	PyModule_AddIntConstant(hm, "EAT_NONE", HEXCHAT_EAT_NONE);
+	PyModule_AddIntConstant(hm, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
+	PyModule_AddIntConstant(hm, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
+	PyModule_AddIntConstant(hm, "EAT_ALL", HEXCHAT_EAT_ALL);
+	PyModule_AddIntConstant(hm, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
+	PyModule_AddIntConstant(hm, "PRI_HIGH", HEXCHAT_PRI_HIGH);
+	PyModule_AddIntConstant(hm, "PRI_NORM", HEXCHAT_PRI_NORM);
+	PyModule_AddIntConstant(hm, "PRI_LOW", HEXCHAT_PRI_LOW);
+	PyModule_AddIntConstant(hm, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
 
-	PyModule_AddIntConstant(m, "EAT_NONE", HEXCHAT_EAT_NONE);
-	PyModule_AddIntConstant(m, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
-	PyModule_AddIntConstant(m, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
-	PyModule_AddIntConstant(m, "EAT_ALL", HEXCHAT_EAT_ALL);
-	PyModule_AddIntConstant(m, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
-	PyModule_AddIntConstant(m, "PRI_HIGH", HEXCHAT_PRI_HIGH);
-	PyModule_AddIntConstant(m, "PRI_NORM", HEXCHAT_PRI_NORM);
-	PyModule_AddIntConstant(m, "PRI_LOW", HEXCHAT_PRI_LOW);
-	PyModule_AddIntConstant(m, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
+
 
 	o = Py_BuildValue("(ii)", VERSION_MAJOR, VERSION_MINOR);
 	if (o == NULL) {
 		hexchat_print(ph, "Can't create version tuple");
 		goto error;
 	}
-	PyObject_SetAttrString(m, "__version__", o);
+	PyObject_SetAttrString(xm, "__version__", o);
+	PyObject_SetAttrString(hm, "__version__", o);
 
 	if (filename) {
 #ifdef WIN32
