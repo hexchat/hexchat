@@ -1436,6 +1436,11 @@ static char * const pevt_dccgenericoffer_help[] = {
 	N_("Nickname"),
 };
 
+static char * const pevt_notifyaway_help[] = {
+	N_("Nickname"),
+	N_("Away Reason"),
+};
+
 static char * const pevt_notifynumber_help[] = {
 	N_("Number of notify items"),
 };

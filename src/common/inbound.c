@@ -1021,7 +1021,16 @@ inbound_away_notify (server *serv, char *nick, char *reason)
 	{
 		sess = list->data;
 		if (sess->server == serv)
+		{
 			userlist_set_away (sess, nick, reason ? TRUE : FALSE);
+			if (sess == serv->front_session && notify_is_in_list (serv, nick))
+			{
+				if (reason)
+					EMIT_SIGNAL (XP_TE_NOTIFYAWAY, sess, nick, reason, NULL, NULL, 0);
+				else
+					EMIT_SIGNAL (XP_TE_NOTIFYBACK, sess, nick, NULL, NULL, NULL, 0);
+			}
+		}
 		list = list->next;
 	}
 }
