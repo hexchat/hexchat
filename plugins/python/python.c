@@ -1171,6 +1171,11 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 		hexchat_print(ph, "Can't create xchat module");
 		goto error;
 	}
+	m = Py_InitModule("hexchat", xchat_methods);
+	if (m == NULL) {
+		hexchat_print(ph, "Can't create hexchat module");
+		goto error;
+	}
 
 	PyModule_AddIntConstant(m, "EAT_NONE", HEXCHAT_EAT_NONE);
 	PyModule_AddIntConstant(m, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
