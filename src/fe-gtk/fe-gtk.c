@@ -735,6 +735,10 @@ fe_set_lag (server *serv, int lag)
 		lag = (nowtim - serv->lag_sent) / 100000;
 	}
 
+	/* if there is no pong for >30s report the lag as +30s */
+	if (lag > 300 && serv->lag_sent)
+		lag=300;
+
 	per = (double)((double)lag / (double)10);
 	if (per > 1.0)
 		per = 1.0;
