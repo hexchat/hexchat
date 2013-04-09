@@ -424,7 +424,7 @@ re_url (void)
 						"|"
 						"(" NOPARENS ")"
 					")*"	/* Zero or more occurrences of either of these */
-					"(?<![.,?!\\]])"	/* Not allowed to end with these */
+					"(?<![,?!\\]])"	/* Not allowed to end with these */
 				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
 			")|("
 				HOST OPT_PORT "/"
@@ -434,7 +434,7 @@ re_url (void)
 						"|"
 						"(" NOPARENS ")"
 					")*"	/* Zero or more occurrences of either of these */
-					"(?<![.,?!\\]])"	/* Not allowed to end with these */
+					"(?<![,?!\\]])"	/* Not allowed to end with these */
 				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
 			")"
 		")"
