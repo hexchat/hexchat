@@ -281,7 +281,7 @@ lag_check (void)
 								 NULL, NULL, 0);
 				if (prefs.hex_net_auto_reconnect)
 					serv->auto_reconnect (serv, FALSE, -1);
-			} else
+			} else if (!serv->lag_sent)
 			{
 				snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
 				serv->p_ping (serv, "", tbuf);
