@@ -49,14 +49,14 @@ If you need your packages to work on i386, you don't need to compile with
 
 Consider using the Python interface for your scripts, it's a very nice
 API, allows for loading/unloading individual scripts, and gives you
-almost all the features of the C-Plugin API.
-
-For more info, see the [HexChat Python Interface](http://docs.hexchat.org/en/latest/script_python.html).
+almost all the features of the C plugin API. For more info, see the
+[HexChat Python Interface](http://docs.hexchat.org/en/latest/script_python.html).
 
 
 ## Perl Scripts:
 
-Perl 5.8 or newer is required. For more info, see the [HexChat Perl Interface](http://docs.hexchat.org/en/latest/script_perl.html).
+Perl 5.8 or newer is required. For more info, see the
+[HexChat Perl Interface](http://docs.hexchat.org/en/latest/script_perl.html).
 
 
 ## Autoloading Scripts and Plugins:
