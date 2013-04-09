@@ -1264,6 +1264,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->saslpassword) != 0)
 					{
 						want_cap ? strcat (buffer, " sasl") : strcpy (buffer, "CAP REQ :sasl");
+						want_cap = 1;
 						want_sasl = 1;
 					}
 
