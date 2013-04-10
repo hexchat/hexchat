@@ -190,6 +190,10 @@ namespace thememan
                 {
                     File.Copy(Path.Combine(themedir, themelist.SelectedItem.ToString(), "pevents.conf"), Path.Combine(hexchatdir, "pevents.conf"), true);
                 }
+                else if (File.Exists(Path.Combine(hexchatdir, "pevents.conf")))
+                {
+                    File.Delete(Path.Combine(hexchatdir, "pevents.conf"));
+                }
             }
         }
 
