@@ -508,7 +508,7 @@ re_nick (void)
 }
 
 /*	CHANNEL description --- */
-#define CHANNEL "#[^ \t\a,:]+"
+#define CHANNEL "^#[^ \t\a,:]+$"
 
 static GRegex *
 re_channel (void)
