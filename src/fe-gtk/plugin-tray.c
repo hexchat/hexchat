@@ -693,7 +693,10 @@ tray_hilight_cb (char *word[], void *userdata)
 	/*if (tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;*/
 
-	if (prefs.hex_input_tray_hilight && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
+	if (prefs.hex_away_omit_alerts && hexchat_get_info(ph, "away"))
+		return HEXCHAT_EAT_NONE;
+
+	if (prefs.hex_input_tray_hilight)
 	{
 		tray_set_flash (ICON_HILIGHT);
 
@@ -707,7 +710,7 @@ tray_hilight_cb (char *word[], void *userdata)
 								tray_hilight_count, word[1], hexchat_get_info (ph, "channel"));
 	}
 
-	if (prefs.hex_input_balloon_hilight && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
+	if (prefs.hex_input_balloon_hilight)
 		tray_set_balloonf (word[2], _(DISPLAY_NAME": Highlighted message from: %s (%s)"),
 								 word[1], hexchat_get_info (ph, "channel"));
 
@@ -719,8 +722,11 @@ tray_message_cb (char *word[], void *userdata)
 {
 	if (/*tray_status == TS_MESSAGE ||*/ tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;
-
-	if (prefs.hex_input_tray_chans && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
+		
+	if (prefs.hex_away_omit_alerts && hexchat_get_info(ph, "away"))
+		return HEXCHAT_EAT_NONE;
+		
+	if (prefs.hex_input_tray_chans)
 	{
 		tray_set_flash (ICON_MSG);
 
@@ -732,7 +738,7 @@ tray_message_cb (char *word[], void *userdata)
 			tray_set_tipf (_(DISPLAY_NAME": %u new public messages."), tray_pub_count);
 	}
 
-	if (prefs.hex_input_balloon_chans && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
+	if (prefs.hex_input_balloon_chans)
 		tray_set_balloonf (word[2], _(DISPLAY_NAME": New public message from: %s (%s)"),
 								 word[1], hexchat_get_info (ph, "channel"));
 
@@ -761,7 +767,7 @@ tray_priv (char *from, char *text)
 		tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
 							tray_priv_count, from, network);
 
-	if (prefs.hex_input_balloon_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
+	if (prefs.hex_input_balloon_priv)
 		tray_set_balloonf (text, _(DISPLAY_NAME": Private message from: %s (%s)"),
 								 from, network);
 }
@@ -772,7 +778,7 @@ tray_priv_cb (char *word[], void *userdata)
 	/*if (tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;*/
 
-	if (prefs.hex_input_tray_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
+	if (prefs.hex_input_tray_priv && (!prefs.hex_away_omit_alerts || !hexchat_get_info(ph, "away")))
 		tray_priv (word[1], word[2]);
 
 	return HEXCHAT_EAT_NONE;
