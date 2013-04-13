@@ -42,13 +42,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(Perl518Output)</TargetName>
+    <TargetName>$(PerlOutput)</TargetName>
     <OutDir>$(HexChatBin)</OutDir>
     <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(Perl518Output)</TargetName>
+    <TargetName>$(PerlOutput)</TargetName>
     <OutDir>$(HexChatBin)</OutDir>
     <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -60,7 +60,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PERL518_EXPORTS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(Perl518Path)\lib\CORE;$(IntDir);..\..\src\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PerlPath)\lib\CORE;$(IntDir);..\..\src\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -69,15 +69,15 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Perl518Lib).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(PerlLib).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>perl.def</ModuleDefinitionFile>
-      <DelayLoadDLLs>$(Perl518Lib).dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>$(PerlLib).dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PreBuildEvent>
-      <Command>"$(GendefPath)\gendef" "$(Perl518Path)\bin\$(Perl518Lib).dll"
-move $(Perl518Lib).def "$(IntDir)"
-lib /nologo /machine:x86 "/def:$(IntDir)$(Perl518Lib).def" "/out:$(OutDir)\$(Perl518Lib).lib"
-"$(Perl518Path)\bin\perl.exe" generate_header
+      <Command>"$(GendefPath)\gendef" "$(PerlPath)\bin\$(PerlLib).dll"
+move $(PerlLib).def "$(IntDir)"
+lib /nologo /machine:x86 "/def:$(IntDir)$(PerlLib).def" "/out:$(OutDir)\$(PerlLib).lib"
+"$(PerlPath)\bin\perl.exe" generate_header
 move irc.pm.h "$(IntDir)"
 move xchat.pm.h "$(IntDir)"</Command>
     </PreBuildEvent>
@@ -90,7 +90,7 @@ move xchat.pm.h "$(IntDir)"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_WINDOWS;_USRDLL;PERL518_EXPORTS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(Perl518Path)\lib\CORE;$(IntDir);..\..\src\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PerlPath)\lib\CORE;$(IntDir);..\..\src\common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -99,15 +99,15 @@ move xchat.pm.h "$(IntDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(Perl518Lib).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(PerlLib).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>perl.def</ModuleDefinitionFile>
-      <DelayLoadDLLs>$(Perl518Lib).dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>$(PerlLib).dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PreBuildEvent>
-      <Command>"$(GendefPath)\gendef" "$(Perl518Path)\bin\$(Perl518Lib).dll"
-move $(Perl518Lib).def "$(IntDir)"
-lib /nologo /machine:x64 "/def:$(IntDir)$(Perl518Lib).def" "/out:$(OutDir)\$(Perl518Lib).lib"
-"$(Perl518Path)\bin\perl.exe" generate_header
+      <Command>"$(GendefPath)\gendef" "$(PerlPath)\bin\$(PerlLib).dll"
+move $(PerlLib).def "$(IntDir)"
+lib /nologo /machine:x64 "/def:$(IntDir)$(PerlLib).def" "/out:$(OutDir)\$(PerlLib).lib"
+"$(PerlPath)\bin\perl.exe" generate_header
 move irc.pm.h "$(IntDir)"
 move xchat.pm.h "$(IntDir)"</Command>
     </PreBuildEvent>
