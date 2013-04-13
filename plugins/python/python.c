@@ -2156,7 +2156,7 @@ Command_PyReload(char *name)
 	if (!plugin) {
 		hexchat_print(ph, "Can't find a python plugin with that name");
 	} else {
-		char *filename = strdup(plugin->filename);
+		char *filename = g_strdup(plugin->filename);
 		Command_PyUnload(filename);
 		Command_PyLoad(filename);
 		/* cppcheck-suppress deallocDealloc */
