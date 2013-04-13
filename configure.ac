@@ -125,10 +125,6 @@ AC_ARG_ENABLE(perl_old,
 	[AS_HELP_STRING([--disable-perl_old],[no backwards compatibility for perl plugin])],
         perl_old=$enableval, perl_old=yes)
 
-dnl AC_ARG_ENABLE(tcl,
-dnl 	[AS_HELP_STRING([--enable-tcl[=PATH]],[directory with Tcl config file: tclConfig.sh])],
-dnl         tcl=$enableval, tcl=yes)
-
 AC_ARG_ENABLE(plugin,
 	[AS_HELP_STRING([--disable-plugin],[disable plugin support])],
         plugin=$enableval, plugin=yes)
@@ -144,10 +140,6 @@ AC_ARG_ENABLE(doat,
 AC_ARG_ENABLE(fishlim,
 	[AS_HELP_STRING([--disable-fishlim],[disable the FiSHLiM plugin])],
         fishlim=$enableval, fishlim=yes)
-
-dnl AC_ARG_ENABLE(sasl,
-dnl 	[AS_HELP_STRING([--disable-sasl],[disable the SASL plugin])],
-dnl         sasl=$enableval, sasl=yes)
 
 AC_ARG_ENABLE(sysinfo,
 	[AS_HELP_STRING([--disable-sysinfo],[disable the SysInfo plugin])],
@@ -375,31 +367,6 @@ if test "x$python" != xno ; then
 fi
 
 dnl *********************************************************************
-dnl ** TCL **************************************************************
-dnl *********************************************************************
-
-dnl AC_MSG_CHECKING(for location of tclConfig.sh)
-dnl dirs="$tcl /lib /usr/lib /usr/tcl/lib /usr/lib/tcl8.4 /usr/local/lib /usr/local/tcl-8.4/lib /usr/local/tcl/lib /opt/lib /usr/lib/tcl8.3"
-dnl found=0
-dnl if test "$tcl" != "no"; then
-dnl 	tcl=no
-dnl 	for try in $dirs; do
-dnl 		if test -f $try/tclConfig.sh; then
-dnl 			found=1
-dnl 			. $try/tclConfig.sh
-dnl 			TCL_LIBS="$TCL_LIB_SPEC $TCL_LIBS"
-dnl 			TCL_CFLAGS="-I${TCL_PREFIX}/include $TCL_INCLUDE_SPEC"
-dnl 			tcl=yes
-dnl 			AC_MSG_RESULT($try/tclConfig.sh)
-dnl 			break
-dnl 		fi
-dnl 	done
-dnl 	if test "$found" -eq 0 ; then
-dnl 		AC_MSG_RESULT([tclConfig.sh not found - use the --enable-tcl option])
-dnl 	fi
-dnl fi
-
-dnl *********************************************************************
 dnl ** IPv6 *************************************************************
 dnl *********************************************************************
 
@@ -586,21 +553,6 @@ if test "$fishlim" != "no"; then
 fi
 
 dnl *********************************************************************
-dnl ** SASL *************************************************************
-dnl *********************************************************************
-
-dnl if test "$sasl" != "no"; then
-dnl 	AC_MSG_CHECKING(for plugin interface used by SASL)
-dnl 	sasl=no
-dnl 	if test "$plugin" = yes; then
-dnl 		sasl=yes
-dnl 		AC_MSG_RESULT([yes])
-dnl 	else
-dnl 		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for SASL])
-dnl 	fi
-dnl fi
-
-dnl *********************************************************************
 dnl ** SYSINFO **********************************************************
 dnl *********************************************************************
 
@@ -702,12 +654,10 @@ AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
 AM_CONDITIONAL(DO_GTK, test "x$gtkfe" = "xyes")
 AM_CONDITIONAL(DO_PERL, test "x$perl" = "xyes")
 AM_CONDITIONAL(DO_PYTHON, test "x$python" != "xno")
-dnl AM_CONDITIONAL(DO_TCL, test "x$tcl" = "xyes")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
 AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
-dnl AM_CONDITIONAL(DO_SASL, test "x$sasl" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
@@ -933,8 +883,6 @@ AC_SUBST(PERL_CFLAGS)
 AC_SUBST(PERL_LDFLAGS)
 AC_SUBST(PY_CFLAGS)
 AC_SUBST(PY_LIBS)
-dnl AC_SUBST(TCL_LIBS)
-dnl AC_SUBST(TCL_CFLAGS)
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 
@@ -980,8 +928,6 @@ intl/Makefile
 po/Makefile.in
 man/Makefile
 ])
-dnl plugins/tcl/Makefile
-dnl plugins/sasl/Makefile
 
 AC_OUTPUT
 
@@ -1010,12 +956,10 @@ echo libproxy support ...... : $libproxy
 echo
 echo Perl .................. : $perl
 echo Python ................ : $python
-dnl echo Tcl ................... : $tcl
 echo
 echo Checksum .............. : $checksum
 echo Do At ................. : $doat
 echo FiSHLiM ............... : $fishlim
-dnl echo SASL .................. : $sasl
 echo SysInfo ............... : $sysinfo
 echo
 echo The binary will be installed in $prefix/bin
