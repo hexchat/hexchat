@@ -765,7 +765,7 @@ static PyMethodDef XChatOut_methods[] = {
 statichere PyTypeObject XChatOut_Type = {
 	PyObject_HEAD_INIT(NULL)
 	0,			/*ob_size*/
-	"xchat.XChatOut",	/*tp_name*/
+	"hexchat.XChatOut",	/*tp_name*/
 	sizeof(XChatOutObject),	/*tp_basicsize*/
 	0,			/*tp_itemsize*/
 	XChatOut_dealloc,	/*tp_dealloc*/
@@ -938,7 +938,7 @@ static PyMethodDef Context_methods[] = {
 statichere PyTypeObject Context_Type = {
 	PyObject_HEAD_INIT(NULL)
 	0,			/*ob_size*/
-	"xchat.Context",	/*tp_name*/
+	"hexchat.Context",	/*tp_name*/
 	sizeof(ContextObject),	/*tp_basicsize*/
 	0,			/*tp_itemsize*/
 	Context_dealloc,        /*tp_dealloc*/
@@ -1034,7 +1034,7 @@ ListItem_repr(PyObject *self)
 statichere PyTypeObject ListItem_Type = {
 	PyObject_HEAD_INIT(NULL)
 	0,			/*ob_size*/
-	"xchat.ListItem",	/*tp_name*/
+	"hexchat.ListItem",	/*tp_name*/
 	sizeof(ListItemObject),	/*tp_basicsize*/
 	0,			/*tp_itemsize*/
 	ListItem_dealloc,	/*tp_dealloc*/
@@ -1419,7 +1419,7 @@ Plugin_dealloc(PluginObject *self)
 statichere PyTypeObject Plugin_Type = {
 	PyObject_HEAD_INIT(NULL)
 	0,			/*ob_size*/
-	"xchat.Plugin",		/*tp_name*/
+	"hexchat.Plugin",		/*tp_name*/
 	sizeof(PluginObject),	/*tp_basicsize*/
 	0,			/*tp_itemsize*/
 	(destructor)Plugin_dealloc, /*tp_dealloc*/
