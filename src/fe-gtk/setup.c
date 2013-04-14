@@ -1520,7 +1520,6 @@ setup_create_color_page (void)
 
 static GtkWidget *sndprog_entry;
 static GtkWidget *sndfile_entry;
-static GtkWidget *snddir_entry;
 static int ignore_changed = FALSE;
 
 extern struct text_event te[]; /* text.c */
@@ -1529,7 +1528,6 @@ extern char *sound_files[];
 static void
 setup_snd_apply (void)
 {
-	strcpy (setup_prefs.hex_sound_dir, GTK_ENTRY (snddir_entry)->text);
 	strcpy (setup_prefs.hex_sound_command, GTK_ENTRY (sndprog_entry)->text);
 }
 
@@ -1697,7 +1695,6 @@ setup_create_sound_page (void)
 	GSList *radio_group = NULL;
 	GtkWidget *radio_auto;
 	GtkWidget *label4;
-	GtkWidget *entry3;
 	GtkWidget *scrolledwindow1;
 	GtkWidget *sound_tree;
 	GtkWidget *table1;
@@ -1776,13 +1773,6 @@ setup_create_sound_page (void)
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label4), 0, 0.5);
 
-	snddir_entry = entry3 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry3), setup_prefs.hex_sound_dir);
-	gtk_widget_show (entry3);
-	gtk_table_attach (GTK_TABLE (table2), entry3, 1, 3, 3, 4,
-							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-
 	scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolledwindow1);
 	gtk_container_add (GTK_CONTAINER (vbox2), scrolledwindow1);
@@ -1844,7 +1834,6 @@ setup_create_sound_page (void)
 							(GtkAttachOptions) (0), 0, 0);
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), sndprog_entry);
-	gtk_label_set_mnemonic_widget (GTK_LABEL (label4), entry3);
 	setup_snd_row_cb (sel, NULL);
 
 	return vbox1;

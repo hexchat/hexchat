@@ -2243,7 +2243,7 @@ sound_play (const char *file, gboolean quiet)
 	}
 	else
 	{
-		wavfile = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", prefs.hex_sound_dir, file);
+		wavfile = g_build_filename (get_xdir (), "sounds", file, NULL);
 	}
 
 	if (g_access (wavfile, R_OK) == 0)

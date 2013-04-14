@@ -558,7 +558,6 @@ const struct prefs vars[] =
 	{"perl_warnings", P_OFFINT (hex_perl_warnings), TYPE_BOOL},
 
 	{"sound_command", P_OFFSET (hex_sound_command), TYPE_STR},
-	{"sound_dir", P_OFFSET (hex_sound_dir), TYPE_STR},
 
 	{"stamp_log", P_OFFINT (hex_stamp_log), TYPE_BOOL},
 	{"stamp_log_format", P_OFFSET (hex_stamp_log_format), TYPE_STR},
@@ -779,7 +778,6 @@ load_config (void)
 	strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason);
 	strcpy (prefs.hex_irc_real_name, realname);
 	strcpy (prefs.hex_irc_user_name, username);
-	snprintf (prefs.hex_sound_dir, sizeof (prefs.hex_sound_dir), "%s" G_DIR_SEPARATOR_S "sounds", get_xdir ());
 	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
 #ifdef WIN32

@@ -337,7 +337,6 @@ struct hexchatprefs
 	char hex_net_proxy_pass[32];
 	char hex_net_proxy_user[32];
 	char hex_sound_command[PATHLEN + 1];
-	char hex_sound_dir[PATHLEN + 1];
 	char hex_stamp_log_format[64];
 	char hex_stamp_text_format[64];
 	char hex_text_background[PATHLEN + 1];
