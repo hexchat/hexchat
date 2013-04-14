@@ -519,7 +519,7 @@ process_numeric (session * sess, int n,
 		if (fe_is_chanwindow (sess->server))
 		{
 			fe_chan_list_end (sess->server);
-			fe_message (word_eol[4] + 1, FE_MSG_ERROR);
+			fe_message (word_eol[4], FE_MSG_ERROR);
 		}
 		goto def;
 
