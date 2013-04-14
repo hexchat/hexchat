@@ -367,12 +367,30 @@ char *
 plugin_load (session *sess, char *filename, char *arg)
 {
 	void *handle;
+	char *pluginpath;
+	char *error;
+	char *filepart;
 	hexchat_init_func *init_func;
 	hexchat_deinit_func *deinit_func;
 
+	/* get the filename without path */
+	filepart = file_part (filename);
+
 #ifdef USE_GMODULE
 	/* load the plugin */
-	handle = g_module_open (filename, 0);
+	if (!g_ascii_strcasecmp (filepart, filename))
+	{
+		/* no path specified, it's just the filename, try to load from config dir */
+		pluginpath = g_build_filename (get_xdir (), filename, NULL);
+		handle = g_module_open (pluginpath, 0);
+		g_free (pluginpath);
+	}
+	else
+	{
+		/* try to load with absolute path */
+		handle = g_module_open (filename, 0);
+	}
+
 	if (handle == NULL)
 		return (char *)g_module_error ();
 
@@ -388,8 +406,6 @@ plugin_load (session *sess, char *filename, char *arg)
 		deinit_func = NULL;
 
 #else
-	char *error;
-	char *filepart;
 
 /* OpenBSD lacks this! */
 #ifndef RTLD_GLOBAL
@@ -399,9 +415,6 @@ plugin_load (session *sess, char *filename, char *arg)
 #ifndef RTLD_NOW
 #define RTLD_NOW 0
 #endif
-
-	/* get the filename without path */
-	filepart = file_part (filename);
 
 	/* load the plugin */
 	if (filepart &&
