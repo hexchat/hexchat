@@ -1276,7 +1276,7 @@ hexchat_list_fields (hexchat_plugin *ph, const char *name)
 	};
 	static const char * const users_fields[] =
 	{
-		"iaway", "shost", "tlasttalk", "snick", "sprefix", "srealname", "iselected", NULL
+		"saccount", "iaway", "shost", "tlasttalk", "snick", "sprefix", "srealname", "iselected", NULL
 	};
 	static const char * const list_of_lists[] =
 	{
@@ -1405,6 +1405,8 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 	case LIST_USERS:
 		switch (hash)
 		{
+		case 0xb9d38a2d: /* account */
+			return ((struct User *)data)->account;
 		case 0x339763: /* nick */
 			return ((struct User *)data)->nick;
 		case 0x30f5a8: /* host */
