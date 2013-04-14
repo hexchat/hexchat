@@ -1646,7 +1646,9 @@ setup_snd_filereq_cb (GtkWidget *entry, char *file)
 static void
 setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 {
-	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry, NULL, NULL, 0);
+	char *sounds_dir = g_build_filename (get_xdir (), "sounds", NULL);
+	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry, sounds_dir, NULL, FRF_FILTERISINITIAL);
+	g_free (sounds_dir);
 }
 
 static void
