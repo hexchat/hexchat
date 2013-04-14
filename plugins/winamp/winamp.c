@@ -173,7 +173,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	*plugin_version = "0.5";
 
 	hexchat_hook_command (ph, "WINAMP", HEXCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
-   	hexchat_command (ph, "MENU -ietc\\music.png ADD \"Window/Display Current Song (Winamp)\" \"WINAMP\"");
+   	hexchat_command (ph, "MENU -ishare\\music.png ADD \"Window/Display Current Song (Winamp)\" \"WINAMP\"");
 
 	hexchat_print (ph, "Winamp plugin loaded\n");
 
