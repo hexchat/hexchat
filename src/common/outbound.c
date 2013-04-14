@@ -3161,7 +3161,7 @@ cmd_splay (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (*word[2])
 	{
-		sound_play (word[2], FALSE);
+		sound_play (word[2], FALSE, FALSE);
 		return TRUE;
 	}
 

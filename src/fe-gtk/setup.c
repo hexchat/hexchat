@@ -1654,7 +1654,7 @@ setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 static void
 setup_snd_play_cb (GtkWidget *button, GtkEntry *entry)
 {
-	sound_play (entry->text, FALSE);
+	sound_play (entry->text, FALSE, FALSE);
 }
 
 static void
