@@ -2501,7 +2501,7 @@ load_perform_file (session *sess, char *file)
 	char *nl;
 	FILE *fp;
 
-	fp = hexchat_fopen_file (file, "r", XOF_FULLPATH);
+	fp = hexchat_fopen_file (file, "r", 0);		/* load files from config dir */
 	if (!fp)
 		return FALSE;
 
