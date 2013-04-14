@@ -135,12 +135,12 @@ Source: "plugins\hcdns.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Com
 Source: "plugins\hcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
 Source: "plugins\hcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
 Source: "plugins\hcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim
-Source: "etc\music.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winamp or plugins\mpcinfo
+Source: "share\music.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\winamp or plugins\mpcinfo
 Source: "plugins\hcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
-Source: "etc\download.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\upd
+Source: "share\download.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\upd
 Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
 Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
-Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\sysinfo
+Source: "share\system.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
 
 Source: "plugins\hcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
