@@ -174,7 +174,7 @@ static const setting appearance_settings[] =
 #endif
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
-	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(hex_stamp_text),0,0,2},
+	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(hex_stamp_text),0,0,1},
 	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(hex_stamp_text_format),
 #ifdef WIN32
 					N_("See the strftime MSDN article for details."),0,sizeof prefs.hex_stamp_text_format},
@@ -284,7 +284,7 @@ static const setting userlist_settings[] =
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(hex_gui_ulist_pos), 0, ulpos, 1},
 
 	{ST_HEADER,	N_("Away Tracking"),0,0,0},
-	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(hex_away_track),0,0,2},
+	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(hex_away_track),0,0,1},
 	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(hex_away_size_max),0,0,10000},
 
 	{ST_HEADER,	N_("Action Upon Double Click"),0,0,0},
@@ -433,7 +433,11 @@ static const setting alert_settings[] =
 	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
 
 	{ST_HEADER,	N_("Tray Behavior"), 0, 0, 0},
-	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 0},
+#ifdef WIN32
+	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 3},
+#else
+	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 4},
+#endif
 	{ST_TOGGLE,	N_("Minimize to tray"), P_OFFINTNL(hex_gui_tray_minimize), 0, 0, 0},
 	{ST_TOGGLE,	N_("Close to tray"), P_OFFINTNL(hex_gui_tray_close), 0, 0, 0},
 	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("Automatically change status when hiding to tray."), 0, 0},
@@ -528,12 +532,12 @@ static const setting logging_settings[] =
 	{ST_HEADER,	N_("Logging"),0,0,0},
 	{ST_TOGGLE,	N_("Display scrollback from previous session"), P_OFFINTNL(hex_text_replay), 0, 0, 0},
 	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(hex_text_max_lines),0,0,100000},
-	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(hex_irc_logging), 0, 0, 2},
+	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(hex_irc_logging), 0, 0, 1},
 	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(hex_irc_logmask), 0, 0, sizeof prefs.hex_irc_logmask},
 	{ST_LABEL,	N_("%s=Server %c=Channel %n=Network.")},
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
-	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(hex_stamp_log), 0, 0, 2},
+	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(hex_stamp_log), 0, 0, 1},
 	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(hex_stamp_log_format), 0, 0, sizeof prefs.hex_stamp_log_format},
 #ifdef WIN32
 	{ST_LABEL,	N_("See the strftime MSDN article for details.")},
@@ -543,7 +547,7 @@ static const setting logging_settings[] =
 
 	{ST_HEADER,	N_("URLs"),0,0,0},
 	{ST_TOGGLE,	N_("Enable logging of URLs to disk"), P_OFFINTNL(hex_url_logging), 0, 0, 0},
-	{ST_TOGGLE,	N_("Enable URL grabber"), P_OFFINTNL(hex_url_grabber), 0, 0, 2},
+	{ST_TOGGLE,	N_("Enable URL grabber"), P_OFFINTNL(hex_url_grabber), 0, 0, 1},
 	{ST_NUMBER,	N_("Maximum number of URLs to grab:"), P_OFFINTNL(hex_url_grabber_limit), 0, 0, 9999},
 
 	{ST_END, 0, 0, 0, 0, 0}
@@ -687,6 +691,12 @@ setup_toggle_cb (GtkToggleButton *but, const setting *set)
 		label = g_object_get_data (G_OBJECT (disable_wid), "lbl");
 		gtk_widget_set_sensitive (label, but->active);
 	}
+}
+
+static void
+setup_toggle_sensitive_cb (GtkToggleButton *but, GtkWidget *wid)
+{
+	gtk_widget_set_sensitive (wid, gtk_toggle_button_get_active (but));
 }
 
 static void
@@ -1236,7 +1246,7 @@ setup_create_page (const setting *set)
 {
 	int i, row, do_disable;
 	GtkWidget *tab, *box, *left;
-	GtkWidget *wid = NULL, *prev;
+	GtkWidget *wid = NULL, *parentwid = NULL;
 
 	box = gtk_vbox_new (FALSE, 1);
 	gtk_container_set_border_width (GTK_CONTAINER (box), 6);
@@ -1246,8 +1256,6 @@ setup_create_page (const setting *set)
 	i = row = do_disable = 0;
 	while (set[i].type != ST_END)
 	{
-		prev = wid;
-
 		switch (set[i].type)
 		{
 		case ST_HEADER:
@@ -1265,7 +1273,8 @@ setup_create_page (const setting *set)
 			break;
 		case ST_TOGGLE:
 			wid = setup_create_toggleL (tab, row, &set[i]);
-			do_disable = set[i].extra;
+			if (set[i].extra)
+				do_disable = set[i].extra;
 			break;
 		case ST_3OGGLE:
 			setup_create_3oggle (tab, row, &set[i]);
@@ -1289,16 +1298,18 @@ setup_create_page (const setting *set)
 			setup_create_alert_header (tab, row, &set[i]);
 		}
 
-		/* will this toggle disable the "next" widget? */
-		do_disable--;
-		if (do_disable == 0)
+		if (do_disable)
 		{
-			/* setup_toggle_cb uses this data */
-			g_object_set_data (G_OBJECT (prev), "nxt", wid);
-			/* force initial sensitive state */
-			gtk_widget_set_sensitive (wid, GTK_TOGGLE_BUTTON (prev)->active);
-			gtk_widget_set_sensitive (g_object_get_data (G_OBJECT (wid), "lbl"),
-											  GTK_TOGGLE_BUTTON (prev)->active);
+			if (GTK_IS_WIDGET (parentwid))
+			{
+				g_signal_connect (G_OBJECT (parentwid), "toggled", G_CALLBACK(setup_toggle_sensitive_cb), wid);
+				gtk_widget_set_sensitive (wid, gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (parentwid)));
+				do_disable--;
+				if (!do_disable)
+					parentwid = NULL;
+			}
+			else
+				parentwid = wid;
 		}
 
 		i++;
