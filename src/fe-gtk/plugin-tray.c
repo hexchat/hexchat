@@ -167,7 +167,8 @@ fe_tray_set_balloon (const char *title, const char *text)
 
 	/* no balloons if the window is focused */
 	ws = tray_get_window_status ();
-	if (ws == WS_FOCUSED)
+	if ((prefs.hex_away_omit_alerts && hexchat_get_info(ph, "away")) ||
+		(prefs.hex_gui_focus_omitalerts && ws == WS_FOCUSED))
 		return;
 
 	/* bit 1 of flags means "no balloons unless hidden/iconified" */
@@ -693,9 +694,6 @@ tray_hilight_cb (char *word[], void *userdata)
 	/*if (tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;*/
 
-	if (prefs.hex_away_omit_alerts && hexchat_get_info(ph, "away"))
-		return HEXCHAT_EAT_NONE;
-
 	if (prefs.hex_input_tray_hilight)
 	{
 		tray_set_flash (ICON_HILIGHT);
@@ -721,9 +719,6 @@ static int
 tray_message_cb (char *word[], void *userdata)
 {
 	if (/*tray_status == TS_MESSAGE ||*/ tray_status == TS_HIGHLIGHT)
-		return HEXCHAT_EAT_NONE;
-		
-	if (prefs.hex_away_omit_alerts && hexchat_get_info(ph, "away"))
 		return HEXCHAT_EAT_NONE;
 		
 	if (prefs.hex_input_tray_chans)
@@ -778,7 +773,7 @@ tray_priv_cb (char *word[], void *userdata)
 	/*if (tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;*/
 
-	if (prefs.hex_input_tray_priv && (!prefs.hex_away_omit_alerts || !hexchat_get_info(ph, "away")))
+	if (prefs.hex_input_tray_priv)
 		tray_priv (word[1], word[2]);
 
 	return HEXCHAT_EAT_NONE;

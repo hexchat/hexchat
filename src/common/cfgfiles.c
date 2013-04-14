@@ -426,6 +426,7 @@ const struct prefs vars[] =
 	{"gui_dialog_left", P_OFFINT (hex_gui_dialog_left), TYPE_INT},
 	{"gui_dialog_top", P_OFFINT (hex_gui_dialog_top), TYPE_INT},
 	{"gui_dialog_width", P_OFFINT (hex_gui_dialog_width), TYPE_INT},
+	{"gui_focus_omitalerts", P_OFFINT (hex_gui_focus_omitalerts), TYPE_BOOL},
 	{"gui_hide_menu", P_OFFINT (hex_gui_hide_menu), TYPE_BOOL},
 	{"gui_input_icon", P_OFFINT (hex_gui_input_icon), TYPE_BOOL},
 	{"gui_input_nick", P_OFFINT (hex_gui_input_nick), TYPE_BOOL},
