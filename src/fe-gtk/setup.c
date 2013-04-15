@@ -1696,7 +1696,6 @@ setup_create_sound_page (void)
 	GtkWidget *radio_external;
 	GSList *radio_group = NULL;
 	GtkWidget *radio_auto;
-	GtkWidget *label4;
 	GtkWidget *scrolledwindow1;
 	GtkWidget *sound_tree;
 	GtkWidget *table1;
@@ -1767,13 +1766,6 @@ setup_create_sound_page (void)
 	radio_group =
 		gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_auto));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio_auto), setup_prefs.hex_sound_command[0] == 0);
-
-	label4 = gtk_label_new_with_mnemonic (_("Sound files _directory:"));
-	gtk_widget_show (label4);
-	gtk_table_attach (GTK_TABLE (table2), label4, 0, 1, 3, 4,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label4), 0, 0.5);
 
 	scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolledwindow1);
