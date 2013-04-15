@@ -678,7 +678,7 @@ fe_beep (session *sess)
 #else
 		beepfile = g_build_filename (HEXCHATSHAREDIR, "hexchat", "beep.wav", NULL);
 #endif
-		sound_play (beepfile, FALSE, TRUE);
+		sound_play (beepfile, TRUE, TRUE);
 		g_free (beepfile);
 	}
 }
