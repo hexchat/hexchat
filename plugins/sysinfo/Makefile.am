@@ -1,4 +1,4 @@
-libdir = $(hexchatlibdir)/plugins
+libdir = $(hexchatlibdir)
 
 lib_LTLIBRARIES = sysinfo.la
 sysinfo_la_SOURCES = hwmon.c match.c parse.c pci.c xsys.c
