@@ -2236,25 +2236,28 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 	int word_type, start, end;
 	char *tmp;
 
-	if (word == NULL)
+	if (word)
 	{
-		if (even->button == 1)		/* left button */
-			mg_focus (sess);
-		return;
+		word_type = mg_word_check (xtext, word);
+		url_last (&start, &end);
 	}
 
-	word_type = mg_word_check (xtext, word);
-	url_last (&start, &end);
-
-	if (even->button == 1 && (even->state & 13) == prefs.hex_gui_url_mod)
+	if (even->button == 1)			/* left button */
 	{
-		switch (word_type)
+		if (word == NULL)
 		{
-		case WORD_URL:
-		case WORD_HOST:
-			word[end] = 0;
-			word += start;
-			fe_open_url (word);
+			mg_focus (sess);
+			return;
+		}
+
+		if ((even->state & 13) == prefs.hex_gui_url_mod)
+		{
+			switch (word_type)
+			{
+			case WORD_URL:
+			case WORD_HOST:
+				fe_open_url (word);
+			}
 		}
 		return;
 	}
@@ -2267,6 +2270,8 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 			userlist_select (sess, word);
 		return;
 	}
+	if (word == NULL)
+		return;
 
 	switch (word_type)
 	{
