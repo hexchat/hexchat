@@ -1,6 +1,6 @@
 EXTRA_DIST = 
 
-libdir = $(hexchatlibdir)/plugins
+libdir = $(hexchatlibdir)
 
 lib_LTLIBRARIES = python.la
 python_la_SOURCES = python.c

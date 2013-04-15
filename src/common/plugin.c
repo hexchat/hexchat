@@ -482,26 +482,26 @@ plugin_auto_load (session *sess)
 #ifdef WIN32
 	/* a long list of bundled plugins that should be loaded automatically,
 	 * user plugins should go to <config>, leave Program Files alone! */
-	for_files (".\\plugins", "hcchecksum.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcdns.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcdoat.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcexec.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcfishlim.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcmpcinfo.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcperl.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcpython.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcupd.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcwinamp.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcsysinfo.dll", plugin_auto_load_cb);
-	for_files (".\\plugins", "hcwmpa.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcchecksum.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcdns.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcdoat.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcexec.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcfishlim.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcmpcinfo.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcperl.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcpython.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcupd.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcwinamp.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcsysinfo.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcwmpa.dll", plugin_auto_load_cb);
 
 	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
 #else
 #if defined(__hpux)
-	for_files (HEXCHATLIBDIR "/plugins", "*.sl", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "*.sl", plugin_auto_load_cb);
 	for_files (sub_dir, "*.sl", plugin_auto_load_cb);
 #else
-	for_files (HEXCHATLIBDIR "/plugins", "*.so", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "*.so", plugin_auto_load_cb);
 	for_files (sub_dir, "*.so", plugin_auto_load_cb);
 #endif
 #endif

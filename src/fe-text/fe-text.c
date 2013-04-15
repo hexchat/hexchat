@@ -514,7 +514,7 @@ fe_args (int argc, char *argv[])
 		}
 		free (exe);
 #else
-		printf ("%s\n", HEXCHATLIBDIR"/plugins");
+		printf ("%s\n", HEXCHATLIBDIR);
 #endif
 		return 0;
 	}
