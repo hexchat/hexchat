@@ -498,10 +498,10 @@ plugin_auto_load (session *sess)
 	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
 #else
 #if defined(__hpux)
-	for_files (HEXCHATLIBDIR "/plugins", "*.sl", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "*.sl", plugin_auto_load_cb);
 	for_files (sub_dir, "*.sl", plugin_auto_load_cb);
 #else
-	for_files (HEXCHATLIBDIR "/plugins", "*.so", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "*.so", plugin_auto_load_cb);
 	for_files (sub_dir, "*.so", plugin_auto_load_cb);
 #endif
 #endif

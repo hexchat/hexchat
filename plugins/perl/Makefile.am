@@ -2,7 +2,7 @@
 EXTRA_DIST=alt_completion.pl generate_header lib/Xchat.pm lib/Xchat/Embed.pm lib/Xchat/List/Network.pm \
 	lib/Xchat/List/Network/Entry.pm lib/Xchat/List/Network/AutoJoin.pm lib/IRC.pm
 
-libdir = $(hexchatlibdir)/plugins
+libdir = $(hexchatlibdir)
 
 lib_LTLIBRARIES = perl.la
 perl_la_SOURCES = perl.c

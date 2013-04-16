@@ -1,4 +1,4 @@
-libdir = $(hexchatlibdir)/plugins
+libdir = $(hexchatlibdir)
 
 lib_LTLIBRARIES = doat.la
 doat_la_SOURCES = doat.c

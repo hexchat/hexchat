@@ -886,6 +886,7 @@ AC_SUBST(PY_LIBS)
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 
+m4_ifdef([PKG_INSTALLDIR], [PKG_INSTALLDIR], AC_SUBST([pkgconfigdir], ${libdir}/pkgconfig))
 
 PLUGIN_INCLUDES='-I$(top_srcdir)/plugins'
 AC_SUBST(PLUGIN_INCLUDES)
@@ -896,14 +897,14 @@ test "x$exec_prefix" = xNONE && exec_prefix="$prefix"
 
 AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
 
-AS_AC_EXPAND(HEXCHATLIBDIR, "${libdir}/hexchat")
+AS_AC_EXPAND(HEXCHATLIBDIR, "${libdir}/hexchat/plugins")
 AC_DEFINE_UNQUOTED(HEXCHATLIBDIR, "$HEXCHATLIBDIR")
 
 AS_AC_EXPAND(HEXCHATSHAREDIR, "$datadir")
 AC_DEFINE_UNQUOTED(HEXCHATSHAREDIR, "$HEXCHATSHAREDIR")
 
 dnl for plugins/xxx/Makefile.am
-hexchatlibdir=${libdir}/hexchat
+hexchatlibdir=${libdir}/hexchat/plugins
 AC_SUBST(hexchatlibdir)
 
 AC_CONFIG_FILES([
@@ -911,6 +912,8 @@ Makefile
 share/Makefile
 share/icons/Makefile
 share/misc/Makefile
+share/pkgconfig/Makefile
+share/pkgconfig/hexchat-plugin.pc
 src/Makefile
 src/common/Makefile
 src/common/dbus/Makefile
