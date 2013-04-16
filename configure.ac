@@ -930,6 +930,7 @@ AC_SUBST(PY_LIBS)
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 
+m4_ifdef([PKG_INSTALLDIR], [PKG_INSTALLDIR], AC_SUBST([pkgconfigdir], ${libdir}/pkgconfig))
 
 PLUGIN_INCLUDES='-I$(top_srcdir)/plugins'
 AC_SUBST(PLUGIN_INCLUDES)
@@ -955,6 +956,8 @@ Makefile
 share/Makefile
 share/icons/Makefile
 share/misc/Makefile
+share/pkgconfig/Makefile
+share/pkgconfig/hexchat-plugin.pc
 src/Makefile
 src/common/Makefile
 src/common/dbus/Makefile
