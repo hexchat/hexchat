@@ -367,12 +367,13 @@ char *
 plugin_load (session *sess, char *filename, char *arg)
 {
 	void *handle;
-	char *pluginpath;
 	char *filepart;
 	hexchat_init_func *init_func;
 	hexchat_deinit_func *deinit_func;
 #ifndef USE_GMODULE
 	char *error;
+#else
+	char *pluginpath;
 #endif
 
 	/* get the filename without path */
