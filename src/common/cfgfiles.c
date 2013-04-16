@@ -844,9 +844,9 @@ load_config (void)
 
 			buf = g_build_filename (get_xdir (), "sounds", "beep.wav", NULL);
 #ifdef WIN32	/* keep this in sync with fe-gtk.c! */
-			beepsrc = g_file_new_for_path (HEXCHATSHAREDIR G_DIR_SEPARATOR_S "share" G_DIR_SEPARATOR_S "beep.wav");
+			beepsrc = g_file_new_for_path (HEXCHATSHAREDIR G_DIR_SEPARATOR_S "share" G_DIR_SEPARATOR_S "sounds" G_DIR_SEPARATOR_S "beep.wav");
 #else
-			beepsrc = g_file_new_for_path (HEXCHATSHAREDIR G_DIR_SEPARATOR_S "hexchat" G_DIR_SEPARATOR_S "beep.wav");
+			beepsrc = g_file_new_for_path (HEXCHATSHAREDIR G_DIR_SEPARATOR_S "sounds" G_DIR_SEPARATOR_S "freedesktop" G_DIR_SEPARATOR_S "stereo" G_DIR_SEPARATOR_S "hexchat_beep.wav");
 #endif
 			beepdest = g_file_new_for_path (buf);
 
