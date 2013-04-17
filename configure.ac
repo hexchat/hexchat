@@ -185,7 +185,7 @@ fi
 
 COMMON_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
 COMMON_LIBS="$GLIB_LIBS"
-COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0 -lgobject-2.0"
+COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0 -lgobject-2.0 -lgio-2.0"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
@@ -357,7 +357,7 @@ if test "x$python" != xno ; then
                                 AC_MSG_RESULT(ok)
                         else
                                 python=no
-                                AC_MSG_RESULT([Can't find Python.h])
+                                AC_MSG_RESULT([Can\'t find Python.h])
                         fi
                 else
                         echo "Python is too old or too new. Only 2.2-2.7 are supported."
