@@ -1,3 +1,5 @@
 if DO_GTK
-SUBDIRS = icons misc
+SUBDIRS = icons sounds misc
+else
+SUBDIRS = sounds
 endif

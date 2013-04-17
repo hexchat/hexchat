@@ -911,6 +911,7 @@ Makefile
 share/Makefile
 share/icons/Makefile
 share/misc/Makefile
+share/sounds/Makefile
 src/Makefile
 src/common/Makefile
 src/common/dbus/Makefile
