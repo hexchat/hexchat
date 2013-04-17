@@ -2199,7 +2199,7 @@ static char *
 sound_find_command (void)
 {
 	/* some sensible unix players. You're bound to have one of them */
-	static const char * const progs[] = {"play", "aplay", "esdplay", "soxplay", "artsplay", NULL};
+	static const char * const progs[] = {"play", "paplay", "aplay", "esdplay", "artsplay", NULL};
 	char *cmd;
 	int i = 0;
 
