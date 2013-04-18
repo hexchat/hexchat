@@ -718,7 +718,7 @@ static char defaultconf_commands[] =
 	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n";
 
 static char defaultconf_urlhandlers[] =
-		"NAME Open Link in Private Firefox Window\n"		"CMD !firefox -private %s'\n\n";
+		"NAME Open Link in Private Firefox Window\n"		"CMD !firefox -private %s\n\n";
 
 #ifdef USE_SIGACTION
 /* Close and open log files on SIGUSR1. Usefull for log rotating */
