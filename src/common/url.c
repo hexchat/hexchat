@@ -316,8 +316,8 @@ do_an_re(const char *word,int *start, int *end, int *type)
 	{
 		{ re_email, WORD_EMAIL },
 		{ re_url, WORD_URL },
-		{ re_host, WORD_HOST },
 		{ re_channel, WORD_CHANNEL },
+		{ re_host, WORD_HOST },
 		{ re_path, WORD_PATH },
 		{ re_nick, WORD_NICK }
 	};
