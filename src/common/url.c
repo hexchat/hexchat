@@ -312,12 +312,18 @@ do_an_re(const char *word,int *start, int *end, int *type)
 		GRegex *(*fn)(void);
 		int type;
 	} func_t;
+
+	/* The order of these functions is important in case of ambiguity, since the
+	 * first match will be selected.
+	 * For instance, channel should always appear before url so that "#foo.bar" is
+	 * correclty recognized.
+	 */
 	func_t funcs[] =
 	{
+		{ re_channel, WORD_CHANNEL },
 		{ re_email, WORD_EMAIL },
 		{ re_url, WORD_URL },
 		{ re_host, WORD_HOST },
-		{ re_channel, WORD_CHANNEL },
 		{ re_path, WORD_PATH },
 		{ re_nick, WORD_NICK }
 	};
@@ -502,7 +508,7 @@ re_nick (void)
 }
 
 /*	CHANNEL description --- */
-#define CHANNEL "#[^ \t\a,:]+"
+#define CHANNEL "^#[^ \t\a,:]+$"
 
 static GRegex *
 re_channel (void)
