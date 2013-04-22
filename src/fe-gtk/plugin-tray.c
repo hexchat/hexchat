@@ -709,7 +709,7 @@ tray_hilight_cb (char *word[], void *userdata)
 	}
 
 	if (prefs.hex_input_balloon_hilight)
-		tray_set_balloonf (word[2], _(DISPLAY_NAME": Highlighted message from: %s (%s)"),
+		tray_set_balloonf (word[2], _("Highlighted message from: %s (%s)"),
 								 word[1], hexchat_get_info (ph, "channel"));
 
 	return HEXCHAT_EAT_NONE;
@@ -727,14 +727,14 @@ tray_message_cb (char *word[], void *userdata)
 
 		tray_pub_count++;
 		if (tray_pub_count == 1)
-			tray_set_tipf (_(DISPLAY_NAME": New public message from: %s (%s)"),
+			tray_set_tipf (_(DISPLAY_NAME": Channel message from: %s (%s)"),
 								word[1], hexchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_(DISPLAY_NAME": %u new public messages."), tray_pub_count);
+			tray_set_tipf (_(DISPLAY_NAME": %u channel messages."), tray_pub_count);
 	}
 
 	if (prefs.hex_input_balloon_chans)
-		tray_set_balloonf (word[2], _(DISPLAY_NAME": New public message from: %s (%s)"),
+		tray_set_balloonf (word[2], _("Channel message from: %s (%s)"),
 								 word[1], hexchat_get_info (ph, "channel"));
 
 	return HEXCHAT_EAT_NONE;
@@ -763,7 +763,7 @@ tray_priv (char *from, char *text)
 							tray_priv_count, from, network);
 
 	if (prefs.hex_input_balloon_priv)
-		tray_set_balloonf (text, _(DISPLAY_NAME": Private message from: %s (%s)"),
+		tray_set_balloonf (text, _("Private message from: %s (%s)"),
 								 from, network);
 }
 
@@ -817,7 +817,7 @@ tray_dcc_cb (char *word[], void *userdata)
 	}
 
 	if (prefs.hex_input_balloon_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
-		tray_set_balloonf ("", _(DISPLAY_NAME": File offer from: %s (%s)"),
+		tray_set_balloonf ("", _("File offer from: %s (%s)"),
 								word[1], network);
 
 	return HEXCHAT_EAT_NONE;
