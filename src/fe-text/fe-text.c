@@ -535,7 +535,9 @@ fe_args (int argc, char *argv[])
 		g_free (arg_cfgdir);
 	}
 
+#if ! GLIB_CHECK_VERSION (2, 36, 0)
 	g_type_init ();
+#endif
 	
 #ifndef WIN32
 #ifndef __EMX__
