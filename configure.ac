@@ -811,6 +811,28 @@ if test x$unsigned_char = xyes; then
 	CFLAGS="$CFLAGS -funsigned-char"
 fi
 
+dnl does this compiler support -Wno-unused-result ?
+AC_MSG_CHECKING([if gcc accepts -Wno-unused-result ])
+
+safe_CFLAGS=$CFLAGS
+CFLAGS="-Wno-unused-result"
+
+AC_TRY_COMPILE(, [
+int main () { return 0 ; }
+],
+[
+no_unused_result=yes
+AC_MSG_RESULT([yes])
+], [
+no_unused_result=no
+AC_MSG_RESULT([no])
+])
+CFLAGS=$safe_CFLAGS
+
+if test x$no_unused_result = xyes; then
+	CFLAGS="$CFLAGS -Wno-unused-result"
+fi
+
 dnl *********************************************************************
 dnl ** FUNCTIONS/LIBS/CFLAGS ********************************************
 dnl *********************************************************************
