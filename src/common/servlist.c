@@ -634,11 +634,11 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 	}
 
-	if (net->flags & FLAG_USE_GLOBAL)
+	if (net->flags & FLAG_USE_GLOBAL || net->user == NULL)
 	{
 		strcpy (serv->sasluser, prefs.hex_irc_user_name);
 	}
-	else if (net->user != NULL)
+	else
 	{
 		safe_strcpy (serv->sasluser, net->user, sizeof (serv->sasluser));
 	}
