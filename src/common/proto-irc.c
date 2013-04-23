@@ -1234,36 +1234,37 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					want_cap = 0;
 					want_sasl = 0;
 
+					strcpy (buffer, "CAP REQ :");
+
 					if (strstr (word_eol[5], "identify-msg") != 0)
 					{
-						strcpy (buffer, "CAP REQ :identify-msg");
+						strcat (buffer, "identify-msg ");
 						want_cap = 1;
 					}
 					if (strstr (word_eol[5], "multi-prefix") != 0)
 					{
-						want_cap ? strcat (buffer, " multi-prefix") : strcpy (buffer, "CAP REQ :multi-prefix");
+						strcat (buffer, "multi-prefix ");
 						want_cap = 1;
 					}
 					if (strstr (word_eol[5], "away-notify") != 0)
 					{
-						want_cap ? strcat (buffer, " away-notify") : strcpy (buffer, "CAP REQ :away-notify");
+						strcat (buffer, "away-notify ");
 						want_cap = 1;
 					}
 					if (strstr (word_eol[5], "account-notify") != 0)
 					{
-						want_cap ? strcat (buffer, " account-notify") : strcpy (buffer, "CAP REQ :account-notify");
+						strcat (buffer, "account-notify ");
 						want_cap = 1;
 					}
-
 					if (strstr (word_eol[5], "extended-join") != 0)
 					{
-						want_cap ? strcat (buffer, " extended-join") : strcpy (buffer, "CAP REQ :extended-join");
+						strcat (buffer, "extended-join ");
 						want_cap = 1;
 					}
 					/* if the SASL password is set, request SASL auth */
 					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->saslpassword) != 0)
 					{
-						want_cap ? strcat (buffer, " sasl") : strcpy (buffer, "CAP REQ :sasl");
+						strcat (buffer, "sasl ");
 						want_cap = 1;
 						want_sasl = 1;
 					}
