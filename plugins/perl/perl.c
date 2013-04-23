@@ -296,7 +296,7 @@ list_item_to_sv ( hexchat_list *list, const char *const *fields )
 		default:
 			field_value = &PL_sv_undef;
 		}
-		hv_store (hash, field_name, name_len, field_value, 0);
+		(void)hv_store (hash, field_name, name_len, field_value, 0);
 		field_index++;
 	}
 	return sv_2mortal (newRV_noinc ((SV *) hash));
