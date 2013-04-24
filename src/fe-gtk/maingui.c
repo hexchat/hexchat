@@ -2233,7 +2233,7 @@ static void
 mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 {
 	session *sess = current_sess;
-	int word_type, start, end;
+	int word_type = 0, start, end;
 	char *tmp;
 
 	if (word)
@@ -2256,7 +2256,8 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 			{
 			case WORD_URL:
 			case WORD_HOST:
-				fe_open_url (word);
+				word[end] = 0;
+				fe_open_url (word + start);
 			}
 		}
 		return;
