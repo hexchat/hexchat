@@ -30,6 +30,7 @@
 #include <unistd.h>
 #endif
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
 #include "fe-gtk.h"
 
 #include "../common/hexchat.h"
