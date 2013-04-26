@@ -159,10 +159,10 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 gboolean
 chanopt_is_set (unsigned int global, guint8 per_chan_setting)
 {
-	if (per_chan_setting == SET_DEFAULT)
+	if (per_chan_setting == SET_ON || per_chan_setting == SET_OFF)
+		return per_chan_setting;
+	else
 		return global;
-
-	return per_chan_setting;
 }
 
 /* === below is LOADING/SAVING stuff only === */
