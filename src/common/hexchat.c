@@ -51,7 +51,9 @@
 #include "url.h"
 #include "hexchatc.h"
 
+#if ! GLIB_CHECK_VERSION (2, 36, 0)
 #include <glib-object.h>			/* for g_type_init() */
+#endif
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>			/* SSL_() */
