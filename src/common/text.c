@@ -2205,7 +2205,7 @@ sound_beep (session *sess)
 void
 sound_play (const char *file, gboolean quiet)
 {
-	char *buf;
+  char *buf;
 	char *wavfile;
 #ifndef WIN32
 	char *cmd;
@@ -2243,21 +2243,18 @@ sound_play (const char *file, gboolean quiet)
 #ifdef USE_LIBCANBERRA
 		ca_context_create (&con);
 		/* TODO: Volume setting? */
-		if (ca_context_play (con, 0,
-						CA_PROP_MEDIA_FILENAME, wavfile, NULL) == 0)
-		{
-			g_free (wavfile);
-			return;
-		}
+		if (ca_context_play (con, 0, CA_PROP_MEDIA_FILENAME, wavfile, NULL) != 0)
 #endif
-		cmd = g_find_program_in_path ("play");
-
-		if (cmd)
 		{
-			buf = g_strdup_printf ("%s \"%s\"", cmd, wavfile);
-			hexchat_exec (buf);
-			g_free (buf);
-			g_free (cmd);
+			cmd = g_find_program_in_path ("play");
+	
+			if (cmd)
+			{
+				buf = g_strdup_printf ("%s \"%s\"", cmd, wavfile);
+				hexchat_exec (buf);
+				g_free (buf);
+				g_free (cmd);
+			}
 		}
 #endif
 	}
