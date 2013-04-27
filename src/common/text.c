@@ -2221,7 +2221,7 @@ sound_find_command (void)
 }
 
 void
-sound_play (const char *file, gboolean quiet, gboolean hexchat_beep)
+sound_play (const char *file, gboolean quiet)
 {
 	char *buf;
 	char *wavfile;
@@ -2234,10 +2234,10 @@ sound_play (const char *file, gboolean quiet, gboolean hexchat_beep)
 	}
 
 #ifdef WIN32
-	/* check for fullpath; also use full path if hexchat_beep is TRUE, which should *only* happen when invoked by fe_beep() */
-	if (hexchat_beep || file[0] == '\\' || (((file[0] >= 'A' && file[0] <= 'Z') || (file[0] >= 'a' && file[0] <= 'z')) && file[1] == ':'))
+	/* check for fullpath */
+	if (file[0] == '\\' || (((file[0] >= 'A' && file[0] <= 'Z') || (file[0] >= 'a' && file[0] <= 'z')) && file[1] == ':'))
 #else
-	if (hexchat_beep || file[0] == '/')
+	if (file[0] == '/')
 #endif
 	{
 		wavfile = g_strdup (file);
@@ -2280,7 +2280,9 @@ void
 sound_play_event (int i)
 {
 	if (sound_files[i])
-		sound_play (sound_files[i], FALSE, FALSE);
+	{
+		sound_play (sound_files[i], FALSE);
+	}
 }
 
 static void

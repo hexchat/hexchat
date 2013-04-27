@@ -23,8 +23,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <gio/gio.h>
-
 #include "hexchat.h"
 #include "cfgfiles.h"
 #include "util.h"
@@ -628,8 +626,6 @@ load_config (void)
 #ifdef WIN32
 	char out[256];
 #endif
-	GFile *beepsrc;
-	GFile *beepdest;
 
 	check_prefs_dir ();
 	username = g_get_user_name ();
@@ -847,23 +843,7 @@ load_config (void)
 		g_free (buf);
 
 		buf = g_build_filename (get_xdir (), "sounds", NULL);
-		if (g_mkdir (buf, 0700) == 0)
-		{
-			g_free (buf);
-
-			buf = g_build_filename (get_xdir (), "sounds", "beep.wav", NULL);
-#ifdef WIN32	/* keep this in sync with fe-gtk.c! */
-			beepsrc = g_file_new_for_path (HEXCHATSHAREDIR G_DIR_SEPARATOR_S "share" G_DIR_SEPARATOR_S "sounds" G_DIR_SEPARATOR_S "beep.wav");
-#else
-			beepsrc = g_file_new_for_path (HEXCHATSHAREDIR G_DIR_SEPARATOR_S "sounds" G_DIR_SEPARATOR_S "freedesktop" G_DIR_SEPARATOR_S "stereo" G_DIR_SEPARATOR_S "hexchat_beep.wav");
-#endif
-			beepdest = g_file_new_for_path (buf);
-
-			g_file_copy (beepsrc, beepdest, G_FILE_COPY_TARGET_DEFAULT_PERMS, NULL, NULL, NULL, NULL);
-
-			g_object_unref (beepsrc);
-			g_object_unref (beepdest);
-		}
+		g_mkdir (buf, 0700);
 		g_free (buf);
 	}
 	if (prefs.hex_gui_win_height < 138)

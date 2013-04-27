@@ -175,7 +175,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 #else
 			if (strchr (word[5], '/') == NULL)
 #endif
-				sound_play (word[5], TRUE, FALSE);
+				sound_play (word[5], TRUE);
 			return;
 		}
 	}

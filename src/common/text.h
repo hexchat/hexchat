@@ -53,7 +53,7 @@ int get_stamp_str (char *fmt, time_t tim, char **ret);
 void format_event (session *sess, int index, char **args, char *o, int sizeofo, unsigned int stripcolor_args);
 char *text_find_format_string (char *name);
  
-void sound_play (const char *file, gboolean quiet, gboolean hexchat_beep);
+void sound_play (const char *file, gboolean quiet);
 void sound_play_event (int i);
 void sound_beep (session *);
 void sound_load ();

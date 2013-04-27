@@ -178,14 +178,14 @@ dnl *********************************************************************
 dnl ** GLIB *************************************************************
 dnl *********************************************************************
 
-AM_PATH_GLIB_2_0(2.20.0, glib=yes, glib=no)
+AM_PATH_GLIB_2_0(2.14.0, glib=yes, glib=no)
 if test "$glib" = no; then
 	AC_MSG_ERROR(Cannot find GLib!)
 fi
 
 COMMON_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
 COMMON_LIBS="$GLIB_LIBS"
-COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0 -lgobject-2.0 -lgio-2.0"
+COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0 -lgobject-2.0"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
@@ -933,7 +933,6 @@ Makefile
 share/Makefile
 share/icons/Makefile
 share/misc/Makefile
-share/sounds/Makefile
 src/Makefile
 src/common/Makefile
 src/common/dbus/Makefile

@@ -660,15 +660,10 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 void
 fe_beep (session *sess)
 {
-	char *beepfile;
-
-#ifdef WIN32	/* keep this in sync with cfgfiles.c! */
-	beepfile = g_build_filename (HEXCHATSHAREDIR, "share", "sounds", "beep.wav", NULL);
-#else
-	beepfile = g_build_filename (HEXCHATSHAREDIR, "sounds", "freedesktop", "stereo", "hexchat_beep.wav", NULL);
-#endif
-	sound_play (beepfile, TRUE, TRUE);
-	g_free (beepfile);
+	if (!prefs.hex_gui_focus_omitalerts || !fe_gui_info (sess, 0) == 1)
+	{
+		gdk_beep ();
+	}
 }
 
 void
