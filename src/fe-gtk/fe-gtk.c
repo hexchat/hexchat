@@ -676,8 +676,7 @@ fe_beep (session *sess)
 #ifdef USE_LIBCANBERRA
 	if (ca_context_play (ca_gtk_context_get (), 0,
 					CA_PROP_APPLICATION_NAME, DISPLAY_NAME,
-					CA_PROP_EVENT_ID, "message-new-instant", NULL) == 0)
-		return;
+					CA_PROP_EVENT_ID, "message-new-instant", NULL) != 0)
 #endif
 	gdk_beep ();
 #endif
