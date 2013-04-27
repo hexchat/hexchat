@@ -119,7 +119,7 @@ AC_ARG_ENABLE(python,
         python=$enableval, python=python2)
 
 AC_ARG_ENABLE(perl,
-	[AS_HELP_STRING([--disable-perl],[don't build the perl plugin])],
+	[AS_HELP_STRING([--disable-perl],[don\'t build the perl plugin])],
         perl=$enableval, perl=yes)
 
 AC_ARG_ENABLE(perl_old,
@@ -172,7 +172,7 @@ AC_ARG_ENABLE(spell,
 		  spell=$enableval, spell=static)
 
 AC_ARG_ENABLE(ntlm,
-	[AS_HELP_STRING([--enable-ntlm],[enable Microsoft's NTLM auth (libntlm) library support (default: no)])],
+	[AS_HELP_STRING([--enable-ntlm],[enable Microsoft\'s NTLM auth (libntlm) library support (default: no)])],
 	ntlm=$enableval, ntlm=no)
 
 AC_ARG_ENABLE(libproxy,
@@ -860,7 +860,7 @@ dnl ** FUNCTIONS/LIBS/CFLAGS ********************************************
 dnl *********************************************************************
 
 AC_MSG_CHECKING(for modern sigaction)
-dnl libc5 on linux and FreeBSD 3.x doesn't have siginfo_t
+dnl libc5 on linux and FreeBSD 3.x doesn\'t have siginfo_t
 dnl and the sa_sigation field.
 AC_TRY_COMPILE(
 	[#include <signal.h>],
@@ -879,7 +879,7 @@ if test "$gtkfe" != no -a "_$gdkpixbufcsourcepath" = _; then
 	AC_MSG_ERROR(Cannot find gdk-pixbuf-csource: Install GTK+ 2.0!)
 fi
 
-dnl if we don't have this, use g_snprintf instead
+dnl if we don\'t have this, use g_snprintf instead
 AC_CHECK_FUNCS(snprintf vsnprintf memrchr strtoull)
 
 AC_CHECK_FUNC(gethostbyname, ,
