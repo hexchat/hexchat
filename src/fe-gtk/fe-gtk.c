@@ -264,15 +264,6 @@ fe_args (int argc, char *argv[])
 	gdk_window_add_filter (gdk_get_default_root_window (), (GdkFilterFunc)root_event_cb, NULL);
 #endif
 
-#ifndef WIN32
-#ifndef __EMX__
-		/* OS/2 uses UID 0 all the time */
-		if (getuid () == 0)
-			fe_message (_("* Running IRC as root is stupid! You should\n"
-							"  create a User Account and use that to login.\n"), FE_MSG_WARN|FE_MSG_WAIT);
-#endif
-#endif /* !WIN32 */
-
 	return -1;
 }
 
