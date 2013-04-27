@@ -2225,7 +2225,9 @@ sound_play (const char *file, gboolean quiet)
 {
 	char *buf;
 	char *wavfile;
+#ifndef WIN32
 	char *cmd;
+#endif
 
 	/* the pevents GUI editor triggers this after removing a soundfile */
 	if (!file[0])
