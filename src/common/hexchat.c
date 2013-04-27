@@ -51,8 +51,10 @@
 #include "url.h"
 #include "hexchatc.h"
 
+#include <glib-object.h>			/*for g_type_init() */
+
 #ifdef USE_OPENSSL
-#include <openssl/ssl.h>		  /* SSL_() */
+#include <openssl/ssl.h>			/* SSL_() */
 #include "ssl.h"
 #endif
 
