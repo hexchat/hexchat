@@ -1518,18 +1518,22 @@ setup_create_color_page (void)
 
 /* === GLOBALS for sound GUI === */
 
+#ifndef WIN32
 static GtkWidget *sndprog_entry;
+#endif
 static GtkWidget *sndfile_entry;
 static int ignore_changed = FALSE;
 
 extern struct text_event te[]; /* text.c */
 extern char *sound_files[];
 
+#ifndef WIN32
 static void
 setup_snd_apply (void)
 {
 	strcpy (setup_prefs.hex_sound_command, GTK_ENTRY (sndprog_entry)->text);
 }
+#endif
 
 static void
 setup_snd_populate (GtkTreeView * treeview)
@@ -1619,6 +1623,7 @@ setup_snd_add_columns (GtkTreeView * treeview)
 	g_object_unref (model);
 }
 
+#ifndef WIN32
 static void
 setup_autotoggle_cb (GtkToggleButton *but, GtkToggleButton *ext)
 {
@@ -1632,6 +1637,7 @@ setup_autotoggle_cb (GtkToggleButton *but, GtkToggleButton *ext)
 		gtk_widget_set_sensitive (sndprog_entry, TRUE);
 	}
 }
+#endif
 
 static void
 setup_snd_filereq_cb (GtkWidget *entry, char *file)
@@ -1690,12 +1696,19 @@ setup_create_sound_page (void)
 {
 	GtkWidget *vbox1;
 	GtkWidget *vbox2;
+
+/* Use only PlaySound() on Windows, to be followed on Unix with libcanberra sometime.
+ * Till then, keep the related set variables on Windows to avoid losing settings when
+ * moving across platforms.
+ */
+#ifndef WIN32
 	GtkWidget *table2;
 	GtkWidget *label2;
 	GtkWidget *label3;
 	GtkWidget *radio_external;
 	GSList *radio_group = NULL;
 	GtkWidget *radio_auto;
+#endif
 	GtkWidget *scrolledwindow1;
 	GtkWidget *sound_tree;
 	GtkWidget *table1;
@@ -1712,6 +1725,7 @@ setup_create_sound_page (void)
 	gtk_widget_show (vbox2);
 	gtk_container_add (GTK_CONTAINER (vbox1), vbox2);
 
+#ifndef WIN32
 	table2 = gtk_table_new (4, 3, FALSE);
 	gtk_widget_show (table2);
 	gtk_box_pack_start (GTK_BOX (vbox2), table2, FALSE, TRUE, 8);
@@ -1766,6 +1780,7 @@ setup_create_sound_page (void)
 	radio_group =
 		gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_auto));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio_auto), setup_prefs.hex_sound_command[0] == 0);
+#endif
 
 	scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolledwindow1);
@@ -1827,7 +1842,9 @@ setup_create_sound_page (void)
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
+#ifndef WIN32
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), sndprog_entry);
+#endif
 	setup_snd_row_cb (sel, NULL);
 
 	return vbox1;
@@ -2279,7 +2296,9 @@ setup_apply_cb (GtkWidget *but, GtkWidget *win)
 static void
 setup_ok_cb (GtkWidget *but, GtkWidget *win)
 {
+#ifndef WIN32
 	setup_snd_apply ();
+#endif
 	gtk_widget_destroy (win);
 	setup_apply (&setup_prefs);
 	save_config ();

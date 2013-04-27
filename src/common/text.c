@@ -2226,14 +2226,12 @@ sound_play (const char *file, gboolean quiet, gboolean hexchat_beep)
 	char *buf;
 	char *wavfile;
 	char *cmd;
-#if 0
-	LPSTR lpRes;
-	HANDLE hResInfo, hRes;
-#endif
 
 	/* the pevents GUI editor triggers this after removing a soundfile */
 	if (!file[0])
+	{
 		return;
+	}
 
 #ifdef WIN32
 	/* check for fullpath; also use full path if hexchat_beep is TRUE, which should *only* happen when invoked by fe_beep() */
@@ -2251,48 +2249,19 @@ sound_play (const char *file, gboolean quiet, gboolean hexchat_beep)
 
 	if (g_access (wavfile, R_OK) == 0)
 	{
+#ifdef WIN32
+		PlaySound (wavfile, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
+#else
 		cmd = sound_find_command ();
 
-#ifdef WIN32
-		if (cmd == NULL || strcmp (cmd, "esdplay") == 0)
-		{
-			PlaySound (wavfile, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
-#if 0			/* this would require the wav file to be added to the executable as resource */
-			hResInfo = FindResource (NULL, file_fs, "WAVE");
-			if (hResInfo != NULL)
-			{
-				/* load the WAVE resource */
-				hRes = LoadResource (NULL, hResInfo);
-				if (hRes != NULL)
-				{
-					/* lock the WAVE resource and play it */
-					lpRes = LockResource(hRes);
-					if (lpRes != NULL)
-					{
-						sndPlaySound (lpRes, SND_MEMORY | SND_NODEFAULT | SND_FILENAME | SND_ASYNC);
-						UnlockResource (hRes);
-					}
-
-					/* free the WAVE resource */
-					FreeResource (hRes);
-				}
-			}
-#endif
-		}
-		else
-#endif
-		{
-			if (cmd)
-			{
-				buf = g_strdup_printf ("%s \"%s\"", cmd, wavfile);
-				hexchat_exec (buf);
-				g_free (buf);
-			}
-		}
-
 		if (cmd)
+		{
+			buf = g_strdup_printf ("%s \"%s\"", cmd, wavfile);
+			hexchat_exec (buf);
+			g_free (buf);
 			g_free (cmd);
-
+		}
+#endif
 	}
 	else
 	{
