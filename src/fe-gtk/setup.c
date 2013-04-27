@@ -1518,22 +1518,11 @@ setup_create_color_page (void)
 
 /* === GLOBALS for sound GUI === */
 
-#ifndef WIN32
-static GtkWidget *sndprog_entry;
-#endif
 static GtkWidget *sndfile_entry;
 static int ignore_changed = FALSE;
 
 extern struct text_event te[]; /* text.c */
 extern char *sound_files[];
-
-#ifndef WIN32
-static void
-setup_snd_apply (void)
-{
-	strcpy (setup_prefs.hex_sound_command, GTK_ENTRY (sndprog_entry)->text);
-}
-#endif
 
 static void
 setup_snd_populate (GtkTreeView * treeview)
@@ -1623,22 +1612,6 @@ setup_snd_add_columns (GtkTreeView * treeview)
 	g_object_unref (model);
 }
 
-#ifndef WIN32
-static void
-setup_autotoggle_cb (GtkToggleButton *but, GtkToggleButton *ext)
-{
-	if (but->active)
-	{
-		setup_prefs.hex_sound_command[0] = 0;
-		gtk_entry_set_text (GTK_ENTRY (sndprog_entry), "");
-		gtk_widget_set_sensitive (sndprog_entry, FALSE);
-	} else
-	{
-		gtk_widget_set_sensitive (sndprog_entry, TRUE);
-	}
-}
-#endif
-
 static void
 setup_snd_filereq_cb (GtkWidget *entry, char *file)
 {
@@ -1696,19 +1669,6 @@ setup_create_sound_page (void)
 {
 	GtkWidget *vbox1;
 	GtkWidget *vbox2;
-
-/* Use only PlaySound() on Windows, to be followed on Unix with libcanberra sometime.
- * Till then, keep the related set variables on Windows to avoid losing settings when
- * moving across platforms.
- */
-#ifndef WIN32
-	GtkWidget *table2;
-	GtkWidget *label2;
-	GtkWidget *label3;
-	GtkWidget *radio_external;
-	GSList *radio_group = NULL;
-	GtkWidget *radio_auto;
-#endif
 	GtkWidget *scrolledwindow1;
 	GtkWidget *sound_tree;
 	GtkWidget *table1;
@@ -1724,63 +1684,6 @@ setup_create_sound_page (void)
 	vbox2 = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox2);
 	gtk_container_add (GTK_CONTAINER (vbox1), vbox2);
-
-#ifndef WIN32
-	table2 = gtk_table_new (4, 3, FALSE);
-	gtk_widget_show (table2);
-	gtk_box_pack_start (GTK_BOX (vbox2), table2, FALSE, TRUE, 8);
-	gtk_table_set_row_spacings (GTK_TABLE (table2), 2);
-	gtk_table_set_col_spacings (GTK_TABLE (table2), 4);
-
-	label2 = gtk_label_new (_("Sound playing method:"));
-	gtk_widget_show (label2);
-	gtk_table_attach (GTK_TABLE (table2), label2, 0, 1, 0, 1,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label2), 0, 0.5);
-
-	label3 =
-		gtk_label_new_with_mnemonic (_("External sound playing _program:"));
-	gtk_widget_show (label3);
-	gtk_table_attach (GTK_TABLE (table2), label3, 0, 1, 2, 3,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label3), 0, 0.5);
-
-	sndprog_entry = gtk_entry_new ();
-	if (setup_prefs.hex_sound_command[0] == 0)
-		gtk_widget_set_sensitive (sndprog_entry, FALSE);
-	else
-		gtk_entry_set_text (GTK_ENTRY (sndprog_entry), setup_prefs.hex_sound_command);
-	gtk_widget_show (sndprog_entry);
-	gtk_table_attach (GTK_TABLE (table2), sndprog_entry, 1, 3, 2, 3,
-							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-
-	radio_external =
-		gtk_radio_button_new_with_mnemonic (NULL, _("_External program"));
-	gtk_widget_show (radio_external);
-	gtk_table_attach (GTK_TABLE (table2), radio_external, 1, 3, 1, 2,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radio_external),
-										 radio_group);
-	radio_group =
-		gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_external));
-
-	radio_auto = gtk_radio_button_new_with_mnemonic (NULL, _("_Automatic"));
-	g_signal_connect (G_OBJECT (radio_auto), "toggled",
-							G_CALLBACK (setup_autotoggle_cb), radio_external);
-	gtk_widget_show (radio_auto);
-	gtk_table_attach (GTK_TABLE (table2), radio_auto, 1, 3, 0, 1,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radio_auto),
-										 radio_group);
-	radio_group =
-		gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_auto));
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio_auto), setup_prefs.hex_sound_command[0] == 0);
-#endif
 
 	scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolledwindow1);
@@ -1842,9 +1745,6 @@ setup_create_sound_page (void)
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
-#ifndef WIN32
-	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), sndprog_entry);
-#endif
 	setup_snd_row_cb (sel, NULL);
 
 	return vbox1;
@@ -2296,9 +2196,6 @@ setup_apply_cb (GtkWidget *but, GtkWidget *win)
 static void
 setup_ok_cb (GtkWidget *but, GtkWidget *win)
 {
-#ifndef WIN32
-	setup_snd_apply ();
-#endif
 	gtk_widget_destroy (win);
 	setup_apply (&setup_prefs);
 	save_config ();
