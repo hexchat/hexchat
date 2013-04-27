@@ -45,6 +45,7 @@ AH_VERBATIM([USE_GTKSPELL],[#undef USE_GTKSPELL])
 AH_VERBATIM([USE_LIBSEXY],[#undef USE_LIBSEXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
+AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
 AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
@@ -152,6 +153,11 @@ AC_ARG_ENABLE(dbus,
 AC_ARG_ENABLE(libnotify,
 	[AS_HELP_STRING([--disable-libnotify],[disable libnotify support])],
         libnotify=$enableval, libnotify=yes)
+
+AC_ARG_ENABLE(libcanberra,
+	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
+		libcanberra=$enableval, libcanberra=yes)
+
 
 AC_ARG_ENABLE(mmx,
 	[AS_HELP_STRING([--disable-mmx],[disable MMX assembly routines])],
@@ -606,6 +612,21 @@ if test "x$libnotify" = "xyes" ; then
 fi
 
 dnl *********************************************************************
+dnl ** LIBCANBERRA ******************************************************
+dnl *********************************************************************
+
+if test "x$libcanberra" = "xyes" ; then
+	PKG_CHECK_MODULES(LIBCANBERRAGTK, libcanberra-gtk >= 0.22, [], [
+		libcanberra=no
+	])
+	if test "$libcanberra" != "no" ; then
+		GUI_LIBS="$GUI_LIBS $LIBCANBERRAGTK_LIBS"
+		GUI_CFLAGS="$GUI_CFLAGS $LIBCANBERRAGTK_CFLAGS"
+		AC_DEFINE(USE_LIBCANBERRA)
+	fi
+fi
+
+dnl *********************************************************************
 dnl ** SPELL ************************************************************
 dnl *********************************************************************
 
@@ -650,6 +671,7 @@ dnl *********************************************************************
 AM_CONDITIONAL(USE_OPENSSL, test "x$openssl" = "xyes")
 AM_CONDITIONAL(USE_LIBSEXY, test "x$spell" = "xstatic")
 AM_CONDITIONAL(USE_LIBNOTIFY, test "x$libnotify" = "xyes")
+AM_CONDITIONAL(USE_LIBCANBERRA, test "x$libcanberra" = "xyes")
 AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
 AM_CONDITIONAL(DO_GTK, test "x$gtkfe" = "xyes")
 AM_CONDITIONAL(DO_PERL, test "x$perl" = "xyes")
@@ -969,6 +991,7 @@ fi
 echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
+echo libcanberra support ... : $libcanberra
 echo Spelling .............. : $spell
 echo Plugin interface ...... : $plugin
 echo NLS/gettext ........... : $USE_NLS
