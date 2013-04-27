@@ -662,7 +662,17 @@ fe_beep (session *sess)
 {
 	if (!prefs.hex_gui_focus_omitalerts || !fe_gui_info (sess, 0) == 1)
 	{
+#ifdef WIN32
+		if (!PlaySound ("Notification.IM", NULL, SND_ALIAS|SND_ASYNC))
+		{
+			/* This is really just a fallback attempt, may or may not work on new Windows releases, especially on x64.
+			 * You should set up the "Instant Message Notification" system sound instead, supported on Vista and up.
+			 */
+			Beep (1000, 50);
+		}
+#else
 		gdk_beep ();
+#endif
 	}
 }
 
