@@ -981,7 +981,7 @@ fe_open_url_inner (const char *url)
 #elif defined __APPLE__
 	/* on Mac you can just 'open http://foo.bar/' */
 	gchar open[512];
-	g_snprinf (open, sizeof(open), "%s %s", g_find_program_in_path ("open"), url, NULL);
+	g_snprintf (open, sizeof(open), "%s %s", g_find_program_in_path ("open"), url, NULL);
 	hexchat_exec (open);
 #else
 	gtk_show_uri (NULL, url, GDK_CURRENT_TIME, NULL);
