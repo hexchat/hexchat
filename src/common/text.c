@@ -47,6 +47,10 @@
 #include <windows.h>
 #endif
 
+#ifdef USE_LIBCANBERRA
+#include <canberra.h>
+#endif
+
 struct pevt_stage1
 {
 	int len;
@@ -2198,28 +2202,6 @@ sound_beep (session *sess)
 	}
 }
 
-static char *
-sound_find_command (void)
-{
-	/* some sensible unix players. You're bound to have one of them */
-	static const char * const progs[] = {"play", "paplay", "aplay", "esdplay", "artsplay", NULL};
-	char *cmd;
-	int i = 0;
-
-	if (prefs.hex_sound_command[0])
-		return g_strdup (prefs.hex_sound_command);
-
-	while (progs[i])
-	{
-		cmd = g_find_program_in_path (progs[i]);
-		if (cmd)
-			return cmd;
-		i++;
-	}
-
-	return NULL;
-}
-
 void
 sound_play (const char *file, gboolean quiet)
 {
@@ -2227,7 +2209,11 @@ sound_play (const char *file, gboolean quiet)
 	char *wavfile;
 #ifndef WIN32
 	char *cmd;
+#ifdef USE_LIBCANBERRA
+	ca_context *con;
 #endif
+#endif
+
 
 	/* the pevents GUI editor triggers this after removing a soundfile */
 	if (!file[0])
@@ -2254,7 +2240,17 @@ sound_play (const char *file, gboolean quiet)
 #ifdef WIN32
 		PlaySound (wavfile, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
 #else
-		cmd = sound_find_command ();
+#ifdef USE_LIBCANBERRA
+		ca_context_create (&con);
+		/* TODO: Volume setting? */
+		if (ca_context_play (con, 0,
+						CA_PROP_MEDIA_FILENAME, wavfile, NULL) == 0)
+		{
+			g_free (wavfile);
+			return;
+		}
+#endif
+		cmd = g_find_program_in_path ("play");
 
 		if (cmd)
 		{
