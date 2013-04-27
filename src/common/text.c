@@ -2016,7 +2016,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 
 /* black n white(0/1) are bad colors for nicks, and we'll use color 2 for us */
 /* also light/dark gray (14/15) */
-/* 5,7,8 are all shades of yellow which happen to look dman near the same */
+/* 5,7,8 are all shades of yellow which happen to look damn near the same */
 
 static char rcolors[] = { 19, 20, 22, 24, 25, 26, 27, 28, 29 };
 
