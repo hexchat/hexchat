@@ -664,26 +664,23 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 void
 fe_beep (session *sess)
 {
-	if (!prefs.hex_gui_focus_omitalerts || !fe_gui_info (sess, 0) == 1)
-	{
 #ifdef WIN32
-		if (!PlaySound ("Notification.IM", NULL, SND_ALIAS|SND_ASYNC))
-		{
-			/* This is really just a fallback attempt, may or may not work on new Windows releases, especially on x64.
-			 * You should set up the "Instant Message Notification" system sound instead, supported on Vista and up.
-			 */
-			Beep (1000, 50);
-		}
+	if (!PlaySound ("Notification.IM", NULL, SND_ALIAS|SND_ASYNC))
+	{
+		/* This is really just a fallback attempt, may or may not work on new Windows releases, especially on x64.
+		 * You should set up the "Instant Message Notification" system sound instead, supported on Vista and up.
+		 */
+		Beep (1000, 50);
+	}
 #else
 #ifdef USE_LIBCANBERRA
-		if (ca_context_play (ca_gtk_context_get (), 0,
-						CA_PROP_APPLICATION_NAME, DISPLAY_NAME,
-						CA_PROP_EVENT_ID, "message-new-instant", NULL) == 0)
-			return;
+	if (ca_context_play (ca_gtk_context_get (), 0,
+					CA_PROP_APPLICATION_NAME, DISPLAY_NAME,
+					CA_PROP_EVENT_ID, "message-new-instant", NULL) == 0)
+		return;
 #endif
-		gdk_beep ();
+	gdk_beep ();
 #endif
-	}
 }
 
 void
