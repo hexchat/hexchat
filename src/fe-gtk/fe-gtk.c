@@ -973,34 +973,6 @@ fe_set_inputbox_contents (session *sess, char *text)
 	}
 }
 
-#ifndef WIN32
-
-static gboolean
-try_browser (const char *browser, char *arg, const char *url)
-{
-	char *argv[4];
-	char *path;
-
-	path = g_find_program_in_path (browser);
-	if (!path)
-		return 0;
-
-	argv[0] = path;
-	argv[1] = (char *)url;
-	argv[2] = NULL;
-	if (arg)
-	{
-		argv[1] = arg;
-		argv[2] = (char *)url;
-		argv[3] = NULL;
-	}
-	hexchat_execv (argv);
-	g_free (path);
-	return 1;
-}
-
-#endif
-
 static void
 fe_open_url_inner (const char *url)
 {
@@ -1009,35 +981,7 @@ fe_open_url_inner (const char *url)
 #elif defined __APPLE__
 	try_browser ("open", NULL, url);				/* on Mac you can just 'open http://foo.bar/' */
 #else
-
-	/* lets try what gtk has built in first. */
-	if (gtk_show_uri (NULL, url, GDK_CURRENT_TIME, NULL))
-		return;
-		
-	/* universal desktop URL opener (from xdg-utils). Supports gnome,kde,xfce4. */
-	if (try_browser ("xdg-open", NULL, url))
-		return;
-
-	/* try to detect GNOME (this env variable is depreciated) */
-	if (g_getenv ("GNOME_DESKTOP_SESSION_ID"))
-	{
-		if (try_browser ("gvfs-open", NULL, url))
-			return;
-	}
-
-	/* try to detect KDE */
-	if (g_getenv ("KDE_FULL_SESSION"))
-	{
-		if (try_browser ("kde-open", NULL, url))
-			return;
-	}
-
-	/* everything failed, what now? just try firefox */
-	if (try_browser ("firefox", NULL, url))
-		return;
-
-	/* fresh out of ideas... i hear chromium is popular */
-	try_browser ("chromium", NULL, url);
+	gtk_show_uri (NULL, url, GDK_CURRENT_TIME, NULL);
 #endif
 }
 
