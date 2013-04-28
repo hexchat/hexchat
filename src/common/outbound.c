@@ -362,7 +362,6 @@ cmd_allservers (struct session *sess, char *tbuf, char *word[],
 static int
 cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	GSList *list;
 	char *reason = word_eol[2];
 
 	if (!(*reason))
@@ -381,21 +380,6 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			reason = random_line (prefs.hex_away_reason);
 	}
 	sess->server->p_set_away (sess->server, reason);
-
-	if (prefs.hex_away_show_message)
-	{
-		snprintf (tbuf, TBUFSIZE, "me is away: %s", reason);
-		for (list = sess_list; list; list = list->next)
-		{
-			/* am I the right server and not a dialog box */
-			if (((struct session *) list->data)->server == sess->server
-				 && ((struct session *) list->data)->type == SESS_CHANNEL
-				 && ((struct session *) list->data)->channel[0])
-			{
-				handle_command ((session *) list->data, tbuf, TRUE);
-			}
-		}
-	}
 
 	if (sess->server->last_away_reason != reason)
 	{
@@ -417,29 +401,9 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_back (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	GSList *list;
-	unsigned int gone;
-
 	if (sess->server->is_away)
 	{
 		sess->server->p_set_back (sess->server);
-
-		if (prefs.hex_away_show_message)
-		{
-			gone = time (NULL) - sess->server->away_time;
-			sprintf (tbuf, "me is back (gone %.2d:%.2d:%.2d)", gone / 3600,
-						(gone / 60) % 60, gone % 60);
-			for (list = sess_list; list; list = list->next)
-			{
-				/* am I the right server and not a dialog box */
-				if (((struct session *) list->data)->server == sess->server
-					 && ((struct session *) list->data)->type == SESS_CHANNEL
-					 && ((struct session *) list->data)->channel[0])
-				{
-					handle_command ((session *) list->data, tbuf, TRUE);
-				}
-			}
-		}
 	}
 	else
 	{

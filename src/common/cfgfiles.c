@@ -373,7 +373,6 @@ const struct prefs vars[] =
 	{"away_auto_unmark", P_OFFINT (hex_away_auto_unmark), TYPE_BOOL},
 	{"away_omit_alerts", P_OFFINT (hex_away_omit_alerts), TYPE_BOOL},
 	{"away_reason", P_OFFSET (hex_away_reason), TYPE_STR},
-	{"away_show_message", P_OFFINT (hex_away_show_message), TYPE_BOOL},
 	{"away_show_once", P_OFFINT (hex_away_show_once), TYPE_BOOL},
 	{"away_size_max", P_OFFINT (hex_away_size_max), TYPE_INT},
 	{"away_timeout", P_OFFINT (hex_away_timeout), TYPE_INT},

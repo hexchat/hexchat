@@ -134,7 +134,6 @@ struct hexchatprefs
 	/* BOOLEANS */
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
-	unsigned int hex_away_show_message;
 	unsigned int hex_away_show_once;
 	unsigned int hex_away_track;
 	unsigned int hex_completion_auto;

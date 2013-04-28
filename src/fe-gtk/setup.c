@@ -492,8 +492,6 @@ static const setting general_settings[] =
 	{ST_ENTRY,	N_("Away:"), P_OFFSETNL(hex_away_reason), 0, 0, sizeof prefs.hex_away_reason},
 
 	{ST_HEADER,	N_("Away"),0,0,0},
-	{ST_TOGGLE,	N_("Announce away messages"), P_OFFINTNL(hex_away_show_message),
-					N_("Announce your away messages to all channels."), 0, 0},
 	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(hex_away_show_once), N_("Show identical away messages only once."), 0, 0},
 	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(hex_away_auto_unmark), N_("Unmark yourself as away before sending messages."), 0, 0},
 
