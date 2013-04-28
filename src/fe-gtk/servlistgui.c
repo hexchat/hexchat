@@ -106,7 +106,7 @@ static const char *pages[]=
 static const char *nstypes[]=
 {
 	/* This list is the same as in irc_nickserv(), except starting at 1, because
-	/* the 1st row is not used. We can't use index 0 coz then "if (nstype)" would
+	 * the 1st row is not used. We can't use index 0 coz then "if (nstype)" would
 	 * not be evaluated, it would give the same result as NULL (i.e. unset) nstype.
 	 * For unset nstype we have a "Default" entry in place of this placeholder, so
 	 * indices will be correct anyway.
