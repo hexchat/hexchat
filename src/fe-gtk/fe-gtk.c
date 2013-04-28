@@ -57,7 +57,7 @@
 #endif
 
 #ifdef USE_LIBCANBERRA
-#include <canberra-gtk.h>
+#include <canberra.h>
 #endif
 
 GdkPixmap *channelwin_pix;
@@ -674,7 +674,9 @@ fe_beep (session *sess)
 	}
 #else
 #ifdef USE_LIBCANBERRA
-	if (ca_context_play (ca_gtk_context_get (), 0,
+	ca_context *con;
+	ca_context_create (&con);
+	if (ca_context_play (con, 0,
 					CA_PROP_APPLICATION_NAME, DISPLAY_NAME,
 					CA_PROP_EVENT_ID, "message-new-instant", NULL) != 0)
 #endif

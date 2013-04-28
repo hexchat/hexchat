@@ -616,12 +616,12 @@ dnl ** LIBCANBERRA ******************************************************
 dnl *********************************************************************
 
 if test "x$libcanberra" = "xyes" ; then
-	PKG_CHECK_MODULES(LIBCANBERRAGTK, libcanberra-gtk >= 0.22, [], [
+	PKG_CHECK_MODULES(LIBCANBERRA, libcanberra >= 0.22, [], [
 		libcanberra=no
 	])
 	if test "$libcanberra" != "no" ; then
-		GUI_LIBS="$GUI_LIBS $LIBCANBERRAGTK_LIBS"
-		GUI_CFLAGS="$GUI_CFLAGS $LIBCANBERRAGTK_CFLAGS"
+		COMMON_LIBS="$COMMON_LIBS $LIBCANBERRA_LIBS"
+		COMMON_CFLAGS="$COMMON_CFLAGS $LIBCANBERRA_CFLAGS"
 		AC_DEFINE(USE_LIBCANBERRA)
 	fi
 fi
