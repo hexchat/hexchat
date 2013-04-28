@@ -840,7 +840,7 @@ load_config (void)
 		g_mkdir (buf, 0700);
 		g_free (buf);
 
-		buf = g_build_filename (get_xdir (), "sounds", NULL);
+		buf = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
 		g_mkdir (buf, 0700);
 		g_free (buf);
 	}

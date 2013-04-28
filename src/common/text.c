@@ -2231,7 +2231,7 @@ sound_play (const char *file, gboolean quiet)
 	}
 	else
 	{
-		wavfile = g_build_filename (get_xdir (), "sounds", file, NULL);
+		wavfile = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, file, NULL);
 	}
 
 	if (g_access (wavfile, R_OK) == 0)

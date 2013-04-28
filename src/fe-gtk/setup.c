@@ -1618,14 +1618,26 @@ setup_snd_filereq_cb (GtkWidget *entry, char *file)
 	if (file)
 	{
 		if (file[0])
-			gtk_entry_set_text (GTK_ENTRY (entry), file);
+		{
+			/* Use just the filename if the given sound file is in the default <config>/sounds directory.
+			 * We're comparing absolute paths so this won't work in portable mode which uses a relative path.
+			 */
+			if (!strcmp (g_path_get_dirname (file), g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL)))
+			{
+				gtk_entry_set_text (GTK_ENTRY (entry), g_path_get_basename (file));
+			}
+			else
+			{
+				gtk_entry_set_text (GTK_ENTRY (entry), file);
+			}
+		}
 	}
 }
 
 static void
 setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 {
-	char *sounds_dir = g_build_filename (get_xdir (), "sounds", NULL);
+	char *sounds_dir = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
 	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry, sounds_dir, NULL, FRF_FILTERISINITIAL);
 	g_free (sounds_dir);
 }

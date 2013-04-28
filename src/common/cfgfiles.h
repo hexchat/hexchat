@@ -69,4 +69,6 @@ struct prefs
 #define TYPE_INT 1
 #define TYPE_BOOL 2
 
+#define HEXCHAT_SOUND_DIR "sounds"
+
 #endif
