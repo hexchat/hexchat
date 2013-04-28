@@ -26,6 +26,7 @@
 #include "sexy-spell-entry.h"
 #include <string.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include <glib/gi18n.h>
 #include <sys/types.h>
 #include <sys/stat.h>
