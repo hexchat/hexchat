@@ -2205,7 +2205,7 @@ sound_beep (session *sess)
 void
 sound_play (const char *file, gboolean quiet)
 {
-  char *buf;
+	char *buf;
 	char *wavfile;
 #ifndef WIN32
 	char *cmd;
@@ -2213,7 +2213,6 @@ sound_play (const char *file, gboolean quiet)
 	ca_context *con;
 #endif
 #endif
-
 
 	/* the pevents GUI editor triggers this after removing a soundfile */
 	if (!file[0])
