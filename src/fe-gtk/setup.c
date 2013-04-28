@@ -1803,10 +1803,10 @@ static const char *const cata[] =
 		N_("Colors"),
 		NULL,
 	N_("Chatting"),
-		N_("Alerts"),
 		N_("General"),
+		N_("Alerts"),
+		N_("Sounds"),
 		N_("Logging"),
-		N_("Sound"),
 		N_("Advanced"),
 		NULL,
 	N_("Network"),
@@ -1829,18 +1829,19 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
 	setup_add_page (cata[5], book, setup_create_color_page ());
 
+	setup_add_page (cata[8], book, setup_create_page (general_settings));
+
 	if (unity_mode ())
 	{
-		setup_add_page (cata[8], book, setup_create_page (alert_settings_unity));
+		setup_add_page (cata[9], book, setup_create_page (alert_settings_unity));
 	}
 	else
 	{
-		setup_add_page (cata[8], book, setup_create_page (alert_settings));
+		setup_add_page (cata[9], book, setup_create_page (alert_settings));
 	}
 
-	setup_add_page (cata[9], book, setup_create_page (general_settings));
-	setup_add_page (cata[10], book, setup_create_page (logging_settings));
-	setup_add_page (cata[11], book, setup_create_sound_page ());
+	setup_add_page (cata[10], book, setup_create_sound_page ());
+	setup_add_page (cata[11], book, setup_create_page (logging_settings));
 	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
 
 	setup_add_page (cata[14], book, setup_create_page (network_settings));
