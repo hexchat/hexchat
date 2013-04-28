@@ -2,7 +2,7 @@ language: c
 compiler: gcc
 before_script:
     - sudo apt-get build-dep -qq xchat
-    - sudo apt-get install -qq libnotify-dev libproxy-dev libpci-dev libcanberra-gtk-dev
+    - sudo apt-get install -qq libnotify-dev libproxy-dev libpci-dev libcanberra-dev
 script: 
     - ./autogen.sh
     - ./configure --enable-textfe
