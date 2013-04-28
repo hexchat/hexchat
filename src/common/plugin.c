@@ -493,7 +493,6 @@ plugin_auto_load (session *sess)
 	for_files (HEXCHATLIBDIR, "hcupd.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcwinamp.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcsysinfo.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcwmpa.dll", plugin_auto_load_cb);
 
 	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
 #else
