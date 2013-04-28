@@ -817,9 +817,7 @@ inbound_005 (server * serv, char *word[])
 			}
 
 			/* use /NICKSERV */
-			if (g_ascii_strcasecmp (word[w] + 8, "RusNet") == 0)
-				serv->nickservtype = 1;
-			else if (g_ascii_strcasecmp (word[w] + 8, "UniBG") == 0)
+			if (g_ascii_strcasecmp (word[w] + 8, "UniBG") == 0)
 				serv->nickservtype = 3;
 			else if (g_ascii_strcasecmp (word[w] + 8, "QuakeNet") == 0)
 				serv->nickservtype = 4;

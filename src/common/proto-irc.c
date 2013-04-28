@@ -484,15 +484,6 @@ process_numeric (session * sess, int n,
 				inbound_foundip (sess, strrchr(word[10], '@')+1);
 		}
 
-		/* use /NICKSERV */
-		if (g_ascii_strcasecmp (word[7], "DALnet") == 0 ||
-			 g_ascii_strcasecmp (word[7], "BRASnet") == 0)
-			serv->nickservtype = 1;
-
-		/* use /NS */
-		else if (g_ascii_strcasecmp (word[7], "FreeNode") == 0)
-			serv->nickservtype = 2;
-
 		goto def;
 
 	case 4:	/* check the ircd type */
