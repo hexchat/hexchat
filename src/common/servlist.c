@@ -625,6 +625,15 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		}
 	}
 
+	if (net->nstype >= 1)	/* once again, make sure gtk_combo_box_get_active() is not bugging us, just in case */
+	{
+		serv->nickservtype = net->nstype - 1;	/* ircnet->nstype starts at 1, server->nickservtype starts at 0! */
+	}
+	else
+	{
+		serv->nickservtype = 1;					/* use /NickServ by default */
+	}
+
 	serv->password[0] = 0;
 	serv->sasluser[0] = 0;
 	serv->saslpassword[0] = 0;
@@ -1128,6 +1137,9 @@ servlist_load (void)
 			case 'B':
 				net->nickserv = strdup (buf + 2);
 				break;
+			case 'T':
+				net->nstype = atoi (buf + 2);
+				break;
 			}
 		}
 		if (buf[0] == 'N')
@@ -1241,6 +1253,20 @@ servlist_save (void)
 			fprintf (fp, "J=%s\n", net->autojoin);
 		if (net->nickserv)
 			fprintf (fp, "B=%s\n", net->nickserv);
+		if (net->nstype)
+		{
+			if (net->nstype == -1)		/* gtk_combo_box_get_active() returns -1 for invalid indices */
+			{
+				net->nstype = 0; 		/* avoid further crashes for the current session */
+				buf = g_strdup_printf (_("Warning: invalid NickServ type. Falling back to default type for network %s."), net->name);
+				fe_message (buf, FE_MSG_WARN);
+				g_free (buf);
+			}
+			else						/* the selection was fine, save it */
+			{
+				fprintf (fp, "T=%d\n", net->nstype);
+			}
+		}
 		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&
 			 g_ascii_strcasecmp (net->encoding, "System default"))
 		{
