@@ -2181,7 +2181,7 @@ setup_apply (struct hexchatprefs *pr)
 
 	if (prefs.hex_irc_real_name[0] == 0)
 	{
-		fe_message (_("The Realname option cannot be left blank. Defaulting back to \"realname\"."), FE_MSG_WARN);
+		fe_message (_("The Real name option cannot be left blank. Falling back to \"realname\"."), FE_MSG_WARN);
 		strcpy (prefs.hex_irc_real_name, "realname");
 	}
 	
