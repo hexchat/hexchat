@@ -656,6 +656,7 @@ servlist_savegui (void)
 		sp[0] = 0;	/* spaces will break the login */
 	/* strcpy (prefs.hex_irc_real_name, GTK_ENTRY (entry_greal)->text); */
 	servlist_save ();
+	save_config (); /* For nicks stored in hexchat.conf */
 
 	return 0;
 }
