@@ -532,6 +532,7 @@ chanlist_minusers (GtkSpinButton *wid, server *serv)
 {
 	serv->gui->chanlist_minusers = gtk_spin_button_get_value_as_int (wid);
 	prefs.hex_gui_chanlist_minusers = serv->gui->chanlist_minusers;
+	save_config();
 
 	if (serv->gui->chanlist_minusers < serv->gui->chanlist_minusers_downloaded)
 	{
@@ -553,6 +554,7 @@ chanlist_maxusers (GtkSpinButton *wid, server *serv)
 {
 	serv->gui->chanlist_maxusers = gtk_spin_button_get_value_as_int (wid);
 	prefs.hex_gui_chanlist_maxusers = serv->gui->chanlist_maxusers;
+	save_config();
 }
 
 static void
@@ -725,6 +727,7 @@ chanlist_opengui (server *serv, int do_refresh)
 		if (prefs.hex_gui_chanlist_minusers < 1 || prefs.hex_gui_chanlist_minusers > 999999)
 		{
 			prefs.hex_gui_chanlist_minusers = 5;
+			save_config();
 		}
 
 		serv->gui->chanlist_minusers = prefs.hex_gui_chanlist_minusers;
@@ -735,6 +738,7 @@ chanlist_opengui (server *serv, int do_refresh)
 		if (prefs.hex_gui_chanlist_maxusers < 1 || prefs.hex_gui_chanlist_maxusers > 999999)
 		{
 			prefs.hex_gui_chanlist_maxusers = 9999;
+			save_config();
 		}
 
 		serv->gui->chanlist_maxusers = prefs.hex_gui_chanlist_maxusers;
