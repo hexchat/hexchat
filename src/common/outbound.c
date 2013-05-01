@@ -3798,7 +3798,7 @@ const struct commands xc_cmds[] = {
 	{"NICK", cmd_nick, 0, 0, 1, N_("NICK <nickname>, sets your nick")},
 
 	{"NOTICE", cmd_notice, 1, 0, 1,
-	 N_("NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to")},
+	 N_("NOTICE <nick/channel> <message>, sends a notice")},
 	{"NOTIFY", cmd_notify, 0, 0, 1,
 	 N_("NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it")},
 	{"OP", cmd_op, 1, 1, 1,
