@@ -26,6 +26,7 @@
 #include "../common/fe.h"
 #include "../common/util.h"
 #include "../common/hexchatc.h"
+#include "../common/cfgfiles.h"
 #include "gtkutil.h"
 #include "xtext.h"
 #include "maingui.h"
@@ -111,24 +112,28 @@ static void
 search_caseign_cb (GtkToggleButton * but, session * sess)
 {
 	prefs.hex_text_search_case_match = (but->active)? 1: 0;
+	save_config();
 }
 
 static void
 search_dirbwd_cb (GtkToggleButton * but, session * sess)
 {
 	prefs.hex_text_search_backward = (but->active)? 1: 0;
+	save_config();
 }
 
 static void
 search_regexp_cb (GtkToggleButton * but, session * sess)
 {
 	prefs.hex_text_search_regexp = (but->active)? 1: 0;
+	save_config();
 }
 
 static void
 search_highlight_cb (GtkToggleButton * but, session * sess)
 {
 	prefs.hex_text_search_highlight_all = (but->active)? 1: 0;
+	save_config();
 	search_search (sess, NULL);
 }
 
