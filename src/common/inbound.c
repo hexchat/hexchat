@@ -258,6 +258,14 @@ alert_match_text (char *text, char *masks)
 
 	while (1)
 	{
+
+		/* allow highlight on '@all' */
+		if (*p == '@')
+		{
+			p++;
+			continue;
+		}
+
 		if (*p >= '0' && *p <= '9')
 		{
 			p++;
