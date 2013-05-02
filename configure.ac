@@ -352,13 +352,17 @@ if test "x$python" != xno ; then
                 PYPLAT_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc(plat_specific=True));'`
                 changequote([, ])dnl
                 AC_MSG_RESULT($PY_VER)
-                $pythonpath -c "import sys; float(sys.version[[:3]]) >= 2.2 and int(sys.version[[0]]) < 3 or sys.exit(1)"
+                $pythonpath -c "import sys; float(sys.version[[:3]]) >= 2.6 and int(sys.version[[0]]) <= 3 or sys.exit(1)"
                 if test "$?" != "1"; then
                         AC_MSG_CHECKING(Python compile flags)
                         PY_PREFIX=`$pythonpath -c 'import sys; print(sys.prefix)'`
                         PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print(sys.exec_prefix)'`
                         if test -f $PY_INC/Python.h || test -f $PYPLAT_INC/Python.h; then
-                                PY_LIBS="-L$PY_LIB/config -lpython$PY_VER -lpthread -lutil"
+								AS_VERSION_COMPARE($PY_VER, 3.0,
+									[PYL="$PY_VER"], # less than
+									[PYL="${PY_VER}m"], # equal
+									[PYL="${PY_VER}m"]) # greater than
+                                PY_LIBS="-L$PY_LIB/config -lpython$PYL -lpthread -lutil"
                                 PY_CFLAGS="-I$PY_INC -I$PYPLAT_INC"
                                 AC_MSG_RESULT(ok)
                         else
@@ -366,7 +370,7 @@ if test "x$python" != xno ; then
                                 AC_MSG_RESULT([Can\'t find Python.h])
                         fi
                 else
-                        echo "Python is too old or too new. Only 2.2-2.7 are supported."
+                        echo "Python is too old or too new. Only 2.6-3.x are supported."
                         python=no
                 fi
         fi

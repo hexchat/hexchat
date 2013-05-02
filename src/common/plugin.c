@@ -489,7 +489,8 @@ plugin_auto_load (session *sess)
 	for_files (HEXCHATLIBDIR, "hcfishlim.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcmpcinfo.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcperl.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcpython.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcpython2.dll", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR, "hcpython3.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcupd.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcwinamp.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcsysinfo.dll", plugin_auto_load_cb);

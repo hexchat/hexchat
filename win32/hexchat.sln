@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "..\src\common\common.vcxproj", "{87554B59-006C-4D94-9714-897B27067BA3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A7D7CE59-2A31-48AE-BED2-A9828E241832} = {A7D7CE59-2A31-48AE-BED2-A9828E241832}
@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripting", "scripting", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{BB051F0F-A841-4A9A-BAF6-51DD9866D65A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python", "..\plugins\python\python.vcxproj", "{19C52A0A-A790-409E-A28A-9745FF990F5C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python2", "..\plugins\python\python2.vcxproj", "{19C52A0A-A790-409E-A28A-9745FF990F5C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doat", "..\plugins\doat\doat.vcxproj", "{4980AF24-9D42-427D-A8E6-0DF3B97C455D}"
 EndProject
@@ -86,6 +86,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "make-te", "..\src\common\make-te.vcxproj", "{A7D7CE59-2A31-48AE-BED2-A9828E241832}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "perl", "..\plugins\perl\perl.vcxproj", "{D90BC3E3-1341-4849-9354-5F40489D39D1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python3", "..\plugins\python\python3.vcxproj", "{C2321A03-0BA7-45B3-8740-ABD82B36B0BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -179,6 +181,10 @@ Global
 		{D90BC3E3-1341-4849-9354-5F40489D39D1}.Release|Win32.Build.0 = Release|Win32
 		{D90BC3E3-1341-4849-9354-5F40489D39D1}.Release|x64.ActiveCfg = Release|x64
 		{D90BC3E3-1341-4849-9354-5F40489D39D1}.Release|x64.Build.0 = Release|x64
+		{C2321A03-0BA7-45B3-8740-ABD82B36B0BF}.Release|Win32.ActiveCfg = Release|Win32
+		{C2321A03-0BA7-45B3-8740-ABD82B36B0BF}.Release|Win32.Build.0 = Release|Win32
+		{C2321A03-0BA7-45B3-8740-ABD82B36B0BF}.Release|x64.ActiveCfg = Release|x64
+		{C2321A03-0BA7-45B3-8740-ABD82B36B0BF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -203,6 +209,7 @@ Global
 		{3024CF36-85E5-4E00-9608-7002E2C7EF14} = {561126F4-FA18-45FC-A2BF-8F858F161D6D}
 		{19C52A0A-A790-409E-A28A-9745FF990F5C} = {D237DA6B-BD5F-46C0-8BEA-50E9A1340240}
 		{D90BC3E3-1341-4849-9354-5F40489D39D1} = {D237DA6B-BD5F-46C0-8BEA-50E9A1340240}
+		{C2321A03-0BA7-45B3-8740-ABD82B36B0BF} = {D237DA6B-BD5F-46C0-8BEA-50E9A1340240}
 		{B10A2C41-344C-43E0-A32D-B9587C198D8B} = {0FD996A7-464F-4981-8380-3DCA3A244A13}
 		{C9B735E4-75BC-45AC-A5E3-39A6D076F912} = {0FD996A7-464F-4981-8380-3DCA3A244A13}
 		{5A0F4962-E670-4DA2-9E45-52CC47F26E2F} = {0FD996A7-464F-4981-8380-3DCA3A244A13}
