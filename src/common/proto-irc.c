@@ -80,14 +80,21 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 		break;
 	case 4:
 		/* why couldn't QuakeNet implement one of the existing ones? */
-		tcp_sendf (serv, "AUTH %s%s%s\r\n", cmd, arg1, arg2, arg3);
+		tcp_sendf (serv, "AUTH %s %s\r\n", arg1, arg2);
 	}
 }
 
 static void
 irc_ns_identify (server *serv, char *pass)
 {
-	irc_nickserv (serv, "IDENTIFY", pass, "", "");
+	if (serv->nickservtype == 4)	/* QuakeNet needs to do everything in its own ways... */
+	{
+		irc_nickserv (serv, NULL, serv->nick, pass, NULL);
+	}
+	else
+	{
+		irc_nickserv (serv, "IDENTIFY", pass, "", "");
+	}
 }
 
 static void
