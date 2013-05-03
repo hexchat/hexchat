@@ -1762,7 +1762,11 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 										serv, 0, (DWORD *)&pid));
 #else
 #ifdef LOOKUPD
-	rand();	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different seed for each child. This method giver a bigger variation in seed values than calling srand(time(0)) in the child itself. */
+	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different
+	 * seed for each child. This method gives a bigger variation in seed values
+	 * than calling srand(time(0)) in the child itself.
+	 */
+	rand();
 #endif
 	switch (pid = fork ())
 	{
