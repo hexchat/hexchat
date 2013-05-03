@@ -89,7 +89,7 @@ irc_ns_identify (server *serv, char *pass)
 {
 	if (serv->nickservtype == 4)	/* QuakeNet needs to do everything in its own ways... */
 	{
-		irc_nickserv (serv, NULL, serv->nick, pass, NULL);
+		irc_nickserv (serv, "", serv->nick, pass, "");
 	}
 	else
 	{
