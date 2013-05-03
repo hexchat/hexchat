@@ -43,6 +43,7 @@ struct defaultserver
 	char *host;
 	char *channel;
 	char *charset;
+	int nsmode;		/* default NickServ type */
 };
 
 static const struct defaultserver def[] =
@@ -166,7 +167,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.criten.net"},
 	{0,			"irc.eu.criten.net"},
 
-	{"DALnet",	0},
+	{"DALnet", 0, 0, 0, 2},
 	{0,			"irc.dal.net"},
 	{0,			"irc.eu.dal.net"},
 
@@ -433,7 +434,7 @@ static const struct defaultserver def[] =
 	{0,			"nfsi.ptnet.org"},
 	{0,			"fctunl.ptnet.org"},
 
-	{"QuakeNet",	0},
+	{"QuakeNet", 0, 0, 0, 5},
 	{0,			"irc.quakenet.org"},
 	{0,			"irc.se.quakenet.org"},
 	{0,			"irc.dk.quakenet.org"},
@@ -467,7 +468,7 @@ static const struct defaultserver def[] =
 	{"Rizon", 0},
 	{0,			"irc.rizon.net"},
 
-	{"RusNet", 0, 0, "KOI8-R (Cyrillic)"},
+	{"RusNet", 0, 0, "KOI8-R (Cyrillic)", 2},
 	{0,			"irc.tomsk.net"},
 	{0,			"irc.rinet.ru"},
 	{0,			"irc.run.net"},
@@ -552,7 +553,7 @@ static const struct defaultserver def[] =
 	{0,			"us.undernet.org"},
 	{0,			"eu.undernet.org"},
 
-	{"UniBG",		0},
+	{"UniBG", 0, 0, 0, 4},
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
 	{0,			"irc.spnet.net"},
@@ -623,6 +624,15 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 				free (serv->autojoin);
 			serv->autojoin = strdup (net->autojoin);
 		}
+	}
+
+	if (net->nstype >= 1)	/* once again, make sure gtk_combo_box_get_active() is not bugging us, just in case */
+	{
+		serv->nickservtype = net->nstype - 1;	/* ircnet->nstype starts at 1, server->nickservtype starts at 0! */
+	}
+	else
+	{
+		serv->nickservtype = 1;					/* use /NickServ by default */
 	}
 
 	serv->password[0] = 0;
@@ -1027,6 +1037,10 @@ servlist_load_defaults (void)
 				free (net->encoding);
 				net->encoding = strdup (def[i].charset);
 			}
+			if (def[i].nsmode)
+			{
+				net->nstype = def[i].nsmode;
+			}
 			if (g_str_hash (def[i].network) == def_hash)
 			{
 				prefs.hex_gui_slist_select = j;
@@ -1127,6 +1141,9 @@ servlist_load (void)
 				break;
 			case 'B':
 				net->nickserv = strdup (buf + 2);
+				break;
+			case 'T':
+				net->nstype = atoi (buf + 2);
 				break;
 			}
 		}
@@ -1241,6 +1258,20 @@ servlist_save (void)
 			fprintf (fp, "J=%s\n", net->autojoin);
 		if (net->nickserv)
 			fprintf (fp, "B=%s\n", net->nickserv);
+		if (net->nstype)
+		{
+			if (net->nstype == -1)		/* gtk_combo_box_get_active() returns -1 for invalid indices */
+			{
+				net->nstype = 0; 		/* avoid further crashes for the current session */
+				buf = g_strdup_printf (_("Warning: invalid NickServ type. Falling back to default type for network %s."), net->name);
+				fe_message (buf, FE_MSG_WARN);
+				g_free (buf);
+			}
+			else						/* the selection was fine, save it */
+			{
+				fprintf (fp, "T=%d\n", net->nstype);
+			}
+		}
 		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&
 			 g_ascii_strcasecmp (net->encoding, "System default"))
 		{
