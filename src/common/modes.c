@@ -816,12 +816,6 @@ inbound_005 (server * serv, char *word[])
 				fe_set_channel (serv->server_session);
 			}
 
-			/* use /NICKSERV */
-			if (g_ascii_strcasecmp (word[w] + 8, "UniBG") == 0)
-				serv->nickservtype = 3;
-			else if (g_ascii_strcasecmp (word[w] + 8, "QuakeNet") == 0)
-				serv->nickservtype = 4;
-
 		} else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
 		{
 			if (strcmp (word[w] + 12, "ascii") == 0)	/* bahamut */

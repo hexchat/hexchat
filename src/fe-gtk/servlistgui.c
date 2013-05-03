@@ -103,6 +103,24 @@ static const char *pages[]=
 	NULL
 };
 
+static const char *nstypes[]=
+{
+	/* This list is the same as in irc_nickserv(), except starting at 1, because
+	 * the 1st row is not used. We can't use index 0 coz then "if (nstype)" would
+	 * not be evaluated, it would give the same result as NULL (i.e. unset) nstype.
+	 * For unset nstype we have a "Default" entry in place of this placeholder, so
+	 * indices will be correct anyway.
+	 */
+	"PLACEHOLDER",			/* nstype = 0 */
+	"/msg NickServ",		/* nstype = 1, nickservtype = 0 */
+	"/NickServ",			/* nstype = 2, nickservtype = 1 */
+	"/NS",					/* ... */
+	"/msg NS",
+	"/auth",
+	NULL
+	/* This also means that we need to shift these values for irc_nickserv()! */
+};
+
 static void
 servlist_select_and_show (GtkTreeView *treeview, GtkTreeIter *iter,
 								  GtkListStore *store)
@@ -1310,6 +1328,21 @@ servlist_combo_cb (GtkEntry *entry, gpointer userdata)
 	}
 }
 
+static void
+servlist_nscombo_cb (GtkEntry *entry, gpointer userdata)
+{
+	if (!selected_net)
+	{
+		return;
+	}
+
+	if (!ignore_changed)
+	{
+		selected_net->nstype = gtk_combo_box_get_active (GTK_COMBO_BOX (entry));
+	}
+}
+
+
 static GtkWidget *
 servlist_create_charsetcombo (void)
 {
@@ -1326,6 +1359,28 @@ servlist_create_charsetcombo (void)
 	}
 	g_signal_connect (G_OBJECT (GTK_BIN (cb)->child), "changed",
 							G_CALLBACK (servlist_combo_cb), NULL);
+
+	return cb;
+}
+
+static GtkWidget *
+servlist_create_nstypecombo (void)
+{
+	GtkWidget *cb;
+	int i;
+
+	cb = gtk_combo_box_entry_new_text ();
+	gtk_combo_box_append_text (GTK_COMBO_BOX (cb), "Default");
+
+	i = 1;		/* start with the 2nd row, leave the placeholder 0th element alone */
+
+	while (nstypes[i])
+	{
+		gtk_combo_box_append_text (GTK_COMBO_BOX (cb), (char *)nstypes[i]);
+		i++;
+	}
+
+	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_nscombo_cb), NULL);
 
 	return cb;
 }
@@ -1375,7 +1430,9 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	GtkWidget *label16;
 	GtkWidget *label21;
 	GtkWidget *label34;
+	GtkWidget *label_nstype;
 	GtkWidget *comboboxentry_charset;
+	GtkWidget *comboboxentry_nstypes;
 	GtkWidget *hbox1;
 	GtkWidget *scrolledwindow2;
 	GtkWidget *treeview_servers;
@@ -1483,26 +1540,42 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 					_("Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."));
 
 	edit_entry_nickserv =
-		servlist_create_entry (table3, _("Nickserv password:"), 17,
+		servlist_create_entry (table3, _("NickServ password:"), 17,
 									  net->nickserv, 0,
 					_("If your nickname requires a password, enter it here. Not all IRC networks support this."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_nickserv), FALSE);
 
+	label_nstype = gtk_label_new (_("NickServ type:"));
+	gtk_widget_show (label_nstype);
+	gtk_table_attach (GTK_TABLE (table3), label_nstype, 1, 2, 18, 19,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (label_nstype), 0, 0.5);
+
+	comboboxentry_nstypes = servlist_create_nstypecombo ();
+	ignore_changed = TRUE;
+	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_nstypes)->child), net->nstype ? nstypes[net->nstype] : "Default");
+	ignore_changed = FALSE;
+	gtk_widget_show (comboboxentry_nstypes);
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_nstypes, 2, 3, 18, 19,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (GTK_FILL), 0, 0);
+
 	edit_entry_pass =
-		servlist_create_entry (table3, _("Server password:"), 18,
+		servlist_create_entry (table3, _("Server password:"), 20,
 									  net->pass, 0,
 					_("Password for the server, if in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
 
 	edit_entry_saslpass =
-		servlist_create_entry (table3, _("SASL password:"), 19,
+		servlist_create_entry (table3, _("SASL password:"), 21,
 									  net->saslpass, 0,
 					_("Password for SASL authentication, if in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_saslpass), FALSE);
 
 	label34 = gtk_label_new (_("Character set:"));
 	gtk_widget_show (label34);
-	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 20, 21,
+	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 22, 23,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
@@ -1512,7 +1585,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_charset)->child), net->encoding ? net->encoding : "System default");
 	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_charset);
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 20, 21,
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 22, 23,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 
