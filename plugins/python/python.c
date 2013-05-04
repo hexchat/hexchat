@@ -1247,6 +1247,7 @@ error:
 	if (plugin) {
 		if (plugin->tstate)
 		{
+			Plugin_RemoveAllHooks((PyObject *)plugin);
 			/* FIXME: Handle this? */
 			if (plugin->tstate == PyInterpreterState_ThreadHead(plugin->tstate->interp))
 				Py_EndInterpreter(plugin->tstate);
