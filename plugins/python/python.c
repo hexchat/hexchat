@@ -205,6 +205,8 @@ static PyThreadState *pTempThread;
 	((PluginObject *)(x))->hooks = (y);
 #define Plugin_SetContext(x, y) \
 	((PluginObject *)(x))->context = (y);
+#define Plugin_SetGui(x, y) \
+	((PluginObject *)(x))->gui = (y);
 
 #define HOOK_XCHAT  1
 #define HOOK_UNLOAD 2
@@ -1129,137 +1131,6 @@ ListItem_New(const char *listname)
 	}
 
 static PyObject *
-Plugin_New(char *filename, PyObject *xcoobj)
-{
-	PluginObject *plugin = NULL;
-	PyObject *m, *o;
-#ifdef IS_PY3K
-	wchar_t *argv[] = { L"<hexchat>", 0 };
-#else
-	char *argv[] = { "<hexchat>", 0 };
-#endif
-
-	if (filename) {
-		char *old_filename = filename;
-		filename = Util_Expand(filename);
-		if (filename == NULL) {
-			hexchat_printf(ph, "File not found: %s", old_filename);
-			return NULL;
-		}
-	}
-
-	/* Allocate plugin structure. */
-	plugin = PyObject_New(PluginObject, &Plugin_Type);
-	if (plugin == NULL) {
-		hexchat_print(ph, "Can't create plugin object");
-		goto error;
-	}
-
-	Plugin_SetName(plugin, NULL);
-	Plugin_SetVersion(plugin, NULL);
-	Plugin_SetFilename(plugin, NULL);
-	Plugin_SetDescription(plugin, NULL);
-	Plugin_SetHooks(plugin, NULL);
-	Plugin_SetContext(plugin, hexchat_get_context(ph));
-
-	/* Start a new interpreter environment for this plugin. */
-	PyEval_AcquireThread(main_tstate);
-	plugin->tstate = Py_NewInterpreter();
-	if (plugin->tstate == NULL) {
-		hexchat_print(ph, "Can't create interpreter state");
-		goto error;
-	}
-
-	PySys_SetArgv(1, argv);
-	PySys_SetObject("__plugin__", (PyObject *) plugin);
-
-	/* Set stdout and stderr to xchatout. */
-	Py_INCREF(xcoobj);
-	PySys_SetObject("stdout", xcoobj);
-	Py_INCREF(xcoobj);
-	PySys_SetObject("stderr", xcoobj);
-
-	if (filename) {
-#ifdef WIN32
-		char *file;
-		if (!g_file_get_contents_utf8(filename, &file, NULL, NULL)) {
-			hexchat_printf(ph, "Can't open file %s: %s\n",
-				     filename, strerror(errno));
-			goto error;
-		}
-
-		if (PyRun_SimpleString(file) != 0) {
-			hexchat_printf(ph, "Error loading module %s\n",
-				     filename);
-			g_free (file);
-			goto error;
-		}
-
-		plugin->filename = filename;
-		filename = NULL;
-		g_free (file);
-#else
-		FILE *fp;
-		plugin->filename = filename;
-
-		/* It's now owned by the plugin. */
-		filename = NULL;
-
-		/* Open the plugin file. */
-		fp = fopen(plugin->filename, "r");
-		if (fp == NULL) {
-			hexchat_printf(ph, "Can't open file %s: %s\n",
-				     plugin->filename, strerror(errno));
-			goto error;
-		}
-
-		/* Run the plugin. */
-		if (PyRun_SimpleFile(fp, plugin->filename) != 0) {
-			hexchat_printf(ph, "Error loading module %s\n",
-				     plugin->filename);
-			fclose(fp);
-			goto error;
-		}
-		fclose(fp);
-#endif
-		m = PyDict_GetItemString(PyImport_GetModuleDict(),
-					 "__main__");
-		if (m == NULL) {
-			hexchat_print(ph, "Can't get __main__ module");
-			goto error;
-		}
-		GET_MODULE_DATA(name, 1);
-		GET_MODULE_DATA(version, 0);
-		GET_MODULE_DATA(description, 0);
-		plugin->gui = hexchat_plugingui_add(ph, plugin->filename,
-						  plugin->name,
-						  plugin->description,
-						  plugin->version, NULL);
-	}
-
-	PyEval_ReleaseThread(plugin->tstate);
-
-	return (PyObject *) plugin;
-
-error:
-	g_free(filename);
-
-	if (plugin) {
-		if (plugin->tstate)
-		{
-			Plugin_RemoveAllHooks((PyObject *)plugin);
-			/* FIXME: Handle this? */
-			if (plugin->tstate == PyInterpreterState_ThreadHead(plugin->tstate->interp))
-				Py_EndInterpreter(plugin->tstate);
-		}
-		Py_DECREF(plugin);
-	}
-	PyEval_ReleaseLock();
-
-	return NULL;
-}
-
-static PyObject *
 Plugin_GetCurrent()
 {
 	PyObject *plugin;
@@ -1379,10 +1250,139 @@ Plugin_Delete(PyObject *plugin)
 		list = list->next;
 	}
 	Plugin_RemoveAllHooks(plugin);
-	hexchat_plugingui_remove(ph, ((PluginObject *)plugin)->gui);
+	if (((PluginObject *)plugin)->gui != NULL)
+		hexchat_plugingui_remove(ph, ((PluginObject *)plugin)->gui);
 	Py_DECREF(plugin);
 	/*PyThreadState_Swap(tstate); needed? */
 	Py_EndInterpreter(tstate);
+}
+
+static PyObject *
+Plugin_New(char *filename, PyObject *xcoobj)
+{
+	PluginObject *plugin = NULL;
+	PyObject *m, *o;
+#ifdef IS_PY3K
+	wchar_t *argv[] = { L"<hexchat>", 0 };
+#else
+	char *argv[] = { "<hexchat>", 0 };
+#endif
+
+	if (filename) {
+		char *old_filename = filename;
+		filename = Util_Expand(filename);
+		if (filename == NULL) {
+			hexchat_printf(ph, "File not found: %s", old_filename);
+			return NULL;
+		}
+	}
+
+	/* Allocate plugin structure. */
+	plugin = PyObject_New(PluginObject, &Plugin_Type);
+	if (plugin == NULL) {
+		hexchat_print(ph, "Can't create plugin object");
+		goto error;
+	}
+
+	Plugin_SetName(plugin, NULL);
+	Plugin_SetVersion(plugin, NULL);
+	Plugin_SetFilename(plugin, NULL);
+	Plugin_SetDescription(plugin, NULL);
+	Plugin_SetHooks(plugin, NULL);
+	Plugin_SetContext(plugin, hexchat_get_context(ph));
+	Plugin_SetGui(plugin, NULL);
+
+	/* Start a new interpreter environment for this plugin. */
+	PyEval_AcquireThread(main_tstate);
+	plugin->tstate = Py_NewInterpreter();
+	if (plugin->tstate == NULL) {
+		hexchat_print(ph, "Can't create interpreter state");
+		goto error;
+	}
+
+	PySys_SetArgv(1, argv);
+	PySys_SetObject("__plugin__", (PyObject *) plugin);
+
+	/* Set stdout and stderr to xchatout. */
+	Py_INCREF(xcoobj);
+	PySys_SetObject("stdout", xcoobj);
+	Py_INCREF(xcoobj);
+	PySys_SetObject("stderr", xcoobj);
+
+	if (filename) {
+#ifdef WIN32
+		char *file;
+		if (!g_file_get_contents_utf8(filename, &file, NULL, NULL)) {
+			hexchat_printf(ph, "Can't open file %s: %s\n",
+				     filename, strerror(errno));
+			goto error;
+		}
+
+		if (PyRun_SimpleString(file) != 0) {
+			hexchat_printf(ph, "Error loading module %s\n",
+				     filename);
+			g_free (file);
+			goto error;
+		}
+
+		plugin->filename = filename;
+		filename = NULL;
+		g_free (file);
+#else
+		FILE *fp;
+		plugin->filename = filename;
+
+		/* It's now owned by the plugin. */
+		filename = NULL;
+
+		/* Open the plugin file. */
+		fp = fopen(plugin->filename, "r");
+		if (fp == NULL) {
+			hexchat_printf(ph, "Can't open file %s: %s\n",
+				     plugin->filename, strerror(errno));
+			goto error;
+		}
+
+		/* Run the plugin. */
+		if (PyRun_SimpleFile(fp, plugin->filename) != 0) {
+			hexchat_printf(ph, "Error loading module %s\n",
+				     plugin->filename);
+			fclose(fp);
+			goto error;
+		}
+		fclose(fp);
+#endif
+		m = PyDict_GetItemString(PyImport_GetModuleDict(),
+					 "__main__");
+		if (m == NULL) {
+			hexchat_print(ph, "Can't get __main__ module");
+			goto error;
+		}
+		GET_MODULE_DATA(name, 1);
+		GET_MODULE_DATA(version, 0);
+		GET_MODULE_DATA(description, 0);
+		plugin->gui = hexchat_plugingui_add(ph, plugin->filename,
+						  plugin->name,
+						  plugin->description,
+						  plugin->version, NULL);
+	}
+
+	PyEval_ReleaseThread(plugin->tstate);
+
+	return (PyObject *) plugin;
+
+error:
+	g_free(filename);
+
+	if (plugin) {
+		if (plugin->tstate)
+			Plugin_Delete((PyObject *)plugin);
+		else
+			Py_DECREF(plugin);
+	}
+	PyEval_ReleaseLock();
+
+	return NULL;
 }
 
 static void
