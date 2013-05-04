@@ -477,7 +477,7 @@ plugin_auto_load (session *sess)
 	char *sub_dir;
 	ps = sess;
 
-	sub_dir = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "addons", get_xdir ());
+	sub_dir = g_build_filename (get_xdir (), "addons", NULL);
 
 #ifdef WIN32
 	/* a long list of bundled plugins that should be loaded automatically,
@@ -1670,9 +1670,9 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 			g_free (buffer);
 			close (fhOut);
 
-			buffer = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), confname);
+			buffer = g_build_filename (get_xdir (), confname, NULL);
 			g_free (confname);
-			buffer_tmp = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), confname_tmp);
+			buffer_tmp = g_build_filename (get_xdir (), confname_tmp, NULL);
 			g_free (confname_tmp);
 
 #ifdef WIN32
@@ -1744,9 +1744,9 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 
 		close (fhOut);
 
-		buffer = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), confname);
+		buffer = g_build_filename (get_xdir (), confname, NULL);
 		g_free (confname);
-		buffer_tmp = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), confname_tmp);
+		buffer_tmp = g_build_filename (get_xdir (), confname_tmp, NULL);
 		g_free (confname_tmp);
 
 #ifdef WIN32

@@ -438,7 +438,7 @@ irc_init (session *sess)
 	}
 
 	/* load -e <xdir>/startup.txt */
-	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "startup.txt", get_xdir ());
+	buf = g_build_filename (get_xdir (), "startup.txt", NULL);
 	load_perform_file (sess, buf);
 	g_free (buf);
 }

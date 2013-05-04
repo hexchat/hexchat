@@ -1691,8 +1691,8 @@ move_file (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
 		 0 == dst_dir[0])
 		return;			/* Already in "completed dir" */
 
-	src = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", src_dir, fname);
-	dst = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", dst_dir, fname);
+	src = g_build_filename (src_dir, fname, NULL);
+	dst = g_build_filename (dst_dir, fname, NULL);
 
 	/* already exists in completed dir? Append a number */
 	if (file_exists (dst))

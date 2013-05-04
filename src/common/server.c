@@ -1713,7 +1713,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 		else
 		{
 			/* if that doesn't exist, try <config>/certs/client.pem */
-			cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "certs" G_DIR_SEPARATOR_S "client.pem", get_xdir ());
+			cert_file = g_build_filename (get_xdir (), "certs", "client.pem", NULL);
 			if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
 				SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
 		}

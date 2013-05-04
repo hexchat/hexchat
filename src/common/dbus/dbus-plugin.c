@@ -373,7 +373,7 @@ remote_object_connect (RemoteObject *obj,
 		g_free (sender);
 		return TRUE;
 	}
-	path = g_strdup_printf (DBUS_OBJECT_PATH"/%d", count++);
+	path = g_build_filename (DBUS_OBJECT_PATH, count++, NULL);
 	remote_object = g_object_new (REMOTE_TYPE_OBJECT, NULL);
 	remote_object->dbus_path = path;
 	remote_object->filename = g_path_get_basename (filename);

@@ -112,7 +112,7 @@ list_loadconf (char *file, GSList ** list, char *defaultconf)
 	int fd;
 	struct stat st;
 
-	filebuf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), file);
+	filebuf = g_build_filename (get_xdir (), file, NULL);
 	fd = g_open (filebuf, O_RDONLY | OFLAGS, 0);
 	g_free (filebuf);
 
@@ -327,10 +327,10 @@ get_xdir (void)
 		}
 		else
 		{
-			xdir = g_strdup_printf ("%s\\" "HexChat", out);
+			xdir = g_build_filename (out, "HexChat", NULL);
 		}
 #else
-		xdir = g_strdup_printf ("%s/" HEXCHAT_DIR, g_get_user_config_dir ());
+		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
 #endif
 	}
 
@@ -361,7 +361,7 @@ default_file (void)
 
 	if (!dfile)
 	{
-		dfile = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "hexchat.conf", get_xdir ());
+		dfile = g_build_filename (get_xdir (), "hexchat.conf", NULL);
 	}
 	return dfile;
 }
@@ -1179,7 +1179,7 @@ hexchat_open_file (char *file, int flags, int mode, int xof_flags)
 			return g_open (file, flags | OFLAGS, 0);
 	}
 
-	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), file);
+	buf = g_build_filename (get_xdir (), file, NULL);
 
 	if (xof_flags & XOF_DOMODE)
 	{
@@ -1204,7 +1204,7 @@ hexchat_fopen_file (const char *file, const char *mode, int xof_flags)
 	if (xof_flags & XOF_FULLPATH)
 		return fopen (file, mode);
 
-	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s", get_xdir (), file);
+	buf = g_build_filename (get_xdir (), file, NULL);
 	fh = g_fopen (buf, mode);
 	g_free (buf);
 

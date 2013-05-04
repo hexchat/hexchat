@@ -133,7 +133,7 @@ plugingui_load (void)
 {
 	char *sub_dir;
 
-	sub_dir = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "addons", get_xdir());
+	sub_dir = g_build_filename (get_xdir(), "addons", NULL);
 
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
 #ifdef WIN32

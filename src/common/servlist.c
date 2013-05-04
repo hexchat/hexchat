@@ -1214,7 +1214,7 @@ servlist_save (void)
 #ifndef WIN32
 	int first = FALSE;
 
-	buf = g_strdup_printf ("%s/servlist.conf", get_xdir ());
+	buf = g_build_filename (get_xdir (), "servlist.conf", NULL);
 	if (g_access (buf, F_OK) != 0)
 		first = TRUE;
 #endif
