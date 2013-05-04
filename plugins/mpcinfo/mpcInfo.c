@@ -135,7 +135,7 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name, char 
 
 	themeInit();
 	loadThemes();
-	hexchat_printf(ph, "%s %s plugin loaded\n",*plugin_name, VERSION);
+	hexchat_printf(ph, "%s plugin loaded\n", *plugin_name);
 
 	return 1;
 }
