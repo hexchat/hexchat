@@ -2378,7 +2378,12 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 
 	*plugin_name = "Python";
 	*plugin_version = VERSION;
-	*plugin_desc = "Python scripting interface";
+
+	/* FIXME You can't free this since it's used as long as the plugin's
+	 * loaded, but if you unload it, everything belonging to the plugin is
+	 * supposed to be freed anyway.
+	 */
+	*plugin_desc = g_strdup_printf ("Python %d scripting interface", PY_MAJOR_VERSION);
 
 	/* Initialize python. */
 #ifdef IS_PY3K
