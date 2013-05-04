@@ -67,7 +67,7 @@
 #endif
 
 #include "hexchat-plugin.h"
-#undef _POSIX_C_SOURCE	/* Avoid warning: also in /usr/include/features.hfrom glib.h */
+#undef _POSIX_C_SOURCE	/* Avoid warning: also in /usr/include/features.h from glib.h */
 #include <Python.h>
 #include <structmember.h>
 #include <pythread.h>
