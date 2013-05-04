@@ -58,6 +58,7 @@
 
 #ifdef WIN32
 #include <direct.h>
+#include <glib/gstdio.h>
 #include "../../src/dirent/dirent-win32.h"
 #include "../../config-win32.h"
 #else
@@ -71,14 +72,36 @@
 #include "structmember.h"
 #include "pythread.h"
 
-#define VERSION_MAJOR 0
-#define VERSION_MINOR 9
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 0
 
+#if PY_MAJOR_VERSION == 2
 #ifdef WIN32
-#undef WITH_THREAD /* Thread support locks up xchat on Win32. */
-#define VERSION "0.9/2.7"	/* Linked to python27.dll */
+#undef WITH_THREAD
+#define VERSION "1.0/2.7"	/* Linked to python27.dll */
+#endif
+
+#undef PyLong_Check
+#define PyLong_Check PyInt_Check
+#define PyLong_AsLong PyInt_AsLong
+#define PyLong_FromLong PyInt_FromLong
+
+#undef PyUnicode_Check
+#undef PyUnicode_FromString
+#define PyUnicode_Check PyString_Check
+#define PyUnicode_AsFormat PyString_AsFormat
+#define PyUnicode_FromString PyString_FromString
+#define PyUnicode_AsUTF8 PyString_AsString
+
 #else
-#define VERSION "0.9"
+#define IS_PY3K
+#ifdef WIN32
+#define VERSION "1.0/3.3"	/* Linked to python33.dll */
+#endif
+#endif
+
+#ifndef VERSION
+#define VERSION "1.0"
 #endif
 
 #define NONE 0
@@ -252,8 +275,7 @@ static PyObject *Context_compare(ContextObject *a, ContextObject *b, int op);
 static PyObject *Context_FromContext(hexchat_context *context);
 static PyObject *Context_FromServerAndChannel(char *server, char *channel);
 
-static PyObject *Plugin_New(char *filename, PyMethodDef *xchat_methods,
-			    PyObject *xcoobj);
+static PyObject *Plugin_New(char *filename, PyObject *xcoobj);
 static PyObject *Plugin_GetCurrent();
 static PluginObject *Plugin_ByString(char *str);
 static Hook *Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
@@ -299,10 +321,10 @@ static int Command_Py(char *word[], char *word_eol[], void *userdata);
 /* ===================================================================== */
 /* Static declarations and definitions */
 
-staticforward PyTypeObject Plugin_Type;
-staticforward PyTypeObject XChatOut_Type;
-staticforward PyTypeObject Context_Type;
-staticforward PyTypeObject ListItem_Type;
+static PyTypeObject Plugin_Type;
+static PyTypeObject XChatOut_Type;
+static PyTypeObject Context_Type;
+static PyTypeObject ListItem_Type;
 
 static PyThreadState *main_tstate = NULL;
 static void *thread_timer = NULL;
@@ -355,7 +377,7 @@ Util_BuildList(char *word[])
 		return NULL;
 	}
 	for (i = 0; i != listsize; i++) {
-		PyObject *o = PyString_FromString(word[i]);
+		PyObject *o = PyUnicode_FromString(word[i]);
 		if (o == NULL) {
 			Py_DECREF(list);
 			PyErr_Print();
@@ -400,25 +422,10 @@ Util_Autoload()
 
 	xdir = hexchat_get_info(ph, "configdir");
 
-	/* don't pollute the filesystem with script files, this only causes misuse of the folders
-	 * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
-#if 0
-	/* auto-load from ~/.config/hexchat/ or %APPDATA%\HexChat\ */
-	Util_Autoload_from(hexchat_get_info(ph, "configdir"));
-#endif
-
 	/* auto-load from subdirectory addons */
-	sub_dir = malloc (strlen (xdir) + 8);
-	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/addons");
+	sub_dir = g_build_filename (xdir, "addons", NULL);
 	Util_Autoload_from(sub_dir);
-	free (sub_dir);
-
-#if 0
-#ifdef WIN32	/* also auto-load C:\Program Files\HexChat\Plugins\*.py */
-	Util_Autoload_from(HEXCHATLIBDIR"/plugins");
-#endif
-#endif
+	g_free (sub_dir);
 }
 
 static char *
@@ -511,7 +518,7 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 		ret = HEXCHAT_EAT_NONE;
 		Py_DECREF(retobj);
 	} else if (retobj) {
-		ret = PyInt_AsLong(retobj);
+		ret = PyLong_AsLong(retobj);
 		Py_DECREF(retobj);
 	} else {
 		PyErr_Print();
@@ -597,7 +604,7 @@ Callback_Print(char *word[], void *userdata)
 		ret = HEXCHAT_EAT_NONE;
 		Py_DECREF(retobj);
 	} else if (retobj) {
-		ret = PyInt_AsLong(retobj);
+		ret = PyLong_AsLong(retobj);
 		Py_DECREF(retobj);
 	} else {
 		PyErr_Print();
@@ -643,7 +650,9 @@ static int
 Callback_ThreadTimer(void *userdata)
 {
 	RELEASE_XCHAT_LOCK();
+#ifndef WIN32
 	usleep(1);
+#endif
 	ACQUIRE_XCHAT_LOCK();
 	return 1;
 }
@@ -672,7 +681,7 @@ XChatOut_New()
 static void
 XChatOut_dealloc(PyObject *self)
 {
-	self->ob_type->tp_free((PyObject *)self);
+	Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
 /* This is a little bit complex because we have to buffer data
@@ -765,9 +774,8 @@ static PyMethodDef XChatOut_methods[] = {
 	{NULL, NULL}
 };
 
-statichere PyTypeObject XChatOut_Type = {
-	PyObject_HEAD_INIT(NULL)
-	0,			/*ob_size*/
+static PyTypeObject XChatOut_Type = {
+	PyVarObject_HEAD_INIT(NULL, 0)
 	"hexchat.XChatOut",	/*tp_name*/
 	sizeof(XChatOutObject),	/*tp_basicsize*/
 	0,			/*tp_itemsize*/
@@ -805,7 +813,7 @@ statichere PyTypeObject XChatOut_Type = {
         0,                      /*tp_init*/
         PyType_GenericAlloc,    /*tp_alloc*/
         PyType_GenericNew,      /*tp_new*/
-      	_PyObject_Del,          /*tp_free*/
+      	PyObject_Del,          /*tp_free*/
         0,                      /*tp_is_gc*/
 };
 
@@ -816,7 +824,7 @@ statichere PyTypeObject XChatOut_Type = {
 static void
 Context_dealloc(PyObject *self)
 {
-	self->ob_type->tp_free((PyObject *)self);
+	Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
 static PyObject *
@@ -874,7 +882,7 @@ Context_emit_print(ContextObject *self, PyObject *args)
 					 argv[3], argv[4], argv[5],
 					 argv[6], argv[7], argv[8]);
 	END_XCHAT_CALLS();
-	return PyInt_FromLong(res);
+	return PyLong_FromLong(res);
 }
 
 static PyObject *
@@ -892,7 +900,7 @@ Context_get_info(ContextObject *self, PyObject *args)
 		Py_INCREF(Py_None);
 		return Py_None;
 	}
-	return PyString_FromString(info);
+	return PyUnicode_FromString(info);
 }
 
 static PyObject *
@@ -922,10 +930,10 @@ Context_compare(ContextObject *a, ContextObject *b, int op)
 	else
 	{
 		PyErr_SetString(PyExc_TypeError, "contexts are either equal or not equal");
+		Py_INCREF(Py_None);
 		ret = Py_None;
 	}
 
-	Py_INCREF(ret);
 	return ret;
 }
 
@@ -939,9 +947,8 @@ static PyMethodDef Context_methods[] = {
 	{NULL, NULL}
 };
 
-statichere PyTypeObject Context_Type = {
-	PyObject_HEAD_INIT(NULL)
-	0,			/*ob_size*/
+static PyTypeObject Context_Type = {
+	PyVarObject_HEAD_INIT(NULL, 0)
 	"hexchat.Context",	/*tp_name*/
 	sizeof(ContextObject),	/*tp_basicsize*/
 	0,			/*tp_itemsize*/
@@ -979,7 +986,7 @@ statichere PyTypeObject Context_Type = {
         0,                      /*tp_init*/
         PyType_GenericAlloc,    /*tp_alloc*/
         PyType_GenericNew,      /*tp_new*/
-      	_PyObject_Del,          /*tp_free*/
+      	PyObject_Del,          /*tp_free*/
         0,                      /*tp_is_gc*/
 };
 
@@ -1025,19 +1032,18 @@ static void
 ListItem_dealloc(PyObject *self)
 {
 	Py_DECREF(((ListItemObject*)self)->dict);
-	self->ob_type->tp_free((PyObject *)self);
+	Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
 static PyObject *
 ListItem_repr(PyObject *self)
 {
-	return PyString_FromFormat("<%s list item at %p>",
+	return PyUnicode_FromFormat("<%s list item at %p>",
 			    	   ((ListItemObject*)self)->listname, self);
 }
 
-statichere PyTypeObject ListItem_Type = {
-	PyObject_HEAD_INIT(NULL)
-	0,			/*ob_size*/
+static PyTypeObject ListItem_Type = {
+	PyVarObject_HEAD_INIT(NULL, 0)
 	"hexchat.ListItem",	/*tp_name*/
 	sizeof(ListItemObject),	/*tp_basicsize*/
 	0,			/*tp_itemsize*/
@@ -1075,7 +1081,7 @@ statichere PyTypeObject ListItem_Type = {
         0,                      /*tp_init*/
         PyType_GenericAlloc,    /*tp_alloc*/
         PyType_GenericNew,      /*tp_new*/
-      	_PyObject_Del,          /*tp_free*/
+      	PyObject_Del,          /*tp_free*/
         0,                      /*tp_is_gc*/
 };
 
@@ -1110,12 +1116,12 @@ ListItem_New(const char *listname)
 		} \
 		plugin->x = g_strdup(""); \
 	} else {\
-		if (!PyString_Check(o)) { \
+		if (!PyUnicode_Check(o)) { \
 			hexchat_print(ph, "Variable __module_" #x "__ " \
 					"must be a string"); \
 			goto error; \
 		} \
-		plugin->x = g_strdup(PyString_AsString(o)); \
+		plugin->x = g_strdup(PyUnicode_AsUTF8(o)); \
 		if (plugin->x == NULL) { \
 			hexchat_print(ph, "Not enough memory to allocate " #x); \
 			goto error; \
@@ -1123,11 +1129,15 @@ ListItem_New(const char *listname)
 	}
 
 static PyObject *
-Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
+Plugin_New(char *filename, PyObject *xcoobj)
 {
 	PluginObject *plugin = NULL;
-	PyObject *m, *hm, *xm, *o;
-	char *argv[] = {"<xchat>", 0};
+	PyObject *m, *o;
+#ifdef IS_PY3K
+	wchar_t *argv[] = { L"<hexchat>", 0 };
+#else
+	char *argv[] = { "<hexchat>", 0 };
+#endif
 
 	if (filename) {
 		char *old_filename = filename;
@@ -1153,7 +1163,7 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	Plugin_SetContext(plugin, hexchat_get_context(ph));
 
 	/* Start a new interpreter environment for this plugin. */
-	PyEval_AcquireLock();
+	PyEval_AcquireThread(main_tstate);
 	plugin->tstate = Py_NewInterpreter();
 	if (plugin->tstate == NULL) {
 		hexchat_print(ph, "Can't create interpreter state");
@@ -1169,67 +1179,27 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	Py_INCREF(xcoobj);
 	PySys_SetObject("stderr", xcoobj);
 
-	/* Add xchat module to the environment. */
-	xm = Py_InitModule("xchat", xchat_methods);
-	if (xm == NULL) {
-		hexchat_print(ph, "Can't create xchat module");
-		goto error;
-	}
-	hm = Py_InitModule("hexchat", xchat_methods);
-	if (hm == NULL) {
-		hexchat_print(ph, "Can't create hexchat module");
-		goto error;
-	}
-	
-	PyModule_AddIntConstant(xm, "EAT_NONE", HEXCHAT_EAT_NONE);
-	PyModule_AddIntConstant(xm, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
-	PyModule_AddIntConstant(xm, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
-	PyModule_AddIntConstant(xm, "EAT_ALL", HEXCHAT_EAT_ALL);
-	PyModule_AddIntConstant(xm, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
-	PyModule_AddIntConstant(xm, "PRI_HIGH", HEXCHAT_PRI_HIGH);
-	PyModule_AddIntConstant(xm, "PRI_NORM", HEXCHAT_PRI_NORM);
-	PyModule_AddIntConstant(xm, "PRI_LOW", HEXCHAT_PRI_LOW);
-	PyModule_AddIntConstant(xm, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
-	PyModule_AddIntConstant(hm, "EAT_NONE", HEXCHAT_EAT_NONE);
-	PyModule_AddIntConstant(hm, "EAT_HEXCHAT", HEXCHAT_EAT_HEXCHAT);
-	PyModule_AddIntConstant(hm, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
-	PyModule_AddIntConstant(hm, "EAT_ALL", HEXCHAT_EAT_ALL);
-	PyModule_AddIntConstant(hm, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
-	PyModule_AddIntConstant(hm, "PRI_HIGH", HEXCHAT_PRI_HIGH);
-	PyModule_AddIntConstant(hm, "PRI_NORM", HEXCHAT_PRI_NORM);
-	PyModule_AddIntConstant(hm, "PRI_LOW", HEXCHAT_PRI_LOW);
-	PyModule_AddIntConstant(hm, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
-
-
-
-	o = Py_BuildValue("(ii)", VERSION_MAJOR, VERSION_MINOR);
-	if (o == NULL) {
-		hexchat_print(ph, "Can't create version tuple");
-		goto error;
-	}
-	PyObject_SetAttrString(xm, "__version__", o);
-	PyObject_SetAttrString(hm, "__version__", o);
-
 	if (filename) {
 #ifdef WIN32
-		PyObject* PyFileObject = PyFile_FromString(filename, "r");
-		if (PyFileObject == NULL) {
+		char *file;
+		if (!g_file_get_contents_utf8(filename, &file, NULL, NULL)) {
 			hexchat_printf(ph, "Can't open file %s: %s\n",
 				     filename, strerror(errno));
 			goto error;
 		}
 
-		if (PyRun_SimpleFile(PyFile_AsFile(PyFileObject), filename) != 0) {
+		if (PyRun_SimpleString(file) != 0) {
 			hexchat_printf(ph, "Error loading module %s\n",
 				     filename);
+			g_free (file);
 			goto error;
 		}
 
 		plugin->filename = filename;
 		filename = NULL;
+		g_free (file);
 #else
 		FILE *fp;
-
 		plugin->filename = filename;
 
 		/* It's now owned by the plugin. */
@@ -1276,7 +1246,11 @@ error:
 
 	if (plugin) {
 		if (plugin->tstate)
-			Py_EndInterpreter(plugin->tstate);
+		{
+			/* FIXME: Handle this? */
+			if (plugin->tstate == PyInterpreterState_ThreadHead(plugin->tstate->interp))
+				Py_EndInterpreter(plugin->tstate);
+		}
 		Py_DECREF(plugin);
 	}
 	PyEval_ReleaseLock();
@@ -1417,12 +1391,11 @@ Plugin_dealloc(PluginObject *self)
 	g_free(self->name);
 	g_free(self->version);
 	g_free(self->description);
-	self->ob_type->tp_free((PyObject *)self);
+	Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
-statichere PyTypeObject Plugin_Type = {
-	PyObject_HEAD_INIT(NULL)
-	0,			/*ob_size*/
+static PyTypeObject Plugin_Type = {
+	PyVarObject_HEAD_INIT(NULL, 0)
 	"hexchat.Plugin",		/*tp_name*/
 	sizeof(PluginObject),	/*tp_basicsize*/
 	0,			/*tp_itemsize*/
@@ -1460,7 +1433,7 @@ statichere PyTypeObject Plugin_Type = {
         0,                      /*tp_init*/
         PyType_GenericAlloc,    /*tp_alloc*/
         PyType_GenericNew,      /*tp_new*/
-      	_PyObject_Del,          /*tp_free*/
+      	PyObject_Del,          /*tp_free*/
         0,                      /*tp_is_gc*/
 };
 
@@ -1511,7 +1484,7 @@ Module_hexchat_emit_print(PyObject *self, PyObject *args)
 					 argv[3], argv[4], argv[5],
 					 argv[6], argv[7], argv[8]);
 	END_XCHAT_CALLS();
-	return PyInt_FromLong(res);
+	return PyLong_FromLong(res);
 }
 
 static PyObject *
@@ -1528,7 +1501,7 @@ Module_hexchat_get_info(PyObject *self, PyObject *args)
 		Py_INCREF(Py_None);
 		return Py_None;
 	}
-	return PyString_FromString(info);
+	return PyUnicode_FromString(info);
 }
 
 static PyObject *
@@ -1550,11 +1523,11 @@ Module_xchat_get_prefs(PyObject *self, PyObject *args)
 			res = Py_None;
 			break;
 		case 1:
-			res = PyString_FromString((char*)info);
+			res = PyUnicode_FromString((char*)info);
 			break;
 		case 2:
 		case 3:
-			res = PyInt_FromLong(integer);
+			res = PyLong_FromLong(integer);
 			break;
 		default:
 			PyErr_Format(PyExc_RuntimeError,
@@ -1608,16 +1581,20 @@ Module_hexchat_pluginpref_set(PyObject *self, PyObject *args)
 	PyObject *value;
 	if (!PyArg_ParseTuple(args, "sO:set_pluginpref", &var, &value))
 		return NULL;
-	if (PyInt_Check(value)) {
-		int intvalue = PyInt_AsLong(value);
-		result = PyInt_FromLong(hexchat_pluginpref_set_int(ph, var, intvalue));
+	if (PyLong_Check(value)) {
+		int intvalue = PyLong_AsLong(value);
+		BEGIN_XCHAT_CALLS(NONE);
+		result = PyLong_FromLong(hexchat_pluginpref_set_int(ph, var, intvalue));
+		END_XCHAT_CALLS();
 	}
-	else if (PyString_Check(value)) {
-		char *charvalue = PyString_AsString(value);
-		result = PyInt_FromLong(hexchat_pluginpref_set_str(ph, var, charvalue));
+	else if (PyUnicode_Check(value)) {
+		char *charvalue = PyUnicode_AsUTF8(value);
+		BEGIN_XCHAT_CALLS(NONE);
+		result = PyLong_FromLong(hexchat_pluginpref_set_str(ph, var, charvalue));
+		END_XCHAT_CALLS();
 	}
 	else
-		result = PyInt_FromLong(0);
+		result = PyLong_FromLong(0);
 	return result;
 }
 
@@ -1628,20 +1605,27 @@ Module_hexchat_pluginpref_get(PyObject *self, PyObject *args)
 	char *var;
 	char retstr[512];
 	int retint;
+	int result;
 	if (!PyArg_ParseTuple(args, "s:get_pluginpref", &var))
 		return NULL;
 	// This will always return numbers as integers.
-	if (hexchat_pluginpref_get_str(ph, var, retstr)) {
+	BEGIN_XCHAT_CALLS(NONE);
+	result = hexchat_pluginpref_get_str(ph, var, retstr);
+	END_XCHAT_CALLS();
+	if (result) {
 		if (strlen (retstr) <= 12) {
+			BEGIN_XCHAT_CALLS(NONE);
 			retint = hexchat_pluginpref_get_int(ph, var);
+			END_XCHAT_CALLS();
 			if ((retint == 0) && (strcmp(retstr, "0") != 0))
-				ret = PyString_FromString(retstr);
+				ret = PyUnicode_FromString(retstr);
 			else
-				ret = PyInt_FromLong(retint);
+				ret = PyLong_FromLong(retint);
 		} else
-			ret = PyString_FromString(retstr);
+			ret = PyUnicode_FromString(retstr);
 	}
 	else
+		Py_INCREF(Py_None);
 		ret = Py_None;
 	return ret;
 }
@@ -1653,8 +1637,10 @@ Module_hexchat_pluginpref_delete(PyObject *self, PyObject *args)
 	int result;
 	if (!PyArg_ParseTuple(args, "s:del_pluginpref", &var))
 		return NULL;
+	BEGIN_XCHAT_CALLS(NONE);
 	result = hexchat_pluginpref_delete(ph, var);
-	return PyInt_FromLong(result);
+	END_XCHAT_CALLS();
+	return PyLong_FromLong(result);
 }
 
 static PyObject *
@@ -1662,12 +1648,16 @@ Module_hexchat_pluginpref_list(PyObject *self, PyObject *args)
 {
 	char list[512];
 	char* token;
+	int result;
 	PyObject *pylist;
 	pylist = PyList_New(0);
-	if (hexchat_pluginpref_list(ph, list)) {
+	BEGIN_XCHAT_CALLS(NONE);
+	result = hexchat_pluginpref_list(ph, list);
+	END_XCHAT_CALLS();
+	if (result) {
 		token = strtok(list, ",");
 		while (token != NULL) {
-			PyList_Append(pylist, PyString_FromString(token));
+			PyList_Append(pylist, PyUnicode_FromString(token));
 			token = strtok (NULL, ",");
 		}
 	}
@@ -1709,7 +1699,7 @@ Module_hexchat_hook_command(PyObject *self, PyObject *args, PyObject *kwargs)
 					       Callback_Command, help, hook);
 	END_XCHAT_CALLS();
 
-	return PyInt_FromLong((long)hook);
+	return PyLong_FromLong((long)hook);
 }
 
 static PyObject *
@@ -1745,7 +1735,7 @@ Module_hexchat_hook_server(PyObject *self, PyObject *args, PyObject *kwargs)
 					      Callback_Command, hook);
 	END_XCHAT_CALLS();
 
-	return PyInt_FromLong((long)hook);
+	return PyLong_FromLong((long)hook);
 }
 
 static PyObject *
@@ -1781,9 +1771,8 @@ Module_hexchat_hook_print(PyObject *self, PyObject *args, PyObject *kwargs)
 					     Callback_Print, hook);
 	END_XCHAT_CALLS();
 
-	return PyInt_FromLong((long)hook);
+	return PyLong_FromLong((long)hook);
 }
-
 
 static PyObject *
 Module_hexchat_hook_timer(PyObject *self, PyObject *args, PyObject *kwargs)
@@ -1817,7 +1806,7 @@ Module_hexchat_hook_timer(PyObject *self, PyObject *args, PyObject *kwargs)
 					     Callback_Timer, hook);
 	END_XCHAT_CALLS();
 
-	return PyInt_FromLong((long)hook);
+	return PyLong_FromLong((long)hook);
 }
 
 static PyObject *
@@ -1845,7 +1834,7 @@ Module_hexchat_hook_unload(PyObject *self, PyObject *args, PyObject *kwargs)
 	if (hook == NULL)
 		return NULL;
 
-	return PyInt_FromLong((long)hook);
+	return PyLong_FromLong((long)hook);
 }
 
 static PyObject *
@@ -1911,11 +1900,11 @@ Module_xchat_get_list(PyObject *self, PyObject *args)
 			switch(fields[i][0]) {
 			case 's':
 				sattr = hexchat_list_str(ph, list, (char*)fld);
-				attr = PyString_FromString(sattr?sattr:"");
+				attr = PyUnicode_FromString(sattr?sattr:"");
 				break;
 			case 'i':
 				iattr = hexchat_list_int(ph, list, (char*)fld);
-				attr = PyInt_FromLong((long)iattr);
+				attr = PyLong_FromLong((long)iattr);
 				break;
 			case 'p':
 				sattr = hexchat_list_str(ph, list, (char*)fld);
@@ -1959,7 +1948,7 @@ Module_xchat_get_lists(PyObject *self, PyObject *args)
 	if (l == NULL)
 		return NULL;
 	for (i = 0; fields[i]; i++) {
-		o = PyString_FromString(fields[i]);
+		o = PyUnicode_FromString(fields[i]);
 		if (o == NULL || PyList_Append(l, o) == -1) {
 			Py_DECREF(l);
 			Py_XDECREF(o);
@@ -1976,7 +1965,7 @@ Module_hexchat_nickcmp(PyObject *self, PyObject *args)
 	char *s1, *s2;
 	if (!PyArg_ParseTuple(args, "ss:nickcmp", &s1, &s2))
 		return NULL;
-	return PyInt_FromLong((long) hexchat_nickcmp(ph, s1, s2));
+	return PyLong_FromLong((long) hexchat_nickcmp(ph, s1, s2));
 }
 
 static PyObject *
@@ -1988,7 +1977,7 @@ Module_hexchat_strip(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s|ii:strip", &str, &len, &flags))
 		return NULL;
 	str2 = hexchat_strip(ph, str, len, flags);
-	result = PyString_FromString(str2);
+	result = PyUnicode_FromString(str2);
 	hexchat_free(ph, str2);
 	return result;
 }
@@ -2039,6 +2028,106 @@ static PyMethodDef Module_xchat_methods[] = {
 	{NULL, NULL}
 };
 
+#ifdef IS_PY3K
+static struct PyModuleDef moduledef = {
+	PyModuleDef_HEAD_INIT,
+	"hexchat",     /* m_name */
+	"HexChat Scripting Interface",  /* m_doc */
+	-1,                  /* m_size */
+	Module_xchat_methods,    /* m_methods */
+	NULL,                /* m_reload */
+	NULL,                /* m_traverse */
+	NULL,                /* m_clear */
+	NULL,                /* m_free */
+};
+
+static struct PyModuleDef xchat_moduledef = {
+	PyModuleDef_HEAD_INIT,
+	"xchat",     /* m_name */
+	"HexChat Scripting Interface",  /* m_doc */
+	-1,                  /* m_size */
+	Module_xchat_methods,    /* m_methods */
+	NULL,                /* m_reload */
+	NULL,                /* m_traverse */
+	NULL,                /* m_clear */
+	NULL,                /* m_free */
+};
+#endif
+
+static PyObject *
+moduleinit_hexchat(void)
+{
+	PyObject *hm;
+#ifdef IS_PY3K
+		hm = PyModule_Create(&moduledef);
+#else
+    hm = Py_InitModule3("hexchat", Module_xchat_methods, "HexChat Scripting Interface");
+#endif
+
+	PyModule_AddIntConstant(hm, "EAT_NONE", HEXCHAT_EAT_NONE);
+	PyModule_AddIntConstant(hm, "EAT_HEXCHAT", HEXCHAT_EAT_HEXCHAT);
+	PyModule_AddIntConstant(hm, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT); /* for compat */
+	PyModule_AddIntConstant(hm, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
+	PyModule_AddIntConstant(hm, "EAT_ALL", HEXCHAT_EAT_ALL);
+	PyModule_AddIntConstant(hm, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
+	PyModule_AddIntConstant(hm, "PRI_HIGH", HEXCHAT_PRI_HIGH);
+	PyModule_AddIntConstant(hm, "PRI_NORM", HEXCHAT_PRI_NORM);
+	PyModule_AddIntConstant(hm, "PRI_LOW", HEXCHAT_PRI_LOW);
+	PyModule_AddIntConstant(hm, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
+
+	PyObject_SetAttrString(hm, "__version__", Py_BuildValue("(ii)", VERSION_MAJOR, VERSION_MINOR));
+
+	return hm;
+}
+
+static PyObject *
+moduleinit_xchat(void)
+{
+	PyObject *xm;
+#ifdef IS_PY3K
+		xm = PyModule_Create(&xchat_moduledef);
+#else
+    xm = Py_InitModule3("xchat", Module_xchat_methods, "HexChat Scripting Interface");
+#endif
+
+	PyModule_AddIntConstant(xm, "EAT_NONE", HEXCHAT_EAT_NONE);
+	PyModule_AddIntConstant(xm, "EAT_XCHAT", HEXCHAT_EAT_HEXCHAT);
+	PyModule_AddIntConstant(xm, "EAT_PLUGIN", HEXCHAT_EAT_PLUGIN);
+	PyModule_AddIntConstant(xm, "EAT_ALL", HEXCHAT_EAT_ALL);
+	PyModule_AddIntConstant(xm, "PRI_HIGHEST", HEXCHAT_PRI_HIGHEST);
+	PyModule_AddIntConstant(xm, "PRI_HIGH", HEXCHAT_PRI_HIGH);
+	PyModule_AddIntConstant(xm, "PRI_NORM", HEXCHAT_PRI_NORM);
+	PyModule_AddIntConstant(xm, "PRI_LOW", HEXCHAT_PRI_LOW);
+	PyModule_AddIntConstant(xm, "PRI_LOWEST", HEXCHAT_PRI_LOWEST);
+
+	PyObject_SetAttrString(xm, "__version__", Py_BuildValue("(ii)", VERSION_MAJOR, VERSION_MINOR));
+
+	return xm;
+}
+
+#ifdef IS_PY3K
+PyMODINIT_FUNC
+PyInit_hexchat(void)
+{
+    return moduleinit_hexchat();
+}
+PyMODINIT_FUNC
+PyInit_xchat(void)
+{
+    return moduleinit_xchat();
+}
+#else
+PyMODINIT_FUNC
+inithexchat(void)
+{
+		moduleinit_hexchat();
+}
+PyMODINIT_FUNC
+initxchat(void)
+{
+		moduleinit_xchat();
+}
+#endif
 
 /* ===================================================================== */
 /* Python interactive interpreter functions */
@@ -2046,18 +2135,18 @@ static PyMethodDef Module_xchat_methods[] = {
 static void
 IInterp_Exec(char *command)
 {
-        PyObject *m, *d, *o;
+	PyObject *m, *d, *o;
 	char *buffer;
 	int len;
 
 	BEGIN_PLUGIN(interp_plugin);
 
-        m = PyImport_AddModule("__main__");
-        if (m == NULL) {
+	m = PyImport_AddModule("__main__");
+	if (m == NULL) {
 		hexchat_print(ph, "Can't get __main__ module");
 		goto fail;
 	}
-        d = PyModule_GetDict(m);
+	d = PyModule_GetDict(m);
 	len = strlen(command);
 	buffer = (char *) g_malloc(len+2);
 	if (buffer == NULL) {
@@ -2067,20 +2156,17 @@ IInterp_Exec(char *command)
 	memcpy(buffer, command, len);
 	buffer[len] = '\n';
 	buffer[len+1] = 0;
-        o = PyRun_StringFlags(buffer, Py_single_input, d, d, NULL);
+	o = PyRun_StringFlags(buffer, Py_single_input, d, d, NULL);
 	g_free(buffer);
-        if (o == NULL) {
-                PyErr_Print();
+	if (o == NULL) {
+		PyErr_Print();
 		goto fail;
-        }
-        Py_DECREF(o);
-        if (Py_FlushLine())
-                PyErr_Clear();
+	}
+	Py_DECREF(o);
 
 fail:
 	END_PLUGIN(interp_plugin);
-
-        return;
+	return;
 }
 
 static int
@@ -2132,7 +2218,7 @@ Command_PyLoad(char *filename)
 {
 	PyObject *plugin;
 	RELEASE_XCHAT_LOCK();
-	plugin = Plugin_New(filename, Module_xchat_methods, xchatout);
+	plugin = Plugin_New(filename, xchatout);
 	ACQUIRE_XCHAT_LOCK();
 	if (plugin)
 		plugin_list = g_slist_append(plugin_list, plugin);
@@ -2162,7 +2248,6 @@ Command_PyReload(char *name)
 		char *filename = g_strdup(plugin->filename);
 		Command_PyUnload(filename);
 		Command_PyLoad(filename);
-		/* cppcheck-suppress deallocDealloc */
 		g_free(filename);
 	}
 }
@@ -2225,22 +2310,22 @@ Command_Load(char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-Command_Unload(char *word[], char *word_eol[], void *userdata)
+Command_Reload(char *word[], char *word_eol[], void *userdata)
 {
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {
-		Command_PyUnload(word[2]);
-		return HEXCHAT_EAT_HEXCHAT;
+	Command_PyReload(word[2]);
+	return HEXCHAT_EAT_HEXCHAT;
 	}
 	return HEXCHAT_EAT_NONE;
 }
 
 static int
-Command_Reload(char *word[], char *word_eol[], void *userdata)
+Command_Unload(char *word[], char *word_eol[], void *userdata)
 {
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {
-		Command_PyReload(word[2]);
+		Command_PyUnload(word[2]);
 		return HEXCHAT_EAT_HEXCHAT;
 	}
 	return HEXCHAT_EAT_NONE;
@@ -2272,7 +2357,11 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 		  char **plugin_version,
 		  char *arg)
 {
-	char *argv[] = {"<xchat>", 0};
+#ifdef IS_PY3K
+	wchar_t *argv[] = { L"<hexchat>", 0 };
+#else
+	char *argv[] = { "<hexchat>", 0 };
+#endif
 
 	ph = plugin_handle;
 
@@ -2291,13 +2380,17 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	*plugin_desc = "Python scripting interface";
 
 	/* Initialize python. */
-	Py_SetProgramName("xchat");
+#ifdef IS_PY3K
+	Py_SetProgramName(L"hexchat");
+	PyImport_AppendInittab("hexchat", PyInit_hexchat);
+	PyImport_AppendInittab("xchat", PyInit_xchat);
+#else
+	Py_SetProgramName("hexchat");
+	PyImport_AppendInittab("hexchat", inithexchat);
+	PyImport_AppendInittab("xchat", initxchat);
+#endif
 	Py_Initialize();
 	PySys_SetArgv(1, argv);
-
-	Plugin_Type.ob_type = &PyType_Type;
-	Context_Type.ob_type = &PyType_Type;
-	XChatOut_Type.ob_type = &PyType_Type;
 
 	xchatout = XChatOut_New();
 	if (xchatout == NULL) {
@@ -2309,7 +2402,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	PyEval_InitThreads();
 	xchat_lock = PyThread_allocate_lock();
 	if (xchat_lock == NULL) {
-		hexchat_print(ph, "Can't allocate xchat lock");
+		hexchat_print(ph, "Can't allocate hexchat lock");
 		Py_DECREF(xchatout);
 		xchatout = NULL;
 		return 0;
@@ -2318,7 +2411,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 
 	main_tstate = PyEval_SaveThread();
 
-	interp_plugin = Plugin_New(NULL, Module_xchat_methods, xchatout);
+	interp_plugin = Plugin_New(NULL, xchatout);
 	if (interp_plugin == NULL) {
 		hexchat_print(ph, "Plugin_New() failed.\n");
 #ifdef WITH_THREAD
@@ -2381,6 +2474,7 @@ hexchat_plugin_deinit()
 
 	/* Switch back to the main thread state. */
 	if (main_tstate) {
+		PyEval_RestoreThread(main_tstate);
 		PyThreadState_Swap(main_tstate);
 		main_tstate = NULL;
 	}

@@ -47,7 +47,9 @@ Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags:
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\perl"; Description: "Perl (requires Perl 5.18)"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\python"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\python"; Description: "Python Interface"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\python\python2"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning exclusive
+Name: "langs\python\python3"; Description: "Python (requires Python 3.3)"; Types: custom; Flags: disablenouninstallwarning exclusive
 
 [Tasks]
 Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
@@ -71,9 +73,9 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
 Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=30679"; Description: "Download Visual C++ 2012 Update 1 Redistributable"; Flags: shellexec runasoriginaluser postinstall skipifsilent
 Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
-Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.18"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
-Filename: "http://hexchat.org/downloads.html"; Description: "Download Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python and not langs\perl
-Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl 5.18 and Python 2.7"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and langs\python
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Python"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python and not langs\perl
+Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl and Python"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and langs\python
 
 [Files]
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
@@ -145,7 +147,8 @@ Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; 
 Source: "share\system.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
 
-Source: "plugins\hcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
+Source: "plugins\hcpython2.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python\python2
+Source: "plugins\hcpython3.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python\python3
 Source: "plugins\hcperl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\perl
 
 Source: "hexchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
