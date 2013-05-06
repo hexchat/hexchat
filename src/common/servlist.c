@@ -323,16 +323,8 @@ static const struct defaultserver def[] =
 	{0,			"tonsberg.no.eu.irclink.net"},
 
 	{"IRCNet",		0},
-	{0,				"irc.stealth.net/6668"},
-	{0,				"ircnet.demon.co.uk"},
-/*	{0,				"ircnet.hinet.hr"},*/
-	{0,				"irc.datacomm.ch"},
-/*	{0,				"ircnet.kaptech.fr"},
-	{0,				"ircnet.easynet.co.uk"},*/
-	{0,				"random.ircd.de"},
-	{0,				"ircnet.netvision.net.il"},
-/*	{0,				"irc.seed.net.tw"},*/
-	{0,				"irc.cs.hut.fi"},
+	{0,				"open.ircnet.net"},
+	{0,				"irc.de.ircnet.net"},
 
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
