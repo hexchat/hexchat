@@ -144,7 +144,7 @@ notify_gui_update (void)
 	GSList *list = notify_list;
 	GSList *slist;
 	gchar *name, *status, *server, *seen;
-	int online, servcount;
+	int online, servcount, lastseenminutes;
 	time_t lastseen;
 	char agobuf[128];
 
@@ -187,7 +187,13 @@ notify_gui_update (void)
 				seen = _("Never");
 			else
 			{
-				snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
+				lastseenminutes = (int)(time (0) - lastseen) / 60;
+				if (lastseenminutes < 60) 
+					snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), lastseenminutes);
+				else if (lastseenminutes < 120)
+					snprintf (agobuf, sizeof (agobuf), _("An hour ago"));
+				else
+					snprintf (agobuf, sizeof (agobuf), _("%d hours ago"), lastseenminutes / 60);
 				seen = agobuf;
 			}
 			if (!valid)	/* create new tree row if required */
