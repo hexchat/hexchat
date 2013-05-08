@@ -211,8 +211,6 @@ fi
 
 if test "$gtkfe" != yes; then
 	gnome=no
-	COMMON_LIBS="$GLIB_LIBS"
-	COMMON_CFLAGS="$GLIB_CFLAGS"
 fi
 
 dnl *********************************************************************
