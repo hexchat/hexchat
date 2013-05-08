@@ -200,7 +200,7 @@ static const setting inputbox_settings[] =
 {
 	{ST_HEADER, N_("Input Box"),0,0,0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
-	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,0},
+	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,1},
 	{ST_TOGGLE, N_("Show user mode icon in nick box"), P_OFFINTNL(hex_gui_input_icon),0,0,0},
 #ifdef HAVE_ISO_CODES /* Defined with static spelling */
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,1},
