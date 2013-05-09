@@ -304,7 +304,7 @@ away_check (void)
 	GSList *list;
 	int full, sent, loop = 0;
 
-	if (!prefs.hex_away_track || prefs.hex_away_size_max < 1)
+	if (!prefs.hex_away_track)
 		return 1;
 
 doover:
@@ -319,7 +319,7 @@ doover:
 		if (sess->server->connected &&
 			 sess->type == SESS_CHANNEL &&
 			 sess->channel[0] &&
-			 sess->total <= prefs.hex_away_size_max)
+			 (sess->total <= prefs.hex_away_size_max || !prefs.hex_away_size_max))
 		{
 			if (!sess->done_away_check)
 			{
