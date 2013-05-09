@@ -237,11 +237,11 @@ GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DIS
 #fi
 
 # GConf
-if test "$gnome" != no ; then
-	AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-else
-	GCONFTOOL=no
-fi
+#if test "$gnome" != no ; then
+#	AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+#else
+#	GCONFTOOL=no
+#fi
 
 dnl *********************************************************************
 dnl ** XFT **************************************************************
@@ -684,7 +684,7 @@ AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
-AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
+#AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
 
 dnl *********************************************************************
 dnl ** SOCKS5 ***********************************************************

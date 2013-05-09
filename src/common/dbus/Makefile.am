@@ -40,17 +40,17 @@ service_DATA = $(service_in_files:.service.in=.service)
 $(service_DATA): $(service_in_files) Makefile
 	@sed -e "s|\@bindir\@|$(bindir)|" $< > $@
 
-if DO_GCONF
-GCONF_SCHEMA_CONFIG_SOURCE = `$(GCONFTOOL) --get-default-source`
-GCONF_SCHEMA_FILE_DIR = $(sysconfdir)/gconf/schemas
-schemadir = $(GCONF_SCHEMA_FILE_DIR)
-schema_DATA = apps_hexchat_url_handler.schemas
+#if DO_GCONF
+#GCONF_SCHEMA_CONFIG_SOURCE = `$(GCONFTOOL) --get-default-source`
+#GCONF_SCHEMA_FILE_DIR = $(sysconfdir)/gconf/schemas
+#schemadir = $(GCONF_SCHEMA_FILE_DIR)
+#schema_DATA = apps_hexchat_url_handler.schemas
+#install-data-local:
+#	if test -z "$(DESTDIR)" ; then \
+#		for p in $(schema_DATA) ; do \
+#			GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$$p; \
+#		done \
+#	fi
+#else
 install-data-local:
-	if test -z "$(DESTDIR)" ; then \
-		for p in $(schema_DATA) ; do \
-			GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$$p; \
-		done \
-	fi
-else
-install-data-local:
-endif
+#endif
