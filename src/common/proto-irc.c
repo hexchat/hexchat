@@ -938,16 +938,21 @@ process_numeric (session * sess, int n,
 		}
 
 	def:
-		if (is_channel (serv, word[4]))
 		{
-			session *realsess = find_channel (serv, word[4]);
-			if (!realsess)
-				realsess = serv->server_session;
-			EMIT_SIGNAL (XP_TE_SERVTEXT, realsess, text, word[1], word[2], NULL, 0);
-		} else
-		{
-			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
-							 word[2], NULL, 0);
+			session *sess;
+		
+			if (is_channel (serv, word[4]))
+			{
+				sess = find_channel (serv, word[4]);
+				if (!sess)
+					sess = serv->server_session;
+			}
+			else if ((sess=find_dialog (serv,word[4]))) /* user with an open dialog */
+				;
+			else
+				sess=serv->server_session;
+			
+			EMIT_SIGNAL (XP_TE_SERVTEXT, sess, text, word[1], word[2], NULL, 0);
 		}
 	}
 }
