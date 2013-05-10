@@ -1450,13 +1450,14 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	GtkWidget *editwindow;
 	GtkWidget *vbox5;
 	GtkWidget *table3;
-	GtkWidget *label16;
 	GtkWidget *label34;
 	GtkWidget *label_logintype;
 	GtkWidget *comboboxentry_charset;
 	GtkWidget *comboboxentry_logintypes;
 	GtkWidget *hbox1;
 	GtkWidget *scrolledwindow2;
+	GtkWidget *scrolledwindow4;
+	GtkWidget *scrolledwindow5;
 	GtkWidget *treeview_servers;
 	GtkWidget *vbuttonbox1;
 	GtkWidget *buttonadd;
@@ -1466,11 +1467,11 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	GtkWidget *hbuttonbox4;
 	GtkWidget *button10;
 	GtkWidget *check;
+	GtkWidget *notebook;
 	GtkTreeModel *model;
 	GtkListStore *store;
 	GtkCellRenderer *renderer;
 	char buf[128];
-	char buf2[128 + 8];
 
 	editwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (editwindow), 4);
@@ -1492,16 +1493,6 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_box_pack_start (GTK_BOX (vbox5), table3, TRUE, TRUE, 0);
 	gtk_table_set_row_spacings (GTK_TABLE (table3), 2);
 	gtk_table_set_col_spacings (GTK_TABLE (table3), 8);
-
-	snprintf (buf, sizeof (buf), _("Servers for %s"), net->name);
-	snprintf (buf2, sizeof (buf2), "<b>%s</b>", buf);
-	label16 = gtk_label_new (buf2);
-	gtk_widget_show (label16);
-	gtk_table_attach (GTK_TABLE (table3), label16, 0, 3, 0, 1,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 3);
-	gtk_label_set_use_markup (GTK_LABEL (label16), TRUE);
-	gtk_misc_set_alignment (GTK_MISC (label16), 0, 0.5);
 
 	check = servlist_create_check (0, !(net->flags & FLAG_CYCLE), table3,
 								  2, 1, _("Connect to selected server only"));
@@ -1603,10 +1594,33 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolledwindow2);
+	scrolledwindow4 = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (scrolledwindow4);
+	scrolledwindow5 = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (scrolledwindow5);
+
+#if 0 /* FIXME! */
+	notebook = gtk_notebook_new ();
+	gtk_widget_show (notebook);
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow2, gtk_label_new ("Servers"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow4, gtk_label_new ("Favorite channels"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow5, gtk_label_new ("Connect commands"));
+	gtk_box_pack_start (GTK_BOX (hbox1), notebook, TRUE, TRUE, 0);
+#else
 	gtk_box_pack_start (GTK_BOX (hbox1), scrolledwindow2, TRUE, TRUE, 0);
+#endif
+
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2),
 											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow2),
+													 GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4),
+											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow4),
+													 GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5),
+											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow5),
 													 GTK_SHADOW_IN);
 
 	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
