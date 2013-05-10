@@ -1164,30 +1164,17 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 	{
 		if (GTK_TOGGLE_BUTTON (but)->active)
 		{
-			gtk_widget_hide (edit_label_nick);
-			gtk_widget_hide (edit_entry_nick);
-
-			gtk_widget_hide (edit_label_nick2);
-			gtk_widget_hide (edit_entry_nick2);
-
-			gtk_widget_hide (edit_label_user);
-			gtk_widget_hide (edit_entry_user);
-
-			gtk_widget_hide (edit_label_real);
-			gtk_widget_hide (edit_entry_real);
-		} else
+			gtk_widget_set_sensitive (edit_entry_nick, FALSE);
+			gtk_widget_set_sensitive (edit_entry_nick2, FALSE);
+			gtk_widget_set_sensitive (edit_entry_user, FALSE);
+			gtk_widget_set_sensitive (edit_entry_real, FALSE);
+		}
+		else
 		{
-			gtk_widget_show (edit_label_nick);
-			gtk_widget_show (edit_entry_nick);
-
-			gtk_widget_show (edit_label_nick2);
-			gtk_widget_show (edit_entry_nick2);
-
-			gtk_widget_show (edit_label_user);
-			gtk_widget_show (edit_entry_user);
-
-			gtk_widget_show (edit_label_real);
-			gtk_widget_show (edit_entry_real);
+			gtk_widget_set_sensitive (edit_entry_nick, TRUE);
+			gtk_widget_set_sensitive (edit_entry_nick2, TRUE);
+			gtk_widget_set_sensitive (edit_entry_user, TRUE);
+			gtk_widget_set_sensitive (edit_entry_real, TRUE);
 		}
 	}
 }
@@ -1228,7 +1215,7 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	gtk_entry_set_text (GTK_ENTRY (entry), def ? def : "");
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
 
-	if (row == 15)	/* for "Channels to Join:" */
+	if (row == 12)	/* for "Favorite channels:" */
 	{
 		GtkWidget *button, *box;
 
@@ -1463,9 +1450,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	GtkWidget *editwindow;
 	GtkWidget *vbox5;
 	GtkWidget *table3;
-	GtkWidget *label17;
 	GtkWidget *label16;
-	GtkWidget *label21;
 	GtkWidget *label34;
 	GtkWidget *label_logintype;
 	GtkWidget *comboboxentry_charset;
@@ -1522,69 +1507,59 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 								  2, 1, _("Connect to selected server only"));
 	add_tip (check, _("Don't cycle through all the servers when the connection fails."));
 
-	label17 = bold_label (_("Your Details"));
-	gtk_table_attach (GTK_TABLE (table3), label17, 0, 3, 3, 4,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 3);
-
-	servlist_create_check (1, net->flags & FLAG_USE_GLOBAL, table3,
-								  4, 1, _("Use global user information"));
-
-	edit_entry_nick =
-		servlist_create_entry (table3, _("_Nick name:"), 5, net->nick,
-									  &edit_label_nick, 0);
-
-	edit_entry_nick2 =
-		servlist_create_entry (table3, _("Second choice:"), 6, net->nick2,
-									  &edit_label_nick2, 0);
-
-	edit_entry_user =
-		servlist_create_entry (table3, _("_User name:"), 7, net->user,
-									  &edit_label_user, 0);
-
-	edit_entry_real =
-		servlist_create_entry (table3, _("Rea_l name:"), 8, net->real,
-									  &edit_label_real, 0);
-
-	label21 = bold_label (_("Connecting"));
-	gtk_table_attach (GTK_TABLE (table3), label21, 0, 3, 9, 10,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 3);
-
 	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3,
-								  11, 1, _("Auto connect to this network at startup"));
+								  3, 1, _("Connect to this network automatically"));
 	servlist_create_check (4, !(net->flags & FLAG_USE_PROXY), table3,
-								  12, 1, _("Bypass proxy server"));
+								  4, 1, _("Bypass proxy server"));
 	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
-								  13, 1, _("Use SSL for all the servers on this network"));
+								  5, 1, _("Use SSL for all the servers on this network"));
 #ifndef USE_OPENSSL
 	gtk_widget_set_sensitive (check, FALSE);
 #endif
 	check = servlist_create_check (5, net->flags & FLAG_ALLOW_INVALID, table3,
-								  14, 1, _("Accept invalid SSL certificate"));
+								  6, 1, _("Accept invalid SSL certificates"));
 #ifndef USE_OPENSSL
 	gtk_widget_set_sensitive (check, FALSE);
 #endif
 
+	servlist_create_check (1, net->flags & FLAG_USE_GLOBAL, table3,
+								  7, 1, _("Use global user information"));
+
+	edit_entry_nick =
+		servlist_create_entry (table3, _("_Nick name:"), 8, net->nick,
+									  &edit_label_nick, 0);
+
+	edit_entry_nick2 =
+		servlist_create_entry (table3, _("Second choice:"), 9, net->nick2,
+									  &edit_label_nick2, 0);
+
+	edit_entry_user =
+		servlist_create_entry (table3, _("_User name:"), 10, net->user,
+									  &edit_label_user, 0);
+
+	edit_entry_real =
+		servlist_create_entry (table3, _("Rea_l name:"), 11, net->real,
+									  &edit_label_real, 0);
+
 	edit_entry_join =
-		servlist_create_entry (table3, _("_Favorite channels:"), 15,
+		servlist_create_entry (table3, _("_Favorite channels:"), 12,
 									  net->autojoin, 0,
 				  _("Channels to join, separated by commas, but not spaces!"));
 
 	edit_entry_cmd =
-		servlist_create_entry (table3, _("Connect command:"), 16,
+		servlist_create_entry (table3, _("Connect command:"), 13,
 									  net->command, 0,
 					_("Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."));
 
 	edit_entry_nickserv =
-		servlist_create_entry (table3, _("NickServ password:"), 17,
+		servlist_create_entry (table3, _("NickServ password:"), 14,
 									  net->nickserv, 0,
 					_("If your nickname requires a password, enter it here. Not all IRC networks support this."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_nickserv), FALSE);
 
 	label_logintype = gtk_label_new (_("Login method:"));
 	gtk_widget_show (label_logintype);
-	gtk_table_attach (GTK_TABLE (table3), label_logintype, 1, 2, 18, 19,
+	gtk_table_attach (GTK_TABLE (table3), label_logintype, 1, 2, 15, 16,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label_logintype), 0, 0.5);
@@ -1594,19 +1569,19 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_logintypes)->child), net->logintype ? login_types[servlist_get_login_desc_index (net->logintype)] : login_types[0]);
 	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_logintypes);
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_logintypes, 2, 3, 18, 19,
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_logintypes, 2, 3, 15, 16,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 
 	edit_entry_pass =
-		servlist_create_entry (table3, _("Password:"), 20,
+		servlist_create_entry (table3, _("Password:"), 17,
 									  net->pass, 0,
 					_("Password used for login. If in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
 
 	label34 = gtk_label_new (_("Character set:"));
 	gtk_widget_show (label34);
-	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 21, 22,
+	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 18, 19,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
@@ -1616,7 +1591,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_charset)->child), net->encoding ? net->encoding : "System default");
 	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_charset);
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 21, 22,
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 18, 19,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 
@@ -1700,17 +1675,10 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	if (net->flags & FLAG_USE_GLOBAL)
 	{
-		gtk_widget_hide (edit_label_nick);
-		gtk_widget_hide (edit_entry_nick);
-
-		gtk_widget_hide (edit_label_nick2);
-		gtk_widget_hide (edit_entry_nick2);
-
-		gtk_widget_hide (edit_label_user);
-		gtk_widget_hide (edit_entry_user);
-
-		gtk_widget_hide (edit_label_real);
-		gtk_widget_hide (edit_entry_real);
+		gtk_widget_set_sensitive (edit_entry_nick, FALSE);
+		gtk_widget_set_sensitive (edit_entry_nick2, FALSE);
+		gtk_widget_set_sensitive (edit_entry_user, FALSE);
+		gtk_widget_set_sensitive (edit_entry_real, FALSE);
 	}
 
 	gtk_widget_grab_focus (button10);
