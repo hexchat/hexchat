@@ -88,8 +88,10 @@
 
 #undef PyUnicode_Check
 #undef PyUnicode_FromString
+#undef PyUnicode_FromFormat
 #define PyUnicode_Check PyString_Check
 #define PyUnicode_AsFormat PyString_AsFormat
+#define PyUnicode_FromFormat PyString_FromFormat
 #define PyUnicode_FromString PyString_FromString
 #define PyUnicode_AsUTF8 PyString_AsString
 
@@ -1502,7 +1504,10 @@ Module_hexchat_get_info(PyObject *self, PyObject *args)
 		Py_INCREF(Py_None);
 		return Py_None;
 	}
-	return PyUnicode_FromString(info);
+	if (strcmp (name, "gtkwin_ptr") == 0)
+		return PyUnicode_FromFormat("%p", info); /* format as pointer */
+	else
+		return PyUnicode_FromString(info);
 }
 
 static PyObject *
