@@ -33,11 +33,10 @@ typedef struct ircnet
 	char *user;
 	char *real;
 	char *pass;
-	char *saslpass;
 	char *autojoin;
 	char *command;
 	char *nickserv;
-	int nstype;
+	int logintype;
 	char *comment;
 	char *encoding;
 	GSList *servlist;

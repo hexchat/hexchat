@@ -528,13 +528,12 @@ typedef struct server
 	char servername[128];			/* what the server says is its name */
 	char password[86];
 	char sasluser[32];				/* this is just a buffer for network->user */
-	char saslpassword[86];			/* we could reuse password but then we couldn't guarantee NickServ doesn't register first */
 	char nick[NICKLEN];
 	char linebuf[2048];				/* RFC says 512 chars including \r\n */
 	char *last_away_reason;
 	int pos;								/* current position in linebuf */
 	int nickcount;
-	int nickservtype;					/* 0=/MSG nickserv 1=/NICKSERV 2=/NS */
+	int loginmethod;					/* see login_types[] */
 
 	char *chantypes;					/* for 005 numeric - free me */
 	char *chanmodes;					/* for 005 numeric - free me */

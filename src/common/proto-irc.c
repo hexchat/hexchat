@@ -49,7 +49,7 @@ irc_login (server *serv, char *user, char *realname)
 {
 	tcp_sendf (serv, "CAP LS\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
 
-	if (serv->password[0])
+	if (serv->password[0] && serv->loginmethod == 7)
 	{
 		tcp_sendf (serv, "PASS %s\r\n", serv->password);
 	}
@@ -64,21 +64,21 @@ static void
 irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 {
 	/* are all ircd authors idiots? */
-	switch (serv->nickservtype)
+	switch (serv->loginmethod)
 	{
-	case 0:
+	case 1:
 		tcp_sendf (serv, "PRIVMSG NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 1:
+	case 2:
 		tcp_sendf (serv, "NICKSERV %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 2:
+	case 3:
 		tcp_sendf (serv, "NS %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 3:
+	case 4:
 		tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 4:
+	case 5:
 		/* why couldn't QuakeNet implement one of the existing ones? */
 		tcp_sendf (serv, "AUTH %s %s\r\n", arg1, arg2);
 	}
@@ -87,7 +87,7 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 static void
 irc_ns_identify (server *serv, char *pass)
 {
-	if (serv->nickservtype == 4)	/* QuakeNet needs to do everything in its own ways... */
+	if (serv->loginmethod == 5)	/* QuakeNet needs to do everything in its own ways... */
 	{
 		irc_nickserv (serv, "", serv->nick, pass, "");
 	}
@@ -100,7 +100,7 @@ irc_ns_identify (server *serv, char *pass)
 static void
 irc_ns_ghost (server *serv, char *usname, char *pass)
 {
-	if (serv->nickservtype != 4)
+	if (serv->loginmethod != 5)
 		irc_nickserv (serv, "GHOST", usname, " ", pass);
 }
 
@@ -1221,7 +1221,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						EMIT_SIGNAL (XP_TE_SASLAUTH, serv->server_session, sess->server->sasluser, NULL, NULL, NULL, 0);
 						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
-						pass = encode_sasl_pass (sess->server->sasluser, sess->server->saslpassword);
+						pass = encode_sasl_pass (sess->server->sasluser, sess->server->password);
 						tcp_sendf (sess->server, "AUTHENTICATE %s\r\n", pass);
 						free (pass);
 					}
@@ -1259,8 +1259,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						strcat (buffer, "extended-join ");
 						want_cap = 1;
 					}
-					/* if the SASL password is set, request SASL auth */
-					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->saslpassword) != 0)
+					/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
+					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->password) != 0 && serv->loginmethod == 6)
 					{
 						strcat (buffer, "sasl ");
 						want_cap = 1;

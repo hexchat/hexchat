@@ -64,7 +64,6 @@ static GtkWidget *edit_entry_user;
 static GtkWidget *edit_entry_real;
 static GtkWidget *edit_entry_join;
 static GtkWidget *edit_entry_pass;
-static GtkWidget *edit_entry_saslpass;
 static GtkWidget *edit_entry_cmd;
 static GtkWidget *edit_entry_nickserv;
 static GtkWidget *edit_label_nick;
@@ -103,23 +102,52 @@ static const char *pages[]=
 	NULL
 };
 
-static const char *nstypes[]=
+/* This is our dictionary for authentication types. Keep these in sync with
+ * login_types[]! This allows us to re-order the login type dropdown in the
+ * network list without breaking config compatibility.
+ */
+static int login_types_conf[] =
 {
-	/* This list is the same as in irc_nickserv(), except starting at 1, because
-	 * the 1st row is not used. We can't use index 0 coz then "if (nstype)" would
-	 * not be evaluated, it would give the same result as NULL (i.e. unset) nstype.
-	 * For unset nstype we have a "Default" entry in place of this placeholder, so
-	 * indices will be correct anyway.
-	 */
-	"PLACEHOLDER",			/* nstype = 0 */
-	"/msg NickServ",		/* nstype = 1, nickservtype = 0 */
-	"/NickServ",			/* nstype = 2, nickservtype = 1 */
-	"/NS",					/* ... */
+	0,	/* default - we don't use this but it makes indexing consistent with login_types[] so it's nice */
+	6,	/* SASL */
+	7,	/* /pass */
+	1,	/* /msg NickServ */
+	2,	/* /NickServ */
+	3,	/* /NS */
+	4,	/* /msg NS */
+	5,	/* /auth */
+};
+
+static const char *login_types[]=
+{
+	"Default",
+	"SASL",
+	"/pass",
+	"/msg NickServ",
+	"/NickServ",
+	"/NS",
 	"/msg NS",
 	"/auth",
 	NULL
-	/* This also means that we need to shift these values for irc_nickserv()! */
 };
+
+/* poor man's IndexOf() - find the dropdown string index that belongs to the given config value */
+static int
+servlist_get_login_desc_index (int conf_value)
+{
+	int i;
+	int length = sizeof (login_types_conf) / sizeof (login_types_conf[0]);		/* the number of elements in the conf array */
+
+	for (i = 0; i < length; i++)
+	{
+		if (login_types_conf[i] == conf_value)
+		{
+			return i;
+		}
+	}
+
+	return 0;	/* make the compiler happy */
+}
 
 static void
 servlist_select_and_show (GtkTreeView *treeview, GtkTreeIter *iter,
@@ -500,7 +528,6 @@ servlist_edit_update (ircnet *net)
 	servlist_update_from_entry (&net->command, edit_entry_cmd);
 	servlist_update_from_entry (&net->nickserv, edit_entry_nickserv);
 	servlist_update_from_entry (&net->pass, edit_entry_pass);
-	servlist_update_from_entry (&net->saslpass, edit_entry_saslpass);
 }
 
 static void
@@ -1328,9 +1355,12 @@ servlist_combo_cb (GtkEntry *entry, gpointer userdata)
 	}
 }
 
+/* Fills up the network's authentication type so that it's guaranteed to be either NULL or a valid value. */
 static void
-servlist_nscombo_cb (GtkEntry *entry, gpointer userdata)
+servlist_logintypecombo_cb (GtkEntry *entry, gpointer userdata)
 {
+	int index;
+
 	if (!selected_net)
 	{
 		return;
@@ -1338,7 +1368,15 @@ servlist_nscombo_cb (GtkEntry *entry, gpointer userdata)
 
 	if (!ignore_changed)
 	{
-		selected_net->nstype = gtk_combo_box_get_active (GTK_COMBO_BOX (entry));
+		index = gtk_combo_box_get_active (GTK_COMBO_BOX (entry));	/* starts at 0, returns -1 for invalid selections */
+
+		if (index != -1)
+		{
+			/* The selection is valid. It can be 0, which is the default type, but we need to allow
+			 * that so that you can revert from other types. servlist_save() will dump 0 anyway.
+			 */
+			selected_net->logintype = login_types_conf[index];
+		}
 	}
 }
 
@@ -1364,23 +1402,22 @@ servlist_create_charsetcombo (void)
 }
 
 static GtkWidget *
-servlist_create_nstypecombo (void)
+servlist_create_logintypecombo (void)
 {
 	GtkWidget *cb;
 	int i;
 
 	cb = gtk_combo_box_entry_new_text ();
-	gtk_combo_box_append_text (GTK_COMBO_BOX (cb), "Default");
 
-	i = 1;		/* start with the 2nd row, leave the placeholder 0th element alone */
+	i = 0;
 
-	while (nstypes[i])
+	while (login_types[i])
 	{
-		gtk_combo_box_append_text (GTK_COMBO_BOX (cb), (char *)nstypes[i]);
+		gtk_combo_box_append_text (GTK_COMBO_BOX (cb), (char *)login_types[i]);
 		i++;
 	}
 
-	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_nscombo_cb), NULL);
+	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_logintypecombo_cb), NULL);
 
 	return cb;
 }
@@ -1430,9 +1467,9 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	GtkWidget *label16;
 	GtkWidget *label21;
 	GtkWidget *label34;
-	GtkWidget *label_nstype;
+	GtkWidget *label_logintype;
 	GtkWidget *comboboxentry_charset;
-	GtkWidget *comboboxentry_nstypes;
+	GtkWidget *comboboxentry_logintypes;
 	GtkWidget *hbox1;
 	GtkWidget *scrolledwindow2;
 	GtkWidget *treeview_servers;
@@ -1545,37 +1582,31 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 					_("If your nickname requires a password, enter it here. Not all IRC networks support this."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_nickserv), FALSE);
 
-	label_nstype = gtk_label_new (_("NickServ type:"));
-	gtk_widget_show (label_nstype);
-	gtk_table_attach (GTK_TABLE (table3), label_nstype, 1, 2, 18, 19,
+	label_logintype = gtk_label_new (_("Login method:"));
+	gtk_widget_show (label_logintype);
+	gtk_table_attach (GTK_TABLE (table3), label_logintype, 1, 2, 18, 19,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label_nstype), 0, 0.5);
+	gtk_misc_set_alignment (GTK_MISC (label_logintype), 0, 0.5);
 
-	comboboxentry_nstypes = servlist_create_nstypecombo ();
+	comboboxentry_logintypes = servlist_create_logintypecombo ();
 	ignore_changed = TRUE;
-	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_nstypes)->child), net->nstype ? nstypes[net->nstype] : "Default");
+	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_logintypes)->child), net->logintype ? login_types[servlist_get_login_desc_index (net->logintype)] : login_types[0]);
 	ignore_changed = FALSE;
-	gtk_widget_show (comboboxentry_nstypes);
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_nstypes, 2, 3, 18, 19,
+	gtk_widget_show (comboboxentry_logintypes);
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_logintypes, 2, 3, 18, 19,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 
 	edit_entry_pass =
-		servlist_create_entry (table3, _("Server password:"), 20,
+		servlist_create_entry (table3, _("Password:"), 20,
 									  net->pass, 0,
-					_("Password for the server, if in doubt, leave blank."));
+					_("Password used for login. If in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
-
-	edit_entry_saslpass =
-		servlist_create_entry (table3, _("SASL password:"), 21,
-									  net->saslpass, 0,
-					_("Password for SASL authentication, if in doubt, leave blank."));
-	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_saslpass), FALSE);
 
 	label34 = gtk_label_new (_("Character set:"));
 	gtk_widget_show (label34);
-	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 22, 23,
+	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 21, 22,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
@@ -1585,7 +1616,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_charset)->child), net->encoding ? net->encoding : "System default");
 	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_charset);
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 22, 23,
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 21, 22,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 
