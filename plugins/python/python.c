@@ -2162,6 +2162,7 @@ IInterp_Exec(char *command)
 	memcpy(buffer, command, len);
 	buffer[len] = '\n';
 	buffer[len+1] = 0;
+	PyRun_SimpleString("import hexchat");
 	o = PyRun_StringFlags(buffer, Py_single_input, d, d, NULL);
 	g_free(buffer);
 	if (o == NULL) {
