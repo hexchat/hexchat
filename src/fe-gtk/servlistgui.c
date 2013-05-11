@@ -36,6 +36,8 @@
 #include "pixmaps.h"
 #include "fkeys.h"
 
+#define SERVLIST_X_PADDING 4			/* horizontal paddig in the network editor */
+#define SERVLIST_Y_PADDING 0			/* vertical padding in the network editor */
 
 /* servlistgui.c globals */
 static GtkWidget *serverlist_win = NULL;
@@ -222,7 +224,6 @@ servlist_channel_save (void)
 static void
 servlist_channels_populate (ircnet *net, GtkWidget *treeview)
 {
-	GtkTreeModel *model;
 	GtkListStore *store;
 	GSList *channels, *keys;
 	GSList *clist, *klist;
@@ -1288,8 +1289,7 @@ servlist_create_check (int num, int state, GtkWidget *table, int row, int col, c
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (but), state);
 	g_signal_connect (G_OBJECT (but), "toggled",
 							G_CALLBACK (servlist_check_cb), GINT_TO_POINTER (num));
-	gtk_table_attach (GTK_TABLE (table), but, col, col+2, row, row+1,
-						   GTK_FILL|GTK_EXPAND, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (table), but, col, col+2, row, row+1, GTK_FILL|GTK_EXPAND, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 	gtk_widget_show (but);
 
 	return but;
@@ -1305,8 +1305,7 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	if (label_ret)
 		*label_ret = label;
 	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 1, 2, row, row+1,
-							GTK_FILL, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1, GTK_FILL, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
 	entry = gtk_entry_new ();
@@ -1329,14 +1328,12 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 		gtk_box_pack_end (GTK_BOX (box), button, 0, 0, 0);
 		gtk_widget_show_all (box);
 
-		gtk_table_attach (GTK_TABLE (table), box, 2, 3, row, row+1,
-								GTK_FILL|GTK_EXPAND, 0, 0, 0);
+		gtk_table_attach (GTK_TABLE (table), box, 1, 2, row, row+1, GTK_FILL|GTK_EXPAND, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 	}
 	else
 	{
 #endif
-		gtk_table_attach (GTK_TABLE (table), entry, 2, 3, row, row+1,
-								GTK_FILL|GTK_EXPAND, 0, 0, 0);
+		gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row+1, GTK_FILL|GTK_EXPAND, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 #if 0
 	}
 #endif
@@ -1592,81 +1589,9 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	vbox5 = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (editwindow), vbox5);
 
-	table3 = gtk_table_new (17, 3, FALSE);
-	gtk_box_pack_start (GTK_BOX (vbox5), table3, TRUE, TRUE, 0);
-	gtk_table_set_row_spacings (GTK_TABLE (table3), 2);
-	gtk_table_set_col_spacings (GTK_TABLE (table3), 8);
-
-	check = servlist_create_check (0, !(net->flags & FLAG_CYCLE), table3,
-								  2, 1, _("Connect to selected server only"));
-	add_tip (check, _("Don't cycle through all the servers when the connection fails."));
-
-	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3,
-								  3, 1, _("Connect to this network automatically"));
-	servlist_create_check (4, !(net->flags & FLAG_USE_PROXY), table3,
-								  4, 1, _("Bypass proxy server"));
-	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
-								  5, 1, _("Use SSL for all the servers on this network"));
-#ifndef USE_OPENSSL
-	gtk_widget_set_sensitive (check, FALSE);
-#endif
-	check = servlist_create_check (5, net->flags & FLAG_ALLOW_INVALID, table3,
-								  6, 1, _("Accept invalid SSL certificates"));
-#ifndef USE_OPENSSL
-	gtk_widget_set_sensitive (check, FALSE);
-#endif
-
-	servlist_create_check (1, net->flags & FLAG_USE_GLOBAL, table3,
-								  7, 1, _("Use global user information"));
-
-	edit_entry_nick =
-		servlist_create_entry (table3, _("_Nick name:"), 8, net->nick,
-									  &edit_label_nick, 0);
-
-	edit_entry_nick2 =
-		servlist_create_entry (table3, _("Second choice:"), 9, net->nick2,
-									  &edit_label_nick2, 0);
-
-	edit_entry_real =
-		servlist_create_entry (table3, _("Rea_l name:"), 10, net->real,
-									  &edit_label_real, 0);
-
-	edit_entry_user =
-		servlist_create_entry (table3, _("_User name:"), 11, net->user,
-									  &edit_label_user, 0);
-
-  label_logintype = gtk_label_new (_("Login method:"));
-	gtk_table_attach (GTK_TABLE (table3), label_logintype, 1, 2, 12, 13,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label_logintype), 0, 0.5);
-
-	combobox_logintypes = servlist_create_logintypecombo ();
-	gtk_table_attach (GTK_TABLE (table3), combobox_logintypes, 2, 3, 12, 13,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (GTK_FILL), 0, 0);
-
-	edit_entry_pass =
-		servlist_create_entry (table3, _("Password:"), 14,
-									  net->pass, 0,
-					_("Password used for login. If in doubt, leave blank."));
-	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
-
-	label34 = gtk_label_new (_("Character set:"));
-	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 15, 16,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
-
-	comboboxentry_charset = servlist_create_charsetcombo ();
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 15, 16,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (GTK_FILL), 0, 0);
-
+	/* tabs and buttons */
 	hbox1 = gtk_hbox_new (FALSE, 0);
-	gtk_table_attach (GTK_TABLE (table3), hbox1, 1, 3, 1, 2,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+	gtk_box_pack_start (GTK_BOX (vbox5), hbox1, TRUE, TRUE, 4);
 
 	scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
 	scrolledwindow4 = gtk_scrolled_window_new (NULL, NULL);
@@ -1676,7 +1601,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow2, gtk_label_new ("Servers"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow4, gtk_label_new ("Favorite channels"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow5, gtk_label_new ("Connect commands"));
-	gtk_box_pack_start (GTK_BOX (hbox1), notebook, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox1), notebook, TRUE, TRUE, SERVLIST_X_PADDING);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2),
 											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -1793,13 +1718,53 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	GTK_WIDGET_SET_FLAGS (buttonedit, GTK_CAN_DEFAULT);
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (vbuttonbox1), GTK_BUTTONBOX_END);
 
+	/* checkboxes and entries */
+	table3 = gtk_table_new (13, 2, FALSE);
+	gtk_box_pack_start (GTK_BOX (vbox5), table3, TRUE, TRUE, 0);
+	gtk_table_set_row_spacings (GTK_TABLE (table3), 2);
+	gtk_table_set_col_spacings (GTK_TABLE (table3), 8);
+
+	check = servlist_create_check (0, !(net->flags & FLAG_CYCLE), table3, 0, 0, _("Connect to selected server only"));
+	add_tip (check, _("Don't cycle through all the servers when the connection fails."));
+	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3, 1, 0, _("Connect to this network automatically"));
+	servlist_create_check (4, !(net->flags & FLAG_USE_PROXY), table3, 2, 0, _("Bypass proxy server"));
+	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3, 3, 0, _("Use SSL for all the servers on this network"));
+#ifndef USE_OPENSSL
+	gtk_widget_set_sensitive (check, FALSE);
+#endif
+	check = servlist_create_check (5, net->flags & FLAG_ALLOW_INVALID, table3, 4, 0, _("Accept invalid SSL certificates"));
+#ifndef USE_OPENSSL
+	gtk_widget_set_sensitive (check, FALSE);
+#endif
+	servlist_create_check (1, net->flags & FLAG_USE_GLOBAL, table3, 5, 0, _("Use global user information"));
+
+	edit_entry_nick = servlist_create_entry (table3, _("_Nick name:"), 6, net->nick, &edit_label_nick, 0);
+	edit_entry_nick2 = servlist_create_entry (table3, _("Second choice:"), 7, net->nick2, &edit_label_nick2, 0);
+	edit_entry_real = servlist_create_entry (table3, _("Rea_l name:"), 8, net->real, &edit_label_real, 0);
+	edit_entry_user = servlist_create_entry (table3, _("_User name:"), 9, net->user, &edit_label_user, 0);
+
+	label_logintype = gtk_label_new (_("Login method:"));
+	gtk_table_attach (GTK_TABLE (table3), label_logintype, 0, 1, 10, 11, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
+	gtk_misc_set_alignment (GTK_MISC (label_logintype), 0, 0.5);
+	combobox_logintypes = servlist_create_logintypecombo ();
+	gtk_table_attach (GTK_TABLE (table3), combobox_logintypes, 1, 2, 10, 11, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
+
+	edit_entry_pass = servlist_create_entry (table3, _("Password:"), 11, net->pass, 0, _("Password used for login. If in doubt, leave blank."));
+	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
+
+	label34 = gtk_label_new (_("Character set:"));
+	gtk_table_attach (GTK_TABLE (table3), label34, 0, 1, 12, 13, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
+	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
+	comboboxentry_charset = servlist_create_charsetcombo ();
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 1, 2, 12, 13, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
+
+	/* rule and close button */
 	hseparator2 = gtk_hseparator_new ();
 	gtk_box_pack_start (GTK_BOX (vbox5), hseparator2, FALSE, FALSE, 8);
 
 	hbuttonbox4 = gtk_hbutton_box_new ();
 	gtk_box_pack_start (GTK_BOX (vbox5), hbuttonbox4, FALSE, FALSE, 0);
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox4),
-										GTK_BUTTONBOX_END);
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox4), GTK_BUTTONBOX_END);
 
 	button10 = gtk_button_new_from_stock ("gtk-close");
 	g_signal_connect (G_OBJECT (button10), "clicked",
