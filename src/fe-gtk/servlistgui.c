@@ -278,6 +278,36 @@ servlist_servers_populate (ircnet *net, GtkWidget *treeview)
 }
 
 static void
+servlist_commands_populate (ircnet *net, GtkWidget *treeview)
+{
+	GtkListStore *store;
+	GtkTreeIter iter;
+	int i;
+	commandentry *entry;
+	GSList *list = net->commandlist;
+
+	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (treeview));
+	gtk_list_store_clear (store);
+
+	i = 0;
+	while (list)
+	{
+		entry = list->data;
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 0, entry->command, 1, 1, -1);
+
+		if (net->selected == i)
+		{
+			/* select this server */
+			servlist_select_and_show (GTK_TREE_VIEW (treeview), &iter, store);
+		}
+
+		i++;
+		list = list->next;
+	}
+}
+
+static void
 servlist_networks_populate_ (GtkWidget *treeview, GSList *netlist, gboolean favorites)
 {
 	GtkListStore *store;
@@ -384,7 +414,7 @@ servlist_addserver (void)
 
 	/* select this server */
 	servlist_select_and_show (GTK_TREE_VIEW (edit_trees[SERVER_TREE]), &iter, store);
-	/*servlist_start_editing (GTK_TREE_VIEW (treeview));*/
+	servlist_start_editing (GTK_TREE_VIEW (edit_trees[SERVER_TREE]));
 
 	servlist_server_row_cb (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree)), NULL);
 }
@@ -399,28 +429,15 @@ servlist_addcommand (void)
 		return;
 
 	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[CMD_TREE])));
+	servlist_command_add (selected_net, "ECHO hello");
 
 	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter, 0, "", 1, 1, -1);
+	gtk_list_store_set (store, &iter, 0, "ECHO hello", 1, 1, -1);
 
 	servlist_select_and_show (GTK_TREE_VIEW (edit_trees[CMD_TREE]), &iter, store);
+	servlist_start_editing (GTK_TREE_VIEW (edit_trees[CMD_TREE]));
 
 	servlist_server_row_cb (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree)), NULL);
-}
-
-static void
-servlist_deletecommand (void)
-{
-	GtkTreeSelection *sel;
-	GtkTreeModel *model;
-	GtkTreeIter iter;
-
-	/* find the selected item in the GUI */
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[CMD_TREE]));
-	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (edit_trees[CMD_TREE]));
-
-	if (gtk_tree_selection_get_selected (sel, &model, &iter))
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
 }
 
 static void
@@ -681,6 +698,7 @@ servlist_edit_cb (GtkWidget *but, gpointer none)
 	edit_win = servlist_open_edit (serverlist_win, selected_net);
 	gtkutil_set_icon (edit_win);
 	servlist_servers_populate (selected_net, edit_trees[SERVER_TREE]);
+	servlist_commands_populate (selected_net, edit_trees[CMD_TREE]);
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (edit_trees[SERVER_TREE]))),
 							"changed", G_CALLBACK (servlist_server_row_cb), NULL);
 	g_signal_connect (G_OBJECT (edit_win), "delete_event",
@@ -762,7 +780,55 @@ servlist_deleteserver_cb (void)
 		serv = servlist_server_find (selected_net, servname, &pos);
 		g_free (servname);
 		if (serv)
+		{
 			servlist_deleteserver (serv, model);
+		}
+	}
+}
+
+static void
+servlist_deletecommand (commandentry *entry, GtkTreeModel *model)
+{
+	GtkTreeSelection *sel;
+	GtkTreeIter iter;
+
+	/* remove from GUI */
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (edit_trees[CMD_TREE]));
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	{
+		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+	}
+
+	/* remove from list */
+	if (selected_net)
+	{
+		servlist_command_remove (selected_net, entry);
+	}
+}
+
+static void
+servlist_deletecommand_cb (void)
+{
+	GtkTreeSelection *sel;
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+	char *command;
+	commandentry *entry;
+	int pos;
+
+	/* find the selected item in the GUI */
+	model = gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[CMD_TREE]));
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (edit_trees[CMD_TREE]));
+
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	{
+		gtk_tree_model_get (model, &iter, 0, &command, -1);			/* query the content of the selection */
+		entry = servlist_command_find (selected_net, command, &pos);
+		g_free (command);
+		if (entry)
+		{
+			servlist_deletecommand (entry, model);
+		}
 	}
 }
 
@@ -874,21 +940,6 @@ servlist_editkey_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, GtkT
 }
 
 static void
-servlist_editcommand_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, GtkTreeModel *model)
-{
-	GtkTreeIter iter;
-
-	if (!servlist_get_iter_from_name (model, name, &iter))
-		return;
-
-	/* delete empty item */
-	if (newval[0] == 0)
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-	else
-		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, newval, -1);
-}
-
-static void
 servlist_addchannel (char *channel)
 {
 	GtkTreeIter iter;
@@ -905,7 +956,7 @@ servlist_addchannel (char *channel)
 }
 
 static void
-servlist_deletechannel (void)
+servlist_deletechannel_cb (void)
 {
 	GtkTreeSelection *sel;
 	GtkTreeModel *model;
@@ -947,10 +998,10 @@ servlist_deletebutton_cb (GtkWidget *item, GtkNotebook *notebook)
 						servlist_deleteserver_cb ();
 						break;
 				case CHANNEL_TREE:
-						servlist_deletechannel ();
+						servlist_deletechannel_cb ();
 						break;
 				case CMD_TREE:
-						servlist_deletecommand ();
+						servlist_deletecommand_cb ();
 						break;
 				default:
 						break;
@@ -1392,6 +1443,20 @@ servlist_sanitize_hostname (char *host)
 	return ret;
 }
 
+/* remove leading slash */
+static char *
+servlist_sanitize_command (char *cmd)
+{
+	if (cmd[0] == '/')
+	{
+		return (g_strdup (cmd + 1));
+	}
+	else
+	{
+		return (g_strdup (cmd));
+	}
+}
+
 static void
 servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 								gpointer user_data)
@@ -1431,6 +1496,49 @@ servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 		serv->hostname = servlist_sanitize_hostname (arg2);
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, serv->hostname, -1);
 		free (servname);
+	}
+
+	gtk_tree_path_free (path);
+}
+
+static void
+servlist_editcommand_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2, gpointer user_data)
+{
+	GtkTreeModel *model = (GtkTreeModel *)user_data;
+	GtkTreeIter iter;
+	GtkTreePath *path;
+	char *cmd;
+	commandentry *entry;
+
+	if (!selected_net)
+		return;
+
+	path = gtk_tree_path_new_from_string (arg1);
+
+	if (!gtk_tree_model_get_iter (model, &iter, path))
+	{
+		gtk_tree_path_free (path);
+		return;
+	}
+
+	gtk_tree_model_get (model, &iter, 0, &cmd, -1);
+	entry = servlist_command_find (selected_net, cmd, NULL);
+	g_free (cmd);
+
+	if (entry)
+	{
+		/* delete empty item */
+		if (arg2[0] == 0)
+		{
+			servlist_deletecommand (entry, model);
+			gtk_tree_path_free (path);
+			return;
+		}
+
+		cmd = entry->command;
+		entry->command = servlist_sanitize_command (arg2);
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, entry->command, -1);
+		free (cmd);
 	}
 
 	gtk_tree_path_free (path);
@@ -1596,7 +1704,8 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	vbox5 = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (editwindow), vbox5);
 
-	/* tabs and buttons */
+
+	/* Tabs and buttons */
 	hbox1 = gtk_hbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (vbox5), hbox1, TRUE, TRUE, 4);
 
@@ -1611,18 +1720,14 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook), GTK_POS_BOTTOM);
 	gtk_box_pack_start (GTK_BOX (hbox1), notebook, TRUE, TRUE, SERVLIST_X_PADDING);
 
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2),
-											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow2),
-													 GTK_SHADOW_IN);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4),
-											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow4),
-													 GTK_SHADOW_IN);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5),
-											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow5),
-													 GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow2), GTK_SHADOW_IN);
+
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow4),	GTK_SHADOW_IN);
+
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_SHADOW_IN);
 
 
 	/* Server Tree */
@@ -1681,6 +1786,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_tree_sortable_set_sort_column_id ((GtkTreeSortable *)model, 0, GTK_SORT_ASCENDING);
 	servlist_channels_populate (selected_net, treeview_channels);
 
+
 	/* Command Tree */
 	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
 	model = GTK_TREE_MODEL (store);
@@ -1700,6 +1806,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 						 		"text", 0,
 								"editable", 1,
 								NULL);
+
 
 	/* Button Box */
 	vbuttonbox1 = gtk_vbutton_box_new ();
@@ -1725,7 +1832,8 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonedit);
 	GTK_WIDGET_SET_FLAGS (buttonedit, GTK_CAN_DEFAULT);
 
-	/* checkboxes and entries */
+
+	/* Checkboxes and entries */
 	table3 = gtk_table_new (13, 2, FALSE);
 	gtk_box_pack_start (GTK_BOX (vbox5), table3, FALSE, FALSE, 0);
 	gtk_table_set_row_spacings (GTK_TABLE (table3), 2);
@@ -1765,7 +1873,8 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	comboboxentry_charset = servlist_create_charsetcombo ();
 	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 1, 2, 12, 13, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
 
-	/* rule and close button */
+
+	/* Rule and Close button */
 	hseparator2 = gtk_hseparator_new ();
 	gtk_box_pack_start (GTK_BOX (vbox5), hseparator2, FALSE, FALSE, 8);
 

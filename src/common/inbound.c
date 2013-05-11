@@ -1384,6 +1384,8 @@ inbound_nickserv_login (server *serv)
 void
 inbound_login_end (session *sess, char *text)
 {
+	GSList *cmdlist;
+	commandentry *cmd;
 	server *serv = sess->server;
 
 	if (!serv->end_of_motd)
@@ -1398,9 +1400,13 @@ inbound_login_end (session *sess, char *text)
 		if (serv->network)
 		{
 			/* there may be more than 1, separated by \n */
-			if (((ircnet *)serv->network)->command)
+
+			cmdlist = ((ircnet *)serv->network)->commandlist;
+			while (cmdlist)
 			{
-				token_foreach (((ircnet *)serv->network)->command, '\n', inbound_exec_eom_cmd, sess);
+				cmd = cmdlist->data;
+				inbound_exec_eom_cmd (cmd->command, sess);
+				cmdlist = cmdlist->next;
 			}
 
 			/* send nickserv password */

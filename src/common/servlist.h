@@ -25,6 +25,11 @@ typedef struct ircserver
 	char *hostname;
 } ircserver;
 
+typedef struct commandentry
+{
+	char *command;
+} commandentry;
+
 typedef struct ircnet
 {
 	char *name;
@@ -34,11 +39,11 @@ typedef struct ircnet
 	char *real;
 	char *pass;
 	char *autojoin;
-	char *command;
 	int logintype;
 	char *comment;
 	char *encoding;
 	GSList *servlist;
+	GSList *commandlist;
 	int selected;
 	guint32 flags;
 } ircnet;
@@ -72,9 +77,12 @@ void servlist_net_remove (ircnet *net);
 ircnet *servlist_net_find (char *name, int *pos, int (*cmpfunc) (const char *, const char *));
 ircnet *servlist_net_find_from_server (char *server_name);
 
-void servlist_server_remove (ircnet *net, ircserver *serv);
-ircserver *servlist_server_add (ircnet *net, char *name);
 ircserver *servlist_server_find (ircnet *net, char *name, int *pos);
+commandentry *servlist_command_find (ircnet *net, char *cmd, int *pos);
+ircserver *servlist_server_add (ircnet *net, char *name);
+commandentry *servlist_command_add (ircnet *net, char *command);
+void servlist_server_remove (ircnet *net, ircserver *serv);
+void servlist_command_remove (ircnet *net, commandentry *entry);
 
 void joinlist_split (char *autojoin, GSList **channels, GSList **keys);
 gboolean joinlist_is_in_list (server *serv, char *channel);

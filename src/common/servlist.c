@@ -814,6 +814,29 @@ servlist_server_find (ircnet *net, char *name, int *pos)
 	return NULL;
 }
 
+commandentry *
+servlist_command_find (ircnet *net, char *cmd, int *pos)
+{
+	GSList *list = net->commandlist;
+	commandentry *entry;
+	int i = 0;
+
+	while (list)
+	{
+		entry = list->data;
+		if (strcmp (entry->command, cmd) == 0)
+		{
+			if (pos)
+				*pos = i;
+			return entry;
+		}
+		i++;
+		list = list->next;
+	}
+
+	return NULL;
+}
+
 /* find a network (e.g. (ircnet *) to "FreeNode") from a hostname
    (e.g. "irc.eu.freenode.net") */
 
@@ -881,6 +904,20 @@ servlist_server_add (ircnet *net, char *name)
 	return serv;
 }
 
+commandentry *
+servlist_command_add (ircnet *net, char *cmd)
+{
+	commandentry *entry;
+
+	entry = malloc (sizeof (commandentry));
+	memset (entry, 0, sizeof (commandentry));
+	entry->command = strdup (cmd);
+
+	net->commandlist = g_slist_append (net->commandlist, entry);
+
+	return entry;
+}
+
 void
 servlist_server_remove (ircnet *net, ircserver *serv)
 {
@@ -899,6 +936,14 @@ servlist_server_remove_all (ircnet *net)
 		serv = net->servlist->data;
 		servlist_server_remove (net, serv);
 	}
+}
+
+void
+servlist_command_remove (ircnet *net, commandentry *entry)
+{
+	free (entry->command);
+	free (entry);
+	net->commandlist = g_slist_remove (net->commandlist, entry);
 }
 
 static void
@@ -948,8 +993,8 @@ servlist_net_remove (ircnet *net)
 	free_and_clear (net->pass);
 	if (net->autojoin)
 		free (net->autojoin);
-	if (net->command)
-		free (net->command);
+	if (net->commandlist)
+		g_slist_free_full (net->commandlist, (GDestroyNotify) g_free);
 	if (net->comment)
 		free (net->comment);
 	if (net->encoding)
@@ -963,7 +1008,9 @@ servlist_net_remove (ircnet *net)
 	{
 		serv = list->data;
 		if (serv->network == net)
+		{
 			serv->network = NULL;
+		}
 		list = list->next;
 	}
 }
@@ -1037,7 +1084,6 @@ servlist_load (void)
 	FILE *fp;
 	char buf[2048];
 	int len;
-	char *tmp;
 	ircnet *net = NULL;
 
 	/* simple migration we will keep for a short while */
@@ -1084,9 +1130,9 @@ servlist_load (void)
 				net->autojoin = strdup (buf + 2);
 				break;
 			case 'C':
-				if (net->command)
+				/*if (net->command)
 				{
-					/* concat extra commands with a \n separator */
+					// concat extra commands with a \n separator
 					tmp = net->command;
 					net->command = malloc (strlen (tmp) + strlen (buf + 2) + 2);
 					strcpy (net->command, tmp);
@@ -1095,6 +1141,8 @@ servlist_load (void)
 					free (tmp);
 				} else
 					net->command = strdup (buf + 2);
+					*/
+				servlist_command_add (net, buf + 2);
 				break;
 			case 'F':
 				net->flags = atoi (buf + 2);
@@ -1161,13 +1209,6 @@ servlist_check_encoding (char *charset)
 	return FALSE;
 }
 
-static int
-servlist_write_ccmd (char *str, void *fp)
-{
-	return fprintf (fp, "C=%s\n", (str[0] == '/') ? str + 1 : str);
-}
-
-
 int
 servlist_save (void)
 {
@@ -1175,8 +1216,10 @@ servlist_save (void)
 	char *buf;
 	ircnet *net;
 	ircserver *serv;
+	commandentry *cmd;
 	GSList *list;
-	GSList *hlist;
+	GSList *netlist;
+	GSList *cmdlist;
 #ifndef WIN32
 	int first = FALSE;
 
@@ -1235,17 +1278,22 @@ servlist_save (void)
 			}
 		}
 
-		if (net->command)
-			token_foreach (net->command, '\n', servlist_write_ccmd, fp);
-
 		fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);
 
-		hlist = net->servlist;
-		while (hlist)
+		netlist = net->servlist;
+		while (netlist)
 		{
-			serv = hlist->data;
+			serv = netlist->data;
 			fprintf (fp, "S=%s\n", serv->hostname);
-			hlist = hlist->next;
+			netlist = netlist->next;
+		}
+
+		cmdlist = net->commandlist;
+		while (cmdlist)
+		{
+			cmd = cmdlist->data;
+			fprintf (fp, "C=%s\n", cmd->command);
+			cmdlist = cmdlist->next;
 		}
 
 		if (fprintf (fp, "\n") < 1)
