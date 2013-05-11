@@ -42,6 +42,7 @@
 #include "util.h"
 #include "hexchatc.h"
 #include "url.h"
+#include "servlist.h"
 
 
 static void
@@ -1218,10 +1219,23 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strstr (word_eol[5], "sasl") != 0)
 					{
 						serv->have_sasl = TRUE;
-						EMIT_SIGNAL (XP_TE_SASLAUTH, serv->server_session, sess->server->sasluser, NULL, NULL, NULL, 0);
+						EMIT_SIGNAL
+						(
+							XP_TE_SASLAUTH,
+							serv->server_session,
+							(((ircnet *)sess->server->network)->user) ? (((ircnet *)sess->server->network)->user) : prefs.hex_irc_user_name,
+							NULL,
+							NULL,
+							NULL,
+							0
+						);
 						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
-						pass = encode_sasl_pass (sess->server->sasluser, sess->server->password);
+						pass = encode_sasl_pass
+						(
+							(((ircnet *)sess->server->network)->user) ? (((ircnet *)sess->server->network)->user) : prefs.hex_irc_user_name,
+							sess->server->password
+						);
 						tcp_sendf (sess->server, "AUTHENTICATE %s\r\n", pass);
 						free (pass);
 					}

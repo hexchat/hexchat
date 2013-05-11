@@ -628,20 +628,10 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 	}
 
 	serv->password[0] = 0;
-	serv->sasluser[0] = 0;
 
 	if (net->pass)
 	{
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
-	}
-
-	if (net->flags & FLAG_USE_GLOBAL || net->user == NULL)
-	{
-		strcpy (serv->sasluser, prefs.hex_irc_user_name);
-	}
-	else
-	{
-		safe_strcpy (serv->sasluser, net->user, sizeof (serv->sasluser));
 	}
 
 	if (net->flags & FLAG_USE_GLOBAL)

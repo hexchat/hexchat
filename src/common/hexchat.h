@@ -527,7 +527,6 @@ typedef struct server
 	char hostname[128];				/* real ip number */
 	char servername[128];			/* what the server says is its name */
 	char password[86];
-	char sasluser[32];				/* this is just a buffer for network->user */
 	char nick[NICKLEN];
 	char linebuf[2048];				/* RFC says 512 chars including \r\n */
 	char *last_away_reason;
