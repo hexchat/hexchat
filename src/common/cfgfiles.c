@@ -760,7 +760,7 @@ load_config (void)
 	strcpy (prefs.hex_dnsprogram, "host");
 	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
 	strcpy (prefs.hex_input_command_char, "/");
-	strcpy (prefs.hex_irc_logmask, "%n-%c.log");
+	strcpy (prefs.hex_irc_logmask, g_build_filename ("%n", "%c.log", NULL));
 	strcpy (prefs.hex_irc_nick1, username);
 	strcpy (prefs.hex_irc_nick2, username);
 	strcat (prefs.hex_irc_nick2, "_");
