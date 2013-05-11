@@ -41,14 +41,12 @@
 
 /* servlistgui.c globals */
 static GtkWidget *serverlist_win = NULL;
-static GtkWidget *networks_tree;	/* network TreeView */
-#ifdef WIN32
-static int win_width = 324;
-static int win_height = 426;
-#else
-static int win_width = 364;
-static int win_height = 478;
-#endif
+static GtkWidget *networks_tree;		/* network TreeView */
+
+static int netlist_win_width = 0;		/* don't hardcode pixels, just use as much as needed by default, save if resized */
+static int netlist_win_height = 0;
+static int netedit_win_width = 0;
+static int netedit_win_height = 0;
 
 /* global user info */
 static GtkWidget *entry_nick1;
@@ -662,7 +660,15 @@ static gboolean
 servlist_configure_cb (GtkWindow *win, GdkEventConfigure *event, gpointer none)
 {
 	/* remember the window size */
-	gtk_window_get_size (win, &win_width, &win_height);
+	gtk_window_get_size (win, &netlist_win_width, &netlist_win_height);
+	return FALSE;
+}
+
+static gboolean
+servlist_edit_configure_cb (GtkWindow *win, GdkEventConfigure *event, gpointer none)
+{
+	/* remember the window size */
+	gtk_window_get_size (win, &netedit_win_width, &netedit_win_height);
 	return FALSE;
 }
 
@@ -679,6 +685,8 @@ servlist_edit_cb (GtkWidget *but, gpointer none)
 							"changed", G_CALLBACK (servlist_server_row_cb), NULL);
 	g_signal_connect (G_OBJECT (edit_win), "delete_event",
 						 	G_CALLBACK (servlist_editwin_delete_cb), 0);
+	g_signal_connect (G_OBJECT (edit_win), "configure_event",
+							G_CALLBACK (servlist_edit_configure_cb), 0);
 	g_signal_connect (G_OBJECT (edit_trees[SERVER_TREE]), "key_press_event",
 							G_CALLBACK (servlist_serv_keypress_cb), 0);
 	gtk_widget_show (edit_win);
@@ -983,7 +991,6 @@ servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 	win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (win), 4);
 	gtk_window_set_title (GTK_WINDOW (win), _(DISPLAY_NAME": Favorite Channels (Auto-Join List)"));
-	gtk_window_set_default_size (GTK_WINDOW (win), 354, 256);
 	gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_MOUSE);
 	if (edit_win)
 		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (edit_win));
@@ -1579,7 +1586,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_container_set_border_width (GTK_CONTAINER (editwindow), 4);
 	snprintf (buf, sizeof (buf), _(DISPLAY_NAME": Edit %s"), net->name);
 	gtk_window_set_title (GTK_WINDOW (editwindow), buf);
-	gtk_window_set_default_size (GTK_WINDOW (editwindow), 354, 0);
+	gtk_window_set_default_size (GTK_WINDOW (editwindow), netedit_win_width, netedit_win_height);
 	gtk_window_set_position (GTK_WINDOW (editwindow), GTK_WIN_POS_MOUSE);
 	gtk_window_set_transient_for (GTK_WINDOW (editwindow), GTK_WINDOW (parent));
 	gtk_window_set_modal (GTK_WINDOW (editwindow), TRUE);
@@ -1826,7 +1833,7 @@ servlist_open_networks (void)
 	servlist = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
 	gtk_window_set_title (GTK_WINDOW (servlist), _(DISPLAY_NAME": Network List"));
-	gtk_window_set_default_size (GTK_WINDOW (servlist), win_width, win_height);
+	gtk_window_set_default_size (GTK_WINDOW (servlist), netlist_win_width, netlist_win_height);
 	gtk_window_set_position (GTK_WINDOW (servlist), GTK_WIN_POS_MOUSE);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");
 	gtk_window_set_type_hint (GTK_WINDOW (servlist), GDK_WINDOW_TYPE_HINT_DIALOG);
