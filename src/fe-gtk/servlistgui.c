@@ -1727,7 +1727,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	/* checkboxes and entries */
 	table3 = gtk_table_new (13, 2, FALSE);
-	gtk_box_pack_start (GTK_BOX (vbox5), table3, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox5), table3, FALSE, FALSE, 0);
 	gtk_table_set_row_spacings (GTK_TABLE (table3), 2);
 	gtk_table_set_col_spacings (GTK_TABLE (table3), 8);
 
