@@ -757,21 +757,6 @@ servlist_deleteserver_cb (void)
 	}
 }
 
-static void
-servlist_editcommand_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, GtkTreeModel *model)
-{
-	GtkTreeIter iter;
-
-	if (!servlist_get_iter_from_name (model, name, &iter))
-		return;
-
-	/* delete empty item */
-	if (newval[0] == 0)
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-	else
-		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, newval, -1);
-}
-
 static ircnet *
 servlist_find_selected_net (GtkTreeSelection *sel)
 {
@@ -877,6 +862,21 @@ servlist_editkey_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, GtkT
 		return;
 
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, newval, -1);
+}
+
+static void
+servlist_editcommand_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, GtkTreeModel *model)
+{
+	GtkTreeIter iter;
+
+	if (!servlist_get_iter_from_name (model, name, &iter))
+		return;
+
+	/* delete empty item */
+	if (newval[0] == 0)
+		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+	else
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, newval, -1);
 }
 
 static void
