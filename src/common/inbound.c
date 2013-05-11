@@ -1367,6 +1367,20 @@ inbound_exec_eom_cmd (char *str, void *sess)
 	return 1;
 }
 
+static int
+inbound_nickserv_login (server *serv)
+{
+	/* this could grow ugly, but let's hope there won't be new NickServ types */
+	if (serv->loginmethod >= 1 && serv->loginmethod <= 5)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 void
 inbound_login_end (session *sess, char *text)
 {
@@ -1385,34 +1399,43 @@ inbound_login_end (session *sess, char *text)
 		{
 			/* there may be more than 1, separated by \n */
 			if (((ircnet *)serv->network)->command)
-				token_foreach (((ircnet *)serv->network)->command, '\n',
-									inbound_exec_eom_cmd, sess);
+			{
+				token_foreach (((ircnet *)serv->network)->command, '\n', inbound_exec_eom_cmd, sess);
+			}
 
 			/* send nickserv password */
-			if (((ircnet *)serv->network)->nickserv)
-				serv->p_ns_identify (serv, ((ircnet *)serv->network)->nickserv);
+			if (((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
+			{
+				serv->p_ns_identify (serv, ((ircnet *)serv->network)->pass);
+			}
 		}
 
 		/* send JOIN now or wait? */
-		if (serv->network && ((ircnet *)serv->network)->nickserv &&
-			 prefs.hex_irc_join_delay)
-			serv->joindelay_tag = fe_timeout_add (prefs.hex_irc_join_delay * 1000,
-															  check_autojoin_channels, serv);
+		if (serv->network && ((ircnet *)serv->network)->pass && prefs.hex_irc_join_delay && inbound_nickserv_login (serv))
+		{
+			serv->joindelay_tag = fe_timeout_add (prefs.hex_irc_join_delay * 1000, check_autojoin_channels, serv);
+		}
 		else
+		{
 			check_autojoin_channels (serv);
+		}
+
 		if (serv->supports_watch || serv->supports_monitor)
+		{
 			notify_send_watches (serv);
+		}
+
 		serv->end_of_motd = TRUE;
 	}
+
 	if (prefs.hex_irc_skip_motd && !serv->motd_skipped)
 	{
 		serv->motd_skipped = TRUE;
-		EMIT_SIGNAL (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL,
-						 NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL, NULL, NULL, 0);
 		return;
 	}
-	EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL,
-					 NULL, NULL, 0);
+
+	EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL, NULL, NULL, 0);
 }
 
 void

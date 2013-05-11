@@ -925,7 +925,6 @@ servlist_cleanup (void)
 	{
 		net = list->data;
 		free_and_clear (net->pass);
-		free_and_clear (net->nickserv);
 	}
 }
 
@@ -951,7 +950,6 @@ servlist_net_remove (ircnet *net)
 		free (net->autojoin);
 	if (net->command)
 		free (net->command);
-	free_and_clear (net->nickserv);
 	if (net->comment)
 		free (net->comment);
 	if (net->encoding)
@@ -1110,9 +1108,6 @@ servlist_load (void)
 			case 'S':	/* new server/hostname for this network */
 				servlist_server_add (net, buf + 2);
 				break;
-			case 'B':
-				net->nickserv = strdup (buf + 2);
-				break;
 			case 'L':
 				net->logintype = atoi (buf + 2);
 				break;
@@ -1225,8 +1220,6 @@ servlist_save (void)
 			fprintf (fp, "P=%s\n", net->pass);
 		if (net->autojoin)
 			fprintf (fp, "J=%s\n", net->autojoin);
-		if (net->nickserv)
-			fprintf (fp, "B=%s\n", net->nickserv);
 		if (net->logintype)
 			fprintf (fp, "L=%d\n", net->logintype);
 		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&

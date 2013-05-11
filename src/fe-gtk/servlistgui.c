@@ -65,7 +65,6 @@ static GtkWidget *edit_entry_real;
 static GtkWidget *edit_entry_join;
 static GtkWidget *edit_entry_pass;
 static GtkWidget *edit_entry_cmd;
-static GtkWidget *edit_entry_nickserv;
 static GtkWidget *edit_label_nick;
 static GtkWidget *edit_label_nick2;
 static GtkWidget *edit_label_real;
@@ -105,6 +104,10 @@ static const char *pages[]=
 /* This is our dictionary for authentication types. Keep these in sync with
  * login_types[]! This allows us to re-order the login type dropdown in the
  * network list without breaking config compatibility.
+ *
+ * Also make sure inbound_nickserv_login() won't break, i.e. if you add a new
+ * type that is NickServ-based, add it there as well so that HexChat knows to
+ * treat it as such.
  */
 static int login_types_conf[] =
 {
@@ -526,7 +529,6 @@ servlist_edit_update (ircnet *net)
 
 	servlist_update_from_entry (&net->autojoin, edit_entry_join);
 	servlist_update_from_entry (&net->command, edit_entry_cmd);
-	servlist_update_from_entry (&net->nickserv, edit_entry_nickserv);
 	servlist_update_from_entry (&net->pass, edit_entry_pass);
 }
 
@@ -1541,12 +1543,6 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 		servlist_create_entry (table3, _("Connect command:"), 13,
 									  net->command, 0,
 					_("Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."));
-
-	edit_entry_nickserv =
-		servlist_create_entry (table3, _("NickServ password:"), 14,
-									  net->nickserv, 0,
-					_("If your nickname requires a password, enter it here. Not all IRC networks support this."));
-	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_nickserv), FALSE);
 
 	label_logintype = gtk_label_new (_("Login method:"));
 	gtk_widget_show (label_logintype);
