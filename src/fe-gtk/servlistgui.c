@@ -1167,16 +1167,31 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 		if (GTK_TOGGLE_BUTTON (but)->active)
 		{
 			gtk_widget_set_sensitive (edit_entry_nick, FALSE);
+			gtk_widget_set_sensitive (edit_label_nick, FALSE);
+
 			gtk_widget_set_sensitive (edit_entry_nick2, FALSE);
+			gtk_widget_set_sensitive (edit_label_nick2, FALSE);
+
 			gtk_widget_set_sensitive (edit_entry_user, FALSE);
+			gtk_widget_set_sensitive (edit_label_user, FALSE);
+
 			gtk_widget_set_sensitive (edit_entry_real, FALSE);
+			gtk_widget_set_sensitive (edit_label_real, FALSE);
+			
 		}
 		else
 		{
 			gtk_widget_set_sensitive (edit_entry_nick, TRUE);
+			gtk_widget_set_sensitive (edit_label_nick, TRUE);
+
 			gtk_widget_set_sensitive (edit_entry_nick2, TRUE);
+			gtk_widget_set_sensitive (edit_label_nick2, TRUE);
+
 			gtk_widget_set_sensitive (edit_entry_user, TRUE);
+			gtk_widget_set_sensitive (edit_label_user, TRUE);
+
 			gtk_widget_set_sensitive (edit_entry_real, TRUE);
+			gtk_widget_set_sensitive (edit_label_real, TRUE);
 		}
 	}
 }
@@ -1686,9 +1701,16 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	if (net->flags & FLAG_USE_GLOBAL)
 	{
 		gtk_widget_set_sensitive (edit_entry_nick, FALSE);
+		gtk_widget_set_sensitive (edit_label_nick, FALSE);
+
 		gtk_widget_set_sensitive (edit_entry_nick2, FALSE);
+		gtk_widget_set_sensitive (edit_label_nick2, FALSE);
+
 		gtk_widget_set_sensitive (edit_entry_user, FALSE);
+		gtk_widget_set_sensitive (edit_label_user, FALSE);
+
 		gtk_widget_set_sensitive (edit_entry_real, FALSE);
+		gtk_widget_set_sensitive (edit_label_real, FALSE);
 	}
 
 	gtk_widget_grab_focus (button10);
