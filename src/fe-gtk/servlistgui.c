@@ -120,7 +120,9 @@ static int login_types_conf[] =
 	7,	/* /pass */
 	1,	/* /msg NickServ */
 	2,	/* /NickServ */
+#if 0
 	3,	/* /NS */
+#endif
 	4,	/* /msg NS */
 	5,	/* /auth */
 };
@@ -128,13 +130,15 @@ static int login_types_conf[] =
 static const char *login_types[]=
 {
 	"Default",
-	"SASL",
-	"Server Password",
-	"Message NickServ",
-	"NickServ",
-	"NS",
-	"Message NS",
-	"AUTH",
+	"SASL (username + password)",
+	"Server Password (/PASS password)",
+	"NickServ (/MSG NickServ + password)",
+	"NickServ (/NickServ + password)",
+#if 0
+	"NickServ (/NS + password)",
+#endif
+	"NickServ (/MSG NS + password)",
+	"AUTH (/AUTH nickname password)",
 	NULL
 };
 
