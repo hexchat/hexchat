@@ -1130,18 +1130,6 @@ servlist_load (void)
 				net->autojoin = strdup (buf + 2);
 				break;
 			case 'C':
-				/*if (net->command)
-				{
-					// concat extra commands with a \n separator
-					tmp = net->command;
-					net->command = malloc (strlen (tmp) + strlen (buf + 2) + 2);
-					strcpy (net->command, tmp);
-					strcat (net->command, "\n");
-					strcat (net->command, buf + 2);
-					free (tmp);
-				} else
-					net->command = strdup (buf + 2);
-					*/
 				servlist_command_add (net, buf + 2);
 				break;
 			case 'F':
