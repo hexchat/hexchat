@@ -21,7 +21,7 @@ in general. HexChat runs on most BSD and POSIX compliant operating systems.
 
 ## Requirements:
 
- * GTK+ 2.14
+ * GTK+ 2.24
  * GLib 2.14
 
 HexChat is known to work on, at least:
