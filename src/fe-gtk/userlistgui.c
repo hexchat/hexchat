@@ -320,7 +320,7 @@ fe_userlist_rehash (session *sess, struct User *user)
 	if (!iter)
 		return;
 
-	if (prefs.hex_away_track && prefs.hex_away_size_max && user->away)
+	if (prefs.hex_away_track && user->away)
 		nick_color = COL_AWAY;
 	else if (prefs.hex_gui_ulist_color)
 		nick_color = text_color_of(user->nick);
@@ -340,7 +340,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	char *nick;
 	int nick_color = 0;
 
-	if (prefs.hex_away_track && prefs.hex_away_size_max && newuser->away)
+	if (prefs.hex_away_track && newuser->away)
 		nick_color = COL_AWAY;
 	else if (prefs.hex_gui_ulist_color)
 		nick_color = text_color_of(newuser->nick);
