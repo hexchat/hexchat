@@ -1608,6 +1608,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow2, gtk_label_new ("Servers"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow4, gtk_label_new ("Favorite channels"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow5, gtk_label_new ("Connect commands"));
+	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook), GTK_POS_BOTTOM);
 	gtk_box_pack_start (GTK_BOX (hbox1), notebook, TRUE, TRUE, SERVLIST_X_PADDING);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow2),
@@ -1723,7 +1724,6 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 							G_CALLBACK (servlist_editbutton_cb), notebook);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonedit);
 	GTK_WIDGET_SET_FLAGS (buttonedit, GTK_CAN_DEFAULT);
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (vbuttonbox1), GTK_BUTTONBOX_END);
 
 	/* checkboxes and entries */
 	table3 = gtk_table_new (13, 2, FALSE);
