@@ -1623,6 +1623,7 @@ servlist_create_logintypecombo (void)
 
 	gtk_combo_box_set_active (GTK_COMBO_BOX (cb), servlist_get_login_desc_index (selected_net->logintype));
 
+	add_tip (cb, _("The way you identify yourself to the server. For custom login methods use connect commands."));
 	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_logintypecombo_cb), NULL);
 
 	return cb;
