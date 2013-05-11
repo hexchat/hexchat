@@ -1315,6 +1315,7 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	gtk_entry_set_text (GTK_ENTRY (entry), def ? def : "");
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
 
+#if 0	/* FIXME */
 	if (row == 12)	/* for "Favorite channels:" */
 	{
 		GtkWidget *button, *box;
@@ -1333,9 +1334,12 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	}
 	else
 	{
+#endif
 		gtk_table_attach (GTK_TABLE (table), entry, 2, 3, row, row+1,
 								GTK_FILL|GTK_EXPAND, 0, 0, 0);
+#if 0
 	}
+#endif
 
 	return entry;
 }
@@ -1623,39 +1627,39 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 		servlist_create_entry (table3, _("Second choice:"), 9, net->nick2,
 									  &edit_label_nick2, 0);
 
-	edit_entry_user =
-		servlist_create_entry (table3, _("_User name:"), 10, net->user,
-									  &edit_label_user, 0);
-
 	edit_entry_real =
-		servlist_create_entry (table3, _("Rea_l name:"), 11, net->real,
+		servlist_create_entry (table3, _("Rea_l name:"), 10, net->real,
 									  &edit_label_real, 0);
 
-	label_logintype = gtk_label_new (_("Login method:"));
-	gtk_table_attach (GTK_TABLE (table3), label_logintype, 1, 2, 15, 16,
+	edit_entry_user =
+		servlist_create_entry (table3, _("_User name:"), 11, net->user,
+									  &edit_label_user, 0);
+
+  label_logintype = gtk_label_new (_("Login method:"));
+	gtk_table_attach (GTK_TABLE (table3), label_logintype, 1, 2, 12, 13,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label_logintype), 0, 0.5);
 
 	combobox_logintypes = servlist_create_logintypecombo ();
-	gtk_table_attach (GTK_TABLE (table3), combobox_logintypes, 2, 3, 15, 16,
+	gtk_table_attach (GTK_TABLE (table3), combobox_logintypes, 2, 3, 12, 13,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 
 	edit_entry_pass =
-		servlist_create_entry (table3, _("Password:"), 17,
+		servlist_create_entry (table3, _("Password:"), 14,
 									  net->pass, 0,
 					_("Password used for login. If in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
 
 	label34 = gtk_label_new (_("Character set:"));
-	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 18, 19,
+	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 15, 16,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
 
 	comboboxentry_charset = servlist_create_charsetcombo ();
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 18, 19,
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 15, 16,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 
