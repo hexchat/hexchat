@@ -1501,7 +1501,7 @@ servlist_create_logintypecombo (void)
 		i++;
 	}
 
-	gtk_combo_box_set_active (GTK_COMBO_BOX (cb), servlist_get_login_desc_index(selected_net->logintype));
+	gtk_combo_box_set_active (GTK_COMBO_BOX (cb), servlist_get_login_desc_index (selected_net->logintype));
 
 	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_logintypecombo_cb), NULL);
 
@@ -1584,7 +1584,6 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_window_set_modal (GTK_WINDOW (editwindow), TRUE);
 	gtk_window_set_type_hint (GTK_WINDOW (editwindow), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_window_set_role (GTK_WINDOW (editwindow), "editserv");
-	gtk_window_set_resizable(GTK_WINDOW (editwindow), FALSE);
 
 	vbox5 = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (editwindow), vbox5);
