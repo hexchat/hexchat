@@ -555,7 +555,7 @@ tray_make_item (GtkWidget *menu, char *label, void *callback, void *userdata)
 static void
 tray_toggle_cb (GtkCheckMenuItem *item, unsigned int *setting)
 {
-	*setting = item->active;
+	*setting = gtk_check_menu_item_get_active (item);
 }
 
 static void

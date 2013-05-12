@@ -311,10 +311,10 @@ notifygui_add_cb (GtkDialog *dialog, gint response, gpointer entry)
 	char *networks;
 	char *text;
 
-	text = GTK_ENTRY (entry)->text;
+	text = (char *)gtk_entry_get_text (GTK_ENTRY (entry));
 	if (text[0] && response == GTK_RESPONSE_ACCEPT)
 	{
-		networks = GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net"))->text;
+		networks = gtk_entry_get_text (GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net")));
 		if (g_ascii_strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
 			notify_adduser (text, NULL);
 		else
@@ -353,7 +353,7 @@ fe_notify_ask (char *nick, char *networks)
 	gtk_container_set_border_width (GTK_CONTAINER (table), 12);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 3);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 8);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), table);
 
 	label = gtk_label_new (msg);
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1);

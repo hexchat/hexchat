@@ -569,7 +569,7 @@ key_dialog_sel_row (GtkWidget * clist, gint row, gint column,
 static void
 key_dialog_tog_key (GtkWidget * tog, int kstate)
 {
-	int state = GTK_TOGGLE_BUTTON (tog)->active;
+	int state = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (tog));
 	int row = gtkutil_clist_selection (key_dialog_kb_clist);
 	struct key_binding *kb;
 	char buf[32];
@@ -1303,8 +1303,8 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
 	if (!sess)
 		return 0;
 
-	adj = GTK_RANGE (sess->gui->vscrollbar)->adjustment;
-	end = adj->upper - adj->lower - adj->page_size;
+	adj = gtk_range_get_adjustment (GTK_RANGE (sess->gui->vscrollbar));
+	end = gtk_adjustment_get_upper (adj) - gtk_adjustment_get_lower (adj) - gtk_adjustment_get_page_size (adj);
 
 	switch (type)
 	{
@@ -1317,19 +1317,19 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
 		break;
 
 	case PAGE_UP:
-		value = adj->value - (adj->page_size - 1);
+		value = gtk_adjustment_get_value (adj) - (gtk_adjustment_get_page_size (adj) - 1);
 		break;
 
 	case PAGE_DOWN:
-		value = adj->value + (adj->page_size - 1);
+		value = gtk_adjustment_get_value (adj) + (gtk_adjustment_get_page_size (adj) - 1);
 		break;
 
 	case LINE_UP:
-		value = adj->value - 1.0;
+		value = gtk_adjustment_get_value (adj) - 1.0;
 		break;
 
 	case LINE_DOWN:
-		value = adj->value + 1.0;
+		value = gtk_adjustment_get_value (adj) + 1.0;
 		break;
 	}
 

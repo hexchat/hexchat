@@ -635,7 +635,7 @@ static const setting network_settings[] =
 static void
 setup_3oggle_cb (GtkToggleButton *but, unsigned int *setting)
 {
-	*setting = but->active;
+	*setting = gtk_toggle_button_get_active (but);
 }
 
 static void
@@ -708,15 +708,15 @@ setup_toggle_cb (GtkToggleButton *but, const setting *set)
 {
 	GtkWidget *label, *disable_wid;
 
-	setup_set_int (&setup_prefs, set, but->active ? 1 : 0);
+	setup_set_int (&setup_prefs, set, gtk_toggle_button_get_active (but));
 
 	/* does this toggle also enable/disable another widget? */
 	disable_wid = g_object_get_data (G_OBJECT (but), "nxt");
 	if (disable_wid)
 	{
-		gtk_widget_set_sensitive (disable_wid, but->active);
+		gtk_widget_set_sensitive (disable_wid, gtk_toggle_button_get_active (but));
 		label = g_object_get_data (G_OBJECT (disable_wid), "lbl");
-		gtk_widget_set_sensitive (label, but->active);
+		gtk_widget_set_sensitive (label, gtk_toggle_button_get_active (but));
 	}
 }
 
@@ -904,7 +904,7 @@ setup_menu_cb (GtkWidget *cbox, const setting *set)
 static void
 setup_radio_cb (GtkWidget *item, const setting *set)
 {
-	if (GTK_TOGGLE_BUTTON (item)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (item)))
 	{
 		int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
 		/* set the prefs.<field> */
@@ -1110,7 +1110,7 @@ setup_fontsel_cancel (GtkWidget *button, GtkFontSelectionDialog *dialog)
 static void
 setup_browsefolder_cb (GtkWidget *button, GtkEntry *entry)
 {
-	gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry, entry->text, NULL, FRF_CHOOSEFOLDER);
+	gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry, (char*)gtk_entry_get_text (entry), NULL, FRF_CHOOSEFOLDER);
 }
 
 static void
@@ -1124,8 +1124,8 @@ setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 
 	sel = (GtkFontSelection *) dialog->fontsel;
 
-	if (GTK_ENTRY (entry)->text[0])
-		gtk_font_selection_set_font_name (sel, GTK_ENTRY (entry)->text);
+	if (gtk_entry_get_text (GTK_ENTRY (entry))[0])
+		gtk_font_selection_set_font_name (sel, gtk_entry_get_text (GTK_ENTRY (entry)));
 
 	g_object_set_data (G_OBJECT (dialog->ok_button), "e", entry);
 
@@ -1144,8 +1144,8 @@ setup_entry_cb (GtkEntry *entry, setting *set)
 {
 	int size;
 	int pos;
-	int len = strlen (entry->text);
-	unsigned char *p = entry->text;
+	int len = gtk_entry_get_text_length (entry);
+	unsigned char *p = (unsigned char*)gtk_entry_get_text (entry);
 
 	/* need to truncate? */
 	if (len >= set->extra)
@@ -1167,7 +1167,7 @@ setup_entry_cb (GtkEntry *entry, setting *set)
 	}
 	else
 	{
-		setup_set_str (&setup_prefs, set, entry->text);
+		setup_set_str (&setup_prefs, set, gtk_entry_get_text (entry));
 	}
 }
 
@@ -1449,7 +1449,7 @@ setup_create_color_button (GtkWidget *table, int num, int row, int col)
 						/* 12345678901 23456789 01  23456789 */
 		sprintf (buf, "<span size=\"x-small\">%d</span>", num);
 	but = gtk_button_new_with_label (" ");
-	gtk_label_set_markup (GTK_LABEL (GTK_BIN (but)->child), buf);
+	gtk_label_set_markup (GTK_LABEL (gtk_bin_get_child (GTK_BIN (but))), buf);
 	/* win32 build uses this to turn off themeing */
 	g_object_set_data (G_OBJECT (but), "hexchat-color", (gpointer)1);
 	gtk_table_attach (GTK_TABLE (table), but, col, col+1, row, row+1,
@@ -1693,7 +1693,7 @@ setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 static void
 setup_snd_play_cb (GtkWidget *button, GtkEntry *entry)
 {
-	sound_play (entry->text, FALSE);
+	sound_play (gtk_entry_get_text (entry), FALSE);
 }
 
 static void
@@ -1715,7 +1715,7 @@ setup_snd_changed_cb (GtkEntry *ent, GtkTreeView *tree)
 	/* get the new sound file */
 	if (sound_files[n])
 		free (sound_files[n]);
-	sound_files[n] = strdup (GTK_ENTRY (ent)->text);
+	sound_files[n] = strdup (gtk_entry_get_text (GTK_ENTRY (ent)));
 
 	/* update the TreeView list */
 	store = (GtkListStore *)gtk_tree_view_get_model (tree);

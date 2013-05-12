@@ -420,7 +420,7 @@ replace_word(GtkWidget *menuitem, SexySpellEntry *entry)
 
 	get_word_extents_from_position(entry, &start, &end, entry->priv->mark_character);
 	oldword = gtk_editable_get_chars(GTK_EDITABLE(entry), start, end);
-	newword = gtk_label_get_text(GTK_LABEL(GTK_BIN(menuitem)->child));
+	newword = gtk_label_get_text(GTK_LABEL(gtk_bin_get_child (GTK_BIN(menuitem))));
 
 	cursor = gtk_editable_get_position(GTK_EDITABLE(entry));
 	/* is the cursor at the end? If so, restore it there */
@@ -821,7 +821,7 @@ sexy_spell_entry_recheck_all(SexySpellEntry *entry)
 		rect.x = 0; rect.y = 0;
 		rect.width  = widget->allocation.width;
 		rect.height = widget->allocation.height;
-		gdk_window_invalidate_rect(widget->window, &rect, TRUE);
+		gdk_window_invalidate_rect(gtk_widget_get_window (widget), &rect, TRUE);
 	}
 }
 
@@ -1338,7 +1338,7 @@ sexy_spell_entry_set_checked(SexySpellEntry *entry, gboolean checked)
 		rect.x = 0; rect.y = 0;
 		rect.width  = widget->allocation.width;
 		rect.height = widget->allocation.height;
-		gdk_window_invalidate_rect(widget->window, &rect, TRUE);
+		gdk_window_invalidate_rect(gtk_widget_get_window (widget), &rect, TRUE);
 	} else {
 		if (entry->priv->words) {
 			g_strfreev(entry->priv->words);

@@ -796,7 +796,7 @@ fe_set_lag (server *serv, int lag)
 				if (sess->gui->lagometer)
 				{
 					gtk_progress_bar_set_fraction ((GtkProgressBar *) sess->gui->lagometer, per);
-					add_tip (sess->gui->lagometer->parent, lagtip);
+					add_tip (gtk_widget_get_parent (sess->gui->lagometer), lagtip);
 				}
 				if (sess->gui->laginfo)
 					gtk_label_set_text ((GtkLabel *) sess->gui->laginfo, lagtext);
@@ -842,7 +842,7 @@ fe_set_throttle (server *serv)
 				if (sess->gui->throttlemeter)
 				{
 					gtk_progress_bar_set_fraction ((GtkProgressBar *) sess->gui->throttlemeter, per);
-					add_tip (sess->gui->throttlemeter->parent, tip);
+					add_tip (gtk_widget_get_parent (sess->gui->throttlemeter), tip);
 				}
 				if (sess->gui->throttleinfo)
 					gtk_label_set_text ((GtkLabel *) sess->gui->throttleinfo, tbuf);
@@ -948,7 +948,7 @@ fe_gui_info_ptr (session *sess, int info_type)
 	{
 	case 0:	/* native window pointer (for plugins) */
 #ifdef WIN32
-		return gdk_win32_window_get_impl_hwnd (sess->gui->window->window);
+		return gdk_win32_window_get_impl_hwnd (gtk_widget_get_window (sess->gui->window));
 #else
 		return sess->gui->window;
 #endif

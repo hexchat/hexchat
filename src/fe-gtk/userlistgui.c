@@ -274,7 +274,7 @@ userlist_set_value (GtkWidget *treeview, gfloat val)
 gfloat
 userlist_get_value (GtkWidget *treeview)
 {
-	return gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (treeview))->value;
+	return gtk_adjustment_get_value (gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (treeview)));
 }
 
 int
@@ -425,7 +425,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 		return;
 	gtk_tree_model_get (model, &iter, COL_USER, &user, -1);
 
-	mg_dnd_drop_file (current_sess, user->nick, selection_data->data);
+	mg_dnd_drop_file (current_sess, user->nick, (char *)gtk_selection_data_get_data (selection_data));
 }
 
 static gboolean

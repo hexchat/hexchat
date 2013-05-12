@@ -75,7 +75,7 @@ chanlist_match (server *serv, const char *str)
 	switch (serv->gui->chanlist_search_type)
 	{
 	case 1:
-		return match (GTK_ENTRY (serv->gui->chanlist_wild)->text, str);
+		return match (gtk_entry_get_text (GTK_ENTRY (serv->gui->chanlist_wild)), str);
 #ifndef WIN32
 	case 2:
 		if (!serv->gui->have_regex)
@@ -84,7 +84,7 @@ chanlist_match (server *serv, const char *str)
 		return !regexec (&serv->gui->chanlist_match_regex, str, 1, NULL, REG_NOTBOL);
 #endif
 	default:	/* case 0: */
-		return nocasestrstr (str, GTK_ENTRY (serv->gui->chanlist_wild)->text) ? 1 : 0;
+		return nocasestrstr (str, gtk_entry_get_text (GTK_ENTRY (serv->gui->chanlist_wild))) ? 1 : 0;
 	}
 }
 
@@ -227,7 +227,7 @@ chanlist_place_row_in_gui (server *serv, chanlistrow *next_row, gboolean force)
 		return;
 	}
 
-	if (GTK_ENTRY (serv->gui->chanlist_wild)->text[0])
+	if (gtk_entry_get_text (GTK_ENTRY (serv->gui->chanlist_wild))[0])
 	{
 		/* Check what the user wants to match. If both buttons or _neither_
 		 * button is checked, look for match in both by default. 
@@ -414,7 +414,7 @@ chanlist_find_cb (GtkWidget * wid, server *serv)
 		regfree (&serv->gui->chanlist_match_regex);
 	}
 
-	if (regcomp (&serv->gui->chanlist_match_regex, GTK_ENTRY (wid)->text,
+	if (regcomp (&serv->gui->chanlist_match_regex, gtk_entry_get_text (GTK_ENTRY (wid)),
 					 REG_ICASE | REG_EXTENDED | REG_NOSUB) == 0)
 		serv->gui->have_regex = 1;
 #endif
@@ -423,13 +423,13 @@ chanlist_find_cb (GtkWidget * wid, server *serv)
 static void
 chanlist_match_channel_button_toggled (GtkWidget * wid, server *serv)
 {
-	serv->gui->chanlist_match_wants_channel = GTK_TOGGLE_BUTTON (wid)->active;
+	serv->gui->chanlist_match_wants_channel = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (wid));
 }
 
 static void
 chanlist_match_topic_button_toggled (GtkWidget * wid, server *serv)
 {
-	serv->gui->chanlist_match_wants_topic = GTK_TOGGLE_BUTTON (wid)->active;
+	serv->gui->chanlist_match_wants_topic = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (wid));
 }
 
 static char *
@@ -519,7 +519,7 @@ chanlist_save (GtkWidget * wid, server *serv)
 static gboolean
 chanlist_flash (server *serv)
 {
-	if (serv->gui->chanlist_refresh->state != GTK_STATE_ACTIVE)
+	if (gtk_widget_get_state (serv->gui->chanlist_refresh) != GTK_STATE_ACTIVE)
 		gtk_widget_set_state (serv->gui->chanlist_refresh, GTK_STATE_ACTIVE);
 	else
 		gtk_widget_set_state (serv->gui->chanlist_refresh, GTK_STATE_PRELIGHT);
@@ -762,7 +762,7 @@ chanlist_opengui (server *serv, int do_refresh)
 
 	store = (GtkListStore *) custom_list_new();
 	view = gtkutil_treeview_new (vbox, GTK_TREE_MODEL (store), NULL, -1);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (view->parent),
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (gtk_widget_get_parent (view)),
 													 GTK_SHADOW_IN);
 	serv->gui->chanlist_list = view;
 

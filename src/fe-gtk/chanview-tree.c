@@ -118,7 +118,7 @@ cv_tree_init (chanview *cv)
 	if (cv->style)
 		gtk_widget_set_style (view, cv->style);
 	/*gtk_widget_modify_base (view, GTK_STATE_NORMAL, &colors[COL_BG]);*/
-	GTK_WIDGET_UNSET_FLAGS (view, GTK_CAN_FOCUS);
+	gtk_widget_set_can_focus (view, FALSE);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
 
 	if (prefs.hex_gui_tab_dots)

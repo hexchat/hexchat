@@ -206,7 +206,7 @@ int SPELL_ENTRY_GET_POS (GtkWidget *entry);
 void SPELL_ENTRY_SET_POS (GtkWidget *entry, int pos);
 void SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos);
 #else
-#define SPELL_ENTRY_GET_TEXT(e) (GTK_ENTRY(e)->text)
+#define SPELL_ENTRY_GET_TEXT(e) ((char *)(gtk_entry_get_text (GTK_ENTRY(e))))
 #define SPELL_ENTRY_SET_TEXT(e,txt) gtk_entry_set_text(GTK_ENTRY(e),txt)
 #define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_editable_set_editable(GTK_EDITABLE(e),v)
 #define SPELL_ENTRY_GET_POS(e) gtk_editable_get_position(GTK_EDITABLE(e))

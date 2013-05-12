@@ -325,8 +325,9 @@ fe_get_str (char *msg, char *def, void *callback, void *userdata)
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 										NULL);
-	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
+
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
 
 	if (userdata == (void *)1)	/* nick box is usually on the very bottom, make it centered */
 	{
@@ -354,7 +355,7 @@ fe_get_str (char *msg, char *def, void *callback, void *userdata)
 	g_signal_connect (G_OBJECT (dialog), "response",
 						   G_CALLBACK (gtkutil_get_str_response), entry);
 
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox);
 
 	gtk_widget_show_all (dialog);
 }
@@ -397,7 +398,7 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 										NULL);
-	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
 
@@ -408,9 +409,9 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 
 	spin = gtk_spin_button_new (NULL, 1, 0);
 	adj = gtk_spin_button_get_adjustment ((GtkSpinButton*)spin);
-	adj->lower = 0;
-	adj->upper = 1024;
-	adj->step_increment = 1;
+	gtk_adjustment_set_lower (adj, 0);
+	gtk_adjustment_set_upper (adj, 1024);
+	gtk_adjustment_set_step_increment (adj, 1);
 	gtk_adjustment_changed (adj);
 	gtk_spin_button_set_value ((GtkSpinButton*)spin, def);
 	gtk_box_pack_end (GTK_BOX (hbox), spin, 0, 0, 0);
@@ -421,7 +422,7 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 	g_signal_connect (G_OBJECT (dialog), "response",
 						   G_CALLBACK (gtkutil_get_number_response), spin);
 
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox);
 
 	gtk_widget_show_all (dialog);
 }
@@ -570,7 +571,7 @@ add_tip (GtkWidget * wid, char *text)
 void
 show_and_unfocus (GtkWidget * wid)
 {
-	GTK_WIDGET_UNSET_FLAGS (wid, GTK_CAN_FOCUS);
+	gtk_widget_set_can_focus (wid, FALSE);
 	gtk_widget_show (wid);
 }
 
@@ -621,7 +622,7 @@ gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
 	GtkClipboard *clip, *clip2;
 
 	win = gtk_widget_get_toplevel (GTK_WIDGET (widget));
-	if (GTK_WIDGET_TOPLEVEL (win))
+	if (gtk_widget_is_toplevel (win))
 	{
 		int len = strlen (str);
 

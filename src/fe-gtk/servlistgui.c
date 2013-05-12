@@ -671,10 +671,10 @@ servlist_update_from_entry (char **str, GtkWidget *entry)
 	if (*str)
 		free (*str);
 
-	if (GTK_ENTRY (entry)->text[0] == 0)
+	if (gtk_entry_get_text (GTK_ENTRY (entry))[0] == 0)
 		*str = NULL;
 	else
-		*str = strdup (GTK_ENTRY (entry)->text);
+		*str = strdup (gtk_entry_get_text (GTK_ENTRY (entry)));
 }
 
 static void
@@ -946,20 +946,20 @@ servlist_savegui (void)
 	char *sp;
 
 	/* check for blank username, ircd will not allow this */
-	if (GTK_ENTRY (entry_guser)->text[0] == 0)
+	if (gtk_entry_get_text (GTK_ENTRY (entry_guser))[0] == 0)
 		return 1;
 
-	/* if (GTK_ENTRY (entry_greal)->text[0] == 0)
+	/* if (gtk_entry_get_text (GTK_ENTRY (entry_greal))[0] == 0)
 		return 1; */
 
-	strcpy (prefs.hex_irc_nick1, GTK_ENTRY (entry_nick1)->text);
-	strcpy (prefs.hex_irc_nick2, GTK_ENTRY (entry_nick2)->text);
-	strcpy (prefs.hex_irc_nick3, GTK_ENTRY (entry_nick3)->text);
-	strcpy (prefs.hex_irc_user_name, GTK_ENTRY (entry_guser)->text);
+	strcpy (prefs.hex_irc_nick1, gtk_entry_get_text (GTK_ENTRY (entry_nick1)));
+	strcpy (prefs.hex_irc_nick2, gtk_entry_get_text (GTK_ENTRY (entry_nick2)));
+	strcpy (prefs.hex_irc_nick3, gtk_entry_get_text (GTK_ENTRY (entry_nick3)));
+	strcpy (prefs.hex_irc_user_name, gtk_entry_get_text (GTK_ENTRY (entry_guser)));
 	sp = strchr (prefs.hex_irc_user_name, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces will break the login */
-	/* strcpy (prefs.hex_irc_real_name, GTK_ENTRY (entry_greal)->text); */
+	/* strcpy (prefs.hex_irc_real_name, gtk_entry_get_text (GTK_ENTRY (entry_greal))); */
 	servlist_save ();
 	save_config (); /* For nicks stored in hexchat.conf */
 
@@ -1208,13 +1208,13 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 	if ((1 << num) == FLAG_CYCLE || (1 << num) == FLAG_USE_PROXY)
 	{
 		/* these ones are reversed, so it's compat with 2.0.x */
-		if (GTK_TOGGLE_BUTTON (but)->active)
+		if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)))
 			selected_net->flags &= ~(1 << num);
 		else
 			selected_net->flags |= (1 << num);
 	} else
 	{
-		if (GTK_TOGGLE_BUTTON (but)->active)
+		if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)))
 			selected_net->flags |= (1 << num);
 		else
 			selected_net->flags &= ~(1 << num);
@@ -1222,7 +1222,7 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 
 	if ((1 << num) == FLAG_USE_GLOBAL)
 	{
-		servlist_toggle_global_user (!GTK_TOGGLE_BUTTON (but)->active);
+		servlist_toggle_global_user (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)));
 	}
 }
 
@@ -1496,7 +1496,7 @@ servlist_combo_cb (GtkEntry *entry, gpointer userdata)
 
 	if (selected_net->encoding)
 		free (selected_net->encoding);
-	selected_net->encoding = strdup (entry->text);
+	selected_net->encoding = strdup (gtk_entry_get_text (entry));
 }
 
 /* Fills up the network's authentication type so that it's guaranteed to be either NULL or a valid value. */
@@ -1549,7 +1549,7 @@ servlist_create_charsetcombo (void)
 
 	gtk_entry_set_text (GTK_ENTRY (gtk_bin_get_child (GTK_BIN(cb))), selected_net->encoding ? selected_net->encoding : "System default");
 	
-	g_signal_connect (G_OBJECT (GTK_BIN (cb)->child), "changed",
+	g_signal_connect (G_OBJECT (gtk_bin_get_child (GTK_BIN (cb))), "changed",
 							G_CALLBACK (servlist_combo_cb), NULL);
 
 	return cb;
@@ -1582,7 +1582,7 @@ servlist_create_logintypecombo (GtkWidget *data)
 static void
 no_servlist (GtkWidget * igad, gpointer serv)
 {
-	if (GTK_TOGGLE_BUTTON (igad)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (igad)))
 		prefs.hex_gui_slist_skip = TRUE;
 	else
 		prefs.hex_gui_slist_skip = FALSE;
@@ -1591,7 +1591,7 @@ no_servlist (GtkWidget * igad, gpointer serv)
 static void
 fav_servlist (GtkWidget * igad, gpointer serv)
 {
-	if (GTK_TOGGLE_BUTTON (igad)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (igad)))
 		prefs.hex_gui_slist_fav = TRUE;
 	else
 		prefs.hex_gui_slist_fav = FALSE;
@@ -1711,7 +1711,6 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 								"editable", 1,
 								NULL);
 
-
 	/* Channel Tree */
 	store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
 	model = GTK_TREE_MODEL (store);
@@ -1784,19 +1783,19 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	g_signal_connect (G_OBJECT (buttonadd), "clicked",
 							G_CALLBACK (servlist_addbutton_cb), notebook);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonadd);
-	GTK_WIDGET_SET_FLAGS (buttonadd, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (buttonadd, TRUE);
 
 	buttonremove = gtk_button_new_from_stock ("gtk-remove");
 	g_signal_connect (G_OBJECT (buttonremove), "clicked",
 							G_CALLBACK (servlist_deletebutton_cb), notebook);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonremove);
-	GTK_WIDGET_SET_FLAGS (buttonremove, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (buttonremove, TRUE);
 
 	buttonedit = gtk_button_new_with_mnemonic (_("_Edit"));
 	g_signal_connect (G_OBJECT (buttonedit), "clicked",
 							G_CALLBACK (servlist_editbutton_cb), notebook);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonedit);
-	GTK_WIDGET_SET_FLAGS (buttonedit, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (buttonedit, TRUE);
 
 
 	/* Checkboxes and entries */
@@ -1854,7 +1853,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	g_signal_connect (G_OBJECT (button10), "clicked",
 							G_CALLBACK (servlist_edit_close_cb), 0);
 	gtk_container_add (GTK_CONTAINER (hbuttonbox4), button10);
-	GTK_WIDGET_SET_FLAGS (button10, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button10, TRUE);
 
 	if (net->flags & FLAG_USE_GLOBAL)
 	{
@@ -2089,21 +2088,21 @@ servlist_open_networks (void)
 							G_CALLBACK (servlist_addnet_cb), networks_tree);
 	gtk_widget_show (button_add);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox2), button_add);
-	GTK_WIDGET_SET_FLAGS (button_add, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button_add, TRUE);
 
 	button_remove = gtk_button_new_from_stock ("gtk-remove");
 	g_signal_connect (G_OBJECT (button_remove), "clicked",
 							G_CALLBACK (servlist_deletenet_cb), 0);
 	gtk_widget_show (button_remove);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox2), button_remove);
-	GTK_WIDGET_SET_FLAGS (button_remove, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button_remove, TRUE);
 
 	button_edit = gtk_button_new_with_mnemonic (_("_Edit..."));
 	g_signal_connect (G_OBJECT (button_edit), "clicked",
 							G_CALLBACK (servlist_edit_cb), 0);
 	gtk_widget_show (button_edit);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox2), button_edit);
-	GTK_WIDGET_SET_FLAGS (button_edit, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button_edit, TRUE);
 
 	button_sort = gtk_button_new_with_mnemonic (_("_Sort"));
 	add_tip (button_sort, _("Sorts the network list in alphabetical order. "
@@ -2112,7 +2111,7 @@ servlist_open_networks (void)
 							G_CALLBACK (servlist_sort), 0);
 	gtk_widget_show (button_sort);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox2), button_sort);
-	GTK_WIDGET_SET_FLAGS (button_sort, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button_sort, TRUE);
 
 	button_sort = gtk_button_new_with_mnemonic (_("_Favor"));
 	add_tip (button_sort, _("Mark or unmark this network as a favorite."));
@@ -2120,7 +2119,7 @@ servlist_open_networks (void)
 							G_CALLBACK (servlist_favor), 0);
 	gtk_widget_show (button_sort);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox2), button_sort);
-	GTK_WIDGET_SET_FLAGS (button_sort, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button_sort, TRUE);
 
 	hseparator1 = gtk_hseparator_new ();
 	gtk_widget_show (hseparator1);
@@ -2136,11 +2135,11 @@ servlist_open_networks (void)
 	g_signal_connect (G_OBJECT (button_close), "clicked",
 							G_CALLBACK (servlist_close_cb), 0);
 	gtk_container_add (GTK_CONTAINER (hbuttonbox1), button_close);
-	GTK_WIDGET_SET_FLAGS (button_close, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button_close, TRUE);
 
 	button_connect = gtkutil_button (hbuttonbox1, GTK_STOCK_CONNECT, NULL,
 												servlist_connect_cb, NULL, _("C_onnect"));
-	GTK_WIDGET_SET_FLAGS (button_connect, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default (button_connect, TRUE);
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);
