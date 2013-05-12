@@ -1035,6 +1035,7 @@ set_locale(void)
 
 	putenv (hexchat_lang);
 }
+
 int
 main (int argc, char *argv[])
 {
