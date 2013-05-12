@@ -1227,26 +1227,26 @@ servlist_load (void)
 			case 'P':
 				net->pass = strdup (buf + 2);
 				break;
-			case 'J':
-				servlist_favchan_add (net, buf + 2);
-				break;
-			case 'C':
-				servlist_command_add (net, buf + 2);
-				break;
-			case 'F':
-				net->flags = atoi (buf + 2);
-				break;
-			case 'D':
-				net->selected = atoi (buf + 2);
+			case 'L':
+				net->logintype = atoi (buf + 2);
 				break;
 			case 'E':
 				net->encoding = strdup (buf + 2);
 				break;
+			case 'F':
+				net->flags = atoi (buf + 2);
+				break;
 			case 'S':	/* new server/hostname for this network */
 				servlist_server_add (net, buf + 2);
 				break;
-			case 'L':
-				net->logintype = atoi (buf + 2);
+			case 'C':
+				servlist_command_add (net, buf + 2);
+				break;
+			case 'J':
+				servlist_favchan_add (net, buf + 2);
+				break;
+			case 'D':
+				net->selected = atoi (buf + 2);
 				break;
 			}
 		}
