@@ -132,7 +132,7 @@ static const char *login_types[]=
 	"SASL (username + password)",
 	"Server Password (/PASS password)",
 	"NickServ (/MSG NickServ + password)",
-	"NickServ (/NickServ + password)",
+	"NickServ (/NICKSERV + password)",
 #if 0
 	"NickServ (/NS + password)",
 #endif
