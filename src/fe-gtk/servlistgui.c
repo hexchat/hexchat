@@ -77,7 +77,6 @@ static GtkWidget *edit_trees[N_TREES];
 
 static ircnet *selected_net = NULL;
 static ircserver *selected_serv = NULL;
-static ircnet *fav_add_net = NULL; /* used in Add/Remove fav context menus */
 static session *servlist_sess;
 
 static void servlist_network_row_cb (GtkTreeSelection *sel, gpointer user_data);
