@@ -2030,8 +2030,8 @@ server_free (server *serv)
 		free (serv->last_away_reason);
 	if (serv->encoding)
 		free (serv->encoding);
-	if (serv->autojoin)
-		free (serv->autojoin);
+	if (serv->favlist)
+		g_slist_free_full (serv->favlist, g_free);
 
 	fe_server_callback (serv);
 

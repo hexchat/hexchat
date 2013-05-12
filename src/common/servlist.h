@@ -30,6 +30,12 @@ typedef struct commandentry
 	char *command;
 } commandentry;
 
+typedef struct favchannel
+{
+	char *name;
+	char *key;
+} favchannel;
+
 typedef struct ircnet
 {
 	char *name;
@@ -38,12 +44,12 @@ typedef struct ircnet
 	char *user;
 	char *real;
 	char *pass;
-	char *autojoin;
 	int logintype;
 	char *comment;
 	char *encoding;
 	GSList *servlist;
 	GSList *commandlist;
+	GSList *favchanlist;
 	int selected;
 	guint32 flags;
 } ircnet;
@@ -79,14 +85,20 @@ ircnet *servlist_net_find_from_server (char *server_name);
 
 ircserver *servlist_server_find (ircnet *net, char *name, int *pos);
 commandentry *servlist_command_find (ircnet *net, char *cmd, int *pos);
+favchannel *servlist_favchan_find (ircnet *net, char *channel, int *pos);
+
 ircserver *servlist_server_add (ircnet *net, char *name);
 commandentry *servlist_command_add (ircnet *net, char *command);
+favchannel *servlist_favchan_add (ircnet *net, char *channel);
+
 void servlist_server_remove (ircnet *net, ircserver *serv);
 void servlist_command_remove (ircnet *net, commandentry *entry);
+void servlist_favchan_remove (ircnet *net, favchannel *channel);
 
-void joinlist_split (char *autojoin, GSList **channels, GSList **keys);
 gboolean joinlist_is_in_list (server *serv, char *channel);
-void joinlist_free (GSList *channels, GSList *keys);
-gchar *joinlist_merge (GSList *channels, GSList *keys);
 
+/* FIXME
+void joinlist_split (char *autojoin, GSList **channels, GSList **keys);
+void joinlist_free (GSList *channels, GSList *keys);
+*/
 #endif

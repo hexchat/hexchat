@@ -610,11 +610,13 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 	{
 		sess->willjoinchannel[0] = 0;
 
-		if (net->autojoin)
+		if (net->favchanlist)
 		{
-			if (serv->autojoin)
-				free (serv->autojoin);
-			serv->autojoin = strdup (net->autojoin);
+			if (serv->favlist)
+			{
+				g_slist_free_full (serv->favlist, g_free);
+			}
+			serv->favlist = g_slist_copy_deep (net->favchanlist, (GCopyFunc) g_strdup, NULL);
 		}
 	}
 
@@ -804,8 +806,35 @@ servlist_server_find (ircnet *net, char *name, int *pos)
 		if (strcmp (serv->hostname, name) == 0)
 		{
 			if (pos)
+			{
 				*pos = i;
+			}
 			return serv;
+		}
+		i++;
+		list = list->next;
+	}
+
+	return NULL;
+}
+
+favchannel *
+servlist_favchan_find (ircnet *net, char *channel, int *pos)
+{
+	GSList *list = net->favchanlist;
+	favchannel *favchan;
+	int i = 0;
+
+	while (list)
+	{
+		favchan = list->data;
+		if (strcmp (favchan->name, channel) == 0)
+		{
+			if (pos)
+			{
+				*pos = i;
+			}
+			return favchan;
 		}
 		i++;
 		list = list->next;
@@ -827,7 +856,9 @@ servlist_command_find (ircnet *net, char *cmd, int *pos)
 		if (strcmp (entry->command, cmd) == 0)
 		{
 			if (pos)
+			{
 				*pos = i;
+			}
 			return entry;
 		}
 		i++;
@@ -918,6 +949,32 @@ servlist_command_add (ircnet *net, char *cmd)
 	return entry;
 }
 
+favchannel *
+servlist_favchan_add (ircnet *net, char *channel)
+{
+	int pos;
+	favchannel *chan;
+
+	chan = malloc (sizeof (favchannel));
+	memset (chan, 0, sizeof (favchannel));
+
+	if (strchr (channel, ',') != NULL)
+	{
+		pos = strchr (channel, ',') - channel;
+		chan->name = g_strndup (channel, pos);
+		chan->key = g_strdup (channel + pos + 1);
+	}
+	else
+	{
+		chan->name = g_strdup (channel);
+		chan->key = NULL;
+	}
+
+	net->favchanlist = g_slist_append (net->favchanlist, chan);
+
+	return chan;
+}
+
 void
 servlist_server_remove (ircnet *net, ircserver *serv)
 {
@@ -944,6 +1001,15 @@ servlist_command_remove (ircnet *net, commandentry *entry)
 	free (entry->command);
 	free (entry);
 	net->commandlist = g_slist_remove (net->commandlist, entry);
+}
+
+void
+servlist_favchan_remove (ircnet *net, favchannel *channel)
+{
+	g_free (channel->name);
+	g_free (channel->key);
+	g_free (channel);
+	net->favchanlist = g_slist_remove (net->favchanlist, channel);
 }
 
 static void
@@ -991,10 +1057,10 @@ servlist_net_remove (ircnet *net)
 	if (net->real)
 		free (net->real);
 	free_and_clear (net->pass);
-	if (net->autojoin)
-		free (net->autojoin);
+	if (net->favchanlist)
+		g_slist_free_full (net->favchanlist, g_free);
 	if (net->commandlist)
-		g_slist_free_full (net->commandlist, (GDestroyNotify) g_free);
+		g_slist_free_full (net->commandlist, g_free);
 	if (net->comment)
 		free (net->comment);
 	if (net->encoding)
@@ -1049,7 +1115,7 @@ servlist_load_defaults (void)
 			net->encoding = strdup (IRC_DEFAULT_CHARSET);
 			if (def[i].channel)
 			{
-				net->autojoin = strdup (def[i].channel);
+				servlist_favchan_add (net, def[i].channel);
 			}
 			if (def[i].charset)
 			{
@@ -1127,7 +1193,7 @@ servlist_load (void)
 				net->pass = strdup (buf + 2);
 				break;
 			case 'J':
-				net->autojoin = strdup (buf + 2);
+				servlist_favchan_add (net, buf + 2);
 				break;
 			case 'C':
 				servlist_command_add (net, buf + 2);
@@ -1205,9 +1271,11 @@ servlist_save (void)
 	ircnet *net;
 	ircserver *serv;
 	commandentry *cmd;
+	favchannel *favchan;
 	GSList *list;
 	GSList *netlist;
 	GSList *cmdlist;
+	GSList *favlist;
 #ifndef WIN32
 	int first = FALSE;
 
@@ -1249,8 +1317,6 @@ servlist_save (void)
 			fprintf (fp, "R=%s\n", net->real);
 		if (net->pass)
 			fprintf (fp, "P=%s\n", net->pass);
-		if (net->autojoin)
-			fprintf (fp, "J=%s\n", net->autojoin);
 		if (net->logintype)
 			fprintf (fp, "L=%d\n", net->logintype);
 		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&
@@ -1284,6 +1350,23 @@ servlist_save (void)
 			cmdlist = cmdlist->next;
 		}
 
+		favlist = net->favchanlist;
+		while (favlist)
+		{
+			favchan = favlist->data;
+
+			if (favchan->key)
+			{
+				fprintf (fp, "J=%s,%s\n", favchan->name, favchan->key);
+			}
+			else
+			{
+				fprintf (fp, "J=%s\n", favchan->name);
+			}
+
+			favlist = favlist->next;
+		}
+
 		if (fprintf (fp, "\n") < 1)
 		{
 			fclose (fp);
@@ -1297,162 +1380,33 @@ servlist_save (void)
 	return TRUE;
 }
 
-static void
-joinlist_free1 (GSList *list)
+static int
+joinlist_find_chan (favchannel *curr_item, const char *channel)
 {
-	GSList *head = list;
-
-	for (; list; list = list->next)
-		g_free (list->data);
-	g_slist_free (head);
-}
-
-void
-joinlist_free (GSList *channels, GSList *keys)
-{
-	joinlist_free1 (channels);
-	joinlist_free1 (keys);
+	if (!g_ascii_strcasecmp (curr_item->name, channel))
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 gboolean
 joinlist_is_in_list (server *serv, char *channel)
 {
-	GSList *channels, *keys;
-	GSList *list;
-
-	if (!serv->network || !((ircnet *)serv->network)->autojoin)
+	if (!serv->network || !((ircnet *)serv->network)->favchanlist)
+	{
 		return FALSE;
-
-	joinlist_split (((ircnet *)serv->network)->autojoin, &channels, &keys);
-
-	for (list = channels; list; list = list->next)
-	{
-		if (serv->p_cmp (list->data, channel) == 0)
-			return TRUE;
 	}
 
-	joinlist_free (channels, keys);
-
-	return FALSE;
+	if (g_slist_find_custom (((ircnet *)serv->network)->favchanlist, channel, (GCompareFunc) joinlist_find_chan))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
-
-gchar *
-joinlist_merge (GSList *channels, GSList *keys)
-{
-	GString *out = g_string_new (NULL);
-	GSList *list;
-	int i, j;
-
-	for (; channels; channels = channels->next)
-	{
-		g_string_append (out, channels->data);
-
-		if (channels->next)
-			g_string_append_c (out, ',');
-	}
-
-	/* count number of REAL keys */
-	for (i = 0, list = keys; list; list = list->next)
-		if (list->data)
-			i++;
-
-	if (i > 0)
-	{
-		g_string_append_c (out, ' ');
-
-		for (j = 0; keys; keys = keys->next)
-		{
-			if (keys->data)
-			{
-				g_string_append (out, keys->data);
-				j++;
-				if (j == i)
-					break;
-			}
-
-			if (keys->next)
-				g_string_append_c (out, ',');
-		}
-	}
-
-	return g_string_free (out, FALSE);
-}
-
-void
-joinlist_split (char *autojoin, GSList **channels, GSList **keys)
-{
-	char *parta, *partb;
-	char *chan, *key;
-	int len;
-
-	*channels = NULL;
-	*keys = NULL;
-
-	/* after the first space, the keys begin */
-	parta = autojoin;
-	partb = strchr (autojoin, ' ');
-	if (partb)
-		partb++;
-
-	while (1)
-	{
-		chan = parta;
-		key = partb;
-
-		if (1)
-		{
-			while (parta[0] != 0 && parta[0] != ',' && parta[0] != ' ')
-			{
-				parta++;
-			}
-		}
-
-		if (partb)
-		{
-			while (partb[0] != 0 && partb[0] != ',' && partb[0] != ' ')
-			{
-				partb++;
-			}
-		}
-
-		len = parta - chan;
-		if (len < 1)
-			break;
-		*channels = g_slist_append (*channels, g_strndup (chan, len));
-
-		len = partb - key;
-		*keys = g_slist_append (*keys, len ? g_strndup (key, len) : NULL);
-
-		if (parta[0] == ' ' || parta[0] == 0)
-			break;
-		parta++;
-
-		if (partb)
-		{
-			if (partb[0] == 0 || partb[0] == ' ')
-				partb = NULL;	/* no more keys, but maybe more channels? */
-			else
-				partb++;
-		}
-	}
-
-#if 0
-	GSList *lista, *listb;
-	int i;
-
-	printf("-----\n");
-	i = 0;
-	lista = *channels;
-	listb = *keys;
-	while (lista)
-	{
-		printf("%d. |%s| |%s|\n", i, lista->data, listb->data);
-		i++;
-		lista = lista->next;
-		listb = listb->next;
-	}
-	printf("-----\n\n");
-#endif
-}
-
-

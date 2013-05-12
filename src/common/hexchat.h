@@ -566,7 +566,7 @@ typedef struct server
 	time_t away_time;					/* when we were marked away */
 
 	char *encoding;					/* NULL for system */
-	char *autojoin;			/* list of channels & keys to join */
+	GSList *favlist;			/* list of channels & keys to join */
 
 	unsigned int motd_skipped:1;
 	unsigned int connected:1;

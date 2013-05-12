@@ -1069,6 +1069,7 @@ inbound_nameslist_end (server *serv, char *chan)
 static gboolean
 check_autojoin_channels (server *serv)
 {
+#if 0//FIXME
 	char *po;
 	session *sess;
 	GSList *list = sess_list;
@@ -1137,6 +1138,7 @@ check_autojoin_channels (server *serv)
 
 	serv->joindelay_tag = 0;
 	fe_server_event (serv, FE_SE_LOGGEDIN, i);
+#endif
 	return FALSE;
 }
 

@@ -182,74 +182,32 @@ servlist_select_and_show (GtkTreeView *treeview, GtkTreeIter *iter,
 }
 
 static void
-servlist_channel_save (void)
-{
-	GtkTreeModel *model;
-	GtkTreeIter iter;
-	char *channel, *key;
-	char *autojoin;
-	GSList *channels = NULL, *keys = NULL;
-
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]));
-
-	if (gtk_tree_model_get_iter_first (model, &iter))
-	{
-		do
-		{
-			gtk_tree_model_get (model, &iter, 0, &channel, 1, &key, -1);
-			channels = g_slist_append (channels, channel);
-			if (key && key[0] == 0)
-			{
-				/* NULL out empty keys */
-				g_free (key);
-				keys = g_slist_append (keys, NULL);				
-			}
-			else
-				keys = g_slist_append (keys, key);
-		}
-		while (gtk_tree_model_iter_next (model, &iter));
-	}
-
-	autojoin = joinlist_merge (channels, keys);
-	if (autojoin)
-	{
-			if (selected_net->autojoin)
-					g_free(selected_net->autojoin);
-			strcpy (selected_net->autojoin, autojoin);
-			g_free (autojoin);
-	}
-
-	/* this does g_free too */
-	joinlist_free (channels, keys);
-}
-
-static void
 servlist_channels_populate (ircnet *net, GtkWidget *treeview)
 {
 	GtkListStore *store;
-	GSList *channels, *keys;
-	GSList *clist, *klist;
 	GtkTreeIter iter;
+	int i;
+	favchannel *favchan;
+	GSList *list = net->favchanlist;
 
-	if (net->autojoin)
+	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (treeview));
+	gtk_list_store_clear (store);
+
+	i = 0;
+	while (list)
 	{
-		joinlist_split (net->autojoin, &channels, &keys);
+		favchan = list->data;
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 0, favchan->name, 1, favchan->key, 2, TRUE, -1);
 
-		clist = channels;
-		klist = keys;
-
-		store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (treeview)));
-
-		while (clist)
+		if (net->selected == i)
 		{
-			gtk_list_store_append (store, &iter);
-			gtk_list_store_set (store, &iter, 0, clist->data, 1, klist->data, 2, TRUE, -1);
-
-			klist = klist->next;
-			clist = clist->next;
+			/* select this server */
+			servlist_select_and_show (GTK_TREE_VIEW (treeview), &iter, store);
 		}
 
-		joinlist_free (channels, keys);
+		i++;
+		list = list->next;
 	}
 }
 
@@ -273,8 +231,10 @@ servlist_servers_populate (ircnet *net, GtkWidget *treeview)
 		gtk_list_store_set (store, &iter, 0, serv->hostname, 1, 1, -1);
 
 		if (net->selected == i)
+		{
 			/* select this server */
 			servlist_select_and_show (GTK_TREE_VIEW (treeview), &iter, store);
+		}
 
 		i++;
 		list = list->next;
@@ -414,7 +374,7 @@ servlist_addserver (void)
 	servlist_server_add (selected_net, "newserver/6667");
 
 	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter, 0, "newserver/6667", 1, 1, -1);
+	gtk_list_store_set (store, &iter, 0, "newserver/6667", 1, TRUE, -1);
 
 	/* select this server */
 	servlist_select_and_show (GTK_TREE_VIEW (edit_trees[SERVER_TREE]), &iter, store);
@@ -436,10 +396,32 @@ servlist_addcommand (void)
 	servlist_command_add (selected_net, "ECHO hello");
 
 	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter, 0, "ECHO hello", 1, 1, -1);
+	gtk_list_store_set (store, &iter, 0, "ECHO hello", 1, TRUE, -1);
 
 	servlist_select_and_show (GTK_TREE_VIEW (edit_trees[CMD_TREE]), &iter, store);
 	servlist_start_editing (GTK_TREE_VIEW (edit_trees[CMD_TREE]));
+
+	servlist_server_row_cb (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree)), NULL);
+}
+
+static void
+servlist_addchannel (void)
+{
+	GtkTreeIter iter;
+	GtkListStore *store;
+
+	if (!selected_net)
+		return;
+
+	store = GTK_LIST_STORE(gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE])));
+	servlist_favchan_add (selected_net, "#channel");
+
+	gtk_list_store_append (store, &iter);
+	gtk_list_store_set (store, &iter, 0, "#channel", 1, "", 2, TRUE, -1);
+
+	/* select this server */
+	servlist_select_and_show (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]), &iter, store);
+	servlist_start_editing (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]));
 
 	servlist_server_row_cb (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree)), NULL);
 }
@@ -702,6 +684,7 @@ servlist_edit_cb (GtkWidget *but, gpointer none)
 	edit_win = servlist_open_edit (serverlist_win, selected_net);
 	gtkutil_set_icon (edit_win);
 	servlist_servers_populate (selected_net, edit_trees[SERVER_TREE]);
+	servlist_channels_populate (selected_net, edit_trees[CHANNEL_TREE]);
 	servlist_commands_populate (selected_net, edit_trees[CMD_TREE]);
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (edit_trees[SERVER_TREE]))),
 							"changed", G_CALLBACK (servlist_server_row_cb), NULL);
@@ -836,6 +819,53 @@ servlist_deletecommand_cb (void)
 	}
 }
 
+static void
+servlist_deletechannel (favchannel *favchan, GtkTreeModel *model)
+{
+	GtkTreeSelection *sel;
+	GtkTreeIter iter;
+
+	/* remove from GUI */
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]));
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	{
+		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+	}
+
+	/* remove from list */
+	if (selected_net)
+	{
+		servlist_favchan_remove (selected_net, favchan);
+	}
+}
+
+static void
+servlist_deletechannel_cb (void)
+{
+	GtkTreeSelection *sel;
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+	char *name;
+	char *key;
+	favchannel *favchan;
+	int pos;
+
+	/* find the selected item in the GUI */
+	model = gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]));
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]));
+
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	{
+		gtk_tree_model_get (model, &iter, 0, &name, 1, &key, -1);			/* query the content of the selection */
+		favchan = servlist_favchan_find (selected_net, name, &pos);
+		g_free (name);
+		if (favchan)
+		{
+			servlist_deletechannel (favchan, model);
+		}
+	}
+}
+
 static ircnet *
 servlist_find_selected_net (GtkTreeSelection *sel)
 {
@@ -889,7 +919,6 @@ servlist_savegui (void)
 	if (sp)
 		sp[0] = 0;	/* spaces will break the login */
 	/* strcpy (prefs.hex_irc_real_name, GTK_ENTRY (entry_greal)->text); */
-	//FIXME: Save commands(and load them) and favorites
 	servlist_save ();
 	save_config (); /* For nicks stored in hexchat.conf */
 
@@ -912,69 +941,6 @@ servlist_get_iter_from_name (GtkTreeModel *model, gchar *name, GtkTreeIter *iter
 }
 
 static void
-servlist_editchannel_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, GtkTreeModel *model)
-{
-	GtkTreeIter iter;
-	static int loop_guard = FALSE;
-
-	if (loop_guard)
-		return;
-
-	if (!servlist_get_iter_from_name (model, name, &iter))
-		return;
-
-	loop_guard = TRUE;
-	/* delete empty item */
-	if (newval[0] == 0)
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-	else
-		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, newval, -1);
-	loop_guard = FALSE;
-}
-
-static void
-servlist_editkey_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, GtkTreeModel *model)
-{
-	GtkTreeIter iter;
-
-	if (!servlist_get_iter_from_name (model, name, &iter))
-		return;
-
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, newval, -1);
-}
-
-static void
-servlist_addchannel (char *channel)
-{
-	GtkTreeIter iter;
-	GtkListStore *store;
-
-	store = GTK_LIST_STORE(gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE])));
-
-	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter, 0, channel, 1, "", 2, TRUE, -1);
-
-	/* select this server */
-	servlist_select_and_show (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]), &iter, store);
-	servlist_start_editing (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]));
-}
-
-static void
-servlist_deletechannel_cb (void)
-{
-	GtkTreeSelection *sel;
-	GtkTreeModel *model;
-	GtkTreeIter iter;
-
-	/* find the selected item in the GUI */
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]));
-	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (edit_trees[CHANNEL_TREE]));
-
-	if (gtk_tree_selection_get_selected (sel, &model, &iter))
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-}
-
-static void
 servlist_addbutton_cb (GtkWidget *item, GtkNotebook *notebook)
 {
 		switch (gtk_notebook_get_current_page (notebook))
@@ -983,7 +949,7 @@ servlist_addbutton_cb (GtkWidget *item, GtkNotebook *notebook)
 						servlist_addserver ();
 						break;
 				case CHANNEL_TREE:
-						servlist_addchannel ("#channel");
+						servlist_addchannel ();
 						break;
 				case CMD_TREE:
 						servlist_addcommand ();
@@ -1015,184 +981,25 @@ servlist_deletebutton_cb (GtkWidget *item, GtkNotebook *notebook)
 void
 servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 {
-#if 0 // FIXME: adding favorites from menu
-	GtkWidget *win;
-	GtkWidget *scrolledwindow;
-	GtkTreeModel *model;
-	GtkListStore *store;
-	GtkCellRenderer *renderer;
-	GtkWidget *tree;
-	GtkWidget *table;
-	GtkWidget *label;
-	GtkWidget *label2;
-	GtkWidget *bbox;
-	GtkWidget *wid;
+	favchannel *fav;
+	char *buf;
 
-	GtkWidget *vbuttonbox1;
-	GtkWidget *buttonadd;
-	GtkWidget *buttonremove;
-	GtkWidget *buttonedit;
-
-	char buf[128];
-	char lab[128];
-	GSList *channels, *keys;
-	GSList *clist, *klist;
-	GtkTreeIter iter;
-
-	if (edit_win && selected_net)
-		/* update net->autojoin */
-		servlist_edit_update (selected_net);
-
-	win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_container_set_border_width (GTK_CONTAINER (win), 4);
-	gtk_window_set_title (GTK_WINDOW (win), _(DISPLAY_NAME": Favorite Channels (Auto-Join List)"));
-	gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_MOUSE);
-	if (edit_win)
-		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (edit_win));
-	gtk_window_set_modal (GTK_WINDOW (win), TRUE);
-	gtk_window_set_type_hint (GTK_WINDOW (win), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_window_set_role (GTK_WINDOW (win), "editserv");
-
-	table = gtk_table_new (1, 1, FALSE);
-	gtk_container_add (GTK_CONTAINER (win), table);
-	gtk_widget_show (table);
-
-	snprintf (buf, sizeof (buf), _("These channels will be joined whenever you connect to %s."), net->name);
-	label = gtk_label_new (buf);
-	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1, GTK_FILL|GTK_EXPAND, GTK_FILL, 3, 3);
-	gtk_widget_show (label);
-
-	label2 = gtk_label_new ("");
-	gtk_label_set_justify (GTK_LABEL (label2), GTK_JUSTIFY_CENTER);
-	gtk_table_attach (GTK_TABLE (table), label2, 0, 2, 1, 2, GTK_FILL, 0, 3, 3);
-	gtk_widget_show (label2);
-
-	scrolledwindow = gtk_scrolled_window_new (NULL, NULL);
-	gtk_table_attach (GTK_TABLE (table), scrolledwindow, 0, 1, 2, 3, GTK_FILL|GTK_EXPAND, GTK_FILL|GTK_EXPAND, 0, 0);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow),
-											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow),
-													 GTK_SHADOW_IN);
-	gtk_widget_show (scrolledwindow);
-
-	store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
-	model = GTK_TREE_MODEL (store);
-
-	tree = gtk_tree_view_new_with_model (model);
-	g_object_unref (model);
-	gtk_container_add (GTK_CONTAINER (scrolledwindow), tree);
-	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree), TRUE);
-	gtk_widget_show (tree);
-
-	renderer = gtk_cell_renderer_text_new ();
-	g_signal_connect (G_OBJECT (renderer), "edited",
-							G_CALLBACK (servlist_editchannel_cb), model);
-	gtk_tree_view_insert_column_with_attributes (
-								GTK_TREE_VIEW (tree), -1,
-						 		_("Channel"), renderer,
-						 		"text", 0,
-								"editable", 2,
-								NULL);
-
-	renderer = gtk_cell_renderer_text_new ();
-	g_signal_connect (G_OBJECT (renderer), "edited",
-							G_CALLBACK (servlist_editkey_cb), model);
-	gtk_tree_view_insert_column_with_attributes (
-								GTK_TREE_VIEW (tree), -1,
-						 		_("Key (Password)"), renderer,
-						 		"text", 1,
-								"editable", 2,
-								NULL);
-
-	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (tree), 0), TRUE);
-	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (tree), 1), TRUE);
-
-	gtk_tree_sortable_set_sort_column_id ((GtkTreeSortable *)model, 0, GTK_SORT_ASCENDING);
-
-	/* ===BUTTONS=== */
-	vbuttonbox1 = gtk_vbutton_box_new ();
-	gtk_box_set_spacing (GTK_BOX (vbuttonbox1), 3);
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (vbuttonbox1), GTK_BUTTONBOX_START);
-	gtk_widget_show (vbuttonbox1);
-	gtk_table_attach (GTK_TABLE (table), vbuttonbox1, 1, 2, 2, 3, GTK_FILL, GTK_FILL, 3, 0);
-
-	buttonadd = gtk_button_new_from_stock ("gtk-add");
-	g_signal_connect (G_OBJECT (buttonadd), "clicked",
-							G_CALLBACK (servlist_addchannel_cb), tree);
-	gtk_widget_show (buttonadd);
-	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonadd);
-	GTK_WIDGET_SET_FLAGS (buttonadd, GTK_CAN_DEFAULT);
-
-	buttonremove = gtk_button_new_from_stock ("gtk-remove");
-	g_signal_connect (G_OBJECT (buttonremove), "clicked",
-							G_CALLBACK (servlist_deletechannel_cb), tree);
-	gtk_widget_show (buttonremove);
-	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonremove);
-	GTK_WIDGET_SET_FLAGS (buttonremove, GTK_CAN_DEFAULT);
-
-	buttonedit = gtk_button_new_with_mnemonic (_("_Edit"));
-	g_signal_connect (G_OBJECT (buttonedit), "clicked",
-							G_CALLBACK (servlist_editchannelbutton_cb), tree);
-	gtk_widget_show (buttonedit);
-	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonedit);
-	GTK_WIDGET_SET_FLAGS (buttonedit, GTK_CAN_DEFAULT);
-
-	bbox = gtk_hbutton_box_new ();
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_END);
-	gtk_box_set_spacing (GTK_BOX (bbox), 4);
-	gtk_table_attach (GTK_TABLE (table), bbox, 0, 1, 3, 4, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 4);
-	gtk_widget_show (bbox);
-
-	wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
-	g_signal_connect (G_OBJECT (wid), "clicked", G_CALLBACK (gtkutil_destroy), win);
-	gtk_container_add (GTK_CONTAINER (bbox), wid);
-	gtk_widget_show (wid);
-
-	wid = gtk_button_new_from_stock (GTK_STOCK_OK);
-	g_signal_connect (G_OBJECT (wid), "clicked", G_CALLBACK (servlist_autojoineditok_cb), tree);
-	gtk_container_add (GTK_CONTAINER (bbox), wid);
-	gtk_widget_show (wid);
-	gtk_widget_grab_focus (wid);
-	/* =========== */
-	if (net->autojoin)
+	if (add)
 	{
-		joinlist_split (net->autojoin, &channels, &keys);
-
-		clist = channels;
-		klist = keys;
-
-		while (clist)
-		{
-			if (channel && !add && !rfc_casecmp (channel, clist->data))
-			{
-				snprintf (buf, sizeof (buf), _("%s has been removed."), channel);
-				snprintf (lab, sizeof (lab), "<span foreground=\"#2222DD\">%s</span>", buf);
-				gtk_label_set_markup (GTK_LABEL (label2), lab);
-			}
-			else
-			{
-				gtk_list_store_append (store, &iter);
-				gtk_list_store_set (store, &iter, 0, clist->data, 1, klist->data, 2, TRUE, -1);
-			}
-
-			klist = klist->next;
-			clist = clist->next;
-		}
-
-		joinlist_free (channels, keys);
+		servlist_favchan_add (net, channel);
+		servlist_save ();
+		buf = g_strdup_printf (_("Channel %s added to favorites."), channel);
+	}
+	else
+	{
+		fav = servlist_favchan_find (net, channel, NULL);
+		servlist_favchan_remove (net, fav);
+		servlist_save ();
+		buf = g_strdup_printf (_("Channel %s removed from favorites."), channel);
 	}
 
-	if (channel && add)
-	{
-		servlist_addchannel (channel);
-		snprintf (buf, sizeof (buf), _("%s has been added."), channel);
-		snprintf (lab, sizeof (lab), "<span foreground=\"#2222DD\">%s</span>", buf);
-		gtk_label_set_markup (GTK_LABEL (label2), lab);
-	}
-
-	fav_add_net = net;
-#endif
+	fe_message (buf, FE_MSG_INFO);
+	g_free (buf);
 }
 
 static void
@@ -1209,12 +1016,6 @@ servlist_toggle_global_user (gboolean sensitive)
 
 	gtk_widget_set_sensitive (edit_entry_real, sensitive);
 	gtk_widget_set_sensitive (edit_label_real, sensitive);
-}
-
-static void
-servlist_autojoinedit_cb (GtkWidget *button, ircnet *net)
-{
-	servlist_autojoinedit (net, NULL, FALSE);
 }
 
 static void
@@ -1376,29 +1177,7 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	gtk_entry_set_text (GTK_ENTRY (entry), def ? def : "");
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
 
-#if 0	/* FIXME */
-	if (row == 12)	/* for "Favorite channels:" */
-	{
-		GtkWidget *button, *box;
-
-		box = gtk_hbox_new (0, 0);
-		button = gtk_button_new_with_label ("...");
-		g_signal_connect (G_OBJECT (button), "clicked",
-								G_CALLBACK (servlist_autojoinedit_cb), selected_net);
-
-		gtk_box_pack_start (GTK_BOX (box), entry, TRUE, TRUE, 0);
-		gtk_box_pack_end (GTK_BOX (box), button, 0, 0, 0);
-		gtk_widget_show_all (box);
-
-		gtk_table_attach (GTK_TABLE (table), box, 1, 2, row, row+1, GTK_FILL|GTK_EXPAND, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
-	}
-	else
-	{
-#endif
-		gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row+1, GTK_FILL|GTK_EXPAND, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
-#if 0
-	}
-#endif
+	gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row+1, GTK_FILL|GTK_EXPAND, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 
 	return entry;
 }
@@ -1462,23 +1241,20 @@ servlist_sanitize_command (char *cmd)
 }
 
 static void
-servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
-								gpointer user_data)
+servlist_editserver_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, gpointer user_data)
 {
 	GtkTreeModel *model = (GtkTreeModel *)user_data;
 	GtkTreeIter iter;
-	GtkTreePath *path;
 	char *servname;
 	ircserver *serv;
 
 	if (!selected_net)
-		return;
-
-	path = gtk_tree_path_new_from_string (arg1);
-
-	if (!gtk_tree_model_get_iter (model, &iter, path))
 	{
-		gtk_tree_path_free (path);
+		return;
+	}
+
+	if (!servlist_get_iter_from_name (model, name, &iter))
+	{
 		return;
 	}
 
@@ -1489,39 +1265,34 @@ servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 	if (serv)
 	{
 		/* delete empty item */
-		if (arg2[0] == 0)
+		if (newval[0] == 0)
 		{
 			servlist_deleteserver (serv, model);
-			gtk_tree_path_free (path);
 			return;
 		}
 
 		servname = serv->hostname;
-		serv->hostname = servlist_sanitize_hostname (arg2);
+		serv->hostname = servlist_sanitize_hostname (newval);
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, serv->hostname, -1);
 		free (servname);
 	}
-
-	gtk_tree_path_free (path);
 }
 
 static void
-servlist_editcommand_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2, gpointer user_data)
+servlist_editcommand_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, gpointer user_data)
 {
 	GtkTreeModel *model = (GtkTreeModel *)user_data;
 	GtkTreeIter iter;
-	GtkTreePath *path;
 	char *cmd;
 	commandentry *entry;
 
 	if (!selected_net)
-		return;
-
-	path = gtk_tree_path_new_from_string (arg1);
-
-	if (!gtk_tree_model_get_iter (model, &iter, path))
 	{
-		gtk_tree_path_free (path);
+		return;
+	}
+
+	if (!servlist_get_iter_from_name (model, name, &iter))
+	{
 		return;
 	}
 
@@ -1532,20 +1303,88 @@ servlist_editcommand_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2, gp
 	if (entry)
 	{
 		/* delete empty item */
-		if (arg2[0] == 0)
+		if (newval[0] == 0)
 		{
 			servlist_deletecommand (entry, model);
-			gtk_tree_path_free (path);
 			return;
 		}
 
 		cmd = entry->command;
-		entry->command = servlist_sanitize_command (arg2);
+		entry->command = servlist_sanitize_command (newval);
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, entry->command, -1);
 		free (cmd);
 	}
+}
 
-	gtk_tree_path_free (path);
+static void
+servlist_editchannel_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, gpointer user_data)
+{
+	GtkTreeModel *model = (GtkTreeModel *)user_data;
+	GtkTreeIter iter;
+	char *chan;
+	char *key;
+	favchannel *favchan;
+
+	if (!selected_net)
+	{
+		return;
+	}
+
+	if (!servlist_get_iter_from_name (model, name, &iter))
+	{
+		return;
+	}
+
+	gtk_tree_model_get (model, &iter, 0, &chan, 1, &key, -1);
+	favchan = servlist_favchan_find (selected_net, chan, NULL);
+	g_free (chan);
+
+	if (favchan)
+	{
+		/* delete empty item */
+		if (newval[0] == 0)
+		{
+			servlist_deletechannel (favchan, model);
+			return;
+		}
+
+		chan = favchan->name;
+		favchan->name = g_strdup (newval);
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, favchan->name, -1);
+		g_free (chan);
+	}
+}
+
+static void
+servlist_editkey_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, gpointer user_data)
+{
+	GtkTreeModel *model = (GtkTreeModel *)user_data;
+	GtkTreeIter iter;
+	char *chan;
+	char *key;
+	favchannel *favchan;
+
+	if (!selected_net)
+	{
+		return;
+	}
+
+	if (!servlist_get_iter_from_name (model, name, &iter))
+	{
+		return;
+	}
+
+	gtk_tree_model_get (model, &iter, 0, &chan, 1, &key, -1);
+	favchan = servlist_favchan_find (selected_net, chan, NULL);
+	g_free (chan);
+
+	if (favchan)
+	{
+		key = favchan->key;
+		favchan->key = g_strdup (newval);
+		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, favchan->key, -1);
+		g_free (key);
+	}
 }
 
 static void
@@ -1789,7 +1628,6 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (treeview_channels), 0), TRUE);
 	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (treeview_channels), 1), TRUE);
 	gtk_tree_sortable_set_sort_column_id ((GtkTreeSortable *)model, 0, GTK_SORT_ASCENDING);
-	servlist_channels_populate (selected_net, treeview_channels);
 
 
 	/* Command Tree */
