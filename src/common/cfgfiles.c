@@ -624,7 +624,6 @@ load_config (void)
 	char out[256];
 #endif
 
-	check_prefs_dir ();
 	username = g_get_user_name ();
 	if (!username)
 		username = "root";
