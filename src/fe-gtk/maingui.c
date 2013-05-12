@@ -2611,7 +2611,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 	mg_create_textarea (sess, vbox);
 	mg_create_entry (sess, vbox);
 
-	g_idle_add ((GSourceFunc)mg_add_pane_signals, gui);
+	mg_add_pane_signals (gui);
 }
 
 static void
