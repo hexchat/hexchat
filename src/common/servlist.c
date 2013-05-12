@@ -661,7 +661,7 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 	}
 	else
 	{
-		serv->loginmethod = 2;				/* use /NickServ by default */
+		serv->loginmethod = 7;				/* Use server password by default. If we had a NickServ password, it'd be set to 2 already. */
 	}
 
 	serv->password[0] = 0;
@@ -1248,6 +1248,34 @@ servlist_load (void)
 			case 'D':
 				net->selected = atoi (buf + 2);
 				break;
+			/* FIXME Migration code. In 2.9.5 the order was:
+			 *
+			 * P=serverpass, A=saslpass, B=nickservpass
+			 *
+			 * So if server password was unset, we can safely use SASL
+			 * password for our new universal password, or if that's also
+			 * unset, use NickServ password.
+			 *
+			 * Should be removed at some point.
+			 */
+			case 'A':
+				if (!net->pass)
+				{
+					net->pass = strdup (buf + 2);
+					if (!net->logintype)
+					{
+						net->logintype = 6;
+					}
+				}
+			case 'B':
+				if (!net->pass)
+				{
+					net->pass = strdup (buf + 2);
+					if (!net->logintype)
+					{
+						net->logintype = 2;
+					}
+				}
 			}
 		}
 		if (buf[0] == 'N')
