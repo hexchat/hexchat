@@ -505,12 +505,13 @@ static const setting advanced_settings[] =
 #ifdef WIN32
 	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
 #endif
-	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
-	{ST_NUMBER,	N_("Auto join delay:"), P_OFFINTNL(hex_irc_join_delay), 0, 0, 9999},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list."), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default."), 0, 0},
 	{ST_TOGGLE,	N_("Display lists in compact mode"), P_OFFINTNL(hex_gui_compact), N_("Use less spacing between user list/channel tree rows."), 0, 0},
+	{ST_TOGGLE,	N_("Automatically reconnect to servers on disconnect"), P_OFFINTNL(hex_net_auto_reconnect), 0, 0, 1},
+	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
+	{ST_NUMBER,	N_("Auto join delay:"), P_OFFINTNL(hex_irc_join_delay), 0, 0, 9999},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
