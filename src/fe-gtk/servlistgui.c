@@ -48,6 +48,8 @@ static int netlist_win_height = 0;
 static int netedit_win_width = 0;
 static int netedit_win_height = 0;
 
+static int netedit_active_tab = 0;
+
 /* global user info */
 static GtkWidget *entry_nick1;
 static GtkWidget *entry_nick2;
@@ -1386,6 +1388,15 @@ servlist_editkey_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, gpoi
 	}
 }
 
+static gboolean
+servlist_edit_tabswitch_cb (GtkNotebook *nb, gpointer *newtab, guint newindex, gpointer user_data)
+{
+	/* remember the active tab */
+	netedit_active_tab = newindex;
+
+	return FALSE;
+}
+
 static void
 servlist_combo_cb (GtkEntry *entry, gpointer userdata)
 {
@@ -1739,6 +1750,12 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_widget_grab_default (button10);
 
 	gtk_widget_show_all (editwindow);
+
+	/* We can't set the active tab without child elements being shown, so this must be *after* gtk_widget_show()s! */
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), netedit_active_tab);
+
+	/* We need to connect this *after* setting the active tab so that the value doesn't get overriden. */
+	g_signal_connect (G_OBJECT (notebook), "switch-page", G_CALLBACK (servlist_edit_tabswitch_cb), notebook);
 
 	return editwindow;
 }
