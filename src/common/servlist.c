@@ -995,7 +995,7 @@ servlist_favchan_add (ircnet *net, char *channel)
 
 	if (strchr (channel, ',') != NULL)
 	{
-		pos = strchr (channel, ',') - channel;
+		pos = (int) (strchr (channel, ',') - channel);
 		chan->name = g_strndup (channel, pos);
 		chan->key = g_strdup (channel + pos + 1);
 	}
