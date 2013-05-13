@@ -1013,9 +1013,10 @@ hexchat_execv (char * const argv[])
 #endif
 }
 
-void
-set_locale(void)
+static void
+set_locale (void)
 {
+#ifdef WIN32
 	const char const *langs[]={
 		"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",   /* 0 .. 9   */
 		"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl", /* 10 .. 19 */
@@ -1034,6 +1035,7 @@ set_locale(void)
 		strcat (hexchat_lang, "en");
 
 	putenv (hexchat_lang);
+#endif
 }
 
 int
@@ -1073,12 +1075,20 @@ main (int argc, char *argv[])
 	g_type_init ();
 #endif
 
-	load_config ();
+	if (check_config_dir () == 0)
+	{
+		if (load_config () != 0)
+			load_default_config ();
+	} else
+	{
+		/* this is probably the first run */
+		load_default_config ();
+		make_config_dirs (); /* FIXME: if this fail display an error (?) */
+		make_dcc_dirs ();
+	}
 
-#ifdef WIN32
 	/* we MUST do this after load_config () AND before fe_init (thus gtk_init) otherwise it will fail */
-	set_locale();
-#endif
+	set_locale ();
 
 #ifdef SOCKS
 	SOCKSinit (argv[0]);

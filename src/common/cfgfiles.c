@@ -337,21 +337,10 @@ get_xdir (void)
 	return xdir;
 }
 
-static void
-check_prefs_dir (void)
+int
+check_config_dir (void)
 {
-	char *dir = get_xdir ();
-	char *msg;
-
-	if (g_access (dir, F_OK) != 0)
-	{
-		if (g_mkdir (dir, 0700) != 0)
-		{
-			msg = g_strdup_printf ("Cannot create %s", get_xdir ());
-			fe_message (msg, FE_MSG_ERROR);
-			g_free (msg);
-		}
-	}
+	return g_access (get_xdir (), F_OK);
 }
 
 static char *
@@ -615,11 +604,10 @@ convert_with_fallback (const char *str, const char *fallback)
 }
 
 void
-load_config (void)
+load_default_config(void)
 {
-	char *cfg, *sp, *buf;
 	const char *username, *realname;
-	int res, val, i;
+	char *sp;
 #ifdef WIN32
 	char out[256];
 #endif
@@ -797,46 +785,89 @@ load_config (void)
 	/* private variables */
 	prefs.local_ip = 0xffffffff;
 
+	sp = strchr (prefs.hex_irc_user_name, ' ');
+	if (sp)
+		sp[0] = 0;	/* spaces in username would break the login */
+
 	g_free ((char *)username);
 	g_free ((char *)realname);
+}
 
-	if (g_file_get_contents (default_file (), &cfg, NULL, NULL))
+int
+make_config_dirs (void)
+{
+	char *buf;
+
+	if (g_mkdir (get_xdir (), 0700) != 0)
+		return -1;
+	
+	buf = g_build_filename (get_xdir (), "addons", NULL);
+	if (g_mkdir (buf, 0700) != 0)
 	{
-		i = 0;
-		do
-		{
-			switch (vars[i].type)
-			{
-			case TYPE_STR:
-				cfg_get_str (cfg, vars[i].name, (char *) &prefs + vars[i].offset,
-								 vars[i].len);
-				break;
-			case TYPE_BOOL:
-			case TYPE_INT:
-				val = cfg_get_int_with_result (cfg, vars[i].name, &res);
-				if (res)
-					*((int *) &prefs + vars[i].offset) = val;
-				break;
-			}
-			i++;
-		}
-		while (vars[i].name);
-
-		g_free (cfg);
-
-	} else
-	{
-		g_mkdir (prefs.hex_dcc_dir, 0700);
-		g_mkdir (prefs.hex_dcc_completed_dir, 0700);
-
-		buf = g_build_filename (get_xdir (), "addons", NULL);
-		g_mkdir (buf, 0700);
 		g_free (buf);
-
-		buf = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
-		g_mkdir (buf, 0700);
-		g_free (buf);
+		return -1;
 	}
+	g_free (buf);
+	
+	buf = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
+	if (g_mkdir (buf, 0700) != 0)
+	{
+		g_free (buf);
+		return -1;
+	}
+	g_free (buf);
+
+	return 0;
+}
+
+int
+make_dcc_dirs (void)
+{
+	if (g_mkdir (prefs.hex_dcc_dir, 0700) != 0)
+		return -1;
+
+	if (g_mkdir (prefs.hex_dcc_completed_dir, 0700) != 0)
+		return -1;
+
+	return 0;
+}
+
+int
+load_config (void)
+{
+	char *cfg, *sp;
+	int res, val, i;
+
+	g_assert(check_config_dir () == 0);
+
+	if (!g_file_get_contents (default_file (), &cfg, NULL, NULL))
+		return -1;
+
+	/* If the config is incomplete we have the default values loaded */
+	load_default_config();
+
+	i = 0;
+	do
+	{
+		switch (vars[i].type)
+		{
+		case TYPE_STR:
+			cfg_get_str (cfg, vars[i].name, (char *) &prefs + vars[i].offset,
+				     vars[i].len);
+			break;
+		case TYPE_BOOL:
+		case TYPE_INT:
+			val = cfg_get_int_with_result (cfg, vars[i].name, &res);
+			if (res)
+				*((int *) &prefs + vars[i].offset) = val;
+			break;
+		}
+		i++;
+	}
+	while (vars[i].name);
+	
+	g_free (cfg);
+
 	if (prefs.hex_gui_win_height < 138)
 		prefs.hex_gui_win_height = 138;
 	if (prefs.hex_gui_win_width < 106)
@@ -845,6 +876,8 @@ load_config (void)
 	sp = strchr (prefs.hex_irc_user_name, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces in username would break the login */
+
+	return 0;
 }
 
 int
@@ -853,7 +886,8 @@ save_config (void)
 	int fh, i;
 	char *config, *new_config;
 
-	check_prefs_dir ();
+	if (check_config_dir () != 0)
+		make_config_dirs ();
 
 	config = default_file ();
 	new_config = g_strconcat (config, ".new", NULL);
