@@ -116,16 +116,16 @@ static const char *pages[]=
  */
 static int login_types_conf[] =
 {
-	0,	/* default - we don't use this but it makes indexing consistent with login_types[] so it's nice */
-	6,	/* SASL */
-	7,	/* /pass */
-	1,	/* /msg NickServ */
-	2,	/* /NickServ */
+	LOGIN_DEFAULT,			/* default entry - we don't use this but it makes indexing consistent with login_types[] so it's nice */
+	LOGIN_SASL,
+	LOGIN_PASS,
+	LOGIN_MSG_NICKSERV,
+	LOGIN_NICKSERV,
 #if 0
-	3,	/* /NS */
+	LOGIN_NS,
 #endif
-	4,	/* /msg NS */
-	5,	/* /auth */
+	LOGIN_MSG_NS,
+	LOGIN_AUTH,
 };
 
 static const char *login_types[]=

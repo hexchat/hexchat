@@ -1373,13 +1373,16 @@ static int
 inbound_nickserv_login (server *serv)
 {
 	/* this could grow ugly, but let's hope there won't be new NickServ types */
-	if (serv->loginmethod >= 1 && serv->loginmethod <= 5)
+	switch (serv->loginmethod)
 	{
-		return 1;
-	}
-	else
-	{
-		return 0;
+		case LOGIN_MSG_NICKSERV:
+		case LOGIN_NICKSERV:
+		case LOGIN_NS:
+		case LOGIN_MSG_NS:
+		case LOGIN_AUTH:
+			return 1;
+		default:
+			return 0;
 	}
 }
 

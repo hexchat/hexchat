@@ -50,7 +50,7 @@ irc_login (server *serv, char *user, char *realname)
 {
 	tcp_sendf (serv, "CAP LS\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
 
-	if (serv->password[0] && serv->loginmethod == 7)
+	if (serv->password[0] && serv->loginmethod == LOGIN_PASS)
 	{
 		tcp_sendf (serv, "PASS %s\r\n", serv->password);
 	}
@@ -67,19 +67,21 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 	/* are all ircd authors idiots? */
 	switch (serv->loginmethod)
 	{
-	case 1:
+	case LOGIN_MSG_NICKSERV:
 		tcp_sendf (serv, "PRIVMSG NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 2:
+	case LOGIN_NICKSERV:
 		tcp_sendf (serv, "NICKSERV %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 3:
+#if 0
+	case LOGIN_NS:
 		tcp_sendf (serv, "NS %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 4:
+#endif
+	case LOGIN_MSG_NS:
 		tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 5:
+	case LOGIN_AUTH:
 		/* why couldn't QuakeNet implement one of the existing ones? */
 		tcp_sendf (serv, "AUTH %s %s\r\n", arg1, arg2);
 	}
@@ -88,7 +90,7 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 static void
 irc_ns_identify (server *serv, char *pass)
 {
-	if (serv->loginmethod == 5)	/* QuakeNet needs to do everything in its own ways... */
+	if (serv->loginmethod == LOGIN_AUTH)	/* QuakeNet needs to do everything in its own ways... */
 	{
 		irc_nickserv (serv, "", serv->nick, pass, "");
 	}
@@ -101,7 +103,7 @@ irc_ns_identify (server *serv, char *pass)
 static void
 irc_ns_ghost (server *serv, char *usname, char *pass)
 {
-	if (serv->loginmethod != 5)
+	if (serv->loginmethod != LOGIN_AUTH)
 	{
 		irc_nickserv (serv, "GHOST", usname, " ", pass);
 	}
@@ -1276,7 +1278,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						want_cap = 1;
 					}
 					/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
-					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->password) != 0 && serv->loginmethod == 6)
+					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->password) != 0 && serv->loginmethod == LOGIN_SASL)
 					{
 						strcat (buffer, "sasl ");
 						want_cap = 1;
