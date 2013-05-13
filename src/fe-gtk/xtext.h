@@ -58,6 +58,7 @@
 #define XTEXT_FG 34
 #define XTEXT_BG 35
 #define XTEXT_MARKER 36		/* for marker line */
+#define XTEXT_MAX_COLOR 41
 
 typedef struct _GtkXText GtkXText;
 typedef struct _GtkXTextClass GtkXTextClass;
