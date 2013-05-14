@@ -118,135 +118,31 @@ irc_join (server *serv, char *channel, char *key)
 		tcp_sendf (serv, "JOIN %s\r\n", channel);
 }
 
-#if 0//FIXME remove when finished porting
 static void
-irc_join_list_flush (server *serv, GString *c, GString *k)
+irc_join_list_flush (server *serv, GString *channels, GString *keys)
 {
-	char *chanstr, *keystr;
+	char *chanstr;
+	char *keystr;
 
-	chanstr = g_string_free (c, FALSE);
-	keystr = g_string_free (k, FALSE);
-	if (chanstr[0])
-	{
-		if (keystr[0])
-			tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);
-		else
-			tcp_sendf (serv, "JOIN %s\r\n", chanstr);
-	}
+	chanstr = g_string_free (channels, FALSE);				/* convert our strings to char arrays */
+	keystr = g_string_free (keys, FALSE);
+
+	tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);	/* send the actual command */
+
 	g_free (chanstr);
 	g_free (keystr);
 }
 
-/* join a whole list of channels & keys, split to multiple lines
- * to get around 512 limit */
-
-static void
-irc_join_list (server *serv, GSList *channels, GSList *keys)
-{
-	GSList *clist;
-	GSList *klist;
-	GString *c = g_string_new (NULL);
-	GString *k = g_string_new (NULL);
-	int len;
-	int add;
-	int i, j;
-
-	i = j = 0;
-	len = 9; /* "JOIN<space><space>\r\n" */
-	clist = channels;
-	klist = keys;
-
-	while (clist)
-	{
-		/* measure how many bytes this channel would add... */
-		if (1)
-		{
-			add = strlen (clist->data);
-			if (i != 0)
-				add++;	/* comma */
-		}
-
-		if (klist->data)
-		{
-			add += strlen (klist->data);
-		}
-		else
-		{
-			add++;	/* 'x' filler */
-		}
-
-		if (j != 0)
-			add++;	/* comma */
-
-		/* too big? dump buffer and start a fresh one */
-		if (len + add > 512)
-		{
-			irc_join_list_flush (serv, c, k);
-
-			c = g_string_new (NULL);
-			k = g_string_new (NULL);
-			i = j = 0;
-			len = 9;
-		}
-
-		/* now actually add it to our GStrings */
-		if (1)
-		{
-			add = strlen (clist->data);
-			if (i != 0)
-			{
-				add++;
-				g_string_append_c (c, ',');
-			}
-			g_string_append (c, clist->data);
-			i++;
-		}
-
-		if (klist->data)
-		{
-			add += strlen (klist->data);
-			if (j != 0)
-			{
-				add++;
-				g_string_append_c (k, ',');
-			}
-			g_string_append (k, klist->data);
-			j++;
-		}
-		else
-		{
-			add++;
-			if (j != 0)
-			{
-				add++;
-				g_string_append_c (k, ',');
-			}
-			g_string_append_c (k, 'x');
-			j++;
-		}
-
-		len += add;
-
-		klist = klist->next;
-		clist = clist->next;
-	}
-
-	irc_join_list_flush (serv, c, k);
-#endif
-
-static void
-irc_join_list_flush (server *serv)
-{
-	/* FIXME implement flushing for too long favorites lists */
-}
+/* Join a whole list of channels & keys, split to multiple lines
+ * to get around the 512 limit.
+ */
 
 static void
 irc_join_list (server *serv, GSList *favorites)
 {
-	int first_item = 1;
+	int first_item = 1;										/* determine whether we add commas or not */
+	int len = 9;											/* JOIN<space>channels<space>keys\r\n\0 */
 	favchannel *fav;
-	char *chanstr;
-	char *keystr;
 	GString *chanlist = g_string_new (NULL);
 	GString *keylist = g_string_new (NULL);
 	GSList *favlist;
@@ -257,9 +153,33 @@ irc_join_list (server *serv, GSList *favorites)
 	{
 		fav = favlist->data;
 
+		len += strlen (fav->name);
+		if (fav->key)
+		{
+			len += strlen (fav->key);
+		}
+
+		if (len >= 512)										/* command length exceeds the IRC hard limit, flush it and start from scratch */
+		{
+			irc_join_list_flush (serv, chanlist, keylist);
+
+			chanlist = g_string_new (NULL);
+			keylist = g_string_new (NULL);
+
+			len = 9;
+			first_item = 1;									/* list dumped, omit commas once again */
+		}
+
 		if (!first_item)
 		{
-			g_string_append_c (chanlist, ',');				/* add separators but only if it's not the 1st element */
+			/* This should be done before the length check, but channel names
+			 * are already at least 2 characters long so it would trigger the
+			 * flush anyway.
+			 */
+			len += 2;
+
+			/* add separators but only if it's not the 1st element */
+			g_string_append_c (chanlist, ',');
 			g_string_append_c (keylist, ',');
 		}
 
@@ -278,13 +198,7 @@ irc_join_list (server *serv, GSList *favorites)
 		favlist = favlist->next;
 	}
 
-	chanstr = g_string_free (chanlist, FALSE);				/* convert our strings to char arrays */
-	keystr = g_string_free (keylist, FALSE);
-
-	tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);	/* send the actual command */
-
-	g_free (chanstr);										/* cleanup */
-	g_free (keystr);
+	irc_join_list_flush (serv, chanlist, keylist);
 	g_slist_free (favlist);
 }
 
