@@ -2031,7 +2031,7 @@ server_free (server *serv)
 	if (serv->encoding)
 		free (serv->encoding);
 	if (serv->favlist)
-		g_slist_free_full (serv->favlist, g_free);
+		g_slist_free_full (serv->favlist, servlist_favchan_free);
 
 	fe_server_callback (serv);
 

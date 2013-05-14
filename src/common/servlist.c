@@ -617,6 +617,20 @@ servlist_slist_copy_deep (GSList *list, GCopyFunc func, gpointer user_data)
 }
 #endif
 
+favchannel *
+servlist_favchan_copy (favchannel *fav)
+{
+	favchannel *newfav;
+
+	newfav = malloc (sizeof (favchannel));
+	memset (newfav, 0, sizeof (favchannel));
+
+	newfav->name = g_strdup (fav->name);
+	newfav->key = g_strdup (fav->key);		/* g_strdup() can handle NULLs so no need to check it */
+
+	return newfav;
+}
+
 void
 servlist_connect (session *sess, ircnet *net, gboolean join)
 {
@@ -649,9 +663,9 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		{
 			if (serv->favlist)
 			{
-				g_slist_free_full (serv->favlist, g_free);
+				g_slist_free_full (serv->favlist, servlist_favchan_free);
 			}
-			serv->favlist = g_slist_copy_deep (net->favchanlist, (GCopyFunc) g_strdup, NULL);
+			serv->favlist = g_slist_copy_deep (net->favchanlist, (GCopyFunc) servlist_favchan_copy, NULL);
 		}
 	}
 
@@ -1031,19 +1045,31 @@ servlist_server_remove_all (ircnet *net)
 }
 
 void
+servlist_command_free (commandentry *entry)
+{
+	g_free (entry->command);
+	g_free (entry);
+}
+
+void
 servlist_command_remove (ircnet *net, commandentry *entry)
 {
-	free (entry->command);
-	free (entry);
+	servlist_command_free (entry);
 	net->commandlist = g_slist_remove (net->commandlist, entry);
+}
+
+void
+servlist_favchan_free (favchannel *channel)
+{
+	g_free (channel->name);
+	g_free (channel->key);
+	g_free (channel);
 }
 
 void
 servlist_favchan_remove (ircnet *net, favchannel *channel)
 {
-	g_free (channel->name);
-	g_free (channel->key);
-	g_free (channel);
+	servlist_favchan_free (channel);
 	net->favchanlist = g_slist_remove (net->favchanlist, channel);
 }
 
@@ -1093,9 +1119,9 @@ servlist_net_remove (ircnet *net)
 		free (net->real);
 	free_and_clear (net->pass);
 	if (net->favchanlist)
-		g_slist_free_full (net->favchanlist, g_free);
+		g_slist_free_full (net->favchanlist, servlist_favchan_free);
 	if (net->commandlist)
-		g_slist_free_full (net->commandlist, g_free);
+		g_slist_free_full (net->commandlist, servlist_command_free);
 	if (net->comment)
 		free (net->comment);
 	if (net->encoding)

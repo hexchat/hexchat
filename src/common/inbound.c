@@ -1066,10 +1066,10 @@ inbound_nameslist_end (server *serv, char *chan)
 	return FALSE;
 }
 
+#if 0//FIXME remove when finished porting
 static gboolean
 check_autojoin_channels (server *serv)
 {
-#if 0//FIXME
 	char *po;
 	session *sess;
 	GSList *list = sess_list;
@@ -1138,7 +1138,40 @@ check_autojoin_channels (server *serv)
 
 	serv->joindelay_tag = 0;
 	fe_server_event (serv, FE_SE_LOGGEDIN, i);
+	return FALSE;
+}
 #endif
+
+static gboolean
+check_autojoin_channels (server *serv)
+{
+	int i = 0;
+
+	/* shouldn't really happen, the io tag is destroyed in server.c */
+	if (!is_server (serv))
+	{
+		return FALSE;
+	}
+
+	/* send auto join list */
+	if (serv->favlist)
+	{
+		serv->p_join_list (serv, serv->favlist);
+		i++;
+
+		/* FIXME this is not going to work and is not needed either. server_free() does the job already. */
+		/* g_slist_free_full (serv->favlist, servlist_favchan_free); */
+	}
+
+	/* This is really only for re-connects when you
+	 * join channels not in the auto-join list.
+	 */
+
+	/* FIXME handle reconnects */
+
+	serv->joindelay_tag = 0;
+	fe_server_event (serv, FE_SE_LOGGEDIN, i);
+
 	return FALSE;
 }
 

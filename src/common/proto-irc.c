@@ -118,6 +118,7 @@ irc_join (server *serv, char *channel, char *key)
 		tcp_sendf (serv, "JOIN %s\r\n", channel);
 }
 
+#if 0//FIXME remove when finished porting
 static void
 irc_join_list_flush (server *serv, GString *c, GString *k)
 {
@@ -231,6 +232,60 @@ irc_join_list (server *serv, GSList *channels, GSList *keys)
 	}
 
 	irc_join_list_flush (serv, c, k);
+#endif
+
+static void
+irc_join_list_flush (server *serv)
+{
+	/* FIXME implement flushing for too long favorites lists */
+}
+
+static void
+irc_join_list (server *serv, GSList *favorites)
+{
+	int first_item = 1;
+	favchannel *fav;
+	char *chanstr;
+	char *keystr;
+	GString *chanlist = g_string_new (NULL);
+	GString *keylist = g_string_new (NULL);
+	GSList *favlist;
+
+	favlist = favorites;
+
+	while (favlist)
+	{
+		fav = favlist->data;
+
+		if (!first_item)
+		{
+			g_string_append_c (chanlist, ',');				/* add separators but only if it's not the 1st element */
+			g_string_append_c (keylist, ',');
+		}
+
+		g_string_append (chanlist, fav->name);
+
+		if (fav->key)
+		{
+			g_string_append (keylist, fav->key);
+		}
+		else
+		{
+			g_string_append_c (keylist, 'x');				/* 'x' filler for keyless channels */
+		}
+
+		first_item = 0;
+		favlist = favlist->next;
+	}
+
+	chanstr = g_string_free (chanlist, FALSE);				/* convert our strings to char arrays */
+	keystr = g_string_free (keylist, FALSE);
+
+	tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);	/* send the actual command */
+
+	g_free (chanstr);										/* cleanup */
+	g_free (keystr);
+	g_slist_free (favlist);
 }
 
 static void
