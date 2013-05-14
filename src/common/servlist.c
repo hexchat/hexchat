@@ -663,7 +663,7 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		{
 			if (serv->favlist)
 			{
-				g_slist_free_full (serv->favlist, servlist_favchan_free);
+				g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free);
 			}
 			serv->favlist = g_slist_copy_deep (net->favchanlist, (GCopyFunc) servlist_favchan_copy, NULL);
 		}
@@ -1119,9 +1119,9 @@ servlist_net_remove (ircnet *net)
 		free (net->real);
 	free_and_clear (net->pass);
 	if (net->favchanlist)
-		g_slist_free_full (net->favchanlist, servlist_favchan_free);
+		g_slist_free_full (net->favchanlist, (GDestroyNotify) servlist_favchan_free);
 	if (net->commandlist)
-		g_slist_free_full (net->commandlist, servlist_command_free);
+		g_slist_free_full (net->commandlist, (GDestroyNotify) servlist_command_free);
 	if (net->comment)
 		free (net->comment);
 	if (net->encoding)

@@ -1160,7 +1160,7 @@ check_autojoin_channels (server *serv)
 		i++;
 
 		/* FIXME this is not going to work and is not needed either. server_free() does the job already. */
-		/* g_slist_free_full (serv->favlist, servlist_favchan_free); */
+		/* g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free); */
 	}
 
 	/* This is really only for re-connects when you
