@@ -498,18 +498,20 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	PyObject *retobj;
 	PyObject *word_list, *word_eol_list;
 	int ret = 0;
+	PyObject *plugin;
 
-	BEGIN_PLUGIN(hook->plugin);
+	plugin = hook->plugin;
+	BEGIN_PLUGIN(plugin);
 
 	word_list = Util_BuildList(word+1);
 	if (word_list == NULL) {
-		END_PLUGIN(hook->plugin);
+		END_PLUGIN(plugin);
 		return 0;
 	}
 	word_eol_list = Util_BuildList(word_eol+1);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
-		END_PLUGIN(hook->plugin);
+		END_PLUGIN(plugin);
 		return 0;
 	}
 
@@ -528,7 +530,7 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 		PyErr_Print();
 	}
 
-	END_PLUGIN(hook->plugin);
+	END_PLUGIN(plugin);
 
 	return ret;
 }
@@ -548,6 +550,7 @@ Callback_Print(char *word[], void *userdata)
 	int next = 0;
 	int i;
 	int ret = 0;
+	PyObject *plugin;
 
 	/* Cut off the message identifier. */
 	word += 1;
@@ -579,13 +582,14 @@ Callback_Print(char *word[], void *userdata)
 	}
 	word_eol[i] = "";
 
-	BEGIN_PLUGIN(hook->plugin);
+	plugin = hook->plugin;
+	BEGIN_PLUGIN(plugin);
 
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		g_free(word_eol_raw);
 		g_free(word_eol);
-		END_PLUGIN(hook->plugin);
+		END_PLUGIN(plugin);
 		return 0;
 	}
 	word_eol_list = Util_BuildList(word_eol);
@@ -593,7 +597,7 @@ Callback_Print(char *word[], void *userdata)
 		g_free(word_eol_raw);
 		g_free(word_eol);
 		Py_DECREF(word_list);
-		END_PLUGIN(hook->plugin);
+		END_PLUGIN(plugin);
 		return 0;
 	}
 
@@ -614,7 +618,7 @@ Callback_Print(char *word[], void *userdata)
 		PyErr_Print();
 	}
 
-	END_PLUGIN(hook->plugin);
+	END_PLUGIN(plugin);
 
 	return ret;
 }
