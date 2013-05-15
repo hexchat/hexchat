@@ -119,7 +119,7 @@ irc_join (server *serv, char *channel, char *key)
 }
 
 static void
-irc_join_list_flush (server *serv, GString *channels, GString *keys)
+irc_join_list_flush (server *serv, GString *channels, GString *keys, int send_keys)
 {
 	char *chanstr;
 	char *keystr;
@@ -127,7 +127,14 @@ irc_join_list_flush (server *serv, GString *channels, GString *keys)
 	chanstr = g_string_free (channels, FALSE);				/* convert our strings to char arrays */
 	keystr = g_string_free (keys, FALSE);
 
-	tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);	/* send the actual command */
+	if (send_keys)
+	{
+		tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);	/* send the actual command */
+	}
+	else
+	{
+		tcp_sendf (serv, "JOIN %s\r\n", chanstr);	/* send the actual command */
+	}
 
 	g_free (chanstr);
 	g_free (keystr);
@@ -141,6 +148,7 @@ static void
 irc_join_list (server *serv, GSList *favorites)
 {
 	int first_item = 1;										/* determine whether we add commas or not */
+	int send_keys = 0;										/* if none of our channels have keys, we can omit the 'x' fillers altogether */
 	int len = 9;											/* JOIN<space>channels<space>keys\r\n\0 */
 	favchannel *fav;
 	GString *chanlist = g_string_new (NULL);
@@ -161,13 +169,14 @@ irc_join_list (server *serv, GSList *favorites)
 
 		if (len >= 512)										/* command length exceeds the IRC hard limit, flush it and start from scratch */
 		{
-			irc_join_list_flush (serv, chanlist, keylist);
+			irc_join_list_flush (serv, chanlist, keylist, send_keys);
 
 			chanlist = g_string_new (NULL);
 			keylist = g_string_new (NULL);
 
 			len = 9;
 			first_item = 1;									/* list dumped, omit commas once again */
+			send_keys = 0;									/* also omit keys until we actually find one */
 		}
 
 		if (!first_item)
@@ -188,6 +197,7 @@ irc_join_list (server *serv, GSList *favorites)
 		if (fav->key && strlen (fav->key))					/* strlen() is required since key can be '' for session->channelkey */
 		{
 			g_string_append (keylist, fav->key);
+			send_keys = 1;
 		}
 		else
 		{
@@ -198,7 +208,7 @@ irc_join_list (server *serv, GSList *favorites)
 		favlist = favlist->next;
 	}
 
-	irc_join_list_flush (serv, chanlist, keylist);
+	irc_join_list_flush (serv, chanlist, keylist, send_keys);
 	g_slist_free (favlist);
 }
 
