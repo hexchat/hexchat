@@ -1080,7 +1080,7 @@ check_autojoin_channels (server *serv)
 		return;
 	}
 
-	/* send auto join list */
+	/* autojoin to favorite channels */
 	if (serv->favlist)
 	{
 		serv->p_join_list (serv, serv->favlist);
@@ -1090,10 +1090,7 @@ check_autojoin_channels (server *serv)
 		/* g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free); */
 	}
 
-	/* This is really only for re-connects when you
-	 * join channels not in the auto-join list.
-	 */
-
+	/* upon a reconnect, also autojoin to channels not in the favorites but joined during the session */
 	while (list)
 	{
 		sess = list->data;
