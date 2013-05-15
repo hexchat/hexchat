@@ -100,7 +100,7 @@ favchannel *servlist_favchan_find (ircnet *net, char *channel, int *pos);
 
 ircserver *servlist_server_add (ircnet *net, char *name);
 commandentry *servlist_command_add (ircnet *net, char *command);
-favchannel *servlist_favchan_add (ircnet *net, char *channel);
+void servlist_favchan_add (ircnet *net, char *channel);
 
 void servlist_command_free (commandentry *entry);
 void servlist_favchan_free (favchannel *channel);
@@ -110,6 +110,7 @@ void servlist_command_remove (ircnet *net, commandentry *entry);
 void servlist_favchan_remove (ircnet *net, favchannel *channel);
 
 favchannel *servlist_favchan_copy (favchannel *fav);
+GSList *servlist_favchan_listadd (GSList *chanlist, char *channel, char *key);
 
 gboolean joinlist_is_in_list (server *serv, char *channel);
 

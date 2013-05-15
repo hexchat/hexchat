@@ -998,30 +998,44 @@ servlist_command_add (ircnet *net, char *cmd)
 	return entry;
 }
 
-favchannel *
-servlist_favchan_add (ircnet *net, char *channel)
+GSList *
+servlist_favchan_listadd (GSList *chanlist, char *channel, char *key)
 {
-	int pos;
 	favchannel *chan;
 
 	chan = malloc (sizeof (favchannel));
 	memset (chan, 0, sizeof (favchannel));
 
+	chan->name = g_strdup (channel);
+	chan->key = g_strdup (key);
+	chanlist = g_slist_append (chanlist, chan);
+
+	return chanlist;
+}
+
+void
+servlist_favchan_add (ircnet *net, char *channel)
+{
+	int pos;
+	char *name;
+	char *key;
+
 	if (strchr (channel, ',') != NULL)
 	{
 		pos = (int) (strchr (channel, ',') - channel);
-		chan->name = g_strndup (channel, pos);
-		chan->key = g_strdup (channel + pos + 1);
+		name = g_strndup (channel, pos);
+		key = g_strdup (channel + pos + 1);
 	}
 	else
 	{
-		chan->name = g_strdup (channel);
-		chan->key = NULL;
+		name = g_strdup (channel);
+		key = NULL;
 	}
 
-	net->favchanlist = g_slist_append (net->favchanlist, chan);
+	net->favchanlist = servlist_favchan_listadd (net->favchanlist, name, key);
 
-	return chan;
+	g_free (name);
+	g_free (key);
 }
 
 void

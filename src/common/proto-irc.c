@@ -185,13 +185,13 @@ irc_join_list (server *serv, GSList *favorites)
 
 		g_string_append (chanlist, fav->name);
 
-		if (fav->key)
+		if (fav->key && strlen (fav->key))					/* strlen() is required since key can be '' for session->channelkey */
 		{
 			g_string_append (keylist, fav->key);
 		}
 		else
 		{
-			g_string_append_c (keylist, 'x');				/* 'x' filler for keyless channels */
+			g_string_append_c (keylist, 'x');				/* 'x' filler for keyless channels so that our JOIN command is always well-formatted */
 		}
 
 		first_item = 0;

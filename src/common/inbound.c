@@ -1066,86 +1066,13 @@ inbound_nameslist_end (server *serv, char *chan)
 	return FALSE;
 }
 
-#if 0//FIXME remove when finished porting
-static gboolean
-check_autojoin_channels (server *serv)
-{
-	char *po;
-	session *sess;
-	GSList *list = sess_list;
-	int i = 0;
-	GSList *channels, *keys;
-
-	/* shouldnt really happen, the io tag is destroyed in server.c */
-	if (!is_server (serv))
-		return FALSE;
-
-	/* send auto join list */
-	if (serv->autojoin)
-	{
-		joinlist_split (serv->autojoin, &channels, &keys);
-		serv->p_join_list (serv, channels, keys);
-		joinlist_free (channels, keys);
-
-		free (serv->autojoin);
-		serv->autojoin = NULL;
-		i++;
-	}
-
-	/* this is really only for re-connects when you
-    * join channels not in the auto-join list. */
-	channels = NULL;
-	keys = NULL;
-	while (list)
-	{
-		sess = list->data;
-		if (sess->server == serv)
-		{
-			if (sess->willjoinchannel[0] != 0)
-			{
-				strcpy (sess->waitchannel, sess->willjoinchannel);
-				sess->willjoinchannel[0] = 0;
-
-				po = strchr (sess->waitchannel, ',');
-				if (po)
-					*po = 0;
-				po = strchr (sess->waitchannel, ' ');
-				if (po)
-					*po = 0;
-
-				/* There can be no gap between keys, list keyed chans first. */
-				if (sess->channelkey[0] != 0)
-				{
-					channels = g_slist_prepend (channels, g_strdup (sess->waitchannel));
-					keys = g_slist_prepend (keys, g_strdup (sess->channelkey));
-				}
-				else
-				{
-					channels = g_slist_append (channels, g_strdup (sess->waitchannel));
-					keys = g_slist_append (keys, g_strdup (sess->channelkey));
-				}
-				i++;
-			}
-		}
-		list = list->next;
-	}
-
-	if (channels)
-	{
-		serv->p_join_list (serv, channels, keys);
-		joinlist_free (channels, keys);
-	}
-
-	serv->joindelay_tag = 0;
-	fe_server_event (serv, FE_SE_LOGGEDIN, i);
-	return FALSE;
-}
-#endif
-
 static void
 check_autojoin_channels (server *serv)
 {
 	int i = 0;
+	session *sess;
+	GSList *list = sess_list;
+	GSList *sess_channels = NULL;			/* joined channels that are not in the favorites list */
 
 	/* shouldn't really happen, the io tag is destroyed in server.c */
 	if (!is_server (serv))
@@ -1167,7 +1094,33 @@ check_autojoin_channels (server *serv)
 	 * join channels not in the auto-join list.
 	 */
 
-	/* FIXME handle reconnects */
+	while (list)
+	{
+		sess = list->data;
+
+		if (sess->server == serv)
+		{
+			if (sess->willjoinchannel[0] != 0)
+			{
+				strcpy (sess->waitchannel, sess->willjoinchannel);
+				sess->willjoinchannel[0] = 0;
+
+				if (!servlist_favchan_find (serv->network, sess->waitchannel, NULL))		/* don't reconnect if it's already in the favlist */
+				{
+					sess_channels = servlist_favchan_listadd (sess_channels, sess->waitchannel, sess->channelkey);
+					i++;
+				}
+			}
+		}
+
+		list = list->next;
+	}
+
+	if (sess_channels)
+	{
+		serv->p_join_list (serv, sess_channels);
+		g_slist_free_full (sess_channels, (GDestroyNotify) servlist_favchan_free);
+	}
 
 	serv->joindelay_tag = 0;
 	fe_server_event (serv, FE_SE_LOGGEDIN, i);
