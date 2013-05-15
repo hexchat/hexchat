@@ -1142,7 +1142,7 @@ check_autojoin_channels (server *serv)
 }
 #endif
 
-static gboolean
+static void
 check_autojoin_channels (server *serv)
 {
 	int i = 0;
@@ -1150,7 +1150,7 @@ check_autojoin_channels (server *serv)
 	/* shouldn't really happen, the io tag is destroyed in server.c */
 	if (!is_server (serv))
 	{
-		return FALSE;
+		return;
 	}
 
 	/* send auto join list */
@@ -1171,8 +1171,6 @@ check_autojoin_channels (server *serv)
 
 	serv->joindelay_tag = 0;
 	fe_server_event (serv, FE_SE_LOGGEDIN, i);
-
-	return FALSE;
 }
 
 void
