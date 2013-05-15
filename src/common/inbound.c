@@ -1105,7 +1105,15 @@ check_autojoin_channels (server *serv)
 					}
 				}
 
-				sess_channels = servlist_favchan_listadd (sess_channels, sess->waitchannel, sess->channelkey);
+				/* for easier checks, ensure that favchannel->key is just NULL when session->channelkey is empty i.e. '' */
+				if (strlen (sess->channelkey))
+				{
+					sess_channels = servlist_favchan_listadd (sess_channels, sess->waitchannel, sess->channelkey);
+				}
+				else
+				{
+					sess_channels = servlist_favchan_listadd (sess_channels, sess->waitchannel, NULL);
+				}
 				i++;
 			}
 		}

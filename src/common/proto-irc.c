@@ -194,7 +194,7 @@ irc_join_list (server *serv, GSList *favorites)
 
 		g_string_append (chanlist, fav->name);
 
-		if (fav->key && strlen (fav->key))					/* strlen() is required since key can be '' for session->channelkey */
+		if (fav->key)					/* strlen() is required since key can be '' for session->channelkey */
 		{
 			g_string_append (keylist, fav->key);
 			send_keys = 1;
