@@ -75,6 +75,10 @@ extern GSList *network_list;
 #define LOGIN_AUTH				5
 #define LOGIN_SASL				6
 #define LOGIN_PASS				7
+#define LOGIN_CHALLENGEAUTH		8
+
+#define CHALLENGEAUTH_ALGO		"HMAC-SHA-256"
+#define CHALLENGEAUTH_NICK		"Q@CServe.quakenet.org"
 
 /* DEFAULT_CHARSET is already defined in wingdi.h */
 #define IRC_DEFAULT_CHARSET		"UTF-8 (Unicode)"

@@ -1380,7 +1380,10 @@ inbound_nickserv_login (server *serv)
 		case LOGIN_NICKSERV:
 		case LOGIN_NS:
 		case LOGIN_MSG_NS:
+		case LOGIN_CHALLENGEAUTH:
+#if 0
 		case LOGIN_AUTH:
+#endif
 			return 1;
 		default:
 			return 0;

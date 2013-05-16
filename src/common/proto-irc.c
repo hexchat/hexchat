@@ -67,43 +67,49 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 	/* are all ircd authors idiots? */
 	switch (serv->loginmethod)
 	{
-	case LOGIN_MSG_NICKSERV:
-		tcp_sendf (serv, "PRIVMSG NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
-		break;
-	case LOGIN_NICKSERV:
-		tcp_sendf (serv, "NICKSERV %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
-		break;
+		case LOGIN_MSG_NICKSERV:
+			tcp_sendf (serv, "PRIVMSG NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
+			break;
+		case LOGIN_NICKSERV:
+			tcp_sendf (serv, "NICKSERV %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
+			break;
+		case LOGIN_MSG_NS:
+			tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
+			break;
 #if 0
-	case LOGIN_NS:
-		tcp_sendf (serv, "NS %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
-		break;
+		case LOGIN_NS:
+			tcp_sendf (serv, "NS %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
+			break;
+		case LOGIN_AUTH:
+			/* why couldn't QuakeNet implement one of the existing ones? */
+			tcp_sendf (serv, "AUTH %s %s\r\n", arg1, arg2);
+			break;
 #endif
-	case LOGIN_MSG_NS:
-		tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
-		break;
-	case LOGIN_AUTH:
-		/* why couldn't QuakeNet implement one of the existing ones? */
-		tcp_sendf (serv, "AUTH %s %s\r\n", arg1, arg2);
 	}
 }
 
 static void
 irc_ns_identify (server *serv, char *pass)
 {
-	if (serv->loginmethod == LOGIN_AUTH)	/* QuakeNet needs to do everything in its own ways... */
+	switch (serv->loginmethod)
 	{
-		irc_nickserv (serv, "", serv->nick, pass, "");
-	}
-	else
-	{
-		irc_nickserv (serv, "IDENTIFY", pass, "", "");
+		case LOGIN_CHALLENGEAUTH:
+			tcp_sendf (serv, "PRIVMSG %s :CHALLENGE\r\n", CHALLENGEAUTH_NICK);	/* request a challenge from Q */
+			break;
+#if 0
+		case LOGIN_AUTH:
+			irc_nickserv (serv, "", serv->nick, pass, "");
+			break;
+#endif
+		default:
+			irc_nickserv (serv, "IDENTIFY", pass, "", "");
 	}
 }
 
 static void
 irc_ns_ghost (server *serv, char *usname, char *pass)
 {
-	if (serv->loginmethod != LOGIN_AUTH)
+	if (serv->loginmethod != LOGIN_AUTH && serv->loginmethod != LOGIN_CHALLENGEAUTH)
 	{
 		irc_nickserv (serv, "GHOST", usname, " ", pass);
 	}
@@ -1080,11 +1086,21 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 
 		case WORDL('N','O','T','I'):
 			{
-				int id = FALSE;	/* identified */
+				int id = FALSE;							/* identified */
+				char *response;
 
 				text = word_eol[4];
 				if (*text == ':')
+				{
 					text++;
+				}
+
+				if (!strncmp (text, "CHALLENGE ", 10))		/* QuakeNet CHALLENGEAUTH upon our request */
+				{
+					response = challengeauth_response (((ircnet *)serv->network)->user, serv->password, word[5]);
+					tcp_sendf (serv, "PRIVMSG %s :CHALLENGEAUTH %s %s %s\r\n", CHALLENGEAUTH_NICK, ((ircnet *)serv->network)->user, response, CHALLENGEAUTH_ALGO);
+					g_free (response);
+				}
 
 				if (serv->have_idmsg)
 				{

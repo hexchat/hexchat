@@ -80,5 +80,6 @@ int portable_mode ();
 int unity_mode ();
 GSList *get_subdirs (const char *path);
 char *encode_sasl_pass (char *user, char *pass);
+char *challengeauth_response (char *username, char *password, char *challenge);
 
 #endif

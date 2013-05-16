@@ -426,7 +426,7 @@ static const struct defaultserver def[] =
 	{0,			"nfsi.ptnet.org"},
 	{0,			"fctunl.ptnet.org"},
 
-	{"QuakeNet", 0, 0, 0, LOGIN_AUTH},
+	{"QuakeNet", 0, 0, 0, LOGIN_CHALLENGEAUTH},
 	{0,			"irc.quakenet.org"},
 	{0,			"irc.se.quakenet.org"},
 	{0,			"irc.dk.quakenet.org"},

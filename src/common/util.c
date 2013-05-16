@@ -1978,3 +1978,64 @@ find_font (const char *fontname)
 	return 0;
 }
 #endif
+
+static char *
+str_sha256hash (char *string)
+{
+	int i;
+	unsigned char hash[SHA256_DIGEST_LENGTH];
+	char buf[SHA256_DIGEST_LENGTH * 2 + 1];		/* 64 digit hash + '\0' */
+	SHA256_CTX sha256;
+
+	SHA256_Init (&sha256);
+	SHA256_Update (&sha256, string, strlen (string));
+	SHA256_Final (hash, &sha256);
+
+	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
+	{
+		sprintf (buf + (i * 2), "%02x", hash[i]);
+	}
+
+	buf[SHA256_DIGEST_LENGTH * 2] = 0;
+
+	return g_strdup (buf);
+}
+
+char *
+challengeauth_response (char *username, char *password, char *challenge)
+{
+	int i;
+	char *user;
+	char *pass;
+	char *passhash;
+	char *key;
+	char *keyhash;
+	unsigned char *digest;
+	GString *buf = g_string_new_len (NULL, SHA256_DIGEST_LENGTH * 2);
+
+	user = g_strdup (username);
+	*user = rfc_tolower (*username);			/* convert username to lowercase as per the RFC*/
+
+	pass = g_strndup (password, 10);			/* truncate to 10 characters */
+	passhash = str_sha256hash (pass);
+	g_free (pass);
+
+	key = g_strdup_printf ("%s:%s", user, passhash);
+	g_free (user);
+	g_free (passhash);
+
+	keyhash = str_sha256hash (key);
+	g_free (key);
+
+	digest = HMAC (EVP_sha256 (), keyhash, strlen (keyhash), (unsigned char *) challenge, strlen (challenge), NULL, NULL);
+	g_free (keyhash);
+
+	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
+	{
+		g_string_append_printf (buf, "%02x", (unsigned int) digest[i]);
+	}
+
+	digest = (unsigned char *) g_string_free (buf, FALSE);
+
+	return (char *) digest;
+}
