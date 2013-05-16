@@ -3200,6 +3200,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 					if (col_num == 99)	/* mIRC lameness */
 						col_num = XTEXT_FG;
 					else
+					if (col_num > XTEXT_MAX_COLOR)
 						col_num = col_num % XTEXT_MIRC_COLS;
 					xtext->col_fore = col_num;
 					if (!mark)
@@ -3226,6 +3227,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 						if (col_num == 99)	/* mIRC lameness */
 							col_num = XTEXT_BG;
 						else
+						if (col_num > XTEXT_MAX_COLOR)
 							col_num = col_num % XTEXT_MIRC_COLS;
 						if (col_num == XTEXT_BG)
 							xtext->backcolor = FALSE;
@@ -3239,6 +3241,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 						if (col_num == 99)	/* mIRC lameness */
 							col_num = XTEXT_FG;
 						else
+						if (col_num > XTEXT_MAX_COLOR)
 							col_num = col_num % XTEXT_MIRC_COLS;
 						if (!mark)
 							xtext_set_fg (xtext, gc, col_num);
