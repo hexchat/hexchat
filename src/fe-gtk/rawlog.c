@@ -154,20 +154,29 @@ open_rawlog (struct server *serv)
 void
 fe_add_rawlog (server *serv, char *text, int len, int outbound)
 {
+	char **split_text;
 	char *new_text;
+	int i;
 
 	if (!serv->gui->rawlog_window)
 		return;
 
-	new_text = malloc (len + 7);
+	split_text = g_strsplit (text, "\r\n", 0);
 
-	len = sprintf (new_text, "\0033>>\017 %s", text);
-	if (outbound)
+	for (i = 0; i < g_strv_length (split_text); i++)
 	{
-		new_text[1] = '4';
-		new_text[2] = '<';
-		new_text[3] = '<';
+		if (split_text[i][0] == 0)
+			break;
+
+		if (outbound)
+			new_text = g_strconcat ("\0034<<\017 ", split_text[i], NULL);
+		else
+			new_text = g_strconcat ("\0033>>\017 ", split_text[i], NULL);
+
+		gtk_xtext_append (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer, new_text, strlen (new_text));
+
+		g_free (new_text);
 	}
-	gtk_xtext_append (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer, new_text, len);
-	free (new_text);
+
+	g_strfreev (split_text);
 }
