@@ -1066,38 +1066,26 @@ inbound_nameslist_end (server *serv, char *chan)
 	return FALSE;
 }
 
-static gboolean
+static void
 check_autojoin_channels (server *serv)
 {
-	char *po;
+	int i = 0;
 	session *sess;
 	GSList *list = sess_list;
-	int i = 0;
-	GSList *channels, *keys;
+	GSList *sess_channels = NULL;			/* joined channels that are not in the favorites list */
+	favchannel *fav;
 
-	/* shouldnt really happen, the io tag is destroyed in server.c */
+	/* shouldn't really happen, the io tag is destroyed in server.c */
 	if (!is_server (serv))
-		return FALSE;
-
-	/* send auto join list */
-	if (serv->autojoin)
 	{
-		joinlist_split (serv->autojoin, &channels, &keys);
-		serv->p_join_list (serv, channels, keys);
-		joinlist_free (channels, keys);
-
-		free (serv->autojoin);
-		serv->autojoin = NULL;
-		i++;
+		return;
 	}
 
-	/* this is really only for re-connects when you
-    * join channels not in the auto-join list. */
-	channels = NULL;
-	keys = NULL;
+	/* If there's a session (i.e. this is a reconnect), autojoin to everything that was open previously. */
 	while (list)
 	{
 		sess = list->data;
+
 		if (sess->server == serv)
 		{
 			if (sess->willjoinchannel[0] != 0)
@@ -1105,39 +1093,54 @@ check_autojoin_channels (server *serv)
 				strcpy (sess->waitchannel, sess->willjoinchannel);
 				sess->willjoinchannel[0] = 0;
 
-				po = strchr (sess->waitchannel, ',');
-				if (po)
-					*po = 0;
-				po = strchr (sess->waitchannel, ' ');
-				if (po)
-					*po = 0;
+				fav = servlist_favchan_find (serv->network, sess->waitchannel, NULL);	/* Is this channel in our favorites? */
 
-				/* There can be no gap between keys, list keyed chans first. */
-				if (sess->channelkey[0] != 0)
+				/* session->channelkey is initially unset for channels joined from the favorites. You have to fill them up manually from favorites settings. */
+				if (fav)
 				{
-					channels = g_slist_prepend (channels, g_strdup (sess->waitchannel));
-					keys = g_slist_prepend (keys, g_strdup (sess->channelkey));
+					/* session->channelkey is set if there was a key change during the session. In that case, use the session key, not the one from favorites. */
+					if (fav->key && !strlen (sess->channelkey))
+					{
+						safe_strcpy (sess->channelkey, fav->key, sizeof (sess->channelkey));
+					}
+				}
+
+				/* for easier checks, ensure that favchannel->key is just NULL when session->channelkey is empty i.e. '' */
+				if (strlen (sess->channelkey))
+				{
+					sess_channels = servlist_favchan_listadd (sess_channels, sess->waitchannel, sess->channelkey);
 				}
 				else
 				{
-					channels = g_slist_append (channels, g_strdup (sess->waitchannel));
-					keys = g_slist_append (keys, g_strdup (sess->channelkey));
+					sess_channels = servlist_favchan_listadd (sess_channels, sess->waitchannel, NULL);
 				}
 				i++;
 			}
 		}
+
 		list = list->next;
 	}
 
-	if (channels)
+	if (sess_channels)
 	{
-		serv->p_join_list (serv, channels, keys);
-		joinlist_free (channels, keys);
+		serv->p_join_list (serv, sess_channels);
+		g_slist_free_full (sess_channels, (GDestroyNotify) servlist_favchan_free);
+	}
+	else
+	{
+		/* If there's no session, just autojoin to favorites. */
+		if (serv->favlist)
+		{
+			serv->p_join_list (serv, serv->favlist);
+			i++;
+
+			/* FIXME this is not going to work and is not needed either. server_free() does the job already. */
+			/* g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free); */
+		}
 	}
 
 	serv->joindelay_tag = 0;
 	fe_server_event (serv, FE_SE_LOGGEDIN, i);
-	return FALSE;
 }
 
 void
@@ -1367,9 +1370,28 @@ inbound_exec_eom_cmd (char *str, void *sess)
 	return 1;
 }
 
+static int
+inbound_nickserv_login (server *serv)
+{
+	/* this could grow ugly, but let's hope there won't be new NickServ types */
+	switch (serv->loginmethod)
+	{
+		case LOGIN_MSG_NICKSERV:
+		case LOGIN_NICKSERV:
+		case LOGIN_NS:
+		case LOGIN_MSG_NS:
+		case LOGIN_AUTH:
+			return 1;
+		default:
+			return 0;
+	}
+}
+
 void
 inbound_login_end (session *sess, char *text)
 {
+	GSList *cmdlist;
+	commandentry *cmd;
 	server *serv = sess->server;
 
 	if (!serv->end_of_motd)
@@ -1384,35 +1406,48 @@ inbound_login_end (session *sess, char *text)
 		if (serv->network)
 		{
 			/* there may be more than 1, separated by \n */
-			if (((ircnet *)serv->network)->command)
-				token_foreach (((ircnet *)serv->network)->command, '\n',
-									inbound_exec_eom_cmd, sess);
+
+			cmdlist = ((ircnet *)serv->network)->commandlist;
+			while (cmdlist)
+			{
+				cmd = cmdlist->data;
+				inbound_exec_eom_cmd (cmd->command, sess);
+				cmdlist = cmdlist->next;
+			}
 
 			/* send nickserv password */
-			if (((ircnet *)serv->network)->nickserv)
-				serv->p_ns_identify (serv, ((ircnet *)serv->network)->nickserv);
+			if (((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
+			{
+				serv->p_ns_identify (serv, ((ircnet *)serv->network)->pass);
+			}
 		}
 
 		/* send JOIN now or wait? */
-		if (serv->network && ((ircnet *)serv->network)->nickserv &&
-			 prefs.hex_irc_join_delay)
-			serv->joindelay_tag = fe_timeout_add (prefs.hex_irc_join_delay * 1000,
-															  check_autojoin_channels, serv);
+		if (serv->network && ((ircnet *)serv->network)->pass && prefs.hex_irc_join_delay && inbound_nickserv_login (serv))
+		{
+			serv->joindelay_tag = fe_timeout_add (prefs.hex_irc_join_delay * 1000, check_autojoin_channels, serv);
+		}
 		else
+		{
 			check_autojoin_channels (serv);
+		}
+
 		if (serv->supports_watch || serv->supports_monitor)
+		{
 			notify_send_watches (serv);
+		}
+
 		serv->end_of_motd = TRUE;
 	}
+
 	if (prefs.hex_irc_skip_motd && !serv->motd_skipped)
 	{
 		serv->motd_skipped = TRUE;
-		EMIT_SIGNAL (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL,
-						 NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL, NULL, NULL, 0);
 		return;
 	}
-	EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL,
-					 NULL, NULL, 0);
+
+	EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL, NULL, NULL, 0);
 }
 
 void

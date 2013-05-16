@@ -1886,7 +1886,7 @@ int main (int argc, char *argv[])
 	list = get_subdirs ("foo");
 	display_list (list);
 #if GLIB_CHECK_VERSION(2,28,0)
-	g_slist_free_full (list, (GFunc) g_free);
+	g_slist_free_full (list, (GDestroyNotify) g_free);
 #else
 	g_slist_foreach (list, (GFunc) g_free, NULL);
 	g_slist_free (list);

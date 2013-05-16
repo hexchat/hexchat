@@ -66,15 +66,6 @@
 #define BIG_STR_TO_INT(x) strtoul(x,NULL,10)
 #endif
 
-/* This is practically copy-paste from gstdio.h.
- * GStatBuf was added in 2.26. On Win32 we already use that,
- * so we only gotta check this on Unix */
-#ifndef WIN32
-#if !GLIB_CHECK_VERSION(2,26,0)
-typedef struct stat GStatBuf;
-#endif
-#endif
-
 static char *dcctypes[] = { "SEND", "RECV", "CHAT", "CHAT" };
 
 struct dccstat_info dccstat[] = {

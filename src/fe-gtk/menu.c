@@ -1048,9 +1048,13 @@ menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel)
 	}
 
 	if (joinlist_is_in_list (serv, channel))
+	{
 		mg_create_icon_item (_("_Remove from Favorites"), GTK_STOCK_REMOVE, menu, menu_delfav_cb, serv);
+	}
 	else
+	{
 		mg_create_icon_item (_("_Add to Favorites"), GTK_STOCK_ADD, menu, menu_addfav_cb, serv);
+	}
 }
 
 static void
@@ -1729,11 +1733,7 @@ static gboolean
 menu_canacaccel (GtkWidget *widget, guint signal_id, gpointer user_data)
 {
 	/* GTK2.2 behaviour */
-#if GTK_CHECK_VERSION(2,20,0)
 	return gtk_widget_is_sensitive (widget);
-#else
-	return GTK_WIDGET_IS_SENSITIVE (widget);
-#endif
 }
 
 /* === STUFF FOR /MENU === */

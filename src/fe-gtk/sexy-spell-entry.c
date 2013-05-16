@@ -954,7 +954,6 @@ enchant_has_lang(const gchar *lang, GSList *langs) {
 void
 sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 {
-#if GLIB_CHECK_VERSION (2, 6, 0)
 	/*const gchar* const *langs;
 	int i;
 	gchar *lastprefix = NULL;*/
@@ -1003,26 +1002,6 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 	/* If we don't have any languages activated, use "en" */
 	if (entry->priv->dict_list == NULL)
 		sexy_spell_entry_activate_language_internal(entry, "en", NULL);
-#else
-	gchar *lang;
-
-	if (!have_enchant)
-		return;
-
-	lang = (gchar *) g_getenv("LANG");
-
-	if (lang != NULL) {
-		if (g_ascii_strncasecmp(lang, "C", 1) == 0)
-			lang = NULL;
-		else if (lang[0] == '\0')
-			lang = NULL;
-	}
-
-	if (lang == NULL)
-		lang = "en";
-
-	sexy_spell_entry_activate_language_internal(entry, lang, NULL);
-#endif
 }
 
 static void

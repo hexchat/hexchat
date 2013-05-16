@@ -897,15 +897,15 @@ fe_gui_info (session *sess, int info_type)
 	switch (info_type)
 	{
 	case 0:	/* window status */
-#if GTK_CHECK_VERSION(2,20,0)
 		if (!gtk_widget_get_visible (GTK_WIDGET (sess->gui->window)))
-#else
-		if (!GTK_WIDGET_VISIBLE (GTK_WIDGET (sess->gui->window)))
-#endif
+		{
 			return 2;	/* hidden (iconified or systray) */
+		}
 
 		if (gtk_window_is_active (GTK_WINDOW (sess->gui->window)))
+		{
 			return 1;	/* active/focused */
+		}
 
 		return 0;		/* normal (no keyboard focus or behind a window) */
 	}
@@ -920,11 +920,7 @@ fe_gui_info_ptr (session *sess, int info_type)
 	{
 	case 0:	/* native window pointer (for plugins) */
 #ifdef WIN32
-#if GTK_CHECK_VERSION(2,24,8)
 		return gdk_win32_window_get_impl_hwnd (sess->gui->window->window);
-#else
-		return GDK_WINDOW_HWND (sess->gui->window->window);
-#endif
 #else
 		return sess->gui->window;
 #endif
