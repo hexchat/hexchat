@@ -42,6 +42,7 @@
 #include "util.h"
 #include "hexchatc.h"
 #include "url.h"
+#include "servlist.h"
 
 
 static void
@@ -49,7 +50,7 @@ irc_login (server *serv, char *user, char *realname)
 {
 	tcp_sendf (serv, "CAP LS\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
 
-	if (serv->password[0])
+	if (serv->password[0] && serv->loginmethod == LOGIN_PASS)
 	{
 		tcp_sendf (serv, "PASS %s\r\n", serv->password);
 	}
@@ -64,21 +65,23 @@ static void
 irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 {
 	/* are all ircd authors idiots? */
-	switch (serv->nickservtype)
+	switch (serv->loginmethod)
 	{
-	case 0:
+	case LOGIN_MSG_NICKSERV:
 		tcp_sendf (serv, "PRIVMSG NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 1:
+	case LOGIN_NICKSERV:
 		tcp_sendf (serv, "NICKSERV %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 2:
+#if 0
+	case LOGIN_NS:
 		tcp_sendf (serv, "NS %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 3:
+#endif
+	case LOGIN_MSG_NS:
 		tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
-	case 4:
+	case LOGIN_AUTH:
 		/* why couldn't QuakeNet implement one of the existing ones? */
 		tcp_sendf (serv, "AUTH %s %s\r\n", arg1, arg2);
 	}
@@ -87,7 +90,7 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 static void
 irc_ns_identify (server *serv, char *pass)
 {
-	if (serv->nickservtype == 4)	/* QuakeNet needs to do everything in its own ways... */
+	if (serv->loginmethod == LOGIN_AUTH)	/* QuakeNet needs to do everything in its own ways... */
 	{
 		irc_nickserv (serv, "", serv->nick, pass, "");
 	}
@@ -100,8 +103,10 @@ irc_ns_identify (server *serv, char *pass)
 static void
 irc_ns_ghost (server *serv, char *usname, char *pass)
 {
-	if (serv->nickservtype != 4)
+	if (serv->loginmethod != LOGIN_AUTH)
+	{
 		irc_nickserv (serv, "GHOST", usname, " ", pass);
+	}
 }
 
 static void
@@ -114,118 +119,97 @@ irc_join (server *serv, char *channel, char *key)
 }
 
 static void
-irc_join_list_flush (server *serv, GString *c, GString *k)
+irc_join_list_flush (server *serv, GString *channels, GString *keys, int send_keys)
 {
-	char *chanstr, *keystr;
+	char *chanstr;
+	char *keystr;
 
-	chanstr = g_string_free (c, FALSE);
-	keystr = g_string_free (k, FALSE);
-	if (chanstr[0])
+	chanstr = g_string_free (channels, FALSE);				/* convert our strings to char arrays */
+	keystr = g_string_free (keys, FALSE);
+
+	if (send_keys)
 	{
-		if (keystr[0])
-			tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);
-		else
-			tcp_sendf (serv, "JOIN %s\r\n", chanstr);
+		tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);	/* send the actual command */
 	}
+	else
+	{
+		tcp_sendf (serv, "JOIN %s\r\n", chanstr);	/* send the actual command */
+	}
+
 	g_free (chanstr);
 	g_free (keystr);
 }
 
-/* join a whole list of channels & keys, split to multiple lines
- * to get around 512 limit */
+/* Join a whole list of channels & keys, split to multiple lines
+ * to get around the 512 limit.
+ */
 
 static void
-irc_join_list (server *serv, GSList *channels, GSList *keys)
+irc_join_list (server *serv, GSList *favorites)
 {
-	GSList *clist;
-	GSList *klist;
-	GString *c = g_string_new (NULL);
-	GString *k = g_string_new (NULL);
-	int len;
-	int add;
-	int i, j;
+	int first_item = 1;										/* determine whether we add commas or not */
+	int send_keys = 0;										/* if none of our channels have keys, we can omit the 'x' fillers altogether */
+	int len = 9;											/* JOIN<space>channels<space>keys\r\n\0 */
+	favchannel *fav;
+	GString *chanlist = g_string_new (NULL);
+	GString *keylist = g_string_new (NULL);
+	GSList *favlist;
 
-	i = j = 0;
-	len = 9; /* "JOIN<space><space>\r\n" */
-	clist = channels;
-	klist = keys;
+	favlist = favorites;
 
-	while (clist)
+	while (favlist)
 	{
-		/* measure how many bytes this channel would add... */
-		if (1)
+		fav = favlist->data;
+
+		len += strlen (fav->name);
+		if (fav->key)
 		{
-			add = strlen (clist->data);
-			if (i != 0)
-				add++;	/* comma */
+			len += strlen (fav->key);
 		}
 
-		if (klist->data)
+		if (len >= 512)										/* command length exceeds the IRC hard limit, flush it and start from scratch */
 		{
-			add += strlen (klist->data);
-		}
-		else
-		{
-			add++;	/* 'x' filler */
-		}
+			irc_join_list_flush (serv, chanlist, keylist, send_keys);
 
-		if (j != 0)
-			add++;	/* comma */
+			chanlist = g_string_new (NULL);
+			keylist = g_string_new (NULL);
 
-		/* too big? dump buffer and start a fresh one */
-		if (len + add > 512)
-		{
-			irc_join_list_flush (serv, c, k);
-
-			c = g_string_new (NULL);
-			k = g_string_new (NULL);
-			i = j = 0;
 			len = 9;
+			first_item = 1;									/* list dumped, omit commas once again */
+			send_keys = 0;									/* also omit keys until we actually find one */
 		}
 
-		/* now actually add it to our GStrings */
-		if (1)
+		if (!first_item)
 		{
-			add = strlen (clist->data);
-			if (i != 0)
-			{
-				add++;
-				g_string_append_c (c, ',');
-			}
-			g_string_append (c, clist->data);
-			i++;
+			/* This should be done before the length check, but channel names
+			 * are already at least 2 characters long so it would trigger the
+			 * flush anyway.
+			 */
+			len += 2;
+
+			/* add separators but only if it's not the 1st element */
+			g_string_append_c (chanlist, ',');
+			g_string_append_c (keylist, ',');
 		}
 
-		if (klist->data)
+		g_string_append (chanlist, fav->name);
+
+		if (fav->key)
 		{
-			add += strlen (klist->data);
-			if (j != 0)
-			{
-				add++;
-				g_string_append_c (k, ',');
-			}
-			g_string_append (k, klist->data);
-			j++;
+			g_string_append (keylist, fav->key);
+			send_keys = 1;
 		}
 		else
 		{
-			add++;
-			if (j != 0)
-			{
-				add++;
-				g_string_append_c (k, ',');
-			}
-			g_string_append_c (k, 'x');
-			j++;
+			g_string_append_c (keylist, 'x');				/* 'x' filler for keyless channels so that our JOIN command is always well-formatted */
 		}
 
-		len += add;
-
-		klist = klist->next;
-		clist = clist->next;
+		first_item = 0;
+		favlist = favlist->next;
 	}
 
-	irc_join_list_flush (serv, c, k);
+	irc_join_list_flush (serv, chanlist, keylist, send_keys);
+	g_slist_free (favlist);
 }
 
 static void
@@ -1218,10 +1202,23 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					if (strstr (word_eol[5], "sasl") != 0)
 					{
 						serv->have_sasl = TRUE;
-						EMIT_SIGNAL (XP_TE_SASLAUTH, serv->server_session, sess->server->sasluser, NULL, NULL, NULL, 0);
+						EMIT_SIGNAL
+						(
+							XP_TE_SASLAUTH,
+							serv->server_session,
+							(((ircnet *)sess->server->network)->user) ? (((ircnet *)sess->server->network)->user) : prefs.hex_irc_user_name,
+							NULL,
+							NULL,
+							NULL,
+							0
+						);
 						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
-						pass = encode_sasl_pass (sess->server->sasluser, sess->server->saslpassword);
+						pass = encode_sasl_pass
+						(
+							(((ircnet *)sess->server->network)->user) ? (((ircnet *)sess->server->network)->user) : prefs.hex_irc_user_name,
+							sess->server->password
+						);
 						tcp_sendf (sess->server, "AUTHENTICATE %s\r\n", pass);
 						free (pass);
 					}
@@ -1259,8 +1256,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						strcat (buffer, "extended-join ");
 						want_cap = 1;
 					}
-					/* if the SASL password is set, request SASL auth */
-					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->saslpassword) != 0)
+					/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
+					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->password) != 0 && serv->loginmethod == LOGIN_SASL)
 					{
 						strcat (buffer, "sasl ");
 						want_cap = 1;

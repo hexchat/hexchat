@@ -184,7 +184,7 @@ dnl *********************************************************************
 dnl ** GLIB *************************************************************
 dnl *********************************************************************
 
-AM_PATH_GLIB_2_0(2.14.0, glib=yes, glib=no)
+AM_PATH_GLIB_2_0(2.28.0, glib=yes, glib=no)
 if test "$glib" = no; then
 	AC_MSG_ERROR(Cannot find GLib!)
 fi
@@ -199,7 +199,7 @@ dnl *********************************************************************
 
 # we might get undefined macro without this test
 if test "$gtkfe" = yes ; then
-	AM_PATH_GTK_2_0(2.14.0, havegtk=yes, havegtk=no)
+	AM_PATH_GTK_2_0(2.24.0, havegtk=yes, havegtk=no)
 
 	if test "$havegtk" = no; then
 		gtkfe=no

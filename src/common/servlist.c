@@ -43,7 +43,7 @@ struct defaultserver
 	char *host;
 	char *channel;
 	char *charset;
-	int nsmode;		/* default NickServ type */
+	int loginmode;		/* default authentication type */
 };
 
 static const struct defaultserver def[] =
@@ -167,7 +167,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.criten.net"},
 	{0,			"irc.eu.criten.net"},
 
-	{"DALnet", 0, 0, 0, 2},
+	{"DALnet", 0},
 	{0,			"irc.dal.net"},
 	{0,			"irc.eu.dal.net"},
 
@@ -245,7 +245,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.ggn.net"},
 	{0,			"irc.vendetta.com"},
 
-	{"freenode",	0,	"#hexchat"},
+	{"freenode", 0, "#hexchat", 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,				"irc.freenode.net/+6697"},
 #endif
@@ -263,7 +263,7 @@ static const struct defaultserver def[] =
 /*	{0,			"sprynet.us.galaxynet.org"},
 	{0,			"atlanta.ga.us.galaxynet.org"},*/
 
-	{"GameSurge", 0, 0, 0, 2},
+	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 	
 /*	{"GamesNET",	0},
@@ -426,7 +426,7 @@ static const struct defaultserver def[] =
 	{0,			"nfsi.ptnet.org"},
 	{0,			"fctunl.ptnet.org"},
 
-	{"QuakeNet", 0, 0, 0, 5},
+	{"QuakeNet", 0, 0, 0, LOGIN_AUTH},
 	{0,			"irc.quakenet.org"},
 	{0,			"irc.se.quakenet.org"},
 	{0,			"irc.dk.quakenet.org"},
@@ -460,7 +460,7 @@ static const struct defaultserver def[] =
 	{"Rizon", 0},
 	{0,			"irc.rizon.net"},
 
-	{"RusNet", 0, 0, "KOI8-R (Cyrillic)", 2},
+	{"RusNet", 0, 0, "KOI8-R (Cyrillic)"},
 	{0,			"irc.tomsk.net"},
 	{0,			"irc.rinet.ru"},
 	{0,			"irc.run.net"},
@@ -545,7 +545,7 @@ static const struct defaultserver def[] =
 	{0,			"us.undernet.org"},
 	{0,			"eu.undernet.org"},
 
-	{"UniBG", 0, 0, 0, 4},
+	{"UniBG", 0, 0, 0, LOGIN_MSG_NS},
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
 	{0,			"irc.spnet.net"},
@@ -581,6 +581,55 @@ static const struct defaultserver def[] =
 
 GSList *network_list = 0;
 
+#if !GLIB_CHECK_VERSION(2,34,0)
+#define g_slist_copy_deep servlist_slist_copy_deep
+/* FIXME copy-paste from gslist.c, should be dumped sometime */
+static GSList*
+servlist_slist_copy_deep (GSList *list, GCopyFunc func, gpointer user_data)
+{
+  GSList *new_list = NULL;
+
+  if (list)
+    {
+      GSList *last;
+
+      new_list = g_slice_new (GSList);
+      if (func)
+        new_list->data = func (list->data, user_data);
+      else
+        new_list->data = list->data;
+      last = new_list;
+      list = list->next;
+      while (list)
+        {
+          last->next = g_slice_new (GSList);
+          last = last->next;
+          if (func)
+            last->data = func (list->data, user_data);
+          else
+            last->data = list->data;
+          list = list->next;
+        }
+      last->next = NULL;
+    }
+
+  return new_list;
+}
+#endif
+
+favchannel *
+servlist_favchan_copy (favchannel *fav)
+{
+	favchannel *newfav;
+
+	newfav = malloc (sizeof (favchannel));
+	memset (newfav, 0, sizeof (favchannel));
+
+	newfav->name = g_strdup (fav->name);
+	newfav->key = g_strdup (fav->key);		/* g_strdup() can handle NULLs so no need to check it */
+
+	return newfav;
+}
 
 void
 servlist_connect (session *sess, ircnet *net, gboolean join)
@@ -603,51 +652,37 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		return;
 	ircserv = list->data;
 
-	/* incase a protocol switch is added to the servlist gui */
+	/* in case a protocol switch is added to the servlist gui */
 	server_fill_her_up (sess->server);
 
 	if (join)
 	{
 		sess->willjoinchannel[0] = 0;
 
-		if (net->autojoin)
+		if (net->favchanlist)
 		{
-			if (serv->autojoin)
-				free (serv->autojoin);
-			serv->autojoin = strdup (net->autojoin);
+			if (serv->favlist)
+			{
+				g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free);
+			}
+			serv->favlist = g_slist_copy_deep (net->favchanlist, (GCopyFunc) servlist_favchan_copy, NULL);
 		}
 	}
 
-	if (net->nstype >= 1)	/* once again, make sure gtk_combo_box_get_active() is not bugging us, just in case */
+	if (net->logintype)
 	{
-		serv->nickservtype = net->nstype - 1;	/* ircnet->nstype starts at 1, server->nickservtype starts at 0! */
+		serv->loginmethod = net->logintype;
 	}
 	else
 	{
-		serv->nickservtype = 1;					/* use /NickServ by default */
+		serv->loginmethod = LOGIN_DEFAULT_REAL;
 	}
 
 	serv->password[0] = 0;
-	serv->sasluser[0] = 0;
-	serv->saslpassword[0] = 0;
 
 	if (net->pass)
 	{
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
-	}
-
-	if (net->flags & FLAG_USE_GLOBAL || net->user == NULL)
-	{
-		strcpy (serv->sasluser, prefs.hex_irc_user_name);
-	}
-	else
-	{
-		safe_strcpy (serv->sasluser, net->user, sizeof (serv->sasluser));
-	}
-
-	if (net->saslpass)
-	{
-		safe_strcpy (serv->saslpassword, net->saslpass, sizeof (serv->saslpassword));
 	}
 
 	if (net->flags & FLAG_USE_GLOBAL)
@@ -820,8 +855,60 @@ servlist_server_find (ircnet *net, char *name, int *pos)
 		if (strcmp (serv->hostname, name) == 0)
 		{
 			if (pos)
+			{
 				*pos = i;
+			}
 			return serv;
+		}
+		i++;
+		list = list->next;
+	}
+
+	return NULL;
+}
+
+favchannel *
+servlist_favchan_find (ircnet *net, char *channel, int *pos)
+{
+	GSList *list = net->favchanlist;
+	favchannel *favchan;
+	int i = 0;
+
+	while (list)
+	{
+		favchan = list->data;
+		if (strcmp (favchan->name, channel) == 0)
+		{
+			if (pos)
+			{
+				*pos = i;
+			}
+			return favchan;
+		}
+		i++;
+		list = list->next;
+	}
+
+	return NULL;
+}
+
+commandentry *
+servlist_command_find (ircnet *net, char *cmd, int *pos)
+{
+	GSList *list = net->commandlist;
+	commandentry *entry;
+	int i = 0;
+
+	while (list)
+	{
+		entry = list->data;
+		if (strcmp (entry->command, cmd) == 0)
+		{
+			if (pos)
+			{
+				*pos = i;
+			}
+			return entry;
 		}
 		i++;
 		list = list->next;
@@ -897,6 +984,60 @@ servlist_server_add (ircnet *net, char *name)
 	return serv;
 }
 
+commandentry *
+servlist_command_add (ircnet *net, char *cmd)
+{
+	commandentry *entry;
+
+	entry = malloc (sizeof (commandentry));
+	memset (entry, 0, sizeof (commandentry));
+	entry->command = strdup (cmd);
+
+	net->commandlist = g_slist_append (net->commandlist, entry);
+
+	return entry;
+}
+
+GSList *
+servlist_favchan_listadd (GSList *chanlist, char *channel, char *key)
+{
+	favchannel *chan;
+
+	chan = malloc (sizeof (favchannel));
+	memset (chan, 0, sizeof (favchannel));
+
+	chan->name = g_strdup (channel);
+	chan->key = g_strdup (key);
+	chanlist = g_slist_append (chanlist, chan);
+
+	return chanlist;
+}
+
+void
+servlist_favchan_add (ircnet *net, char *channel)
+{
+	int pos;
+	char *name;
+	char *key;
+
+	if (strchr (channel, ',') != NULL)
+	{
+		pos = (int) (strchr (channel, ',') - channel);
+		name = g_strndup (channel, pos);
+		key = g_strdup (channel + pos + 1);
+	}
+	else
+	{
+		name = g_strdup (channel);
+		key = NULL;
+	}
+
+	net->favchanlist = servlist_favchan_listadd (net->favchanlist, name, key);
+
+	g_free (name);
+	g_free (key);
+}
+
 void
 servlist_server_remove (ircnet *net, ircserver *serv)
 {
@@ -915,6 +1056,35 @@ servlist_server_remove_all (ircnet *net)
 		serv = net->servlist->data;
 		servlist_server_remove (net, serv);
 	}
+}
+
+void
+servlist_command_free (commandentry *entry)
+{
+	g_free (entry->command);
+	g_free (entry);
+}
+
+void
+servlist_command_remove (ircnet *net, commandentry *entry)
+{
+	servlist_command_free (entry);
+	net->commandlist = g_slist_remove (net->commandlist, entry);
+}
+
+void
+servlist_favchan_free (favchannel *channel)
+{
+	g_free (channel->name);
+	g_free (channel->key);
+	g_free (channel);
+}
+
+void
+servlist_favchan_remove (ircnet *net, favchannel *channel)
+{
+	servlist_favchan_free (channel);
+	net->favchanlist = g_slist_remove (net->favchanlist, channel);
 }
 
 static void
@@ -941,8 +1111,6 @@ servlist_cleanup (void)
 	{
 		net = list->data;
 		free_and_clear (net->pass);
-		free_and_clear (net->saslpass);
-		free_and_clear (net->nickserv);
 	}
 }
 
@@ -964,12 +1132,10 @@ servlist_net_remove (ircnet *net)
 	if (net->real)
 		free (net->real);
 	free_and_clear (net->pass);
-	free_and_clear (net->saslpass);
-	if (net->autojoin)
-		free (net->autojoin);
-	if (net->command)
-		free (net->command);
-	free_and_clear (net->nickserv);
+	if (net->favchanlist)
+		g_slist_free_full (net->favchanlist, (GDestroyNotify) servlist_favchan_free);
+	if (net->commandlist)
+		g_slist_free_full (net->commandlist, (GDestroyNotify) servlist_command_free);
 	if (net->comment)
 		free (net->comment);
 	if (net->encoding)
@@ -983,7 +1149,9 @@ servlist_net_remove (ircnet *net)
 	{
 		serv = list->data;
 		if (serv->network == net)
+		{
 			serv->network = NULL;
+		}
 		list = list->next;
 	}
 }
@@ -1022,16 +1190,16 @@ servlist_load_defaults (void)
 			net->encoding = strdup (IRC_DEFAULT_CHARSET);
 			if (def[i].channel)
 			{
-				net->autojoin = strdup (def[i].channel);
+				servlist_favchan_add (net, def[i].channel);
 			}
 			if (def[i].charset)
 			{
 				free (net->encoding);
 				net->encoding = strdup (def[i].charset);
 			}
-			if (def[i].nsmode)
+			if (def[i].loginmode)
 			{
-				net->nstype = def[i].nsmode;
+				net->logintype = def[i].loginmode;
 			}
 			if (g_str_hash (def[i].network) == def_hash)
 			{
@@ -1057,7 +1225,6 @@ servlist_load (void)
 	FILE *fp;
 	char buf[2048];
 	int len;
-	char *tmp;
 	ircnet *net = NULL;
 
 	/* simple migration we will keep for a short while */
@@ -1100,43 +1267,55 @@ servlist_load (void)
 			case 'P':
 				net->pass = strdup (buf + 2);
 				break;
-			case 'A':
-				net->saslpass = strdup (buf + 2);
-				break;
-			case 'J':
-				net->autojoin = strdup (buf + 2);
-				break;
-			case 'C':
-				if (net->command)
-				{
-					/* concat extra commands with a \n separator */
-					tmp = net->command;
-					net->command = malloc (strlen (tmp) + strlen (buf + 2) + 2);
-					strcpy (net->command, tmp);
-					strcat (net->command, "\n");
-					strcat (net->command, buf + 2);
-					free (tmp);
-				} else
-					net->command = strdup (buf + 2);
-				break;
-			case 'F':
-				net->flags = atoi (buf + 2);
-				break;
-			case 'D':
-				net->selected = atoi (buf + 2);
+			case 'L':
+				net->logintype = atoi (buf + 2);
 				break;
 			case 'E':
 				net->encoding = strdup (buf + 2);
 				break;
+			case 'F':
+				net->flags = atoi (buf + 2);
+				break;
 			case 'S':	/* new server/hostname for this network */
 				servlist_server_add (net, buf + 2);
 				break;
+			case 'C':
+				servlist_command_add (net, buf + 2);
+				break;
+			case 'J':
+				servlist_favchan_add (net, buf + 2);
+				break;
+			case 'D':
+				net->selected = atoi (buf + 2);
+				break;
+			/* FIXME Migration code. In 2.9.5 the order was:
+			 *
+			 * P=serverpass, A=saslpass, B=nickservpass
+			 *
+			 * So if server password was unset, we can safely use SASL
+			 * password for our new universal password, or if that's also
+			 * unset, use NickServ password.
+			 *
+			 * Should be removed at some point.
+			 */
+			case 'A':
+				if (!net->pass)
+				{
+					net->pass = strdup (buf + 2);
+					if (!net->logintype)
+					{
+						net->logintype = LOGIN_SASL;
+					}
+				}
 			case 'B':
-				net->nickserv = strdup (buf + 2);
-				break;
-			case 'T':
-				net->nstype = atoi (buf + 2);
-				break;
+				if (!net->pass)
+				{
+					net->pass = strdup (buf + 2);
+					if (!net->logintype)
+					{
+						net->logintype = LOGIN_NICKSERV;
+					}
+				}
 			}
 		}
 		if (buf[0] == 'N')
@@ -1187,13 +1366,6 @@ servlist_check_encoding (char *charset)
 	return FALSE;
 }
 
-static int
-servlist_write_ccmd (char *str, void *fp)
-{
-	return fprintf (fp, "C=%s\n", (str[0] == '/') ? str + 1 : str);
-}
-
-
 int
 servlist_save (void)
 {
@@ -1201,8 +1373,12 @@ servlist_save (void)
 	char *buf;
 	ircnet *net;
 	ircserver *serv;
+	commandentry *cmd;
+	favchannel *favchan;
 	GSList *list;
-	GSList *hlist;
+	GSList *netlist;
+	GSList *cmdlist;
+	GSList *favlist;
 #ifndef WIN32
 	int first = FALSE;
 
@@ -1244,26 +1420,8 @@ servlist_save (void)
 			fprintf (fp, "R=%s\n", net->real);
 		if (net->pass)
 			fprintf (fp, "P=%s\n", net->pass);
-		if (net->saslpass)
-			fprintf (fp, "A=%s\n", net->saslpass);
-		if (net->autojoin)
-			fprintf (fp, "J=%s\n", net->autojoin);
-		if (net->nickserv)
-			fprintf (fp, "B=%s\n", net->nickserv);
-		if (net->nstype)
-		{
-			if (net->nstype == -1)		/* gtk_combo_box_get_active() returns -1 for invalid indices */
-			{
-				net->nstype = 0; 		/* avoid further crashes for the current session */
-				buf = g_strdup_printf (_("Warning: invalid NickServ type. Falling back to default type for network %s."), net->name);
-				fe_message (buf, FE_MSG_WARN);
-				g_free (buf);
-			}
-			else						/* the selection was fine, save it */
-			{
-				fprintf (fp, "T=%d\n", net->nstype);
-			}
-		}
+		if (net->logintype)
+			fprintf (fp, "L=%d\n", net->logintype);
 		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&
 			 g_ascii_strcasecmp (net->encoding, "System default"))
 		{
@@ -1277,17 +1435,39 @@ servlist_save (void)
 			}
 		}
 
-		if (net->command)
-			token_foreach (net->command, '\n', servlist_write_ccmd, fp);
-
 		fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);
 
-		hlist = net->servlist;
-		while (hlist)
+		netlist = net->servlist;
+		while (netlist)
 		{
-			serv = hlist->data;
+			serv = netlist->data;
 			fprintf (fp, "S=%s\n", serv->hostname);
-			hlist = hlist->next;
+			netlist = netlist->next;
+		}
+
+		cmdlist = net->commandlist;
+		while (cmdlist)
+		{
+			cmd = cmdlist->data;
+			fprintf (fp, "C=%s\n", cmd->command);
+			cmdlist = cmdlist->next;
+		}
+
+		favlist = net->favchanlist;
+		while (favlist)
+		{
+			favchan = favlist->data;
+
+			if (favchan->key)
+			{
+				fprintf (fp, "J=%s,%s\n", favchan->name, favchan->key);
+			}
+			else
+			{
+				fprintf (fp, "J=%s\n", favchan->name);
+			}
+
+			favlist = favlist->next;
 		}
 
 		if (fprintf (fp, "\n") < 1)
@@ -1303,162 +1483,33 @@ servlist_save (void)
 	return TRUE;
 }
 
-static void
-joinlist_free1 (GSList *list)
+static int
+joinlist_find_chan (favchannel *curr_item, const char *channel)
 {
-	GSList *head = list;
-
-	for (; list; list = list->next)
-		g_free (list->data);
-	g_slist_free (head);
-}
-
-void
-joinlist_free (GSList *channels, GSList *keys)
-{
-	joinlist_free1 (channels);
-	joinlist_free1 (keys);
+	if (!g_ascii_strcasecmp (curr_item->name, channel))
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 gboolean
 joinlist_is_in_list (server *serv, char *channel)
 {
-	GSList *channels, *keys;
-	GSList *list;
-
-	if (!serv->network || !((ircnet *)serv->network)->autojoin)
+	if (!serv->network || !((ircnet *)serv->network)->favchanlist)
+	{
 		return FALSE;
-
-	joinlist_split (((ircnet *)serv->network)->autojoin, &channels, &keys);
-
-	for (list = channels; list; list = list->next)
-	{
-		if (serv->p_cmp (list->data, channel) == 0)
-			return TRUE;
 	}
 
-	joinlist_free (channels, keys);
-
-	return FALSE;
+	if (g_slist_find_custom (((ircnet *)serv->network)->favchanlist, channel, (GCompareFunc) joinlist_find_chan))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
-
-gchar *
-joinlist_merge (GSList *channels, GSList *keys)
-{
-	GString *out = g_string_new (NULL);
-	GSList *list;
-	int i, j;
-
-	for (; channels; channels = channels->next)
-	{
-		g_string_append (out, channels->data);
-
-		if (channels->next)
-			g_string_append_c (out, ',');
-	}
-
-	/* count number of REAL keys */
-	for (i = 0, list = keys; list; list = list->next)
-		if (list->data)
-			i++;
-
-	if (i > 0)
-	{
-		g_string_append_c (out, ' ');
-
-		for (j = 0; keys; keys = keys->next)
-		{
-			if (keys->data)
-			{
-				g_string_append (out, keys->data);
-				j++;
-				if (j == i)
-					break;
-			}
-
-			if (keys->next)
-				g_string_append_c (out, ',');
-		}
-	}
-
-	return g_string_free (out, FALSE);
-}
-
-void
-joinlist_split (char *autojoin, GSList **channels, GSList **keys)
-{
-	char *parta, *partb;
-	char *chan, *key;
-	int len;
-
-	*channels = NULL;
-	*keys = NULL;
-
-	/* after the first space, the keys begin */
-	parta = autojoin;
-	partb = strchr (autojoin, ' ');
-	if (partb)
-		partb++;
-
-	while (1)
-	{
-		chan = parta;
-		key = partb;
-
-		if (1)
-		{
-			while (parta[0] != 0 && parta[0] != ',' && parta[0] != ' ')
-			{
-				parta++;
-			}
-		}
-
-		if (partb)
-		{
-			while (partb[0] != 0 && partb[0] != ',' && partb[0] != ' ')
-			{
-				partb++;
-			}
-		}
-
-		len = parta - chan;
-		if (len < 1)
-			break;
-		*channels = g_slist_append (*channels, g_strndup (chan, len));
-
-		len = partb - key;
-		*keys = g_slist_append (*keys, len ? g_strndup (key, len) : NULL);
-
-		if (parta[0] == ' ' || parta[0] == 0)
-			break;
-		parta++;
-
-		if (partb)
-		{
-			if (partb[0] == 0 || partb[0] == ' ')
-				partb = NULL;	/* no more keys, but maybe more channels? */
-			else
-				partb++;
-		}
-	}
-
-#if 0
-	GSList *lista, *listb;
-	int i;
-
-	printf("-----\n");
-	i = 0;
-	lista = *channels;
-	listb = *keys;
-	while (lista)
-	{
-		printf("%d. |%s| |%s|\n", i, lista->data, listb->data);
-		i++;
-		lista = lista->next;
-		listb = listb->next;
-	}
-	printf("-----\n\n");
-#endif
-}
-
-

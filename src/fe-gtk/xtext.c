@@ -1034,11 +1034,7 @@ gtk_xtext_realize (GtkWidget * widget)
 
 	gdk_window_set_user_data (widget->window, widget);
 
-#if GTK_CHECK_VERSION(2,24,0)
 	xtext->depth = gdk_window_get_visual (widget->window)->depth;
-#else
-	xtext->depth = gdk_drawable_get_visual (widget->window)->depth;
-#endif
 
 	val.subwindow_mode = GDK_INCLUDE_INFERIORS;
 	val.graphics_exposures = 0;

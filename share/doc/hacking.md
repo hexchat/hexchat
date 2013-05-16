@@ -2,10 +2,10 @@
 
 Just some tips if you're going to help with HexChat code (patches etc):
 
-* Use tabs, not spaces, to indent code.
+* Use tabs, not spaces, to indent and align code.
 
-* Use a tab size of 3 (most editors will let you choose this).
-  Type :set ts=3 in vim/gvim.
+* Use a tab size of 4 (most editors will let you choose this).
+  Type :set ts=4 in vim/gvim.
 
 * Try to stick to the same consistant coding style (vertically aligned braces, a space after if, while, functions etc.):
 

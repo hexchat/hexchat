@@ -1637,10 +1637,6 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 						strncat (buf, result, COMP_BUF - prefix_len);
 						cursor_pos = strlen (buf);
 						g_free(result);
-#if !GLIB_CHECK_VERSION(2,4,0)
-						g_utf8_validate (buf, -1, (const gchar **)&result);
-						(*result) = 0;
-#endif
 						if (postfix)
 						{
 							strcat (buf, " ");
