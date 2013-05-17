@@ -1097,8 +1097,14 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 
 				if (!strncmp (text, "CHALLENGE ", 10))		/* QuakeNet CHALLENGEAUTH upon our request */
 				{
-					response = challengeauth_response (((ircnet *)serv->network)->user, serv->password, word[5]);
-					tcp_sendf (serv, "PRIVMSG %s :CHALLENGEAUTH %s %s %s\r\n", CHALLENGEAUTH_NICK, ((ircnet *)serv->network)->user, response, CHALLENGEAUTH_ALGO);
+					response = challengeauth_response (((ircnet *)serv->network)->user ? ((ircnet *)serv->network)->user : prefs.hex_irc_user_name, serv->password, word[5]);
+
+					tcp_sendf (serv, "PRIVMSG %s :CHALLENGEAUTH %s %s %s\r\n",
+						CHALLENGEAUTH_NICK,
+						((ircnet *)serv->network)->user ? ((ircnet *)serv->network)->user : prefs.hex_irc_user_name,
+						response,
+						CHALLENGEAUTH_ALGO);
+
 					g_free (response);
 				}
 
