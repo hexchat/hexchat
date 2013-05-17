@@ -706,6 +706,7 @@ static char defaultconf_commands[] =
 	"NAME KILL\n"			"CMD quote KILL %2 :&3\n\n"\
 	"NAME LEAVE\n"			"CMD part &2\n\n"\
 	"NAME M\n"				"CMD msg &2\n\n"\
+	"NAME OMSG\n"			"CMD msg @%c &2\n\n"\
 	"NAME ONOTICE\n"		"CMD notice @%c &2\n\n"\
 	"NAME RAW\n"			"CMD quote &2\n\n"\
 	"NAME SERVHELP\n"		"CMD quote HELP\n\n"\
