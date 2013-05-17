@@ -1425,8 +1425,10 @@ inbound_login_end (session *sess, char *text)
 			}
 		}
 
-		/* send JOIN now or wait? */
-		if (serv->network && ((ircnet *)serv->network)->pass && prefs.hex_irc_join_delay && inbound_nickserv_login (serv))
+		/* wait for join if command or nickserv set */
+		if (serv->network && prefs.hex_irc_join_delay
+			&& ((((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
+				|| ((ircnet *)serv->network)->commandlist))
 		{
 			serv->joindelay_tag = fe_timeout_add (prefs.hex_irc_join_delay * 1000, check_autojoin_channels, serv);
 		}
