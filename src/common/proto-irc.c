@@ -1131,6 +1131,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				int id = FALSE;	/* identified */
 				if (*to)
 				{
+					/* Handle limited channel messages, for now no special event */
+					if (strchr (serv->nick_prefixes, to[0]) != NULL)
+						to++;
+						
 					text = word_eol[4];
 					if (*text == ':')
 						text++;
