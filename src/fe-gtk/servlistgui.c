@@ -1384,7 +1384,16 @@ servlist_editkey_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, gpoi
 	if (favchan)
 	{
 		key = favchan->key;
-		favchan->key = g_strdup (newval);
+
+		if (strlen (newval))	/* check key length, the field can be empty in order to delete the key! */
+		{
+			favchan->key = g_strdup (newval);
+		}
+		else					/* if key's empty, make sure we actually remove the key */
+		{
+			favchan->key = NULL;
+		}
+
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 1, favchan->key, -1);
 		g_free (key);
 	}
