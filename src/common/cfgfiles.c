@@ -729,7 +729,7 @@ load_config (void)
 	prefs.hex_gui_win_width = 640;
 	prefs.hex_input_balloon_time = 20;
 	prefs.hex_irc_ban_type = 2;
-	prefs.hex_irc_join_delay = 3;
+	prefs.hex_irc_join_delay = 5;
 	prefs.hex_net_reconnect_delay = 10;
 	prefs.hex_notify_timeout = 15;
 	prefs.hex_text_max_indent = 256;
