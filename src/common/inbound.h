@@ -20,7 +20,7 @@
 #ifndef HEXCHAT_INBOUND_H
 #define HEXCHAT_INBOUND_H
 
-void inbound_next_nick (session *sess, char *nick);
+void inbound_next_nick (session *sess, char *nick, int error);
 void inbound_uback (server *serv);
 void inbound_uaway (server *serv);
 void inbound_account (server *serv, char *nick, char *account);

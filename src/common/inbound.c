@@ -1145,7 +1145,7 @@ check_autojoin_channels (server *serv)
 }
 
 void
-inbound_next_nick (session *sess, char *nick)
+inbound_next_nick (session *sess, char *nick, int error)
 {
 	char *newnick;
 	server *serv = sess->server;
@@ -1160,14 +1160,30 @@ inbound_next_nick (session *sess, char *nick)
 		net = serv->network;
 		/* use network specific "Second choice"? */
 		if (net && !(net->flags & FLAG_USE_GLOBAL) && net->nick2)
+		{
 			newnick = net->nick2;
+		}
 		serv->p_change_nick (serv, newnick);
-		EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, newnick, NULL, NULL, 0);
+		if (error)
+		{
+			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, newnick, NULL, NULL, 0);
+		}
+		else
+		{
+			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, newnick, NULL, NULL, 0);
+		}
 		break;
 
 	case 3:
 		serv->p_change_nick (serv, prefs.hex_irc_nick3);
-		EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+		if (error)
+		{
+			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+		}
+		else
+		{
+			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+		}
 		break;
 
 	default:

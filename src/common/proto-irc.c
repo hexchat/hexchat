@@ -835,17 +835,26 @@ process_numeric (session * sess, int n,
 		inbound_login_end (sess, text);
 		break;
 
-	case 433:	/* nickname in use */
 	case 432:	/* erroneous nickname */
 		if (serv->end_of_motd)
+		{
 			goto def;
-		inbound_next_nick (sess,  word[4]);
+		}
+		inbound_next_nick (sess,  word[4], 1);
+		break;
+
+	case 433:	/* nickname in use */
+		if (serv->end_of_motd)
+		{
+			goto def;
+		}
+		inbound_next_nick (sess,  word[4], 0);
 		break;
 
 	case 437:
 		if (serv->end_of_motd || is_channel (serv, word[4]))
 			goto def;
-		inbound_next_nick (sess, word[4]);
+		inbound_next_nick (sess, word[4], 0);
 		break;
 
 	case 471:
