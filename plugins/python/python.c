@@ -356,13 +356,7 @@ Usage: /PY LOAD   <filename>\n\
 /* Remove if/when HexChat supports this command for plugins */
 static const char reload[] = "Usage: RELOAD <name>, reloads a python script";
 
-static const char about[] = "\
-\n\
-X-Chat Python Interface " VERSION "\n\
-\n\
-Copyright (c) 2002-2003  Gustavo Niemeyer <niemeyer@conectiva.com>\n\
-\n";
-
+static const char about[] = "HexChat Python " PY_VERSION " Interface Version " VERSION "\n";
 
 /* ===================================================================== */
 /* Utility functions */
