@@ -32,6 +32,7 @@
 #include "maingui.h"
 
 GtkWidget *searchwin;
+GtkWidget *searchentry;
 
 static void
 search_search (session * sess, const gchar *text)
@@ -64,7 +65,11 @@ search_search (session * sess, const gchar *text)
 	}
 	else if (!last)
 	{
-		fe_message (_("Search hit end, not found."), FE_MSG_ERROR);
+		gtk_entry_set_icon_from_stock (GTK_ENTRY (searchentry), GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
+	}
+	else
+	{
+		gtk_entry_set_icon_from_stock (GTK_ENTRY (searchentry), GTK_ENTRY_ICON_SECONDARY, NULL);	
 	}
 }
 
@@ -106,6 +111,12 @@ static void
 search_entry_cb (GtkWidget * entry, session * sess)
 {
 	search_search (sess, gtk_entry_get_text (GTK_ENTRY (entry)));
+}
+
+static void
+search_changed_cb (GtkWidget * entry, gpointer userdata)
+{
+	gtk_entry_set_icon_from_stock (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, NULL);
 }
 
 static void
@@ -158,8 +169,10 @@ search_open (session * sess)
 	gtk_container_add (GTK_CONTAINER (vbox), hbox);
 	gtk_widget_show (hbox);
 
-	entry = gtk_entry_new ();
+	entry = searchentry = gtk_entry_new ();
 	text = GTK_XTEXT (sess->gui->xtext)->buffer->search_text;
+	gtk_entry_set_icon_activatable (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, FALSE);
+	gtk_entry_set_icon_tooltip_text (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, "Search hit end or not found.");
 	if (text)
 	{
 		gtk_entry_set_text (GTK_ENTRY (entry), text);
@@ -167,6 +180,8 @@ search_open (session * sess)
 	}
 	g_signal_connect (G_OBJECT (entry), "activate",
 							G_CALLBACK (search_entry_cb), sess);
+	g_signal_connect (G_OBJECT (entry), "changed",
+							G_CALLBACK (search_changed_cb), NULL);
 	gtk_container_add (GTK_CONTAINER (hbox), entry);
 	gtk_widget_show (entry);
 	gtk_widget_grab_focus (entry);
