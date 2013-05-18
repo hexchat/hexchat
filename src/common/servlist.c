@@ -255,6 +255,12 @@ static const struct defaultserver def[] =
 	{0,			"kabel.freeworld.nu"},
 	{0,			"irc.freeworld.nu"},*/
 
+	{"FurryLand",	0},
+#ifdef USE_OPENSSL
+	{0,				"irc.furryland.net/+6697"},
+#endif
+	{0,				"irc.furryland.net"},	
+
 	{"Fusion Latina",	0},
 	{0,					"irc.fusionlatina.org/2012"},
 
