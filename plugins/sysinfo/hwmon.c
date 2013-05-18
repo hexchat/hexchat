@@ -34,6 +34,7 @@ int hwmon_chip_present()
 	return 0;
 }
 
+#if 0
 void get_hwmon_chip_name(char *name)
 {
 	char *position, buffer[bsize];
@@ -47,6 +48,7 @@ void get_hwmon_chip_name(char *name)
 		fclose(fp);
 	}
 }
+#endif
 
 void get_hwmon_temp(unsigned int *value, unsigned int *sensor)
 {

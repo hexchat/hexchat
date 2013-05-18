@@ -438,8 +438,10 @@ int xs_parse_hwmon_chip(char *chip)
 {
 	if (!hwmon_chip_present())
 		return 1;
+#if 0
 	else
 		get_hwmon_chip_name(chip);
+#endif
 	return 0;
 }
 
