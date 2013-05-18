@@ -1066,7 +1066,7 @@ inbound_nameslist_end (server *serv, char *chan)
 	return FALSE;
 }
 
-static void
+static gboolean
 check_autojoin_channels (server *serv)
 {
 	int i = 0;
@@ -1078,7 +1078,7 @@ check_autojoin_channels (server *serv)
 	/* shouldn't really happen, the io tag is destroyed in server.c */
 	if (!is_server (serv))
 	{
-		return;
+		return FALSE;
 	}
 
 	/* If there's a session (i.e. this is a reconnect), autojoin to everything that was open previously. */
@@ -1141,6 +1141,7 @@ check_autojoin_channels (server *serv)
 
 	serv->joindelay_tag = 0;
 	fe_server_event (serv, FE_SE_LOGGEDIN, i);
+	return FALSE;
 }
 
 void
