@@ -1907,6 +1907,7 @@ Module_xchat_get_list(PyObject *self, PyObject *args)
 			PyObject *attr = NULL;
 			const char *sattr;
 			int iattr;
+			time_t tattr;
 			switch(fields[i][0]) {
 			case 's':
 				sattr = hexchat_list_str(ph, list, (char*)fld);
@@ -1915,6 +1916,10 @@ Module_xchat_get_list(PyObject *self, PyObject *args)
 			case 'i':
 				iattr = hexchat_list_int(ph, list, (char*)fld);
 				attr = PyLong_FromLong((long)iattr);
+				break;
+			case 't':
+				tattr = hexchat_list_time(ph, list, (char*)fld);
+				attr = PyLong_FromLong((long)tattr);
 				break;
 			case 'p':
 				sattr = hexchat_list_str(ph, list, (char*)fld);
