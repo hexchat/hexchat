@@ -1931,19 +1931,15 @@ get_subdirs (const char *path)
 char *
 encode_sasl_pass (char *user, char *pass)
 {
-	int passlen;
+	int authlen;
 	char *buffer;
 	char *encoded;
 
-	/* passphrase generation, nicely copy-pasted from the CAP-SASL plugin */
-	passlen = strlen (user) * 2 + 2 + strlen (pass);
-	buffer = (char*) malloc (passlen + 1);
-	strcpy (buffer, user);
-	strcpy (buffer + strlen (user) + 1, user);
-	strcpy (buffer + strlen (user) * 2 + 2, pass);
-	encoded = g_base64_encode ((unsigned char*) buffer, passlen);
-
-	free (buffer);
+	/* we can't call strlen() directly on buffer thanks to the atrocious \0 characters it requires */
+	authlen = strlen (user) * 2 + 2 + strlen (pass);
+	buffer = g_strdup_printf ("%s%c%s%c%s", user, '\0', user, '\0', pass);
+	encoded = g_base64_encode ((unsigned char*) buffer, authlen);
+	g_free (buffer);
 
 	return encoded;
 }
