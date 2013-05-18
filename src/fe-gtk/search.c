@@ -172,7 +172,7 @@ search_open (session * sess)
 	entry = searchentry = gtk_entry_new ();
 	text = GTK_XTEXT (sess->gui->xtext)->buffer->search_text;
 	gtk_entry_set_icon_activatable (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, FALSE);
-	gtk_entry_set_icon_tooltip_text (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, "Search hit end or not found.");
+	gtk_entry_set_icon_tooltip_text (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, _("Search hit end or not found."));
 	if (text)
 	{
 		gtk_entry_set_text (GTK_ENTRY (entry), text);
@@ -198,7 +198,7 @@ search_open (session * sess)
 	GTK_TOGGLE_BUTTON (wid)->active = prefs.hex_text_search_case_match;
 	g_signal_connect (G_OBJECT (wid), "toggled", G_CALLBACK (search_caseign_cb), sess);
 	gtk_container_add (GTK_CONTAINER (vbox), wid);
-	add_tip (wid, "Perform a case-sensitive search.");
+	add_tip (wid, _("Perform a case-sensitive search."));
 	gtk_widget_show (wid);
 
 	/* Third line:  X Search backwards */
@@ -206,7 +206,7 @@ search_open (session * sess)
 	GTK_TOGGLE_BUTTON (wid)->active = prefs.hex_text_search_backward;
 	g_signal_connect (G_OBJECT (wid), "toggled", G_CALLBACK (search_dirbwd_cb), sess);
 	gtk_container_add (GTK_CONTAINER (vbox), wid);
-	add_tip (wid, "Search from the newest text line to the oldest.");
+	add_tip (wid, _("Search from the newest text line to the oldest."));
 	gtk_widget_show (wid);
 
 	/* Fourth line:  X Highlight all */
@@ -214,7 +214,7 @@ search_open (session * sess)
 	GTK_TOGGLE_BUTTON (wid)->active = prefs.hex_text_search_highlight_all;
 	g_signal_connect (G_OBJECT (wid), "toggled", G_CALLBACK (search_highlight_cb), sess);
 	gtk_container_add (GTK_CONTAINER (vbox), wid);
-	add_tip (wid, "Highlight all occurrences, and underline the current occurrence.");
+	add_tip (wid, _("Highlight all occurrences, and underline the current occurrence."));
 	gtk_widget_show (wid);
 
 	/* Fifth line:  X Regular expression */
@@ -222,7 +222,7 @@ search_open (session * sess)
 	GTK_TOGGLE_BUTTON (wid)->active = prefs.hex_text_search_regexp;
 	g_signal_connect (G_OBJECT (wid), "toggled", G_CALLBACK (search_regexp_cb), sess);
 	gtk_container_add (GTK_CONTAINER (vbox), wid);
-	add_tip (wid, "Regard search string as a regular expression.");
+	add_tip (wid, _("Regard search string as a regular expression."));
 	gtk_widget_show (wid);
 
 	/* Sixth line:  _Close    Close and _Reset */
@@ -232,10 +232,10 @@ search_open (session * sess)
 
 	wid = gtkutil_button (hbox, GTK_STOCK_CLOSE, 0, search_close_cb, win,
 						_("_Close"));
-	add_tip (wid, "Close this box, but continue searching new lines.");
+	add_tip (wid, _("Close this box, but continue searching new lines."));
 	wid = gtkutil_button (hbox, "gtk-reset", 0, search_reset_cb, sess,
 						_("Close and _Reset"));
-	add_tip (wid, "Close this box, reset highlighted search items, and stop searching new lines.");
+	add_tip (wid, _("Close this box, reset highlighted search items, and stop searching new lines."));
 
 	/* Add recognition of the ESC key to close the box */
 	gtkutil_destroy_on_esc (win);
