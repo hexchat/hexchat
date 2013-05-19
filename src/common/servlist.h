@@ -70,9 +70,11 @@ extern GSList *network_list;
 #define LOGIN_DEFAULT			0				/* this is for the login type dropdown, doesn't serve any other purpose */
 #define LOGIN_MSG_NICKSERV		1
 #define LOGIN_NICKSERV			2
+#if 0
 #define LOGIN_NS				3
 #define LOGIN_MSG_NS			4
 #define LOGIN_AUTH				5
+#endif
 #define LOGIN_SASL				6
 #define LOGIN_PASS				7
 #define LOGIN_CHALLENGEAUTH		8

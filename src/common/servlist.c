@@ -547,11 +547,11 @@ static const struct defaultserver def[] =
 	{0,			"irc.servx.ru"},
 	{0,			"irc.gavnos.ru"},
 
-	{"UnderNet",	0},
+	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM},
 	{0,			"us.undernet.org"},
 	{0,			"eu.undernet.org"},
 
-	{"UniBG", 0, 0, 0, LOGIN_MSG_NS},
+	{"UniBG", 0, 0, 0, LOGIN_CUSTOM},
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
 	{0,			"irc.spnet.net"},

@@ -73,10 +73,10 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 		case LOGIN_NICKSERV:
 			tcp_sendf (serv, "NICKSERV %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 			break;
+#if 0
 		case LOGIN_MSG_NS:
 			tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 			break;
-#if 0
 		case LOGIN_NS:
 			tcp_sendf (serv, "NS %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 			break;
@@ -109,7 +109,7 @@ irc_ns_identify (server *serv, char *pass)
 static void
 irc_ns_ghost (server *serv, char *usname, char *pass)
 {
-	if (serv->loginmethod != LOGIN_AUTH && serv->loginmethod != LOGIN_CHALLENGEAUTH)
+	if (serv->loginmethod != LOGIN_CHALLENGEAUTH)
 	{
 		irc_nickserv (serv, "GHOST", usname, " ", pass);
 	}
