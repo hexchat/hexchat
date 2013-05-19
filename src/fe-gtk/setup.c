@@ -376,14 +376,10 @@ static const setting filexfer_settings[] =
 	{ST_EFOLDER,N_("Move completed files to:"), P_OFFSETNL(hex_dcc_completed_dir), 0, 0, sizeof prefs.hex_dcc_completed_dir},
 	{ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL(hex_dcc_save_nick), 0, 0, 0},
 
-	{ST_HEADER, N_("Network Settings"), 0, 0, 0},
-	{ST_TOGGLE, N_("Get my address from the IRC server"), P_OFFINTNL(hex_dcc_ip_from_server),
-					N_("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
-	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(hex_dcc_ip),
-					N_("Claim you are at this address when offering files."), 0, sizeof prefs.hex_dcc_ip},
-	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
-	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
-		(const char **)N_("!Leave ports at zero for full range."), 65535},
+	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
+	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
+	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
+	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 
 	{ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0, 0},
 	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(hex_dcc_max_send_cps), 
@@ -495,27 +491,16 @@ static const setting general_settings[] =
 	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(hex_away_show_once), N_("Show identical away messages only once."), 0, 0},
 	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(hex_away_auto_unmark), N_("Unmark yourself as away before sending messages."), 0, 0},
 
+	{ST_HEADER,	N_("Miscellaneous"),0,0,0},
+	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
+	{ST_TOGGLE,	N_("WHOIS on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list."), 0, 0},
+	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default."), 0, 0},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting advanced_settings[] =
 {
-	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
-	{ST_ENTRY,  N_("Real name:"), P_OFFSETNL(hex_irc_real_name), 0, 0, sizeof prefs.hex_irc_real_name},
-#ifdef WIN32
-	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
-#endif
-	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
-	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list."), 0, 0},
-	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default."), 0, 0},
-	{ST_TOGGLE,	N_("Display lists in compact mode"), P_OFFINTNL(hex_gui_compact), N_("Use less spacing between user list/channel tree rows."), 0, 0},
-	{ST_TOGGLE,	N_("Automatically reconnect to servers on disconnect"), P_OFFINTNL(hex_net_auto_reconnect), 0, 0, 1},
-	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
-	{ST_NUMBER,	N_("Auto join delay:"), P_OFFINTNL(hex_irc_join_delay), 0, 0, 9999},
-	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
-	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
-	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
-	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
 	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(hex_text_autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
@@ -528,6 +513,16 @@ static const setting advanced_settings[] =
 					N_("Automatically include color information in copied lines of text.  "
 						"Otherwise, include color information if the CONTROL key is held down "
 						"while selecting."), 0, 0},
+
+	{ST_HEADER,	N_("Miscellaneous"),0,0,0},
+	{ST_ENTRY,  N_("Real name:"), P_OFFSETNL(hex_irc_real_name), 0, 0, sizeof prefs.hex_irc_real_name},
+#ifdef WIN32
+	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
+#endif
+	{ST_TOGGLE,	N_("Display lists in compact mode"), P_OFFINTNL(hex_gui_compact), N_("Use less spacing between user list/channel tree rows."), 0, 0},
+	{ST_TOGGLE,	N_("Automatically reconnect to servers on disconnect"), P_OFFINTNL(hex_net_auto_reconnect), 0, 0, 1},
+	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
+	{ST_NUMBER,	N_("Auto join delay:"), P_OFFINTNL(hex_irc_join_delay), 0, 0, 9999},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -587,6 +582,15 @@ static const setting network_settings[] =
 	{ST_HEADER,	N_("Your Address"), 0, 0, 0, 0},
 	{ST_ENTRY,	N_("Bind to:"), P_OFFSETNL(hex_net_bind_host), 0, 0, sizeof prefs.hex_net_bind_host},
 	{ST_LABEL,	N_("Only useful for computers with multiple addresses.")},
+
+	{ST_HEADER, N_("File Transfers"), 0, 0, 0},
+	{ST_TOGGLE, N_("Get my address from the IRC server"), P_OFFINTNL(hex_dcc_ip_from_server),
+					N_("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
+	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(hex_dcc_ip),
+					N_("Claim you are at this address when offering files."), 0, sizeof prefs.hex_dcc_ip},
+	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
+	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
+		(const char **)N_("!Leave ports at zero for full range."), 65535},
 
 	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
 	{ST_ENTRY,	N_("Hostname:"), P_OFFSETNL(hex_net_proxy_host), 0, 0, sizeof prefs.hex_net_proxy_host},
