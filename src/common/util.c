@@ -2010,7 +2010,7 @@ challengeauth_response (char *username, char *password, char *challenge)
 	GString *buf = g_string_new_len (NULL, SHA256_DIGEST_LENGTH * 2);
 
 	user = g_strdup (username);
-	*user = rfc_tolower (*username);			/* convert username to lowercase as per the RFC*/
+	*user = rfc_tolower (*username);			/* convert username to lowercase as per the RFC */
 
 	pass = g_strndup (password, 10);			/* truncate to 10 characters */
 	passhash = str_sha256hash (pass);
