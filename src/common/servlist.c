@@ -44,6 +44,7 @@ struct defaultserver
 	char *channel;
 	char *charset;
 	int loginmode;		/* default authentication type */
+	char *connectcmd;	/* default connect command - should only be used for rare login types, paired with LOGIN_CUSTOM */
 };
 
 static const struct defaultserver def[] =
@@ -547,11 +548,11 @@ static const struct defaultserver def[] =
 	{0,			"irc.servx.ru"},
 	{0,			"irc.gavnos.ru"},
 
-	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM},
+	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM, "MSG x@channels.undernet.org login %u %p"},
 	{0,			"us.undernet.org"},
 	{0,			"eu.undernet.org"},
 
-	{"UniBG", 0, 0, 0, LOGIN_CUSTOM},
+	{"UniBG", 0, 0, 0, LOGIN_CUSTOM, "MSG NS IDENTIFY %p"},
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
 	{0,			"irc.spnet.net"},
@@ -1207,10 +1208,16 @@ servlist_load_defaults (void)
 			{
 				net->logintype = def[i].loginmode;
 			}
+			if (def[i].connectcmd)
+			{
+				servlist_command_add (net, def[i].connectcmd);
+			}
+
 			if (g_str_hash (def[i].network) == def_hash)
 			{
 				prefs.hex_gui_slist_select = j;
 			}
+
 			j++;
 		}
 		else
