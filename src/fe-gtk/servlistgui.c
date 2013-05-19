@@ -122,7 +122,8 @@ static int login_types_conf[] =
 	LOGIN_MSG_NICKSERV,
 	LOGIN_NICKSERV,
 	LOGIN_MSG_NS,
-	LOGIN_CHALLENGEAUTH
+	LOGIN_CHALLENGEAUTH,
+	LOGIN_CUSTOM
 #if 0
 	LOGIN_NS,
 	LOGIN_AUTH,
@@ -138,6 +139,7 @@ static const char *login_types[]=
 	"NickServ (/NICKSERV + password)",
 	"NickServ (/MSG NS + password)",
 	"Challenge Auth (username + password)",
+	"Custom... (connect commands)",
 #if 0
 	"NickServ (/NS + password)",
 	"AUTH (/AUTH nickname password)",
@@ -1421,7 +1423,7 @@ servlist_combo_cb (GtkEntry *entry, gpointer userdata)
 
 /* Fills up the network's authentication type so that it's guaranteed to be either NULL or a valid value. */
 static void
-servlist_logintypecombo_cb (GtkComboBox *cb, gpointer userdata)
+servlist_logintypecombo_cb (GtkComboBox *cb, gpointer *userdata)
 {
 	int index;
 
@@ -1438,6 +1440,10 @@ servlist_logintypecombo_cb (GtkComboBox *cb, gpointer userdata)
 		* that so that you can revert from other types. servlist_save() will dump 0 anyway.
 		*/
 		selected_net->logintype = login_types_conf[index];
+	}
+	if (login_types_conf[index] == LOGIN_CUSTOM)
+	{
+		gtk_notebook_set_current_page (GTK_NOTEBOOK (userdata), 2);		/* FIXME avoid hardcoding? */
 	}
 }
 
@@ -1466,7 +1472,7 @@ servlist_create_charsetcombo (void)
 }
 
 static GtkWidget *
-servlist_create_logintypecombo (void)
+servlist_create_logintypecombo (GtkWidget *data)
 {
 	GtkWidget *cb;
 	int i;
@@ -1484,7 +1490,7 @@ servlist_create_logintypecombo (void)
 	gtk_combo_box_set_active (GTK_COMBO_BOX (cb), servlist_get_login_desc_index (selected_net->logintype));
 
 	add_tip (cb, _("The way you identify yourself to the server. For custom login methods use connect commands."));
-	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_logintypecombo_cb), NULL);
+	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_logintypecombo_cb), data);
 
 	return cb;
 }
@@ -1726,7 +1732,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	label_logintype = gtk_label_new (_("Login method:"));
 	gtk_table_attach (GTK_TABLE (table3), label_logintype, 0, 1, 10, 11, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 	gtk_misc_set_alignment (GTK_MISC (label_logintype), 0, 0.5);
-	combobox_logintypes = servlist_create_logintypecombo ();
+	combobox_logintypes = servlist_create_logintypecombo (notebook);
 	gtk_table_attach (GTK_TABLE (table3), combobox_logintypes, 1, 2, 10, 11, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
 
 	edit_entry_pass = servlist_create_entry (table3, _("Password:"), 11, net->pass, 0, _("Password used for login. If in doubt, leave blank."));
