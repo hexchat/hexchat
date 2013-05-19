@@ -1194,15 +1194,17 @@ servlist_load_defaults (void)
 		if (def[i].network)
 		{
 			net = servlist_net_add (def[i].network, def[i].host, FALSE);
-			net->encoding = strdup (IRC_DEFAULT_CHARSET);
 			if (def[i].channel)
 			{
 				servlist_favchan_add (net, def[i].channel);
 			}
 			if (def[i].charset)
 			{
-				free (net->encoding);
-				net->encoding = strdup (def[i].charset);
+				net->encoding = g_strdup (def[i].charset);
+			}
+			else
+			{
+				net->encoding = g_strdup (IRC_DEFAULT_CHARSET);
 			}
 			if (def[i].loginmode)
 			{
