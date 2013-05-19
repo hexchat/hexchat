@@ -4356,6 +4356,85 @@ xit:
 		free (newcmd);
 }
 
+char *
+command_insert_vars (session *sess, char *cmd)
+{
+	int pos;
+	GString *expanded;
+	ircnet *mynet = (ircnet *) sess->server->network;
+
+	if (!mynet)										/* shouldn't really happen */
+	{
+		return g_strdup (cmd);						/* the return value will be freed so we must srtdup() it */
+	}
+
+	expanded = g_string_new (NULL);
+
+	while (strchr (cmd, '%') != NULL)
+	{
+		pos = (int) (strchr (cmd, '%') - cmd);		/* offset to the first '%' */
+		g_string_append_len (expanded, cmd, pos);	/* copy contents till the '%' */
+		cmd += pos + 1;								/* jump to the char after the '%' */
+
+		switch (cmd[0])
+		{
+			case 'n':
+				if (mynet->nick)
+				{
+					g_string_append (expanded, mynet->nick);
+				}
+				else
+				{
+					g_string_append (expanded, prefs.hex_irc_nick1);
+				}
+				cmd++;
+				break;
+
+			case 'p':
+				if (mynet->pass)
+				{
+					g_string_append (expanded, mynet->pass);
+				}
+				cmd++;
+				break;
+
+			case 'r':
+				if (mynet->real)
+				{
+					g_string_append (expanded, mynet->real);
+				}
+				else
+				{
+					g_string_append (expanded, prefs.hex_irc_real_name);
+				}
+				cmd++;
+				break;
+
+			case 'u':
+				if (mynet->user)
+				{
+					g_string_append (expanded, mynet->user);
+				}
+				else
+				{
+					g_string_append (expanded, prefs.hex_irc_user_name);
+				}
+				cmd++;
+				break;
+
+			default:								/* unsupported character? copy it along with the '%'! */
+				cmd--;
+				g_string_append_len (expanded, cmd, 2);
+				cmd += 2;
+				break;
+		}
+	}
+
+	g_string_append (expanded, cmd);				/* copy any remaining string after the last '%' */
+
+	return g_string_free (expanded, FALSE);
+}
+
 /* handle a command, without the '/' prefix */
 
 int
@@ -4372,6 +4451,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 	char tbuf_static[TBUFSIZE];
 	char *pdibuf;
 	char *tbuf;
+	char *cmd_vars;
 	int len;
 	int ret = TRUE;
 
@@ -4383,19 +4463,29 @@ handle_command (session *sess, char *cmd, int check_spch)
 	command_level++;
 	/* anything below MUST DEC command_level before returning */
 
-	len = strlen (cmd);
+	cmd_vars = command_insert_vars (sess, cmd);
+
+	len = strlen (cmd_vars);
 	if (len >= sizeof (pdibuf_static))
+	{
 		pdibuf = malloc (len + 1);
+	}
 	else
+	{
 		pdibuf = pdibuf_static;
+	}
 
 	if ((len * 2) >= sizeof (tbuf_static))
+	{
 		tbuf = malloc ((len * 2) + 1);
+	}
 	else
+	{
 		tbuf = tbuf_static;
+	}
 
 	/* split the text into words and word_eol */
-	process_data_init (pdibuf, cmd, word, word_eol, TRUE, TRUE);
+	process_data_init (pdibuf, cmd_vars, word, word_eol, TRUE, TRUE);
 
 	/* ensure an empty string at index 32 for cmd_deop etc */
 	/* (internal use only, plugins can still only read 1-31). */
@@ -4405,17 +4495,25 @@ handle_command (session *sess, char *cmd, int check_spch)
 	int_cmd = find_internal_command (word[1]);
 	/* redo it without quotes processing, for some commands like /JOIN */
 	if (int_cmd && !int_cmd->handle_quotes)
-		process_data_init (pdibuf, cmd, word, word_eol, FALSE, FALSE);
+	{
+		process_data_init (pdibuf, cmd_vars, word, word_eol, FALSE, FALSE);
+	}
 
 	if (check_spch && prefs.hex_input_perc_color)
-		check_special_chars (cmd, prefs.hex_input_perc_ascii);
+	{
+		check_special_chars (cmd_vars, prefs.hex_input_perc_ascii);
+	}
 
 	if (plugin_emit_command (sess, word[1], word, word_eol))
+	{
 		goto xit;
+	}
 
 	/* incase a plugin did /close */
 	if (!is_session (sess))
+	{
 		goto xit;
+	}
 
 	/* first see if it's a userCommand */
 	list = command_list;
@@ -4431,7 +4529,9 @@ handle_command (session *sess, char *cmd, int check_spch)
 	}
 
 	if (user_cmd)
+	{
 		goto xit;
+	}
 
 	/* now check internal commands */
 	int_cmd = find_internal_command (word[1]);
@@ -4441,38 +4541,51 @@ handle_command (session *sess, char *cmd, int check_spch)
 		if (int_cmd->needserver && !sess->server->connected)
 		{
 			notc_msg (sess);
-		} else if (int_cmd->needchannel && !sess->channel[0])
+		}
+		else if (int_cmd->needchannel && !sess->channel[0])
 		{
 			notj_msg (sess);
-		} else
+		}
+		else
 		{
 			switch (int_cmd->callback (sess, tbuf, word, word_eol))
 			{
-			case FALSE:
-				help (sess, tbuf, int_cmd->name, TRUE);
-				break;
-			case 2:
-				ret = FALSE;
-				goto xit;
+				case FALSE:
+					help (sess, tbuf, int_cmd->name, TRUE);
+					break;
+				case 2:
+					ret = FALSE;
+					goto xit;
 			}
 		}
-	} else
+	}
+	else
 	{
 		/* unknown command, just send it to the server and hope */
 		if (!sess->server->connected)
+		{
 			PrintText (sess, _("Unknown Command. Try /help\n"));
+		}
 		else
-			sess->server->p_raw (sess->server, cmd);
+		{
+			sess->server->p_raw (sess->server, cmd_vars);
+		}
 	}
 
 xit:
 	command_level--;
 
 	if (pdibuf != pdibuf_static)
+	{
 		free (pdibuf);
+	}
 
 	if (tbuf != tbuf_static)
+	{
 		free (tbuf);
+	}
+
+	g_free (cmd_vars);
 
 	return ret;
 }

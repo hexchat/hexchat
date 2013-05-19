@@ -1593,6 +1593,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_SHADOW_IN);
+	add_tip (scrolledwindow5, _("%n=Nick name\n%p=Password\n%r=Real name\n%u=User name"));
 
 
 	/* Server Tree */
