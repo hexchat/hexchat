@@ -1997,6 +1997,21 @@ str_sha256hash (char *string)
 	return g_strdup (buf);
 }
 
+/**
+ * \brief Generate CHALLENGEAUTH response for QuakeNet login.
+ *
+ * \param username QuakeNet user name
+ * \param password password for the user
+ * \param challenge the CHALLENGE response we got from Q
+ *
+ * After a successful connection to QuakeNet a CHALLENGE is requested from Q.
+ * Generate the CHALLENGEAUTH response from this CHALLENGE and our user
+ * credentials as per the
+ * <a href="http://www.quakenet.org/development/challengeauth">CHALLENGEAUTH</a>
+ * docs. As for using OpenSSL HMAC, see
+ * <a href="http://www.askyb.com/cpp/openssl-hmac-hasing-example-in-cpp/">example 1</a>,
+ * <a href="http://stackoverflow.com/questions/242665/understanding-engine-initialization-in-openssl">example 2</a>.
+ */
 char *
 challengeauth_response (char *username, char *password, char *challenge)
 {
