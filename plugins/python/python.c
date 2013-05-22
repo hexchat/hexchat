@@ -249,6 +249,7 @@ typedef struct {
 	PyObject *plugin;
 	PyObject *callback;
 	PyObject *userdata;
+	char *name;
 	void *data; /* A handle, when type == HOOK_XCHAT */
 } Hook;
 
@@ -283,7 +284,8 @@ static PyObject *Plugin_New(char *filename, PyObject *xcoobj);
 static PyObject *Plugin_GetCurrent();
 static PluginObject *Plugin_ByString(char *str);
 static Hook *Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
-			    PyObject *userdata, void *data);
+			    PyObject *userdata, char *name, void *data);
+static Hook *Plugin_FindHook(PyObject *plugin, char *name);
 static void Plugin_RemoveHook(PyObject *plugin, Hook *hook);
 static void Plugin_RemoveAllHooks(PyObject *plugin);
 
@@ -1166,7 +1168,7 @@ Plugin_ByString(char *str)
 
 static Hook *
 Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
-	       PyObject *userdata, void *data)
+	       PyObject *userdata, char *name, void *data)
 {
 	Hook *hook = (Hook *) g_malloc(sizeof(Hook));
 	if (hook == NULL) {
@@ -1179,9 +1181,30 @@ Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
 	hook->callback = callback;
 	Py_INCREF(userdata);
 	hook->userdata = userdata;
+	hook->name = g_strdup (name);
 	hook->data = NULL;
 	Plugin_SetHooks(plugin, g_slist_append(Plugin_GetHooks(plugin),
 					       hook));
+
+	return hook;
+}
+
+static Hook *
+Plugin_FindHook(PyObject *plugin, char *name)
+{
+	Hook *hook = NULL;
+	GSList *plugin_hooks = Plugin_GetHooks(plugin);
+	
+	while (plugin_hooks)
+	{
+		if (g_strcmp0 (((Hook *)plugin_hooks->data)->name, name) == 0)
+		{
+			hook = (Hook *)plugin_hooks->data;
+			break;
+		}
+		
+		plugin_hooks = g_slist_next(plugin_hooks);
+	}
 
 	return hook;
 }
@@ -1205,6 +1228,8 @@ Plugin_RemoveHook(PyObject *plugin, Hook *hook)
 					       hook));
 		Py_DECREF(hook->callback);
 		Py_DECREF(hook->userdata);
+		if (hook->name)
+			g_free(hook->name);
 		g_free(hook);
 	}
 }
@@ -1223,6 +1248,8 @@ Plugin_RemoveAllHooks(PyObject *plugin)
 		}
 		Py_DECREF(hook->callback);
 		Py_DECREF(hook->userdata);
+		if (hook->name)
+			g_free(hook->name);
 		g_free(hook);
 		list = list->next;
 	}
@@ -1694,7 +1721,7 @@ Module_hexchat_hook_command(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL);
+	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, name, NULL);
 	if (hook == NULL)
 		return NULL;
 
@@ -1730,7 +1757,7 @@ Module_hexchat_hook_server(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL);
+	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL, NULL);
 	if (hook == NULL)
 		return NULL;
 
@@ -1766,7 +1793,7 @@ Module_hexchat_hook_print(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL);
+	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, name, NULL);
 	if (hook == NULL)
 		return NULL;
 
@@ -1801,7 +1828,7 @@ Module_hexchat_hook_timer(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL);
+	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL, NULL);
 	if (hook == NULL)
 		return NULL;
 
@@ -1834,7 +1861,7 @@ Module_hexchat_hook_unload(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(HOOK_UNLOAD, plugin, callback, userdata, NULL);
+	hook = Plugin_AddHook(HOOK_UNLOAD, plugin, callback, userdata, NULL, NULL);
 	if (hook == NULL)
 		return NULL;
 
@@ -1845,13 +1872,29 @@ static PyObject *
 Module_hexchat_unhook(PyObject *self, PyObject *args)
 {
 	PyObject *plugin;
+	PyObject *obj;
 	Hook *hook;
-	if (!PyArg_ParseTuple(args, "l:unhook", &hook))
+	if (!PyArg_ParseTuple(args, "O:unhook", &obj))
 		return NULL;
 	plugin = Plugin_GetCurrent();
 	if (plugin == NULL)
 		return NULL;
-	Plugin_RemoveHook(plugin, hook);
+
+	if (PyUnicode_Check (obj))
+	{
+		hook = Plugin_FindHook(plugin, PyUnicode_AsUTF8 (obj));
+		while (hook)
+		{
+			Plugin_RemoveHook(plugin, hook);
+			hook = Plugin_FindHook(plugin, PyUnicode_AsUTF8 (obj));
+		}
+	}
+	else
+	{
+		hook = (Hook *)PyLong_AsLong(obj);
+		Plugin_RemoveHook(plugin, hook);
+	}	
+
 	Py_INCREF(Py_None);
 	return Py_None;
 }
