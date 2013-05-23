@@ -489,6 +489,7 @@ server_connected (server * serv)
 {
 	prefs.wait_on_exit = TRUE;
 	serv->ping_recv = time (0);
+	serv->lag_sent = 0;
 	serv->connected = TRUE;
 	set_nonblocking (serv->sok);
 	serv->iotag = fe_input_add (serv->sok, FIA_READ|FIA_EX, server_read, serv);
