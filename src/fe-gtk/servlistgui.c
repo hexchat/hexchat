@@ -126,7 +126,7 @@ static const char *login_types[]=
 	"NickServ (/MSG NickServ + pass)",
 	"NickServ (/NICKSERV + pass)",
 	"Challenge Auth (user + pass)",
-	"ZNC (network + user + pass)",
+	"ZNC (network name + user + pass)",
 	"Custom... (connect commands)",
 #if 0
 	"NickServ (/NS + pass)",
