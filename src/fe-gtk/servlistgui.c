@@ -1592,6 +1592,7 @@ fav_servlist (GtkWidget * igad, gpointer serv)
 	servlist_networks_populate (networks_tree, network_list);
 }
 
+#if 0	/* FIXME will we need this at all? */
 static GtkWidget *
 bold_label (char *text)
 {
@@ -1606,6 +1607,7 @@ bold_label (char *text)
 
 	return label;
 }
+#endif
 
 static GtkWidget *
 servlist_open_edit (GtkWidget *parent, ircnet *net)
