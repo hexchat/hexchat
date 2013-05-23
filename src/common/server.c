@@ -54,8 +54,8 @@
 #include "util.h"
 #include "url.h"
 #include "proto-irc.h"
-#include "servlist.h"
 #include "server.h"
+#include "profile.h"		/* thus also include servlist.h */
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */
@@ -487,6 +487,7 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 static void
 server_connected (server * serv)
 {
+	profile *prof;
 	prefs.wait_on_exit = TRUE;
 	serv->ping_recv = time (0);
 	serv->lag_sent = 0;
@@ -495,27 +496,13 @@ server_connected (server * serv)
 	serv->iotag = fe_input_add (serv->sok, FIA_READ|FIA_EX, server_read, serv);
 	if (!serv->no_login)
 	{
-		EMIT_SIGNAL (XP_TE_CONNECTED, serv->server_session, NULL, NULL, NULL,
-						 NULL, 0);
-		if (serv->network)
-		{
-			serv->p_login (serv,
-								(!(((ircnet *)serv->network)->flags & FLAG_USE_GLOBAL) &&
-								 (((ircnet *)serv->network)->user)) ?
-								(((ircnet *)serv->network)->user) :
-								prefs.hex_irc_user_name,
-								(!(((ircnet *)serv->network)->flags & FLAG_USE_GLOBAL) &&
-								 (((ircnet *)serv->network)->real)) ?
-								(((ircnet *)serv->network)->real) :
-								prefs.hex_irc_real_name);
-		} else
-		{
-			serv->p_login (serv, prefs.hex_irc_user_name, prefs.hex_irc_real_name);
-		}
-	} else
+		EMIT_SIGNAL (XP_TE_CONNECTED, serv->server_session, NULL, NULL, NULL, NULL, 0);
+		prof = profile_find_for_serv (serv);
+		serv->p_login (serv, prof->username, prof->realname);
+	}
+	else
 	{
-		EMIT_SIGNAL (XP_TE_SERVERCONNECTED, serv->server_session, NULL, NULL,
-						 NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_SERVERCONNECTED, serv->server_session, NULL, NULL, NULL, NULL, 0);
 	}
 
 	server_set_name (serv, serv->servername);
@@ -897,6 +884,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 #ifdef USE_MSPROXY
 	char *p;
 #endif
+	profile *prof = profile_find_for_serv (serv);
 
 	waitline2 (source, tbuf, sizeof tbuf);
 
@@ -948,22 +936,14 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 #ifdef WIN32
 		if (prefs.hex_identd)
 		{
-			if (serv->network && ((ircnet *)serv->network)->user)
-			{
-				identd_start (((ircnet *)serv->network)->user);
-			}
-			else
-			{
-				identd_start (prefs.hex_irc_user_name);
-			}
+			identd_start (prof->username);
 		}
 #else
 		snprintf (outbuf, sizeof (outbuf), "%s/auth/xchat_auth",
 					 g_get_home_dir ());
 		if (access (outbuf, X_OK) == 0)
 		{
-			snprintf (outbuf, sizeof (outbuf), "exec -d %s/auth/xchat_auth %s",
-						 g_get_home_dir (), prefs.hex_irc_user_name);
+			snprintf (outbuf, sizeof (outbuf), "exec -d %s/auth/xchat_auth %s", g_get_home_dir (), prof->username);
 			handle_command (serv->server_session, outbuf, FALSE);
 		}
 #endif
@@ -1172,12 +1152,13 @@ traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 {
 	struct sock_connect sc;
 	unsigned char buf[256];
+	profile *prof = profile_find_default ();
 
 	sc.version = 4;
 	sc.type = 1;
 	sc.port = htons (port);
 	sc.address = inet_addr (serverAddr);
-	strncpy (sc.username, prefs.hex_irc_user_name, 9);
+	strncpy (sc.username, prof->username, 9);
 
 	send (sok, (char *) &sc, 8 + strlen (sc.username) + 1, 0);
 	buf[1] = 0;
@@ -1839,6 +1820,7 @@ server_new (void)
 {
 	static int id = 0;
 	server *serv;
+	profile *prof = profile_find_default ();
 
 	serv = malloc (sizeof (struct server));
 	memset (serv, 0, sizeof (struct server));
@@ -1848,7 +1830,7 @@ server_new (void)
 
 	serv->id = id++;
 	serv->sok = -1;
-	strcpy (serv->nick, prefs.hex_irc_nick1);
+	strcpy (serv->nick, prof->nickname1);
 	server_set_defaults (serv);
 
 	serv_list = g_slist_prepend (serv_list, serv);

@@ -42,8 +42,7 @@
 #include "util.h"
 #include "hexchatc.h"
 #include "url.h"
-#include "servlist.h"
-
+#include "profile.h"		/* thus also include servlist.h */
 
 static void
 irc_login (server *serv, char *user, char *realname)
@@ -1097,6 +1096,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 			{
 				int id = FALSE;								/* identified */
 				char *response;
+				profile *prof = profile_find_for_serv (serv);
 
 				text = word_eol[4];
 				if (*text == ':')
@@ -1106,14 +1106,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 
 				if (!strncmp (text, "CHALLENGE ", 10))		/* QuakeNet CHALLENGE upon our request */
 				{
-					response = challengeauth_response (((ircnet *)serv->network)->user ? ((ircnet *)serv->network)->user : prefs.hex_irc_user_name, serv->password, word[5]);
-
-					tcp_sendf (serv, "PRIVMSG %s :CHALLENGEAUTH %s %s %s\r\n",
-						CHALLENGEAUTH_NICK,
-						((ircnet *)serv->network)->user ? ((ircnet *)serv->network)->user : prefs.hex_irc_user_name,
-						response,
-						CHALLENGEAUTH_ALGO);
-
+					response = challengeauth_response (prof->username, serv->password, word[5]);
+					tcp_sendf (serv, "PRIVMSG %s :CHALLENGEAUTH %s %s %s\r\n", CHALLENGEAUTH_NICK, prof->username, response, CHALLENGEAUTH_ALGO);
 					g_free (response);
 					return;									/* omit the CHALLENGE <hash> ALGOS message */
 				}
@@ -1242,26 +1236,15 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 
 					if (strstr (word_eol[5], "sasl") != 0)
 					{
+						profile *prof = profile_find_for_serv (serv);
 						serv->have_sasl = TRUE;
-						EMIT_SIGNAL
-						(
-							XP_TE_SASLAUTH,
-							serv->server_session,
-							(((ircnet *)sess->server->network)->user) ? (((ircnet *)sess->server->network)->user) : prefs.hex_irc_user_name,
-							NULL,
-							NULL,
-							NULL,
-							0
-						);
-						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
-						pass = encode_sasl_pass
-						(
-							(((ircnet *)sess->server->network)->user) ? (((ircnet *)sess->server->network)->user) : prefs.hex_irc_user_name,
-							sess->server->password
-						);
+						EMIT_SIGNAL (XP_TE_SASLAUTH, serv->server_session, prof->username, NULL, NULL, NULL, 0);
+						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
+						pass = encode_sasl_pass (prof->username, sess->server->password);
 						tcp_sendf (sess->server, "AUTHENTICATE %s\r\n", pass);
-						free (pass);
+
+						g_free (pass);
 					}
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)

@@ -31,11 +31,9 @@
 #include "fe.h"
 #include "server.h"
 #include "text.h"
-#include "util.h" /* token_foreach */
+#include "util.h"			/* token_foreach */
+#include "profile.h"		/* thus also include servlist.h */
 #include "hexchatc.h"
-
-#include "servlist.h"
-
 
 struct defaultserver
 {
@@ -692,15 +690,8 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 	}
 
-	if (net->flags & FLAG_USE_GLOBAL)
-	{
-		strcpy (serv->nick, prefs.hex_irc_nick1);
-	}
-	else
-	{
-		if (net->nick)
-			strcpy (serv->nick, net->nick);
-	}
+	net->profcache = profile_find_for_net (net);
+	strcpy (serv->nick, net->profcache->nickname1);
 
 	serv->dont_use_proxy = (net->flags & FLAG_USE_PROXY) ? FALSE : TRUE;
 
@@ -1130,14 +1121,6 @@ servlist_net_remove (ircnet *net)
 	servlist_server_remove_all (net);
 	network_list = g_slist_remove (network_list, net);
 
-	if (net->nick)
-		free (net->nick);
-	if (net->nick2)
-		free (net->nick2);
-	if (net->user)
-		free (net->user);
-	if (net->real)
-		free (net->real);
 	free_and_clear (net->pass);
 	if (net->favchanlist)
 		g_slist_free_full (net->favchanlist, (GDestroyNotify) servlist_favchan_free);
@@ -1172,7 +1155,7 @@ servlist_net_add (char *name, char *comment, int prepend)
 	memset (net, 0, sizeof (ircnet));
 	net->name = strdup (name);
 /*	net->comment = strdup (comment);*/
-	net->flags = FLAG_CYCLE | FLAG_USE_GLOBAL | FLAG_USE_PROXY;
+	net->flags = FLAG_CYCLE | FLAG_USE_PROXY;
 
 	if (prepend)
 		network_list = g_slist_prepend (network_list, net);
@@ -1267,17 +1250,8 @@ servlist_load (void)
 		{
 			switch (buf[0])
 			{
-			case 'I':
-				net->nick = strdup (buf + 2);
-				break;
-			case 'i':
-				net->nick2 = strdup (buf + 2);
-				break;
-			case 'U':
-				net->user = strdup (buf + 2);
-				break;
-			case 'R':
-				net->real = strdup (buf + 2);
+			case 'X':
+				net->account = atoi (buf + 2);
 				break;
 			case 'P':
 				net->pass = strdup (buf + 2);
@@ -1334,7 +1308,9 @@ servlist_load (void)
 			}
 		}
 		if (buf[0] == 'N')
+		{
 			net = servlist_net_add (buf + 2, /* comment */ NULL, FALSE);
+		}
 	}
 	fclose (fp);
 
@@ -1390,6 +1366,7 @@ servlist_save (void)
 	ircserver *serv;
 	commandentry *cmd;
 	favchannel *favchan;
+	profile *prof;
 	GSList *list;
 	GSList *netlist;
 	GSList *cmdlist;
@@ -1425,14 +1402,11 @@ servlist_save (void)
 		net = list->data;
 
 		fprintf (fp, "N=%s\n", net->name);
-		if (net->nick)
-			fprintf (fp, "I=%s\n", net->nick);
-		if (net->nick2)
-			fprintf (fp, "i=%s\n", net->nick2);
-		if (net->user)
-			fprintf (fp, "U=%s\n", net->user);
-		if (net->real)
-			fprintf (fp, "R=%s\n", net->real);
+		if (net->account)
+		{
+			prof = profile_find_for_net (net);		/* make sure we don't save erroneous IDs */
+			fprintf (fp, "X=%d\n", prof->id);
+		}
 		if (net->pass)
 			fprintf (fp, "P=%s\n", net->pass);
 		if (net->logintype)

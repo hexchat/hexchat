@@ -45,10 +45,10 @@
 #include "plugin-timer.h"
 #include "notify.h"
 #include "server.h"
-#include "servlist.h"
 #include "outbound.h"
 #include "text.h"
 #include "url.h"
+#include "profile.h"
 #include "hexchatc.h"
 
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
@@ -923,6 +923,7 @@ xchat_init (void)
 						defaultconf_urlhandlers);
 
 	servlist_init ();							/* load server list */
+	profile_init ();							/* load profile list */
 
 	/* if we got a URL, don't open the server list GUI */
 	if (!prefs.hex_gui_slist_skip && !arg_url)
@@ -969,6 +970,7 @@ hexchat_exit (void)
 	free_sessions ();
 	chanopt_save_all ();
 	servlist_cleanup ();
+	profile_save ();	/* FIXME do this from gui */
 	fe_exit ();
 }
 

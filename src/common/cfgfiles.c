@@ -510,6 +510,7 @@ const struct prefs vars[] =
 	{"irc_auto_rejoin", P_OFFINT (hex_irc_auto_rejoin), TYPE_BOOL},
 	{"irc_ban_type", P_OFFINT (hex_irc_ban_type), TYPE_INT},
 	{"irc_conf_mode", P_OFFINT (hex_irc_conf_mode), TYPE_BOOL},
+	{"irc_default_profile", P_OFFINT (hex_irc_default_profile), TYPE_INT},
 	{"irc_extra_hilight", P_OFFSET (hex_irc_extra_hilight), TYPE_STR},
 	{"irc_hide_version", P_OFFINT (hex_irc_hide_version), TYPE_BOOL},
 	{"irc_id_ntext", P_OFFSET (hex_irc_id_ntext), TYPE_STR},
@@ -518,19 +519,14 @@ const struct prefs vars[] =
 	{"irc_join_delay", P_OFFINT (hex_irc_join_delay), TYPE_INT},
 	{"irc_logging", P_OFFINT (hex_irc_logging), TYPE_BOOL},
 	{"irc_logmask", P_OFFSET (hex_irc_logmask), TYPE_STR},
-	{"irc_nick1", P_OFFSET (hex_irc_nick1), TYPE_STR},
-	{"irc_nick2", P_OFFSET (hex_irc_nick2), TYPE_STR},
-	{"irc_nick3", P_OFFSET (hex_irc_nick3), TYPE_STR},
 	{"irc_nick_hilight", P_OFFSET (hex_irc_nick_hilight), TYPE_STR},
 	{"irc_no_hilight", P_OFFSET (hex_irc_no_hilight), TYPE_STR},
 	{"irc_notice_pos", P_OFFINT (hex_irc_notice_pos), TYPE_INT},
 	{"irc_part_reason", P_OFFSET (hex_irc_part_reason), TYPE_STR},
 	{"irc_quit_reason", P_OFFSET (hex_irc_quit_reason), TYPE_STR},
 	{"irc_raw_modes", P_OFFINT (hex_irc_raw_modes), TYPE_BOOL},
-	{"irc_real_name", P_OFFSET (hex_irc_real_name), TYPE_STR},
 	{"irc_servernotice", P_OFFINT (hex_irc_servernotice), TYPE_BOOL},
 	{"irc_skip_motd", P_OFFINT (hex_irc_skip_motd), TYPE_BOOL},
-	{"irc_user_name", P_OFFSET (hex_irc_user_name), TYPE_STR},
 	{"irc_wallops", P_OFFINT (hex_irc_wallops), TYPE_BOOL},
 	{"irc_who_join", P_OFFINT (hex_irc_who_join), TYPE_BOOL},
 	{"irc_whois_front", P_OFFINT (hex_irc_whois_front), TYPE_BOOL},
@@ -597,48 +593,16 @@ const struct prefs vars[] =
 	{0, 0, 0},
 };
 
-static char *
-convert_with_fallback (const char *str, const char *fallback)
-{
-	char *utf;
-
-	utf = g_locale_to_utf8 (str, -1, 0, 0, 0);
-	if (!utf)
-	{
-		/* this can happen if CHARSET envvar is set wrong */
-		/* maybe it's already utf8 (breakage!) */
-		if (!g_utf8_validate (str, -1, NULL))
-			utf = g_strdup (fallback);
-		else
-			utf = g_strdup (str);
-	}
-
-	return utf;
-}
-
 void
 load_config (void)
 {
-	char *cfg, *sp, *buf;
-	const char *username, *realname;
+	char *cfg, *buf;
 	int res, val, i;
 #ifdef WIN32
 	char out[256];
 #endif
 
 	check_prefs_dir ();
-	username = g_get_user_name ();
-	if (!username)
-		username = "root";
-
-	/* We hid Real name from the Network List, so don't use the user's name unnoticeably */
-	/* realname = g_get_real_name ();
-	if ((realname && realname[0] == 0) || !realname)
-		realname = username; */
-	realname = "realname";
-
-	username = convert_with_fallback (username, "username");
-	realname = convert_with_fallback (realname, "realname");
 
 	memset (&prefs, 0, sizeof (struct hexchatprefs));
 
@@ -731,6 +695,7 @@ load_config (void)
 	prefs.hex_gui_win_width = 640;
 	prefs.hex_input_balloon_time = 20;
 	prefs.hex_irc_ban_type = 2;
+	prefs.hex_irc_default_profile = 1;
 	prefs.hex_irc_join_delay = 5;
 	prefs.hex_net_reconnect_delay = 10;
 	prefs.hex_notify_timeout = 15;
@@ -767,16 +732,9 @@ load_config (void)
 	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
 	strcpy (prefs.hex_input_command_char, "/");
 	strcpy (prefs.hex_irc_logmask, g_build_filename ("%n", "%c.log", NULL));
-	strcpy (prefs.hex_irc_nick1, username);
-	strcpy (prefs.hex_irc_nick2, username);
-	strcat (prefs.hex_irc_nick2, "_");
-	strcpy (prefs.hex_irc_nick3, username);
-	strcat (prefs.hex_irc_nick3, "__");
 	strcpy (prefs.hex_irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
 	strcpy (prefs.hex_irc_part_reason, _("Leaving"));
 	strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason);
-	strcpy (prefs.hex_irc_real_name, realname);
-	strcpy (prefs.hex_irc_user_name, username);
 	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
 #ifdef WIN32
@@ -799,9 +757,6 @@ load_config (void)
 
 	/* private variables */
 	prefs.local_ip = 0xffffffff;
-
-	g_free ((char *)username);
-	g_free ((char *)realname);
 
 	if (g_file_get_contents (default_file (), &cfg, NULL, NULL))
 	{
@@ -853,10 +808,6 @@ load_config (void)
 		prefs.hex_gui_win_height = 138;
 	if (prefs.hex_gui_win_width < 106)
 		prefs.hex_gui_win_width = 106;
-
-	sp = strchr (prefs.hex_irc_user_name, ' ');
-	if (sp)
-		sp[0] = 0;	/* spaces in username would break the login */
 }
 
 int

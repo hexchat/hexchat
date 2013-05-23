@@ -294,6 +294,7 @@ struct hexchatprefs
 	int hex_gui_win_width;
 	int hex_input_balloon_time;
 	int hex_irc_ban_type;
+	int hex_irc_default_profile;		/* user profile to be used when it's unspecified for the network */
 	int hex_irc_join_delay;
 	int hex_irc_notice_pos;
 	int hex_net_ping_timeout;
@@ -322,15 +323,10 @@ struct hexchatprefs
 	char hex_irc_id_ntext[64];
 	char hex_irc_id_ytext[64];
 	char hex_irc_logmask[256];
-	char hex_irc_nick1[NICKLEN];
-	char hex_irc_nick2[NICKLEN];
-	char hex_irc_nick3[NICKLEN];
 	char hex_irc_nick_hilight[300];
 	char hex_irc_no_hilight[300];
 	char hex_irc_part_reason[256];
 	char hex_irc_quit_reason[256];
-	char hex_irc_real_name[127];
-	char hex_irc_user_name[127];
 	char hex_net_bind_host[127];
 	char hex_net_proxy_host[64];
 	char hex_net_proxy_pass[32];

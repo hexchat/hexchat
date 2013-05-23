@@ -42,9 +42,9 @@
 #include "outbound.h"
 #include "inbound.h"
 #include "server.h"
-#include "servlist.h"
 #include "text.h"
 #include "ctcp.h"
+#include "profile.h"
 #include "hexchatc.h"
 
 
@@ -1147,42 +1147,34 @@ check_autojoin_channels (server *serv)
 void
 inbound_next_nick (session *sess, char *nick, int error)
 {
-	char *newnick;
 	server *serv = sess->server;
-	ircnet *net;
+	profile *prof = profile_find_for_serv (serv);
 
 	serv->nickcount++;
 
 	switch (serv->nickcount)
 	{
 	case 2:
-		newnick = prefs.hex_irc_nick2;
-		net = serv->network;
-		/* use network specific "Second choice"? */
-		if (net && !(net->flags & FLAG_USE_GLOBAL) && net->nick2)
-		{
-			newnick = net->nick2;
-		}
-		serv->p_change_nick (serv, newnick);
+		serv->p_change_nick (serv, prof->nickname2);
 		if (error)
 		{
-			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, newnick, NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, prof->nickname2, NULL, NULL, 0);
 		}
 		else
 		{
-			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, newnick, NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prof->nickname2, NULL, NULL, 0);
 		}
 		break;
 
 	case 3:
-		serv->p_change_nick (serv, prefs.hex_irc_nick3);
+		serv->p_change_nick (serv, prof->nickname3);
 		if (error)
 		{
-			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, prof->nickname3, NULL, NULL, 0);
 		}
 		else
 		{
-			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prof->nickname3, NULL, NULL, 0);
 		}
 		break;
 
