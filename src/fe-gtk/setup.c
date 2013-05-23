@@ -2013,6 +2013,7 @@ setup_apply_to_sess (session_gui *gui)
 #endif
 
 #ifdef USE_LIBSEXY
+	sexy_spell_entry_update_languages ((SexySpellEntry *)gui->input_box);
 	sexy_spell_entry_set_checked ((SexySpellEntry *)gui->input_box, prefs.hex_gui_input_spell);
 #endif
 }
