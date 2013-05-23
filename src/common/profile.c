@@ -261,7 +261,7 @@ profile_save (void)
 }
 
 static profile *
-profile_find_by_id (int id)
+profile_find_for_id (int id)
 {
 	profile *prof;
 	GSList *list;
@@ -289,7 +289,7 @@ profile_find_default (void)
 	profile *prof;
 	GSList *list;
 
-	prof = profile_find_by_id (prefs.hex_irc_default_profile);
+	prof = profile_find_for_id (prefs.hex_irc_default_profile);
 
 	if (prof)
 	{
@@ -324,7 +324,7 @@ profile_find_for_net (ircnet *net)
 
 	if (net->account)
 	{
-		prof = profile_find_by_id (net->account);
+		prof = profile_find_for_id (net->account);
 	}
 
 	/* If a profile ID is deleted, we reset network accounts, so prof should
