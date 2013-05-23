@@ -55,6 +55,7 @@
 #include "server.h"
 #include "text.h"
 #include "url.h"
+#include "profile.h"
 #include "hexchatc.h"
 
 #ifdef USE_DCC64
@@ -1010,6 +1011,7 @@ static gboolean
 dcc_socks_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
 	struct proxy_state *proxy = dcc->proxy;
+	profile *prof = profile_find_default ();
 
 	if (proxy->phase == 0)
 	{
@@ -1018,7 +1020,7 @@ dcc_socks_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC
 		sc.type = 1;
 		sc.port = htons (dcc->port);
 		sc.address = htonl (dcc->addr);
-		strncpy (sc.username, prefs.hex_irc_user_name, 9);
+		strncpy (sc.username, prof->username, 9);
 		memcpy (proxy->buffer, &sc, sizeof (sc));
 		proxy->buffersize = 8 + strlen (sc.username) + 1;
 		proxy->bufferused = 0;

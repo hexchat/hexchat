@@ -25,7 +25,7 @@
 
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
-#include "../common/servlist.h"
+#include "../common/profile.h"		/* thus also include servlist.h */
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
 #include "../common/util.h"
@@ -50,13 +50,6 @@ static int netedit_win_height = 0;
 
 static int netedit_active_tab = 0;
 
-/* global user info */
-static GtkWidget *entry_nick1;
-static GtkWidget *entry_nick2;
-static GtkWidget *entry_nick3;
-static GtkWidget *entry_guser;
-/* static GtkWidget *entry_greal; */
-
 enum {
 		SERVER_TREE,
 		CHANNEL_TREE,
@@ -66,15 +59,7 @@ enum {
 
 /* edit area */
 static GtkWidget *edit_win;
-static GtkWidget *edit_entry_nick;
-static GtkWidget *edit_entry_nick2;
-static GtkWidget *edit_entry_user;
-static GtkWidget *edit_entry_real;
 static GtkWidget *edit_entry_pass;
-static GtkWidget *edit_label_nick;
-static GtkWidget *edit_label_nick2;
-static GtkWidget *edit_label_real;
-static GtkWidget *edit_label_user;
 static GtkWidget *edit_trees[N_TREES];
 
 static ircnet *selected_net = NULL;
@@ -124,6 +109,7 @@ static int login_types_conf[] =
 	LOGIN_MSG_NICKSERV,
 	LOGIN_NICKSERV,
 	LOGIN_CHALLENGEAUTH,
+	LOGIN_ZNC,
 	LOGIN_CUSTOM
 #if 0
 	LOGIN_NS,
@@ -135,16 +121,17 @@ static int login_types_conf[] =
 static const char *login_types[]=
 {
 	"Default",
-	"SASL (username + password)",
-	"Server Password (/PASS password)",
-	"NickServ (/MSG NickServ + password)",
-	"NickServ (/NICKSERV + password)",
-	"Challenge Auth (username + password)",
+	"SASL (user + pass)",
+	"Server Password (/PASS pass)",
+	"NickServ (/MSG NickServ + pass)",
+	"NickServ (/NICKSERV + pass)",
+	"Challenge Auth (user + pass)",
+	"ZNC (network name + user + pass)",
 	"Custom... (connect commands)",
 #if 0
-	"NickServ (/NS + password)",
-	"NickServ (/MSG NS + password)",
-	"AUTH (/AUTH nickname password)",
+	"NickServ (/NS + pass)",
+	"NickServ (/MSG NS + pass)",
+	"AUTH (/AUTH nick pass)",
 #endif
 	NULL
 };
@@ -669,10 +656,6 @@ servlist_update_from_entry (char **str, GtkWidget *entry)
 static void
 servlist_edit_update (ircnet *net)
 {
-	servlist_update_from_entry (&net->nick, edit_entry_nick);
-	servlist_update_from_entry (&net->nick2, edit_entry_nick2);
-	servlist_update_from_entry (&net->user, edit_entry_user);
-	servlist_update_from_entry (&net->real, edit_entry_real);
 	servlist_update_from_entry (&net->pass, edit_entry_pass);
 }
 
@@ -932,8 +915,10 @@ servlist_network_row_cb (GtkTreeSelection *sel, gpointer user_data)
 static int
 servlist_savegui (void)
 {
+#if 0
 	char *sp;
 
+	/* FIXME check these in profile GUI */
 	/* check for blank username, ircd will not allow this */
 	if (GTK_ENTRY (entry_guser)->text[0] == 0)
 		return 1;
@@ -941,14 +926,11 @@ servlist_savegui (void)
 	/* if (GTK_ENTRY (entry_greal)->text[0] == 0)
 		return 1; */
 
-	strcpy (prefs.hex_irc_nick1, GTK_ENTRY (entry_nick1)->text);
-	strcpy (prefs.hex_irc_nick2, GTK_ENTRY (entry_nick2)->text);
-	strcpy (prefs.hex_irc_nick3, GTK_ENTRY (entry_nick3)->text);
 	strcpy (prefs.hex_irc_user_name, GTK_ENTRY (entry_guser)->text);
 	sp = strchr (prefs.hex_irc_user_name, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces will break the login */
-	/* strcpy (prefs.hex_irc_real_name, GTK_ENTRY (entry_greal)->text); */
+#endif
 	servlist_save ();
 	save_config (); /* For nicks stored in hexchat.conf */
 
@@ -1081,22 +1063,6 @@ servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 }
 
 static void
-servlist_toggle_global_user (gboolean sensitive)
-{
-	gtk_widget_set_sensitive (edit_entry_nick, sensitive);
-	gtk_widget_set_sensitive (edit_label_nick, sensitive);
-
-	gtk_widget_set_sensitive (edit_entry_nick2, sensitive);
-	gtk_widget_set_sensitive (edit_label_nick2, sensitive);
-
-	gtk_widget_set_sensitive (edit_entry_user, sensitive);
-	gtk_widget_set_sensitive (edit_label_user, sensitive);
-
-	gtk_widget_set_sensitive (edit_entry_real, sensitive);
-	gtk_widget_set_sensitive (edit_label_real, sensitive);
-}
-
-static void
 servlist_connect_cb (GtkWidget *button, gpointer userdata)
 {
 	if (!selected_net)
@@ -1213,11 +1179,6 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 			selected_net->flags |= (1 << num);
 		else
 			selected_net->flags &= ~(1 << num);
-	}
-
-	if ((1 << num) == FLAG_USE_GLOBAL)
-	{
-		servlist_toggle_global_user (!GTK_TOGGLE_BUTTON (but)->active);
 	}
 }
 
@@ -1520,6 +1481,26 @@ servlist_logintypecombo_cb (GtkComboBox *cb, gpointer *userdata)
 	}
 }
 
+static void
+servlist_profilecombo_cb (GtkComboBox *cb, gpointer *userdata)
+{
+	int index;
+
+	if (!selected_net)
+	{
+		return;
+	}
+
+	index = gtk_combo_box_get_active (cb);	/* starts at 0, returns -1 for invalid selections */
+
+	if (index != -1)
+	{
+		/* The selection is valid. It can be 0, which is the default type, but we need to allow
+		* that so that you can revert from other types. servlist_save() will dump 0 anyway.
+		*/
+		selected_net->account = index;
+	}
+}
 
 static GtkWidget *
 servlist_create_charsetcombo (void)
@@ -1568,6 +1549,31 @@ servlist_create_logintypecombo (GtkWidget *data)
 	return cb;
 }
 
+static GtkWidget *
+servlist_create_profilecombo (void)
+{
+	GtkWidget *cb;
+	GSList *list;
+	profile *prof;
+
+	cb = gtk_combo_box_text_new ();
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (cb), _("Default"));
+
+	list = profile_list;
+
+	while (list)
+	{
+		prof = list->data;
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (cb), prof->name);
+		list = list->next;
+	}
+
+	gtk_combo_box_set_active (GTK_COMBO_BOX (cb), selected_net->account);
+	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_profilecombo_cb), NULL);
+
+	return cb;
+}
+
 static void
 no_servlist (GtkWidget * igad, gpointer serv)
 {
@@ -1588,6 +1594,7 @@ fav_servlist (GtkWidget * igad, gpointer serv)
 	servlist_networks_populate (networks_tree, network_list);
 }
 
+#if 0	/* FIXME will we need this at all? */
 static GtkWidget *
 bold_label (char *text)
 {
@@ -1602,6 +1609,7 @@ bold_label (char *text)
 
 	return label;
 }
+#endif
 
 static GtkWidget *
 servlist_open_edit (GtkWidget *parent, ircnet *net)
@@ -1611,8 +1619,10 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	GtkWidget *table3;
 	GtkWidget *label34;
 	GtkWidget *label_logintype;
+	GtkWidget *label_profile;
 	GtkWidget *comboboxentry_charset;
 	GtkWidget *combobox_logintypes;
+	GtkWidget *combobox_profiles;
 	GtkWidget *hbox1;
 	GtkWidget *scrolledwindow2;
 	GtkWidget *scrolledwindow4;
@@ -1789,16 +1799,16 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 
 	/* Checkboxes and entries */
-	table3 = gtk_table_new (13, 2, FALSE);
+	table3 = gtk_table_new (8, 2, FALSE);
 	gtk_box_pack_start (GTK_BOX (vbox5), table3, FALSE, FALSE, 0);
 	gtk_table_set_row_spacings (GTK_TABLE (table3), 2);
 	gtk_table_set_col_spacings (GTK_TABLE (table3), 8);
 
-	check = servlist_create_check (0, !(net->flags & FLAG_CYCLE), table3, 0, 0, _("Connect to selected server only"));
+	check = servlist_create_check (0, !(net->flags & FLAG_CYCLE), table3, 0, 0, _("Use selected server only"));
 	add_tip (check, _("Don't cycle through all the servers when the connection fails."));
-	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3, 1, 0, _("Connect to this network automatically"));
+	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3, 1, 0, _("Connect automatically"));
 	servlist_create_check (4, !(net->flags & FLAG_USE_PROXY), table3, 2, 0, _("Bypass proxy server"));
-	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3, 3, 0, _("Use SSL for all the servers on this network"));
+	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3, 3, 0, _("Use SSL for all the servers"));
 #ifndef USE_OPENSSL
 	gtk_widget_set_sensitive (check, FALSE);
 #endif
@@ -1806,27 +1816,27 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 #ifndef USE_OPENSSL
 	gtk_widget_set_sensitive (check, FALSE);
 #endif
-	servlist_create_check (1, net->flags & FLAG_USE_GLOBAL, table3, 5, 0, _("Use global user information"));
 
-	edit_entry_nick = servlist_create_entry (table3, _("_Nick name:"), 6, net->nick, &edit_label_nick, 0);
-	edit_entry_nick2 = servlist_create_entry (table3, _("Second choice:"), 7, net->nick2, &edit_label_nick2, 0);
-	edit_entry_real = servlist_create_entry (table3, _("Rea_l name:"), 8, net->real, &edit_label_real, 0);
-	edit_entry_user = servlist_create_entry (table3, _("_User name:"), 9, net->user, &edit_label_user, 0);
+	label_profile = gtk_label_new (_("Profile:"));
+	gtk_table_attach (GTK_TABLE (table3), label_profile, 0, 1, 5, 6, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
+	gtk_misc_set_alignment (GTK_MISC (label_profile), 0, 0.5);
+	combobox_profiles = servlist_create_profilecombo ();
+	gtk_table_attach (GTK_TABLE (table3), combobox_profiles, 1, 2, 5, 6, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
 
 	label_logintype = gtk_label_new (_("Login method:"));
-	gtk_table_attach (GTK_TABLE (table3), label_logintype, 0, 1, 10, 11, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
+	gtk_table_attach (GTK_TABLE (table3), label_logintype, 0, 1, 6, 7, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 	gtk_misc_set_alignment (GTK_MISC (label_logintype), 0, 0.5);
 	combobox_logintypes = servlist_create_logintypecombo (notebook);
-	gtk_table_attach (GTK_TABLE (table3), combobox_logintypes, 1, 2, 10, 11, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
+	gtk_table_attach (GTK_TABLE (table3), combobox_logintypes, 1, 2, 6, 7, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
 
-	edit_entry_pass = servlist_create_entry (table3, _("Password:"), 11, net->pass, 0, _("Password used for login. If in doubt, leave blank."));
+	edit_entry_pass = servlist_create_entry (table3, _("Password:"), 7, net->pass, 0, _("Password used for login. If in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
 
 	label34 = gtk_label_new (_("Character set:"));
-	gtk_table_attach (GTK_TABLE (table3), label34, 0, 1, 12, 13, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
+	gtk_table_attach (GTK_TABLE (table3), label34, 0, 1, 8, 9, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
 	comboboxentry_charset = servlist_create_charsetcombo ();
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 1, 2, 12, 13, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 1, 2, 8, 9, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (GTK_FILL), 4, 2);
 
 
 	/* Rule and Close button */
@@ -1842,11 +1852,6 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 							G_CALLBACK (servlist_edit_close_cb), 0);
 	gtk_container_add (GTK_CONTAINER (hbuttonbox4), button10);
 	GTK_WIDGET_SET_FLAGS (button10, GTK_CAN_DEFAULT);
-
-	if (net->flags & FLAG_USE_GLOBAL)
-	{
-		servlist_toggle_global_user (FALSE);
-	}
 
 	gtk_widget_grab_focus (button10);
 	gtk_widget_grab_default (button10);
@@ -1867,20 +1872,7 @@ servlist_open_networks (void)
 {
 	GtkWidget *servlist;
 	GtkWidget *vbox1;
-	GtkWidget *label2;
-	GtkWidget *table1;
-	GtkWidget *label3;
-	GtkWidget *label4;
-	GtkWidget *label5;
-	GtkWidget *label6;
-	/* GtkWidget *label7; */
-	GtkWidget *entry1;
-	GtkWidget *entry2;
-	GtkWidget *entry3;
-	GtkWidget *entry4;
-	/* GtkWidget *entry5; */
 	GtkWidget *vbox2;
-	GtkWidget *label1;
 	GtkWidget *table4;
 	GtkWidget *scrolledwindow3;
 	GtkWidget *treeview_networks;
@@ -1914,92 +1906,9 @@ servlist_open_networks (void)
 	gtk_widget_show (vbox1);
 	gtk_container_add (GTK_CONTAINER (servlist), vbox1);
 
-	label2 = bold_label (_("User Information"));
-	gtk_box_pack_start (GTK_BOX (vbox1), label2, FALSE, FALSE, 0);
-
-	table1 = gtk_table_new (5, 2, FALSE);
-	gtk_widget_show (table1);
-	gtk_box_pack_start (GTK_BOX (vbox1), table1, FALSE, FALSE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (table1), 8);
-	gtk_table_set_row_spacings (GTK_TABLE (table1), 2);
-	gtk_table_set_col_spacings (GTK_TABLE (table1), 4);
-
-	label3 = gtk_label_new_with_mnemonic (_("_Nick name:"));
-	gtk_widget_show (label3);
-	gtk_table_attach (GTK_TABLE (table1), label3, 0, 1, 0, 1,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label3), 0, 0.5);
-
-	label4 = gtk_label_new (_("Second choice:"));
-	gtk_widget_show (label4);
-	gtk_table_attach (GTK_TABLE (table1), label4, 0, 1, 1, 2,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label4), 0, 0.5);
-
-	label5 = gtk_label_new (_("Third choice:"));
-	gtk_widget_show (label5);
-	gtk_table_attach (GTK_TABLE (table1), label5, 0, 1, 2, 3,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label5), 0, 0.5);
-
-	label6 = gtk_label_new_with_mnemonic (_("_User name:"));
-	gtk_widget_show (label6);
-	gtk_table_attach (GTK_TABLE (table1), label6, 0, 1, 3, 4,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label6), 0, 0.5);
-
-	/* label7 = gtk_label_new_with_mnemonic (_("Rea_l name:"));
-	gtk_widget_show (label7);
-	gtk_table_attach (GTK_TABLE (table1), label7, 0, 1, 4, 5,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label7), 0, 0.5);*/
-
-	entry_nick1 = entry1 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry1), prefs.hex_irc_nick1);
-	gtk_widget_show (entry1);
-	gtk_table_attach (GTK_TABLE (table1), entry1, 1, 2, 0, 1,
-							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-
-	entry_nick2 = entry2 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry2), prefs.hex_irc_nick2);
-	gtk_widget_show (entry2);
-	gtk_table_attach (GTK_TABLE (table1), entry2, 1, 2, 1, 2,
-							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-
-	entry_nick3 = entry3 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry3), prefs.hex_irc_nick3);
-	gtk_widget_show (entry3);
-	gtk_table_attach (GTK_TABLE (table1), entry3, 1, 2, 2, 3,
-							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-
-	entry_guser = entry4 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry4), prefs.hex_irc_user_name);
-	gtk_widget_show (entry4);
-	gtk_table_attach (GTK_TABLE (table1), entry4, 1, 2, 3, 4,
-							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
-
-	/* entry_greal = entry5 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry5), prefs.hex_irc_real_name);
-	gtk_widget_show (entry5);
-	gtk_table_attach (GTK_TABLE (table1), entry5, 1, 2, 4, 5,
-							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0); */
-
 	vbox2 = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox2);
 	gtk_box_pack_start (GTK_BOX (vbox1), vbox2, TRUE, TRUE, 0);
-
-	label1 = bold_label (_("Networks"));
-	gtk_box_pack_start (GTK_BOX (vbox2), label1, FALSE, FALSE, 0);
 
 	table4 = gtk_table_new (2, 2, FALSE);
 	gtk_widget_show (table4);
@@ -2111,7 +2020,7 @@ servlist_open_networks (void)
 
 	hseparator1 = gtk_hseparator_new ();
 	gtk_widget_show (hseparator1);
-	gtk_box_pack_start (GTK_BOX (vbox1), hseparator1, FALSE, TRUE, 4);
+	gtk_box_pack_start (GTK_BOX (vbox1), hseparator1, FALSE, TRUE, 0);
 
 	hbuttonbox1 = gtk_hbutton_box_new ();
 	gtk_widget_show (hbuttonbox1);
@@ -2128,10 +2037,6 @@ servlist_open_networks (void)
 	button_connect = gtkutil_button (hbuttonbox1, GTK_STOCK_CONNECT, NULL,
 												servlist_connect_cb, NULL, _("C_onnect"));
 	GTK_WIDGET_SET_FLAGS (button_connect, GTK_CAN_DEFAULT);
-
-	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
-	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);
-	/* gtk_label_set_mnemonic_widget (GTK_LABEL (label7), entry5); */
 
 	gtk_widget_grab_focus (networks_tree);
 	gtk_widget_grab_default (button_close);

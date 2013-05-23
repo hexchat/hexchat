@@ -36,28 +36,38 @@ typedef struct favchannel
 	char *key;
 } favchannel;
 
+/* we have to put this here to avoid include cross-reference conflicts */
+typedef struct profile
+{
+	int id;				/* this is the unique identifier used to associate a profile with a network, starting at 1, for new profiles always the lowest possible */
+	char *name;			/* profile name used in the gui profile editor */
+	char *nickname1;
+	char *nickname2;
+	char *nickname3;
+	char *username;
+	char *realname;
+} profile;
+
 typedef struct ircnet
 {
 	char *name;
-	char *nick;
-	char *nick2;
-	char *user;
-	char *real;
 	char *pass;
-	int logintype;
 	char *comment;
 	char *encoding;
 	GSList *servlist;
 	GSList *commandlist;
 	GSList *favchanlist;
 	int selected;
+	int logintype;
+	int account;						/* if it's 0, use the default profile */
+	profile *profcache;					/* cached pointer for the profile belonging to 'account' to save lookup times; make sure to update whenever 'account' changes FIXME */
 	guint32 flags;
 } ircnet;
 
 extern GSList *network_list;
 
 #define FLAG_CYCLE				1
-#define FLAG_USE_GLOBAL			2
+#define FLAG_USE_GLOBAL			2		/* unused, but we gotta leave it here for config compat */
 #define FLAG_USE_SSL			4
 #define FLAG_AUTO_CONNECT		8
 #define FLAG_USE_PROXY			16
@@ -79,6 +89,7 @@ extern GSList *network_list;
 #define LOGIN_PASS				7
 #define LOGIN_CHALLENGEAUTH		8
 #define LOGIN_CUSTOM			9
+#define LOGIN_ZNC				10
 
 #define CHALLENGEAUTH_ALGO		"HMAC-SHA-256"
 #define CHALLENGEAUTH_NICK		"Q@CServe.quakenet.org"

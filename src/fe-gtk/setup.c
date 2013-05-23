@@ -515,7 +515,6 @@ static const setting advanced_settings[] =
 						"while selecting."), 0, 0},
 
 	{ST_HEADER,	N_("Miscellaneous"),0,0,0},
-	{ST_ENTRY,  N_("Real name:"), P_OFFSETNL(hex_irc_real_name), 0, 0, sizeof prefs.hex_irc_real_name},
 #ifdef WIN32
 	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
 #endif
@@ -2182,11 +2181,11 @@ setup_apply (struct hexchatprefs *pr)
 	}
 #endif
 
-	if (prefs.hex_irc_real_name[0] == 0)
+	/*if (prefs.hex_irc_real_name[0] == 0) FIXME move these to profile editor!
 	{
 		fe_message (_("The Real name option cannot be left blank. Falling back to \"realname\"."), FE_MSG_WARN);
 		strcpy (prefs.hex_irc_real_name, "realname");
-	}
+	}*/
 	
 	setup_apply_real (new_pix, do_ulist, do_layout);
 

@@ -50,7 +50,7 @@
 #include "inbound.h"
 #include "text.h"
 #include "hexchatc.h"
-#include "servlist.h"
+#include "profile.h"
 #include "server.h"
 #include "tree.h"
 #include "outbound.h"
@@ -257,6 +257,16 @@ cmd_addbutton (struct session *sess, char *tbuf, char *word[],
 	}
 	return FALSE;
 }
+
+#if 0		/* for testing only */
+static int
+cmd_addprofile (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	profile_add (word[2], word[3], word[4], word[5], word[6], word[7]);
+	profile_save ();
+	return TRUE;
+}
+#endif
 
 /* ADDSERVER <networkname> <serveraddress>, add a new network and server to the network list */
 static int
@@ -3675,6 +3685,9 @@ cmd_voice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 const struct commands xc_cmds[] = {
 	{"ADDBUTTON", cmd_addbutton, 0, 0, 1,
 	 N_("ADDBUTTON <name> <action>, adds a button under the user-list")},
+#if 0
+	{"ADDPROFILE", cmd_addprofile, 0, 0, 1, N_("ADDPROFILE <ProfileName> <NickName1> <NickName2> <NickName3> <UserName> <RealName>, adds a new profile to the profile list")},
+#endif
 	{"ADDSERVER", cmd_addserver, 0, 0, 1, N_("ADDSERVER <NewNetwork> <newserver/6667>, adds a new network with a new server to the network list")},
 	{"ALLCHAN", cmd_allchannels, 0, 0, 1,
 	 N_("ALLCHAN <cmd>, sends a command to all channels you're in")},
@@ -4363,13 +4376,15 @@ command_insert_vars (session *sess, char *cmd)
 	int pos;
 	GString *expanded;
 	ircnet *mynet = (ircnet *) sess->server->network;
+	profile *prof;
 
-	if (!mynet)										/* shouldn't really happen */
+	if (!mynet)										/* command performed in new tab or tab from /server */
 	{
 		return g_strdup (cmd);						/* the return value will be freed so we must srtdup() it */
 	}
 
 	expanded = g_string_new (NULL);
+	prof = mynet->profcache;						/* if we have an ircnet, we have the profcache filled up as well thanks to servlist_connect() */
 
 	while (strchr (cmd, '%') != NULL)
 	{
@@ -4380,46 +4395,25 @@ command_insert_vars (session *sess, char *cmd)
 		switch (cmd[0])
 		{
 			case 'n':
-				if (mynet->nick)
-				{
-					g_string_append (expanded, mynet->nick);
-				}
-				else
-				{
-					g_string_append (expanded, prefs.hex_irc_nick1);
-				}
+				g_string_append (expanded, prof->nickname1);
 				cmd++;
 				break;
 
 			case 'p':
-				if (mynet->pass)
+				if (strlen (sess->server->password) != 0)
 				{
-					g_string_append (expanded, mynet->pass);
+					g_string_append (expanded, sess->server->password);
 				}
 				cmd++;
 				break;
 
 			case 'r':
-				if (mynet->real)
-				{
-					g_string_append (expanded, mynet->real);
-				}
-				else
-				{
-					g_string_append (expanded, prefs.hex_irc_real_name);
-				}
+				g_string_append (expanded, prof->realname);
 				cmd++;
 				break;
 
 			case 'u':
-				if (mynet->user)
-				{
-					g_string_append (expanded, mynet->user);
-				}
-				else
-				{
-					g_string_append (expanded, prefs.hex_irc_user_name);
-				}
+				g_string_append (expanded, prof->username);
 				cmd++;
 				break;
 
