@@ -121,17 +121,17 @@ static int login_types_conf[] =
 static const char *login_types[]=
 {
 	"Default",
-	"SASL (username + password)",
-	"Server Password (/PASS password)",
-	"NickServ (/MSG NickServ + password)",
-	"NickServ (/NICKSERV + password)",
-	"Challenge Auth (username + password)",
-	"ZNC (username + password)",
+	"SASL (user + pass)",
+	"Server Password (/PASS pass)",
+	"NickServ (/MSG NickServ + pass)",
+	"NickServ (/NICKSERV + pass)",
+	"Challenge Auth (user + pass)",
+	"ZNC (network + user + pass)",
 	"Custom... (connect commands)",
 #if 0
-	"NickServ (/NS + password)",
-	"NickServ (/MSG NS + password)",
-	"AUTH (/AUTH nickname password)",
+	"NickServ (/NS + pass)",
+	"NickServ (/MSG NS + pass)",
+	"AUTH (/AUTH nick pass)",
 #endif
 	NULL
 };
