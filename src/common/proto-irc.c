@@ -47,17 +47,31 @@
 static void
 irc_login (server *serv, char *user, char *realname)
 {
+	ircnet *net = (ircnet *) serv->network;
+
 	tcp_sendf (serv, "CAP LS\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
 
-	if (serv->password[0] && serv->loginmethod == LOGIN_PASS)
+	if (serv->password[0] && (serv->loginmethod == LOGIN_PASS || serv->loginmethod == LOGIN_ZNC))
 	{
 		tcp_sendf (serv, "PASS %s\r\n", serv->password);
 	}
 
-	tcp_sendf (serv,
-				  "NICK %s\r\n"
-				  "USER %s %s %s :%s\r\n",
-				  serv->nick, user, user, serv->servername, realname);
+	if (serv->loginmethod == LOGIN_ZNC && net)
+	{
+		tcp_sendf (serv,
+					  "NICK %s\r\n"
+					  "USER %s/%s %s/%s %s :%s\r\n",
+					  serv->nick,
+					  user, net->name, user, net->name, serv->servername, realname);
+	}
+	else
+	{
+		tcp_sendf (serv,
+					  "NICK %s\r\n"
+					  "USER %s %s %s :%s\r\n",
+					  serv->nick,
+					  user, user, serv->servername, realname);
+	}
 }
 
 static void

@@ -109,6 +109,7 @@ static int login_types_conf[] =
 	LOGIN_MSG_NICKSERV,
 	LOGIN_NICKSERV,
 	LOGIN_CHALLENGEAUTH,
+	LOGIN_ZNC,
 	LOGIN_CUSTOM
 #if 0
 	LOGIN_NS,
@@ -125,6 +126,7 @@ static const char *login_types[]=
 	"NickServ (/MSG NickServ + password)",
 	"NickServ (/NICKSERV + password)",
 	"Challenge Auth (username + password)",
+	"ZNC (username + password)",
 	"Custom... (connect commands)",
 #if 0
 	"NickServ (/NS + password)",
