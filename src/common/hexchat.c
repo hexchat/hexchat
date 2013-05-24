@@ -1014,15 +1014,36 @@ hexchat_execv (char * const argv[])
 #endif
 }
 
+static void
+set_locale (void)
+{
+#ifdef WIN32
+	const char const *langs[]={
+		"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",   /* 0 .. 9   */
+		"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl", /* 10 .. 19 */
+		"de", "el", "gu", "hi", "hu", "id", "it", "ja", "kn", "rw",       /* 20 .. 29 */
+		"ko", "lv", "lt", "mk", "ml", "ms", "nb", "no", "pl", "pt",       /* 30 .. 39 */
+		"pt_BR", "pa", "ru", "sr", "sk", "sl", "es", "sv", "th", "uk",    /* 40 .. 49 */
+		"vi", "wa"                                                        /* 50 .. */
+	};
+	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of hex_gui_lang and trailing \0 */
+
+	strcpy (hexchat_lang, "LC_ALL=");
+
+	if (0 <= prefs.hex_gui_lang && prefs.hex_gui_lang < sizeof(langs)/sizeof(*langs))
+		strcat (hexchat_lang, langs[prefs.hex_gui_lang]);
+	else
+		strcat (hexchat_lang, "en");
+
+	putenv (hexchat_lang);
+#endif
+}
+
 int
 main (int argc, char *argv[])
 {
 	int i;
 	int ret;
-
-#ifdef WIN32
-	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of hex_gui_lang and trailing \0 */
-#endif
 
 	srand (time (0));	/* CL: do this only once! */
 
@@ -1054,178 +1075,21 @@ main (int argc, char *argv[])
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
 	g_type_init ();
 #endif
-	load_config ();
 
-#ifdef WIN32
-	/* we MUST do this after load_config () AND before fe_init (thus gtk_init) otherwise it will fail */
-	strcpy (hexchat_lang, "LC_ALL=");
-
-	/* this must be ordered EXACTLY as langsmenu[] */
-	switch (prefs.hex_gui_lang)
+	if (check_config_dir () == 0)
 	{
-		case 0:
-			strcat (hexchat_lang, "af");
-			break;
-		case 1:
-			strcat (hexchat_lang, "sq");
-			break;
-		case 2:
-			strcat (hexchat_lang, "am");
-			break;
-		case 3:
-			strcat (hexchat_lang, "ast");
-			break;
-		case 4:
-			strcat (hexchat_lang, "az");
-			break;
-		case 5:
-			strcat (hexchat_lang, "eu");
-			break;
-		case 6:
-			strcat (hexchat_lang, "be");
-			break;
-		case 7:
-			strcat (hexchat_lang, "bg");
-			break;
-		case 8:
-			strcat (hexchat_lang, "ca");
-			break;
-		case 9:
-			strcat (hexchat_lang, "zh_CN");
-			break;
-		case 10:
-			strcat (hexchat_lang, "zh_TW");
-			break;
-		case 11:
-			strcat (hexchat_lang, "cs");
-			break;
-		case 12:
-			strcat (hexchat_lang, "da");
-			break;
-		case 13:
-			strcat (hexchat_lang, "nl");
-			break;
-		case 14:
-			strcat (hexchat_lang, "en_GB");
-			break;
-		case 15:
-			strcat (hexchat_lang, "en");
-			break;
-		case 16:
-			strcat (hexchat_lang, "et");
-			break;
-		case 17:
-			strcat (hexchat_lang, "fi");
-			break;
-		case 18:
-			strcat (hexchat_lang, "fr");
-			break;
-		case 19:
-			strcat (hexchat_lang, "gl");
-			break;
-		case 20:
-			strcat (hexchat_lang, "de");
-			break;
-		case 21:
-			strcat (hexchat_lang, "el");
-			break;
-		case 22:
-			strcat (hexchat_lang, "gu");
-			break;
-		case 23:
-			strcat (hexchat_lang, "hi");
-			break;
-		case 24:
-			strcat (hexchat_lang, "hu");
-			break;
-		case 25:
-			strcat (hexchat_lang, "id");
-			break;
-		case 26:
-			strcat (hexchat_lang, "it");
-			break;
-		case 27:
-			strcat (hexchat_lang, "ja");
-			break;
-		case 28:
-			strcat (hexchat_lang, "kn");
-			break;
-		case 29:
-			strcat (hexchat_lang, "rw");
-			break;
-		case 30:
-			strcat (hexchat_lang, "ko");
-			break;
-		case 31:
-			strcat (hexchat_lang, "lv");
-			break;
-		case 32:
-			strcat (hexchat_lang, "lt");
-			break;
-		case 33:
-			strcat (hexchat_lang, "mk");
-			break;
-		case 34:
-			strcat (hexchat_lang, "ml");
-			break;
-		case 35:
-			strcat (hexchat_lang, "ms");
-			break;
-		case 36:
-			strcat (hexchat_lang, "nb");
-			break;
-		case 37:
-			strcat (hexchat_lang, "no");
-			break;
-		case 38:
-			strcat (hexchat_lang, "pl");
-			break;
-		case 39:
-			strcat (hexchat_lang, "pt");
-			break;
-		case 40:
-			strcat (hexchat_lang, "pt_BR");
-			break;
-		case 41:
-			strcat (hexchat_lang, "pa");
-			break;
-		case 42:
-			strcat (hexchat_lang, "ru");
-			break;
-		case 43:
-			strcat (hexchat_lang, "sr");
-			break;
-		case 44:
-			strcat (hexchat_lang, "sk");
-			break;
-		case 45:
-			strcat (hexchat_lang, "sl");
-			break;
-		case 46:
-			strcat (hexchat_lang, "es");
-			break;
-		case 47:
-			strcat (hexchat_lang, "sv");
-			break;
-		case 48:
-			strcat (hexchat_lang, "th");
-			break;
-		case 49:
-			strcat (hexchat_lang, "uk");
-			break;
-		case 50:
-			strcat (hexchat_lang, "vi");
-			break;
-		case 51:
-			strcat (hexchat_lang, "wa");
-			break;
-		default:
-			strcat (hexchat_lang, "en");
-			break;
+		if (load_config () != 0)
+			load_default_config ();
+	} else
+	{
+		/* this is probably the first run */
+		load_default_config ();
+		make_config_dirs (); /* FIXME: if this fail display an error (?) */
+		make_dcc_dirs ();
 	}
 
-	putenv (hexchat_lang);
-#endif
+	/* we MUST do this after load_config () AND before fe_init (thus gtk_init) otherwise it will fail */
+	set_locale ();
 
 #ifdef SOCKS
 	SOCKSinit (argv[0]);
@@ -1244,6 +1108,15 @@ main (int argc, char *argv[])
 #endif
 
 	fe_init ();
+
+#ifndef WIN32
+#ifndef __EMX__
+	/* OS/2 uses UID 0 all the time */
+	if (getuid () == 0)
+		fe_message (_("* Running IRC as root is stupid! You should\n"
+			      "  create a User Account and use that to login.\n"), FE_MSG_WARN|FE_MSG_WAIT);
+#endif
+#endif /* !WIN32 */
 
 	xchat_init ();
 
