@@ -877,9 +877,14 @@ servlist_server_find (ircnet *net, char *name, int *pos)
 favchannel *
 servlist_favchan_find (ircnet *net, char *channel, int *pos)
 {
-	GSList *list = net->favchanlist;
+	GSList *list;
 	favchannel *favchan;
 	int i = 0;
+
+	if (net == NULL)
+		return NULL;
+
+	list = net->favchanlist;
 
 	while (list)
 	{
