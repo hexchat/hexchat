@@ -943,19 +943,6 @@ enchant_has_lang(const gchar *lang, GSList *langs) {
 #endif
 
 /**
- * sexy_spell_entry_update_languages:
- * @entry: A #SexySpellEntry.
- *
- * Update active languages.
- */
-void
-sexy_spell_entry_update_languages (SexySpellEntry *entry)
-{
-	sexy_spell_entry_deactivate_language(entry,NULL);
-	sexy_spell_entry_activate_default_languages(entry);
-}
-
-/**
  * sexy_spell_entry_activate_default_languages:
  * @entry: A #SexySpellEntry.
  *
