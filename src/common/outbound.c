@@ -3251,6 +3251,11 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		safe_strcpy (serv->password, pass, sizeof (serv->password));
 		serv->loginmethod = LOGIN_PASS;
 	}
+	else
+	{
+		serv->password[0] = 0;
+	}
+
 #ifdef USE_OPENSSL
 	serv->use_ssl = use_ssl;
 	serv->accept_invalid_cert = TRUE;
