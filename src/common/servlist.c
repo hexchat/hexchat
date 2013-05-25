@@ -422,6 +422,12 @@ static const struct defaultserver def[] =
 
 	{"PIRC.PL",	0},
 	{0,			"irc.pirc.pl"},
+	
+	{"PonyChat",	0},
+#ifdef USE_OPENSSL
+	{0, 		"irc.ponychat.net/+6697"},
+#endif
+	{0,			"irc.ponychat.net"},
 
 	{"PTNet.org",   0},
 	{0,			"irc.PTNet.org"},
