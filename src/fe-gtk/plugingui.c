@@ -137,9 +137,9 @@ plugingui_load (void)
 
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
 #ifdef WIN32
-							sub_dir, "*.dll;*.lua;*.pl;*.py;*.tcl", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
+							sub_dir, "*.dll;*.lua;*.pl;*.py;*.tcl;*.js", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 #else
-							sub_dir, "*.so;*.lua;*.pl;*.py;*.tcl", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
+							sub_dir, "*.so;*.lua;*.pl;*.py;*.tcl;*.js", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 #endif
 
 	g_free (sub_dir);
