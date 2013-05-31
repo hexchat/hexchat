@@ -934,10 +934,10 @@ Context_compare(ContextObject *a, ContextObject *b, int op)
 	else
 	{
 		PyErr_SetString(PyExc_TypeError, "contexts are either equal or not equal");
-		Py_INCREF(Py_None);
 		ret = Py_None;
 	}
 
+	Py_INCREF(ret);
 	return ret;
 }
 
