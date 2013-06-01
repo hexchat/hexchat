@@ -399,7 +399,7 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	firstRun = 1;
 
 	hexchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, printInfo, helptext, NULL);
-	hexchat_command (ph, "MENU -ishare\\system.png ADD \"Window/Display System Info\" \"SYSINFO\"");
+	hexchat_command (ph, "MENU -ishare\\system.png ADD \"Window/Send System Info\" \"SYSINFO\"");
 
 	hexchat_printf (ph, "%s plugin loaded\n", name);
 

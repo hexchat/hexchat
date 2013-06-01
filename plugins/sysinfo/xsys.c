@@ -867,7 +867,7 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 		hexchat_pluginpref_set_int (ph, "percent", DEFAULT_PERCENT);
 	}
 
-	hexchat_command (ph, "MENU ADD \"Window/Display System Info\" \"SYSINFO\"");
+	hexchat_command (ph, "MENU ADD \"Window/Send System Info\" \"SYSINFO\"");
 	hexchat_printf (ph, "%s plugin loaded\n", name);
 	return 1;
 }
