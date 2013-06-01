@@ -659,7 +659,7 @@ if test "$spell" = "static" ; then
 	PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.0.0, [
 	AC_DEFINE(HAVE_ISO_CODES)
 	AC_DEFINE(USE_LIBSEXY)
-	GUI_CFLAGS="$GUI_CFLAGS -I/usr/include/libxml2"
+	GUI_CFLAGS="$GUI_CFLAGS $LIBXML2_CFLAGS"
 	LIBS="$LIBS -lxml2"
 	], [
 	AC_MSG_ERROR(Cannot find libxml2!)
