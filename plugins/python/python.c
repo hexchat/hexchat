@@ -1142,6 +1142,16 @@ Plugin_GetCurrent()
 	return plugin;
 }
 
+static hexchat_plugin *
+Plugin_GetHandle(PluginObject *plugin)
+{
+	/* return fake handle for pluginpref */
+	if (plugin->gui != NULL)
+		return plugin->gui;
+	else
+		return ph;
+}
+
 static PluginObject *
 Plugin_ByString(char *str)
 {
@@ -1607,21 +1617,24 @@ Module_hexchat_find_context(PyObject *self, PyObject *args, PyObject *kwargs)
 static PyObject *
 Module_hexchat_pluginpref_set(PyObject *self, PyObject *args)
 {
+	PluginObject *plugin = (PluginObject*)Plugin_GetCurrent();
+	hexchat_plugin *prefph = Plugin_GetHandle(plugin);
 	PyObject *result;
 	char *var;
 	PyObject *value;
+		
 	if (!PyArg_ParseTuple(args, "sO:set_pluginpref", &var, &value))
 		return NULL;
 	if (PyLong_Check(value)) {
 		int intvalue = PyLong_AsLong(value);
 		BEGIN_XCHAT_CALLS(NONE);
-		result = PyLong_FromLong(hexchat_pluginpref_set_int(ph, var, intvalue));
+		result = PyLong_FromLong(hexchat_pluginpref_set_int(prefph, var, intvalue));
 		END_XCHAT_CALLS();
 	}
 	else if (PyUnicode_Check(value)) {
 		char *charvalue = PyUnicode_AsUTF8(value);
 		BEGIN_XCHAT_CALLS(NONE);
-		result = PyLong_FromLong(hexchat_pluginpref_set_str(ph, var, charvalue));
+		result = PyLong_FromLong(hexchat_pluginpref_set_str(prefph, var, charvalue));
 		END_XCHAT_CALLS();
 	}
 	else
@@ -1632,6 +1645,8 @@ Module_hexchat_pluginpref_set(PyObject *self, PyObject *args)
 static PyObject *
 Module_hexchat_pluginpref_get(PyObject *self, PyObject *args)
 {
+	PluginObject *plugin = (PluginObject*)Plugin_GetCurrent();
+	hexchat_plugin *prefph = Plugin_GetHandle(plugin);
 	PyObject *ret;
 	char *var;
 	char retstr[512];
@@ -1639,14 +1654,15 @@ Module_hexchat_pluginpref_get(PyObject *self, PyObject *args)
 	int result;
 	if (!PyArg_ParseTuple(args, "s:get_pluginpref", &var))
 		return NULL;
+		
 	// This will always return numbers as integers.
 	BEGIN_XCHAT_CALLS(NONE);
-	result = hexchat_pluginpref_get_str(ph, var, retstr);
+	result = hexchat_pluginpref_get_str(prefph, var, retstr);
 	END_XCHAT_CALLS();
 	if (result) {
 		if (strlen (retstr) <= 12) {
 			BEGIN_XCHAT_CALLS(NONE);
-			retint = hexchat_pluginpref_get_int(ph, var);
+			retint = hexchat_pluginpref_get_int(prefph, var);
 			END_XCHAT_CALLS();
 			if ((retint == 0) && (strcmp(retstr, "0") != 0))
 				ret = PyUnicode_FromString(retstr);
@@ -1656,20 +1672,24 @@ Module_hexchat_pluginpref_get(PyObject *self, PyObject *args)
 			ret = PyUnicode_FromString(retstr);
 	}
 	else
+	{
 		Py_INCREF(Py_None);
 		ret = Py_None;
+	}
 	return ret;
 }
 
 static PyObject *
 Module_hexchat_pluginpref_delete(PyObject *self, PyObject *args)
 {
+	PluginObject *plugin = (PluginObject*)Plugin_GetCurrent();
+	hexchat_plugin *prefph = Plugin_GetHandle(plugin);
 	char *var;
 	int result;
 	if (!PyArg_ParseTuple(args, "s:del_pluginpref", &var))
 		return NULL;
 	BEGIN_XCHAT_CALLS(NONE);
-	result = hexchat_pluginpref_delete(ph, var);
+	result = hexchat_pluginpref_delete(prefph, var);
 	END_XCHAT_CALLS();
 	return PyLong_FromLong(result);
 }
@@ -1677,13 +1697,15 @@ Module_hexchat_pluginpref_delete(PyObject *self, PyObject *args)
 static PyObject *
 Module_hexchat_pluginpref_list(PyObject *self, PyObject *args)
 {
+	PluginObject *plugin = (PluginObject*)Plugin_GetCurrent();
+	hexchat_plugin *prefph = Plugin_GetHandle(plugin);
 	char list[512];
 	char* token;
 	int result;
 	PyObject *pylist;
 	pylist = PyList_New(0);
 	BEGIN_XCHAT_CALLS(NONE);
-	result = hexchat_pluginpref_list(ph, list);
+	result = hexchat_pluginpref_list(prefph, list);
 	END_XCHAT_CALLS();
 	if (result) {
 		token = strtok(list, ",");
