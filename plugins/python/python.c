@@ -1619,7 +1619,7 @@ Module_hexchat_pluginpref_set(PyObject *self, PyObject *args)
 {
 	PluginObject *plugin = (PluginObject*)Plugin_GetCurrent();
 	hexchat_plugin *prefph = Plugin_GetHandle(plugin);
-	PyObject *result;
+	int result;
 	char *var;
 	PyObject *value;
 		
@@ -1628,18 +1628,18 @@ Module_hexchat_pluginpref_set(PyObject *self, PyObject *args)
 	if (PyLong_Check(value)) {
 		int intvalue = PyLong_AsLong(value);
 		BEGIN_XCHAT_CALLS(NONE);
-		result = PyLong_FromLong(hexchat_pluginpref_set_int(prefph, var, intvalue));
+		result = hexchat_pluginpref_set_int(prefph, var, intvalue);
 		END_XCHAT_CALLS();
 	}
 	else if (PyUnicode_Check(value)) {
 		char *charvalue = PyUnicode_AsUTF8(value);
 		BEGIN_XCHAT_CALLS(NONE);
-		result = PyLong_FromLong(hexchat_pluginpref_set_str(prefph, var, charvalue));
+		result = hexchat_pluginpref_set_str(prefph, var, charvalue);
 		END_XCHAT_CALLS();
 	}
 	else
-		result = PyLong_FromLong(0);
-	return result;
+		result = 0;
+	return PyBool_FromLong(result);
 }
 
 static PyObject *
@@ -1691,7 +1691,7 @@ Module_hexchat_pluginpref_delete(PyObject *self, PyObject *args)
 	BEGIN_XCHAT_CALLS(NONE);
 	result = hexchat_pluginpref_delete(prefph, var);
 	END_XCHAT_CALLS();
-	return PyLong_FromLong(result);
+	return PyBool_FromLong(result);
 }
 
 static PyObject *
