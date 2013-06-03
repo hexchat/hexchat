@@ -332,6 +332,15 @@ static const struct defaultserver def[] =
 	{"IRCNet",		0},
 	{0,				"open.ircnet.net"},
 	{0,				"irc.de.ircnet.net"},
+	
+	{"IRCNode", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.ircnode.org/+6697"},
+#endif
+#ifdef USE_IPV6
+	{0,			"ipv6.ircnode.org"},
+#endif
+	{0,                     "irc.ircnode.org"},
 
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
