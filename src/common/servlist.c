@@ -337,9 +337,6 @@ static const struct defaultserver def[] =
 #ifdef USE_OPENSSL
 	{0,			"irc.ircnode.org/+6697"},
 #endif
-#ifdef USE_IPV6
-	{0,			"ipv6.ircnode.org"},
-#endif
 	{0,                     "irc.ircnode.org"},
 
 	{"Irctoo.net",	0},
