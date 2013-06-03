@@ -1066,14 +1066,14 @@ servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 	{
 		servlist_favchan_add (net, channel);
 		servlist_save ();
-		buf = g_strdup_printf (_("Channel %s added to favorites."), channel);
+		buf = g_strdup_printf (_("Channel %s added to autojoin."), channel);
 	}
 	else
 	{
 		fav = servlist_favchan_find (net, channel, NULL);
 		servlist_favchan_remove (net, fav);
 		servlist_save ();
-		buf = g_strdup_printf (_("Channel %s removed from favorites."), channel);
+		buf = g_strdup_printf (_("Channel %s removed from autojoin."), channel);
 	}
 
 	fe_message (buf, FE_MSG_INFO);
@@ -1659,7 +1659,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	notebook = gtk_notebook_new ();
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow2, gtk_label_new ("Servers"));
-	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow4, gtk_label_new ("Favorite channels"));
+	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow4, gtk_label_new ("Autojoin channels"));
 	gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scrolledwindow5, gtk_label_new ("Connect commands"));
 	gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook), GTK_POS_BOTTOM);
 	gtk_box_pack_start (GTK_BOX (hbox1), notebook, TRUE, TRUE, SERVLIST_X_PADDING);

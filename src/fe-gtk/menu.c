@@ -1049,11 +1049,11 @@ menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel)
 
 	if (joinlist_is_in_list (serv, channel))
 	{
-		mg_create_icon_item (_("_Remove from Favorites"), GTK_STOCK_REMOVE, menu, menu_delfav_cb, serv);
+		mg_create_icon_item (_("_Remove from Autojoin"), GTK_STOCK_REMOVE, menu, menu_delfav_cb, serv);
 	}
 	else
 	{
-		mg_create_icon_item (_("_Add to Favorites"), GTK_STOCK_ADD, menu, menu_addfav_cb, serv);
+		mg_create_icon_item (_("_Add to Autojoin"), GTK_STOCK_ADD, menu, menu_addfav_cb, serv);
 	}
 }
 
