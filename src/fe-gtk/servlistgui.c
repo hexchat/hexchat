@@ -549,6 +549,7 @@ servlist_move_item (GtkTreeView *view, GSList *list, gpointer item, int delta)
 	else
 		gtk_tree_path_prev (path);
 	gtk_tree_model_get_iter (store, &iter2, path);
+	gtk_tree_path_free (path);
 	
 	pos = g_slist_index (list, item);
 	if (pos >= 0)
