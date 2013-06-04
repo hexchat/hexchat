@@ -2489,7 +2489,7 @@ load_perform_file (session *sess, char *file)
 static int
 cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char *error, *arg, *file;
+	char *error, *arg, *file, *buf;
 	int len;
 
 	if (!word[2][0])
@@ -2500,8 +2500,10 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		file = expand_homedir (word[3]);
 		if (!load_perform_file (sess, file))
 		{
-			PrintTextf (sess, _("Cannot access %s\n"), file);
+			buf = g_strdup_printf ("%s%c%s", get_xdir(), G_DIR_SEPARATOR, file);
+			PrintTextf (sess, _("Cannot access %s\n"), buf);
 			PrintText (sess, errorstring (errno));
+			g_free (buf);
 		}
 		free (file);
 		return TRUE;
