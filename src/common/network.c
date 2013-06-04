@@ -205,7 +205,7 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 
 	memset (&hints, 0, sizeof (struct addrinfo));
 	hints.ai_family = PF_UNSPEC; /* support ipv6 and ipv4 */
-	hints.ai_flags = AI_CANONNAME;
+	hints.ai_flags = AI_CANONNAME | AI_ADDRCONFIG;
 	hints.ai_socktype = SOCK_STREAM;
 
 	if (port == 0)
