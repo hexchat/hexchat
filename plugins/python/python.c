@@ -1145,10 +1145,15 @@ Plugin_GetCurrent()
 static hexchat_plugin *
 Plugin_GetHandle(PluginObject *plugin)
 {
+	/* This works but the issue is that the script must be ran to get
+	 * the name of it thus upon first use it will use the wrong handler
+	 * work around would be to run a fake script once to get name? */
+#if 0
 	/* return fake handle for pluginpref */
 	if (plugin->gui != NULL)
 		return plugin->gui;
 	else
+#endif
 		return ph;
 }
 
