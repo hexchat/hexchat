@@ -438,9 +438,7 @@ irc_init (session *sess)
 	}
 
 	/* load -e <xdir>/startup.txt */
-	buf = g_build_filename (get_xdir (), "startup.txt", NULL);
-	load_perform_file (sess, buf);
-	g_free (buf);
+	load_perform_file (sess, "startup.txt");
 }
 
 static session *
