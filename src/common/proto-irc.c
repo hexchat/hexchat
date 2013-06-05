@@ -1321,6 +1321,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				{
 					tcp_send_len (serv, "CAP END\r\n", 9);
 				}
+				else if (strncasecmp (word[4], "LIST", 4) == 0)	
+				{
+					EMIT_SIGNAL (XP_TE_CAPACK, sess->server->server_session, word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5], NULL, NULL, 0);
+				}
 
 				return;
 		}
