@@ -65,6 +65,7 @@ static const channel_options chanopt[] =
 	{"text_hidejoinpart", "CONFMODE", S_F(text_hidejoinpart)},
 	{"text_logging", NULL, S_F(text_logging)},
 	{"text_scrollback", NULL, S_F(text_scrollback)},
+	{"text_strip", NULL, S_F(text_strip)},
 };
 
 #undef S_F
@@ -179,6 +180,7 @@ typedef struct
 	guint8 text_hidejoinpart;
 	guint8 text_logging;
 	guint8 text_scrollback;
+	guint8 text_strip;
 
 	char *network;
 	char *channel;

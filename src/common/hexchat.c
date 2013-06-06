@@ -465,6 +465,7 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->text_hidejoinpart = SET_DEFAULT;
 	sess->text_logging = SET_DEFAULT;
 	sess->text_scrollback = SET_DEFAULT;
+	sess->text_strip = SET_DEFAULT;
 
 	sess->lastact_idx = LACT_NONE;
 

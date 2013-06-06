@@ -398,6 +398,7 @@ typedef struct session
 	guint8 text_hidejoinpart;
 	guint8 text_logging;
 	guint8 text_scrollback;
+	guint8 text_strip;
 
 	struct server *server;
 	void *usertree_alpha;			/* pure alphabetical tree */
