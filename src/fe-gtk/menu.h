@@ -24,6 +24,7 @@ GtkWidget *menu_create_main (void *accel_group, int bar, int away, int toplevel,
 void menu_urlmenu (GdkEventButton * event, char *url);
 void menu_chanmenu (session *sess, GdkEventButton * event, char *chan);
 void menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel);
+void menu_addconnectmenu (server *serv, GtkWidget *menu);
 void menu_nickmenu (session *sess, GdkEventButton * event, char *nick, int num_sel);
 void menu_middlemenu (session *sess, GdkEventButton *event);
 void userlist_button_cb (GtkWidget * button, char *cmd);

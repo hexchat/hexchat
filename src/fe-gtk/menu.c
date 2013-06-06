@@ -1058,6 +1058,36 @@ menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel)
 }
 
 static void
+menu_delautoconn_cb (GtkWidget *item, server *serv)
+{
+	((ircnet*)serv->network)->flags &= ~FLAG_AUTO_CONNECT;
+	servlist_save ();
+}
+
+static void
+menu_addautoconn_cb (GtkWidget *item, server *serv)
+{
+	((ircnet*)serv->network)->flags |= FLAG_AUTO_CONNECT;
+	servlist_save ();
+}
+
+void
+menu_addconnectmenu (server *serv, GtkWidget *menu)
+{
+	if (!serv->network)
+		return;
+
+	if (((ircnet*)serv->network)->flags & FLAG_AUTO_CONNECT)
+	{
+		menu_toggle_item (_("_Auto-Connect"), menu, menu_delautoconn_cb, serv, TRUE);
+	}
+	else
+	{
+		menu_toggle_item (_("_Auto-Connect"), menu, menu_addautoconn_cb, serv, FALSE);
+	}
+}
+
+static void
 menu_open_server_list (GtkWidget *wid, gpointer none)
 {
 	fe_serverlist_open (current_sess);

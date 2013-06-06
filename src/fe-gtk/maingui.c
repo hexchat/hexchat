@@ -1611,6 +1611,8 @@ mg_create_tabmenu (session *sess, GdkEventButton *event, chan *ch)
 
 		if (sess->type == SESS_CHANNEL)
 			menu_addfavoritemenu (sess->server, menu, sess->channel);
+		else if (sess->type == SESS_SERVER)
+			menu_addconnectmenu (sess->server, menu);
 	}
 
 	mg_create_icon_item (_("_Detach"), GTK_STOCK_REDO, menu,
