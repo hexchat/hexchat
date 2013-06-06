@@ -1061,24 +1061,18 @@ void
 servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 {
 	favchannel *fav;
-	char *buf;
 
 	if (add)
 	{
 		servlist_favchan_add (net, channel);
 		servlist_save ();
-		buf = g_strdup_printf (_("Channel %s added to autojoin."), channel);
 	}
 	else
 	{
 		fav = servlist_favchan_find (net, channel, NULL);
 		servlist_favchan_remove (net, fav);
 		servlist_save ();
-		buf = g_strdup_printf (_("Channel %s removed from autojoin."), channel);
 	}
-
-	fe_message (buf, FE_MSG_INFO);
-	g_free (buf);
 }
 
 static void
