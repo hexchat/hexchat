@@ -128,6 +128,7 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (newval != -1)	/* set new value */
 			{
 				*(guint8 *)G_STRUCT_MEMBER_P(sess, chanopt[i].offset) = newval;
+				chanopt_changed = TRUE;
 			}
 
 			if (!quiet)	/* print value */
@@ -436,11 +437,9 @@ cont:
 
 	close (fh);
 
-	/* we're quiting, no need to free */
-
-	/*g_slist_free (chanopt_list);
+	g_slist_free (chanopt_list);
 	chanopt_list = NULL;
 
 	chanopt_open = FALSE;
-	chanopt_changed = FALSE;*/
+	chanopt_changed = FALSE;
 }

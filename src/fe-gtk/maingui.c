@@ -32,6 +32,7 @@
 #include "../common/url.h"
 #include "../common/util.h"
 #include "../common/text.h"
+#include "../common/chanopt.h"
 
 #include "fe-gtk.h"
 #include "banlist.h"
@@ -1537,6 +1538,9 @@ mg_set_guint8 (GtkCheckMenuItem *item, guint8 *setting)
 	/* has the logging setting changed? */
 	if (logging != sess->text_logging)
 		log_open_or_close (sess);
+
+	chanopt_save (sess);
+	chanopt_save_all ();
 }
 
 static void

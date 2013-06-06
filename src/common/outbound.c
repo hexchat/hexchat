@@ -575,8 +575,13 @@ cmd_unban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
+	int ret;
+	
 	/* chanopt.c */
-	return chanopt_command (sess, tbuf, word, word_eol);
+	ret = chanopt_command (sess, tbuf, word, word_eol);
+	chanopt_save_all ();
+	
+	return ret;
 }
 
 static int
