@@ -494,6 +494,11 @@ static const struct defaultserver def[] =
 	{"SeilEn.de",	0},
 	{0,			"irc.seilen.de"},
 
+	{"Serenity-IRC",	0},
+	{0,			"irc.serenity-irc.net"},
+	{0,			"eu.serenity-irc.net"},
+	{0,			"us.serenity-irc.net"},
+
 	{"SlashNET",	0},
 	{0,			"irc.slashnet.org"},
 	{0,			"area51.slashnet.org"},
