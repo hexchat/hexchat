@@ -417,33 +417,27 @@ cmd_back (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
-static void
-ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
+static char *
+create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 {
-	int bantype;
+	int type;
 	struct User *user;
 	char *at, *dot, *lastdot;
-	char username[64], fullhost[128], domain[128], *mode, *p2;
-	server *serv = sess->server;
+	char username[64], fullhost[128], domain[128], tbuf[512], *p2;
 
 	user = userlist_find (sess, mask);
 	if (user && user->hostname)  /* it's a nickname, let's find a proper ban mask */
 	{
 		if (deop)
-		{
-			mode = "-o+b ";
 			p2 = user->nick;
-		} else
-		{
-			mode = "+b";
+		else
 			p2 = "";
-		}
 
 		mask = user->hostname;
 
 		at = strchr (mask, '@');	/* FIXME: utf8 */
 		if (!at)
-			return;					  /* can't happen? */
+			return NULL;					  /* can't happen? */
 		*at = 0;
 
 		if (mask[0] == '~' || mask[0] == '+' ||
@@ -474,23 +468,23 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 			safe_strcpy (domain, fullhost, sizeof (domain));
 		}
 
-		if (*bantypestr)
-			bantype = atoi (bantypestr);
+		if (*typestr)
+			type = atoi (typestr);
 		else
-			bantype = prefs.hex_irc_ban_type;
+			type = prefs.hex_irc_ban_type;
 
 		tbuf[0] = 0;
 		if (inet_addr (fullhost) != -1)	/* "fullhost" is really a IP number */
 		{
 			lastdot = strrchr (fullhost, '.');
 			if (!lastdot)
-				return;				  /* can't happen? */
+				return NULL;				  /* can't happen? */
 
 			*lastdot = 0;
 			strcpy (domain, fullhost);
 			*lastdot = '.';
 
-			switch (bantype)
+			switch (type)
 			{
 			case 0:
 				snprintf (tbuf, TBUFSIZE, "%s%s *!*@%s.*", mode, p2, domain);
@@ -510,7 +504,7 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 			}
 		} else
 		{
-			switch (bantype)
+			switch (type)
 			{
 			case 0:
 				snprintf (tbuf, TBUFSIZE, "%s%s *!*@*%s", mode, p2, domain);
@@ -532,9 +526,23 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 
 	} else
 	{
-		snprintf (tbuf, TBUFSIZE, "+b %s", mask);
+		snprintf (tbuf, TBUFSIZE, "%s %s", mode, mask);
 	}
-	serv->p_mode (serv, sess->channel, tbuf);
+	
+	return g_strdup (tbuf);
+}
+
+static void
+ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
+{
+	char *banmask = create_mask (sess, mask, deop ? "-o+b" : "+b", bantypestr, deop);
+	server *serv = sess->server;
+	
+	if (banmask)
+	{
+		serv->p_mode (serv, sess->channel, banmask);
+		g_free (banmask);
+	}
 }
 
 static int
@@ -2973,6 +2981,61 @@ cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_quiet (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	char *quietmask;
+	server *serv = sess->server;
+
+	if (strchr (serv->chanmodes, 'q') == NULL)
+	{
+		PrintText (sess, _("Quiet is not supported by this server."));
+		return TRUE;
+	}
+
+	if (*word[2])
+	{
+		quietmask = create_mask (sess, word[2], "+q", word[3], 0);
+	
+		if (quietmask)
+		{
+			serv->p_mode (serv, sess->channel, quietmask);
+			g_free (quietmask);
+		}
+	}
+	else
+	{
+		serv->p_mode (serv, sess->channel, "+q");	/* quietlist */
+	}
+
+	return TRUE;
+}
+
+static int
+cmd_unquiet (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	/* Allow more than one mask in /unban -- tvk */
+	int i = 2;
+	
+	if (strchr (sess->server->chanmodes, 'q') == NULL)
+	{
+		PrintText (sess, _("Quiet is not supported by this server."));
+		return TRUE;
+	}
+
+	while (1)
+	{
+		if (!*word[i])
+		{
+			if (i == 2)
+				return FALSE;
+			send_channel_modes (sess, tbuf, word, 2, i, '-', 'q', 0);
+			return TRUE;
+		}
+		i++;
+	}
+}
+
+static int
 cmd_quote (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *raw = word_eol[2];
@@ -3822,6 +3885,8 @@ const struct commands xc_cmds[] = {
 	 N_("PING <nick | channel>, CTCP pings nick or channel")},
 	{"QUERY", cmd_query, 0, 0, 1,
 	 N_("QUERY [-nofocus] <nick>, opens up a new privmsg window to someone")},
+	{"QUIET", cmd_quiet, 1, 1, 1,
+	 N_("QUIET <mask> [<quiettype>], quiet everyone matching the mask in the current channel if supported by the server.")},
 	{"QUIT", cmd_quit, 0, 0, 1,
 	 N_("QUIT [<reason>], disconnects from the current server")},
 	{"QUOTE", cmd_quote, 1, 0, 1,
@@ -3870,6 +3935,8 @@ const struct commands xc_cmds[] = {
 	 N_("UNBAN <mask> [<mask>...], unbans the specified masks.")},
 	{"UNIGNORE", cmd_unignore, 0, 0, 1, N_("UNIGNORE <mask> [QUIET]")},
 	{"UNLOAD", cmd_unload, 0, 0, 1, N_("UNLOAD <name>, unloads a plugin or script")},
+	{"UNQUIET", cmd_unquiet, 1, 1, 1,
+	 N_("UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the server.")},
 	{"URL", cmd_url, 0, 0, 1, N_("URL <url>, opens a URL in your browser")},
 	{"USELECT", cmd_uselect, 0, 1, 0,
 	 N_("USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist")},
