@@ -71,7 +71,6 @@
 #include "fe-gtk.h"
 #include "xtext.h"
 #include "fkeys.h"
-#include "gtkutil.h"
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
 
@@ -2196,14 +2195,14 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 	if (str)
 	{
 		if (str[0])
-			gtkutil_copy_to_clipboard (xtext, NULL, str);
+		{
+			gtk_clipboard_set_text (gtk_widget_get_clipboard (xtext, GDK_SELECTION_CLIPBOARD), str, len);
+			
+			gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event ? event->time : GDK_CURRENT_TIME);
+			gtk_selection_owner_set (xtext, GDK_SELECTION_SECONDARY, event ? event->time : GDK_CURRENT_TIME);
+		}
 
 		free (str);
-	}
-
-	if (event)
-	{
-		gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
 	}
 }
 
