@@ -654,7 +654,7 @@ get_default_language (void)
 
 	if (lang_no >= 0)
 	{
-		free(lang);
+		free (lang);
 		return lang_no;
 	}
 
@@ -663,7 +663,7 @@ get_default_language (void)
 
 	lang_no = find_language_number (lang);
 
-	free(lang);
+	free (lang);
 
 	return lang_no >= 0 ? lang_no : find_language_number ("en");
 }
