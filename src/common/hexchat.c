@@ -1017,20 +1017,12 @@ static void
 set_locale (void)
 {
 #ifdef WIN32
-	const char const *langs[]={
-		"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",   /* 0 .. 9   */
-		"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl", /* 10 .. 19 */
-		"de", "el", "gu", "hi", "hu", "id", "it", "ja", "kn", "rw",       /* 20 .. 29 */
-		"ko", "lv", "lt", "mk", "ml", "ms", "nb", "no", "pl", "pt",       /* 30 .. 39 */
-		"pt_BR", "pa", "ru", "sr", "sk", "sl", "es", "sv", "th", "uk",    /* 40 .. 49 */
-		"vi", "wa"                                                        /* 50 .. */
-	};
 	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of hex_gui_lang and trailing \0 */
 
 	strcpy (hexchat_lang, "LC_ALL=");
 
-	if (0 <= prefs.hex_gui_lang && prefs.hex_gui_lang < sizeof(langs)/sizeof(*langs))
-		strcat (hexchat_lang, langs[prefs.hex_gui_lang]);
+	if (0 <= prefs.hex_gui_lang && prefs.hex_gui_lang < LANGUAGES_LENGTH)
+		strcat (hexchat_lang, languages[prefs.hex_gui_lang]);
 	else
 		strcat (hexchat_lang, "en");
 
