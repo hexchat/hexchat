@@ -423,7 +423,7 @@ create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 	int type;
 	struct User *user;
 	char *at, *dot, *lastdot;
-	char username[64], fullhost[128], domain[128], tbuf[512], *p2;
+	char username[64], fullhost[128], domain[128], buf[512], *p2;
 
 	user = userlist_find (sess, mask);
 	if (user && user->hostname)  /* it's a nickname, let's find a proper ban mask */
@@ -473,7 +473,7 @@ create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 		else
 			type = prefs.hex_irc_ban_type;
 
-		tbuf[0] = 0;
+		buf[0] = 0;
 		if (inet_addr (fullhost) != -1)	/* "fullhost" is really a IP number */
 		{
 			lastdot = strrchr (fullhost, '.');
@@ -487,19 +487,19 @@ create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 			switch (type)
 			{
 			case 0:
-				snprintf (tbuf, TBUFSIZE, "%s%s *!*@%s.*", mode, p2, domain);
+				snprintf (buf, sizeof (buf), "%s%s *!*@%s.*", mode, p2, domain);
 				break;
 
 			case 1:
-				snprintf (tbuf, TBUFSIZE, "%s%s *!*@%s", mode, p2, fullhost);
+				snprintf (buf, sizeof (buf), "%s%s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				snprintf (tbuf, TBUFSIZE, "%s%s *!%s@%s.*", mode, p2, username, domain);
+				snprintf (buf, sizeof (buf), "%s%s *!%s@%s.*", mode, p2, username, domain);
 				break;
 
 			case 3:
-				snprintf (tbuf, TBUFSIZE, "%s%s *!%s@%s", mode, p2, username, fullhost);
+				snprintf (buf, sizeof (buf), "%s%s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		} else
@@ -507,29 +507,29 @@ create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 			switch (type)
 			{
 			case 0:
-				snprintf (tbuf, TBUFSIZE, "%s%s *!*@*%s", mode, p2, domain);
+				snprintf (buf, sizeof (buf), "%s%s *!*@*%s", mode, p2, domain);
 				break;
 
 			case 1:
-				snprintf (tbuf, TBUFSIZE, "%s%s *!*@%s", mode, p2, fullhost);
+				snprintf (buf, sizeof (buf), "%s%s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				snprintf (tbuf, TBUFSIZE, "%s%s *!%s@*%s", mode, p2, username, domain);
+				snprintf (buf, sizeof (buf), "%s%s *!%s@*%s", mode, p2, username, domain);
 				break;
 
 			case 3:
-				snprintf (tbuf, TBUFSIZE, "%s%s *!%s@%s", mode, p2, username, fullhost);
+				snprintf (buf, sizeof (buf), "%s%s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		}
 
 	} else
 	{
-		snprintf (tbuf, TBUFSIZE, "%s %s", mode, mask);
+		snprintf (buf, sizeof (buf), "%s %s", mode, mask);
 	}
 	
-	return g_strdup (tbuf);
+	return g_strdup (buf);
 }
 
 static void
