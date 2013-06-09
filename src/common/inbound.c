@@ -1286,7 +1286,7 @@ inbound_foundip (session *sess, char *ip)
 	if (HostAddr)
 	{
 		prefs.dcc_ip = ((struct in_addr *) HostAddr->h_addr)->s_addr;
-		EMIT_SIGNAL (XP_TE_FOUNDIP, sess,
+		EMIT_SIGNAL (XP_TE_FOUNDIP, sess->server->server_session,
 						 inet_ntoa (*((struct in_addr *) HostAddr->h_addr)),
 						 NULL, NULL, NULL, 0);
 	}
