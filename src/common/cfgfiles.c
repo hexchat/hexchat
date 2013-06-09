@@ -41,6 +41,15 @@
 #define DEF_FONT "Monospace 9"
 #define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,MS Gothic,Unifont"
 
+const char const *languages[LANGUAGES_LENGTH] = {
+	"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",   /*  0 ..  9 */
+	"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl", /* 10 .. 19 */
+	"de", "el", "gu", "hi", "hu", "id", "it", "ja", "kn", "rw",       /* 20 .. 29 */
+	"ko", "lv", "lt", "mk", "ml", "ms", "nb", "no", "pl", "pt",       /* 30 .. 39 */
+	"pt_BR", "pa", "ru", "sr", "sk", "sl", "es", "sv", "th", "uk",    /* 40 .. 49 */
+	"vi", "wa"                                                        /* 50 .. */
+};
+
 void
 list_addentry (GSList ** list, char *cmd, char *name)
 {
@@ -605,6 +614,60 @@ convert_with_fallback (const char *str, const char *fallback)
 	return utf;
 }
 
+static int
+find_language_number (const char const *lang)
+{
+	int i;
+
+	for (i = 0; i < LANGUAGES_LENGTH; i++)
+		if (!strcmp (lang, languages[i]))
+			return i;
+
+	return -1;
+}
+
+/* Return the number of the system language if found, or english otherwise.
+ */
+static int
+get_default_language (void)
+{
+	const char *locale;
+	char *lang;
+	char *p;
+	int lang_no;
+
+	/* LC_ALL overrides LANG, so we must check it first */
+	locale = g_getenv ("LC_ALL");
+
+	if (!locale)
+		locale = g_getenv ("LANG") ? g_getenv ("LANG") : "en";
+
+	/* we might end up with something like "en_US.UTF-8".  We will try to 
+	 * search for "en_US"; if it fails we search for "en".
+	 */
+	lang = g_strdup (locale);
+
+	if ((p = strchr (lang, '.')))
+		*p='\0';
+
+	lang_no = find_language_number (lang);
+
+	if (lang_no >= 0)
+	{
+		free (lang);
+		return lang_no;
+	}
+
+	if ((p = strchr (lang, '_')))
+		*p='\0';
+
+	lang_no = find_language_number (lang);
+
+	free (lang);
+
+	return lang_no >= 0 ? lang_no : find_language_number ("en");
+}
+
 void
 load_default_config(void)
 {
@@ -704,7 +767,7 @@ load_default_config(void)
 	prefs.hex_gui_dialog_height = 256;
 	prefs.hex_gui_dialog_width = 500;
 	prefs.hex_gui_lagometer = 1;
-	prefs.hex_gui_lang = 15;
+	prefs.hex_gui_lang = get_default_language();
 	prefs.hex_gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
 	prefs.hex_gui_pane_right_size = 100;
 	prefs.hex_gui_pane_right_size_min = 80;
