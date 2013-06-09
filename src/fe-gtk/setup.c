@@ -217,10 +217,9 @@ static const setting inputbox_settings[] =
 #endif
 
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
-	{ST_TOGGLE, N_("Automatic nick completion (without TAB key)"), P_OFFINTNL(hex_completion_auto),
-					0,0,0},
 	{ST_ENTRY,	N_("Nick completion suffix:"), P_OFFSETNL(hex_completion_suffix),0,0,sizeof prefs.hex_completion_suffix},
 	{ST_MENU,	N_("Nick completion sorted:"), P_OFFINTNL(hex_completion_sort), 0, tabcompmenu, 0},
+	{ST_NUMBER,	N_("Nick completion amount:"), P_OFFINTNL(hex_completion_amount), N_("Threshold of nicks to start listing instead of completing"), 0, 1000},
 
 #if 0	/* obsolete */
 	{ST_HEADER, N_("Input Box Codes"),0,0,0},
