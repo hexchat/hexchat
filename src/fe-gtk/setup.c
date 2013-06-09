@@ -498,6 +498,15 @@ static const setting general_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const char *const bantypemenu[] = 
+{
+	N_("*!*@*.host"),
+	N_("*!*@domain"),
+	N_("*!*user@*.host"),
+	N_("*!*user@domain"),
+	NULL
+};
+
 static const setting advanced_settings[] =
 {
 	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
@@ -522,6 +531,7 @@ static const setting advanced_settings[] =
 	{ST_TOGGLE,	N_("Automatically reconnect to servers on disconnect"), P_OFFINTNL(hex_net_auto_reconnect), 0, 0, 1},
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
 	{ST_NUMBER,	N_("Auto join delay:"), P_OFFINTNL(hex_irc_join_delay), 0, 0, 9999},
+	{ST_MENU,	N_("Ban Type:"), P_OFFINTNL(hex_irc_ban_type), N_("Attempt to use this banmask when banning or quieting. (requires irc_who_join)"), bantypemenu, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
