@@ -24,7 +24,10 @@
 
 #include "hexchat.h"
 
+#define LANGUAGES_LENGTH 52
+
 extern char *xdir;
+extern const char const *languages[LANGUAGES_LENGTH];
 
 char *cfg_get_str (char *cfg, const char *var, char *dest, int dest_len);
 int cfg_get_bool (char *var);
@@ -47,6 +50,7 @@ void list_addentry (GSList ** list, char *cmd, char *name);
 int cmd_set (session *sess, char *tbuf, char *word[], char *word_eol[]);
 int hexchat_open_file (char *file, int flags, int mode, int xof_flags);
 FILE *hexchat_fopen_file (const char *file, const char *mode, int xof_flags);
+
 #define XOF_DOMODE 1
 #define XOF_FULLPATH 2
 
