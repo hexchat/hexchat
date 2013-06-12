@@ -62,6 +62,9 @@
 
 GdkPixmap *channelwin_pix;
 
+#ifdef USE_LIBCANBERRA
+static ca_context *ca_con;
+#endif
 
 #ifdef USE_XLIB
 
@@ -674,11 +677,16 @@ fe_beep (session *sess)
 	}
 #else
 #ifdef USE_LIBCANBERRA
-	ca_context *con;
-	ca_context_create (&con);
-	if (ca_context_play (con, 0,
-					CA_PROP_APPLICATION_NAME, DISPLAY_NAME,
-					CA_PROP_EVENT_ID, "message-new-instant", NULL) != 0)
+	if (ca_con == NULL)
+	{
+		ca_context_create (&ca_con);
+		ca_context_change_props (ca_con,
+										CA_PROP_APPLICATION_ID, "hexchat",
+										CA_PROP_APPLICATION_NAME, DISPLAY_NAME,
+										CA_PROP_APPLICATION_ICON_NAME, "hexchat", NULL);
+	}
+
+	if (ca_context_play (ca_con, 0, CA_PROP_EVENT_ID, "message-new-instant", NULL) != 0)
 #endif
 	gdk_beep ();
 #endif

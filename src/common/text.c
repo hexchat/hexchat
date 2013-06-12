@@ -58,6 +58,9 @@ struct pevt_stage1
 	struct pevt_stage1 *next;
 };
 
+#ifdef USE_LIBCANBERRA
+static ca_context *ca_con;
+#endif
 
 static void mkdir_p (char *filename);
 static char *log_create_filename (char *channame);
@@ -2209,9 +2212,6 @@ sound_play (const char *file, gboolean quiet)
 	char *wavfile;
 #ifndef WIN32
 	char *cmd;
-#ifdef USE_LIBCANBERRA
-	ca_context *con;
-#endif
 #endif
 
 	/* the pevents GUI editor triggers this after removing a soundfile */
@@ -2240,9 +2240,16 @@ sound_play (const char *file, gboolean quiet)
 		PlaySound (wavfile, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
 #else
 #ifdef USE_LIBCANBERRA
-		ca_context_create (&con);
-		/* TODO: Volume setting? */
-		if (ca_context_play (con, 0, CA_PROP_MEDIA_FILENAME, wavfile, NULL) != 0)
+		if (ca_con == NULL)
+		{
+			ca_context_create (&ca_con);
+			ca_context_change_props (ca_con,
+											CA_PROP_APPLICATION_ID, "hexchat",
+											CA_PROP_APPLICATION_NAME, "HexChat",
+											CA_PROP_APPLICATION_ICON_NAME, "hexchat", NULL);
+		}
+
+		if (ca_context_play (ca_con, 0, CA_PROP_MEDIA_FILENAME, wavfile, NULL) != 0)
 #endif
 		{
 			cmd = g_find_program_in_path ("play");
