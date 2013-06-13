@@ -10,5 +10,5 @@ script:
 notifications:
     irc:
         channels: "chat.freenode.net#hexchat-devel"
+        template: "Build #%{build_number} (%{commit}) by %{author}: %{message}"
         on_success: change
-        use_notice: true
