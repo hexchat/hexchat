@@ -1049,11 +1049,11 @@ menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel)
 
 	if (joinlist_is_in_list (serv, channel))
 	{
-		menu_toggle_item (_("_Autojoin"), menu, menu_delfav_cb, serv, TRUE);
+		menu_toggle_item (_("_Autojoin Channel"), menu, menu_delfav_cb, serv, TRUE);
 	}
 	else
 	{
-		menu_toggle_item (_("_Autojoin"), menu, menu_addfav_cb, serv, FALSE);
+		menu_toggle_item (_("_Autojoin Channel"), menu, menu_addfav_cb, serv, FALSE);
 	}
 }
 
