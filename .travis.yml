@@ -7,4 +7,7 @@ script:
     - ./autogen.sh
     - ./configure --enable-textfe
     - make
-
+notifications:
+    irc: "chat.freenode.net#hexchat-devel"
+        on_success: change
+        use_notice: true
