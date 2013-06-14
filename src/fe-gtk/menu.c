@@ -1016,7 +1016,7 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 												 str_copy);
 	}
 
-	menu_addfavoritemenu (sess->server, menu, str_copy);
+	menu_addfavoritemenu (sess->server, menu, str_copy, FALSE);
 
 	menu_add_plugin_items (menu, "\x5$CHAN", str_copy);
 	menu_popup (menu, event, NULL);
@@ -1035,8 +1035,10 @@ menu_addfav_cb (GtkWidget *item, server *serv)
 }
 
 void
-menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel)
+menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel, gboolean istree)
 {
+	char *str;
+	
 	if (!serv->network)
 		return;
 
@@ -1046,14 +1048,19 @@ menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel)
 			free (str_copy);
 		str_copy = strdup (channel);
 	}
+	
+	if (istree)
+		str = _("_Autojoin");
+	else
+		str = _("Autojoin Channel");
 
 	if (joinlist_is_in_list (serv, channel))
 	{
-		menu_toggle_item (_("_Autojoin Channel"), menu, menu_delfav_cb, serv, TRUE);
+		menu_toggle_item (str, menu, menu_delfav_cb, serv, TRUE);
 	}
 	else
 	{
-		menu_toggle_item (_("_Autojoin Channel"), menu, menu_addfav_cb, serv, FALSE);
+		menu_toggle_item (str, menu, menu_addfav_cb, serv, FALSE);
 	}
 }
 

@@ -629,7 +629,7 @@ chanlist_button_cb (GtkTreeView *tree, GdkEventButton *event, server *serv)
 								chanlist_copytopic, serv);
 
 	chan = chanlist_get_selected (serv, FALSE);
-	menu_addfavoritemenu (serv, menu, chan);
+	menu_addfavoritemenu (serv, menu, chan, FALSE);
 	g_free (chan);
 
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
