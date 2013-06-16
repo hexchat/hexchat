@@ -420,8 +420,8 @@ struct
 	const char *path_sep;  /* string that begins the path */
 	int flags;             /* see above (flag macros) */
 } uri[] = {
-	{ "irc",       "/", URI_AUTHORITY | URI_PATH },
-	{ "ircs",      "/", URI_AUTHORITY | URI_PATH },
+	{ "irc",       "/", URI_PATH },
+	{ "ircs",      "/", URI_PATH },
 	{ "rtsp",      "/", URI_AUTHORITY | URI_PATH },
 	{ "feed",      "/", URI_AUTHORITY | URI_PATH },
 	{ "teamspeak", "?", URI_AUTHORITY | URI_PATH },
