@@ -189,9 +189,10 @@ if test "$glib" = no; then
 	AC_MSG_ERROR(Cannot find GLib!)
 fi
 
-COMMON_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
-COMMON_LIBS="$GLIB_LIBS"
-COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0 -lgobject-2.0"
+PKG_CHECK_MODULES([GOBJECT], [gobject-2.0], [], [AC_MSG_ERROR(Cannot find gobject-2.0!)])
+
+COMMON_CFLAGS="$GLIB_CFLAGS $GOBJECT_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
+COMMON_LIBS="$GLIB_LIBS $GOBJECT_LIBS"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************

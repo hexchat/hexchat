@@ -7,4 +7,8 @@ script:
     - ./autogen.sh
     - ./configure --enable-textfe
     - make
-
+notifications:
+    irc:
+        channels: "chat.freenode.net#hexchat-devel"
+        template: "Build #%{build_number} (%{commit}) by %{author}: %{message}"
+        on_success: change
