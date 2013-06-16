@@ -418,7 +418,7 @@ struct
 {
 	const char *scheme;    /* scheme name. e.g. http */
 	const char *path_sep;  /* string that begins the path */
-	int flags;             /* see above (flag definitions) */
+	int flags;             /* see above (flag macros) */
 } uri[] = {
 	{ "irc",       "/", URI_AUTHORITY | URI_PATH },
 	{ "ircs",      "/", URI_AUTHORITY | URI_PATH },
@@ -437,7 +437,6 @@ struct
 	{ "mumble",    "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "ventrilo",  "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "xmpp",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
-	{ "file",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "h323",      ";", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "imap",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "pop",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
@@ -451,7 +450,8 @@ struct
 	{ "bitcoin",   "",  URI_PATH },
 	{ "gtalk",     "",  URI_PATH },
 	{ "steam",     "",  URI_PATH },
-	{ NULL, '\0', 0}
+	{ "file",      "/", URI_PATH },
+	{ NULL, "", 0}
 };
 
 static GRegex *
