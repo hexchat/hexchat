@@ -1008,8 +1008,20 @@ fe_open_url_inner (const char *url)
 static void
 fe_open_url_locale (const char *url)
 {
+	if (url_check_word (url) == WORD_PATH)
+	{
+#ifndef WIN32
+		char *uri;
+		
+		uri = g_strconcat ("file://", url, NULL);
+		fe_open_url_inner (uri);
+		g_free (uri);
+#else
+		fe_open_url_inner (url);
+#endif
+	}
 	/* the http:// part's missing, prepend it, otherwise it won't always work */
-	if (strchr (url, ':') == NULL && url_check_word (url) != WORD_PATH)
+	else if (strchr (url, ':') == NULL)
 	{
 		url = g_strdup_printf ("http://%s", url);
 		fe_open_url_inner (url);
