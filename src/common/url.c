@@ -314,8 +314,8 @@ do_an_re(const char *word,int *start, int *end, int *type)
 	} func_t;
 	func_t funcs[] =
 	{
-		{ re_email, WORD_EMAIL },
 		{ re_url, WORD_URL },
+		{ re_email, WORD_EMAIL },
 		{ re_channel, WORD_CHANNEL },
 		{ re_host, WORD_HOST },
 		{ re_path, WORD_PATH },
@@ -360,7 +360,7 @@ make_re(char *grist, char *type)
 	GRegex *ret;
 	GError *err = NULL;
 
-	ret = g_regex_new (grist, G_REGEX_CASELESS + G_REGEX_OPTIMIZE, 0, &err);
+	ret = g_regex_new (grist, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, 0, &err);
 	g_free (grist);
 	return ret;
 }
@@ -389,60 +389,123 @@ re_host (void)
 #define LPAR "\\("
 #define RPAR "\\)"
 #define NOPARENS "[^() \t]*"
+#define PATH								\
+	"("								\
+	   "(" LPAR NOPARENS RPAR ")"					\
+	   "|"								\
+	   "(" NOPARENS ")"						\
+	")*"	/* Zero or more occurrences of either of these */	\
+	"(?<![.,?!\\]])"	/* Not allowed to end with these */
+#define USERINFO "([-a-z0-9._~%]+@)"
 
-char *prefix[] = {
-	"irc\\.",
-	"ftp\\.",
-	"www\\.",
-	"irc://",
-	"ircs://",
-	"ftp://",
-	"http://",
-	"https://",
-	"file://",
-	"rtsp://",
-	NULL
+/* Flags used to describe URIs (RFC 3986)
+ *
+ * Bellow is an example of what the flags match.
+ *
+ * URI_AUTHORITY - http://example.org:80/foo/bar
+ *                      ^^^^^^^^^^^^^^^^
+ * URI_USERINFO/URI_OPT_USERINFO - http://user@example.org:80/foo/bar
+ *                                        ^^^^^
+ * URI_PATH - http://example.org:80/foo/bar
+ *                                 ^^^^^^^^
+ */
+#define URI_AUTHORITY     (1 << 0)
+#define URI_OPT_USERINFO  (1 << 1)
+#define URI_USERINFO      (1 << 2)
+#define URI_PATH          (1 << 3)
+
+struct
+{
+	const char *scheme;    /* scheme name. e.g. http */
+	const char *path_sep;  /* string that begins the path */
+	int flags;             /* see above (flag definitions) */
+} uri[] = {
+	{ "irc",       "/", URI_AUTHORITY | URI_PATH },
+	{ "ircs",      "/", URI_AUTHORITY | URI_PATH },
+	{ "rtsp",      "/", URI_AUTHORITY | URI_PATH },
+	{ "feed",      "/", URI_AUTHORITY | URI_PATH },
+	{ "teamspeak", "?", URI_AUTHORITY | URI_PATH },
+	{ "ftp",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "sftp",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "ftps",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "http",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "https",     "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "cvs",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "svn",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "git",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "rsync",     "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "mumble",    "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "ventrilo",  "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "xmpp",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "file",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "h323",      ";", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "imap",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "pop",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "nfs",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "smb",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "ssh",       "",  URI_AUTHORITY | URI_OPT_USERINFO },
+	{ "sip",       "",  URI_AUTHORITY | URI_USERINFO },
+	{ "sips",      "",  URI_AUTHORITY | URI_USERINFO },
+	{ "magnet",    "?", URI_PATH },
+	{ "mailto",    "",  URI_PATH },
+	{ "bitcoin",   "",  URI_PATH },
+	{ "gtalk",     "",  URI_PATH },
+	{ "steam",     "",  URI_PATH },
+	{ NULL, '\0', 0}
 };
 
 static GRegex *
 re_url (void)
 {
-	static GRegex *url_ret;
+	static GRegex *url_ret = NULL;
+	GString *grist_gstr;
 	char *grist;
-	char *scheme;
+	int i;
 
 	if (url_ret) return url_ret;
 
-	scheme = g_strjoinv ("|", prefix);
-	grist = g_strdup_printf (
-		"("	/* URL or HOST */
-			"("
-				SCHEME HOST OPT_PORT
-				"("	/* Optional "/path?query_string#fragment_id" */
-					"/"	/* Must start with slash */
-					"("	
-						"(" LPAR NOPARENS RPAR ")"
-						"|"
-						"(" NOPARENS ")"
-					")*"	/* Zero or more occurrences of either of these */
-					"(?<![.,?!\\]])"	/* Not allowed to end with these */
-				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
-			")|("
-				HOST OPT_PORT "/"
-				"("	/* Optional "path?query_string#fragment_id" */
-					"("
-						"(" LPAR NOPARENS RPAR ")"
-						"|"
-						"(" NOPARENS ")"
-					")*"	/* Zero or more occurrences of either of these */
-					"(?<![.,?!\\]])"	/* Not allowed to end with these */
-				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
-			")"
-		")"
-		, scheme
-	);
+	grist_gstr = g_string_new (NULL);
+
+	/* Add regex "host/path", representing a "schemeless" url */
+	g_string_append (grist_gstr, "(" HOST OPT_PORT "/" "(" PATH ")?" ")");
+
+	for (i = 0; uri[i].scheme; i++)
+	{
+		g_string_append (grist_gstr, "|(");
+		g_string_append_printf (grist_gstr, "%s:", uri[i].scheme);
+
+		if (uri[i].flags & URI_AUTHORITY)
+			g_string_append (grist_gstr, "//");
+
+		if (uri[i].flags & URI_USERINFO)
+			g_string_append (grist_gstr, USERINFO);
+		else if (uri[i].flags & URI_OPT_USERINFO)
+			g_string_append (grist_gstr, USERINFO "?");
+
+		if (uri[i].flags & URI_AUTHORITY)
+			g_string_append (grist_gstr, HOST OPT_PORT);
+		
+		if (uri[i].flags & URI_PATH)
+		{
+			char *sep_escaped;
+			
+			sep_escaped = g_regex_escape_string (uri[i].path_sep, 
+							     strlen(uri[i].path_sep));
+
+			g_string_append_printf(grist_gstr, "(" "%s" PATH ")?",
+					       sep_escaped);
+
+			g_free(sep_escaped);
+		}
+
+
+		g_string_append(grist_gstr, ")");
+	}
+
+	grist = g_string_free (grist_gstr, FALSE);
+
 	url_ret = make_re (grist, "re_url");
-	g_free (scheme);
+
 	return url_ret;
 }
 
@@ -525,10 +588,10 @@ re_channel (void)
 /*	PATH description --- */
 #ifdef WIN32
 /* Windows path can be .\ ..\ or C: D: etc */
-#define PATH "^(\\.{1,2}\\\\|[a-z]:).*"
+#define FS_PATH "^(\\.{1,2}\\\\|[a-z]:).*"
 #else
 /* Linux path can be / or ./ or ../ etc */
-#define PATH "^(/|\\./|\\.\\./).*"
+#define FS_PATH "^(/|\\./|\\.\\./).*"
 #endif
 
 static GRegex *
@@ -540,8 +603,8 @@ re_path (void)
 	if (path_ret) return path_ret;
 
 	grist = g_strdup_printf (
-		"("	/* PATH */
-			PATH
+		"("	/* FS_PATH */
+			FS_PATH
 		")"
 	);
 	path_ret = make_re (grist, "re_path");
