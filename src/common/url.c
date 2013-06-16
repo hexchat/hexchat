@@ -396,7 +396,7 @@ re_host (void)
 	   "(" NOPARENS ")"						\
 	")*"	/* Zero or more occurrences of either of these */	\
 	"(?<![.,?!\\]])"	/* Not allowed to end with these */
-#define USERINFO "([-a-z0-9._~%]+@)"
+#define USERINFO "([-a-z0-9._~%]+(:[-a-z0-9._~%]*)?@)"
 
 /* Flags used to describe URIs (RFC 3986)
  *
