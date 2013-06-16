@@ -1780,6 +1780,12 @@ gtk_xtext_scrolldown_timeout (GtkXText * xtext)
 	GtkAdjustment *adj = xtext->adj;
 	textentry *ent;
 
+	if (buf->last_ent_end == NULL)	/* If context has changed */
+	{
+		xtext->scroll_tag = 0;
+		return 0;
+	}
+
 	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
 	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, 0, &win_height);
 
@@ -1820,6 +1826,12 @@ gtk_xtext_scrollup_timeout (GtkXText * xtext)
 	xtext_buffer *buf = xtext->buffer;
 	GtkAdjustment *adj = xtext->adj;
 	textentry *ent;
+
+	if (buf->last_ent_start == NULL)	/* If context has changed */
+	{
+		xtext->scroll_tag = 0;
+		return 0;
+	}
 
 	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
 
