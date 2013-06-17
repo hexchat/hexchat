@@ -306,7 +306,7 @@ url_last (int *lstart, int *lend)
 }
 
 static int
-do_an_re(const char *word,int *start, int *end, int *type)
+do_an_re(const char *word, int *start, int *end, int *type)
 {
 	typedef struct func_s {
 		GRegex *(*fn)(void);
@@ -354,6 +354,8 @@ do_an_re(const char *word,int *start, int *end, int *type)
 #define IPV6ADDR "((" IPV6GROUP "(:" IPV6GROUP "){7})"	\
 	         "|(" IPV6GROUP "(:" IPV6GROUP ")*:(:" IPV6GROUP ")+))" /* with :: compression */
 #define HOST "(" DOMAIN TLD "|" IPADDR "|" IPV6ADDR ")"
+/* In urls the IPv6 must be enclosed in square brackets */
+#define HOST_URL "(" DOMAIN TLD "|" IPADDR "|" "\\[" IPV6ADDR "\\]" ")"
 #define OPT_PORT "(:[1-9][0-9]{0,4})?"
 
 GRegex *
@@ -453,7 +455,7 @@ struct
 	{ "gtalk",     "",  URI_PATH },
 	{ "steam",     "",  URI_PATH },
 	{ "file",      "/", URI_PATH },
-	{ NULL, "", 0}
+	{ NULL,        "",  0}
 };
 
 static GRegex *
@@ -469,7 +471,7 @@ re_url (void)
 	grist_gstr = g_string_new (NULL);
 
 	/* Add regex "host/path", representing a "schemeless" url */
-	g_string_append (grist_gstr, "(" HOST OPT_PORT "/" "(" PATH ")?" ")");
+	g_string_append (grist_gstr, "(" HOST_URL OPT_PORT "/" "(" PATH ")?" ")");
 
 	for (i = 0; uri[i].scheme; i++)
 	{
@@ -485,7 +487,7 @@ re_url (void)
 			g_string_append (grist_gstr, USERINFO "?");
 
 		if (uri[i].flags & URI_AUTHORITY)
-			g_string_append (grist_gstr, HOST OPT_PORT);
+			g_string_append (grist_gstr, HOST_URL OPT_PORT);
 		
 		if (uri[i].flags & URI_PATH)
 		{
@@ -500,7 +502,6 @@ re_url (void)
 			g_free(sep_escaped);
 		}
 
-
 		g_string_append(grist_gstr, ")");
 	}
 
@@ -512,7 +513,7 @@ re_url (void)
 }
 
 /*	EMAIL description --- */
-#define EMAIL "[a-z][-_a-z0-9]+@" "(" HOST ")"
+#define EMAIL "[a-z][-_a-z0-9]+@" "(" HOST_URL ")"
 
 static GRegex *
 re_email (void)
