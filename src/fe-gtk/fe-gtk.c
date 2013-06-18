@@ -1008,8 +1008,22 @@ fe_open_url_inner (const char *url)
 static void
 fe_open_url_locale (const char *url)
 {
+	int url_type = url_check_word (url);
+
+	/* IPv6 addr. Add http:// */
+	if (url_type == WORD_HOST6)
+	{
+		/* IPv6 addrs in urls should be enclosed in [ ] */
+		if (*url != '[')
+			url = g_strdup_printf ("http://[%s]", url);
+		else
+			url = g_strdup_printf ("http://%s", url);
+
+		fe_open_url_inner (url);
+		g_free ((char *)url);
+	}
 	/* the http:// part's missing, prepend it, otherwise it won't always work */
-	if (strchr (url, ':') == NULL && url_check_word (url) != WORD_PATH)
+	else if (strchr (url, ':') == NULL && url_type != WORD_PATH)
 	{
 		url = g_strdup_printf ("http://%s", url);
 		fe_open_url_inner (url);
