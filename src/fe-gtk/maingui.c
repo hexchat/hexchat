@@ -2267,6 +2267,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 			switch (word_type)
 			{
 			case WORD_URL:
+			case WORD_HOST6:
 			case WORD_HOST:
 				word[end] = 0;
 				fe_open_url (word + start);
@@ -2293,6 +2294,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 		menu_middlemenu (sess, even);
 		break;
 	case WORD_URL:
+	case WORD_HOST6:
 	case WORD_HOST:
 		word[end] = 0;
 		word += start;

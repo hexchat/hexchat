@@ -26,7 +26,8 @@ extern void *url_tree;
 #define WORD_NICK    2
 #define WORD_CHANNEL 3
 #define WORD_HOST    4
-#define WORD_EMAIL   5
+#define WORD_HOST6   5
+#define WORD_EMAIL   6
 /* anything >0 will be displayed as a link by gtk_xtext_motion_notify() */
 #define WORD_DIALOG  -1
 #define WORD_PATH    -2
