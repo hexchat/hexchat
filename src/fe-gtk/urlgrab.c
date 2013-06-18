@@ -49,13 +49,22 @@ url_treeview_url_clicked_cb (GtkWidget *view, GdkEventButton *event,
 {
 	GtkTreeIter iter;
 	gchar *url;
+	GtkTreeSelection *sel;
+	GtkTreePath *path;
+	GtkTreeView *tree = GTK_TREE_VIEW (view);
 
-	if (!event ||
-	    !gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
+   if (!event || !gtk_tree_view_get_path_at_pos (tree, event->x, event->y, &path, 0, 0, 0))
+      return FALSE;
+
+   /* select what they right-clicked on */
+   sel = gtk_tree_view_get_selection (tree); 
+   gtk_tree_selection_unselect_all (sel);
+   gtk_tree_selection_select_path (sel, path);
+   gtk_tree_path_free (path); 
+
+	if (!gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
 	                                    URL_COLUMN, &url, -1))
-	{
 		return FALSE;
-	}
 	
 	switch (event->button)
 	{
