@@ -460,6 +460,7 @@ struct
 	{ "cvs",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "svn",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "git",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "bzr",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "rsync",     "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "mumble",    "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "ventrilo",  "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
@@ -478,6 +479,9 @@ struct
 	{ "gtalk",     "",  URI_PATH },
 	{ "steam",     "",  URI_PATH },
 	{ "file",      "/", URI_PATH },
+	{ "callto",    "",  URI_PATH },
+	{ "skype",     "",  URI_PATH },
+	{ "geo",       "",  URI_PATH },
 	{ NULL,        "",  0}
 };
 
