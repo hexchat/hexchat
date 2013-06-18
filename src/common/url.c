@@ -363,7 +363,7 @@ do_an_re(const char *word, int *start, int *end, int *type)
 #define OPT_PORT "(" PORT ")?"
 
 GRegex *
-make_re(char *grist, char *type)
+make_re (char *grist)
 {
 	GRegex *ret;
 	GError *err = NULL;
@@ -388,7 +388,7 @@ re_host (void)
 			"(" HOST_URL PORT ")|(" HOST ")"
 		")"
 	);
-	host_ret = make_re (grist, "re_host");
+	host_ret = make_re (grist);
 	return host_ret;
 }
 
@@ -406,7 +406,7 @@ re_host6 (void)
 		")"
 	);
 
-	host6_ret = make_re (grist, "re_host6");
+	host6_ret = make_re (grist);
 
 	return host6_ret;
 }
@@ -530,7 +530,7 @@ re_url (void)
 
 	grist = g_string_free (grist_gstr, FALSE);
 
-	url_ret = make_re (grist, "re_url");
+	url_ret = make_re (grist);
 
 	return url_ret;
 }
@@ -551,7 +551,7 @@ re_email (void)
 			EMAIL
 		")"
 	);
-	email_ret = make_re (grist, "re_email");
+	email_ret = make_re (grist);
 	return email_ret;
 }
 
@@ -587,7 +587,7 @@ re_nick (void)
 			NICK
 		")"
 	);
-	nick_ret = make_re (grist, "re_nick");
+	nick_ret = make_re (grist);
 	return nick_ret;
 }
 
@@ -607,7 +607,7 @@ re_channel (void)
 			CHANNEL
 		")"
 	);
-	channel_ret = make_re (grist, "re_channel");
+	channel_ret = make_re (grist);
 	return channel_ret;
 }
 
@@ -633,6 +633,6 @@ re_path (void)
 			FS_PATH
 		")"
 	);
-	path_ret = make_re (grist, "re_path");
+	path_ret = make_re (grist);
 	return path_ret;
 }
