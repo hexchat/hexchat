@@ -35,6 +35,7 @@ GTree *url_btree = NULL;
 static int do_an_re (const char *word, int *start, int *end, int *type);
 static GRegex *re_url (void);
 static GRegex *re_host (void);
+static GRegex *re_host6 (void);
 static GRegex *re_email (void);
 static GRegex *re_nick (void);
 static GRegex *re_channel (void);
@@ -222,6 +223,7 @@ url_check_word (const char *word)
 				/* Fall through */
 			case WORD_URL:
 			case WORD_HOST:
+			case WORD_HOST6:
 			case WORD_CHANNEL:
 			case WORD_PATH:
 				return lasttype;
@@ -317,6 +319,7 @@ do_an_re(const char *word, int *start, int *end, int *type)
 		{ re_url, WORD_URL },
 		{ re_email, WORD_EMAIL },
 		{ re_channel, WORD_CHANNEL },
+		{ re_host6, WORD_HOST6 },
 		{ re_host, WORD_HOST },
 		{ re_path, WORD_PATH },
 		{ re_nick, WORD_NICK }
@@ -356,7 +359,8 @@ do_an_re(const char *word, int *start, int *end, int *type)
 #define HOST "(" DOMAIN TLD "|" IPADDR "|" IPV6ADDR ")"
 /* In urls the IPv6 must be enclosed in square brackets */
 #define HOST_URL "(" DOMAIN TLD "|" IPADDR "|" "\\[" IPV6ADDR "\\]" ")"
-#define OPT_PORT "(:[1-9][0-9]{0,4})?"
+#define PORT "(:[1-9][0-9]{0,4})"
+#define OPT_PORT "(" PORT ")?"
 
 GRegex *
 make_re(char *grist, char *type)
@@ -380,12 +384,31 @@ re_host (void)
 	if (host_ret) return host_ret;
 
 	grist = g_strdup_printf (
-		"("	/* HOST */
-			HOST OPT_PORT
+		"("
+			"(" HOST_URL PORT ")|(" HOST ")"
 		")"
 	);
 	host_ret = make_re (grist, "re_host");
 	return host_ret;
+}
+
+static GRegex *
+re_host6 (void)
+{
+	static GRegex *host6_ret;
+	char *grist;
+
+	if (host6_ret) return host6_ret;
+
+	grist = g_strdup_printf (
+		"("
+			"(" IPV6ADDR ")|(" "\\[" IPV6ADDR "\\]" PORT ")"
+		")"
+	);
+
+	host6_ret = make_re (grist, "re_host6");
+
+	return host6_ret;
 }
 
 /*	URL description --- */
@@ -524,7 +547,7 @@ re_email (void)
 	if (email_ret) return email_ret;
 
 	grist = g_strdup_printf (
-		"("	/* EMAIL */
+		"("
 			EMAIL
 		")"
 	);
@@ -560,7 +583,7 @@ re_nick (void)
 	if (nick_ret) return nick_ret;
 
 	grist = g_strdup_printf (
-		"("	/* NICK */
+		"("
 			NICK
 		")"
 	);
@@ -580,7 +603,7 @@ re_channel (void)
 	if (channel_ret) return channel_ret;
 
 	grist = g_strdup_printf (
-		"("	/* CHANNEL */
+		"("
 			CHANNEL
 		")"
 	);
@@ -606,7 +629,7 @@ re_path (void)
 	if (path_ret) return path_ret;
 
 	grist = g_strdup_printf (
-		"("	/* FS_PATH */
+		"("
 			FS_PATH
 		")"
 	);
