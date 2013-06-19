@@ -35,6 +35,7 @@ GTree *url_btree = NULL;
 static int do_an_re (const char *word, int *start, int *end, int *type);
 static GRegex *re_url (void);
 static GRegex *re_host (void);
+static GRegex *re_host6 (void);
 static GRegex *re_email (void);
 static GRegex *re_nick (void);
 static GRegex *re_channel (void);
@@ -222,6 +223,7 @@ url_check_word (const char *word)
 				/* Fall through */
 			case WORD_URL:
 			case WORD_HOST:
+			case WORD_HOST6:
 			case WORD_CHANNEL:
 			case WORD_PATH:
 				return lasttype;
@@ -306,7 +308,7 @@ url_last (int *lstart, int *lend)
 }
 
 static int
-do_an_re(const char *word,int *start, int *end, int *type)
+do_an_re(const char *word, int *start, int *end, int *type)
 {
 	typedef struct func_s {
 		GRegex *(*fn)(void);
@@ -314,9 +316,10 @@ do_an_re(const char *word,int *start, int *end, int *type)
 	} func_t;
 	func_t funcs[] =
 	{
-		{ re_email, WORD_EMAIL },
 		{ re_url, WORD_URL },
+		{ re_email, WORD_EMAIL },
 		{ re_channel, WORD_CHANNEL },
+		{ re_host6, WORD_HOST6 },
 		{ re_host, WORD_HOST },
 		{ re_path, WORD_PATH },
 		{ re_nick, WORD_NICK }
@@ -349,17 +352,23 @@ do_an_re(const char *word,int *start, int *end, int *type)
 /*	Miscellaneous description --- */
 #define DOMAIN "[a-z0-9][-a-z0-9]*(\\.[-a-z0-9]+)*\\."
 #define TLD "[a-z][-a-z0-9]*[a-z]"
-#define IPADDR "[0-9]+(\\.[0-9]+){3}"
-#define HOST "(" DOMAIN TLD "|" IPADDR ")"
-#define OPT_PORT "(:[1-9][0-9]{0,4})?"
+#define IPADDR "[0-9]{1,3}(\\.[0-9]{1,3}){3}"
+#define IPV6GROUP "([0-9a-f]{0,4})"
+#define IPV6ADDR "((" IPV6GROUP "(:" IPV6GROUP "){7})"	\
+	         "|(" IPV6GROUP "(:" IPV6GROUP ")*:(:" IPV6GROUP ")+))" /* with :: compression */
+#define HOST "(" DOMAIN TLD "|" IPADDR "|" IPV6ADDR ")"
+/* In urls the IPv6 must be enclosed in square brackets */
+#define HOST_URL "(" DOMAIN TLD "|" IPADDR "|" "\\[" IPV6ADDR "\\]" ")"
+#define PORT "(:[1-9][0-9]{0,4})"
+#define OPT_PORT "(" PORT ")?"
 
 GRegex *
-make_re(char *grist, char *type)
+make_re (char *grist)
 {
 	GRegex *ret;
 	GError *err = NULL;
 
-	ret = g_regex_new (grist, G_REGEX_CASELESS + G_REGEX_OPTIMIZE, 0, &err);
+	ret = g_regex_new (grist, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, 0, &err);
 	g_free (grist);
 	return ret;
 }
@@ -375,12 +384,31 @@ re_host (void)
 	if (host_ret) return host_ret;
 
 	grist = g_strdup_printf (
-		"("	/* HOST */
-			HOST OPT_PORT
+		"("
+			"(" HOST_URL PORT ")|(" HOST ")"
 		")"
 	);
-	host_ret = make_re (grist, "re_host");
+	host_ret = make_re (grist);
 	return host_ret;
+}
+
+static GRegex *
+re_host6 (void)
+{
+	static GRegex *host6_ret;
+	char *grist;
+
+	if (host6_ret) return host6_ret;
+
+	grist = g_strdup_printf (
+		"("
+			"(" IPV6ADDR ")|(" "\\[" IPV6ADDR "\\]" PORT ")"
+		")"
+	);
+
+	host6_ret = make_re (grist);
+
+	return host6_ret;
 }
 
 /*	URL description --- */
@@ -388,65 +416,131 @@ re_host (void)
 #define LPAR "\\("
 #define RPAR "\\)"
 #define NOPARENS "[^() \t]*"
+#define PATH								\
+	"("								\
+	   "(" LPAR NOPARENS RPAR ")"					\
+	   "|"								\
+	   "(" NOPARENS ")"						\
+	")*"	/* Zero or more occurrences of either of these */	\
+	"(?<![.,?!\\]])"	/* Not allowed to end with these */
+#define USERINFO "([-a-z0-9._~%]+(:[-a-z0-9._~%]*)?@)"
 
-char *prefix[] = {
-	"irc\\.",
-	"ftp\\.",
-	"www\\.",
-	"irc://",
-	"ircs://",
-	"ftp://",
-	"http://",
-	"https://",
-	"file://",
-	"rtsp://",
-	NULL
+/* Flags used to describe URIs (RFC 3986)
+ *
+ * Bellow is an example of what the flags match.
+ *
+ * URI_AUTHORITY - http://example.org:80/foo/bar
+ *                      ^^^^^^^^^^^^^^^^
+ * URI_USERINFO/URI_OPT_USERINFO - http://user@example.org:80/foo/bar
+ *                                        ^^^^^
+ * URI_PATH - http://example.org:80/foo/bar
+ *                                 ^^^^^^^^
+ */
+#define URI_AUTHORITY     (1 << 0)
+#define URI_OPT_USERINFO  (1 << 1)
+#define URI_USERINFO      (1 << 2)
+#define URI_PATH          (1 << 3)
+
+struct
+{
+	const char *scheme;    /* scheme name. e.g. http */
+	const char *path_sep;  /* string that begins the path */
+	int flags;             /* see above (flag macros) */
+} uri[] = {
+	{ "irc",       "/", URI_PATH },
+	{ "ircs",      "/", URI_PATH },
+	{ "rtsp",      "/", URI_AUTHORITY | URI_PATH },
+	{ "feed",      "/", URI_AUTHORITY | URI_PATH },
+	{ "teamspeak", "?", URI_AUTHORITY | URI_PATH },
+	{ "ftp",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "sftp",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "ftps",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "http",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "https",     "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "cvs",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "svn",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "git",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "bzr",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "rsync",     "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "mumble",    "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "ventrilo",  "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "xmpp",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "h323",      ";", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "imap",      "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "pop",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "nfs",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "smb",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "ssh",       "",  URI_AUTHORITY | URI_OPT_USERINFO },
+	{ "sip",       "",  URI_AUTHORITY | URI_USERINFO },
+	{ "sips",      "",  URI_AUTHORITY | URI_USERINFO },
+	{ "magnet",    "?", URI_PATH },
+	{ "mailto",    "",  URI_PATH },
+	{ "bitcoin",   "",  URI_PATH },
+	{ "gtalk",     "",  URI_PATH },
+	{ "steam",     "",  URI_PATH },
+	{ "file",      "/", URI_PATH },
+	{ "callto",    "",  URI_PATH },
+	{ "skype",     "",  URI_PATH },
+	{ "geo",       "",  URI_PATH },
+	{ NULL,        "",  0}
 };
 
 static GRegex *
 re_url (void)
 {
-	static GRegex *url_ret;
+	static GRegex *url_ret = NULL;
+	GString *grist_gstr;
 	char *grist;
-	char *scheme;
+	int i;
 
 	if (url_ret) return url_ret;
 
-	scheme = g_strjoinv ("|", prefix);
-	grist = g_strdup_printf (
-		"("	/* URL or HOST */
-			"("
-				SCHEME HOST OPT_PORT
-				"("	/* Optional "/path?query_string#fragment_id" */
-					"/"	/* Must start with slash */
-					"("	
-						"(" LPAR NOPARENS RPAR ")"
-						"|"
-						"(" NOPARENS ")"
-					")*"	/* Zero or more occurrences of either of these */
-					"(?<![.,?!\\]])"	/* Not allowed to end with these */
-				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
-			")|("
-				HOST OPT_PORT "/"
-				"("	/* Optional "path?query_string#fragment_id" */
-					"("
-						"(" LPAR NOPARENS RPAR ")"
-						"|"
-						"(" NOPARENS ")"
-					")*"	/* Zero or more occurrences of either of these */
-					"(?<![.,?!\\]])"	/* Not allowed to end with these */
-				")?"	/* Zero or one of this /path?query_string#fragment_id thing */
-			")"
-		")"
-		, scheme
-	);
-	url_ret = make_re (grist, "re_url");
-	g_free (scheme);
+	grist_gstr = g_string_new (NULL);
+
+	/* Add regex "host/path", representing a "schemeless" url */
+	g_string_append (grist_gstr, "(" HOST_URL OPT_PORT "/" "(" PATH ")?" ")");
+
+	for (i = 0; uri[i].scheme; i++)
+	{
+		g_string_append (grist_gstr, "|(");
+		g_string_append_printf (grist_gstr, "%s:", uri[i].scheme);
+
+		if (uri[i].flags & URI_AUTHORITY)
+			g_string_append (grist_gstr, "//");
+
+		if (uri[i].flags & URI_USERINFO)
+			g_string_append (grist_gstr, USERINFO);
+		else if (uri[i].flags & URI_OPT_USERINFO)
+			g_string_append (grist_gstr, USERINFO "?");
+
+		if (uri[i].flags & URI_AUTHORITY)
+			g_string_append (grist_gstr, HOST_URL OPT_PORT);
+		
+		if (uri[i].flags & URI_PATH)
+		{
+			char *sep_escaped;
+			
+			sep_escaped = g_regex_escape_string (uri[i].path_sep, 
+							     strlen(uri[i].path_sep));
+
+			g_string_append_printf(grist_gstr, "(" "%s" PATH ")?",
+					       sep_escaped);
+
+			g_free(sep_escaped);
+		}
+
+		g_string_append(grist_gstr, ")");
+	}
+
+	grist = g_string_free (grist_gstr, FALSE);
+
+	url_ret = make_re (grist);
+
 	return url_ret;
 }
 
 /*	EMAIL description --- */
-#define EMAIL "[a-z][-_a-z0-9]+@" "(" HOST ")"
+#define EMAIL "[a-z][-_a-z0-9]+@" "(" HOST_URL ")"
 
 static GRegex *
 re_email (void)
@@ -457,11 +551,11 @@ re_email (void)
 	if (email_ret) return email_ret;
 
 	grist = g_strdup_printf (
-		"("	/* EMAIL */
+		"("
 			EMAIL
 		")"
 	);
-	email_ret = make_re (grist, "re_email");
+	email_ret = make_re (grist);
 	return email_ret;
 }
 
@@ -493,11 +587,11 @@ re_nick (void)
 	if (nick_ret) return nick_ret;
 
 	grist = g_strdup_printf (
-		"("	/* NICK */
+		"("
 			NICK
 		")"
 	);
-	nick_ret = make_re (grist, "re_nick");
+	nick_ret = make_re (grist);
 	return nick_ret;
 }
 
@@ -513,21 +607,21 @@ re_channel (void)
 	if (channel_ret) return channel_ret;
 
 	grist = g_strdup_printf (
-		"("	/* CHANNEL */
+		"("
 			CHANNEL
 		")"
 	);
-	channel_ret = make_re (grist, "re_channel");
+	channel_ret = make_re (grist);
 	return channel_ret;
 }
 
 /*	PATH description --- */
 #ifdef WIN32
 /* Windows path can be .\ ..\ or C: D: etc */
-#define PATH "^(\\.{1,2}\\\\|[a-z]:).*"
+#define FS_PATH "^(\\.{1,2}\\\\|[a-z]:).*"
 #else
 /* Linux path can be / or ./ or ../ etc */
-#define PATH "^(/|\\./|\\.\\./).*"
+#define FS_PATH "^(/|\\./|\\.\\./).*"
 #endif
 
 static GRegex *
@@ -539,10 +633,10 @@ re_path (void)
 	if (path_ret) return path_ret;
 
 	grist = g_strdup_printf (
-		"("	/* PATH */
-			PATH
+		"("
+			FS_PATH
 		")"
 	);
-	path_ret = make_re (grist, "re_path");
+	path_ret = make_re (grist);
 	return path_ret;
 }
