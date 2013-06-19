@@ -483,6 +483,8 @@ struct
 	{ "skype",     "",  URI_PATH },
 	{ "geo",       "",  URI_PATH },
 	{ "spotify",   "",  URI_PATH },
+	{ "lastfm",    "/", URI_PATH },
+	{ "xfire",     "",  URI_PATH },
 	{ NULL,        "",  0}
 };
 
