@@ -482,6 +482,7 @@ struct
 	{ "callto",    "",  URI_PATH },
 	{ "skype",     "",  URI_PATH },
 	{ "geo",       "",  URI_PATH },
+	{ "spotify",   "",  URI_PATH },
 	{ NULL,        "",  0}
 };
 
