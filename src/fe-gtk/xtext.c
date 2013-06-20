@@ -170,11 +170,11 @@ static int gtk_xtext_find_subline (GtkXText *xtext, textentry *ent, int line);
 /* static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen); */
 /* For use by gtk_xtext_strip_color() and its callers -- */
 typedef union offlen_u {
-   struct offlen_s {
-      guint16  off;
-      guint16  len;
-   } o;
-   guint32 u;
+	struct offlen_s {
+		guint16  off;
+		guint16  len;
+	} o;
+	guint32 u;
 } offlen_t;
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
@@ -196,14 +196,14 @@ static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk
 static char *
 nocasestrstr (const char *s, const char *tofind)
 {
-   register const size_t len = strlen (tofind);
+	register const size_t len = strlen (tofind);
 
-   if (len == 0)
-     return (char *)s;
-   while (toupper(*s) != toupper(*tofind) || g_ascii_strncasecmp (s, tofind, len))
-     if (*s++ == '\0')
-       return (char *)NULL;
-   return (char *)s;   
+	if (len == 0)
+		return (char *)s;
+	while (toupper(*s) != toupper(*tofind) || g_ascii_strncasecmp (s, tofind, len))
+		if (*s++ == '\0')
+			return (char *)NULL;
+	return (char *)s;
 }
 
 #endif
