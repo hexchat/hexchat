@@ -158,6 +158,8 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 	struct User *user;
 	char idtext[64];
 	gboolean nodiag = FALSE;
+	message_tags_data tags_data_ = MESSAGE_TAGS_DATA_INIT; /* TODO: this will be an argument */
+	const message_tags_data const *tags_data = &tags_data_;
 
 	sess = find_dialog (serv, from);
 
@@ -186,7 +188,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 			}
 			set_topic (sess, ip, ip);
 		}
-		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE, id);
+		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE, id, tags_data);
 		return;
 	}
 
@@ -410,7 +412,9 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int
 }
 
 void
-inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text, char fromme, int id)
+inbound_chanmsg (server *serv, session *sess, char *chan, char *from, 
+		 char *text, char fromme, int id, 
+		 const message_tags_data const *tags_data)
 {
 	struct User *user;
 	int hilight = FALSE;
@@ -462,11 +466,14 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 		hilight = TRUE;
 
 	if (sess->type == SESS_DIALOG)
-		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_DPRIVMSG, sess, from, text, 
+				       idtext, NULL, 0, tags_data->timestamp);
 	else if (hilight)
-		EMIT_SIGNAL (XP_TE_HCHANMSG, sess, from, text, nickchar, idtext, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_HCHANMSG, sess, from, text,
+				       nickchar, idtext, 0, tags_data->timestamp);
 	else
-		EMIT_SIGNAL (XP_TE_CHANMSG, sess, from, text, nickchar, idtext, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMSG, sess, from, text, 
+				       nickchar, idtext, 0, tags_data->timestamp);
 }
 
 void
