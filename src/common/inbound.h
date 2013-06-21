@@ -46,7 +46,7 @@ void inbound_away (server *serv, char *nick, char *msg);
 void inbound_away_notify (server *serv, char *nick, char *reason);
 void inbound_login_start (session *sess, char *nick, char *servname);
 void inbound_login_end (session *sess, char *text);
-void inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text, char fromme, int id);
+void inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text, char fromme, int id, time_t timestamp);
 void clear_channel (session *sess);
 void set_topic (session *sess, char *topic, char *stripped_topic);
 void inbound_privmsg (server *serv, char *from, char *ip, char *text, int id);

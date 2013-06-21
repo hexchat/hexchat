@@ -959,7 +959,8 @@ process_numeric (session * sess, int n,
 /* handle named messages that starts with a ':' */
 
 static void
-process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
+process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
+		   time_t timestamp)
 {
 	server *serv = sess->server;
 	char ip[128], nick[NICKLEN];
@@ -1173,7 +1174,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						{
 							if (ignore_check (word[1], IG_CHAN))
 								return;
-							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id);
+							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id, timestamp);
 						} else
 						{
 							if (ignore_check (word[1], IG_PRIV))
@@ -1368,8 +1369,54 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 	EMIT_SIGNAL (XP_TE_SERVTEXT, sess, buf, sess->server->servername, rawname, NULL, 0);
 }
 
-/* irc_inline() - 1 single line received from serv */
+/* Handle time-server tags.
+ * 
+ * Sets timestamp to the correct time. This needs to take into account that
+ * time is in UTC, so we should convert it to our local time.
+ *
+ * See http://ircv3.atheme.org/extensions/server-time-3.2
+ */
+static void
+handle_message_tag_time (const char const *time, time_t *timestamp)
+{
+	/* TODO, obviously :P */
+	*timestamp = 44332211;
+}
 
+/* Handle message tags.
+ *
+ * See http://ircv3.atheme.org/specification/message-tags-3.2 
+ */
+static void
+handle_message_tags (const char const *tags_str, time_t *timestamp)
+{
+	char **tags;
+	int i;
+
+	/* FIXME We might want to avoid the allocation overhead here since 
+	 * this will be might called for every message from the server.
+	 */
+	tags = g_strsplit (tags_str, ";", 0);
+
+	for (i=0; tags[i]; i++)
+	{
+		char *key = tags[i];
+		char *value = strchr (tags[i], '=');
+
+		if (!value)
+			continue;
+
+		*value = '\0';
+		value++;
+
+		if (!strcmp (key, "time"))
+			handle_message_tag_time (value, timestamp);
+	}
+	
+	g_strfreev (tags);
+}
+
+/* irc_inline() - 1 single line received from serv */
 static void
 irc_inline (server *serv, char *buf, int len)
 {
@@ -1379,8 +1426,7 @@ irc_inline (server *serv, char *buf, int len)
 	char *word_eol[PDIWORDS+1];
 	char pdibuf_static[522]; /* 1 line can potentially be 512*6 in utf8 */
 	char *pdibuf = pdibuf_static;
-
-	url_check_line (buf, len);
+	time_t timestamp = 0; /* for server-time extension */
 
 	/* need more than 522? fall back to malloc */
 	if (len >= sizeof (pdibuf_static))
@@ -1392,11 +1438,27 @@ irc_inline (server *serv, char *buf, int len)
 	word[PDIWORDS] = NULL;
 	word_eol[PDIWORDS] = NULL;
 
+	if (*buf == '@')
+	{
+		char *tags = buf + 1; /* skip the '@' */
+		char *sep = strchr (buf, ' ');
+
+		if (!sep)
+			goto xit;
+		
+		*sep = '\0';
+		buf = sep + 1;
+
+		handle_message_tags(tags, &timestamp);
+	}
+
+	url_check_line (buf, len);
+
+	/* split line into words and words_to_end_of_line */
+	process_data_init (pdibuf, buf, word, word_eol, FALSE, FALSE);
+
 	if (buf[0] == ':')
 	{
-		/* split line into words and words_to_end_of_line */
-		process_data_init (pdibuf, buf, word, word_eol, FALSE, FALSE);
-
 		/* find a context for this message */
 		if (is_channel (serv, word[3]))
 		{
@@ -1417,7 +1479,6 @@ irc_inline (server *serv, char *buf, int len)
 
 	} else
 	{
-		process_data_init (pdibuf, buf, word, word_eol, FALSE, FALSE);
 		word[0] = type = word[1];
 		if (plugin_emit_server (sess, type, word, word_eol))
 			goto xit;
@@ -1439,7 +1500,7 @@ irc_inline (server *serv, char *buf, int len)
 		process_numeric (sess, atoi (word[2]), word, word_eol, text);
 	} else
 	{
-		process_named_msg (sess, type, word, word_eol);
+		process_named_msg (sess, type, word, word_eol, timestamp);
 	}
 
 xit:

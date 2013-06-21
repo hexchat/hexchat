@@ -2755,7 +2755,7 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
 				{
 					inbound_chanmsg (newsess->server, NULL, newsess->channel,
-										  newsess->server->nick, split_text, TRUE, FALSE);
+							 newsess->server->nick, split_text, TRUE, FALSE, 0);
 
 					if (*split_text)
 						offset += strlen(split_text);
@@ -2763,7 +2763,7 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					g_free(split_text);
 				}
 				inbound_chanmsg (newsess->server, NULL, newsess->channel,
-									  newsess->server->nick, msg + offset, TRUE, FALSE);
+						 newsess->server->nick, msg + offset, TRUE, FALSE, 0);
 			}
 			else
 			{
@@ -3700,7 +3700,7 @@ cmd_wallchan (struct session *sess, char *tbuf, char *word[],
 			if (sess->type == SESS_CHANNEL)
 			{
 				inbound_chanmsg (sess->server, NULL, sess->channel,
-									  sess->server->nick, word_eol[2], TRUE, FALSE);
+						 sess->server->nick, word_eol[2], TRUE, FALSE, 0);
 				sess->server->p_message (sess->server, sess->channel, word_eol[2]);
 			}
 			list = list->next;
@@ -4396,7 +4396,7 @@ handle_say (session *sess, char *text, int check_spch)
 		if (dcc)
 		{
 			inbound_chanmsg (sess->server, NULL, sess->channel,
-								  sess->server->nick, text, TRUE, FALSE);
+					 sess->server->nick, text, TRUE, FALSE, 0);
 			set_topic (sess, net_ip (dcc->addr), net_ip (dcc->addr));
 			goto xit;
 		}
@@ -4411,7 +4411,7 @@ handle_say (session *sess, char *text, int check_spch)
 		while ((split_text = split_up_text (sess, text + offset, cmd_length, split_text)))
 		{
 			inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
-								  split_text, TRUE, FALSE);
+					 split_text, TRUE, FALSE, 0);
 			sess->server->p_message (sess->server, sess->channel, split_text);
 			
 			if (*split_text)
@@ -4421,7 +4421,7 @@ handle_say (session *sess, char *text, int check_spch)
 		}
 
 		inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
-							  text + offset, TRUE, FALSE);
+				 text + offset, TRUE, FALSE, 0);
 		sess->server->p_message (sess->server, sess->channel, text + offset);
 	} else
 	{
