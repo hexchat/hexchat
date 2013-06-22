@@ -999,9 +999,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				if (*chan == ':')
 					chan++;
 				if (!serv->p_cmp (nick, serv->nick))
-					inbound_ujoin (serv, chan, nick, ip);
+					inbound_ujoin (serv, chan, nick, ip, tags_data);
 				else
-					inbound_join (serv, chan, nick, ip, account, realname);
+					inbound_join (serv, chan, nick, ip, account, realname,
+									  tags_data);
 			}
 			return;
 

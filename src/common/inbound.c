@@ -562,7 +562,8 @@ find_session_from_waitchannel (char *chan, struct server *serv)
 }
 
 void
-inbound_ujoin (server *serv, char *chan, char *nick, char *ip)
+inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
+					const message_tags_data *tags_data)
 {
 	session *sess;
 
@@ -600,7 +601,8 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip)
 	/* sends a MODE */
 	serv->p_join_info (sess->server, chan);
 
-	EMIT_SIGNAL (XP_TE_UJOIN, sess, nick, chan, ip, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_UJOIN, sess, nick, chan, ip, NULL, 0,
+								  tags_data->timestamp);
 
 	if (prefs.hex_irc_who_join)
 	{
@@ -721,12 +723,14 @@ inbound_topicnew (server *serv, char *nick, char *chan, char *topic)
 }
 
 void
-inbound_join (server *serv, char *chan, char *user, char *ip, char *account, char *realname)
+inbound_join (server *serv, char *chan, char *user, char *ip, char *account,
+				  char *realname, const message_tags_data *tags_data)
 {
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		EMIT_SIGNAL (XP_TE_JOIN, sess, user, chan, ip, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_JOIN, sess, user, chan, ip, NULL, 0,
+									  tags_data->timestamp);
 		userlist_add (sess, user, ip, account, realname);
 	}
 }
