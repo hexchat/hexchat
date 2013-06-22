@@ -1048,9 +1048,9 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				if (*reason == ':')
 					reason++;
 				if (!strcmp (nick, serv->nick))
-					inbound_upart (serv, chan, ip, reason);
+					inbound_upart (serv, chan, ip, reason, tags_data);
 				else
-					inbound_part (serv, chan, nick, ip, reason);
+					inbound_part (serv, chan, nick, ip, reason, tags_data);
 			}
 			return;
 
