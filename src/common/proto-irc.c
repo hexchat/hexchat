@@ -1062,7 +1062,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 
 		case WORDL('Q','U','I','T'):
 			inbound_quit (serv, nick, ip,
-							  (word_eol[3][0] == ':') ? word_eol[3] + 1 : word_eol[3]);
+							  (word_eol[3][0] == ':') ? word_eol[3] + 1 : word_eol[3],
+							  tags_data);
 			return;
 
 		case WORDL('A','W','A','Y'):

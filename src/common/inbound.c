@@ -785,7 +785,8 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp)
 }
 
 void
-inbound_quit (server *serv, char *nick, char *ip, char *reason)
+inbound_quit (server *serv, char *nick, char *ip, char *reason,
+				  const message_tags_data *tags_data)
 {
 	GSList *list = sess_list;
 	session *sess;
@@ -801,11 +802,13 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
  				was_on_front_session = TRUE;
 			if ((user = userlist_find (sess, nick)))
 			{
-				EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0,
+											  tags_data->timestamp);
 				userlist_remove_user (sess, user);
 			} else if (sess->type == SESS_DIALOG && !serv->p_cmp (sess->channel, nick))
 			{
-				EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0,
+											  tags_data->timestamp);
 			}
 		}
 		list = list->next;
