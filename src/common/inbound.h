@@ -51,7 +51,8 @@ void inbound_nameslist (server *serv, char *chan, char *names);
 int inbound_nameslist_end (server *serv, char *chan);
 void inbound_away (server *serv, char *nick, char *msg);
 void inbound_away_notify (server *serv, char *nick, char *reason);
-void inbound_login_start (session *sess, char *nick, char *servname);
+void inbound_login_start (session *sess, char *nick, char *servname,
+								  const message_tags_data *tags_data);
 void inbound_login_end (session *sess, char *text);
 void inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
 							 char *text, char fromme, int id, 
@@ -61,7 +62,8 @@ void set_topic (session *sess, char *topic, char *stripped_topic);
 void inbound_privmsg (server *serv, char *from, char *ip, char *text, int id, 
 							 const message_tags_data *tags_data);
 void inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int fromme, int id);
-void inbound_newnick (server *serv, char *nick, char *newnick, int quiet);
+void inbound_newnick (server *serv, char *nick, char *newnick, int quiet,
+							 const message_tags_data *tags_data);
 void do_dns (session *sess, char *nick, char *host);
 void inbound_identified (server *serv);
 gboolean alert_match_word (char *word, char *masks);

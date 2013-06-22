@@ -470,7 +470,7 @@ process_numeric (session * sess, int n,
 	switch (n)
 	{
 	case 1:
-		inbound_login_start (sess, word[3], word[1]);
+		inbound_login_start (sess, word[3], word[1], tags_data);
 		/* if network is PTnet then you must get your IP address
 			from "001" server message */
 		if ((strncmp(word[7], "PTnet", 5) == 0) &&
@@ -1033,8 +1033,9 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			return;
 
 		case WORDL('N','I','C','K'):
-			inbound_newnick (serv, nick, (word_eol[3][0] == ':')
-									? word_eol[3] + 1 : word_eol[3], FALSE);
+			inbound_newnick (serv, nick, 
+								  (word_eol[3][0] == ':') ? word_eol[3] + 1 : word_eol[3],
+								  FALSE, tags_data);
 			return;
 
 		case WORDL('P','A','R','T'):

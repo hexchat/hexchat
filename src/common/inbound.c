@@ -478,7 +478,8 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
 }
 
 void
-inbound_newnick (server *serv, char *nick, char *newnick, int quiet)
+inbound_newnick (server *serv, char *nick, char *newnick, int quiet,
+					  const message_tags_data *tags_data)
 {
 	int me = FALSE;
 	session *sess;
@@ -500,11 +501,12 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet)
 				if (!quiet)
 				{
 					if (me)
-						EMIT_SIGNAL (XP_TE_UCHANGENICK, sess, nick, newnick, NULL,
-										 NULL, 0);
+						EMIT_SIGNAL_TIMESTAMP (XP_TE_UCHANGENICK, sess, nick, 
+													  newnick, NULL, NULL, 0,
+													  tags_data->timestamp);
 					else
-						EMIT_SIGNAL (XP_TE_CHANGENICK, sess, nick, newnick, NULL,
-										 NULL, 0);
+						EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANGENICK, sess, nick,
+													  newnick, NULL, NULL, 0, tags_data->timestamp);
 				}
 			}
 			if (sess->type == SESS_DIALOG && !serv->p_cmp (sess->channel, nick))
@@ -1243,9 +1245,10 @@ set_default_modes (server *serv)
 }
 
 void
-inbound_login_start (session *sess, char *nick, char *servname)
+inbound_login_start (session *sess, char *nick, char *servname,
+							const message_tags_data *tags_data)
 {
-	inbound_newnick (sess->server, sess->server->nick, nick, TRUE);
+	inbound_newnick (sess->server, sess->server->nick, nick, TRUE, tags_data);
 	server_set_name (sess->server, servname);
 	if (sess->type == SESS_SERVER)
 		log_open_or_close (sess);

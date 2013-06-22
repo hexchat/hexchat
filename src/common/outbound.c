@@ -2825,7 +2825,11 @@ cmd_nick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (sess->server->connected)
 			sess->server->p_change_nick (sess->server, nick);
 		else
-			inbound_newnick (sess->server, sess->server->nick, nick, TRUE);
+		{
+			message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+			inbound_newnick (sess->server, sess->server->nick, nick, TRUE,
+								  &no_tags);
+		}
 		return TRUE;
 	}
 	return FALSE;
