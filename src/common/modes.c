@@ -786,7 +786,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 /* handle the 005 numeric */
 
 void
-inbound_005 (server * serv, char *word[])
+inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 {
 	int w;
 	char *pre;

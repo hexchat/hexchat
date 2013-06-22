@@ -916,6 +916,20 @@ PrintTextf (session *sess, char *format, ...)
 	g_free (buf);
 }
 
+void
+PrintTextTimeStampf (session *sess, time_t timestamp, char *format, ...)
+{
+	va_list args;
+	char *buf;
+
+	va_start (args, format);
+	buf = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	PrintTextTimeStamp (sess, buf, timestamp);
+	g_free (buf);
+}
+
 /* Print Events stuff here --AGL */
 
 /* Consider the following a NOTES file:

@@ -650,7 +650,8 @@ inbound_upart (server *serv, char *chan, char *ip, char *reason,
 }
 
 void
-inbound_nameslist (server *serv, char *chan, char *names)
+inbound_nameslist (server *serv, char *chan, char *names,
+						 const message_tags_data *tags_data)
 {
 	session *sess;
 	char name[NICKLEN];
@@ -679,12 +680,12 @@ inbound_nameslist (server *serv, char *chan, char *names)
 		case 0:
 			name[pos] = 0;
 			if (pos != 0)
-				userlist_add (sess, name, 0, NULL, NULL);
+				userlist_add (sess, name, 0, NULL, NULL, tags_data);
 			return;
 		case ' ':
 			name[pos] = 0;
 			pos = 0;
-			userlist_add (sess, name, 0, NULL, NULL);
+			userlist_add (sess, name, 0, NULL, NULL, tags_data);
 			break;
 		default:
 			name[pos] = *names;
@@ -696,7 +697,8 @@ inbound_nameslist (server *serv, char *chan, char *names)
 }
 
 void
-inbound_topic (server *serv, char *chan, char *topic_text)
+inbound_topic (server *serv, char *chan, char *topic_text,
+					const message_tags_data *tags_data)
 {
 	session *sess = find_channel (serv, chan);
 	char *stripped_topic;
@@ -709,7 +711,8 @@ inbound_topic (server *serv, char *chan, char *topic_text)
 	} else
 		sess = serv->server_session;
 
-	EMIT_SIGNAL (XP_TE_TOPIC, sess, chan, topic_text, NULL, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_TOPIC, sess, chan, topic_text, NULL, NULL, 0,
+								  tags_data->timestamp);
 }
 
 void
@@ -739,7 +742,7 @@ inbound_join (server *serv, char *chan, char *user, char *ip, char *account,
 	{
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_JOIN, sess, user, chan, ip, NULL, 0,
 									  tags_data->timestamp);
-		userlist_add (sess, user, ip, account, realname);
+		userlist_add (sess, user, ip, account, realname, tags_data);
 	}
 }
 
@@ -774,7 +777,8 @@ inbound_part (server *serv, char *chan, char *user, char *ip, char *reason,
 }
 
 void
-inbound_topictime (server *serv, char *chan, char *nick, time_t stamp)
+inbound_topictime (server *serv, char *chan, char *nick, time_t stamp,
+						 const message_tags_data *tags_data)
 {
 	char *tim = ctime (&stamp);
 	session *sess = find_channel (serv, chan);
@@ -783,7 +787,8 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp)
 		sess = serv->server_session;
 
 	tim[24] = 0;	/* get rid of the \n */
-	EMIT_SIGNAL (XP_TE_TOPICDATE, sess, chan, nick, tim, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_TOPICDATE, sess, chan, nick, tim, NULL, 0,
+								  tags_data->timestamp);
 }
 
 void
@@ -816,7 +821,7 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason,
 		list = list->next;
 	}
 
-	notify_set_offline (serv, nick, was_on_front_session);
+	notify_set_offline (serv, nick, was_on_front_session, tags_data);
 }
 
 void
@@ -1077,7 +1082,8 @@ inbound_away_notify (server *serv, char *nick, char *reason,
 }
 
 int
-inbound_nameslist_end (server *serv, char *chan)
+inbound_nameslist_end (server *serv, char *chan,
+							  const message_tags_data *tags_data)
 {
 	session *sess;
 	GSList *list;
@@ -1186,7 +1192,8 @@ check_autojoin_channels (server *serv)
 }
 
 void
-inbound_next_nick (session *sess, char *nick, int error)
+inbound_next_nick (session *sess, char *nick, int error,
+						 const message_tags_data *tags_data)
 {
 	char *newnick;
 	server *serv = sess->server;
@@ -1207,11 +1214,13 @@ inbound_next_nick (session *sess, char *nick, int error)
 		serv->p_change_nick (serv, newnick);
 		if (error)
 		{
-			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, newnick, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKERROR, sess, nick, newnick, NULL, NULL,
+										  0, tags_data->timestamp);
 		}
 		else
 		{
-			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, newnick, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKCLASH, sess, nick, newnick, NULL, NULL,
+										  0, tags_data->timestamp);
 		}
 		break;
 
@@ -1219,16 +1228,18 @@ inbound_next_nick (session *sess, char *nick, int error)
 		serv->p_change_nick (serv, prefs.hex_irc_nick3);
 		if (error)
 		{
-			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKERROR, sess, nick, prefs.hex_irc_nick3,
+										  NULL, NULL, 0, tags_data->timestamp);
 		}
 		else
 		{
-			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKCLASH, sess, nick, prefs.hex_irc_nick3,
+										  NULL, NULL, 0, tags_data->timestamp);
 		}
 		break;
 
 	default:
-		EMIT_SIGNAL (XP_TE_NICKFAIL, sess, NULL, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKFAIL, sess, NULL, NULL, NULL, NULL, 0);
 	}
 }
 
@@ -1300,7 +1311,7 @@ inbound_set_all_away_status (server *serv, char *nick, unsigned int status)
 }
 
 void
-inbound_uaway (server *serv)
+inbound_uaway (server *serv, const message_tags_data *tags_data)
 {
 	serv->is_away = TRUE;
 	serv->away_time = time (NULL);
@@ -1310,7 +1321,7 @@ inbound_uaway (server *serv)
 }
 
 void
-inbound_uback (server *serv)
+inbound_uback (server *serv, const message_tags_data *tags_data)
 {
 	serv->is_away = FALSE;
 	serv->reconnect_away = FALSE;
@@ -1320,7 +1331,7 @@ inbound_uback (server *serv)
 }
 
 void
-inbound_foundip (session *sess, char *ip)
+inbound_foundip (session *sess, char *ip, const message_tags_data *tags_data)
 {
 	struct hostent *HostAddr;
 
@@ -1328,14 +1339,15 @@ inbound_foundip (session *sess, char *ip)
 	if (HostAddr)
 	{
 		prefs.dcc_ip = ((struct in_addr *) HostAddr->h_addr)->s_addr;
-		EMIT_SIGNAL (XP_TE_FOUNDIP, sess->server->server_session,
-						 inet_ntoa (*((struct in_addr *) HostAddr->h_addr)),
-						 NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_FOUNDIP, sess->server->server_session,
+									  inet_ntoa (*((struct in_addr *) HostAddr->h_addr)),
+									  NULL, NULL, NULL, 0, tags_data->timestamp);
 	}
 }
 
 void
-inbound_user_info_start (session *sess, char *nick)
+inbound_user_info_start (session *sess, char *nick,
+								 const message_tags_data *tags_data)
 {
 	/* set away to FALSE now, 301 may turn it back on */
 	inbound_set_all_away_status (sess->server, nick, 0);
@@ -1347,7 +1359,8 @@ inbound_user_info_start (session *sess, char *nick)
 void
 inbound_user_info (session *sess, char *chan, char *user, char *host,
 						 char *servname, char *nick, char *realname,
-						 char *account, unsigned int away)
+						 char *account, unsigned int away,
+						 const message_tags_data *tags_data)
 {
 	server *serv = sess->server;
 	session *who_sess;
@@ -1388,7 +1401,8 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 }
 
 int
-inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int rplcode)
+inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, 
+					  char *banner, int rplcode, const message_tags_data *tags_data)
 {
 	char *time_str = ctime (&stamp);
 	server *serv = sess->server;
@@ -1410,7 +1424,8 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *bann
 	{
 nowindow:
 
-		EMIT_SIGNAL (XP_TE_BANLIST, sess, chan, mask, banner, time_str, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_BANLIST, sess, chan, mask, banner, time_str,
+									  0, tags_data->timestamp);
 		return TRUE;
 	}
 
@@ -1447,7 +1462,7 @@ inbound_nickserv_login (server *serv)
 }
 
 void
-inbound_login_end (session *sess, char *text)
+inbound_login_end (session *sess, char *text, const message_tags_data *tags_data)
 {
 	GSList *cmdlist;
 	commandentry *cmd;
@@ -1504,11 +1519,13 @@ inbound_login_end (session *sess, char *text)
 	if (prefs.hex_irc_skip_motd && !serv->motd_skipped)
 	{
 		serv->motd_skipped = TRUE;
-		EMIT_SIGNAL (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL,
+									  NULL, NULL, 0, tags_data->timestamp);
 		return;
 	}
 
-	EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL, NULL, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_MOTD, serv->server_session, text, NULL, NULL,
+								  NULL, 0, tags_data->timestamp);
 }
 
 void

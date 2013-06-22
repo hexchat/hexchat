@@ -22,9 +22,10 @@
 #ifndef HEXCHAT_INBOUND_H
 #define HEXCHAT_INBOUND_H
 
-void inbound_next_nick (session *sess, char *nick, int error);
-void inbound_uback (server *serv);
-void inbound_uaway (server *serv);
+void inbound_next_nick (session *sess, char *nick, int error,
+								const message_tags_data *tags_data);
+void inbound_uback (server *serv, const message_tags_data *tags_data);
+void inbound_uaway (server *serv, const message_tags_data *tags_data);
 void inbound_account (server *serv, char *nick, char *account,
 							 const message_tags_data *tags_data);
 void inbound_part (server *serv, char *chan, char *user, char *ip, char *reason,
@@ -46,23 +47,34 @@ void inbound_join (server *serv, char *chan, char *user, char *ip,
 						 const message_tags_data *tags_data);
 void inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
 						  const message_tags_data *tags_data);
-void inbound_topictime (server *serv, char *chan, char *nick, time_t stamp);
-void inbound_topic (server *serv, char *chan, char *topic_text);
-void inbound_user_info_start (session *sess, char *nick);
-void inbound_user_info (session *sess, char *chan, char *user, char *host, char *servname, char *nick, char *realname, char *account, unsigned int away);
-void inbound_foundip (session *sess, char *ip);
-int inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int is_exemption);
+void inbound_topictime (server *serv, char *chan, char *nick, time_t stamp,
+								const message_tags_data *tags_data);
+void inbound_topic (server *serv, char *chan, char *topic_text,
+						  const message_tags_data *tags_data);
+void inbound_user_info_start (session *sess, char *nick,
+										const message_tags_data *tags_data);
+void inbound_user_info (session *sess, char *chan, char *user, char *host,
+								char *servname, char *nick, char *realname, char *account,
+								unsigned int away, const message_tags_data *tags_data);
+void inbound_foundip (session *sess, char *ip, 
+							 const message_tags_data *tags_data);
+int inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, 
+							char *banner, int is_exemption,
+							const message_tags_data *tags_data);
 void inbound_ping_reply (session *sess, char *timestring, char *from,
 								 const message_tags_data *tags_data);
-void inbound_nameslist (server *serv, char *chan, char *names);
-int inbound_nameslist_end (server *serv, char *chan);
+void inbound_nameslist (server *serv, char *chan, char *names,
+								const message_tags_data *tags_data);
+int inbound_nameslist_end (server *serv, char *chan,
+									const message_tags_data *tags_data);
 void inbound_away (server *serv, char *nick, char *msg,
 						 const message_tags_data *tags_data);
 void inbound_away_notify (server *serv, char *nick, char *reason,
 								  const message_tags_data *tags_data);
 void inbound_login_start (session *sess, char *nick, char *servname,
 								  const message_tags_data *tags_data);
-void inbound_login_end (session *sess, char *text);
+void inbound_login_end (session *sess, char *text,
+								const message_tags_data *tags_data);
 void inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
 							 char *text, char fromme, int id, 
 							 const message_tags_data *tags_data);

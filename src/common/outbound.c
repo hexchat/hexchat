@@ -2898,7 +2898,10 @@ cmd_notify (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 		}
 	} else
-		notify_showlist (sess);
+	{
+		message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+		notify_showlist (sess, &no_tags);
+	}
 	return TRUE;
 }
 
