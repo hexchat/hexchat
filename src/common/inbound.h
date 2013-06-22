@@ -73,8 +73,15 @@ void inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 void inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int fromme, int id);
 void inbound_newnick (server *serv, char *nick, char *newnick, int quiet,
 							 const message_tags_data *tags_data);
-void do_dns (session *sess, char *nick, char *host);
 void inbound_identified (server *serv);
+void inbound_cap_ack (server *serv, char *nick, char *extensions,
+							 const message_tags_data *tags_data);
+void inbound_cap_ls (server *serv, char *nick, char *extensions,
+							const message_tags_data *tags_data);
+void inbound_cap_nak (server *serv, const message_tags_data *tags_data);
+void inbound_cap_list (server *serv, char *nick, char *extensions,
+							  const message_tags_data *tags_data);
+void do_dns (session *sess, char *nick, char *host);
 gboolean alert_match_word (char *word, char *masks);
 gboolean alert_match_text (char *text, char *masks);
 

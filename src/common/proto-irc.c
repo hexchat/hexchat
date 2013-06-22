@@ -1216,10 +1216,6 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 	else if (len == 3)
 	{
 		guint32 t;
-		guint32 want_cap;		/* format the CAP REQ string based on previous capabilities being requested or not */
-		guint32 want_sasl;		/* CAP END shouldn't be sent when SASL is requested, it needs further responses */
-		char *pass;				/* buffer for SASL password */
-		char buffer[256];		/* buffer for requesting capabilities and emitting the signal */
 
 		t = WORDL((guint8)type[0], (guint8)type[1], (guint8)type[2], (guint8)type[3]);
 		switch (t)
@@ -1227,128 +1223,25 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			case WORDL('C','A','P','\0'):
 				if (strncasecmp (word[4], "ACK", 3) == 0)
 				{
-					EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, sess->server->server_session,
-												  word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5],
-												  NULL, NULL, 0,
-												  tags_data->timestamp);
-
-					if (strstr (word_eol[5], "identify-msg") != 0)
-					{
-						serv->have_idmsg = TRUE;
-					}
-
-					if (strstr (word_eol[5], "multi-prefix") != 0)
-					{
-						serv->have_namesx = TRUE;
-					}
-
-					if (strstr (word_eol[5], "away-notify") != 0)
-					{
-						serv->have_awaynotify = TRUE;
-					}
-
-					if (strstr (word_eol[5], "account-notify") != 0)
-					{
-						serv->have_accnotify = TRUE;
-					}
-					
-					if (strstr (word_eol[5], "extended-join") != 0)
-					{
-						serv->have_extjoin = TRUE;
-					}
-
-					if (strstr (word_eol[5], "sasl") != 0)
-					{
-						serv->have_sasl = TRUE;
-						EMIT_SIGNAL_TIMESTAMP
-						(
-							XP_TE_SASLAUTH,
-							serv->server_session,
-							(((ircnet *)sess->server->network)->user) ? (((ircnet *)sess->server->network)->user) : prefs.hex_irc_user_name,
-							NULL,
-							NULL,
-							NULL,
-							0,
-							tags_data->timestamp
-						);
-						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
-
-						pass = encode_sasl_pass
-						(
-							(((ircnet *)sess->server->network)->user) ? (((ircnet *)sess->server->network)->user) : prefs.hex_irc_user_name,
-							sess->server->password
-						);
-						tcp_sendf (sess->server, "AUTHENTICATE %s\r\n", pass);
-						free (pass);
-					}
+					inbound_cap_ack (serv, word[1], 
+										  word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
+										  tags_data);
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)
 				{
-					EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPLIST, serv->server_session, word[1],
-												  word[5][0]==':' ? ++word_eol[5] : word_eol[5],
-												  NULL, NULL, 0,
-												  tags_data->timestamp);
-					want_cap = 0;
-					want_sasl = 0;
-
-					strcpy (buffer, "CAP REQ :");
-
-					if (strstr (word_eol[5], "identify-msg") != 0)
-					{
-						strcat (buffer, "identify-msg ");
-						want_cap = 1;
-					}
-					if (strstr (word_eol[5], "multi-prefix") != 0)
-					{
-						strcat (buffer, "multi-prefix ");
-						want_cap = 1;
-					}
-					if (strstr (word_eol[5], "away-notify") != 0)
-					{
-						strcat (buffer, "away-notify ");
-						want_cap = 1;
-					}
-					if (strstr (word_eol[5], "account-notify") != 0)
-					{
-						strcat (buffer, "account-notify ");
-						want_cap = 1;
-					}
-					if (strstr (word_eol[5], "extended-join") != 0)
-					{
-						strcat (buffer, "extended-join ");
-						want_cap = 1;
-					}
-					/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
-					if (strstr (word_eol[5], "sasl") != 0 && strlen (sess->server->password) != 0 && serv->loginmethod == LOGIN_SASL)
-					{
-						strcat (buffer, "sasl ");
-						want_cap = 1;
-						want_sasl = 1;
-					}
-
-					if (want_cap)
-					{
-						/* buffer + 9 = emit buffer without "CAP REQ :" */
-						EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPREQ, sess->server->server_session,
-													  buffer + 9, NULL, NULL, NULL, 0,
-													  tags_data->timestamp);
-						tcp_sendf (serv, "%s\r\n", buffer);
-					}
-					if (!want_sasl)
-					{
-						/* if we use SASL, CAP END is dealt via raw numerics */
-						tcp_send_len (serv, "CAP END\r\n", 9);
-					}
+					inbound_cap_ls (serv, word[1], 
+										 word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
+										 tags_data);
 				}
 				else if (strncasecmp (word[4], "NAK", 3) == 0)
 				{
-					tcp_send_len (serv, "CAP END\r\n", 9);
+					inbound_cap_nak (serv, tags_data);
 				}
 				else if (strncasecmp (word[4], "LIST", 4) == 0)	
 				{
-					EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, sess->server->server_session,
-												  word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5],
-												  NULL, NULL, 0, tags_data->timestamp);
+					inbound_cap_list (serv, word[1], 
+											word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
+											tags_data);
 				}
 
 				return;
