@@ -1227,7 +1227,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			case WORDL('C','A','P','\0'):
 				if (strncasecmp (word[4], "ACK", 3) == 0)
 				{
-					EMIT_SIGNAL (XP_TE_CAPACK, sess->server->server_session, word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5], NULL, NULL, 0);
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, sess->server->server_session,
+												  word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5],
+												  NULL, NULL, 0,
+												  tags_data->timestamp);
 
 					if (strstr (word_eol[5], "identify-msg") != 0)
 					{
@@ -1257,7 +1260,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 					if (strstr (word_eol[5], "sasl") != 0)
 					{
 						serv->have_sasl = TRUE;
-						EMIT_SIGNAL
+						EMIT_SIGNAL_TIMESTAMP
 						(
 							XP_TE_SASLAUTH,
 							serv->server_session,
@@ -1265,7 +1268,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 							NULL,
 							NULL,
 							NULL,
-							0
+							0,
+							tags_data->timestamp
 						);
 						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
@@ -1280,7 +1284,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)
 				{
-					EMIT_SIGNAL (XP_TE_CAPLIST, serv->server_session, word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5], NULL, NULL, 0);
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPLIST, serv->server_session, word[1],
+												  word[5][0]==':' ? ++word_eol[5] : word_eol[5],
+												  NULL, NULL, 0,
+												  tags_data->timestamp);
 					want_cap = 0;
 					want_sasl = 0;
 
@@ -1322,7 +1329,9 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 					if (want_cap)
 					{
 						/* buffer + 9 = emit buffer without "CAP REQ :" */
-						EMIT_SIGNAL (XP_TE_CAPREQ, sess->server->server_session, buffer + 9, NULL, NULL, NULL, 0);
+						EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPREQ, sess->server->server_session,
+													  buffer + 9, NULL, NULL, NULL, 0,
+													  tags_data->timestamp);
 						tcp_sendf (serv, "%s\r\n", buffer);
 					}
 					if (!want_sasl)
@@ -1337,7 +1346,9 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 				else if (strncasecmp (word[4], "LIST", 4) == 0)	
 				{
-					EMIT_SIGNAL (XP_TE_CAPACK, sess->server->server_session, word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5], NULL, NULL, 0);
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, sess->server->server_session,
+												  word[1], word[5][0]==':' ? ++word_eol[5] : word_eol[5],
+												  NULL, NULL, 0, tags_data->timestamp);
 				}
 
 				return;
