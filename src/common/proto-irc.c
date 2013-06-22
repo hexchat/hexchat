@@ -444,12 +444,14 @@ irc_raw (server *serv, char *raw)
 
 
 static void
-channel_date (session *sess, char *chan, char *timestr)
+channel_date (session *sess, char *chan, char *timestr,
+				  const message_tags_data *tags_data)
 {
 	time_t timestamp = (time_t) atol (timestr);
 	char *tim = ctime (&timestamp);
 	tim[24] = 0;	/* get rid of the \n */
-	EMIT_SIGNAL (XP_TE_CHANDATE, sess, chan, tim, NULL, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANDATE, sess, chan, tim, NULL, NULL, 0,
+								  tags_data->timestamp);
 }
 
 static void
@@ -554,7 +556,8 @@ process_numeric (session * sess, int n,
 
 	case 312:
 		if (!serv->skip_next_whois)
-			EMIT_SIGNAL (XP_TE_WHOIS3, whois_sess, word[4], word_eol[5], NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS3, whois_sess, word[4], word_eol[5],
+										  NULL, NULL, 0, tags_data->timestamp);
 		else
 			inbound_user_info (sess, NULL, NULL, NULL, word[5], word[4], NULL, NULL, 0xff);
 		break;
@@ -563,8 +566,8 @@ process_numeric (session * sess, int n,
 		serv->inside_whois = 1;
 		inbound_user_info_start (sess, word[4]);
 		if (!serv->skip_next_whois)
-			EMIT_SIGNAL (XP_TE_WHOIS1, whois_sess, word[4], word[5],
-							 word[6], word_eol[8] + 1, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS1, whois_sess, word[4], word[5],
+										  word[6], word_eol[8] + 1, 0, tags_data->timestamp);
 		else
 			inbound_user_info (sess, NULL, word[5], word[6], NULL, word[4],
 									 word_eol[8][0] == ':' ? word_eol[8] + 1 : word_eol[8], NULL, 0xff);
@@ -572,8 +575,8 @@ process_numeric (session * sess, int n,
 
 	case 314:	/* WHOWAS */
 		inbound_user_info_start (sess, word[4]);
-		EMIT_SIGNAL (XP_TE_WHOIS1, whois_sess, word[4], word[5],
-						 word[6], word_eol[8] + 1, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS1, whois_sess, word[4], word[5],
+									  word[6], word_eol[8] + 1, 0, tags_data->timestamp);
 		break;
 
 	case 317:
@@ -588,22 +591,22 @@ process_numeric (session * sess, int n,
 						"%02ld:%02ld:%02ld", idle / 3600, (idle / 60) % 60,
 						idle % 60);
 			if (timestamp == 0)
-				EMIT_SIGNAL (XP_TE_WHOIS4, whois_sess, word[4],
-								 outbuf, NULL, NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS4, whois_sess, word[4],
+											  outbuf, NULL, NULL, 0, tags_data->timestamp);
 			else
 			{
 				tim = ctime (&timestamp);
 				tim[19] = 0; 	/* get rid of the \n */
-				EMIT_SIGNAL (XP_TE_WHOIS4T, whois_sess, word[4],
-								 outbuf, tim, NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS4T, whois_sess, word[4],
+											  outbuf, tim, NULL, 0, tags_data->timestamp);
 			}
 		}
 		break;
 
 	case 318:	/* END OF WHOIS */
 		if (!serv->skip_next_whois)
-			EMIT_SIGNAL (XP_TE_WHOIS6, whois_sess, word[4], NULL,
-							 NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS6, whois_sess, word[4], NULL,
+										  NULL, NULL, 0, tags_data->timestamp);
 		serv->skip_next_whois = 0;
 		serv->inside_whois = 0;
 		break;
@@ -611,20 +614,23 @@ process_numeric (session * sess, int n,
 	case 313:
 	case 319:
 		if (!serv->skip_next_whois)
-			EMIT_SIGNAL (XP_TE_WHOIS2, whois_sess, word[4],
-							 word_eol[5] + 1, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS2, whois_sess, word[4],
+										  word_eol[5] + 1, NULL, NULL, 0,
+										  tags_data->timestamp);
 		break;
 
 	case 307:	/* dalnet version */
 	case 320:	/* :is an identified user */
 		if (!serv->skip_next_whois)
-			EMIT_SIGNAL (XP_TE_WHOIS_ID, whois_sess, word[4],
-							 word_eol[5] + 1, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS_ID, whois_sess, word[4],
+										  word_eol[5] + 1, NULL, NULL, 0,
+										  tags_data->timestamp);
 		break;
 
 	case 321:
 		if (!fe_is_chanwindow (sess->server))
-			EMIT_SIGNAL (XP_TE_CHANLISTHEAD, serv->server_session, NULL, NULL, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANLISTHEAD, serv->server_session, NULL,
+										  NULL, NULL, NULL, 0, tags_data->timestamp);
 		break;
 
 	case 322:
@@ -640,7 +646,8 @@ process_numeric (session * sess, int n,
 
 	case 323:
 		if (!fe_is_chanwindow (sess->server))
-			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1], word[2], NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, serv->server_session, text, 
+										  word[1], word[2], NULL, 0, tags_data->timestamp);
 		else
 			fe_chan_list_end (sess->server);
 		break;
@@ -652,8 +659,8 @@ process_numeric (session * sess, int n,
 		if (sess->ignore_mode)
 			sess->ignore_mode = FALSE;
 		else
-			EMIT_SIGNAL (XP_TE_CHANMODES, sess, word[4], word_eol[5],
-							 NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODES, sess, word[4], word_eol[5],
+										  NULL, NULL, 0, tags_data->timestamp);
 		fe_update_mode_buttons (sess, 't', '-');
 		fe_update_mode_buttons (sess, 'n', '-');
 		fe_update_mode_buttons (sess, 's', '-');
@@ -672,14 +679,15 @@ process_numeric (session * sess, int n,
 			if (sess->ignore_date)
 				sess->ignore_date = FALSE;
 			else
-				channel_date (sess, word[4], word[5]);
+				channel_date (sess, word[4], word[5], tags_data);
 		}
 		break;
 
 	case 330:
 		if (!serv->skip_next_whois)
-			EMIT_SIGNAL (XP_TE_WHOIS_AUTH, whois_sess, word[4],
-							 word_eol[6] + 1, word[5], NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS_AUTH, whois_sess, word[4],
+										  word_eol[6] + 1, word[5], NULL, 0,
+										  tags_data->timestamp);
 		inbound_user_info (sess, NULL, NULL, NULL, NULL, word[4], NULL, word[5], 0xff);
 		break;
 
@@ -694,14 +702,15 @@ process_numeric (session * sess, int n,
 
 #if 0
 	case 338:  /* Undernet Real user@host, Real IP */
-		EMIT_SIGNAL (XP_TE_WHOIS_REALHOST, sess, word[4], word[5], word[6], 
-			(word_eol[7][0]==':') ? word_eol[7]+1 : word_eol[7], 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS_REALHOST, sess, word[4], word[5], word[6], 
+									  (word_eol[7][0]==':') ? word_eol[7]+1 : word_eol[7],
+									  0, tags_data->timestamp);
 		break;
 #endif
 
 	case 341:						  /* INVITE ACK */
-		EMIT_SIGNAL (XP_TE_UINVITE, sess, word[4], word[5], serv->servername,
-						 NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], word[5],
+									  serv->servername, NULL, 0, tags_data->timestamp);
 		break;
 
 	case 352:						  /* WHO */
@@ -717,8 +726,8 @@ process_numeric (session * sess, int n,
 
 			/* try to show only user initiated whos */
 			if (!who_sess || !who_sess->doing_who)
-				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
-								 word[2], NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, serv->server_session, text, word[1],
+											  word[2], NULL, 0, tags_data->timestamp);
 		}
 		break;
 
@@ -741,8 +750,9 @@ process_numeric (session * sess, int n,
 
 				/* try to show only user initiated whos */
 				if (!who_sess || !who_sess->doing_who)
-					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
-									 word[1], word[2], NULL, 0);
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, serv->server_session, text,
+												  word[1], word[2], NULL, 0,
+												  tags_data->timestamp);
 			} else
 				goto def;
 		}
@@ -755,14 +765,15 @@ process_numeric (session * sess, int n,
 			if (who_sess)
 			{
 				if (!who_sess->doing_who)
-					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
-									 word[1], word[2], NULL, 0);
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, serv->server_session, text,
+												  word[1], word[2], NULL, 0,
+												  tags_data->timestamp);
 				who_sess->doing_who = FALSE;
 			} else
 			{
 				if (!serv->doing_dns)
-					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
-									 word[1], word[2], NULL, 0);
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, serv->server_session, text,
+												  word[1], word[2], NULL, 0, tags_data->timestamp);
 				serv->doing_dns = FALSE;
 			}
 		}
@@ -822,15 +833,16 @@ process_numeric (session * sess, int n,
 
 	case 369:	/* WHOWAS end */
 	case 406:	/* WHOWAS error */
-		EMIT_SIGNAL (XP_TE_SERVTEXT, whois_sess, text, word[1], word[2], NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, whois_sess, text, word[1], word[2],
+									  NULL, 0, tags_data->timestamp);
 		serv->inside_whois = 0;
 		break;
 
 	case 372:	/* motd text */
 	case 375:	/* motd start */
 		if (!prefs.hex_irc_skip_motd || serv->motd_skipped)
-			EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL, NULL,
-							 NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_MOTD, serv->server_session, text, NULL,
+										  NULL, NULL, 0, tags_data->timestamp);
 		break;
 
 	case 376:	/* end of motd */
@@ -861,19 +873,23 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 471:
-		EMIT_SIGNAL (XP_TE_USERLIMIT, sess, word[4], NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_USERLIMIT, sess, word[4], NULL, NULL, NULL, 0,
+									  tags_data->timestamp);
 		break;
 
 	case 473:
-		EMIT_SIGNAL (XP_TE_INVITE, sess, word[4], NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITE, sess, word[4], NULL, NULL, NULL, 0,
+									  tags_data->timestamp);
 		break;
 
 	case 474:
-		EMIT_SIGNAL (XP_TE_BANNED, sess, word[4], NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_BANNED, sess, word[4], NULL, NULL, NULL, 0,
+									  tags_data->timestamp);
 		break;
 
 	case 475:
-		EMIT_SIGNAL (XP_TE_KEYWORD, sess, word[4], NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_KEYWORD, sess, word[4], NULL, NULL, NULL, 0,
+									  tags_data->timestamp);
 		break;
 
 	case 601:
@@ -916,14 +932,18 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 900:	/* successful SASL 'logged in as ' */
-		EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, word_eol[6]+1, word[1], word[2], NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, serv->server_session, 
+									  word_eol[6]+1, word[1], word[2], NULL, 0,
+									  tags_data->timestamp);
 		break;
 	case 903:	/* successful SASL auth */
 	case 904:	/* aborted SASL auth */
 	case 905:	/* failed SASL auth */
 	case 906:	/* registration completes before SASL auth */
 	case 907:	/* attempting to re-auth after a successful auth */
-		EMIT_SIGNAL (XP_TE_SASLRESPONSE, serv->server_session, word[1], word[2], word[3], ++word_eol[4], 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SASLRESPONSE, serv->server_session, word[1],
+									  word[2], word[3], ++word_eol[4], 0,
+									  tags_data->timestamp);
 		tcp_send_len (serv, "CAP END\r\n", 9);
 		break;
 
@@ -933,9 +953,9 @@ process_numeric (session * sess, int n,
 		{
 			/* some unknown WHOIS reply, ircd coders make them up weekly */
 			if (!serv->skip_next_whois)
-				EMIT_SIGNAL (XP_TE_WHOIS_SPECIAL, whois_sess, word[4],
-								(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
-								 word[2], NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS_SPECIAL, whois_sess, word[4],
+											  (word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
+											  word[2], NULL, 0, tags_data->timestamp);
 			return;
 		}
 
@@ -954,7 +974,8 @@ process_numeric (session * sess, int n,
 			else
 				sess=serv->server_session;
 			
-			EMIT_SIGNAL (XP_TE_SERVTEXT, sess, text, word[1], word[2], NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, sess, text, word[1], word[2],
+										  NULL, 0, tags_data->timestamp);
 		}
 	}
 }
@@ -1351,7 +1372,7 @@ handle_message_tag_time (const char *time, message_tags_data *tags_data)
  *
  * See http://ircv3.atheme.org/specification/message-tags-3.2 
  */
-/* TODO: we should ignore capabilities not enabled! */
+/* TODO:orium: we should ignore capabilities not enabled! */
 static void
 handle_message_tags (const char *tags_str, message_tags_data *tags_data)
 {
@@ -1462,7 +1483,7 @@ irc_inline (server *serv, char *buf, int len)
 		if (*text == ':')
 			text++;
 
-		process_numeric (sess, atoi (word[2]), word, word_eol, text, &tags_data); // TODO (data tags)
+		process_numeric (sess, atoi (word[2]), word, word_eol, text, &tags_data); // TODO:orium (data tags)
 	} else
 	{
 		process_named_msg (sess, type, word, word_eol, &tags_data);
