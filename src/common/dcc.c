@@ -509,8 +509,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	int len;
 	gsize utf_len;
 	char portbuf[32];
-	message_tags_data tags_data_ = MESSAGE_TAGS_DATA_INIT; /* TODO: this will be an argument */
-	const message_tags_data *tags_data = &tags_data_;
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	len = strlen (line);
 	if (dcc->serv->using_cp1255)
@@ -581,7 +580,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 		inbound_action (sess, dcc->serv->nick, dcc->nick, "", line + 8, FALSE, FALSE);
 	} else
 	{
-		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE, tags_data);
+		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE, &no_tags);
 	}
 	if (utf)
 		g_free (utf);
