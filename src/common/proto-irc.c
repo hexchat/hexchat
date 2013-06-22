@@ -29,6 +29,7 @@
 #endif
 
 #include "hexchat.h"
+#include "proto-irc.h"
 #include "ctcp.h"
 #include "fe.h"
 #include "ignore.h"
@@ -960,7 +961,7 @@ process_numeric (session * sess, int n,
 
 static void
 process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
-		   time_t timestamp)
+		   const message_tags_data const *tags_data)
 {
 	server *serv = sess->server;
 	char ip[128], nick[NICKLEN];
@@ -1174,7 +1175,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						{
 							if (ignore_check (word[1], IG_CHAN))
 								return;
-							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id, timestamp);
+							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id, tags_data);
 						} else
 						{
 							if (ignore_check (word[1], IG_PRIV))
@@ -1377,24 +1378,25 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
  * See http://ircv3.atheme.org/extensions/server-time-3.2
  */
 static void
-handle_message_tag_time (const char const *time, time_t *timestamp)
+handle_message_tag_time (const char const *time, message_tags_data *tags_data)
 {
 	/* TODO, obviously :P */
-	*timestamp = 44332211;
+	tags_data->timestamp = 44332211;
 }
 
 /* Handle message tags.
  *
  * See http://ircv3.atheme.org/specification/message-tags-3.2 
  */
+/* FIXME: we should ignore capabilities not enabled! */
 static void
-handle_message_tags (const char const *tags_str, time_t *timestamp)
+handle_message_tags (const char const *tags_str, message_tags_data *tags_data)
 {
 	char **tags;
 	int i;
 
 	/* FIXME We might want to avoid the allocation overhead here since 
-	 * this will be might called for every message from the server.
+	 * this might be called for every message from the server.
 	 */
 	tags = g_strsplit (tags_str, ";", 0);
 
@@ -1410,7 +1412,7 @@ handle_message_tags (const char const *tags_str, time_t *timestamp)
 		value++;
 
 		if (!strcmp (key, "time"))
-			handle_message_tag_time (value, timestamp);
+			handle_message_tag_time (value, tags_data);
 	}
 	
 	g_strfreev (tags);
@@ -1426,7 +1428,7 @@ irc_inline (server *serv, char *buf, int len)
 	char *word_eol[PDIWORDS+1];
 	char pdibuf_static[522]; /* 1 line can potentially be 512*6 in utf8 */
 	char *pdibuf = pdibuf_static;
-	time_t timestamp = 0; /* for server-time extension */
+	message_tags_data tags_data = MESSAGE_TAGS_DATA_INIT;
 
 	/* need more than 522? fall back to malloc */
 	if (len >= sizeof (pdibuf_static))
@@ -1449,7 +1451,7 @@ irc_inline (server *serv, char *buf, int len)
 		*sep = '\0';
 		buf = sep + 1;
 
-		handle_message_tags(tags, &timestamp);
+		handle_message_tags(tags, &tags_data);
 	}
 
 	url_check_line (buf, len);
@@ -1500,7 +1502,7 @@ irc_inline (server *serv, char *buf, int len)
 		process_numeric (sess, atoi (word[2]), word, word_eol, text);
 	} else
 	{
-		process_named_msg (sess, type, word, word_eol, timestamp);
+		process_named_msg (sess, type, word, word_eol, &tags_data);
 	}
 
 xit:
