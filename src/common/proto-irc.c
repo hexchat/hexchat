@@ -1256,7 +1256,8 @@ garbage:
 /* handle named messages that DON'T start with a ':' */
 
 static void
-process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol[])
+process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol[],
+								 const message_tags_data *tags_data)
 {
 	sess = sess->server->server_session;
 
@@ -1267,7 +1268,8 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 	}
 	if (!strncmp (buf, "ERROR", 5))
 	{
-		EMIT_SIGNAL (XP_TE_SERVERERROR, sess, buf + 7, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVERERROR, sess, buf + 7, NULL, NULL, NULL,
+									  0, tags_data->timestamp);
 		return;
 	}
 	if (!strncmp (buf, "NOTICE ", 7))
@@ -1275,7 +1277,9 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 		buf = word_eol[3];
 		if (*buf == ':')
 			buf++;
-		EMIT_SIGNAL (XP_TE_SERVNOTICE, sess, buf, sess->server->servername, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVNOTICE, sess, buf, 
+									  sess->server->servername, NULL, NULL, 0,
+									  tags_data->timestamp);
 		return;
 	}
 	if (!strncmp (buf, "AUTHENTICATE +", 14))	/* omit SASL "empty" responses */
@@ -1283,7 +1287,8 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 		return;
 	}
 
-	EMIT_SIGNAL (XP_TE_SERVTEXT, sess, buf, sess->server->servername, rawname, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, sess, buf, sess->server->servername,
+								  rawname, NULL, 0, tags_data->timestamp);
 }
 
 /* Handle time-server tags.
@@ -1444,7 +1449,7 @@ irc_inline (server *serv, char *buf, int len)
 
 	if (buf[0] != ':')
 	{
-		process_named_servermsg (sess, buf, word[0], word_eol); // TODO (data tags)
+		process_named_servermsg (sess, buf, word[0], word_eol, &tags_data);
 		goto xit;
 	}
 
@@ -1458,7 +1463,7 @@ irc_inline (server *serv, char *buf, int len)
 		process_numeric (sess, atoi (word[2]), word, word_eol, text, &tags_data); // TODO (data tags)
 	} else
 	{
-		process_named_msg (sess, type, word, word_eol, &tags_data); // TODO (data tags)
+		process_named_msg (sess, type, word, word_eol, &tags_data);
 	}
 
 xit:
