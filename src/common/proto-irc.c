@@ -1095,11 +1095,13 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				return;
 			
 			if (word[4][0] == ':')
-				EMIT_SIGNAL (XP_TE_INVITED, sess, word[4] + 1, nick,
-								 serv->servername, NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, word[4] + 1, nick,
+											  serv->servername, NULL, 0,
+											  tags_data->timestamp);
 			else
-				EMIT_SIGNAL (XP_TE_INVITED, sess, word[4], nick,
-								 serv->servername, NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, word[4], nick,
+											  serv->servername, NULL, 0,
+											  tags_data->timestamp);
 				
 			return;
 
