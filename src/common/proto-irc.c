@@ -482,7 +482,7 @@ process_numeric (session * sess, int n,
 		{
 			serv->use_who = FALSE;
 			if (prefs.hex_dcc_ip_from_server)
-				inbound_foundip (sess, strrchr(word[10], '@')+1);
+				inbound_foundip (sess, strrchr(word[10], '@')+1, tags_data);
 		}
 
 		goto def;
@@ -504,7 +504,7 @@ process_numeric (session * sess, int n,
 		goto def;
 
 	case 5:
-		inbound_005 (serv, word);
+		inbound_005 (serv, word, tags_data);
 		goto def;
 
 	case 263:	/*Server load is temporarily too heavy */
@@ -532,7 +532,7 @@ process_numeric (session * sess, int n,
 				{
 					char *at = strrchr (eq + 1, '@');
 					if (at)
-						inbound_foundip (sess, at + 1);
+						inbound_foundip (sess, at + 1, tags_data);
 				}
 			}
 
@@ -543,15 +543,15 @@ process_numeric (session * sess, int n,
 
 	case 303:
 		word[4]++;
-		notify_markonline (serv, word);
+		notify_markonline (serv, word, tags_data);
 		break;
 
 	case 305:
-		inbound_uback (serv);
+		inbound_uback (serv, tags_data);
 		goto def;
 
 	case 306:
-		inbound_uaway (serv);
+		inbound_uaway (serv, tags_data);
 		goto def;
 
 	case 312:
@@ -559,22 +559,24 @@ process_numeric (session * sess, int n,
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS3, whois_sess, word[4], word_eol[5],
 										  NULL, NULL, 0, tags_data->timestamp);
 		else
-			inbound_user_info (sess, NULL, NULL, NULL, word[5], word[4], NULL, NULL, 0xff);
+			inbound_user_info (sess, NULL, NULL, NULL, word[5], word[4], NULL, NULL,
+									 0xff, tags_data);
 		break;
 
 	case 311:	/* WHOIS 1st line */
 		serv->inside_whois = 1;
-		inbound_user_info_start (sess, word[4]);
+		inbound_user_info_start (sess, word[4], tags_data);
 		if (!serv->skip_next_whois)
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS1, whois_sess, word[4], word[5],
 										  word[6], word_eol[8] + 1, 0, tags_data->timestamp);
 		else
 			inbound_user_info (sess, NULL, word[5], word[6], NULL, word[4],
-									 word_eol[8][0] == ':' ? word_eol[8] + 1 : word_eol[8], NULL, 0xff);
+									 word_eol[8][0] == ':' ? word_eol[8] + 1 : word_eol[8],
+									 NULL, 0xff, tags_data);
 		break;
 
 	case 314:	/* WHOWAS */
-		inbound_user_info_start (sess, word[4]);
+		inbound_user_info_start (sess, word[4], tags_data);
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS1, whois_sess, word[4], word[5],
 									  word[6], word_eol[8] + 1, 0, tags_data->timestamp);
 		break;
@@ -639,8 +641,9 @@ process_numeric (session * sess, int n,
 			fe_add_chan_list (sess->server, word[4], word[5], word_eol[6] + 1);
 		} else
 		{
-			PrintTextf (serv->server_session, "%-16s %-7d %s\017\n",
-							word[4], atoi (word[5]), word_eol[6] + 1);
+			PrintTextTimeStampf (serv->server_session, tags_data->timestamp,
+										"%-16s %-7d %s\017\n", word[4], atoi (word[5]),
+										word_eol[6] + 1);
 		}
 		break;
 
@@ -688,16 +691,18 @@ process_numeric (session * sess, int n,
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS_AUTH, whois_sess, word[4],
 										  word_eol[6] + 1, word[5], NULL, 0,
 										  tags_data->timestamp);
-		inbound_user_info (sess, NULL, NULL, NULL, NULL, word[4], NULL, word[5], 0xff);
+		inbound_user_info (sess, NULL, NULL, NULL, NULL, word[4], NULL, word[5],
+								 0xff, tags_data);
 		break;
 
 	case 332:
 		inbound_topic (serv, word[4],
-						(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5]);
+							(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
+							tags_data);
 		break;
 
 	case 333:
-		inbound_topictime (serv, word[4], word[5], atol (word[6]));
+		inbound_topictime (serv, word[4], word[5], atol (word[6]), tags_data);
 		break;
 
 #if 0
@@ -722,7 +727,8 @@ process_numeric (session * sess, int n,
 				away = 1;
 
 			inbound_user_info (sess, word[4], word[5], word[6], word[7],
-									 word[8], word_eol[11], NULL, away);
+									 word[8], word_eol[11], NULL, away,
+									 tags_data);
 
 			/* try to show only user initiated whos */
 			if (!who_sess || !who_sess->doing_who)
@@ -746,7 +752,8 @@ process_numeric (session * sess, int n,
 
 				/* :server 354 yournick 152 #channel ~ident host servname nick H account :realname */
 				inbound_user_info (sess, word[5], word[6], word[7], word[8],
-									 word[9], word_eol[12]+1, word[11], away);
+										 word[9], word_eol[12]+1, word[11], away,
+										 tags_data);
 
 				/* try to show only user initiated whos */
 				if (!who_sess || !who_sess->doing_who)
@@ -807,7 +814,8 @@ process_numeric (session * sess, int n,
 
 	case 353:						  /* NAMES */
 		inbound_nameslist (serv, word[5],
-							(word_eol[6][0] == ':') ? word_eol[6] + 1 : word_eol[6]);
+								 (word_eol[6][0] == ':') ? word_eol[6] + 1 : word_eol[6],
+								 tags_data);
 		break;
 
 	case 366:
@@ -893,16 +901,16 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 601:
-		notify_set_offline (serv, word[4], FALSE);
+		notify_set_offline (serv, word[4], FALSE, tags_data);
 		break;
 
 	case 605:
-		notify_set_offline (serv, word[4], TRUE);
+		notify_set_offline (serv, word[4], TRUE, tags_data);
 		break;
 
 	case 600:
 	case 604:
-		notify_set_online (serv, word[4]);
+		notify_set_online (serv, word[4], tags_data);
 		break;
 
 	case 728:	/* +q-list entry */
@@ -921,14 +929,14 @@ process_numeric (session * sess, int n,
 		ex = strchr (word[4], '!'); /* only send the nick */
 		if (ex)
 			ex[0] = 0;
-		notify_set_online (serv, word[4] + 1);
+		notify_set_online (serv, word[4] + 1, tags_data);
 		break;
 
 	case 731: /* RPL_MONOFFLINE */
 		ex = strchr (word[4], '!'); /* only send the nick */
 		if (ex)
 			ex[0] = 0;
-		notify_set_offline (serv, word[4] + 1, FALSE);
+		notify_set_offline (serv, word[4] + 1, FALSE, tags_data);
 		break;
 
 	case 900:	/* successful SASL 'logged in as ' */
