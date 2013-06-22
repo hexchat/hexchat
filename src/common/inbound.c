@@ -1522,3 +1522,133 @@ inbound_identified (server *serv)	/* 'MODE +e MYSELF' on freenode */
 		check_autojoin_channels (serv);
 	}
 }
+
+void
+inbound_cap_ack (server *serv, char *nick, char *extensions,
+					  const message_tags_data *tags_data)
+{
+	char *pass; /* buffer for SASL password */
+
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, serv->server_session, nick, extensions,
+								  NULL, NULL, 0, tags_data->timestamp);
+
+	if (strstr (extensions, "identify-msg") != 0)
+	{
+		serv->have_idmsg = TRUE;
+	}
+
+	if (strstr (extensions, "multi-prefix") != 0)
+	{
+		serv->have_namesx = TRUE;
+	}
+
+	if (strstr (extensions, "away-notify") != 0)
+	{
+		serv->have_awaynotify = TRUE;
+	}
+
+	if (strstr (extensions, "account-notify") != 0)
+	{
+		serv->have_accnotify = TRUE;
+	}
+					
+	if (strstr (extensions, "extended-join") != 0)
+	{
+		serv->have_extjoin = TRUE;
+	}
+
+	if (strstr (extensions, "sasl") != 0)
+	{
+		char *user;
+
+		serv->have_sasl = TRUE;
+
+		user = (((ircnet *)serv->network)->user) 
+			? (((ircnet *)serv->network)->user) : prefs.hex_irc_user_name;
+
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SASLAUTH, serv->server_session, user, NULL,
+									  NULL,	NULL,	0,	tags_data->timestamp);
+		tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
+
+		pass = encode_sasl_pass (user, serv->password);
+		tcp_sendf (serv, "AUTHENTICATE %s\r\n", pass);
+		free (pass);
+	}
+}
+
+void
+inbound_cap_ls (server *serv, char *nick, char *extensions,
+					 const message_tags_data *tags_data)
+{
+	char buffer[256];	/* buffer for requesting capabilities and emitting the signal */
+	guint32 want_cap; /* format the CAP REQ string based on previous capabilities being requested or not */
+	guint32 want_sasl; /* CAP END shouldn't be sent when SASL is requested, it needs further responses */
+
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPLIST, serv->server_session, nick, extensions,
+								  NULL, NULL, 0, tags_data->timestamp);
+	want_cap = 0;
+	want_sasl = 0;
+
+	strcpy (buffer, "CAP REQ :");
+
+	if (strstr (extensions, "identify-msg") != 0)
+	{
+		strcat (buffer, "identify-msg ");
+		want_cap = 1;
+	}
+	if (strstr (extensions, "multi-prefix") != 0)
+	{
+		strcat (buffer, "multi-prefix ");
+		want_cap = 1;
+	}
+	if (strstr (extensions, "away-notify") != 0)
+	{
+		strcat (buffer, "away-notify ");
+		want_cap = 1;
+	}
+	if (strstr (extensions, "account-notify") != 0)
+	{
+		strcat (buffer, "account-notify ");
+		want_cap = 1;
+	}
+	if (strstr (extensions, "extended-join") != 0)
+	{
+		strcat (buffer, "extended-join ");
+		want_cap = 1;
+	}
+	/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
+	if (strstr (extensions, "sasl") != 0 && strlen (serv->password) != 0 && serv->loginmethod == LOGIN_SASL)
+	{
+		strcat (buffer, "sasl ");
+		want_cap = 1;
+		want_sasl = 1;
+	}
+
+	if (want_cap)
+	{
+		/* buffer + 9 = emit buffer without "CAP REQ :" */
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPREQ, serv->server_session,
+									  buffer + 9, NULL, NULL, NULL, 0,
+									  tags_data->timestamp);
+		tcp_sendf (serv, "%s\r\n", buffer);
+	}
+	if (!want_sasl)
+	{
+		/* if we use SASL, CAP END is dealt via raw numerics */
+		tcp_send_len (serv, "CAP END\r\n", 9);
+	}
+}
+
+void
+inbound_cap_nak (server *serv, const message_tags_data *tags_data)
+{
+	tcp_send_len (serv, "CAP END\r\n", 9);
+}
+
+void
+inbound_cap_list (server *serv, char *nick, char *extensions,
+						const message_tags_data *tags_data)
+{
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, serv->server_session, nick, extensions,
+								  NULL, NULL, 0, tags_data->timestamp);
+}
