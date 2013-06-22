@@ -1372,16 +1372,14 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 
 /* Handle time-server tags.
  * 
- * Sets timestamp to the correct time. This needs to take into account that
- * time is in UTC, so we should convert it to our local time.
+ * Sets tags_data->timestamp to the correct time (in unix time). 
+ * This received time is always in UTC.
  *
  * See http://ircv3.atheme.org/extensions/server-time-3.2
  */
 static void
 handle_message_tag_time (const char const *time, message_tags_data *tags_data)
 {
-	time_t timestamp_utc = 0;
-
 	/* The time format defined in the ircv3.2 specification is
 	 *       YYYY-MM-DDThh:mm:ss.sssZ
 	 * but znc simply sends a unix time (with 3 decimal places for miliseconds)
@@ -1405,10 +1403,13 @@ handle_message_tag_time (const char const *time, message_tags_data *tags_data)
 
 		t.tm_isdst = 0; /* day light saving time */
 
-		timestamp_utc = mktime (&t);
+		tags_data->timestamp = mktime (&t);
 
-		if (timestamp_utc < 0)
+		if (tags_data->timestamp < 0)
+		{
+			tags_data->timestamp = 0;
 			return;
+		}
 	}
 	else
 	{
@@ -1419,11 +1420,8 @@ handle_message_tag_time (const char const *time, message_tags_data *tags_data)
 		if (sscanf (time, "%lld", &t) != 1)
 			return;
 
-		timestamp_utc = (time_t) t;
+		tags_data->timestamp = (time_t) t;
 	}
-
-	/* TODO, utc -> local time conversion (and take into accound DST) */
-	tags_data->timestamp = timestamp_utc;
 }
 
 /* Handle message tags.
