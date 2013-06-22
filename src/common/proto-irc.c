@@ -1178,14 +1178,16 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						if (g_ascii_strncasecmp (text, "DCC ", 4) == 0)
 							/* redo this with handle_quotes TRUE */
 							process_data_init (word[1], word_eol[1], word, word_eol, TRUE, FALSE);
-						ctcp_handle (sess, to, nick, ip, text, word, word_eol, id);
+						ctcp_handle (sess, to, nick, ip, text, word, word_eol, id,
+										 tags_data);
 					} else
 					{
 						if (is_channel (serv, to))
 						{
 							if (ignore_check (word[1], IG_CHAN))
 								return;
-							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id, tags_data);
+							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id,
+												  tags_data);
 						} else
 						{
 							if (ignore_check (word[1], IG_PRIV))
