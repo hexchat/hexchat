@@ -454,7 +454,8 @@ channel_date (session *sess, char *chan, char *timestr)
 
 static void
 process_numeric (session * sess, int n,
-					  char *word[], char *word_eol[], char *text)
+					  char *word[], char *word_eol[], char *text,
+					  const message_tags_data *tags_data)
 {
 	server *serv = sess->server;
 	/* show whois is the server tab */
@@ -660,7 +661,7 @@ process_numeric (session * sess, int n,
 		fe_update_mode_buttons (sess, 'm', '-');
 		fe_update_mode_buttons (sess, 'l', '-');
 		fe_update_mode_buttons (sess, 'k', '-');
-		handle_mode (serv, word, word_eol, "", TRUE);
+		handle_mode (serv, word, word_eol, "", TRUE, tags_data);
 		break;
 
 	case 329:
@@ -1028,7 +1029,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			return;
 
 		case WORDL('M','O','D','E'):
-			handle_mode (serv, word, word_eol, nick, FALSE);	/* modes.c */
+			handle_mode (serv, word, word_eol, nick, FALSE, tags_data);	/* modes.c */
 			return;
 
 		case WORDL('N','I','C','K'):
@@ -1541,7 +1542,7 @@ irc_inline (server *serv, char *buf, int len)
 		if (*text == ':')
 			text++;
 
-		process_numeric (sess, atoi (word[2]), word, word_eol, text); // TODO (data tags)
+		process_numeric (sess, atoi (word[2]), word, word_eol, text, &tags_data); // TODO (data tags)
 	} else
 	{
 		process_named_msg (sess, type, word, word_eol, &tags_data); // TODO (data tags)
