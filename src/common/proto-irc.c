@@ -1199,7 +1199,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 
 		case WORDL('T','O','P','I'):
 			inbound_topicnew (serv, nick, word[3],
-									(word_eol[4][0] == ':') ? word_eol[4] + 1 : word_eol[4]);
+									(word_eol[4][0] == ':') ? word_eol[4] + 1 : word_eol[4],
+									tags_data);
 			return;
 
 		case WORDL('W','A','L','L'):

@@ -39,7 +39,8 @@ void inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip,
 							int id, const message_tags_data *tags_data);
 void inbound_quit (server *serv, char *nick, char *ip, char *reason,
 						 const message_tags_data *tags_data);
-void inbound_topicnew (server *serv, char *nick, char *chan, char *topic);
+void inbound_topicnew (server *serv, char *nick, char *chan, char *topic,
+							  const message_tags_data *tags_data);
 void inbound_join (server *serv, char *chan, char *user, char *ip, 
 						 char *account, char *realname, 
 						 const message_tags_data *tags_data);
