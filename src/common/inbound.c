@@ -1004,7 +1004,8 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 }
 
 void
-inbound_away (server *serv, char *nick, char *msg)
+inbound_away (server *serv, char *nick, char *msg,
+				  const message_tags_data *tags_data)
 {
 	struct away_msg *away = server_away_find_message (serv, nick);
 	session *sess = NULL;
@@ -1031,7 +1032,8 @@ inbound_away (server *serv, char *nick, char *msg)
 
 	/* possibly hide the output */
 	if (!serv->inside_whois || !serv->skip_next_whois)
-		EMIT_SIGNAL (XP_TE_WHOIS5, sess, nick, msg, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS5, sess, nick, msg, NULL, NULL, 0,
+									  tags_data->timestamp);
 
 	list = sess_list;
 	while (list)
@@ -1044,7 +1046,8 @@ inbound_away (server *serv, char *nick, char *msg)
 }
 
 void
-inbound_away_notify (server *serv, char *nick, char *reason)
+inbound_away_notify (server *serv, char *nick, char *reason,
+							const message_tags_data *tags_data)
 {
 	session *sess = NULL;
 	GSList *list;
@@ -1059,9 +1062,11 @@ inbound_away_notify (server *serv, char *nick, char *reason)
 			if (sess == serv->front_session && notify_is_in_list (serv, nick))
 			{
 				if (reason)
-					EMIT_SIGNAL (XP_TE_NOTIFYAWAY, sess, nick, reason, NULL, NULL, 0);
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYAWAY, sess, nick, reason, NULL,
+												  NULL, 0, tags_data->timestamp);
 				else
-					EMIT_SIGNAL (XP_TE_NOTIFYBACK, sess, nick, NULL, NULL, NULL, 0);
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYBACK, sess, nick, NULL, NULL, 
+												  NULL, 0, tags_data->timestamp);
 			}
 		}
 		list = list->next;

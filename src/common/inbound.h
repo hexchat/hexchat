@@ -54,8 +54,10 @@ void inbound_ping_reply (session *sess, char *timestring, char *from,
 								 const message_tags_data *tags_data);
 void inbound_nameslist (server *serv, char *chan, char *names);
 int inbound_nameslist_end (server *serv, char *chan);
-void inbound_away (server *serv, char *nick, char *msg);
-void inbound_away_notify (server *serv, char *nick, char *reason);
+void inbound_away (server *serv, char *nick, char *msg,
+						 const message_tags_data *tags_data);
+void inbound_away_notify (server *serv, char *nick, char *reason,
+								  const message_tags_data *tags_data);
 void inbound_login_start (session *sess, char *nick, char *servname,
 								  const message_tags_data *tags_data);
 void inbound_login_end (session *sess, char *text);

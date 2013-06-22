@@ -515,7 +515,8 @@ process_numeric (session * sess, int n,
 
 	case 301:
 		inbound_away (serv, word[4],
-						(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5]);
+						  (word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
+						  tags_data);
 		break;
 
 	case 302:
@@ -1068,7 +1069,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 
 		case WORDL('A','W','A','Y'):
 			inbound_away_notify (serv, nick,
-						(word_eol[3][0] == ':') ? word_eol[3] + 1 : NULL);
+										(word_eol[3][0] == ':') ? word_eol[3] + 1 : NULL,
+										tags_data);
 			return;
 		}
 
