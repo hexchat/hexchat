@@ -1616,6 +1616,13 @@ inbound_cap_ls (server *serv, char *nick, char *extensions,
 		strcat (buffer, "extended-join ");
 		want_cap = 1;
 	}
+
+	/* TODO:orium for testing */
+	if (strstr (extensions, "znc.in/server-time") != 0)
+	{
+		strcat (buffer, "znc.in/server-time ");
+	}
+
 	/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
 	if (strstr (extensions, "sasl") != 0 && strlen (serv->password) != 0 && serv->loginmethod == LOGIN_SASL)
 	{
