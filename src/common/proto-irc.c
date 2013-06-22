@@ -1207,7 +1207,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			text = word_eol[3];
 			if (*text == ':')
 				text++;
-			EMIT_SIGNAL (XP_TE_WALLOPS, sess, nick, text, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_WALLOPS, sess, nick, text, NULL, NULL, 0,
+										  tags_data->timestamp);
 			return;
 		}
 	}
