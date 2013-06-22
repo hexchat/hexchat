@@ -1559,25 +1559,18 @@ inbound_cap_ack (server *serv, char *nick, char *extensions,
 
 	if (strstr (extensions, "sasl") != 0)
 	{
+		char *user;
+
 		serv->have_sasl = TRUE;
-		EMIT_SIGNAL_TIMESTAMP
-			(
-				XP_TE_SASLAUTH,
-				serv->server_session,
-				(((ircnet *)serv->network)->user) ? (((ircnet *)serv->network)->user) : prefs.hex_irc_user_name,
-				NULL,
-				NULL,
-				NULL,
-				0,
-				tags_data->timestamp
-				);
+
+		user = (((ircnet *)serv->network)->user) 
+			? (((ircnet *)serv->network)->user) : prefs.hex_irc_user_name;
+
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SASLAUTH, serv->server_session, user, NULL,
+									  NULL,	NULL,	0,	tags_data->timestamp);
 		tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
-		pass = encode_sasl_pass
-			(
-				(((ircnet *)serv->network)->user) ? (((ircnet *)serv->network)->user) : prefs.hex_irc_user_name,
-				serv->password
-				);
+		pass = encode_sasl_pass (user, serv->password);
 		tcp_sendf (serv, "AUTHENTICATE %s\r\n", pass);
 		free (pass);
 	}
