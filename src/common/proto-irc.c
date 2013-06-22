@@ -1372,23 +1372,63 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 
 /* Handle time-server tags.
  * 
- * Sets timestamp to the correct time. This needs to take into account that
- * time is in UTC, so we should convert it to our local time.
+ * Sets tags_data->timestamp to the correct time (in unix time). 
+ * This received time is always in UTC.
  *
  * See http://ircv3.atheme.org/extensions/server-time-3.2
  */
 static void
 handle_message_tag_time (const char const *time, message_tags_data *tags_data)
 {
-	/* TODO, obviously :P */
-	tags_data->timestamp = 44332211;
+	/* The time format defined in the ircv3.2 specification is
+	 *       YYYY-MM-DDThh:mm:ss.sssZ
+	 * but znc simply sends a unix time (with 3 decimal places for miliseconds)
+	 * so we might as well support both.
+	 */
+	if (!*time)
+		return;
+	
+	if (time[strlen (time) - 1] == 'Z')
+	{
+		/* as defined in the specification */
+		struct tm t;
+		int z;
+
+		/* we ignore the milisecond part */
+		z = sscanf (time, "%d-%d-%dT%d:%d:%d", &t.tm_year, &t.tm_mon, &t.tm_mday,
+						&t.tm_hour, &t.tm_min, &t.tm_sec);
+
+		if (z != 6)
+			return;
+
+		t.tm_isdst = 0; /* day light saving time */
+
+		tags_data->timestamp = mktime (&t);
+
+		if (tags_data->timestamp < 0)
+		{
+			tags_data->timestamp = 0;
+			return;
+		}
+	}
+	else
+	{
+		/* znc */
+		long long int t;
+
+		/* we ignore the milisecond part */
+		if (sscanf (time, "%lld", &t) != 1)
+			return;
+
+		tags_data->timestamp = (time_t) t;
+	}
 }
 
 /* Handle message tags.
  *
  * See http://ircv3.atheme.org/specification/message-tags-3.2 
  */
-/* FIXME: we should ignore capabilities not enabled! */
+/* TODO: we should ignore capabilities not enabled! */
 static void
 handle_message_tags (const char const *tags_str, message_tags_data *tags_data)
 {
