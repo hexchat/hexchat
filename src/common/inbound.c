@@ -152,14 +152,13 @@ inbound_make_idtext (server *serv, char *idtext, int max, int id)
 }
 
 void
-inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
+inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
+					  const message_tags_data *tags_data)
 {
 	session *sess;
 	struct User *user;
 	char idtext[64];
 	gboolean nodiag = FALSE;
-	message_tags_data tags_data_ = MESSAGE_TAGS_DATA_INIT; /* TODO: this will be an argument */
-	const message_tags_data const *tags_data = &tags_data_;
 
 	sess = find_dialog (serv, from);
 
@@ -210,9 +209,11 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
 
 	if (sess->type == SESS_DIALOG && !nodiag)
-		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0,
+									  tags_data->timestamp);
 	else
-		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0, 
+									  tags_data->timestamp);
 }
 
 /* used for Alerts section. Masks can be separated by commas and spaces. */
@@ -414,7 +415,7 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int
 void
 inbound_chanmsg (server *serv, session *sess, char *chan, char *from, 
 		 char *text, char fromme, int id, 
-		 const message_tags_data const *tags_data)
+		 const message_tags_data *tags_data)
 {
 	struct User *user;
 	int hilight = FALSE;

@@ -961,7 +961,7 @@ process_numeric (session * sess, int n,
 
 static void
 process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
-		   const message_tags_data const *tags_data)
+						 const message_tags_data *tags_data)
 {
 	server *serv = sess->server;
 	char ip[128], nick[NICKLEN];
@@ -1180,7 +1180,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						{
 							if (ignore_check (word[1], IG_PRIV))
 								return;
-							inbound_privmsg (serv, nick, ip, text, id);
+							inbound_privmsg (serv, nick, ip, text, id, tags_data);
 						}
 					}
 				}
@@ -1378,7 +1378,7 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
  * See http://ircv3.atheme.org/extensions/server-time-3.2
  */
 static void
-handle_message_tag_time (const char const *time, message_tags_data *tags_data)
+handle_message_tag_time (const char *time, message_tags_data *tags_data)
 {
 	/* The time format defined in the ircv3.2 specification is
 	 *       YYYY-MM-DDThh:mm:ss.sssZ
@@ -1430,7 +1430,7 @@ handle_message_tag_time (const char const *time, message_tags_data *tags_data)
  */
 /* TODO: we should ignore capabilities not enabled! */
 static void
-handle_message_tags (const char const *tags_str, message_tags_data *tags_data)
+handle_message_tags (const char *tags_str, message_tags_data *tags_data)
 {
 	char **tags;
 	int i;
@@ -1528,7 +1528,7 @@ irc_inline (server *serv, char *buf, int len)
 
 	if (buf[0] != ':')
 	{
-		process_named_servermsg (sess, buf, word[0], word_eol);
+		process_named_servermsg (sess, buf, word[0], word_eol); // TODO (data tags)
 		goto xit;
 	}
 
@@ -1539,10 +1539,10 @@ irc_inline (server *serv, char *buf, int len)
 		if (*text == ':')
 			text++;
 
-		process_numeric (sess, atoi (word[2]), word, word_eol, text);
+		process_numeric (sess, atoi (word[2]), word, word_eol, text); // TODO (data tags)
 	} else
 	{
-		process_named_msg (sess, type, word, word_eol, &tags_data);
+		process_named_msg (sess, type, word, word_eol, &tags_data); // TODO (data tags)
 	}
 
 xit:
