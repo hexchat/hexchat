@@ -818,7 +818,8 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason,
 }
 
 void
-inbound_account (server *serv, char *nick, char *account)
+inbound_account (server *serv, char *nick, char *account,
+					  const message_tags_data *tags_data)
 {
 	session *sess = NULL;
 	GSList *list;

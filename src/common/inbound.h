@@ -25,7 +25,8 @@
 void inbound_next_nick (session *sess, char *nick, int error);
 void inbound_uback (server *serv);
 void inbound_uaway (server *serv);
-void inbound_account (server *serv, char *nick, char *account);
+void inbound_account (server *serv, char *nick, char *account,
+							 const message_tags_data *tags_data);
 void inbound_part (server *serv, char *chan, char *user, char *ip, char *reason,
 						 const message_tags_data *tags_data);
 void inbound_upart (server *serv, char *chan, char *ip, char *reason,

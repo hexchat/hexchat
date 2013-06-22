@@ -1087,7 +1087,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		{
 
 		case WORDL('A','C','C','O'):
-			inbound_account (serv, nick, word[3]);
+			inbound_account (serv, nick, word[3], tags_data);
 			return;
 			
 		case WORDL('I','N','V','I'):
