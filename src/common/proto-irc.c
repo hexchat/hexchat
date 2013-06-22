@@ -1393,22 +1393,36 @@ handle_message_tag_time (const char const *time, message_tags_data *tags_data)
 	if (time[strlen (time) - 1] == 'Z')
 	{
 		/* as defined in the specification */
+		struct tm t;
+		int z;
 
-		/* TODO */
+		/* we ignore the milisecond part */
+		z = sscanf (time, "%d-%d-%dT%d:%d:%d", &t.tm_year, &t.tm_mon, &t.tm_mday,
+						&t.tm_hour, &t.tm_min, &t.tm_sec);
+
+		if (z != 6)
+			return;
+
+		t.tm_isdst = 0; /* day light saving time */
+
+		timestamp_utc = mktime (&t);
+
+		if (timestamp_utc < 0)
+			return;
 	}
 	else
 	{
 		/* znc */
-		unsigned long long int t;
+		long long int t;
 
 		/* we ignore the milisecond part */
-		if (sscanf (time, "%llu", &t) != 1)
+		if (sscanf (time, "%lld", &t) != 1)
 			return;
 
 		timestamp_utc = (time_t) t;
 	}
 
-	/* TODO, utc -> local time conversion */
+	/* TODO, utc -> local time conversion (and take into accound DST) */
 	tags_data->timestamp = timestamp_utc;
 }
 
@@ -1416,7 +1430,7 @@ handle_message_tag_time (const char const *time, message_tags_data *tags_data)
  *
  * See http://ircv3.atheme.org/specification/message-tags-3.2 
  */
-/* FIXME: we should ignore capabilities not enabled! */
+/* TODO: we should ignore capabilities not enabled! */
 static void
 handle_message_tags (const char const *tags_str, message_tags_data *tags_data)
 {
