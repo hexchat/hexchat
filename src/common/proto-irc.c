@@ -1380,8 +1380,36 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 static void
 handle_message_tag_time (const char const *time, message_tags_data *tags_data)
 {
-	/* TODO, obviously :P */
-	tags_data->timestamp = 44332211;
+	time_t timestamp_utc = 0;
+
+	/* The time format defined in the ircv3.2 specification is
+	 *       YYYY-MM-DDThh:mm:ss.sssZ
+	 * but znc simply sends a unix time (with 3 decimal places for miliseconds)
+	 * so we might as well support both.
+	 */
+	if (!*time)
+		return;
+	
+	if (time[strlen (time) - 1] == 'Z')
+	{
+		/* as defined in the specification */
+
+		/* TODO */
+	}
+	else
+	{
+		/* znc */
+		unsigned long long int t;
+
+		/* we ignore the milisecond part */
+		if (sscanf (time, "%llu", &t) != 1)
+			return;
+
+		timestamp_utc = (time_t) t;
+	}
+
+	/* TODO, utc -> local time conversion */
+	tags_data->timestamp = timestamp_utc;
 }
 
 /* Handle message tags.
