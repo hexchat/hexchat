@@ -1056,7 +1056,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 
 		case WORDL('P','O','N','G'):
 			inbound_ping_reply (serv->server_session,
-								 (word[4][0] == ':') ? word[4] + 1 : word[4], word[3]);
+									  (word[4][0] == ':') ? word[4] + 1 : word[4],
+									  word[3], tags_data);
 			return;
 
 		case WORDL('Q','U','I','T'):
@@ -1135,7 +1136,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 
 				if (!ignore_check (word[1], IG_NOTI))
-					inbound_notice (serv, word[3], nick, text, ip, id);
+					inbound_notice (serv, word[3], nick, text, ip, id, tags_data);
 			}
 			return;
 

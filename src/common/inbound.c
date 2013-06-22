@@ -831,7 +831,8 @@ inbound_account (server *serv, char *nick, char *account)
 }
 
 void
-inbound_ping_reply (session *sess, char *timestring, char *from)
+inbound_ping_reply (session *sess, char *timestring, char *from,
+						  const message_tags_data *tags_data)
 {
 	unsigned long tim, nowtim, dif;
 	int lag = 0;
@@ -862,11 +863,13 @@ inbound_ping_reply (session *sess, char *timestring, char *from)
 		if (sess->server->lag_sent)
 			sess->server->lag_sent = 0;
 		else
-			EMIT_SIGNAL (XP_TE_PINGREP, sess, from, "?", NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_PINGREP, sess, from, "?", NULL, NULL, 0,
+										  tags_data->timestamp);
 	} else
 	{
 		snprintf (outbuf, sizeof (outbuf), "%ld.%ld%ld", dif / 1000000, (dif / 100000) % 10, dif % 10);
-		EMIT_SIGNAL (XP_TE_PINGREP, sess, from, outbuf, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_PINGREP, sess, from, outbuf, NULL, NULL, 0,
+									  tags_data->timestamp);
 	}
 }
 
@@ -886,7 +889,8 @@ find_session_from_type (int type, server *serv)
 }
 
 void
-inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
+inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
+					 const message_tags_data *tags_data)
 {
 	char *po,*ptr=to;
 	session *sess = 0;
@@ -977,7 +981,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 		msg++;
 		if (!strncmp (msg, "PING", 4))
 		{
-			inbound_ping_reply (sess, msg + 5, nick);
+			inbound_ping_reply (sess, msg + 5, nick, tags_data);
 			return;
 		}
 	}
@@ -986,11 +990,14 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 		po[0] = 0;
 
 	if (server_notice)
-		EMIT_SIGNAL (XP_TE_SERVNOTICE, sess, msg, nick, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVNOTICE, sess, msg, nick, NULL, NULL, 0,
+									  tags_data->timestamp);
 	else if (ptr)
-		EMIT_SIGNAL (XP_TE_CHANNOTICE, sess, nick, to, msg, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANNOTICE, sess, nick, to, msg, NULL, 0,
+									  tags_data->timestamp);
 	else
-		EMIT_SIGNAL (XP_TE_NOTICE, sess, nick, msg, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTICE, sess, nick, msg, NULL, NULL, 0,
+									  tags_data->timestamp);
 }
 
 void
