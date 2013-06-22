@@ -414,8 +414,8 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int
 
 void
 inbound_chanmsg (server *serv, session *sess, char *chan, char *from, 
-		 char *text, char fromme, int id, 
-		 const message_tags_data *tags_data)
+					  char *text, char fromme, int id, 
+					  const message_tags_data *tags_data)
 {
 	struct User *user;
 	int hilight = FALSE;
