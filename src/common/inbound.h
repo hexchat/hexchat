@@ -28,8 +28,10 @@ void inbound_uaway (server *serv);
 void inbound_account (server *serv, char *nick, char *account);
 void inbound_part (server *serv, char *chan, char *user, char *ip, char *reason);
 void inbound_upart (server *serv, char *chan, char *ip, char *reason);
-void inbound_ukick (server *serv, char *chan, char *kicker, char *reason);
-void inbound_kick (server *serv, char *chan, char *user, char *kicker, char *reason);
+void inbound_ukick (server *serv, char *chan, char *kicker, char *reason,
+						  const message_tags_data *tags_data);
+void inbound_kick (server *serv, char *chan, char *user, char *kicker,
+						 char *reason, const message_tags_data *tags_data);
 void inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id);
 void inbound_quit (server *serv, char *nick, char *ip, char *reason);
 void inbound_topicnew (server *serv, char *nick, char *chan, char *topic);

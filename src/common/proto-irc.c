@@ -1015,15 +1015,16 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 					if (*reason == ':')
 						reason++;
 					if (!strcmp (kicked, serv->nick))
-	 					inbound_ukick (serv, word[3], nick, reason);
+	 					inbound_ukick (serv, word[3], nick, reason, tags_data);
 					else
-						inbound_kick (serv, word[3], kicked, nick, reason);
+						inbound_kick (serv, word[3], kicked, nick, reason, tags_data);
 				}
 			}
 			return;
 
 		case WORDL('K','I','L','L'):
-			EMIT_SIGNAL (XP_TE_KILL, sess, nick, word_eol[5], NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_KILL, sess, nick, word_eol[5], NULL, NULL,
+										  0, tags_data->timestamp);
 			return;
 
 		case WORDL('M','O','D','E'):
