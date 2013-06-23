@@ -1662,12 +1662,6 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 			 * a option in the preferences (or per server).
 			 */
 		}
-
-		if (strstr (extension, "server-time") != NULL)
-		{
-			strcat (buffer, extension);
-			strcat (buffer, " ");
-		}
 		
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
 		if (serv->loginmethod == LOGIN_SASL
