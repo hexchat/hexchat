@@ -1384,9 +1384,9 @@ handle_message_tag_time (const char *time, message_tags_data *tags_data)
  *
  * See http://ircv3.atheme.org/specification/message-tags-3.2 
  */
-/* TODO:orium: we should ignore capabilities not enabled! */
 static void
-handle_message_tags (const char *tags_str, message_tags_data *tags_data)
+handle_message_tags (server *serv, const char *tags_str,
+							message_tags_data *tags_data)
 {
 	char **tags;
 	int i;
@@ -1407,7 +1407,7 @@ handle_message_tags (const char *tags_str, message_tags_data *tags_data)
 		*value = '\0';
 		value++;
 
-		if (!strcmp (key, "time"))
+		if (serv->have_server_time && !strcmp (key, "time"))
 			handle_message_tag_time (value, tags_data);
 	}
 	
@@ -1447,7 +1447,7 @@ irc_inline (server *serv, char *buf, int len)
 		*sep = '\0';
 		buf = sep + 1;
 
-		handle_message_tags(tags, &tags_data);
+		handle_message_tags(serv, tags, &tags_data);
 	}
 
 	url_check_line (buf, len);
@@ -1495,7 +1495,7 @@ irc_inline (server *serv, char *buf, int len)
 		if (*text == ':')
 			text++;
 
-		process_numeric (sess, atoi (word[2]), word, word_eol, text, &tags_data); // TODO:orium (data tags)
+		process_numeric (sess, atoi (word[2]), word, word_eol, text, &tags_data);
 	} else
 	{
 		process_named_msg (sess, type, word, word_eol, &tags_data);

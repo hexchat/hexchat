@@ -1239,7 +1239,8 @@ inbound_next_nick (session *sess, char *nick, int error,
 		break;
 
 	default:
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKFAIL, sess, NULL, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKFAIL, sess, NULL, NULL, NULL, NULL, 0,
+									  tags_data->timestamp);
 	}
 }
 
@@ -1549,32 +1550,37 @@ inbound_cap_ack (server *serv, char *nick, char *extensions,
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, serv->server_session, nick, extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
 
-	if (strstr (extensions, "identify-msg") != 0)
+	if (strstr (extensions, "identify-msg") != NULL)
 	{
 		serv->have_idmsg = TRUE;
 	}
 
-	if (strstr (extensions, "multi-prefix") != 0)
+	if (strstr (extensions, "multi-prefix") != NULL)
 	{
 		serv->have_namesx = TRUE;
 	}
 
-	if (strstr (extensions, "away-notify") != 0)
+	if (strstr (extensions, "away-notify") != NULL)
 	{
 		serv->have_awaynotify = TRUE;
 	}
 
-	if (strstr (extensions, "account-notify") != 0)
+	if (strstr (extensions, "account-notify") != NULL)
 	{
 		serv->have_accnotify = TRUE;
 	}
 					
-	if (strstr (extensions, "extended-join") != 0)
+	if (strstr (extensions, "extended-join") != NULL)
 	{
 		serv->have_extjoin = TRUE;
 	}
 
-	if (strstr (extensions, "sasl") != 0)
+	if (strstr (extensions, "server-time") != NULL)
+	{
+		serv->have_server_time = TRUE;
+	}
+
+	if (strstr (extensions, "sasl") != NULL)
 	{
 		char *user;
 
@@ -1594,52 +1600,81 @@ inbound_cap_ack (server *serv, char *nick, char *extensions,
 }
 
 void
-inbound_cap_ls (server *serv, char *nick, char *extensions,
+inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 					 const message_tags_data *tags_data)
 {
 	char buffer[256];	/* buffer for requesting capabilities and emitting the signal */
 	guint32 want_cap; /* format the CAP REQ string based on previous capabilities being requested or not */
 	guint32 want_sasl; /* CAP END shouldn't be sent when SASL is requested, it needs further responses */
+	char **extensions;
+	int i;
 
-	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPLIST, serv->server_session, nick, extensions,
-								  NULL, NULL, 0, tags_data->timestamp);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPLIST, serv->server_session, nick,
+								  extensions_str, NULL, NULL, 0, tags_data->timestamp);
 	want_cap = 0;
 	want_sasl = 0;
 
+	extensions = g_strsplit (extensions_str, " ", 0);
+
 	strcpy (buffer, "CAP REQ :");
 
-	if (strstr (extensions, "identify-msg") != 0)
+	for (i=0; extensions[i]; i++)
 	{
-		strcat (buffer, "identify-msg ");
-		want_cap = 1;
+		const char *extension = extensions[i];
+
+		if (!strcmp (extension, "identify-msg"))
+		{
+			strcat (buffer, "identify-msg ");
+			want_cap = 1;
+		}
+		if (!strcmp (extension, "multi-prefix"))
+		{
+			strcat (buffer, "multi-prefix ");
+			want_cap = 1;
+		}
+		if (!strcmp (extension, "away-notify"))
+		{
+			strcat (buffer, "away-notify ");
+			want_cap = 1;
+		}
+		if (!strcmp (extension, "account-notify"))
+		{
+			strcat (buffer, "account-notify ");
+			want_cap = 1;
+		}
+		if (!strcmp (extension, "extended-join"))
+		{
+			strcat (buffer, "extended-join ");
+			want_cap = 1;
+		}
+
+		/* bouncers can prefix a name space to the extension so we should use.
+		 * znc uses "znc.in/server-time".
+		 */
+		if (!strcmp (extension, "znc.in/server-time"))
+		{
+			strcat (buffer, "znc.in/server-time");
+			strcat (buffer, " ");
+		}
+		else if (!strcmp (extension, "server-time"))
+		{
+			/* ignore. it is best to have server-time explicitly enabled or have
+			 * a option in the preferences (or per server).
+			 */
+		}
+		
+		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
+		if (serv->loginmethod == LOGIN_SASL
+			 && strcmp (extension, "sasl") != 0
+			 && strlen (serv->password) != 0)
+		{
+			strcat (buffer, "sasl ");
+			want_cap = 1;
+			want_sasl = 1;
+		}
 	}
-	if (strstr (extensions, "multi-prefix") != 0)
-	{
-		strcat (buffer, "multi-prefix ");
-		want_cap = 1;
-	}
-	if (strstr (extensions, "away-notify") != 0)
-	{
-		strcat (buffer, "away-notify ");
-		want_cap = 1;
-	}
-	if (strstr (extensions, "account-notify") != 0)
-	{
-		strcat (buffer, "account-notify ");
-		want_cap = 1;
-	}
-	if (strstr (extensions, "extended-join") != 0)
-	{
-		strcat (buffer, "extended-join ");
-		want_cap = 1;
-	}
-	/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
-	if (strstr (extensions, "sasl") != 0 && strlen (serv->password) != 0 && serv->loginmethod == LOGIN_SASL)
-	{
-		strcat (buffer, "sasl ");
-		want_cap = 1;
-		want_sasl = 1;
-	}
+
+	g_strfreev (extensions);
 
 	if (want_cap)
 	{
