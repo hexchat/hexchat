@@ -1575,6 +1575,11 @@ inbound_cap_ack (server *serv, char *nick, char *extensions,
 		serv->have_extjoin = TRUE;
 	}
 
+	if (strstr (extensions, "server-time") != 0)
+	{
+		serv->have_server_time = TRUE;
+	}
+
 	if (strstr (extensions, "sasl") != 0)
 	{
 		char *user;
