@@ -2707,7 +2707,6 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *nick = word[2];
 	char *msg = word_eol[3];
 	struct session *newsess;
-
 	char *split_text = NULL;
 	int cmd_length = 13; /* " PRIVMSG ", " ", :, \r, \n */
 	int offset = 0;
@@ -2758,10 +2757,13 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				newsess = find_channel (sess->server, nick);
 			if (newsess)
 			{
+				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+
 				while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
 				{
 					inbound_chanmsg (newsess->server, NULL, newsess->channel,
-							 newsess->server->nick, split_text, TRUE, FALSE, 0);
+										  newsess->server->nick, split_text, TRUE, FALSE,
+										  &no_tags);
 
 					if (*split_text)
 						offset += strlen(split_text);
@@ -2769,7 +2771,8 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					g_free(split_text);
 				}
 				inbound_chanmsg (newsess->server, NULL, newsess->channel,
-						 newsess->server->nick, msg + offset, TRUE, FALSE, 0);
+									  newsess->server->nick, msg + offset, TRUE, FALSE,
+									  &no_tags);
 			}
 			else
 			{
