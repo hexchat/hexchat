@@ -96,6 +96,7 @@ enum
 	LIST_CHANNELS,
 	LIST_DCC,
 	LIST_IGNORE,
+	LIST_NETWORKS,
 	LIST_NOTIFY,
 	LIST_USERS
 };
@@ -1209,6 +1210,11 @@ hexchat_list_get (hexchat_plugin *ph, const char *name)
 		list->type = LIST_IGNORE;
 		list->next = ignore_list;
 		break;
+	
+	case 0x4e49ec05:	/* networks */
+		list->type = LIST_NETWORKS;
+		list->next = network_list;
+		break;
 
 	case 0xc2079749:	/* notify */
 		list->type = LIST_NOTIFY;
@@ -1281,6 +1287,11 @@ hexchat_list_fields (hexchat_plugin *ph, const char *name)
 	{
 		"iflags", "smask", NULL
 	};
+	static const char * const networks_fields[] =
+	{
+		/* TODO: return lists for favorites */
+		"sname", "snick", "snick2", "susername", "srealname", "spassword", "sencoding", "ilogintype", "iflags", NULL
+	};
 	static const char * const notify_fields[] =
 	{
 		"iflags", "snetworks", "snick", "toff", "ton", "tseen", NULL
@@ -1291,7 +1302,7 @@ hexchat_list_fields (hexchat_plugin *ph, const char *name)
 	};
 	static const char * const list_of_lists[] =
 	{
-		"channels",	"dcc", "ignore", "notify", "users", NULL
+		"channels",	"dcc", "ignore", "networks", "notify", "users", NULL
 	};
 
 	switch (str_hash (name))
@@ -1302,6 +1313,8 @@ hexchat_list_fields (hexchat_plugin *ph, const char *name)
 		return dcc_fields;
 	case 0xb90bfdd2:	/* ignore */
 		return ignore_fields;
+	case 0x4e49ec05:	/* networks */
+		return networks_fields;
 	case 0xc2079749:	/* notify */
 		return notify_fields;
 	case 0x6a68e08:	/* users */
@@ -1400,6 +1413,26 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		{
 		case 0x3306ec:	/* mask */
 			return ((struct ignore *)data)->mask;
+		}
+		break;
+		
+	case LIST_NETWORKS:
+		switch (hash)
+		{
+		case 0x337a8b:	/* name */
+			return ((struct ircnet *)data)->name;
+		case 0x339763:	/* nick */
+			return ((struct ircnet *)data)->nick;
+		case 0x63f552f:	/* nick2 */
+			return ((struct ircnet *)data)->nick2;
+		case 0xf02988d6:	/* username */
+			return ((struct ircnet *)data)->user;
+		case 0xccc6d529:	/* realname */
+			return ((struct ircnet *)data)->real;
+		case 0x4889ba9b:	/* password */
+			return ((struct ircnet *)data)->pass;
+		case 0x65ff2d53:	/* encoding */
+			return ((struct ircnet *)data)->encoding;
 		}
 		break;
 
@@ -1523,6 +1556,16 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			return ((struct session *)data)->type;
 		case 0x6a68e08: /* users */
 			return ((struct session *)data)->total;
+		}
+		break;
+		
+	case LIST_NETWORKS:
+		switch (hash)
+		{
+		case 0x9994a223:	/* logintype */
+			return ((struct ircnet *)data)->logintype;
+		case 0x5cfee87:	/* flags TODO: expand these out */
+			return ((struct ircnet *)data)->flags;
 		}
 		break;
 
