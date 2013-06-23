@@ -491,7 +491,7 @@ notify_showlist (struct session *sess, const message_tags_data *tags_data)
 			snprintf (outbuf, sizeof (outbuf), _("  %-20s online\n"), notify->name);
 		else
 			snprintf (outbuf, sizeof (outbuf), _("  %-20s offline\n"), notify->name);
-		PrintText (sess, outbuf);
+		PrintTextTimeStamp (sess, outbuf, tags_data->timestamp);
 		list = list->next;
 	}
 	if (i)

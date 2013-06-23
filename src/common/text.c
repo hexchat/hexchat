@@ -865,7 +865,7 @@ text_validate (char **text, int *len)
 	return utf;
 }
 
-static void
+void
 PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 {
 	char *conv;
@@ -1857,7 +1857,7 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo, unsig
 
 static void
 display_event (session *sess, int event, char **args, 
-	       unsigned int stripcolor_args, time_t timestamp)
+					unsigned int stripcolor_args, time_t timestamp)
 {
 	char o[4096];
 	format_event (sess, event, args, o, sizeof (o), stripcolor_args);
@@ -2064,7 +2064,7 @@ text_color_of (char *name)
 
 void
 text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
-	   time_t timestamp)
+			  time_t timestamp)
 {
 	char *word[PDIWORDS];
 	int i;
