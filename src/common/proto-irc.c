@@ -1495,7 +1495,7 @@ irc_inline (server *serv, char *buf, int len)
 		if (*text == ':')
 			text++;
 
-		process_numeric (sess, atoi (word[2]), word, word_eol, text, &tags_data); // TODO:orium (data tags)
+		process_numeric (sess, atoi (word[2]), word, word_eol, text, &tags_data);
 	} else
 	{
 		process_named_msg (sess, type, word, word_eol, &tags_data);

@@ -1648,10 +1648,21 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 			want_cap = 1;
 		}
 
-		/* TODO:orium for testing */
-		/* bouncers can prefix a name space to the extension so we should use
-		 * strstr() here. For example znc will say it support "znc.in/server-time".
+		/* bouncers can prefix a name space to the extension so we should use.
+		 * znc uses "znc.in/server-time".
 		 */
+		if (!strcmp (extension, "znc.in/server-time"))
+		{
+			strcat (buffer, "znc.in/server-time");
+			strcat (buffer, " ");
+		}
+		else if (!strcmp (extension, "server-time"))
+		{
+			/* ignore. it is best to have server-time explicitly enabled or have
+			 * a option in the preferences (or per server).
+			 */
+		}
+
 		if (strstr (extension, "server-time") != NULL)
 		{
 			strcat (buffer, extension);
