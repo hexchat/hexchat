@@ -10,26 +10,24 @@ use overload
 
 sub new {
 	my $class = shift;
-	my $line = shift;
 
 	my @autojoins;
 
-	if ( $line ) {
-		my ( $channels, $keys ) = split / /, $line, 2;
-		my @channels = split /,/, $channels;
-		my @keys     = split /,/, ($keys || '');
-
-		for my $channel ( @channels ) {
-			my $key = shift @keys;
-			$key = '' unless defined $key;
-
-			push @autojoins, {
-				channel => $channel,
-				key     => $key,
-				};
-		}
-	}
 	return bless \@autojoins, $class;
+}
+
+sub add {
+	my $self = shift;
+
+	my $line = shift;
+
+	my ( $channel, $key ) = split /,/, $line, 2;
+	$key = $key || '';
+
+	push @$self, {
+		channel => $channel,
+		key     => $key,
+		};
 }
 
 sub channels {

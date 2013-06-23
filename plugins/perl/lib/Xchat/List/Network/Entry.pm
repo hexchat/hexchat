@@ -39,6 +39,8 @@ sub parse {
 	my @fields = split /\n/, $data;
 	chomp @fields;
 
+	$entry->{ autojoins } = Xchat::List::Network::AutoJoin->new();
+
 	for my $field ( @fields ) {
 	SWITCH: for ( $field ) {
 			/^($letter_key_re)=(.*)/ && do {
@@ -47,8 +49,7 @@ sub parse {
 			};
 
 			/^J.(.*)/ && do {
-				$entry->{ autojoins } =
-					Xchat::List::Network::AutoJoin->new( $1 );
+				$entry->{ autojoins }->add( $1 );
 			};
 
 			/^F.(.*)/ && do {
