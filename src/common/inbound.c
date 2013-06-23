@@ -1550,37 +1550,37 @@ inbound_cap_ack (server *serv, char *nick, char *extensions,
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, serv->server_session, nick, extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
 
-	if (strstr (extensions, "identify-msg") != 0)
+	if (strstr (extensions, "identify-msg") != NULL)
 	{
 		serv->have_idmsg = TRUE;
 	}
 
-	if (strstr (extensions, "multi-prefix") != 0)
+	if (strstr (extensions, "multi-prefix") != NULL)
 	{
 		serv->have_namesx = TRUE;
 	}
 
-	if (strstr (extensions, "away-notify") != 0)
+	if (strstr (extensions, "away-notify") != NULL)
 	{
 		serv->have_awaynotify = TRUE;
 	}
 
-	if (strstr (extensions, "account-notify") != 0)
+	if (strstr (extensions, "account-notify") != NULL)
 	{
 		serv->have_accnotify = TRUE;
 	}
 					
-	if (strstr (extensions, "extended-join") != 0)
+	if (strstr (extensions, "extended-join") != NULL)
 	{
 		serv->have_extjoin = TRUE;
 	}
 
-	if (strstr (extensions, "server-time") != 0)
+	if (strstr (extensions, "server-time") != NULL)
 	{
 		serv->have_server_time = TRUE;
 	}
 
-	if (strstr (extensions, "sasl") != 0)
+	if (strstr (extensions, "sasl") != NULL)
 	{
 		char *user;
 
