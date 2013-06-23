@@ -82,7 +82,9 @@ void clear_channel (session *sess);
 void set_topic (session *sess, char *topic, char *stripped_topic);
 void inbound_privmsg (server *serv, char *from, char *ip, char *text, int id, 
 							 const message_tags_data *tags_data);
-void inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int fromme, int id);
+void inbound_action (session *sess, char *chan, char *from, char *ip,
+							char *text, int fromme, int id,
+							const message_tags_data *tags_data);
 void inbound_newnick (server *serv, char *nick, char *newnick, int quiet,
 							 const message_tags_data *tags_data);
 void inbound_identified (server *serv);
@@ -93,7 +95,8 @@ void inbound_cap_ls (server *serv, char *nick, char *extensions,
 void inbound_cap_nak (server *serv, const message_tags_data *tags_data);
 void inbound_cap_list (server *serv, char *nick, char *extensions,
 							  const message_tags_data *tags_data);
-void do_dns (session *sess, char *nick, char *host);
+void do_dns (session *sess, char *nick, char *host,
+				 const message_tags_data *tags_data);
 gboolean alert_match_word (char *word, char *masks);
 gboolean alert_match_text (char *text, char *masks);
 

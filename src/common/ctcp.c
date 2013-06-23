@@ -129,7 +129,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		if (ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 			goto generic;
 
-		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id);
+		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id, tags_data);
 		return;
 	}
 

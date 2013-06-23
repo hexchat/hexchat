@@ -122,13 +122,15 @@ find_session_from_nick (char *nick, server *serv)
 }
 
 static session *
-inbound_open_dialog (server *serv, char *from)
+inbound_open_dialog (server *serv, char *from,
+							const message_tags_data *tags_data)
 {
 	session *sess;
 
 	sess = new_ircwindow (serv, from, SESS_DIALOG, 0);
 	/* for playing sounds */
-	EMIT_SIGNAL (XP_TE_OPENDIALOG, sess, NULL, NULL, NULL, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_OPENDIALOG, sess, NULL, NULL, NULL, NULL, 0,
+								  tags_data->timestamp);
 
 	return sess;
 }
@@ -169,7 +171,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 		{
 			if (flood_check (from, ip, serv, current_sess, 1))
 				/* Create a dialog session */
-				sess = inbound_open_dialog (serv, from);
+				sess = inbound_open_dialog (serv, from, tags_data);
 			else
 				sess = serv->server_session;
 			if (!sess)
@@ -326,7 +328,8 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 }
 
 void
-inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int fromme, int id)
+inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
+					 int fromme, int id, const message_tags_data *tags_data)
 {
 	session *def = sess;
 	server *serv = sess->server;
@@ -351,7 +354,7 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int
 			{
 				/* but only if it wouldn't flood */
 				if (flood_check (from, ip, serv, current_sess, 1))
-					sess = inbound_open_dialog (serv, from);
+					sess = inbound_open_dialog (serv, from, tags_data);
 				else
 					sess = serv->server_session;
 			}
@@ -397,19 +400,24 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int
 	{
 		if (is_hilight (from, text, sess, serv))
 		{
-			EMIT_SIGNAL (XP_TE_HCHANACTION, sess, from, text, nickchar, idtext, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_HCHANACTION, sess, from, text, nickchar,
+										  idtext, 0, tags_data->timestamp);
 			return;
 		}
 	}
 
 	if (fromme)
-		EMIT_SIGNAL (XP_TE_UACTION, sess, from, text, nickchar, idtext, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_UACTION, sess, from, text, nickchar, idtext,
+									  0, tags_data->timestamp);
 	else if (!privaction)
-		EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, nickchar, idtext, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANACTION, sess, from, text, nickchar,
+									  idtext, 0, tags_data->timestamp);
 	else if (sess->type == SESS_DIALOG)
-		EMIT_SIGNAL (XP_TE_DPRIVACTION, sess, from, text, idtext, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_DPRIVACTION, sess, from, text, idtext, NULL,
+									  0, tags_data->timestamp);
 	else
-		EMIT_SIGNAL (XP_TE_PRIVACTION, sess, from, text, idtext, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_PRIVACTION, sess, from, text, idtext, NULL, 0,
+									  tags_data->timestamp);
 }
 
 void
@@ -457,7 +465,8 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
 	{
   		if (prefs.hex_away_auto_unmark && serv->is_away)
 			sess->server->p_set_back (sess->server);
-		EMIT_SIGNAL (XP_TE_UCHANMSG, sess, from, text, nickchar, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_UCHANMSG, sess, from, text, nickchar, NULL,
+									  0, tags_data->timestamp);
 		return;
 	}
 
@@ -467,14 +476,14 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
 		hilight = TRUE;
 
 	if (sess->type == SESS_DIALOG)
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_DPRIVMSG, sess, from, text, 
-				       idtext, NULL, 0, tags_data->timestamp);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0,
+									  tags_data->timestamp);
 	else if (hilight)
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_HCHANMSG, sess, from, text,
-				       nickchar, idtext, 0, tags_data->timestamp);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_HCHANMSG, sess, from, text, nickchar, idtext,
+									  0, tags_data->timestamp);
 	else
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMSG, sess, from, text, 
-				       nickchar, idtext, 0, tags_data->timestamp);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMSG, sess, from, text, nickchar, idtext,
+									  0, tags_data->timestamp);
 }
 
 void
@@ -660,12 +669,13 @@ inbound_nameslist (server *serv, char *chan, char *names,
 	sess = find_channel (serv, chan);
 	if (!sess)
 	{
-		EMIT_SIGNAL (XP_TE_USERSONCHAN, serv->server_session, chan, names, NULL,
-						 NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_USERSONCHAN, serv->server_session, chan,
+									  names, NULL, NULL, 0, tags_data->timestamp);
 		return;
 	}
 	if (!sess->ignore_names)
-		EMIT_SIGNAL (XP_TE_USERSONCHAN, sess, chan, names, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_USERSONCHAN, sess, chan, names, NULL, NULL,
+									  0, tags_data->timestamp);
 
 	if (sess->end_of_names)
 	{
@@ -1245,7 +1255,8 @@ inbound_next_nick (session *sess, char *nick, int error,
 }
 
 void
-do_dns (session *sess, char *nick, char *host)
+do_dns (session *sess, char *nick, char *host,
+		  const message_tags_data *tags_data)
 {
 	char *po;
 	char tbuf[1024];
@@ -1253,7 +1264,8 @@ do_dns (session *sess, char *nick, char *host)
 	po = strrchr (host, '@');
 	if (po)
 		host = po + 1;
-	EMIT_SIGNAL (XP_TE_RESOLVINGUSER, sess, nick, host, NULL, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_RESOLVINGUSER, sess, nick, host, NULL, NULL, 0,
+								  tags_data->timestamp);
 	snprintf (tbuf, sizeof (tbuf), "exec -d %s %s", prefs.hex_dnsprogram, host);
 	handle_command (sess, tbuf, FALSE);
 }
@@ -1382,7 +1394,7 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 		else
 		{
 			if (serv->doing_dns && nick && host)
-				do_dns (sess, nick, host);
+				do_dns (sess, nick, host, tags_data);
 		}
 	}
 	else
