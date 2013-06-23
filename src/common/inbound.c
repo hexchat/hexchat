@@ -1082,7 +1082,8 @@ inbound_away_notify (server *serv, char *nick, char *reason,
 }
 
 int
-inbound_nameslist_end (server *serv, char *chan)
+inbound_nameslist_end (server *serv, char *chan,
+							  const message_tags_data *tags_data)
 {
 	session *sess;
 	GSList *list;
@@ -1191,7 +1192,8 @@ check_autojoin_channels (server *serv)
 }
 
 void
-inbound_next_nick (session *sess, char *nick, int error)
+inbound_next_nick (session *sess, char *nick, int error,
+						 const message_tags_data *tags_data)
 {
 	char *newnick;
 	server *serv = sess->server;
@@ -1212,11 +1214,13 @@ inbound_next_nick (session *sess, char *nick, int error)
 		serv->p_change_nick (serv, newnick);
 		if (error)
 		{
-			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, newnick, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKERROR, sess, nick, newnick, NULL, NULL,
+										  0, tags_data->timestamp);
 		}
 		else
 		{
-			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, newnick, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKCLASH, sess, nick, newnick, NULL, NULL,
+										  0, tags_data->timestamp);
 		}
 		break;
 
@@ -1224,16 +1228,18 @@ inbound_next_nick (session *sess, char *nick, int error)
 		serv->p_change_nick (serv, prefs.hex_irc_nick3);
 		if (error)
 		{
-			EMIT_SIGNAL (XP_TE_NICKERROR, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKERROR, sess, nick, prefs.hex_irc_nick3,
+										  NULL, NULL, 0, tags_data->timestamp);
 		}
 		else
 		{
-			EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKCLASH, sess, nick, prefs.hex_irc_nick3,
+										  NULL, NULL, 0, tags_data->timestamp);
 		}
 		break;
 
 	default:
-		EMIT_SIGNAL (XP_TE_NICKFAIL, sess, NULL, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NICKFAIL, sess, NULL, NULL, NULL, NULL, 0);
 	}
 }
 
@@ -1395,7 +1401,8 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 }
 
 int
-inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int rplcode)
+inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, 
+					  char *banner, int rplcode, const message_tags_data *tags_data)
 {
 	char *time_str = ctime (&stamp);
 	server *serv = sess->server;
@@ -1417,7 +1424,8 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *bann
 	{
 nowindow:
 
-		EMIT_SIGNAL (XP_TE_BANLIST, sess, chan, mask, banner, time_str, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_BANLIST, sess, chan, mask, banner, time_str,
+									  0, tags_data->timestamp);
 		return TRUE;
 	}
 
@@ -1454,7 +1462,7 @@ inbound_nickserv_login (server *serv)
 }
 
 void
-inbound_login_end (session *sess, char *text)
+inbound_login_end (session *sess, char *text, const message_tags_data *tags_data)
 {
 	GSList *cmdlist;
 	commandentry *cmd;
@@ -1511,11 +1519,13 @@ inbound_login_end (session *sess, char *text)
 	if (prefs.hex_irc_skip_motd && !serv->motd_skipped)
 	{
 		serv->motd_skipped = TRUE;
-		EMIT_SIGNAL (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL,
+									  NULL, NULL, 0, tags_data->timestamp);
 		return;
 	}
 
-	EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL, NULL, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_MOTD, serv->server_session, text, NULL, NULL,
+								  NULL, 0, tags_data->timestamp);
 }
 
 void

@@ -787,7 +787,8 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 346:	/* +I-list entry */
-		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 346))
+		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 346,
+									 tags_data))
 			goto def;
 		break;
 
@@ -797,7 +798,8 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 348:	/* +e-list entry */
-		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 348))
+		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 348,
+									 tags_data))
 			goto def;
 		break;
 
@@ -819,12 +821,13 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 366:
-		if (!inbound_nameslist_end (serv, word[4]))
+		if (!inbound_nameslist_end (serv, word[4], tags_data))
 			goto def;
 		break;
 
 	case 367: /* banlist entry */
-		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 367))
+		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 367,
+									 tags_data))
 			goto def;
 		break;
 
@@ -855,7 +858,7 @@ process_numeric (session * sess, int n,
 
 	case 376:	/* end of motd */
 	case 422:	/* motd file is missing */
-		inbound_login_end (sess, text);
+		inbound_login_end (sess, text, tags_data);
 		break;
 
 	case 432:	/* erroneous nickname */
@@ -863,7 +866,7 @@ process_numeric (session * sess, int n,
 		{
 			goto def;
 		}
-		inbound_next_nick (sess,  word[4], 1);
+		inbound_next_nick (sess,  word[4], 1, tags_data);
 		break;
 
 	case 433:	/* nickname in use */
@@ -871,13 +874,13 @@ process_numeric (session * sess, int n,
 		{
 			goto def;
 		}
-		inbound_next_nick (sess,  word[4], 0);
+		inbound_next_nick (sess,  word[4], 0, tags_data);
 		break;
 
 	case 437:
 		if (serv->end_of_motd || is_channel (serv, word[4]))
 			goto def;
-		inbound_next_nick (sess, word[4], 0);
+		inbound_next_nick (sess, word[4], 0, tags_data);
 		break;
 
 	case 471:
@@ -916,7 +919,8 @@ process_numeric (session * sess, int n,
 	case 728:	/* +q-list entry */
 		/* NOTE:  FREENODE returns these results inconsistent with e.g. +b */
 		/* Who else has imlemented MODE_QUIET, I wonder? */
-		if (!inbound_banlist (sess, atol (word[8]), word[4], word[6], word[7], 728))
+		if (!inbound_banlist (sess, atol (word[8]), word[4], word[6], word[7], 728,
+									 tags_data))
 			goto def;
 		break;
 
