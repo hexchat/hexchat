@@ -20,6 +20,7 @@
 /* dcc.h */
 
 #include <time.h>						/* for time_t */
+#include "proto-irc.h"
 
 #ifndef HEXCHAT_DCC_H
 #define HEXCHAT_DCC_H
@@ -127,7 +128,8 @@ void dcc_send (struct session *sess, char *to, char *file, int maxcps, int passi
 struct DCC *find_dcc (char *nick, char *file, int type);
 void dcc_get_nick (struct session *sess, char *nick);
 void dcc_chat (session *sess, char *nick, int passive);
-void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[]);
+void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[],
+					  const message_tags_data *tags_data);
 void dcc_show_list (session *sess);
 guint32 dcc_get_my_address (void);
 void dcc_get_with_destfile (struct DCC *dcc, char *utf8file);

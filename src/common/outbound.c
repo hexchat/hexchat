@@ -1419,7 +1419,8 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			user = userlist_find (sess, nick);
 			if (user && user->hostname)
 			{
-				do_dns (sess, user->nick, user->hostname);
+				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+				do_dns (sess, user->nick, user->hostname, &no_tags);
 			} else
 			{
 				sess->server->p_get_ip (sess->server, nick);
@@ -2606,6 +2607,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *split_text = NULL;
 	int cmd_length = 22; /* " PRIVMSG ", " ", :, \001ACTION, " ", \001, \r, \n */
 	int offset = 0;
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	if (!(*act))
 		return FALSE;
@@ -2621,7 +2623,8 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (dcc_write_chat (sess->channel, tbuf))
 	{
 		/* print it to screen */
-		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE);
+		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE,
+							 &no_tags);
 	} else
 	{
 		/* DCC CHAT failed, try through server */
@@ -2631,7 +2634,9 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			{
 				sess->server->p_action (sess->server, sess->channel, split_text);
 				/* print it to screen */
-				inbound_action (sess, sess->channel, sess->server->nick, "", split_text, TRUE, FALSE);
+				inbound_action (sess, sess->channel, sess->server->nick, "",
+									 split_text, TRUE, FALSE,
+									 &no_tags);
 
 				if (*split_text)
 					offset += strlen(split_text);
@@ -2641,7 +2646,8 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 			sess->server->p_action (sess->server, sess->channel, act + offset);
 			/* print it to screen */
-			inbound_action (sess, sess->channel, sess->server->nick, "", act + offset, TRUE, FALSE);
+			inbound_action (sess, sess->channel, sess->server->nick, "",
+								 act + offset, TRUE, FALSE, &no_tags);
 		} else
 		{
 			notc_msg (sess);

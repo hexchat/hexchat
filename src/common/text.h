@@ -42,6 +42,7 @@ void scrollback_load (session *sess);
 
 int text_word_check (char *word, int len);
 void PrintText (session *sess, char *text);
+void PrintTextTimeStamp (session *sess, char *text, time_t timestamp);
 void PrintTextf (session *sess, char *format, ...);
 void PrintTextTimeStampf (session *sess, time_t timestamp, char *format, ...);
 void log_close (session *sess);

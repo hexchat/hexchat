@@ -104,7 +104,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		if (!ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 		{
 			if (!ignore_check (word[1], IG_DCC))
-				handle_dcc (sess, nick, word, word_eol);
+				handle_dcc (sess, nick, word, word_eol, tags_data);
 		}
 		return;
 	}
@@ -129,7 +129,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		if (ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 			goto generic;
 
-		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id);
+		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id, tags_data);
 		return;
 	}
 

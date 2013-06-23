@@ -1285,7 +1285,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 
 garbage:
 	/* unknown message */
-	PrintTextf (sess, "GARBAGE: %s\n", word_eol[1]);
+	PrintTextTimeStampf (sess, tags_data->timestamp, "GARBAGE: %s\n", word_eol[1]);
 }
 
 /* handle named messages that DON'T start with a ':' */
