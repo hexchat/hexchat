@@ -215,6 +215,7 @@ struct hexchatprefs
 	unsigned int hex_irc_wallops;
 	unsigned int hex_irc_who_join;
 	unsigned int hex_irc_whois_front;
+	unsigned int hex_irc_cap_server_time;
 	unsigned int hex_net_auto_reconnect;
 	unsigned int hex_net_auto_reconnectonfail;
 	unsigned int hex_net_proxy_auth;
