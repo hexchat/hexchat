@@ -1665,14 +1665,12 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 		 */
 		if (!strcmp (extension, "znc.in/server-time"))
 		{
-			strcat (buffer, "znc.in/server-time");
-			strcat (buffer, " ");
+			strcat (buffer, "znc.in/server-time ");
 		}
-		else if (!strcmp (extension, "server-time"))
+		if (prefs.hex_irc_cap_server_time
+			 && !strcmp (extension, "server-time"))
 		{
-			/* ignore. it is best to have server-time explicitly enabled or have
-			 * a option in the preferences (or per server).
-			 */
+			strcat (buffer, "server-time ");
 		}
 		
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */

@@ -507,6 +507,7 @@ const struct prefs vars[] =
 
 	{"irc_auto_rejoin", P_OFFINT (hex_irc_auto_rejoin), TYPE_BOOL},
 	{"irc_ban_type", P_OFFINT (hex_irc_ban_type), TYPE_INT},
+	{"irc_cap_server_time", P_OFFINT (hex_irc_cap_server_time), TYPE_BOOL},
 	{"irc_conf_mode", P_OFFINT (hex_irc_conf_mode), TYPE_BOOL},
 	{"irc_extra_hilight", P_OFFSET (hex_irc_extra_hilight), TYPE_STR},
 	{"irc_hide_version", P_OFFINT (hex_irc_hide_version), TYPE_BOOL},
@@ -748,6 +749,7 @@ load_default_config(void)
 	prefs.hex_text_thin_sep = 1;
 	prefs.hex_text_wordwrap = 1;
 	prefs.hex_url_grabber = 1;
+	prefs.hex_irc_cap_server_time = 0;
 
 	/* NUMBERS */
 	prefs.hex_away_size_max = 300;
