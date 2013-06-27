@@ -24,7 +24,7 @@ routine (void)
 
 * When opening a file with Unix level functions (open, read/write, close)
   as opposed to the C level functions (fopen, fwrite/fread, fclose), use
-  the OFLAGS macro. This makes sure it'll work on Win32 aswell as Unix e.g.:
+  the OFLAGS macro. This makes sure it'll work on Win32 as well as Unix e.g.:
 
 	<pre>fh = open ("file", OFLAGS | O_RDONLY);</pre>
 
