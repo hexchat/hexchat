@@ -1661,8 +1661,12 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 		}
 
 		/* bouncers can prefix a name space to the extension so we should use.
-		 * znc uses "znc.in/server-time".
+		 * znc <= 1.0 uses "znc.in/server-time" and newer use "znc.in/server-time-iso".
 		 */
+		if (!strcmp (extension, "znc.in/server-time-iso"))
+		{
+			strcat (buffer, "znc.in/server-time-iso ");
+		}
 		if (!strcmp (extension, "znc.in/server-time"))
 		{
 			strcat (buffer, "znc.in/server-time ");
