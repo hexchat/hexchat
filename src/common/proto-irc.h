@@ -24,8 +24,8 @@
 #define HEXCHAT_PROTO_H
 
 #define MESSAGE_TAGS_DATA_INIT			\
-	{					\
-		.timestamp=(time_t)0,		\
+	{									\
+		(time_t)0, /* timestamp */		\
 	}
 
 /* Message tag information that might be passed along with a server message
