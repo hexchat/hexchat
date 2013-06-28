@@ -205,7 +205,8 @@ notify_find (server *serv, char *nick)
 
 static void
 notify_announce_offline (server * serv, struct notify_per_server *servnot,
-								char *nick, int quiet)
+								 char *nick, int quiet, 
+								 const message_tags_data *tags_data)
 {
 	session *sess;
 
@@ -214,15 +215,16 @@ notify_announce_offline (server * serv, struct notify_per_server *servnot,
 	servnot->ison = FALSE;
 	servnot->lastoff = time (0);
 	if (!quiet)
-		EMIT_SIGNAL (XP_TE_NOTIFYOFFLINE, sess, nick, serv->servername,
-						 server_get_network (serv, TRUE), NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYOFFLINE, sess, nick, serv->servername,
+									  server_get_network (serv, TRUE), NULL, 0,
+									  tags_data->timestamp);
 	fe_notify_update (nick);
 	fe_notify_update (0);
 }
 
 static void
 notify_announce_online (server * serv, struct notify_per_server *servnot,
-								char *nick)
+								char *nick, const message_tags_data *tags_data)
 {
 	session *sess;
 
@@ -234,8 +236,9 @@ notify_announce_online (server * serv, struct notify_per_server *servnot,
 
 	servnot->ison = TRUE;
 	servnot->laston = time (0);
-	EMIT_SIGNAL (XP_TE_NOTIFYONLINE, sess, nick, serv->servername,
-					 server_get_network (serv, TRUE), NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYONLINE, sess, nick, serv->servername,
+					 server_get_network (serv, TRUE), NULL, 0,
+					 tags_data->timestamp);
 	fe_notify_update (nick);
 	fe_notify_update (0);
 
@@ -254,7 +257,8 @@ notify_announce_online (server * serv, struct notify_per_server *servnot,
 /* handles numeric 601 */
 
 void
-notify_set_offline (server * serv, char *nick, int quiet)
+notify_set_offline (server * serv, char *nick, int quiet,
+						  const message_tags_data *tags_data)
 {
 	struct notify_per_server *servnot;
 
@@ -262,13 +266,14 @@ notify_set_offline (server * serv, char *nick, int quiet)
 	if (!servnot)
 		return;
 
-	notify_announce_offline (serv, servnot, nick, quiet);
+	notify_announce_offline (serv, servnot, nick, quiet, tags_data);
 }
 
 /* handles numeric 604 and 600 */
 
 void
-notify_set_online (server * serv, char *nick)
+notify_set_online (server * serv, char *nick,
+						 const message_tags_data *tags_data)
 {
 	struct notify_per_server *servnot;
 
@@ -276,7 +281,7 @@ notify_set_online (server * serv, char *nick)
 	if (!servnot)
 		return;
 
-	notify_announce_online (serv, servnot, nick);
+	notify_announce_online (serv, servnot, nick, tags_data);
 }
 
 static void
@@ -369,7 +374,7 @@ notify_send_watches (server * serv)
 /* called when receiving a ISON 303 - should this func go? */
 
 void
-notify_markonline (server *serv, char *word[])
+notify_markonline (server *serv, char *word[], const message_tags_data *tags_data)
 {
 	struct notify *notify;
 	struct notify_per_server *servnot;
@@ -392,7 +397,7 @@ notify_markonline (server *serv, char *word[])
 			if (!serv->p_cmp (notify->name, word[i]))
 			{
 				seen = TRUE;
-				notify_announce_online (serv, servnot, notify->name);
+				notify_announce_online (serv, servnot, notify->name, tags_data);
 				break;
 			}
 			i++;
@@ -406,7 +411,7 @@ notify_markonline (server *serv, char *word[])
 		}
 		if (!seen && servnot->ison)
 		{
-			notify_announce_offline (serv, servnot, notify->name, FALSE);
+			notify_announce_offline (serv, servnot, notify->name, FALSE, tags_data);
 		}
 		list = list->next;
 	}
@@ -467,7 +472,7 @@ notify_checklist (void)	/* check ISON list */
 }
 
 void
-notify_showlist (struct session *sess)
+notify_showlist (struct session *sess, const message_tags_data *tags_data)
 {
 	char outbuf[256];
 	struct notify *notify;
@@ -475,7 +480,8 @@ notify_showlist (struct session *sess)
 	struct notify_per_server *servnot;
 	int i = 0;
 
-	EMIT_SIGNAL (XP_TE_NOTIFYHEAD, sess, NULL, NULL, NULL, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYHEAD, sess, NULL, NULL, NULL, NULL, 0,
+								  tags_data->timestamp);
 	while (list)
 	{
 		i++;
@@ -485,15 +491,17 @@ notify_showlist (struct session *sess)
 			snprintf (outbuf, sizeof (outbuf), _("  %-20s online\n"), notify->name);
 		else
 			snprintf (outbuf, sizeof (outbuf), _("  %-20s offline\n"), notify->name);
-		PrintText (sess, outbuf);
+		PrintTextTimeStamp (sess, outbuf, tags_data->timestamp);
 		list = list->next;
 	}
 	if (i)
 	{
 		sprintf (outbuf, "%d", i);
-		EMIT_SIGNAL (XP_TE_NOTIFYNUMBER, sess, outbuf, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYNUMBER, sess, outbuf, NULL, NULL, NULL,
+									  0, tags_data->timestamp);
 	} else
-		EMIT_SIGNAL (XP_TE_NOTIFYEMPTY, sess, NULL, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYEMPTY, sess, NULL, NULL, NULL, NULL, 0,
+									  tags_data->timestamp);
 }
 
 int

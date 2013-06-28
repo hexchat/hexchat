@@ -1419,7 +1419,8 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			user = userlist_find (sess, nick);
 			if (user && user->hostname)
 			{
-				do_dns (sess, user->nick, user->hostname);
+				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+				do_dns (sess, user->nick, user->hostname, &no_tags);
 			} else
 			{
 				sess->server->p_get_ip (sess->server, nick);
@@ -2606,6 +2607,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *split_text = NULL;
 	int cmd_length = 22; /* " PRIVMSG ", " ", :, \001ACTION, " ", \001, \r, \n */
 	int offset = 0;
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	if (!(*act))
 		return FALSE;
@@ -2621,7 +2623,8 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (dcc_write_chat (sess->channel, tbuf))
 	{
 		/* print it to screen */
-		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE);
+		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE,
+							 &no_tags);
 	} else
 	{
 		/* DCC CHAT failed, try through server */
@@ -2631,7 +2634,9 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			{
 				sess->server->p_action (sess->server, sess->channel, split_text);
 				/* print it to screen */
-				inbound_action (sess, sess->channel, sess->server->nick, "", split_text, TRUE, FALSE);
+				inbound_action (sess, sess->channel, sess->server->nick, "",
+									 split_text, TRUE, FALSE,
+									 &no_tags);
 
 				if (*split_text)
 					offset += strlen(split_text);
@@ -2641,7 +2646,8 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 			sess->server->p_action (sess->server, sess->channel, act + offset);
 			/* print it to screen */
-			inbound_action (sess, sess->channel, sess->server->nick, "", act + offset, TRUE, FALSE);
+			inbound_action (sess, sess->channel, sess->server->nick, "",
+								 act + offset, TRUE, FALSE, &no_tags);
 		} else
 		{
 			notc_msg (sess);
@@ -2701,7 +2707,6 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *nick = word[2];
 	char *msg = word_eol[3];
 	struct session *newsess;
-
 	char *split_text = NULL;
 	int cmd_length = 13; /* " PRIVMSG ", " ", :, \r, \n */
 	int offset = 0;
@@ -2752,10 +2757,13 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				newsess = find_channel (sess->server, nick);
 			if (newsess)
 			{
+				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+
 				while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
 				{
 					inbound_chanmsg (newsess->server, NULL, newsess->channel,
-										  newsess->server->nick, split_text, TRUE, FALSE);
+										  newsess->server->nick, split_text, TRUE, FALSE,
+										  &no_tags);
 
 					if (*split_text)
 						offset += strlen(split_text);
@@ -2763,7 +2771,8 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					g_free(split_text);
 				}
 				inbound_chanmsg (newsess->server, NULL, newsess->channel,
-									  newsess->server->nick, msg + offset, TRUE, FALSE);
+									  newsess->server->nick, msg + offset, TRUE, FALSE,
+									  &no_tags);
 			}
 			else
 			{
@@ -2825,7 +2834,11 @@ cmd_nick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (sess->server->connected)
 			sess->server->p_change_nick (sess->server, nick);
 		else
-			inbound_newnick (sess->server, sess->server->nick, nick, TRUE);
+		{
+			message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+			inbound_newnick (sess->server, sess->server->nick, nick, TRUE,
+								  &no_tags);
+		}
 		return TRUE;
 	}
 	return FALSE;
@@ -2894,7 +2907,10 @@ cmd_notify (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 		}
 	} else
-		notify_showlist (sess);
+	{
+		message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+		notify_showlist (sess, &no_tags);
+	}
 	return TRUE;
 }
 
@@ -3699,8 +3715,11 @@ cmd_wallchan (struct session *sess, char *tbuf, char *word[],
 			sess = list->data;
 			if (sess->type == SESS_CHANNEL)
 			{
+				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+
 				inbound_chanmsg (sess->server, NULL, sess->channel,
-									  sess->server->nick, word_eol[2], TRUE, FALSE);
+									  sess->server->nick, word_eol[2], TRUE, FALSE, 
+									  &no_tags);
 				sess->server->p_message (sess->server, sess->channel, word_eol[2]);
 			}
 			list = list->next;
@@ -4344,6 +4363,7 @@ handle_say (session *sess, char *text, int check_spch)
 	char *newcmd = newcmd_static;
 	int len;
 	int newcmdlen = sizeof newcmd_static;
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	if (strcmp (sess->channel, "(lastlog)") == 0)
 	{
@@ -4396,7 +4416,7 @@ handle_say (session *sess, char *text, int check_spch)
 		if (dcc)
 		{
 			inbound_chanmsg (sess->server, NULL, sess->channel,
-								  sess->server->nick, text, TRUE, FALSE);
+								  sess->server->nick, text, TRUE, FALSE, &no_tags);
 			set_topic (sess, net_ip (dcc->addr), net_ip (dcc->addr));
 			goto xit;
 		}
@@ -4411,7 +4431,7 @@ handle_say (session *sess, char *text, int check_spch)
 		while ((split_text = split_up_text (sess, text + offset, cmd_length, split_text)))
 		{
 			inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
-								  split_text, TRUE, FALSE);
+								  split_text, TRUE, FALSE, &no_tags);
 			sess->server->p_message (sess->server, sess->channel, split_text);
 			
 			if (*split_text)
@@ -4421,7 +4441,7 @@ handle_say (session *sess, char *text, int check_spch)
 		}
 
 		inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
-							  text + offset, TRUE, FALSE);
+							  text + offset, TRUE, FALSE, &no_tags);
 		sess->server->p_message (sess->server, sess->channel, text + offset);
 	} else
 	{

@@ -85,7 +85,8 @@ ctcp_check (session *sess, char *nick, char *word[], char *word_eol[],
 
 void
 ctcp_handle (session *sess, char *to, char *nick, char *ip,
-				 char *msg, char *word[], char *word_eol[], int id)
+				 char *msg, char *word[], char *word_eol[], int id,
+				 const message_tags_data *tags_data)
 {
 	char *po;
 	session *chansess;
@@ -103,7 +104,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		if (!ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 		{
 			if (!ignore_check (word[1], IG_DCC))
-				handle_dcc (sess, nick, word, word_eol);
+				handle_dcc (sess, nick, word, word_eol, tags_data);
 		}
 		return;
 	}
@@ -128,7 +129,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		if (ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 			goto generic;
 
-		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id);
+		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id, tags_data);
 		return;
 	}
 
@@ -161,12 +162,13 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 				if (!chansess)
 					chansess = sess;
 
-				EMIT_SIGNAL (XP_TE_CTCPSNDC, chansess, word[5],
-								 nick, to, NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_CTCPSNDC, chansess, word[5],
+											  nick, to, NULL, 0, tags_data->timestamp);
 			} else
 			{
-				EMIT_SIGNAL (XP_TE_CTCPSND, sess->server->front_session, word[5],
-								 nick, NULL, NULL, 0);
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_CTCPSND, sess->server->front_session,
+											  word[5], nick, NULL, NULL, 0,
+											  tags_data->timestamp);
 			}
 
 			/* don't let IRCers specify path */
@@ -187,13 +189,14 @@ generic:
 
 	if (!is_channel (sess->server, to))
 	{
-		EMIT_SIGNAL (XP_TE_CTCPGEN, sess->server->front_session, msg, nick,
-						 NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_CTCPGEN, sess->server->front_session, msg,
+									  nick, NULL, NULL, 0, tags_data->timestamp);
 	} else
 	{
 		chansess = find_channel (sess->server, to);
 		if (!chansess)
 			chansess = sess;
-		EMIT_SIGNAL (XP_TE_CTCPGENC, chansess, msg, nick, to, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_CTCPGENC, chansess, msg, nick, to, NULL, 0,
+									  tags_data->timestamp);
 	}
 }

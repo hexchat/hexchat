@@ -18,6 +18,7 @@
  */
 
 #include <time.h>
+#include "proto-irc.h"
 
 #ifndef HEXCHAT_USERLIST_H
 #define HEXCHAT_USERLIST_H
@@ -51,7 +52,8 @@ struct User *userlist_find (session *sess, const char *name);
 struct User *userlist_find_global (server *serv, char *name);
 void userlist_clear (session *sess);
 void userlist_free (session *sess);
-void userlist_add (session *sess, char *name, char *hostname, char *account, char *realname);
+void userlist_add (session *sess, char *name, char *hostname, char *account,
+						 char *realname, const message_tags_data *tags_data);
 int userlist_remove (session *sess, char *name);
 void userlist_remove_user (session *sess, struct User *user);
 int userlist_change (session *sess, char *oldname, char *newname);

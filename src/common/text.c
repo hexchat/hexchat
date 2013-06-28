@@ -866,7 +866,7 @@ text_validate (char **text, int *len)
 }
 
 void
-PrintText (session *sess, char *text)
+PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 {
 	char *conv;
 
@@ -890,10 +890,16 @@ PrintText (session *sess, char *text)
 
 	log_write (sess, text);
 	scrollback_save (sess, text);
-	fe_print_text (sess, text, 0);
+	fe_print_text (sess, text, timestamp);
 
 	if (conv)
 		g_free (conv);
+}
+
+void
+PrintText (session *sess, char *text)
+{
+	PrintTextTimeStamp (sess, text, 0);
 }
 
 void
@@ -907,6 +913,20 @@ PrintTextf (session *sess, char *format, ...)
 	va_end (args);
 
 	PrintText (sess, buf);
+	g_free (buf);
+}
+
+void
+PrintTextTimeStampf (session *sess, time_t timestamp, char *format, ...)
+{
+	va_list args;
+	char *buf;
+
+	va_start (args, format);
+	buf = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	PrintTextTimeStamp (sess, buf, timestamp);
 	g_free (buf);
 }
 
@@ -1836,12 +1856,13 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo, unsig
 }
 
 static void
-display_event (session *sess, int event, char **args, unsigned int stripcolor_args)
+display_event (session *sess, int event, char **args, 
+					unsigned int stripcolor_args, time_t timestamp)
 {
 	char o[4096];
 	format_event (sess, event, args, o, sizeof (o), stripcolor_args);
 	if (o[0])
-		PrintText (sess, o);
+		PrintTextTimeStamp (sess, o, timestamp);
 }
 
 int
@@ -2042,7 +2063,8 @@ text_color_of (char *name)
 /* called by EMIT_SIGNAL macro */
 
 void
-text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
+text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
+			  time_t timestamp)
 {
 	char *word[PDIWORDS];
 	int i;
@@ -2120,7 +2142,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	}
 
 	sound_play_event (index);
-	display_event (sess, index, word, stripcolor_args);
+	display_event (sess, index, word, stripcolor_args, timestamp);
 }
 
 char *
@@ -2143,7 +2165,7 @@ text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d
 	i = pevent_find (name, &i);
 	if (i >= 0)
 	{
-		text_emit (i, sess, a, b, c, d);
+		text_emit (i, sess, a, b, c, d, 0);
 		return 1;
 	}
 
