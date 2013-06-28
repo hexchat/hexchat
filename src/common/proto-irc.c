@@ -1352,11 +1352,12 @@ handle_message_tag_time (const char *time, message_tags_data *tags_data)
 
 		/* we ignore the milisecond part */
 		z = sscanf (time, "%d-%d-%dT%d:%d:%d", &t.tm_year, &t.tm_mon, &t.tm_mday,
-						&t.tm_hour, &t.tm_min, &t.tm_sec);
+					&t.tm_hour, &t.tm_min, &t.tm_sec);
 
 		if (z != 6)
 			return;
 
+		t.tm_year -= 1900;
 		t.tm_isdst = 0; /* day light saving time */
 
 		tags_data->timestamp = mktime (&t);
