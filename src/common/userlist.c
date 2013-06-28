@@ -383,7 +383,8 @@ userlist_remove_user (struct session *sess, struct User *user)
 }
 
 void
-userlist_add (struct session *sess, char *name, char *hostname, char *account, char *realname)
+userlist_add (struct session *sess, char *name, char *hostname,
+				  char *account, char *realname, const message_tags_data *tags_data)
 {
 	struct User *user;
 	int row, prefix_chars;
@@ -391,7 +392,7 @@ userlist_add (struct session *sess, char *name, char *hostname, char *account, c
 
 	acc = nick_access (sess->server, name, &prefix_chars);
 
-	notify_set_online (sess->server, name + prefix_chars);
+	notify_set_online (sess->server, name + prefix_chars, tags_data);
 
 	user = malloc (sizeof (struct User));
 	memset (user, 0, sizeof (struct User));

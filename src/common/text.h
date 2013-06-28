@@ -17,12 +17,17 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <time.h>
 #include "textenums.h"
 
 #ifndef HEXCHAT_TEXT_H
 #define HEXCHAT_TEXT_H
 
-#define EMIT_SIGNAL(i, sess, a, b, c, d, e) text_emit(i, sess, a, b, c, d)
+/* timestamp is non-zero if we are using server-time */
+#define EMIT_SIGNAL_TIMESTAMP(i, sess, a, b, c, d, e, timestamp) \
+	text_emit(i, sess, a, b, c, d, timestamp)
+#define EMIT_SIGNAL(i, sess, a, b, c, d, e) \
+	text_emit(i, sess, a, b, c, d, 0)
 
 struct text_event
 {
@@ -37,7 +42,9 @@ void scrollback_load (session *sess);
 
 int text_word_check (char *word, int len);
 void PrintText (session *sess, char *text);
+void PrintTextTimeStamp (session *sess, char *text, time_t timestamp);
 void PrintTextf (session *sess, char *format, ...);
+void PrintTextTimeStampf (session *sess, time_t timestamp, char *format, ...);
 void log_close (session *sess);
 void log_open_or_close (session *sess);
 void load_text_events (void);
@@ -46,7 +53,8 @@ int pevt_build_string (const char *input, char **output, int *max_arg);
 int pevent_load (char *filename);
 void pevent_make_pntevts (void);
 int text_color_of (char *name);
-void text_emit (int index, session *sess, char *a, char *b, char *c, char *d);
+void text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
+		time_t timestamp);
 int text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d);
 char *text_validate (char **text, int *len);
 int get_stamp_str (char *fmt, time_t tim, char **ret);

@@ -509,6 +509,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	int len;
 	gsize utf_len;
 	char portbuf[32];
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	len = strlen (line);
 	if (dcc->serv->using_cp1255)
@@ -576,10 +577,11 @@ dcc_chat_line (struct DCC *dcc, char *line)
 		po = strchr (line + 8, '\001');
 		if (po)
 			po[0] = 0;
-		inbound_action (sess, dcc->serv->nick, dcc->nick, "", line + 8, FALSE, FALSE);
+		inbound_action (sess, dcc->serv->nick, dcc->nick, "", line + 8, FALSE,
+							 FALSE, &no_tags);
 	} else
 	{
-		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE);
+		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE, &no_tags);
 	}
 	if (utf)
 		g_free (utf);
@@ -2375,8 +2377,8 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 }
 
 void
-handle_dcc (struct session *sess, char *nick, char *word[],
-				char *word_eol[])
+handle_dcc (struct session *sess, char *nick, char *word[], char *word_eol[],
+				const message_tags_data *tags_data)
 {
 	char tbuf[512];
 	struct DCC *dcc;
@@ -2472,8 +2474,9 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 				dcc->serv->p_ctcp (dcc->serv, dcc->nick, tbuf);
 			}
 			sprintf (tbuf, "%"DCC_SFMT, dcc->pos);
-			EMIT_SIGNAL (XP_TE_DCCRESUMEREQUEST, sess, nick,
-							 file_part (dcc->file), tbuf, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_DCCRESUMEREQUEST, sess, nick,
+										  file_part (dcc->file), tbuf, NULL, 0,
+										  tags_data->timestamp);
 		}
 		return;
 	}
@@ -2543,8 +2546,9 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 
 	} else
 	{
-		EMIT_SIGNAL (XP_TE_DCCGENERICOFFER, sess->server->front_session,
-						 word_eol[4] + 2, nick, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_DCCGENERICOFFER, sess->server->front_session,
+									  word_eol[4] + 2, nick, NULL, NULL, 0,
+									  tags_data->timestamp);
 	}
 }
 
