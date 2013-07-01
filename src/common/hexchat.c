@@ -105,6 +105,7 @@ int hexchat_is_quitting = FALSE;
 int arg_dont_autoconnect = FALSE;
 int arg_skip_plugins = FALSE;
 char *arg_url = NULL;
+char **arg_urls = NULL;
 char *arg_command = NULL;
 gint arg_existing = FALSE;
 
@@ -400,6 +401,7 @@ irc_init (session *sess)
 {
 	static int done_init = FALSE;
 	char *buf;
+	int i;
 
 	if (done_init)
 		return;
@@ -430,6 +432,17 @@ irc_init (session *sess)
 		g_free (arg_url);	/* from GOption */
 		handle_command (sess, buf, FALSE);
 		g_free (buf);
+	}
+	
+	if (arg_urls != NULL)
+	{
+		for (i = 0; i < g_strv_length(arg_urls); i++)
+		{
+			buf = g_strdup_printf ("%s %s", i==0? "server" : "newserver", arg_urls[i]);
+			handle_command (sess, buf, FALSE);
+			g_free (buf);
+		}
+		g_strfreev (arg_urls);
 	}
 
 	if (arg_command != NULL)
@@ -924,17 +937,17 @@ xchat_init (void)
 	servlist_init ();							/* load server list */
 
 	/* if we got a URL, don't open the server list GUI */
-	if (!prefs.hex_gui_slist_skip && !arg_url)
+	if (!prefs.hex_gui_slist_skip && !arg_url && !arg_urls)
 		fe_serverlist_open (NULL);
 
-	/* turned OFF via -a arg */
-	if (!arg_dont_autoconnect)
+	/* turned OFF via -a arg or by passing urls */
+	if (!arg_dont_autoconnect && !arg_urls)
 	{
 		/* do any auto connects */
 		if (!servlist_have_auto ())	/* if no new windows open .. */
 		{
 			/* and no serverlist gui ... */
-			if (prefs.hex_gui_slist_skip || arg_url)
+			if (prefs.hex_gui_slist_skip || arg_url || arg_urls)
 				/* we'll have to open one. */
 				new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 		} else
@@ -943,7 +956,7 @@ xchat_init (void)
 		}
 	} else
 	{
-		if (prefs.hex_gui_slist_skip || arg_url)
+		if (prefs.hex_gui_slist_skip || arg_url || arg_urls)
 			new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	}
 }
