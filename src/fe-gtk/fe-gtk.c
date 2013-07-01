@@ -218,10 +218,14 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_version)
 	{
+#ifdef WIN32
 		buffer = g_strdup_printf (DISPLAY_NAME " " PACKAGE_VERSION "\n");
 		gtk_init (&argc, &argv);
 		create_msg_dialog ("Version Information", buffer);
 		g_free (buffer);
+#else
+		 printf (PACKAGE_NAME" "PACKAGE_VERSION"\n");
+#endif
 
 		return 0;
 	}
@@ -229,8 +233,12 @@ fe_args (int argc, char *argv[])
 	if (arg_show_autoload)
 	{
 		buffer = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "addons\n", get_xdir ());
+#ifdef WIN32
 		gtk_init (&argc, &argv);
 		create_msg_dialog ("Plugin/Script Auto-load Directory", buffer);
+#else
+		printf (buffer);
+#endif
 		g_free (buffer);
 
 		return 0;
@@ -239,8 +247,12 @@ fe_args (int argc, char *argv[])
 	if (arg_show_config)
 	{
 		buffer = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "\n", get_xdir ());
+#ifdef WIN32
 		gtk_init (&argc, &argv);
 		create_msg_dialog ("User Config Directory", buffer);
+#else
+		printf (buffer);
+#endif
 		g_free (buffer);
 
 		return 0;
