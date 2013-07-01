@@ -53,6 +53,7 @@ hexchat_remote (void)
 	gboolean hexchat_running;
 	GError *error = NULL;
 	char *command = NULL;
+	int i;
 
 	/* GnomeVFS >=2.15 uses D-Bus and threads, so threads should be
 	 * initialised before opening for the first time a D-Bus connection */
@@ -62,7 +63,7 @@ hexchat_remote (void)
 	dbus_g_thread_init ();
 
 	/* if there is nothing to do, return now. */
-	if (!arg_existing || !(arg_url || arg_command)) {
+	if (!arg_existing || !(arg_url || arg_urls || arg_command)) {
 		return;
 	}
 
@@ -114,6 +115,22 @@ hexchat_remote (void)
 		}
 		g_free (command);
 	}
+	
+	if (arg_urls)
+	{
+		for (i = 0; i < g_strv_length(arg_urls); i++)
+		{
+			command = g_strdup_printf ("newserver %s", arg_urls[i]);
+			if (!dbus_g_proxy_call (remote_object, "Command",
+					&error,
+					G_TYPE_STRING, command,
+					G_TYPE_INVALID, G_TYPE_INVALID)) {
+				write_error (_("Failed to complete Command"), &error);
+			}
+			g_free (command);
+		}
+		g_strfreev (arg_urls);
+	} 	
 
 	exit (0);
 }
