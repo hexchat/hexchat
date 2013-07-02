@@ -1337,8 +1337,16 @@ get_timezone(void)
 
 	time (&t);
 
+	/* gmtime() and localtime() are thread-safe on windows.
+	 * on other systems we should use {gmtime,localtime}_r().
+	 */
+#if WIN32
+	tm_utc = *gmtime (&t);
+	tm_local = *localtime (&t);
+#else
 	gmtime_r (&t, &tm_utc);
 	localtime_r (&t, &tm_local);
+#endif
 
 	time_utc = mktime (&tm_utc);
 	time_local = mktime (&tm_local);
