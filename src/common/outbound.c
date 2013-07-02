@@ -3253,7 +3253,7 @@ urlserv:
 			co++;
 			if (*co == '#')
 				*channel = co+1;
-			else
+			else if (*co != '\0')
 				*channel = co;
 				
 			/* check for key - mirc style */
