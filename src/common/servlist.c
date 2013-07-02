@@ -52,6 +52,10 @@ static const struct defaultserver def[] =
 	{"2600net",	0},
 	{0,			"irc.2600.net"},
 
+	{"2ch", 0, 0, "iso-2022-jp", 0, 0},
+	{0,			"irc.2ch.net"},
+	{0,			"irc2.2ch.net"},
+
 /*	{"7-indonesia",	0},
 	{0,			"irc.7-indonesia.org"},*/
 
