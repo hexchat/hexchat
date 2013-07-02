@@ -323,10 +323,14 @@ banlist_copyentry (GtkWidget *menuitem, GtkTreeView *view)
 	GtkTreeModel *model;
 	GtkTreeSelection *sel;
 	GtkTreeIter iter;
-	GValue mask = G_VALUE_INIT;
-	GValue from = G_VALUE_INIT;
-	GValue date = G_VALUE_INIT;
+	GValue mask;
+	GValue from;
+	GValue date;
 	char *str;
+
+	memset (&mask, 0, sizeof (mask));
+	memset (&from, 0, sizeof (from));
+	memset (&date, 0, sizeof (date));
 	
 	/* get selection (which should have been set on click)
 	 * and temporarily switch to single mode to get selected iter */
