@@ -120,7 +120,7 @@ hexchat_remote (void)
 	{
 		for (i = 0; i < g_strv_length(arg_urls); i++)
 		{
-			command = g_strdup_printf ("newserver %s", arg_urls[i]);
+			command = g_strdup_printf ("url %s", arg_urls[i]);
 			if (!dbus_g_proxy_call (remote_object, "Command",
 					&error,
 					G_TYPE_STRING, command,
