@@ -391,12 +391,14 @@ fe_get_str (char *msg, char *def, void *callback, void *userdata)
 	GtkWidget *entry;
 	GtkWidget *hbox;
 	GtkWidget *label;
+	extern GtkWidget *parent_window;
 
 	dialog = gtk_dialog_new_with_buttons (msg, NULL, 0,
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 										NULL);
 	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
 
 	if (userdata == (void *)1)	/* nick box is usually on the very bottom, make it centered */
 	{
@@ -461,6 +463,7 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 	GtkWidget *hbox;
 	GtkWidget *label;
 	GtkAdjustment *adj;
+	extern GtkWidget *parent_window;
 
 	dialog = gtk_dialog_new_with_buttons (msg, NULL, 0,
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
@@ -468,6 +471,8 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 										NULL);
 	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+
 	hbox = gtk_hbox_new (TRUE, 0);
 
 	g_object_set_data (G_OBJECT (dialog), "cb", callback);
