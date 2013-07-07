@@ -382,13 +382,13 @@ static const setting filexfer_settings[] =
 
 	{ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0, 0},
 	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(hex_dcc_max_send_cps), 
-					N_("Maximum speed for one transfer"), 0, 1000000},
+					N_("Maximum speed for one transfer"), 0, 10000000},
 	{ST_NUMBER,	N_("One download:"), P_OFFINTNL(hex_dcc_max_get_cps),
-					N_("Maximum speed for one transfer"), 0, 1000000},
+					N_("Maximum speed for one transfer"), 0, 10000000},
 	{ST_NUMBER,	N_("All uploads combined:"), P_OFFINTNL(hex_dcc_global_max_send_cps),
-					N_("Maximum speed for all files"), 0, 1000000},
+					N_("Maximum speed for all files"), 0, 10000000},
 	{ST_NUMBER,	N_("All downloads combined:"), P_OFFINTNL(hex_dcc_global_max_get_cps),
-					N_("Maximum speed for all files"), 0, 1000000},
+					N_("Maximum speed for all files"), 0, 10000000},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
