@@ -630,11 +630,11 @@ plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[])
 
 int
 plugin_emit_server_attrs (session *sess, char *name, char *word[], char *word_eol[],
-						 time_t server_time)
+						  time_t server_time)
 {
 	hexchat_event_attrs attrs;
 
-	attrs.server_time_utc=server_time;
+	attrs.server_time_utc = server_time;
 
 	return plugin_hook_run (sess, name, word, word_eol, &attrs, HOOK_SERVER_ATTRS);
 }
@@ -652,7 +652,7 @@ plugin_emit_print_attrs (session *sess, char *word[], time_t server_time)
 {
 	hexchat_event_attrs attrs;
 
-	attrs.server_time_utc=server_time;
+	attrs.server_time_utc = server_time;
 
 	return plugin_hook_run (sess, word[0], word, NULL, &attrs, HOOK_PRINT_ATTRS);
 }
