@@ -74,11 +74,6 @@ struct _hexchat_hook
 	int pri;	/* fd */	/* priority / fd for HOOK_FD only */
 };
 
-struct _hexchat_event_attrs
-{
-	time_t server_time_utc; /* 0 if not used */
-};
-
 struct _hexchat_list
 {
 	int type;			/* LIST_* */
@@ -634,7 +629,7 @@ plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[])
 }
 
 int
-plugin_emit_server_attr (session *sess, char *name, char *word[], char *word_eol[],
+plugin_emit_server_attrs (session *sess, char *name, char *word[], char *word_eol[],
 						 time_t server_time)
 {
 	hexchat_event_attrs attrs;
@@ -653,7 +648,7 @@ plugin_emit_print (session *sess, char *word[])
 }
 
 int
-plugin_emit_print_attr (session *sess, char *word[], time_t server_time)
+plugin_emit_print_attrs (session *sess, char *word[], time_t server_time)
 {
 	hexchat_event_attrs attrs;
 

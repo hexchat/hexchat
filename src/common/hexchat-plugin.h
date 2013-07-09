@@ -46,10 +46,13 @@ extern "C" {
 typedef struct _hexchat_plugin hexchat_plugin;
 typedef struct _hexchat_list hexchat_list;
 typedef struct _hexchat_hook hexchat_hook;
-typedef struct _hexchat_event_attrs hexchat_event_attrs;
 #ifndef PLUGIN_C
 typedef struct _hexchat_context hexchat_context;
 #endif
+typedef struct
+{
+	time_t server_time_utc; /* 0 if not used */
+} hexchat_event_attrs;
 
 #ifndef PLUGIN_C
 struct _hexchat_plugin
@@ -381,7 +384,9 @@ hexchat_pluginpref_list (hexchat_plugin *ph,
 #endif
 #define hexchat_hook_command ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_command)
 #define hexchat_hook_server ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_server)
+#define hexchat_hook_server_attrs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_server_attrs)
 #define hexchat_hook_print ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_print)
+#define hexchat_hook_print_attrs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_print_attrs)
 #define hexchat_hook_timer ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_timer)
 #define hexchat_hook_fd ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_fd)
 #define hexchat_unhook ((HEXCHAT_PLUGIN_HANDLE)->hexchat_unhook)

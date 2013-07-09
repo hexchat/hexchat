@@ -1506,15 +1506,24 @@ irc_inline (server *serv, char *buf, int len)
 
 		word[0] = type;
 		word_eol[1] = buf;	/* keep the ":" for plugins */
-		if (plugin_emit_server (sess, type, word, word_eol))
+
+		/* don't use || here, since it might short-circuit */
+		if (plugin_emit_server (sess, type, word, word_eol)
+			+ plugin_emit_server_attrs (sess, type, word, word_eol, 
+										tags_data.timestamp))
 			goto xit;
+
 		word[1]++;
 		word_eol[1] = buf + 1;	/* but not for HexChat internally */
 
 	} else
 	{
 		word[0] = type = word[1];
-		if (plugin_emit_server (sess, type, word, word_eol))
+
+		/* don't use || here, since it might short-circuit */
+		if (plugin_emit_server (sess, type, word, word_eol)
+			+ plugin_emit_server_attrs (sess, type, word, word_eol,
+										tags_data.timestamp))
 			goto xit;
 	}
 

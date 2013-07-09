@@ -2086,7 +2086,9 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 
-	if (plugin_emit_print (sess, word))
+	/* don't use || here, since it might short-circuit */
+	if (plugin_emit_print (sess, word)
+		+ plugin_emit_print_attrs (sess, word, timestamp))
 		return;
 
 	/* If a plugin's callback executes "/close", 'sess' may be invalid */
