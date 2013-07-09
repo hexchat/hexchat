@@ -46,6 +46,7 @@ extern "C" {
 typedef struct _hexchat_plugin hexchat_plugin;
 typedef struct _hexchat_list hexchat_list;
 typedef struct _hexchat_hook hexchat_hook;
+typedef struct _hexchat_event_attrs hexchat_event_attrs;
 #ifndef PLUGIN_C
 typedef struct _hexchat_context hexchat_context;
 #endif
@@ -164,6 +165,18 @@ struct _hexchat_plugin
 		const char *var);
 	int (*hexchat_pluginpref_list) (hexchat_plugin *ph,
 		char *dest);
+	hexchat_hook *(*hexchat_hook_server_attrs) (hexchat_plugin *ph,
+		   const char *name,
+		   int pri,
+		   int (*callback) (char *word[], char *word_eol[],
+							hexchat_event_attrs *attrs, void *user_data),
+		   void *userdata);
+	hexchat_hook *(*hexchat_hook_print_attrs) (hexchat_plugin *ph,
+		  const char *name,
+		  int pri,
+		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
+						   void *user_data),
+		  void *userdata);
 };
 #endif
 
@@ -183,11 +196,28 @@ hexchat_hook_server (hexchat_plugin *ph,
 		   int (*callback) (char *word[], char *word_eol[], void *user_data),
 		   void *userdata);
 
+
+hexchat_hook *
+hexchat_hook_server_attrs (hexchat_plugin *ph,
+		   const char *name,
+		   int pri,
+		   int (*callback) (char *word[], char *word_eol[],
+							hexchat_event_attrs *attrs, void *user_data),
+		   void *userdata);
+
 hexchat_hook *
 hexchat_hook_print (hexchat_plugin *ph,
 		  const char *name,
 		  int pri,
 		  int (*callback) (char *word[], void *user_data),
+		  void *userdata);
+
+hexchat_hook *
+hexchat_hook_print_attrs (hexchat_plugin *ph,
+		  const char *name,
+		  int pri,
+		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
+						   void *user_data),
 		  void *userdata);
 
 hexchat_hook *
