@@ -144,10 +144,12 @@ struct _hexchat_plugin
 		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
 						   void *user_data),
 		  void *userdata);
-	void *(*hexchat_dummy4) (hexchat_plugin *ph);
-	void *(*hexchat_dummy3) (hexchat_plugin *ph);
+
+	/* If you add new functions here you should remove the corresponding number
+	 * of dummy functions bellow. */
 	void *(*hexchat_dummy2) (hexchat_plugin *ph);
 	void *(*hexchat_dummy1) (hexchat_plugin *ph);
+
 	/* PRIVATE FIELDS! */
 	void *handle;		/* from dlopen */
 	char *filename;	/* loaded from */

@@ -302,8 +302,6 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_hook_print_attrs = hexchat_hook_print_attrs;
 
 		/* incase new plugins are loaded on older HexChat */
-		pl->hexchat_dummy4 = hexchat_dummy;
-		pl->hexchat_dummy3 = hexchat_dummy;
 		pl->hexchat_dummy2 = hexchat_dummy;
 		pl->hexchat_dummy1 = hexchat_dummy;
 
