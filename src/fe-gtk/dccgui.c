@@ -78,6 +78,7 @@ struct dccwindow
 	GtkWidget *accept_button;
 	GtkWidget *resume_button;
 	GtkWidget *open_button;
+	/*Add clear all button*/
 
 	GtkWidget *file_label;
 	GtkWidget *address_label;
