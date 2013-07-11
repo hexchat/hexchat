@@ -179,6 +179,11 @@ AC_ARG_ENABLE(libproxy,
 	[AS_HELP_STRING([--disable-libproxy],[disable libproxy support (default: auto)])],
         libproxy=$enableval, libproxy=auto)
 
+AC_ARG_ENABLE(minimal-flags,
+	[AS_HELP_STRING([--enable-minimal-flags],[only add those CFLAGS that are really needed or not intrusive (default: no)])],
+        minimalflags=$enableval, minimalflags=no)
+
+
 
 dnl *********************************************************************
 dnl ** GLIB *************************************************************
@@ -782,13 +787,16 @@ if test "x$GCC" = "xyes"; then
 	if test -z "`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`" ; then
 		CFLAGS="$CFLAGS -Wall"
 	fi
-	if test "$system" = "Linux" -o "$system" = "FreeBSD"; then
-		if test -z "`echo "$CFLAGS" | grep "\-pipe" 2> /dev/null`" ; then
-			CFLAGS="$CFLAGS -pipe"
+	dnl these flags might be unwanted
+	if test x$minimalflags != xyes; then
+		if test "$system" = "Linux" -o "$system" = "FreeBSD"; then
+			if test -z "`echo "$CFLAGS" | grep "\-pipe" 2> /dev/null`" ; then
+				CFLAGS="$CFLAGS -pipe"
+			fi
 		fi
-	fi
-	if test -z "`echo "$CFLAGS" | grep "\-g " 2> /dev/null`" ; then
-		CFLAGS="$CFLAGS -g"
+		if test -z "`echo "$CFLAGS" | grep "\-g " 2> /dev/null`" ; then
+			CFLAGS="$CFLAGS -g"
+		fi
 	fi
 fi
 
