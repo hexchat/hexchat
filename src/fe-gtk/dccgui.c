@@ -78,7 +78,7 @@ struct dccwindow
 	GtkWidget *accept_button;
 	GtkWidget *resume_button;
 	GtkWidget *open_button;
-	/*Add clear all button*/
+	GtkWidget *clear_button; /* clears aborted and completed requests */	
 
 	GtkWidget *file_label;
 	GtkWidget *address_label;
@@ -813,10 +813,12 @@ fe_dcc_open_recv_win (int passive)
 	dccfwin.abort_button = gtkutil_button (bbox, GTK_STOCK_CANCEL, 0, abort_clicked, 0, _("Abort"));
 	dccfwin.accept_button = gtkutil_button (bbox, GTK_STOCK_APPLY, 0, accept_clicked, 0, _("Accept"));
 	dccfwin.resume_button = gtkutil_button (bbox, GTK_STOCK_REFRESH, 0, resume_clicked, 0, _("Resume"));
+	dccfwin.clear_button = gtkutil_button (bbox, GTK_STOCK_CLEAR, 0, NULL, 0, _("Clear")); /* TODO create CB function*/
 	dccfwin.open_button = gtkutil_button (bbox, 0, 0, browse_dcc_folder, 0, _("Open Folder..."));
 	gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.abort_button, FALSE);
+	gtk_widget_set_sensitive (dccfwin.clear_button, FALSE);
 
 	dcc_fill_window (3);
 	gtk_widget_show_all (dccfwin.window);
