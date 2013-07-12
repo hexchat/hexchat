@@ -2091,7 +2091,6 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	eat1 = plugin_emit_print (sess, word);
 	eat2 = plugin_emit_print_attrs (sess, word, timestamp);
 
-	/* don't use || here, since it might short-circuit */
 	if (eat1 || eat2)
 		return;
 
