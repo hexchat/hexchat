@@ -295,9 +295,9 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_pluginpref_list = hexchat_pluginpref_list;
 		pl->hexchat_hook_server_attrs = hexchat_hook_server_attrs;
 		pl->hexchat_hook_print_attrs = hexchat_hook_print_attrs;
+		pl->hexchat_emit_print_attrs = hexchat_emit_print_attrs;
 
 		/* incase new plugins are loaded on older HexChat */
-		pl->hexchat_dummy2 = hexchat_dummy;
 		pl->hexchat_dummy1 = hexchat_dummy;
 
 		/* run hexchat_plugin_init, if it returns 0, close the plugin */
@@ -1646,8 +1646,36 @@ hexchat_emit_print (hexchat_plugin *ph, const char *event_name, ...)
 			break;
 	}
 
-	i = text_emit_by_name ((char *)event_name, ph->context, argv[0], argv[1],
-								  argv[2], argv[3]);
+	i = text_emit_by_name ((char *)event_name, ph->context, (time_t) 0,
+						   argv[0], argv[1], argv[2], argv[3]);
+	va_end (args);
+
+	return i;
+}
+
+int
+hexchat_emit_print_attrs (hexchat_plugin *ph, hexchat_event_attrs *attrs,
+						  const char *event_name, ...)
+{
+	va_list args;
+	/* currently only 4 because no events use more than 4.
+		This can be easily expanded without breaking the API. */
+	char *argv[4] = {NULL, NULL, NULL, NULL};
+	int i = 0;
+
+	va_start (args, event_name);
+	while (1)
+	{
+		argv[i] = va_arg (args, char *);
+		if (!argv[i])
+			break;
+		i++;
+		if (i >= 4)
+			break;
+	}
+
+	i = text_emit_by_name ((char *)event_name, ph->context, attrs->server_time_utc,
+						   argv[0], argv[1], argv[2], argv[3]);
 	va_end (args);
 
 	return i;

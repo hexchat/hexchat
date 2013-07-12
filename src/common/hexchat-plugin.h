@@ -180,6 +180,8 @@ struct _hexchat_plugin
 		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
 						   void *user_data),
 		  void *userdata);
+	int (*hexchat_emit_print_attrs) (hexchat_plugin *ph, hexchat_event_attrs *attrs,
+									 const char *event_name, ...);
 };
 #endif
 
@@ -329,6 +331,10 @@ hexchat_plugingui_remove (hexchat_plugin *ph,
 int 
 hexchat_emit_print (hexchat_plugin *ph,
 		  const char *event_name, ...);
+
+int 
+hexchat_emit_print_attrs (hexchat_plugin *ph, hexchat_event_attrs *attrs,
+						  const char *event_name, ...);
 
 char *
 hexchat_gettext (hexchat_plugin *ph,

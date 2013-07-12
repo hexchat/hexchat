@@ -144,10 +144,10 @@ struct _hexchat_plugin
 		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
 						   void *user_data),
 		  void *userdata);
+	int (*hexchat_emit_print_attrs) (hexchat_plugin *ph, hexchat_event_attrs *attrs,
+									 const char *event_name, ...);
 
-	/* If you add new functions here you should remove the corresponding number
-	 * of dummy functions bellow. */
-	void *(*hexchat_dummy2) (hexchat_plugin *ph);
+	/* If you add a new function here you should remove the dummy function bellow. */
 	void *(*hexchat_dummy1) (hexchat_plugin *ph);
 
 	/* PRIVATE FIELDS! */
