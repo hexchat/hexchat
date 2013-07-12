@@ -78,7 +78,7 @@ if test "$?" != "0"; then
 	exit 2
 fi
 echo running libtoolize...
-libtoolize --force
+libtoolize --copy --force --install
 if test "$?" != "0"; then
 	echo libtoolize failed, stopping.
 	exit 3
@@ -90,7 +90,7 @@ if test "$?" != "0"; then
 	exit 4
 fi
 echo running $AUTOMAKE...
-$AUTOMAKE -a
+$AUTOMAKE -a -c
 if test "$?" != "0"; then
 	echo automake failed, stopping.
 	exit 5
