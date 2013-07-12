@@ -296,9 +296,8 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_hook_server_attrs = hexchat_hook_server_attrs;
 		pl->hexchat_hook_print_attrs = hexchat_hook_print_attrs;
 		pl->hexchat_emit_print_attrs = hexchat_emit_print_attrs;
-
-		/* incase new plugins are loaded on older HexChat */
-		pl->hexchat_dummy1 = hexchat_dummy;
+		pl->hexchat_event_attrs_create = hexchat_event_attrs_create;
+		pl->hexchat_event_attrs_free = hexchat_event_attrs_free;
 
 		/* run hexchat_plugin_init, if it returns 0, close the plugin */
 		if (((hexchat_init_func *)init_func) (pl, &pl->name, &pl->desc, &pl->version, arg) == 0)
@@ -620,8 +619,28 @@ plugin_emit_command (session *sess, char *name, char *word[], char *word_eol[])
 	return plugin_hook_run (sess, name, word, word_eol, NULL, HOOK_COMMAND);
 }
 
-/* got a server PRIVMSG, NOTICE, numeric etc... */
+hexchat_event_attrs *
+hexchat_event_attrs_create (hexchat_plugin *ph)
+{
+	hexchat_event_attrs *attrs;
 
+	attrs = malloc (sizeof (*attrs));
+
+	if (attrs == NULL)
+		return NULL;
+
+	attrs->server_time_utc = (time_t) 0;
+
+	return attrs;
+}
+
+void
+hexchat_event_attrs_free (hexchat_plugin *ph, hexchat_event_attrs *attrs)
+{
+	g_free (attrs);
+}
+
+/* got a server PRIVMSG, NOTICE, numeric etc... */
 int
 plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[])
 {

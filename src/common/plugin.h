@@ -146,9 +146,9 @@ struct _hexchat_plugin
 		  void *userdata);
 	int (*hexchat_emit_print_attrs) (hexchat_plugin *ph, hexchat_event_attrs *attrs,
 									 const char *event_name, ...);
-
-	/* If you add a new function here you should remove the dummy function bellow. */
-	void *(*hexchat_dummy1) (hexchat_plugin *ph);
+	hexchat_event_attrs *(*hexchat_event_attrs_create) (hexchat_plugin *ph);
+	void (*hexchat_event_attrs_free) (hexchat_plugin *ph,
+									  hexchat_event_attrs *attrs);
 
 	/* PRIVATE FIELDS! */
 	void *handle;		/* from dlopen */
