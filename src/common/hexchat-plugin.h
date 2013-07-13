@@ -423,6 +423,7 @@ hexchat_pluginpref_list (hexchat_plugin *ph,
 #define hexchat_plugingui_add ((HEXCHAT_PLUGIN_HANDLE)->hexchat_plugingui_add)
 #define hexchat_plugingui_remove ((HEXCHAT_PLUGIN_HANDLE)->hexchat_plugingui_remove)
 #define hexchat_emit_print ((HEXCHAT_PLUGIN_HANDLE)->hexchat_emit_print)
+#define hexchat_emit_print_attrs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_emit_print_attrs)
 #define hexchat_list_time ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_time)
 #define hexchat_gettext ((HEXCHAT_PLUGIN_HANDLE)->hexchat_gettext)
 #define hexchat_send_modes ((HEXCHAT_PLUGIN_HANDLE)->hexchat_send_modes)
