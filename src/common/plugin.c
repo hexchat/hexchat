@@ -624,10 +624,7 @@ hexchat_event_attrs_create (hexchat_plugin *ph)
 {
 	hexchat_event_attrs *attrs;
 
-	attrs = malloc (sizeof (*attrs));
-
-	if (attrs == NULL)
-		return NULL;
+	attrs = g_malloc (sizeof (*attrs));
 
 	attrs->server_time_utc = (time_t) 0;
 
