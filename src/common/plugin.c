@@ -86,6 +86,8 @@ struct _hexchat_list
 typedef int (hexchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
 typedef int (hexchat_serv_cb) (char *word[], char *word_eol[], void *user_data);
 typedef int (hexchat_print_cb) (char *word[], void *user_data);
+typedef int (hexchat_serv_attrs_cb) (char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *user_data);
+typedef int (hexchat_print_attrs_cb) (char *word[], hexchat_event_attrs *attrs, void *user_data);
 typedef int (hexchat_fd_cb) (int fd, int flags, void *user_data);
 typedef int (hexchat_timer_cb) (void *user_data);
 typedef int (hexchat_init_func) (hexchat_plugin *, char **, char **, char **, char *);
@@ -102,12 +104,14 @@ enum
 
 enum
 {
-	HOOK_COMMAND,	/* /command */
-	HOOK_SERVER,	/* PRIVMSG, NOTICE, numerics */
-	HOOK_PRINT,		/* All print events */
-	HOOK_TIMER,		/* timeouts */
-	HOOK_FD,			/* sockets & fds */
-	HOOK_DELETED	/* marked for deletion */
+	HOOK_COMMAND,      /* /command */
+	HOOK_SERVER,       /* PRIVMSG, NOTICE, numerics */
+	HOOK_SERVER_ATTRS, /* same as above, with attributes */
+	HOOK_PRINT,        /* All print events */
+	HOOK_PRINT_ATTRS,  /* same as above, with attributes */
+	HOOK_TIMER,        /* timeouts */
+	HOOK_FD,           /* sockets & fds */
+	HOOK_DELETED       /* marked for deletion */
 };
 
 GSList *plugin_list = NULL;	/* export for plugingui.c */
@@ -289,12 +293,11 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_pluginpref_get_int = hexchat_pluginpref_get_int;
 		pl->hexchat_pluginpref_delete = hexchat_pluginpref_delete;
 		pl->hexchat_pluginpref_list = hexchat_pluginpref_list;
-
-		/* incase new plugins are loaded on older HexChat */
-		pl->hexchat_dummy4 = hexchat_dummy;
-		pl->hexchat_dummy3 = hexchat_dummy;
-		pl->hexchat_dummy2 = hexchat_dummy;
-		pl->hexchat_dummy1 = hexchat_dummy;
+		pl->hexchat_hook_server_attrs = hexchat_hook_server_attrs;
+		pl->hexchat_hook_print_attrs = hexchat_hook_print_attrs;
+		pl->hexchat_emit_print_attrs = hexchat_emit_print_attrs;
+		pl->hexchat_event_attrs_create = hexchat_event_attrs_create;
+		pl->hexchat_event_attrs_free = hexchat_event_attrs_free;
 
 		/* run hexchat_plugin_init, if it returns 0, close the plugin */
 		if (((hexchat_init_func *)init_func) (pl, &pl->name, &pl->desc, &pl->version, arg) == 0)
@@ -539,7 +542,8 @@ plugin_hook_find (GSList *list, int type, char *name)
 /* check for plugin hooks and run them */
 
 static int
-plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[], int type)
+plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[],
+				 hexchat_event_attrs *attrs, int type)
 {
 	GSList *list, *next;
 	hexchat_hook *hook;
@@ -562,8 +566,14 @@ plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[], int 
 		case HOOK_COMMAND:
 			ret = ((hexchat_cmd_cb *)hook->callback) (word, word_eol, hook->userdata);
 			break;
+		case HOOK_PRINT_ATTRS:
+			ret = ((hexchat_print_attrs_cb *)hook->callback) (word, attrs, hook->userdata);
+			break;
 		case HOOK_SERVER:
 			ret = ((hexchat_serv_cb *)hook->callback) (word, word_eol, hook->userdata);
+			break;
+		case HOOK_SERVER_ATTRS:
+			ret = ((hexchat_serv_attrs_cb *)hook->callback) (word, word_eol, attrs, hook->userdata);
 			break;
 		default: /*case HOOK_PRINT:*/
 			ret = ((hexchat_print_cb *)hook->callback) (word, hook->userdata);
@@ -606,15 +616,43 @@ xit:
 int
 plugin_emit_command (session *sess, char *name, char *word[], char *word_eol[])
 {
-	return plugin_hook_run (sess, name, word, word_eol, HOOK_COMMAND);
+	return plugin_hook_run (sess, name, word, word_eol, NULL, HOOK_COMMAND);
+}
+
+hexchat_event_attrs *
+hexchat_event_attrs_create (hexchat_plugin *ph)
+{
+	hexchat_event_attrs *attrs;
+
+	attrs = g_malloc (sizeof (*attrs));
+
+	attrs->server_time_utc = (time_t) 0;
+
+	return attrs;
+}
+
+void
+hexchat_event_attrs_free (hexchat_plugin *ph, hexchat_event_attrs *attrs)
+{
+	g_free (attrs);
 }
 
 /* got a server PRIVMSG, NOTICE, numeric etc... */
-
 int
 plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[])
 {
-	return plugin_hook_run (sess, name, word, word_eol, HOOK_SERVER);
+	return plugin_hook_run (sess, name, word, word_eol, NULL, HOOK_SERVER);
+}
+
+int
+plugin_emit_server_attrs (session *sess, char *name, char *word[], char *word_eol[],
+						  time_t server_time)
+{
+	hexchat_event_attrs attrs;
+
+	attrs.server_time_utc = server_time;
+
+	return plugin_hook_run (sess, name, word, word_eol, &attrs, HOOK_SERVER_ATTRS);
 }
 
 /* see if any plugins are interested in this print event */
@@ -622,7 +660,17 @@ plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[])
 int
 plugin_emit_print (session *sess, char *word[])
 {
-	return plugin_hook_run (sess, word[0], word, NULL, HOOK_PRINT);
+	return plugin_hook_run (sess, word[0], word, NULL, NULL, HOOK_PRINT);
+}
+
+int
+plugin_emit_print_attrs (session *sess, char *word[], time_t server_time)
+{
+	hexchat_event_attrs attrs;
+
+	attrs.server_time_utc = server_time;
+
+	return plugin_hook_run (sess, word[0], word, NULL, &attrs, HOOK_PRINT_ATTRS);
 }
 
 int
@@ -635,7 +683,7 @@ plugin_emit_dummy_print (session *sess, char *name)
 	for (i = 1; i < 32; i++)
 		word[i] = "\000";
 
-	return plugin_hook_run (sess, name, word, NULL, HOOK_PRINT);
+	return plugin_hook_run (sess, name, word, NULL, NULL, HOOK_PRINT);
 }
 
 int
@@ -663,7 +711,7 @@ plugin_emit_keypress (session *sess, unsigned int state, unsigned int keyval,
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 
-	return plugin_hook_run (sess, word[0], word, NULL, HOOK_PRINT);
+	return plugin_hook_run (sess, word[0], word, NULL, NULL, HOOK_PRINT);
 }
 
 static int
@@ -869,10 +917,26 @@ hexchat_hook_server (hexchat_plugin *ph, const char *name, int pri,
 }
 
 hexchat_hook *
+hexchat_hook_server_attrs (hexchat_plugin *ph, const char *name, int pri,
+						   hexchat_serv_attrs_cb *callb, void *userdata)
+{
+	return plugin_add_hook (ph, HOOK_SERVER_ATTRS, pri, name, 0, callb, 0,
+							userdata);
+}
+
+hexchat_hook *
 hexchat_hook_print (hexchat_plugin *ph, const char *name, int pri,
 						hexchat_print_cb *callb, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_PRINT, pri, name, 0, callb, 0, userdata);
+}
+
+hexchat_hook *
+hexchat_hook_print_attrs (hexchat_plugin *ph, const char *name, int pri,
+						  hexchat_print_attrs_cb *callb, void *userdata)
+{
+	return plugin_add_hook (ph, HOOK_PRINT_ATTRS, pri, name, 0, callb, 0,
+							userdata);
 }
 
 hexchat_hook *
@@ -1598,8 +1662,36 @@ hexchat_emit_print (hexchat_plugin *ph, const char *event_name, ...)
 			break;
 	}
 
-	i = text_emit_by_name ((char *)event_name, ph->context, argv[0], argv[1],
-								  argv[2], argv[3]);
+	i = text_emit_by_name ((char *)event_name, ph->context, (time_t) 0,
+						   argv[0], argv[1], argv[2], argv[3]);
+	va_end (args);
+
+	return i;
+}
+
+int
+hexchat_emit_print_attrs (hexchat_plugin *ph, hexchat_event_attrs *attrs,
+						  const char *event_name, ...)
+{
+	va_list args;
+	/* currently only 4 because no events use more than 4.
+		This can be easily expanded without breaking the API. */
+	char *argv[4] = {NULL, NULL, NULL, NULL};
+	int i = 0;
+
+	va_start (args, event_name);
+	while (1)
+	{
+		argv[i] = va_arg (args, char *);
+		if (!argv[i])
+			break;
+		i++;
+		if (i >= 4)
+			break;
+	}
+
+	i = text_emit_by_name ((char *)event_name, ph->context, attrs->server_time_utc,
+						   argv[0], argv[1], argv[2], argv[3]);
 	va_end (args);
 
 	return i;

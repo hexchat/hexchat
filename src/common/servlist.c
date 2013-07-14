@@ -207,7 +207,7 @@ static const struct defaultserver def[] =
 	{"EnterTheGame",	0},
 	{0,			"IRC.EnterTheGame.Com"},
 
-	{"EntropyNet",	0},
+	{"EntropyNet",	0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,			"irc.entropynet.net/+6697"},
 #endif
@@ -510,7 +510,7 @@ static const struct defaultserver def[] =
 	{0,			"moo.slashnet.org"},
 	{0,			"radon.slashnet.org"},
 
-	{"Snoonet", 0},
+	{"Snoonet", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,			"irc.snoonet.org/+6697"},
 #endif
@@ -549,6 +549,9 @@ static const struct defaultserver def[] =
 	{0,			"revenge.starchat.net"},
 	{0,			"tahoma.starchat.net"},
 	{0,			"neo.starchat.net"},
+
+	{"StaticBox", 0, 0, 0, LOGIN_SASL},
+	{0,			"irc.staticbox.net"},
 
 	{"Station51", 0},
 #ifdef USE_OPENSSL

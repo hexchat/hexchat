@@ -132,10 +132,24 @@ struct _hexchat_plugin
 		const char *var);
 	int (*hexchat_pluginpref_list) (hexchat_plugin *ph,
 		char *dest);
-	void *(*hexchat_dummy4) (hexchat_plugin *ph);
-	void *(*hexchat_dummy3) (hexchat_plugin *ph);
-	void *(*hexchat_dummy2) (hexchat_plugin *ph);
-	void *(*hexchat_dummy1) (hexchat_plugin *ph);
+	hexchat_hook *(*hexchat_hook_server_attrs) (hexchat_plugin *ph,
+		   const char *name,
+		   int pri,
+		   int (*callback) (char *word[], char *word_eol[],
+							hexchat_event_attrs *attrs, void *user_data),
+		   void *userdata);
+	hexchat_hook *(*hexchat_hook_print_attrs) (hexchat_plugin *ph,
+		  const char *name,
+		  int pri,
+		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
+						   void *user_data),
+		  void *userdata);
+	int (*hexchat_emit_print_attrs) (hexchat_plugin *ph, hexchat_event_attrs *attrs,
+									 const char *event_name, ...);
+	hexchat_event_attrs *(*hexchat_event_attrs_create) (hexchat_plugin *ph);
+	void (*hexchat_event_attrs_free) (hexchat_plugin *ph,
+									  hexchat_event_attrs *attrs);
+
 	/* PRIVATE FIELDS! */
 	void *handle;		/* from dlopen */
 	char *filename;	/* loaded from */
@@ -156,7 +170,10 @@ void plugin_kill_all (void);
 void plugin_auto_load (session *sess);
 int plugin_emit_command (session *sess, char *name, char *word[], char *word_eol[]);
 int plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[]);
+int plugin_emit_server_attrs (session *sess, char *name, char *word[],
+							  char *word_eol[], time_t server_time);
 int plugin_emit_print (session *sess, char *word[]);
+int plugin_emit_print_attrs (session *sess, char *word[], time_t server_time);
 int plugin_emit_dummy_print (session *sess, char *name);
 int plugin_emit_keypress (session *sess, unsigned int state, unsigned int keyval, int len, char *string);
 GList* plugin_command_list(GList *tmp_list);
