@@ -2070,6 +2070,8 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	int i;
 	unsigned int stripcolor_args = (chanopt_is_set (prefs.hex_text_stripcolor_msg, sess->text_strip) ? 0xFFFFFFFF : 0);
 	char tbuf[NICKLEN + 4];
+	int eat1;
+	int eat2;
 
 	if (prefs.hex_text_color_nicks && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
 	{
@@ -2086,7 +2088,10 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 
-	if (plugin_emit_print (sess, word))
+	eat1 = plugin_emit_print (sess, word);
+	eat2 = plugin_emit_print_attrs (sess, word, timestamp);
+
+	if (eat1 || eat2)
 		return;
 
 	/* If a plugin's callback executes "/close", 'sess' may be invalid */
@@ -2158,14 +2163,15 @@ text_find_format_string (char *name)
 }
 
 int
-text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d)
+text_emit_by_name (char *name, session *sess, time_t timestamp,
+				   char *a, char *b, char *c, char *d)
 {
 	int i = 0;
 
 	i = pevent_find (name, &i);
 	if (i >= 0)
 	{
-		text_emit (i, sess, a, b, c, d, 0);
+		text_emit (i, sess, a, b, c, d, timestamp);
 		return 1;
 	}
 
