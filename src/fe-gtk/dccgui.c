@@ -531,6 +531,36 @@ accept_clicked (GtkWidget * wid, gpointer none)
 }
 
 static void
+clear_completed (GtkWidget * wid, gpointer none)
+{
+	struct DCC *dcc;
+	GSList *list;
+	GSList *completed = 0;
+	
+	list = dcc_list;
+
+	/* dcc_abort may change dcc_list structure, so we need to gather the targets
+	first. This way, we assume nothing about the order of items in the list (after dcc_abort)*/
+	for (; list; list = list->next)
+	{
+		dcc = list->data;
+		if (is_dcc_file (dcc) && is_dcc_fcompleted (dcc))
+		{
+			completed = g_slist_append (completed, dcc);
+		}
+	}
+	
+	for (; completed; completed = completed->next)
+	{
+		dcc = completed->data;
+		dcc_abort (dcc->serv->front_session, dcc);
+	}
+
+	/* The data was freed by dcc_close */
+	g_slist_free (completed);
+}
+
+static void
 browse_folder (char *dir)
 {
 #ifdef WIN32
@@ -813,12 +843,12 @@ fe_dcc_open_recv_win (int passive)
 	dccfwin.abort_button = gtkutil_button (bbox, GTK_STOCK_CANCEL, 0, abort_clicked, 0, _("Abort"));
 	dccfwin.accept_button = gtkutil_button (bbox, GTK_STOCK_APPLY, 0, accept_clicked, 0, _("Accept"));
 	dccfwin.resume_button = gtkutil_button (bbox, GTK_STOCK_REFRESH, 0, resume_clicked, 0, _("Resume"));
-	dccfwin.clear_button = gtkutil_button (bbox, GTK_STOCK_CLEAR, 0, NULL, 0, _("Clear")); /* TODO create CB function*/
+	dccfwin.clear_button = gtkutil_button (bbox, GTK_STOCK_CLEAR, 0, clear_completed, 0, _("Clear"));
 	dccfwin.open_button = gtkutil_button (bbox, 0, 0, browse_dcc_folder, 0, _("Open Folder..."));
 	gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.abort_button, FALSE);
-	gtk_widget_set_sensitive (dccfwin.clear_button, FALSE);
+	gtk_widget_set_sensitive (dccfwin.clear_button, TRUE);
 
 	dcc_fill_window (3);
 	gtk_widget_show_all (dccfwin.window);
