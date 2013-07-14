@@ -461,6 +461,27 @@ dcc_get_selected (void)
 											dccfwin.sel, COL_DCC);
 }
 
+/* Retrives aborted, sent and received tasks */
+static GSList *
+dcc_get_completed (void)
+{
+	struct DCC *dcc;
+	GSList *list;
+	GSList *completed = NULL;
+
+	list = dcc_list;
+	for (; list; list = list->next)
+	{
+		dcc = list->data;
+		if (is_dcc_file (dcc) && is_dcc_fcompleted (dcc))
+		{
+			completed = g_slist_append (completed, dcc);
+		}
+	}
+
+	return completed;
+}
+
 static void
 resume_clicked (GtkWidget * wid, gpointer none)
 {
@@ -534,22 +555,12 @@ static void
 clear_completed (GtkWidget * wid, gpointer none)
 {
 	struct DCC *dcc;
-	GSList *list;
 	GSList *completed = 0;
 	
-	list = dcc_list;
-
 	/* dcc_abort may change dcc_list structure, so we need to gather the targets
 	first. This way, we assume nothing about the order of items in the list (after dcc_abort)*/
-	for (; list; list = list->next)
-	{
-		dcc = list->data;
-		if (is_dcc_file (dcc) && is_dcc_fcompleted (dcc))
-		{
-			completed = g_slist_append (completed, dcc);
-		}
-	}
-	
+	completed = dcc_get_completed ();
+
 	for (; completed; completed = completed->next)
 	{
 		dcc = completed->data;
