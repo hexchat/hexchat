@@ -399,8 +399,7 @@ dcc_get_completed (void)
 			if (is_dcc_fcompleted (dcc))
 				completed = g_slist_prepend (completed, dcc);
 				
-		}
-		while (gtk_tree_model_iter_next (model, &iter));
+		} while (gtk_tree_model_iter_next (model, &iter));
 	}
 
 	return completed;
