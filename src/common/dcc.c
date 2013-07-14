@@ -228,16 +228,7 @@ is_dcc (struct DCC *dcc)
 }
 
 gboolean
-is_dcc_file(struct DCC *dcc)
-{
-	if (dcc != NULL)
-		return (dcc->type == TYPE_SEND || dcc->type == TYPE_RECV);
-	
-	return FALSE;
-}
-
-gboolean
-is_dcc_fcompleted(struct DCC *dcc)
+is_dcc_fcompleted (struct DCC *dcc)
 {
 	if (dcc != NULL)
 		return (dcc->dccstat == STAT_FAILED || dcc->dccstat == STAT_DONE || dcc->dccstat == STAT_ABORTED);

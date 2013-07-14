@@ -381,6 +381,44 @@ dcc_append (struct DCC *dcc, GtkListStore *store, gboolean prepend)
 		dcc_prepare_row_send (dcc, store, &iter, FALSE);
 }
 
+/* Retrives aborted, sent and received tasks of current view */
+static GSList *
+dcc_get_completed (void)
+{
+	struct DCC *dcc;
+	GtkTreeIter iter;
+	GtkTreeModel *model;	
+	GSList *completed = NULL;
+
+	model = GTK_TREE_MODEL (dccfwin.store);
+	if (gtk_tree_model_get_iter_first (model, &iter))
+	{
+		do
+		{
+			gtk_tree_model_get (model, &iter, COL_DCC, &dcc, -1);
+			if (is_dcc_fcompleted (dcc))
+				completed = g_slist_prepend (completed, dcc);
+				
+		}
+		while (gtk_tree_model_iter_next (model, &iter));
+	}
+
+	return completed;
+}
+
+static gboolean
+exists_completed_tasks (void)
+{
+	gboolean exist;
+	GSList *comp_list;
+	
+	comp_list = dcc_get_completed (); 
+	exist = comp_list != NULL;
+	
+	g_slist_free (comp_list);	
+	return exist;
+}
+
 static void
 dcc_fill_window (int flags)
 {
@@ -427,6 +465,10 @@ dcc_fill_window (int flags)
 		gtk_tree_model_get_iter_first (GTK_TREE_MODEL (dccfwin.store), &iter);
 		gtk_tree_selection_select_iter (dccfwin.sel, &iter);
 	}
+	else	
+	{
+		gtk_widget_set_sensitive (dccfwin.clear_button, exists_completed_tasks ());
+	}
 }
 
 /* return list of selected DCCs */
@@ -461,26 +503,13 @@ dcc_get_selected (void)
 											dccfwin.sel, COL_DCC);
 }
 
-/* Retrives aborted, sent and received tasks */
-static GSList *
-dcc_get_completed (void)
+static void
+sensitize_clear_button (void)
 {
-	struct DCC *dcc;
-	GSList *list;
-	GSList *completed = NULL;
-
-	list = dcc_list;
-	for (; list; list = list->next)
-	{
-		dcc = list->data;
-		if (is_dcc_file (dcc) && is_dcc_fcompleted (dcc))
-		{
-			completed = g_slist_append (completed, dcc);
-		}
-	}
-
-	return completed;
+	gboolean show = (exists_completed_tasks () && !dcc_get_selected ());
+	gtk_widget_set_sensitive (dccfwin.clear_button, show);
 }
+
 
 static void
 resume_clicked (GtkWidget * wid, gpointer none)
@@ -533,6 +562,9 @@ abort_clicked (GtkWidget * wid, gpointer none)
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 	g_slist_free (start);
+	
+	/* putting it here avoids redudant calls when user presses clear button*/
+	sensitize_clear_button ();
 }
 
 static void
@@ -551,6 +583,7 @@ accept_clicked (GtkWidget * wid, gpointer none)
 	g_slist_free (start);
 }
 
+
 static void
 clear_completed (GtkWidget * wid, gpointer none)
 {
@@ -560,7 +593,6 @@ clear_completed (GtkWidget * wid, gpointer none)
 	/* dcc_abort may change dcc_list structure, so we need to gather the targets
 	first. This way, we assume nothing about the order of items in the list (after dcc_abort)*/
 	completed = dcc_get_completed ();
-
 	for (; completed; completed = completed->next)
 	{
 		dcc = completed->data;
@@ -569,6 +601,7 @@ clear_completed (GtkWidget * wid, gpointer none)
 
 	/* The data was freed by dcc_close */
 	g_slist_free (completed);
+	sensitize_clear_button ();
 }
 
 static void
@@ -632,7 +665,9 @@ dcc_row_cb (GtkTreeSelection *sel, gpointer user_data)
 		dcc_details_populate (NULL);
 		return;
 	}
-
+	
+	/* there is at least a selection, disable button... similar to banlist semantics*/
+	gtk_widget_set_sensitive (dccfwin.clear_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.abort_button, TRUE);
 
 	if (list->next)	/* multi selection */
@@ -859,7 +894,6 @@ fe_dcc_open_recv_win (int passive)
 	gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.abort_button, FALSE);
-	gtk_widget_set_sensitive (dccfwin.clear_button, TRUE);
 
 	dcc_fill_window (3);
 	gtk_widget_show_all (dccfwin.window);
@@ -1099,6 +1133,8 @@ fe_dcc_update (struct DCC *dcc)
 	default:
 		dcc_update_chat (dcc);
 	}
+
+	sensitize_clear_button ();
 }
 
 void
