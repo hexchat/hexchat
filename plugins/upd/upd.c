@@ -233,9 +233,9 @@ print_version (char *word[], char *word_eol[], void *userdata)
 		else
 		{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for some reason */
-			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttp://dl.hexchat.org/hexchat/HexChat%%20%s%%20x64.exe\n", name, version);
+			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttp://dl.hexchat.net/hexchat/HexChat%%20%s%%20x64.exe\n", name, version);
 #else
-			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttp://dl.hexchat.org/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
+			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttp://dl.hexchat.net/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
 #endif
 		}
 		return HEXCHAT_EAT_HEXCHAT;
