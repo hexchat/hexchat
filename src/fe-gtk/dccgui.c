@@ -381,7 +381,7 @@ dcc_append (struct DCC *dcc, GtkListStore *store, gboolean prepend)
 		dcc_prepare_row_send (dcc, store, &iter, FALSE);
 }
 
-/* Retrives aborted, sent and received tasks of current view */
+/* Returns aborted and completed transfers. */
 static GSList *
 dcc_get_completed (void)
 {
@@ -396,7 +396,7 @@ dcc_get_completed (void)
 		do
 		{
 			gtk_tree_model_get (model, &iter, COL_DCC, &dcc, -1);
-			if (is_dcc_fcompleted (dcc))
+			if (is_dcc_completed (dcc))
 				completed = g_slist_prepend (completed, dcc);
 				
 		} while (gtk_tree_model_iter_next (model, &iter));
@@ -406,7 +406,7 @@ dcc_get_completed (void)
 }
 
 static gboolean
-exists_completed_tasks (void)
+dcc_completed_transfer_exists (void)
 {
 	gboolean exist;
 	GSList *comp_list;
@@ -466,7 +466,7 @@ dcc_fill_window (int flags)
 	}
 	else	
 	{
-		gtk_widget_set_sensitive (dccfwin.clear_button, exists_completed_tasks ());
+		gtk_widget_set_sensitive (dccfwin.clear_button, dcc_completed_transfer_exists ());
 	}
 }
 
@@ -503,12 +503,11 @@ dcc_get_selected (void)
 }
 
 static void
-sensitize_clear_button (void)
+update_clear_button_sensitivity (void)
 {
-	gboolean show = (exists_completed_tasks () && !dcc_get_selected ());
-	gtk_widget_set_sensitive (dccfwin.clear_button, show);
+	gboolean sensitive = dcc_completed_transfer_exists () && !dcc_get_selected ();
+	gtk_widget_set_sensitive (dccfwin.clear_button, sensitive);
 }
-
 
 static void
 resume_clicked (GtkWidget * wid, gpointer none)
@@ -562,8 +561,8 @@ abort_clicked (GtkWidget * wid, gpointer none)
 	}
 	g_slist_free (start);
 	
-	/* putting it here avoids redudant calls when user presses clear button*/
-	sensitize_clear_button ();
+	/* Enable the clear button if it wasn't already enabled */
+	update_clear_button_sensitivity ();
 }
 
 static void
@@ -582,17 +581,17 @@ accept_clicked (GtkWidget * wid, gpointer none)
 	g_slist_free (start);
 }
 
-
 static void
 clear_completed (GtkWidget * wid, gpointer none)
 {
 	struct DCC *dcc;
-	GSList *completed = 0;
-	
-	/* dcc_abort may change dcc_list structure, so we need to gather the targets
-	first. This way, we assume nothing about the order of items in the list (after dcc_abort)*/
-	completed = dcc_get_completed ();
-	for (; completed; completed = completed->next)
+	GSList *completed;
+
+	/* Make a new list of only the completed items and abort each item.
+	 * A new list is made because calling dcc_abort removes items from the original list,
+	 * making it impossible to iterate over that list directly.
+	*/
+	for (completed = dcc_get_completed (); completed; completed = completed->next)
 	{
 		dcc = completed->data;
 		dcc_abort (dcc->serv->front_session, dcc);
@@ -600,7 +599,7 @@ clear_completed (GtkWidget * wid, gpointer none)
 
 	/* The data was freed by dcc_close */
 	g_slist_free (completed);
-	sensitize_clear_button ();
+	update_clear_button_sensitivity ();
 }
 
 static void
@@ -665,7 +664,7 @@ dcc_row_cb (GtkTreeSelection *sel, gpointer user_data)
 		return;
 	}
 	
-	/* there is at least a selection, disable button... similar to banlist semantics*/
+	/* if a row is selected, the clear button is disabled. */
 	gtk_widget_set_sensitive (dccfwin.clear_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.abort_button, TRUE);
 
@@ -1133,7 +1132,7 @@ fe_dcc_update (struct DCC *dcc)
 		dcc_update_chat (dcc);
 	}
 
-	sensitize_clear_button ();
+	update_clear_button_sensitivity ();
 }
 
 void

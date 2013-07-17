@@ -228,7 +228,7 @@ is_dcc (struct DCC *dcc)
 }
 
 gboolean
-is_dcc_fcompleted (struct DCC *dcc)
+is_dcc_completed (struct DCC *dcc)
 {
 	if (dcc != NULL)
 		return (dcc->dccstat == STAT_FAILED || dcc->dccstat == STAT_DONE || dcc->dccstat == STAT_ABORTED);
