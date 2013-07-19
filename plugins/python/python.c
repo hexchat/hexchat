@@ -1018,22 +1018,31 @@ Context_prnt(ContextObject *self, PyObject *args)
 }
 
 static PyObject *
-Context_emit_print(ContextObject *self, PyObject *args)
+Context_emit_print(ContextObject *self, PyObject *args, PyObject *kwargs)
 {
-	char *argv[10];
+	char *argv[6];
 	char *name;
 	int res;
-	memset(&argv, 0, sizeof(char*)*10);
-	if (!PyArg_ParseTuple(args, "s|ssssss:print_event", &name,
+	long time = 0;
+	hexchat_event_attrs *attrs;
+	char *kwlist[] = {"name", "arg1", "arg2", "arg3",
+					"arg4", "arg5", "arg6", 
+					"time", NULL};
+	memset(&argv, 0, sizeof(char*)*6);
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ssssssl:print_event", kwlist, &name,
 			      &argv[0], &argv[1], &argv[2],
 			      &argv[3], &argv[4], &argv[5],
-			      &argv[6], &argv[7], &argv[8]))
+				  &time))
 		return NULL;
 	BEGIN_XCHAT_CALLS(ALLOW_THREADS);
 	hexchat_set_context(ph, self->context);
-	res = hexchat_emit_print(ph, name, argv[0], argv[1], argv[2],
-					 argv[3], argv[4], argv[5],
-					 argv[6], argv[7], argv[8]);
+	attrs = hexchat_event_attrs_create(ph);
+	attrs->server_time_utc = (time_t)time; 
+	
+	res = hexchat_emit_print_attrs(ph, attrs, name, argv[0], argv[1], argv[2],
+					 argv[3], argv[4], argv[5], NULL);
+
+	hexchat_event_attrs_free(ph, attrs);
 	END_XCHAT_CALLS();
 	return PyLong_FromLong(res);
 }
@@ -1094,7 +1103,7 @@ static PyMethodDef Context_methods[] = {
 	{"set", (PyCFunction) Context_set, METH_NOARGS},
 	{"command", (PyCFunction) Context_command, METH_VARARGS},
 	{"prnt", (PyCFunction) Context_prnt, METH_VARARGS},
-	{"emit_print", (PyCFunction) Context_emit_print, METH_VARARGS},
+	{"emit_print", (PyCFunction) Context_emit_print, METH_VARARGS|METH_KEYWORDS},
 	{"get_info", (PyCFunction) Context_get_info, METH_VARARGS},
 	{"get_list", (PyCFunction) Context_get_list, METH_VARARGS},
 	{NULL, NULL}
@@ -1660,46 +1669,28 @@ Module_xchat_prnt(PyObject *self, PyObject *args)
 }
 
 static PyObject *
-Module_hexchat_emit_print(PyObject *self, PyObject *args)
+Module_hexchat_emit_print(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-	char *argv[10];
+	char *argv[6];
 	char *name;
 	int res;
-	memset(&argv, 0, sizeof(char*)*10);
-	if (!PyArg_ParseTuple(args, "s|ssssss:print_event", &name,
+	long time = 0;
+	hexchat_event_attrs *attrs;
+	char *kwlist[] = {"name", "arg1", "arg2", "arg3",
+					"arg4", "arg5", "arg6", 
+					"time", NULL};
+	memset(&argv, 0, sizeof(char*)*6);
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ssssssl:print_event", kwlist, &name,
 			      &argv[0], &argv[1], &argv[2],
 			      &argv[3], &argv[4], &argv[5],
-			      &argv[6], &argv[7], &argv[8]))
-		return NULL;
-	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT|ALLOW_THREADS);
-	res = hexchat_emit_print(ph, name, argv[0], argv[1], argv[2],
-					 argv[3], argv[4], argv[5],
-					 argv[6], argv[7], argv[8]);
-	END_XCHAT_CALLS();
-	return PyLong_FromLong(res);
-}
-
-static PyObject *
-Module_hexchat_emit_print_at(PyObject *self, PyObject *args)
-{
-	char *argv[10];
-	char *name;
-	long time;
-	int res;
-	hexchat_event_attrs* attrs;
-	memset(&argv, 0, sizeof(char*)*10);
-	if (!PyArg_ParseTuple(args, "ls|ssssss:print_event_at", &time, &name,
-			      &argv[0], &argv[1], &argv[2],
-			      &argv[3], &argv[4], &argv[5],
-			      &argv[6], &argv[7], &argv[8]))
+				  &time))
 		return NULL;
 	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT|ALLOW_THREADS);
 	attrs = hexchat_event_attrs_create(ph);
-	attrs->server_time_utc = (time_t)time;
-
+	attrs->server_time_utc = (time_t)time; 
+	
 	res = hexchat_emit_print_attrs(ph, attrs, name, argv[0], argv[1], argv[2],
-					 argv[3], argv[4], argv[5],
-					 argv[6], argv[7], argv[8]);
+					 argv[3], argv[4], argv[5], NULL);
 
 	hexchat_event_attrs_free(ph, attrs);
 	END_XCHAT_CALLS();
@@ -2314,10 +2305,8 @@ static PyMethodDef Module_xchat_methods[] = {
 		METH_VARARGS},
 	{"prnt",		Module_xchat_prnt,
 		METH_VARARGS},
-	{"emit_print",		Module_hexchat_emit_print,
-		METH_VARARGS},
-	{"emit_print_at",	Module_hexchat_emit_print_at,
-		METH_VARARGS},
+	{"emit_print",		(PyCFunction)Module_hexchat_emit_print,
+		METH_VARARGS|METH_KEYWORDS},
 	{"get_info",		Module_hexchat_get_info,
 		METH_VARARGS},
 	{"get_prefs",		Module_xchat_get_prefs,
