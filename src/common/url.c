@@ -350,8 +350,8 @@ do_an_re(const char *word, int *start, int *end, int *type)
 }
 
 /*	Miscellaneous description --- */
-#define DOMAIN "[a-z0-9][-a-z0-9]*(\\.[-a-z0-9]+)*\\."
-#define TLD "[a-z][-a-z0-9]*[a-z]"
+#define DOMAIN "[a-z0-9][-a-z0-9]*(\\.[-a-z0-9]+)*"
+#define TLD "\\.[a-z][-a-z0-9]*[a-z]"
 #define IPADDR "[0-9]{1,3}(\\.[0-9]{1,3}){3}"
 #define IPV6GROUP "([0-9a-f]{0,4})"
 #define IPV6ADDR "((" IPV6GROUP "(:" IPV6GROUP "){7})"	\
@@ -359,6 +359,7 @@ do_an_re(const char *word, int *start, int *end, int *type)
 #define HOST "(" DOMAIN TLD "|" IPADDR "|" IPV6ADDR ")"
 /* In urls the IPv6 must be enclosed in square brackets */
 #define HOST_URL "(" DOMAIN TLD "|" IPADDR "|" "\\[" IPV6ADDR "\\]" ")"
+#define HOST_URL_OPT_TLD "(" DOMAIN "|" HOST_URL ")"
 #define PORT "(:[1-9][0-9]{0,4})"
 #define OPT_PORT "(" PORT ")?"
 
@@ -517,7 +518,7 @@ re_url (void)
 			g_string_append (grist_gstr, USERINFO "?");
 
 		if (uri[i].flags & URI_AUTHORITY)
-			g_string_append (grist_gstr, HOST_URL OPT_PORT);
+			g_string_append (grist_gstr, HOST_URL_OPT_TLD OPT_PORT);
 		
 		if (uri[i].flags & URI_PATH)
 		{
