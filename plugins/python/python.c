@@ -211,7 +211,8 @@ static PyThreadState *pTempThread;
 	((PluginObject *)(x))->gui = (y);
 
 #define HOOK_XCHAT  1
-#define HOOK_UNLOAD 2
+#define HOOK_XCHAT_ATTR 2
+#define HOOK_UNLOAD 3
 
 /* ===================================================================== */
 /* Object definitions */
@@ -225,6 +226,11 @@ typedef struct {
 	PyObject_HEAD
 	hexchat_context *context;
 } ContextObject;
+
+typedef struct {
+	PyObject_HEAD
+	PyObject *time;
+} AttributeObject;
 
 typedef struct {
 	PyObject_HEAD
@@ -261,14 +267,17 @@ static PyObject *Util_BuildList(char *word[]);
 static void Util_Autoload();
 static char *Util_Expand(char *filename);
 
+static int Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata);
 static int Callback_Command(char *word[], char *word_eol[], void *userdata);
-static int Callback_Print(char *word[], void *userdata);
+static int Callback_Print(char *word[], hexchat_event_attrs *attrs, void *userdata);
 static int Callback_Timer(void *userdata);
 static int Callback_ThreadTimer(void *userdata);
 
 static PyObject *XChatOut_New();
 static PyObject *XChatOut_write(PyObject *self, PyObject *args);
 static void XChatOut_dealloc(PyObject *self);
+
+static PyObject *Attribute_New(hexchat_event_attrs *attrs);
 
 static void Context_dealloc(PyObject *self);
 static PyObject *Context_set(ContextObject *self, PyObject *args);
@@ -331,6 +340,7 @@ static PyTypeObject Plugin_Type;
 static PyTypeObject XChatOut_Type;
 static PyTypeObject Context_Type;
 static PyTypeObject ListItem_Type;
+static PyTypeObject Attribute_Type;
 
 static PyThreadState *main_tstate = NULL;
 static void *thread_timer = NULL;
@@ -488,6 +498,58 @@ Util_ReleaseThread(PyThreadState *tstate)
  * the load function, and the hooks for interactive interpreter. */
 
 static int
+Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata)
+{
+	Hook *hook = (Hook *) userdata;
+	PyObject *retobj;
+	PyObject *word_list, *word_eol_list;
+	PyObject *attributes;
+	int ret = 0;
+	PyObject *plugin;
+
+	plugin = hook->plugin;
+	BEGIN_PLUGIN(plugin);
+
+	word_list = Util_BuildList(word+1);
+	if (word_list == NULL) {
+		END_PLUGIN(plugin);
+		return 0;
+	}
+	word_eol_list = Util_BuildList(word_eol+1);
+	if (word_eol_list == NULL) {
+		Py_DECREF(word_list);
+		END_PLUGIN(plugin);
+		return 0;
+	}
+
+	attributes = Attribute_New(attrs);
+
+	if (hook->type == HOOK_XCHAT_ATTR)
+		retobj = PyObject_CallFunction(hook->callback, "(OOOO)", word_list,
+					       word_eol_list, hook->userdata, attributes);
+	else
+		retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
+					       word_eol_list, hook->userdata);
+	Py_DECREF(word_list);
+	Py_DECREF(word_eol_list);
+	Py_DECREF(attributes);
+
+	if (retobj == Py_None) {
+		ret = HEXCHAT_EAT_NONE;
+		Py_DECREF(retobj);
+	} else if (retobj) {
+		ret = PyLong_AsLong(retobj);
+		Py_DECREF(retobj);
+	} else {
+		PyErr_Print();
+	}
+
+	END_PLUGIN(plugin);
+
+	return ret;
+}
+
+static int
 Callback_Command(char *word[], char *word_eol[], void *userdata)
 {
 	Hook *hook = (Hook *) userdata;
@@ -534,12 +596,13 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 /* No Callback_Server() here. We use Callback_Command() as well. */
 
 static int
-Callback_Print(char *word[], void *userdata)
+Callback_Print(char *word[], hexchat_event_attrs *attrs, void *userdata)
 {
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;
 	PyObject *word_list;
 	PyObject *word_eol_list;
+	PyObject *attributes;
 	char **word_eol;
 	char *word_eol_raw;
 	int listsize = 0;
@@ -597,10 +660,18 @@ Callback_Print(char *word[], void *userdata)
 		return 0;
 	}
 
-	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
-				       word_eol_list, hook->userdata);
+	attributes = Attribute_New(attrs);
+
+	if (hook->type == HOOK_XCHAT_ATTR)
+		retobj = PyObject_CallFunction(hook->callback, "(OOOO)", word_list,
+					       word_eol_list, hook->userdata, attributes);
+	else
+		retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
+					       word_eol_list, hook->userdata);
+
 	Py_DECREF(word_list);
 	Py_DECREF(word_eol_list);
+	Py_DECREF(attributes);
 
 	g_free(word_eol_raw);
 	g_free(word_eol);
@@ -823,6 +894,84 @@ static PyTypeObject XChatOut_Type = {
 
 
 /* ===================================================================== */
+/* Attribute object */
+
+#define OFF(x) offsetof(AttributeObject, x)
+
+static PyMemberDef Attribute_members[] = {
+	{"time", T_OBJECT, OFF(time), 0},
+	{0}
+};
+
+static void
+Attribute_dealloc(PyObject *self)
+{
+	Py_DECREF(((AttributeObject*)self)->time);
+	Py_TYPE(self)->tp_free((PyObject *)self);
+}
+
+static PyObject *
+Attribute_repr(PyObject *self)
+{
+	return PyUnicode_FromFormat("<Attribute object at %p>", self);
+}
+
+static PyTypeObject Attribute_Type = {
+	PyVarObject_HEAD_INIT(NULL, 0)
+	"hexchat.Attribute",	/*tp_name*/
+	sizeof(AttributeObject),	/*tp_basicsize*/
+	0,			/*tp_itemsize*/
+	Attribute_dealloc,	/*tp_dealloc*/
+	0,			/*tp_print*/
+	0,			/*tp_getattr*/
+	0,			/*tp_setattr*/
+	0,			/*tp_compare*/
+	Attribute_repr,		/*tp_repr*/
+	0,			/*tp_as_number*/
+	0,			/*tp_as_sequence*/
+	0,			/*tp_as_mapping*/
+	0,			/*tp_hash*/
+        0,                      /*tp_call*/
+        0,                      /*tp_str*/
+        PyObject_GenericGetAttr,/*tp_getattro*/
+        PyObject_GenericSetAttr,/*tp_setattro*/
+        0,                      /*tp_as_buffer*/
+        Py_TPFLAGS_DEFAULT,     /*tp_flags*/
+        0,                      /*tp_doc*/
+        0,                      /*tp_traverse*/
+        0,                      /*tp_clear*/
+        0,                      /*tp_richcompare*/
+        0,                      /*tp_weaklistoffset*/
+        0,                      /*tp_iter*/
+        0,                      /*tp_iternext*/
+        0,                      /*tp_methods*/
+        Attribute_members,		/*tp_members*/
+        0,                      /*tp_getset*/
+        0,                      /*tp_base*/
+        0,                      /*tp_dict*/
+        0,                      /*tp_descr_get*/
+        0,                      /*tp_descr_set*/
+        0,						/*tp_dictoffset*/
+        0,                      /*tp_init*/
+        PyType_GenericAlloc,    /*tp_alloc*/
+        PyType_GenericNew,      /*tp_new*/
+      	PyObject_Del,          /*tp_free*/
+        0,                      /*tp_is_gc*/
+};
+
+static PyObject *
+Attribute_New(hexchat_event_attrs *attrs)
+{
+	AttributeObject *attr;
+	attr = PyObject_New(AttributeObject, &Attribute_Type);
+	if (attr != NULL) {
+		attr->time = PyLong_FromLong((long)attrs->server_time_utc);
+	}
+	return (PyObject *) attr;
+}
+
+
+/* ===================================================================== */
 /* Context object */
 
 static void
@@ -869,22 +1018,31 @@ Context_prnt(ContextObject *self, PyObject *args)
 }
 
 static PyObject *
-Context_emit_print(ContextObject *self, PyObject *args)
+Context_emit_print(ContextObject *self, PyObject *args, PyObject *kwargs)
 {
-	char *argv[10];
+	char *argv[6];
 	char *name;
 	int res;
-	memset(&argv, 0, sizeof(char*)*10);
-	if (!PyArg_ParseTuple(args, "s|ssssss:print_event", &name,
+	long time = 0;
+	hexchat_event_attrs *attrs;
+	char *kwlist[] = {"name", "arg1", "arg2", "arg3",
+					"arg4", "arg5", "arg6", 
+					"time", NULL};
+	memset(&argv, 0, sizeof(char*)*6);
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ssssssl:print_event", kwlist, &name,
 			      &argv[0], &argv[1], &argv[2],
 			      &argv[3], &argv[4], &argv[5],
-			      &argv[6], &argv[7], &argv[8]))
+				  &time))
 		return NULL;
 	BEGIN_XCHAT_CALLS(ALLOW_THREADS);
 	hexchat_set_context(ph, self->context);
-	res = hexchat_emit_print(ph, name, argv[0], argv[1], argv[2],
-					 argv[3], argv[4], argv[5],
-					 argv[6], argv[7], argv[8]);
+	attrs = hexchat_event_attrs_create(ph);
+	attrs->server_time_utc = (time_t)time; 
+	
+	res = hexchat_emit_print_attrs(ph, attrs, name, argv[0], argv[1], argv[2],
+					 argv[3], argv[4], argv[5], NULL);
+
+	hexchat_event_attrs_free(ph, attrs);
 	END_XCHAT_CALLS();
 	return PyLong_FromLong(res);
 }
@@ -945,7 +1103,7 @@ static PyMethodDef Context_methods[] = {
 	{"set", (PyCFunction) Context_set, METH_NOARGS},
 	{"command", (PyCFunction) Context_command, METH_VARARGS},
 	{"prnt", (PyCFunction) Context_prnt, METH_VARARGS},
-	{"emit_print", (PyCFunction) Context_emit_print, METH_VARARGS},
+	{"emit_print", (PyCFunction) Context_emit_print, METH_VARARGS|METH_KEYWORDS},
 	{"get_info", (PyCFunction) Context_get_info, METH_VARARGS},
 	{"get_list", (PyCFunction) Context_get_list, METH_VARARGS},
 	{NULL, NULL}
@@ -1232,7 +1390,7 @@ Plugin_RemoveHook(PyObject *plugin, Hook *hook)
 	list = g_slist_find(Plugin_GetHooks(plugin), hook);
 	if (list) {
 		/* Ok, unhook it. */
-		if (hook->type == HOOK_XCHAT) {
+		if (hook->type != HOOK_UNLOAD) {
 			/* This is an xchat hook. Unregister it. */
 			BEGIN_XCHAT_CALLS(NONE);
 			hexchat_unhook(ph, (hexchat_hook*)hook->data);
@@ -1255,7 +1413,7 @@ Plugin_RemoveAllHooks(PyObject *plugin)
 	GSList *list = Plugin_GetHooks(plugin);
 	while (list) {
 		Hook *hook = (Hook *) list->data;
-		if (hook->type == HOOK_XCHAT) {
+		if (hook->type != HOOK_UNLOAD) {
 			/* This is an xchat hook. Unregister it. */
 			BEGIN_XCHAT_CALLS(NONE);
 			hexchat_unhook(ph, (hexchat_hook*)hook->data);
@@ -1511,21 +1669,30 @@ Module_xchat_prnt(PyObject *self, PyObject *args)
 }
 
 static PyObject *
-Module_hexchat_emit_print(PyObject *self, PyObject *args)
+Module_hexchat_emit_print(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-	char *argv[10];
+	char *argv[6];
 	char *name;
 	int res;
-	memset(&argv, 0, sizeof(char*)*10);
-	if (!PyArg_ParseTuple(args, "s|ssssss:print_event", &name,
+	long time = 0;
+	hexchat_event_attrs *attrs;
+	char *kwlist[] = {"name", "arg1", "arg2", "arg3",
+					"arg4", "arg5", "arg6", 
+					"time", NULL};
+	memset(&argv, 0, sizeof(char*)*6);
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ssssssl:print_event", kwlist, &name,
 			      &argv[0], &argv[1], &argv[2],
 			      &argv[3], &argv[4], &argv[5],
-			      &argv[6], &argv[7], &argv[8]))
+				  &time))
 		return NULL;
 	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT|ALLOW_THREADS);
-	res = hexchat_emit_print(ph, name, argv[0], argv[1], argv[2],
-					 argv[3], argv[4], argv[5],
-					 argv[6], argv[7], argv[8]);
+	attrs = hexchat_event_attrs_create(ph);
+	attrs->server_time_utc = (time_t)time; 
+	
+	res = hexchat_emit_print_attrs(ph, attrs, name, argv[0], argv[1], argv[2],
+					 argv[3], argv[4], argv[5], NULL);
+
+	hexchat_event_attrs_free(ph, attrs);
 	END_XCHAT_CALLS();
 	return PyLong_FromLong(res);
 }
@@ -1789,8 +1956,44 @@ Module_hexchat_hook_server(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 
 	BEGIN_XCHAT_CALLS(NONE);
-	hook->data = (void*)hexchat_hook_server(ph, name, priority,
-					      Callback_Command, hook);
+	hook->data = (void*)hexchat_hook_server_attrs(ph, name, priority,
+					      Callback_Server, hook);
+	END_XCHAT_CALLS();
+
+	return PyLong_FromLong((long)hook);
+}
+
+static PyObject *
+Module_hexchat_hook_server_attrs(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+	char *name;
+	PyObject *callback;
+	PyObject *userdata = Py_None;
+	int priority = HEXCHAT_PRI_NORM;
+	PyObject *plugin;
+	Hook *hook;
+	char *kwlist[] = {"name", "callback", "userdata", "priority", 0};
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sO|Oi:hook_server",
+					 kwlist, &name, &callback, &userdata,
+					 &priority))
+		return NULL;
+
+	plugin = Plugin_GetCurrent();
+	if (plugin == NULL)
+		return NULL;
+	if (!PyCallable_Check(callback)) {
+		PyErr_SetString(PyExc_TypeError, "callback is not callable");
+		return NULL;
+	}
+
+	hook = Plugin_AddHook(HOOK_XCHAT_ATTR, plugin, callback, userdata, NULL, NULL);
+	if (hook == NULL)
+		return NULL;
+
+	BEGIN_XCHAT_CALLS(NONE);
+	hook->data = (void*)hexchat_hook_server_attrs(ph, name, priority,
+					      Callback_Server, hook);
 	END_XCHAT_CALLS();
 
 	return PyLong_FromLong((long)hook);
@@ -1825,7 +2028,43 @@ Module_hexchat_hook_print(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 
 	BEGIN_XCHAT_CALLS(NONE);
-	hook->data = (void*)hexchat_hook_print(ph, name, priority,
+	hook->data = (void*)hexchat_hook_print_attrs(ph, name, priority,
+					     Callback_Print, hook);
+	END_XCHAT_CALLS();
+
+	return PyLong_FromLong((long)hook);
+}
+
+static PyObject *
+Module_hexchat_hook_print_attrs(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+	char *name;
+	PyObject *callback;
+	PyObject *userdata = Py_None;
+	int priority = HEXCHAT_PRI_NORM;
+	PyObject *plugin;
+	Hook *hook;
+	char *kwlist[] = {"name", "callback", "userdata", "priority", 0};
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "sO|Oi:hook_print_attrs",
+					 kwlist, &name, &callback, &userdata,
+					 &priority))
+		return NULL;
+
+	plugin = Plugin_GetCurrent();
+	if (plugin == NULL)
+		return NULL;
+	if (!PyCallable_Check(callback)) {
+		PyErr_SetString(PyExc_TypeError, "callback is not callable");
+		return NULL;
+	}
+
+	hook = Plugin_AddHook(HOOK_XCHAT_ATTR, plugin, callback, userdata, name, NULL);
+	if (hook == NULL)
+		return NULL;
+
+	BEGIN_XCHAT_CALLS(NONE);
+	hook->data = (void*)hexchat_hook_print_attrs(ph, name, priority,
 					     Callback_Print, hook);
 	END_XCHAT_CALLS();
 
@@ -2066,8 +2305,8 @@ static PyMethodDef Module_xchat_methods[] = {
 		METH_VARARGS},
 	{"prnt",		Module_xchat_prnt,
 		METH_VARARGS},
-	{"emit_print",		Module_hexchat_emit_print,
-		METH_VARARGS},
+	{"emit_print",		(PyCFunction)Module_hexchat_emit_print,
+		METH_VARARGS|METH_KEYWORDS},
 	{"get_info",		Module_hexchat_get_info,
 		METH_VARARGS},
 	{"get_prefs",		Module_xchat_get_prefs,
@@ -2088,7 +2327,11 @@ static PyMethodDef Module_xchat_methods[] = {
 		METH_VARARGS|METH_KEYWORDS},
 	{"hook_server",		(PyCFunction)Module_hexchat_hook_server,
 		METH_VARARGS|METH_KEYWORDS},
+	{"hook_server_attrs",		(PyCFunction)Module_hexchat_hook_server_attrs,
+		METH_VARARGS|METH_KEYWORDS},
 	{"hook_print",		(PyCFunction)Module_hexchat_hook_print,
+		METH_VARARGS|METH_KEYWORDS},
+	{"hook_print_attrs",		(PyCFunction)Module_hexchat_hook_print_attrs,
 		METH_VARARGS|METH_KEYWORDS},
 	{"hook_timer",		(PyCFunction)Module_hexchat_hook_timer,
 		METH_VARARGS|METH_KEYWORDS},
