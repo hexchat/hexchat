@@ -1924,7 +1924,7 @@ Module_hexchat_hook_command(PyObject *self, PyObject *args, PyObject *kwargs)
 					       Callback_Command, help, hook);
 	END_XCHAT_CALLS();
 
-	return PyLong_FromLong((long)hook);
+	return PyLong_FromVoidPtr(hook);
 }
 
 static PyObject *
@@ -1960,7 +1960,7 @@ Module_hexchat_hook_server(PyObject *self, PyObject *args, PyObject *kwargs)
 					      Callback_Server, hook);
 	END_XCHAT_CALLS();
 
-	return PyLong_FromLong((long)hook);
+	return PyLong_FromVoidPtr(hook);
 }
 
 static PyObject *
@@ -1996,7 +1996,7 @@ Module_hexchat_hook_server_attrs(PyObject *self, PyObject *args, PyObject *kwarg
 					      Callback_Server, hook);
 	END_XCHAT_CALLS();
 
-	return PyLong_FromLong((long)hook);
+	return PyLong_FromVoidPtr(hook);
 }
 
 static PyObject *
@@ -2032,7 +2032,7 @@ Module_hexchat_hook_print(PyObject *self, PyObject *args, PyObject *kwargs)
 					     Callback_Print, hook);
 	END_XCHAT_CALLS();
 
-	return PyLong_FromLong((long)hook);
+	return PyLong_FromVoidPtr(hook);
 }
 
 static PyObject *
@@ -2068,7 +2068,7 @@ Module_hexchat_hook_print_attrs(PyObject *self, PyObject *args, PyObject *kwargs
 					     Callback_Print, hook);
 	END_XCHAT_CALLS();
 
-	return PyLong_FromLong((long)hook);
+	return PyLong_FromVoidPtr(hook);
 }
 
 static PyObject *
@@ -2103,7 +2103,7 @@ Module_hexchat_hook_timer(PyObject *self, PyObject *args, PyObject *kwargs)
 					     Callback_Timer, hook);
 	END_XCHAT_CALLS();
 
-	return PyLong_FromLong((long)hook);
+	return PyLong_FromVoidPtr(hook);
 }
 
 static PyObject *
@@ -2131,7 +2131,7 @@ Module_hexchat_hook_unload(PyObject *self, PyObject *args, PyObject *kwargs)
 	if (hook == NULL)
 		return NULL;
 
-	return PyLong_FromLong((long)hook);
+	return PyLong_FromVoidPtr(hook);
 }
 
 static PyObject *
@@ -2157,7 +2157,7 @@ Module_hexchat_unhook(PyObject *self, PyObject *args)
 	}
 	else
 	{
-		hook = (Hook *)PyLong_AsLong(obj);
+		hook = (Hook *)PyLong_AsVoidPtr(obj);
 		Plugin_RemoveHook(plugin, hook);
 	}	
 
