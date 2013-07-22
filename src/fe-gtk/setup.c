@@ -36,6 +36,7 @@
 #include "pixmaps.h"
 #include "menu.h"
 #include "plugin-tray.h"
+#include "xtext.h"
 
 #ifdef WIN32
 #include "../common/fe.h"
@@ -829,7 +830,7 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 static gint
 setup_apply_tint (int *tag)
 {
-	gtk_xtext_set_transparency(current_sess->gui->xtext, (prefs.hex_gui_transparency / 255.));
+	gtk_xtext_set_transparency(GTK_XTEXT(current_sess->gui->xtext), (prefs.hex_gui_transparency / 255.));
 
 	*tag = 0;
 	return 0;
