@@ -521,9 +521,6 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 			gtk_window_get_size (GTK_WINDOW (wid), &prefs.hex_gui_dialog_width,
 										&prefs.hex_gui_dialog_height);
 		}
-
-		if (((GtkXText *) sess->gui->xtext)->transparent)
-			gtk_widget_queue_draw (sess->gui->xtext);
 	}
 
 	return FALSE;
@@ -2227,14 +2224,20 @@ mg_create_topicbar (session *sess, GtkWidget *box)
 /* check if a word is clickable */
 
 static int
-mg_word_check (GtkWidget * xtext, char *word)
+mg_word_check (GtkWidget * xtext, char *word, int len)
 {
 	session *sess = current_sess;
 	int ret;
 
 	ret = url_check_word (word);
-	if (ret == 0 && sess->type == SESS_DIALOG)
-		return WORD_DIALOG;
+	if (ret == 0)
+	{
+                if (((word[0] == '@' || word[0] == '+' || word[0] == '%') && userlist_find (sess, word+1)) || userlist_find (sess, word))
+                        return WORD_NICK;
+
+		if (sess->type == SESS_DIALOG)
+			return WORD_DIALOG;
+	}
 
 	return ret;
 }
@@ -2250,7 +2253,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 
 	if (word)
 	{
-		word_type = mg_word_check (xtext, word);
+		word_type = mg_word_check (xtext, word, 0);
 		url_last (&start, &end);
 	}
 
@@ -2328,8 +2331,6 @@ mg_update_xtext (GtkWidget *wid)
 
 	gtk_xtext_set_palette (xtext, colors);
 	gtk_xtext_set_max_lines (xtext, prefs.hex_text_max_lines);
-	gtk_xtext_set_tint (xtext, prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
-	gtk_xtext_set_background (xtext, channelwin_pix, prefs.hex_text_transparent);
 	gtk_xtext_set_wordwrap (xtext, prefs.hex_text_wordwrap);
 	gtk_xtext_set_show_marker (xtext, prefs.hex_text_show_marker);
 	gtk_xtext_set_show_separator (xtext, prefs.hex_text_indent ? prefs.hex_text_show_sep : 0);
@@ -2340,24 +2341,10 @@ mg_update_xtext (GtkWidget *wid)
 		exit (1);
 	}
 
-	gtk_xtext_refresh (xtext, FALSE);
+	gtk_xtext_refresh (xtext);
 }
 
 /* handle errors reported by xtext */
-
-static void
-mg_xtext_error (int type)
-{
-	switch (type)
-	{
-	case 0:
-		fe_message (_("Unable to set transparent background!\n\n"
-						"You may be using a non-compliant window\n"
-						"manager that is not currently supported.\n"), FE_MSG_WARN);
-		prefs.hex_text_transparent = 0;
-		/* no others exist yet */
-	}
-}
 
 static void
 mg_create_textarea (session *sess, GtkWidget *box)
@@ -2389,7 +2376,6 @@ mg_create_textarea (session *sess, GtkWidget *box)
 	xtext = GTK_XTEXT (gui->xtext);
 	gtk_xtext_set_max_indent (xtext, prefs.hex_text_max_indent);
 	gtk_xtext_set_thin_separator (xtext, prefs.hex_text_thin_sep);
-	gtk_xtext_set_error_function (xtext, mg_xtext_error);
 	gtk_xtext_set_urlcheck_function (xtext, mg_word_check);
 	gtk_xtext_set_max_lines (xtext, prefs.hex_text_max_lines);
 	gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (xtext));

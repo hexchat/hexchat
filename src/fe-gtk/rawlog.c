@@ -70,7 +70,7 @@ rawlog_save (server *serv, char *file)
 static int
 rawlog_clearbutton (GtkWidget * wid, server *serv)
 {
-	gtk_xtext_clear (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer, 0);
+	gtk_xtext_clear (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer);
 	return FALSE;
 }
 
@@ -121,9 +121,6 @@ open_rawlog (struct server *serv)
 	gtk_widget_show (hbox);
 
 	serv->gui->rawlog_textlist = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_tint (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
-	gtk_xtext_set_background (GTK_XTEXT (serv->gui->rawlog_textlist),
-									  channelwin_pix, prefs.hex_text_transparent);
 
 	gtk_container_add (GTK_CONTAINER (hbox), serv->gui->rawlog_textlist);
 	gtk_xtext_set_font (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.hex_text_font);
