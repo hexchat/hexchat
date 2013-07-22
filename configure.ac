@@ -47,7 +47,6 @@ AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
-AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
 AH_VERBATIM([USE_XFT],[#undef USE_XFT])
@@ -746,32 +745,6 @@ if test "$shm" = yes; then
 		CPPFLAGS=$oldc
 	fi
 fi
-
-dnl *********************************************************************
-dnl ** MMX **************************************************************
-dnl *********************************************************************
-
-dnl we don't need mmx on *this* machine, just i386, because
-dnl it's checked at runtime.
-if test "$mmx" = "yes"; then
-	case $host_cpu in
-    i386|i486|i586|i686|i786|k6|k7)
-    mmx=yes
-        ;;
-     *)
-    mmx=no
-	esac
-	if test "$system" = "OpenBSD"; then
-		dnl openbsd fails because mmx_cmod doesn't prefix its symbols with underscore.
-		dnl xtext.o: Undefined symbol `_shade_ximage_15_mmx' referenced from text segment
-		mmx=no
-	fi
-	if test "$mmx" = "yes"; then
-		AC_DEFINE(USE_MMX)
-	fi
-fi
-
-AM_CONDITIONAL(USE_MMX, test "$mmx" = "yes")
 
 dnl *********************************************************************
 dnl ** GCC FLAGS ********************************************************

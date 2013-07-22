@@ -59,10 +59,6 @@
 #include <X11/Xatom.h>
 #endif
 
-#ifdef USE_MMX
-#include "mmx_cmod.h"
-#endif
-
 #include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
@@ -3727,58 +3723,23 @@ static void
 shade_image (GdkVisual *visual, void *data, int bpl, int bpp, int w, int h,
 				 int rm, int gm, int bm, int bg, int depth)
 {
-#ifdef USE_MMX
-	int bg_r, bg_g, bg_b;
-
-	bg_r = bg & visual->red_mask;
-	bg_g = bg & visual->green_mask;
-	bg_b = bg & visual->blue_mask;
-
-	/* the MMX routines are about 50% faster at 16-bit. */
-	/* only use MMX routines with a pure black background */
-	if (bg_r == 0 && bg_g == 0 && bg_b == 0 && have_mmx ())	/* do a runtime check too! */
+	switch (depth)
 	{
-		switch (depth)
+	case 15:
+		shade_ximage_15 (data, bpl, w, h, rm, gm, bm, bg);
+		break;
+	case 16:
+		shade_ximage_16 (data, bpl, w, h, rm, gm, bm, bg);
+		break;
+	case 24:
+		if (bpp != 32)
 		{
-		case 15:
-			shade_ximage_15_mmx (data, bpl, w, h, rm, gm, bm);
+			shade_ximage_24 (data, bpl, w, h, rm, gm, bm, bg);
 			break;
-		case 16:
-			shade_ximage_16_mmx (data, bpl, w, h, rm, gm, bm);
-			break;
-		case 24:
-			if (bpp != 32)
-				goto generic;
-		case 32:
-			shade_ximage_32_mmx (data, bpl, w, h, rm, gm, bm);
-			break;
-		default:
-			goto generic;
 		}
-	} else
-	{
-generic:
-#endif
-		switch (depth)
-		{
-		case 15:
-			shade_ximage_15 (data, bpl, w, h, rm, gm, bm, bg);
-			break;
-		case 16:
-			shade_ximage_16 (data, bpl, w, h, rm, gm, bm, bg);
-			break;
-		case 24:
-			if (bpp != 32)
-			{
-				shade_ximage_24 (data, bpl, w, h, rm, gm, bm, bg);
-				break;
-			}
-		case 32:
-			shade_ximage_32 (data, bpl, w, h, rm, gm, bm, bg);
-		}
-#ifdef USE_MMX
+	case 32:
+		shade_ximage_32 (data, bpl, w, h, rm, gm, bm, bg);
 	}
-#endif
 }
 
 #ifdef USE_XLIB
