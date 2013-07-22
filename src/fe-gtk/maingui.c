@@ -3086,6 +3086,8 @@ mg_tabwindow_de_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 static void
 mg_create_tabwindow (session *sess)
 {
+	GdkScreen *screen;
+	GdkColormap *colormap;
 	GtkWidget *win;
 	GtkWidget *table;
 
@@ -3145,6 +3147,16 @@ mg_create_tabwindow (session *sess)
 		gtk_widget_hide (sess->gui->nick_box);
 
 	mg_place_userlist_and_chanview (sess->gui);
+
+	/* take advantage of a compositor if one is available. */
+	screen = gtk_widget_get_screen(GTK_WIDGET(win));
+	colormap = gdk_screen_get_rgba_colormap(screen);
+
+	if (colormap != NULL && gdk_screen_is_composited(screen))
+	{
+		gtk_widget_set_colormap(GTK_WIDGET(win), colormap);
+		gtk_widget_set_colormap(GTK_WIDGET(sess->gui->xtext), colormap);
+	}
 
 	gtk_widget_show (win);
 }
