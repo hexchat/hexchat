@@ -419,6 +419,13 @@ dcc_completed_transfer_exists (void)
 }
 
 static void
+update_clear_button_sensitivity (void)
+{
+	gboolean sensitive = dcc_completed_transfer_exists ();
+	gtk_widget_set_sensitive (dccfwin.clear_button, sensitive);
+}
+
+static void
 dcc_fill_window (int flags)
 {
 	struct DCC *dcc;
@@ -464,10 +471,8 @@ dcc_fill_window (int flags)
 		gtk_tree_model_get_iter_first (GTK_TREE_MODEL (dccfwin.store), &iter);
 		gtk_tree_selection_select_iter (dccfwin.sel, &iter);
 	}
-	else	
-	{
-		gtk_widget_set_sensitive (dccfwin.clear_button, dcc_completed_transfer_exists ());
-	}
+	
+	update_clear_button_sensitivity ();
 }
 
 /* return list of selected DCCs */
@@ -500,13 +505,6 @@ dcc_get_selected (void)
 {
 	return treeview_get_selected (GTK_TREE_MODEL (dccfwin.store),
 											dccfwin.sel, COL_DCC);
-}
-
-static void
-update_clear_button_sensitivity (void)
-{
-	gboolean sensitive = dcc_completed_transfer_exists () && !dcc_get_selected ();
-	gtk_widget_set_sensitive (dccfwin.clear_button, sensitive);
 }
 
 static void
@@ -663,9 +661,7 @@ dcc_row_cb (GtkTreeSelection *sel, gpointer user_data)
 		dcc_details_populate (NULL);
 		return;
 	}
-	
-	/* if a row is selected, the clear button is disabled. */
-	gtk_widget_set_sensitive (dccfwin.clear_button, FALSE);
+
 	gtk_widget_set_sensitive (dccfwin.abort_button, TRUE);
 
 	if (list->next)	/* multi selection */
