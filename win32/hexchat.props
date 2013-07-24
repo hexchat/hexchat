@@ -100,6 +100,11 @@ xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
 		<ClCompile>
 			<WarningLevel>Level3</WarningLevel>
 			<DisableSpecificWarnings>4996</DisableSpecificWarnings>
+			<!-- UNCOMMENT ONLY ONE -->
+			<!--Optimization>Disabled</Optimization-->
+			<Optimization>MaxSpeed</Optimization>
+			<!--Optimization>MinSpace</Optimization-->
+			<!--Optimization>Full</Optimization-->
 		</ClCompile>
 	</ItemDefinitionGroup>
 
