@@ -27,8 +27,9 @@
 
 #include "hexchat-plugin.h"
 
-#define DEFAULT_DELAY 10	/* 10 seconds */
+#define DEFAULT_DELAY 30	/* 30 seconds */
 #define DEFAULT_FREQ 360	/* 6 hours */
+#define DOWNLOAD_URL "http://dl.hexchat.net/hexchat"
 
 static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "Update Checker";
@@ -39,61 +40,6 @@ static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexC
 static char*
 check_version ()
 {
-#if 0
-	HINTERNET hINet, hFile;
-	hINet = InternetOpen ("Update Checker", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
-
-	if (!hINet)
-	{
-		return "Unknown";
-	}
-
-	hFile = InternetOpenUrl (hINet,
-							"https://raw.github.com/hexchat/hexchat/master/win32/version.txt",
-							NULL,
-							0,
-							INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD,
-							0);
-	if (hFile)
-	{
-		static char buffer[1024];
-		DWORD dwRead;
-		while (InternetReadFile (hFile, buffer, 1023, &dwRead))
-		{
-			if (dwRead == 0)
-			{
-				break;
-			}
-			buffer[dwRead] = 0;
-		}
-
-		InternetCloseHandle (hFile);
-		InternetCloseHandle (hINet);
-		if (strlen (buffer) == 5)
-			return buffer;
-		else
-			return "Unknown";
-	}
-
-	InternetCloseHandle (hINet);
-	return "Unknown";
-#endif
-
-	/* Google Code's messing up with requests, use HTTP/1.0 as suggested. More info:
-
-	   http://code.google.com/p/support/issues/detail?id=6095
-
-	   Of course it would be still too simple, coz IE will override settings, so
-	   you have to disable HTTP/1.1 manually and globally. More info:
-
-	   http://support.microsoft.com/kb/258425
-
-	   So this code's basically useless since disabling HTTP/1.1 will work with the
-	   above code too.
-
-	   Update: a Connection: close header seems to disable chunked encoding.
-	*/
-
 	HINTERNET hOpen, hConnect, hResource;
 
 	hOpen = InternetOpen (TEXT ("Update Checker"),
@@ -137,7 +83,11 @@ check_version ()
 	else
 	{
 		static char buffer[1024];
+		char infobuffer[32];
+		int statuscode;
+
 		DWORD dwRead;
+		DWORD infolen = sizeof(infobuffer);
 
 		HttpAddRequestHeaders (hResource, TEXT ("Connection: close\r\n"), -1L, HTTP_ADDREQ_FLAG_ADD);	/* workaround for GC bug */
 		HttpSendRequest (hResource, NULL, 0, NULL, 0);
@@ -151,10 +101,18 @@ check_version ()
 			buffer[dwRead] = 0;
 		}
 
+		HttpQueryInfo(hResource,
+					HTTP_QUERY_STATUS_CODE,
+					&infobuffer,
+					&infolen,
+					NULL);
+
 		InternetCloseHandle (hResource);
 		InternetCloseHandle (hConnect);
 		InternetCloseHandle (hOpen);
-		if (strlen (buffer) == 5)
+
+		statuscode = atoi(infobuffer);
+		if (statuscode == 200)
 			return buffer;
 		else
 			return "Unknown";
@@ -233,9 +191,9 @@ print_version (char *word[], char *word_eol[], void *userdata)
 		else
 		{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for some reason */
-			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttp://dl.hexchat.net/hexchat/HexChat%%20%s%%20x64.exe\n", name, version);
+			hexchat_printf (ph, "%s:\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x64.exe\n", name, DOWNLOAD_URL, version);
 #else
-			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttp://dl.hexchat.net/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
+			hexchat_printf (ph, "%s:\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x86.exe\n", name, DOWNLOAD_URL, version);
 #endif
 		}
 		return HEXCHAT_EAT_HEXCHAT;
@@ -256,9 +214,9 @@ print_version_quiet (void *userdata)
 	if (!(strcmp (version, hexchat_get_info (ph, "version")) == 0) && !(strcmp (version, "Unknown") == 0))
 	{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for plugins for some reason */
-		hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x64.exe\n", name, version);
+		hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x64.exe\n", name, DOWNLOAD_URL, version);
 #else
-		hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x86.exe\n", name, version);
+		hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x86.exe\n", name, DOWNLOAD_URL, version);
 #endif
 		/* print update url once, then stop the timer */
 		return 0;
