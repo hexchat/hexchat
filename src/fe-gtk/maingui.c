@@ -21,6 +21,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#include <gdk/gdkkeysyms.h>
+
 #include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/server.h"
@@ -33,6 +35,7 @@
 #include "../common/util.h"
 #include "../common/text.h"
 #include "../common/chanopt.h"
+#include "../common/cfgfiles.h"
 
 #include "fe-gtk.h"
 #include "banlist.h"
@@ -77,6 +80,7 @@ enum
 #define TAG_UTIL 1	/* dcc, notify, chanlist */
 
 static void mg_create_entry (session *sess, GtkWidget *box);
+static void mg_create_search (session *sess, GtkWidget *box);
 static void mg_link_irctab (session *sess, int focus);
 
 static session_gui static_mg_gui;
@@ -2619,7 +2623,18 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 	vbox = gtk_vbox_new (FALSE, 3);
 	gtk_notebook_append_page (GTK_NOTEBOOK (book), vbox, NULL);
 	mg_create_topicbar (sess, vbox);
-	mg_create_textarea (sess, vbox);
+
+	if (prefs.hex_gui_search_pos)
+	{
+		mg_create_search (sess, vbox);
+		mg_create_textarea (sess, vbox);
+	}
+	else
+	{
+		mg_create_textarea (sess, vbox);
+		mg_create_search (sess, vbox);
+	}
+
 	mg_create_entry (sess, vbox);
 
 	mg_add_pane_signals (gui);
@@ -2812,6 +2827,183 @@ static void
 mg_inputbox_rightclick (GtkEntry *entry, GtkWidget *menu)
 {
 	mg_create_color_menu (menu, NULL);
+}
+
+/* Search bar adapted from Conspire's by William Pitcock */
+
+#define SEARCH_CHANGE		1
+#define SEARCH_NEXT			2
+#define SEARCH_PREVIOUS		3
+#define SEARCH_REFRESH		4
+
+static void
+search_handle_event(int search_type, session *sess)
+{
+	textentry *last;
+	const gchar *text = NULL;
+	gtk_xtext_search_flags flags;
+	GError *err = NULL;
+	gboolean backwards = FALSE;
+
+	/* When just typing show most recent first */
+	if (search_type == SEARCH_PREVIOUS || search_type == SEARCH_CHANGE)
+		backwards = TRUE;
+
+	flags = ((prefs.hex_text_search_case_match == 1? case_match: 0) |
+				(backwards? backward: 0) |
+				(prefs.hex_text_search_highlight_all == 1? highlight: 0) |
+				(prefs.hex_text_search_follow == 1? follow: 0) |
+				(prefs.hex_text_search_regexp == 1? regexp: 0));
+
+	if (search_type != SEARCH_REFRESH)
+		text = gtk_entry_get_text (GTK_ENTRY(sess->gui->shentry));
+	last = gtk_xtext_search (GTK_XTEXT (sess->gui->xtext), text, flags, &err);
+
+	if (err)
+	{
+		gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
+		gtk_entry_set_icon_tooltip_text (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, _(err->message));
+		g_error_free (err);
+	}
+	else if (!last)
+	{
+		/* Either end of search or not found, try again to wrap if only end */
+		last = gtk_xtext_search (GTK_XTEXT (sess->gui->xtext), text, flags, &err);
+		if (!last) /* Not found error */
+		{
+			gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
+			gtk_entry_set_icon_tooltip_text (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, _("No results found."));
+		}
+	}
+	else
+	{
+		gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, NULL);	
+	}
+}
+
+static void
+search_handle_change(GtkWidget *wid, session *sess)
+{
+	search_handle_event(SEARCH_CHANGE, sess);
+}
+
+static void
+search_handle_refresh(GtkWidget *wid, session *sess)
+{
+	search_handle_event(SEARCH_REFRESH, sess);
+}
+
+void
+mg_search_handle_previous(GtkWidget *wid, session *sess)
+{
+	search_handle_event(SEARCH_PREVIOUS, sess);
+}
+
+void
+mg_search_handle_next(GtkWidget *wid, session *sess)
+{
+	search_handle_event(SEARCH_NEXT, sess);
+}
+
+static void
+search_set_option (GtkToggleButton *but, guint *pref)
+{
+	*pref = gtk_toggle_button_get_active(but);
+	save_config();
+}
+
+void
+mg_search_toggle(session *sess)
+{
+	if (gtk_widget_get_visible(sess->gui->shbox))
+	{
+		gtk_widget_hide(sess->gui->shbox);
+		gtk_widget_grab_focus(sess->gui->input_box);
+		gtk_entry_set_text(GTK_ENTRY(sess->gui->shentry), "");
+	}
+	else
+	{
+		/* Reset search state */
+		gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, NULL);
+
+		/* Show and focus */
+		gtk_widget_show(sess->gui->shbox);
+		gtk_widget_grab_focus(sess->gui->shentry);
+	}
+}
+
+static gboolean
+search_handle_esc (GtkWidget *win, GdkEventKey *key, session *sess)
+{
+	if (key->keyval == GDK_KEY_Escape)
+		mg_search_toggle(sess);
+			
+	return FALSE;
+}
+
+static void
+mg_create_search(session *sess, GtkWidget *box)
+{
+	GtkWidget *entry, *label, *next, *previous, *highlight, *matchcase, *regex, *close;
+	session_gui *gui = sess->gui;
+
+	gui->shbox = gtk_hbox_new(FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(box), gui->shbox, FALSE, FALSE, 0);
+
+	close = gtk_button_new ();
+	gtk_button_set_image (GTK_BUTTON (close), gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU));
+	gtk_button_set_relief(GTK_BUTTON(close), GTK_RELIEF_NONE);
+	gtk_widget_set_can_focus (close, FALSE);
+	gtk_box_pack_start(GTK_BOX(gui->shbox), close, FALSE, FALSE, 0);
+	g_signal_connect_swapped(G_OBJECT(close), "clicked", G_CALLBACK(mg_search_toggle), sess);
+
+	label = gtk_label_new(_("Find:"));
+	gtk_box_pack_start(GTK_BOX(gui->shbox), label, FALSE, FALSE, 0);
+
+	gui->shentry = entry = gtk_entry_new();
+	gtk_box_pack_start(GTK_BOX(gui->shbox), entry, FALSE, FALSE, 0);
+	gtk_widget_set_size_request (gui->shentry, 180, -1);
+	gui->search_changed_signal = g_signal_connect(G_OBJECT(entry), "changed", G_CALLBACK(search_handle_change), sess);
+	g_signal_connect (G_OBJECT (entry), "key_press_event", G_CALLBACK (search_handle_esc), sess);
+	g_signal_connect(G_OBJECT(entry), "activate", G_CALLBACK(mg_search_handle_next), sess);
+	gtk_entry_set_icon_activatable (GTK_ENTRY (entry), GTK_ENTRY_ICON_SECONDARY, FALSE);
+	gtk_entry_set_icon_tooltip_text (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, _("Search hit end or not found."));
+
+	previous = gtk_button_new ();
+	gtk_button_set_image (GTK_BUTTON (previous), gtk_image_new_from_stock (GTK_STOCK_GO_BACK, GTK_ICON_SIZE_MENU));
+	gtk_button_set_relief(GTK_BUTTON(previous), GTK_RELIEF_NONE);
+	gtk_widget_set_can_focus (previous, FALSE);
+	gtk_box_pack_start(GTK_BOX(gui->shbox), previous, FALSE, FALSE, 0);
+	g_signal_connect(G_OBJECT(previous), "clicked", G_CALLBACK(mg_search_handle_previous), sess);
+
+	next = gtk_button_new ();
+	gtk_button_set_image (GTK_BUTTON (next), gtk_image_new_from_stock (GTK_STOCK_GO_FORWARD, GTK_ICON_SIZE_MENU));
+	gtk_button_set_relief(GTK_BUTTON(next), GTK_RELIEF_NONE);
+	gtk_widget_set_can_focus (next, FALSE);
+	gtk_box_pack_start(GTK_BOX(gui->shbox), next, FALSE, FALSE, 0);
+	g_signal_connect(G_OBJECT(next), "clicked", G_CALLBACK(mg_search_handle_next), sess);
+
+	highlight = gtk_check_button_new_with_mnemonic (_("Highlight _all"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(highlight), prefs.hex_text_search_case_match);
+	gtk_widget_set_can_focus (highlight, FALSE);
+	g_signal_connect (G_OBJECT (highlight), "toggled", G_CALLBACK (search_set_option), &prefs.hex_text_search_highlight_all);
+	g_signal_connect (G_OBJECT (highlight), "toggled", G_CALLBACK (search_handle_refresh), sess);
+	gtk_box_pack_start(GTK_BOX(gui->shbox), highlight, FALSE, FALSE, 0);
+	add_tip (highlight, _("Highlight all occurrences, and underline the current occurrence."));
+
+	matchcase = gtk_check_button_new_with_mnemonic (_("Mat_ch case"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(matchcase), prefs.hex_text_search_case_match);
+	gtk_widget_set_can_focus (matchcase, FALSE);
+	g_signal_connect (G_OBJECT (matchcase), "toggled", G_CALLBACK (search_set_option), &prefs.hex_text_search_case_match);
+	gtk_box_pack_start(GTK_BOX(gui->shbox), matchcase, FALSE, FALSE, 0);
+	add_tip (matchcase, _("Perform a case-sensitive search."));
+
+	regex = gtk_check_button_new_with_mnemonic (_("_Regex"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(regex), prefs.hex_text_search_regexp);
+	gtk_widget_set_can_focus (regex, FALSE);
+	g_signal_connect (G_OBJECT (regex), "toggled", G_CALLBACK (search_set_option), &prefs.hex_text_search_regexp);
+	gtk_box_pack_start(GTK_BOX(gui->shbox), regex, FALSE, FALSE, 0);
+	add_tip (regex, _("Regard search string as a regular expression."));
 }
 
 static void
@@ -3055,6 +3247,8 @@ mg_create_topwindow (session *sess)
 	if (!prefs.hex_gui_input_nick)
 		gtk_widget_hide (sess->gui->nick_box);
 
+	gtk_widget_hide(sess->gui->shbox);
+
 	mg_decide_userlist (sess, FALSE);
 
 	if (sess->type == SESS_DIALOG)
@@ -3157,6 +3351,8 @@ mg_create_tabwindow (session *sess)
 
 	if (!prefs.hex_gui_input_nick)
 		gtk_widget_hide (sess->gui->nick_box);
+
+	gtk_widget_hide (sess->gui->shbox);
 
 	mg_place_userlist_and_chanview (sess->gui);
 

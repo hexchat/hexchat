@@ -52,6 +52,10 @@ GtkWidget *mg_submenu (GtkWidget *menu, char *text);
 gboolean mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata);
 void mg_drag_end_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata);
 gboolean mg_drag_drop_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, guint time, gpointer user_data);
-gboolean mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, guint time, gpointer user_data); 
+gboolean mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, guint time, gpointer user_data);
+/* search */
+void mg_search_toggle(session *sess);
+void mg_search_handle_previous(GtkWidget *wid, session *sess);
+void mg_search_handle_next(GtkWidget *wid, session *sess);
 
 #endif

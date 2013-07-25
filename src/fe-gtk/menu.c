@@ -1237,41 +1237,19 @@ menu_quit (GtkWidget * wid, gpointer none)
 static void
 menu_search ()
 {
-	search_open (current_sess);
+	mg_search_toggle (current_sess);
 }
 
 static void
-menu_search_next ()
+menu_search_next (GtkWidget *wid)
 {
-	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
-	xtext_buffer *buf = xtext->buffer;
-
-	if (!gtk_xtext_search (xtext, buf->search_text,
-		(buf->search_flags & (case_match | follow | regexp)), NULL))
-	{
-		fe_message (_("Search hit end, not found."), FE_MSG_ERROR);
-	}
+	mg_search_handle_next(wid, current_sess);
 }
 
 static void
-menu_search_prev ()
+menu_search_prev (GtkWidget *wid)
 {
-	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
-	xtext_buffer *buf = xtext->buffer;
-
-	if (!gtk_xtext_search(xtext, buf->search_text,
-		(buf->search_flags & (case_match | follow | regexp)) | backward, NULL))
-	{
-		fe_message (_("Search hit end, not found."), FE_MSG_ERROR);
-	}
-}
-
-static void
-menu_search_reset ()
-{
-	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
-
-	gtk_xtext_search (xtext, "", 0, NULL);
+	mg_search_handle_previous(wid, current_sess);
 }
 
 static void
@@ -1732,7 +1710,6 @@ static struct mymenu mymenu[] = {
 #define SEARCH_OFFSET 68
 	{N_("Search"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},
 		{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
-		{N_("Reset Search"), menu_search_reset, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_F},
 		{N_("Search Next"   ), menu_search_next, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_g},
 		{N_("Search Previous"   ), menu_search_prev, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_G},
 		{0, 0, 0, M_END, 0, 0, 0},
