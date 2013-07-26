@@ -170,7 +170,7 @@ AC_ARG_ENABLE(shm,
 
 AC_ARG_ENABLE(spell,
 	[AS_HELP_STRING([--enable-spell=type],[enable spelling type: none static libsexy gtkspell])],
-		  spell=$enableval, spell=static)
+		  spell=$enableval, spell=libsexy)
 
 AC_ARG_ENABLE(ntlm,
 	[AS_HELP_STRING([--enable-ntlm],[enable Microsoft\'s NTLM auth (libntlm) library support (default: no)])],
