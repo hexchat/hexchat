@@ -593,10 +593,8 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	return ret;
 }
 
-/* No Callback_Server() here. We use Callback_Command() as well. */
-
 static int
-Callback_Print(char *word[], hexchat_event_attrs *attrs, void *userdata)
+Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
 {
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;
@@ -662,16 +660,100 @@ Callback_Print(char *word[], hexchat_event_attrs *attrs, void *userdata)
 
 	attributes = Attribute_New(attrs);
 
-	if (hook->type == HOOK_XCHAT_ATTR)
-		retobj = PyObject_CallFunction(hook->callback, "(OOOO)", word_list,
-					       word_eol_list, hook->userdata, attributes);
-	else
-		retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
-					       word_eol_list, hook->userdata);
+	retobj = PyObject_CallFunction(hook->callback, "(OOOO)", word_list,
+					    word_eol_list, hook->userdata, attributes);
 
 	Py_DECREF(word_list);
 	Py_DECREF(word_eol_list);
 	Py_DECREF(attributes);
+
+	g_free(word_eol_raw);
+	g_free(word_eol);
+	if (retobj == Py_None) {
+		ret = HEXCHAT_EAT_NONE;
+		Py_DECREF(retobj);
+	} else if (retobj) {
+		ret = PyLong_AsLong(retobj);
+		Py_DECREF(retobj);
+	} else {
+		PyErr_Print();
+	}
+
+	END_PLUGIN(plugin);
+
+	return ret;
+}
+
+static int
+Callback_Print(char *word[], void *userdata)
+{
+	Hook *hook = (Hook *) userdata;
+	PyObject *retobj;
+	PyObject *word_list;
+	PyObject *word_eol_list;
+	char **word_eol;
+	char *word_eol_raw;
+	int listsize = 0;
+	int next = 0;
+	int i;
+	int ret = 0;
+	PyObject *plugin;
+
+	/* Cut off the message identifier. */
+	word += 1;
+
+	/* HexChat doesn't provide a word_eol for print events, so we
+	 * build our own here. */
+	while (word[listsize] && word[listsize][0])
+		listsize++;
+	word_eol = (char **) g_malloc(sizeof(char*)*(listsize+1));
+	if (word_eol == NULL) {
+		hexchat_print(ph, "Not enough memory to alloc word_eol "
+				"for python plugin callback.");
+		return 0;
+	}
+	/* First build a word clone, but NULL terminated. */
+	memcpy(word_eol, word, listsize*sizeof(char*));
+	word_eol[listsize] = NULL;
+	/* Then join it. */
+	word_eol_raw = g_strjoinv(" ", word_eol);
+	if (word_eol_raw == NULL) {
+		hexchat_print(ph, "Not enough memory to alloc word_eol_raw "
+				"for python plugin callback.");
+		return 0;
+	}
+	/* And rebuild the real word_eol. */
+	for (i = 0; i != listsize; i++) {
+		word_eol[i] = word_eol_raw+next;
+		next += strlen(word[i])+1;
+	}
+	word_eol[i] = "";
+
+	plugin = hook->plugin;
+	BEGIN_PLUGIN(plugin);
+
+	word_list = Util_BuildList(word);
+	if (word_list == NULL) {
+		g_free(word_eol_raw);
+		g_free(word_eol);
+		END_PLUGIN(plugin);
+		return 0;
+	}
+	word_eol_list = Util_BuildList(word_eol);
+	if (word_eol_list == NULL) {
+		g_free(word_eol_raw);
+		g_free(word_eol);
+		Py_DECREF(word_list);
+		END_PLUGIN(plugin);
+		return 0;
+	}
+
+
+	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
+					       word_eol_list, hook->userdata);
+
+	Py_DECREF(word_list);
+	Py_DECREF(word_eol_list);
 
 	g_free(word_eol_raw);
 	g_free(word_eol);
@@ -2028,7 +2110,7 @@ Module_hexchat_hook_print(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 
 	BEGIN_XCHAT_CALLS(NONE);
-	hook->data = (void*)hexchat_hook_print_attrs(ph, name, priority,
+	hook->data = (void*)hexchat_hook_print(ph, name, priority,
 					     Callback_Print, hook);
 	END_XCHAT_CALLS();
 
@@ -2065,7 +2147,7 @@ Module_hexchat_hook_print_attrs(PyObject *self, PyObject *args, PyObject *kwargs
 
 	BEGIN_XCHAT_CALLS(NONE);
 	hook->data = (void*)hexchat_hook_print_attrs(ph, name, priority,
-					     Callback_Print, hook);
+					     Callback_Print_Attrs, hook);
 	END_XCHAT_CALLS();
 
 	return PyLong_FromVoidPtr(hook);
