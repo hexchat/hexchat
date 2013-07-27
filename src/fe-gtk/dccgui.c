@@ -78,6 +78,7 @@ struct dccwindow
 	GtkWidget *accept_button;
 	GtkWidget *resume_button;
 	GtkWidget *open_button;
+	GtkWidget *clear_button; /* clears aborted and completed requests */	
 
 	GtkWidget *file_label;
 	GtkWidget *address_label;
@@ -380,6 +381,50 @@ dcc_append (struct DCC *dcc, GtkListStore *store, gboolean prepend)
 		dcc_prepare_row_send (dcc, store, &iter, FALSE);
 }
 
+/* Returns aborted and completed transfers. */
+static GSList *
+dcc_get_completed (void)
+{
+	struct DCC *dcc;
+	GtkTreeIter iter;
+	GtkTreeModel *model;	
+	GSList *completed = NULL;
+
+	model = GTK_TREE_MODEL (dccfwin.store);
+	if (gtk_tree_model_get_iter_first (model, &iter))
+	{
+		do
+		{
+			gtk_tree_model_get (model, &iter, COL_DCC, &dcc, -1);
+			if (is_dcc_completed (dcc))
+				completed = g_slist_prepend (completed, dcc);
+				
+		} while (gtk_tree_model_iter_next (model, &iter));
+	}
+
+	return completed;
+}
+
+static gboolean
+dcc_completed_transfer_exists (void)
+{
+	gboolean exist;
+	GSList *comp_list;
+	
+	comp_list = dcc_get_completed (); 
+	exist = comp_list != NULL;
+	
+	g_slist_free (comp_list);	
+	return exist;
+}
+
+static void
+update_clear_button_sensitivity (void)
+{
+	gboolean sensitive = dcc_completed_transfer_exists ();
+	gtk_widget_set_sensitive (dccfwin.clear_button, sensitive);
+}
+
 static void
 dcc_fill_window (int flags)
 {
@@ -426,6 +471,8 @@ dcc_fill_window (int flags)
 		gtk_tree_model_get_iter_first (GTK_TREE_MODEL (dccfwin.store), &iter);
 		gtk_tree_selection_select_iter (dccfwin.sel, &iter);
 	}
+	
+	update_clear_button_sensitivity ();
 }
 
 /* return list of selected DCCs */
@@ -511,6 +558,9 @@ abort_clicked (GtkWidget * wid, gpointer none)
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 	g_slist_free (start);
+	
+	/* Enable the clear button if it wasn't already enabled */
+	update_clear_button_sensitivity ();
 }
 
 static void
@@ -527,6 +577,27 @@ accept_clicked (GtkWidget * wid, gpointer none)
 			dcc_get (dcc);
 	}
 	g_slist_free (start);
+}
+
+static void
+clear_completed (GtkWidget * wid, gpointer none)
+{
+	struct DCC *dcc;
+	GSList *completed;
+
+	/* Make a new list of only the completed items and abort each item.
+	 * A new list is made because calling dcc_abort removes items from the original list,
+	 * making it impossible to iterate over that list directly.
+	*/
+	for (completed = dcc_get_completed (); completed; completed = completed->next)
+	{
+		dcc = completed->data;
+		dcc_abort (dcc->serv->front_session, dcc);
+	}
+
+	/* The data was freed by dcc_close */
+	g_slist_free (completed);
+	update_clear_button_sensitivity ();
 }
 
 static void
@@ -812,6 +883,7 @@ fe_dcc_open_recv_win (int passive)
 	dccfwin.abort_button = gtkutil_button (bbox, GTK_STOCK_CANCEL, 0, abort_clicked, 0, _("Abort"));
 	dccfwin.accept_button = gtkutil_button (bbox, GTK_STOCK_APPLY, 0, accept_clicked, 0, _("Accept"));
 	dccfwin.resume_button = gtkutil_button (bbox, GTK_STOCK_REFRESH, 0, resume_clicked, 0, _("Resume"));
+	dccfwin.clear_button = gtkutil_button (bbox, GTK_STOCK_CLEAR, 0, clear_completed, 0, _("Clear"));
 	dccfwin.open_button = gtkutil_button (bbox, 0, 0, browse_dcc_folder, 0, _("Open Folder..."));
 	gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
@@ -1055,6 +1127,8 @@ fe_dcc_update (struct DCC *dcc)
 	default:
 		dcc_update_chat (dcc);
 	}
+
+	update_clear_button_sensitivity ();
 }
 
 void
