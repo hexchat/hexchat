@@ -227,6 +227,15 @@ is_dcc (struct DCC *dcc)
 	return FALSE;
 }
 
+gboolean
+is_dcc_completed (struct DCC *dcc)
+{
+	if (dcc != NULL)
+		return (dcc->dccstat == STAT_FAILED || dcc->dccstat == STAT_DONE || dcc->dccstat == STAT_ABORTED);
+
+	return FALSE;
+}
+
 /* this is called from hexchat.c:hexchat_misc_checks() every 1 second. */
 
 void
