@@ -251,7 +251,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.ggn.net"},
 	{0,			"irc.vendetta.com"},
 
-	{"freenode", 0, "#hexchat", 0, LOGIN_SASL},
+	{"freenode", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,				"chat.freenode.net/+6697"},
 #endif
