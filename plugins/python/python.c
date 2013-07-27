@@ -269,7 +269,8 @@ static char *Util_Expand(char *filename);
 
 static int Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata);
 static int Callback_Command(char *word[], char *word_eol[], void *userdata);
-static int Callback_Print(char *word[], hexchat_event_attrs *attrs, void *userdata);
+static int Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata);
+static int Callback_Print(char *word[], void *userdata);
 static int Callback_Timer(void *userdata);
 static int Callback_ThreadTimer(void *userdata);
 
@@ -978,6 +979,7 @@ static PyTypeObject XChatOut_Type = {
 /* ===================================================================== */
 /* Attribute object */
 
+#undef OFF
 #define OFF(x) offsetof(AttributeObject, x)
 
 static PyMemberDef Attribute_members[] = {
