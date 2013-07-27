@@ -34,6 +34,7 @@
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
 #include "../common/server.h"
+#include "../common/servlist.h"
 #include "../common/fe.h"
 #include "fe-gtk.h"
 #include "chanlist.h"
@@ -241,6 +242,13 @@ joind_show_dialog (server *serv)
 							G_CALLBACK (joind_radio2_cb), serv);
 	g_signal_connect (G_OBJECT (okbutton1), "clicked",
 							G_CALLBACK (joind_ok_cb), serv);
+							
+	if (serv->network)
+		if (g_ascii_strcasecmp(((ircnet*)serv->network)->name, "freenode") == 0)
+		{
+			gtk_entry_set_text (GTK_ENTRY (entry1), "#hexchat");
+			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(radiobutton2), TRUE);
+		}
 
 	gtk_widget_grab_focus (okbutton1);
 	gtk_widget_show_all (dialog1);
