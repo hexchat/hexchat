@@ -72,15 +72,32 @@
 #include <structmember.h>
 #include <pythread.h>
 
+/* Macros to convert version macros into string literals.
+ * The indirect macro is a well-known preprocessor trick to force X to be evaluated before the # operator acts to make it a string literal.
+ * If STRINGIZE were to be directly defined as #X instead, VERSION would be "VERSION_MAJOR" instead of "1".
+ */
+#define STRINGIZE2(X) #X
+#define STRINGIZE(X) STRINGIZE2(X)
+
+/* Version number macros */
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 0
 
-#if PY_MAJOR_VERSION == 2
+/* Version string macro */
 #ifdef WIN32
-#undef WITH_THREAD
-#define VERSION "1.0/2.7"	/* Linked to python27.dll */
+#if PY_MAJOR_VERSION == 2
+#define VERSION STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_MINOR) "/2.7"	/* Linked to python27.dll */
+#elif PY_MAJOR_VERSION == 3
+#define VERSION STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_MINOR) "/3.3"	/* Linked to python33.dll */
+#endif
 #endif
 
+#ifndef VERSION
+#define VERSION STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_MINOR)
+#endif
+
+/* #define's for Python 2 */
+#if PY_MAJOR_VERSION == 2
 #undef PyLong_Check
 #define PyLong_Check PyInt_Check
 #define PyLong_AsLong PyInt_AsLong
@@ -95,15 +112,14 @@
 #define PyUnicode_FromString PyString_FromString
 #define PyUnicode_AsUTF8 PyString_AsString
 
-#else
-#define IS_PY3K
 #ifdef WIN32
-#define VERSION "1.0/3.3"	/* Linked to python33.dll */
+#undef WITH_THREAD
 #endif
 #endif
 
-#ifndef VERSION
-#define VERSION "1.0"
+/* #define for Python 3 */
+#if PY_MAJOR_VERSION == 3
+#define IS_PY3K
 #endif
 
 #define NONE 0
