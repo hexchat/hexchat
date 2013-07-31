@@ -487,19 +487,19 @@ create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 			switch (type)
 			{
 			case 0:
-				snprintf (buf, sizeof (buf), "%s%s *!*@%s.*", mode, p2, domain);
+				snprintf (buf, sizeof (buf), "%s %s *!*@%s.*", mode, p2, domain);
 				break;
 
 			case 1:
-				snprintf (buf, sizeof (buf), "%s%s *!*@%s", mode, p2, fullhost);
+				snprintf (buf, sizeof (buf), "%s %s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				snprintf (buf, sizeof (buf), "%s%s *!%s@%s.*", mode, p2, username, domain);
+				snprintf (buf, sizeof (buf), "%s %s *!%s@%s.*", mode, p2, username, domain);
 				break;
 
 			case 3:
-				snprintf (buf, sizeof (buf), "%s%s *!%s@%s", mode, p2, username, fullhost);
+				snprintf (buf, sizeof (buf), "%s %s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		} else
@@ -507,19 +507,19 @@ create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 			switch (type)
 			{
 			case 0:
-				snprintf (buf, sizeof (buf), "%s%s *!*@*%s", mode, p2, domain);
+				snprintf (buf, sizeof (buf), "%s %s *!*@*%s", mode, p2, domain);
 				break;
 
 			case 1:
-				snprintf (buf, sizeof (buf), "%s%s *!*@%s", mode, p2, fullhost);
+				snprintf (buf, sizeof (buf), "%s %s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				snprintf (buf, sizeof (buf), "%s%s *!%s@*%s", mode, p2, username, domain);
+				snprintf (buf, sizeof (buf), "%s %s *!%s@*%s", mode, p2, username, domain);
 				break;
 
 			case 3:
-				snprintf (buf, sizeof (buf), "%s%s *!%s@%s", mode, p2, username, fullhost);
+				snprintf (buf, sizeof (buf), "%s %s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		}
