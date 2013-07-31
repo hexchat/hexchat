@@ -148,7 +148,7 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	{key_action_insert, "Insert in Buffer",
 	 N_("The \002Insert in Buffer\002 command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position")},
 	{key_action_scroll_page, "Scroll Page",
-	 N_("The \002Scroll Page\002 command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1.")},
+	 N_("The \002Scroll Page\002 command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, Top, Bottom, +1 or -1.")},
 	{key_action_set_buffer, "Set Buffer",
 	 N_("The \002Set Buffer\002 command sets the entry where the key sequence was entered to the contents of Data 1")},
 	{key_action_history_up, "Last Command",
@@ -395,6 +395,8 @@ key_load_defaults ()
 		"S\nNext\nChange Selected Nick\nD1!\nD2!\n\n"\
 		"S\nPrior\nChange Selected Nick\nD1:Up\nD2!\n\n"\
 		"None\nNext\nScroll Page\nD1:Down\nD2!\n\n"\
+		"C\nHome\nScroll Page\nD1:Top\nD2!\n\n"\
+		"C\nEnd\nScroll Page\nD1:Bottom\nD2!\n\n"\
 		"None\nPrior\nScroll Page\nD1:Up\nD2!\n\n"\
 		"S\nDown\nScroll Page\nD1:+1\nD2!\n\n"\
 		"S\nUp\nScroll Page\nD1:-1\nD2!\n\n"\
@@ -1279,13 +1281,19 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
 {
 	int value, end;
 	GtkAdjustment *adj;
-	enum scroll_type { PAGE_UP, PAGE_DOWN, LINE_UP, LINE_DOWN };
+	enum scroll_type { PAGE_TOP, PAGE_BOTTOM, PAGE_UP, PAGE_DOWN, LINE_UP, LINE_DOWN };
 	int type = PAGE_DOWN;
 
 	if (d1)
 	{
-		if (!g_ascii_strcasecmp (d1, "up"))
+		if (!g_ascii_strcasecmp (d1, "top"))
+			type = PAGE_TOP;
+		else if (!g_ascii_strcasecmp (d1, "bottom"))
+			type = PAGE_BOTTOM;
+		else if (!g_ascii_strcasecmp (d1, "up"))
 			type = PAGE_UP;
+		else if (!g_ascii_strcasecmp (d1, "down"))
+			type = PAGE_DOWN;
 		else if (!g_ascii_strcasecmp (d1, "+1"))
 			type = LINE_DOWN;
 		else if (!g_ascii_strcasecmp (d1, "-1"))
@@ -1300,20 +1308,28 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
 
 	switch (type)
 	{
-	case LINE_UP:
-		value = adj->value - 1.0;
+	case PAGE_TOP:
+		value = 0;
 		break;
 
-	case LINE_DOWN:
-		value = adj->value + 1.0;
+	case PAGE_BOTTOM:
+		value = end;
 		break;
 
 	case PAGE_UP:
 		value = adj->value - (adj->page_size - 1);
 		break;
 
-	default:	/* PAGE_DOWN */
+	case PAGE_DOWN:
 		value = adj->value + (adj->page_size - 1);
+		break;
+
+	case LINE_UP:
+		value = adj->value - 1.0;
+		break;
+
+	case LINE_DOWN:
+		value = adj->value + 1.0;
 		break;
 	}
 
