@@ -148,7 +148,7 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	{key_action_insert, "Insert in Buffer",
 	 N_("The \002Insert in Buffer\002 command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position")},
 	{key_action_scroll_page, "Scroll Page",
-	 N_("The \002Scroll Page\002 command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, Top, Bottom, +1 or -1.")},
+	 N_("The \002Scroll Page\002 command scrolls the text widget up or down one page or one line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1.")},
 	{key_action_set_buffer, "Set Buffer",
 	 N_("The \002Set Buffer\002 command sets the entry where the key sequence was entered to the contents of Data 1")},
 	{key_action_history_up, "Last Command",
