@@ -251,7 +251,10 @@ match_nick (const char *word, int *start, int *end)
 	str = g_strndup (&word[*start], *end - *start);
 
 	if (!userlist_find (current_sess, str))
+	{
+		g_free (str);
 		return FALSE;
+	}
 
 	g_free (str);
 
