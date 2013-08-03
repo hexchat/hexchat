@@ -7,7 +7,7 @@ AM_CPPFLAGS = $(GUI_CFLAGS) -DLOCALEDIR=\"$(localedir)\"
 hexchat_LDADD = ../common/libhexchatcommon.a $(GUI_LIBS)
 
 EXTRA_DIST = \
-	about.h ascii.h banlist.h chanlist.h chanview.h chanview-tabs.c \
+	ascii.h banlist.h chanlist.h chanview.h chanview-tabs.c \
 	chanview-tree.c custom-list.h editlist.h fe-gtk.h fkeys.h gtkutil.h joind.h \
 	maingui.h menu.h mmx_cmod.S mmx_cmod.h notifygui.h palette.h pixmaps.h \
 	plugin-tray.h plugingui.c plugingui.h rawlog.h search.h sexy-iso-codes.h \
@@ -26,7 +26,7 @@ sexy_spell = \
 	sexy-iso-codes.c sexy-marshal.c sexy-spell-entry.c
 endif
 
-hexchat_SOURCES = about.c ascii.c banlist.c chanlist.c chanview.c custom-list.c \
+hexchat_SOURCES = ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	dccgui.c editlist.c fe-gtk.c fkeys.c gtkutil.c ignoregui.c joind.c menu.c \
 	maingui.c $(mmx_cmod_S) notifygui.c palette.c pixmaps.c plugin-tray.c $(plugingui_c) \
 	rawlog.c search.c servlistgui.c setup.c $(sexy_spell) textgui.c \

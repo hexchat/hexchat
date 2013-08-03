@@ -43,7 +43,6 @@
 #include "../common/notify.h"
 #include "../common/util.h"
 #include "xtext.h"
-#include "about.h"
 #include "ascii.h"
 #include "banlist.h"
 #include "chanlist.h"
@@ -1641,6 +1640,61 @@ menu_metres_both (GtkWidget *item, gpointer none)
 		prefs.hex_gui_throttlemeter = 3;
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
+}
+
+static void
+about_dialog_close (GtkDialog *dialog, int response, gpointer data)
+{
+	gtk_widget_destroy (GTK_WIDGET(dialog));
+}
+
+static gboolean
+about_dialog_openurl (GtkAboutDialog *dialog, char *uri, gpointer data)
+{
+	fe_open_url (uri);
+	return TRUE;
+}
+
+static void
+menu_about (GtkWidget *wid, gpointer sess)
+{
+	GtkAboutDialog *dialog = GTK_ABOUT_DIALOG(gtk_about_dialog_new());
+	char comment[512];
+	char *license = "This program is free software; you can redistribute it and/or modify\n" \
+					"it under the terms of the GNU General Public License as published by\n" \
+					"the Free Software Foundation; version 2.\n\n" \
+					"This program is distributed in the hope that it will be useful,\n" \
+					"but WITHOUT ANY WARRANTY; without even the implied warranty of\n" \
+					"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n" \
+					"GNU General Public License for more details.\n\n" \
+					"You should have received a copy of the GNU General Public License\n" \
+					"along with this program. If not, see <http://www.gnu.org/licenses/>";
+
+	g_snprintf  (comment, sizeof(comment), "Compiled: "__DATE__"\n"
+#ifdef WIN32
+				"Portable Mode: %s\n"
+				"Build Type: x%d\n"
+#endif
+				"OS: %s",
+#ifdef WIN32
+				(portable_mode () ? "Yes" : "No"),
+				get_cpu_arch (),
+#endif
+				get_sys_str (0));
+
+	gtk_about_dialog_set_name (dialog, DISPLAY_NAME);
+	gtk_about_dialog_set_version (dialog, PACKAGE_VERSION);
+	gtk_about_dialog_set_license (dialog, license); /* gtk3 can use GTK_LICENSE_GPL_2_0 */
+	gtk_about_dialog_set_website (dialog, "http://hexchat.github.io");
+	gtk_about_dialog_set_logo (dialog, pix_hexchat);
+	gtk_about_dialog_set_copyright (dialog, "\302\251 1998-2010 Peter \305\275elezn\303\275\n\302\251 2009-2013 Berke Viktor");
+	gtk_about_dialog_set_comments (dialog, comment);
+
+	gtk_window_set_transient_for (GTK_WINDOW(dialog), GTK_WINDOW(parent_window));
+	g_signal_connect (G_OBJECT(dialog), "response", G_CALLBACK(about_dialog_close), NULL);
+	g_signal_connect (G_OBJECT(dialog), "activate-link", G_CALLBACK(about_dialog_openurl), NULL);
+	
+	gtk_widget_show_all (GTK_WIDGET(dialog));
 }
 
 static struct mymenu mymenu[] = {
