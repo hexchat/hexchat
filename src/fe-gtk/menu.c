@@ -1686,6 +1686,7 @@ menu_about (GtkWidget *wid, gpointer sess)
 	gtk_about_dialog_set_version (dialog, PACKAGE_VERSION);
 	gtk_about_dialog_set_license (dialog, license); /* gtk3 can use GTK_LICENSE_GPL_2_0 */
 	gtk_about_dialog_set_website (dialog, "http://hexchat.github.io");
+	gtk_about_dialog_set_website_label (dialog, "Website");
 	gtk_about_dialog_set_logo (dialog, pix_hexchat);
 	gtk_about_dialog_set_copyright (dialog, "\302\251 1998-2010 Peter \305\275elezn\303\275\n\302\251 2009-2013 Berke Viktor");
 	gtk_about_dialog_set_comments (dialog, comment);
