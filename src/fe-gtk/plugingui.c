@@ -267,10 +267,10 @@ plugingui_open (void)
 	                plugingui_loadbutton_cb, NULL, _("_Load..."));
 
 	gtkutil_button (hbox, GTK_STOCK_DELETE, NULL,
-	                plugingui_unload, NULL, _("_UnLoad"));
+	                plugingui_unload, NULL, _("_Unload"));
 
-	gtkutil_button (hbox, NULL, NULL,
-	                plugingui_reloadbutton_cb, view, _("_Reload..."));
+	gtkutil_button (hbox, GTK_STOCK_REFRESH, NULL,
+	                plugingui_reloadbutton_cb, view, _("_Reload"));
 
 	fe_pluginlist_update ();
 
