@@ -3498,6 +3498,39 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return FALSE;
 }
 
+static int
+cmd_reload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+#ifdef USE_PLUGIN
+	int len, by_file = FALSE;
+
+	len = strlen (word[2]);
+#ifdef WIN32
+	if (len > 4 && g_ascii_strcasecmp (word[2] + len - 4, ".dll") == 0)
+#else
+#if defined(__hpux)
+	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".sl") == 0)
+#else
+	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".so") == 0)
+#endif
+#endif
+		by_file = TRUE;
+
+	switch (plugin_reload (sess, word[2], by_file))
+	{
+	case 0: /* error */
+			PrintText (sess, _("No such plugin found.\n"));
+			break;
+	case 1: /* success */
+			return TRUE;
+	case 2: /* fake plugin, we know it exists but scripts should handle it. */
+			return TRUE;
+	}
+#endif
+
+	return FALSE;
+}
+
 static server *
 find_server_from_hostname (char *hostname)
 {
@@ -3918,7 +3951,7 @@ const struct commands xc_cmds[] = {
 	 N_("RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")},
 #endif
 	{"RECV", cmd_recv, 1, 0, 1, N_("RECV <text>, send raw data to HexChat, as if it was received from the IRC server")},
-
+	{"RELOAD", cmd_reload, 0, 0, 1, N_("RELOAD <name>, reloads a plugin or script")},
 	{"SAY", cmd_say, 0, 0, 1,
 	 N_("SAY <text>, sends the text to the object in the current window")},
 	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},

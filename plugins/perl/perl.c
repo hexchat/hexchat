@@ -1520,7 +1520,7 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_reload (char *word[], char *word_eol[], void *userdata)
+perl_command_reload (char *word[], char *word_eol[], void *eat)
 {
 	char *file = get_filename (word, word_eol);
 	
@@ -1529,7 +1529,10 @@ perl_command_reload (char *word[], char *word_eol[], void *userdata)
 		return HEXCHAT_EAT_HEXCHAT;
 	}
 	
-	return HEXCHAT_EAT_HEXCHAT;
+	if (eat)
+		return HEXCHAT_EAT_HEXCHAT;
+	else
+		return HEXCHAT_EAT_NONE;
 }
 
 void
@@ -1570,7 +1573,7 @@ hexchat_plugin_init (hexchat_plugin * plugin_handle, char **plugin_name,
 	hexchat_hook_command (ph, "reload", HEXCHAT_PRI_NORM, perl_command_reload, 0,
 							  0);
 	hexchat_hook_command (ph, "pl_reload", HEXCHAT_PRI_NORM, perl_command_reload, 0,
-							  0);
+							  (int*)1);
 	hexchat_hook_command (ph, "unloadall", HEXCHAT_PRI_NORM,
 							  perl_command_unloadall, 0, 0);
 	hexchat_hook_command (ph, "reloadall", HEXCHAT_PRI_NORM,

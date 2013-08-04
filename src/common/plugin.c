@@ -512,6 +512,44 @@ plugin_auto_load (session *sess)
 	g_free (sub_dir);
 }
 
+int
+plugin_reload (session *sess, char *name, int by_filename)
+{
+	GSList *list;
+	char *filename;
+	char *ret;
+	hexchat_plugin *pl;
+
+	list = plugin_list;
+	while (list)
+	{
+		pl = list->data;
+		/* static-plugins (plugin-timer.c) have a NULL filename */
+		if ((by_filename && pl->filename && g_ascii_strcasecmp (name, pl->filename) == 0) ||
+			 (by_filename && pl->filename && g_ascii_strcasecmp (name, file_part (pl->filename)) == 0) ||
+			(!by_filename && g_ascii_strcasecmp (name, pl->name) == 0))
+		{
+			/* statically linked plugins have a NULL filename */
+			if (pl->filename != NULL && !pl->fake)
+			{
+				filename = g_strdup (pl->filename);
+				plugin_free (pl, TRUE, FALSE);
+				ret = plugin_load (sess, filename, NULL);
+				g_free (filename);
+				if (ret == NULL)
+					return 1;
+				else
+					return 0;
+			}
+			else
+				return 2;
+		}
+		list = list->next;
+	}
+
+	return 0;
+}
+
 #endif
 
 static GSList *
