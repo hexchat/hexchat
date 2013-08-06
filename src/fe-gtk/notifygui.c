@@ -60,6 +60,7 @@ static void
 notify_closegui (void)
 {
 	notify_window = 0;
+	notify_save ();
 }
 
 /* Need this to be able to set the foreground colour property of a row
