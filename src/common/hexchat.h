@@ -305,10 +305,8 @@ struct hexchatprefs
 	int hex_notify_timeout;
 	int hex_text_max_indent;
 	int hex_text_max_lines;
-	int hex_text_tint_blue;
-	int hex_text_tint_green;
-	int hex_text_tint_red;
 	int hex_url_grabber_limit;
+	int hex_gui_transparency;
 
 	/* STRINGS */
 	char hex_away_reason[256];

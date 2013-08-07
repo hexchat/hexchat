@@ -383,9 +383,6 @@ pevent_dialog_show ()
 							G_CALLBACK (pevent_dialog_select), store);
 
 	pevent_dialog_twid = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_tint (GTK_XTEXT (pevent_dialog_twid), prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
-	gtk_xtext_set_background (GTK_XTEXT (pevent_dialog_twid),
-									  channelwin_pix, prefs.hex_text_transparent);
 
 	pevent_dialog_entry = gtk_entry_new_with_max_length (255);
 	g_signal_connect (G_OBJECT (pevent_dialog_entry), "activate",
