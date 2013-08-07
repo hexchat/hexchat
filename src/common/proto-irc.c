@@ -678,6 +678,15 @@ process_numeric (session * sess, int n,
 		handle_mode (serv, word, word_eol, "", TRUE, tags_data);
 		break;
 
+	case 328: /* channel url */
+		sess = find_channel (serv, word[4]);
+		if (sess)
+		{
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANURL, sess, word[4], word[5] + 1,
+									NULL, NULL, 0, tags_data->timestamp); 
+		}
+		break;
+
 	case 329:
 		sess = find_channel (serv, word[4]);
 		if (sess)

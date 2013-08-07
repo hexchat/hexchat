@@ -1359,6 +1359,11 @@ static char * const pevt_chanmodes_help[] = {
 	N_("Modes string"),
 };
 
+static char * const pevt_chanurl_help[] = {
+	N_("Channel Name"),
+	N_("URL"),
+};
+
 static char * const pevt_rawmodes_help[] = {
 	N_("Nickname"),
 	N_("Modes string"),
