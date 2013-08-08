@@ -256,6 +256,8 @@ static const struct defaultserver def[] =
 	{0,				"chat.freenode.net/+6697"},
 #endif
 	{0,				"chat.freenode.net"},
+	/* irc. points to chat. but many users and urls still reference it */
+	{0,				"irc.freenode.net"},
 
 /*	{"Freeworld",	0},
 	{0,			"kabel.freeworld.nu"},
