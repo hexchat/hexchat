@@ -2102,8 +2102,8 @@ mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 	gui->flag_k = mg_create_flagbutton (_("Keyword"), box, "K");
 	gui->key_entry = gtk_entry_new ();
 	gtk_widget_set_name (gui->key_entry, "hexchat-inputbox");
-	gtk_entry_set_max_length (GTK_ENTRY (gui->key_entry), 16);
-	gtk_widget_set_size_request (gui->key_entry, 30, -1);
+	gtk_entry_set_max_length (GTK_ENTRY (gui->key_entry), 23);
+	gtk_widget_set_size_request (gui->key_entry, 115, -1);
 	gtk_box_pack_start (GTK_BOX (box), gui->key_entry, 0, 0, 0);
 	g_signal_connect (G_OBJECT (gui->key_entry), "activate",
 							G_CALLBACK (mg_key_entry_cb), NULL);
