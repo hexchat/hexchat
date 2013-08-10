@@ -70,7 +70,7 @@ void remove_leading_whitespace(char *buffer)
 {
     char * buffer2 = NULL;
     buffer2 = (char*) malloc(strlen(buffer)*(sizeof(char)));
-    if (buffer2 == NULL) { puts("derp"); return; }
+    if (buffer2 == NULL) { return; }
     memset(buffer2,(char) 0,strlen(buffer));
     int i = 0, j = 0,ews = 0;
     while (i < strlen(buffer)) {
