@@ -4551,7 +4551,6 @@ handle_command (session *sess, char *cmd, int check_spch)
 	char tbuf_static[TBUFSIZE];
 	char *pdibuf;
 	char *tbuf;
-	char *cmd_vars;
 	int len;
 	int ret = TRUE;
 
@@ -4563,9 +4562,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 	command_level++;
 	/* anything below MUST DEC command_level before returning */
 
-	cmd_vars = command_insert_vars (sess, cmd);
-
-	len = strlen (cmd_vars);
+	len = strlen (cmd);
 	if (len >= sizeof (pdibuf_static))
 	{
 		pdibuf = malloc (len + 1);
@@ -4585,7 +4582,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 	}
 
 	/* split the text into words and word_eol */
-	process_data_init (pdibuf, cmd_vars, word, word_eol, TRUE, TRUE);
+	process_data_init (pdibuf, cmd, word, word_eol, TRUE, TRUE);
 
 	/* ensure an empty string at index 32 for cmd_deop etc */
 	/* (internal use only, plugins can still only read 1-31). */
@@ -4596,12 +4593,12 @@ handle_command (session *sess, char *cmd, int check_spch)
 	/* redo it without quotes processing, for some commands like /JOIN */
 	if (int_cmd && !int_cmd->handle_quotes)
 	{
-		process_data_init (pdibuf, cmd_vars, word, word_eol, FALSE, FALSE);
+		process_data_init (pdibuf, cmd, word, word_eol, FALSE, FALSE);
 	}
 
 	if (check_spch && prefs.hex_input_perc_color)
 	{
-		check_special_chars (cmd_vars, prefs.hex_input_perc_ascii);
+		check_special_chars (cmd, prefs.hex_input_perc_ascii);
 	}
 
 	if (plugin_emit_command (sess, word[1], word, word_eol))
@@ -4668,7 +4665,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 		}
 		else
 		{
-			sess->server->p_raw (sess->server, cmd_vars);
+			sess->server->p_raw (sess->server, cmd);
 		}
 	}
 
@@ -4684,8 +4681,6 @@ xit:
 	{
 		free (tbuf);
 	}
-
-	g_free (cmd_vars);
 
 	return ret;
 }

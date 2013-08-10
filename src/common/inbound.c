@@ -1450,7 +1450,10 @@ nowindow:
 static int
 inbound_exec_eom_cmd (char *str, void *sess)
 {
-	handle_command (sess, (str[0] == '/') ? str + 1 : str, TRUE);
+	char *cmd;
+
+	cmd = command_insert_vars ((session*)sess, (str[0] == '/') ? str + 1 : str);
+	handle_command ((session*)sess, cmd, TRUE);
 	return 1;
 }
 
