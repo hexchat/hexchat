@@ -72,6 +72,31 @@ plugingui_treeview_new (GtkWidget *box)
 	return view;
 }
 
+static char *
+plugingui_getfilename (GtkTreeView *view)
+{
+	GtkTreeModel *model;
+	GtkTreeSelection *sel;
+	GtkTreeIter iter;
+	GValue file;
+	char *str;
+
+	memset (&file, 0, sizeof (file));
+
+	sel = gtk_tree_view_get_selection (view);
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	{
+		gtk_tree_model_get_value (model, &iter, FILE_COLUMN, &file);
+
+		str = g_value_dup_string (&file);
+		g_value_unset (&file);
+
+		return str;
+	}
+
+	return NULL;
+}
+
 static void
 plugingui_close (GtkWidget * wid, gpointer a)
 {
@@ -193,6 +218,25 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	g_free (file);
 }
 
+static void
+plugingui_reloadbutton_cb (GtkWidget *wid, GtkTreeView *view)
+{
+	char *file = plugingui_getfilename(view);
+
+	if (file)
+	{
+		char *buf = malloc (strlen (file) + 9);
+
+		if (strchr (file, ' '))
+			sprintf (buf, "RELOAD \"%s\"", file);
+		else
+			sprintf (buf, "RELOAD %s", file);
+		handle_command (current_sess, buf, FALSE);
+		free (buf);
+		g_free (file);
+	}
+}
+
 void
 plugingui_open (void)
 {
@@ -223,7 +267,10 @@ plugingui_open (void)
 	                plugingui_loadbutton_cb, NULL, _("_Load..."));
 
 	gtkutil_button (hbox, GTK_STOCK_DELETE, NULL,
-	                plugingui_unload, NULL, _("_UnLoad"));
+	                plugingui_unload, NULL, _("_Unload"));
+
+	gtkutil_button (hbox, GTK_STOCK_REFRESH, NULL,
+	                plugingui_reloadbutton_cb, view, _("_Reload"));
 
 	fe_pluginlist_update ();
 

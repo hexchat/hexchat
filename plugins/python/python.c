@@ -382,9 +382,6 @@ Usage: /PY LOAD   <filename>\n\
            ABOUT\n\
 \n";
 
-/* Remove if/when HexChat supports this command for plugins */
-static const char reload[] = "Usage: RELOAD <name>, reloads a python script";
-
 static const char about[] = "HexChat Python " PY_VERSION " Interface Version " VERSION "\n";
 
 /* ===================================================================== */
@@ -2855,7 +2852,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	hexchat_hook_command(ph, "PY", HEXCHAT_PRI_NORM, Command_Py, usage, 0);
 	hexchat_hook_command(ph, "LOAD", HEXCHAT_PRI_NORM, Command_Load, 0, 0);
 	hexchat_hook_command(ph, "UNLOAD", HEXCHAT_PRI_NORM, Command_Unload, 0, 0);
-	hexchat_hook_command(ph, "RELOAD", HEXCHAT_PRI_NORM, Command_Reload, reload, 0);
+	hexchat_hook_command(ph, "RELOAD", HEXCHAT_PRI_NORM, Command_Reload, 0, 0);
 #ifdef WITH_THREAD
 	thread_timer = hexchat_hook_timer(ph, 300, Callback_ThreadTimer, NULL);
 #endif
