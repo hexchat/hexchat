@@ -247,6 +247,13 @@ typedef struct {
 
 typedef struct {
 	PyObject_HEAD
+	hexchat_list *list;
+	char *name;
+} ListObject;
+
+
+typedef struct {
+	PyObject_HEAD
 	char *name;
 	char *version;
 	char *filename;
@@ -349,6 +356,7 @@ static PyTypeObject XChatOut_Type;
 static PyTypeObject Context_Type;
 static PyTypeObject ListItem_Type;
 static PyTypeObject Attribute_Type;
+static PyTypeObject List_Type;
 
 static PyThreadState *main_tstate = NULL;
 static void *thread_timer = NULL;
@@ -1350,7 +1358,167 @@ ListItem_New(const char *listname)
 		}
 	}
 	return (PyObject *) item;
-}
+};
+
+
+/* ===================================================================== */
+/* List object */
+
+#undef OFF
+#define OFF(x) offsetof(ListObject, x)
+
+static void
+List_dealloc(PyObject *self)
+{
+	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT);
+	hexchat_list_free(ph, ((ListObject*)self)->list);
+	END_XCHAT_CALLS();
+	Py_TYPE(self)->tp_free((PyObject *)self);
+};
+
+static PyObject *
+List_repr(PyObject *self)
+{
+	return PyUnicode_FromFormat("<%s list at %p>", ((ListObject*)self)->name, self);
+};
+
+static PyObject *
+List_iter(PyObject *self)
+{
+	Py_INCREF(self);
+	return self;
+};
+
+static PyObject *
+List_iternext(PyObject *self)
+{
+	hexchat_list *list = ((ListObject *)self)->list;
+	char *name = ((ListObject *)self)->name;
+	PyObject *o = NULL;
+	const char * const *fields;
+	int i;
+
+	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT);
+	fields = hexchat_list_fields(ph, name);
+	if (hexchat_list_next(ph, list))
+	{
+		o = ListItem_New(name);
+		if (o == NULL)
+			goto error;
+		for (i = 0; fields[i]; i++)
+		{
+			const char *fld = fields[i]+1;
+			PyObject *attr = NULL;
+			const char *sattr;
+			int iattr;
+			time_t tattr;
+
+			switch(fields[i][0])
+			{
+				case 's':
+					sattr = hexchat_list_str(ph, list, (char*)fld);
+					attr = PyUnicode_FromString(sattr?sattr:"");
+					break;
+				case 'i':
+					iattr = hexchat_list_int(ph, list, (char*)fld);
+					attr = PyLong_FromLong((long)iattr);
+					break;
+				case 't':
+					tattr = hexchat_list_time(ph, list, (char*)fld);
+					attr = PyLong_FromLong((long)tattr);
+					break;
+				case 'p':
+					sattr = hexchat_list_str(ph, list, (char*)fld);
+					if (strcmp(fld, "context") == 0)
+					{
+						attr = Context_FromContext((hexchat_context*)sattr);
+						break;
+					}
+				default: /* ignore unknown (newly added?) types */
+					continue;
+			}
+			if (attr == NULL)
+				goto error;
+			PyObject_SetAttrString(o, (char*)fld, attr); /* add reference on attr in o */
+			Py_DECREF(attr); /* make o own attr */
+		}
+	}
+	else
+	{
+		/* Raising of standard StopIteration exception with empty value. */
+		PyErr_SetNone(PyExc_StopIteration);
+	}
+
+	goto exit;
+
+error:
+	if (list)
+		hexchat_list_free(ph, list);
+	Py_DECREF(o);
+	o = NULL;
+
+exit:
+	END_XCHAT_CALLS();
+	if (o)
+		return o;
+	return NULL;
+};
+
+static PyTypeObject List_Type = {
+	PyVarObject_HEAD_INIT(NULL, 0)
+	"hexchat.List",	/*tp_name*/
+	sizeof(ListObject),	/*tp_basicsize*/
+	0,			/*tp_itemsize*/
+	List_dealloc,	/*tp_dealloc*/
+	0,			/*tp_print*/
+	0,			/*tp_getattr*/
+	0,			/*tp_setattr*/
+	0,			/*tp_compare*/
+	List_repr,		/*tp_repr*/
+	0,			/*tp_as_number*/
+	0,			/*tp_as_sequence*/
+	0,			/*tp_as_mapping*/
+	0,			/*tp_hash*/
+	0,                      /*tp_call*/
+	0,                      /*tp_str*/
+	PyObject_GenericGetAttr,/*tp_getattro*/
+	PyObject_GenericSetAttr,/*tp_setattro*/
+	0,                      /*tp_as_buffer*/
+	Py_TPFLAGS_DEFAULT,     /*tp_flags*/
+	0,                      /*tp_doc*/
+	0,                      /*tp_traverse*/
+	0,                      /*tp_clear*/
+	0,                      /*tp_richcompare*/
+	0,                      /*tp_weaklistoffset*/
+	List_iter,              /*tp_iter*/
+	List_iternext,          /*tp_iternext*/
+	0,                      /*tp_methods*/
+	0,       /*tp_members*/
+	0,                      /*tp_getset*/
+	0,                      /*tp_base*/
+	0,                      /*tp_dict*/
+	0,                      /*tp_descr_get*/
+	0,                      /*tp_descr_set*/
+	0,              /*tp_dictoffset*/
+	0,                      /*tp_init*/
+	PyType_GenericAlloc,    /*tp_alloc*/
+	PyType_GenericNew,      /*tp_new*/
+	PyObject_Del,          /*tp_free*/
+	0,                      /*tp_is_gc*/
+};
+
+static PyObject *
+List_New(hexchat_list *list, char *name)
+{
+	ListObject *listobj = PyObject_New(ListObject, &List_Type);
+	if (listobj != NULL) {
+		/* name parameter must be statically allocated. */
+		listobj->name = name;
+		//listobj->ph = ph;
+		listobj->list = list;
+	}
+	return (PyObject *)listobj;
+};
 
 
 /* ===================================================================== */
@@ -2266,6 +2434,7 @@ Module_xchat_get_list(PyObject *self, PyObject *args)
 		return NULL;
 	/* This function is thread safe, and returns statically
 	 * allocated data. */
+	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT);
 	fields = hexchat_list_fields(ph, "lists");
 	for (i = 0; fields[i]; i++) {
 		if (strcmp(fields[i], name) == 0) {
@@ -2278,57 +2447,14 @@ Module_xchat_get_list(PyObject *self, PyObject *args)
 		PyErr_SetString(PyExc_KeyError, "list not available");
 		return NULL;
 	}
-	l = PyList_New(0);
-	if (l == NULL)
-		return NULL;
-	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT);
 	list = hexchat_list_get(ph, (char*)name);
 	if (list == NULL)
 		goto error;
-	fields = hexchat_list_fields(ph, (char*)name);
-	while (hexchat_list_next(ph, list)) {
-		PyObject *o = ListItem_New(name);
-		if (o == NULL || PyList_Append(l, o) == -1) {
-			Py_XDECREF(o);
-			goto error;
-		}
-		Py_DECREF(o); /* l is holding a reference */
-		for (i = 0; fields[i]; i++) {
-			const char *fld = fields[i]+1;
-			PyObject *attr = NULL;
-			const char *sattr;
-			int iattr;
-			time_t tattr;
-			switch(fields[i][0]) {
-			case 's':
-				sattr = hexchat_list_str(ph, list, (char*)fld);
-				attr = PyUnicode_FromString(sattr?sattr:"");
-				break;
-			case 'i':
-				iattr = hexchat_list_int(ph, list, (char*)fld);
-				attr = PyLong_FromLong((long)iattr);
-				break;
-			case 't':
-				tattr = hexchat_list_time(ph, list, (char*)fld);
-				attr = PyLong_FromLong((long)tattr);
-				break;
-			case 'p':
-				sattr = hexchat_list_str(ph, list, (char*)fld);
-				if (strcmp(fld, "context") == 0) {
-					attr = Context_FromContext(
-						(hexchat_context*)sattr);
-					break;
-				}
-			default: /* ignore unknown (newly added?) types */
-				continue;
-			}
-			if (attr == NULL)
-				goto error;
-			PyObject_SetAttrString(o, (char*)fld, attr); /* add reference on attr in o */
-			Py_DECREF(attr); /* make o own attr */
-		}
-	}
-	hexchat_list_free(ph, list);
+
+	l = List_New(list, (char*)name);
+	if (l == NULL)
+		goto error;
+
 	goto exit;
 error:
 	if (list)
