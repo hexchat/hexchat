@@ -650,7 +650,7 @@ re_nick (void)
 }
 
 /*	CHANNEL description --- */
-#define CHANNEL "[" CHANPRE "][^ \t\a,:]+"
+#define CHANNEL "[" CHANPRE "][^ \t\a,]+"
 
 static const GRegex *
 re_channel (void)

@@ -2139,6 +2139,7 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 			{
 				gdk_window_set_cursor (GTK_WIDGET (xtext)->window,
 										  		xtext->resize_cursor);
+				xtext->cursor_hand = FALSE;
 				xtext->cursor_resize = TRUE;
 			}
 			return FALSE;
@@ -2161,6 +2162,7 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 				gdk_window_set_cursor (GTK_WIDGET (xtext)->window,
 										  		xtext->hand_cursor);
 				xtext->cursor_hand = TRUE;
+				xtext->cursor_resize = FALSE;
 			}
 
 			/* un-render the old hilight */
