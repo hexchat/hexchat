@@ -65,14 +65,31 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
         return result;
 }
 
+
 void remove_leading_whitespace(char *buffer)
 {
-	char *pos;
-        while((pos = memchr(buffer, 0x20, 1)))
+	char *buffer2 = NULL;
+	int i = 0, j = 0, ews = 0;
+
+	buffer2 = (char*)malloc(strlen(buffer) * sizeof(char));
+	if (buffer2 == NULL)
+		return;
+
+	memset (buffer2, (char)0, strlen(buffer));
+	while (i < strlen(buffer))
 	{
-		pos += 1;
-		strcpy(buffer, pos);
+		/* count tabs, spaces as whitespace. */
+		if (!(buffer[i] == (char)32 || buffer[i] == (char)9) || ews == 1)
+		{
+			ews = 1;
+			buffer2[j] = buffer[i];
+			j++;
+		}
+		i++;
 	}
+	memset (buffer, (char)0, strlen(buffer));
+	strcpy (buffer, buffer2);
+	free (buffer2);
 }
 
 char *decruft_filename(char *buffer)
