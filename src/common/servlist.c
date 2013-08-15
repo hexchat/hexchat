@@ -420,6 +420,9 @@ static const struct defaultserver def[] =
 
 /*	{"NullusNet",	0},
 	{0,			"irc.nullus.net"},*/
+	
+	{"ObsidianIRC",  0},
+	{0,      "irc.obsidianirc.net"}, 
 
 	{"Oceanius", 0},
 	{0,			"irc.oceanius.com"},
