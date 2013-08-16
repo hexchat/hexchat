@@ -627,7 +627,7 @@ re_email (void)
 /* Rationale is that do_an_re() above will anyway look up what */
 /* we find, and that WORD_NICK is the last item in the array */
 /* that do_an_re() runs through. */
-#define NICK0 "[" NICKPRE "]?[" NICKLET NICKDIG NICKSPE "]"
+#define NICK0 "^[" NICKPRE "]?[" NICKLET NICKDIG NICKSPE "]"
 #endif
 #define NICK1 "[" NICKHYP NICKLET NICKDIG NICKSPE "]*"
 #define NICK	NICK0 NICK1
@@ -650,7 +650,7 @@ re_nick (void)
 }
 
 /*	CHANNEL description --- */
-#define CHANNEL "[" CHANPRE "][^ \t\a,:]+"
+#define CHANNEL "[" CHANPRE "][^ \t\a,]+(?:,[" CHANPRE "][^ \t\a,]+)*"
 
 static const GRegex *
 re_channel (void)

@@ -2306,6 +2306,8 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 		menu_nickmenu (sess, even, word, FALSE);
 		break;
 	case WORD_CHANNEL:
+		word[end] = 0;
+		word += start;
 		menu_chanmenu (sess, even, word);
 		break;
 	case WORD_EMAIL:
