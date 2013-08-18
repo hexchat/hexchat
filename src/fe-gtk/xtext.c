@@ -1923,7 +1923,8 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 
 	word = ent->str + offset;
 
-	while (!is_del (*word) && word != ent->str) {
+	while (!is_del (*word) && word != ent->str)
+	{
 		word--;
 		len_to_offset++;
 	}
@@ -1950,7 +1951,8 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	word = gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL, slp, FALSE);
 
 	/* avoid turning the cursor into a hand for non-url part of the word */
-	if (xtext->urlcheck_function (GTK_WIDGET (xtext), word)) {
+	if (xtext->urlcheck_function (GTK_WIDGET (xtext), word))
+	{
 		int start, end;
 		url_last (&start, &end);
 
