@@ -1901,10 +1901,10 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 {
 	textentry *ent;
 	int offset;
-	unsigned char *str;
 	unsigned char *word;
 	int len;
 	int out_of_bounds = 0;
+	int len_to_offset = 0;
 
 	ent = gtk_xtext_find_char (xtext, x, y, &offset, &out_of_bounds);
 	if (!ent)
@@ -1921,25 +1921,24 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 
 	/*offset--;*/	/* FIXME: not all chars are 1 byte */
 
-	str = ent->str + offset;
+	word = ent->str + offset;
 
-	while (!is_del (*str) && str != ent->str)
-		str--;
-	word = str + 1;
+	while (!is_del (*word) && word != ent->str) {
+		word--;
+		len_to_offset++;
+	}
+	word++;
+	len_to_offset--;
+
+	/* remove color characters from the length */
+	gtk_xtext_strip_color (word, len_to_offset, xtext->scratch_buffer, &len_to_offset, NULL, slp, FALSE);
 
 	len = 0;
-	str = word;
-	while (!is_del (*str) && len != ent->str_len)
-	{
-		str++;
+	while (!is_del (word[len]) && len != ent->str_len)
 		len++;
-	}
 
 	if (len > 0 && word[len-1]=='.')
-	{
 		len--;
-		str--;
-	}
 
 	if (ret_ent)
 		*ret_ent = ent;
@@ -1948,7 +1947,23 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	if (ret_len)
 		*ret_len = len;		/* Length before stripping */
 
-	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL, slp, FALSE);
+	word = gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL, slp, FALSE);
+
+	/* avoid turning the cursor into a hand for non-url part of the word */
+	if (xtext->urlcheck_function (GTK_WIDGET (xtext), word)) {
+		int start, end;
+		url_last (&start, &end);
+
+		/* make sure we're not before the start of the match */
+		if (len_to_offset < start)
+			return 0;
+
+		/* and not after it */
+		if (len_to_offset - start >= end - start)
+			return 0;
+	}
+
+	return word;
 }
 
 #ifdef MOTION_MONITOR
