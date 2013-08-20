@@ -47,6 +47,11 @@ void notify_set_online (server * serv, char *nick,
 								const message_tags_data *tags_data);
 void notify_set_offline (server * serv, char *nick, int quiet,
 								 const message_tags_data *tags_data);
+/* the MONITOR stuff */
+void notify_set_online_list (server * serv, char *users,
+								const message_tags_data *tags_data);
+void notify_set_offline_list (server * serv, char *users, int quiet,
+								 const message_tags_data *tags_data);
 void notify_send_watches (server * serv);
 
 /* the general stuff */

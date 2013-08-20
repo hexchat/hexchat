@@ -284,6 +284,70 @@ notify_set_online (server * serv, char *nick,
 	notify_announce_online (serv, servnot, nick, tags_data);
 }
 
+/* monitor can send lists for numeric 730/731 */
+
+void
+notify_set_offline_list (server * serv, char *users, int quiet,
+						  const message_tags_data *tags_data)
+{
+	struct notify_per_server *servnot;
+	char nick[NICKLEN];
+	char *token, *chr;
+	int pos;
+
+	token = strtok (users, ",");
+	while (token != NULL)
+	{
+		chr = strchr (token, '!');
+		if (!chr)
+			goto end;
+
+		pos = chr - token;
+		if (pos + 1 >= sizeof(nick))
+			goto end;
+
+		memset (nick, 0, sizeof(nick));
+		strncpy (nick, token, pos);
+
+		servnot = notify_find (serv, nick);
+		if (servnot)
+			notify_announce_offline (serv, servnot, nick, quiet, tags_data);
+end:
+		token = strtok (NULL, ",");
+	}
+}
+
+void
+notify_set_online_list (server * serv, char *users,
+						 const message_tags_data *tags_data)
+{
+	struct notify_per_server *servnot;
+	char nick[NICKLEN];
+	char *token, *chr;
+	int pos;
+
+	token = strtok (users, ",");
+	while (token != NULL)
+	{
+		chr = strchr (token, '!');
+		if (!chr)
+			goto end;
+
+		pos = chr - token;
+		if (pos + 1 >= sizeof(nick))
+			goto end;
+
+		memset (nick, 0, sizeof(nick));
+		strncpy (nick, token, pos);
+
+		servnot = notify_find (serv, nick);
+		if (servnot)
+			notify_announce_online (serv, servnot, nick, tags_data);
+end:
+		token = strtok (NULL, ",");
+	}
+}
+
 static void
 notify_watch (server * serv, char *nick, int add)
 {

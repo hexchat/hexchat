@@ -465,8 +465,6 @@ process_numeric (session * sess, int n,
 	server *serv = sess->server;
 	/* show whois is the server tab */
 	session *whois_sess = serv->server_session;
-
-	char *ex;
 	
 	/* unless this setting is on */
 	if (prefs.hex_irc_whois_front)
@@ -942,17 +940,11 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 730: /* RPL_MONONLINE */
-		ex = strchr (word[4], '!'); /* only send the nick */
-		if (ex)
-			ex[0] = 0;
-		notify_set_online (serv, word[4] + 1, tags_data);
+		notify_set_online_list (serv, word[4] + 1, tags_data);
 		break;
 
 	case 731: /* RPL_MONOFFLINE */
-		ex = strchr (word[4], '!'); /* only send the nick */
-		if (ex)
-			ex[0] = 0;
-		notify_set_offline (serv, word[4] + 1, FALSE, tags_data);
+		notify_set_offline_list (serv, word[4] + 1, FALSE, tags_data);
 		break;
 
 	case 900:	/* successful SASL 'logged in as ' */
