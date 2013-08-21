@@ -570,6 +570,9 @@ static const struct defaultserver def[] =
 #endif
 	{0,			"irc.swiftirc.net/6667"},
 
+	{"TinyCrab",			0},
+	{0,			"irc.tinycrab.net"},
+
 /*	{"TNI3",			0},
 	{0,			"irc.tni3.com"},*/
 
