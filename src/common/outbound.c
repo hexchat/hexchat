@@ -3815,7 +3815,7 @@ const struct commands xc_cmds[] = {
 	 N_("BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)")},
 	{"CHANOPT", cmd_chanopt, 0, 0, 1, N_("CHANOPT [-quiet] <variable> [<value>]")},
 	{"CHARSET", cmd_charset, 0, 0, 1, N_("CHARSET [<encoding>], get or set the encoding used for the current connection")},
-	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY], Clears the current text window or command history")},
+	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY|[-]<amount>], Clears the current text window or command history")},
 	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE [-m], Closes the current window/tab or all queries")},
 
 	{"COUNTRY", cmd_country, 0, 0, 1,
@@ -3916,7 +3916,7 @@ const struct commands xc_cmds[] = {
 	{"MODE", cmd_mode, 1, 0, 1, 0},
 	{"MOP", cmd_mop, 1, 1, 1,
 	 N_("MOP, Mass op's all users in the current channel (needs chanop)")},
-	{"MSG", cmd_msg, 0, 0, 1, N_("MSG <nick> <message>, sends a private message")},
+	{"MSG", cmd_msg, 0, 0, 1, N_("MSG <nick> <message>, sends a private message, message \".\" to send to last nick or prefix with \"=\" for dcc chat")},
 
 	{"NAMES", cmd_names, 1, 0, 1,
 	 N_("NAMES, Lists the nicks on the current channel")},
