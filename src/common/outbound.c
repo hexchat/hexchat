@@ -3816,7 +3816,7 @@ const struct commands xc_cmds[] = {
 	{"CHANOPT", cmd_chanopt, 0, 0, 1, N_("CHANOPT [-quiet] <variable> [<value>]")},
 	{"CHARSET", cmd_charset, 0, 0, 1, N_("CHARSET [<encoding>], get or set the encoding used for the current connection")},
 	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY], Clears the current text window or command history")},
-	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE, Closes the current window/tab")},
+	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE [-m], Closes the current window/tab or all queries")},
 
 	{"COUNTRY", cmd_country, 0, 0, 1,
 	 N_("COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia")},
