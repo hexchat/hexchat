@@ -378,22 +378,9 @@ int xs_parse_distro(char *name)
 {
 	FILE *fp = NULL;
 	char buffer[bsize], *pos = NULL;
-	
-	if((fp = fopen("/etc/lsb-release", "r")) != NULL)
-	{
-		char id[bsize], codename[bsize], release[bsize];
-		strcpy(id, "?");
-		strcpy(codename, "?");
-		strcpy(release, "?");
-		while(fgets(buffer, bsize, fp) != NULL)
-		{
-			find_match_char(buffer, "DISTRIB_ID", id);
-			find_match_char(buffer, "DISTRIB_CODENAME", codename);
-			find_match_char(buffer, "DISTRIB_RELEASE", release);
-		}
-		snprintf(buffer, bsize, "%s \"%s\" %s", id, codename, release);
-	}
-	else if((fp = fopen("/etc/make.conf", "r")) != NULL)
+
+	if((fp = fopen("/etc/portage/make.conf", "r")) != NULL ||
+			(fp = fopen("/etc/make.conf", "r")) != NULL)
 	{
 		char keywords[bsize];
 		while(fgets(buffer, bsize, fp) != NULL)
@@ -403,7 +390,7 @@ int xs_parse_distro(char *name)
 			snprintf(buffer, bsize, "Gentoo Linux (stable)");
 		else
 			snprintf(buffer, bsize, "Gentoo Linux %s", keywords);
-	}		
+	}
 	else if((fp = fopen("/etc/redhat-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/mageia-release", "r")) != NULL)
@@ -424,6 +411,20 @@ int xs_parse_distro(char *name)
 		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/arch-release", "r")) != NULL)
 		snprintf(buffer, bsize, "ArchLinux");
+	else if((fp = fopen("/etc/lsb-release", "r")) != NULL)
+	{
+		char id[bsize], codename[bsize], release[bsize];
+		strcpy(id, "?");
+		strcpy(codename, "?");
+		strcpy(release, "?");
+		while(fgets(buffer, bsize, fp) != NULL)
+		{
+			find_match_char(buffer, "DISTRIB_ID", id);
+			find_match_char(buffer, "DISTRIB_CODENAME", codename);
+			find_match_char(buffer, "DISTRIB_RELEASE", release);
+		}
+		snprintf(buffer, bsize, "%s \"%s\" %s", id, codename, release);
+	}
 	else
 		snprintf(buffer, bsize, "Unknown Distro");
 	if(fp != NULL) fclose(fp);
