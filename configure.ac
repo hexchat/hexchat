@@ -340,10 +340,10 @@ if test "x$python" != xno ; then
 	case $python in
 		python2|python2.7)
 			PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_ERROR(Cannot find python-2.7!)])
-            PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
+			PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
 		python3|python3.3)
 			PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_ERROR(Cannot find python-3.3!)])
-            PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+			PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
 		*)
 			AC_MSG_ERROR(Unsupported ${python}. Only python2.7 and python3.3 are currently supported!)
 	esac
