@@ -35,6 +35,7 @@
 
 #define DEFAULT_FORMAT "%B%1:%B %2 **"
 #define DEFAULT_PERCENT 1
+#define DEFAULT_ANNOUNCE 1
 #define DEFAULT_PCIIDS "/usr/share/hwdata/pci.ids"
 
 static hexchat_plugin *ph;	/* plugin handle */
@@ -43,7 +44,7 @@ static int error_printed = 0;	/* semaphore, make sure not to print the same erro
 static char name[] = "SysInfo";
 static char desc[] = "Display info about your hardware and OS";
 static char version[] = "3.0";
-static char sysinfo_help[] = "SysInfo Usage:\n  /SYSINFO [OS|DISTRO|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME], print various details about your system or print a summary without arguments\n  /SYSINFO LIST, print current settings\n  /SYSINFO SET <variable>, update given setting\n  /SYSINFO RESET, reset settings to defaults\n  /NETDATA <iface>, show transmitted data on given interface\n  /NETSTREAM <iface>, show current bandwidth on given interface\n";
+static char sysinfo_help[] = "SysInfo Usage:\n  /SYSINFO [-e|-o] [OS|DISTRO|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME], print various details about your system or print a summary without arguments\n  /SYSINFO LIST, print current settings\n  /SYSINFO SET <variable>, update given setting\n  /SYSINFO RESET, reset settings to defaults\n  /NETDATA <iface>, show transmitted data on given interface\n  /NETSTREAM <iface>, show current bandwidth on given interface\n";
 
 void
 sysinfo_get_pciids (char* dest)
@@ -55,6 +56,12 @@ int
 sysinfo_get_percent ()
 {
 	return hexchat_pluginpref_get_int (ph, "percent");
+}
+
+int
+sysinfo_get_announce ()
+{
+	return hexchat_pluginpref_get_int (ph, "announce");
 }
 
 void
@@ -705,13 +712,15 @@ reset_settings ()
 	hexchat_pluginpref_set_str (ph, "pciids", DEFAULT_PCIIDS);
 	hexchat_pluginpref_set_str (ph, "format", DEFAULT_FORMAT);
 	hexchat_pluginpref_set_int (ph, "percent", DEFAULT_PERCENT);
+	hexchat_pluginpref_set_int (ph, "announce", DEFAULT_ANNOUNCE);
 }
 
 static int
 sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 {
 	error_printed = 0;
-	int announce = 0;
+	int announce = sysinfo_get_announce ();
+	int offset = 0;
 	int buffer;
 	char format[bsize];
 
@@ -721,36 +730,49 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 		return HEXCHAT_EAT_ALL;
 	}
 
-	if (hexchat_list_int (ph, NULL, "type") >= 2)
+	/* Cannot send to server tab */
+	if (hexchat_list_int (ph, NULL, "type") == 1)
 	{
-		announce = 1;
+		announce = 0;
 	}
 
-	if (!g_ascii_strcasecmp ("HELP", word[2]))
+	/* Allow overriding global announce setting */
+	if (!strcmp ("-e", word[2]))
+	{
+		announce = 0;
+		offset++;
+	}
+	else if (!strcmp ("-o", word[2]))
+	{
+		announce = 1;
+		offset++;
+	}
+
+	if (!g_ascii_strcasecmp ("HELP", word[2+offset]))
 	{
 		hexchat_printf (ph, sysinfo_help);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("LIST", word[2]))
+	else if (!g_ascii_strcasecmp ("LIST", word[2+offset]))
 	{
 		list_settings ();
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("SET", word[2]))
+	else if (!g_ascii_strcasecmp ("SET", word[2+offset]))
 	{
-		if (!g_ascii_strcasecmp ("", word_eol[4]))
+		if (!g_ascii_strcasecmp ("", word_eol[4+offset]))
 		{
 			hexchat_printf (ph, "%s\tEnter a value!\n", name);
 			return HEXCHAT_EAT_ALL;
 		}
-		if (!g_ascii_strcasecmp ("format", word[3]))
+		if (!g_ascii_strcasecmp ("format", word[3+offset]))
 		{
-			hexchat_pluginpref_set_str (ph, "format", word_eol[4]);
-			hexchat_printf (ph, "%s\tformat is set to: %s\n", name, word_eol[4]);
+			hexchat_pluginpref_set_str (ph, "format", word_eol[4+offset]);
+			hexchat_printf (ph, "%s\tformat is set to: %s\n", name, word_eol[4+offset]);
 		}
-		else if (!g_ascii_strcasecmp ("percent", word[3]))
+		else if (!g_ascii_strcasecmp ("percent", word[3+offset]))
 		{
-			buffer = atoi (word[4]);	/* don't use word_eol, numbers must not contain spaces */
+			buffer = atoi (word[4+offset]);	/* don't use word_eol, numbers must not contain spaces */
 
 			if (buffer > 0 && buffer < INT_MAX)
 			{
@@ -762,10 +784,25 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 				hexchat_printf (ph, "%s\tInvalid input!\n", name);
 			}
 		}
-		else if (!g_ascii_strcasecmp ("pciids", word[3]))
+		else if (!g_ascii_strcasecmp ("announce", word[3+offset]))
 		{
-			hexchat_pluginpref_set_str (ph, "pciids", word_eol[4]);
-			hexchat_printf (ph, "%s\tpciids is set to: %s\n", name, word_eol[4]);
+			buffer = atoi (word[4+offset]);	/* don't use word_eol, numbers must not contain spaces */
+
+			if (buffer > 0)
+			{
+				hexchat_pluginpref_set_int (ph, "announce", 1);
+				hexchat_printf (ph, "%s\tannounce is set to: On\n", name);
+			}
+			else
+			{
+				hexchat_pluginpref_set_int (ph, "announce", 0);
+				hexchat_printf (ph, "%s\tannounce is set to: Off\n", name);
+			}
+		}
+		else if (!g_ascii_strcasecmp ("pciids", word[3+offset]))
+		{
+			hexchat_pluginpref_set_str (ph, "pciids", word_eol[4+offset]);
+			hexchat_printf (ph, "%s\tpciids is set to: %s\n", name, word_eol[4+offset]);
 		}
 		else
 		{
@@ -775,58 +812,58 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("RESET", word[2]))
+	else if (!g_ascii_strcasecmp ("RESET", word[2+offset]))
 	{
 		reset_settings ();
 		hexchat_printf (ph, "%s\tSettings have been restored to defaults.\n", name);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("OS", word[2]))
+	else if (!g_ascii_strcasecmp ("OS", word[2+offset]))
 	{
 		print_os (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("DISTRO", word[2]))
+	else if (!g_ascii_strcasecmp ("DISTRO", word[2+offset]))
 	{
 		print_distro (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("CPU", word[2]))
+	else if (!g_ascii_strcasecmp ("CPU", word[2+offset]))
 	{
 		print_cpu (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("RAM", word[2]))
+	else if (!g_ascii_strcasecmp ("RAM", word[2+offset]))
 	{
 		print_ram (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("DISK", word[2]))
+	else if (!g_ascii_strcasecmp ("DISK", word[2+offset]))
 	{
 		print_disk (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("VGA", word[2]))
+	else if (!g_ascii_strcasecmp ("VGA", word[2+offset]))
 	{
 		print_vga (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("SOUND", word[2]))
+	else if (!g_ascii_strcasecmp ("SOUND", word[2+offset]))
 	{
 		print_sound (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("ETHERNET", word[2]))
+	else if (!g_ascii_strcasecmp ("ETHERNET", word[2+offset]))
 	{
 		print_ethernet (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("UPTIME", word[2]))
+	else if (!g_ascii_strcasecmp ("UPTIME", word[2+offset]))
 	{
 		print_uptime (announce, format);
 		return HEXCHAT_EAT_ALL;
 	}
-	else if (!g_ascii_strcasecmp ("", word[2]))
+	else if (!g_ascii_strcasecmp ("", word[2+offset]))
 	{
 		print_summary (announce, format);
 		return HEXCHAT_EAT_ALL;
@@ -865,6 +902,11 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	if (hexchat_pluginpref_get_int (ph, "percent") == -1)
 	{
 		hexchat_pluginpref_set_int (ph, "percent", DEFAULT_PERCENT);
+	}
+
+	if (hexchat_pluginpref_get_int (ph, "announce") == -1)
+	{
+		hexchat_pluginpref_set_int (ph, "announce", DEFAULT_ANNOUNCE);
 	}
 
 	hexchat_command (ph, "MENU ADD \"Window/Send System Info\" \"SYSINFO\"");
