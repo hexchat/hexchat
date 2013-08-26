@@ -229,15 +229,14 @@ GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
 
 #if test "$gnome" = yes; then
-#	AC_PATH_PROG(pkgconfigpath, pkg-config)
 #	AC_MSG_CHECKING(Gnome2 compile flags)
-#	GNOME_CFLAGS="`$pkgconfigpath libgnome-2.0 --cflags 2>/dev/null`"
+#	GNOME_CFLAGS="`$PKG_CONFIG libgnome-2.0 --cflags 2>/dev/null`"
 #	if test "_$GNOME_CFLAGS" = _ ; then
 #		gnome=no
 #		AC_MSG_RESULT([Gnome not found, building without it.])
 #	else
-#		GNOME_VER="`$pkgconfigpath libgnome-2.0 --modversion`"
-#		GUI_LIBS="$GUI_LIBS `$pkgconfigpath libgnome-2.0 --libs`"
+#		GNOME_VER="`$PKG_CONFIG libgnome-2.0 --modversion`"
+#		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG libgnome-2.0 --libs`"
 #		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
 #		AC_DEFINE(USE_GNOME)
 #		AC_MSG_RESULT(ok)
@@ -256,10 +255,9 @@ dnl ** XFT **************************************************************
 dnl *********************************************************************
 
 if test "$xft" = yes; then
-	AC_PATH_PROG(pkgconfigpath, pkg-config)
-	if $pkgconfigpath xft --exists; then
-		GUI_CFLAGS="$GUI_CFLAGS `$pkgconfigpath xft --cflags`"
-		GUI_LIBS="$GUI_LIBS `$pkgconfigpath xft --libs`"
+	if $PKG_CONFIG xft --exists; then
+		GUI_CFLAGS="$GUI_CFLAGS `$PKG_CONFIG xft --cflags`"
+		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG xft --libs`"
 	else
 		xft=no
 		oldCPPFLAGS=$CPPFLAGS
@@ -385,11 +383,10 @@ dnl *********************************************************************
 
 retry=no
 if test "$openssl" != no; then
-	AC_PATH_PROG(pkgconfigpath, pkg-config)
 	AC_MSG_CHECKING(for openssl through pkg-config)
-	if $pkgconfigpath openssl --exists; then
-		CPPFLAGS="$CPPFLAGS `$pkgconfigpath openssl --cflags`"
-		LIBS="$LIBS `$pkgconfigpath openssl --libs`"
+	if $PKG_CONFIG openssl --exists; then
+		CPPFLAGS="$CPPFLAGS `$PKG_CONFIG openssl --cflags`"
+		LIBS="$LIBS `$PKG_CONFIG openssl --libs`"
 		AC_DEFINE(USE_OPENSSL)
 		AC_MSG_RESULT(yes)
 		openssl=yes
@@ -465,9 +462,8 @@ if test "$plugin" = yes; then
 	fi
 	if test "$have_dl" = yes; then
 		AC_DEFINE(USE_PLUGIN)
-		AC_PATH_PROG(pkgconfigpath, pkg-config)
 		dnl we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
-		RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
+		RDYNAMIC_FLAGS="`$PKG_CONFIG gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
 		LIBS="$LIBS $RDYNAMIC_FLAGS"
 		if test "$LD" = ""; then
 			VS="`ld --help | grep version-script 2> /dev/null`"
@@ -703,8 +699,8 @@ dnl *********************************************************************
 if test "$shm" = yes; then
 	oldl=$LIBS
 	oldc=$CPPFLAGS
-	LIBS="$LIBS `$pkgconfigpath --libs-only-L xft`"
-	CPPFLAGS="$CPPFLAGS `$pkgconfigpath --cflags-only-I xft`"
+	LIBS="$LIBS `$PKG_CONFIG --libs-only-L xft`"
+	CPPFLAGS="$CPPFLAGS `$PKG_CONFIG --cflags-only-I xft`"
 	shm=no
 	AC_CHECK_LIB(Xext, XShmAttach, shm=yes)
 	if test "$shm" = yes; then
@@ -718,7 +714,7 @@ if test "$shm" = yes; then
 
 	LIBS=$oldl
 	if test "$shm" = yes; then
-		GUI_LIBS="$GUI_LIBS `$pkgconfigpath --libs-only-L xft` -lX11 -lXext"
+		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG --libs-only-L xft` -lX11 -lXext"
 		AC_DEFINE(USE_SHM)
 	else
 		CPPFLAGS=$oldc
