@@ -41,6 +41,10 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	time_t start;
 	double timeElapsed;
 
+	char *token;
+	char *context = NULL;
+	int announce = 0;
+
 	HANDLE readPipe;
 	HANDLE writePipe;
 	STARTUPINFO sInfo; 
@@ -59,9 +63,8 @@ run_command (char *word[], char *word_eol[], void *userdata)
 
 		if (!stricmp("-O", word[2]))
 		{
-			/*strcat (commandLine, word_eol[3]);*/
-			hexchat_printf (ph, "Printing Exec output to others is not supported yet.\n");
-			return HEXCHAT_EAT_HEXCHAT;
+			strcat (commandLine, word_eol[3]);
+			announce = 1;
 		}
 		else
 		{
@@ -90,7 +93,19 @@ run_command (char *word[], char *word_eol[], void *userdata)
 				{
 					/* avoid garbage */
 					buffer[dwRead] = '\0';
-					hexchat_printf (ph, "%s", buffer);
+
+					if (announce)
+					{
+						/* Say each line seperately, TODO: improve... */
+						token = strtok_s (buffer, "\n", &context);
+						while (token != NULL)
+						{
+							hexchat_commandf (ph, "SAY %s", token);
+							token = strtok_s (NULL, "\n", &context);
+						}
+					}
+					else
+						hexchat_printf (ph, "%s", buffer);
 				}
 			}
 			else
@@ -103,7 +118,8 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	}
 
 	/* display a newline to separate things */
-	hexchat_printf (ph, "\n");
+	if (!announce)
+		hexchat_printf (ph, "\n");
 
 	if (timeElapsed >= 10)
 	{
