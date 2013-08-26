@@ -392,6 +392,8 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 		user->lasttalk = time (0);
 		if (user->account)
 			id = TRUE;
+		if (user->me)
+			fromme = TRUE;
 	}
 
 	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
@@ -459,6 +461,8 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
 			id = TRUE;
 		nickchar[0] = user->prefix[0];
 		user->lasttalk = time (0);
+		if (user->me)
+			fromme = TRUE;
 	}
 
 	if (fromme)
