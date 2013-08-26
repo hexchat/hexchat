@@ -116,8 +116,9 @@ AC_ARG_ENABLE(xlib,
         xlib=$enableval, xlib=yes)
 
 AC_ARG_ENABLE(python,
-	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin (default on, python2)])],
+	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin; possible values: python2, python2.7 python3, python3.3 (default on, python2)])],
         python=$enableval, python=python2)
+AS_IF([test "x$python" = "xyes"], [python=python2])
 
 AC_ARG_ENABLE(perl,
 	[AS_HELP_STRING([--disable-perl],[don\'t build the perl plugin])],
@@ -338,47 +339,18 @@ dnl ** PYTHON ***********************************************************
 dnl *********************************************************************
 
 if test "x$python" != xno ; then
-	if test "$python" = yes ; then
-		# default
-		python="python2"
-	fi
-	AC_PATH_PROG(pythonpath, $python)
-	if test "_$pythonpath" = _ ; then
-                AC_PATH_PROG(pythonpath, python)
-        fi
-        if test "_$pythonpath" = _ ; then
-                python=no
-        else
-                AC_MSG_CHECKING(Python version)
-                changequote(<<, >>)dnl
-                PY_VER=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_config_vars("VERSION")[0]);'`
-                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(standard_lib=1));'`
-                PY_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc());'`
-                PYPLAT_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc(plat_specific=True));'`
-                changequote([, ])dnl
-                AC_MSG_RESULT($PY_VER)
-                $pythonpath -c "import sys; float(sys.version[[:3]]) >= 2.6 and int(sys.version[[0]]) <= 3 or sys.exit(1)"
-                if test "$?" != "1"; then
-                        AC_MSG_CHECKING(Python compile flags)
-                        PY_PREFIX=`$pythonpath -c 'import sys; print(sys.prefix)'`
-                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print(sys.exec_prefix)'`
-                        if test -f $PY_INC/Python.h || test -f $PYPLAT_INC/Python.h; then
-								AS_VERSION_COMPARE($PY_VER, 3.0,
-									[PYL="$PY_VER"], # less than
-									[PYL="${PY_VER}m"], # equal
-									[PYL="${PY_VER}m"]) # greater than
-                                PY_LIBS="-L$PY_LIB/config -lpython$PYL -lpthread -lutil"
-                                PY_CFLAGS="-I$PY_INC -I$PYPLAT_INC"
-                                AC_MSG_RESULT(ok)
-                        else
-                                python=no
-                                AC_MSG_RESULT([Can\'t find Python.h])
-                        fi
-                else
-                        echo "Python is too old or too new. Only 2.6-3.x are supported."
-                        python=no
-                fi
-        fi
+	case $python in
+		python2|python2.7)
+			PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_ERROR(Cannot find python-2.7!)])
+            PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
+		python3|python3.3)
+			PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_ERROR(Cannot find python-3.3!)])
+            PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+		*)
+			AC_MSG_ERROR(Unsupported ${python}. Only python2.7 and python3.3 are currently supported!)
+	esac
+	AC_MSG_CHECKING(Python version)
+	AC_MSG_RESULT($PY_VER)
 fi
 
 dnl *********************************************************************
@@ -1015,7 +987,7 @@ echo MS Proxy NTLM \(ISA\) ... : $have_ntlm
 echo libproxy support ...... : $libproxy
 echo
 echo Perl .................. : $perl
-echo Python ................ : $python
+echo Python ................ : python-$PY_VER
 echo
 echo Checksum .............. : $checksum
 echo Do At ................. : $doat
