@@ -116,7 +116,7 @@ AC_ARG_ENABLE(xlib,
         xlib=$enableval, xlib=yes)
 
 AC_ARG_ENABLE(python,
-	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin; possible values: python2, python2.7 python3, python3.3 (default on, python2)])],
+	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin; possible values: python2, python2.7, python3, python3.3 (default on, python2)])],
         python=$enableval, python=python2)
 AS_IF([test "x$python" = "xyes"], [python=python2])
 
