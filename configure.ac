@@ -116,8 +116,9 @@ AC_ARG_ENABLE(xlib,
         xlib=$enableval, xlib=yes)
 
 AC_ARG_ENABLE(python,
-	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin (default on, python2)])],
+	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin; possible values: "python2", "python3" or specific such as "python3.3" (default on, python2)])],
         python=$enableval, python=python2)
+AS_IF([test "x$python" = "xyes"], [python=python2])
 
 AC_ARG_ENABLE(perl,
 	[AS_HELP_STRING([--disable-perl],[don\'t build the perl plugin])],
@@ -228,15 +229,14 @@ GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
 
 #if test "$gnome" = yes; then
-#	AC_PATH_PROG(pkgconfigpath, pkg-config)
 #	AC_MSG_CHECKING(Gnome2 compile flags)
-#	GNOME_CFLAGS="`$pkgconfigpath libgnome-2.0 --cflags 2>/dev/null`"
+#	GNOME_CFLAGS="`$PKG_CONFIG libgnome-2.0 --cflags 2>/dev/null`"
 #	if test "_$GNOME_CFLAGS" = _ ; then
 #		gnome=no
 #		AC_MSG_RESULT([Gnome not found, building without it.])
 #	else
-#		GNOME_VER="`$pkgconfigpath libgnome-2.0 --modversion`"
-#		GUI_LIBS="$GUI_LIBS `$pkgconfigpath libgnome-2.0 --libs`"
+#		GNOME_VER="`$PKG_CONFIG libgnome-2.0 --modversion`"
+#		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG libgnome-2.0 --libs`"
 #		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
 #		AC_DEFINE(USE_GNOME)
 #		AC_MSG_RESULT(ok)
@@ -255,10 +255,9 @@ dnl ** XFT **************************************************************
 dnl *********************************************************************
 
 if test "$xft" = yes; then
-	AC_PATH_PROG(pkgconfigpath, pkg-config)
-	if $pkgconfigpath xft --exists; then
-		GUI_CFLAGS="$GUI_CFLAGS `$pkgconfigpath xft --cflags`"
-		GUI_LIBS="$GUI_LIBS `$pkgconfigpath xft --libs`"
+	if $PKG_CONFIG xft --exists; then
+		GUI_CFLAGS="$GUI_CFLAGS `$PKG_CONFIG xft --cflags`"
+		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG xft --libs`"
 	else
 		xft=no
 		oldCPPFLAGS=$CPPFLAGS
@@ -338,47 +337,27 @@ dnl ** PYTHON ***********************************************************
 dnl *********************************************************************
 
 if test "x$python" != xno ; then
-	if test "$python" = yes ; then
-		# default
-		python="python2"
-	fi
-	AC_PATH_PROG(pythonpath, $python)
-	if test "_$pythonpath" = _ ; then
-                AC_PATH_PROG(pythonpath, python)
-        fi
-        if test "_$pythonpath" = _ ; then
-                python=no
-        else
-                AC_MSG_CHECKING(Python version)
-                changequote(<<, >>)dnl
-                PY_VER=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_config_vars("VERSION")[0]);'`
-                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_lib(standard_lib=1));'`
-                PY_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc());'`
-                PYPLAT_INC=`$pythonpath -c 'import distutils.sysconfig; print(distutils.sysconfig.get_python_inc(plat_specific=True));'`
-                changequote([, ])dnl
-                AC_MSG_RESULT($PY_VER)
-                $pythonpath -c "import sys; float(sys.version[[:3]]) >= 2.6 and int(sys.version[[0]]) <= 3 or sys.exit(1)"
-                if test "$?" != "1"; then
-                        AC_MSG_CHECKING(Python compile flags)
-                        PY_PREFIX=`$pythonpath -c 'import sys; print(sys.prefix)'`
-                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print(sys.exec_prefix)'`
-                        if test -f $PY_INC/Python.h || test -f $PYPLAT_INC/Python.h; then
-								AS_VERSION_COMPARE($PY_VER, 3.0,
-									[PYL="$PY_VER"], # less than
-									[PYL="${PY_VER}m"], # equal
-									[PYL="${PY_VER}m"]) # greater than
-                                PY_LIBS="-L$PY_LIB/config -lpython$PYL -lpthread -lutil"
-                                PY_CFLAGS="-I$PY_INC -I$PYPLAT_INC"
-                                AC_MSG_RESULT(ok)
-                        else
-                                python=no
-                                AC_MSG_RESULT([Can\'t find Python.h])
-                        fi
-                else
-                        echo "Python is too old or too new. Only 2.6-3.x are supported."
-                        python=no
-                fi
-        fi
+	case $python in
+		dnl set python2 default here
+		python2)
+			PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_ERROR(Cannot find python-2.7!)])
+			PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
+		dnl set python3 default here
+		python3)
+			PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_ERROR(Cannot find python-3.3!)])
+			PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+		dnl add broken versions here
+		python2.5|python2.6|python3.1|python3.2)
+			AC_MSG_ERROR(Unsupported Python version ${python}!);;
+		python*)
+			python="python-${python#python}" # stay posix compliant
+			PKG_CHECK_MODULES([PY], [${python}], [], [AC_MSG_ERROR(Cannot find "${python}.pc"!)])
+			PY_VER="`$PKG_CONFIG --modversion ${python}`";;
+		*)
+			AC_MSG_ERROR(Unsupported Python ${python}!)
+	esac
+	AC_MSG_CHECKING(Python version)
+	AC_MSG_RESULT($PY_VER)
 fi
 
 dnl *********************************************************************
@@ -413,11 +392,10 @@ dnl *********************************************************************
 
 retry=no
 if test "$openssl" != no; then
-	AC_PATH_PROG(pkgconfigpath, pkg-config)
 	AC_MSG_CHECKING(for openssl through pkg-config)
-	if $pkgconfigpath openssl --exists; then
-		CPPFLAGS="$CPPFLAGS `$pkgconfigpath openssl --cflags`"
-		LIBS="$LIBS `$pkgconfigpath openssl --libs`"
+	if $PKG_CONFIG openssl --exists; then
+		CPPFLAGS="$CPPFLAGS `$PKG_CONFIG openssl --cflags`"
+		LIBS="$LIBS `$PKG_CONFIG openssl --libs`"
 		AC_DEFINE(USE_OPENSSL)
 		AC_MSG_RESULT(yes)
 		openssl=yes
@@ -493,9 +471,8 @@ if test "$plugin" = yes; then
 	fi
 	if test "$have_dl" = yes; then
 		AC_DEFINE(USE_PLUGIN)
-		AC_PATH_PROG(pkgconfigpath, pkg-config)
 		dnl we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
-		RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
+		RDYNAMIC_FLAGS="`$PKG_CONFIG gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
 		LIBS="$LIBS $RDYNAMIC_FLAGS"
 		if test "$LD" = ""; then
 			VS="`ld --help | grep version-script 2> /dev/null`"
@@ -731,8 +708,8 @@ dnl *********************************************************************
 if test "$shm" = yes; then
 	oldl=$LIBS
 	oldc=$CPPFLAGS
-	LIBS="$LIBS `$pkgconfigpath --libs-only-L xft`"
-	CPPFLAGS="$CPPFLAGS `$pkgconfigpath --cflags-only-I xft`"
+	LIBS="$LIBS `$PKG_CONFIG --libs-only-L xft`"
+	CPPFLAGS="$CPPFLAGS `$PKG_CONFIG --cflags-only-I xft`"
 	shm=no
 	AC_CHECK_LIB(Xext, XShmAttach, shm=yes)
 	if test "$shm" = yes; then
@@ -746,7 +723,7 @@ if test "$shm" = yes; then
 
 	LIBS=$oldl
 	if test "$shm" = yes; then
-		GUI_LIBS="$GUI_LIBS `$pkgconfigpath --libs-only-L xft` -lX11 -lXext"
+		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG --libs-only-L xft` -lX11 -lXext"
 		AC_DEFINE(USE_SHM)
 	else
 		CPPFLAGS=$oldc
@@ -1015,7 +992,7 @@ echo MS Proxy NTLM \(ISA\) ... : $have_ntlm
 echo libproxy support ...... : $libproxy
 echo
 echo Perl .................. : $perl
-echo Python ................ : $python
+echo Python ................ : python-$PY_VER
 echo
 echo Checksum .............. : $checksum
 echo Do At ................. : $doat
