@@ -21,6 +21,7 @@ AC_PROG_CPP
 AM_PROG_AS
 AM_DISABLE_STATIC
 AC_PROG_LIBTOOL
+AC_PATH_PROG(MDTOOL, mdtool, no)
 
 dnl -----------------------------------------------------------
 dnl Language Support
@@ -185,6 +186,20 @@ AC_ARG_ENABLE(minimal-flags,
 	[AS_HELP_STRING([--enable-minimal-flags],[only add those CFLAGS that are really needed or not intrusive (default: no)])],
         minimalflags=$enableval, minimalflags=no)
 
+AC_ARG_WITH(theme-manager,
+	[AS_HELP_STRING([--with-theme-manager],[compile theme manager (needs monodevelop, default: off)])],
+		theme_manager=$withval, theme_manager=no)
+
+
+
+dnl *********************************************************************
+dnl ** THEME-MANAGER ****************************************************
+dnl *********************************************************************
+if test "x$theme_manager" != "xno" ; then
+	if test "x$MDTOOL" = "xno"; then
+		AC_MSG_ERROR([No "mdtool" found, you need to install monodevelop!])
+	fi
+fi
 
 
 dnl *********************************************************************
@@ -669,6 +684,7 @@ AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 #AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
+AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
 
 dnl *********************************************************************
 dnl ** SOCKS5 ***********************************************************
@@ -952,6 +968,7 @@ src/common/Makefile
 src/common/dbus/Makefile
 src/fe-text/Makefile
 src/fe-gtk/Makefile
+src/htm/Makefile
 src/pixmaps/Makefile
 plugins/Makefile
 plugins/python/Makefile
@@ -972,6 +989,7 @@ echo HexChat $VERSION
 echo
 echo GTK+ interface ........ : $gtkfe
 echo Text interface ........ : $textfe
+echo Theme manager ......... : $theme_manager
 echo
 echo MMX tinting ........... : $mmx
 echo XShm tinting .......... : $shm
