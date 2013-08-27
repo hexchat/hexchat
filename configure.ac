@@ -116,7 +116,7 @@ AC_ARG_ENABLE(xlib,
         xlib=$enableval, xlib=yes)
 
 AC_ARG_ENABLE(python,
-	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin; possible values: python2, python2.7, python3, python3.3 (default on, python2)])],
+	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin; possible values: "python2", "python3" or specific such as "python3.3" (default on, python2)])],
         python=$enableval, python=python2)
 AS_IF([test "x$python" = "xyes"], [python=python2])
 
@@ -338,14 +338,23 @@ dnl *********************************************************************
 
 if test "x$python" != xno ; then
 	case $python in
-		python2|python2.7)
+		dnl set python2 default here
+		python2)
 			PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_ERROR(Cannot find python-2.7!)])
 			PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
-		python3|python3.3)
+		dnl set python3 default here
+		python3)
 			PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_ERROR(Cannot find python-3.3!)])
 			PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+		dnl add broken versions here
+		python2.5|python2.6|python3.1|python3.2)
+			AC_MSG_ERROR(Unsupported Python version ${python}!);;
+		python*)
+			python="python-${python#python}" # stay posix compliant
+			PKG_CHECK_MODULES([PY], [${python}], [], [AC_MSG_ERROR(Cannot find "${python}.pc"!)])
+			PY_VER="`$PKG_CONFIG --modversion ${python}`";;
 		*)
-			AC_MSG_ERROR(Unsupported ${python}. Only python2.7 and python3.3 are currently supported!)
+			AC_MSG_ERROR(Unsupported Python ${python}!)
 	esac
 	AC_MSG_CHECKING(Python version)
 	AC_MSG_RESULT($PY_VER)
