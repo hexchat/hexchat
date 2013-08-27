@@ -8,7 +8,7 @@ thememan.exe: htm-mono.csproj
 
 thememan:
 	@echo '#!/bin/sh' > $@
-	@echo 'exec mono /usr/bin/thememan.exe "$$@"' >> $@
+	@echo 'exec mono "$(bindir)/thememan.exe" "$$@"' >> $@
 
 clean-local:
 	rm -f thememan.exe thememan.exe.config thememan.exe.mdb thememan Main.resources
