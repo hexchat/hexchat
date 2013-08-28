@@ -969,6 +969,7 @@ src/common/dbus/Makefile
 src/fe-text/Makefile
 src/fe-gtk/Makefile
 src/htm/Makefile
+src/htm/thememan
 src/pixmaps/Makefile
 plugins/Makefile
 plugins/python/Makefile

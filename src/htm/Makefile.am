@@ -6,9 +6,7 @@ themedir = $(bindir)
 thememan.exe: htm-mono.csproj
 	$(MDTOOL) $(MDTOOL_OPTS) build $<
 
-thememan:
-	@echo '#!/bin/sh' > $@
-	@echo 'exec mono "$(bindir)/thememan.exe" "$$@"' >> $@
-
 clean-local:
 	rm -f thememan.exe thememan.exe.config thememan.exe.mdb thememan Main.resources
+
+EXTRA_DIST = thememan.in
