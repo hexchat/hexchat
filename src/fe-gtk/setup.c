@@ -1060,8 +1060,18 @@ static void
 setup_browsefile_cb (GtkWidget *button, GtkWidget *entry)
 {
 	/* used for background image only */
+	char *filter;
+	int filter_type;
+
+#ifdef WIN32
+	filter = "*png;*.tiff;*.gif;*.jpeg;*.jpg";
+	filter_type = FRF_EXTENSIONS;
+#else
+	filter = "image/*";
+	filter_type = FRF_MIMETYPES;
+#endif
 	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb,
-					entry, NULL, "image/*", FRF_MIMETYPES|FRF_RECENTLYUSED);
+					entry, NULL, filter, filter_type|FRF_RECENTLYUSED);
 }
 
 static void
