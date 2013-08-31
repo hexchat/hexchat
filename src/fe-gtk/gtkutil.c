@@ -51,7 +51,6 @@
 
 extern void path_part (char *file, char *path, int pathlen);
 
-
 struct file_req
 {
 	GtkWidget *dialog;
@@ -69,9 +68,6 @@ struct file_req
 #endif
 };
 
-static char last_dir[256] = "";
-
-
 static void
 gtkutil_file_req_destroy (GtkWidget * wid, struct file_req *freq)
 {
@@ -84,13 +80,14 @@ gtkutil_check_file (char *file, struct file_req *freq)
 {
 	struct stat st;
 	int axs = FALSE;
+	char temp[256];
 
-	path_part (file, last_dir, sizeof (last_dir));
+	path_part (file, temp, sizeof (temp));
 
 	/* check if the file is readable or writable */
 	if (freq->flags & FRF_WRITE)
 	{
-		if (access (last_dir, W_OK) == 0)
+		if (access (temp, W_OK) == 0)
 			axs = TRUE;
 	} else
 	{
@@ -179,60 +176,6 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	char *token;
 	char *tokenbuffer;
 
-#if 0	/* native file dialogs */
-#ifdef WIN32
-	if (!(flags & FRF_WRITE))
-	{
-		freq = malloc (sizeof (struct file_req));
-		freq->th = thread_new ();
-		freq->flags = 0;
-		freq->multiple = (flags & FRF_MULTIPLE);
-		freq->callback = callback;
-		freq->userdata = userdata;
-		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
-		if (!filter)
-		{
-			freq->filter =	"All files\0*.*\0"
-							"Executables\0*.exe\0"
-							"ZIP files\0*.zip\0\0";
-		}
-		else
-		{
-			freq->filter = filter;
-		}
-
-		thread_start (freq->th, win32_thread, freq);
-		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
-
-		return;
-
-	}
-	
-	else {
-		freq = malloc (sizeof (struct file_req));
-		freq->th = thread_new ();
-		freq->flags = 0;
-		freq->multiple = (flags & FRF_MULTIPLE);
-		freq->callback = callback;
-		freq->userdata = userdata;
-		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
-		if (!filter)
-		{
-			freq->filter = "All files\0*.*\0\0";
-		}
-		else
-		{
-			freq->filter = filter;
-		}
-
-		thread_start (freq->th, win32_thread2, freq);
-		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
-
-	return;
-	}
-#endif
-#endif
-
 	if (flags & FRF_WRITE)
 	{
 		dialog = gtk_file_chooser_dialog_new (title, NULL,
@@ -240,13 +183,6 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 												GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 												GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 												NULL);
-		if (filter && filter[0])	/* filter becomes initial name when saving */
-		{
-			char temp[1024];
-			path_part (filter, temp, sizeof (temp));
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), temp);
-			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), file_part (filter));
-		}
 
 		if (!(flags & FRF_NOASKOVERWRITE))
 			gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
@@ -257,39 +193,26 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 												GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 												GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 												NULL);
+
+	if (filter && filter[0] && (flags & FRF_FILTERISINITIAL))
+	{
+		if (flags & FRF_WRITE)
+		{
+			char temp[1024];
+			path_part (filter, temp, sizeof (temp));
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), temp);
+			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), file_part (filter));
+		}
+		else
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
+	}
+	else if (!(flags & FRF_RECENTLYUSED))
+		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), get_xdir ());
+
 	if (flags & FRF_MULTIPLE)
 		gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (dialog), TRUE);
-	if (last_dir[0])
-		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), last_dir);
-	if (flags & FRF_ADDFOLDER)
-		gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
-														  get_xdir (), NULL);
 	if (flags & FRF_CHOOSEFOLDER)
-	{
 		gtk_file_chooser_set_action (GTK_FILE_CHOOSER (dialog), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
-	}
-	else
-	{
-		if (filter && (flags & FRF_FILTERISINITIAL))
-		{
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
-		}
-		/* With DCC, we can't rely on filter as initial folder since filter already contains
-		 * the filename upon DCC RECV. Thus we have no better option than to check for the message
-		 * which will be the title of the window. For DCC it always contains the "offering" word.
-		 * This method is really ugly but it works so we'll stick with it for now.
-		 */
-		else if (strstr (title, "offering") != NULL)
-		{
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), prefs.hex_dcc_dir);
-		}
-		/* by default, open the config folder */
-		else
-		{
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), get_xdir ());
-		}
-	}
 
 	if (flags & FRF_EXTENSIONS && extensions != NULL)
 	{
@@ -306,6 +229,8 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 		g_free (tokenbuffer);
 		gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filefilter);
 	}
+
+	gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog), get_xdir (), NULL);
 
 	freq = malloc (sizeof (struct file_req));
 	freq->dialog = dialog;
