@@ -1061,7 +1061,7 @@ setup_browsefile_cb (GtkWidget *button, GtkWidget *entry)
 {
 	/* used for background image only */
 	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb,
-					entry, NULL, "*.jpg;*.png;*.tif;*.gif", FRF_EXTENSIONS|FRF_RECENTLYUSED);
+					entry, NULL, "image/*", FRF_MIMETYPES|FRF_RECENTLYUSED);
 }
 
 static void
@@ -1661,12 +1661,18 @@ static void
 setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 {
 	char *sounds_dir = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
-	char *extensions = NULL;
+	char *filter = NULL;
+	int filter_type;
 #ifdef WIN32 /* win32 only supports wav, others could support anything */
-	extensions = "*.wav";
+	filter = "*.wav";
+	filter_type = FRF_EXTENSIONS;
+#else
+	filter = "audio/*";
+	filter_type = FRF_MIMETYPES;
 #endif
 
-	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry, sounds_dir, extensions, FRF_FILTERISINITIAL|FRF_EXTENSIONS);
+	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry,
+						sounds_dir, filter, FRF_FILTERISINITIAL|filter_type);
 	g_free (sounds_dir);
 }
 
