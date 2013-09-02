@@ -1297,7 +1297,8 @@ static char * const pevt_generic_channel_help[] = {
 };
 
 static char * const pevt_saslauth_help[] = {
-	N_("Username")
+	N_("Username"),
+	N_("Mechanism")
 };
 
 static char * const pevt_saslresponse_help[] = {

@@ -45,11 +45,11 @@
 #include "url.h"
 #include "servlist.h"
 
-
 static void
 irc_login (server *serv, char *user, char *realname)
 {
 	tcp_sendf (serv, "CAP LS\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
+	serv->sent_capend = FALSE;	/* track if we have finished */
 
 	if (serv->password[0] && serv->loginmethod == LOGIN_PASS)
 	{
@@ -953,14 +953,20 @@ process_numeric (session * sess, int n,
 									  tags_data->timestamp);
 		break;
 	case 903:	/* successful SASL auth */
-	case 904:	/* aborted SASL auth */
+	case 904:	/* failed SASL auth */
+		if (inbound_sasl_error (serv))
+			break; /* might retry */
 	case 905:	/* failed SASL auth */
-	case 906:	/* registration completes before SASL auth */
+	case 906:	/* aborted */
 	case 907:	/* attempting to re-auth after a successful auth */
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_SASLRESPONSE, serv->server_session, word[1],
 									  word[2], word[3], ++word_eol[4], 0,
 									  tags_data->timestamp);
-		tcp_send_len (serv, "CAP END\r\n", 9);
+		if (!serv->sent_capend)
+		{
+			serv->sent_capend = TRUE;
+			tcp_send_len (serv, "CAP END\r\n", 9);
+		}
 		break;
 
 	default:
@@ -1321,8 +1327,9 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 									  tags_data->timestamp);
 		return;
 	}
-	if (!strncmp (buf, "AUTHENTICATE +", 14))	/* omit SASL "empty" responses */
+	if (!strncmp (buf, "AUTHENTICATE", 12))
 	{
+		inbound_sasl_authenticate (sess->server, word_eol[2]);
 		return;
 	}
 

@@ -461,6 +461,12 @@ struct msproxy_state_t
 	unsigned char		seq_sent;		/* seq number of last packet sent.	*/
 };
 
+/* SASL Mechanisms */
+#define MECH_PLAIN 0
+#define MECH_BLOWFISH 1
+#define MECH_AES 2
+#define MECH_EXTERNAL 3
+
 typedef struct server
 {
 	/*  server control operations (in server*.c) */
@@ -598,9 +604,13 @@ typedef struct server
 	unsigned int have_sasl:1;		/* SASL capability */
 	unsigned int have_except:1;	/* ban exemptions +e */
 	unsigned int have_invite:1;	/* invite exemptions +I */
+	unsigned int have_cert:1;	/* have loaded a cert */
 	unsigned int using_cp1255:1;	/* encoding is CP1255/WINDOWS-1255? */
 	unsigned int using_irc:1;		/* encoding is "IRC" (CP1252/UTF-8 hybrid)? */
 	unsigned int use_who:1;			/* whether to use WHO command to get dcc_ip */
+	unsigned int sasl_mech;			/* mechanism for sasl auth */
+	unsigned int sent_saslauth:1;	/* have sent AUTHENICATE yet */
+	unsigned int sent_capend:1;	/* have sent CAP END yet */
 #ifdef USE_OPENSSL
 	unsigned int use_ssl:1;				  /* is server SSL capable? */
 	unsigned int accept_invalid_cert:1;/* ignore result of server's cert. verify */

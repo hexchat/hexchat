@@ -120,6 +120,7 @@ static int login_types_conf[] =
 {
 	LOGIN_DEFAULT,			/* default entry - we don't use this but it makes indexing consistent with login_types[] so it's nice */
 	LOGIN_SASL,
+	LOGIN_SASLEXTERNAL,
 	LOGIN_PASS,
 	LOGIN_MSG_NICKSERV,
 	LOGIN_NICKSERV,
@@ -136,6 +137,7 @@ static const char *login_types[]=
 {
 	"Default",
 	"SASL (username + password)",
+	"SASL EXTERNAL (cert)",
 	"Server Password (/PASS password)",
 	"NickServ (/MSG NickServ + password)",
 	"NickServ (/NICKSERV + password)",
@@ -1513,6 +1515,12 @@ servlist_logintypecombo_cb (GtkComboBox *cb, gpointer *userdata)
 	{
 		gtk_notebook_set_current_page (GTK_NOTEBOOK (userdata), 2);		/* FIXME avoid hardcoding? */
 	}
+	
+	/* EXTERNAL uses a cert, not a pass */
+	if (login_types_conf[index] == LOGIN_SASLEXTERNAL)
+		gtk_widget_set_sensitive (edit_entry_pass, FALSE);
+	else
+		gtk_widget_set_sensitive (edit_entry_pass, TRUE);
 }
 
 
@@ -1816,6 +1824,8 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	edit_entry_pass = servlist_create_entry (table3, _("Password:"), 11, net->pass, 0, _("Password used for login. If in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
+	if (selected_net && selected_net->logintype == LOGIN_SASLEXTERNAL)
+		gtk_widget_set_sensitive (edit_entry_pass, FALSE);
 
 	label34 = gtk_label_new (_("Character set:"));
 	gtk_table_attach (GTK_TABLE (table3), label34, 0, 1, 12, 13, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
