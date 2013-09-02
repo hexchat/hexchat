@@ -55,6 +55,7 @@
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */
+#include "ssl.h"
 #endif
 
 #ifdef __EMX__						  /* for o/s 2 */
@@ -597,6 +598,7 @@ typedef struct server
 #ifdef USE_OPENSSL
 	unsigned int use_ssl:1;				  /* is server SSL capable? */
 	unsigned int accept_invalid_cert:1;/* ignore result of server's cert. verify */
+	struct cert_info *cert_info;
 #endif
 } server;
 

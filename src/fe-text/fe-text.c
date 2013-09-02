@@ -922,3 +922,8 @@ fe_get_default_font (void)
 {
 	return NULL;
 }
+void
+fe_sslalert_open (struct server *serv, void (*callback)(int, void *), void *callback_data)
+{
+	callback (SSLALERT_RESPONSE_ACCEPT, callback_data);
+}

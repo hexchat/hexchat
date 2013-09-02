@@ -31,9 +31,24 @@ struct cert_info {
     int sign_algorithm_bits;
     char notbefore[32];
     char notafter[32];
+	char fingerprint[128];
 
     int rsa_tmp_bits;
 };
+
+enum
+{
+	SSLALERT_RESPONSE_ABORT = 0,
+	SSLALERT_RESPONSE_ACCEPT = 1,
+	SSLALERT_RESPONSE_SAVE = 2
+};
+
+typedef struct ssl_alert_context
+{
+	struct server *serv;
+	struct cert_info cert;
+	int verify_error;
+} ssl_alert_context;
 
 struct chiper_info {
     char version[16];
@@ -55,6 +70,7 @@ void _SSL_close (SSL * ssl);
 int _SSL_check_hostname(X509 *cert, const char *host);
 int _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl);
 struct chiper_info *_SSL_get_cipher_info (SSL * ssl);
+int _SSL_verify_cert_hostname (struct server *serv, struct cert_info *cert);
 
 /*char *_SSL_add_keypair (SSL_CTX *ctx, char *privkey, char *cert);*/
 /*void _SSL_add_random_keypair(SSL_CTX *ctx, int bits);*/
@@ -81,5 +97,11 @@ int _SSL_recv (SSL * ssl, char *buf, int len);
 #define	_SSL_get_ctx_x509_base64(a)	_SSL_get_ctx_obj_base64(a, 2)
 
 /*int _SSL_verify_x509(X509 *x509);*/
+
+/* functions for managing the SSL certificate/fingerprint cache */
+void _SSL_certlist_init ();
+void _SSL_certlist_save ();
+int _SSL_certlist_cert_check (struct server *serv, struct cert_info *cert);
+void _SSL_certlist_cert_add (struct server *serv, struct cert_info *cert);
 
 #endif

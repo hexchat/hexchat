@@ -103,6 +103,7 @@ void fe_dcc_remove (struct DCC *dcc);
 int fe_dcc_open_recv_win (int passive);
 int fe_dcc_open_send_win (int passive);
 int fe_dcc_open_chat_win (int passive);
+void fe_sslalert_open (struct server *serv, void (*callback)(int, void *), void *callback_data);
 void fe_clear_channel (struct session *sess);
 void fe_session_callback (struct session *sess);
 void fe_server_callback (struct server *serv);
