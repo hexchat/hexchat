@@ -120,11 +120,15 @@ static int login_types_conf[] =
 {
 	LOGIN_DEFAULT,			/* default entry - we don't use this but it makes indexing consistent with login_types[] so it's nice */
 	LOGIN_SASL,
+#ifdef USE_OPENSSL
 	LOGIN_SASLEXTERNAL,
+#endif
 	LOGIN_PASS,
 	LOGIN_MSG_NICKSERV,
 	LOGIN_NICKSERV,
+#ifdef USE_OPENSSL
 	LOGIN_CHALLENGEAUTH,
+#endif
 	LOGIN_CUSTOM
 #if 0
 	LOGIN_NS,
@@ -137,11 +141,15 @@ static const char *login_types[]=
 {
 	"Default",
 	"SASL (username + password)",
+#ifdef USE_OPENSSL
 	"SASL EXTERNAL (cert)",
+#endif
 	"Server Password (/PASS password)",
 	"NickServ (/MSG NickServ + password)",
 	"NickServ (/NICKSERV + password)",
+#ifdef USE_OPENSSL
 	"Challenge Auth (username + password)",
+#endif
 	"Custom... (connect commands)",
 #if 0
 	"NickServ (/NS + password)",

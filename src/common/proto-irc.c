@@ -1151,7 +1151,6 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		case WORDL('N','O','T','I'):
 			{
 				int id = FALSE;								/* identified */
-				char *response;
 
 				text = word_eol[4];
 				if (*text == ':')
@@ -1159,9 +1158,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 					text++;
 				}
 
+#ifdef USE_OPENSSL
 				if (!strncmp (text, "CHALLENGE ", 10))		/* QuakeNet CHALLENGE upon our request */
 				{
-					response = challengeauth_response (((ircnet *)serv->network)->user ? ((ircnet *)serv->network)->user : prefs.hex_irc_user_name, serv->password, word[5]);
+					char *response = challengeauth_response (((ircnet *)serv->network)->user ? ((ircnet *)serv->network)->user : prefs.hex_irc_user_name, serv->password, word[5]);
 
 					tcp_sendf (serv, "PRIVMSG %s :CHALLENGEAUTH %s %s %s\r\n",
 						CHALLENGEAUTH_NICK,
@@ -1172,6 +1172,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 					g_free (response);
 					return;									/* omit the CHALLENGE <hash> ALGOS message */
 				}
+#endif
 
 				if (serv->have_idmsg)
 				{
