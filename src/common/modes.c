@@ -848,7 +848,7 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 				serv->p_cmp = (void *)g_ascii_strcasecmp;
 		} else if (strncmp (word[w], "CHARSET=", 8) == 0)
 		{
-			if (g_ascii_strcasecmp (word[w] + 8, "UTF-8") == 0)
+			if (g_ascii_strncasecmp (word[w] + 8, "UTF-8", 5) == 0)
 			{
 				server_set_encoding (serv, "UTF-8");
 			}
