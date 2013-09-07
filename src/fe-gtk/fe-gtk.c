@@ -908,10 +908,15 @@ fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *)
 {
 	/* warning, assuming fe_confirm is used by DCC only! */
 	struct DCC *dcc = ud;
+	char *filepath;
 
 	if (dcc->file)
-		gtkutil_file_req (message, dcc_saveas_cb, ud, dcc->file, NULL,
-								FRF_WRITE|FRF_NOASKOVERWRITE);
+	{
+		filepath = g_build_filename (prefs.hex_dcc_dir, dcc->file, NULL);
+		gtkutil_file_req (message, dcc_saveas_cb, ud, filepath, NULL,
+								FRF_WRITE|FRF_NOASKOVERWRITE|FRF_FILTERISINITIAL);
+		g_free (filepath);
+	}
 }
 
 int
