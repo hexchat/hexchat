@@ -1049,7 +1049,8 @@ server_cleanup (server * serv)
 #ifdef USE_OPENSSL
 	if (serv->ssl)
 	{
-		_SSL_close (serv->ssl);
+		SSL_shutdown (serv->ssl);
+		SSL_free (serv->ssl);
 		serv->ssl = NULL;
 	}
 #endif
@@ -1705,18 +1706,25 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	if (serv->use_ssl)
 	{
 		char *cert_file;
+		serv->have_cert = FALSE;
 
 		/* first try network specific cert/key */
 		cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "certs" G_DIR_SEPARATOR_S "%s.pem",
 					 get_xdir (), server_get_network (serv, TRUE));
 		if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
-			SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
+		{
+			if (SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
+				serv->have_cert = TRUE;
+		}
 		else
 		{
 			/* if that doesn't exist, try <config>/certs/client.pem */
 			cert_file = g_build_filename (get_xdir (), "certs", "client.pem", NULL);
 			if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
-				SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
+			{
+				if (SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
+					serv->have_cert = TRUE;
+			}
 		}
 		g_free (cert_file);
 	}
