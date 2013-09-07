@@ -1,6 +1,10 @@
 util_DATA = hexchat.desktop
 utildir = $(datadir)/applications
 
+appdata_DATA = hexchat.appdata.xml
+appdatadir = $(datadir)/appdata
+
+
 if WITH_TM
 util_DATA += htm.desktop
 mime_DATA = htm-mime.xml
