@@ -125,11 +125,12 @@ void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);
 #define FRF_WRITE 1				/* save file */
 #define FRF_MULTIPLE 2			/* multi-select */
-#define FRF_ADDFOLDER 4			/* add ~/.config/hexchat to favourites */
+#define FRF_RECENTLYUSED 4		/* let gtk decide start dir instead of our config */
 #define FRF_CHOOSEFOLDER 8		/* choosing a folder only */
 #define FRF_FILTERISINITIAL 16	/* filter is initial directory */
 #define FRF_NOASKOVERWRITE 32	/* don't ask to overwrite existing files */
 #define FRF_EXTENSIONS 64		/* specify file extensions to be displayed */
+#define FRF_MIMETYPES 128		/* specify file mimetypes to be displayed */
 void fe_get_file (const char *title, char *initial,
 				 void (*callback) (void *userdata, char *file), void *userdata,
 				 int flags);
