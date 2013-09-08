@@ -1381,7 +1381,7 @@ hexchat_list_fields (hexchat_plugin *ph, const char *name)
 	};
 	static const char * const channels_fields[] =
 	{
-		"schannel",	"schantypes", "pcontext", "iflags", "iid", "ilag", "imaxmodes",
+		"schannel",	"schannelkey", "schantypes", "pcontext", "iflags", "iid", "ilag", "imaxmodes",
 		"snetwork", "snickmodes", "snickprefixes", "iqueue", "sserver", "itype", "iusers",
 		NULL
 	};
@@ -1476,6 +1476,8 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		{
 		case 0x2c0b7d03: /* channel */
 			return ((session *)data)->channel;
+		case 0x8cea5e7c: /* channelkey */
+			return ((session *)data)->channelkey;
 		case 0x577e0867: /* chantypes */
 			return ((session *)data)->server->chantypes;
 		case 0x38b735af: /* context */
