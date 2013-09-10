@@ -28,7 +28,7 @@
 static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "Exec";
 static char desc[] = "Execute commands inside HexChat";
-static char version[] = "1.1";
+static char version[] = "1.2";
 
 static int
 run_command (char *word[], char *word_eol[], void *userdata)
@@ -115,20 +115,24 @@ run_command (char *word[], char *word_eol[], void *userdata)
 			}
 			timeElapsed = difftime (time (0), start);
 		}
+
+		/* display a newline to separate things */
+		if (!announce)
+			hexchat_printf (ph, "\n");
+
+		if (timeElapsed >= 10)
+		{
+			hexchat_printf (ph, "Command took too much time to run, execution aborted.\n");
+		}
+
+		CloseHandle (readPipe);
+		CloseHandle (pInfo.hProcess);
+		CloseHandle (pInfo.hThread);
 	}
-
-	/* display a newline to separate things */
-	if (!announce)
-		hexchat_printf (ph, "\n");
-
-	if (timeElapsed >= 10)
+	else
 	{
-		hexchat_printf (ph, "Command took too much time to run, execution aborted.\n");
+		hexchat_command (ph, "help exec");
 	}
-
-	CloseHandle (readPipe);
-	CloseHandle (pInfo.hProcess);
-	CloseHandle (pInfo.hThread);
 
 	return HEXCHAT_EAT_HEXCHAT;
 }
