@@ -1504,7 +1504,7 @@ mg_create_color_menu (GtkWidget *menu, session *sess)
 
 	mg_markup_item (submenu, _("<b>Bold</b>"), 100);
 	mg_markup_item (submenu, _("<u>Underline</u>"), 101);
-	/*mg_markup_item (submenu, _("<i>Italic</i>"), 102);*/
+	mg_markup_item (submenu, _("<i>Italic</i>"), 102);
 	mg_markup_item (submenu, _("Normal"), 103);
 
 	subsubmenu = mg_submenu (submenu, _("Colors 0-7"));
