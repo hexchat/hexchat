@@ -579,7 +579,7 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 static gboolean
 userlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
 {
-	if (evt->keyval >= GDK_asterisk && evt->keyval <= GDK_z)
+	if (evt->keyval >= GDK_KEY_asterisk && evt->keyval <= GDK_KEY_z)
 	{
 		/* dirty trick to avoid auto-selection */
 		SPELL_ENTRY_SET_EDITABLE (current_sess->gui->input_box, FALSE);

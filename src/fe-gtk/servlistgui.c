@@ -587,12 +587,12 @@ servlist_net_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 
 	if (evt->state & STATE_SHIFT)
 	{
-		if (evt->keyval == GDK_Up)
+		if (evt->keyval == GDK_KEY_Up)
 		{
 			handled = TRUE;
 			network_list = servlist_move_item (GTK_TREE_VIEW (tree), network_list, selected_net, -1);
 		}
-		else if (evt->keyval == GDK_Down)
+		else if (evt->keyval == GDK_KEY_Down)
 		{
 			handled = TRUE;
 			network_list = servlist_move_item (GTK_TREE_VIEW (tree), network_list, selected_net, +1);
@@ -1030,12 +1030,12 @@ servlist_keypress_cb (GtkWidget *wid, GdkEventKey *evt, GtkNotebook *notebook)
 
 	if (evt->state & STATE_SHIFT)
 	{
-		if (evt->keyval == GDK_Up)
+		if (evt->keyval == GDK_KEY_Up)
 		{
 			handled = TRUE;
 			delta = -1;
 		}
-		else if (evt->keyval == GDK_Down)
+		else if (evt->keyval == GDK_KEY_Down)
 		{
 			handled = TRUE;
 			delta = +1;

@@ -264,7 +264,7 @@ gtkutil_esc_destroy (GtkWidget * win, GdkEventKey * key, gpointer userdata)
 	else
 		wid = win;
 
-	if (key->keyval == GDK_Escape)
+	if (key->keyval == GDK_KEY_Escape)
 		gtk_widget_destroy (wid);
 			
 	return FALSE;

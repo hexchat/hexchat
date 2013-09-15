@@ -88,7 +88,7 @@ rawlog_key_cb (GtkWidget * wid, GdkEventKey * key, gpointer userdata)
 	 * but make sure not to copy twice, i.e. when auto-copy is enabled.
 	 */
 	if (!prefs.hex_text_autocopy_text &&
-		(key->keyval == GDK_c || key->keyval == GDK_C) &&
+		(key->keyval == GDK_KEY_c || key->keyval == GDK_KEY_C) &&
 		key->state & STATE_SHIFT &&
 		key->state & STATE_CTRL)
 	{
