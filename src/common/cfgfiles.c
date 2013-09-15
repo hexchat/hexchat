@@ -438,6 +438,7 @@ const struct prefs vars[] =
 	{"gui_pane_right_size", P_OFFINT (hex_gui_pane_right_size), TYPE_INT},
 	{"gui_pane_right_size_min", P_OFFINT (hex_gui_pane_right_size_min), TYPE_INT},
 	{"gui_quit_dialog", P_OFFINT (hex_gui_quit_dialog), TYPE_BOOL},
+	{"gui_search_pos", P_OFFINT (hex_gui_search_pos), TYPE_INT},
 	/* {"gui_single", P_OFFINT (hex_gui_single), TYPE_BOOL}, */
 	{"gui_slist_fav", P_OFFINT (hex_gui_slist_fav), TYPE_BOOL},
 	{"gui_slist_select", P_OFFINT (hex_gui_slist_select), TYPE_INT},
@@ -573,7 +574,6 @@ const struct prefs vars[] =
 	{"text_max_lines", P_OFFINT (hex_text_max_lines), TYPE_INT},
 	{"text_replay", P_OFFINT (hex_text_replay), TYPE_BOOL},
 	{"text_search_case_match", P_OFFINT (hex_text_search_case_match), TYPE_BOOL},
-	{"text_search_backward", P_OFFINT (hex_text_search_backward), TYPE_BOOL},
 	{"text_search_highlight_all", P_OFFINT (hex_text_search_highlight_all), TYPE_BOOL},
 	{"text_search_follow", P_OFFINT (hex_text_search_follow), TYPE_BOOL},
 	{"text_search_regexp", P_OFFINT (hex_text_search_regexp), TYPE_BOOL},
