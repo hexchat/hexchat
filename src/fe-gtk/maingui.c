@@ -2869,17 +2869,24 @@ search_handle_event(int search_type, session *sess)
 	}
 	else if (!last)
 	{
-		/* Either end of search or not found, try again to wrap if only end */
-		last = gtk_xtext_search (GTK_XTEXT (sess->gui->xtext), text, flags, &err);
-		if (!last) /* Not found error */
+		if (text && text[0] == 0) /* empty string, no error */
 		{
-			gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
-			gtk_entry_set_icon_tooltip_text (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, _("No results found."));
+			gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, NULL);
+		}
+		else
+		{
+			/* Either end of search or not found, try again to wrap if only end */
+			last = gtk_xtext_search (GTK_XTEXT (sess->gui->xtext), text, flags, &err);
+			if (!last) /* Not found error */
+			{
+				gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
+				gtk_entry_set_icon_tooltip_text (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, _("No results found."));
+			}
 		}
 	}
 	else
 	{
-		gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, NULL);	
+		gtk_entry_set_icon_from_stock (GTK_ENTRY (sess->gui->shentry), GTK_ENTRY_ICON_SECONDARY, NULL);
 	}
 }
 
