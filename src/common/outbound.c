@@ -2980,17 +2980,43 @@ static int
 cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *nick = word[2];
+	char *msg = word_eol[3];
+	char *split_text = NULL;
 	gboolean focus = TRUE;
+	int cmd_length = 13; /* " PRIVMSG ", " ", :, \r, \n */
+	int offset = 0;
 
 	if (strcmp (word[2], "-nofocus") == 0)
 	{
 		nick = word[3];
+		msg = word_eol[4];
 		focus = FALSE;
 	}
 
 	if (*nick && !is_channel (sess->server, nick))
 	{
 		open_query (sess->server, nick, focus);
+
+		if (*msg)
+		{
+			if (!sess->server->connected)
+			{
+				notc_msg (sess);
+				return TRUE;
+			}
+
+			while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
+			{
+				sess->server->p_message (sess->server, nick, split_text);
+
+				if (*split_text)
+					offset += strlen(split_text);
+
+				g_free(split_text);
+			}
+			sess->server->p_message (sess->server, nick, msg + offset);
+		}
+
 		return TRUE;
 	}
 	return FALSE;
@@ -3936,7 +3962,7 @@ const struct commands xc_cmds[] = {
 	{"PING", cmd_ping, 1, 0, 1,
 	 N_("PING <nick | channel>, CTCP pings nick or channel")},
 	{"QUERY", cmd_query, 0, 0, 1,
-	 N_("QUERY [-nofocus] <nick>, opens up a new privmsg window to someone")},
+	 N_("QUERY [-nofocus] <nick> [message], opens up a new privmsg window to someone and optionally sends a message")},
 	{"QUIET", cmd_quiet, 1, 1, 1,
 	 N_("QUIET <mask> [<quiettype>], quiet everyone matching the mask in the current channel if supported by the server.")},
 	{"QUIT", cmd_quit, 0, 0, 1,
