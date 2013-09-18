@@ -96,20 +96,6 @@
 
 static GtkWidgetClass *parent_class = NULL;
 
-/*
- * offsets_t is used for retaining search information.
- * It is stored in the 'data' member of a GList,
- * as chained from ent->marks.  It saves starting and
- * ending+1 offset of a found occurrence.
- */
-typedef union offsets_u {
-	struct offsets_s {
-		guint16	start;
-		guint16	end;
-	} o;
-	guint32 u;
-} offsets_t;
-
 struct textentry
 {
 	struct textentry *next;
@@ -5265,7 +5251,7 @@ gtk_xtext_unstrip_color (gint start, gint end, GSList *slp, GList **gl, gint max
 	while (cursl)
 	{
 		offlen_t ol;
-		ol.u = GPOINTER_TO_UINT(cursl->data);
+		ol.u = GPOINTER_TO_UINT (cursl->data);
 		if (start < ol.o.len)
 		{
 			off1 = ol.o.off + start;
@@ -5281,7 +5267,7 @@ gtk_xtext_unstrip_color (gint start, gint end, GSList *slp, GList **gl, gint max
 	while (cursl)
 	{
 		offlen_t ol;
-		ol.u = GPOINTER_TO_UINT(cursl->data);
+		ol.u = GPOINTER_TO_UINT (cursl->data);
 		if (end < ol.o.len)
 		{
 			off2 = ol.o.off + end;
@@ -5393,6 +5379,7 @@ gtk_xtext_search_textentry_del (xtext_buffer *buf, textentry *ent)
 	{
 		buf->cursearch = NULL;
 		buf->curmark = NULL;
+		buf->curdata.u = 0;
 	}
 	if (buf->pagetop_ent == ent)
 	{
@@ -5429,6 +5416,7 @@ gtk_xtext_search_fini (xtext_buffer *buf)
 	buf->search_flags = 0;
 	buf->cursearch = NULL;
 	buf->curmark = NULL;
+	/* but leave buf->curdata.u alone! */
 	if (buf->search_re)
 	{
 		g_regex_unref (buf->search_re);
@@ -5475,6 +5463,7 @@ gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_fl
 	buf->search_flags = flags;
 	buf->cursearch = NULL;
 	buf->curmark = NULL;
+	/* but leave buf->curdata.u alone! */
 	return FALSE;
 }
 
@@ -5565,24 +5554,36 @@ gtk_xtext_search (GtkXText * xtext, const gchar *text, gtk_xtext_search_flags fl
 					}
 				}
 			}
-#if 0
+
 			/* If user changed the search, let's look starting where he was */
 			else if (buf->hintsearch)
 			{
-				for (ent = buf->hintsearch; ent; ent = BACKWARD? ent->prev: ent->next)
-					if (ent->marks)
-						break;
-				if (ent == NULL)
-					for (ent = buf->hintsearch; ent; ent = BACKWARD? ent->next: ent->prev)
+				GList *mark;
+				offsets_t last, this;
+				/*
+				 * If we already have a 'current' item from the last search, and if
+				 * the first character of an occurrence on this line for this new search
+				 * is within that former item, use the occurrence as current.
+				 */
+				ent = buf->hintsearch;
+				last.u = buf->curdata.u;
+				for (mark = ent->marks; mark; mark = mark->next)
+				{
+					this.u = GPOINTER_TO_UINT (mark->data);
+					if (this.o.start >= last.o.start && this.o.start < last.o.end)
+					break;
+				}
+				if (mark == NULL)
+				{
+					for (ent = buf->hintsearch; ent; ent = BACKWARD? ent->prev: ent->next)
 						if (ent->marks)
 							break;
-				if (ent)
-				{
-					buf->cursearch = g_list_find (buf->search_found, ent);
-					buf->curmark = FIRSTLAST (ent->marks);
+					mark = ent? FIRSTLAST (ent->marks): NULL;
 				}
+				buf->cursearch = g_list_find (buf->search_found, ent);
+				buf->curmark = mark;
 			}
-#endif
+
 			/* This is a fresh search */
 			else
 			{
@@ -5590,6 +5591,7 @@ gtk_xtext_search (GtkXText * xtext, const gchar *text, gtk_xtext_search_flags fl
 				ent = buf->cursearch->data;
 				buf->curmark = FIRSTLAST (ent->marks);
 			}
+			buf->curdata.u = (buf->curmark)? GPOINTER_TO_UINT (buf->curmark->data): 0;
 		}
 	}
 	buf->hintsearch = ent;

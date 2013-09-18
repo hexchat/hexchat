@@ -64,6 +64,20 @@ typedef struct _GtkXText GtkXText;
 typedef struct _GtkXTextClass GtkXTextClass;
 typedef struct textentry textentry;
 
+/*
+ * offsets_t is used for retaining search information.
+ * It is stored in the 'data' member of a GList,
+ * as chained from ent->marks.  It saves starting and
+ * ending+1 offset of a found occurrence.
+ */
+typedef union offsets_u {
+	struct offsets_s {
+		guint16	start;
+		guint16	end;
+	} o;
+	guint32 u;
+} offsets_t;
+
 typedef struct {
 	GtkXText *xtext;					/* attached to this widget */
 
@@ -105,6 +119,7 @@ typedef struct {
 	gtk_xtext_search_flags search_flags;	/* match, bwd, highlight */
 	GList *cursearch;			/* GList whose 'data' pts to current textentry */
 	GList *curmark;			/* current item in ent->marks */
+	offsets_t curdata;		/* current offset info, from *curmark */
 	GRegex *search_re;		/* Compiled regular expression */
 	textentry *hintsearch;	/* textentry found for last search */
 } xtext_buffer;
