@@ -477,6 +477,7 @@ const struct prefs vars[] =
 	{"gui_url_mod", P_OFFINT (hex_gui_url_mod), TYPE_INT},
 	{"gui_usermenu", P_OFFINT (hex_gui_usermenu), TYPE_BOOL},
 	{"gui_win_height", P_OFFINT (hex_gui_win_height), TYPE_INT},
+	{"gui_win_fullscreen", P_OFFINT (hex_gui_win_fullscreen), TYPE_INT},
 	{"gui_win_left", P_OFFINT (hex_gui_win_left), TYPE_INT},
 	{"gui_win_modes", P_OFFINT (hex_gui_win_modes), TYPE_BOOL},
 	{"gui_win_save", P_OFFINT (hex_gui_win_save), TYPE_BOOL},

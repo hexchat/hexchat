@@ -495,6 +495,10 @@ mg_windowstate_cb (GtkWindow *wid, GdkEventWindowState *event, gpointer userdata
 	if (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED)
 		prefs.hex_gui_win_state = 1;
 
+	prefs.hex_gui_win_fullscreen = 0;
+	if (event->new_window_state & GDK_WINDOW_STATE_FULLSCREEN)
+		prefs.hex_gui_win_fullscreen = 1;
+
 	return FALSE;
 }
 
@@ -505,7 +509,7 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 	{
 		if (mg_gui)
 		{
-			if (prefs.hex_gui_win_save)
+			if (prefs.hex_gui_win_save && !prefs.hex_gui_win_state && !prefs.hex_gui_win_fullscreen)
 			{
 				sess = current_sess;
 				gtk_window_get_position (GTK_WINDOW (wid), &prefs.hex_gui_win_left,
@@ -3313,6 +3317,8 @@ mg_create_tabwindow (session *sess)
 						  prefs.hex_gui_win_top);
 	if (prefs.hex_gui_win_state)
 		gtk_window_maximize (GTK_WINDOW (win));
+	if (prefs.hex_gui_win_fullscreen)
+		gtk_window_fullscreen (GTK_WINDOW (win));
 	gtk_container_set_border_width (GTK_CONTAINER (win), GUI_BORDER);
 
 	g_signal_connect (G_OBJECT (win), "delete_event",

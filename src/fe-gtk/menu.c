@@ -890,6 +890,23 @@ menu_cmbuttons_toggle (GtkWidget *wid, gpointer ud)
 								 prefs.hex_gui_mode_buttons);
 }
 
+static void
+menu_fullscreen_toggle (GtkWidget *wid, gpointer ud)
+{
+	if (!prefs.hex_gui_win_fullscreen)
+		gtk_window_fullscreen (GTK_WINDOW(parent_window));
+	else
+	{
+		gtk_window_unfullscreen (GTK_WINDOW(parent_window));
+
+		/* At least on Windows we need to manually reposition the window */
+		gtk_window_resize (GTK_WINDOW(parent_window),
+					prefs.hex_gui_win_width, prefs.hex_gui_win_height);
+		gtk_window_move (GTK_WINDOW(parent_window),
+					prefs.hex_gui_win_left, prefs.hex_gui_win_top);
+	}
+}
+
 void
 menu_middlemenu (session *sess, GdkEventButton *event)
 {
@@ -1722,6 +1739,8 @@ static struct mymenu mymenu[] = {
 		{N_("Text"), menu_metres_text, 0, M_MENURADIO, 0, 0, 1},
 		{N_("Both"), menu_metres_both, 0, M_MENURADIO, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},	/* 32 */
+	{ 0, 0, 0, M_SEP, 0, 0, 0 },
+	{N_ ("Toggle _Fullscreen"), menu_fullscreen_toggle, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_F11},
 
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
@@ -1729,7 +1748,7 @@ static struct mymenu mymenu[] = {
 	{N_("_Join a Channel..."), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
 	{N_("_List of Channels..."), menu_chanlist, GTK_STOCK_INDEX, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-#define AWAY_OFFSET (39)
+#define AWAY_OFFSET (41)
 	{N_("Marked _Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_a},
 
 	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 40 */
@@ -1762,7 +1781,7 @@ static struct mymenu mymenu[] = {
 	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
-#define SEARCH_OFFSET 68
+#define SEARCH_OFFSET (70)
 	{N_("Search"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},
 		{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
 		{N_("Search Next"   ), menu_search_next, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_g},
@@ -1770,11 +1789,7 @@ static struct mymenu mymenu[] = {
 		{0, 0, 0, M_END, 0, 0, 0},
 
 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 74 */
-
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
-#if 0
-	{N_("Check for updates"), menu_update, 0, M_MENUITEM, 0, 1},
-#endif
 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
 
 	{0, 0, 0, M_END, 0, 0, 0},
@@ -2296,6 +2311,7 @@ normalitem:
 				gtk_widget_add_accelerator (item, "activate", accel_group,
 										mymenu[i].key,
 										mymenu[i].key == GDK_F1 ? 0 :
+										mymenu[i].key == GDK_F11 ? 0 :
 										mymenu[i].key == GDK_w ? close_mask :
 										(g_ascii_isupper (mymenu[i].key)) ?
 											STATE_SHIFT | STATE_CTRL :
