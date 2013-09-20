@@ -1197,7 +1197,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				if (*to)
 				{
 					/* Handle limited channel messages, for now no special event */
-					if (strchr (serv->nick_prefixes, to[0]) != NULL)
+					if (strchr (serv->chantypes, to[0]) == NULL
+						&& strchr (serv->nick_prefixes, to[0]) != NULL)
 						to++;
 						
 					text = word_eol[4];
