@@ -274,7 +274,10 @@ match_channel (const char *word, int *start, int *end)
 	/* Check for +#channel (for example whois output) */
 	if (strchr (nick_prefixes, word[*start]) != NULL
 		 && strchr (chan_prefixes, word[*start + 1]) != NULL)
+	{
+		(*start)++;
 		return TRUE;
+	}
 	/* Or just #channel */
 	else if (strchr (chan_prefixes, word[*start]) != NULL)
 		return TRUE;
