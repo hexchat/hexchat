@@ -746,7 +746,7 @@ cmd_cycle (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *chan = word[2];
 	if (!*chan)
 		chan = sess->channel;
-	if (*chan && sess->type == SESS_CHANNEL)
+	if (*chan)
 	{
 		sess->server->p_cycle (sess->server, chan, key);
 		return TRUE;
