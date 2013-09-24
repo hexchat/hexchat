@@ -1441,24 +1441,26 @@ menu_pluginlist (void)
                            "&2 would be \042john hello\042.")
 
 #define ulbutton_help       _("Userlist Buttons - Special codes:\n\n"\
-                           "%a  =  all selected nicks\n"\
-                           "%c  =  current channel\n"\
-									"%e  =  current network name\n"\
-                           "%h  =  selected nick's hostname\n"\
-									"%m  =  machine info\n"\
-                           "%n  =  your nick\n"\
-                           "%s  =  selected nick\n"\
-									"%t  =  time/date\n")
+							"%a  =  all selected nicks\n"\
+							"%c  =  current channel\n"\
+							"%e  =  current network name\n"\
+							"%h  =  selected nick's hostname\n"\
+							"%m  =  machine info\n"\
+							"%n  =  your nick\n"\
+							"%s  =  selected nick\n"\
+							"%t  =  time/date\n"\
+							"%u  =  selected uses account")
 
 #define dlgbutton_help      _("Dialog Buttons - Special codes:\n\n"\
-                           "%a  =  all selected nicks\n"\
-                           "%c  =  current channel\n"\
-									"%e  =  current network name\n"\
-                           "%h  =  selected nick's hostname\n"\
-									"%m  =  machine info\n"\
-                           "%n  =  your nick\n"\
-                           "%s  =  selected nick\n"\
-									"%t  =  time/date\n")
+							"%a  =  all selected nicks\n"\
+							"%c  =  current channel\n"\
+							"%e  =  current network name\n"\
+							"%h  =  selected nick's hostname\n"\
+							"%m  =  machine info\n"\
+							"%n  =  your nick\n"\
+							"%s  =  selected nick\n"\
+							"%t  =  time/date\n"\
+							"%u  =  selected uses account")
 
 #define ctcp_help          _("CTCP Replies - Special codes:\n\n"\
                            "%d  =  data (the whole ctcp)\n"\
