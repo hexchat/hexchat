@@ -2569,7 +2569,8 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 char *
 split_up_text(struct session *sess, char *text, int cmd_length, char *split_text)
 {
-	unsigned int max;
+	unsigned int max, space_offset;
+	char *space;
 
 	/* maximum allowed text */
 	/* :nickname!username@host.com cmd_length */
@@ -2601,6 +2602,17 @@ split_up_text(struct session *sess, char *text, int cmd_length, char *split_text
 			i += size;
 		}
 		max = i;
+
+		/* Try splitting at last space */
+		space = g_utf8_strrchr (text, max, ' ');
+		if (space)
+		{
+			space_offset = g_utf8_pointer_to_offset (text, space);
+
+			/* Only split if last word is of sane length */
+			if (max != space_offset && max - space_offset < 20)
+				max = space_offset + 1;
+		}
 
 		split_text = g_strdup_printf ("%.*s", max, text);
 
