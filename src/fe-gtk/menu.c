@@ -1449,7 +1449,7 @@ menu_pluginlist (void)
 							"%n  =  your nick\n"\
 							"%s  =  selected nick\n"\
 							"%t  =  time/date\n"\
-							"%u  =  selected uses account")
+							"%u  =  selected users account")
 
 #define dlgbutton_help      _("Dialog Buttons - Special codes:\n\n"\
 							"%a  =  all selected nicks\n"\
@@ -1460,7 +1460,7 @@ menu_pluginlist (void)
 							"%n  =  your nick\n"\
 							"%s  =  selected nick\n"\
 							"%t  =  time/date\n"\
-							"%u  =  selected uses account")
+							"%u  =  selected users account")
 
 #define ctcp_help          _("CTCP Replies - Special codes:\n\n"\
                            "%d  =  data (the whole ctcp)\n"\
