@@ -1404,7 +1404,7 @@ mg_link_gentab (chan *ch, GtkWidget *box)
 	win = gtkutil_window_new (g_object_get_data (G_OBJECT (box), "title"), "",
 									  GPOINTER_TO_INT (g_object_get_data (G_OBJECT (box), "w")),
 									  GPOINTER_TO_INT (g_object_get_data (G_OBJECT (box), "h")),
-									  3);
+									  2);
 	/* so it doesn't try to chan_remove (there's no tab anymore) */
 	g_object_steal_data (G_OBJECT (box), "ch");
 	gtk_container_set_border_width (GTK_CONTAINER (box), 0);
@@ -3643,7 +3643,7 @@ mg_create_generic_tab (char *name, char *title, int force_toplevel,
 
 	if (force_toplevel || !prefs.hex_gui_tab_utils)
 	{
-		win = gtkutil_window_new (title, name, width, height, 3);
+		win = gtkutil_window_new (title, name, width, height, 2);
 		vbox = gtk_vbox_new (0, 0);
 		*vbox_ret = vbox;
 		gtk_container_add (GTK_CONTAINER (win), vbox);

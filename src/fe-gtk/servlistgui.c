@@ -1650,7 +1650,6 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	snprintf (buf, sizeof (buf), _(DISPLAY_NAME": Edit %s"), net->name);
 	gtk_window_set_title (GTK_WINDOW (editwindow), buf);
 	gtk_window_set_default_size (GTK_WINDOW (editwindow), netedit_win_width, netedit_win_height);
-	gtk_window_set_position (GTK_WINDOW (editwindow), GTK_WIN_POS_MOUSE);
 	gtk_window_set_transient_for (GTK_WINDOW (editwindow), GTK_WINDOW (parent));
 	gtk_window_set_modal (GTK_WINDOW (editwindow), TRUE);
 	gtk_window_set_type_hint (GTK_WINDOW (editwindow), GDK_WINDOW_TYPE_HINT_DIALOG);
@@ -1916,7 +1915,6 @@ servlist_open_networks (void)
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
 	gtk_window_set_title (GTK_WINDOW (servlist), _(DISPLAY_NAME": Network List"));
 	gtk_window_set_default_size (GTK_WINDOW (servlist), netlist_win_width, netlist_win_height);
-	gtk_window_set_position (GTK_WINDOW (servlist), GTK_WIN_POS_MOUSE);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");
 	gtk_window_set_type_hint (GTK_WINDOW (servlist), GDK_WINDOW_TYPE_HINT_DIALOG);
 	if (current_sess)
