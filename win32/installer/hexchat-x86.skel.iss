@@ -70,7 +70,7 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 
 [Run]
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
-Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=30679"; Description: "Download Visual C++ 2012 Redistributable"; Flags: shellexec runasoriginaluser postinstall skipifsilent
+Filename: "https://www.microsoft.com/en-us/download/details.aspx?id=39315"; Description: "Download Visual C++ 2013 Redistributable"; Flags: shellexec runasoriginaluser postinstall skipifsilent
 Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
 Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
 Filename: "http://hexchat.org/downloads.html"; Description: "Download Python"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python and not langs\perl
