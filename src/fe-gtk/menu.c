@@ -600,7 +600,7 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 {
 	char buf[512];
 	char unknown[96];
-	char *real, *fmt;
+	char *real, *fmt, *users_country;
 	struct away_msg *away;
 	gboolean missing = FALSE;
 	GtkWidget *item;
@@ -637,12 +637,14 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 							G_CALLBACK (copy_to_clipboard_cb), 
 							user->account ? user->account : unknown);
 
-	snprintf (buf, sizeof (buf), fmt, _("Country:"),
-				 user->hostname ? country(user->hostname) : unknown);
-	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
-	g_signal_connect (G_OBJECT (item), "activate",
-							G_CALLBACK (copy_to_clipboard_cb), 
-							user->hostname ? country(user->hostname) : unknown);
+	users_country = country (user->hostname);
+	if (users_country)
+	{
+		snprintf (buf, sizeof (buf), fmt, _ ("Country:"), users_country);
+		item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+		g_signal_connect (G_OBJECT (item), "activate",
+			G_CALLBACK (copy_to_clipboard_cb), users_country);
+	}
 
 	snprintf (buf, sizeof (buf), fmt, _("Server:"),
 				 user->servername ? user->servername : unknown);

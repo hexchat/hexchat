@@ -1253,7 +1253,7 @@ country (char *hostname)
 	domain_t *dom;
 
 	if (!hostname || !*hostname || isdigit ((unsigned char) hostname[strlen (hostname) - 1]))
-		return _("Unknown");
+		return NULL;
 	if ((p = strrchr (hostname, '.')))
 		p++;
 	else
@@ -1263,7 +1263,7 @@ country (char *hostname)
 						sizeof (domain_t), country_compare);
 
 	if (!dom)
-		return _("Unknown");
+		return NULL;
 
 	return _(dom->country);
 }
