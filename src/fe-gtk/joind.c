@@ -132,7 +132,10 @@ joind_show_dialog (server *serv)
 	serv->gui->joind_win = dialog1 = gtk_dialog_new ();
 	gtk_window_set_title (GTK_WINDOW (dialog1), _(DISPLAY_NAME": Connection Complete"));
 	gtk_window_set_type_hint (GTK_WINDOW (dialog1), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_window_set_position (GTK_WINDOW (dialog1), GTK_WIN_POS_MOUSE);
+	gtk_window_set_position (GTK_WINDOW (dialog1), GTK_WIN_POS_CENTER_ON_PARENT);
+	gtk_window_set_transient_for (GTK_WINDOW(dialog1), GTK_WINDOW(serv->front_session->gui->window));
+	gtk_window_set_modal (GTK_WINDOW (dialog1), TRUE);
+	gtk_window_set_resizable (GTK_WINDOW (dialog1), FALSE);
 
 	dialog_vbox1 = gtk_dialog_get_content_area (GTK_DIALOG (dialog1));
 	gtk_widget_show (dialog_vbox1);
