@@ -41,7 +41,6 @@ AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
-dnl AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
 AH_VERBATIM([USE_SHM],[#undef USE_SHM])
 AH_VERBATIM([USE_GTKSPELL],[#undef USE_GTKSPELL])
 AH_VERBATIM([USE_LIBSEXY],[#undef USE_LIBSEXY])
@@ -107,10 +106,6 @@ AC_ARG_ENABLE(gtkfe,
 AC_ARG_ENABLE(textfe,
 	[AS_HELP_STRING([--enable-textfe],[build the text frontend (default: no)])],
         textfe=$enableval, textfe=no)
-
-dnl AC_ARG_ENABLE(gnome,
-dnl 	[AS_HELP_STRING([--disable-gnome],[disable use of gnome])],
-dnl        gnome=$enableval, gnome=yes)
 
 AC_ARG_ENABLE(xlib,
 	[AS_HELP_STRING([--disable-xlib],[disable use of xlib (for non X11 systems)])],
@@ -232,38 +227,8 @@ if test "$gtkfe" = yes ; then
 	fi
 fi
 
-if test "$gtkfe" != yes; then
-	gnome=no
-fi
-
-dnl *********************************************************************
-dnl ** GNOME ************************************************************
-dnl *********************************************************************
-
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
-
-#if test "$gnome" = yes; then
-#	AC_MSG_CHECKING(Gnome2 compile flags)
-#	GNOME_CFLAGS="`$PKG_CONFIG libgnome-2.0 --cflags 2>/dev/null`"
-#	if test "_$GNOME_CFLAGS" = _ ; then
-#		gnome=no
-#		AC_MSG_RESULT([Gnome not found, building without it.])
-#	else
-#		GNOME_VER="`$PKG_CONFIG libgnome-2.0 --modversion`"
-#		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG libgnome-2.0 --libs`"
-#		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
-#		AC_DEFINE(USE_GNOME)
-#		AC_MSG_RESULT(ok)
-#	fi
-#fi
-
-# GConf
-#if test "$gnome" != no ; then
-#	AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-#else
-#	GCONFTOOL=no
-#fi
 
 dnl *********************************************************************
 dnl ** XFT **************************************************************
@@ -683,7 +648,6 @@ AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
-#AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
 AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
 
 dnl *********************************************************************
