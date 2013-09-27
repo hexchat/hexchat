@@ -21,16 +21,6 @@
 #define HEXCHAT_XTEXT_H
 
 #include <gtk/gtk.h>
-#ifdef USE_XFT
-#include <X11/Xft/Xft.h>
-#endif
-
-#ifdef USE_SHM
-#include <X11/Xlib.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <X11/extensions/XShm.h>
-#endif
 
 #define GTK_TYPE_XTEXT              (gtk_xtext_get_type ())
 #define GTK_XTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GTK_TYPE_XTEXT, GtkXText))
@@ -132,10 +122,6 @@ struct _GtkXText
 	xtext_buffer *orig_buffer;
 	xtext_buffer *selection_buffer;
 
-#ifdef USE_SHM
-	XShmSegmentInfo shminfo;
-#endif
-
 	GtkAdjustment *adj;
 	GdkPixmap *pixmap;				/* 0 = use palette[19] */
 	GdkDrawable *draw_buf;			/* points to ->window */
@@ -188,14 +174,6 @@ struct _GtkXText
 
 	guint16 fontwidth[128];	  /* each char's width, only the ASCII ones */
 
-#ifdef USE_XFT
-	XftColor color[XTEXT_COLS];
-	XftColor *xft_fg;
-	XftColor *xft_bg;				/* both point into color[20] */
-	XftDraw *xftdraw;
-	XftFont *font;
-	XftFont *ifont;				/* italics */
-#else
 	struct pangofont
 	{
 		PangoFontDescription *font;
@@ -204,7 +182,6 @@ struct _GtkXText
 		int descent;
 	} *font, pango_font;
 	PangoLayout *layout;
-#endif
 
 	int fontsize;
 	int space_width;				  /* width (pixels) of the space " " character */
@@ -258,7 +235,6 @@ struct _GtkXText
 	unsigned int recycle:1;
 	unsigned int avoid_trans:1;
 	unsigned int force_render:1;
-	unsigned int shm:1;
 	unsigned int color_paste:1; /* CTRL was pressed when selection finished */
 
 	/* settings/prefs */

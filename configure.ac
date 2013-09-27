@@ -41,17 +41,14 @@ AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
-AH_VERBATIM([USE_SHM],[#undef USE_SHM])
 AH_VERBATIM([USE_GTKSPELL],[#undef USE_GTKSPELL])
 AH_VERBATIM([USE_LIBSEXY],[#undef USE_LIBSEXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
-AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
-AH_VERBATIM([USE_XFT],[#undef USE_XFT])
 AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
 AH_VERBATIM([USE_SIGACTION],[#undef USE_SIGACTION])
 AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
@@ -90,10 +87,6 @@ AC_ARG_ENABLE(socks,
 AC_ARG_ENABLE(ipv6,
 	[AS_HELP_STRING([--disable-ipv6],[disable IPv6])],
         ipv6=$enableval, ipv6=yes)
-
-AC_ARG_ENABLE(xft,
-	[AS_HELP_STRING([--enable-xft],[enable use of Xft directly (default: no)])],
-        xft=$enableval, xft=no)
 
 AC_ARG_ENABLE(openssl,
 	[AS_HELP_STRING([--enable-openssl[=PATH]],[enable use of openSSL])],
@@ -155,15 +148,6 @@ AC_ARG_ENABLE(libnotify,
 AC_ARG_ENABLE(libcanberra,
 	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
 		libcanberra=$enableval, libcanberra=yes)
-
-
-AC_ARG_ENABLE(mmx,
-	[AS_HELP_STRING([--disable-mmx],[disable MMX assembly routines])],
-        mmx=$enableval, mmx=yes)
-
-AC_ARG_ENABLE(shm,
-	[AS_HELP_STRING([--enable-shm],[enable use of XShm for fast tinting (default: no)])],
-        shm=$enableval, shm=no)
 
 AC_ARG_ENABLE(spell,
 	[AS_HELP_STRING([--enable-spell=type],[enable spelling type: none static libsexy gtkspell])],
@@ -231,26 +215,6 @@ GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
 
 dnl *********************************************************************
-dnl ** XFT **************************************************************
-dnl *********************************************************************
-
-if test "$xft" = yes; then
-	if $PKG_CONFIG xft --exists; then
-		GUI_CFLAGS="$GUI_CFLAGS `$PKG_CONFIG xft --cflags`"
-		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG xft --libs`"
-	else
-		xft=no
-		oldCPPFLAGS=$CPPFLAGS
-		CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
-		AC_CHECK_HEADERS(X11/Xft/Xft.h, xft=yes)
-		CPPFLAGS=$oldCPPFLAGS
-	fi
-	if test "$xft" = yes; then
-		AC_DEFINE(USE_XFT)
-	fi
-fi
-
-dnl *********************************************************************
 dnl ** XLIB *************************************************************
 dnl *********************************************************************
 
@@ -261,8 +225,6 @@ if test "$xlib" = yes; then
 	else
 		AC_CHECK_LIB(X11, XSetWMHints)
 	fi
-else
-	shm=no
 fi
 
 dnl *********************************************************************
@@ -682,61 +644,6 @@ if test "x$ntlm" = "xyes" ; then
 fi
 
 dnl *********************************************************************
-dnl ** XShm *************************************************************
-dnl *********************************************************************
-
-if test "$shm" = yes; then
-	oldl=$LIBS
-	oldc=$CPPFLAGS
-	LIBS="$LIBS `$PKG_CONFIG --libs-only-L xft`"
-	CPPFLAGS="$CPPFLAGS `$PKG_CONFIG --cflags-only-I xft`"
-	shm=no
-	AC_CHECK_LIB(Xext, XShmAttach, shm=yes)
-	if test "$shm" = yes; then
-		shm=no
-		AC_CHECK_HEADERS(sys/ipc.h, shm=yes)
-		if test "$shm" = yes; then
-			shm=no
-			AC_CHECK_HEADERS(sys/shm.h, shm=yes)
-		fi
-	fi
-
-	LIBS=$oldl
-	if test "$shm" = yes; then
-		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG --libs-only-L xft` -lX11 -lXext"
-		AC_DEFINE(USE_SHM)
-	else
-		CPPFLAGS=$oldc
-	fi
-fi
-
-dnl *********************************************************************
-dnl ** MMX **************************************************************
-dnl *********************************************************************
-
-dnl we don't need mmx on *this* machine, just i386, because
-dnl it's checked at runtime.
-if test "$mmx" = "yes"; then
-	case $host_cpu in
-    i386|i486|i586|i686|i786|k6|k7)
-    mmx=yes
-        ;;
-     *)
-    mmx=no
-	esac
-	if test "$system" = "OpenBSD"; then
-		dnl openbsd fails because mmx_cmod doesn't prefix its symbols with underscore.
-		dnl xtext.o: Undefined symbol `_shade_ximage_15_mmx' referenced from text segment
-		mmx=no
-	fi
-	if test "$mmx" = "yes"; then
-		AC_DEFINE(USE_MMX)
-	fi
-fi
-
-AM_CONDITIONAL(USE_MMX, test "$mmx" = "yes")
-
-dnl *********************************************************************
 dnl ** GCC FLAGS ********************************************************
 dnl *********************************************************************
 
@@ -956,13 +863,6 @@ echo GTK+ interface ........ : $gtkfe
 echo Text interface ........ : $textfe
 echo Theme manager ......... : $theme_manager
 echo
-echo MMX tinting ........... : $mmx
-echo XShm tinting .......... : $shm
-if test "$xft" = no; then
-  echo Text backend .......... : Pango
-else
-  echo Text backend .......... : Xft
-fi
 echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
