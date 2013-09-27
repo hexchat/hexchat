@@ -39,10 +39,6 @@
 
 #ifdef WIN32
 #include <io.h>
-#if 0	/* native file dialogs */
-#include "../common/fe.h"
-#include "../common/thread.h"
-#endif
 #else
 #include <unistd.h>
 #endif
@@ -57,15 +53,6 @@ struct file_req
 	void *userdata;
 	filereqcallback callback;
 	int flags;		/* FRF_* flags */
-
-#if 0	/* native file dialogs */
-#ifdef WIN32
-	int multiple;
-	thread *th;
-	char *title;	/* native locale */
-	char *filter;
-#endif
-#endif
 };
 
 static void
