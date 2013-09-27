@@ -529,9 +529,6 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 			gtk_window_get_size (GTK_WINDOW (wid), &prefs.hex_gui_dialog_width,
 										&prefs.hex_gui_dialog_height);
 		}
-
-		if (((GtkXText *) sess->gui->xtext)->transparent)
-			gtk_widget_queue_draw (sess->gui->xtext);
 	}
 
 	return FALSE;
@@ -1504,7 +1501,7 @@ mg_create_color_menu (GtkWidget *menu, session *sess)
 
 	mg_markup_item (submenu, _("<b>Bold</b>"), 100);
 	mg_markup_item (submenu, _("<u>Underline</u>"), 101);
-	/*mg_markup_item (submenu, _("<i>Italic</i>"), 102);*/
+	mg_markup_item (submenu, _("<i>Italic</i>"), 102);
 	mg_markup_item (submenu, _("Normal"), 103);
 
 	subsubmenu = mg_submenu (submenu, _("Colors 0-7"));
@@ -2333,8 +2330,7 @@ mg_update_xtext (GtkWidget *wid)
 
 	gtk_xtext_set_palette (xtext, colors);
 	gtk_xtext_set_max_lines (xtext, prefs.hex_text_max_lines);
-	gtk_xtext_set_tint (xtext, prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
-	gtk_xtext_set_background (xtext, channelwin_pix, prefs.hex_text_transparent);
+	gtk_xtext_set_background (xtext, channelwin_pix);
 	gtk_xtext_set_wordwrap (xtext, prefs.hex_text_wordwrap);
 	gtk_xtext_set_show_marker (xtext, prefs.hex_text_show_marker);
 	gtk_xtext_set_show_separator (xtext, prefs.hex_text_indent ? prefs.hex_text_show_sep : 0);
@@ -2345,23 +2341,7 @@ mg_update_xtext (GtkWidget *wid)
 		exit (1);
 	}
 
-	gtk_xtext_refresh (xtext, FALSE);
-}
-
-/* handle errors reported by xtext */
-
-static void
-mg_xtext_error (int type)
-{
-	switch (type)
-	{
-	case 0:
-		fe_message (_("Unable to set transparent background!\n\n"
-						"You may be using a non-compliant window\n"
-						"manager that is not currently supported.\n"), FE_MSG_WARN);
-		prefs.hex_text_transparent = 0;
-		/* no others exist yet */
-	}
+	gtk_xtext_refresh (xtext);
 }
 
 static void
@@ -2394,7 +2374,6 @@ mg_create_textarea (session *sess, GtkWidget *box)
 	xtext = GTK_XTEXT (gui->xtext);
 	gtk_xtext_set_max_indent (xtext, prefs.hex_text_max_indent);
 	gtk_xtext_set_thin_separator (xtext, prefs.hex_text_thin_sep);
-	gtk_xtext_set_error_function (xtext, mg_xtext_error);
 	gtk_xtext_set_urlcheck_function (xtext, mg_word_check);
 	gtk_xtext_set_max_lines (xtext, prefs.hex_text_max_lines);
 	gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (xtext));
@@ -3207,6 +3186,7 @@ mg_create_topwindow (session *sess)
 										  prefs.hex_gui_win_height, 0);
 	sess->gui->window = win;
 	gtk_container_set_border_width (GTK_CONTAINER (win), GUI_BORDER);
+	gtk_window_set_opacity (GTK_WINDOW (win), (prefs.hex_gui_transparency / 255.));
 
 	g_signal_connect (G_OBJECT (win), "focus_in_event",
 							G_CALLBACK (mg_topwin_focus_cb), sess);
@@ -3311,6 +3291,7 @@ mg_create_tabwindow (session *sess)
 		gtk_window_maximize (GTK_WINDOW (win));
 	if (prefs.hex_gui_win_fullscreen)
 		gtk_window_fullscreen (GTK_WINDOW (win));
+	gtk_window_set_opacity (GTK_WINDOW (win), (prefs.hex_gui_transparency / 255.));
 	gtk_container_set_border_width (GTK_CONTAINER (win), GUI_BORDER);
 
 	g_signal_connect (G_OBJECT (win), "delete_event",

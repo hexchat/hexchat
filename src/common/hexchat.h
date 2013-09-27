@@ -284,6 +284,7 @@ struct hexchatprefs
 	int hex_gui_tab_pos;
 	int hex_gui_tab_small;
 	int hex_gui_tab_trunc;
+	int hex_gui_transparency;
 	int hex_gui_throttlemeter;
 	int hex_gui_ulist_pos;
 	int hex_gui_ulist_sort;
@@ -306,9 +307,6 @@ struct hexchatprefs
 	int hex_notify_timeout;
 	int hex_text_max_indent;
 	int hex_text_max_lines;
-	int hex_text_tint_blue;
-	int hex_text_tint_green;
-	int hex_text_tint_red;
 	int hex_url_grabber_limit;
 
 	/* STRINGS */
