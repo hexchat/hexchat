@@ -327,9 +327,6 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 
 	xtext_draw_layout_line (xtext->draw_buf, gc, x, y, line);
 
-	if (xtext->overdraw)
-		xtext_draw_layout_line (xtext->draw_buf, gc, x, y, line);
-
 	if (xtext->bold)
 		xtext_draw_layout_line (xtext->draw_buf, gc, x + 1, y, line);
 
@@ -405,7 +402,6 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->recycle = FALSE;
 	xtext->dont_render = FALSE;
 	xtext->dont_render2 = FALSE;
-	xtext->overdraw = FALSE;
 
 	xtext->adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 1, 1, 1, 1);
 	g_object_ref (G_OBJECT (xtext->adj));
@@ -426,9 +422,6 @@ gtk_xtext_init (GtkXText * xtext)
 		gtk_selection_add_targets (GTK_WIDGET (xtext), GDK_SELECTION_PRIMARY,
 											targets, n_targets);
 	}
-
-	if (getenv ("HEXCHAT_OVERDRAW"))
-		xtext->overdraw = TRUE;
 }
 
 static void

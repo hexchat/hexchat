@@ -237,7 +237,6 @@ struct _GtkXText
 	unsigned int marker:1;
 	unsigned int separator:1;
 	unsigned int wordwrap:1;
-	unsigned int overdraw:1;
 	unsigned int ignore_hidden:1;	/* rawlog uses this */
 };
 
