@@ -52,10 +52,6 @@
 #include "urlgrab.h"
 #include "setup.h"
 
-#ifdef USE_XLIB
-#include <gdk/gdkx.h>
-#endif
-
 #ifdef USE_LIBCANBERRA
 #include <canberra.h>
 #endif
@@ -64,49 +60,6 @@ GdkPixmap *channelwin_pix;
 
 #ifdef USE_LIBCANBERRA
 static ca_context *ca_con;
-#endif
-
-#ifdef USE_XLIB
-
-static void
-redraw_trans_xtexts (void)
-{
-	GSList *list = sess_list;
-	session *sess;
-	int done_main = FALSE;
-
-	while (list)
-	{
-		sess = list->data;
-		if (GTK_XTEXT (sess->gui->xtext)->transparent)
-		{
-			if (!sess->gui->is_tab || !done_main)
-				gtk_xtext_refresh (GTK_XTEXT (sess->gui->xtext), 1);
-			if (sess->gui->is_tab)
-				done_main = TRUE;
-		}
-		list = list->next;
-	}
-}
-
-static GdkFilterReturn
-root_event_cb (GdkXEvent *xev, GdkEventProperty *event, gpointer data)
-{
-	static Atom at = None;
-	XEvent *xevent = (XEvent *)xev;
-
-	if (xevent->type == PropertyNotify)
-	{
-		if (at == None)
-			at = XInternAtom (xevent->xproperty.display, "_XROOTPMAP_ID", True);
-
-		if (at == xevent->xproperty.atom)
-			redraw_trans_xtexts ();
-	}
-
-	return GDK_FILTER_CONTINUE;
-}
-
 #endif
 
 /* === command-line parameter parsing : requires glib 2.6 === */
@@ -280,11 +233,6 @@ fe_args (int argc, char *argv[])
 #endif
 
 	gtk_init (&argc, &argv);
-
-#ifdef USE_XLIB
-	gdk_window_set_events (gdk_get_default_root_window (), GDK_PROPERTY_CHANGE_MASK);
-	gdk_window_add_filter (gdk_get_default_root_window (), (GdkFilterFunc)root_event_cb, NULL);
-#endif
 
 	return -1;
 }
