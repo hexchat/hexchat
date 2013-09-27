@@ -3749,7 +3749,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 	overlap = xtext->buffer->last_pixel_pos - pos;
 	xtext->buffer->last_pixel_pos = pos;
 
-	if (abs (overlap) < height)
+	if (!xtext->pixmap && abs (overlap) < height)
 	{
 		/* so the obscured regions are exposed */
 		gdk_gc_set_exposures (xtext->fgc, TRUE);
