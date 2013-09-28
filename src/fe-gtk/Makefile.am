@@ -11,7 +11,8 @@ EXTRA_DIST = \
 	chanview-tree.c custom-list.h editlist.h fe-gtk.h fkeys.h gtkutil.h joind.h \
 	maingui.h menu.h notifygui.h palette.h pixmaps.h \
 	plugin-tray.h plugingui.c plugingui.h rawlog.h sexy-iso-codes.h \
-	sexy-spell-entry.h sexy-marshal.h textgui.h urlgrab.h userlistgui.h xtext.h
+	sexy-spell-entry.h sexy-marshal.h textgui.h urlgrab.h userlistgui.h xtext.h \
+	../../data/hexchat.gresource.xml
 
 if DO_PLUGIN
 plugingui_c = plugingui.c
@@ -25,5 +26,8 @@ endif
 hexchat_SOURCES = ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	dccgui.c editlist.c fe-gtk.c fkeys.c gtkutil.c ignoregui.c joind.c menu.c \
 	maingui.c notifygui.c palette.c pixmaps.c plugin-tray.c $(plugingui_c) \
-	rawlog.c servlistgui.c setup.c $(sexy_spell) textgui.c \
+	rawlog.c resources.c servlistgui.c setup.c $(sexy_spell) textgui.c \
 	urlgrab.c userlistgui.c xtext.c
+
+resources.c: ../../data/hexchat.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=../../data --generate-dependencies ../../data/hexchat.gresource.xml)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=../../data --generate-source $<

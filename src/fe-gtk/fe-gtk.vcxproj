@@ -22,13 +22,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -97,6 +95,12 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <PreBuildEvent>
+      <Command>$(DepsRoot)\bin\glib-compile-resources.exe --generate-source --sourcedir $(DataDir) --target "$(ProjectDir)resources.c" "$(DataDir)hexchat.gresource.xml"</Command>
+      <Message>Build gresource file</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ascii.h" />
     <ClInclude Include="banlist.h" />
@@ -147,6 +151,7 @@
     <ClCompile Include="plugin-tray.c" />
     <ClCompile Include="plugingui.c" />
     <ClCompile Include="rawlog.c" />
+    <ClCompile Include="resources.c" />
     <ClCompile Include="servlistgui.c" />
     <ClCompile Include="setup.c" />
     <ClCompile Include="sexy-iso-codes.c" />
@@ -164,7 +169,10 @@
     <ResourceCompile Include="hexchat.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\share\icons\hexchat.ico" />
+    <None Include="..\..\data\icons\hexchat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\data\hexchat.gresource.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

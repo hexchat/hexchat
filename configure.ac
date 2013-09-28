@@ -731,12 +731,6 @@ AC_TRY_COMPILE(
 	],
 	AC_MSG_RESULT(no))
 
-AC_PATH_PROG(gdkpixbufcsourcepath, gdk-pixbuf-csource)
-AC_SUBST(gdkpixbufcsourcepath)
-if test "$gtkfe" != no -a "_$gdkpixbufcsourcepath" = _; then
-	AC_MSG_ERROR(Cannot find gdk-pixbuf-csource: Install GTK+ 2.0!)
-fi
-
 dnl if we don\'t have this, use g_snprintf instead
 AC_CHECK_FUNCS(snprintf vsnprintf memrchr strtoull)
 
@@ -811,11 +805,12 @@ AC_SUBST(hexchatlibdir)
 
 AC_CONFIG_FILES([
 Makefile
-share/Makefile
-share/icons/Makefile
-share/misc/Makefile
-share/pkgconfig/Makefile
-share/pkgconfig/hexchat-plugin.pc
+data/Makefile
+data/icons/Makefile
+data/misc/Makefile
+data/man/Makefile
+data/pkgconfig/Makefile
+data/pkgconfig/hexchat-plugin.pc
 src/Makefile
 src/common/Makefile
 src/common/dbus/Makefile
@@ -823,7 +818,6 @@ src/fe-text/Makefile
 src/fe-gtk/Makefile
 src/htm/Makefile
 src/htm/thememan
-src/pixmaps/Makefile
 plugins/Makefile
 plugins/python/Makefile
 plugins/perl/Makefile
@@ -833,7 +827,6 @@ plugins/fishlim/Makefile
 plugins/sysinfo/Makefile
 intl/Makefile
 po/Makefile.in
-man/Makefile
 ])
 
 AC_OUTPUT

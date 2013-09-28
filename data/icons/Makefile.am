@@ -1,4 +1,4 @@
-icon_DATA = ../../src/pixmaps/hexchat.png
+icon_DATA = hexchat.png
 icondir = $(datadir)/icons/hicolor/48x48/apps
 
 hicolor_DATA = hexchat.svg
