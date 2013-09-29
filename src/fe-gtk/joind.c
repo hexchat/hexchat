@@ -86,7 +86,7 @@ joind_ok_cb (GtkWidget *ok, server *serv)
 	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (serv->gui->joind_radio2)))
 	{
 		char *text = (char *)gtk_entry_get_text (GTK_ENTRY (serv->gui->joind_entry));
-		if (strlen (text) < 2)
+		if (strlen (text) < 1)
 		{
 			fe_message (_("Channel name too short, try again."), FE_MSG_ERROR);
 			return;
