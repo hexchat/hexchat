@@ -185,6 +185,9 @@
     <ClCompile Include="xtext.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="resources.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="hexchat.exe.manifest">
@@ -197,8 +200,11 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\share\icons\hexchat.ico">
+    <None Include="..\..\data\icons\hexchat.ico">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\data\hexchat.gresource.xml" />
   </ItemGroup>
 </Project>

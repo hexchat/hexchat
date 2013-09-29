@@ -4,7 +4,7 @@ AppPublisherURL=http://www.hexchat.org/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
 AppSupportURL=https://github.com/hexchat/hexchat/issues
 AppUpdatesURL=http://www.hexchat.org/home/downloads
-LicenseFile=share\doc\hexchat\COPYING
+LicenseFile=COPYING
 UninstallDisplayIcon={app}\hexchat.exe
 UninstallDisplayName=HexChat (x86)
 DefaultDirName={pf}\HexChat
@@ -85,8 +85,7 @@ Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: gtktheme
 ;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: libs and not gtkengines
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
-Source: "share\doc\*"; DestDir: "{app}\share\doc"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
-
+Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
 
 Source: "atk-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs

@@ -1,6 +1,6 @@
 # HexChat ReadMe
 
-X-Chat ("xchat") Copyright (c) 1998-2010 By Peter Zelezny.  
+X-Chat ("xchat") Copyright (c) 1998-2010 By Peter Zelezny.
 HexChat ("hexchat") Copyright (c) 2009-2013 By Berke Viktor.
 
 This program is released under the GPL v2 with the additional exemption
