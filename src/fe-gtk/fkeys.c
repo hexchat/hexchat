@@ -392,6 +392,8 @@ key_load_defaults ()
 		"C\no\nInsert in Buffer\nD1:\nD2!\n\n"\
 		"C\nb\nInsert in Buffer\nD1:\nD2!\n\n"\
 		"C\nk\nInsert in Buffer\nD1:\nD2!\n\n"\
+		"C\ni\nInsert in Buffer\nD1:\nD2!\n\n"\
+		"C\nu\nInsert in Buffer\nD1:\nD2!\n\n"\
 		"S\nNext\nChange Selected Nick\nD1!\nD2!\n\n"\
 		"S\nPrior\nChange Selected Nick\nD1:Up\nD2!\n\n"\
 		"None\nNext\nScroll Page\nD1:Down\nD2!\n\n"\
