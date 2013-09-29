@@ -166,7 +166,6 @@ static void
 backend_font_close (GtkXText *xtext)
 {
 	pango_font_description_free (xtext->font->font);
-	pango_font_description_free (xtext->font->ifont);
 }
 
 static void
@@ -221,8 +220,6 @@ backend_font_open (GtkXText *xtext, char *name)
 		xtext->font = NULL;
 		return;
 	}
-	xtext->font->ifont = backend_font_open_real (name);
-	pango_font_description_set_style (xtext->font->ifont, PANGO_STYLE_ITALIC);
 
 	backend_init (xtext);
 	pango_layout_set_font_description (xtext->layout, xtext->font->font);
@@ -306,10 +303,29 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	GdkGCValues val;
 	GdkColor col;
 	PangoLayoutLine *line;
+	PangoAttrList *attr_list;
+	PangoAttribute *attr;
+
+	attr_list = pango_attr_list_new ();
 
 	if (xtext->italics)
-		pango_layout_set_font_description (xtext->layout, xtext->font->ifont);
+	{
+		attr = pango_attr_style_new (PANGO_STYLE_ITALIC);
+		attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;
+		attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
 
+		pango_attr_list_insert (attr_list, attr);
+	}
+	if (xtext->bold)
+	{
+		attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+		attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;
+		attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+
+		pango_attr_list_insert (attr_list, attr);
+	}
+
+	pango_layout_set_attributes (xtext->layout, attr_list);
 	pango_layout_set_text (xtext->layout, str, len);
 
 	if (dofill)
@@ -327,27 +343,8 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 
 	xtext_draw_layout_line (xtext->draw_buf, gc, x, y, line);
 
-	if (xtext->bold)
-		xtext_draw_layout_line (xtext->draw_buf, gc, x + 1, y, line);
-
-	if (xtext->italics)
-		pango_layout_set_font_description (xtext->layout, xtext->font->font);
+	pango_attr_list_unref (attr_list);
 }
-
-/*static void
-backend_set_clip (GtkXText *xtext, GdkRectangle *area)
-{
-	gdk_gc_set_clip_rectangle (xtext->fgc, area);
-	gdk_gc_set_clip_rectangle (xtext->bgc, area);
-}
-
-static void
-backend_clear_clip (GtkXText *xtext)
-{
-	gdk_gc_set_clip_rectangle (xtext->fgc, NULL);
-	gdk_gc_set_clip_rectangle (xtext->bgc, NULL);
-}*/
-
 
 static void
 xtext_set_fg (GtkXText *xtext, GdkGC *gc, int index)
@@ -2333,101 +2330,6 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 
 	return new_str;
 }
-
-#if 0
-/* GeEkMaN: converts mIRC control codes to literal control codes */
-
-static char *
-gtk_xtext_conv_color (unsigned char *text, int len, int *newlen)
-{
-	int i, j = 2;
-	char cchar = 0;
-	char *new_str;
-	int mbl;
-
-	for (i = 0; i < len;)
-	{
-		switch (text[i])
-		{
-		case ATTR_COLOR:
-		case ATTR_RESET:
-		case ATTR_REVERSE:
-		case ATTR_BOLD:
-		case ATTR_UNDERLINE:
-		case ATTR_ITALICS:
-		case ATTR_HIDDEN:
-			j += 3;
-			i++;
-			break;
-		default:
-			mbl = charlen (text + i);
-			j += mbl;
-			i += mbl;
-		}
-	}
-
-	new_str = malloc (j);
-	j = 0;
-
-	for (i = 0; i < len;)
-	{
-		switch (text[i])
-		{
-		case ATTR_COLOR:
-			cchar = 'C';
-			break;
-		case ATTR_RESET:
-			cchar = 'O';
-			break;
-		case ATTR_REVERSE:
-			cchar = 'R';
-			break;
-		case ATTR_BOLD:
-			cchar = 'B';
-			break;
-		case ATTR_UNDERLINE:
-			cchar = 'U';
-			break;
-		case ATTR_ITALICS:
-			cchar = 'I';
-			break;
-		case ATTR_HIDDEN:
-			cchar = 'H';
-			break;
-		case ATTR_BEEP:
-			break;
-		default:
-			mbl = charlen (text + i);
-			if (mbl == 1)
-			{
-				new_str[j] = text[i];
-				j++;
-				i++;
-			} else
-			{
-				/* invalid utf8 safe guard */
-				if (i + mbl > len)
-					mbl = len - i;
-				memcpy (new_str + j, text + i, mbl);
-				j += mbl;
-				i += mbl;
-			}
-		}
-		if (cchar != 0)
-		{
-			new_str[j++] = '%';
-			new_str[j++] = cchar;
-			cchar = 0;
-			i++;
-		}
-	}
-
-	new_str[j] = 0;
-	*newlen = j;
-
-	return new_str;
-}
-#endif
 
 /* gives width of a string, excluding the mIRC codes */
 

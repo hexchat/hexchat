@@ -173,7 +173,6 @@ struct _GtkXText
 	struct pangofont
 	{
 		PangoFontDescription *font;
-		PangoFontDescription *ifont;	/* italics */
 		int ascent;
 		int descent;
 	} *font, pango_font;
