@@ -4308,6 +4308,9 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 					case 'B':
 						buf[i] = '\002';
 						break;
+					case 'I':
+						buf[i] = '\035';
+						break;
 					case 'C':
 						buf[i] = '\003';
 						break;
