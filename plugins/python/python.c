@@ -1959,7 +1959,7 @@ Module_hexchat_pluginpref_list(PyObject *self, PyObject *args)
 {
 	PluginObject *plugin = (PluginObject*)Plugin_GetCurrent();
 	hexchat_plugin *prefph = Plugin_GetHandle(plugin);
-	char list[512];
+	char list[4096];
 	char* token;
 	int result;
 	PyObject *pylist;
