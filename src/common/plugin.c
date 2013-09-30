@@ -2015,7 +2015,7 @@ hexchat_pluginpref_list (hexchat_plugin *pl, char* dest)
 		while (fscanf (fpIn, " %[^\n]", bufp) != EOF)	/* read whole lines including whitespaces */
 		{
 			token = strtok (buffer, "=");
-			g_strlcat (dest, token, 4096); /* Dest must not be smaller than this */
+			g_strlcat (dest, g_strchomp (token), 4096); /* Dest must not be smaller than this */
 			g_strlcat (dest, ",", 4096);
 		}
 
