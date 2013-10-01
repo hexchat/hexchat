@@ -341,6 +341,20 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 	free (cmd);
 }
 
+static gboolean
+mg_spellcheck_cb (SexySpellEntry *entry, gchar *word, gpointer data)
+{
+	/* This can cause freezes on long words, nicks arn't very long anyway. */
+	if (strlen (word) > 20)
+		return TRUE;
+
+	/* Ignore anything we think is a valid url */
+	if (url_check_word (word) != 0)
+		return FALSE;
+
+	return TRUE;
+}
+
 #if 0
 static gboolean
 has_key (char *modes)
@@ -2969,6 +2983,8 @@ mg_create_entry (session *sess, GtkWidget *box)
 							G_CALLBACK (mg_inputbox_focus), gui);
 	g_signal_connect (G_OBJECT (entry), "populate_popup",
 							G_CALLBACK (mg_inputbox_rightclick), NULL);
+	g_signal_connect (G_OBJECT (entry), "word-check",
+							G_CALLBACK (mg_spellcheck_cb), NULL);
 	gtk_widget_grab_focus (entry);
 
 	if (prefs.hex_gui_input_style)
