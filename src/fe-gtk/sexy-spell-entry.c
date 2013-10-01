@@ -159,8 +159,9 @@ initialize_enchant ()
 		enchant = g_module_open("libenchant.so.1", 0);
 				if (enchant == NULL)
 					return;
-#endif
+#else
 		return;
+#endif
 	}
 
 	have_enchant = TRUE;
