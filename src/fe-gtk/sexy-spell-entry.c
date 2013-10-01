@@ -1074,7 +1074,7 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 
 	layout = gtk_entry_get_layout(GTK_ENTRY(entry));
 	text = gtk_entry_get_text(GTK_ENTRY(entry));
-	pango_layout_get_log_attrs(layout, &log_attrs, &n_attrs);
+	log_attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
 
 	/* Find how many words we have */
 	n_strings = 0;
@@ -1094,7 +1094,7 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 
 			/* Find the end of this string */
 			cend = i;
-			while (!(log_attrs[cend].is_word_end))
+			while ((!log_attrs[cend].is_word_end || !log_attrs[cend].is_word_boundary))
 				cend++;
 
 			/* Copy sub-string */
@@ -1109,8 +1109,6 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 			j++;
 		}
 	}
-
-	g_free (log_attrs);
 }
 
 static void
