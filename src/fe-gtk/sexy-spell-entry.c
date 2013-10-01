@@ -577,11 +577,14 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 		for (li = entry->priv->dict_list; li; li = g_slist_next (li)) {
 			dict = (struct EnchantDict *) li->data;
 			lang = get_lang_from_dict(dict);
-			lang_name = gtkspell_iso_codes_lookup_name_for_code(lang);
-			if (lang_name) {
+			lang_name = sexy_spell_entry_get_language_name (entry, lang);
+			if (lang_name)
+			{
 				mi = gtk_menu_item_new_with_label(lang_name);
-				g_free(lang_name);
-			} else {
+				g_free (lang_name);
+			}
+			else
+			{
 				mi = gtk_menu_item_new_with_label(lang);
 			}
 			g_free(lang);
@@ -621,11 +624,14 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 		for (li = entry->priv->dict_list; li; li = g_slist_next(li)) {
 			dict = (struct EnchantDict *)li->data;
 			lang = get_lang_from_dict(dict);
-			lang_name = gtkspell_iso_codes_lookup_name_for_code(lang);
-			if (lang_name) {
+			lang_name = sexy_spell_entry_get_language_name (entry, lang);
+			if (lang_name)
+			{
 				submi = gtk_menu_item_new_with_label(lang_name);
-				g_free(lang_name);
-			} else {
+				g_free (lang_name);
+			}
+			else 
+			{
 				submi = gtk_menu_item_new_with_label(lang);
 			}
 			g_free(lang);
@@ -699,6 +705,10 @@ sexy_spell_entry_init(SexySpellEntry *entry)
 	if (have_enchant)
 		sexy_spell_entry_activate_default_languages(entry);
 
+#ifdef HAVE_ISO_CODES
+	codetable_init ();
+#endif
+
 	entry->priv->attr_list = pango_attr_list_new();
 
 	entry->priv->checked = TRUE;
@@ -743,6 +753,9 @@ sexy_spell_entry_finalize(GObject *obj)
 	}
 
 	g_free(entry->priv);
+#ifdef HAVE_ISO_CODES
+	codetable_free ();
+#endif
 
 	if (G_OBJECT_CLASS(parent_class)->finalize)
 		G_OBJECT_CLASS(parent_class)->finalize(obj);
@@ -1273,9 +1286,21 @@ gchar *
 sexy_spell_entry_get_language_name(const SexySpellEntry *entry,
 								   const gchar *lang)
 {
-	if (have_enchant)
-		return gtkspell_iso_codes_lookup_name_for_code(lang);
-	return NULL;
+#ifdef HAVE_ISO_CODES
+	const gchar *lang_name = "";
+	const gchar *country_name = "";
+
+	g_return_val_if_fail (have_enchant, NULL);
+
+	codetable_lookup (lang, &lang_name, &country_name);
+
+	if (strlen (country_name) != 0)
+		return g_strdup_printf ("%s (%s)", lang_name, country_name);
+	else
+		return g_strdup_printf ("%s", lang_name);
+#else
+	return g_strdup (lang);
+#endif
 }
 
 /**

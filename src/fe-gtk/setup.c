@@ -189,14 +189,12 @@ static const setting inputbox_settings[] =
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
 	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,1},
 	{ST_TOGGLE, N_("Show user mode icon in nick box"), P_OFFINTNL(hex_gui_input_icon),0,0,0},
-#ifdef USE_SPELL
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,1},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(hex_text_spell_langs),0,0,sizeof prefs.hex_text_spell_langs},
 #ifdef WIN32
-	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
+	{ST_LABEL,	N_("Use language codes (as in \"%LOCALAPPDATA%\\enchant\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
 #else
 	{ST_LABEL,	N_("Use language codes. Separate multiple entries with commas.")},
-#endif
 #endif
 
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
@@ -2021,13 +2019,11 @@ setup_apply_to_sess (session_gui *gui)
 	else
 		gtk_widget_hide (gui->button_box);
 
-#ifdef USE_SPELL
 	/* update active languages */
 	sexy_spell_entry_deactivate_language((SexySpellEntry *)gui->input_box,NULL);
 	sexy_spell_entry_activate_default_languages((SexySpellEntry *)gui->input_box);
 
 	sexy_spell_entry_set_checked ((SexySpellEntry *)gui->input_box, prefs.hex_gui_input_spell);
-#endif
 }
 
 static void

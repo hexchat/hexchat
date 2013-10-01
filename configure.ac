@@ -41,7 +41,6 @@ AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
-AH_VERBATIM([USE_SPELL],[#undef USE_SPELL])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
@@ -142,10 +141,6 @@ AC_ARG_ENABLE(libnotify,
 AC_ARG_ENABLE(libcanberra,
 	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
 		libcanberra=$enableval, libcanberra=yes)
-
-AC_ARG_ENABLE(spell,
-	[AS_HELP_STRING([--enable-spell],[enable spellcheck, (default: yes)])],
-		  spell=$enableval, spell=yes)
 
 AC_ARG_ENABLE(ntlm,
 	[AS_HELP_STRING([--enable-ntlm],[enable Microsoft\'s NTLM auth (libntlm) library support (default: no)])],
@@ -539,15 +534,12 @@ dnl *********************************************************************
 dnl ** SPELL ************************************************************
 dnl *********************************************************************
 
-if test "$spell" = "xyes" ; then
-	PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.0.0, [
-	AC_DEFINE(HAVE_ISO_CODES)
-	AC_DEFINE(USE_SPELL)
-	GUI_CFLAGS="$GUI_CFLAGS $LIBXML2_CFLAGS"
-	LIBS="$LIBS -lxml2"
-	], [
-	AC_MSG_ERROR(Cannot find libxml2!)
-	])
+if test "$gtkfe" = "xyes" ; then
+	iso_codes_prefix=`$PKG_CONFIG --variable=prefix iso-codes 2>/dev/null || echo /usr`
+    AC_MSG_NOTICE([iso-codes prefix: $iso_codes_prefix])
+    AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$iso_codes_prefix"], [ISO codes prefix])
+    AC_DEFINE_UNQUOTED([ISO_CODES_LOCALEDIR], ["$iso_codes_prefix/share/locale"], [ISO codes locale dir])
+    AC_DEFINE([HAVE_ISO_CODES], [1], [iso-codes available])
 fi
 
 dnl *********************************************************************
@@ -555,7 +547,6 @@ dnl ** CONDITIONALS *****************************************************
 dnl *********************************************************************
 
 AM_CONDITIONAL(USE_OPENSSL, test "x$openssl" = "xyes")
-AM_CONDITIONAL(USE_SPELL, test "x$spell" = "xyes")
 AM_CONDITIONAL(USE_LIBNOTIFY, test "x$libnotify" = "xyes")
 AM_CONDITIONAL(USE_LIBCANBERRA, test "x$libcanberra" = "xyes")
 AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
@@ -818,7 +809,6 @@ echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
 echo libcanberra support ... : $libcanberra
-echo Spelling .............. : $spell
 echo Plugin interface ...... : $plugin
 echo NLS/gettext ........... : $USE_NLS
 echo IPv6 support .......... : $ipv6
