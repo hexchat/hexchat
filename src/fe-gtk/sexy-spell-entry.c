@@ -42,6 +42,7 @@
 
 #include "../common/cfgfiles.h"
 #include "../common/hexchatc.h"
+#include "xtext.h"
 
 /*
  * Bunch of poop to make enchant into a runtime dependency rather than a
@@ -275,7 +276,26 @@ gtk_entry_find_position (GtkEntry *entry, gint x)
 }
 
 static void
-insert_underline(SexySpellEntry *entry, guint start, guint end)
+insert_hiddenchar (SexySpellEntry *entry, guint start, guint end)
+{
+	PangoAttribute *hattr;
+	PangoRectangle *rect = g_malloc (sizeof (PangoRectangle));
+
+	rect->x = 0;
+	rect->y = 0;
+	rect->width = 0;
+	rect->height = 0;
+
+	hattr = pango_attr_shape_new (rect, rect);
+	hattr->start_index = start;
+	hattr->end_index = end;
+	pango_attr_list_insert (entry->priv->attr_list, hattr);
+
+	g_free (rect);
+}
+
+static void
+insert_underline_error (SexySpellEntry *entry, guint start, guint end)
 {
 	int fh, l;
 	int red, green, blue;
@@ -322,6 +342,72 @@ insert_underline(SexySpellEntry *entry, guint start, guint end)
 
 	pango_attr_list_insert (entry->priv->attr_list, ucolor);
 	pango_attr_list_insert (entry->priv->attr_list, unline);
+}
+
+static void
+insert_underline (SexySpellEntry *entry, guint start, gboolean toggle)
+{
+	PangoAttribute *uattr;
+
+	uattr = pango_attr_underline_new (toggle ? PANGO_UNDERLINE_NONE : PANGO_UNDERLINE_SINGLE);
+	uattr->start_index = start;
+	uattr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+	pango_attr_list_change (entry->priv->attr_list, uattr);
+}
+
+static void
+insert_bold (SexySpellEntry *entry, guint start, gboolean toggle)
+{
+	PangoAttribute *battr;
+
+	battr = pango_attr_weight_new (toggle ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD);
+	battr->start_index = start;
+	battr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+	pango_attr_list_change (entry->priv->attr_list, battr);
+}
+
+static void
+insert_italic (SexySpellEntry *entry, guint start, gboolean toggle)
+{
+	PangoAttribute *iattr;
+
+	iattr  = pango_attr_style_new (toggle ? PANGO_STYLE_NORMAL : PANGO_STYLE_ITALIC); 
+	iattr->start_index = start;
+	iattr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+	pango_attr_list_change (entry->priv->attr_list, iattr);
+}
+
+static void
+insert_color (SexySpellEntry *entry, guint start, int fgcolor, int bgcolor)
+{
+	PangoAttribute *fgattr;
+	PangoAttribute *bgattr;
+
+	if (fgcolor < 0 || fgcolor > MAX_COL)
+		fgattr = pango_attr_foreground_new (colors[COL_FG].red, colors[COL_FG].green, colors[COL_FG].blue);
+	else
+		fgattr = pango_attr_foreground_new (colors[fgcolor].red, colors[fgcolor].green, colors[fgcolor].blue);
+
+	if (bgcolor < 0 || bgcolor > MAX_COL)
+		bgattr = pango_attr_background_new (colors[COL_BG].red, colors[COL_BG].green, colors[COL_BG].blue);
+	else
+		bgattr = pango_attr_background_new (colors[bgcolor].red, colors[bgcolor].green, colors[bgcolor].blue);
+
+	fgattr->start_index = start;
+	fgattr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+	pango_attr_list_change (entry->priv->attr_list, fgattr);
+	bgattr->start_index = start;
+	bgattr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+	pango_attr_list_change (entry->priv->attr_list, bgattr);
+}
+
+static void
+insert_reset (SexySpellEntry *entry, guint start)
+{
+	insert_bold (entry, start, TRUE);
+	insert_underline (entry, start, TRUE);
+	insert_italic (entry, start, TRUE);
+	insert_color (entry, start, -1, -1);
 }
 
 static void
@@ -785,7 +871,119 @@ check_word(SexySpellEntry *entry, int start, int end)
 	pango_attr_iterator_destroy(it);
 
 	if (word_misspelled(entry, start, end))
-		insert_underline(entry, start, end);
+		insert_underline_error(entry, start, end);
+}
+
+static void
+check_attributes (SexySpellEntry *entry, char *text, int len)
+{
+	PangoAttribute *attr;
+	PangoAttrList *attr_list = entry->priv->attr_list;
+	gboolean bold = FALSE;
+	gboolean italic = FALSE;
+	gboolean underline = FALSE;
+	int parsing_color = 0;
+	char fg_color[3];
+	char bg_color[3];
+	int i, bg_offset, fg_offset = 0;
+
+	memset (bg_color, 0, sizeof(bg_color));
+	memset (fg_color, 0, sizeof(fg_color));
+
+	for (i = 0; i < len; i++)
+	{
+		switch (text[i])
+		{
+		case ATTR_BOLD:
+			insert_hiddenchar (entry, i, i + 1);
+			insert_bold (entry, i, bold);
+			bold = !bold;
+			break;
+
+		case ATTR_ITALICS:
+			insert_italic (entry, i, italic);
+			italic = !italic;
+			break;
+
+		case ATTR_UNDERLINE:
+			insert_underline (entry, i, underline);
+			underline = !underline;
+			break;
+
+		case ATTR_RESET:
+			insert_hiddenchar (entry, i, i + 1);
+			insert_reset (entry, i);
+			break;
+
+		case ATTR_COLOR:
+			parsing_color = 1;
+			break;
+
+		default:
+			if (!parsing_color)
+				continue;
+
+			if (!g_unichar_isdigit (text[i]))
+			{
+				if (text[i] == ',' && parsing_color <= 3)
+				{
+					parsing_color = 3;
+					continue;
+				}
+				else
+					parsing_color = 5;
+			}
+
+			switch (parsing_color)
+			{
+			case 1:
+				fg_color[0] = text[i];
+				parsing_color++;
+				fg_offset = 2;
+				continue;
+			case 2:
+				fg_color[1] = text[i];
+				parsing_color++;
+				fg_offset++;
+				continue;
+			case 3:
+				bg_color[0] = text[i];
+				parsing_color++;
+				bg_offset = 3 + fg_offset; /* 1 extra for , */
+				continue;
+			case 4:
+				bg_color[1] = text[i];
+				parsing_color++;
+				bg_offset++;
+				continue;
+			case 5:
+				if (bg_color[0] != 0)
+				{
+					insert_hiddenchar (entry, i - bg_offset, i);
+					insert_color (entry, i, atoi (fg_color), atoi (bg_color));
+				}
+				else if (fg_color[0] != 0)
+				{
+					insert_hiddenchar (entry, i - fg_offset, i);
+					insert_color (entry, i, atoi (fg_color), -1);
+				}
+				else
+				{
+					insert_hiddenchar (entry, i - 1, i);
+					insert_color (entry, i, -1, -1);
+				}
+
+				memset (bg_color, 0, sizeof(bg_color));
+				memset (fg_color, 0, sizeof(fg_color));
+				parsing_color = 0;
+				fg_offset = 0;
+				continue;
+			default:
+				insert_hiddenchar (entry, i - 1, i);
+				insert_color (entry, i, -1, -1);
+			}
+		}
+	}
 }
 
 static void
@@ -794,25 +992,30 @@ sexy_spell_entry_recheck_all(SexySpellEntry *entry)
 	GdkRectangle rect;
 	GtkWidget *widget = GTK_WIDGET(entry);
 	PangoLayout *layout;
-	int length, i;
-
-	if ((have_enchant == FALSE) || (entry->priv->checked == FALSE))
-		return;
-
-	if (g_slist_length(entry->priv->dict_list) == 0)
-		return;
+	int length, i, text_len;
+	char *text;
 
 	/* Remove all existing pango attributes.  These will get readded as we check */
 	pango_attr_list_unref(entry->priv->attr_list);
 	entry->priv->attr_list = pango_attr_list_new();
 
-	/* Loop through words */
-	for (i = 0; entry->priv->words[i]; i++) {
-		length = strlen(entry->priv->words[i]);
-		if (length == 0)
-			continue;
-		check_word(entry, entry->priv->word_starts[i], entry->priv->word_ends[i]);
+	if (have_enchant && entry->priv->checked
+		&& g_slist_length (entry->priv->dict_list) != 0)
+	{
+		/* Loop through words */
+		for (i = 0; entry->priv->words[i]; i++)
+		{
+			length = strlen (entry->priv->words[i]);
+			if (length == 0)
+				continue;
+			check_word (entry, entry->priv->word_starts[i], entry->priv->word_ends[i]);
+		}
 	}
+
+	/* Check for attributes */
+	text = gtk_entry_get_text (GTK_ENTRY (entry));
+	text_len = gtk_entry_get_text_length (GTK_ENTRY (entry));
+	check_attributes (entry, text, text_len);
 
 	layout = gtk_entry_get_layout(GTK_ENTRY(entry));
 	pango_layout_set_attributes(layout, entry->priv->attr_list);
@@ -832,10 +1035,9 @@ sexy_spell_entry_expose(GtkWidget *widget, GdkEventExpose *event)
 	GtkEntry *gtk_entry = GTK_ENTRY(widget);
 	PangoLayout *layout;
 
-	if (entry->priv->checked) {
-		layout = gtk_entry_get_layout(gtk_entry);
-		pango_layout_set_attributes(layout, entry->priv->attr_list);
-	}
+	
+	layout = gtk_entry_get_layout(gtk_entry);
+	pango_layout_set_attributes(layout, entry->priv->attr_list);
 
 	return GTK_WIDGET_CLASS(parent_class)->expose_event (widget, event);
 }
@@ -915,12 +1117,9 @@ static void
 sexy_spell_entry_changed(GtkEditable *editable, gpointer data)
 {
 	SexySpellEntry *entry = SEXY_SPELL_ENTRY(editable);
-	if (entry->priv->checked == FALSE)
-		return;
-	if (g_slist_length(entry->priv->dict_list) == 0)
-		return;
 
-	if (entry->priv->words) {
+	if (entry->priv->words)
+	{
 		g_strfreev(entry->priv->words);
 		g_free(entry->priv->word_starts);
 		g_free(entry->priv->word_ends);
@@ -1329,11 +1528,8 @@ sexy_spell_entry_set_checked(SexySpellEntry *entry, gboolean checked)
 		PangoLayout *layout;
 		GdkRectangle rect;
 
-		pango_attr_list_unref(entry->priv->attr_list);
-		entry->priv->attr_list = pango_attr_list_new();
-
-		layout = gtk_entry_get_layout(GTK_ENTRY(entry));
-		pango_layout_set_attributes(layout, entry->priv->attr_list);
+		/* This will unmark any existing */
+		sexy_spell_entry_recheck_all (entry);
 
 		rect.x = 0; rect.y = 0;
 		rect.width  = widget->allocation.width;
