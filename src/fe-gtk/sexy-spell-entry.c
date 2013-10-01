@@ -42,6 +42,7 @@
 
 #include "../common/cfgfiles.h"
 #include "../common/hexchatc.h"
+#include "palette.h"
 #include "xtext.h"
 
 /*
@@ -297,41 +298,10 @@ insert_hiddenchar (SexySpellEntry *entry, guint start, guint end)
 static void
 insert_underline_error (SexySpellEntry *entry, guint start, guint end)
 {
-	int fh, l;
-	int red, green, blue;
-	struct stat st;
-	char *cfg;
 	PangoAttribute *ucolor;
 	PangoAttribute *unline;
 
-	fh = hexchat_open_file ("colors.conf", O_RDONLY, 0, 0);
-
-	if (fh != -1)
-	{
-		fstat (fh, &st);
-		cfg = malloc (st.st_size + 1);
-
-		if (cfg)
-		{
-			cfg[0] = '\0';
-			l = read (fh, cfg, st.st_size);
-			if (l >= 0)
-			{
-				cfg[l] = '\0';
-			}
-
-			cfg_get_color (cfg, "color_265", &red, &green, &blue);
-			free (cfg);
-		}
-
-		close (fh);
-	} else
-	{
-		red = 65535;
-		green = blue = 0;
-	}
-
-	ucolor = pango_attr_underline_color_new (red, green, blue);
+	ucolor = pango_attr_underline_color_new (colors[COL_SPELL].red, colors[COL_SPELL].green, colors[COL_SPELL].blue);
 	unline = pango_attr_underline_new (PANGO_UNDERLINE_ERROR);
 
 	ucolor->start_index = start;
