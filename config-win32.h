@@ -3,7 +3,7 @@
 #define USE_GMODULE
 #define USE_PLUGIN
 #define USE_OPENSSL
-#define USE_LIBSEXY
+#define USE_SPELL
 #define USE_IPV6
 #define HAVE_ISO_CODES
 #define PACKAGE_NAME "hexchat"

@@ -40,12 +40,7 @@
 #ifdef WIN32
 #include "../common/fe.h"
 #endif
-#ifdef USE_GTKSPELL
-#include <gtkspell/gtkspell.h>
-#endif
-#ifdef USE_LIBSEXY
 #include "sexy-spell-entry.h"
-#endif
 
 GtkStyle *create_input_style (GtkStyle *);
 
@@ -194,17 +189,13 @@ static const setting inputbox_settings[] =
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
 	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,1},
 	{ST_TOGGLE, N_("Show user mode icon in nick box"), P_OFFINTNL(hex_gui_input_icon),0,0,0},
-#ifdef HAVE_ISO_CODES /* Defined with static spelling */
+#ifdef USE_SPELL
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,1},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(hex_text_spell_langs),0,0,sizeof prefs.hex_text_spell_langs},
 #ifdef WIN32
 	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
 #else
 	{ST_LABEL,	N_("Use language codes. Separate multiple entries with commas.")},
-#endif
-#else
-#if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
-	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,0},
 #endif
 #endif
 
@@ -2004,10 +1995,6 @@ setup_apply_entry_style (GtkWidget *entry)
 static void
 setup_apply_to_sess (session_gui *gui)
 {
-#ifdef USE_GTKSPELL
-	GtkSpell *spell;
-#endif
-
 	mg_update_xtext (gui->xtext);
 
 	if (prefs.hex_gui_ulist_style)
@@ -2034,21 +2021,7 @@ setup_apply_to_sess (session_gui *gui)
 	else
 		gtk_widget_hide (gui->button_box);
 
-#ifdef USE_GTKSPELL
-	spell = gtkspell_get_from_text_view (GTK_TEXT_VIEW (gui->input_box));
-	if (prefs.hex_gui_input_spell)
-	{
-		if (!spell)
-			gtkspell_new_attach (GTK_TEXT_VIEW (gui->input_box), NULL, NULL);
-	}
-	else
-	{
-		if (spell)
-			gtkspell_detach (spell);
-	}
-#endif
-
-#ifdef USE_LIBSEXY
+#ifdef USE_SPELL
 	/* update active languages */
 	sexy_spell_entry_deactivate_language((SexySpellEntry *)gui->input_box,NULL);
 	sexy_spell_entry_activate_default_languages((SexySpellEntry *)gui->input_box);

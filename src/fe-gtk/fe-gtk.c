@@ -240,11 +240,7 @@ fe_args (int argc, char *argv[])
 const char cursor_color_rc[] =
 	"style \"xc-ib-st\""
 	"{"
-#ifdef USE_GTKSPELL
-		"GtkTextView::cursor-color=\"#%02x%02x%02x\""
-#else
 		"GtkEntry::cursor-color=\"#%02x%02x%02x\""
-#endif
 	"}"
 	"widget \"*.hexchat-inputbox\" style : application \"xc-ib-st\"";
 

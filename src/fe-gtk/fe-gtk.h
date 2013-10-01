@@ -197,21 +197,11 @@ typedef struct session_gui
 extern GdkPixmap *channelwin_pix;
 extern GdkPixmap *dialogwin_pix;
 
-
-#ifdef USE_GTKSPELL
-char *SPELL_ENTRY_GET_TEXT (GtkWidget *entry);
-#define SPELL_ENTRY_SET_TEXT(e,txt) gtk_text_buffer_set_text (gtk_text_view_get_buffer(GTK_TEXT_VIEW(e)),txt,-1);
-#define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_text_view_set_editable(GTK_TEXT_VIEW(e), v)
-int SPELL_ENTRY_GET_POS (GtkWidget *entry);
-void SPELL_ENTRY_SET_POS (GtkWidget *entry, int pos);
-void SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos);
-#else
 #define SPELL_ENTRY_GET_TEXT(e) ((char *)(gtk_entry_get_text (GTK_ENTRY(e))))
 #define SPELL_ENTRY_SET_TEXT(e,txt) gtk_entry_set_text(GTK_ENTRY(e),txt)
 #define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_editable_set_editable(GTK_EDITABLE(e),v)
 #define SPELL_ENTRY_GET_POS(e) gtk_editable_get_position(GTK_EDITABLE(e))
 #define SPELL_ENTRY_SET_POS(e,p) gtk_editable_set_position(GTK_EDITABLE(e),p);
 #define SPELL_ENTRY_INSERT(e,t,l,p) gtk_editable_insert_text(GTK_EDITABLE(e),t,l,p)
-#endif
 
 #endif

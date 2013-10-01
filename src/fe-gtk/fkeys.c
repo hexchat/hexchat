@@ -300,17 +300,6 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	case GDK_KEY_space:
 		key_action_tab_clean ();
 		break;
-
-#if defined(USE_GTKSPELL)/* && !defined(WIN32) */
-	/* gtktextview has no 'activate' event, so we trap ENTER here */
-	case GDK_KEY_Return:
-	case GDK_KEY_KP_Enter:
-		if (!(evt->state & STATE_CTRL))
-		{
-			g_signal_stop_emission_by_name (G_OBJECT (wid), "key_press_event");
-			mg_inputbox_cb (wid, sess->gui);
-		}
-#endif
 	}
 
 	return 0;
