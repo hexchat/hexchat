@@ -2161,8 +2161,9 @@ mg_create_topicbar (session *sess, GtkWidget *box)
 	if (!gui->is_tab)
 		sess->res->tab = NULL;
 
-	gui->topic_entry = topic = gtk_entry_new ();
+	gui->topic_entry = topic = sexy_spell_entry_new ();
 	gtk_widget_set_name (topic, "hexchat-inputbox");
+	sexy_spell_entry_set_checked (SEXY_SPELL_ENTRY (topic), FALSE);
 	gtk_container_add (GTK_CONTAINER (hbox), topic);
 	g_signal_connect (G_OBJECT (topic), "activate",
 							G_CALLBACK (mg_topic_cb), 0);
