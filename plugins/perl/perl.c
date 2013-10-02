@@ -1284,7 +1284,10 @@ XS (XS_HexChat_Embed_plugingui_remove)
 static
 XS (XS_HexChat_plugin_pref_set)
 {
-	dXSARGS;
+	dSP;
+	dMARK;
+	dAX;
+
 	XSRETURN_IV ((IV) hexchat_pluginpref_set_str (ph, SvPV_nolen (ST (0)),
 													SvPV_nolen (ST (1))));
 }
@@ -1295,7 +1298,9 @@ XS (XS_HexChat_plugin_pref_get)
 	int result;
 	char value[512];
 
-	dXSARGS;
+	dSP;
+	dMARK;
+	dAX;
 
 	result = hexchat_pluginpref_get_str (ph, SvPV_nolen (ST (0)), value);
 
@@ -1308,7 +1313,10 @@ XS (XS_HexChat_plugin_pref_get)
 static
 XS (XS_HexChat_plugin_pref_delete)
 {
-	dXSARGS;
+	dSP;
+	dMARK;
+	dAX;
+	
 	XSRETURN_IV ((IV) hexchat_pluginpref_delete (ph, SvPV_nolen (ST (0))));
 }
 
@@ -1319,7 +1327,9 @@ XS (XS_HexChat_plugin_pref_list)
 	char value[512];
 	char *token;
 
-	dXSARGS;
+	dSP;
+	dMARK;
+	dAX;
 
 	if (!hexchat_pluginpref_list (ph, list))
 		XSRETURN_EMPTY;
