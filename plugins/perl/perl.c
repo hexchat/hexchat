@@ -1652,15 +1652,15 @@ hexchat_plugin_init (hexchat_plugin * plugin_handle, char **plugin_name,
 							  0);
 	hexchat_hook_command (ph, "reload", HEXCHAT_PRI_NORM, perl_command_reload, 0,
 							  0);
-	hexchat_hook_command (ph, "pl_reload", HEXCHAT_PRI_NORM, perl_command_reload, 0,
-							  (int*)1);
+	hexchat_hook_command (ph, "pl_reload", HEXCHAT_PRI_NORM, perl_command_reload,
+							  "Reloads a Perl script. Syntax: /reload <filename.pl>", (int*)1);
 	hexchat_hook_command (ph, "unloadall", HEXCHAT_PRI_NORM,
-							  perl_command_unloadall, 0, 0);
+							  perl_command_unloadall, "Unloads all loaded Perl scripts.", 0);
 	hexchat_hook_command (ph, "reloadall", HEXCHAT_PRI_NORM,
-							  perl_command_reloadall, 0, 0);
+							  perl_command_reloadall, "Realoads all loaded Perl scripts.", 0);
 
 	hexchat_hook_command (ph, "pl", HEXCHAT_PRI_NORM,
-							  perl_command_eval, 0, 0);
+							  perl_command_eval, "Evaluates Perl code. Syntax: /pl <perl code>", 0);
 
 	/*perl_init (); */
 	hexchat_hook_timer (ph, 0, perl_auto_load, NULL );
