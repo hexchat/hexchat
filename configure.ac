@@ -150,6 +150,10 @@ AC_ARG_ENABLE(libproxy,
 	[AS_HELP_STRING([--disable-libproxy],[disable libproxy support (default: auto)])],
         libproxy=$enableval, libproxy=auto)
 
+AC_ARG_ENABLE(isocodes,
+	[AS_HELP_STRING([--disable-isocodes],[disable iso-codes with spell-check])],
+        isocodes=$enableval, isocodes=yes)
+
 AC_ARG_ENABLE(minimal-flags,
 	[AS_HELP_STRING([--enable-minimal-flags],[only add those CFLAGS that are really needed or not intrusive (default: no)])],
         minimalflags=$enableval, minimalflags=no)
@@ -534,12 +538,17 @@ dnl *********************************************************************
 dnl ** SPELL ************************************************************
 dnl *********************************************************************
 
-if test "$gtkfe" = "xyes" ; then
-	iso_codes_prefix=`$PKG_CONFIG --variable=prefix iso-codes 2>/dev/null || echo /usr`
-    AC_MSG_NOTICE([iso-codes prefix: $iso_codes_prefix])
-    AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$iso_codes_prefix"], [ISO codes prefix])
-    AC_DEFINE_UNQUOTED([ISO_CODES_LOCALEDIR], ["$iso_codes_prefix/share/locale"], [ISO codes locale dir])
-    AC_DEFINE([HAVE_ISO_CODES], [1], [iso-codes available])
+if test "x$isocodes" = "xyes" ; then
+	PKG_CHECK_MODULES(ISOCODES, "iso-codes", [
+		iso_codes_prefix=`$PKG_CONFIG --variable=prefix iso-codes 2>/dev/null || echo /usr`
+    	AC_MSG_NOTICE([iso-codes prefix: $iso_codes_prefix])
+    	AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$iso_codes_prefix"], [ISO codes prefix])
+    	AC_DEFINE_UNQUOTED([ISO_CODES_LOCALEDIR], ["$iso_codes_prefix/share/locale"], [ISO codes locale dir])
+    	AC_DEFINE([HAVE_ISO_CODES], [1], [iso-codes available])
+    	], [
+    	isocodes=no
+    	AC_MSG_WARN(iso-codes not found!)
+    ])
 fi
 
 dnl *********************************************************************
@@ -559,6 +568,7 @@ AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
+AM_CONDITIONAL(HAVE_ISO_CODES, test "x$isocodes" = "xyes")
 AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
 
 dnl *********************************************************************

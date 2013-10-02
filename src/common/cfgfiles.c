@@ -425,6 +425,7 @@ const struct prefs vars[] =
 	{"gui_dialog_width", P_OFFINT (hex_gui_dialog_width), TYPE_INT},
 	{"gui_focus_omitalerts", P_OFFINT (hex_gui_focus_omitalerts), TYPE_BOOL},
 	{"gui_hide_menu", P_OFFINT (hex_gui_hide_menu), TYPE_BOOL},
+	{"gui_input_attr", P_OFFINT (hex_gui_input_attr), TYPE_BOOL},
 	{"gui_input_icon", P_OFFINT (hex_gui_input_icon), TYPE_BOOL},
 	{"gui_input_nick", P_OFFINT (hex_gui_input_nick), TYPE_BOOL},
 	{"gui_input_spell", P_OFFINT (hex_gui_input_spell), TYPE_BOOL},
@@ -668,6 +669,53 @@ get_default_language (void)
 	return lang_no >= 0 ? lang_no : find_language_number ("en");
 }
 
+static char *
+get_default_spell_languages (void)
+{
+	const gchar* const *langs = g_get_language_names ();
+	char *last = NULL;
+	char *p;
+	char lang_list[64];
+	char *ret = lang_list;
+	int i;
+
+	if (langs != NULL)
+	{
+		memset (lang_list, 0, sizeof(lang_list));
+
+		for (i = 0; langs[i]; i++)
+		{
+			if (g_ascii_strncasecmp (langs[i], "C", 1) != 0 && strlen (langs[i]) >= 2)
+			{
+				/* Avoid duplicates */
+				if (!last || !g_str_has_prefix (langs[i], last))
+				{
+					if (last != NULL)
+					{
+						g_free(last);
+						g_strlcat (lang_list, ",", sizeof(lang_list));
+					}
+
+					/* ignore .utf8 */
+					if ((p = strchr (langs[i], '.')))
+						*p='\0';
+
+					last = g_strndup (langs[i], 2);
+
+					g_strlcat (lang_list, langs[i], sizeof(lang_list));
+				}
+			}
+		}
+		if (last != NULL)
+			g_free(last);
+
+		if (lang_list[0])
+			return ret;
+	}
+
+	return "en";
+}
+
 void
 load_default_config(void)
 {
@@ -705,6 +753,7 @@ load_default_config(void)
 	prefs.hex_gui_autoopen_dialog = 1;
 	prefs.hex_gui_autoopen_recv = 1;
 	prefs.hex_gui_autoopen_send = 1;
+	prefs.hex_gui_input_attr = 1;
 	prefs.hex_gui_input_icon = 1;
 	prefs.hex_gui_input_nick = 1;
 	prefs.hex_gui_input_spell = 1;
@@ -844,7 +893,8 @@ load_default_config(void)
 	strcpy (prefs.hex_text_font_main, DEF_FONT);
 #endif
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
-	strcpy (prefs.hex_text_spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
+	strcpy (prefs.hex_text_spell_langs, get_default_spell_languages ());
+
 
 	/* private variables */
 	prefs.local_ip = 0xffffffff;
