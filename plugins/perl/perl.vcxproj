@@ -81,7 +81,7 @@ move $(PerlLib).def "$(IntDir)"
 lib /nologo /machine:x86 "/def:$(IntDir)$(PerlLib).def" "/out:$(OutDir)\$(PerlLib).lib"
 "$(PerlPath)\bin\perl.exe" generate_header
 move irc.pm.h "$(IntDir)"
-move xchat.pm.h "$(IntDir)"</Command>
+move hexchat.pm.h "$(IntDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -110,7 +110,7 @@ move $(PerlLib).def "$(IntDir)"
 lib /nologo /machine:x64 "/def:$(IntDir)$(PerlLib).def" "/out:$(OutDir)\$(PerlLib).lib"
 "$(PerlPath)\bin\perl.exe" generate_header
 move irc.pm.h "$(IntDir)"
-move xchat.pm.h "$(IntDir)"</Command>
+move hexchat.pm.h "$(IntDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

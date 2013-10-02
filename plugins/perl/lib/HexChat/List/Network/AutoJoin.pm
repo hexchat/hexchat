@@ -1,4 +1,4 @@
-package Xchat::List::Network::AutoJoin;
+package HexChat::List::Network::AutoJoin;
 use strict;
 use warnings;
 
