@@ -1284,7 +1284,6 @@ XS (XS_HexChat_Embed_plugingui_remove)
 static
 XS (XS_HexChat_plugin_pref_set)
 {
-	dSP;
 	dMARK;
 	dAX;
 
@@ -1298,7 +1297,6 @@ XS (XS_HexChat_plugin_pref_get)
 	int result;
 	char value[512];
 
-	dSP;
 	dMARK;
 	dAX;
 
@@ -1313,7 +1311,6 @@ XS (XS_HexChat_plugin_pref_get)
 static
 XS (XS_HexChat_plugin_pref_delete)
 {
-	dSP;
 	dMARK;
 	dAX;
 	
