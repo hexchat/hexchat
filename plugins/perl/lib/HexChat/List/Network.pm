@@ -1,4 +1,4 @@
-package Xchat::List::Network;
+package HexChat::List::Network;
 use strict;
 use warnings;
 use Storable qw(dclone);
@@ -6,7 +6,7 @@ my $last_modified;
 my @servers;
 
 sub get {
-	my $server_file = Xchat::get_info( "configdir" ) . "/servlist.conf";
+	my $server_file = HexChat::get_info( "configdir" ) . "/servlist.conf";
 
 	# recreate the list only if the server list file has changed
 	if( -f $server_file && 
@@ -19,7 +19,7 @@ sub get {
 			while( my $record = <$fh> ) {
 				chomp $record;
 				next if $record =~ /^v=/; # skip the version line
-				push @servers, Xchat::List::Network::Entry::parse( $record );
+				push @servers, HexChat::List::Network::Entry::parse( $record );
 			}
 		} else {
 			warn "Unable to open '$server_file': $!";

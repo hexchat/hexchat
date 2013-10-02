@@ -1,6 +1,7 @@
-package Xchat::Embed;
+package HexChat::Embed;
 use strict;
 use warnings;
+use Data::Dumper;
 # list of loaded scripts keyed by their package names
 # The package names are generated from the filename of the script using
 # the file2pkg() function.
@@ -42,11 +43,11 @@ sub load {
 	if( exists $scripts{$package} ) {
 		my $pkg_info = pkg_info( $package );
 		my $filename = File::Basename::basename( $pkg_info->{filename} );
-		Xchat::printf(
+		HexChat::printf(
 			qq{'%s' already loaded from '%s'.\n},
 			$filename, $pkg_info->{filename}
 		);
-		Xchat::print(
+		HexChat::print(
 			'If this is a different script then it rename and try '.
 			'loading it again.'
 		);
@@ -60,7 +61,7 @@ sub load {
 		$source =~ s/^__END__.*//ms;
 		
 		# this must come before the eval or the filename will not be found in
-		# Xchat::register
+		# HexChat::register
 		$scripts{$package}{filename} = $file;
 		$scripts{$package}{loaded_at} = Time::HiRes::time();
 
@@ -93,7 +94,7 @@ sub load {
 				$error_message .= "   $conflict_package already defined in " .
 					pkg_info($owner_package{ $conflict_package })->{filename}."\n";
 			}
-			Xchat::print( $error_message );
+			HexChat::print( $error_message );
 
 			return 2;
 		}
@@ -114,7 +115,7 @@ sub load {
 
 		unless( exists $scripts{$package}{gui_entry} ) {
 			$scripts{$package}{gui_entry} =
-				Xchat::Internal::register(
+				HexChat::Internal::register(
 					"", "unknown", "", $file
 				);
 		}
@@ -122,13 +123,13 @@ sub load {
 		if( $@ ) {
 			# something went wrong
 			$@ =~ s/\(eval \d+\)/$file/g;
-			Xchat::print( "Error loading '$file':\n$@\n" );
+			HexChat::print( "Error loading '$file':\n$@\n" );
 			# make sure the script list doesn't contain false information
 			unload( $scripts{$package}{filename} );
 			return 1;
 		}
 	} else {
-		Xchat::print( "Error opening '$file': $!\n" );
+		HexChat::print( "Error opening '$file': $!\n" );
 		return 2;
 	}
 
@@ -162,7 +163,7 @@ sub unload {
 
 		if( exists $pkg_info->{hooks} ) {
 			for my $hook ( @{$pkg_info->{hooks}} ) {
-				Xchat::unhook( $hook, $package );
+				HexChat::unhook( $hook, $package );
 			}
 		}
 
@@ -176,10 +177,10 @@ sub unload {
 		}
 		Symbol::delete_package( $package );
 		delete $scripts{$package};
-		return Xchat::EAT_ALL;
+		return HexChat::EAT_ALL;
 	} else {
-		Xchat::print( qq{"$file" is not loaded.\n} );
-		return Xchat::EAT_NONE;
+		HexChat::print( qq{"$file" is not loaded.\n} );
+		return HexChat::EAT_NONE;
 	}
 }
 
@@ -188,7 +189,7 @@ sub unload_all {
 		unload( $scripts{$package}->{filename} );
 	}
 	
-	return Xchat::EAT_ALL;
+	return HexChat::EAT_ALL;
 }
 
 sub reload {
@@ -203,11 +204,11 @@ sub reload {
 	}
 	
 	load( $fullpath );
-	return Xchat::EAT_ALL;
+	return HexChat::EAT_ALL;
 }
 
 sub reload_all {
-	my @dirs = Xchat::get_info( "configdir" );
+	my @dirs = HexChat::get_info( "configdir" );
 	push @dirs, File::Spec->catdir( $dirs[0], "plugins" );
 	for my $dir ( @dirs ) {
 		my $auto_load_glob = File::Spec->catfile( $dir, "*.pl" );
@@ -227,6 +228,28 @@ sub reload_all {
 	}
 }
 
+sub evaluate {
+	my ($code) = @_;
+
+	my @results = eval $code;
+	HexChat::print $@ if $@; #print warnings
+
+	local $Data::Dumper::Sortkeys = 1;
+	local $Data::Dumper::Terse    = 1;
+
+	if (@results > 1) {
+		HexChat::print Dumper \@results;
+	}
+	elsif (ref $results[0] || !$results[0]) {
+		HexChat::print Dumper $results[0];
+	}
+	else {
+		HexChat::print $results[0];
+	}
+
+	return HexChat::EAT_HEXCHAT;
+};
+
 sub expand_homedir {
 	my $file = shift @_;
 
@@ -244,7 +267,7 @@ sub file2pkg {
 	my $string = File::Basename::basename( shift @_ );
 	$string =~ s/\.pl$//i;
 	$string =~ s|([^A-Za-z0-9/])|'_'.unpack("H*",$1)|eg;
-	return "Xchat::Script::" . $string;
+	return "HexChat::Script::" . $string;
 }
 
 sub pkg_info {
@@ -256,7 +279,7 @@ sub find_external_pkg {
 	my $level = 1;
 
 	while( my @frame = caller( $level ) ) {
-		return @frame if $frame[0] !~ /(?:^IRC$|^Xchat)/;
+		return @frame if $frame[0] !~ /(?:^IRC$|^HexChat)/;
 		$level++;
 	}
 	return;
@@ -266,7 +289,7 @@ sub find_pkg {
 	my $level = 1;
 
 	while( my ($package, $file, $line) = caller( $level ) ) {
-		return $package if $package =~ /^Xchat::Script::/;
+		return $package if $package =~ /^HexChat::Script::/;
 		$level++;
 	}
 
