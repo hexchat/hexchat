@@ -54,11 +54,11 @@
 #undef gtk_signal_connect
 #define gtk_signal_connect g_signal_connect
 
-#define flag_t flag_wid[0]
+#define flag_c flag_wid[0]
 #define flag_n flag_wid[1]
-#define flag_s flag_wid[2]
-#define flag_i flag_wid[3]
-#define flag_p flag_wid[4]
+#define flag_r flag_wid[2]
+#define flag_t flag_wid[3]
+#define flag_i flag_wid[4]
 #define flag_m flag_wid[5]
 #define flag_l flag_wid[6]
 #define flag_k flag_wid[7]

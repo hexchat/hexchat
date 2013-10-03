@@ -86,7 +86,7 @@ static void mg_link_irctab (session *sess, int focus);
 static session_gui static_mg_gui;
 static session_gui *mg_gui = NULL;	/* the shared irc tab */
 static int ignore_chanmode = FALSE;
-static const char chan_flags[] = { 't', 'n', 's', 'i', 'p', 'm', 'l', 'k' };
+static const char chan_flags[] = { 'c', 'n', 'r', 't', 'i', 'm', 'l', 'k' };
 
 static chan *active_tab = NULL;	/* active tab */
 GtkWidget *parent_window = NULL;			/* the master window */
@@ -898,6 +898,9 @@ mg_populate (session *sess)
 		mg_decide_userlist (sess, FALSE);
 		/* shouldn't edit the topic */
 		gtk_editable_set_editable (GTK_EDITABLE (gui->topic_entry), FALSE);
+		/* might be hidden from server tab */
+		if (prefs.hex_gui_topicbar)
+			gtk_widget_show (gui->topic_bar);
 		break;
 	case SESS_SERVER:
 		if (prefs.hex_gui_mode_buttons)
@@ -906,8 +909,8 @@ mg_populate (session *sess)
 		gtk_widget_hide (gui->dialogbutton_box);
 		/* hide the userlist */
 		mg_decide_userlist (sess, FALSE);
-		/* shouldn't edit the topic */
-		gtk_editable_set_editable (GTK_EDITABLE (gui->topic_entry), FALSE);
+		/* servers don't have topics */
+		gtk_widget_hide (gui->topic_bar);
 		break;
 	default:
 		/* hide the dialog buttons */
@@ -918,6 +921,8 @@ mg_populate (session *sess)
 		mg_decide_userlist (sess, FALSE);
 		/* let the topic be editted */
 		gtk_editable_set_editable (GTK_EDITABLE (gui->topic_entry), TRUE);
+		if (prefs.hex_gui_topicbar)
+			gtk_widget_show (gui->topic_bar);
 	}
 
 	/* move to THE irc tab */
@@ -2091,15 +2096,15 @@ mg_apply_entry_style (GtkWidget *entry)
 static void
 mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 {
-	gui->flag_t = mg_create_flagbutton (_("Topic Protection"), box, "T");
-	gui->flag_n = mg_create_flagbutton (_("No outside messages"), box, "N");
-	gui->flag_s = mg_create_flagbutton (_("Secret"), box, "S");
-	gui->flag_i = mg_create_flagbutton (_("Invite Only"), box, "I");
-	gui->flag_p = mg_create_flagbutton (_("Private"), box, "P");
-	gui->flag_m = mg_create_flagbutton (_("Moderated"), box, "M");
-	gui->flag_b = mg_create_flagbutton (_("Ban List"), box, "B");
+	gui->flag_c = mg_create_flagbutton (_("Filter Colors"), box, "c");
+	gui->flag_n = mg_create_flagbutton (_("No outside messages"), box, "n");
+	gui->flag_r = mg_create_flagbutton (_("Registered Only"), box, "r");
+	gui->flag_t = mg_create_flagbutton (_("Topic Protection"), box, "t");
+	gui->flag_i = mg_create_flagbutton (_("Invite Only"), box, "i");
+	gui->flag_m = mg_create_flagbutton (_("Moderated"), box, "m");
+	gui->flag_b = mg_create_flagbutton (_("Ban List"), box, "b");
 
-	gui->flag_k = mg_create_flagbutton (_("Keyword"), box, "K");
+	gui->flag_k = mg_create_flagbutton (_("Keyword"), box, "k");
 	gui->key_entry = gtk_entry_new ();
 	gtk_widget_set_name (gui->key_entry, "hexchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->key_entry), 23);
@@ -2111,7 +2116,7 @@ mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 	if (prefs.hex_gui_input_style)
 		mg_apply_entry_style (gui->key_entry);
 
-	gui->flag_l = mg_create_flagbutton (_("User Limit"), box, "L");
+	gui->flag_l = mg_create_flagbutton (_("User Limit"), box, "l");
 	gui->limit_entry = gtk_entry_new ();
 	gtk_widget_set_name (gui->limit_entry, "hexchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->limit_entry), 10);
@@ -3223,8 +3228,8 @@ mg_create_topwindow (session *sess)
 	if (prefs.hex_gui_hide_menu)
 		gtk_widget_hide (sess->gui->menu);
 
-	if (!prefs.hex_gui_topicbar)
-		gtk_widget_hide (sess->gui->topic_bar);
+	/* Will be shown when needed */
+	gtk_widget_hide (sess->gui->topic_bar);
 
 	if (!prefs.hex_gui_ulist_buttons)
 		gtk_widget_hide (sess->gui->button_box);
@@ -3328,8 +3333,8 @@ mg_create_tabwindow (session *sess)
 
 	mg_decide_userlist (sess, FALSE);
 
-	if (!prefs.hex_gui_topicbar)
-		gtk_widget_hide (sess->gui->topic_bar);
+	/* Will be shown when needed */
+	gtk_widget_hide (sess->gui->topic_bar);
 
 	if (!prefs.hex_gui_mode_buttons)
 		gtk_widget_hide (sess->gui->topicbutton_box);
@@ -3489,11 +3494,20 @@ fe_update_mode_buttons (session *sess, char mode, char sign)
 		{
 			if (!sess->gui->is_tab || sess == current_tab)
 			{
-				ignore_chanmode = TRUE;
-				if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (sess->gui->flag_wid[i])) != state)
-					gtk_toggle_button_set_active (
-							GTK_TOGGLE_BUTTON (sess->gui->flag_wid[i]), state);
-				ignore_chanmode = FALSE;
+				/* Mode not supported */
+				if (sess->server && strchr (sess->server->chanmodes, mode) == NULL)
+				{
+					gtk_widget_hide (sess->gui->flag_wid[i]);
+				}
+				else
+				{
+					gtk_widget_show (sess->gui->flag_wid[i]);
+					ignore_chanmode = TRUE;
+					if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (sess->gui->flag_wid[i])) != state)
+						gtk_toggle_button_set_active (
+						GTK_TOGGLE_BUTTON (sess->gui->flag_wid[i]), state);
+					ignore_chanmode = FALSE;
+				}
 			} else
 			{
 				sess->res->flag_wid_state[i] = state;
