@@ -52,10 +52,10 @@ sub HexChat::Internal::context_info;
 sub HexChat::Internal::print;
 
 #keep compability with Xchat scripts
+sub EAT_XCHAT ();
 BEGIN {
 	*Xchat:: = *HexChat::;
 }
-*Xchat::EAT_XCHAT = \&HexChat::EAT_HEXCHAT;
 
 our %EXPORT_TAGS = (
 	constants => [

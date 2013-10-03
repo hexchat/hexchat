@@ -1400,6 +1400,7 @@ xs_init (pTHX)
 
 	newCONSTSUB (stash, "EAT_NONE", newSViv (HEXCHAT_EAT_NONE));
 	newCONSTSUB (stash, "EAT_HEXCHAT", newSViv (HEXCHAT_EAT_HEXCHAT));
+	newCONSTSUB (stash, "EAT_XCHAT", newSViv (HEXCHAT_EAT_HEXCHAT)); /* for compatibility */
 	newCONSTSUB (stash, "EAT_PLUGIN", newSViv (HEXCHAT_EAT_PLUGIN));
 	newCONSTSUB (stash, "EAT_ALL", newSViv (HEXCHAT_EAT_ALL));
 	newCONSTSUB (stash, "FD_READ", newSViv (HEXCHAT_FD_READ));
