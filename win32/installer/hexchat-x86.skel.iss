@@ -158,6 +158,7 @@ Name: "{group}\HexChat (x86)"; Filename: "{app}\hexchat.exe"; Tasks: not portabl
 Name: "{group}\HexChat (x86) Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable
 Name: "{group}\HexChat (x86) ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
 Name: "{group}\HexChat (x86) ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable
+Name: "{group}\HexChat (x86) Config Folder"; Filename: "%APPDATA%\HexChat\"; Tasks: not portable
 Name: "{group}\HexChat-Text (x86)"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
 Name: "{group}\HexChat Theme Manager (x86)"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
 Name: "{group}\Uninstall HexChat (x86)"; Filename: "{uninstallexe}"; Tasks: not portable
