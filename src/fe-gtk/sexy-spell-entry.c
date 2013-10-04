@@ -949,12 +949,10 @@ check_color:
 				else
 					parsing_color = 5;
 			}
-			else
-			{
-				/* don't parse background color without a comma */
-				if (parsing_color == 3 && text[i - 1] != ',')
-					parsing_color = 5;
-			}
+
+			/* don't parse background color without a comma */
+			else if (parsing_color == 3 && text[i - 1] != ',')
+				parsing_color = 5;
 
 			switch (parsing_color)
 			{
