@@ -1251,6 +1251,7 @@ sexy_spell_entry_activate_language_internal(SexySpellEntry *entry, const gchar *
 		return FALSE;
 	}
 
+	enchant_dict_add_to_session (dict, "HexChat", strlen("HexChat"));
 	entry->priv->dict_list = g_slist_append(entry->priv->dict_list, (gpointer) dict);
 	g_hash_table_insert(entry->priv->dict_hash, get_lang_from_dict(dict), (gpointer) dict);
 
