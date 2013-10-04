@@ -89,6 +89,15 @@ cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 }
 
 static void
+cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event)
+{
+	if (event->direction == GDK_SCROLL_DOWN)
+		mg_switch_page (1, 1);
+	else if (event->direction == GDK_SCROLL_UP)
+		mg_switch_page (1, -1);
+}
+
+static void
 cv_tree_init (chanview *cv)
 {
 	GtkWidget *view, *win;
@@ -163,6 +172,8 @@ cv_tree_init (chanview *cv)
 							G_CALLBACK (cv_tree_click_cb), cv);
 	g_signal_connect (G_OBJECT (view), "row-activated",
 							G_CALLBACK (cv_tree_activated_cb), NULL);
+	g_signal_connect (G_OBJECT (view), "scroll_event",
+							G_CALLBACK (cv_tree_scroll_event_cb), NULL);
 
 	gtk_drag_dest_set (view, GTK_DEST_DEFAULT_ALL, dnd_dest_target, 1,
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
