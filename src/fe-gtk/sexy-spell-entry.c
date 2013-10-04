@@ -1117,7 +1117,8 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 
 			/* Find the end of this string */
 			cend = i;
-			while ((!log_attrs[cend].is_word_end || !log_attrs[cend].is_word_boundary))
+			while ((!log_attrs[cend].is_word_end || !log_attrs[cend].is_word_boundary)
+					&& !log_attrs[cend].is_white)
 				cend++;
 
 			/* Copy sub-string */
