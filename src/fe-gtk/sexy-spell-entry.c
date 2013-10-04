@@ -950,6 +950,10 @@ check_color:
 					parsing_color = 5;
 			}
 
+			/* don't parse background color without a comma */
+			else if (parsing_color == 3 && text[i - 1] != ',')
+				parsing_color = 5;
+
 			switch (parsing_color)
 			{
 			case 1:
@@ -965,7 +969,7 @@ check_color:
 			case 3:
 				bg_color[0] = text[i];
 				parsing_color++;
-				bg_offset = 3 + fg_offset; /* 1 extra for , */
+				bg_offset = 2 + fg_offset; /* 1 extra for , */
 				continue;
 			case 4:
 				bg_color[1] = text[i];
