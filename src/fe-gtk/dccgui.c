@@ -1128,7 +1128,8 @@ fe_dcc_update (struct DCC *dcc)
 		dcc_update_chat (dcc);
 	}
 
-	update_clear_button_sensitivity ();
+	if (dccfwin.window)
+		update_clear_button_sensitivity();
 }
 
 void
