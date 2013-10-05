@@ -394,7 +394,7 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 
 		if(dccstat == STAT_DONE)
 		{
-			/* if we just completed a dcc recieve, move the */
+			/* if we just completed a dcc receive, move the */
 			/* completed file to the completed directory */
 			if(dcc->type == TYPE_RECV)
 			{			
