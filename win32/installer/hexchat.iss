@@ -1,26 +1,52 @@
-AppName=HexChat (x86)
+#define APPNAM "HexChat"
+#define APPVER "2.9.6"
+; These are defined by our installer project at build time
+;#define APPARCH "x64"
+;#define PROJECTDIR "C:\...\hexchat\win32\installer\"
+
+[Setup]
+AppName=HexChat
+AppVersion={#APPVER}
+AppVerName=HexChat {#APPVER}
 AppPublisher=HexChat
-AppPublisherURL=http://www.hexchat.org/
+AppPublisherURL=http://hexchat.github.io
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
 AppSupportURL=https://github.com/hexchat/hexchat/issues
-AppUpdatesURL=http://www.hexchat.org/home/downloads
+AppUpdatesURL=http://hexchat.github.io/downloads.html
 LicenseFile=COPYING
 UninstallDisplayIcon={app}\hexchat.exe
-UninstallDisplayName=HexChat (x86)
-DefaultDirName={pf}\HexChat
+UninstallDisplayName=HexChat
+#if APPARCH == "x64"
+DefaultDirName={pf64}\HexChat
+#else
+DefaultDirName={pf32}\HexChat
+#endif
 DefaultGroupName=HexChat
 DisableProgramGroupPage=yes
 SolidCompression=yes
 Compression=lzma2/ultra64
 SourceDir=..\rel
 OutputDir=..
+#if APPARCH == "x64"
+OutputBaseFilename={#APPNAM} {#APPVER} x64
+#else
+OutputBaseFilename={#APPNAM} {#APPVER} x86
+#endif
 FlatComponentsList=no
 PrivilegesRequired=none
 ShowComponentSizes=no
 CreateUninstallRegKey=not IsTaskSelected('portable')
 Uninstallable=not IsTaskSelected('portable')
+#if APPARCH == "x64"
+ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64
+#else
 ArchitecturesAllowed=x86 x64
+#endif
 MinVersion=6.0
+WizardImageFile={#PROJECTDIR}wizardimage.bmp
+WizardSmallImageFile={#PROJECTDIR}wizardsmallimage.bmp
+SetupIconFile={#PROJECTDIR}..\..\data\icons\hexchat.ico
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
@@ -33,7 +59,6 @@ Name: "gtktheme"; Description: "GTK+ Theme"; Types: normal custom; Flags: disabl
 Name: "xctext"; Description: "HexChat-Text"; Types: custom; Flags: disablenouninstallwarning
 Name: "xtm"; Description: "HexChat Theme Manager (Requires .NET 4.0)"; Types: custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal custom; Flags: disablenouninstallwarning
-;obs Name: "gtkengines"; Description: "GTK+ Engines"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\checksum"; Description: "Checksum"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\dns"; Description: "DNS"; Types: custom; Flags: disablenouninstallwarning
@@ -71,6 +96,7 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 [Run]
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
 Filename: "https://www.microsoft.com/en-us/download/details.aspx?id=39315"; Description: "Download Visual C++ 2013 Redistributable"; Flags: shellexec runasoriginaluser postinstall skipifsilent
+Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=17851"; Description: "Download .NET 4.0 for theme manager"; Components: xtm; Flags: shellexec runasoriginaluser postinstall skipifsilent
 Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
 Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
 Filename: "http://hexchat.org/downloads.html"; Description: "Download Python"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python and not langs\perl
@@ -83,7 +109,6 @@ Source: "changelog.url"; DestDir: "{app}"; Flags: ignoreversion; Components: lib
 Source: "readme.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: gtktheme
-;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: libs and not gtkengines
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
@@ -118,20 +143,6 @@ Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Flag
 
 Source: "lib\gtk-2.0\i686-pc-vs10\engines\libwimp.dll"; DestDir: "{app}\lib\gtk-2.0\i686-pc-vs10\engines"; Flags: ignoreversion; Components: libs
 
-;obs Source: "etc\gtkpref.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libclearlooks.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libcrux-engine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libglide.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libhcengine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libindustrial.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libmist.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libmurrine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libredmond95.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libthinice.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "plugins\hcgtkpref.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "share\themes\*"; DestDir: "{app}\share\themes"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: gtkengines
-;obs Source: "gtk2-prefs.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: gtkengines
-
 Source: "plugins\hcchecksum.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\checksum
 Source: "plugins\hcdns.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\dns
 Source: "plugins\hcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
@@ -154,17 +165,17 @@ Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: 
 Source: "thememan.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xtm
 
 [Icons]
-Name: "{group}\HexChat (x86)"; Filename: "{app}\hexchat.exe"; Tasks: not portable
-Name: "{group}\HexChat (x86) Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable
-Name: "{group}\HexChat (x86) ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
-Name: "{group}\HexChat (x86) ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable
-Name: "{group}\HexChat (x86) Config Folder"; Filename: "%APPDATA%\HexChat\"; Tasks: not portable
-Name: "{group}\HexChat-Text (x86)"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
-Name: "{group}\HexChat Theme Manager (x86)"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
-Name: "{group}\Uninstall HexChat (x86)"; Filename: "{uninstallexe}"; Tasks: not portable
+Name: "{group}\HexChat"; Filename: "{app}\hexchat.exe"; Tasks: not portable
+Name: "{group}\HexChat Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable
+Name: "{group}\HexChat ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
+Name: "{group}\HexChat ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable
+Name: "{group}\HexChat Config Folder"; Filename: "%APPDATA%\HexChat\"; Tasks: not portable
+Name: "{group}\HexChat-Text"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
+Name: "{group}\HexChat Theme Manager"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
+Name: "{group}\Uninstall HexChat"; Filename: "{uninstallexe}"; Tasks: not portable
 
 [Messages]
-BeveledLabel= HexChat
+BeveledLabel= {#APPNAM}
 
 [Code]
 /////////////////////////////////////////////////////////////////////
@@ -182,10 +193,20 @@ var
 	sUnInstPath: String;
 	sUnInstallString: String;
 begin
+#if APPARCH == "x64"
+	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\HexChat (x64)_is1');
+#else
 	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\HexChat (x86)_is1');
+#endif
 	sUnInstallString := '';
 	if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
 		RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+	if not (sUnInstallString <> '') then
+		sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\HexChat_is1');
+		if not RegQueryStringValue(HKLM64, sUnInstPath, 'UninstallString', sUnInstallString) then
+			if not RegQueryStringValue(HKCU64, sUnInstPath, 'UninstallString', sUnInstallString) then
+				if not RegQueryStringValue(HKLM32, sUnInstPath, 'UninstallString', sUnInstallString) then
+					RegQueryStringValue(HKCU32, sUnInstPath, 'UninstallString', sUnInstallString);
 	Result := sUnInstallString;
 end;
 
