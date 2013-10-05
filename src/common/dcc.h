@@ -87,7 +87,7 @@ struct DCC
 	unsigned char dccstat;	  /* 0 = QUEUED  1 = ACTIVE  2 = FAILED  3 = DONE */
 	unsigned int resume_sent:1;	/* resume request sent */
 	unsigned int fastsend:1;
-	unsigned int ackoffset:1;	/* is reciever sending acks as an offset from */
+	unsigned int ackoffset:1;	/* is receiver sending acks as an offset from */
 										/* the resume point? */
 	unsigned int throttled:2;	/* 0x1 = per send/get throttle
 											0x2 = global throttle */
