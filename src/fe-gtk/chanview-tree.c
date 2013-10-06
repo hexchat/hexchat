@@ -265,7 +265,7 @@ cv_tree_focus (chan *ch)
 		gtk_tree_view_get_visible_rect (tree, &vis_rect);
 
 		/* The cordinates aren't offset correctly */
-		gtk_tree_view_widget_to_tree_coords( tree, cell_rect.x, cell_rect.y, NULL, &cell_rect.y );
+		gtk_tree_view_convert_widget_to_bin_window_coords ( tree, cell_rect.x, cell_rect.y, NULL, &cell_rect.y );
 
 		/* only need to scroll if out of bounds */
 		if (cell_rect.y < vis_rect.y ||
