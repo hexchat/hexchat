@@ -323,6 +323,25 @@ scrollback_load (session *sess)
 				}
 				lines++;
 			}
+			else if (lines > 0 && n_bytes > 1)
+			{
+				text = buf;
+
+				if (text[n_bytes] == '\n')
+					text[n_bytes] = 0;
+
+				if (prefs.hex_text_stripcolor_replay)
+				{
+					text = strip_color (text, -1, STRIP_COLOR);
+				}
+
+				fe_print_text (sess, text, stamp);
+
+				if (prefs.hex_text_stripcolor_replay)
+				{
+					g_free (text);
+				}
+			}
 
 			g_free (buf);
 		}
