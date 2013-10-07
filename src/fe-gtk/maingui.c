@@ -3787,9 +3787,9 @@ mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 		return FALSE;
 
 	cmap = gtk_widget_get_colormap (widget);
-	gdk_drawable_get_size (widget->window, &width, &height);
+	gdk_drawable_get_size (gtk_widget_get_window (widget), &width, &height);
 
-	pix = gdk_pixbuf_get_from_drawable (NULL, widget->window, cmap, 0, 0, 0, 0, width, height);
+	pix = gdk_pixbuf_get_from_drawable (NULL, gtk_widget_get_window (widget), cmap, 0, 0, 0, 0, width, height);
 	pix2 = gdk_pixbuf_scale_simple (pix, width * 4 / 5, height / 2, GDK_INTERP_HYPER);
 	g_object_unref (pix);
 

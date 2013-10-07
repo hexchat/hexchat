@@ -97,6 +97,7 @@ tab_search_offset (GtkWidget *inner, gint start_offset,
 	GList *tabs;
 	GtkWidget *box;
 	GtkWidget *button;
+	GtkAllocation allocation;
 	gint found;
 
 	boxes = gtk_container_get_children (GTK_CONTAINER (inner));
@@ -120,7 +121,8 @@ tab_search_offset (GtkWidget *inner, gint start_offset,
 			if (!GTK_IS_TOGGLE_BUTTON (button))
 				continue;
 
-			found = (vertical ? button->allocation.y : button->allocation.x);
+			gtk_widget_get_allocation (button, &allocation);
+			found = (vertical ? allocation.y : allocation.x);
 			if ((forward && found > start_offset) ||
 				(!forward && found < start_offset))
 				return found;
@@ -153,16 +155,16 @@ tab_scroll_left_up_clicked (GtkWidget *widget, chanview *cv)
 		gdk_window_get_geometry (parent_win, 0, 0, &viewport_size, 0, 0);
 	}
 
-	new_value = tab_search_offset (inner, adj->value, 0, cv->vertical);
+	new_value = tab_search_offset (inner, gtk_adjustment_get_value (adj), 0, cv->vertical);
 
-	if (new_value + viewport_size > adj->upper)
-		new_value = adj->upper - viewport_size;
+	if (new_value + viewport_size > gtk_adjustment_get_upper (adj))
+		new_value = gtk_adjustment_get_upper (adj) - viewport_size;
 
 	if (!tab_left_is_moving)
 	{
 		tab_left_is_moving = 1;
 
-		for (i = adj->value; ((i > new_value) && (tab_left_is_moving)); i -= 0.1)
+		for (i = gtk_adjustment_get_value (adj); ((i > new_value) && (tab_left_is_moving)); i -= 0.1)
 		{
 			gtk_adjustment_set_value (adj, i);
 			while (g_main_context_pending (NULL))
@@ -202,16 +204,16 @@ tab_scroll_right_down_clicked (GtkWidget *widget, chanview *cv)
 		gdk_window_get_geometry (parent_win, 0, 0, &viewport_size, 0, 0);
 	}
 
-	new_value = tab_search_offset (inner, adj->value, 1, cv->vertical);
+	new_value = tab_search_offset (inner, gtk_adjustment_get_value (adj), 1, cv->vertical);
 
-	if (new_value == 0 || new_value + viewport_size > adj->upper)
-		new_value = adj->upper - viewport_size;
+	if (new_value == 0 || new_value + viewport_size > gtk_adjustment_get_upper (adj))
+		new_value = gtk_adjustment_get_upper (adj) - viewport_size;
 
 	if (!tab_right_is_moving)
 	{
 		tab_right_is_moving = 1;
 
-		for (i = adj->value; ((i < new_value) && (tab_right_is_moving)); i += 0.1)
+		for (i = gtk_adjustment_get_value (adj); ((i < new_value) && (tab_right_is_moving)); i += 0.1)
 		{
 			gtk_adjustment_set_value (adj, i);
 			while (g_main_context_pending (NULL))
@@ -628,7 +630,7 @@ tab_group_for_each_tab (chanview *cv,
 static int
 tab_check_focus_cb (GtkWidget *tab, int num, int unused)
 {
-	if (GTK_TOGGLE_BUTTON (tab)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (tab)))
 		return num;
 
 	return -1;
@@ -766,7 +768,7 @@ cv_tabs_cleanup (chanview *cv)
 static void
 cv_tabs_set_color (chan *ch, PangoAttrList *list)
 {
-	gtk_label_set_attributes (GTK_LABEL (GTK_BIN (ch->impl)->child), list);
+	gtk_label_set_attributes (GTK_LABEL (gtk_bin_get_child (GTK_BIN (ch->impl))), list);
 }
 
 static void
@@ -775,7 +777,7 @@ cv_tabs_rename (chan *ch, char *name)
 	PangoAttrList *attr;
 	GtkWidget *tab = ch->impl;
 
-	attr = gtk_label_get_attributes (GTK_LABEL (GTK_BIN (tab)->child));
+	attr = gtk_label_get_attributes (GTK_LABEL (gtk_bin_get_child (GTK_BIN (tab))));
 	if (attr)
 		pango_attr_list_ref (attr);
 
@@ -784,7 +786,7 @@ cv_tabs_rename (chan *ch, char *name)
 
 	if (attr)
 	{
-		gtk_label_set_attributes (GTK_LABEL (GTK_BIN (tab)->child), attr);
+		gtk_label_set_attributes (GTK_LABEL (gtk_bin_get_child (GTK_BIN (tab))), attr);
 		pango_attr_list_unref (attr);
 	}
 }
