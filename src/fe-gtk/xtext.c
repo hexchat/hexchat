@@ -1914,14 +1914,6 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		return FALSE;
 	}
 
-	if (xtext->word_select || xtext->line_select)
-	{
-		xtext->word_select = FALSE;
-		xtext->line_select = FALSE;
-		xtext->button_down = FALSE;
-		return FALSE;
-	}
-
 	if (event->button == 1)
 	{
 		xtext->button_down = FALSE;
@@ -1944,6 +1936,14 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 			{
 				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 			}
+		}
+
+		/* don't unselect on word or line selection */
+		if (xtext->word_select || xtext->line_select)
+		{
+			xtext->word_select = FALSE;
+			xtext->line_select = FALSE;
+			return FALSE;
 		}
 
 		if (xtext->select_start_x == event->x &&
@@ -2007,10 +2007,6 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_end = offset + len;
 			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
 			xtext->word_select = TRUE;
-			if (prefs.hex_text_autocopy_text)
-			{
-				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-			}
 		}
 
 		return FALSE;
@@ -2026,10 +2022,6 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_end = ent->str_len;
 			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
 			xtext->line_select = TRUE;
-			if (prefs.hex_text_autocopy_text)
-			{
-				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-			}
 		}
 
 		return FALSE;
