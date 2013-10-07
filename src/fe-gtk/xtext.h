@@ -212,7 +212,8 @@ struct _GtkXText
 
 	/* various state information */
 	unsigned int moving_separator:1;
-	unsigned int word_or_line_select:1;
+	unsigned int word_select:1;
+	unsigned int line_select:1;
 	unsigned int button_down:1;
 	unsigned int hilighting:1;
 	unsigned int dont_render:1;
@@ -282,5 +283,9 @@ void gtk_xtext_buffer_free (xtext_buffer *buf);
 void gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render);
 void gtk_xtext_copy_selection (GtkXText *xtext);
 GType gtk_xtext_get_type (void);
+
+static char *
+gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
+						  int *ret_off, int *ret_len, GSList **slp);
 
 #endif
