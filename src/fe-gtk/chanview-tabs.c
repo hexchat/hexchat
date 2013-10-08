@@ -233,11 +233,21 @@ tab_scroll_right_down_clicked (GtkWidget *widget, chanview *cv)
 static gboolean
 tab_scroll_cb (GtkWidget *widget, GdkEventScroll *event, gpointer cv)
 {
-	/* mouse wheel scrolling */
-	if (event->direction == GDK_SCROLL_UP)
-		tab_scroll_left_up_clicked (widget, cv);
-	else if (event->direction == GDK_SCROLL_DOWN)
-		tab_scroll_right_down_clicked (widget, cv);
+	if (prefs.hex_gui_tab_scrollchans)
+	{
+		if (event->direction == GDK_SCROLL_DOWN)
+			mg_switch_page (1, 1);
+		else if (event->direction == GDK_SCROLL_UP)
+			mg_switch_page (1, -1);
+	}
+	else
+	{
+		/* mouse wheel scrolling */
+		if (event->direction == GDK_SCROLL_UP)
+			tab_scroll_left_up_clicked (widget, cv);
+		else if (event->direction == GDK_SCROLL_DOWN)
+			tab_scroll_right_down_clicked (widget, cv);
+	}
 
 	return FALSE;
 }

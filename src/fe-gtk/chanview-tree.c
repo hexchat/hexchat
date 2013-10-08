@@ -25,11 +25,6 @@ typedef struct
 	GtkWidget *scrollw;	/* scrolledWindow */
 } treeview;
 
-#include "../common/hexchat.h"
-#include "../common/hexchatc.h"
-#include "fe-gtk.h"
-#include "maingui.h"
-
 #include <gdk/gdk.h>
 
 static void 	/* row-activated, when a row is double clicked */
@@ -91,10 +86,13 @@ cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 static void
 cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event)
 {
-	if (event->direction == GDK_SCROLL_DOWN)
-		mg_switch_page (1, 1);
-	else if (event->direction == GDK_SCROLL_UP)
-		mg_switch_page (1, -1);
+	if (prefs.hex_gui_tab_scrollchans)
+	{
+		if (event->direction == GDK_SCROLL_DOWN)
+			mg_switch_page (1, 1);
+		else if (event->direction == GDK_SCROLL_UP)
+			mg_switch_page (1, -1);
+	}
 }
 
 static void

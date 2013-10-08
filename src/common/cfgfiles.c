@@ -451,6 +451,7 @@ const struct prefs vars[] =
 	{"gui_tab_layout", P_OFFINT (hex_gui_tab_layout), TYPE_INT},
 	{"gui_tab_newtofront", P_OFFINT (hex_gui_tab_newtofront), TYPE_INT},
 	{"gui_tab_pos", P_OFFINT (hex_gui_tab_pos), TYPE_INT},
+	{"gui_tab_scrollchans", P_OFFINT (hex_gui_tab_scrollchans), TYPE_BOOL},
 	{"gui_tab_server", P_OFFINT (hex_gui_tab_server), TYPE_BOOL},
 	{"gui_tab_small", P_OFFINT (hex_gui_tab_small), TYPE_INT},
 	{"gui_tab_sort", P_OFFINT (hex_gui_tab_sort), TYPE_BOOL},
