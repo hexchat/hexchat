@@ -314,7 +314,7 @@ scrollback_load (session *sess)
 						text = strip_color (text + 1, -1, STRIP_COLOR);
 					}
 
-					fe_print_text (sess, text, stamp);
+					fe_print_text (sess, text, stamp, TRUE);
 
 					if (prefs.hex_text_stripcolor_replay)
 					{
@@ -340,7 +340,7 @@ scrollback_load (session *sess)
 		text = ctime (&stamp);
 		text[24] = 0;	/* get rid of the \n */
 		buf = g_strdup_printf ("\n*\t%s %s\n\n", _("Loaded log from"), text);
-		fe_print_text (sess, buf, 0);
+		fe_print_text (sess, buf, 0, FALSE);
 		g_free (buf);
 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
 	}
@@ -895,7 +895,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 
 	log_write (sess, text);
 	scrollback_save (sess, text);
-	fe_print_text (sess, text, timestamp);
+	fe_print_text (sess, text, timestamp, FALSE);
 
 	if (conv)
 		g_free (conv);
