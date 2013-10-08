@@ -99,7 +99,7 @@ fe_new_window (struct session *sess, int focus)
 				" \017This binary compiled \00310"__DATE__"\017\n",
 				get_sys_str (1),
 				glib_major_version, glib_minor_version, glib_micro_version);
-	fe_print_text (sess, buf, 0);
+	fe_print_text (sess, buf, 0, FALSE);
 
 	fe_print_text (sess, "\n\nCompiled in Features\0032:\017 "
 #ifdef USE_PLUGIN
@@ -114,7 +114,7 @@ fe_new_window (struct session *sess, int focus)
 #ifdef USE_IPV6
 	"IPv6"
 #endif
-	"\n\n", 0);
+	"\n\n", 0, FALSE);
 	fflush (stdout);
 }
 
@@ -144,7 +144,8 @@ timecat (char *buf, time_t stamp)
 static const short colconv[] = { 0, 7, 4, 2, 1, 3, 5, 11, 13, 12, 6, 16, 14, 15, 10, 7 };
 
 void
-fe_print_text (struct session *sess, char *text, time_t stamp)
+fe_print_text (struct session *sess, char *text, time_t stamp,
+			   gboolean no_activity)
 {
 	int dotime = FALSE;
 	char num[8];
@@ -312,7 +313,8 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 #else
 /* The win32 version for cmd.exe */
 void
-fe_print_text (struct session *sess, char *text, time_t stamp)
+fe_print_text (struct session *sess, char *text, time_t stamp,
+			   gboolean no_activity)
 {
 	int dotime = FALSE;
 	int comma, k, i = 0, j = 0, len = strlen (text);
