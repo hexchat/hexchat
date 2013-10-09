@@ -408,7 +408,7 @@ timer_cb (void *userdata)
 	}
 
 	set_current_package (data->package);
-	count = call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
 	set_current_package (&PL_sv_undef);
 	SPAGAIN;
 
@@ -467,7 +467,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 
 	data->depth++;
 	set_current_package (data->package);
-	count = call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
 	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
@@ -516,7 +516,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 
 	data->depth++;
 	set_current_package (data->package);
-	count = call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
 	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
@@ -592,7 +592,7 @@ print_cb (char *word[], void *userdata)
 
 	data->depth++;
 	set_current_package (data->package);
-	count = call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
 	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
