@@ -313,7 +313,8 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 #else
 /* The win32 version for cmd.exe */
 void
-fe_print_text (struct session *sess, char *text, time_t stamp)
+fe_print_text (struct session *sess, char *text, time_t stamp,
+			   gboolean no_activity)
 {
 	int dotime = FALSE;
 	int comma, k, i = 0, j = 0, len = strlen (text);

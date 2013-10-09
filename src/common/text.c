@@ -340,7 +340,7 @@ scrollback_load (session *sess)
 		text = ctime (&stamp);
 		text[24] = 0;	/* get rid of the \n */
 		buf = g_strdup_printf ("\n*\t%s %s\n\n", _("Loaded log from"), text);
-		fe_print_text (sess, buf, 0, FALSE);
+		fe_print_text (sess, buf, 0, TRUE);
 		g_free (buf);
 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
 	}
