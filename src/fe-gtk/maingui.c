@@ -3482,7 +3482,7 @@ fe_set_away (server *serv)
 		{
 			if (!sess->gui->is_tab || sess == current_tab)
 			{
-				gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (sess->gui->menu_item[MENU_ID_AWAY]), serv->is_away);
+				GTK_CHECK_MENU_ITEM (sess->gui->menu_item[MENU_ID_AWAY])->active = serv->is_away;
 				/* gray out my nickname */
 				mg_set_myself_away (sess->gui, serv->is_away);
 			}
