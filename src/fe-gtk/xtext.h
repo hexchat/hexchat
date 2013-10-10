@@ -284,8 +284,4 @@ void gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render);
 void gtk_xtext_copy_selection (GtkXText *xtext);
 GType gtk_xtext_get_type (void);
 
-static char *
-gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
-						  int *ret_off, int *ret_len, GSList **slp);
-
 #endif

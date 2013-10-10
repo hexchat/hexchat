@@ -138,6 +138,9 @@ static void gtk_xtext_search_textentry_del (xtext_buffer *, textentry *);
 static void gtk_xtext_search_textentry_fini (gpointer, gpointer);
 static void gtk_xtext_search_fini (xtext_buffer *);
 static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_flags flags, GError **perr);
+static char *
+gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
+						  int *ret_off, int *ret_len, GSList **slp);
 
 /* gives width of a 8bit string - with no mIRC codes in it */
 
