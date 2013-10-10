@@ -20,6 +20,8 @@
 #ifndef HEXCHAT_OUTBOUND_H
 #define HEXCHAT_OUTBOUND_H
 
+#include "hexchat.h"
+
 extern const struct commands xc_cmds[];
 extern GSList *menu_list;
 
@@ -34,7 +36,7 @@ void notc_msg (session *sess);
 void server_sendpart (server * serv, char *channel, char *reason);
 void server_sendquit (session * sess);
 int menu_streq (const char *s1, const char *s2, int def);
-void open_query (server *serv, char *nick, gboolean focus_existing);
+session *open_query (server *serv, char *nick, gboolean focus_existing);
 gboolean load_perform_file (session *sess, char *file);
 
 #endif
