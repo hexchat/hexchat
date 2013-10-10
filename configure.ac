@@ -280,6 +280,7 @@ if test "x$python" != xno ; then
 	esac
 	AC_MSG_CHECKING(Python version)
 	AC_MSG_RESULT($PY_VER)
+	python="python-${PY_VER}"
 fi
 
 dnl *********************************************************************
@@ -826,7 +827,7 @@ echo MS Proxy NTLM \(ISA\) ... : $have_ntlm
 echo libproxy support ...... : $libproxy
 echo
 echo Perl .................. : $perl
-echo Python ................ : python-$PY_VER
+echo Python ................ : $python
 echo
 echo Checksum .............. : $checksum
 echo Do At ................. : $doat
