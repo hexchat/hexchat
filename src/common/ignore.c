@@ -322,7 +322,7 @@ ignore_save ()
 			ig = (struct ignore *) temp->data;
 			if (!(ig->type & IG_NOSAVE))
 			{
-				snprintf (buf, sizeof (buf), "mask = %s\ntype = %d\n\n",
+				snprintf (buf, sizeof (buf), "mask = %s\ntype = %u\n\n",
 							 ig->mask, ig->type);
 				write (fh, buf, strlen (buf));
 			}

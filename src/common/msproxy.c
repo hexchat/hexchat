@@ -72,7 +72,7 @@ send_msprequest(s, state, request, end)
 
 	if ((w = send(s, request, l, 0)) != l) {
 #ifdef DEBUG_MSPROXY
-		printf ("send_msprequest(): send() failed (%d bytes sent instead of %d\n", w, l);
+		printf ("send_msprequest(): send() failed (%ld bytes sent instead of %Iu\n", w, l);
 		perror ("Error is");
 #endif
 		return -1;
@@ -93,7 +93,7 @@ recv_mspresponse(s, state, response)
 	do {
 		if ((r = recv (s, response, sizeof (*response), 0)) < MSPROXY_MINLENGTH) {
 #ifdef DEBUG_MSPROXY
-			printf ("recv_mspresponse(): expected to read atleast %d, read %d\n", MSPROXY_MINLENGTH, r);
+			printf ("recv_mspresponse(): expected to read atleast %d, read %ld\n", MSPROXY_MINLENGTH, r);
 #endif
 			return -1;
 		}

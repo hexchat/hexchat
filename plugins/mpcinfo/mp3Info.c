@@ -244,6 +244,7 @@ struct tagInfo readID3V2(char *file){
 	for (i=0;i<10;i++){
         c=fgetc(f);
         if (c==EOF){
+            fclose(f);
            //putlog("found eof while reading id3v2");
            return ret;
         }

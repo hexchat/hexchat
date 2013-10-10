@@ -77,7 +77,7 @@ struct tagInfo getOggHeader(char *file){
 	info.bitrate=nomBr;
 	if (((maxBr==nomBr)&&(nomBr=minBr))||((minBr==0)&&(maxBr==0))||((minBr=-1)&&(maxBr=-1)) )info.cbr=1;else info.cbr=0;
 	printf("bitrates: %i|%i|%i\n",maxBr,nomBr,minBr);
-	printf("freq: %i\n",info.freq);
+	printf("freq: %u\n",info.freq);
 	pos=h3pos+7;
 	pos+=getOggInt(header,pos,4)+4;
 	count=getOggInt(header,pos,4);

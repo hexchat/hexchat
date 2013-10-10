@@ -140,11 +140,11 @@ print_summary (int announce, char* format)
 
 	if (giga)
 	{
-		snprintf (buffer, bsize, "%d x %s (%s) @ %.2fGHz", count, cpu_model, cpu_vendor, cpu_freq);
+		snprintf (buffer, bsize, "%u x %s (%s) @ %.2fGHz", count, cpu_model, cpu_vendor, cpu_freq);
 	}
 	else
 	{
-		snprintf (buffer, bsize, "%d x %s (%s) @ %.0fMHz", count, cpu_model, cpu_vendor, cpu_freq);
+		snprintf (buffer, bsize, "%u x %s (%s) @ %.0fMHz", count, cpu_model, cpu_vendor, cpu_freq);
 	}
 
 	format_output ("CPU", buffer, format);
@@ -332,11 +332,11 @@ print_cpu (int announce, char* format)
 
 	if (giga)
 	{
-		snprintf (buffer, bsize, "%d x %s (%s) @ %.2fGHz w/ %s L2 Cache", count, model, vendor, freq, cache);
+		snprintf (buffer, bsize, "%u x %s (%s) @ %.2fGHz w/ %s L2 Cache", count, model, vendor, freq, cache);
 	}
 	else
 	{
-		snprintf (buffer, bsize, "%d x %s (%s) @ %.0fMHz w/ %s L2 Cache", count, model, vendor, freq, cache);
+		snprintf (buffer, bsize, "%u x %s (%s) @ %.0fMHz w/ %s L2 Cache", count, model, vendor, freq, cache);
 	}
 
 	format_output ("CPU", buffer, format);
