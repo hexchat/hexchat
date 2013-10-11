@@ -141,7 +141,7 @@ struct _GtkXText
 	GdkGC *dark_gc;
 	GdkGC *thin_gc;
 	GdkGC *marker_gc;
-	gulong palette[XTEXT_COLS];
+	GdkColor palette[XTEXT_COLS];
 
 	gint io_tag;					  /* for delayed refresh events */
 	gint add_io_tag;				  /* "" when adding new text */

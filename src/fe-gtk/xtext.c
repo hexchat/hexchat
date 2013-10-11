@@ -349,19 +349,13 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 static void
 xtext_set_fg (GtkXText *xtext, GdkGC *gc, int index)
 {
-	GdkColor col;
-
-	col.pixel = xtext->palette[index];
-	gdk_gc_set_foreground (gc, &col);
+	gdk_gc_set_foreground (gc, &xtext->palette[index]);
 }
 
 static void
 xtext_set_bg (GtkXText *xtext, GdkGC *gc, int index)
 {
-	GdkColor col;
-
-	col.pixel = xtext->palette[index];
-	gdk_gc_set_background (gc, &col);
+	gdk_gc_set_background (gc, &xtext->palette[index]);
 }
 
 static void
@@ -685,8 +679,7 @@ gtk_xtext_realize (GtkWidget * widget)
 	gdk_gc_set_foreground (xtext->thin_gc, &col);
 
 	/* for the marker bar (marker) */
-	col.pixel = xtext->palette[XTEXT_MARKER];
-	gdk_gc_set_foreground (xtext->marker_gc, &col);
+	gdk_gc_set_foreground (xtext->marker_gc, &xtext->palette[XTEXT_MARKER]);
 
 	xtext_set_fg (xtext, xtext->fgc, XTEXT_FG);
 	xtext_set_bg (xtext, xtext->fgc, XTEXT_BG);
@@ -3241,7 +3234,7 @@ gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[])
 
 	for (i = (XTEXT_COLS-1); i >= 0; i--)
 	{
-		xtext->palette[i] = palette[i].pixel;
+		xtext->palette[i] = palette[i];
 	}
 
 	if (GTK_WIDGET_REALIZED (xtext))
@@ -3250,8 +3243,7 @@ gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[])
 		xtext_set_bg (xtext, xtext->fgc, XTEXT_BG);
 		xtext_set_fg (xtext, xtext->bgc, XTEXT_BG);
 
-		col.pixel = xtext->palette[XTEXT_MARKER];
-		gdk_gc_set_foreground (xtext->marker_gc, &col);
+		gdk_gc_set_foreground (xtext->marker_gc, &xtext->palette[XTEXT_MARKER]);
 	}
 	xtext->col_fore = XTEXT_FG;
 	xtext->col_back = XTEXT_BG;
