@@ -458,7 +458,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 		return HEXCHAT_EAT_NONE;
 
 	/*               hexchat_printf (ph, */
-	/*                               "Recieved %d words in server callback", av_len (wd)); */
+	/*                               "Received %d words in server callback", av_len (wd)); */
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) array2av (word)));
 	XPUSHs (newRV_noinc ((SV *) array2av (word_eol)));
@@ -506,7 +506,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	if (data->depth)
 		return HEXCHAT_EAT_NONE;
 
-	/*               hexchat_printf (ph, "Recieved %d words in command callback", */
+	/*               hexchat_printf (ph, "Received %d words in command callback", */
 	/*                               av_len (wd)); */
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) array2av (word)));
@@ -584,7 +584,7 @@ print_cb (char *word[], void *userdata)
 		}
 	}
 
-	/*hexchat_printf (ph, "Recieved %d words in print callback", av_len (wd)+1); */
+	/*hexchat_printf (ph, "Received %d words in print callback", av_len (wd)+1); */
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) wd));
 	XPUSHs (data->userdata);
@@ -1424,14 +1424,14 @@ perl_load_file (char *filename)
 									 "You must have a Visual C++ build of Perl "
 									 PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run Perl scripts. A reboot may be required.\n\n"
-									 "http://hexchat.org/downloads.html\n\n"
+									 "http://hexchat.github.io/downloads.html\n\n"
 									 "I have found Perl 5.6, but that is too old.");
 				} else {
 					thread_mbox ("Cannot open " PERL_DLL "!\n\n"
 									 "You must have a Visual C++ build of Perl "
 									 PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run Perl scripts. A reboot may be required.\n\n"
-									 "http://hexchat.org/downloads.html\n\n"
+									 "http://hexchat.github.io/downloads.html\n\n"
 									 "Make sure Perl's bin directory is in your PATH.");
 				}
 			}

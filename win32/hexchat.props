@@ -16,6 +16,7 @@
 		<!-- YOU SHOULDN'T TOUCH ANYTHING BELOW -->
 
 		<!-- G_DISABLE_DEPRECATED is unfeasible due to g_completion_* -->
+		<!-- must be buildable with GSEAL_ENABLE in the future, xtext, setup, and chanview-tabs stand in the way --> 
 		<OwnFlags>GDK_PIXBUF_DISABLE_DEPRECATED;G_DISABLE_SINGLE_INCLUDES;GDK_PIXBUF_DISABLE_SINGLE_INCLUDES;GTK_DISABLE_SINGLE_INCLUDES;HAVE_STRTOULL;strtoull=_strtoui64;strcasecmp=stricmp;strncasecmp=strnicmp;__inline__=__inline</OwnFlags>
 		<DepsRoot>$(YourDepsPath)\$(PlatformName)</DepsRoot>
 		<GendefPath>$(YourGendefPath)</GendefPath>
@@ -31,8 +32,8 @@
 		<Python3Output>hcpython3</Python3Output>
 		<Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
 		<Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
-		<Pixmaps>png_ulist_voice "$(SolutionDir)\..\src\pixmaps\ulist_voice.png" png_ulist_halfop "$(SolutionDir)\..\src\pixmaps\ulist_halfop.png" png_ulist_op "$(SolutionDir)\..\src\pixmaps\ulist_op.png" png_ulist_owner "$(SolutionDir)\..\src\pixmaps\ulist_owner.png" png_ulist_founder "$(SolutionDir)\..\src\pixmaps\ulist_founder.png" png_ulist_netop "$(SolutionDir)\..\src\pixmaps\ulist_netop.png" png_tray_fileoffer "$(SolutionDir)\..\src\pixmaps\tray_fileoffer.png" png_tray_highlight "$(SolutionDir)\..\src\pixmaps\tray_highlight.png" png_tray_message "$(SolutionDir)\..\src\pixmaps\tray_message.png" png_tree_channel "$(SolutionDir)\..\src\pixmaps\tree_channel.png" png_tree_dialog "$(SolutionDir)\..\src\pixmaps\tree_dialog.png" png_tree_server "$(SolutionDir)\..\src\pixmaps\tree_server.png" png_tree_util "$(SolutionDir)\..\src\pixmaps\tree_util.png" png_book "$(SolutionDir)\..\src\pixmaps\book.png" png_hexchat "$(SolutionDir)\..\src\pixmaps\hexchat.png"</Pixmaps>
 		<DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;libintl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
+		<DataDir>$(SolutionDir)..\data\</DataDir>
 		<HexChatBuild>$(SolutionDir)..\..\hexchat-build</HexChatBuild>
 		<HexChatBin>$(HexChatBuild)\$(PlatformName)\bin\</HexChatBin>
 		<HexChatObj>$(HexChatBuild)\$(PlatformName)\obj\</HexChatObj>
@@ -76,8 +77,7 @@ copy "$(DepsRoot)\bin\zlib1.dll" "$(HexChatRel)"
 xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\i686-pc-vs10\engines" "$(HexChatRel)\lib\gtk-2.0\i686-pc-vs10\engines"
 xcopy /q /s /i etc "$(HexChatRel)\etc"
 xcopy /q /s /i share "$(HexChatRel)\share"
-xcopy /q /s /i "..\..\share\doc\COPYING" "$(HexChatRel)\share\doc\hexchat\"
-xcopy /q /s /i "$(DepsRoot)\share\doc" "$(HexChatRel)\share\doc"
+xcopy /q /s /i "..\..\COPYING" "$(HexChatRel)\"
 xcopy /q /s /i "$(DepsRoot)\lib\enchant\libenchant_myspell.dll" "$(HexChatRel)\lib\enchant\"
 xcopy /q /s /i "$(HexChatBin)hcchecksum.dll" "$(HexChatRel)\plugins\"
 copy "$(HexChatBin)hcdns.dll" "$(HexChatRel)\plugins"
@@ -100,6 +100,8 @@ xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
 		<ClCompile>
 			<WarningLevel>Level3</WarningLevel>
 			<DisableSpecificWarnings>4996</DisableSpecificWarnings>
+			<AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions> 
+			<WholeProgramOptimization>false</WholeProgramOptimization>
 			<!-- UNCOMMENT ONLY ONE -->
 			<!--Optimization>Disabled</Optimization-->
 			<Optimization>MaxSpeed</Optimization>

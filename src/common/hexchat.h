@@ -151,6 +151,7 @@ struct hexchatprefs
 	unsigned int hex_gui_compact;
 	unsigned int hex_gui_focus_omitalerts;
 	unsigned int hex_gui_hide_menu;
+	unsigned int hex_gui_input_attr;
 	unsigned int hex_gui_input_icon;
 	unsigned int hex_gui_input_nick;
 	unsigned int hex_gui_input_spell;
@@ -231,7 +232,6 @@ struct hexchatprefs
 	unsigned int hex_text_indent;
 	unsigned int hex_text_replay;
 	unsigned int hex_text_search_case_match;
-	unsigned int hex_text_search_backward;
 	unsigned int hex_text_search_highlight_all;
 	unsigned int hex_text_search_follow;
 	unsigned int hex_text_search_regexp;
@@ -278,17 +278,20 @@ struct hexchatprefs
 	int hex_gui_pane_left_size;
 	int hex_gui_pane_right_size;
 	int hex_gui_pane_right_size_min;
+	int hex_gui_search_pos;
 	int hex_gui_slist_select;
 	int hex_gui_tab_layout;
 	int hex_gui_tab_newtofront;
 	int hex_gui_tab_pos;
 	int hex_gui_tab_small;
 	int hex_gui_tab_trunc;
+	int hex_gui_transparency;
 	int hex_gui_throttlemeter;
 	int hex_gui_ulist_pos;
 	int hex_gui_ulist_sort;
 	int hex_gui_url_mod;
 	int hex_gui_win_height;
+	int hex_gui_win_fullscreen;
 	int hex_gui_win_left;
 	int hex_gui_win_state;
 	int hex_gui_win_top;
@@ -305,9 +308,6 @@ struct hexchatprefs
 	int hex_notify_timeout;
 	int hex_text_max_indent;
 	int hex_text_max_lines;
-	int hex_text_tint_blue;
-	int hex_text_tint_green;
-	int hex_text_tint_red;
 	int hex_url_grabber_limit;
 
 	/* STRINGS */

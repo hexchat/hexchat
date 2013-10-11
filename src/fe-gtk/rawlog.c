@@ -88,7 +88,7 @@ rawlog_key_cb (GtkWidget * wid, GdkEventKey * key, gpointer userdata)
 	 * but make sure not to copy twice, i.e. when auto-copy is enabled.
 	 */
 	if (!prefs.hex_text_autocopy_text &&
-		(key->keyval == GDK_c || key->keyval == GDK_C) &&
+		(key->keyval == GDK_KEY_c || key->keyval == GDK_KEY_C) &&
 		key->state & STATE_SHIFT &&
 		key->state & STATE_CTRL)
 	{
@@ -121,9 +121,6 @@ open_rawlog (struct server *serv)
 	gtk_widget_show (hbox);
 
 	serv->gui->rawlog_textlist = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_tint (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
-	gtk_xtext_set_background (GTK_XTEXT (serv->gui->rawlog_textlist),
-									  channelwin_pix, prefs.hex_text_transparent);
 
 	gtk_container_add (GTK_CONTAINER (hbox), serv->gui->rawlog_textlist);
 	gtk_xtext_set_font (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.hex_text_font);

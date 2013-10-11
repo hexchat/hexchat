@@ -742,15 +742,25 @@ cmd_country (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_cycle (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char *key = sess->channelkey;
+	char *key = NULL;
 	char *chan = word[2];
+	session *chan_sess;
+
 	if (!*chan)
 		chan = sess->channel;
-	if (*chan && sess->type == SESS_CHANNEL)
+
+	if (chan)
 	{
-		sess->server->p_cycle (sess->server, chan, key);
-		return TRUE;
+		chan_sess = find_channel (sess->server, chan);
+
+		if (chan_sess && chan_sess->type == SESS_CHANNEL)
+		{
+			key = chan_sess->channelkey;
+			sess->server->p_cycle (sess->server, chan, key);
+			return TRUE;
+		}
 	}
+
 	return FALSE;
 }
 
@@ -2559,7 +2569,8 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 char *
 split_up_text(struct session *sess, char *text, int cmd_length, char *split_text)
 {
-	unsigned int max;
+	unsigned int max, space_offset;
+	char *space;
 
 	/* maximum allowed text */
 	/* :nickname!username@host.com cmd_length */
@@ -2591,6 +2602,17 @@ split_up_text(struct session *sess, char *text, int cmd_length, char *split_text
 			i += size;
 		}
 		max = i;
+
+		/* Try splitting at last space */
+		space = g_utf8_strrchr (text, max, ' ');
+		if (space)
+		{
+			space_offset = g_utf8_pointer_to_offset (text, space);
+
+			/* Only split if last word is of sane length */
+			if (max != space_offset && max - space_offset < 20)
+				max = space_offset + 1;
+		}
 
 		split_text = g_strdup_printf ("%.*s", max, text);
 
@@ -2980,17 +3002,43 @@ static int
 cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *nick = word[2];
+	char *msg = word_eol[3];
+	char *split_text = NULL;
 	gboolean focus = TRUE;
+	int cmd_length = 13; /* " PRIVMSG ", " ", :, \r, \n */
+	int offset = 0;
 
 	if (strcmp (word[2], "-nofocus") == 0)
 	{
 		nick = word[3];
+		msg = word_eol[4];
 		focus = FALSE;
 	}
 
 	if (*nick && !is_channel (sess->server, nick))
 	{
 		open_query (sess->server, nick, focus);
+
+		if (*msg)
+		{
+			if (!sess->server->connected)
+			{
+				notc_msg (sess);
+				return TRUE;
+			}
+
+			while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
+			{
+				sess->server->p_message (sess->server, nick, split_text);
+
+				if (*split_text)
+					offset += strlen(split_text);
+
+				g_free(split_text);
+			}
+			sess->server->p_message (sess->server, nick, msg + offset);
+		}
+
 		return TRUE;
 	}
 	return FALSE;
@@ -3936,7 +3984,7 @@ const struct commands xc_cmds[] = {
 	{"PING", cmd_ping, 1, 0, 1,
 	 N_("PING <nick | channel>, CTCP pings nick or channel")},
 	{"QUERY", cmd_query, 0, 0, 1,
-	 N_("QUERY [-nofocus] <nick>, opens up a new privmsg window to someone")},
+	 N_("QUERY [-nofocus] <nick> [message], opens up a new privmsg window to someone and optionally sends a message")},
 	{"QUIET", cmd_quiet, 1, 1, 1,
 	 N_("QUIET <mask> [<quiettype>], quiet everyone matching the mask in the current channel if supported by the server.")},
 	{"QUIT", cmd_quit, 0, 0, 1,
@@ -4259,6 +4307,9 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 						break;
 					case 'B':
 						buf[i] = '\002';
+						break;
+					case 'I':
+						buf[i] = '\035';
 						break;
 					case 'C':
 						buf[i] = '\003';

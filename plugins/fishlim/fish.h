@@ -25,11 +25,7 @@
 #ifndef FISH_H
 #define FISH_H
 
-#ifdef _MSC_VER
-#include "bool.h"
-#else
 #include <stdbool.h>
-#endif
 #include <stddef.h>
 
 char *fish_encrypt(const char *key, size_t keylen, const char *message);

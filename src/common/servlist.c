@@ -540,7 +540,7 @@ static const struct defaultserver def[] =
 	{0,			"eu.spidernet.org"},
 	{0,			"irc.spidernet.org"},*/
 	
-	{"SpotChat", 0},
+	{"SpotChat", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,			"irc.spotchat.org/+6697"},
 #endif

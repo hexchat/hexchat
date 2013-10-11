@@ -83,18 +83,9 @@
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 0
 
-/* Version string macro */
-#ifdef WIN32
-#if PY_MAJOR_VERSION == 2
-#define VERSION STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_MINOR) "/2.7"	/* Linked to python27.dll */
-#elif PY_MAJOR_VERSION == 3
-#define VERSION STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_MINOR) "/3.3"	/* Linked to python33.dll */
-#endif
-#endif
-
-#ifndef VERSION
-#define VERSION STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_MINOR)
-#endif
+/* Version string macro e.g 1.0/3.3 */
+#define VERSION STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_MINOR) "/" \
+				STRINGIZE(PY_MAJOR_VERSION) "." STRINGIZE (PY_MINOR_VERSION)
 
 /* #define's for Python 2 */
 #if PY_MAJOR_VERSION == 2
@@ -382,7 +373,7 @@ Usage: /PY LOAD   <filename>\n\
            ABOUT\n\
 \n";
 
-static const char about[] = "HexChat Python " PY_VERSION " Interface Version " VERSION "\n";
+static const char about[] = "HexChat Python interface version " VERSION "\n";
 
 /* ===================================================================== */
 /* Utility functions */
@@ -1968,7 +1959,7 @@ Module_hexchat_pluginpref_list(PyObject *self, PyObject *args)
 {
 	PluginObject *plugin = (PluginObject*)Plugin_GetCurrent();
 	hexchat_plugin *prefph = Plugin_GetHandle(plugin);
-	char list[512];
+	char list[4096];
 	char* token;
 	int result;
 	PyObject *pylist;

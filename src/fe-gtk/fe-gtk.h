@@ -54,11 +54,11 @@
 #undef gtk_signal_connect
 #define gtk_signal_connect g_signal_connect
 
-#define flag_t flag_wid[0]
+#define flag_c flag_wid[0]
 #define flag_n flag_wid[1]
-#define flag_s flag_wid[2]
-#define flag_i flag_wid[3]
-#define flag_p flag_wid[4]
+#define flag_r flag_wid[2]
+#define flag_t flag_wid[3]
+#define flag_i flag_wid[4]
 #define flag_m flag_wid[5]
 #define flag_l flag_wid[6]
 #define flag_k flag_wid[7]
@@ -176,6 +176,9 @@ typedef struct session_gui
 		*limit_entry,		  /* +l */
 		*key_entry;		  /* +k */
 
+		GtkWidget *shbox, *shentry;	/* search bar hbox */
+		gulong search_changed_signal; /* hook for search change event so blanking the box doesn't suck */
+
 #define MENU_ID_NUM 12
 	GtkWidget *menu_item[MENU_ID_NUM+1]; /* some items we may change state of */
 
@@ -194,21 +197,11 @@ typedef struct session_gui
 extern GdkPixmap *channelwin_pix;
 extern GdkPixmap *dialogwin_pix;
 
-
-#ifdef USE_GTKSPELL
-char *SPELL_ENTRY_GET_TEXT (GtkWidget *entry);
-#define SPELL_ENTRY_SET_TEXT(e,txt) gtk_text_buffer_set_text (gtk_text_view_get_buffer(GTK_TEXT_VIEW(e)),txt,-1);
-#define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_text_view_set_editable(GTK_TEXT_VIEW(e), v)
-int SPELL_ENTRY_GET_POS (GtkWidget *entry);
-void SPELL_ENTRY_SET_POS (GtkWidget *entry, int pos);
-void SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos);
-#else
-#define SPELL_ENTRY_GET_TEXT(e) (GTK_ENTRY(e)->text)
+#define SPELL_ENTRY_GET_TEXT(e) ((char *)(gtk_entry_get_text (GTK_ENTRY(e))))
 #define SPELL_ENTRY_SET_TEXT(e,txt) gtk_entry_set_text(GTK_ENTRY(e),txt)
 #define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_editable_set_editable(GTK_EDITABLE(e),v)
 #define SPELL_ENTRY_GET_POS(e) gtk_editable_get_position(GTK_EDITABLE(e))
 #define SPELL_ENTRY_SET_POS(e,p) gtk_editable_set_position(GTK_EDITABLE(e),p);
 #define SPELL_ENTRY_INSERT(e,t,l,p) gtk_editable_insert_text(GTK_EDITABLE(e),t,l,p)
-#endif
 
 #endif

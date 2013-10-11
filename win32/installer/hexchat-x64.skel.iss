@@ -4,7 +4,7 @@ AppPublisherURL=http://www.hexchat.org/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
 AppSupportURL=https://github.com/hexchat/hexchat/issues
 AppUpdatesURL=http://www.hexchat.org/home/downloads
-LicenseFile=share\doc\hexchat\COPYING
+LicenseFile=COPYING
 UninstallDisplayIcon={app}\hexchat.exe
 UninstallDisplayName=HexChat (x64)
 DefaultDirName={pf}\HexChat
@@ -71,7 +71,7 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 
 [Run]
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
-Filename: "http://www.microsoft.com/en-us/download/details.aspx?id=30679"; Description: "Download Visual C++ 2012 Redistributable"; Flags: shellexec runasoriginaluser postinstall skipifsilent
+Filename: "https://www.microsoft.com/en-us/download/details.aspx?id=39315"; Description: "Download Visual C++ 2013 Redistributable"; Flags: shellexec runasoriginaluser postinstall skipifsilent
 Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
 Filename: "http://hexchat.org/downloads.html"; Description: "Download Perl"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\perl and not langs\python
 Filename: "http://hexchat.org/downloads.html"; Description: "Download Python"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked; Components: langs\python and not langs\perl
@@ -86,8 +86,7 @@ Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: gtktheme
 ;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: libs and not gtkengines
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
-Source: "share\doc\*"; DestDir: "{app}\share\doc"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
-
+Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
 
 Source: "atk-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -160,6 +159,7 @@ Name: "{group}\HexChat (x64)"; Filename: "{app}\hexchat.exe"; Tasks: not portabl
 Name: "{group}\HexChat (x64) Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable
 Name: "{group}\HexChat (x64) ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
 Name: "{group}\HexChat (x64) ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable
+Name: "{group}\HexChat (x64) Config Folder"; Filename: "%APPDATA%\HexChat\"; Tasks: not portable
 Name: "{group}\HexChat-Text (x64)"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
 Name: "{group}\HexChat Theme Manager (x64)"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
 Name: "{group}\Uninstall HexChat (x64)"; Filename: "{uninstallexe}"; Tasks: not portable

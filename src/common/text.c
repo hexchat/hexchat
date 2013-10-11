@@ -518,7 +518,11 @@ log_create_pathname (char *servname, char *channame, char *netname)
 
 	if (!netname)
 	{
-		netname = "NETWORK";
+		netname = strdup ("NETWORK");
+	}
+	else
+	{
+		netname = log_create_filename (netname);
 	}
 
 	/* first, everything is in UTF-8 */
@@ -533,6 +537,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 
 	log_insert_vars (fname, sizeof (fname), prefs.hex_irc_logmask, channame, netname, servname);
 	free (channame);
+	free (netname);
 
 	/* insert time/date */
 	now = time (NULL);

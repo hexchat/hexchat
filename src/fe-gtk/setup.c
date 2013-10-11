@@ -40,12 +40,7 @@
 #ifdef WIN32
 #include "../common/fe.h"
 #endif
-#ifdef USE_GTKSPELL
-#include <gtkspell/gtkspell.h>
-#endif
-#ifdef USE_LIBSEXY
 #include "sexy-spell-entry.h"
-#endif
 
 GtkStyle *create_input_style (GtkStyle *);
 
@@ -159,19 +154,11 @@ static const setting appearance_settings[] =
 	{ST_HEADER,	N_("Text Box"),0,0,0},
 	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(hex_text_color_nicks), N_("Give each person on IRC a different color"),0,0},
 	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(hex_text_indent), N_("Make nick names right-justified"),0,0},
-#if defined(USE_XLIB) || defined(WIN32)
-	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(hex_text_transparent),0,0,0},
-	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(hex_text_show_marker), N_("Insert a red line after the last read text."),0,0},
-	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(hex_text_background), 0, 0, sizeof prefs.hex_text_background},
+	{ST_TOGGLE, N_ ("Show marker line"), P_OFFINTNL (hex_text_show_marker), N_ ("Insert a red line after the last read text."), 0, 0},
+	{ST_EFILE, N_ ("Background image:"), P_OFFSETNL (hex_text_background), 0, 0, sizeof prefs.hex_text_background},
 
 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
-	{ST_HSCALE, N_("Red:"), P_OFFINTNL(hex_text_tint_red),0,0,0},
-	{ST_HSCALE, N_("Green:"), P_OFFINTNL(hex_text_tint_green),0,0,0},
-	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(hex_text_tint_blue),0,0,0},
-#else
-	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(hex_text_show_marker), N_("Insert a red line after the last read text."),0,0},
-	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(hex_text_background), 0, 0, sizeof prefs.hex_text_background},
-#endif
+	{ST_HSCALE, N_("Window Opacity:"), P_OFFINTNL(hex_gui_transparency),0,0,0},
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(hex_stamp_text),0,0,1},
@@ -200,20 +187,15 @@ static const setting inputbox_settings[] =
 {
 	{ST_HEADER, N_("Input Box"),0,0,0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
+	{ST_TOGGLE, N_("Show attributes"), P_OFFINTNL (hex_gui_input_attr),0,0,0},
 	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,1},
 	{ST_TOGGLE, N_("Show user mode icon in nick box"), P_OFFINTNL(hex_gui_input_icon),0,0,0},
-#ifdef HAVE_ISO_CODES /* Defined with static spelling */
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,1},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(hex_text_spell_langs),0,0,sizeof prefs.hex_text_spell_langs},
 #ifdef WIN32
-	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
+	{ST_LABEL,	N_("Use language codes (as in \"%LOCALAPPDATA%\\enchant\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
 #else
 	{ST_LABEL,	N_("Use language codes. Separate multiple entries with commas.")},
-#endif
-#else
-#if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
-	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,0},
-#endif
 #endif
 
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
@@ -426,7 +408,11 @@ static const setting alert_settings[] =
 #ifdef WIN32
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play the \"Instant Message Notification\" system sound upon the selected events"), (void *)beeplist, 0},
 #else
+#ifdef USE_LIBCANBERRA
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play \"message-new-instant\" from the freedesktop.org sound theme upon the selected events"), (void *)beeplist, 0},
+#else
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play a GTK beep upon the selected events"), (void *)beeplist, 0},
+#endif
 #endif
 
 	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
@@ -631,7 +617,7 @@ static const setting network_settings[] =
 static void
 setup_3oggle_cb (GtkToggleButton *but, unsigned int *setting)
 {
-	*setting = but->active;
+	*setting = gtk_toggle_button_get_active (but);
 }
 
 static void
@@ -704,15 +690,15 @@ setup_toggle_cb (GtkToggleButton *but, const setting *set)
 {
 	GtkWidget *label, *disable_wid;
 
-	setup_set_int (&setup_prefs, set, but->active ? 1 : 0);
+	setup_set_int (&setup_prefs, set, gtk_toggle_button_get_active (but));
 
 	/* does this toggle also enable/disable another widget? */
 	disable_wid = g_object_get_data (G_OBJECT (but), "nxt");
 	if (disable_wid)
 	{
-		gtk_widget_set_sensitive (disable_wid, but->active);
+		gtk_widget_set_sensitive (disable_wid, gtk_toggle_button_get_active (but));
 		label = g_object_get_data (G_OBJECT (disable_wid), "lbl");
-		gtk_widget_set_sensitive (label, but->active);
+		gtk_widget_set_sensitive (label, gtk_toggle_button_get_active (but));
 	}
 }
 
@@ -835,12 +821,13 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 }
 
 static gint
-setup_apply_tint (int *tag)
+setup_apply_trans (int *tag)
 {
-	prefs.hex_text_tint_red = setup_prefs.hex_text_tint_red;
-	prefs.hex_text_tint_green = setup_prefs.hex_text_tint_green;
-	prefs.hex_text_tint_blue = setup_prefs.hex_text_tint_blue;
-	mg_update_xtext (current_sess->gui->xtext);
+	prefs.hex_gui_transparency = setup_prefs.hex_gui_transparency;
+	gtk_window_set_opacity (GTK_WINDOW (current_sess->gui->window),
+							(prefs.hex_gui_transparency / 255.));
+
+	/* mg_update_xtext (current_sess->gui->xtext); */
 	*tag = 0;
 	return 0;
 }
@@ -854,7 +841,7 @@ setup_hscale_cb (GtkHScale *wid, const setting *set)
 
 	if (tag == 0)
 	{
-		tag = g_idle_add ((GSourceFunc) setup_apply_tint, &tag);
+		tag = g_idle_add ((GSourceFunc) setup_apply_trans, &tag);
 	}
 }
 
@@ -875,6 +862,12 @@ setup_create_hscale (GtkWidget *table, int row, const setting *set)
 							G_CALLBACK (setup_hscale_cb), (gpointer)set);
 	gtk_table_attach (GTK_TABLE (table), wid, 3, 6, row, row + 1,
 							GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+
+#ifndef WIN32 /* Windows always supports this */
+	/* Only used for transparency currently */
+	if (!gtk_widget_is_composited (current_sess->gui->window))
+		gtk_widget_set_sensitive (wid, FALSE);
+#endif
 }
 
 
@@ -900,7 +893,7 @@ setup_menu_cb (GtkWidget *cbox, const setting *set)
 static void
 setup_radio_cb (GtkWidget *item, const setting *set)
 {
-	if (GTK_TOGGLE_BUTTON (item)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (item)))
 	{
 		int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
 		/* set the prefs.<field> */
@@ -1106,7 +1099,7 @@ setup_fontsel_cancel (GtkWidget *button, GtkFontSelectionDialog *dialog)
 static void
 setup_browsefolder_cb (GtkWidget *button, GtkEntry *entry)
 {
-	gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry, entry->text, NULL, FRF_CHOOSEFOLDER);
+	gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry, (char*)gtk_entry_get_text (entry), NULL, FRF_CHOOSEFOLDER);
 }
 
 static void
@@ -1120,8 +1113,8 @@ setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 
 	sel = (GtkFontSelection *) dialog->fontsel;
 
-	if (GTK_ENTRY (entry)->text[0])
-		gtk_font_selection_set_font_name (sel, GTK_ENTRY (entry)->text);
+	if (gtk_entry_get_text (GTK_ENTRY (entry))[0])
+		gtk_font_selection_set_font_name (sel, gtk_entry_get_text (GTK_ENTRY (entry)));
 
 	g_object_set_data (G_OBJECT (dialog->ok_button), "e", entry);
 
@@ -1140,8 +1133,8 @@ setup_entry_cb (GtkEntry *entry, setting *set)
 {
 	int size;
 	int pos;
-	int len = strlen (entry->text);
-	unsigned char *p = entry->text;
+	int len = gtk_entry_get_text_length (entry);
+	unsigned char *p = (unsigned char*)gtk_entry_get_text (entry);
 
 	/* need to truncate? */
 	if (len >= set->extra)
@@ -1163,7 +1156,7 @@ setup_entry_cb (GtkEntry *entry, setting *set)
 	}
 	else
 	{
-		setup_set_str (&setup_prefs, set, entry->text);
+		setup_set_str (&setup_prefs, set, gtk_entry_get_text (entry));
 	}
 }
 
@@ -1445,7 +1438,7 @@ setup_create_color_button (GtkWidget *table, int num, int row, int col)
 						/* 12345678901 23456789 01  23456789 */
 		sprintf (buf, "<span size=\"x-small\">%d</span>", num);
 	but = gtk_button_new_with_label (" ");
-	gtk_label_set_markup (GTK_LABEL (GTK_BIN (but)->child), buf);
+	gtk_label_set_markup (GTK_LABEL (gtk_bin_get_child (GTK_BIN (but))), buf);
 	/* win32 build uses this to turn off themeing */
 	g_object_set_data (G_OBJECT (but), "hexchat-color", (gpointer)1);
 	gtk_table_attach (GTK_TABLE (table), but, col, col+1, row, row+1,
@@ -1689,7 +1682,7 @@ setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 static void
 setup_snd_play_cb (GtkWidget *button, GtkEntry *entry)
 {
-	sound_play (entry->text, FALSE);
+	sound_play (gtk_entry_get_text (entry), FALSE);
 }
 
 static void
@@ -1711,7 +1704,7 @@ setup_snd_changed_cb (GtkEntry *ent, GtkTreeView *tree)
 	/* get the new sound file */
 	if (sound_files[n])
 		free (sound_files[n]);
-	sound_files[n] = strdup (GTK_ENTRY (ent)->text);
+	sound_files[n] = strdup (gtk_entry_get_text (GTK_ENTRY (ent)));
 
 	/* update the TreeView list */
 	store = (GtkListStore *)gtk_tree_view_get_model (tree);
@@ -2001,10 +1994,6 @@ setup_apply_entry_style (GtkWidget *entry)
 static void
 setup_apply_to_sess (session_gui *gui)
 {
-#ifdef USE_GTKSPELL
-	GtkSpell *spell;
-#endif
-
 	mg_update_xtext (gui->xtext);
 
 	if (prefs.hex_gui_ulist_style)
@@ -2031,27 +2020,12 @@ setup_apply_to_sess (session_gui *gui)
 	else
 		gtk_widget_hide (gui->button_box);
 
-#ifdef USE_GTKSPELL
-	spell = gtkspell_get_from_text_view (GTK_TEXT_VIEW (gui->input_box));
-	if (prefs.hex_gui_input_spell)
-	{
-		if (!spell)
-			gtkspell_new_attach (GTK_TEXT_VIEW (gui->input_box), NULL, NULL);
-	}
-	else
-	{
-		if (spell)
-			gtkspell_detach (spell);
-	}
-#endif
-
-#ifdef USE_LIBSEXY
 	/* update active languages */
 	sexy_spell_entry_deactivate_language((SexySpellEntry *)gui->input_box,NULL);
 	sexy_spell_entry_activate_default_languages((SexySpellEntry *)gui->input_box);
 
 	sexy_spell_entry_set_checked ((SexySpellEntry *)gui->input_box, prefs.hex_gui_input_spell);
-#endif
+	sexy_spell_entry_set_parse_attributes ((SexySpellEntry *)gui->input_box, prefs.hex_gui_input_attr);
 }
 
 static void
@@ -2268,7 +2242,7 @@ setup_window_open (void)
 {
 	GtkWidget *wid, *win, *vbox, *hbox, *hbbox;
 
-	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 0, 3);
+	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 0, 2);
 
 	vbox = gtk_vbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);

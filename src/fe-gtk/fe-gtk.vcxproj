@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Configuration">
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -22,13 +22,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -97,6 +95,12 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <PreBuildEvent>
+      <Command>$(DepsRoot)\bin\glib-compile-resources.exe --generate-source --sourcedir $(DataDir) --target "$(ProjectDir)resources.c" "$(DataDir)hexchat.gresource.xml"</Command>
+      <Message>Build gresource file</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ascii.h" />
     <ClInclude Include="banlist.h" />
@@ -110,14 +114,12 @@
     <ClInclude Include="joind.h" />
     <ClInclude Include="maingui.h" />
     <ClInclude Include="menu.h" />
-    <ClInclude Include="mmx_cmod.h" />
     <ClInclude Include="notifygui.h" />
     <ClInclude Include="palette.h" />
     <ClInclude Include="pixmaps.h" />
     <ClInclude Include="plugin-tray.h" />
     <ClInclude Include="plugingui.h" />
     <ClInclude Include="rawlog.h" />
-    <ClInclude Include="search.h" />
     <ClInclude Include="servlistgui.h" />
     <ClInclude Include="setup.h" />
     <ClInclude Include="sexy-iso-codes.h" />
@@ -149,7 +151,7 @@
     <ClCompile Include="plugin-tray.c" />
     <ClCompile Include="plugingui.c" />
     <ClCompile Include="rawlog.c" />
-    <ClCompile Include="search.c" />
+    <ClCompile Include="resources.c" />
     <ClCompile Include="servlistgui.c" />
     <ClCompile Include="setup.c" />
     <ClCompile Include="sexy-iso-codes.c" />
@@ -167,7 +169,10 @@
     <ResourceCompile Include="hexchat.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\share\icons\hexchat.ico" />
+    <None Include="..\..\data\icons\hexchat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\data\hexchat.gresource.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

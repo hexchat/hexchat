@@ -632,7 +632,7 @@ banlist_toggle (GtkWidget *item, gpointer data)
 	if (bit)		/* Should be gassert() */
 	{
 		banl->checked &= ~bit;
-		banl->checked |= (GTK_TOGGLE_BUTTON (item)->active)? bit: 0;
+		banl->checked |= (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (item)))? bit: 0;
 		banlist_do_refresh (banl);
 	}
 }

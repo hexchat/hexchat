@@ -86,7 +86,6 @@ GdkColor colors[] = {
 	{0, 0x8888, 0x8a8a, 0x8585}, /* 40 away user (grey) */
 	{0, 0xa4a4, 0x0000, 0x0000}, /* 41 spell checker color (red) */
 };
-#define MAX_COL 41
 
 
 void

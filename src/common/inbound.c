@@ -1708,7 +1708,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPREQ, serv->server_session,
 									  buffer + 9, NULL, NULL, NULL, 0,
 									  tags_data->timestamp);
-		tcp_sendf (serv, "%s\r\n", buffer);
+		tcp_sendf (serv, "%s\r\n", g_strchomp (buffer));
 	}
 	if (!want_sasl)
 	{

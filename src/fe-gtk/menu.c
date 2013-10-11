@@ -86,7 +86,7 @@ struct mymenu
 	unsigned char id;		/* MENU_ID_XXX (menu.h) */
 	unsigned char state;	/* ticked or not? */
 	unsigned char sensitive;	/* shaded out? */
-	guint key;				/* GDK_x */
+	guint key;				/* GDK_KEY_x */
 };
 
 #define XCMENU_DOLIST 1
@@ -600,7 +600,7 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 {
 	char buf[512];
 	char unknown[96];
-	char *real, *fmt;
+	char *real, *fmt, *users_country;
 	struct away_msg *away;
 	gboolean missing = FALSE;
 	GtkWidget *item;
@@ -637,12 +637,14 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 							G_CALLBACK (copy_to_clipboard_cb), 
 							user->account ? user->account : unknown);
 
-	snprintf (buf, sizeof (buf), fmt, _("Country:"),
-				 user->hostname ? country(user->hostname) : unknown);
-	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
-	g_signal_connect (G_OBJECT (item), "activate",
-							G_CALLBACK (copy_to_clipboard_cb), 
-							user->hostname ? country(user->hostname) : unknown);
+	users_country = country (user->hostname);
+	if (users_country)
+	{
+		snprintf (buf, sizeof (buf), fmt, _ ("Country:"), users_country);
+		item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+		g_signal_connect (G_OBJECT (item), "activate",
+			G_CALLBACK (copy_to_clipboard_cb), users_country);
+	}
 
 	snprintf (buf, sizeof (buf), fmt, _("Server:"),
 				 user->servername ? user->servername : unknown);
@@ -888,6 +890,25 @@ menu_cmbuttons_toggle (GtkWidget *wid, gpointer ud)
 	prefs.hex_gui_mode_buttons = !prefs.hex_gui_mode_buttons;
 	menu_setting_foreach (menu_cmbuttons_showhide_cb, MENU_ID_MODEBUTTONS,
 								 prefs.hex_gui_mode_buttons);
+}
+
+static void
+menu_fullscreen_toggle (GtkWidget *wid, gpointer ud)
+{
+	if (!prefs.hex_gui_win_fullscreen)
+		gtk_window_fullscreen (GTK_WINDOW(parent_window));
+	else
+	{
+		gtk_window_unfullscreen (GTK_WINDOW(parent_window));
+
+#ifdef WIN32
+		/* other window managers seem to handle this */
+		gtk_window_resize (GTK_WINDOW(parent_window),
+					prefs.hex_gui_win_width, prefs.hex_gui_win_height);
+		gtk_window_move (GTK_WINDOW(parent_window),
+					prefs.hex_gui_win_left, prefs.hex_gui_win_top);
+#endif
+	}
 }
 
 void
@@ -1236,41 +1257,19 @@ menu_quit (GtkWidget * wid, gpointer none)
 static void
 menu_search ()
 {
-	search_open (current_sess);
+	mg_search_toggle (current_sess);
 }
 
 static void
-menu_search_next ()
+menu_search_next (GtkWidget *wid)
 {
-	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
-	xtext_buffer *buf = xtext->buffer;
-
-	if (!gtk_xtext_search (xtext, buf->search_text,
-		(buf->search_flags & (case_match | follow | regexp)), NULL))
-	{
-		fe_message (_("Search hit end, not found."), FE_MSG_ERROR);
-	}
+	mg_search_handle_next(wid, current_sess);
 }
 
 static void
-menu_search_prev ()
+menu_search_prev (GtkWidget *wid)
 {
-	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
-	xtext_buffer *buf = xtext->buffer;
-
-	if (!gtk_xtext_search(xtext, buf->search_text,
-		(buf->search_flags & (case_match | follow | regexp)) | backward, NULL))
-	{
-		fe_message (_("Search hit end, not found."), FE_MSG_ERROR);
-	}
-}
-
-static void
-menu_search_reset ()
-{
-	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
-
-	gtk_xtext_search (xtext, "", 0, NULL);
+	mg_search_handle_previous(wid, current_sess);
 }
 
 static void
@@ -1444,24 +1443,26 @@ menu_pluginlist (void)
                            "&2 would be \042john hello\042.")
 
 #define ulbutton_help       _("Userlist Buttons - Special codes:\n\n"\
-                           "%a  =  all selected nicks\n"\
-                           "%c  =  current channel\n"\
-									"%e  =  current network name\n"\
-                           "%h  =  selected nick's hostname\n"\
-									"%m  =  machine info\n"\
-                           "%n  =  your nick\n"\
-                           "%s  =  selected nick\n"\
-									"%t  =  time/date\n")
+							"%a  =  all selected nicks\n"\
+							"%c  =  current channel\n"\
+							"%e  =  current network name\n"\
+							"%h  =  selected nick's hostname\n"\
+							"%m  =  machine info\n"\
+							"%n  =  your nick\n"\
+							"%s  =  selected nick\n"\
+							"%t  =  time/date\n"\
+							"%u  =  selected users account")
 
 #define dlgbutton_help      _("Dialog Buttons - Special codes:\n\n"\
-                           "%a  =  all selected nicks\n"\
-                           "%c  =  current channel\n"\
-									"%e  =  current network name\n"\
-                           "%h  =  selected nick's hostname\n"\
-									"%m  =  machine info\n"\
-                           "%n  =  your nick\n"\
-                           "%s  =  selected nick\n"\
-									"%t  =  time/date\n")
+							"%a  =  all selected nicks\n"\
+							"%c  =  current channel\n"\
+							"%e  =  current network name\n"\
+							"%h  =  selected nick's hostname\n"\
+							"%m  =  machine info\n"\
+							"%n  =  your nick\n"\
+							"%s  =  selected nick\n"\
+							"%t  =  time/date\n"\
+							"%u  =  selected users account")
 
 #define ctcp_help          _("CTCP Replies - Special codes:\n\n"\
                            "%d  =  data (the whole ctcp)\n"\
@@ -1700,13 +1701,13 @@ menu_about (GtkWidget *wid, gpointer sess)
 
 static struct mymenu mymenu[] = {
 	{N_("He_xChat"), 0, 0, M_NEWMENU, 0, 0, 1},
-	{N_("Network Li_st..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_s},
+	{N_("Network Li_st..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_KEY_s},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
 	{N_("_New"), 0, GTK_STOCK_NEW, M_MENUSUB, 0, 0, 1},
-		{N_("Server Tab..."), menu_newserver_tab, 0, M_MENUITEM, 0, 0, 1, GDK_t},
+		{N_("Server Tab..."), menu_newserver_tab, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_t},
 		{N_("Channel Tab..."), menu_newchannel_tab, 0, M_MENUITEM, 0, 0, 1},
-		{N_("Server Window..."), menu_newserver_window, 0, M_MENUITEM, 0, 0, 1, GDK_n},
+		{N_("Server Window..."), menu_newserver_window, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_n},
 		{N_("Channel Window..."), menu_newchannel_window, 0, M_MENUITEM, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},
 	{0, 0, 0, M_SEP, 0, 0, 0},
@@ -1718,17 +1719,17 @@ static struct mymenu mymenu[] = {
 #endif
 	{0, 0, 0, M_SEP, 0, 0, 0},	/* 11 */
 #define DETACH_OFFSET (12)
-	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1, GDK_i},	/* 12 */
+	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1},	/* 12 */
 #define CLOSE_OFFSET (13)
-	{0, menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 0, 1, GDK_w},
+	{0, menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 0, 1, GDK_KEY_w},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-	{N_("_Quit"), menu_quit, GTK_STOCK_QUIT, M_MENUSTOCK, 0, 0, 1, GDK_q},	/* 15 */
+	{N_("_Quit"), menu_quit, GTK_STOCK_QUIT, M_MENUSTOCK, 0, 0, 1, GDK_KEY_q},	/* 15 */
 
 	{N_("_View"), 0, 0, M_NEWMENU, 0, 0, 1},
 #define MENUBAR_OFFSET (17)
-	{N_("_Menu Bar"), menu_bar_toggle_cb, 0, M_MENUTOG, MENU_ID_MENUBAR, 0, 1, GDK_F9},
+	{N_("_Menu Bar"), menu_bar_toggle_cb, 0, M_MENUTOG, MENU_ID_MENUBAR, 0, 1, GDK_KEY_F9},
 	{N_("_Topic Bar"), menu_topicbar_toggle, 0, M_MENUTOG, MENU_ID_TOPICBAR, 0, 1},
-	{N_("_User List"), menu_userlist_toggle, 0, M_MENUTOG, MENU_ID_USERLIST, 0, 1, GDK_F7},
+	{N_("_User List"), menu_userlist_toggle, 0, M_MENUTOG, MENU_ID_USERLIST, 0, 1, GDK_KEY_F7},
 	{N_("U_serlist Buttons"), menu_ulbuttons_toggle, 0, M_MENUTOG, MENU_ID_ULBUTTONS, 0, 1},
 	{N_("M_ode Buttons"), menu_cmbuttons_toggle, 0, M_MENUTOG, MENU_ID_MODEBUTTONS, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
@@ -1744,6 +1745,8 @@ static struct mymenu mymenu[] = {
 		{N_("Text"), menu_metres_text, 0, M_MENURADIO, 0, 0, 1},
 		{N_("Both"), menu_metres_both, 0, M_MENURADIO, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},	/* 32 */
+	{ 0, 0, 0, M_SEP, 0, 0, 0 },
+	{N_ ("Toggle _Fullscreen"), menu_fullscreen_toggle, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_F11},
 
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
@@ -1751,8 +1754,8 @@ static struct mymenu mymenu[] = {
 	{N_("_Join a Channel..."), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
 	{N_("_List of Channels..."), menu_chanlist, GTK_STOCK_INDEX, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-#define AWAY_OFFSET (39)
-	{N_("Marked _Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_a},
+#define AWAY_OFFSET (41)
+	{N_("Marked _Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_KEY_a},
 
 	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 40 */
 
@@ -1780,24 +1783,19 @@ static struct mymenu mymenu[] = {
 	{N_("_Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 61 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
-	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
+	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_m},
+	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
-#define SEARCH_OFFSET 68
+#define SEARCH_OFFSET (70)
 	{N_("Search"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},
-		{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
-		{N_("Reset Search"), menu_search_reset, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_F},
-		{N_("Search Next"   ), menu_search_next, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_g},
-		{N_("Search Previous"   ), menu_search_prev, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_G},
+		{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_KEY_f},
+		{N_("Search Next"   ), menu_search_next, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_KEY_g},
+		{N_("Search Previous"   ), menu_search_prev, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_KEY_G},
 		{0, 0, 0, M_END, 0, 0, 0},
 
 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 74 */
-
-	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
-#if 0
-	{N_("Check for updates"), menu_update, 0, M_MENUITEM, 0, 1},
-#endif
+	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_KEY_F1},
 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
 
 	{0, 0, 0, M_END, 0, 0, 0},
@@ -2318,8 +2316,9 @@ normalitem:
 			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
 										mymenu[i].key,
-										mymenu[i].key == GDK_F1 ? 0 :
-										mymenu[i].key == GDK_w ? close_mask :
+										mymenu[i].key == GDK_KEY_F1 ? 0 :
+										mymenu[i].key == GDK_KEY_F11 ? 0 :
+										mymenu[i].key == GDK_KEY_w ? close_mask :
 										(g_ascii_isupper (mymenu[i].key)) ?
 											STATE_SHIFT | STATE_CTRL :
 											STATE_CTRL,

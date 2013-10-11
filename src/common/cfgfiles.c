@@ -425,6 +425,7 @@ const struct prefs vars[] =
 	{"gui_dialog_width", P_OFFINT (hex_gui_dialog_width), TYPE_INT},
 	{"gui_focus_omitalerts", P_OFFINT (hex_gui_focus_omitalerts), TYPE_BOOL},
 	{"gui_hide_menu", P_OFFINT (hex_gui_hide_menu), TYPE_BOOL},
+	{"gui_input_attr", P_OFFINT (hex_gui_input_attr), TYPE_BOOL},
 	{"gui_input_icon", P_OFFINT (hex_gui_input_icon), TYPE_BOOL},
 	{"gui_input_nick", P_OFFINT (hex_gui_input_nick), TYPE_BOOL},
 	{"gui_input_spell", P_OFFINT (hex_gui_input_spell), TYPE_BOOL},
@@ -438,6 +439,7 @@ const struct prefs vars[] =
 	{"gui_pane_right_size", P_OFFINT (hex_gui_pane_right_size), TYPE_INT},
 	{"gui_pane_right_size_min", P_OFFINT (hex_gui_pane_right_size_min), TYPE_INT},
 	{"gui_quit_dialog", P_OFFINT (hex_gui_quit_dialog), TYPE_BOOL},
+	{"gui_search_pos", P_OFFINT (hex_gui_search_pos), TYPE_INT},
 	/* {"gui_single", P_OFFINT (hex_gui_single), TYPE_BOOL}, */
 	{"gui_slist_fav", P_OFFINT (hex_gui_slist_fav), TYPE_BOOL},
 	{"gui_slist_select", P_OFFINT (hex_gui_slist_select), TYPE_INT},
@@ -456,6 +458,7 @@ const struct prefs vars[] =
 	{"gui_tab_utils", P_OFFINT (hex_gui_tab_utils), TYPE_BOOL},
 	{"gui_throttlemeter", P_OFFINT (hex_gui_throttlemeter), TYPE_INT},
 	{"gui_topicbar", P_OFFINT (hex_gui_topicbar), TYPE_BOOL},
+	{"gui_transparency", P_OFFINT (hex_gui_transparency), TYPE_INT},
 	{"gui_tray", P_OFFINT (hex_gui_tray), TYPE_BOOL},
 	{"gui_tray_away", P_OFFINT (hex_gui_tray_away), TYPE_BOOL},
 	{"gui_tray_blink", P_OFFINT (hex_gui_tray_blink), TYPE_BOOL},
@@ -476,6 +479,7 @@ const struct prefs vars[] =
 	{"gui_url_mod", P_OFFINT (hex_gui_url_mod), TYPE_INT},
 	{"gui_usermenu", P_OFFINT (hex_gui_usermenu), TYPE_BOOL},
 	{"gui_win_height", P_OFFINT (hex_gui_win_height), TYPE_INT},
+	{"gui_win_fullscreen", P_OFFINT (hex_gui_win_fullscreen), TYPE_INT},
 	{"gui_win_left", P_OFFINT (hex_gui_win_left), TYPE_INT},
 	{"gui_win_modes", P_OFFINT (hex_gui_win_modes), TYPE_BOOL},
 	{"gui_win_save", P_OFFINT (hex_gui_win_save), TYPE_BOOL},
@@ -573,7 +577,6 @@ const struct prefs vars[] =
 	{"text_max_lines", P_OFFINT (hex_text_max_lines), TYPE_INT},
 	{"text_replay", P_OFFINT (hex_text_replay), TYPE_BOOL},
 	{"text_search_case_match", P_OFFINT (hex_text_search_case_match), TYPE_BOOL},
-	{"text_search_backward", P_OFFINT (hex_text_search_backward), TYPE_BOOL},
 	{"text_search_highlight_all", P_OFFINT (hex_text_search_highlight_all), TYPE_BOOL},
 	{"text_search_follow", P_OFFINT (hex_text_search_follow), TYPE_BOOL},
 	{"text_search_regexp", P_OFFINT (hex_text_search_regexp), TYPE_BOOL},
@@ -584,9 +587,6 @@ const struct prefs vars[] =
 	{"text_stripcolor_replay", P_OFFINT (hex_text_stripcolor_replay), TYPE_BOOL},
 	{"text_stripcolor_topic", P_OFFINT (hex_text_stripcolor_topic), TYPE_BOOL},
 	{"text_thin_sep", P_OFFINT (hex_text_thin_sep), TYPE_BOOL},
-	{"text_tint_blue", P_OFFINT (hex_text_tint_blue), TYPE_INT},
-	{"text_tint_green", P_OFFINT (hex_text_tint_green), TYPE_INT},
-	{"text_tint_red", P_OFFINT (hex_text_tint_red), TYPE_INT},
 	{"text_transparent", P_OFFINT (hex_text_transparent), TYPE_BOOL},
 	{"text_wordwrap", P_OFFINT (hex_text_wordwrap), TYPE_BOOL},
 
@@ -669,6 +669,53 @@ get_default_language (void)
 	return lang_no >= 0 ? lang_no : find_language_number ("en");
 }
 
+static char *
+get_default_spell_languages (void)
+{
+	const gchar* const *langs = g_get_language_names ();
+	char *last = NULL;
+	char *p;
+	char lang_list[64];
+	char *ret = lang_list;
+	int i;
+
+	if (langs != NULL)
+	{
+		memset (lang_list, 0, sizeof(lang_list));
+
+		for (i = 0; langs[i]; i++)
+		{
+			if (g_ascii_strncasecmp (langs[i], "C", 1) != 0 && strlen (langs[i]) >= 2)
+			{
+				/* Avoid duplicates */
+				if (!last || !g_str_has_prefix (langs[i], last))
+				{
+					if (last != NULL)
+					{
+						g_free(last);
+						g_strlcat (lang_list, ",", sizeof(lang_list));
+					}
+
+					/* ignore .utf8 */
+					if ((p = strchr (langs[i], '.')))
+						*p='\0';
+
+					last = g_strndup (langs[i], 2);
+
+					g_strlcat (lang_list, langs[i], sizeof(lang_list));
+				}
+			}
+		}
+		if (last != NULL)
+			g_free(last);
+
+		if (lang_list[0])
+			return ret;
+	}
+
+	return "en";
+}
+
 void
 load_default_config(void)
 {
@@ -706,6 +753,7 @@ load_default_config(void)
 	prefs.hex_gui_autoopen_dialog = 1;
 	prefs.hex_gui_autoopen_recv = 1;
 	prefs.hex_gui_autoopen_send = 1;
+	prefs.hex_gui_input_attr = 1;
 	prefs.hex_gui_input_icon = 1;
 	prefs.hex_gui_input_nick = 1;
 	prefs.hex_gui_input_spell = 1;
@@ -720,6 +768,7 @@ load_default_config(void)
 	prefs.hex_gui_tab_server = 1;
 	prefs.hex_gui_tab_sort = 1;
 	prefs.hex_gui_topicbar = 1;
+	prefs.hex_gui_transparency = 255;
 	prefs.hex_gui_tray = 1;
 	prefs.hex_gui_tray_blink = 1;
 	prefs.hex_gui_ulist_count = 1;
@@ -788,9 +837,6 @@ load_default_config(void)
 	prefs.hex_notify_timeout = 15;
 	prefs.hex_text_max_indent = 256;
 	prefs.hex_text_max_lines = 500;
-	prefs.hex_text_tint_blue = 195;
-	prefs.hex_text_tint_green = 195;
-	prefs.hex_text_tint_red = 195;
 	prefs.hex_url_grabber_limit = 100; 		/* 0 means unlimited */
 
 	/* STRINGS */
@@ -847,7 +893,8 @@ load_default_config(void)
 	strcpy (prefs.hex_text_font_main, DEF_FONT);
 #endif
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
-	strcpy (prefs.hex_text_spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
+	strcpy (prefs.hex_text_spell_langs, get_default_spell_languages ());
+
 
 	/* private variables */
 	prefs.local_ip = 0xffffffff;

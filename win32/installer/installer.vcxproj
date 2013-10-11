@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Configuration">
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -68,7 +68,7 @@ echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDi
 "$(OutDir)\version" -v &gt;&gt; "$(OutDir)\hexchat-x86.iss"
 "$(OutDir)\version" -i &gt;&gt; "$(OutDir)\hexchat-x86.iss"
 "$(OutDir)\version" -o &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-echo SetupIconFile="$(SolutionDir)\..\share\icons\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+echo SetupIconFile="$(DataDir)icons\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-x86.iss"
 type hexchat-x86.skel.iss &gt;&gt; "$(OutDir)\hexchat-x86.iss"
 "$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\hexchat-x86.iss"</Command>
     </PreBuildEvent>
@@ -91,7 +91,7 @@ echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDi
 "$(OutDir)\version" -v &gt;&gt; "$(OutDir)\hexchat-x64.iss"
 "$(OutDir)\version" -i &gt;&gt; "$(OutDir)\hexchat-x64.iss"
 "$(OutDir)\version" -o &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-echo SetupIconFile="$(SolutionDir)\..\share\icons\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+echo SetupIconFile="$(DataDir)icons\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-x64.iss"
 type hexchat-x64.skel.iss &gt;&gt; "$(OutDir)\hexchat-x64.iss"
 "$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\hexchat-x64.iss"</Command>
     </PreBuildEvent>

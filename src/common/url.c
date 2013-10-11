@@ -266,11 +266,23 @@ match_channel (const char *word, int *start, int *end)
 {
 	const server *serv = current_sess->server;
 	const char *chan_prefixes = serv ? serv->chantypes : CHANPRE;
+	const char *nick_prefixes = serv ? serv->nick_prefixes : NICKPRE;
 
 	if (!regex_match (re_channel (), word, start, end))
 		return FALSE;
 
-	return strchr (chan_prefixes, word[*start]) != NULL;
+	/* Check for +#channel (for example whois output) */
+	if (strchr (nick_prefixes, word[*start]) != NULL
+		 && strchr (chan_prefixes, word[*start + 1]) != NULL)
+	{
+		(*start)++;
+		return TRUE;
+	}
+	/* Or just #channel */
+	else if (strchr (chan_prefixes, word[*start]) != NULL)
+		return TRUE;
+	
+	return FALSE;
 }
 
 static gboolean

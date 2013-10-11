@@ -394,8 +394,11 @@ notify_flush_watches (server * serv, GSList *from, GSList *end)
 	while (list != end)
 	{
 		notify = list->data;
-		serv->supports_monitor ? strcat (tbuf, ",") : strcat (tbuf, " +");
-		strcat (tbuf, notify->name);
+		if (serv->supports_monitor)
+			g_strlcat (tbuf, ",", sizeof(tbuf));
+		else
+			g_strlcat (tbuf, " +", sizeof(tbuf));
+		g_strlcat (tbuf, notify->name, sizeof(tbuf));
 		list = list->next;
 	}
 	serv->p_raw (serv, tbuf);

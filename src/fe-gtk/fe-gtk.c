@@ -52,10 +52,6 @@
 #include "urlgrab.h"
 #include "setup.h"
 
-#ifdef USE_XLIB
-#include <gdk/gdkx.h>
-#endif
-
 #ifdef USE_LIBCANBERRA
 #include <canberra.h>
 #endif
@@ -64,49 +60,6 @@ GdkPixmap *channelwin_pix;
 
 #ifdef USE_LIBCANBERRA
 static ca_context *ca_con;
-#endif
-
-#ifdef USE_XLIB
-
-static void
-redraw_trans_xtexts (void)
-{
-	GSList *list = sess_list;
-	session *sess;
-	int done_main = FALSE;
-
-	while (list)
-	{
-		sess = list->data;
-		if (GTK_XTEXT (sess->gui->xtext)->transparent)
-		{
-			if (!sess->gui->is_tab || !done_main)
-				gtk_xtext_refresh (GTK_XTEXT (sess->gui->xtext), 1);
-			if (sess->gui->is_tab)
-				done_main = TRUE;
-		}
-		list = list->next;
-	}
-}
-
-static GdkFilterReturn
-root_event_cb (GdkXEvent *xev, GdkEventProperty *event, gpointer data)
-{
-	static Atom at = None;
-	XEvent *xevent = (XEvent *)xev;
-
-	if (xevent->type == PropertyNotify)
-	{
-		if (at == None)
-			at = XInternAtom (xevent->xproperty.display, "_XROOTPMAP_ID", True);
-
-		if (at == xevent->xproperty.atom)
-			redraw_trans_xtexts ();
-	}
-
-	return GDK_FILTER_CONTINUE;
-}
-
 #endif
 
 /* === command-line parameter parsing : requires glib 2.6 === */
@@ -281,22 +234,13 @@ fe_args (int argc, char *argv[])
 
 	gtk_init (&argc, &argv);
 
-#ifdef USE_XLIB
-	gdk_window_set_events (gdk_get_default_root_window (), GDK_PROPERTY_CHANGE_MASK);
-	gdk_window_add_filter (gdk_get_default_root_window (), (GdkFilterFunc)root_event_cb, NULL);
-#endif
-
 	return -1;
 }
 
 const char cursor_color_rc[] =
 	"style \"xc-ib-st\""
 	"{"
-#ifdef USE_GTKSPELL
-		"GtkTextView::cursor-color=\"#%02x%02x%02x\""
-#else
 		"GtkEntry::cursor-color=\"#%02x%02x%02x\""
-#endif
 	"}"
 	"widget \"*.hexchat-inputbox\" style : application \"xc-ib-st\"";
 
@@ -796,7 +740,7 @@ fe_set_lag (server *serv, int lag)
 				if (sess->gui->lagometer)
 				{
 					gtk_progress_bar_set_fraction ((GtkProgressBar *) sess->gui->lagometer, per);
-					add_tip (sess->gui->lagometer->parent, lagtip);
+					add_tip (gtk_widget_get_parent (sess->gui->lagometer), lagtip);
 				}
 				if (sess->gui->laginfo)
 					gtk_label_set_text ((GtkLabel *) sess->gui->laginfo, lagtext);
@@ -842,7 +786,7 @@ fe_set_throttle (server *serv)
 				if (sess->gui->throttlemeter)
 				{
 					gtk_progress_bar_set_fraction ((GtkProgressBar *) sess->gui->throttlemeter, per);
-					add_tip (sess->gui->throttlemeter->parent, tip);
+					add_tip (gtk_widget_get_parent (sess->gui->throttlemeter), tip);
 				}
 				if (sess->gui->throttleinfo)
 					gtk_label_set_text ((GtkLabel *) sess->gui->throttleinfo, tbuf);
@@ -948,7 +892,7 @@ fe_gui_info_ptr (session *sess, int info_type)
 	{
 	case 0:	/* native window pointer (for plugins) */
 #ifdef WIN32
-		return gdk_win32_window_get_impl_hwnd (sess->gui->window->window);
+		return gdk_win32_window_get_impl_hwnd (gtk_widget_get_window (sess->gui->window));
 #else
 		return sess->gui->window;
 #endif

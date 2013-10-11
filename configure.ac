@@ -41,19 +41,12 @@ AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
-dnl AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
-AH_VERBATIM([USE_SHM],[#undef USE_SHM])
-AH_VERBATIM([USE_GTKSPELL],[#undef USE_GTKSPELL])
-AH_VERBATIM([USE_LIBSEXY],[#undef USE_LIBSEXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
-AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
-AH_VERBATIM([USE_XFT],[#undef USE_XFT])
-AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
 AH_VERBATIM([USE_SIGACTION],[#undef USE_SIGACTION])
 AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
 AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
@@ -92,10 +85,6 @@ AC_ARG_ENABLE(ipv6,
 	[AS_HELP_STRING([--disable-ipv6],[disable IPv6])],
         ipv6=$enableval, ipv6=yes)
 
-AC_ARG_ENABLE(xft,
-	[AS_HELP_STRING([--enable-xft],[enable use of Xft directly (default: no)])],
-        xft=$enableval, xft=no)
-
 AC_ARG_ENABLE(openssl,
 	[AS_HELP_STRING([--enable-openssl[=PATH]],[enable use of openSSL])],
         openssl=$enableval, openssl=yes)
@@ -107,14 +96,6 @@ AC_ARG_ENABLE(gtkfe,
 AC_ARG_ENABLE(textfe,
 	[AS_HELP_STRING([--enable-textfe],[build the text frontend (default: no)])],
         textfe=$enableval, textfe=no)
-
-dnl AC_ARG_ENABLE(gnome,
-dnl 	[AS_HELP_STRING([--disable-gnome],[disable use of gnome])],
-dnl        gnome=$enableval, gnome=yes)
-
-AC_ARG_ENABLE(xlib,
-	[AS_HELP_STRING([--disable-xlib],[disable use of xlib (for non X11 systems)])],
-        xlib=$enableval, xlib=yes)
 
 AC_ARG_ENABLE(python,
 	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin; possible values: "python2", "python3" or specific such as "python3.3" (default on, python2)])],
@@ -161,19 +142,6 @@ AC_ARG_ENABLE(libcanberra,
 	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
 		libcanberra=$enableval, libcanberra=yes)
 
-
-AC_ARG_ENABLE(mmx,
-	[AS_HELP_STRING([--disable-mmx],[disable MMX assembly routines])],
-        mmx=$enableval, mmx=yes)
-
-AC_ARG_ENABLE(shm,
-	[AS_HELP_STRING([--enable-shm],[enable use of XShm for fast tinting (default: no)])],
-        shm=$enableval, shm=no)
-
-AC_ARG_ENABLE(spell,
-	[AS_HELP_STRING([--enable-spell=type],[enable spelling type: none static libsexy gtkspell])],
-		  spell=$enableval, spell=libsexy)
-
 AC_ARG_ENABLE(ntlm,
 	[AS_HELP_STRING([--enable-ntlm],[enable Microsoft\'s NTLM auth (libntlm) library support (default: no)])],
 	ntlm=$enableval, ntlm=no)
@@ -181,6 +149,10 @@ AC_ARG_ENABLE(ntlm,
 AC_ARG_ENABLE(libproxy,
 	[AS_HELP_STRING([--disable-libproxy],[disable libproxy support (default: auto)])],
         libproxy=$enableval, libproxy=auto)
+
+AC_ARG_ENABLE(isocodes,
+	[AS_HELP_STRING([--disable-isocodes],[disable iso-codes with spell-check])],
+        isocodes=$enableval, isocodes=yes)
 
 AC_ARG_ENABLE(minimal-flags,
 	[AS_HELP_STRING([--enable-minimal-flags],[only add those CFLAGS that are really needed or not intrusive (default: no)])],
@@ -232,73 +204,8 @@ if test "$gtkfe" = yes ; then
 	fi
 fi
 
-if test "$gtkfe" != yes; then
-	gnome=no
-fi
-
-dnl *********************************************************************
-dnl ** GNOME ************************************************************
-dnl *********************************************************************
-
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
-
-#if test "$gnome" = yes; then
-#	AC_MSG_CHECKING(Gnome2 compile flags)
-#	GNOME_CFLAGS="`$PKG_CONFIG libgnome-2.0 --cflags 2>/dev/null`"
-#	if test "_$GNOME_CFLAGS" = _ ; then
-#		gnome=no
-#		AC_MSG_RESULT([Gnome not found, building without it.])
-#	else
-#		GNOME_VER="`$PKG_CONFIG libgnome-2.0 --modversion`"
-#		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG libgnome-2.0 --libs`"
-#		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
-#		AC_DEFINE(USE_GNOME)
-#		AC_MSG_RESULT(ok)
-#	fi
-#fi
-
-# GConf
-#if test "$gnome" != no ; then
-#	AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-#else
-#	GCONFTOOL=no
-#fi
-
-dnl *********************************************************************
-dnl ** XFT **************************************************************
-dnl *********************************************************************
-
-if test "$xft" = yes; then
-	if $PKG_CONFIG xft --exists; then
-		GUI_CFLAGS="$GUI_CFLAGS `$PKG_CONFIG xft --cflags`"
-		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG xft --libs`"
-	else
-		xft=no
-		oldCPPFLAGS=$CPPFLAGS
-		CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
-		AC_CHECK_HEADERS(X11/Xft/Xft.h, xft=yes)
-		CPPFLAGS=$oldCPPFLAGS
-	fi
-	if test "$xft" = yes; then
-		AC_DEFINE(USE_XFT)
-	fi
-fi
-
-dnl *********************************************************************
-dnl ** XLIB *************************************************************
-dnl *********************************************************************
-
-if test "$xlib" = yes; then
-	AC_DEFINE(USE_XLIB)
-	if test "$system" = "SunOS"; then
-		LIBS="$LIBS -L/usr/openwin/lib -lX11"
-	else
-		AC_CHECK_LIB(X11, XSetWMHints)
-	fi
-else
-	shm=no
-fi
 
 dnl *********************************************************************
 dnl ** PERL *************************************************************
@@ -631,38 +538,17 @@ dnl *********************************************************************
 dnl ** SPELL ************************************************************
 dnl *********************************************************************
 
-if test "$spell" = "gtkspell" ; then
-	PKG_CHECK_MODULES(GTKSPELL, gtkspell-2.0 >= 2.0.2, [], [
-		spell=no
-	])
-	if test "$spell" != "no" ; then
-		GUI_LIBS="$GUI_LIBS $GTKSPELL_LIBS"
-		GUI_CFLAGS="$GUI_CFLAGS $GTKSPELL_CFLAGS"
-		AC_DEFINE(USE_GTKSPELL)
-	fi
-fi
-
-if test "$spell" = "libsexy" ; then
-	PKG_CHECK_MODULES([LIBSEXY], [libsexy >= 0.1.8], [
-		libsexy=yes
-		GUI_LIBS="$GUI_LIBS $LIBSEXY_LIBS"
-		GUI_CFLAGS="$GUI_CFLAGS $LIBSEXY_CFLAGS"
-		AC_DEFINE(USE_LIBSEXY)
-	], [
-		dnl use builtin static one
-		spell="static"
-	])
-fi
-
-if test "$spell" = "static" ; then
-	PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.0.0, [
-	AC_DEFINE(HAVE_ISO_CODES)
-	AC_DEFINE(USE_LIBSEXY)
-	GUI_CFLAGS="$GUI_CFLAGS $LIBXML2_CFLAGS"
-	LIBS="$LIBS -lxml2"
-	], [
-	AC_MSG_ERROR(Cannot find libxml2!)
-	])
+if test "x$isocodes" = "xyes" ; then
+	PKG_CHECK_MODULES(ISOCODES, "iso-codes", [
+		iso_codes_prefix=`$PKG_CONFIG --variable=prefix iso-codes 2>/dev/null || echo /usr`
+    	AC_MSG_NOTICE([iso-codes prefix: $iso_codes_prefix])
+    	AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$iso_codes_prefix"], [ISO codes prefix])
+    	AC_DEFINE_UNQUOTED([ISO_CODES_LOCALEDIR], ["$iso_codes_prefix/share/locale"], [ISO codes locale dir])
+    	AC_DEFINE([HAVE_ISO_CODES], [1], [iso-codes available])
+    	], [
+    	isocodes=no
+    	AC_MSG_WARN(iso-codes not found!)
+    ])
 fi
 
 dnl *********************************************************************
@@ -670,7 +556,6 @@ dnl ** CONDITIONALS *****************************************************
 dnl *********************************************************************
 
 AM_CONDITIONAL(USE_OPENSSL, test "x$openssl" = "xyes")
-AM_CONDITIONAL(USE_LIBSEXY, test "x$spell" = "xstatic")
 AM_CONDITIONAL(USE_LIBNOTIFY, test "x$libnotify" = "xyes")
 AM_CONDITIONAL(USE_LIBCANBERRA, test "x$libcanberra" = "xyes")
 AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
@@ -683,7 +568,7 @@ AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
-#AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
+AM_CONDITIONAL(HAVE_ISO_CODES, test "x$isocodes" = "xyes")
 AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
 
 dnl *********************************************************************
@@ -716,61 +601,6 @@ if test "x$ntlm" = "xyes" ; then
 		AC_DEFINE(USE_MSPROXY)
 	fi
 fi
-
-dnl *********************************************************************
-dnl ** XShm *************************************************************
-dnl *********************************************************************
-
-if test "$shm" = yes; then
-	oldl=$LIBS
-	oldc=$CPPFLAGS
-	LIBS="$LIBS `$PKG_CONFIG --libs-only-L xft`"
-	CPPFLAGS="$CPPFLAGS `$PKG_CONFIG --cflags-only-I xft`"
-	shm=no
-	AC_CHECK_LIB(Xext, XShmAttach, shm=yes)
-	if test "$shm" = yes; then
-		shm=no
-		AC_CHECK_HEADERS(sys/ipc.h, shm=yes)
-		if test "$shm" = yes; then
-			shm=no
-			AC_CHECK_HEADERS(sys/shm.h, shm=yes)
-		fi
-	fi
-
-	LIBS=$oldl
-	if test "$shm" = yes; then
-		GUI_LIBS="$GUI_LIBS `$PKG_CONFIG --libs-only-L xft` -lX11 -lXext"
-		AC_DEFINE(USE_SHM)
-	else
-		CPPFLAGS=$oldc
-	fi
-fi
-
-dnl *********************************************************************
-dnl ** MMX **************************************************************
-dnl *********************************************************************
-
-dnl we don't need mmx on *this* machine, just i386, because
-dnl it's checked at runtime.
-if test "$mmx" = "yes"; then
-	case $host_cpu in
-    i386|i486|i586|i686|i786|k6|k7)
-    mmx=yes
-        ;;
-     *)
-    mmx=no
-	esac
-	if test "$system" = "OpenBSD"; then
-		dnl openbsd fails because mmx_cmod doesn't prefix its symbols with underscore.
-		dnl xtext.o: Undefined symbol `_shade_ximage_15_mmx' referenced from text segment
-		mmx=no
-	fi
-	if test "$mmx" = "yes"; then
-		AC_DEFINE(USE_MMX)
-	fi
-fi
-
-AM_CONDITIONAL(USE_MMX, test "$mmx" = "yes")
 
 dnl *********************************************************************
 dnl ** GCC FLAGS ********************************************************
@@ -878,12 +708,6 @@ AC_TRY_COMPILE(
 	],
 	AC_MSG_RESULT(no))
 
-AC_PATH_PROG(gdkpixbufcsourcepath, gdk-pixbuf-csource)
-AC_SUBST(gdkpixbufcsourcepath)
-if test "$gtkfe" != no -a "_$gdkpixbufcsourcepath" = _; then
-	AC_MSG_ERROR(Cannot find gdk-pixbuf-csource: Install GTK+ 2.0!)
-fi
-
 dnl if we don\'t have this, use g_snprintf instead
 AC_CHECK_FUNCS(snprintf vsnprintf memrchr strtoull)
 
@@ -958,11 +782,12 @@ AC_SUBST(hexchatlibdir)
 
 AC_CONFIG_FILES([
 Makefile
-share/Makefile
-share/icons/Makefile
-share/misc/Makefile
-share/pkgconfig/Makefile
-share/pkgconfig/hexchat-plugin.pc
+data/Makefile
+data/icons/Makefile
+data/misc/Makefile
+data/man/Makefile
+data/pkgconfig/Makefile
+data/pkgconfig/hexchat-plugin.pc
 src/Makefile
 src/common/Makefile
 src/common/dbus/Makefile
@@ -970,7 +795,6 @@ src/fe-text/Makefile
 src/fe-gtk/Makefile
 src/htm/Makefile
 src/htm/thememan
-src/pixmaps/Makefile
 plugins/Makefile
 plugins/python/Makefile
 plugins/perl/Makefile
@@ -980,7 +804,6 @@ plugins/fishlim/Makefile
 plugins/sysinfo/Makefile
 intl/Makefile
 po/Makefile.in
-man/Makefile
 ])
 
 AC_OUTPUT
@@ -992,18 +815,10 @@ echo GTK+ interface ........ : $gtkfe
 echo Text interface ........ : $textfe
 echo Theme manager ......... : $theme_manager
 echo
-echo MMX tinting ........... : $mmx
-echo XShm tinting .......... : $shm
-if test "$xft" = no; then
-  echo Text backend .......... : Pango
-else
-  echo Text backend .......... : Xft
-fi
 echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
 echo libcanberra support ... : $libcanberra
-echo Spelling .............. : $spell
 echo Plugin interface ...... : $plugin
 echo NLS/gettext ........... : $USE_NLS
 echo IPv6 support .......... : $ipv6
@@ -1023,11 +838,6 @@ echo
 
 if test "$gtkfe" = no; then
 	echo Warning: The GTK \(GUI\) frontend will not be built.
-	echo
-fi
-
-if test "$spell" = "gtkspell"; then
-	echo Warning: GTK SPELL is not the recommended spelling library.
 	echo
 fi
 

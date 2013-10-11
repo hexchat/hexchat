@@ -3,9 +3,10 @@
 #define USE_GMODULE
 #define USE_PLUGIN
 #define USE_OPENSSL
-#define USE_LIBSEXY
 #define USE_IPV6
 #define HAVE_ISO_CODES
+#define ISO_CODES_PREFIX ".\\"
+#define ISO_CODES_LOCALEDIR LOCALEDIR
 #define PACKAGE_NAME "hexchat"
 #define PACKAGE_VERSION "2.9.6"
 #define HEXCHATLIBDIR ".\\plugins"

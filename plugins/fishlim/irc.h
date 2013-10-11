@@ -25,11 +25,7 @@
 #ifndef IRC_H
 #define IRC_H
 
-#ifdef _MSC_VER
-#include "bool.h"
-#else
 #include <stdbool.h>
-#endif
 #include <stddef.h>
 
 bool irc_parse_message(const char *words[],

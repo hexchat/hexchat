@@ -297,20 +297,9 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 
 	switch (keyval)
 	{
-	case GDK_space:
+	case GDK_KEY_space:
 		key_action_tab_clean ();
 		break;
-
-#if defined(USE_GTKSPELL)/* && !defined(WIN32) */
-	/* gtktextview has no 'activate' event, so we trap ENTER here */
-	case GDK_Return:
-	case GDK_KP_Enter:
-		if (!(evt->state & STATE_CTRL))
-		{
-			g_signal_stop_emission_by_name (G_OBJECT (wid), "key_press_event");
-			mg_inputbox_cb (wid, sess->gui);
-		}
-#endif
 	}
 
 	return 0;
@@ -392,6 +381,8 @@ key_load_defaults ()
 		"C\no\nInsert in Buffer\nD1:\nD2!\n\n"\
 		"C\nb\nInsert in Buffer\nD1:\nD2!\n\n"\
 		"C\nk\nInsert in Buffer\nD1:\nD2!\n\n"\
+		"C\ni\nInsert in Buffer\nD1:\nD2!\n\n"\
+		"C\nu\nInsert in Buffer\nD1:\nD2!\n\n"\
 		"S\nNext\nChange Selected Nick\nD1!\nD2!\n\n"\
 		"S\nPrior\nChange Selected Nick\nD1:Up\nD2!\n\n"\
 		"None\nNext\nScroll Page\nD1:Down\nD2!\n\n"\
@@ -569,7 +560,7 @@ key_dialog_sel_row (GtkWidget * clist, gint row, gint column,
 static void
 key_dialog_tog_key (GtkWidget * tog, int kstate)
 {
-	int state = GTK_TOGGLE_BUTTON (tog)->active;
+	int state = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (tog));
 	int row = gtkutil_clist_selection (key_dialog_kb_clist);
 	struct key_binding *kb;
 	char buf[32];
@@ -804,10 +795,6 @@ key_dialog_show ()
 	gtk_box_pack_end (GTK_BOX (vbox), hbox2, 0, 0, 1);
 
 	wid = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_tint (GTK_XTEXT (wid), prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
-	gtk_xtext_set_background (GTK_XTEXT (wid),
-									  channelwin_pix,
-									  prefs.hex_text_transparent);
 	gtk_widget_set_usize (wid, 0, 75);
 	gtk_box_pack_start (GTK_BOX (hbox2), wid, 1, 1, 1);
 	gtk_xtext_set_font (GTK_XTEXT (wid), prefs.hex_text_font);
@@ -1303,8 +1290,8 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
 	if (!sess)
 		return 0;
 
-	adj = GTK_RANGE (sess->gui->vscrollbar)->adjustment;
-	end = adj->upper - adj->lower - adj->page_size;
+	adj = gtk_range_get_adjustment (GTK_RANGE (sess->gui->vscrollbar));
+	end = gtk_adjustment_get_upper (adj) - gtk_adjustment_get_lower (adj) - gtk_adjustment_get_page_size (adj);
 
 	switch (type)
 	{
@@ -1317,19 +1304,19 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
 		break;
 
 	case PAGE_UP:
-		value = adj->value - (adj->page_size - 1);
+		value = gtk_adjustment_get_value (adj) - (gtk_adjustment_get_page_size (adj) - 1);
 		break;
 
 	case PAGE_DOWN:
-		value = adj->value + (adj->page_size - 1);
+		value = gtk_adjustment_get_value (adj) + (gtk_adjustment_get_page_size (adj) - 1);
 		break;
 
 	case LINE_UP:
-		value = adj->value - 1.0;
+		value = gtk_adjustment_get_value (adj) - 1.0;
 		break;
 
 	case LINE_DOWN:
-		value = adj->value + 1.0;
+		value = gtk_adjustment_get_value (adj) + 1.0;
 		break;
 	}
 
@@ -1499,7 +1486,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		cursor_pos = g_utf8_pointer_to_offset(text, ch);
 		if (cursor_pos && (g_utf8_get_char_validated(ch, -1) == ':' || 
 					g_utf8_get_char_validated(ch, -1) == ',' ||
-					g_utf8_get_char_validated(ch, -1) == prefs.hex_completion_suffix[0]))
+					g_utf8_get_char_validated (ch, -1) == g_utf8_get_char_validated (prefs.hex_completion_suffix, -1)))
 		{
 			skip_len++;
 		}
