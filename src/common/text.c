@@ -964,7 +964,7 @@ PrintTextTimeStampf (session *sess, time_t timestamp, char *format, ...)
 
 /* Internals:
 
-   On startup ~/.xchat/printevents.conf is loaded if it doesn't exist the
+   On startup ~/.hexchat/printevents.conf is loaded if it doesn't exist the
    defaults are loaded. Any missing events are filled from defaults.
    Each event is parsed by pevt_build_string and a binary output is produced
    which looks like:

@@ -253,7 +253,7 @@ namespace thememan
             using (FileStream inFile = fi.OpenRead())
             {
                 string themeName = fi.Name.Remove(fi.Name.Length - fi.Extension.Length);
-                string destFolder = xchatdir + themedir + themeName;
+                string destFolder = hexchatdir + themedir + themeName;
 
                 if (!Directory.Exists(destFolder))
                 {
