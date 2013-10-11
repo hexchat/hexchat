@@ -371,7 +371,7 @@ struct hexchatprefs
 #define SET_DEFAULT 2 /* use global setting */
 
 /* Priorities in the "interesting sessions" priority queue
- * (see xchat.c:sess_list_by_lastact) */
+ * (see hexchat.c:sess_list_by_lastact) */
 #define LACT_NONE		-1		/* no queues */
 #define LACT_QUERY_HI	0		/* query with hilight */
 #define LACT_QUERY		1		/* query with messages */

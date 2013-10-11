@@ -1551,7 +1551,7 @@ menu_docs (GtkWidget *wid, gpointer none)
 /*static void
 menu_webpage (GtkWidget *wid, gpointer none)
 {
-	fe_open_url ("http://xchat.org");
+	fe_open_url ("http://hexchat.org");
 }*/
 
 static void
