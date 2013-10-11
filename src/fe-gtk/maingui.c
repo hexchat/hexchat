@@ -630,7 +630,7 @@ mg_unpopulate (session *sess)
 		mg_progressbar_destroy (gui);
 	}
 
-	gtk_xtext_reset_marker_pos (gui->xtext, FALSE);
+	gtk_xtext_reset_marker_pos (GTK_XTEXT (gui->xtext), FALSE);
 }
 
 static void
@@ -3074,7 +3074,7 @@ mg_tabwin_focus_out_cb (GtkWindow * win, GdkEventFocus *event, gpointer userdata
 {
 	current_sess = current_tab;
 	if (current_sess)
-		gtk_xtext_reset_marker_pos (current_sess->gui->xtext, TRUE);
+		gtk_xtext_reset_marker_pos (GTK_XTEXT (current_sess->gui->xtext), TRUE);
 	return FALSE;
 }
 
