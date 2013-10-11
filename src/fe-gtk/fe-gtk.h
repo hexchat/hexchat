@@ -193,7 +193,7 @@ typedef struct session_gui
 
 } session_gui;
 
-extern GdkPixmap *channelwin_pix;
+extern GdkPixbuf *channelwin_pix;
 extern GdkPixmap *dialogwin_pix;
 
 #define SPELL_ENTRY_GET_TEXT(e) ((char *)(gtk_entry_get_text (GTK_ENTRY(e))))

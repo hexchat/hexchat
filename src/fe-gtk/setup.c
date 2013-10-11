@@ -2032,7 +2032,7 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 	{
 		if (channelwin_pix)
 			g_object_unref (channelwin_pix);
-		channelwin_pix = pixmap_load_from_file (prefs.hex_text_background);
+		channelwin_pix = gdk_pixbuf_new_from_file (prefs.hex_text_background, NULL);
 	}
 
 	input_style = create_input_style (input_style);
