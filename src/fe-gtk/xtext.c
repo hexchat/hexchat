@@ -950,11 +950,6 @@ gtk_xtext_draw_marker (GtkXText * xtext, textentry * ent, int y)
 	width = GTK_WIDGET (xtext)->allocation.width;
 
 	gdk_draw_line (xtext->draw_buf, xtext->marker_gc, x, render_y, x + width, render_y);
-
-	if (gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (xtext)))))
-	{
-		xtext->buffer->marker_seen = TRUE;
-	}
 }
 
 static void
@@ -3736,7 +3731,7 @@ gtk_xtext_kill_ent (xtext_buffer *buffer, textentry *ent)
 		buffer->last_ent_end = NULL;
 	}
 
-	if (buffer->marker_pos == ent) buffer->marker_pos = NULL;
+	if (buffer->marker_pos == ent) buffer->marker_pos = ent->next;
 
 	if (ent->marks)
 	{
@@ -3926,13 +3921,6 @@ gtk_xtext_check_ent_visibility (GtkXText * xtext, textentry *find_ent, int add)
 	}
 
 	return FALSE;
-}
-
-void
-gtk_xtext_check_marker_visibility (GtkXText * xtext)
-{
-	if (gtk_xtext_check_ent_visibility (xtext, xtext->buffer->marker_pos, 1))
-		xtext->buffer->marker_seen = TRUE;
 }
 
 static void
@@ -4404,14 +4392,11 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 	ent->lines_taken = gtk_xtext_lines_taken (buf, ent);
 	buf->num_lines += ent->lines_taken;
 
-	if (buf->reset_marker_pos || 
-		((buf->marker_pos == NULL || buf->marker_seen) && (buf->xtext->buffer != buf || 
-		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))))))
+	if (buf->marker_pos == NULL && (buf->xtext->buffer != buf || 
+		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext))))))
 	{
 		buf->marker_pos = ent;
 		dontscroll (buf); /* force scrolling off */
-		buf->marker_seen = FALSE;
-		buf->reset_marker_pos = FALSE;
 	}
 
 	if (buf->xtext->max_lines > 2 && buf->xtext->max_lines < buf->num_lines)
@@ -4658,12 +4643,12 @@ gtk_xtext_set_wordwrap (GtkXText *xtext, gboolean wordwrap)
 }
 
 void
-gtk_xtext_reset_marker_pos (GtkXText *xtext)
+gtk_xtext_reset_marker_pos (GtkXText *xtext, gboolean render)
 {
 	xtext->buffer->marker_pos = NULL;
 	dontscroll (xtext->buffer); /* force scrolling off */
-	gtk_xtext_render_page (xtext);
-	xtext->buffer->reset_marker_pos = TRUE;
+	if (render)
+		gtk_xtext_render_page (xtext);
 }
 
 void

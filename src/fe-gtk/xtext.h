@@ -99,8 +99,6 @@ typedef struct {
 	unsigned int scrollbar_down:1;
 	unsigned int needs_recalc:1;
 	unsigned int grid_dirty:1;
-	unsigned int marker_seen:1;
-	unsigned int reset_marker_pos:1;
 
 	GList *search_found;		/* list of textentries where search found strings */
 	gchar *search_text;		/* desired text to search for */
@@ -259,8 +257,7 @@ void gtk_xtext_save (GtkXText * xtext, int fh);
 void gtk_xtext_refresh (GtkXText * xtext);
 int gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area);
 textentry *gtk_xtext_search (GtkXText * xtext, const gchar *text, gtk_xtext_search_flags flags, GError **err);
-void gtk_xtext_reset_marker_pos (GtkXText *xtext);
-void gtk_xtext_check_marker_visibility(GtkXText *xtext);
+void gtk_xtext_reset_marker_pos (GtkXText *xtext, gboolean render);
 
 gboolean gtk_xtext_is_empty (xtext_buffer *buf);
 typedef void (*GtkXTextForeach) (GtkXText *xtext, unsigned char *text, void *data);

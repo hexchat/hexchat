@@ -629,6 +629,8 @@ mg_unpopulate (session *sess)
 		res->c_graph = TRUE;	/* still have a graph, just not visible now */
 		mg_progressbar_destroy (gui);
 	}
+
+	gtk_xtext_reset_marker_pos (gui->xtext, FALSE);
 }
 
 static void
@@ -3062,11 +3064,17 @@ mg_tabwin_focus_cb (GtkWindow * win, GdkEventFocus *event, gpointer userdata)
 {
 	current_sess = current_tab;
 	if (current_sess)
-	{
-		gtk_xtext_check_marker_visibility (GTK_XTEXT (current_sess->gui->xtext));
 		plugin_emit_dummy_print (current_sess, "Focus Window");
-	}
 	unflash_window (GTK_WIDGET (win));
+	return FALSE;
+}
+
+static gboolean
+mg_tabwin_focus_out_cb (GtkWindow * win, GdkEventFocus *event, gpointer userdata)
+{
+	current_sess = current_tab;
+	if (current_sess)
+		gtk_xtext_reset_marker_pos (current_sess->gui->xtext, TRUE);
 	return FALSE;
 }
 
@@ -3076,7 +3084,6 @@ mg_topwin_focus_cb (GtkWindow * win, GdkEventFocus *event, session *sess)
 	current_sess = sess;
 	if (!sess->server->server_session)
 		sess->server->server_session = sess;
-	gtk_xtext_check_marker_visibility(GTK_XTEXT (current_sess->gui->xtext));
 	unflash_window (GTK_WIDGET (win));
 	plugin_emit_dummy_print (sess, "Focus Window");
 	return FALSE;
@@ -3239,6 +3246,8 @@ mg_create_tabwindow (session *sess)
 						   G_CALLBACK (mg_tabwindow_kill_cb), 0);
 	g_signal_connect (G_OBJECT (win), "focus_in_event",
 							G_CALLBACK (mg_tabwin_focus_cb), NULL);
+	g_signal_connect (G_OBJECT (win), "focus_out_event",
+							G_CALLBACK (mg_tabwin_focus_out_cb), NULL);
 	g_signal_connect (G_OBJECT (win), "configure_event",
 							G_CALLBACK (mg_configure_cb), NULL);
 	g_signal_connect (G_OBJECT (win), "window_state_event",
