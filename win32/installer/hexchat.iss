@@ -203,10 +203,11 @@ begin
 		RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
 	if not (sUnInstallString <> '') then
 		sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\HexChat_is1');
-		if not RegQueryStringValue(HKLM64, sUnInstPath, 'UninstallString', sUnInstallString) then
-			if not RegQueryStringValue(HKCU64, sUnInstPath, 'UninstallString', sUnInstallString) then
 				if not RegQueryStringValue(HKLM32, sUnInstPath, 'UninstallString', sUnInstallString) then
-					RegQueryStringValue(HKCU32, sUnInstPath, 'UninstallString', sUnInstallString);
+					if not RegQueryStringValue(HKCU32, sUnInstPath, 'UninstallString', sUnInstallString) then
+						if IsWin64 then
+							if not RegQueryStringValue(HKLM64, sUnInstPath, 'UninstallString', sUnInstallString) then
+								RegQueryStringValue(HKCU64, sUnInstPath, 'UninstallString', sUnInstallString);
 	Result := sUnInstallString;
 end;
 
