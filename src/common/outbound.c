@@ -3019,7 +3019,7 @@ cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		open_query (sess->server, nick, focus);
 
-		if (*msg)
+		if (*msg && strcmp (nick, ".") != 0 && *nick != '=')
 			cmd_msg(sess, tbuf, word, word_eol);
 
 		return TRUE;
