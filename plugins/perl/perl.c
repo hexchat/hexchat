@@ -1482,9 +1482,9 @@ perl_load_file (char *filename)
 				/* http://forum.xchat.org/viewtopic.php?t=3277 */
 				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
 #ifdef _WIN64
-								 "64-bit Strawberry Perl is required.");
+								 "64-bit Hexchat Perl is required.");
 #else
-								 "32-bit Strawberry Perl is required.");
+								 "32-bit Hexchat Perl is required.");
 #endif
 			else {
 				/* a lot of people install this old version */
