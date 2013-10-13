@@ -57,9 +57,6 @@ static const struct defaultserver def[] =
 	{0,			"irc2.2ch.net"},
 	{0,			"irc.juggler.jp"},
 
-/*	{"7-indonesia",	0},
-	{0,			"irc.7-indonesia.org"},*/
-
 	{"AccessIRC",	0},
 	{0,			"irc.accessirc.net"},
 	{0,			"eu.accessirc.net"},
@@ -96,13 +93,6 @@ static const struct defaultserver def[] =
 	{0,			"au.alphachat.net"},
 	{0,			"za.alphachat.net"},
 
-/*	{"AmigaNet",	0},
-	{0,			"irc.amiganet.org"},
-	{0,			"us.amiganet.org"},
-	{0,			"uk.amiganet.org"},
-	{0,			"no.amiganet.org"},
-	{0,			"au.amiganet.org"},*/
-
 	{"ARCNet",	0},
 	{0,			"se1.arcnet.vapor.com"},
 	{0,			"us1.arcnet.vapor.com"},
@@ -116,22 +106,12 @@ static const struct defaultserver def[] =
 	{0,			"nl3.arcnet.vapor.com"},
 	{0,			"uk1.arcnet.vapor.com"},
 	{0,			"uk2.arcnet.vapor.com"},
-/*	{0,			"uk3.arcnet.vapor.com"},*/
 	{0,			"fr1.arcnet.vapor.com"},
-
-/*	{"AstroLink",	0},
-	{0,			"irc.astrolink.org"},*/
 
 	{"AustNet",	0},
 	{0,			"au.austnet.org"},
 	{0,			"us.austnet.org"},
 	{0,			"ca.austnet.org"},
-
-/*	{"AxeNet",	0},
-	{0,			"irc.axenet.org"},
-	{0,			"angel.axenet.org"},
-	{0,			"energy.axenet.org"},
-	{0,			"python.axenet.org"},*/
 
 	{"AzzurraNet",	0},
 	{0,			"irc.azzurra.org"},
@@ -157,17 +137,8 @@ static const struct defaultserver def[] =
 	{0,			"US.ChatNet.Org"},
 	{0,			"EU.ChatNet.Org"},
 
-/*	{"ChatSociety", 0},
-	{0,			"us.chatsociety.net"},
-	{0,			"eu.chatsociety.net"},*/
-
 	{"ChatSpike", 0},
 	{0,			"irc.chatspike.net"},
-
-/*	{"CoolChat",	0},
-	{0,			"irc.coolchat.net"},
-	{0,			"unix.coolchat.net"},
-	{0,			"toronto.coolchat.net"},*/
 
 	{"Criten", 0},
 	{0,			"irc.criten.net"},
@@ -198,7 +169,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.Qeast.net"},
 	{0,			"irc.efnet.pl"},
 	{0,			"efnet.demon.co.uk"},
-/*	{0,			"irc.lagged.org"},*/
 	{0,			"irc.lightning.net"},
 	{0,			"irc.mindspring.com"},
 	{0,			"irc.easynews.com"},
@@ -245,9 +215,6 @@ static const struct defaultserver def[] =
 	{"EuropNet", 0},
 	{0,			"irc.europnet.org"},
 
-/*	{"EU-IRC",	0},
-	{0,			"irc.eu-irc.net"},*/
-
 	{"FDFNet",	0},
 	{0,			"irc.fdfnet.net"},
 	{0,			"irc.eu.fdfnet.net"},
@@ -265,45 +232,26 @@ static const struct defaultserver def[] =
 	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
 
-/*	{"Freeworld",	0},
-	{0,			"kabel.freeworld.nu"},
-	{0,			"irc.freeworld.nu"},*/
-
 	{"Fusion Latina",	0},
 	{0,					"irc.fusionlatina.org/2012"},
 
 	{"GalaxyNet",	0},
 	{0,			"irc.galaxynet.org"},
-/*	{0,			"sprynet.us.galaxynet.org"},
-	{0,			"atlanta.ga.us.galaxynet.org"},*/
 
 	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 	
-/*	{"GamesNET",	0},
-	{0,				"irc.gamesnet.net"},
-	{0,				"irc.us.gamesnet.net"},
-	{0,				"east.us.gamesnet.net"},
-	{0,				"west.us.gamesnet.net"},
-	{0,				"irc.ca.gamesnet.net"},
-	{0,				"irc.eu.gamesnet.net"},*/
-
 	{"GeekShed",	0},
 	{0,			"irc.geekshed.net"},
 
 	{"German-Elite",	0},
 	{0,			"dominion.german-elite.net"},
 	{0,			"komatu.german-elite.net"},
-/*	{0,			"liberty.german-elite.net"},*/
 
 	{"GIMPNet",		0},
 	{0,			"irc.gimp.org"},
 	{0,			"irc.gnome.org"},
-/*	{0,			"irc.au.gimp.org"},*/
 	{0,			"irc.us.gimp.org"},
-
-/*	{"HabberNet",	0},
-	{0,			"irc.habber.net"},*/
 
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
@@ -316,12 +264,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.indirectirc.com/+6697"},
 #endif
 	{0,			"irc.indirectirc.com"},
-
-/*	{"Infinity-IRC",	0},
-	{0,			"Atlanta.GA.US.Infinity-IRC.Org"},
-	{0,			"Babylon.NY.US.Infinity-IRC.Org"},
-	{0,			"Sunshine.Ca.US.Infinity-IRC.Org"},
-	{0,			"IRC.Infinity-IRC.Org"},*/
 
 	{"IRCHighWay",	0},
 #ifdef USE_OPENSSL
@@ -376,21 +318,10 @@ static const struct defaultserver def[] =
 #ifdef USE_IPV6
 	{0,			"irc6.link-net.org/+7000"},
 #endif
-/*	{0,			"irc.no.link-net.org"},
-	{0,			"irc.gamesden.net.au"},
-	{0,			"irc.bahnhof.se"},
-	{0,			"irc.kinexuseurope.co.uk"},
-	{0,			"irc.gamiix.com"},*/
 #endif
-
-/*	{"Majistic",	0},
-	{0,			"irc.majistic.net"},*/
 
 	{"MindForge",	0},
 	{0,			"irc.mindforge.org"},
-
-/*	{"MintIRC",	0},
-	{0,			"irc.mintirc.net"},*/
 
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
@@ -417,9 +348,6 @@ static const struct defaultserver def[] =
 	{0,			"us.co.nixhelp.org"},
 	{0,			"us.ca.nixhelp.org"},
 	{0,			"us.pa.nixhelp.org"},
-
-/*	{"NullusNet",	0},
-	{0,			"irc.nullus.net"},*/
 	
 	{"ObsidianIRC",  0},
 	{0,      "irc.obsidianirc.net"}, 
@@ -465,26 +393,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.uk.quakenet.org"},
 	{0,			"irc.de.quakenet.org"},
 	{0,			"irc.it.quakenet.org"},
-
-/*	{"RebelChat",	0},
-	{0,			"irc.rebelchat.org"},*/
-
-/*	{"Recycled-IRC",  0},
-	{0,			"irc.recycled-irc.org"},
-	{0,			"vermin.recycled-irc.org"},
-	{0,			"waste.recycled-irc.org"},
-	{0,			"lumber.recycled-irc.org"},
-	{0,			"trash.recycled-irc.org"},
-	{0,			"unwashed.recycled-irc.org"},
-	{0,			"garbage.recycled-irc.org"},
-	{0,			"dustbin.recycled-irc.org"},*/
-
-/*	{"RizeNET", 0},
-	{0,			"irc.rizenet.org"},
-	{0,			"omega.rizenet.org"},
-	{0,			"evelance.rizenet.org"},
-	{0,			"lisa.rizenet.org"},
-	{0,			"scott.rizenet.org"},*/
 
 	{"Rizon", 0},
 	{0,			"irc.rizon.net"},
@@ -534,11 +442,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.sorcery.net/9000"},
 	{0,			"irc.us.sorcery.net/9000"},
 	{0,			"irc.eu.sorcery.net/9000"},
-
-/*	{"Spidernet",	0},
-	{0,			"us.spidernet.org"},
-	{0,			"eu.spidernet.org"},
-	{0,			"irc.spidernet.org"},*/
 	
 	{"SpotChat", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
@@ -573,9 +476,6 @@ static const struct defaultserver def[] =
 	{"TinyCrab",			0},
 	{0,			"irc.tinycrab.net"},
 
-/*	{"TNI3",			0},
-	{0,			"irc.tni3.com"},*/
-
 	{"TURLINet",			0},
 	{0,			"irc.turli.net"},
 	{0,			"irc.servx.ru"},
@@ -608,16 +508,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.windfyre.net/+6697"},
 #endif
 	{0,			"irc.windfyre.net"},
-
-/*	{"Xentonix.net",	0},
-	{0,			"irc.xentonix.net"},*/
-
-/*	{"XWorld",	0},
-	{0,			"Buffalo.NY.US.XWorld.org"},
-	{0,			"Minneapolis.MN.US.Xworld.Org"},
-	{0,			"Rochester.NY.US.XWorld.org"},
-	{0,			"Bayern.DE.EU.XWorld.Org"},
-	{0,			"Chicago.IL.US.XWorld.Org"},*/
 
 	{0,0}
 };
