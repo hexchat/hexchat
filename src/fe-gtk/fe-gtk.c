@@ -1091,3 +1091,9 @@ fe_get_file (const char *title, char *initial,
 	/* CANCEL: Call callback once with file=NULL. */
 	gtkutil_file_req (title, callback, userdata, initial, NULL, flags | FRF_FILTERISINITIAL);
 }
+
+void
+fe_open_chan_list (server *serv, char *filter, int do_refresh)
+{
+	chanlist_opengui (serv, do_refresh);
+}
