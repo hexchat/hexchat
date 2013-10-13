@@ -1601,7 +1601,13 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		case 0xd1b:	/* id */
 			return ((struct session *)data)->server->id;
 		case 0x5cfee87:	/* flags */
-			tmp = ((struct session *)data)->alert_taskbar;   /* bit 10 */
+			tmp = ((struct session *)data)->text_strip;         /* bit 13 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->text_scrollback;    /* 12 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->text_logging;       /* 11 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->alert_taskbar;      /* 10 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->alert_tray;         /* 9 */
 			tmp <<= 1;
@@ -1609,7 +1615,7 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			tmp <<= 1;
 			/*tmp |= ((struct session *)data)->color_paste;*/    /* 7 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->text_hidejoinpart;   /* 6 */
+			tmp |= ((struct session *)data)->text_hidejoinpart;  /* 6 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->server->have_idmsg; /* 5 */
 			tmp <<= 1;
