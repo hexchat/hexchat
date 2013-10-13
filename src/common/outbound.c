@@ -3019,25 +3019,8 @@ cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		open_query (sess->server, nick, focus);
 
-		if (*msg)
-		{
-			if (!sess->server->connected)
-			{
-				notc_msg (sess);
-				return TRUE;
-			}
-
-			while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
-			{
-				sess->server->p_message (sess->server, nick, split_text);
-
-				if (*split_text)
-					offset += strlen(split_text);
-
-				g_free(split_text);
-			}
-			sess->server->p_message (sess->server, nick, msg + offset);
-		}
+		if (*msg && strcmp (nick, ".") != 0 && *nick != '=')
+			cmd_msg(sess, tbuf, word, word_eol);
 
 		return TRUE;
 	}
