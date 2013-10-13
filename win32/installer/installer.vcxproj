@@ -62,9 +62,14 @@
     </Link>
     <PreBuildEvent>
       <Command>
+      <![CDATA[
+SET SOLUTIONDIR=$(SolutionDir)..\
+"%PROGRAMFILES%\Common Files\microsoft shared\TextTemplating\12.0\TextTransform.exe" -out "%SOLUTIONDIR%win32\installer\hexchat.iss" "%SOLUTIONDIR%win32\installer\hexchat.iss.tt"
 del "$(OutDir)hexchat.iss"
-type hexchat.iss &gt;&gt; "$(OutDir)hexchat.iss"
-"$(ProgramFiles)\Inno Setup 5\iscc.exe" /dPROJECTDIR="$(ProjectDir)" /dAPPARCH="$(Platform)" "$(OutDir)hexchat.iss"</Command>
+type hexchat.iss >> "$(OutDir)hexchat.iss"
+"$(ProgramFiles)\Inno Setup 5\iscc.exe" /dPROJECTDIR="$(ProjectDir)" /dAPPARCH="$(Platform)" "$(OutDir)hexchat.iss"
+      ]]>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
