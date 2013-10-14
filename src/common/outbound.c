@@ -2278,7 +2278,7 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				snprintf (tbuf, TBUFSIZE, "%s!*@*", word[2]);
 			}
 
-			i = ignore_add (mask, type);
+			i = ignore_add (mask, type, TRUE);
 			if (quiet)
 				return TRUE;
 			switch (i)

@@ -103,7 +103,7 @@ mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
 		/* delete old mask, and add new one with original flags */
 		ignore_del (old, NULL);
 		flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
-		ignore_add (new, flags);
+		ignore_add (new, flags, TRUE);
 
 		/* update tree */
 		gtk_list_store_set (store, &iter, MASK_COLUMN, new, -1);
@@ -131,7 +131,7 @@ option_toggled (GtkCellRendererToggle *render, gchar *path, gpointer data)
 	/* update ignore list */
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 0, &mask, -1);
 	flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
-	if (ignore_add (mask, flags) != 2)
+	if (ignore_add (mask, flags, TRUE) != 2)
 		g_warning ("ignore treeview is out of sync!\n");
 	
 	g_free (mask);
@@ -244,7 +244,7 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 		return;
 	}
 
-	ignore_add (mask, flags);
+	ignore_add (mask, flags, TRUE);
 
 	gtk_list_store_append (store, &iter);
 	/* ignore everything by default */

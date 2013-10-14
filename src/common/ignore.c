@@ -77,7 +77,7 @@ ignore_exists (char *mask)
  */
 
 int
-ignore_add (char *mask, int type)
+ignore_add (char *mask, int type, gboolean overwrite)
 {
 	struct ignore *ig = 0;
 	int change_only = FALSE;
@@ -94,7 +94,11 @@ ignore_add (char *mask, int type)
 		return 0;
 
 	ig->mask = strdup (mask);
-	ig->type = type;
+
+	if (!overwrite && change_only)
+		ig->type |= type;
+	else
+		ig->type = type;
 
 	if (!change_only)
 		ignore_list = g_slist_prepend (ignore_list, ig);
@@ -376,16 +380,14 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 						if (ip[i] == '@')
 							break;
 					snprintf (real_ip, sizeof (real_ip), "*!*%s", &ip[i]);
-					/*ignore_add (char *mask, int priv, int noti, int chan,
-					   int ctcp, int invi, int unignore, int no_save) */
 
 					snprintf (buf, sizeof (buf),
 								 _("You are being CTCP flooded from %s, ignoring %s\n"),
 								 nick, real_ip);
 					PrintText (sess, buf);
 
-					/*FIXME: only ignore ctcp or all?, its ignoring ctcps for now */
-					ignore_add (real_ip, IG_CTCP);
+					/* ignore CTCP */
+					ignore_add (real_ip, IG_CTCP, FALSE);
 					return 0;
 				}
 			}
@@ -410,12 +412,9 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 					PrintText (sess, buf);
 					serv->msg_last_time = current_time;	/*we got the flood, restore all the vars for next one */
 					serv->msg_counter = 0;
-					/*ignore_add (char *mask, int priv, int noti, int chan,
-					   int ctcp, int invi, int unignore, int no_save) */
 
 					if (prefs.hex_gui_autoopen_dialog)
 					{
-						/*FIXME: only ignore ctcp or all?, its ignoring ctcps for now */
 						prefs.hex_gui_autoopen_dialog = 0;
 						/* turn it back on in 30 secs */
 						fe_timeout_add (30000, flood_autodialog_timeout, NULL);
