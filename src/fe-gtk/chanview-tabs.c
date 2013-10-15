@@ -722,11 +722,11 @@ cv_tabs_remove (chan *ch)
 static void
 cv_tabs_move (chan *ch, int delta)
 {
-	int i, pos = 0;
+	int i = 0;
+	int pos = 0;
 	GList *list;
 	GtkWidget *parent = gtk_widget_get_parent(GTK_WIDGET (ch->impl));
 
-	i = 0;
 	for (list = gtk_container_get_children (GTK_CONTAINER (parent)); list; list = list->next)
 	{
 		GtkWidget *child_entry;
@@ -734,7 +734,12 @@ cv_tabs_move (chan *ch, int delta)
 		child_entry = list->data;
 		if (child_entry == ch->impl)
 			pos = i;
-		i++;
+
+		/* keep separator at end to not throw off our count */
+		if (GTK_IS_SEPARATOR (child_entry))
+			gtk_box_reorder_child (GTK_BOX (parent), child_entry, -1);
+		else
+			i++;
 	}
 
 	pos = (pos - delta) % i;
