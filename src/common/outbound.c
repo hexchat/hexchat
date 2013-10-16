@@ -2842,7 +2842,7 @@ cmd_newserver (struct session *sess, char *tbuf, char *word[],
 		return TRUE;
 	}
 	
-	sess = new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+	sess = new_ircwindow (NULL, NULL, SESS_SERVER, 1);
 	cmd_server (sess, tbuf, word, word_eol);
 	return TRUE;
 }
