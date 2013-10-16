@@ -930,6 +930,11 @@ check_attributes (SexySpellEntry *entry, const char *text, int len)
 			insert_color (entry, i, COL_BG, COL_FG);
 			goto check_color;
 
+		case '\n':
+			insert_reset (entry, i);
+			parsing_color = 0;
+			break;
+
 		case ATTR_COLOR:
 			parsing_color = 1;
 			break;
