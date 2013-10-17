@@ -1744,11 +1744,14 @@ static const char *sasl_mechanisms[] =
 void
 inbound_sasl_authenticate (server *serv, char *data)
 {
+		ircnet *net = (ircnet*)serv->network;
 		char *user, *pass = NULL;
 		const char *mech = sasl_mechanisms[serv->sasl_mech];
 
-		user = (((ircnet*)serv->network)->user)
-				? (((ircnet*)serv->network)->user) : prefs.hex_irc_user_name;
+		if (net->user && !(net->flags & FLAG_USE_GLOBAL))
+			user = net->user;
+		else
+			user = prefs.hex_irc_user_name;
 
 		switch (serv->sasl_mech)
 		{
