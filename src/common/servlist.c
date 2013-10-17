@@ -305,10 +305,6 @@ static const struct defaultserver def[] =
 	{"Krstarica", 0},
 	{0,			"irc.krstarica.com"},
 
-	{"Librenet",	0},
-	{0,			"irc.librenet.net"},
-	{0,			"ielf.fr.librenet.net"},
-
 #ifdef USE_OPENSSL
 	{"LinkNet",	0},
 	{0,			"irc.link-net.org/+7000"},
@@ -336,18 +332,6 @@ static const struct defaultserver def[] =
 	{0,			"universe.nevernet.net"},
 	{0,			"wayland.nevernet.net"},
 	{0,			"forte.nevernet.net"},
-
-	{"NixHelpNet",	0},
-	{0,			"irc.nixhelp.org"},
-	{0,			"us.nixhelp.org"},
-	{0,			"uk.nixhelp.org"},
-	{0,			"uk2.nixhelp.org"},
-	{0,			"uk3.nixhelp.org"},
-	{0,			"nl.nixhelp.org"},
-	{0,			"ca.ld.nixhelp.org"},
-	{0,			"us.co.nixhelp.org"},
-	{0,			"us.ca.nixhelp.org"},
-	{0,			"us.pa.nixhelp.org"},
 	
 	{"ObsidianIRC",  0},
 	{0,      "irc.obsidianirc.net"}, 
