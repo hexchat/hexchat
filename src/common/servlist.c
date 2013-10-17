@@ -129,7 +129,7 @@ static const struct defaultserver def[] =
 	{"ChattingAway", 0},
 	{0,			"irc.chattingaway.com"},
 
-	{"ChatJunkies",	0, "#xchat"},
+	{"ChatJunkies",	0},
 	{0,			"irc.chatjunkies.org"},
 	{0,			"nl.chatjunkies.org"},
 
