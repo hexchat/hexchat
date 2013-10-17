@@ -86,7 +86,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.5ci.net"},
 	{0,			"irc.kis.lt"},
 
-	{"AlphaChat",	0},
+	{"AlphaChat",	0, 0, 0, LOGIN_SASL},
 	{0,			"irc.alphachat.net"},
 	{0,			"na.alphachat.net"},
 	{0,			"eu.alphachat.net"},
@@ -154,7 +154,7 @@ static const struct defaultserver def[] =
 	{0,			"nc.d-t-net.de"},
 	{0,			"wakka.d-t-net.de"},
 
-	{"DarkMyst", 0},
+	{"DarkMyst", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.darkmyst.org"},
 
 	{"DeepIRC", 0},
@@ -195,7 +195,7 @@ static const struct defaultserver def[] =
 	{0,			"irc6.entropynet.net"},
 #endif
 
-	{"EsperNet",	0},
+	{"EsperNet", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,			"irc.esper.net/+6697"},
 #endif
@@ -219,7 +219,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.fdfnet.net"},
 	{0,			"irc.eu.fdfnet.net"},
 
-	{"FEFNet",	0},
+	{"FEFNet", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.fef.net"},
 	{0,			"irc.ggn.net"},
 	{0,			"irc.vendetta.com"},
@@ -282,7 +282,7 @@ static const struct defaultserver def[] =
 	{0,				"open.ircnet.net"},
 	{0,				"irc.de.ircnet.net"},
 	
-	{"IRCNode", 0},
+	{"IRCNode", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,			"irc.ircnode.org/+6697"},
 #endif
@@ -291,7 +291,7 @@ static const struct defaultserver def[] =
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
 
-	{"IronDust", 0},
+	{"IronDust", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,			"irc.irondust.net/+6697"},
 #endif
@@ -352,7 +352,7 @@ static const struct defaultserver def[] =
 	{"ObsidianIRC",  0},
 	{0,      "irc.obsidianirc.net"}, 
 
-	{"Oceanius", 0},
+	{"Oceanius", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.oceanius.com"},
 
 	{"OFTC",	0},
@@ -367,7 +367,7 @@ static const struct defaultserver def[] =
 	{"PIRC.PL",	0},
 	{0,			"irc.pirc.pl"},
 	
-	{"PonyChat",	0},
+	{"PonyChat", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0, 		"irc.ponychat.net/+6697"},
 #endif
@@ -438,7 +438,7 @@ static const struct defaultserver def[] =
 	{"SolidIRC", 0},
 	{0,			"irc.solidirc.com"},
 
-	{"SorceryNet",	0},
+	{"SorceryNet", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.sorcery.net/9000"},
 	{0,			"irc.us.sorcery.net/9000"},
 	{0,			"irc.eu.sorcery.net/9000"},
@@ -473,7 +473,7 @@ static const struct defaultserver def[] =
 #endif
 	{0,			"irc.swiftirc.net/6667"},
 
-	{"TinyCrab",			0},
+	{"TinyCrab", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.tinycrab.net"},
 
 	{"TURLINet",			0},
@@ -493,7 +493,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.telecoms.bg"},
 	{0,			"irc.tu-varna.edu"},
 	
-	{"ValleyNode",	0},
+	{"ValleyNode", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.valleynode.net"},
 
 	{"Whiffle",	0},
