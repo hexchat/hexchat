@@ -888,8 +888,7 @@ check_attributes (SexySpellEntry *entry, const char *text, int len)
 	int parsing_color = 0;
 	char fg_color[3];
 	char bg_color[3];
-	int i, bg_offset = 0;
-	int fg_offset = 0;
+	int i, offset = 0;
 
 	memset (bg_color, 0, sizeof(bg_color));
 	memset (fg_color, 0, sizeof(fg_color));
@@ -937,6 +936,7 @@ check_attributes (SexySpellEntry *entry, const char *text, int len)
 
 		case ATTR_COLOR:
 			parsing_color = 1;
+			offset = 1;
 			break;
 
 		default:
@@ -949,6 +949,7 @@ check_color:
 				if (text[i] == ',' && parsing_color <= 3)
 				{
 					parsing_color = 3;
+					offset++;
 					continue;
 				}
 				else
@@ -964,48 +965,48 @@ check_color:
 			case 1:
 				fg_color[0] = text[i];
 				parsing_color++;
-				fg_offset = 2;
+				offset++;
 				continue;
 			case 2:
 				fg_color[1] = text[i];
 				parsing_color++;
-				fg_offset++;
+				offset++;
 				continue;
 			case 3:
 				bg_color[0] = text[i];
 				parsing_color++;
-				bg_offset = 2 + fg_offset; /* 1 extra for , */
+				offset++;
 				continue;
 			case 4:
 				bg_color[1] = text[i];
 				parsing_color++;
-				bg_offset++;
+				offset++;
 				continue;
 			case 5:
 				if (bg_color[0] != 0)
 				{
-					insert_hiddenchar (entry, i - bg_offset, i);
+					insert_hiddenchar (entry, i - offset, i);
 					insert_color (entry, i, atoi (fg_color), atoi (bg_color));
 				}
 				else if (fg_color[0] != 0)
 				{
-					insert_hiddenchar (entry, i - fg_offset, i);
+					insert_hiddenchar (entry, i - offset, i);
 					insert_color (entry, i, atoi (fg_color), -1);
 				}
 				else
 				{
-					insert_hiddenchar (entry, i - 1, i);
+					if (offset > 1) /* No colors but a , was added */
+						insert_hiddenchar (entry, i - 2, i - 1);
+					else
+						insert_hiddenchar (entry, i - 1, i);
 					insert_color (entry, i, -1, -1);
 				}
 
 				memset (bg_color, 0, sizeof(bg_color));
 				memset (fg_color, 0, sizeof(fg_color));
 				parsing_color = 0;
-				fg_offset = 0;
+				offset = 0;
 				continue;
-			default:
-				insert_hiddenchar (entry, i - 1, i);
-				insert_color (entry, i, -1, -1);
 			}
 		}
 	}
