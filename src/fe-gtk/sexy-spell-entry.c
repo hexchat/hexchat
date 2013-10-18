@@ -995,10 +995,8 @@ check_color:
 				}
 				else
 				{
-					if (offset > 1) /* No colors but a , was added */
-						insert_hiddenchar (entry, i - 2, i - 1);
-					else
-						insert_hiddenchar (entry, i - 1, i);
+					/* No colors but some commas may have been added */
+					insert_hiddenchar (entry, i - offset, i - offset + 1);
 					insert_color (entry, i, -1, -1);
 				}
 
