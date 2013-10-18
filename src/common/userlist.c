@@ -163,6 +163,7 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 		}
 
 		fe_userlist_update (sess, user);
+		fe_userlist_rehash (sess, user);
 
 		return 1;
 	}

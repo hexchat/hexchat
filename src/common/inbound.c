@@ -667,8 +667,10 @@ inbound_nameslist (server *serv, char *chan, char *names,
 						 const message_tags_data *tags_data)
 {
 	session *sess;
+	char **name_list;
+	char *host;
 	char name[NICKLEN];
-	int pos = 0;
+	int i, offset;
 
 	sess = find_channel (serv, chan);
 	if (!sess)
@@ -687,27 +689,24 @@ inbound_nameslist (server *serv, char *chan, char *names,
 		userlist_clear (sess);
 	}
 
-	while (1)
+	name_list = g_strsplit (names, " ", -1);
+	for (i = 0; name_list[i]; i++)
 	{
-		switch (*names)
-		{
-		case 0:
-			name[pos] = 0;
-			if (pos != 0)
-				userlist_add (sess, name, 0, NULL, NULL, tags_data);
-			return;
-		case ' ':
-			name[pos] = 0;
-			pos = 0;
-			userlist_add (sess, name, 0, NULL, NULL, tags_data);
-			break;
-		default:
-			name[pos] = *names;
-			if (pos < (NICKLEN-1))
-				pos++;
-		}
-		names++;
+		host = NULL;
+
+		if (name_list[i][0] == 0)
+			continue;
+
+		/* Server may have userhost-in-names cap */
+		offset = strcspn (name_list[i], "!");
+		if (offset++ < strlen (name_list[i]))
+			host = name_list[i] + offset;
+
+		g_strlcpy (name, name_list[i], MIN(offset, sizeof(name)));
+
+		userlist_add (sess, name, host, NULL, NULL, tags_data);
 	}
+	g_strfreev (name_list);
 }
 
 void
@@ -1671,6 +1670,11 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 		if (!strcmp (extension, "extended-join"))
 		{
 			strcat (buffer, "extended-join ");
+			want_cap = 1;
+		}
+		if (!strcmp (extension, "userhost-in-names"))
+		{
+			strcat (buffer, "userhost-in-names ");
 			want_cap = 1;
 		}
 
