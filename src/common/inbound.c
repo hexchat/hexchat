@@ -1288,6 +1288,8 @@ set_default_modes (server *serv)
 		strcat (modes, "s");
 	if (prefs.hex_irc_invisible)
 		strcat (modes, "i");
+	if (prefs.hex_irc_hidehost)
+		strcat (modes, "x");
 
 	if (modes[1] != '\0')
 	{
