@@ -668,7 +668,7 @@ inbound_nameslist (server *serv, char *chan, char *names,
 {
 	session *sess;
 	char **name_list;
-	char *host;
+	char *host, *nopre_name;
 	char name[NICKLEN];
 	int i, offset;
 
@@ -700,8 +700,17 @@ inbound_nameslist (server *serv, char *chan, char *names,
 
 		if (serv->have_uhnames)
 		{
-			/* Server may have userhost-in-names cap */
-			offset = strcspn (name_list[i], "!");
+			offset = 0;
+			nopre_name = name_list[i];
+
+			/* Ignore prefixes so '!' won't cause issues */
+			while (strchr (serv->nick_prefixes, *nopre_name) != NULL)
+			{
+				*nopre_name++;
+				offset++;
+			}
+
+			offset += strcspn (nopre_name, "!");
 			if (offset++ < strlen (name_list[i]))
 				host = name_list[i] + offset;
 		}
