@@ -693,14 +693,18 @@ inbound_nameslist (server *serv, char *chan, char *names,
 	for (i = 0; name_list[i]; i++)
 	{
 		host = NULL;
+		offset = sizeof(name);
 
 		if (name_list[i][0] == 0)
 			continue;
 
-		/* Server may have userhost-in-names cap */
-		offset = strcspn (name_list[i], "!");
-		if (offset++ < strlen (name_list[i]))
-			host = name_list[i] + offset;
+		if (serv->have_uhnames)
+		{
+			/* Server may have userhost-in-names cap */
+			offset = strcspn (name_list[i], "!");
+			if (offset++ < strlen (name_list[i]))
+				host = name_list[i] + offset;
+		}
 
 		g_strlcpy (name, name_list[i], MIN(offset, sizeof(name)));
 
@@ -1593,6 +1597,11 @@ inbound_cap_ack (server *serv, char *nick, char *extensions,
 	if (strstr (extensions, "extended-join") != NULL)
 	{
 		serv->have_extjoin = TRUE;
+	}
+
+	if (strstr (extensions, "userhost-in-names") != NULL)
+	{
+		serv->have_uhnames = TRUE;
 	}
 
 	if (strstr (extensions, "server-time") != NULL)
