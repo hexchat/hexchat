@@ -1771,6 +1771,29 @@ inbound_sasl_authenticate (server *serv, char *data)
 		ircnet *net = (ircnet*)serv->network;
 		char *user, *pass = NULL;
 		const char *mech = sasl_mechanisms[serv->sasl_mech];
+		int i;
+
+		/* Got a list of supported mechanisms */
+		if (strchr (data, ',') != NULL)
+		{
+			if (serv->sasl_mech == MECH_EXTERNAL)
+				goto sasl_abort;
+
+			/* Use most secure one supported */
+			for (i = MECH_AES; i >= MECH_PLAIN; i--)
+			{
+				if (strstr (data, sasl_mechanisms[i]) != NULL)
+				{
+					serv->sasl_mech = i;
+					serv->retry_sasl = TRUE;
+					tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[i]);
+					return;
+				}
+			}
+
+			/* Nothing we support */
+			goto sasl_abort;
+		}
 
 		if (net->user && !(net->flags & FLAG_USE_GLOBAL))
 			user = net->user;
@@ -1795,6 +1818,7 @@ inbound_sasl_authenticate (server *serv, char *data)
 #endif
 		}
 
+sasl_abort:
 		if (pass == NULL)
 		{
 			/* something went wrong abort */
@@ -1815,6 +1839,9 @@ inbound_sasl_authenticate (server *serv, char *data)
 int
 inbound_sasl_error (server *serv)
 {
+	if (serv->retry_sasl && !serv->sent_saslauth)
+		return 1;
+
 	/* If server sent 904 before we sent password,
 		* mech not support so fallback to next mech */
 	if (!serv->sent_saslauth && serv->sasl_mech != MECH_EXTERNAL && serv->sasl_mech != MECH_PLAIN)

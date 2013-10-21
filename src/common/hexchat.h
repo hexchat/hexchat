@@ -586,6 +586,7 @@ typedef struct server
 	unsigned int skip_next_whois:1;	/* hide whois output */
 	unsigned int inside_whois:1;
 	unsigned int doing_dns:1;			/* /dns has been done */
+	unsigned int retry_sasl:1;		/* retrying another sasl mech */
 	unsigned int end_of_motd:1;		/* end of motd reached (logged in) */
 	unsigned int sent_quit:1;			/* sent a QUIT already? */
 	unsigned int use_listargs:1;		/* undernet and dalnet need /list >0,<10000 */
