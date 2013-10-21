@@ -399,12 +399,6 @@ int xs_parse_distro(char *name)
 		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/mandrake-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
-	else if((fp = fopen("/etc/debian_version", "r")) != NULL)
-	{
-		char release[bsize];
-		fgets(release, bsize, fp);
-		snprintf(buffer, bsize, "Debian %s", release);
-	}
 	else if((fp = fopen("/etc/SuSE-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/turbolinux-release", "r")) != NULL)
@@ -424,6 +418,12 @@ int xs_parse_distro(char *name)
 			find_match_char(buffer, "DISTRIB_RELEASE", release);
 		}
 		snprintf(buffer, bsize, "%s \"%s\" %s", id, codename, release);
+	}
+	else if((fp = fopen("/etc/debian_version", "r")) != NULL)
+	{
+		char release[bsize];
+		fgets(release, bsize, fp);
+		snprintf(buffer, bsize, "Debian %s", release);
 	}
 	else
 		snprintf(buffer, bsize, "Unknown Distro");
