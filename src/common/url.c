@@ -425,14 +425,14 @@ regex_match (const GRegex *re, const char *word, int *start, int *end)
 #define PORT "(:[1-9][0-9]{0,4})"
 #define OPT_PORT "(" PORT ")?"
 
-GRegex *
+static GRegex *
 make_re (char *grist)
 {
 	GRegex *ret;
 	GError *err = NULL;
 
 	ret = g_regex_new (grist, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, 0, &err);
-	g_free (grist);
+
 	return ret;
 }
 
@@ -442,16 +442,11 @@ static const GRegex *
 re_host (void)
 {
 	static GRegex *host_ret;
-	char *grist;
 
 	if (host_ret) return host_ret;
 
-	grist = g_strdup (
-		"("
-			"(" HOST_URL PORT ")|(" HOST ")"
-		")"
-	);
-	host_ret = make_re (grist);
+	host_ret = make_re ("(" "(" HOST_URL PORT ")|(" HOST ")" ")");
+	
 	return host_ret;
 }
 
@@ -459,17 +454,10 @@ static const GRegex *
 re_host6 (void)
 {
 	static GRegex *host6_ret;
-	char *grist;
 
 	if (host6_ret) return host6_ret;
 
-	grist = g_strdup (
-		"("
-			"(" IPV6ADDR ")|(" "\\[" IPV6ADDR "\\]" PORT ")"
-		")"
-	);
-
-	host6_ret = make_re (grist);
+	host6_ret = make_re ("(" "(" IPV6ADDR ")|(" "\\[" IPV6ADDR "\\]" PORT ")" ")");
 
 	return host6_ret;
 }
@@ -601,6 +589,7 @@ re_url (void)
 	grist = g_string_free (grist_gstr, FALSE);
 
 	url_ret = make_re (grist);
+	g_free (grist);
 
 	return url_ret;
 }
@@ -612,16 +601,11 @@ static const GRegex *
 re_email (void)
 {
 	static GRegex *email_ret;
-	char *grist;
 
 	if (email_ret) return email_ret;
 
-	grist = g_strdup (
-		"("
-			EMAIL
-		")"
-	);
-	email_ret = make_re (grist);
+	email_ret = make_re ("(" EMAIL ")");
+
 	return email_ret;
 }
 
@@ -648,16 +632,11 @@ static const GRegex *
 re_nick (void)
 {
 	static GRegex *nick_ret;
-	char *grist;
 
 	if (nick_ret) return nick_ret;
 
-	grist = g_strdup (
-		"("
-			NICK
-		")"
-	);
-	nick_ret = make_re (grist);
+	nick_ret = make_re ("(" NICK ")");
+
 	return nick_ret;
 }
 
@@ -668,16 +647,11 @@ static const GRegex *
 re_channel (void)
 {
 	static GRegex *channel_ret;
-	char *grist;
 
 	if (channel_ret) return channel_ret;
 
-	grist = g_strdup (
-		"("
-			CHANNEL
-		")"
-	);
-	channel_ret = make_re (grist);
+	channel_ret = make_re ("(" CHANNEL ")");
+
 	return channel_ret;
 }
 
@@ -694,15 +668,10 @@ static const GRegex *
 re_path (void)
 {
 	static GRegex *path_ret;
-	char *grist;
 
 	if (path_ret) return path_ret;
 
-	grist = g_strdup (
-		"("
-			FS_PATH
-		")"
-	);
-	path_ret = make_re (grist);
+	path_ret = make_re ("(" FS_PATH ")");
+
 	return path_ret;
 }
