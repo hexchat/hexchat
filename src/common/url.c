@@ -35,6 +35,7 @@ GTree *url_btree = NULL;
 static gboolean regex_match (const GRegex *re, const char *word,
 							 int *start, int *end);
 static const GRegex *re_url (void);
+static const GRegex *re_url_no_scheme (void);
 static const GRegex *re_host (void);
 static const GRegex *re_host6 (void);
 static const GRegex *re_email (void);
@@ -294,7 +295,10 @@ match_email (const char *word, int *start, int *end)
 static gboolean
 match_url (const char *word, int *start, int *end)
 {
-	return regex_match (re_url (), word, start, end);
+	if (regex_match (re_url (), word, start, end))
+		return TRUE;
+
+	return regex_match (re_url_no_scheme (), word, start, end);
 }
 
 static gboolean
@@ -372,8 +376,7 @@ url_check_line (char *buf, int len)
 		g_match_info_fetch_pos(gmi, 0, &start, &end);
 		while (end > start && (po[end - 1] == '\r' || po[end - 1] == '\n'))
 			end--;
-		if (g_strstr_len (po + start, end - start, "://"))
-			url_add(po + start, end - start);
+		url_add(po + start, end - start);
 		g_match_info_next(gmi, NULL);
 	}
 	g_match_info_free(gmi);
@@ -540,6 +543,18 @@ struct
 };
 
 static const GRegex *
+re_url_no_scheme (void)
+{
+	static GRegex *url_ret = NULL;
+
+	if (url_ret) return url_ret;
+
+	url_ret = make_re ("(" HOST_URL OPT_PORT "/" "(" PATH ")?" ")");
+
+	return url_ret;
+}
+
+static const GRegex *
 re_url (void)
 {
 	static GRegex *url_ret = NULL;
@@ -551,12 +566,12 @@ re_url (void)
 
 	grist_gstr = g_string_new (NULL);
 
-	/* Add regex "host/path", representing a "schemeless" url */
-	g_string_append (grist_gstr, "(" HOST_URL OPT_PORT "/" "(" PATH ")?" ")");
-
 	for (i = 0; uri[i].scheme; i++)
 	{
-		g_string_append (grist_gstr, "|(");
+		if (i)
+			g_string_append (grist_gstr, "|");
+
+		g_string_append (grist_gstr, "(");
 		g_string_append_printf (grist_gstr, "%s:", uri[i].scheme);
 
 		if (uri[i].flags & URI_AUTHORITY)
