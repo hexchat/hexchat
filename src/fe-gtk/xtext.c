@@ -3230,7 +3230,6 @@ void
 gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[])
 {
 	int i;
-	GdkColor col;
 
 	for (i = (XTEXT_COLS-1); i >= 0; i--)
 	{

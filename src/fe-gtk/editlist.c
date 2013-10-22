@@ -298,7 +298,7 @@ editlist_treeview_new (GtkWidget *box, char *title1, char *title2)
 	render = gtk_cell_renderer_text_new ();
 	g_object_set (render, "editable", TRUE, NULL);
 	g_signal_connect (G_OBJECT (render), "edited",
-					G_CALLBACK (editlist_edited), NAME_COLUMN);
+					G_CALLBACK (editlist_edited), GINT_TO_POINTER(NAME_COLUMN));
 	gtk_tree_view_insert_column_with_attributes (
 					GTK_TREE_VIEW (view), NAME_COLUMN,
 					title1, render,
@@ -309,7 +309,7 @@ editlist_treeview_new (GtkWidget *box, char *title1, char *title2)
 	render = gtk_cell_renderer_text_new ();
 	g_object_set (render, "editable", TRUE, NULL);
 	g_signal_connect (G_OBJECT (render), "edited",
-					G_CALLBACK (editlist_edited), CMD_COLUMN);
+					G_CALLBACK (editlist_edited), GINT_TO_POINTER(CMD_COLUMN));
 	gtk_tree_view_insert_column_with_attributes (
 					GTK_TREE_VIEW (view), CMD_COLUMN,
 					title2, render,
