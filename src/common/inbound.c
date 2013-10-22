@@ -706,7 +706,7 @@ inbound_nameslist (server *serv, char *chan, char *names,
 			/* Ignore prefixes so '!' won't cause issues */
 			while (strchr (serv->nick_prefixes, *nopre_name) != NULL)
 			{
-				*nopre_name++;
+				nopre_name++;
 				offset++;
 			}
 
