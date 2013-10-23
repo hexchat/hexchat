@@ -453,6 +453,8 @@ mg_windowstate_cb (GtkWindow *wid, GdkEventWindowState *event, gpointer userdata
 	if (event->new_window_state & GDK_WINDOW_STATE_FULLSCREEN)
 		prefs.hex_gui_win_fullscreen = 1;
 
+	menu_set_fullscreen (current_sess->gui, prefs.hex_gui_win_fullscreen);
+
 	return FALSE;
 }
 
@@ -951,7 +953,7 @@ mg_populate (session *sess)
 	}
 
 	/* menu items */
-	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (gui->menu_item[MENU_ID_AWAY]), sess->server->is_away);
+	menu_set_away (gui, sess->server->is_away);
 	gtk_widget_set_sensitive (gui->menu_item[MENU_ID_AWAY], sess->server->connected);
 	gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], sess->server->end_of_motd);
 	gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT],
@@ -3482,7 +3484,7 @@ fe_set_away (server *serv)
 		{
 			if (!sess->gui->is_tab || sess == current_tab)
 			{
-				GTK_CHECK_MENU_ITEM (sess->gui->menu_item[MENU_ID_AWAY])->active = serv->is_away;
+				menu_set_away (sess->gui, serv->is_away);
 				/* gray out my nickname */
 				mg_set_myself_away (sess->gui, serv->is_away);
 			}

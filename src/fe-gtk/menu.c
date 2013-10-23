@@ -1390,7 +1390,7 @@ menu_join (GtkWidget * wid, gpointer none)
 static void
 menu_away (GtkCheckMenuItem *item, gpointer none)
 {
-	handle_command (current_sess, item->active ? "away" : "back", FALSE);
+	handle_command (current_sess, gtk_check_menu_item_get_active (item) ? "away" : "back", FALSE);
 }
 
 static void
@@ -1746,7 +1746,7 @@ static struct mymenu mymenu[] = {
 		{N_("Both"), menu_metres_both, 0, M_MENURADIO, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},	/* 32 */
 	{ 0, 0, 0, M_SEP, 0, 0, 0 },
-	{N_ ("Toggle _Fullscreen"), menu_fullscreen_toggle, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_F11},
+	{N_ ("_Fullscreen"), menu_fullscreen_toggle, 0, M_MENUTOG, MENU_ID_FULLSCREEN, 0, 1, GDK_KEY_F11},
 
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
@@ -1800,6 +1800,26 @@ static struct mymenu mymenu[] = {
 
 	{0, 0, 0, M_END, 0, 0, 0},
 };
+
+void
+menu_set_away (session_gui *gui, int away)
+{
+	GtkCheckMenuItem *item = GTK_CHECK_MENU_ITEM (gui->menu_item[MENU_ID_AWAY]);
+
+	g_signal_handlers_block_by_func (G_OBJECT (item), menu_away, NULL);
+	gtk_check_menu_item_set_active (item, away);
+	g_signal_handlers_unblock_by_func (G_OBJECT (item), menu_away, NULL);
+}
+
+void
+menu_set_fullscreen (session_gui *gui, int full)
+{
+	GtkCheckMenuItem *item = GTK_CHECK_MENU_ITEM (gui->menu_item[MENU_ID_FULLSCREEN]);
+
+	g_signal_handlers_block_by_func (G_OBJECT (item), menu_fullscreen_toggle, NULL);
+	gtk_check_menu_item_set_active (item, full);
+	g_signal_handlers_unblock_by_func (G_OBJECT (item), menu_fullscreen_toggle, NULL);
+}
 
 GtkWidget *
 create_icon_menu (char *labeltext, void *stock_name, int is_stock)
@@ -2317,7 +2337,6 @@ normalitem:
 				gtk_widget_add_accelerator (item, "activate", accel_group,
 										mymenu[i].key,
 										mymenu[i].key == GDK_KEY_F1 ? 0 :
-										mymenu[i].key == GDK_KEY_F11 ? 0 :
 										mymenu[i].key == GDK_KEY_w ? close_mask :
 										(g_ascii_isupper (mymenu[i].key)) ?
 											STATE_SHIFT | STATE_CTRL :
@@ -2342,11 +2361,14 @@ togitem:
 													 mymenu[i].state);*/
 			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
-									mymenu[i].key, mymenu[i].id == MENU_ID_AWAY ?
-									away_mask : STATE_CTRL, GTK_ACCEL_VISIBLE);
+											mymenu[i].key,
+											mymenu[i].id == MENU_ID_FULLSCREEN ? 0 :
+											mymenu[i].id == MENU_ID_AWAY ? away_mask :
+											STATE_CTRL, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "toggled",
-										G_CALLBACK (mymenu[i].callback), 0);
+									G_CALLBACK (mymenu[i].callback), NULL);
+
 			if (submenu)
 				gtk_menu_shell_append (GTK_MENU_SHELL (submenu), item);
 			else
