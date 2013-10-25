@@ -237,9 +237,14 @@ static void
 banlist_sensitize (banlist_info *banl)
 {
 	int checkable, i;
+	gboolean is_op = FALSE;
+
+	/* FIXME: More access levels than these can unban */
+	if (banl->sess->me->op || banl->sess->me->hop)
+		is_op = TRUE;
 
 	/* CHECKBOXES -- */
-	checkable = banl->sess->me->op? banl->writeable: banl->readable;
+	checkable = is_op? banl->writeable: banl->readable;
 	for (i = 0; i < MODE_CT; i++)
 	{
 		if (banl->checkboxes[i] == NULL)
@@ -258,7 +263,7 @@ banlist_sensitize (banlist_info *banl)
 	}
 
 	/* BUTTONS --- */
-	if (banl->sess->me->op == 0 || banl->line_ct == 0)
+	if (!is_op || banl->line_ct == 0)
 	{
 		/* If user is not op or list is empty, buttons should be all greyed */
 		gtk_widget_set_sensitive (banl->but_clear, FALSE);
