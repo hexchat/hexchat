@@ -163,6 +163,37 @@ gtk_xtext_text_width_8bit (GtkXText *xtext, unsigned char *str, int len)
 /* ======================================= */
 
 static void
+xtext_layout_set_text (GtkXText *xtext, char *str, int len)
+{
+	PangoAttrList *attr_list;
+	PangoAttribute *attr;
+
+	attr_list = pango_attr_list_new ();
+
+	if (xtext->italics)
+	{
+		attr = pango_attr_style_new (PANGO_STYLE_ITALIC);
+		attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;
+		attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+
+		pango_attr_list_insert (attr_list, attr);
+	}
+	if (xtext->bold)
+	{
+		attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
+		attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;
+		attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+
+		pango_attr_list_insert (attr_list, attr);
+	}
+
+	pango_layout_set_attributes (xtext->layout, attr_list);
+	pango_layout_set_text (xtext->layout, str, len);
+
+	pango_attr_list_unref (attr_list);
+}
+
+static void
 backend_font_close (GtkXText *xtext)
 {
 	pango_font_description_free (xtext->font->font);
@@ -238,13 +269,11 @@ backend_get_text_width (GtkXText *xtext, guchar *str, int len, int is_mb)
 {
 	int width;
 
-	if (!is_mb)
-		return gtk_xtext_text_width_8bit (xtext, str, len);
-
 	if (*str == 0)
 		return 0;
 
-	pango_layout_set_text (xtext->layout, str, len);
+	/* set text w/ attributes for proper width */
+	xtext_layout_set_text (xtext, str, len);
 	pango_layout_get_pixel_size (xtext->layout, &width, NULL);
 
 	return width;
@@ -303,30 +332,8 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	GdkGCValues val;
 	GdkColor col;
 	PangoLayoutLine *line;
-	PangoAttrList *attr_list;
-	PangoAttribute *attr;
 
-	attr_list = pango_attr_list_new ();
-
-	if (xtext->italics)
-	{
-		attr = pango_attr_style_new (PANGO_STYLE_ITALIC);
-		attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;
-		attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
-
-		pango_attr_list_insert (attr_list, attr);
-	}
-	if (xtext->bold)
-	{
-		attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
-		attr->start_index = PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING;
-		attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
-
-		pango_attr_list_insert (attr_list, attr);
-	}
-
-	pango_layout_set_attributes (xtext->layout, attr_list);
-	pango_layout_set_text (xtext->layout, str, len);
+	xtext_layout_set_text (xtext, str, len);
 
 	if (dofill)
 	{
@@ -342,8 +349,6 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	line = pango_layout_get_lines (xtext->layout)->data;
 
 	xtext_draw_layout_line (xtext->draw_buf, gc, x, y, line);
-
-	pango_attr_list_unref (attr_list);
 }
 
 static void
