@@ -139,31 +139,33 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 							  char *realname, char *servername, char *account, unsigned int away)
 {
 	struct User *user;
+	gboolean do_rehash = FALSE;
 
 	user = userlist_find (sess, nick);
 	if (user)
 	{
 		if (!user->hostname && hostname)
+		{
+			if (prefs.hex_gui_ulist_show_hosts)
+				do_rehash = TRUE;
 			user->hostname = strdup (hostname);
+		}
 		if (!user->realname && realname)
 			user->realname = strdup (realname);
 		if (!user->servername && servername)
 			user->servername = strdup (servername);
 		if (!user->account && account && strcmp (account, "0") != 0)
 			user->account = strdup (account);
-
 		if (away != 0xff)
 		{
-			if (prefs.hex_gui_ulist_show_hosts || user->away != away)
-			{
-				user->away = away;
-				fe_userlist_rehash (sess, user);
-			}
+			if (user->away != away)
+				do_rehash = TRUE;
 			user->away = away;
 		}
 
 		fe_userlist_update (sess, user);
-		fe_userlist_rehash (sess, user);
+		if (do_rehash)
+			fe_userlist_rehash (sess, user);
 
 		return 1;
 	}
