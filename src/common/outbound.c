@@ -114,7 +114,6 @@ random_line (char *file_name)
 	}
 	while (lines > ran);
 	fclose (fh);
-	buf[strlen (buf) - 1] = 0;	  /* remove the trailing '\n' */
 	return strdup (buf);
 }
 
