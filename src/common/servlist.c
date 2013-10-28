@@ -463,6 +463,12 @@ static const struct defaultserver def[] =
 #endif
 	{0,			"irc.swiftirc.net/6667"},
 
+	{"Techman's World IRC",		0},
+#ifdef USE_OPENSSL
+	{0,			"irc.techmansworld.com/+6697"},
+#endif
+	{0,			"irc.techmansworld.com/6667"},
+
 	{"TinyCrab", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.tinycrab.net"},
 
