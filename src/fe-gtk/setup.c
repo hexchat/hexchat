@@ -1108,22 +1108,24 @@ setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 {
 	GtkFontSelection *sel;
 	GtkFontSelectionDialog *dialog;
+	GtkWidget *ok_button;
 
 	dialog = (GtkFontSelectionDialog *) gtk_font_selection_dialog_new (_("Select font"));
 	font_dialog = (GtkWidget *)dialog;	/* global var */
 
-	sel = (GtkFontSelection *) dialog->fontsel;
+	sel = (GtkFontSelection *) gtk_font_selection_dialog_get_font_selection (dialog);
 
 	if (gtk_entry_get_text (GTK_ENTRY (entry))[0])
 		gtk_font_selection_set_font_name (sel, gtk_entry_get_text (GTK_ENTRY (entry)));
 
-	g_object_set_data (G_OBJECT (dialog->ok_button), "e", entry);
+	ok_button = gtk_font_selection_dialog_get_ok_button (dialog);
+	g_object_set_data (G_OBJECT (ok_button), "e", entry);
 
 	g_signal_connect (G_OBJECT (dialog), "destroy",
 							G_CALLBACK (setup_fontsel_destroy), dialog);
-	g_signal_connect (G_OBJECT (dialog->ok_button), "clicked",
+	g_signal_connect (G_OBJECT (ok_button), "clicked",
 							G_CALLBACK (setup_fontsel_cb), dialog);
-	g_signal_connect (G_OBJECT (dialog->cancel_button), "clicked",
+	g_signal_connect (G_OBJECT (gtk_font_selection_dialog_get_cancel_button (dialog)), "clicked",
 							G_CALLBACK (setup_fontsel_cancel), dialog);
 
 	gtk_widget_show (GTK_WIDGET (dialog));
@@ -1387,7 +1389,7 @@ setup_color_ok_cb (GtkWidget *button, GtkWidget *dialog)
 
 	color_change = TRUE;
 
-	gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (cdialog->colorsel), col);
+	gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (gtk_color_selection_dialog_get_color_selection (cdialog)), col);
 
 	gdk_colormap_alloc_color (gtk_widget_get_colormap (button), col, TRUE, TRUE);
 
@@ -1405,7 +1407,7 @@ setup_color_ok_cb (GtkWidget *button, GtkWidget *dialog)
 static void
 setup_color_cb (GtkWidget *button, gpointer userdata)
 {
-	GtkWidget *dialog;
+	GtkWidget *dialog, *cancel_button, *ok_button, *help_button;
 	GtkColorSelectionDialog *cdialog;
 	GdkColor *color;
 
@@ -1414,16 +1416,24 @@ setup_color_cb (GtkWidget *button, gpointer userdata)
 	dialog = gtk_color_selection_dialog_new (_("Select color"));
 	cdialog = GTK_COLOR_SELECTION_DIALOG (dialog);
 
-	gtk_widget_hide (cdialog->help_button);
-	g_signal_connect (G_OBJECT (cdialog->ok_button), "clicked",
+	g_object_get (G_OBJECT(cdialog), "cancel-button", &cancel_button,
+									"ok-button", &ok_button,
+									"help-button", &help_button, NULL);
+
+	gtk_widget_hide (help_button);
+	g_signal_connect (G_OBJECT (ok_button), "clicked",
 							G_CALLBACK (setup_color_ok_cb), dialog);
-	g_signal_connect (G_OBJECT (cdialog->cancel_button), "clicked",
+	g_signal_connect (G_OBJECT (cancel_button), "clicked",
 							G_CALLBACK (gtkutil_destroy), dialog);
-	g_object_set_data (G_OBJECT (cdialog->ok_button), "c", color);
-	g_object_set_data (G_OBJECT (cdialog->ok_button), "b", button);
-	gtk_widget_set_sensitive (cdialog->help_button, FALSE);
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (cdialog->colorsel), color);
+	g_object_set_data (G_OBJECT (ok_button), "c", color);
+	g_object_set_data (G_OBJECT (ok_button), "b", button);
+	gtk_widget_set_sensitive (help_button, FALSE);
+	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (gtk_color_selection_dialog_get_color_selection (cdialog)), color);
 	gtk_widget_show (dialog);
+
+	g_object_unref (cancel_button);
+	g_object_unref (ok_button);
+	g_object_unref (help_button);
 }
 
 static void
