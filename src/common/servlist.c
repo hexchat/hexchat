@@ -26,8 +26,6 @@
 #include <unistd.h>
 #endif
 
-
-
 #include "hexchat.h"
 #include "cfgfiles.h"
 #include "fe.h"
@@ -39,8 +37,8 @@
 #include "servlist.h"
 
 #ifdef USE_GNOME_KEYRING
- #include <gnome-keyring.h>
- #include <gnome-keyring-memory.h>
+#include <gnome-keyring.h>
+#include <gnome-keyring-memory.h>
 #endif
 
 struct defaultserver
@@ -1061,10 +1059,11 @@ servlist_net_remove (ircnet *net)
 		free (net->real);
 
 	#ifdef USE_GNOME_KEYRING
-		// To be sure that no old password is stored in the keyring we delete the password if net->pass is empty
+		/* To be sure that no old password is stored in the keyring we delete the password if net->pass is empty */
 		gnome_keyring_delete_password_sync (GNOME_KEYRING_NETWORK_PASSWORD, 
-       																												"server", net->name, NULL);
+																															"server", net->name, NULL);
 	#endif
+
 	free_and_clear(net->pass);
 	
 	if (net->favchanlist)
@@ -1269,15 +1268,15 @@ servlist_load (void)
 			net = servlist_net_add (buf + 2, /* comment */ NULL, FALSE);
 
 			#ifdef USE_GNOME_KEYRING
-        GnomeKeyringResult res = gnome_keyring_find_password_sync(
-            GNOME_KEYRING_NETWORK_PASSWORD, &password,
-            "server", net->name,
-            NULL);
+				GnomeKeyringResult res = gnome_keyring_find_password_sync(
+						GNOME_KEYRING_NETWORK_PASSWORD, &password,
+						"server", net->name,
+						NULL);
 
-        if (res == GNOME_KEYRING_RESULT_OK) {
-            net->pass = g_strdup(password);
-            gnome_keyring_free_password(password);
-        }
+				if (res == GNOME_KEYRING_RESULT_OK) {
+						net->pass = g_strdup(password);
+						gnome_keyring_free_password(password);
+				}
 			#endif
 		}
 	}
@@ -1347,7 +1346,6 @@ servlist_save (void)
 		first = TRUE;
 #endif
 
-
 	fp = hexchat_fopen_file ("servlist.conf", "w", 0);
 	if (!fp)
 	{
@@ -1387,19 +1385,19 @@ servlist_save (void)
 
 				dispName = g_strdup_printf(_("IRC (%s)"), net->name);
 				
-        res = gnome_keyring_store_password_sync (GNOME_KEYRING_NETWORK_PASSWORD, GNOME_KEYRING_DEFAULT,
-                                                                 dispName, net->pass,
-                                                                 "server", net->name, NULL);
-                                       /* 
-	                                     * netname identifier. NOTE: If the user creates more than one network 
-	                                     * with the same netname, the password for the first network will be overwritten.
-	                                     */
-	                                    
-        if (res != GNOME_KEYRING_RESULT_OK) {
+				/* 
+				* netname identifier. NOTE: If the user creates more than one network 
+				* with the same netname, the password for the first network will be overwritten.
+				*/
+				res = gnome_keyring_store_password_sync (GNOME_KEYRING_NETWORK_PASSWORD, GNOME_KEYRING_DEFAULT,
+																																	dispName, net->pass,
+																																	"server", net->name, NULL);
+
+				if (res != GNOME_KEYRING_RESULT_OK) {
 					buf = g_strdup_printf (_("Warning: Failed to store password for %s"), net->name);
 					fe_message (buf, FE_MSG_WARN);
 					g_free (buf);
-        }
+				}
 
 			#else
 				fprintf (fp, "P=%s\n", net->pass);
@@ -1408,9 +1406,9 @@ servlist_save (void)
 		#ifdef USE_GNOME_KEYRING
 		else
 		{
-				// To be sure that no old password is stored in the keyring we delete the password if net->pass is empty
+				/* To be sure that no old password is stored in the keyring we delete the password if net->pass is empty */
 				gnome_keyring_delete_password_sync (GNOME_KEYRING_NETWORK_PASSWORD, 
-        																													"server", net->name, NULL);
+																																	"server", net->name, NULL);
 		}
 		#endif
 
