@@ -23,6 +23,8 @@ AM_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PATH_PROG(MDTOOL, mdtool, no)
 
+GNOME_KEYRING_REQUIRED=2.22
+
 dnl -----------------------------------------------------------
 dnl Language Support
 dnl -----------------------------------------------------------
@@ -43,6 +45,7 @@ AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
+AH_VERBATIM([USE_GNOME_KEYRING],[#undef USE_GNOME_KEYRING])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
@@ -52,6 +55,7 @@ AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
 AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
 AH_VERBATIM([socklen_t],[#undef socklen_t])
 AH_VERBATIM([USE_DBUS],[#undef USE_DBUS])
+
 
 AC_PATH_PROG(sedpath, sed)
 if test "_$sedpath" = _; then
@@ -137,6 +141,11 @@ AC_ARG_ENABLE(dbus,
 AC_ARG_ENABLE(libnotify,
 	[AS_HELP_STRING([--disable-libnotify],[disable libnotify support])],
         libnotify=$enableval, libnotify=yes)
+
+AC_ARG_ENABLE(gnome_keyring,
+	[AS_HELP_STRING([--enable-gnome-keyring],[enable Gnome Keyring support to store credentials (default: auto)])],
+        gnome_keyring=$enableval, enable_gnome_keyring=auto)
+
 
 AC_ARG_ENABLE(libcanberra,
 	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
@@ -521,6 +530,30 @@ if test "x$libnotify" = "xyes" ; then
 fi
 
 dnl *********************************************************************
+dnl ** GNOME PASSWORD MANAGER *******************************************
+dnl *********************************************************************
+
+if test "x$enable_gnome_keyring" != "xno"; then
+   PKG_CHECK_MODULES(GNOME_KEYRING,
+                     [gnome-keyring-1 >= $GNOME_KEYRING_REQUIRED],
+                     [use_gnome_keyring=yes],
+                     [use_gnome_keyring=no])
+
+   CPPFLAGS="$CPPFLAGS $GNOME_KEYRING_CFLAGS"
+   LIBS="$LIBS $GNOME_KEYRING_LIBS"
+
+   if test "x$use_gnome_keyring" = "xyes"; then
+      AC_DEFINE(USE_GNOME_KEYRING, [], [Define if we use Gnome Keyring for password storage])
+   fi
+fi
+
+if test "x$enable_gnome_keyring" = "xyes"; then
+   if test "x$use_gnome_keyring" != "xyes"; then
+      AC_MSG_ERROR([Couldn't find Gnome Keyring >= $GNOME_KEYRING_REQUIRED.])
+   fi
+fi
+
+dnl *********************************************************************
 dnl ** LIBCANBERRA ******************************************************
 dnl *********************************************************************
 
@@ -552,12 +585,14 @@ if test "x$isocodes" = "xyes" ; then
     ])
 fi
 
+
 dnl *********************************************************************
 dnl ** CONDITIONALS *****************************************************
 dnl *********************************************************************
 
 AM_CONDITIONAL(USE_OPENSSL, test "x$openssl" = "xyes")
 AM_CONDITIONAL(USE_LIBNOTIFY, test "x$libnotify" = "xyes")
+AM_CONDITIONAL(USE_GNOME_KEYRING, test "x$use_gnome_keyring" = "xyes")
 AM_CONDITIONAL(USE_LIBCANBERRA, test "x$libcanberra" = "xyes")
 AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
 AM_CONDITIONAL(DO_GTK, test "x$gtkfe" = "xyes")
@@ -819,6 +854,7 @@ echo
 echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
+echo Gnome password manager . : $use_gnome_keyring
 echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
 echo NLS/gettext ........... : $USE_NLS
