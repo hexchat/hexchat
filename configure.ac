@@ -854,7 +854,7 @@ echo
 echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
-echo Gnome password manager . : $use_gnome_keyring
+echo Gnome keyring ......... : $use_gnome_keyring
 echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
 echo NLS/gettext ........... : $USE_NLS
