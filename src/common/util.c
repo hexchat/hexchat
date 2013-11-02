@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -2287,3 +2288,80 @@ challengeauth_response (char *username, char *password, char *challenge)
 	return (char *) digest;
 }
 #endif
+
+/**
+* \brief Wrapper around strftime for Windows
+*
+* Prevents crashing when using an invalid format by escaping them.
+*
+* Behaves the same as strftime with the addition that
+* it returns 0 if the escaped format string is too large.
+*
+* Based upon work from znc-msvc project.
+*/
+size_t
+strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time)
+{
+#ifndef WIN32
+	return strftime (dest, destsize, format, time);
+#else
+	char safe_format[64];
+	const char *p = format;
+	int i = 0;
+
+	if (strlen (format) >= sizeof(safe_format))
+		return 0;
+
+	memset (safe_format, 0, sizeof(safe_format));
+
+	while (*p)
+	{
+		if (*p == '%')
+		{
+			int has_hash = (*(p + 1) == '#');
+			char c = *(p + (has_hash ? 2 : 1));
+
+			if (i >= sizeof (safe_format))
+				return 0;
+
+			switch (c)
+			{
+			case 'a': case 'A': case 'b': case 'B': case 'c': case 'd': case 'H': case 'I': case 'j': case 'm': case 'M':
+			case 'p': case 'S': case 'U': case 'w': case 'W': case 'x': case 'X': case 'y': case 'Y': case 'z': case 'Z':
+			case '%':
+				/* formatting code is fine */
+				break;
+			default:
+				/* replace bad formatting code with itself, escaped, e.g. "%V" --> "%%V" */
+				g_strlcat (safe_format, "%%", sizeof(safe_format));
+				i += 2;
+				p++;
+				break;
+			}
+
+			/* the current loop run will append % (and maybe #) and the next one will do the actual char. */
+			if (has_hash)
+			{
+				safe_format[i] = *p;
+				p++;
+				i++;
+			}
+			if (c == '%')
+			{
+				safe_format[i] = *p;
+				p++;
+				i++;
+			}
+		}
+
+		if (*p)
+		{
+			safe_format[i] = *p;
+			p++;
+			i++;
+		}
+	}
+
+	return strftime (dest, destsize, safe_format, time);
+#endif
+}

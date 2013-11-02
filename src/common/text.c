@@ -542,7 +542,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	/* insert time/date */
 	now = time (NULL);
 	tm = localtime (&now);
-	strftime (fnametime, sizeof (fnametime), fname, tm);
+	strftime_validated (fnametime, sizeof (fnametime), fname, tm);
 
 	/* create final path/filename */
 	if (logmask_is_fullpath ())
@@ -649,14 +649,7 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 			fmt = loc;
 	}
 
-	len = strftime (dest, sizeof (dest), fmt, localtime (&tim));
-#ifdef WIN32
-	if (!len)
-	{
-		/* use failsafe format until a correct one is specified */
-		len = strftime (dest, sizeof (dest), "[%H:%M:%S]", localtime (&tim));
-	}
-#endif
+	len = strftime_validated (dest, sizeof (dest), fmt, localtime (&tim));
 	if (len)
 	{
 		if (prefs.utf8_locale)

@@ -121,7 +121,7 @@ fe_new_window (struct session *sess, int focus)
 static int
 get_stamp_str (time_t tim, char *dest, int size)
 {
-	return strftime (dest, size, prefs.hex_stamp_text_format, localtime (&tim));
+	return strftime_validated (dest, size, prefs.hex_stamp_text_format, localtime (&tim));
 }
 
 static int

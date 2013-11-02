@@ -2114,7 +2114,6 @@ setup_apply (struct hexchatprefs *pr)
 	PangoFontDescription *old_desc;
 	PangoFontDescription *new_desc;
 	char buffer[4 * FONTNAMELEN + 1];
-	time_t rawtime;
 #endif
 	int new_pix = FALSE;
 	int noapply = FALSE;
@@ -2192,14 +2191,6 @@ setup_apply (struct hexchatprefs *pr)
 	g_free (old_desc);
 	g_free (new_desc);
 	*/
-
-	/* workaround for strftime differences between POSIX and MSVC */
-	time (&rawtime);
-
-	if (!strftime (buffer, sizeof (buffer), prefs.hex_stamp_text_format, localtime (&rawtime)) || !strftime (buffer, sizeof (buffer), prefs.hex_stamp_log_format, localtime (&rawtime)))
-	{
-		fe_message (_("Invalid time stamp format! See the strftime MSDN article for details."), FE_MSG_ERROR);
-	}
 #endif
 
 	if (prefs.hex_irc_real_name[0] == 0)
