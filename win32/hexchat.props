@@ -94,6 +94,8 @@ copy "$(HexChatBin)hcsysinfo.dll" "$(HexChatRel)\plugins"
 xcopy /q /s /i "$(HexChatBin)locale" "$(HexChatRel)\share\locale"
 xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
 		</HexChatCopy>
+		<TextTransformPath Condition="'$(Platform)'=='Win32'">"%PROGRAMFILES%\Common Files\microsoft shared\TextTemplating\12.0\TextTransform.exe"</TextTransformPath>
+		<TextTransformPath Condition="'$(Platform)'=='x64'">"%PROGRAMFILES(x86)%\Common Files\microsoft shared\TextTemplating\12.0\TextTransform.exe"</TextTransformPath>
 	</PropertyGroup>
 
 	<ItemDefinitionGroup>

@@ -100,7 +100,7 @@
       <Command>
       <![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
-"%PROGRAMFILES%\Common Files\microsoft shared\TextTemplating\12.0\TextTransform.exe" -out hexchat.rc hexchat.rc.tt
+$(TextTransformPath) -out hexchat.rc hexchat.rc.tt
 $(DepsRoot)\bin\glib-compile-resources.exe --generate-source --sourcedir $(DataDir) --target "$(ProjectDir)resources.c" "$(DataDir)hexchat.gresource.xml"
       ]]>
       </Command>
