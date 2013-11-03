@@ -96,6 +96,8 @@ xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
 		</HexChatCopy>
 		<TextTransformPath Condition="'$(Platform)'=='Win32'">"%PROGRAMFILES%\Common Files\microsoft shared\TextTemplating\12.0\TextTransform.exe"</TextTransformPath>
 		<TextTransformPath Condition="'$(Platform)'=='x64'">"%PROGRAMFILES(x86)%\Common Files\microsoft shared\TextTemplating\12.0\TextTransform.exe"</TextTransformPath>
+		<IsccPath Condition="'$(Platform)'=='Win32'">"%PROGRAMFILES%\Inno Setup 5\iscc.exe"</IsccPath>
+		<IsccPath Condition="'$(Platform)'=='x64'">"%PROGRAMFILES(x86)%\Inno Setup 5\iscc.exe"</IsccPath>
 	</PropertyGroup>
 
 	<ItemDefinitionGroup>

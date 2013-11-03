@@ -67,7 +67,7 @@ SET SOLUTIONDIR=$(SolutionDir)..\
 $(TextTransformPath) -out "%SOLUTIONDIR%win32\installer\hexchat.iss" "%SOLUTIONDIR%win32\installer\hexchat.iss.tt"
 del "$(OutDir)hexchat.iss"
 type hexchat.iss >> "$(OutDir)hexchat.iss"
-"$(ProgramFiles)\Inno Setup 5\iscc.exe" /dPROJECTDIR="$(ProjectDir)" /dAPPARCH="$(Platform)" "$(OutDir)hexchat.iss"
+$(IsccPath) /dPROJECTDIR="$(ProjectDir)" /dAPPARCH="$(Platform)" "$(OutDir)hexchat.iss"
       ]]>
       </Command>
     </PreBuildEvent>
