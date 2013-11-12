@@ -139,6 +139,8 @@ static void gtk_xtext_search_textentry_fini (gpointer, gpointer);
 static void gtk_xtext_search_fini (xtext_buffer *);
 static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_flags flags, GError **perr);
 
+/* Avoid warning messages for this unused function */
+#if 0
 /* gives width of a 8bit string - with no mIRC codes in it */
 
 static int
@@ -155,6 +157,7 @@ gtk_xtext_text_width_8bit (GtkXText *xtext, unsigned char *str, int len)
 
 	return width;
 }
+#endif
 
 #define xtext_draw_bg(xt,x,y,w,h) gdk_draw_rectangle(xt->draw_buf, xt->bgc, 1, x, y, w, h);
 
@@ -1319,50 +1322,35 @@ gtk_xtext_timeout_ms (GtkXText *xtext, int pixes)
 	if (apixes < 20) return 20;
 	return 10;
 }
-
 static gint
 gtk_xtext_scrolldown_timeout (GtkXText * xtext)
 {
 	int p_y, win_height;
 	xtext_buffer *buf = xtext->buffer;
 	GtkAdjustment *adj = xtext->adj;
-	textentry *ent;
 
-	if (buf->last_ent_end == NULL)	/* If context has changed */
+	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
+	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, 0, &win_height);
+
+	if (buf->last_ent_end == NULL ||	/* If context has changed OR */
+		 buf->pagetop_ent == NULL ||	/* pagetop_ent is reset OR */
+		 p_y <= win_height ||			/* pointer not below bottom margin OR */
+		 adj->value >= adj->upper - adj->page_size) 	/* we're scrolled to bottom */
 	{
 		xtext->scroll_tag = 0;
 		return 0;
 	}
 
-	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, 0, &win_height);
-
-	if (p_y > win_height &&
-		 xtext->adj->value < (xtext->adj->upper - xtext->adj->page_size))
-	{
-		xtext->adj->value += buf->pagetop_ent->lines_taken;
-		ent = buf->last_ent_end->next;
-		if (ent)
-		{
-			gtk_adjustment_value_changed (xtext->adj);
-		}
-		else
-		{
-			buf->scrollbar_down = TRUE;
-		}
-		xtext->scroll_tag = g_timeout_add (gtk_xtext_timeout_ms (xtext, p_y - win_height),
-														(GSourceFunc)
-														gtk_xtext_scrolldown_timeout,
-														xtext);
-		xtext->select_start_y -= (adj->value - xtext->select_start_adj) * xtext->fontsize;
-		xtext->select_start_adj = adj->value;
-		gtk_xtext_selection_draw (xtext, NULL, TRUE);
-		gtk_xtext_render_ents (xtext, ent, buf->last_ent_end);
-	}
-	else
-	{
-		xtext->scroll_tag = 0;
-	}
+	xtext->select_start_y -= xtext->fontsize;
+	xtext->select_start_adj++;
+	adj->value++;
+	gtk_adjustment_value_changed (adj);
+	gtk_xtext_selection_draw (xtext, NULL, TRUE);
+	gtk_xtext_render_ents (xtext, buf->pagetop_ent->next, buf->last_ent_end);
+	xtext->scroll_tag = g_timeout_add (gtk_xtext_timeout_ms (xtext, p_y - win_height),
+													(GSourceFunc)
+													gtk_xtext_scrolldown_timeout,
+													xtext);
 
 	return 0;
 }
@@ -1373,38 +1361,28 @@ gtk_xtext_scrollup_timeout (GtkXText * xtext)
 	int p_y;
 	xtext_buffer *buf = xtext->buffer;
 	GtkAdjustment *adj = xtext->adj;
-	textentry *ent;
 
-	if (buf->last_ent_start == NULL)	/* If context has changed */
+	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
+
+	if (buf->last_ent_start == NULL ||	/* If context has changed OR */
+		 buf->pagetop_ent == NULL ||		/* pagetop_ent is reset OR */
+		 p_y >= 0 ||							/* not above top margin OR */
+		 adj->value == 0)						/* we're scrolled to the top */
 	{
 		xtext->scroll_tag = 0;
 		return 0;
 	}
 
-	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
-
-	if (p_y < 0 && adj->value >= 0)
-	{
-		buf->scrollbar_down = FALSE;
-		ent = buf->last_ent_start->prev;
-		if (ent)
-		{
-			adj->value -= ent->lines_taken;
-			gtk_adjustment_value_changed (adj);
-		}
-		xtext->select_start_y -= (adj->value - xtext->select_start_adj) * xtext->fontsize;
-		xtext->select_start_adj = adj->value;
-		gtk_xtext_selection_draw (xtext, NULL, TRUE);
-		gtk_xtext_render_ents (xtext, ent, buf->last_ent_end);
-		xtext->scroll_tag = g_timeout_add (gtk_xtext_timeout_ms (xtext, p_y),
-														(GSourceFunc)
-														gtk_xtext_scrollup_timeout,
-														xtext);
-	}
-	else
-	{
-		xtext->scroll_tag = 0;
-	}
+	xtext->select_start_y += xtext->fontsize;
+	xtext->select_start_adj--;
+	adj->value--;
+	gtk_adjustment_value_changed (adj);
+	gtk_xtext_selection_draw (xtext, NULL, TRUE);
+	gtk_xtext_render_ents (xtext, buf->pagetop_ent->prev, buf->last_ent_end);
+	xtext->scroll_tag = g_timeout_add (gtk_xtext_timeout_ms (xtext, p_y),
+													(GSourceFunc)
+													gtk_xtext_scrollup_timeout,
+													xtext);
 
 	return 0;
 }
