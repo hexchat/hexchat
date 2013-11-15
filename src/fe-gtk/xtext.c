@@ -1341,6 +1341,7 @@ gtk_xtext_scrolldown_timeout (GtkXText * xtext)
 		return 0;
 	}
 
+	adj->value = (int)adj->value;	/* Align to line boundary */
 	xtext->select_start_y -= xtext->fontsize;
 	xtext->select_start_adj++;
 	adj->value++;
@@ -1373,6 +1374,7 @@ gtk_xtext_scrollup_timeout (GtkXText * xtext)
 		return 0;
 	}
 
+	adj->value = (int)adj->value;	/* Align to line boundary */
 	xtext->select_start_y += xtext->fontsize;
 	xtext->select_start_adj--;
 	adj->value--;
@@ -2125,14 +2127,14 @@ gtk_xtext_scroll (GtkWidget *widget, GdkEventScroll *event)
 		new_value = xtext->adj->value - (xtext->adj->page_increment / 10);
 		if (new_value < xtext->adj->lower)
 			new_value = xtext->adj->lower;
-		gtk_adjustment_set_value (xtext->adj, (int)new_value);
+		gtk_adjustment_set_value (xtext->adj, new_value);
 	}
 	else if (event->direction == GDK_SCROLL_DOWN)	/* mouse wheel pageDn */
 	{
 		new_value = xtext->adj->value + (xtext->adj->page_increment / 10);
 		if (new_value > (xtext->adj->upper - xtext->adj->page_size))
 			new_value = xtext->adj->upper - xtext->adj->page_size;
-		gtk_adjustment_set_value (xtext->adj, (int)new_value);
+		gtk_adjustment_set_value (xtext->adj, new_value);
 	}
 
 	return FALSE;
