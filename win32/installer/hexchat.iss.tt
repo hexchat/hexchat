@@ -62,6 +62,7 @@ Name: "gtktheme"; Description: "GTK+ Theme"; Types: normal custom; Flags: disabl
 Name: "xctext"; Description: "HexChat-Text"; Types: custom; Flags: disablenouninstallwarning
 Name: "xtm"; Description: "HexChat Theme Manager"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "spell"; Description: "Spelling Dictionaries"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\checksum"; Description: "Checksum"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\dns"; Description: "DNS"; Types: custom; Flags: disablenouninstallwarning
@@ -103,6 +104,7 @@ Filename: "{tmp}\vcredist.exe"; Parameters: "/install /quiet /norestart"; Status
 Filename: "{tmp}\dotnet4.exe"; Parameters: "/q /norestart"; StatusMsg: "Installing .NET"; Components: xtm; Flags: skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\perl.msi"; StatusMsg: "Installing Perl"; Components: langs\perl; Flags: shellexec skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\python.msi"; StatusMsg: "Installing Python"; Components: langs\python; Flags: shellexec skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\spelling-dicts.exe"; Parameters: "/verysilent"; StatusMsg: "Installing Spelling Dictionaries"; Components: spell; Flags: skipifdoesntexist; Tasks: not portable
 
 [Files]
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
@@ -220,6 +222,12 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////
+function CheckSpellInstall(): Boolean;
+begin
+	Result := DirExists(ExpandConstant('{localappdata}') + '\enchant');;
+end;
+
+/////////////////////////////////////////////////////////////////////
 function CheckDotNetInstall(): Boolean;
 begin
 	Result := RegKeyExists(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4');
@@ -233,6 +241,7 @@ var
 	PY2: String;
 	PY3: String;
 	DOTNET: String;
+	SPELL: String;
 begin
   if not IsTaskSelected('portable') and (CurPageID = wpReady) then
   begin
@@ -250,12 +259,16 @@ begin
 	PY3 := 'http://python.org/ftp/python/3.3.2/python-3.3.2.msi';
 #endif
 	DOTNET := 'http://dl.hexchat.net/misc/dotnet_40.exe';
+	SPELL := 'http://dl.hexchat.net/hexchat/HexChat%20Spelling%20Dictionaries%20r2.exe';
 
 	if not CheckVCInstall() then
 		idpAddFile(REDIST, ExpandConstant('{tmp}\vcredist.exe'));
 
 	if IsComponentSelected('xtm') and not CheckDotNetInstall() then
 		idpAddFile(DOTNET, ExpandConstant('{tmp}\dotnet4.exe'));
+
+	if IsComponentSelected('spell') and not CheckSpellInstall() then
+		idpAddFile(SPELL, ExpandConstant('{tmp}\spelling-dicts.exe'));
 		
 	if IsComponentSelected('langs\perl') and not CheckDLL('perl518.dll') then
 		idpAddFile(PERL, ExpandConstant('{tmp}\perl.msi'));
