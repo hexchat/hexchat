@@ -1439,10 +1439,15 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask,
 	server *serv = sess->server;
 	char *nl;
 
-	if ((nl = strchr (time_str, '\n')))
-		*nl = 0;
-	if (stamp == 0)
+	if (stamp <= 0)
+	{
 		time_str = "";
+	}
+	else
+	{
+		if ((nl = strchr (time_str, '\n')))
+			*nl = 0;
+	}
 
 	sess = find_channel (serv, chan);
 	if (!sess)
