@@ -264,6 +264,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.indirectirc.com/+6697"},
 #endif
 	{0,			"irc.indirectirc.com"},
+	
+	{"Interlinked", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.interlinked.me/+6697"},
+#endif
+	{0,			"irc.interlinked.me"},
 
 	{"IRCHighWay",	0},
 #ifdef USE_OPENSSL
