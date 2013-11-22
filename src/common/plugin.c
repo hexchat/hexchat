@@ -1548,7 +1548,8 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
 	gpointer data = ph->context;
-	int tmp, type = LIST_CHANNELS;
+	int tmp = 0;
+	int type = LIST_CHANNELS;
 
 	/* a NULL xlist is a shortcut to current "channels" context */
 	if (xlist)

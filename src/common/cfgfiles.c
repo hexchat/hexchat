@@ -1085,12 +1085,10 @@ set_showval (session *sess, const struct prefs *var, char *tbuf)
 
 	len = strlen (var->name);
 	memcpy (tbuf, var->name, len);
-	dots = 29 - len;
-
-	if (dots < 0)
-	{
+	if (len > 29)
 		dots = 0;
-	}
+	else
+		dots = 29 - len;
 
 	tbuf[len++] = '\003';
 	tbuf[len++] = '2';
