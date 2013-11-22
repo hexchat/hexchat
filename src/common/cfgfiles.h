@@ -27,7 +27,7 @@
 #define LANGUAGES_LENGTH 52
 
 extern char *xdir;
-extern const char const *languages[LANGUAGES_LENGTH];
+extern const char * const languages[LANGUAGES_LENGTH];
 
 char *cfg_get_str (char *cfg, const char *var, char *dest, int dest_len);
 int cfg_get_bool (char *var);

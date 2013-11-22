@@ -41,7 +41,7 @@
 #define DEF_FONT "Monospace 9"
 #define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,MS Gothic,Unifont"
 
-const char const *languages[LANGUAGES_LENGTH] = {
+const char * const languages[LANGUAGES_LENGTH] = {
 	"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",   /*  0 ..  9 */
 	"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl", /* 10 .. 19 */
 	"de", "el", "gu", "hi", "hu", "id", "it", "ja", "kn", "rw",       /* 20 .. 29 */
@@ -630,7 +630,7 @@ convert_with_fallback (const char *str, const char *fallback)
 }
 
 static int
-find_language_number (const char const *lang)
+find_language_number (const char * const lang)
 {
 	int i;
 
