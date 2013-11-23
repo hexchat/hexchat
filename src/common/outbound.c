@@ -3977,8 +3977,8 @@ const struct commands xc_cmds[] = {
 	 N_("MOP, Mass op's all users in the current channel (needs chanop)")},
 	{"MSG", cmd_msg, 0, 0, 1, N_("MSG <nick> <message>, sends a private message, message \".\" to send to last nick or prefix with \"=\" for dcc chat")},
 
-	{"NAMES", cmd_names, 1, 0, 1,
-	 N_("NAMES, Lists the nicks on the current channel")},
+	{"NAMES [channel]", cmd_names, 1, 0, 1,
+	 N_("NAMES, Lists the nicks on the channel")},
 	{"NCTCP", cmd_nctcp, 1, 0, 1,
 	 N_("NCTCP <nick> <message>, Sends a CTCP notice")},
 	{"NEWSERVER", cmd_newserver, 0, 0, 1, N_("NEWSERVER [-noconnect] <hostname> [<port>]")},
