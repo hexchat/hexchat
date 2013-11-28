@@ -185,6 +185,12 @@ struct _hexchat_plugin
 	hexchat_event_attrs *(*hexchat_event_attrs_create) (hexchat_plugin *ph);
 	void (*hexchat_event_attrs_free) (hexchat_plugin *ph,
 									  hexchat_event_attrs *attrs);
+
+	hexchat_hook *(*hexchat_hook_client) (hexchat_plugin *ph,
+	   const char *name,
+	   int pri,
+	   int (*callback) (char *word[], char *word_eol[], void *user_data),
+	   void *userdata);
 };
 #endif
 
@@ -214,6 +220,13 @@ hexchat_hook_server_attrs (hexchat_plugin *ph,
 		   int pri,
 		   int (*callback) (char *word[], char *word_eol[],
 							hexchat_event_attrs *attrs, void *user_data),
+		   void *userdata);
+
+hexchat_hook *
+hexchat_hook_client (hexchat_plugin *ph,
+		   const char *name,
+		   int pri,
+		   int (*callback) (char *word[], char *word_eol[], void *user_data),
 		   void *userdata);
 
 hexchat_hook *
@@ -399,6 +412,7 @@ hexchat_pluginpref_list (hexchat_plugin *ph,
 #define hexchat_event_attrs_free ((HEXCHAT_PLUGIN_HANDLE)->hexchat_event_attrs_free)
 #define hexchat_hook_server ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_server)
 #define hexchat_hook_server_attrs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_server_attrs)
+#define hexchat_hook_client ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_client)
 #define hexchat_hook_print ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_print)
 #define hexchat_hook_print_attrs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_print_attrs)
 #define hexchat_hook_timer ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_timer)

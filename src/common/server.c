@@ -155,9 +155,31 @@ tcp_send_real (void *ssl, int sok, char *encoding, int using_irc, char *buf, int
 static int
 server_send_real (server *serv, char *buf, int len)
 {
-	fe_add_rawlog (serv, buf, len, TRUE);
+	char *word[PDIWORDS+1];
+	char *word_eol[PDIWORDS+1];
+	char pdibuf_static[512];
+	char *pdibuf = pdibuf_static;
+	char *tmp;
+	int eat;
 
+	if (len >= sizeof pdibuf_static)
+		pdibuf = malloc (len + 1);
+
+	word[PDIWORDS] = NULL;
+	word_eol[PDIWORDS] = NULL;
+
+	/* remove \r\n */
+	tmp = g_strndup (buf, len - 2);
+	process_data_init (pdibuf, tmp, word, word_eol, FALSE, FALSE);
+
+	fe_add_rawlog (serv, buf, len, TRUE);
 	url_check_line (buf, len);
+
+	eat = plugin_emit_client (serv->server_session, word[1], word, word_eol);
+	g_free(tmp);
+
+	if (eat)
+		return;
 
 	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, serv->using_irc,
 								 buf, len);
