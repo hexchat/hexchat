@@ -102,16 +102,21 @@ enum
 	LIST_USERS
 };
 
+/* We use binary flags here because it makes it possible for plugin_hook_find()
+ * to match several types of hooks.  This is used so that plugin_hook_run()
+ * match both HOOK_SERVER and HOOK_SERVER_ATTRS hooks when plugin_emit_server()
+ * is called.
+ */
 enum
 {
-	HOOK_COMMAND,      /* /command */
-	HOOK_SERVER,       /* PRIVMSG, NOTICE, numerics */
-	HOOK_SERVER_ATTRS, /* same as above, with attributes */
-	HOOK_PRINT,        /* All print events */
-	HOOK_PRINT_ATTRS,  /* same as above, with attributes */
-	HOOK_TIMER,        /* timeouts */
-	HOOK_FD,           /* sockets & fds */
-	HOOK_DELETED       /* marked for deletion */
+	HOOK_COMMAND      = 1 << 0, /* /command */
+	HOOK_SERVER       = 1 << 1, /* PRIVMSG, NOTICE, numerics */
+	HOOK_SERVER_ATTRS = 1 << 2, /* same as above, with attributes */
+	HOOK_PRINT        = 1 << 3, /* All print events */
+	HOOK_PRINT_ATTRS  = 1 << 4, /* same as above, with attributes */
+	HOOK_TIMER        = 1 << 5, /* timeouts */
+	HOOK_FD           = 1 << 6, /* sockets & fds */
+	HOOK_DELETED      = 1 << 7  /* marked for deletion */
 };
 
 GSList *plugin_list = NULL;	/* export for plugingui.c */
@@ -560,16 +565,14 @@ plugin_hook_find (GSList *list, int type, char *name)
 	while (list)
 	{
 		hook = list->data;
-		if (hook && hook->type == type)
+		if (hook && (hook->type & type))
 		{
 			if (g_ascii_strcasecmp (hook->name, name) == 0)
 				return list;
 
-			if (type == HOOK_SERVER)
-			{
-				if (g_ascii_strcasecmp (hook->name, "RAW LINE") == 0)
+			if ((type & HOOK_SERVER)
+				&& g_ascii_strcasecmp (hook->name, "RAW LINE") == 0)
 					return list;
-			}
 		}
 		list = list->next;
 	}
@@ -599,7 +602,7 @@ plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[],
 		hook->pl->context = sess;
 
 		/* run the plugin's callback function */
-		switch (type)
+		switch (hook->type)
 		{
 		case HOOK_COMMAND:
 			ret = ((hexchat_cmd_cb *)hook->callback) (word, word_eol, hook->userdata);
@@ -676,39 +679,30 @@ hexchat_event_attrs_free (hexchat_plugin *ph, hexchat_event_attrs *attrs)
 }
 
 /* got a server PRIVMSG, NOTICE, numeric etc... */
-int
-plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[])
-{
-	return plugin_hook_run (sess, name, word, word_eol, NULL, HOOK_SERVER);
-}
 
 int
-plugin_emit_server_attrs (session *sess, char *name, char *word[], char *word_eol[],
-						  time_t server_time)
+plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[],
+					time_t server_time)
 {
 	hexchat_event_attrs attrs;
 
 	attrs.server_time_utc = server_time;
 
-	return plugin_hook_run (sess, name, word, word_eol, &attrs, HOOK_SERVER_ATTRS);
+	return plugin_hook_run (sess, name, word, word_eol, &attrs, 
+							HOOK_SERVER | HOOK_SERVER_ATTRS);
 }
 
 /* see if any plugins are interested in this print event */
 
 int
-plugin_emit_print (session *sess, char *word[])
-{
-	return plugin_hook_run (sess, word[0], word, NULL, NULL, HOOK_PRINT);
-}
-
-int
-plugin_emit_print_attrs (session *sess, char *word[], time_t server_time)
+plugin_emit_print (session *sess, char *word[], time_t server_time)
 {
 	hexchat_event_attrs attrs;
 
 	attrs.server_time_utc = server_time;
 
-	return plugin_hook_run (sess, word[0], word, NULL, &attrs, HOOK_PRINT_ATTRS);
+	return plugin_hook_run (sess, word[0], word, NULL, &attrs,
+							HOOK_PRINT | HOOK_PRINT_ATTRS);
 }
 
 int
@@ -783,12 +777,27 @@ plugin_insert_hook (hexchat_hook *new_hook)
 {
 	GSList *list;
 	hexchat_hook *hook;
+	int new_hook_type;
+ 
+	switch (new_hook->type)
+	{
+		case HOOK_PRINT:
+		case HOOK_PRINT_ATTRS:
+			new_hook_type = HOOK_PRINT | HOOK_PRINT_ATTRS;
+			break;
+		case HOOK_SERVER:
+		case HOOK_SERVER_ATTRS:
+			new_hook_type = HOOK_SERVER | HOOK_PRINT_ATTRS;
+			break;
+		default:
+			new_hook_type = new_hook->type;
+	}
 
 	list = hook_list;
 	while (list)
 	{
 		hook = list->data;
-		if (hook && hook->type == new_hook->type && hook->pri <= new_hook->pri)
+		if (hook && (hook->type & new_hook_type) && hook->pri <= new_hook->pri)
 		{
 			hook_list = g_slist_insert_before (hook_list, list, new_hook);
 			return;
