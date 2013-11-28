@@ -2074,8 +2074,6 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	int i;
 	unsigned int stripcolor_args = (chanopt_is_set (prefs.hex_text_stripcolor_msg, sess->text_strip) ? 0xFFFFFFFF : 0);
 	char tbuf[NICKLEN + 4];
-	int eat1;
-	int eat2;
 
 	if (prefs.hex_text_color_nicks && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
 	{
@@ -2092,10 +2090,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 
-	eat1 = plugin_emit_print (sess, word);
-	eat2 = plugin_emit_print_attrs (sess, word, timestamp);
-
-	if (eat1 || eat2)
+	if (plugin_emit_print (sess, word, timestamp))
 		return;
 
 	/* If a plugin's callback executes "/close", 'sess' may be invalid */

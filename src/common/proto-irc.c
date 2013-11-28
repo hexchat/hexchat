@@ -1503,9 +1503,6 @@ irc_inline (server *serv, char *buf, int len)
 
 	if (buf[0] == ':')
 	{
-		int eat1;
-		int eat2;
-
 		/* find a context for this message */
 		if (is_channel (serv, word[3]))
 		{
@@ -1520,11 +1517,8 @@ irc_inline (server *serv, char *buf, int len)
 		word[0] = type;
 		word_eol[1] = buf;	/* keep the ":" for plugins */
 
-		eat1 = plugin_emit_server (sess, type, word, word_eol);
-		eat2 = plugin_emit_server_attrs (sess, type, word, word_eol, 
-										 tags_data.timestamp);
-
-		if (eat1 || eat2)
+		if (plugin_emit_server (sess, type, word, word_eol,
+								tags_data.timestamp))
 			goto xit;
 
 		word[1]++;
@@ -1532,16 +1526,10 @@ irc_inline (server *serv, char *buf, int len)
 
 	} else
 	{
-		int eat1;
-		int eat2;
-
 		word[0] = type = word[1];
 
-		eat1 = plugin_emit_server (sess, type, word, word_eol);
-		eat2 = plugin_emit_server_attrs (sess, type, word, word_eol,
-										 tags_data.timestamp);
-
-		if (eat1 || eat2)
+		if (plugin_emit_server (sess, type, word, word_eol,
+								tags_data.timestamp))
 			goto xit;
 	}
 
