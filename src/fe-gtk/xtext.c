@@ -138,6 +138,9 @@ static void gtk_xtext_search_textentry_del (xtext_buffer *, textentry *);
 static void gtk_xtext_search_textentry_fini (gpointer, gpointer);
 static void gtk_xtext_search_fini (xtext_buffer *);
 static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_flags flags, GError **perr);
+static char *
+gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
+						  int *ret_off, int *ret_len, GSList **slp);
 
 /* Avoid warning messages for this unused function */
 #if 0
@@ -1275,12 +1278,56 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	}
 
 	/* marking less than a complete line? */
-	/* make sure "start" is smaller than "end" (swap them if need be) */
-	if (ent_start == ent_end && offset_start > offset_end)
+	if (ent_start == ent_end)
 	{
-		tmp = offset_start;
-		offset_start = offset_end;
-		offset_end = tmp;
+		if (xtext->line_select)
+		{
+			offset_start = 0;
+			offset_end = ent_start->str_len;
+		}
+		else if (xtext->word_select)
+		{
+			int len_start;
+			int len_end;
+
+			/* get the word offsets on the left */
+			gtk_xtext_get_word (xtext, xtext->select_start_x, low_y, NULL, &offset_start, &len_start, NULL);
+			/* and right */
+			gtk_xtext_get_word (xtext, xtext->select_end_x, low_y, NULL, &offset_end, &len_end, NULL);
+
+			/* selecting to the right */
+			if (xtext->select_end_x >= xtext->select_start_x)
+			{
+				/* if we're out of bounds to the right, select until the end */
+				if (ent_end->str_width + ent_end->indent < xtext->select_end_x)
+					offset_end = ent_end->str_len;
+
+				/* otherwise, select the next word */
+				else
+					offset_end += len_end;
+					
+			}
+			/* selecting to the left */
+			else
+			{
+				/* start and end are reversed here */
+
+				/* select the first word */
+				offset_start += len_start;
+
+				/* if we're out of bounds to the left (separator is about 8px), select from the beginning */
+				if (ent_start->indent > xtext->select_end_x - 8)
+					offset_end = 0;
+			}
+		}
+
+		/* make sure "start" is smaller than "end" (swap them if need be) */
+		if (offset_start > offset_end)
+		{
+			tmp = offset_start;
+			offset_start = offset_end;
+			offset_end = tmp;
+		}
 	}
 
 	/* set all the old mark_ fields to -1 */
@@ -1291,6 +1338,35 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 
 	if (ent_start != ent_end)
 	{
+		if (xtext->line_select)
+		{
+			ent_start->mark_start = 0;
+			ent_start->mark_end = ent_start->str_len;
+			offset_start = 0;
+			offset_end = ent_end->str_len;
+		}
+		else if (xtext->word_select)
+		{
+			int len_start;
+			int len_end;
+
+			/* get the word offsets from the word line on top line */
+			gtk_xtext_get_word (xtext, low_x, low_y, NULL, &offset_start, &len_start, NULL);
+			/* and bottom one */
+			gtk_xtext_get_word (xtext, high_x, high_y, NULL, &offset_end, &len_end, NULL);
+
+			/* if we're out of bounds, only select the whole line if moving towards the bottom */
+			if (xtext->select_end_y > low_y && ent_start->indent > xtext->select_end_x - 8)
+				offset_end = ent_end->str_len;
+
+			/* otherwise, select the first/next word */
+			else
+				offset_end += len_end;
+
+			ent_start->mark_start = offset_start;
+			ent_end->mark_end = offset_end;
+		}
+
 		ent_start->mark_end = ent_start->str_len;
 		if (offset_end != 0)
 		{
@@ -1819,13 +1895,6 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		return FALSE;
 	}
 
-	if (xtext->word_or_line_select)
-	{
-		xtext->word_or_line_select = FALSE;
-		xtext->button_down = FALSE;
-		return FALSE;
-	}
-
 	if (event->button == 1)
 	{
 		xtext->button_down = FALSE;
@@ -1848,6 +1917,14 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 			{
 				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 			}
+		}
+
+		/* don't unselect on word or line selection */
+		if (xtext->word_select || xtext->line_select)
+		{
+			xtext->word_select = FALSE;
+			xtext->line_select = FALSE;
+			return FALSE;
 		}
 
 		if (xtext->select_start_x == event->x &&
@@ -1910,11 +1987,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_start = offset;
 			ent->mark_end = offset + len;
 			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
-			xtext->word_or_line_select = TRUE;
-			if (prefs.hex_text_autocopy_text)
-			{
-				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-			}
+			xtext->word_select = TRUE;
 		}
 
 		return FALSE;
@@ -1929,11 +2002,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_start = 0;
 			ent->mark_end = ent->str_len;
 			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
-			xtext->word_or_line_select = TRUE;
-			if (prefs.hex_text_autocopy_text)
-			{
-				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-			}
+			xtext->line_select = TRUE;
 		}
 
 		return FALSE;
