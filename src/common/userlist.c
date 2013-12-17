@@ -172,7 +172,7 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 	return FALSE;
 }
 
-static void 
+static int 
 free_user (struct User *user, gpointer data)
 {
 	if (user->realname)
@@ -184,6 +184,8 @@ free_user (struct User *user, gpointer data)
 	if (user->account)
 		free (user->account);
     free (user);
+
+    return TRUE;
 }
 
 void
