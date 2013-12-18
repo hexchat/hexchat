@@ -167,9 +167,9 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 		if (do_rehash)
 			fe_userlist_rehash (sess, user);
 
-		return 1;
+		return TRUE;
 	}
-	return 0;
+	return FALSE;
 }
 
 static int
@@ -183,9 +183,9 @@ free_user (struct User *user, gpointer data)
 		free (user->servername);
 	if (user->account)
 		free (user->account);
-	free (user);
+    	free (user);
 
-	return TRUE;
+    	return TRUE;
 }
 
 void
@@ -248,7 +248,7 @@ userlist_find_global (struct server *serv, char *name)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 static void
@@ -344,10 +344,10 @@ userlist_change (struct session *sess, char *oldname, char *newname)
 		fe_userlist_move (sess, user, tree_insert (sess->usertree, user));
 		fe_userlist_numbers (sess);
 
-		return 1;
+		return TRUE;
 	}
 
-	return 0;
+	return FALSE;
 }
 
 int
@@ -427,13 +427,7 @@ userlist_add (struct session *sess, char *name, char *hostname,
 	/* duplicate? some broken servers trigger this */
 	if (row == -1)
 	{
-		if (user->hostname)
-			free (user->hostname);
-		if (user->account)
-			free (user->account);
-		if (user->realname)
-			free (user->realname);
-		free (user);
+        	free_user(user, NULL);
 		return;
 	}
 
