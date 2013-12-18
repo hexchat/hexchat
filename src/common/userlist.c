@@ -172,7 +172,7 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 	return FALSE;
 }
 
-static int 
+static int
 free_user (struct User *user, gpointer data)
 {
 	if (user->realname)
@@ -183,9 +183,9 @@ free_user (struct User *user, gpointer data)
 		free (user->servername);
 	if (user->account)
 		free (user->account);
-    free (user);
+    	free (user);
 
-    return TRUE;
+    	return TRUE;
 }
 
 void
@@ -427,7 +427,7 @@ userlist_add (struct session *sess, char *name, char *hostname,
 	/* duplicate? some broken servers trigger this */
 	if (row == -1)
 	{
-        free_user(user, NULL);
+        	free_user(user, NULL);
 		return;
 	}
 
