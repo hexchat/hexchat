@@ -150,7 +150,7 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 				do_rehash = TRUE;
 			user->hostname = strdup (hostname);
 		}
-		if (!user->realname && realname)
+		if (!user->realname && realname && *realname)
 			user->realname = strdup (realname);
 		if (!user->servername && servername)
 			user->servername = strdup (servername);
@@ -418,7 +418,7 @@ userlist_add (struct session *sess, char *name, char *hostname,
 	{
 		if (account && strcmp (account, "*") != 0)
 			user->account = strdup (account);
-		if (realname)
+		if (realname && *realname)
 			user->realname = strdup (realname);
 	}
 
