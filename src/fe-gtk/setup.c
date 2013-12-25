@@ -1890,8 +1890,8 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[11], book, setup_create_page (logging_settings));
 	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
 
-	setup_add_page (cata[14], book, setup_create_page (network_settings));
-	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[15], book, setup_create_page (network_settings));
+	setup_add_page (cata[16], book, setup_create_page (filexfer_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
