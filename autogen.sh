@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 have_automake=false
 
 if automake --version < /dev/null > /dev/null 2>&1 ; then
