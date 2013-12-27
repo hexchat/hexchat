@@ -1707,15 +1707,18 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 		if (!strcmp (extension, "znc.in/server-time-iso"))
 		{
 			strcat (buffer, "znc.in/server-time-iso ");
+			want_cap = 1;
 		}
 		if (!strcmp (extension, "znc.in/server-time"))
 		{
 			strcat (buffer, "znc.in/server-time ");
+			want_cap = 1;
 		}
 		if (prefs.hex_irc_cap_server_time
 			 && !strcmp (extension, "server-time"))
 		{
 			strcat (buffer, "server-time ");
+			want_cap = 1;
 		}
 		
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
