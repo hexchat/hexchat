@@ -1,7 +1,7 @@
-<#@ include file="..\..\version.include.tt" #>#include <winver.h>
+#include <winver.h>
 #include "../../config-win32.h"
 
-#define COMMA_VERSION <#= string.Join(",", versionParts) #>,0
+#define COMMA_VERSION <#= [string]::Join(',', $versionParts) #>,0
 
 XC_ICON ICON "../../data/icons/hexchat.ico"
 

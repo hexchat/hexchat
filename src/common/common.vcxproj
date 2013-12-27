@@ -159,8 +159,10 @@
       <Command>
       <![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
-$(TextTransformPath) -out "%SOLUTIONDIR%config-win32.h" "%SOLUTIONDIR%config-win32.h.tt"
-$(TextTransformPath) -out "%SOLUTIONDIR%win32\version.txt" "%SOLUTIONDIR%win32\version.txt.tt"
+powershell "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\config-win32.h.tt" "$(SolutionDir)..\config-win32.h"
+powershell "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\win32\version.txt.tt" "$(SolutionDir)..\win32\version.txt.tmp"
+REM version.txt must be in UTF-8 without trailing newline
+powershell "[string] $content = Get-Content '$(SolutionDir)..\win32\version.txt.tmp' -Encoding UTF8; [System.IO.File]::WriteAllText('$(SolutionDir)..\win32\version.txt', $content); Remove-Item '$(SolutionDir)..\win32\version.txt.tmp';"
       ]]>
       </Command>
     </PreBuildEvent>

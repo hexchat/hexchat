@@ -1,5 +1,5 @@
-<#@ include file="..\..\version.include.tt" #>#define APPNAM "HexChat"
-#define APPVER "<#= string.Join(".", versionParts) #>"
+#define APPNAM "HexChat"
+#define APPVER "<#= [string]::Join('.', $versionParts) #>"
 ; These are defined by our installer project at build time
 ;#define APPARCH "x64"
 ;#define PROJECTDIR "C:\...\hexchat\win32\installer\"
