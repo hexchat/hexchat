@@ -132,7 +132,7 @@ sub _process_hook_options {
 
 sub _hook {
 	return undef unless @_ >= 3;
-	my $is_server_hook = pop;
+	my $is_server_hook = shift;
 	my $message = shift;
 	my $callback = shift;
 	my $options = shift;
@@ -158,11 +158,11 @@ sub _hook {
 }
 
 sub hook_server {
-	return _hook(@_, 1);
+	return _hook(1, @_);
 }
 
 sub hook_client {
-	return _hook(@_, 0);
+	return _hook(0, @_);
 }
 
 sub hook_command {

@@ -47,6 +47,7 @@
 #include "cfgfiles.h"
 #include "network.h"
 #include "notify.h"
+#include "plugin.h"
 #include "hexchatc.h"
 #include "inbound.h"
 #include "outbound.h"
@@ -179,7 +180,7 @@ server_send_real (server *serv, char *buf, int len)
 	g_free(tmp);
 
 	if (eat)
-		return;
+		return 0;
 
 	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, serv->using_irc,
 								 buf, len);
