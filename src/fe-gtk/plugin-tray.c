@@ -764,15 +764,15 @@ tray_priv (char *from, char *text)
 
 	if (prefs.hex_input_tray_priv)
 	{
-		tray_set_flash(ICON_MSG);
+		tray_set_flash (ICON_MSG);
 
 		tray_priv_count++;
 		if (tray_priv_count == 1)
-			tray_set_tipf(_(DISPLAY_NAME": Private message from: %s (%s)"),
-			from, network);
+			tray_set_tipf (_(DISPLAY_NAME": Private message from: %s (%s)"),
+								from, network);
 		else
-			tray_set_tipf(_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
-			tray_priv_count, from, network);
+			tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
+								tray_priv_count, from, network);
 	}
 
 	if (prefs.hex_input_balloon_priv)
