@@ -758,19 +758,22 @@ tray_priv (char *from, char *text)
 	if (alert_match_word (from, prefs.hex_irc_no_hilight))
 		return;
 
-	tray_set_flash (ICON_MSG);
-
 	network = hexchat_get_info (ph, "network");
 	if (!network)
 		network = hexchat_get_info (ph, "server");
 
-	tray_priv_count++;
-	if (tray_priv_count == 1)
-		tray_set_tipf (_(DISPLAY_NAME": Private message from: %s (%s)"),
-							from, network);
-	else
-		tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
-							tray_priv_count, from, network);
+	if (prefs.hex_input_tray_priv)
+	{
+		tray_set_flash(ICON_MSG);
+
+		tray_priv_count++;
+		if (tray_priv_count == 1)
+			tray_set_tipf(_(DISPLAY_NAME": Private message from: %s (%s)"),
+			from, network);
+		else
+			tray_set_tipf(_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
+			tray_priv_count, from, network);
+	}
 
 	if (prefs.hex_input_balloon_priv)
 		tray_set_balloonf (text, _("Private message from: %s (%s)"),
@@ -780,11 +783,7 @@ tray_priv (char *from, char *text)
 static int
 tray_priv_cb (char *word[], void *userdata)
 {
-	/*if (tray_status == TS_HIGHLIGHT)
-		return HEXCHAT_EAT_NONE;*/
-
-	if (prefs.hex_input_tray_priv)
-		tray_priv (word[1], word[2]);
+	tray_priv (word[1], word[2]);
 
 	return HEXCHAT_EAT_NONE;
 }
@@ -792,10 +791,7 @@ tray_priv_cb (char *word[], void *userdata)
 static int
 tray_invited_cb (char *word[], void *userdata)
 {
-	/*if (tray_status == TS_HIGHLIGHT)
-		return HEXCHAT_EAT_NONE;*/
-
-	if (prefs.hex_input_tray_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
+	if (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1)
 		tray_priv (word[2], "Invited");
 
 	return HEXCHAT_EAT_NONE;
