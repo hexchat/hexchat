@@ -860,9 +860,10 @@ XS (XS_HexChat_get_prefs)
 	}
 }
 
-/* HexChat::Internal::hook_server(name, priority, callback, userdata) */
+/* HexChat::Internal::hook(name, priority, callback, userdata, is_server_hook)
+   function for server and client hooks */
 static
-XS (XS_HexChat_hook_server)
+XS (XS_HexChat_hook)
 {
 
 	char *name;
@@ -872,18 +873,20 @@ XS (XS_HexChat_hook_server)
 	SV *package;
 	hexchat_hook *hook;
 	HookData *data;
+	int is_server_hook;
 
 	dXSARGS;
 
-	if (items != 5) {
+	if (items != 6) {
 		hexchat_print (ph,
-						 "Usage: HexChat::Internal::hook_server(name, priority, callback, userdata, package)");
+						 "Usage: HexChat::Internal::hook(name, priority, callback, userdata, package, is_server_hook)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int) SvIV (ST (1));
 		callback = ST (2);
 		userdata = ST (3);
 		package = ST (4);
+		is_server_hook = (int) SvIV (ST (5));
 		data = NULL;
 		data = malloc (sizeof (HookData));
 		if (data == NULL) {
@@ -895,7 +898,10 @@ XS (XS_HexChat_hook_server)
 		data->depth = 0;
 		data->package = newSVsv (package);
 
-		hook = hexchat_hook_server (ph, name, pri, server_cb, data);
+		if (is_server_hook)
+			hook = hexchat_hook_server(ph, name, pri, server_cb, data);
+		else
+			hook = hexchat_hook_client(ph, name, pri, server_cb, data);
 
 		XSRETURN_IV (PTR2IV (hook));
 	}
@@ -1359,7 +1365,7 @@ xs_init (pTHX)
 	newXS ("DynaLoader::boot_DynaLoader", boot_DynaLoader, __FILE__);
 	/* load up all the custom IRC perl functions */
 	newXS ("HexChat::Internal::register", XS_HexChat_register, __FILE__);
-	newXS ("HexChat::Internal::hook_server", XS_HexChat_hook_server, __FILE__);
+	newXS ("HexChat::Internal::hook", XS_HexChat_hook, __FILE__);
 	newXS ("HexChat::Internal::hook_command", XS_HexChat_hook_command, __FILE__);
 	newXS ("HexChat::Internal::hook_print", XS_HexChat_hook_print, __FILE__);
 	newXS ("HexChat::Internal::hook_timer", XS_HexChat_hook_timer, __FILE__);

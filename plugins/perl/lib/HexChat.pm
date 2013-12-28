@@ -128,11 +128,11 @@ sub _process_hook_options {
 			}
 		}
 	}
-
 }
 
-sub hook_server {
-	return undef unless @_ >= 2;
+sub _hook {
+	return undef unless @_ >= 3;
+	my $is_server_hook = pop;
 	my $message = shift;
 	my $callback = shift;
 	my $options = shift;
@@ -150,11 +150,19 @@ sub hook_server {
 	);
 	
 	my $pkg_info = HexChat::Embed::pkg_info( $package );
-	my $hook = HexChat::Internal::hook_server(
-		$message, $priority, $callback, $data, $package
+	my $hook = HexChat::Internal::hook(
+		$message, $priority, $callback, $data, $package, $is_server_hook
 	);
 	push @{$pkg_info->{hooks}}, $hook if defined $hook;
 	return $hook;
+}
+
+sub hook_server {
+	return _hook(@_, 1);
+}
+
+sub hook_client {
+	return _hook(@_, 0);
 }
 
 sub hook_command {
