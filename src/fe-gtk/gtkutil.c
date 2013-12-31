@@ -374,6 +374,28 @@ gtkutil_get_number_response (GtkDialog *dialog, gint arg1, gpointer spin)
 	}
 }
 
+static void
+gtkutil_get_bool_response (GtkDialog *dialog, gint arg1, gpointer spin)
+{
+	void (*callback) (int value, void *user_data);
+	void *user_data;
+
+	callback = g_object_get_data (G_OBJECT (dialog), "cb");
+	user_data = g_object_get_data (G_OBJECT (dialog), "ud");
+
+	switch (arg1)
+	{
+	case GTK_RESPONSE_REJECT:
+		callback (0, user_data);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+		break;
+	case GTK_RESPONSE_ACCEPT:
+		callback (1, user_data);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+		break;
+	}
+}
+
 void
 fe_get_int (char *msg, int def, void *callback, void *userdata)
 {
@@ -413,6 +435,35 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 						   G_CALLBACK (gtkutil_get_number_response), spin);
 
 	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox);
+
+	gtk_widget_show_all (dialog);
+}
+
+void
+fe_get_bool (char *title, char *prompt, void *callback, void *userdata)
+{
+	GtkWidget *dialog;
+	GtkWidget *prompt_label;
+	extern GtkWidget *parent_window;
+
+	dialog = gtk_dialog_new_with_buttons (title, NULL, 0,
+		GTK_STOCK_NO, GTK_RESPONSE_REJECT,
+		GTK_STOCK_YES, GTK_RESPONSE_ACCEPT,
+		NULL);
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+
+
+	g_object_set_data (G_OBJECT (dialog), "cb", callback);
+	g_object_set_data (G_OBJECT (dialog), "ud", userdata);
+
+	prompt_label = gtk_label_new (prompt);
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+		G_CALLBACK (gtkutil_get_bool_response), NULL);
+
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), prompt_label);
 
 	gtk_widget_show_all (dialog);
 }

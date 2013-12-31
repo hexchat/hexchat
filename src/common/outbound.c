@@ -1941,6 +1941,36 @@ typedef struct
 } getvalinfo;
 
 static void
+get_bool_cb (int val, getvalinfo *info)
+{
+	char buf[512];
+
+	snprintf (buf, sizeof (buf), "%s %d", info->cmd, val);
+	if (is_session (info->sess))
+		handle_command (info->sess, buf, FALSE);
+
+	free (info->cmd);
+	free (info);
+}
+
+static int
+cmd_getbool (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	getvalinfo *info;
+
+	if (!word[4][0])
+		return FALSE;
+
+	info = malloc (sizeof (*info));
+	info->cmd = strdup (word[2]);
+	info->sess = sess;
+
+	fe_get_bool (word[3], word_eol[4], get_bool_cb, info);
+
+	return TRUE;
+}
+
+static void
 get_int_cb (int cancel, int val, getvalinfo *info)
 {
 	char buf[512];
@@ -3934,6 +3964,7 @@ const struct commands xc_cmds[] = {
 	 N_("FLUSHQ, flushes the current server's send queue")},
 	{"GATE", cmd_gate, 0, 0, 1,
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
+	{"GETBOOL", cmd_getbool, 0, 0, 1, "GETBOOL <command> <title> <text>"},
 	{"GETFILE", cmd_getfile, 0, 0, 1, "GETFILE [-folder] [-multi] [-save] <command> <title> [<initial>]"},
 	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
