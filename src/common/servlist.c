@@ -475,7 +475,13 @@ static const struct defaultserver def[] =
 	{0,			"irc.station51.net/+6697"},
 #endif
 	{0,			"irc.station51.net"},
-	
+
+	{"StormBit", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.stormbit.net/+6697"},
+#endif
+	{0,			"irc.stormbit.net"},
+
 	{"SwiftIRC", 0},
 #ifdef USE_OPENSSL
 	{0,			"irc.swiftirc.net/+6697"},
