@@ -34,6 +34,10 @@
 #endif
 #ifdef WANTDNS
 #include <netdb.h>
+/* Small hack to get HexChat to work on OpenBSD */
+#ifndef AI_ADDRCONFIG
+#define AI_ADDRCONFIG
+#endif
 #endif
 #define closesocket close
 #define set_blocking(sok) fcntl(sok, F_SETFL, 0)
