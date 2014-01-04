@@ -34,6 +34,10 @@
 #endif
 #ifdef WANTDNS
 #include <netdb.h>
+/* OpenBSD's netdb.h does not define AI_ADDRCONFIG */
+#ifndef AI_ADDRCONFIG
+#define AI_ADDRCONFIG 0
+#endif
 #endif
 #define closesocket close
 #define set_blocking(sok) fcntl(sok, F_SETFL, 0)
