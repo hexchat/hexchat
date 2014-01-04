@@ -36,7 +36,7 @@
 #include <netdb.h>
 /* Small hack to get HexChat to work on OpenBSD */
 #ifndef AI_ADDRCONFIG
-#define AI_ADDRCONFIG
+#define AI_ADDRCONFIG 0
 #endif
 #endif
 #define closesocket close
