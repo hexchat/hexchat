@@ -34,7 +34,7 @@
 #endif
 #ifdef WANTDNS
 #include <netdb.h>
-/* Small hack to get HexChat to work on OpenBSD */
+/* OpenBSD's netdb.h does not define AI_ADDRCONFIG */
 #ifndef AI_ADDRCONFIG
 #define AI_ADDRCONFIG 0
 #endif
