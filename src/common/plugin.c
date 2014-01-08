@@ -491,7 +491,6 @@ plugin_auto_load (session *sess)
 	/* a long list of bundled plugins that should be loaded automatically,
 	 * user plugins should go to <config>, leave Program Files alone! */
 	for_files (HEXCHATLIBDIR, "hcchecksum.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcdns.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcdoat.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcexec.dll", plugin_auto_load_cb);
 	for_files (HEXCHATLIBDIR, "hcfishlim.dll", plugin_auto_load_cb);

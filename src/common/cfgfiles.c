@@ -417,8 +417,6 @@ const struct prefs vars[] =
 	{"dcc_stall_timeout", P_OFFINT (hex_dcc_stall_timeout), TYPE_INT},
 	{"dcc_timeout", P_OFFINT (hex_dcc_timeout), TYPE_INT},
 
-	{"dnsprogram", P_OFFSET (hex_dnsprogram), TYPE_STR},
-
 	{"flood_ctcp_num", P_OFFINT (hex_flood_ctcp_num), TYPE_INT},
 	{"flood_ctcp_time", P_OFFINT (hex_flood_ctcp_time), TYPE_INT},
 	{"flood_msg_num", P_OFFINT (hex_flood_msg_num), TYPE_INT},
@@ -875,7 +873,6 @@ load_default_config(void)
 		strcpy (prefs.hex_dcc_dir, g_build_filename (g_get_home_dir (), "Downloads", NULL));
 	}
 #endif
-	strcpy (prefs.hex_dnsprogram, "host");
 	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
 	strcpy (prefs.hex_input_command_char, "/");
 	strcpy (prefs.hex_irc_logmask, g_build_filename ("%n", "%c.log", NULL));

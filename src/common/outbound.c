@@ -1414,21 +1414,17 @@ cmd_discon (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-#ifdef WIN32
-	PrintText (sess, "DNS is not implemented in Windows.\n");
-	return TRUE;
-#else
 	char *nick = word[2];
 	struct User *user;
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	if (*nick)
 	{
-		if (strchr (nick, '.') == NULL)
+		user = userlist_find (sess, nick);
+		if (user)
 		{
-			user = userlist_find (sess, nick);
-			if (user && user->hostname)
+			if (user->hostname)
 			{
-				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 				do_dns (sess, user->nick, user->hostname, &no_tags);
 			} else
 			{
@@ -1437,13 +1433,11 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 		} else
 		{
-			snprintf (tbuf, TBUFSIZE, "exec -d %s %s", prefs.hex_dnsprogram, nick);
-			handle_command (sess, tbuf, FALSE);
+			do_dns (sess, NULL, nick, &no_tags);
 		}
 		return TRUE;
 	}
 	return FALSE;
-#endif
 }
 
 static int
@@ -3904,7 +3898,7 @@ const struct commands xc_cmds[] = {
 	{"DEVOICE", cmd_devoice, 1, 1, 1,
 	 N_("DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)")},
 	{"DISCON", cmd_discon, 0, 0, 1, N_("DISCON, Disconnects from server")},
-	{"DNS", cmd_dns, 0, 0, 1, N_("DNS <nick|host|ip>, Finds a users IP number")},
+	{"DNS", cmd_dns, 0, 0, 1, N_("DNS <nick|host|ip>, Resolves an IP or hostname")},
 	{"ECHO", cmd_echo, 0, 0, 1, N_("ECHO <text>, Prints text locally")},
 #ifndef WIN32
 	{"EXEC", cmd_exec, 0, 0, 1,

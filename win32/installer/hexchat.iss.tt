@@ -65,7 +65,6 @@ Name: "translations"; Description: "Translations"; Types: normal custom; Flags: 
 Name: "spell"; Description: "Spelling Dictionaries"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\checksum"; Description: "Checksum"; Types: custom; Flags: disablenouninstallwarning
-Name: "plugins\dns"; Description: "DNS"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\doat"; Description: "Do At"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\exec"; Description: "Exec"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disablenouninstallwarning
@@ -148,7 +147,6 @@ Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Flag
 Source: "lib\gtk-2.0\i686-pc-vs10\engines\*"; DestDir: "{app}\lib\gtk-2.0\i686-pc-vs10\engines"; Flags: ignoreversion; Components: libs
 
 Source: "plugins\hcchecksum.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\checksum
-Source: "plugins\hcdns.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\dns
 Source: "plugins\hcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
 Source: "plugins\hcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
 Source: "plugins\hcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim

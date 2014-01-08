@@ -33,6 +33,8 @@
 #define WANTDNS
 #include "inet.h"
 
+#include <gio/gio.h>
+
 #include "hexchat.h"
 #include "util.h"
 #include "ignore.h"
@@ -1270,20 +1272,71 @@ inbound_next_nick (session *sess, char *nick, int error,
 	}
 }
 
+
+static void
+dns_addr_callback (GResolver *resolver, GAsyncResult *result, session *sess)
+{
+	gchar *addr;
+
+	g_return_if_fail (is_session(sess));
+
+	addr = g_resolver_lookup_by_address_finish (resolver, result, NULL);
+	if (addr)
+		PrintTextf (sess, _("Resolved to %s"), addr);
+	else
+		PrintText (sess, _("Not found"));
+}
+
+static void
+dns_name_callback (GResolver *resolver, GAsyncResult *result, session *sess)
+{
+	GList* addrs;
+	gchar* addr;
+	GList* list;
+
+	g_return_if_fail (is_session (sess));
+
+	addrs = g_resolver_lookup_by_name_finish (resolver, result, NULL);
+	if (addrs)
+	{
+		PrintText (sess, _("Resolved to:"));
+
+		for (list = g_list_first (addrs); list; list = g_list_next (list))
+		{
+			addr = g_inet_address_to_string (list->data);
+			PrintTextf (sess, "    %s", addr);
+		}
+
+		g_resolver_free_addresses (addrs);
+	}
+	else
+		PrintText (sess, _("Not found"));
+}
+
 void
 do_dns (session *sess, char *nick, char *host,
-		  const message_tags_data *tags_data)
+const message_tags_data *tags_data)
 {
+	GResolver *res = g_resolver_get_default ();
+	GInetAddress *addr;
 	char *po;
 	char tbuf[1024];
 
 	po = strrchr (host, '@');
 	if (po)
 		host = po + 1;
-	EMIT_SIGNAL_TIMESTAMP (XP_TE_RESOLVINGUSER, sess, nick, host, NULL, NULL, 0,
-								  tags_data->timestamp);
-	snprintf (tbuf, sizeof (tbuf), "exec -d %s %s", prefs.hex_dnsprogram, host);
-	handle_command (sess, tbuf, FALSE);
+
+	if (nick)
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_RESOLVINGUSER, sess, nick, host, NULL, NULL, 0,
+								tags_data->timestamp);
+
+	PrintTextf (sess, _("Looking up %s..."), host);
+
+	addr = g_inet_address_new_from_string (host);
+	if (addr)
+		g_resolver_lookup_by_address_async (res, addr, NULL, dns_addr_callback, sess);
+	else
+		g_resolver_lookup_by_name_async (res, host, NULL, dns_name_callback, sess);
 }
 
 static void
