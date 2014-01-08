@@ -1274,8 +1274,10 @@ inbound_next_nick (session *sess, char *nick, int error,
 
 
 static void
-dns_addr_callback (GResolver *resolver, GAsyncResult *result, session *sess)
+dns_addr_callback (GObject *obj, GAsyncResult *result, gpointer user_data)
 {
+	GResolver *resolver = G_RESOLVER(obj);
+	session *sess = (session*)user_data;
 	gchar *addr;
 
 	g_return_if_fail (is_session(sess));
@@ -1288,8 +1290,10 @@ dns_addr_callback (GResolver *resolver, GAsyncResult *result, session *sess)
 }
 
 static void
-dns_name_callback (GResolver *resolver, GAsyncResult *result, session *sess)
+dns_name_callback (GObject *obj, GAsyncResult *result, gpointer user_data)
 {
+	GResolver *resolver = G_RESOLVER(obj);
+	session *sess = (session*)user_data;
 	GList* addrs;
 	gchar* addr;
 	GList* list;
@@ -1315,12 +1319,11 @@ dns_name_callback (GResolver *resolver, GAsyncResult *result, session *sess)
 
 void
 do_dns (session *sess, char *nick, char *host,
-const message_tags_data *tags_data)
+		const message_tags_data *tags_data)
 {
 	GResolver *res = g_resolver_get_default ();
 	GInetAddress *addr;
 	char *po;
-	char tbuf[1024];
 
 	po = strrchr (host, '@');
 	if (po)
