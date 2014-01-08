@@ -57,12 +57,10 @@ static gboolean
 cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 {
 	chan *ch;
-	GtkTreeSelection *sel;
 	GtkTreePath *path;
 	GtkTreeIter iter;
 	int ret = FALSE;
 
-	sel = gtk_tree_view_get_selection (tree);
 	if (gtk_tree_view_get_path_at_pos (tree, event->x, event->y, &path, 0, 0, 0))
 	{
 		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (cv->store), &iter, path))
