@@ -3,6 +3,7 @@
 # 
 # Translators:
 # sacarasc <sacarasc@gmail.com>, 2013
+# Sir_Burpalot <doctor.z01db3rg@gmail.com>, 2014
 # Gareth Owen <gowen72@yahoo.com>, 2004
 # tea <Srbulov.Ivan@gmail.com>, 2013
 # rbh00 <rbh00@netcom.com>, 2013
@@ -13,8 +14,8 @@ msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2013-09-08 01:16-0400\n"
-"PO-Revision-Date: 2013-09-15 08:06+0000\n"
-"Last-Translator: rbh00 <rbh00@netcom.com>\n"
+"PO-Revision-Date: 2014-01-05 04:00+0000\n"
+"Last-Translator: Sir_Burpalot <doctor.z01db3rg@gmail.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/hexchat/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -356,11 +357,11 @@ msgstr "CHARSET [<encoding>], get or set the encoding used for the current conne
 msgid ""
 "CLEAR [ALL|HISTORY|[-]<amount>], Clears the current text window or command "
 "history"
-msgstr ""
+msgstr "CLEAR [ALL|HISTORY|[-]<amount>], Clears the current text window or command history"
 
 #: src/common/outbound.c:3819
 msgid "CLOSE [-m], Closes the current window/tab or all queries"
-msgstr ""
+msgstr "CLOSE [-m], Closes the current window/tab or all queries"
 
 #: src/common/outbound.c:3822
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
@@ -547,7 +548,7 @@ msgstr "MOP, Mass op's all users in the current channel (needs chanop)"
 msgid ""
 "MSG <nick> <message>, sends a private message, message \".\" to send to last"
 " nick or prefix with \"=\" for dcc chat"
-msgstr ""
+msgstr "MSG <nick> <message>, sends a private message, message \".\" to send to last nick or prefix with \"=\" for dcc chat"
 
 #: src/common/outbound.c:3922
 msgid "NAMES, Lists the nicks on the current channel"
@@ -628,7 +629,7 @@ msgstr "RECV <text>, send raw data to HexChat, as if it was received from the IR
 
 #: src/common/outbound.c:3954
 msgid "RELOAD <name>, reloads a plugin or script"
-msgstr ""
+msgstr "RELOAD <name>, reloads a plugin or script"
 
 #: src/common/outbound.c:3956
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -903,7 +904,7 @@ msgstr "%C22*%O$t%C26$1%O removes quiet on %C18$2%O"
 
 #: src/common/textevents.h:108
 msgid "%C22*%O$tChannel %C22$1%O url: %C24$2"
-msgstr ""
+msgstr "%C22*%O$tChannel %C22$1%O url: %C24$2"
 
 #: src/common/textevents.h:111
 msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
@@ -1100,7 +1101,7 @@ msgstr "%C24*%O$tYou have been invited to %C22$1%O by %C18$2%O (%C29$3%O)"
 #: src/common/textevents.h:252
 #, c-format
 msgid "%C23*$t$1 ($3%C23) has joined"
-msgstr ""
+msgstr "%C23*$t$1 ($3%C23) has joined"
 
 #: src/common/textevents.h:255
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Requires keyword%O)"
@@ -1171,12 +1172,12 @@ msgstr "%C23*%O$tNotify: %C18$1%C is online (%C29$3%O)"
 #: src/common/textevents.h:318
 #, c-format
 msgid "%C24*$t$1 ($2%C24) has left"
-msgstr ""
+msgstr "%C24*$t$1 ($2%C24) has left"
 
 #: src/common/textevents.h:321
 #, c-format
 msgid "%C24*$t$1 ($2%C24) has left ($4)"
-msgstr ""
+msgstr "%C24*$t$1 ($2%C24) has left ($4)"
 
 #: src/common/textevents.h:324
 msgid "%C24*%O$tPing reply from %C18$1%C: %C24$2%O second(s)"
@@ -1209,7 +1210,7 @@ msgstr "%C24*%O$tLooking up IP number for %C18$1%O..."
 
 #: src/common/textevents.h:357
 msgid "%C23*%O$tAuthenticating via SASL as %C18$1%O (%C24$2%O)"
-msgstr ""
+msgstr "%C23*%O$tAuthenticating via SASL as %C18$1%O (%C24$2%O)"
 
 #: src/common/textevents.h:363
 msgid "%C29*%O$tConnected."
@@ -1237,7 +1238,7 @@ msgstr "%C22*%O$tTopic for %C22$1%C set by %C26$2%C (%C24$3%O)"
 
 #: src/common/textevents.h:393
 msgid "%C20*%O$tUnknown host. Maybe you misspelled it?"
-msgstr "%C20*%O$tUnknown host. Maybe you misspelled it?"
+msgstr "%C20*%O$tUnknown host. Maybe you misspelt it?"
 
 #: src/common/textevents.h:396
 msgid "%C20*%O$tCannot join %C22$1%C (%C20User limit reached%O)"
@@ -1669,7 +1670,7 @@ msgstr "Channel Name"
 
 #: src/common/text.c:1301
 msgid "Mechanism"
-msgstr ""
+msgstr "Mechanism"
 
 #: src/common/text.c:1306 src/common/text.c:1314
 msgid "Raw Numeric or Identifier"
@@ -3406,7 +3407,7 @@ msgstr "The Insert in Buffer command will insert the contents of Data 1 into t
 msgid ""
 "The Scroll Page command scrolls the text widget up or down one page or one"
 " line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
-msgstr ""
+msgstr "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
 
 #: src/fe-gtk/fkeys.c:153
 msgid ""
@@ -3914,7 +3915,7 @@ msgstr "_Autojoin"
 
 #: src/fe-gtk/menu.c:1054
 msgid "Autojoin Channel"
-msgstr ""
+msgstr "Autojoin Channel"
 
 #: src/fe-gtk/menu.c:1088 src/fe-gtk/menu.c:1092
 msgid "_Auto-Connect"
@@ -4144,15 +4145,15 @@ msgstr "_Reconnect"
 
 #: src/fe-gtk/menu.c:1751
 msgid "_Join a Channel..."
-msgstr ""
+msgstr "_Join a Channel..."
 
 #: src/fe-gtk/menu.c:1752
 msgid "_List of Channels..."
-msgstr ""
+msgstr "_List of Channels..."
 
 #: src/fe-gtk/menu.c:1755
 msgid "Marked _Away"
-msgstr ""
+msgstr "Marked _Away"
 
 #: src/fe-gtk/menu.c:1757
 msgid "_Usermenu"
@@ -4208,7 +4209,7 @@ msgstr "_Window"
 
 #: src/fe-gtk/menu.c:1773
 msgid "_Ban List..."
-msgstr ""
+msgstr "_Ban List..."
 
 #: src/fe-gtk/menu.c:1774
 msgid "Character Chart..."
@@ -4220,7 +4221,7 @@ msgstr "Direct Chat..."
 
 #: src/fe-gtk/menu.c:1776
 msgid "File _Transfers..."
-msgstr ""
+msgstr "File _Transfers..."
 
 #: src/fe-gtk/menu.c:1777
 msgid "Friends List..."
@@ -4232,11 +4233,11 @@ msgstr "Ignore List..."
 
 #: src/fe-gtk/menu.c:1779
 msgid "_Plugins and Scripts..."
-msgstr ""
+msgstr "_Plugins and Scripts..."
 
 #: src/fe-gtk/menu.c:1780
 msgid "_Raw Log..."
-msgstr ""
+msgstr "_Raw Log..."
 
 #: src/fe-gtk/menu.c:1781
 msgid "URL Grabber..."
@@ -4472,11 +4473,11 @@ msgstr "_Load..."
 
 #: src/fe-gtk/plugingui.c:270
 msgid "_Unload"
-msgstr ""
+msgstr "_Unload"
 
 #: src/fe-gtk/plugingui.c:273
 msgid "_Reload"
-msgstr ""
+msgstr "_Reload"
 
 #: src/fe-gtk/rawlog.c:80 src/fe-gtk/rawlog.c:146 src/fe-gtk/textgui.c:428
 #: src/fe-gtk/urlgrab.c:216
@@ -5076,15 +5077,15 @@ msgstr "Nick completion sorted:"
 
 #: src/fe-gtk/setup.c:222
 msgid "Nick completion amount:"
-msgstr ""
+msgstr "Nick completion amount:"
 
 #: src/fe-gtk/setup.c:222
 msgid "Threshold of nicks to start listing instead of completing"
-msgstr ""
+msgstr "Threshold of nicks to start listing instead of completing"
 
 #: src/fe-gtk/setup.c:222
 msgid "nicks."
-msgstr ""
+msgstr "nicks."
 
 #: src/fe-gtk/setup.c:225
 msgid "Input Box Codes"
@@ -5552,19 +5553,19 @@ msgstr "Hide channel join/part messages by default."
 
 #: src/fe-gtk/setup.c:503
 msgid "*!*@*.host"
-msgstr ""
+msgstr "*!*@*.host"
 
 #: src/fe-gtk/setup.c:504
 msgid "*!*@domain"
-msgstr ""
+msgstr "*!*@domain"
 
 #: src/fe-gtk/setup.c:505
 msgid "*!*user@*.host"
-msgstr ""
+msgstr "*!*user@*.host"
 
 #: src/fe-gtk/setup.c:506
 msgid "*!*user@domain"
-msgstr ""
+msgstr "*!*user@domain"
 
 #: src/fe-gtk/setup.c:512
 msgid "Auto Copy Behavior"
@@ -5610,7 +5611,7 @@ msgstr "Alternative fonts:"
 
 #: src/fe-gtk/setup.c:528
 msgid "Separate multiple entries with commas without spaces before or after."
-msgstr ""
+msgstr "Separate multiple entries with commas without spaces before or after."
 
 #: src/fe-gtk/setup.c:530
 msgid "Display lists in compact mode"
@@ -5622,13 +5623,13 @@ msgstr "Use less spacing between user list/channel tree rows."
 
 #: src/fe-gtk/setup.c:531
 msgid "Use server time if supported"
-msgstr ""
+msgstr "Use server time if supported"
 
 #: src/fe-gtk/setup.c:531
 msgid ""
 "Display timestamps obtained from server if it supports the time-server "
 "extension."
-msgstr ""
+msgstr "Display timestamps obtained from server if it supports the time-server extension."
 
 #: src/fe-gtk/setup.c:532
 msgid "Automatically reconnect to servers on disconnect"
@@ -5644,13 +5645,13 @@ msgstr "Auto join delay:"
 
 #: src/fe-gtk/setup.c:535
 msgid "Ban Type:"
-msgstr ""
+msgstr "Ban Type:"
 
 #: src/fe-gtk/setup.c:535
 msgid ""
 "Attempt to use this banmask when banning or quieting. (requires "
 "irc_who_join)"
-msgstr ""
+msgstr "Attempt to use this banmask when banning or quieting. (requires irc_who_join)"
 
 #: src/fe-gtk/setup.c:542 src/fe-gtk/setup.c:1853
 msgid "Logging"

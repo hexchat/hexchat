@@ -6,13 +6,14 @@
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2007,2012
 # Misdre <misdre@hexchat.misdre.info>, 2013
 # Misdre <misdre@hexchat.misdre.info>, 2013
+# Calinou, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2013-09-08 01:16-0400\n"
-"PO-Revision-Date: 2013-09-08 05:21+0000\n"
-"Last-Translator: TingPing <tingping@tingping.se>\n"
+"PO-Revision-Date: 2013-11-24 18:50+0000\n"
+"Last-Translator: Calinou\n"
 "Language-Team: French (http://www.transifex.com/projects/p/hexchat/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -293,7 +294,7 @@ msgstr "Paramètre inconnu « %s », ignoré."
 
 #: src/common/outbound.c:3007 src/common/outbound.c:3037
 msgid "Quiet is not supported by this server."
-msgstr ""
+msgstr "Rendre muet n'est pas pris en charge sur ce serveur."
 
 #: src/common/outbound.c:3488 src/common/outbound.c:3522
 msgid "No such plugin found.\n"
@@ -354,11 +355,11 @@ msgstr "CHARSET [<encodage>], retourne ou modifie le jeu de caractère utilisé 
 msgid ""
 "CLEAR [ALL|HISTORY|[-]<amount>], Clears the current text window or command "
 "history"
-msgstr ""
+msgstr "CLEAR [ALL|HISTORY|[-]<nombre>], vider la fenêtre de texte actuelle ou l'historique de commandes"
 
 #: src/common/outbound.c:3819
 msgid "CLOSE [-m], Closes the current window/tab or all queries"
-msgstr ""
+msgstr "CLOSE [-m], ferme la fenêtre ou l'onglet actuel ou toutes les fenêtres de requête"
 
 #: src/common/outbound.c:3822
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
@@ -545,7 +546,7 @@ msgstr "MOP, donner globalement les droits d'opérateur à tous les utilisateurs
 msgid ""
 "MSG <nick> <message>, sends a private message, message \".\" to send to last"
 " nick or prefix with \"=\" for dcc chat"
-msgstr ""
+msgstr "MSG <pseudo> <message>, envoie un message privé, envoyez un message à « . » pour envoyer au dernier pseudo utilisé ou préfixez avec « = » pour un chat DCC"
 
 #: src/common/outbound.c:3922
 msgid "NAMES, Lists the nicks on the current channel"
@@ -565,7 +566,7 @@ msgstr "NICK <pseudo>, définir votre pseudonyme"
 
 #: src/common/outbound.c:3929
 msgid "NOTICE <nick/channel> <message>, sends a notice"
-msgstr ""
+msgstr "NOTICE <pseudo/canal> <message>, envoie une notification"
 
 #: src/common/outbound.c:3931
 msgid ""
@@ -594,7 +595,7 @@ msgstr "QUERY [-nofocus] <pseudo>, ouvre une fenêtre de chat privé avec quelqu
 msgid ""
 "QUIET <mask> [<quiettype>], quiet everyone matching the mask in the current "
 "channel if supported by the server."
-msgstr ""
+msgstr "QUIET <masque> [<quiettype>], rendre muet toutes les personnes qui correspondent au masque dans le canal courant si pris en charge par le serveur."
 
 #: src/common/outbound.c:3943
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -626,7 +627,7 @@ msgstr "RECV <texte>, envoie des données brutes à HexChat, comme si elles éta
 
 #: src/common/outbound.c:3954
 msgid "RELOAD <name>, reloads a plugin or script"
-msgstr ""
+msgstr "RELOAD <nom>, recharge un plugin ou script"
 
 #: src/common/outbound.c:3956
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -704,7 +705,7 @@ msgstr "UNLOAD <nom>, décharger un greffon ou un script"
 msgid ""
 "UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the"
 " server."
-msgstr ""
+msgstr "UNQUIET <masque> [<masque>...], ne plus rendre muet les masques spécifiés si pris en charge par le serveur."
 
 #: src/common/outbound.c:3992
 msgid "URL <url>, opens a URL in your browser"
@@ -793,7 +794,7 @@ msgstr "%C18*%O$t%C18$1%O ajouté à la liste de notifications."
 
 #: src/common/textevents.h:9
 msgid "%C22*%O$t%C22$1%O: %C18$2%O on %C24$4%O by %C26$3%O"
-msgstr ""
+msgstr "%C22*%O$t%C22$1%O: %C18$2%O sur %C24$4%O par %C26$3%O"
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join %C22$1 %O(%C20You are banned%O)."
@@ -845,7 +846,7 @@ msgstr "%C22*%O$t%C26$1%O a donné le statut de semi-opérateur de canal à %C18
 
 #: src/common/textevents.h:57
 msgid "%C22*%O$t%C26$1%C sets invite exempt on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%C définit l'exemption d'invitation sur %C18$2%O"
 
 #: src/common/textevents.h:60
 msgid "%UChannel          Users   Topic"
@@ -865,7 +866,7 @@ msgstr "%C22*%O$t%C26$1%O a donné le statut d'opérateur de canal à %C18$2%O"
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t%C26$1%O sets quiet on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O rend %C18$2%O muet"
 
 #: src/common/textevents.h:84
 msgid "%C22*%O$t%C26$1%O removes exempt on %C18$2%O"
@@ -873,7 +874,7 @@ msgstr "%C22*%O$t%C26$1%O a enlevé l'exception sur %C18$2%O"
 
 #: src/common/textevents.h:87
 msgid "%C22*%O$t%C26$1%O removes invite exempt on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O supprime l'exemption d'invitation sur %C18$2%O"
 
 #: src/common/textevents.h:90
 msgid "%C22*%O$t%C26$1%O removes channel keyword"
@@ -885,7 +886,7 @@ msgstr "%C22*%O$t%C26$1%O a enlevé la limite du nombre d'utilisateurs"
 
 #: src/common/textevents.h:96
 msgid "%C22*%O$t%C26$1%O sets channel keyword to %C24$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O définit le mot-clé du canal à %C24$2%O"
 
 #: src/common/textevents.h:99
 msgid "%C22*%O$t%C26$1%O sets channel limit to %C24$2%O"
@@ -897,11 +898,11 @@ msgstr "%C22*%O$t%C26$1%O supprime l'état de bannissement de %C18$2%O"
 
 #: src/common/textevents.h:105
 msgid "%C22*%O$t%C26$1%O removes quiet on %C18$2%O"
-msgstr ""
+msgstr "%C22*%O$t%C26$1%O ne rend plus %C18$2%O muet"
 
 #: src/common/textevents.h:108
 msgid "%C22*%O$tChannel %C22$1%O url: %C24$2"
-msgstr ""
+msgstr "%C22*%O$tCanal %C22$1%O URL : %C24$2"
 
 #: src/common/textevents.h:111
 msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
@@ -1098,7 +1099,7 @@ msgstr "%C24*%O$tVous avez été invité sur %C22$1%O par %C18$2%O (%C29$3%O)"
 #: src/common/textevents.h:252
 #, c-format
 msgid "%C23*$t$1 ($3%C23) has joined"
-msgstr ""
+msgstr "%C23*$t$1 ($3%C23) vient de rentrer"
 
 #: src/common/textevents.h:255
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Requires keyword%O)"
@@ -1118,16 +1119,16 @@ msgstr "%C29*%O$t%C29MOTD passé%O"
 
 #: src/common/textevents.h:273
 msgid "%C23*%O$t%C28$1%C is already in use. Retrying with %C18$2%O..."
-msgstr ""
+msgstr "%C23*%O$t%C28$1%C est déjà utilisé. Tentative avec %C18$2%O..."
 
 #: src/common/textevents.h:276
 msgid "%C23*%O$t%C28$1%C is erroneous. Retrying with %C18$2%O..."
-msgstr ""
+msgstr "%C23*%O$t%C28$1%C est erroné. Tentative avec %C18$2%O..."
 
 #: src/common/textevents.h:279
 msgid ""
 "%C20*%O$tNickname is erroneous or already in use. Use /NICK to try another."
-msgstr ""
+msgstr "%C20*%O$tPseudonyme erroné ou déjà utilisé. Utilisez /NICK pour en essayer un autre."
 
 #: src/common/textevents.h:282
 msgid "%C20*%O$tNo such DCC."
@@ -1139,11 +1140,11 @@ msgstr "%C23*%O$tAucun processus ne tourne pour l'instant"
 
 #: src/common/textevents.h:294
 msgid "%C23*%O$tNotify: %C18$1%C is away (%C24$2%O)"
-msgstr ""
+msgstr "%C23*%O$tNotification : %C18$1%C est absent (%C24$2%O)"
 
 #: src/common/textevents.h:297
 msgid "%C23*%O$tNotify: %C18$1%C is back"
-msgstr ""
+msgstr "%C23*%O$tNotification : %C18$1%C est de retour"
 
 #: src/common/textevents.h:300
 msgid "$tNotify list is empty."
@@ -1169,12 +1170,12 @@ msgstr "%C23*%O$tInformation : %C18$1%C est connecté (%C29$3%O)"
 #: src/common/textevents.h:318
 #, c-format
 msgid "%C24*$t$1 ($2%C24) has left"
-msgstr ""
+msgstr "%C24*$t$1 ($2%C24) est parti"
 
 #: src/common/textevents.h:321
 #, c-format
 msgid "%C24*$t$1 ($2%C24) has left ($4)"
-msgstr ""
+msgstr "%C24*$t$1 ($2%C24) est parti ($4)"
 
 #: src/common/textevents.h:324
 msgid "%C24*%O$tPing reply from %C18$1%C: %C24$2%O second(s)"
@@ -1207,7 +1208,7 @@ msgstr "%C24*%O$tRecherche de l'adresse IP de %C18$1%O..."
 
 #: src/common/textevents.h:357
 msgid "%C23*%O$tAuthenticating via SASL as %C18$1%O (%C24$2%O)"
-msgstr ""
+msgstr "%C23*%O$tAuthentification par SASL en tant que %C18$1%O (%C24$2%O)"
 
 #: src/common/textevents.h:363
 msgid "%C29*%O$tConnected."
@@ -1533,11 +1534,11 @@ msgstr "Masque de bannissement"
 
 #: src/common/text.c:1176
 msgid "The nick of the person who did the quieting"
-msgstr ""
+msgstr "Pseudonyme de la personne qui a rendu muet"
 
 #: src/common/text.c:1177 src/common/text.c:1209
 msgid "The quiet mask"
-msgstr ""
+msgstr "Le masque « quiet »"
 
 #: src/common/text.c:1181
 msgid "The nick who removed the key"
@@ -1577,7 +1578,7 @@ msgstr "Pseudonyme de la personne qui a supprimé l'état de bannissement"
 
 #: src/common/text.c:1208
 msgid "The nick of the person of did the unquiet'ing"
-msgstr ""
+msgstr "Pseudonyme de la personne qui n'a plus rendu muet"
 
 #: src/common/text.c:1213
 msgid "The nick of the person who did the exempt"
@@ -1667,7 +1668,7 @@ msgstr "Nom du canal"
 
 #: src/common/text.c:1301
 msgid "Mechanism"
-msgstr ""
+msgstr "Mécanisme"
 
 #: src/common/text.c:1306 src/common/text.c:1314
 msgid "Raw Numeric or Identifier"
@@ -3012,16 +3013,16 @@ msgstr "Silencieux"
 
 #: src/fe-gtk/banlist.c:346 src/fe-gtk/banlist.c:380
 msgid "Copy mask"
-msgstr ""
+msgstr "Copier le masque"
 
 #: src/fe-gtk/banlist.c:349
 #, c-format
 msgid "%s on %s by %s"
-msgstr ""
+msgstr "%s sur %s par %s"
 
 #: src/fe-gtk/banlist.c:381
 msgid "Copy entry"
-msgstr ""
+msgstr "Copier l'entrée"
 
 #: src/fe-gtk/banlist.c:454 src/fe-gtk/chanlist.c:294
 #: src/fe-gtk/plugin-tray.c:267
@@ -3330,7 +3331,7 @@ msgstr "Afficher le répertoire de configuration de l'utilisateur"
 
 #: src/fe-gtk/fe-gtk.c:127 src/fe-gtk/fe-gtk.c:134
 msgid "Open an irc://server:port/channel?key URL"
-msgstr ""
+msgstr "Ouvrir une URL irc://server:port/channel?key"
 
 #: src/fe-gtk/fe-gtk.c:129 src/fe-gtk/setup.c:290
 msgid "Execute command:"
@@ -3746,7 +3747,7 @@ msgstr "_Recharger le tampon"
 
 #: src/fe-gtk/maingui.c:1569
 msgid "Strip _Colors"
-msgstr ""
+msgstr "Enlever les couleurs"
 
 #: src/fe-gtk/maingui.c:1570
 msgid "_Hide Join/Part Messages"
@@ -3884,7 +3885,7 @@ msgstr "%d pseudonymes sélectionnés."
 msgid ""
 "The Menubar is now hidden. You can show it again by pressing Control+F9 or "
 "right-clicking in a blank part of the main text area."
-msgstr ""
+msgstr "La barre de menu est maintenant cachée. Vous pouvez l'afficher en appuyant sur Contrôle+F9 ou en faisant un clic droit sur la fenêtre principale."
 
 #: src/fe-gtk/menu.c:945
 msgid "Open Link in Browser"
@@ -3908,15 +3909,15 @@ msgstr "Cycler canal"
 
 #: src/fe-gtk/menu.c:1052
 msgid "_Autojoin"
-msgstr ""
+msgstr "Rejoindre automatiquement si expulsé"
 
 #: src/fe-gtk/menu.c:1054
 msgid "Autojoin Channel"
-msgstr ""
+msgstr "Joindre le canal automatiquement"
 
 #: src/fe-gtk/menu.c:1088 src/fe-gtk/menu.c:1092
 msgid "_Auto-Connect"
-msgstr ""
+msgstr "Connexion automatique"
 
 #: src/fe-gtk/menu.c:1112
 msgid ": User menu"
@@ -4142,15 +4143,15 @@ msgstr "Se _reconnecter"
 
 #: src/fe-gtk/menu.c:1751
 msgid "_Join a Channel..."
-msgstr ""
+msgstr "Re_joindre un canal..."
 
 #: src/fe-gtk/menu.c:1752
 msgid "_List of Channels..."
-msgstr ""
+msgstr "_Liste de canaux..."
 
 #: src/fe-gtk/menu.c:1755
 msgid "Marked _Away"
-msgstr ""
+msgstr "Marqué _absent"
 
 #: src/fe-gtk/menu.c:1757
 msgid "_Usermenu"
@@ -4206,7 +4207,7 @@ msgstr "_Fenêtre"
 
 #: src/fe-gtk/menu.c:1773
 msgid "_Ban List..."
-msgstr ""
+msgstr "Liste de _bannissement..."
 
 #: src/fe-gtk/menu.c:1774
 msgid "Character Chart..."
@@ -4218,7 +4219,7 @@ msgstr "Chat direct..."
 
 #: src/fe-gtk/menu.c:1776
 msgid "File _Transfers..."
-msgstr ""
+msgstr "_Transferts de fichiers..."
 
 #: src/fe-gtk/menu.c:1777
 msgid "Friends List..."
@@ -4230,11 +4231,11 @@ msgstr "Liste d'ignorance..."
 
 #: src/fe-gtk/menu.c:1779
 msgid "_Plugins and Scripts..."
-msgstr ""
+msgstr "_Plugins et scripts..."
 
 #: src/fe-gtk/menu.c:1780
 msgid "_Raw Log..."
-msgstr ""
+msgstr "Journal b_rut..."
 
 #: src/fe-gtk/menu.c:1781
 msgid "URL Grabber..."
@@ -4401,22 +4402,22 @@ msgstr "XChat : %u messages en surbrillance. Le dernier est de %s (%s)"
 #: src/fe-gtk/plugin-tray.c:718
 #, c-format
 msgid "Highlighted message from: %s (%s)"
-msgstr ""
+msgstr "Message en surbrillance de : %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:736
 #, c-format
 msgid ": Channel message from: %s (%s)"
-msgstr ""
+msgstr ": Message de canal de : %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:739
 #, c-format
 msgid ": %u channel messages."
-msgstr ""
+msgstr ": %u messages de canal."
 
 #: src/fe-gtk/plugin-tray.c:743
 #, c-format
 msgid "Channel message from: %s (%s)"
-msgstr ""
+msgstr "Message de canal de : %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:765
 #, c-format
@@ -4431,7 +4432,7 @@ msgstr "XChat : %u messages privés. Le dernier est de %s (%s)"
 #: src/fe-gtk/plugin-tray.c:772
 #, c-format
 msgid "Private message from: %s (%s)"
-msgstr ""
+msgstr "Message privé de : %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:818
 #, c-format
@@ -4470,11 +4471,11 @@ msgstr "_Charger..."
 
 #: src/fe-gtk/plugingui.c:270
 msgid "_Unload"
-msgstr ""
+msgstr "_Décharger"
 
 #: src/fe-gtk/plugingui.c:273
 msgid "_Reload"
-msgstr ""
+msgstr "_Recharger"
 
 #: src/fe-gtk/rawlog.c:80 src/fe-gtk/rawlog.c:146 src/fe-gtk/textgui.c:428
 #: src/fe-gtk/urlgrab.c:216
@@ -4500,7 +4501,7 @@ msgstr "XChat : chercher"
 
 #: src/fe-gtk/search.c:175
 msgid "Search hit end or not found."
-msgstr ""
+msgstr "Fin atteinte lors de la recherche ou non trouvé."
 
 #: src/fe-gtk/search.c:193
 msgid "_Find"
@@ -4512,7 +4513,7 @@ msgstr "_Sensible à la casse"
 
 #: src/fe-gtk/search.c:201
 msgid "Perform a case-sensitive search."
-msgstr ""
+msgstr "Réaliser une recherche sensible à la casse."
 
 #: src/fe-gtk/search.c:205
 msgid "Search _backwards"
@@ -4520,7 +4521,7 @@ msgstr "Rechercher vers l'a_rrière"
 
 #: src/fe-gtk/search.c:209
 msgid "Search from the newest text line to the oldest."
-msgstr ""
+msgstr "Chercher de la ligne la plus récente à la plus ancienne."
 
 #: src/fe-gtk/search.c:213
 msgid "_Highlight all"
@@ -4528,7 +4529,7 @@ msgstr "Mettre tout en _Surbrillance"
 
 #: src/fe-gtk/search.c:217
 msgid "Highlight all occurrences, and underline the current occurrence."
-msgstr ""
+msgstr "Mettre en surbrillance toutes les occurrences et souligner l'occurrence actuelle."
 
 #: src/fe-gtk/search.c:221
 msgid "R_egular expression"
@@ -4536,11 +4537,11 @@ msgstr "_Expression rationnelle"
 
 #: src/fe-gtk/search.c:225
 msgid "Regard search string as a regular expression."
-msgstr ""
+msgstr "Voir la chaîne de recherche comme une expression régulière."
 
 #: src/fe-gtk/search.c:235
 msgid "Close this box, but continue searching new lines."
-msgstr ""
+msgstr "Fermer cette fenêtre, mais continuer à chercher des nouvelles lignes."
 
 #: src/fe-gtk/search.c:237
 msgid "Close and _Reset"
@@ -4550,7 +4551,7 @@ msgstr "Fermer et _réinitialiser"
 msgid ""
 "Close this box, reset highlighted search items, and stop searching new "
 "lines."
-msgstr ""
+msgstr "Fermer cette fenêtre, remettre à zéro les mots mis en surbrillance et arrêter de rechercher de nouvelles lignes."
 
 #: src/fe-gtk/servlistgui.c:301 src/fe-gtk/servlistgui.c:499
 msgid "New Network"
@@ -4569,7 +4570,7 @@ msgstr "Le nom d'utilisateur et le nom réel ne peuvent être laissés blancs."
 msgid ""
 "The way you identify yourself to the server. For custom login methods use "
 "connect commands."
-msgstr ""
+msgstr "La façon qui permet de vous identifier sur le serveur. Pour des méthodes d'identification personnalisées, utilisez des commandes de connexion."
 
 #: src/fe-gtk/servlistgui.c:1650
 #, c-format
@@ -4582,11 +4583,11 @@ msgstr "Serveurs"
 
 #: src/fe-gtk/servlistgui.c:1673
 msgid "Autojoin channels"
-msgstr ""
+msgstr "Joindre automatiquement ces canaux"
 
 #: src/fe-gtk/servlistgui.c:1674
 msgid "Connect commands"
-msgstr ""
+msgstr "Commandes de connexion"
 
 #: src/fe-gtk/servlistgui.c:1686
 msgid ""
@@ -4594,7 +4595,7 @@ msgid ""
 "%p=Password\n"
 "%r=Real name\n"
 "%u=User name"
-msgstr ""
+msgstr "%n=Pseudonyme\n%p=Mot de passe\n%r=Nom réel\n%u=Nom d'utilisateur"
 
 #: src/fe-gtk/servlistgui.c:1743
 msgid "Key (Password)"
@@ -4614,7 +4615,7 @@ msgstr "Ne pas passer au serveur suivant lorsque la connexion échoue."
 
 #: src/fe-gtk/servlistgui.c:1810
 msgid "Connect to this network automatically"
-msgstr ""
+msgstr "Se connecter à ce réseau automatiquement"
 
 #: src/fe-gtk/servlistgui.c:1811
 msgid "Bypass proxy server"
@@ -4626,7 +4627,7 @@ msgstr "Utiliser SSL pour tous les serveurs de ce réseau"
 
 #: src/fe-gtk/servlistgui.c:1816
 msgid "Accept invalid SSL certificates"
-msgstr ""
+msgstr "Accepter les certificats SSL non valides"
 
 #: src/fe-gtk/servlistgui.c:1820
 msgid "Use global user information"
@@ -4650,7 +4651,7 @@ msgstr "Nom d'_utilisateur :"
 
 #: src/fe-gtk/servlistgui.c:1827
 msgid "Login method:"
-msgstr ""
+msgstr "Méthode d'identification :"
 
 #: src/fe-gtk/servlistgui.c:1833 src/fe-gtk/setup.c:618
 msgid "Password:"
@@ -4658,7 +4659,7 @@ msgstr "Mot de passe :"
 
 #: src/fe-gtk/servlistgui.c:1833
 msgid "Password used for login. If in doubt, leave blank."
-msgstr ""
+msgstr "Le mot de passe utilisé pour se connecter. En cas de doute, le laisser blanc."
 
 #: src/fe-gtk/servlistgui.c:1838
 msgid "Character set:"
@@ -5074,15 +5075,15 @@ msgstr "Tri de la complétion des pseudo :"
 
 #: src/fe-gtk/setup.c:222
 msgid "Nick completion amount:"
-msgstr ""
+msgstr "Maximum pour la complétion de pseudonymes :"
 
 #: src/fe-gtk/setup.c:222
 msgid "Threshold of nicks to start listing instead of completing"
-msgstr ""
+msgstr "Seuil du nombre de pseudonymes à lister au lieu de compléter"
 
 #: src/fe-gtk/setup.c:222
 msgid "nicks."
-msgstr ""
+msgstr "pseudonymes."
 
 #: src/fe-gtk/setup.c:225
 msgid "Input Box Codes"
@@ -5417,13 +5418,13 @@ msgstr "Quand émettre un bip : "
 msgid ""
 "Play the \"Instant Message Notification\" system sound upon the selected "
 "events"
-msgstr ""
+msgstr "Jouer le son système « Notification de messagerie instantanée » quand les événements sélectionnés surviennent"
 
 #: src/fe-gtk/setup.c:429
 msgid ""
 "Play \"message-new-instant\" from the freedesktop.org sound theme upon the "
 "selected events"
-msgstr ""
+msgstr "Jouer « message-new-instant » depuis le thème de sons freedesktop.org quand les événements  sélectionnés surviennent"
 
 #: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:468
 msgid "Omit alerts when marked as being away"
@@ -5431,7 +5432,7 @@ msgstr "Passer les alertes quand vous êtes absent"
 
 #: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:469
 msgid "Omit alerts while the window is focused"
-msgstr ""
+msgstr "Omettre les alertes quand la fenêtre est focalisée"
 
 #: src/fe-gtk/setup.c:435
 msgid "Tray Behavior"
@@ -5455,7 +5456,7 @@ msgstr "Gérer le statut absent/présent automatiquement"
 
 #: src/fe-gtk/setup.c:443
 msgid "Automatically change status when hiding to tray."
-msgstr ""
+msgstr "Automatiquement changer de statut en cachant l'application dans la barre de tâches."
 
 #: src/fe-gtk/setup.c:445
 msgid "Only show tray balloons when hidden or iconified"
@@ -5526,7 +5527,7 @@ msgstr "Vous sortir du mode absent avant d'envoyer des messages."
 
 #: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:525
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Autres"
 
 #: src/fe-gtk/setup.c:494
 msgid "Display MODEs in raw form"
@@ -5534,7 +5535,7 @@ msgstr "Afficher les MODEs sous forme brute"
 
 #: src/fe-gtk/setup.c:495
 msgid "WHOIS on notify"
-msgstr ""
+msgstr "WHOIS sur les notifications"
 
 #: src/fe-gtk/setup.c:495
 msgid "Sends a /WHOIS when a user comes online in your notify list."
@@ -5550,19 +5551,19 @@ msgstr "Cacher les messages d'entrée/sortie par défaut."
 
 #: src/fe-gtk/setup.c:503
 msgid "*!*@*.host"
-msgstr ""
+msgstr "*!*@*.hôte"
 
 #: src/fe-gtk/setup.c:504
 msgid "*!*@domain"
-msgstr ""
+msgstr "*!*@domaine"
 
 #: src/fe-gtk/setup.c:505
 msgid "*!*user@*.host"
-msgstr ""
+msgstr "*!*utilisateur@*.hôte"
 
 #: src/fe-gtk/setup.c:506
 msgid "*!*user@domain"
-msgstr ""
+msgstr "*!*utilisateur@domaine"
 
 #: src/fe-gtk/setup.c:512
 msgid "Auto Copy Behavior"
@@ -5608,7 +5609,7 @@ msgstr "Police alternative :"
 
 #: src/fe-gtk/setup.c:528
 msgid "Separate multiple entries with commas without spaces before or after."
-msgstr ""
+msgstr "Séparez plusieurs entrées avec des virgules sans espaces avant ou après la virgule."
 
 #: src/fe-gtk/setup.c:530
 msgid "Display lists in compact mode"
@@ -5620,17 +5621,17 @@ msgstr "Utiliser moins d'espace entre la liste des utilisateurs et l'arbre des c
 
 #: src/fe-gtk/setup.c:531
 msgid "Use server time if supported"
-msgstr ""
+msgstr "Utiliser le temps serveur si pris en charg"
 
 #: src/fe-gtk/setup.c:531
 msgid ""
 "Display timestamps obtained from server if it supports the time-server "
 "extension."
-msgstr ""
+msgstr "Afficher les horodatages obtenus depuis le serveur s'il supporte l'extension du temps côté serveur."
 
 #: src/fe-gtk/setup.c:532
 msgid "Automatically reconnect to servers on disconnect"
-msgstr ""
+msgstr "Automatiquement se reconnecter aux serveurs en cas de déconnexion"
 
 #: src/fe-gtk/setup.c:533
 msgid "Auto reconnect delay:"
@@ -5642,13 +5643,13 @@ msgstr "Délai pour rejoindre les canaux :"
 
 #: src/fe-gtk/setup.c:535
 msgid "Ban Type:"
-msgstr ""
+msgstr "Type de bannissement :"
 
 #: src/fe-gtk/setup.c:535
 msgid ""
 "Attempt to use this banmask when banning or quieting. (requires "
 "irc_who_join)"
-msgstr ""
+msgstr "Essayer d'utiliser ce masque de bannissement en banissant ou en rendant muet (requiert irc_who_join)."
 
 #: src/fe-gtk/setup.c:542 src/fe-gtk/setup.c:1853
 msgid "Logging"
@@ -5963,7 +5964,7 @@ msgstr "Bavardage"
 
 #: src/fe-gtk/setup.c:1852
 msgid "Sounds"
-msgstr ""
+msgstr "Sons"
 
 #: src/fe-gtk/setup.c:1854
 msgid "Advanced"
@@ -5993,7 +5994,7 @@ msgstr "Format d'heure invalide ! Lisez l'article MSDN sur strftime pour les dé
 
 #: src/fe-gtk/setup.c:2224
 msgid "The Real name option cannot be left blank. Falling back to \"realname\"."
-msgstr ""
+msgstr "L'option Nom réel ne peut être laissée blanche. Le nom réel \"realname\" sera utilisé."
 
 #: src/fe-gtk/setup.c:2231
 msgid "Some settings were changed that require a restart to take full effect."

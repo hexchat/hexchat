@@ -4,13 +4,14 @@
 # Translators:
 # Claudio Arseni <claudio.arseni@gmail.com>, 2013
 # Eros Palberti - Fabio Viola : How-Tux Team <admin@how-tux.com>, 2006
+# Random_R, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2013-09-08 01:16-0400\n"
-"PO-Revision-Date: 2013-09-09 07:00+0000\n"
-"Last-Translator: Claudio Arseni <claudio.arseni@gmail.com>\n"
+"PO-Revision-Date: 2013-11-20 09:21+0000\n"
+"Last-Translator: Random_R\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/hexchat/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -239,7 +240,7 @@ msgstr "  %-20s non in linea\n"
 
 #: src/common/outbound.c:72
 msgid "No channel joined. Try /join #<channel>\n"
-msgstr "Alcun canale aperto. Provare /join #<canale>\n"
+msgstr "Nessun canale aperto. Provare /join #<canale>\n"
 
 #: src/common/outbound.c:78
 msgid "Not connected. Try /server <host> [<port>]\n"
@@ -352,11 +353,11 @@ msgstr "CHARSET [<codifica>], rileva o imposta la codifica usata per la connessi
 msgid ""
 "CLEAR [ALL|HISTORY|[-]<amount>], Clears the current text window or command "
 "history"
-msgstr ""
+msgstr "CLEAR [ALL|HISTORY|[-]<quantità>], pulisce la finestra di testo corrente o la cronologia dei comandi"
 
 #: src/common/outbound.c:3819
 msgid "CLOSE [-m], Closes the current window/tab or all queries"
-msgstr ""
+msgstr "CLOSE [-m], chiude l'attuale finestra/scheda o tutte quelle private"
 
 #: src/common/outbound.c:3822
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
@@ -543,7 +544,7 @@ msgstr "MOP, rende operatori tutti gli utenti nel canale attuale (bisogna essere
 msgid ""
 "MSG <nick> <message>, sends a private message, message \".\" to send to last"
 " nick or prefix with \"=\" for dcc chat"
-msgstr ""
+msgstr "MSG <soprannome> <messaggio>, invia un messaggio privato, messaggio \".\" per inviarlo all'ultimo soprannome contattato o con il prefisso \"=\" per avviare una chat DCC"
 
 #: src/common/outbound.c:3922
 msgid "NAMES, Lists the nicks on the current channel"
@@ -624,7 +625,7 @@ msgstr "RECV <testo>, invia dati in forma grezza a HexChat, come se venissero ri
 
 #: src/common/outbound.c:3954
 msgid "RELOAD <name>, reloads a plugin or script"
-msgstr ""
+msgstr "RELOAD <nome>, ricarica un plugin o uno script"
 
 #: src/common/outbound.c:3956
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -899,7 +900,7 @@ msgstr "%C22*%O$t%C26$1%O ha rimosso il quiet su %C18$2%O"
 
 #: src/common/textevents.h:108
 msgid "%C22*%O$tChannel %C22$1%O url: %C24$2"
-msgstr ""
+msgstr "%C22*%O$tCanale %C22$1%O url: %C24$2"
 
 #: src/common/textevents.h:111
 msgid "%C22*%O$t%C26$1%O gives voice to %C18$2%O"
@@ -1096,7 +1097,7 @@ msgstr "%C24*%O$tHai ricevuto un invito per %C22$1%O da %C18$2%O (%C29$3%O)"
 #: src/common/textevents.h:252
 #, c-format
 msgid "%C23*$t$1 ($3%C23) has joined"
-msgstr ""
+msgstr "%C23*$t$1 ($3%C23) è entrato"
 
 #: src/common/textevents.h:255
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Requires keyword%O)"
@@ -1167,12 +1168,12 @@ msgstr "%C23*%O$tNotifica: %C18$1%C è in linea (%C29$3%O)"
 #: src/common/textevents.h:318
 #, c-format
 msgid "%C24*$t$1 ($2%C24) has left"
-msgstr ""
+msgstr "%C24*$t$1 ($2%C24) abbandona"
 
 #: src/common/textevents.h:321
 #, c-format
 msgid "%C24*$t$1 ($2%C24) has left ($4)"
-msgstr ""
+msgstr "%C24*$t$1 ($2%C24) ha abbandonato ($4)"
 
 #: src/common/textevents.h:324
 msgid "%C24*%O$tPing reply from %C18$1%C: %C24$2%O second(s)"
@@ -1205,7 +1206,7 @@ msgstr "%C24*%O$tRicerca dell'indirizzo IP per %C18$1%O..."
 
 #: src/common/textevents.h:357
 msgid "%C23*%O$tAuthenticating via SASL as %C18$1%O (%C24$2%O)"
-msgstr ""
+msgstr "%C23*%O$tAutenticazione SASL come %C18$1%O (%C24$2%O)"
 
 #: src/common/textevents.h:363
 msgid "%C29*%O$tConnected."
@@ -1665,7 +1666,7 @@ msgstr "Nome del canale"
 
 #: src/common/text.c:1301
 msgid "Mechanism"
-msgstr ""
+msgstr "Meccanismo"
 
 #: src/common/text.c:1306 src/common/text.c:1314
 msgid "Raw Numeric or Identifier"
@@ -3120,7 +3121,7 @@ msgstr "Mostra solo:"
 
 #: src/fe-gtk/chanlist.c:828
 msgid "channels with"
-msgstr "canali con"
+msgstr "canali con, da"
 
 #: src/fe-gtk/chanlist.c:841
 msgid "to"
@@ -3402,7 +3403,7 @@ msgstr "La funzione Insert in Buffer inserirà il contenuto di «Dati 1» nella 
 msgid ""
 "The Scroll Page command scrolls the text widget up or down one page or one"
 " line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
-msgstr ""
+msgstr "Il comando Scroll Page scorre l'oggetto testo su o giù di una pagina o di una riga. Impostare Data 1 a Top, Bottom, Up, Down, +1 o -1."
 
 #: src/fe-gtk/fkeys.c:153
 msgid ""
@@ -3643,7 +3644,7 @@ msgstr "_Niente, verrà selezionato successivamente un canale."
 
 #: src/fe-gtk/joind.c:187
 msgid "_Join this channel:"
-msgstr "_Entra in questo canale:"
+msgstr "_Entrare in questo canale:"
 
 #: src/fe-gtk/joind.c:199
 msgid "If you know the name of the channel you want to join, enter it here."
@@ -3651,7 +3652,7 @@ msgstr "Se si conosce il nome del canale nel quale si vuole entrare, digitarlo q
 
 #: src/fe-gtk/joind.c:206
 msgid "O_pen the Channel-List window."
-msgstr "A_pri la finestra elenco canali"
+msgstr "A_prire la finestra elenco canali"
 
 #: src/fe-gtk/joind.c:213
 msgid "Retrieving the Channel-List may take a minute or two."
@@ -3659,7 +3660,7 @@ msgstr "Il recupero dell'elenco dei canali potrebbe richiedere un minuto o due."
 
 #: src/fe-gtk/joind.c:220
 msgid "_Always show this dialog after connecting."
-msgstr "_Mostr_a sempre questo dialogo dopo la connessione"
+msgstr "Mostr_are sempre questo dialogo dopo la connessione"
 
 #: src/fe-gtk/maingui.c:437
 msgid "Dialog with"
@@ -3692,7 +3693,7 @@ msgstr "Non chiedere la prossima volta."
 #: src/fe-gtk/maingui.c:1258
 #, c-format
 msgid "You are connected to %i IRC networks."
-msgstr "Connesso a %i reti IRC."
+msgstr "Reti IRC connesse %i."
 
 #: src/fe-gtk/maingui.c:1260
 msgid "Are you sure you want to quit?"
@@ -3910,7 +3911,7 @@ msgstr "_Accesso automatico"
 
 #: src/fe-gtk/menu.c:1054
 msgid "Autojoin Channel"
-msgstr ""
+msgstr "Accesso automatico al canale"
 
 #: src/fe-gtk/menu.c:1088 src/fe-gtk/menu.c:1092
 msgid "_Auto-Connect"
@@ -4140,15 +4141,15 @@ msgstr "_Riconnetti"
 
 #: src/fe-gtk/menu.c:1751
 msgid "_Join a Channel..."
-msgstr ""
+msgstr "E_tra in un canale..."
 
 #: src/fe-gtk/menu.c:1752
 msgid "_List of Channels..."
-msgstr ""
+msgstr "E_lenco dei canali..."
 
 #: src/fe-gtk/menu.c:1755
 msgid "Marked _Away"
-msgstr ""
+msgstr "Contrassegna come _Assente"
 
 #: src/fe-gtk/menu.c:1757
 msgid "_Usermenu"
@@ -4204,7 +4205,7 @@ msgstr "_Finestra"
 
 #: src/fe-gtk/menu.c:1773
 msgid "_Ban List..."
-msgstr ""
+msgstr "Elenco dei _ban..."
 
 #: src/fe-gtk/menu.c:1774
 msgid "Character Chart..."
@@ -4216,7 +4217,7 @@ msgstr "Chat diretta..."
 
 #: src/fe-gtk/menu.c:1776
 msgid "File _Transfers..."
-msgstr ""
+msgstr "_Trasferimenti di file..."
 
 #: src/fe-gtk/menu.c:1777
 msgid "Friends List..."
@@ -4228,11 +4229,11 @@ msgstr "Elenco utenti ignorati..."
 
 #: src/fe-gtk/menu.c:1779
 msgid "_Plugins and Scripts..."
-msgstr ""
+msgstr "_Plugin e script..."
 
 #: src/fe-gtk/menu.c:1780
 msgid "_Raw Log..."
-msgstr ""
+msgstr "Regist_ro grezzo..."
 
 #: src/fe-gtk/menu.c:1781
 msgid "URL Grabber..."
@@ -4240,7 +4241,7 @@ msgstr "URL collezionati..."
 
 #: src/fe-gtk/menu.c:1783
 msgid "Reset Marker Line"
-msgstr "Azzera linea di demrcazione"
+msgstr "Azzera linea di demarcazione"
 
 #: src/fe-gtk/menu.c:1784
 msgid "_Copy Selection"
@@ -4468,11 +4469,11 @@ msgstr "_Carica..."
 
 #: src/fe-gtk/plugingui.c:270
 msgid "_Unload"
-msgstr ""
+msgstr "_Disattiva"
 
 #: src/fe-gtk/plugingui.c:273
 msgid "_Reload"
-msgstr ""
+msgstr "_Ricarica"
 
 #: src/fe-gtk/rawlog.c:80 src/fe-gtk/rawlog.c:146 src/fe-gtk/textgui.c:428
 #: src/fe-gtk/urlgrab.c:216
@@ -4542,7 +4543,7 @@ msgstr "Chiude questa finestra, ma continua a cercare nuove righe."
 
 #: src/fe-gtk/search.c:237
 msgid "Close and _Reset"
-msgstr "Chiudi e azzera"
+msgstr "Chiudi e azze_ra"
 
 #: src/fe-gtk/search.c:238
 msgid ""
@@ -5072,11 +5073,11 @@ msgstr "Ordinare i soprannomi completati:"
 
 #: src/fe-gtk/setup.c:222
 msgid "Nick completion amount:"
-msgstr ""
+msgstr "Numero di soprannomi completati:"
 
 #: src/fe-gtk/setup.c:222
 msgid "Threshold of nicks to start listing instead of completing"
-msgstr ""
+msgstr "Soglia di soprannomi da iniziare a elencare invece di completarli"
 
 #: src/fe-gtk/setup.c:222
 msgid "nicks."
@@ -5606,7 +5607,7 @@ msgstr "Caratteri alternativi:"
 
 #: src/fe-gtk/setup.c:528
 msgid "Separate multiple entries with commas without spaces before or after."
-msgstr ""
+msgstr "Separare le voci con virgole, senza spazi né prima né dopo."
 
 #: src/fe-gtk/setup.c:530
 msgid "Display lists in compact mode"
@@ -5618,13 +5619,13 @@ msgstr "Usa una spaziatura inferiore tra l'elenco utenti e l'albero dei canali"
 
 #: src/fe-gtk/setup.c:531
 msgid "Use server time if supported"
-msgstr ""
+msgstr "Usare l'ora del server se supportata"
 
 #: src/fe-gtk/setup.c:531
 msgid ""
 "Display timestamps obtained from server if it supports the time-server "
 "extension."
-msgstr ""
+msgstr "Mostra l'orario ottenuto dal server se è supportata l'estensione \"time-server\"."
 
 #: src/fe-gtk/setup.c:532
 msgid "Automatically reconnect to servers on disconnect"
@@ -5646,7 +5647,7 @@ msgstr "Tipo di ban:"
 msgid ""
 "Attempt to use this banmask when banning or quieting. (requires "
 "irc_who_join)"
-msgstr ""
+msgstr "Tenta di usare questa maschera per i ban e i quite. (È richiesto irc_who_join)"
 
 #: src/fe-gtk/setup.c:542 src/fe-gtk/setup.c:1853
 msgid "Logging"
