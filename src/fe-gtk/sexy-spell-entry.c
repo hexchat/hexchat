@@ -918,6 +918,9 @@ check_attributes (SexySpellEntry *entry, const char *text, int len)
 		case ATTR_RESET:
 			insert_hiddenchar (entry, i, i + 1);
 			insert_reset (entry, i);
+			bold = FALSE;
+			italic = FALSE;
+			underline = FALSE;
 			goto check_color;
 
 		case ATTR_HIDDEN:
