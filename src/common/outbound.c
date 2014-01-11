@@ -3395,7 +3395,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		/* If part of a known network, login like normal */
 		net = servlist_net_find_from_server (server_name);
-		if (net)
+		if (net && net->pass && *net->pass)
 		{
 			safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 			serv->loginmethod = net->logintype;
