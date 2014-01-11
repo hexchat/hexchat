@@ -3336,6 +3336,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int use_ssl = FALSE;
 	int is_url = TRUE;
 	server *serv = sess->server;
+	ircnet *net = NULL;
 
 #ifdef USE_OPENSSL
 	/* BitchX uses -ssl, mIRC uses -e, let's support both */
@@ -3392,7 +3393,17 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 	else
 	{
-		serv->password[0] = 0;
+		/* If part of a known network, login like normal */
+		net = servlist_net_find_from_server (server_name);
+		if (net)
+		{
+			safe_strcpy (serv->password, net->pass, sizeof (serv->password));
+			serv->loginmethod = net->logintype;
+		}
+		else /* Otherwise ensure no password is sent */
+		{
+			serv->password[0] = 0;
+		}
 	}
 
 #ifdef USE_OPENSSL
