@@ -24,7 +24,7 @@
 
 #include "hexchat.h"
 
-#define LANGUAGES_LENGTH 52
+#define LANGUAGES_LENGTH 53
 
 extern char *xdir;
 extern const char * const languages[LANGUAGES_LENGTH];

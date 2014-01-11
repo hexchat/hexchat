@@ -42,12 +42,12 @@
 #define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,MS Gothic,Unifont"
 
 const char * const languages[LANGUAGES_LENGTH] = {
-	"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",   /*  0 ..  9 */
-	"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl", /* 10 .. 19 */
-	"de", "el", "gu", "hi", "hu", "id", "it", "ja", "kn", "rw",       /* 20 .. 29 */
-	"ko", "lv", "lt", "mk", "ml", "ms", "nb", "no", "pl", "pt",       /* 30 .. 39 */
-	"pt_BR", "pa", "ru", "sr", "sk", "sl", "es", "sv", "th", "uk",    /* 40 .. 49 */
-	"vi", "wa"                                                        /* 50 .. */
+	"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",      /*  0 ..  9 */
+	"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl",    /* 10 .. 19 */
+	"de", "el", "gu", "hi", "hu", "id", "it", "ja_JP", "kn", "rw",       /* 20 .. 29 */
+	"ko", "lv", "lt", "mk", "ml", "ms", "nb", "no", "pl", "pt",          /* 30 .. 39 */
+	"pt_BR", "pa", "ru", "sr", "sk", "sl", "es", "sv", "th", "tr",       /* 40 .. 49 */
+	"uk", "vi", "wa"                                                     /* 50 .. */
 };
 
 void
