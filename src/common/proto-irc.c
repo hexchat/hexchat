@@ -968,6 +968,9 @@ process_numeric (session * sess, int n,
 			tcp_send_len (serv, "CAP END\r\n", 9);
 		}
 		break;
+	case 908:	/* Supported SASL Mechs */
+		inbound_sasl_supportedmechs (serv, word_eol[3]+1);
+		break;
 
 	default:
 

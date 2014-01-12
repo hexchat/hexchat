@@ -1830,33 +1830,43 @@ static const char *sasl_mechanisms[] =
 };
 
 void
+inbound_sasl_supportedmechs (server *serv, char *list)
+{
+	int i;
+
+	if (serv->sasl_mech != MECH_EXTERNAL)
+	{
+		/* Use most secure one supported */
+		for (i = MECH_AES; i >= MECH_PLAIN; i--)
+		{
+			if (strstr (list, sasl_mechanisms[i]) != NULL)
+			{
+				serv->sasl_mech = i;
+				serv->retry_sasl = TRUE;
+				tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[i]);
+				return;
+			}
+		}
+	}
+
+	/* Abort, none supported */
+	serv->sent_saslauth = TRUE;
+	tcp_sendf (serv, "AUTHENTICATE *\r\n");
+	return;
+}
+
+void
 inbound_sasl_authenticate (server *serv, char *data)
 {
 		ircnet *net = (ircnet*)serv->network;
 		char *user, *pass = NULL;
 		const char *mech = sasl_mechanisms[serv->sasl_mech];
-		int i;
 
-		/* Got a list of supported mechanisms */
+		/* Got a list of supported mechanisms from inspircd */
 		if (strchr (data, ',') != NULL)
 		{
-			if (serv->sasl_mech == MECH_EXTERNAL)
-				goto sasl_abort;
-
-			/* Use most secure one supported */
-			for (i = MECH_AES; i >= MECH_PLAIN; i--)
-			{
-				if (strstr (data, sasl_mechanisms[i]) != NULL)
-				{
-					serv->sasl_mech = i;
-					serv->retry_sasl = TRUE;
-					tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[i]);
-					return;
-				}
-			}
-
-			/* Nothing we support */
-			goto sasl_abort;
+			inbound_sasl_supportedmechs (serv, data);
+			return;
 		}
 
 		if (net->user && !(net->flags & FLAG_USE_GLOBAL))
@@ -1882,7 +1892,6 @@ inbound_sasl_authenticate (server *serv, char *data)
 #endif
 		}
 
-sasl_abort:
 		if (pass == NULL)
 		{
 			/* something went wrong abort */
