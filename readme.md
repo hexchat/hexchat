@@ -1,4 +1,4 @@
-# HexChat [![Build Status](https://travis-ci.org/hexchat/hexchat.png)](https://travis-ci.org/hexchat/hexchat)
+# HexChat [![Build Status](https://travis-ci.org/hexchat/hexchat.png)](https://travis-ci.org/hexchat/hexchat) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/hexchat/hexchat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 X-Chat ("xchat") Copyright (c) 1998-2010 By Peter Zelezny.  
 HexChat ("hexchat") Copyright (c) 2009-2013 By Berke Viktor.
