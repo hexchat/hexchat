@@ -969,7 +969,7 @@ process_numeric (session * sess, int n,
 		}
 		break;
 	case 908:	/* Supported SASL Mechs */
-		inbound_sasl_supportedmechs (serv, word_eol[3]+1);
+		inbound_sasl_supportedmechs (serv, word[4]);
 		break;
 
 	default:
