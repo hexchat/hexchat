@@ -97,6 +97,7 @@ void inbound_cap_list (server *serv, char *nick, char *extensions,
 							  const message_tags_data *tags_data);
 void inbound_sasl_authenticate (server *serv, char *data);
 int inbound_sasl_error (server *serv);
+void inbound_sasl_supportedmechs (server *serv, char *list);
 void do_dns (session *sess, char *nick, char *host,
 				 const message_tags_data *tags_data);
 gboolean alert_match_word (char *word, char *masks);
