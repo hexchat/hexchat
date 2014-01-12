@@ -49,6 +49,11 @@
 #endif
 
 #include <gtk/gtk.h>
+
+#ifdef HAVE_GTK_MAC
+#include <gtkosxapplication.h>
+#endif
+
 #include "banlist.h"
 
 #undef gtk_signal_connect
@@ -64,6 +69,10 @@
 #define flag_k flag_wid[7]
 #define flag_b flag_wid[8]
 #define NUM_FLAG_WIDS 9
+
+#ifdef HAVE_GTK_MAC
+extern GtkosxApplication *osx_app;
+#endif
 
 struct server_gui
 {

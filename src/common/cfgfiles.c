@@ -765,6 +765,9 @@ load_default_config(void)
 	prefs.hex_gui_autoopen_dialog = 1;
 	prefs.hex_gui_autoopen_recv = 1;
 	prefs.hex_gui_autoopen_send = 1;
+#ifdef HAVE_GTK_MAC
+	prefs.hex_gui_hide_menu = 1;
+#endif
 	prefs.hex_gui_input_attr = 1;
 	prefs.hex_gui_input_icon = 1;
 	prefs.hex_gui_input_nick = 1;

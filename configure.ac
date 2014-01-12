@@ -41,6 +41,7 @@ AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
+AH_VERBATIM([HAVE_GTK_MAC],[#undef HAVE_GTK_MAC])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
@@ -205,6 +206,19 @@ fi
 
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
+
+dnl *********************************************************************
+dnl ** MAC_INTEGRATION **************************************************
+dnl *********************************************************************
+
+_gdk_tgt=`$PKG_CONFIG --variable=target gdk-2.0`
+if test "x$_gdk_tgt" = xquartz; then
+		PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration, [
+			GUI_LIBS="$GUI_LIBS $GTK_MAC_LIBS"
+			GUI_CFLAGS="$GUI_CFLAGS $GTK_MAC_CFLAGS"
+			AC_DEFINE(HAVE_GTK_MAC)
+		])
+fi
 
 dnl *********************************************************************
 dnl ** PERL *************************************************************

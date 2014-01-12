@@ -63,6 +63,10 @@ GdkPixmap *channelwin_pix;
 static ca_context *ca_con;
 #endif
 
+#ifdef HAVE_GTK_MAC
+GtkosxApplication *osx_app;
+#endif
+
 /* === command-line parameter parsing : requires glib 2.6 === */
 
 static char *arg_cfgdir = NULL;
@@ -235,6 +239,10 @@ fe_args (int argc, char *argv[])
 
 	gtk_init (&argc, &argv);
 
+#ifdef HAVE_GTK_MAC
+	osx_app = g_object_new(GTKOSX_TYPE_APPLICATION, NULL);
+#endif
+
 	return -1;
 }
 
@@ -285,6 +293,9 @@ fe_init (void)
 	key_init ();
 	pixmaps_init ();
 
+#ifdef HAVE_GTK_MAC
+	gtkosx_application_set_dock_icon_pixbuf (osx_app, pix_hexchat);
+#endif
 	channelwin_pix = pixmap_load_from_file (prefs.hex_text_background);
 	input_style = create_input_style (gtk_style_new ());
 }
@@ -292,6 +303,10 @@ fe_init (void)
 void
 fe_main (void)
 {
+#ifdef HAVE_GTK_MAC
+	gtkosx_application_ready(osx_app);
+#endif
+
 	gtk_main ();
 
 	/* sleep for 2 seconds so any QUIT messages are not lost. The  */
