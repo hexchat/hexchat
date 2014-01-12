@@ -3627,6 +3627,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 	overlap = xtext->buffer->last_pixel_pos - pos;
 	xtext->buffer->last_pixel_pos = pos;
 
+#ifndef __APPLE__
 	if (!xtext->pixmap && abs (overlap) < height)
 	{
 		/* so the obscured regions are exposed */
@@ -3660,6 +3661,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 
 		return;
 	}
+#endif
 
 	xtext->buffer->grid_dirty = FALSE;
 	width -= MARGIN;
