@@ -1,0 +1,97 @@
+# Based off example shipped with gtk-quartz-engine
+
+gtk-icon-sizes = "gtk-menu=16,16:gtk-small-toolbar=16,16:gtk-large-toolbar=24,24:gtk-dnd=32,32"
+gtk-toolbar-icon-size = small-toolbar
+
+gtk_color_scheme = "fg_color:#000\nbg_color:ededed\nbase_color:#fff\ntext_color:#1A1A1A\nselected_bg_color:#86ABD9\nselected_fg_color:#fff\ntooltip_bg_color:#F5F5B5\ntooltip_fg_color:#000"
+
+gtk-button-images = 0
+gtk-menu-images = 0
+gtk-enable-mnemonics = 0
+
+style "clearlooks-default"
+{
+  engine "clearlooks"
+  {
+  }
+}
+
+style "quartz-default"
+{
+  xthickness = 0
+  ythickness = 0
+
+  GtkWidget::interior-focus = 1
+  GtkWidget::focus-line-width = 0
+  GtkWidget::focus-padding = 0
+
+  GtkButton::default-border = { 0, 0, 0, 0 }
+  GtkButton::default-outside-border = { 0, 0, 0, 0 }
+  GtkButton::child-displacement-x = 0
+  GtkButton::child-displacement-y = 0
+
+  GtkCheckButton::indicator-spacing = 3
+
+  GtkSpinButton::shadow-type = out
+
+  GtkComboBox::appears-as-list = 0
+  GtkComboBox::focus-on-click = 0
+
+  GtkNotebook::tab-curvature = 4
+  GtkNotebook::tab-overlap = 0
+  
+  GtkTreeView::allow-rules = 1
+  GtkTreeView::expander-size = 14
+  GtkToolbar::internal-padding = 3
+  GtkExpander::expander-size = 14
+
+  GtkScrolledWindow::scrollbar-spacing = 0
+
+  GtkMenuItem::horizontal-padding = 8
+  GtkSeparatorMenuItem::horizontal-padding = 2
+
+  engine "quartz"
+  {
+  }
+}
+
+style "quartz-toolbar"
+{
+  xthickness = 3
+  ythickness = 3
+}
+
+style "quartz-frame"
+{
+  xthickness = 2
+  ythickness = 2
+}
+
+style "quartz-scrolled-window"
+{
+  xthickness = 2
+  ythickness = 2
+}
+
+style "quartz-notebook"
+{
+  xthickness = 2
+  ythickness = 2
+}
+
+style "quartz-menu"
+{
+
+}
+
+class "GtkWidget" style "quartz-default"
+#class "GtkMenu*" style "quartz-menu" # TODO fix buggy menus
+class "GtkNotebook" style "quartz-notebook"
+
+class "GtkEntry" style "clearlooks-default"
+class "SexySpellEntry" style "clearlooks-default"
+# GtkSpinButton now uses clearlooks but its broken anyways
+
+widget_class "*Toolbar*" style "quartz-toolbar"
+widget_class "*.<GtkScrolledWindow>" style "quartz-scrolled-window"
+widget_class "*.<GtkFrame>" style "quartz-frame"
