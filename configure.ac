@@ -29,9 +29,8 @@ dnl -----------------------------------------------------------
 GETTEXT_PACKAGE=hexchat
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
-
-ALL_LINGUAS="af am ast az be bg ca cs da de el en_GB es et eu fi fr gl gu hi hu id it ja_JP kn ko lt lv mk ml ms nb nl no pa pl pt pt_BR ru rw sk sl sq sr sr@latin sv th tr uk vi wa zh_CN zh_TW"
-AM_GNU_GETTEXT
+IT_PROG_INTLTOOL([0.40.0])
+AM_GLIB_GNU_GETTEXT
 
 dnl displaced from acconfig.h
 AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
@@ -803,7 +802,6 @@ plugins/checksum/Makefile
 plugins/doat/Makefile
 plugins/fishlim/Makefile
 plugins/sysinfo/Makefile
-intl/Makefile
 po/Makefile.in
 ])
 
