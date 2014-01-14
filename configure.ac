@@ -228,22 +228,29 @@ if test "$perl" = yes; then
 		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lc //'`
 		AC_MSG_RESULT(ok)
 
-#		oldLIBS=$LIBS
-#		LIBS="$LIBS $PERL_LDFLAGS"
-#		AC_CHECK_FUNC(eval_pv)
-#		AC_CHECK_FUNC(call_pv)
-#		LIBS=$oldLIBS
-
 		AC_MSG_CHECKING(for perl >= 5.8.0)
 		PERL_VER=`$perlpath -e 'print $]>= 5.008?"yes":"no"'`
 		if test "$PERL_VER" = "yes"; then
-			AC_MSG_RESULT(yes)
-			AC_MSG_CHECKING(if perl plugin will be backward compatible)
-			if test "$perl_old" = "yes"; then
-					  AC_MSG_RESULT(yes)
-					  AC_DEFINE(OLD_PERL)
+			original_cflags="$CFLAGS"
+			original_ldflags="$LDFLAGS"
+			CFLAGS="$PERL_CFLAGS"
+			LDFLAGS="$PERL_LDFLAGS"
+			AC_TRY_LINK([#include <EXTERN.h>
+#include <perl.h>], [], perl_is_usable=yes, perl_is_usable=no)
+			CFLAGS="$original_cflags"
+			LDFLAGS="$original_ldflags"
+			if test x$perl_is_usable = xno ; then
+				AC_MSG_RESULT(no)
+				perl=no
 			else
-					  AC_MSG_RESULT(no)
+				AC_MSG_RESULT(yes)
+				AC_MSG_CHECKING(if perl plugin will be backward compatible)
+				if test "$perl_old" = "yes"; then
+						  AC_MSG_RESULT(yes)
+						  AC_DEFINE(OLD_PERL)
+				else
+						  AC_MSG_RESULT(no)
+				fi
 			fi
 		else
 			AC_MSG_RESULT(no)
