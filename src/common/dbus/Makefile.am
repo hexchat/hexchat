@@ -25,10 +25,10 @@ example_SOURCES = example.c
 example_LDADD = $(DBUS_LIBS) $(GLIB_LIBS)
 
 remote-object-glue.h: remote-object.xml
-	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<
+	$(AM_V_GEN) $(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<
 
 marshallers.h: marshallers.list
-	$(LIBTOOL) --mode=execute $(GLIB_GENMARSHAL)  --header --body $< > $@
+	$(AM_V_GEN) $(LIBTOOL) --mode=execute $(GLIB_GENMARSHAL)  --header --body $< > $@
 
 # Dbus service file
 servicedir = $(DBUS_SERVICES_DIR)

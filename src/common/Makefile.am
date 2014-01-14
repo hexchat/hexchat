@@ -55,6 +55,8 @@ if DO_PLUGIN
 include_HEADERS = hexchat-plugin.h
 endif
 
+noinst_PROGRAMS = make-te
+
 libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c hexchat.c \
 	history.c ignore.c inbound.c modes.c msproxy.c network.c notify.c \
 	outbound.c plugin.c plugin-timer.c proto-irc.c server.c servlist.c \
@@ -64,6 +66,6 @@ libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
 textenums.h: textevents.h
 
 textevents.h: textevents.in make-te
-	./make-te < textevents.in > textevents.h 2> textenums.h
+	$(AM_V_GEN) ./make-te < textevents.in > textevents.h 2> textenums.h
 
 BUILT_SOURCES = textenums.h textevents.h
