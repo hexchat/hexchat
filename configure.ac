@@ -184,9 +184,10 @@ if test "$glib" = no; then
 fi
 
 PKG_CHECK_MODULES([GOBJECT], [gobject-2.0], [], [AC_MSG_ERROR(Cannot find gobject-2.0!)])
+PKG_CHECK_MODULES([GIO], [gio-2.0], [], [AC_MSG_ERROR(Cannot find gio-2.0!)])
 
-COMMON_CFLAGS="$GLIB_CFLAGS $GOBJECT_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
-COMMON_LIBS="$GLIB_LIBS $GOBJECT_LIBS -lgmodule-2.0"
+COMMON_CFLAGS="$GLIB_CFLAGS $GIO_CFLAGS $GOBJECT_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
+COMMON_LIBS="$GLIB_LIBS $GIO_LIBS $GOBJECT_LIBS -lgmodule-2.0"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
