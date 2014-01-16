@@ -226,52 +226,58 @@ dnl ** PERL *************************************************************
 dnl *********************************************************************
 
 if test "$perl" = yes; then
-	AC_PATH_PROG(perlpath, perl)
-	AC_MSG_CHECKING(for Perl compile flags)
-	PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
-	if test "_$PERL_CFLAGS" = _ ; then
-		AC_MSG_RESULT([not found, building without perl.])
-		perl=no
-	else
-		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts |$sedpath 's/-lgdbm //'`
-		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-ldb //'`
-		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lndbm //'`
-		if test "$system" = "Linux"; then
-			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lnsl //'`
-			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lposix //'`
-		fi
-		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lc //'`
-		AC_MSG_RESULT(ok)
-
-		AC_MSG_CHECKING(for perl >= 5.8.0)
-		PERL_VER=`$perlpath -e 'print $]>= 5.008?"yes":"no"'`
-		if test "$PERL_VER" = "yes"; then
-			original_cflags="$CFLAGS"
-			original_ldflags="$LDFLAGS"
-			CFLAGS="$PERL_CFLAGS"
-			LDFLAGS="$PERL_LDFLAGS"
-			AC_TRY_LINK([#include <EXTERN.h>
-#include <perl.h>], [], perl_is_usable=yes, perl_is_usable=no)
-			CFLAGS="$original_cflags"
-			LDFLAGS="$original_ldflags"
-			if test x$perl_is_usable = xno ; then
-				AC_MSG_RESULT(no)
-				perl=no
-			else
-				AC_MSG_RESULT(yes)
-				AC_MSG_CHECKING(if perl plugin will be backward compatible)
-				if test "$perl_old" = "yes"; then
-						  AC_MSG_RESULT(yes)
-						  AC_DEFINE(OLD_PERL)
-				else
-						  AC_MSG_RESULT(no)
-				fi
-			fi
-		else
-			AC_MSG_RESULT(no)
-			echo "perl version too old, building without perl."
+	AC_MSG_CHECKING(for plugin interface used by Perl)
+	if test "$plugin" = yes; then
+		AC_PATH_PROG(perlpath, perl)
+		AC_MSG_CHECKING(for Perl compile flags)
+		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
+		if test "_$PERL_CFLAGS" = _ ; then
+			AC_MSG_RESULT([not found, building without perl.])
 			perl=no
+		else
+			PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts |$sedpath 's/-lgdbm //'`
+			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-ldb //'`
+			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lndbm //'`
+			if test "$system" = "Linux"; then
+				PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lnsl //'`
+				PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lposix //'`
+			fi
+			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lc //'`
+			AC_MSG_RESULT(ok)
+
+			AC_MSG_CHECKING(for perl >= 5.8.0)
+			PERL_VER=`$perlpath -e 'print $]>= 5.008?"yes":"no"'`
+			if test "$PERL_VER" = "yes"; then
+				original_cflags="$CFLAGS"
+				original_ldflags="$LDFLAGS"
+				CFLAGS="$PERL_CFLAGS"
+				LDFLAGS="$PERL_LDFLAGS"
+				AC_TRY_LINK([#include <EXTERN.h>
+	#include <perl.h>], [], perl_is_usable=yes, perl_is_usable=no)
+				CFLAGS="$original_cflags"
+				LDFLAGS="$original_ldflags"
+				if test x$perl_is_usable = xno ; then
+					AC_MSG_RESULT(no)
+					perl=no
+				else
+					AC_MSG_RESULT(yes)
+					AC_MSG_CHECKING(if perl plugin will be backward compatible)
+					if test "$perl_old" = "yes"; then
+							  AC_MSG_RESULT(yes)
+							  AC_DEFINE(OLD_PERL)
+					else
+							  AC_MSG_RESULT(no)
+					fi
+				fi
+			else
+				AC_MSG_RESULT(no)
+				echo "perl version too old, building without perl."
+				perl=no
+			fi
 		fi
+	else
+		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for Perl])
+		perl=no
 	fi
 fi
 
@@ -280,28 +286,34 @@ dnl ** PYTHON ***********************************************************
 dnl *********************************************************************
 
 if test "x$python" != xno ; then
-	case $python in
-		dnl set python2 default here
-		python2)
-			PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_ERROR(Cannot find python-2.7!)])
-			PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
-		dnl set python3 default here
-		python3)
-			PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_ERROR(Cannot find python-3.3!)])
-			PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
-		dnl add broken versions here
-		python2.5|python2.6|python3.1|python3.2)
-			AC_MSG_ERROR(Unsupported Python version ${python}!);;
-		python*)
-			python="python-${python#python}" # stay posix compliant
-			PKG_CHECK_MODULES([PY], [${python}], [], [AC_MSG_ERROR(Cannot find "${python}.pc"!)])
-			PY_VER="`$PKG_CONFIG --modversion ${python}`";;
-		*)
-			AC_MSG_ERROR(Unsupported Python ${python}!)
-	esac
-	AC_MSG_CHECKING(Python version)
-	AC_MSG_RESULT($PY_VER)
-	python="python-${PY_VER}"
+	AC_MSG_CHECKING(for plugin interface used by Python)
+	if test "$plugin" = yes; then
+		case $python in
+			dnl set python2 default here
+			python2)
+				PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_ERROR(Cannot find python-2.7!)])
+				PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
+			dnl set python3 default here
+			python3)
+				PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_ERROR(Cannot find python-3.3!)])
+				PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+			dnl add broken versions here
+			python2.5|python2.6|python3.1|python3.2)
+				AC_MSG_ERROR(Unsupported Python version ${python}!);;
+			python*)
+				python="python-${python#python}" # stay posix compliant
+				PKG_CHECK_MODULES([PY], [${python}], [], [AC_MSG_ERROR(Cannot find "${python}.pc"!)])
+				PY_VER="`$PKG_CONFIG --modversion ${python}`";;
+			*)
+				AC_MSG_ERROR(Unsupported Python ${python}!)
+		esac
+		AC_MSG_CHECKING(Python version)
+		AC_MSG_RESULT($PY_VER)
+		python="python-${PY_VER}"
+	else
+		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for Python])
+		python=no
+	fi
 fi
 
 dnl *********************************************************************
