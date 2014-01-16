@@ -1421,8 +1421,14 @@ menu_pluginlist (void)
 
 #else
 
-#define menu_pluginlist 0
-#define menu_loadplugin 0
+static void
+menu_noplugin_info (void)
+{
+	fe_message (_(DISPLAY_NAME " has been build without plugin support."), FE_MSG_INFO);
+}
+
+#define menu_loadplugin menu_noplugin_info
+#define menu_pluginlist menu_noplugin_info
 
 #endif
 
@@ -1712,11 +1718,7 @@ static struct mymenu mymenu[] = {
 		{0, 0, 0, M_END, 0, 0, 0},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
-#ifdef USE_PLUGIN
 	{N_("_Load Plugin or Script..."), menu_loadplugin, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 0, 1},
-#else
-	{N_("_Load Plugin or Script..."), 0, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 0, 0},
-#endif
 	{0, 0, 0, M_SEP, 0, 0, 0},	/* 11 */
 #define DETACH_OFFSET (12)
 	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1},	/* 12 */
