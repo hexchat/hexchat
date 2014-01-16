@@ -2506,8 +2506,11 @@ load_perform_file (session *sess, char *file)
 static int
 cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char *error, *arg, *file, *buf;
+	char *file, *buf;
+#ifdef USE_PLUGIN
+	char *error, *arg;
 	int len;
+#endif
 
 	if (!word[2][0])
 		return FALSE;
@@ -2551,10 +2554,10 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 		return TRUE;
 	}
-#endif
 
 	sprintf (tbuf, "Unknown file type %s. Maybe you need to install the Perl or Python plugin?\n", word[2]);
 	PrintText (sess, tbuf);
+#endif
 
 	return FALSE;
 }
