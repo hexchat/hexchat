@@ -847,7 +847,10 @@ gtk_xtext_find_x (GtkXText * xtext, int x, textentry * ent, int subline,
 		indent = xtext->buffer->indent;
 
 	if (line > xtext->adj->page_size || line < 0)
+	{
+		*out_of_bounds = TRUE;
 		return 0;
+	}
 
 	if (xtext->buffer->grid_dirty || line > 255)
 	{
@@ -879,6 +882,10 @@ gtk_xtext_find_char (GtkXText * xtext, int x, int y, int *off,
 	textentry *ent;
 	int line;
 	int subline;
+
+	/* Adjust y value for negative rounding, double to int */
+	if (y < 0)
+		y -= xtext->fontsize;
 
 	line = (y + xtext->pixel_offset) / xtext->fontsize;
 	ent = gtk_xtext_nth (xtext, line + (int)xtext->adj->value, &subline);
@@ -1260,6 +1267,9 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 			gtk_xtext_render_page (xtext);
 		return;
 	}
+	else if (tmp) {
+		offset_start = xtext->buffer->last_offset_start;
+	}
 
 	ent_end = gtk_xtext_find_char (xtext, high_x, high_y, &offset_end, &tmp);
 	if (!ent_end)
@@ -1272,6 +1282,10 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 			return;
 		}
 		offset_end = ent_end->str_len;
+	}
+	else if (tmp)
+	{
+		offset_end = xtext->buffer->last_offset_end;
 	}
 
 	/* marking less than a complete line? */
@@ -1341,7 +1355,6 @@ gtk_xtext_scrolldown_timeout (GtkXText * xtext)
 		return 0;
 	}
 
-	adj->value = (int)adj->value;	/* Align to line boundary */
 	xtext->select_start_y -= xtext->fontsize;
 	xtext->select_start_adj++;
 	adj->value++;
@@ -1362,6 +1375,7 @@ gtk_xtext_scrollup_timeout (GtkXText * xtext)
 	int p_y;
 	xtext_buffer *buf = xtext->buffer;
 	GtkAdjustment *adj = xtext->adj;
+	int delta_y;
 
 	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
 
@@ -1374,10 +1388,16 @@ gtk_xtext_scrollup_timeout (GtkXText * xtext)
 		return 0;
 	}
 
-	adj->value = (int)adj->value;	/* Align to line boundary */
-	xtext->select_start_y += xtext->fontsize;
-	xtext->select_start_adj--;
-	adj->value--;
+	if (adj->value < 0)
+	{
+		delta_y = adj->value * xtext->fontsize;
+		adj->value = 0;
+	} else {
+		delta_y = xtext->fontsize;
+		adj->value--;
+	}
+	xtext->select_start_y += delta_y;
+	xtext->select_start_adj = adj->value;
 	gtk_adjustment_value_changed (adj);
 	gtk_xtext_selection_draw (xtext, NULL, TRUE);
 	gtk_xtext_render_ents (xtext, buf->pagetop_ent->prev, buf->last_ent_end);
@@ -1783,10 +1803,9 @@ gtk_xtext_unselect (GtkXText *xtext)
 	gtk_xtext_selection_clear (xtext->buffer);
 
 	/* FIXME: use jump_out on multi-line selects too! */
-	gtk_xtext_render_ents (xtext, buf->last_ent_start, buf->last_ent_end);
-
 	xtext->jump_in_offset = 0;
 	xtext->jump_out_offset = 0;
+	gtk_xtext_render_ents (xtext, buf->last_ent_start, buf->last_ent_end);
 
 	xtext->skip_border_fills = FALSE;
 	xtext->skip_stamp = FALSE;
