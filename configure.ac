@@ -228,6 +228,7 @@ dnl *********************************************************************
 if test "$perl" = yes; then
 	AC_MSG_CHECKING(for plugin interface used by Perl)
 	if test "$plugin" = yes; then
+		AC_MSG_RESULT([yes])
 		AC_PATH_PROG(perlpath, perl)
 		AC_MSG_CHECKING(for Perl compile flags)
 		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
@@ -288,6 +289,7 @@ dnl *********************************************************************
 if test "x$python" != xno ; then
 	AC_MSG_CHECKING(for plugin interface used by Python)
 	if test "$plugin" = yes; then
+		AC_MSG_RESULT([yes])
 		case $python in
 			dnl set python2 default here
 			python2)
