@@ -87,7 +87,7 @@ static void custom_list_sortable_set_sort_func (GtkTreeSortable * sortable,
 																gint sort_col_id,
 																GtkTreeIterCompareFunc
 																sort_func, gpointer user_data,
-																GtkDestroyNotify
+																GDestroyNotify
 																destroy_func);
 
 static void custom_list_sortable_set_default_sort_func (GtkTreeSortable *
@@ -95,7 +95,7 @@ static void custom_list_sortable_set_default_sort_func (GtkTreeSortable *
 																		  GtkTreeIterCompareFunc
 																		  sort_func,
 																		  gpointer user_data,
-																		  GtkDestroyNotify
+																		  GDestroyNotify
 																		  destroy_func);
 
 static gboolean custom_list_sortable_has_default_sort_func (GtkTreeSortable *
@@ -601,7 +601,7 @@ custom_list_sortable_set_sort_func (GtkTreeSortable * sortable,
 												gint sort_col_id,
 												GtkTreeIterCompareFunc sort_func,
 												gpointer user_data,
-												GtkDestroyNotify destroy_func)
+												GDestroyNotify destroy_func)
 {
 }
 
@@ -609,7 +609,7 @@ static void
 custom_list_sortable_set_default_sort_func (GtkTreeSortable * sortable,
 														  GtkTreeIterCompareFunc sort_func,
 														  gpointer user_data,
-														  GtkDestroyNotify destroy_func)
+														  GDestroyNotify destroy_func)
 {
 }
 

@@ -1689,7 +1689,7 @@ menu_about (GtkWidget *wid, gpointer sess)
 #endif
 				get_sys_str (0));
 
-	gtk_about_dialog_set_name (dialog, DISPLAY_NAME);
+	gtk_about_dialog_set_program_name (dialog, DISPLAY_NAME);
 	gtk_about_dialog_set_version (dialog, PACKAGE_VERSION);
 	gtk_about_dialog_set_license (dialog, license); /* gtk3 can use GTK_LICENSE_GPL_2_0 */
 	gtk_about_dialog_set_website (dialog, "http://hexchat.github.io");

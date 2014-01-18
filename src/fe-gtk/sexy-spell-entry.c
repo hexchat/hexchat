@@ -93,7 +93,7 @@ static void sexy_spell_entry_class_init(SexySpellEntryClass *klass);
 static void sexy_spell_entry_editable_init (GtkEditableClass *iface);
 static void sexy_spell_entry_init(SexySpellEntry *entry);
 static void sexy_spell_entry_finalize(GObject *obj);
-static void sexy_spell_entry_destroy(GtkObject *obj);
+static void sexy_spell_entry_destroy(GObject *obj);
 static gint sexy_spell_entry_expose(GtkWidget *widget, GdkEventExpose *event);
 static gint sexy_spell_entry_button_press(GtkWidget *widget, GdkEventButton *event);
 
@@ -198,7 +198,7 @@ static void
 sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 {
 	GObjectClass *gobject_class;
-	GtkObjectClass *object_class;
+	GObjectClass *object_class;
 	GtkWidgetClass *widget_class;
 
 	initialize_enchant();
@@ -206,7 +206,7 @@ sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 	parent_class = g_type_class_peek_parent(klass);
 
 	gobject_class = G_OBJECT_CLASS(klass);
-	object_class  = GTK_OBJECT_CLASS(klass);
+	object_class  = G_OBJECT_CLASS(klass);
 	widget_class  = GTK_WIDGET_CLASS(klass);
 
 	if (have_enchant)
@@ -214,7 +214,7 @@ sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 
 	gobject_class->finalize = sexy_spell_entry_finalize;
 
-	object_class->destroy = sexy_spell_entry_destroy;
+	object_class->dispose = sexy_spell_entry_destroy;
 
 	widget_class->expose_event = sexy_spell_entry_expose;
 	widget_class->button_press_event = sexy_spell_entry_button_press;
@@ -783,10 +783,10 @@ sexy_spell_entry_finalize(GObject *obj)
 }
 
 static void
-sexy_spell_entry_destroy(GtkObject *obj)
+sexy_spell_entry_destroy(GObject *obj)
 {
-	if (GTK_OBJECT_CLASS(parent_class)->destroy)
-		GTK_OBJECT_CLASS(parent_class)->destroy(obj);
+	if (G_OBJECT_CLASS(parent_class)->dispose)
+		G_OBJECT_CLASS(parent_class)->dispose(obj);
 }
 
 /**

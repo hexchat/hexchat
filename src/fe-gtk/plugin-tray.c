@@ -151,7 +151,7 @@ void
 fe_tray_set_tooltip (const char *text)
 {
 	if (sticon)
-		gtk_status_icon_set_tooltip (sticon, text);
+		gtk_status_icon_set_tooltip_text (sticon, text);
 }
 
 void

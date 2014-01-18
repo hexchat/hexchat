@@ -586,8 +586,8 @@ key_dialog_make_toggle (char *label, void *callback, void *option,
 
 	wid = gtk_check_button_new_with_label (label);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "toggled",
-							  GTK_SIGNAL_FUNC (callback), option);
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							  G_CALLBACK (callback), option);
 	gtk_box_pack_end (GTK_BOX (box), wid, 0, 0, 0);
 	gtk_widget_show (wid);
 
@@ -610,7 +610,7 @@ key_dialog_make_entry (char *label, char *act, void *callback, void *option,
 	wid = gtk_entry_new ();
 	if (act)
 	{
-		gtk_signal_connect (GTK_OBJECT (wid), act, GTK_SIGNAL_FUNC (callback),
+		g_signal_connect (G_OBJECT (wid), act, G_CALLBACK (callback),
 								  option);
 	}
 	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
@@ -744,13 +744,13 @@ key_dialog_show ()
 	gtk_box_pack_end (GTK_BOX (hbox), vbox2, 1, 1, 0);
 	wid = gtk_button_new_with_label (_("Add New"));
 	gtk_box_pack_start (GTK_BOX (vbox2), wid, 0, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
-							  GTK_SIGNAL_FUNC (key_dialog_add_new), list);
+	g_signal_connect (G_OBJECT (wid), "clicked",
+							  G_CALLBACK (key_dialog_add_new), list);
 	gtk_widget_show (wid);
 	wid = gtk_button_new_with_label (_("Delete"));
 	gtk_box_pack_start (GTK_BOX (vbox2), wid, 0, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
-							  GTK_SIGNAL_FUNC (key_dialog_delete), list);
+	g_signal_connect (G_OBJECT (wid), "clicked",
+							  G_CALLBACK (key_dialog_delete), list);
 	gtk_widget_show (wid);
 	gtk_widget_show (vbox2);
 
@@ -762,8 +762,8 @@ key_dialog_show ()
 		wid3 = gtk_menu_item_new_with_label (_(key_actions[i].name));
 		gtk_widget_show (wid3);
 		gtk_menu_shell_append (GTK_MENU_SHELL (wid2), wid3);
-		gtk_signal_connect (GTK_OBJECT (wid3), "activate",
-								  GTK_SIGNAL_FUNC (key_dialog_sel_act),
+		g_signal_connect (G_OBJECT (wid3), "activate",
+								  G_CALLBACK (key_dialog_sel_act),
 								  GINT_TO_POINTER (i));
 	}
 

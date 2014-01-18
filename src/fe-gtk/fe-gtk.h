@@ -56,9 +56,6 @@
 
 #include "banlist.h"
 
-#undef gtk_signal_connect
-#define gtk_signal_connect g_signal_connect
-
 #define flag_c flag_wid[0]
 #define flag_n flag_wid[1]
 #define flag_r flag_wid[2]

@@ -660,7 +660,7 @@ setup_create_3oggle (GtkWidget *tab, int row, const setting *set)
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	if (set->tooltip)
 	{
-		add_tip (label, _(set->tooltip));
+		gtk_widget_set_tooltip_text (label, _(set->tooltip));
 	}
 	gtk_table_attach (GTK_TABLE (tab), label, 2, 3, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
@@ -721,7 +721,7 @@ setup_create_toggleR (GtkWidget *tab, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (setup_toggle_cb), (gpointer)set);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_table_attach (GTK_TABLE (tab), wid, 4, 5, row, row + 1,
 							GTK_EXPAND | GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 }
@@ -737,7 +737,7 @@ setup_create_toggleL (GtkWidget *tab, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (setup_toggle_cb), (gpointer)set);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_table_attach (GTK_TABLE (tab), wid, 2, row==6 ? 6 : 4, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
@@ -756,7 +756,7 @@ setup_create_toggle (GtkWidget *box, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (setup_toggle_cb), (gpointer)set);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
 }
 #endif
@@ -802,7 +802,7 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 	wid = gtk_spin_button_new_with_range (0, set->extra, 1);
 	g_object_set_data (G_OBJECT (wid), "lbl", label);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
 										setup_get_int (&setup_prefs, set));
 	g_signal_connect (G_OBJECT (wid), "value_changed",
@@ -928,7 +928,7 @@ setup_create_radio (GtkWidget *table, int row, const setting *set)
 		{
 			wid = gtk_radio_button_new_with_mnemonic (group, _(text[i]));
 			/*if (set->tooltip)
-				add_tip (wid, _(set->tooltip));*/
+				gtk_widget_set_tooltip_text (wid, _(set->tooltip));*/
 			group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
 			gtk_container_add (GTK_CONTAINER (hbox), wid);
 			if (i == setup_get_int (&setup_prefs, set))
@@ -1025,10 +1025,10 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
-	cbox = gtk_combo_box_new_text ();
+	cbox = gtk_combo_box_text_new ();
 
 	for (i = 0; text[i]; i++)
-		gtk_combo_box_append_text (GTK_COMBO_BOX (cbox), _(text[i]));
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (cbox), _(text[i]));
 
 	gtk_combo_box_set_active (GTK_COMBO_BOX (cbox),
 									  setup_get_int (&setup_prefs, set) - set->extra);
@@ -1188,7 +1188,7 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	if (set->list)
 		gtk_entry_set_visibility (GTK_ENTRY (wid), FALSE);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_entry_set_max_length (GTK_ENTRY (wid), set->extra - 1);
 	gtk_entry_set_text (GTK_ENTRY (wid), setup_get_str (&setup_prefs, set));
 	g_signal_connect (G_OBJECT (wid), "changed",

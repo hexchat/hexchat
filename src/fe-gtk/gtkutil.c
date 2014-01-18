@@ -450,7 +450,7 @@ gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 							G_CALLBACK (callback), userdata);
 	gtk_widget_show (wid);
 	if (tip)
-		add_tip (wid, tip);
+		gtk_widget_set_tooltip_text (wid, tip);
 
 	return wid;
 }
@@ -544,15 +544,6 @@ gtkutil_clist_multiple_selection (GtkWidget * clist, int ** rows, const int max_
 	qsort(*rows, i, sizeof(int), (void *)int_compare);
 	return i;
 
-}
-
-void
-add_tip (GtkWidget * wid, char *text)
-{
-	static GtkTooltips *tip = NULL;
-	if (!tip)
-		tip = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tip, wid, text, 0);
 }
 
 void

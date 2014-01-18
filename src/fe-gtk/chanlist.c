@@ -870,16 +870,15 @@ chanlist_opengui (server *serv, int do_refresh)
 
 	wid = gtk_check_button_new_with_label (_("Channel name"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
-	gtk_signal_connect (GTK_OBJECT (wid), "toggled",
-							  GTK_SIGNAL_FUNC
-							  (chanlist_match_channel_button_toggled), serv);
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							  G_CALLBACK(chanlist_match_channel_button_toggled), serv);
 	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
 	gtk_widget_show (wid);
 
 	wid = gtk_check_button_new_with_label (_("Topic"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
-	gtk_signal_connect (GTK_OBJECT (wid), "toggled",
-							  GTK_SIGNAL_FUNC (chanlist_match_topic_button_toggled),
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							  G_CALLBACK (chanlist_match_topic_button_toggled),
 							  serv);
 	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
 	gtk_widget_show (wid);
@@ -895,11 +894,11 @@ chanlist_opengui (server *serv, int do_refresh)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_combo_box_new_text ();
-	gtk_combo_box_append_text (GTK_COMBO_BOX (wid), _("Simple Search"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (wid), _("Pattern Match (Wildcards)"));
+	wid = gtk_combo_box_text_new ();
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (wid), _("Simple Search"));
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (wid), _("Pattern Match (Wildcards)"));
 #ifndef WIN32
-	gtk_combo_box_append_text (GTK_COMBO_BOX (wid), _("Regular Expression"));
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (wid), _("Regular Expression"));
 #endif
 	gtk_combo_box_set_active (GTK_COMBO_BOX (wid), serv->gui->chanlist_search_type);
 	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 1, 2,
@@ -916,11 +915,12 @@ chanlist_opengui (server *serv, int do_refresh)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_entry_new_with_max_length (255);
-	gtk_signal_connect (GTK_OBJECT (wid), "changed",
-							  GTK_SIGNAL_FUNC (chanlist_find_cb), serv);
-	gtk_signal_connect (GTK_OBJECT (wid), "activate",
-							  GTK_SIGNAL_FUNC (chanlist_search_pressed),
+	wid = gtk_entry_new ();
+	gtk_entry_set_max_length (GTK_ENTRY(wid), 255);
+	g_signal_connect (G_OBJECT (wid), "changed",
+							  G_CALLBACK (chanlist_find_cb), serv);
+	g_signal_connect (G_OBJECT (wid), "activate",
+							  G_CALLBACK (chanlist_search_pressed),
 							  (gpointer) serv);
 	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 0, 1,
 							GTK_EXPAND | GTK_FILL, 0, 0, 0);

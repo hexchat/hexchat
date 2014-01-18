@@ -384,7 +384,8 @@ pevent_dialog_show ()
 
 	pevent_dialog_twid = gtk_xtext_new (colors, 0);
 
-	pevent_dialog_entry = gtk_entry_new_with_max_length (255);
+	pevent_dialog_entry = gtk_entry_new ();
+	gtk_entry_set_max_length (GTK_ENTRY (pevent_dialog_entry), 255);
 	g_signal_connect (G_OBJECT (pevent_dialog_entry), "activate",
 							G_CALLBACK (pevent_dialog_update), pevent_dialog_twid);
 	gtk_box_pack_start (GTK_BOX (bh), pevent_dialog_entry, 0, 0, 0);
@@ -394,7 +395,6 @@ pevent_dialog_show ()
 	gtk_container_add (GTK_CONTAINER (bh), tbox);
 	gtk_widget_show (tbox);
 
-	gtk_widget_set_usize (pevent_dialog_twid, 150, 20);
 	gtk_container_add (GTK_CONTAINER (tbox), pevent_dialog_twid);
 	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.hex_text_font);
 
@@ -418,8 +418,8 @@ pevent_dialog_show ()
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 2);
 	/*wid = gtk_button_new_with_label (_("Save"));
 	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
-							  GTK_SIGNAL_FUNC (pevent_save_cb), NULL);
+	g_signal_connect (G_OBJECT (wid), "clicked",
+							  G_CALLBACK (pevent_save_cb), NULL);
 	gtk_widget_show (wid);*/
 	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, NULL, pevent_save_cb,
 						 (void *) 1, _("Save As..."));

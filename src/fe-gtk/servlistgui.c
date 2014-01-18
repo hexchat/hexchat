@@ -1255,7 +1255,7 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
 	entry = gtk_entry_new ();
-	add_tip (entry, tip);
+	gtk_widget_set_tooltip_text (entry, tip);
 	gtk_widget_show (entry);
 	gtk_entry_set_text (GTK_ENTRY (entry), def ? def : "");
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
@@ -1573,7 +1573,7 @@ servlist_create_logintypecombo (GtkWidget *data)
 
 	gtk_combo_box_set_active (GTK_COMBO_BOX (cb), servlist_get_login_desc_index (selected_net->logintype));
 
-	add_tip (cb, _("The way you identify yourself to the server. For custom login methods use connect commands."));
+	gtk_widget_set_tooltip_text (cb, _("The way you identify yourself to the server. For custom login methods use connect commands."));
 	g_signal_connect (G_OBJECT (GTK_BIN (cb)), "changed", G_CALLBACK (servlist_logintypecombo_cb), data);
 
 	return cb;
@@ -1682,7 +1682,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow5), GTK_SHADOW_IN);
-	add_tip (scrolledwindow5, _("%n=Nick name\n%p=Password\n%r=Real name\n%u=User name"));
+	gtk_widget_set_tooltip_text (scrolledwindow5, _("%n=Nick name\n%p=Password\n%r=Real name\n%u=User name"));
 
 
 	/* Server Tree */
@@ -1804,7 +1804,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_table_set_col_spacings (GTK_TABLE (table3), 8);
 
 	check = servlist_create_check (0, !(net->flags & FLAG_CYCLE), table3, 0, 0, _("Connect to selected server only"));
-	add_tip (check, _("Don't cycle through all the servers when the connection fails."));
+	gtk_widget_set_tooltip_text (check, _("Don't cycle through all the servers when the connection fails."));
 	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3, 1, 0, _("Connect to this network automatically"));
 	servlist_create_check (4, !(net->flags & FLAG_USE_PROXY), table3, 2, 0, _("Bypass proxy server"));
 	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3, 3, 0, _("Use SSL for all the servers on this network"));
@@ -2103,7 +2103,7 @@ servlist_open_networks (void)
 	gtk_widget_set_can_default (button_edit, TRUE);
 
 	button_sort = gtk_button_new_with_mnemonic (_("_Sort"));
-	add_tip (button_sort, _("Sorts the network list in alphabetical order. "
+	gtk_widget_set_tooltip_text (button_sort, _("Sorts the network list in alphabetical order. "
 				"Use SHIFT-UP and SHIFT-DOWN keys to move a row."));
 	g_signal_connect (G_OBJECT (button_sort), "clicked",
 							G_CALLBACK (servlist_sort), 0);
@@ -2112,7 +2112,7 @@ servlist_open_networks (void)
 	gtk_widget_set_can_default (button_sort, TRUE);
 
 	button_sort = gtk_button_new_with_mnemonic (_("_Favor"));
-	add_tip (button_sort, _("Mark or unmark this network as a favorite."));
+	gtk_widget_set_tooltip_text (button_sort, _("Mark or unmark this network as a favorite."));
 	g_signal_connect (G_OBJECT (button_sort), "clicked",
 							G_CALLBACK (servlist_favor), 0);
 	gtk_widget_show (button_sort);

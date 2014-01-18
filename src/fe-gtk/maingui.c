@@ -692,17 +692,17 @@ mg_set_topic_tip (session *sess)
 		{
 			text = g_strdup_printf (_("Topic for %s is: %s"), sess->channel,
 						 sess->topic);
-			add_tip (sess->gui->topic_entry, text);
+			gtk_widget_set_tooltip_text (sess->gui->topic_entry, text);
 			g_free (text);
 		} else
-			add_tip (sess->gui->topic_entry, _("No topic is set"));
+			gtk_widget_set_tooltip_text (sess->gui->topic_entry, _("No topic is set"));
 		break;
 	default:
 		if (gtk_entry_get_text (GTK_ENTRY (sess->gui->topic_entry)) &&
 			 gtk_entry_get_text (GTK_ENTRY (sess->gui->topic_entry))[0])
-			add_tip (sess->gui->topic_entry, (char *)gtk_entry_get_text (GTK_ENTRY (sess->gui->topic_entry)));
+			gtk_widget_set_tooltip_text (sess->gui->topic_entry, (char *)gtk_entry_get_text (GTK_ENTRY (sess->gui->topic_entry)));
 		else
-			add_tip (sess->gui->topic_entry, NULL);
+			gtk_widget_set_tooltip_text (sess->gui->topic_entry, NULL);
 	}
 }
 
@@ -935,14 +935,14 @@ mg_populate (session *sess)
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (gui->lagometer),
 												 res->lag_value);
 		if (res->lag_tip)
-			add_tip (gtk_widget_get_parent (sess->gui->lagometer), res->lag_tip);
+			gtk_widget_set_tooltip_text (gtk_widget_get_parent (sess->gui->lagometer), res->lag_tip);
 	}
 	if (gui->throttlemeter)
 	{
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (gui->throttlemeter),
 												 res->queue_value);
 		if (res->queue_tip)
-			add_tip (gtk_widget_get_parent (sess->gui->throttlemeter), res->queue_tip);
+			gtk_widget_set_tooltip_text (gtk_widget_get_parent (sess->gui->throttlemeter), res->queue_tip);
 	}
 
 	/* did this tab have a connecting graph? restore it.. */
@@ -1192,7 +1192,6 @@ mg_open_quit_dialog (gboolean minimize_button)
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Quit HexChat?"));
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
 	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
-	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	dialog_vbox1 = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
 	gtk_widget_show (dialog_vbox1);
@@ -1994,7 +1993,7 @@ mg_create_flagbutton (char *tip, GtkWidget *box, char *face)
 
 	wid = gtk_toggle_button_new_with_label (face);
 	gtk_widget_set_size_request (wid, 18, 0);
-	add_tip (wid, tip);
+	gtk_widget_set_tooltip_text (wid, tip);
 	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (mg_flagbutton_cb), face);
@@ -2936,21 +2935,21 @@ mg_create_search(session *sess, GtkWidget *box)
 	g_signal_connect (G_OBJECT (highlight), "toggled", G_CALLBACK (search_set_option), &prefs.hex_text_search_highlight_all);
 	g_signal_connect (G_OBJECT (highlight), "toggled", G_CALLBACK (search_handle_refresh), sess);
 	gtk_box_pack_start(GTK_BOX(gui->shbox), highlight, FALSE, FALSE, 0);
-	add_tip (highlight, _("Highlight all occurrences, and underline the current occurrence."));
+	gtk_widget_set_tooltip_text (highlight, _("Highlight all occurrences, and underline the current occurrence."));
 
 	matchcase = gtk_check_button_new_with_mnemonic (_("Mat_ch case"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(matchcase), prefs.hex_text_search_case_match);
 	gtk_widget_set_can_focus (matchcase, FALSE);
 	g_signal_connect (G_OBJECT (matchcase), "toggled", G_CALLBACK (search_set_option), &prefs.hex_text_search_case_match);
 	gtk_box_pack_start(GTK_BOX(gui->shbox), matchcase, FALSE, FALSE, 0);
-	add_tip (matchcase, _("Perform a case-sensitive search."));
+	gtk_widget_set_tooltip_text (matchcase, _("Perform a case-sensitive search."));
 
 	regex = gtk_check_button_new_with_mnemonic (_("_Regex"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(regex), prefs.hex_text_search_regexp);
 	gtk_widget_set_can_focus (regex, FALSE);
 	g_signal_connect (G_OBJECT (regex), "toggled", G_CALLBACK (search_set_option), &prefs.hex_text_search_regexp);
 	gtk_box_pack_start(GTK_BOX(gui->shbox), regex, FALSE, FALSE, 0);
-	add_tip (regex, _("Regard search string as a regular expression."));
+	gtk_widget_set_tooltip_text (regex, _("Regard search string as a regular expression."));
 }
 
 static void
