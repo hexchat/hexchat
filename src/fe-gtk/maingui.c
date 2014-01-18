@@ -1593,7 +1593,7 @@ mg_create_tabmenu (session *sess, GdkEventButton *event, chan *ch)
 		menu_add_plugin_items (menu, "\x4$TAB", sess->channel);
 
 	if (event->window)
-		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
+		gtk_menu_set_screen (GTK_MENU (menu), gdk_window_get_screen (event->window));
 	g_object_ref (menu);
 	g_object_ref_sink (menu);
 	g_object_unref (menu);
@@ -3715,7 +3715,7 @@ mg_handle_drop (GtkWidget *widget, int y, int *pos, int *other_pos)
 	int height;
 	session_gui *gui = current_sess->gui;
 
-	gdk_drawable_get_size (gtk_widget_get_window (widget), NULL, &height);
+	height = gdk_window_get_height (gtk_widget_get_window (widget));
 
 	if (y < height / 2)
 	{
@@ -3794,7 +3794,8 @@ mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 		return FALSE;
 
 	cmap = gtk_widget_get_colormap (widget);
-	gdk_drawable_get_size (gtk_widget_get_window (widget), &width, &height);
+	width = gdk_window_get_width (gtk_widget_get_window (widget));
+	height = gdk_window_get_height (gtk_widget_get_window (widget));
 
 	pix = gdk_pixbuf_get_from_drawable (NULL, gtk_widget_get_window (widget), cmap, 0, 0, 0, 0, width, height);
 	pix2 = gdk_pixbuf_scale_simple (pix, width * 4 / 5, height / 2, GDK_INTERP_HYPER);
@@ -3874,7 +3875,8 @@ mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, gui
 	else
 	{
 		ox = oy = 0;
-		gdk_drawable_get_size (gtk_widget_get_window (widget), &width, &height);
+		width = gdk_window_get_width (gtk_widget_get_window (widget));
+		height = gdk_window_get_height (gtk_widget_get_window (widget));
 		draw = gtk_widget_get_window (widget);
 	}
 

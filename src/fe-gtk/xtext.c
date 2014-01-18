@@ -55,6 +55,9 @@
 #include <gdk/gdkwin32.h>
 #else
 #include <unistd.h>
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
 #endif
 
 /* is delimiter */
@@ -704,8 +707,8 @@ gtk_xtext_realize (GtkWidget * widget)
 		gdk_gc_set_fill (xtext->bgc, GDK_TILED);
 	}
 
-	xtext->hand_cursor = gdk_cursor_new_for_display (gdk_drawable_get_display (widget->window), GDK_HAND1);
-	xtext->resize_cursor = gdk_cursor_new_for_display (gdk_drawable_get_display (widget->window), GDK_LEFT_SIDE);
+	xtext->hand_cursor = gdk_cursor_new_for_display (gdk_window_get_display (widget->window), GDK_HAND1);
+	xtext->resize_cursor = gdk_cursor_new_for_display (gdk_window_get_display (widget->window), GDK_LEFT_SIDE);
 
 	gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
 	widget->style = gtk_style_attach (widget->style, widget->window);
@@ -1330,7 +1333,7 @@ gtk_xtext_scrolldown_timeout (GtkXText * xtext)
 	GtkAdjustment *adj = xtext->adj;
 
 	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, 0, &win_height);
+	win_height = gdk_window_get_height (gtk_widget_get_window (GTK_WIDGET (xtext)));
 
 	if (buf->last_ent_end == NULL ||	/* If context has changed OR */
 		 buf->pagetop_ent == NULL ||	/* pagetop_ent is reset OR */
@@ -1400,7 +1403,7 @@ gtk_xtext_selection_update (GtkXText * xtext, GdkEventMotion * event, int p_y, g
 		return;
 	}
 
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, 0, &win_height);
+	win_height = gdk_window_get_height (gtk_widget_get_window (GTK_WIDGET (xtext)));
 
 	/* selecting past top of window, scroll up! */
 	if (p_y < 0 && xtext->adj->value >= 0)
@@ -2092,20 +2095,22 @@ gtk_xtext_selection_get (GtkWidget * widget,
 		break;
 	case TARGET_TEXT:
 	case TARGET_COMPOUND_TEXT:
+#ifdef GDK_WINDOWING_X11
 		{
+			GdkDisplay *display = gdk_window_get_display (widget->window);
 			GdkAtom encoding;
 			gint format;
 			gint new_length;
 
-			gdk_string_to_compound_text_for_display (
-												gdk_drawable_get_display (widget->window),
-												stripped, &encoding, &format, &new_text,
-												&new_length);
+			gdk_x11_display_string_to_compound_text (display, stripped, &encoding,
+												&format, &new_text, &new_length);
 			gtk_selection_data_set (selection_data_ptr, encoding, format,
 											new_text, new_length);
-			gdk_free_compound_text (new_text);
+			gdk_x11_free_compound_text (new_text);
+
 		}
 		break;
+#endif
 	default:
 		new_text = g_locale_from_utf8 (stripped, len, NULL, &glen, NULL);
 		gtk_selection_data_set (selection_data_ptr, GDK_SELECTION_TYPE_STRING,
@@ -3039,7 +3044,7 @@ gtk_xtext_find_subline (GtkXText *xtext, textentry *ent, int line)
 	if (line <= RECORD_WRAPS)
 		return ent->wrap_offset[line - 1];
 
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &win_width, 0);
+	win_width = gdk_window_get_width (gtk_widget_get_window (GTK_WIDGET (xtext)));
 	win_width -= MARGIN;
 
 /*	indent = ent->indent;
@@ -3419,7 +3424,8 @@ gtk_xtext_calc_lines (xtext_buffer *buf, int fire_signal)
 	int height;
 	int lines;
 
-	gdk_drawable_get_size (GTK_WIDGET (buf->xtext)->window, &width, &height);
+	height = gdk_window_get_height (gtk_widget_get_window (GTK_WIDGET (buf->xtext)));
+	width = gdk_window_get_width (gtk_widget_get_window (GTK_WIDGET (buf->xtext)));
 	width -= MARGIN;
 
 	if (width < 30 || height < buf->xtext->fontsize || width < buf->indent + 30)
@@ -3514,7 +3520,8 @@ gtk_xtext_render_ents (GtkXText * xtext, textentry * enta, textentry * entb)
 	if (xtext->buffer->indent < MARGIN)
 		xtext->buffer->indent = MARGIN;	  /* 2 pixels is our left margin */
 
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
+	height = gdk_window_get_height (gtk_widget_get_window (GTK_WIDGET (xtext)));
+	width = gdk_window_get_width (gtk_widget_get_window (GTK_WIDGET (xtext)));
 	width -= MARGIN;
 
 	if (width < 32 || height < xtext->fontsize || width < xtext->buffer->indent + 30)
@@ -3595,7 +3602,6 @@ gtk_xtext_render_page (GtkXText * xtext)
 	int subline;
 	int startline = xtext->adj->value;
 	int pos, overlap;
-	GdkRectangle area;
 
 	if(!GTK_WIDGET_REALIZED(xtext))
 	  return;
@@ -3630,6 +3636,8 @@ gtk_xtext_render_page (GtkXText * xtext)
 #ifndef __APPLE__
 	if (!xtext->pixmap && abs (overlap) < height)
 	{
+		GdkRectangle area;
+
 		/* so the obscured regions are exposed */
 		gdk_gc_set_exposures (xtext->fgc, TRUE);
 		if (overlap < 1)	/* DOWN */
@@ -3879,7 +3887,6 @@ gtk_xtext_check_ent_visibility (GtkXText * xtext, textentry *find_ent, int add)
 	textentry *ent;
 	int lines;
 	xtext_buffer *buf = xtext->buffer;
-	int width;
 	int height;
 
 	if (find_ent == NULL)
@@ -3887,7 +3894,7 @@ gtk_xtext_check_ent_visibility (GtkXText * xtext, textentry *find_ent, int add)
 		return FALSE;
 	}
 
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
+	height = gdk_window_get_height (gtk_widget_get_window (GTK_WIDGET (xtext)));
 
 	ent = buf->pagetop_ent;
 	/* If top line not completely displayed return FALSE */
@@ -4679,7 +4686,8 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 	if (!GTK_WIDGET_REALIZED (GTK_WIDGET (xtext)))
 		gtk_widget_realize (GTK_WIDGET (xtext));
 
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &w, &h);
+	h = gdk_window_get_height (gtk_widget_get_window (GTK_WIDGET (xtext)));
+	w = gdk_window_get_width (gtk_widget_get_window (GTK_WIDGET (xtext)));
 
 	/* after a font change */
 	if (buf->needs_recalc)

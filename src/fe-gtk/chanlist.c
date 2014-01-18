@@ -615,7 +615,7 @@ chanlist_button_cb (GtkTreeView *tree, GdkEventButton *event, server *serv)
 
 	menu = gtk_menu_new ();
 	if (event->window)
-		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
+		gtk_menu_set_screen (GTK_MENU (menu), gdk_window_get_screen (event->window));
 	g_object_ref (menu);
 	g_object_ref_sink (menu);
 	g_object_unref (menu);
