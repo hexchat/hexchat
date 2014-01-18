@@ -1321,6 +1321,11 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 			ent = ent->next;
 		}
 	}
+	else
+	{
+		if (xtext->mark_stamp)
+			offset_start = 0;
+	}
 
 	if (render)
 		gtk_xtext_selection_render (xtext, ent_start, offset_start, ent_end, offset_end);
