@@ -518,7 +518,7 @@ gtk_xtext_new (GdkColor palette[], int separator)
 }
 
 static void
-gtk_xtext_destroy (GObject * object)
+gtk_xtext_destroy (GtkObject * object)
 {
 	GtkXText *xtext = GTK_XTEXT (object);
 
@@ -2155,7 +2155,7 @@ gtk_xtext_scroll (GtkWidget *widget, GdkEventScroll *event)
 static void
 gtk_xtext_class_init (GtkXTextClass * class)
 {
-	GObjectClass *object_class;
+	GtkObjectClass *object_class;
 	GtkWidgetClass *widget_class;
 	GtkXTextClass *xtext_class;
 
@@ -2163,7 +2163,7 @@ gtk_xtext_class_init (GtkXTextClass * class)
 	widget_class = (GtkWidgetClass *) class;
 	xtext_class = (GtkXTextClass *) class;
 
-	parent_class = g_type_class_peek (g_object_get_type ());
+	parent_class = g_type_class_peek (gtk_widget_get_type ());
 
 	xtext_signals[WORD_CLICK] =
 		g_signal_new ("word_click",
@@ -2174,7 +2174,7 @@ gtk_xtext_class_init (GtkXTextClass * class)
 							gtk_marshal_VOID__POINTER_POINTER,
 							G_TYPE_NONE,
 							2, G_TYPE_POINTER, G_TYPE_POINTER);
-	object_class->dispose = gtk_xtext_destroy;
+	object_class->destroy = gtk_xtext_destroy;
 
 	widget_class->realize = gtk_xtext_realize;
 	widget_class->unrealize = gtk_xtext_unrealize;
