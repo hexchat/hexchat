@@ -1,4 +1,4 @@
-EXTRA_DIST = INSTALL LICENSE README
+EXTRA_DIST = INSTALL LICENSE
 
 libdir = $(hexchatlibdir)
 

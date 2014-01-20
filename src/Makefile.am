@@ -1,7 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST = fe-text/fe-text.c \
-	fe-text/README fe-text/fe-text.h version-script
+EXTRA_DIST = version-script
 
 if DO_TEXT
 text_fe = fe-text

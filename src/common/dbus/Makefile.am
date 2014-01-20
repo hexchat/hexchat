@@ -9,8 +9,7 @@ EXTRA_DIST =				\
 	remote-object.xml		\
 	marshallers.list		\
 	example.py			\
-	org.hexchat.service.service.in \
-	README
+	org.hexchat.service.service.in
 
 BUILT_SOURCES =				\
 	marshallers.h			\
