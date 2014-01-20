@@ -1,5 +1,5 @@
 
-EXTRA_DIST=alt_completion.pl generate_header lib/HexChat.pm lib/Xchat.pm lib/HexChat/Embed.pm lib/HexChat/List/Network.pm \
+EXTRA_DIST=generate_header lib/HexChat.pm lib/Xchat.pm lib/HexChat/Embed.pm lib/HexChat/List/Network.pm \
 	lib/HexChat/List/Network/Entry.pm lib/HexChat/List/Network/AutoJoin.pm lib/IRC.pm
 
 libdir = $(hexchatlibdir)
