@@ -615,8 +615,8 @@ gtk_xtext_destroy (GtkObject * object)
 		xtext->orig_buffer = NULL;
 	}
 
-	if (G_OBJECT_CLASS (parent_class)->dispose)
-		(*G_OBJECT_CLASS (parent_class)->dispose) (object);
+	if (GTK_OBJECT_CLASS (parent_class)->destroy)
+		(*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
 static void
@@ -2159,7 +2159,7 @@ gtk_xtext_class_init (GtkXTextClass * class)
 	GtkWidgetClass *widget_class;
 	GtkXTextClass *xtext_class;
 
-	object_class = (GObjectClass *) class;
+	object_class = (GtkObjectClass *) class;
 	widget_class = (GtkWidgetClass *) class;
 	xtext_class = (GtkXTextClass *) class;
 
