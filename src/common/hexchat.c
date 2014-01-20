@@ -447,6 +447,7 @@ irc_init (session *sess)
 
 	if (arg_command != NULL)
 	{
+		handle_command (sess, arg_command, FALSE);
 		g_free (arg_command);
 	}
 
