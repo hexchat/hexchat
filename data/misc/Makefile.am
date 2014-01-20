@@ -1,9 +1,10 @@
 util_DATA = hexchat.desktop
 utildir = $(datadir)/applications
 
-appdata_DATA = hexchat.appdata.xml
+appdata_in_files = hexchat.appdata.xml.in
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 appdatadir = $(datadir)/appdata
-
+@INTLTOOL_XML_RULE@
 
 if WITH_TM
 util_DATA += htm.desktop
@@ -21,3 +22,6 @@ uninstall-hook:
 	$(UPDATE_MIME_DATABASE);
 	$(UPDATE_DESKTOP_DATABASE);
 endif
+
+CLEANFILES = $(appdata_DATA)
+
