@@ -93,6 +93,24 @@ static const struct defaultserver def[] =
 	{0,			"au.alphachat.net"},
 	{0,			"za.alphachat.net"},
 
+	{"Anthrochat", 0},
+#ifdef USE_OPENSSL
+	{0,			"bear.anthrochat.net/+6697"},
+	{0,			"cheetah.anthrochat.net/+6697"},
+	{0,			"husky.anthrochat.net/+6697"},
+	{0,			"lion.anthrochat.net/+6697"},
+	{0,			"otter.anthrochat.net/+6697"},
+	{0,			"snowleopard.anthrochat.net/+6697"},
+	//{0,			"panda.anthrochat.net/+6697"},		/* Server wasn't up last time I tried, still listed at the website though */
+#endif
+	{0,			"bear.anthrochat.net"},
+	{0,			"cheetah.anthrochat.net"},
+	{0,			"husky.anthrochat.net"},
+	{0,			"lion.anthrochat.net"},
+	{0,			"otter.anthrochat.net"},
+	//{0,			"panda.anthrochat.net"},			/* Server wasn't up last time I tried, still listed at the website though */
+	{0,			"snowleopard.anthrochat.net"},
+
 	{"ARCNet",	0},
 	{0,			"se1.arcnet.vapor.com"},
 	{0,			"us1.arcnet.vapor.com"},
