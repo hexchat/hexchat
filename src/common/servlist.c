@@ -232,6 +232,34 @@ static const struct defaultserver def[] =
 	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
 
+	{"Furnet",	0},
+#ifdef USE_IPV6
+#ifdef USE_OPENSSL
+	{0,			"ipv6.alicorn.furnet.org/+6697"},
+	{0,			"ipv6.coyote.furnet.org/+6697"},
+	{0,			"ipv6.panther.furnet.org/+6697"},
+#endif
+	{0,			"ipv6.coyote.furnet.org"},
+	{0,			"ipv6.panther.furnet.org"},
+	{0,			"ipv6.alicorn.furnet.org"},
+#endif
+#ifdef USE_OPENSSL
+	{0,			"alicorn.furnet.org/+6697"},
+	{0,			"kinglion.furnet.org/+6697"},
+	{0,			"panther.furnet.org/+6697"},
+	{0,			"lynx.furnet.org/+6697"},
+	{0,			"coyote.furnet.org/+6697"},
+	{0,			"wolf.furnet.org/+6697"},
+	{0,			"foxtaur.furnet.org/+6697"},
+#endif
+	{0,			"alicorn.furnet.org"},
+	{0,			"kinglion.furnet.org"},
+	{0,			"panther.furnet.org"},
+	{0,			"lynx.furnet.org"},
+	{0,			"coyote.furnet.org"},
+	{0,			"wolf.furnet.org"},
+	{0,			"foxtaur.furnet.org"},
+
 	{"Fusion Latina",	0},
 	{0,					"irc.fusionlatina.org/2012"},
 
