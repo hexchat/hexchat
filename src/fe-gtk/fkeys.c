@@ -96,9 +96,8 @@ struct gcomp_data
 	int elen;
 };
 
-static int key_load_kbs (char *);
-static void key_load_defaults ();
-static void key_save_kbs (char *);
+static int key_load_kbs ();
+static void key_save_kbs ();
 static int key_action_handle_command (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
@@ -173,15 +172,52 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	 N_("Push input line into history but doesn't send to server")},
 };
 
+#define default_kb_cfg \
+	"C\nPrior\nChange Page\nD1:-1\nD2:Relative\n\n"\
+	"C\nNext\nChange Page\nD1:1\nD2:Relative\n\n"\
+	"A\n9\nChange Page\nD1:9\nD2!\n\n"\
+	"A\n8\nChange Page\nD1:8\nD2!\n\n"\
+	"A\n7\nChange Page\nD1:7\nD2!\n\n"\
+	"A\n6\nChange Page\nD1:6\nD2!\n\n"\
+	"A\n5\nChange Page\nD1:5\nD2!\n\n"\
+	"A\n4\nChange Page\nD1:4\nD2!\n\n"\
+	"A\n3\nChange Page\nD1:3\nD2!\n\n"\
+	"A\n2\nChange Page\nD1:2\nD2!\n\n"\
+	"A\n1\nChange Page\nD1:1\nD2!\n\n"\
+	"A\ngrave\nChange Page\nD1:auto\nD2!\n\n"\
+	"C\no\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"C\nb\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"C\nk\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"C\ni\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"C\nu\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"S\nNext\nChange Selected Nick\nD1!\nD2!\n\n"\
+	"S\nPrior\nChange Selected Nick\nD1:Up\nD2!\n\n"\
+	"None\nNext\nScroll Page\nD1:Down\nD2!\n\n"\
+	"C\nHome\nScroll Page\nD1:Top\nD2!\n\n"\
+	"C\nEnd\nScroll Page\nD1:Bottom\nD2!\n\n"\
+	"None\nPrior\nScroll Page\nD1:Up\nD2!\n\n"\
+	"S\nDown\nScroll Page\nD1:+1\nD2!\n\n"\
+	"S\nUp\nScroll Page\nD1:-1\nD2!\n\n"\
+	"None\nDown\nNext Command\nD1!\nD2!\n\n"\
+	"None\nUp\nLast Command\nD1!\nD2!\n\n"\
+	"None\nTab\nComplete nick/command\nD1!\nD2!\n\n"\
+	"None\nspace\nCheck For Replace\nD1!\nD2!\n\n"\
+	"None\nReturn\nCheck For Replace\nD1!\nD2!\n\n"\
+	"None\nKP_Enter\nCheck For Replace\nD1!\nD2!\n\n"\
+	"C\nTab\nComplete nick/command\nD1:Up\nD2!\n\n"\
+	"A\nLeft\nMove front tab left\nD1!\nD2!\n\n"\
+	"A\nRight\nMove front tab right\nD1!\nD2!\n\n"\
+	"CS\nPrior\nMove tab family left\nD1!\nD2!\n\n"\
+	"CS\nNext\nMove tab family right\nD1!\nD2!\n\n"\
+	"None\nF9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
+
 void
 key_init ()
 {
 	keys_root = NULL;
-	if (key_load_kbs (NULL) == 1)
+	if (key_load_kbs () == 1)
 	{
-		key_load_defaults ();
-		if (key_load_kbs (NULL) == 1)
-			fe_message (_("There was an error loading key"
+		fe_message (_("There was an error loading key"
 							" bindings configuration"), FE_MSG_ERROR);
 	}
 }
@@ -362,63 +398,10 @@ static GtkWidget *key_dialog_ent_key, *key_dialog_ent_d1, *key_dialog_ent_d2;
 static GtkWidget *key_dialog_text;
 
 static void
-key_load_defaults ()
-{
-		/* This is the default config */
-#define defcfg \
-		"C\nPrior\nChange Page\nD1:-1\nD2:Relative\n\n"\
-		"C\nNext\nChange Page\nD1:1\nD2:Relative\n\n"\
-		"A\n9\nChange Page\nD1:9\nD2!\n\n"\
-		"A\n8\nChange Page\nD1:8\nD2!\n\n"\
-		"A\n7\nChange Page\nD1:7\nD2!\n\n"\
-		"A\n6\nChange Page\nD1:6\nD2!\n\n"\
-		"A\n5\nChange Page\nD1:5\nD2!\n\n"\
-		"A\n4\nChange Page\nD1:4\nD2!\n\n"\
-		"A\n3\nChange Page\nD1:3\nD2!\n\n"\
-		"A\n2\nChange Page\nD1:2\nD2!\n\n"\
-		"A\n1\nChange Page\nD1:1\nD2!\n\n"\
-		"A\ngrave\nChange Page\nD1:auto\nD2!\n\n"\
-		"C\no\nInsert in Buffer\nD1:\nD2!\n\n"\
-		"C\nb\nInsert in Buffer\nD1:\nD2!\n\n"\
-		"C\nk\nInsert in Buffer\nD1:\nD2!\n\n"\
-		"C\ni\nInsert in Buffer\nD1:\nD2!\n\n"\
-		"C\nu\nInsert in Buffer\nD1:\nD2!\n\n"\
-		"S\nNext\nChange Selected Nick\nD1!\nD2!\n\n"\
-		"S\nPrior\nChange Selected Nick\nD1:Up\nD2!\n\n"\
-		"None\nNext\nScroll Page\nD1:Down\nD2!\n\n"\
-		"C\nHome\nScroll Page\nD1:Top\nD2!\n\n"\
-		"C\nEnd\nScroll Page\nD1:Bottom\nD2!\n\n"\
-		"None\nPrior\nScroll Page\nD1:Up\nD2!\n\n"\
-		"S\nDown\nScroll Page\nD1:+1\nD2!\n\n"\
-		"S\nUp\nScroll Page\nD1:-1\nD2!\n\n"\
-		"None\nDown\nNext Command\nD1!\nD2!\n\n"\
-		"None\nUp\nLast Command\nD1!\nD2!\n\n"\
-		"None\nTab\nComplete nick/command\nD1!\nD2!\n\n"\
-		"None\nspace\nCheck For Replace\nD1!\nD2!\n\n"\
-		"None\nReturn\nCheck For Replace\nD1!\nD2!\n\n"\
-		"None\nKP_Enter\nCheck For Replace\nD1!\nD2!\n\n"\
-		"C\nTab\nComplete nick/command\nD1:Up\nD2!\n\n"\
-		"A\nLeft\nMove front tab left\nD1!\nD2!\n\n"\
-		"A\nRight\nMove front tab right\nD1!\nD2!\n\n"\
-		"CS\nPrior\nMove tab family left\nD1!\nD2!\n\n"\
-		"CS\nNext\nMove tab family right\nD1!\nD2!\n\n"\
-		"None\nF9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
-	int fd;
-
-	fd = hexchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY, 0x180, XOF_DOMODE);
-	if (fd < 0)
-		/* ???!!! */
-		return;
-
-	write (fd, defcfg, strlen (defcfg));
-	close (fd);
-}
-
-static void
 key_dialog_close ()
 {
 	key_dialog = NULL;
-	key_save_kbs (NULL);
+	key_save_kbs ();
 }
 
 static void
@@ -811,18 +794,14 @@ key_dialog_show ()
 }
 
 static void
-key_save_kbs (char *fn)
+key_save_kbs (void)
 {
 	int fd, i;
 	char buf[512];
 	struct key_binding *kb;
 
-	if (!fn)
-		fd = hexchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY,
+	fd = hexchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY,
 									 0x180, XOF_DOMODE);
-	else
-		fd = hexchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY,
-									 0x180, XOF_DOMODE | XOF_FULLPATH);
 	if (fd < 0)
 	{
 		fe_message (_("Error opening keys config file\n"), FE_MSG_ERROR);
@@ -938,26 +917,35 @@ key_load_kbs_helper_mod (char *in, int *out)
 /* *** Warning, Warning! - massive function ahead! --AGL */
 
 static int
-key_load_kbs (char *filename)
+key_load_kbs (void)
 {
 	char *buf, *ibuf;
 	struct stat st;
 	struct key_binding *kb = NULL, *last = NULL;
 	int fd, len, pnt = 0, state = 0, n;
+	off_t size;
 
-	if (filename == NULL)
-		fd = hexchat_open_file ("keybindings.conf", O_RDONLY, 0, 0);
-	else
-		fd = hexchat_open_file (filename, O_RDONLY, 0, XOF_FULLPATH);
+	fd = hexchat_open_file ("keybindings.conf", O_RDONLY, 0, 0);
 	if (fd < 0)
-		return 1;
-	if (fstat (fd, &st) != 0)
-		return 1;
-	ibuf = malloc (st.st_size);
-	read (fd, ibuf, st.st_size);
-	close (fd);
+	{
+		ibuf = strdup (default_kb_cfg);
+		size = strlen (default_kb_cfg);
+	}
+	else
+	{
+		if (fstat (fd, &st) != 0)
+		{
+			close (fd);
+			return 1;
+		}
 
-	while (buf_get_line (ibuf, &buf, &pnt, st.st_size))
+		ibuf = malloc (st.st_size);
+		read (fd, ibuf, st.st_size);
+		size = st.st_size;
+		close (fd);
+	}
+
+	while (buf_get_line (ibuf, &buf, &pnt, size))
 	{
 		if (buf[0] == '#')
 			continue;
