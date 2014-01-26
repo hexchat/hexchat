@@ -1089,7 +1089,7 @@ main (int argc, char *argv[])
 	{
 		/* this is probably the first run */
 		load_default_config ();
-		make_config_dirs (); /* FIXME: if this fail display an error (?) */
+		make_config_dirs ();
 		make_dcc_dirs ();
 	}
 
@@ -1113,6 +1113,18 @@ main (int argc, char *argv[])
 #endif
 
 	fe_init ();
+
+	/* This is done here because cfgfiles.c is too early in
+	* the startup process to use gtk functions. */
+	if (g_access (get_xdir (), W_OK) != 0)
+	{
+		char buf[2048];
+
+		g_snprintf (buf, sizeof(buf),
+			_("You do not have write access to %s. Nothing from this session can be saved."),
+			get_xdir ());
+		fe_message (buf, FE_MSG_ERROR);
+	}
 
 #ifndef WIN32
 #ifndef __EMX__
