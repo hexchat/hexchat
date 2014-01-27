@@ -39,6 +39,8 @@ export PANGO_SYSCONFDIR="$bundle_etc"
 #export PYTHONHOME="$bundle_res"
 #export PYTHONPATH="$bundle_lib/python2.7:$bundle_lib/python2.7/site-packages"
 
+export HEXCHAT_LIBDIR="$bundle_lib/hexchat/plugins"
+
 APP=name
 I18NDIR="$bundle_data/locale"
 # Set the locale-related variables appropriately:
