@@ -4084,6 +4084,31 @@ find_internal_command (char *name)
 				sizeof (xc_cmds[0])) - 1, sizeof (xc_cmds[0]), command_compare);
 }
 
+static gboolean
+usercommand_show_help (session *sess, char *name)
+{
+	struct popup *pop;
+	gboolean found = FALSE;
+	char buf[1024];
+	GSList *list;
+
+	list = command_list;
+	while (list)
+	{
+		pop = (struct popup *) list->data;
+		if (!g_ascii_strcasecmp (pop->name, name))
+		{
+			snprintf (buf, sizeof(buf), _("User Command for: %s\n"), pop->cmd);
+			PrintText (sess, buf);
+
+			found = TRUE;
+		}
+		list = list->next;
+	}
+
+	return found;
+}
+
 static void
 help (session *sess, char *tbuf, char *helpcmd, int quiet)
 {
@@ -4092,8 +4117,10 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
 	if (plugin_show_help (sess, helpcmd))
 		return;
 
-	cmd = find_internal_command (helpcmd);
+	if (usercommand_show_help (sess, helpcmd))
+		return;
 
+	cmd = find_internal_command (helpcmd);
 	if (cmd)
 	{
 		if (cmd->help)
