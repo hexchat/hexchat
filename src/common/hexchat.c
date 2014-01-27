@@ -286,12 +286,16 @@ lag_check (void)
 								 NULL, NULL, 0);
 				if (prefs.hex_net_auto_reconnect)
 					serv->auto_reconnect (serv, FALSE, -1);
-			} else if (!serv->lag_sent)
+			} else
 			{
 				snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
 				serv->p_ping (serv, "", tbuf);
-				serv->lag_sent = tim;
-				fe_set_lag (serv, -1);
+				
+				if (!serv->lag_sent)
+				{
+					serv->lag_sent = tim;
+					fe_set_lag (serv, -1);
+				}
 			}
 		}
 		list = list->next;
