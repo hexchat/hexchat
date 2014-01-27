@@ -1459,7 +1459,7 @@ make_ping_time (void)
 	GTimeVal timev;
 	g_get_current_time (&timev);
 #endif
-	return (timev.tv_sec - 50000) * 1000000 + timev.tv_usec;
+	return (timev.tv_sec - 50000) * 1000 + timev.tv_usec/1000;
 }
 
 

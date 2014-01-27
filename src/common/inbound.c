@@ -892,8 +892,8 @@ inbound_ping_reply (session *sess, char *timestring, char *from,
 	if (lag)
 	{
 		sess->server->lag_sent = 0;
-		sess->server->lag = dif / 1000;
-		fe_set_lag (sess->server, dif / 100000);
+		sess->server->lag = dif;
+		fe_set_lag (sess->server, dif);
 		return;
 	}
 
@@ -906,7 +906,7 @@ inbound_ping_reply (session *sess, char *timestring, char *from,
 										  tags_data->timestamp);
 	} else
 	{
-		snprintf (outbuf, sizeof (outbuf), "%ld.%ld%ld", dif / 1000000, (dif / 100000) % 10, dif % 10);
+		snprintf (outbuf, sizeof (outbuf), "%ld.%03ld", dif / 1000, dif % 1000);
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_PINGREP, sess, from, outbuf, NULL, NULL, 0,
 									  tags_data->timestamp);
 	}
