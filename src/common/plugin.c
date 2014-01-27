@@ -479,36 +479,50 @@ plugin_auto_load_cb (char *filename)
 	}
 }
 
+static char *
+plugin_get_libdir ()
+{
+	const char *libdir;
+
+	libdir = g_getenv ("HEXCHAT_LIBDIR");
+	if (libdir && *libdir)
+		return (char*)libdir;
+	else
+		return HEXCHATLIBDIR;
+}
+
 void
 plugin_auto_load (session *sess)
 {
+	char *lib_dir; 
 	char *sub_dir;
 	ps = sess;
 
+	lib_dir = plugin_get_libdir ();
 	sub_dir = g_build_filename (get_xdir (), "addons", NULL);
 
 #ifdef WIN32
 	/* a long list of bundled plugins that should be loaded automatically,
 	 * user plugins should go to <config>, leave Program Files alone! */
-	for_files (HEXCHATLIBDIR, "hcchecksum.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcdoat.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcexec.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcfishlim.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcmpcinfo.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcperl.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcpython2.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcpython3.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcupd.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcwinamp.dll", plugin_auto_load_cb);
-	for_files (HEXCHATLIBDIR, "hcsysinfo.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcchecksum.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcdoat.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcexec.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcfishlim.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcmpcinfo.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcperl.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcpython2.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcpython3.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcupd.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcwinamp.dll", plugin_auto_load_cb);
+	for_files (lib_dir, "hcsysinfo.dll", plugin_auto_load_cb);
 
 	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
 #else
 #if defined(__hpux)
-	for_files (HEXCHATLIBDIR, "*.sl", plugin_auto_load_cb);
+	for_files (lib_dir, "*.sl", plugin_auto_load_cb);
 	for_files (sub_dir, "*.sl", plugin_auto_load_cb);
 #else
-	for_files (HEXCHATLIBDIR, "*.so", plugin_auto_load_cb);
+	for_files (lib_dir, "*.so", plugin_auto_load_cb);
 	for_files (sub_dir, "*.so", plugin_auto_load_cb);
 #endif
 #endif
@@ -1166,7 +1180,7 @@ hexchat_get_info (hexchat_plugin *ph, const char *id)
 	switch (hash)
 	{
 		case 0x325acab5:	/* libdirfs */
-			return HEXCHATLIBDIR;
+			return plugin_get_libdir ();
 
 		case 0x14f51cd8: /* version */
 			return PACKAGE_VERSION;
