@@ -13,3 +13,7 @@ fi
 rm -rf HexChat.app
 
 $JHBUILD_PREFIX/bin/python $HOME/.local/bin/gtk-mac-bundler hexchat.bundle
+
+# These take up a lot of space in the bundle
+echo "Cleaning up python files"
+find ./HexChat.app/Contents/Resources/lib/python2.7 -name "*.pyo" -or -name "*.pyc" -delete
