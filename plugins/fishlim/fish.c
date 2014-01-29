@@ -22,6 +22,11 @@
 
 */
 
+#ifdef __APPLE__
+#define __AVAILABILITYMACROS__
+#define DEPRECATED_IN_MAC_OS_X_VERSION_10_7_AND_LATER
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <openssl/blowfish.h>
