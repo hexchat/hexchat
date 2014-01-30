@@ -14,6 +14,10 @@ EXTRA_DIST = \
 	sexy-spell-entry.h sexy-marshal.h textgui.h urlgrab.h userlistgui.h xtext.h \
 	../../data/hexchat.gresource.xml
 
+BUILT_SOURCES = resources.c
+
+CLEANFILES = $(BUILT_SOURCES)
+
 if DO_PLUGIN
 plugingui_c = plugingui.c
 endif
