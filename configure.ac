@@ -838,6 +838,7 @@ src/fe-text/Makefile
 src/fe-gtk/Makefile
 src/htm/Makefile
 src/htm/thememan
+osx/Info.plist
 plugins/Makefile
 plugins/python/Makefile
 plugins/perl/Makefile
