@@ -52,4 +52,8 @@ gboolean gtkutil_treemodel_string_to_iter (GtkTreeModel *model, gchar *pathstr, 
 gboolean gtkutil_treeview_get_selected_iter (GtkTreeView *view, GtkTreeIter *iter_ret);
 gboolean gtkutil_treeview_get_selected (GtkTreeView *view, GtkTreeIter *iter_ret, ...);
 
+#if defined (WIN32) || defined (__APPLE__)
+gboolean gtkutil_find_font (const char *fontname);
+#endif
+
 #endif

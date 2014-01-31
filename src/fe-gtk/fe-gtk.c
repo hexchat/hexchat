@@ -1113,3 +1113,20 @@ fe_open_chan_list (server *serv, char *filter, int do_refresh)
 {
 	chanlist_opengui (serv, do_refresh);
 }
+
+const char *
+fe_get_default_font (void)
+{
+#ifdef WIN32
+	if (gtkutil_find_font ("Consolas"))
+		return "Consolas 10";
+	else
+#else
+#ifdef __APPLE__
+	if (gtkutil_find_font ("Menlo"))
+		return "Menlo 13";
+	else
+#endif
+#endif
+		return NULL;
+}

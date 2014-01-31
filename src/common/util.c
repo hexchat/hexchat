@@ -33,7 +33,6 @@
 #include <sys/timeb.h>
 #include <process.h>
 #include <io.h>
-#include <pango/pangocairo.h>		/* for find_font() */
 #include "../dirent/dirent-win32.h"
 #include "../../config-win32.h"
 #else
@@ -2177,37 +2176,6 @@ end:
 		free (response);
 
 	return ret;
-}
-#endif
-
-#ifdef WIN32
-int
-find_font (const char *fontname)
-{
-	int i;
-	int n_families;
-	const char *family_name;
-	PangoFontMap *fontmap;
-	PangoFontFamily *family;
-	PangoFontFamily **families;
-
-	fontmap = pango_cairo_font_map_get_default ();
-	pango_font_map_list_families (fontmap, &families, &n_families);
-
-	for (i = 0; i < n_families; i++)
-	{
-		family = families[i];
-		family_name = pango_font_family_get_name (family);
-
-		if (!g_ascii_strcasecmp (family_name, fontname))
-		{
-			g_free (families);
-			return 1;
-		}
-	}
-
-	g_free (families);
-	return 0;
 }
 #endif
 

@@ -731,7 +731,7 @@ get_default_spell_languages (void)
 void
 load_default_config(void)
 {
-	const char *username, *realname;
+	const char *username, *realname, *font;
 	char *sp;
 #ifdef WIN32
 	char out[256];
@@ -891,21 +891,19 @@ load_default_config(void)
 	strcpy (prefs.hex_irc_user_name, username);
 	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
-#ifdef WIN32
-	if (find_font ("Consolas"))
+
+	font = fe_get_default_font ();
+	if (font)
 	{
-		strcpy (prefs.hex_text_font, "Consolas 10");
-		strcpy (prefs.hex_text_font_main, "Consolas 10");
+		strcpy (prefs.hex_text_font, font);
+		strcpy (prefs.hex_text_font_main, font);
 	}
 	else
 	{
 		strcpy (prefs.hex_text_font, DEF_FONT);
 		strcpy (prefs.hex_text_font_main, DEF_FONT);
 	}
-#else
-	strcpy (prefs.hex_text_font, DEF_FONT);
-	strcpy (prefs.hex_text_font_main, DEF_FONT);
-#endif
+
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
 	strcpy (prefs.hex_text_spell_langs, get_default_spell_languages ());
 

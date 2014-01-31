@@ -913,3 +913,8 @@ fe_open_chan_list (server *serv, char *filter, int do_refresh)
 {
 	serv->p_list_channels (serv, filter, 1);
 }
+const char *
+fe_get_default_font (void)
+{
+	return NULL;
+}

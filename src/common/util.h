@@ -65,7 +65,6 @@ int waitline (int sok, char *buf, int bufsize, int);
 #ifdef WIN32
 int waitline2 (GIOChannel *source, char *buf, int bufsize);
 int get_cpu_arch (void);
-int find_font (const char *fontname);
 #else
 #define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
 #endif
