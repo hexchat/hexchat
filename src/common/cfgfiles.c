@@ -926,7 +926,7 @@ make_config_dirs (void)
 {
 	char *buf;
 
-	if (g_mkdir (get_xdir (), 0700) != 0)
+	if (g_mkdir_with_parents (get_xdir (), 0700) != 0)
 		return -1;
 	
 	buf = g_build_filename (get_xdir (), "addons", NULL);
