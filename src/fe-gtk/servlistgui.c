@@ -944,6 +944,7 @@ static int
 servlist_savegui (void)
 {
 	char *sp;
+	char *nick1, *nick2;
 
 	/* check for blank username, ircd will not allow this */
 	if (gtk_entry_get_text (GTK_ENTRY (entry_guser))[0] == 0)
@@ -952,8 +953,15 @@ servlist_savegui (void)
 	/* if (gtk_entry_get_text (GTK_ENTRY (entry_greal))[0] == 0)
 		return 1; */
 
-	strcpy (prefs.hex_irc_nick1, gtk_entry_get_text (GTK_ENTRY (entry_nick1)));
-	strcpy (prefs.hex_irc_nick2, gtk_entry_get_text (GTK_ENTRY (entry_nick2)));
+	nick1 = gtk_entry_get_text (GTK_ENTRY (entry_nick1));
+	nick2 = gtk_entry_get_text (GTK_ENTRY (entry_nick2));
+
+	/* ensure unique nicknames */
+	if (!rfc_casecmp (nick1, nick2))
+		return 2;
+
+	strcpy (prefs.hex_irc_nick1, nick1);
+	strcpy (prefs.hex_irc_nick2, nick2);
 	strcpy (prefs.hex_irc_nick3, gtk_entry_get_text (GTK_ENTRY (entry_nick3)));
 	strcpy (prefs.hex_irc_user_name, gtk_entry_get_text (GTK_ENTRY (entry_guser)));
 	sp = strchr (prefs.hex_irc_user_name, ' ');
@@ -1104,12 +1112,20 @@ servlist_toggle_global_user (gboolean sensitive)
 static void
 servlist_connect_cb (GtkWidget *button, gpointer userdata)
 {
+	int servlist_err;
+
 	if (!selected_net)
 		return;
 
-	if (servlist_savegui () != 0)
+	servlist_err = servlist_savegui ();
+	if (servlist_err == 1)
 	{
-		fe_message (_("User name and Real name cannot be left blank."), FE_MSG_ERROR);
+		fe_message (_("User name cannot be left blank."), FE_MSG_ERROR);
+		return;
+	}
+	else if (servlist_err == 2)
+	{
+		fe_message (_("You must have a unique nickname for Second Choice."), FE_MSG_ERROR);
 		return;
 	}
 
