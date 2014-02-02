@@ -120,6 +120,12 @@ static const struct defaultserver def[] =
 	{"Beirut", 0},
 	{0,			"irc.beirut.com"},
 
+	{"Canternet", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0, 		"irc.canternet.org/+6697"},
+#endif
+	{0,			"irc.canternet.org"},
+
 	{"Chat4all", 0},
 #ifdef USE_OPENSSL
 	{0,			"irc.chat4all.org/+7001"},
