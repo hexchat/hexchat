@@ -74,7 +74,6 @@ typedef struct {
 	gfloat old_value;					/* last known adj->value */
 	textentry *text_first;
 	textentry *text_last;
-	guint16 grid_offset[256];
 
 	textentry *last_ent_start;	  /* this basically describes the last rendered */
 	textentry *last_ent_end;	  /* selection. */
@@ -98,7 +97,6 @@ typedef struct {
 	unsigned int time_stamp:1;
 	unsigned int scrollbar_down:1;
 	unsigned int needs_recalc:1;
-	unsigned int grid_dirty:1;
 	unsigned int marker_seen:1;
 	unsigned int reset_marker_pos:1;
 
@@ -200,9 +198,7 @@ struct _GtkXText
 	int clip_y2;		/* from y to y2 */
 
 	/* current text states */
-	unsigned int bold:1;
 	unsigned int underline:1;
-	unsigned int italics:1;
 	unsigned int hidden:1;
 
 	/* text parsing states */
