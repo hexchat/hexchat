@@ -862,7 +862,7 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 		off += mbl;
 	}
 	if (len < 0)
-		printf ("%s:%d -- Bad UTF-8 character somewhere in meta=%p\n", __FILE__, __LINE__, meta);
+		return ent->str_len;		/* Bad char -- return max offset. */
 
 	/* Step through characters to find the one at the x position */
 	wid = x - indent;
