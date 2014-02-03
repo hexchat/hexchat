@@ -944,7 +944,7 @@ static int
 servlist_savegui (void)
 {
 	char *sp;
-	char *nick1, *nick2;
+	const char *nick1, *nick2;
 
 	/* check for blank username, ircd will not allow this */
 	if (gtk_entry_get_text (GTK_ENTRY (entry_guser))[0] == 0)
