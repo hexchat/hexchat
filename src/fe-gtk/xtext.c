@@ -45,6 +45,7 @@
 #include "fe-gtk.h"
 #include "xtext.h"
 #include "fkeys.h"
+#include "xtext_marshalers.h"
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
 
@@ -66,13 +67,6 @@
 
 /* force scrolling off */
 #define dontscroll(buf) (buf)->last_pixel_pos = 0x7fffffff
-
-extern void gtk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
-                                               GValue       *return_value,
-                                               guint         n_param_values,
-                                               const GValue *param_values,
-                                               gpointer      invocation_hint,
-                                               gpointer      marshal_data);
 
 static GtkWidgetClass *parent_class = NULL;
 
@@ -99,6 +93,7 @@ struct textentry
 enum
 {
 	WORD_CLICK,
+	SET_SCROLL_ADJUSTMENTS,
 	LAST_SIGNAL
 };
 
@@ -121,6 +116,8 @@ static char *gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret);
 static textentry *gtk_xtext_nth (GtkXText *xtext, int line, int *subline);
 static void gtk_xtext_adjustment_changed (GtkAdjustment * adj,
 														GtkXText * xtext);
+static void gtk_xtext_scroll_adjustments (GtkXText *xtext, GtkAdjustment *hadj,
+										GtkAdjustment *vadj);
 static int gtk_xtext_render_ents (GtkXText * xtext, textentry *, textentry *);
 static void gtk_xtext_recalc_widths (xtext_buffer *buf, int);
 static void gtk_xtext_fix_indent (xtext_buffer *buf);
@@ -452,14 +449,8 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->recycle = FALSE;
 	xtext->dont_render = FALSE;
 	xtext->dont_render2 = FALSE;
+	gtk_xtext_scroll_adjustments (xtext, NULL, NULL);
 
-	xtext->adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 1, 1, 1, 1);
-	g_object_ref (G_OBJECT (xtext->adj));
-	g_object_ref_sink (G_OBJECT (xtext->adj));
-	g_object_unref (G_OBJECT (xtext->adj));
-
-	xtext->vc_signal_tag = g_signal_connect (G_OBJECT (xtext->adj),
-				"value_changed", G_CALLBACK (gtk_xtext_adjustment_changed), xtext);
 	{
 		static const GtkTargetEntry targets[] = {
 			{ "UTF8_STRING", 0, TARGET_UTF8_STRING },
@@ -513,6 +504,9 @@ gtk_xtext_adjustment_timeout (GtkXText * xtext)
 static void
 gtk_xtext_adjustment_changed (GtkAdjustment * adj, GtkXText * xtext)
 {
+	if (!gtk_widget_get_realized (GTK_WIDGET (xtext)))
+		return;
+
 	if (xtext->buffer->old_value != xtext->adj->value)
 	{
 		if (xtext->adj->value >= xtext->adj->upper - xtext->adj->page_size)
@@ -2217,6 +2211,37 @@ gtk_xtext_scroll (GtkWidget *widget, GdkEventScroll *event)
 }
 
 static void
+gtk_xtext_scroll_adjustments (GtkXText *xtext, GtkAdjustment *hadj, GtkAdjustment *vadj)
+{
+	/* hadj is ignored entirely */
+
+	if (vadj)
+		g_return_if_fail (GTK_IS_ADJUSTMENT (vadj));
+	else
+		vadj = GTK_ADJUSTMENT(gtk_adjustment_new (0, 0, 1, 1, 1, 1));
+
+	if (xtext->adj && (xtext->adj != vadj))
+	{
+		g_signal_handlers_disconnect_by_func (xtext->adj,
+								gtk_xtext_adjustment_changed,
+								xtext);
+		g_object_unref (xtext->adj);
+	}
+
+	if (xtext->adj != vadj)
+	{
+		xtext->adj = vadj;
+		g_object_ref_sink (xtext->adj);
+
+		xtext->vc_signal_tag = g_signal_connect (xtext->adj, "value-changed",
+							G_CALLBACK (gtk_xtext_adjustment_changed),
+							xtext);
+
+		gtk_xtext_adjustment_changed (xtext->adj, xtext);
+	}
+}
+
+static void
 gtk_xtext_class_init (GtkXTextClass * class)
 {
 	GtkObjectClass *object_class;
@@ -2235,9 +2260,19 @@ gtk_xtext_class_init (GtkXTextClass * class)
 							G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 							G_STRUCT_OFFSET (GtkXTextClass, word_click),
 							NULL, NULL,
-							gtk_marshal_VOID__POINTER_POINTER,
+							_xtext_marshal_VOID__POINTER_POINTER,
 							G_TYPE_NONE,
 							2, G_TYPE_POINTER, G_TYPE_POINTER);
+	xtext_signals[SET_SCROLL_ADJUSTMENTS] =
+		g_signal_new ("set_scroll_adjustments",
+							G_OBJECT_CLASS_TYPE (object_class),
+							G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
+							G_STRUCT_OFFSET (GtkXTextClass, set_scroll_adjustments),
+							NULL, NULL,
+							_xtext_marshal_VOID__OBJECT_OBJECT,
+							G_TYPE_NONE,
+							2, GTK_TYPE_ADJUSTMENT, GTK_TYPE_ADJUSTMENT);
+
 	object_class->destroy = gtk_xtext_destroy;
 
 	widget_class->realize = gtk_xtext_realize;
@@ -2252,8 +2287,10 @@ gtk_xtext_class_init (GtkXTextClass * class)
 	widget_class->expose_event = gtk_xtext_expose;
 	widget_class->scroll_event = gtk_xtext_scroll;
 	widget_class->leave_notify_event = gtk_xtext_leave_notify;
+	widget_class->set_scroll_adjustments_signal = xtext_signals[SET_SCROLL_ADJUSTMENTS];
 
 	xtext_class->word_click = NULL;
+	xtext_class->set_scroll_adjustments = gtk_xtext_scroll_adjustments;
 }
 
 GType

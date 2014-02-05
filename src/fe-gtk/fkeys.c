@@ -661,7 +661,7 @@ key_dialog_set_data (GtkWidget * entry, int d)
 void
 key_dialog_show ()
 {
-	GtkWidget *vbox, *hbox, *list, *vbox2, *wid, *wid2, *wid3, *hbox2;
+	GtkWidget *vbox, *hbox, *list, *vbox2, *wid, *wid2, *wid3;
 	struct key_binding *kb;
 	gchar *titles[] = { NULL, NULL, NULL, "1", "2" };
 	char temp[32];
@@ -774,21 +774,13 @@ key_dialog_show ()
 															 key_dialog_set_data,
 															 (void *) 1, vbox2);
 
-	hbox2 = gtk_hbox_new (0, 2);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox2, 0, 0, 1);
+	wid2 = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (wid2), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_container_add (GTK_CONTAINER (vbox), wid2);
 
-	wid = gtk_xtext_new (colors, 0);
-	gtk_widget_set_usize (wid, 0, 75);
-	gtk_box_pack_start (GTK_BOX (hbox2), wid, 1, 1, 1);
-	gtk_xtext_set_font (GTK_XTEXT (wid), prefs.hex_text_font);
-	gtk_widget_show (wid);
-
-	wid2 = gtk_vscrollbar_new (GTK_XTEXT (wid)->adj);
-	gtk_box_pack_start (GTK_BOX (hbox2), wid2, 0, 0, 0);
-	gtk_widget_show (wid2);
-
-	gtk_widget_show (hbox2);
-	key_dialog_text = wid;
+	key_dialog_text = gtk_xtext_new (colors, 0);
+	gtk_container_add (GTK_CONTAINER (wid2), key_dialog_text);
+	gtk_xtext_set_font (GTK_XTEXT (key_dialog_text), prefs.hex_text_font);
 
 	gtk_widget_show_all (key_dialog);
 }

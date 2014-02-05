@@ -371,7 +371,6 @@ pevent_dialog_show ()
 	gtk_paned_pack1 (GTK_PANED (wid), th, 1, 1);
 	gtk_paned_pack2 (GTK_PANED (wid), bh, 0, 1);
 	gtk_box_pack_start (GTK_BOX (vbox), wid, 1, 1, 0);
-	gtk_widget_show (wid);
 
 	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING,
 	                            G_TYPE_STRING, G_TYPE_INT);
@@ -389,30 +388,24 @@ pevent_dialog_show ()
 	g_signal_connect (G_OBJECT (pevent_dialog_entry), "activate",
 							G_CALLBACK (pevent_dialog_update), pevent_dialog_twid);
 	gtk_box_pack_start (GTK_BOX (bh), pevent_dialog_entry, 0, 0, 0);
-	gtk_widget_show (pevent_dialog_entry);
 
 	tbox = gtk_hbox_new (0, 0);
 	gtk_container_add (GTK_CONTAINER (bh), tbox);
-	gtk_widget_show (tbox);
 
-	gtk_container_add (GTK_CONTAINER (tbox), pevent_dialog_twid);
+	wid = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (wid), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+	gtk_container_add (GTK_CONTAINER (tbox), wid);
+
+	gtk_container_add (GTK_CONTAINER (wid), pevent_dialog_twid);
 	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.hex_text_font);
-
-	wid = gtk_vscrollbar_new (GTK_XTEXT (pevent_dialog_twid)->adj);
-	gtk_box_pack_start (GTK_BOX (tbox), wid, FALSE, FALSE, 0);
-	show_and_unfocus (wid);
-
-	gtk_widget_show (pevent_dialog_twid);
 
 	hstore = gtk_list_store_new (2, G_TYPE_INT, G_TYPE_STRING);
 	pevent_dialog_hlist = gtkutil_treeview_new (bh, GTK_TREE_MODEL (hstore),
 															  NULL,
 															  0, _("$ Number"),
 															  1, _("Description"), -1);
-	gtk_widget_show (pevent_dialog_hlist);
 
 	pevent_dialog_fill (pevent_dialog_list);
-	gtk_widget_show (pevent_dialog_list);
 
 	hbox = gtk_hbutton_box_new ();
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 2);
@@ -429,15 +422,11 @@ pevent_dialog_show ()
 	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
 	g_signal_connect (G_OBJECT (wid), "clicked",
 							G_CALLBACK (pevent_test_cb), pevent_dialog_twid);
-	gtk_widget_show (wid);
 
 	wid = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
 	g_signal_connect (G_OBJECT (wid), "clicked",
 							G_CALLBACK (pevent_ok_cb), NULL);
-	gtk_widget_show (wid);
 
-	gtk_widget_show (hbox);
-
-	gtk_widget_show (pevent_dialog);
+	gtk_widget_show_all (pevent_dialog);
 }

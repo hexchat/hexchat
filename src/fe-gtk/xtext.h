@@ -239,6 +239,7 @@ struct _GtkXTextClass
 {
 	GtkWidgetClass parent_class;
 	void (*word_click) (GtkXText * xtext, char *word, GdkEventButton * event);
+	void (*set_scroll_adjustments) (GtkXText *xtext, GtkAdjustment *hadj, GtkAdjustment *vadj);
 };
 
 GtkWidget *gtk_xtext_new (GdkColor palette[], int separator);
