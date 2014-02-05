@@ -181,6 +181,7 @@ fe_tray_set_balloon (const char *title, const char *text)
 
 #ifdef USE_LIBNOTIFY
 	static int notify_text_strip_flags = STRIP_ALL;
+	static gboolean notify_persistant = FALSE;
 	NotifyNotification *notification;
 	char *notify_text, *notify_title;
 
@@ -193,6 +194,10 @@ fe_tray_set_balloon (const char *title, const char *text)
 		{
 			notify_text_strip_flags |= STRIP_ESCMARKUP;
 		}
+		if (g_list_find_custom (server_caps, "persistance", (GCompareFunc)strcmp))
+		{
+			notify_persistant = TRUE;
+		}
 		g_list_free_full (server_caps, g_free);
 	}
 
@@ -203,6 +208,9 @@ fe_tray_set_balloon (const char *title, const char *text)
 
 #if NOTIFY_CHECK_VERSION(0,7,0)
 	notify_notification_set_hint (notification, "desktop-entry", g_variant_new_string ("hexchat"));
+
+	if (notify_persistant && !prefs.hex_gui_tray)
+		notify_notification_set_hint (notification, "persistant", g_variant_new_boolean (TRUE));
 #endif
 
 	g_free ((char *)notify_title);
