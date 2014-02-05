@@ -713,7 +713,7 @@ fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gtk_xtext_search_f
 }
 
 void
-fe_set_lag (server *serv, int lag)
+fe_set_lag (server *serv, long lag)
 {
 	GSList *list = sess_list;
 	session *sess;
@@ -727,21 +727,21 @@ fe_set_lag (server *serv, int lag)
 		if (!serv->lag_sent)
 			return;
 		nowtim = make_ping_time ();
-		lag = (nowtim - serv->lag_sent) / 100000;
+		lag = nowtim - serv->lag_sent;
 	}
 
 	/* if there is no pong for >30s report the lag as +30s */
-	if (lag > 300 && serv->lag_sent)
-		lag=300;
+	if (lag > 30000 && serv->lag_sent)
+		lag=30000;
 
-	per = (double)((double)lag / (double)10);
+	per = ((double)lag) / 1000.0;
 	if (per > 1.0)
 		per = 1.0;
 
-	snprintf (lagtext, sizeof (lagtext) - 1, "%s%d.%ds",
-				 serv->lag_sent ? "+" : "", lag / 10, lag % 10);
-	snprintf (lagtip, sizeof (lagtip) - 1, "Lag: %s%d.%d seconds",
-				 serv->lag_sent ? "+" : "", lag / 10, lag % 10);
+	snprintf (lagtext, sizeof (lagtext) - 1, "%s%ld.%lds",
+			  serv->lag_sent ? "+" : "", lag / 1000, (lag/100) % 10);
+	snprintf (lagtip, sizeof (lagtip) - 1, "Lag: %s%ld.%ld seconds",
+				 serv->lag_sent ? "+" : "", lag / 1000, (lag/100) % 10);
 
 	while (list)
 	{

@@ -577,7 +577,7 @@ typedef struct server
 	time_t msg_last_time;
 
 	/*time_t connect_time;*/				/* when did it connect? */
-	time_t lag_sent;
+	unsigned long lag_sent;   /* we are still waiting for this ping response*/
 	time_t ping_recv;					/* when we last got a ping reply */
 	time_t away_time;					/* when we were marked away */
 
