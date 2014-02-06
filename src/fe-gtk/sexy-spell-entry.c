@@ -31,7 +31,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "sexy-iso-codes.h"
-#include "sexy-marshal.h"
+#include "../common/marshal.h"
 
 #ifdef WIN32
 #include "../common/typedef.h"
@@ -237,7 +237,7 @@ sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 					   G_SIGNAL_RUN_LAST,
 					   G_STRUCT_OFFSET(SexySpellEntryClass, word_check),
 					   (GSignalAccumulator) spell_accumulator, NULL,
-					   sexy_marshal_BOOLEAN__STRING,
+					   _hexchat_marshal_BOOLEAN__STRING,
 					   G_TYPE_BOOLEAN,
 					   1, G_TYPE_STRING);
 }

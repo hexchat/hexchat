@@ -42,10 +42,10 @@
 #include "../common/util.h"
 #include "../common/hexchatc.h"
 #include "../common/url.h"
+#include "../common/marshal.h"
 #include "fe-gtk.h"
 #include "xtext.h"
 #include "fkeys.h"
-#include "xtext_marshalers.h"
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
 
@@ -2260,7 +2260,7 @@ gtk_xtext_class_init (GtkXTextClass * class)
 							G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 							G_STRUCT_OFFSET (GtkXTextClass, word_click),
 							NULL, NULL,
-							_xtext_marshal_VOID__POINTER_POINTER,
+							_hexchat_marshal_VOID__POINTER_POINTER,
 							G_TYPE_NONE,
 							2, G_TYPE_POINTER, G_TYPE_POINTER);
 	xtext_signals[SET_SCROLL_ADJUSTMENTS] =
@@ -2269,7 +2269,7 @@ gtk_xtext_class_init (GtkXTextClass * class)
 							G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 							G_STRUCT_OFFSET (GtkXTextClass, set_scroll_adjustments),
 							NULL, NULL,
-							_xtext_marshal_VOID__OBJECT_OBJECT,
+							_hexchat_marshal_VOID__OBJECT_OBJECT,
 							G_TYPE_NONE,
 							2, GTK_TYPE_ADJUSTMENT, GTK_TYPE_ADJUSTMENT);
 

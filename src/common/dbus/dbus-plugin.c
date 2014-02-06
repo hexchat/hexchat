@@ -241,7 +241,7 @@ static gboolean		remote_object_send_modes	(RemoteObject *obj,
 							 GError **error);
 
 #include "remote-object-glue.h"
-#include "marshallers.h"
+#include "../marshal.h"
 
 /* Useful functions */
 
@@ -317,7 +317,7 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      0,
 			      NULL, NULL,
-			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT,
+			      _hexchat_marshal_VOID__POINTER_POINTER_UINT_UINT,
 			      G_TYPE_NONE,
 			      4, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT);
 
@@ -327,7 +327,7 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      0,
 			      NULL, NULL,
-			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT,
+			      _hexchat_marshal_VOID__POINTER_POINTER_UINT_UINT,
 			      G_TYPE_NONE,
 			      4, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT);
 
@@ -337,7 +337,7 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      0,
 			      NULL, NULL,
-			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT,
+			      _hexchat_marshal_VOID__POINTER_POINTER_UINT_UINT,
 			      G_TYPE_NONE,
 			      3, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT);
 

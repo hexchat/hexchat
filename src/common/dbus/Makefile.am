@@ -7,12 +7,10 @@ libhexchatdbus_a_SOURCES =			\
 
 EXTRA_DIST =				\
 	remote-object.xml		\
-	marshallers.list		\
 	example.py			\
 	org.hexchat.service.service.in
 
 BUILT_SOURCES =				\
-	marshallers.h			\
 	remote-object-glue.h
 
 CLEANFILES = $(BUILT_SOURCES)
@@ -20,14 +18,11 @@ CLEANFILES = $(BUILT_SOURCES)
 AM_CPPFLAGS = $(COMMON_CFLAGS) $(DBUS_CFLAGS)
 
 noinst_PROGRAMS = example
-example_SOURCES = example.c 
+example_SOURCES = example.c
 example_LDADD = $(DBUS_LIBS) $(GLIB_LIBS)
 
 remote-object-glue.h: remote-object.xml
 	$(AM_V_GEN) $(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<
-
-marshallers.h: marshallers.list
-	$(AM_V_GEN) $(LIBTOOL) --mode=execute $(GLIB_GENMARSHAL)  --header --body $< > $@
 
 # Dbus service file
 servicedir = $(DBUS_SERVICES_DIR)
