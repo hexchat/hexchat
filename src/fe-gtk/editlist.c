@@ -223,7 +223,7 @@ editlist_edited (GtkCellRendererText *render, gchar *pathstr, gchar *new_text, g
 	gint column = GPOINTER_TO_INT (data);
 
 	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter, column, new_text);
+	gtk_list_store_set (GTK_LIST_STORE (model), &iter, column, new_text, -1);
 
 	gtk_tree_path_free (path);
 }
@@ -302,8 +302,7 @@ editlist_treeview_new (GtkWidget *box, char *title1, char *title2)
 	gtk_tree_view_insert_column_with_attributes (
 					GTK_TREE_VIEW (view), NAME_COLUMN,
 					title1, render,
-					"text", 0,
-					"editable", 2,
+					"text", NAME_COLUMN,
 					NULL);
 
 	render = gtk_cell_renderer_text_new ();
@@ -313,8 +312,7 @@ editlist_treeview_new (GtkWidget *box, char *title1, char *title2)
 	gtk_tree_view_insert_column_with_attributes (
 					GTK_TREE_VIEW (view), CMD_COLUMN,
 					title2, render,
-					"text", 1,
-					"editable", 2,
+					"text", CMD_COLUMN,
 					NULL);
 
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), NAME_COLUMN);
