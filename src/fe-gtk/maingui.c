@@ -925,8 +925,17 @@ mg_populate (session *sess)
 	/* restore all the channel mode buttons */
 	ignore_chanmode = TRUE;
 	for (i = 0; i < NUM_FLAG_WIDS - 1; i++)
+	{
+		/* Hide if mode not supported */
+		if (sess->server && strchr (sess->server->chanmodes, chan_flags[i]) == NULL)
+			gtk_widget_hide (sess->gui->flag_wid[i]);
+		else
+			gtk_widget_show (sess->gui->flag_wid[i]);
+
+		/* Update state */
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gui->flag_wid[i]),
-												res->flag_wid_state[i]);
+									res->flag_wid_state[i]);
+	}
 	ignore_chanmode = FALSE;
 
 	if (gui->lagometer)
@@ -3428,20 +3437,10 @@ fe_update_mode_buttons (session *sess, char mode, char sign)
 		{
 			if (!sess->gui->is_tab || sess == current_tab)
 			{
-				/* Mode not supported */
-				if (sess->server && strchr (sess->server->chanmodes, mode) == NULL)
-				{
-					gtk_widget_hide (sess->gui->flag_wid[i]);
-				}
-				else
-				{
-					gtk_widget_show (sess->gui->flag_wid[i]);
-					ignore_chanmode = TRUE;
-					if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (sess->gui->flag_wid[i])) != state)
-						gtk_toggle_button_set_active (
-						GTK_TOGGLE_BUTTON (sess->gui->flag_wid[i]), state);
-					ignore_chanmode = FALSE;
-				}
+				ignore_chanmode = TRUE;
+				if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (sess->gui->flag_wid[i])) != state)
+					gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sess->gui->flag_wid[i]), state);
+				ignore_chanmode = FALSE;
 			} else
 			{
 				sess->res->flag_wid_state[i] = state;
