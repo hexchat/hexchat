@@ -204,12 +204,6 @@ static const setting inputbox_settings[] =
 	{ST_MENU,	N_("Nick completion sorted:"), P_OFFINTNL(hex_completion_sort), 0, tabcompmenu, 0},
 	{ST_NUMBER,	N_("Nick completion amount:"), P_OFFINTNL(hex_completion_amount), N_("Threshold of nicks to start listing instead of completing"), (const char **)N_("nicks."), 1000},
 
-#if 0	/* obsolete */
-	{ST_HEADER, N_("Input Box Codes"),0,0,0},
-	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINTNL(hex_input_perc_ascii),0,0,0},
-	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINTNL(hex_input_perc_color),0,0,0},
-#endif
-
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -744,23 +738,6 @@ setup_create_toggleL (GtkWidget *tab, int row, const setting *set)
 	return wid;
 }
 
-#if 0
-static void
-setup_create_toggle (GtkWidget *box, int row, const setting *set)
-{
-	GtkWidget *wid;
-
-	wid = gtk_check_button_new_with_label (_(set->label));
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
-											setup_get_int (&setup_prefs, set));
-	g_signal_connect (G_OBJECT (wid), "toggled",
-							G_CALLBACK (setup_toggle_cb), (gpointer)set);
-	if (set->tooltip)
-		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
-	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
-}
-#endif
-
 static GtkWidget *
 setup_create_italic_label (char *text)
 {
@@ -1247,22 +1224,24 @@ setup_create_header (GtkWidget *table, int row, char *labeltext)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 5);
 }
 
-static GtkWidget *
-setup_create_frame (GtkWidget **left, GtkWidget *box)
+static void
+setup_create_button (GtkWidget *table, int row, char *label, GCallback callback)
 {
-	GtkWidget *tab, *hbox, *inbox = box;
+	GtkWidget *but = gtk_button_new_with_label (label);
+	gtk_table_attach (GTK_TABLE (table), but, 2, 3, row, row + 1,
+					GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 5);
+	g_signal_connect (G_OBJECT (but), "clicked", callback, NULL);
+}
+
+static GtkWidget *
+setup_create_frame (void)
+{
+	GtkWidget *tab;
 
 	tab = gtk_table_new (3, 2, FALSE);
 	gtk_container_set_border_width (GTK_CONTAINER (tab), 6);
 	gtk_table_set_row_spacings (GTK_TABLE (tab), 2);
 	gtk_table_set_col_spacings (GTK_TABLE (tab), 3);
-	gtk_container_add (GTK_CONTAINER (inbox), tab);
-
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (inbox), hbox);
-
-	*left = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), *left, 0, 0, 0);
 
 	return tab;
 }
@@ -1277,13 +1256,11 @@ static GtkWidget *
 setup_create_page (const setting *set)
 {
 	int i, row, do_disable;
-	GtkWidget *tab, *box, *left;
+	GtkWidget *tab;
 	GtkWidget *wid = NULL, *parentwid = NULL;
 
-	box = gtk_vbox_new (FALSE, 1);
-	gtk_container_set_border_width (GTK_CONTAINER (box), 6);
-
-	tab = setup_create_frame (&left, box);
+	tab = setup_create_frame ();
+	gtk_container_set_border_width (GTK_CONTAINER (tab), 6);
 
 	i = row = do_disable = 0;
 	while (set[i].type != ST_END)
@@ -1348,25 +1325,12 @@ setup_create_page (const setting *set)
 		row++;
 	}
 
-#if 0
-	if (set == general_settings)
-	{
-		setup_create_id_menu (tab, _("Mark identified users with:"),	
-									 row, setup_prefs.hex_irc_id_ytext);
-		setup_create_id_menu (tab, _("Mark not-identified users with:"),	
-									 row + 1, setup_prefs.hex_irc_id_ntext);
-	}
-#endif
-
 	if (set == logging_settings)
 	{
-		GtkWidget *but = gtk_button_new_with_label (_("Open Data Folder"));
-		gtk_box_pack_start (GTK_BOX (left), but, 0, 0, 0);
-		g_signal_connect (G_OBJECT (but), "clicked",
-								G_CALLBACK (open_data_cb), 0);
+		setup_create_button (tab, row, _("Open Data Folder"), G_CALLBACK(open_data_cb));
 	}
 
-	return box;
+	return tab;
 }
 
 static void
@@ -1812,20 +1776,10 @@ setup_create_sound_page (void)
 static void
 setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 {
-	GtkWidget *oframe, *frame, *label, *vvbox;
+	GtkWidget *label, *vvbox;
 	char buf[128];
 
-	/* frame for whole page */
-	oframe = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (oframe), GTK_SHADOW_IN);
-
 	vvbox = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (oframe), vvbox);
-
-	/* border for the label */
-	frame = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-	gtk_box_pack_start (GTK_BOX (vvbox), frame, FALSE, TRUE, 0);
 
 	/* label */
 	label = gtk_label_new (NULL);
@@ -1833,11 +1787,11 @@ setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_misc_set_padding (GTK_MISC (label), 2, 1);
-	gtk_container_add (GTK_CONTAINER (frame), label);
+	gtk_box_pack_start (GTK_BOX (vvbox), label, FALSE, FALSE, 2);
 
 	gtk_container_add (GTK_CONTAINER (vvbox), tab);
 
-	gtk_notebook_append_page (GTK_NOTEBOOK (book), oframe, NULL);
+	gtk_notebook_append_page (GTK_NOTEBOOK (book), vvbox, NULL);
 }
 
 static const char *const cata[] =
@@ -2220,15 +2174,6 @@ setup_apply (struct hexchatprefs *pr)
 #endif
 }
 
-#if 0
-static void
-setup_apply_cb (GtkWidget *but, GtkWidget *win)
-{
-	/* setup_prefs -> hexchat */
-	setup_apply (&setup_prefs);
-}
-#endif
-
 static void
 setup_ok_cb (GtkWidget *but, GtkWidget *win)
 {
@@ -2254,22 +2199,11 @@ setup_window_open (void)
 
 	setup_create_tree (hbox, setup_create_pages (hbox));
 
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-
 	/* prepare the button box */
 	hbbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbbox), GTK_BUTTONBOX_END);
 	gtk_box_set_spacing (GTK_BOX (hbbox), 4);
-	gtk_box_pack_end (GTK_BOX (hbox), hbbox, FALSE, FALSE, 0);
-
-	/* standard buttons */
-	/* GNOME doesn't like apply */
-#if 0
-	wid = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-	g_signal_connect (G_OBJECT (wid), "clicked",
-							G_CALLBACK (setup_apply_cb), win);
-	gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);
-#endif
+	gtk_box_pack_end (GTK_BOX (vbox), hbbox, FALSE, FALSE, 0);
 
 	cancel_button = wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	g_signal_connect (G_OBJECT (wid), "clicked",
@@ -2280,9 +2214,6 @@ setup_window_open (void)
 	g_signal_connect (G_OBJECT (wid), "clicked",
 							G_CALLBACK (setup_ok_cb), win);
 	gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);
-
-	wid = gtk_hseparator_new ();
-	gtk_box_pack_end (GTK_BOX (vbox), wid, FALSE, FALSE, 0);
 
 	gtk_widget_show_all (win);
 
