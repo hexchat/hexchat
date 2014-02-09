@@ -202,12 +202,6 @@ editlist_add (GtkWidget *wid, gpointer userdata)
 }
 
 static void
-editlist_showhelp (GtkWidget *wid, gchar *help)
-{
-	fe_message (help, FE_MSG_INFO);
-}
-
-static void
 editlist_close (GtkWidget *wid, gpointer userdata)
 {
 	gtk_widget_destroy (editlist_win);
@@ -351,6 +345,9 @@ editlist_gui_open (char *title1, char *title2, GSList *list, char *title, char *
 	view = editlist_treeview_new (vbox, title1, title2);
 	g_object_set_data (G_OBJECT (editlist_win), "view", view);
 
+	if (help)
+		gtk_widget_set_tooltip_text (view, help);
+
 	box = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (box), GTK_BUTTONBOX_SPREAD);
 	gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 2);
@@ -365,9 +362,6 @@ editlist_gui_open (char *title1, char *title2, GSList *list, char *title, char *
 					NULL, _("Cancel"));
 	gtkutil_button (box, GTK_STOCK_SAVE, 0, editlist_save,
 					file, _("Save"));
-	if (help)
-		gtkutil_button (box, GTK_STOCK_HELP, 0, editlist_showhelp,
-						help, _("Help"));
 
 	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
 	editlist_load (store, list);
