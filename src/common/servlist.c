@@ -101,14 +101,12 @@ static const struct defaultserver def[] =
 	{0,			"lion.anthrochat.net/+6697"},
 	{0,			"otter.anthrochat.net/+6697"},
 	{0,			"snowleopard.anthrochat.net/+6697"},
-	//{0,			"panda.anthrochat.net/+6697"},		/* Server wasn't up last time I tried, still listed at the website though */
 #endif
 	{0,			"bear.anthrochat.net"},
 	{0,			"cheetah.anthrochat.net"},
 	{0,			"husky.anthrochat.net"},
 	{0,			"lion.anthrochat.net"},
 	{0,			"otter.anthrochat.net"},
-	//{0,			"panda.anthrochat.net"},			/* Server wasn't up last time I tried, still listed at the website though */
 	{0,			"snowleopard.anthrochat.net"},
 
 	{"ARCNet",	0},
