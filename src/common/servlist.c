@@ -509,6 +509,46 @@ static const struct defaultserver def[] =
 #endif
 	{0,			"irc.swiftirc.net/6667"},
 
+	{"synIRC",	0},
+#ifdef USE_IPV6
+#ifdef USE_OPENSSL
+	{0,			"triton.az.us.synirc.net/+6697"},
+	{0,			"hades.de.eu.synirc.net/+6697"},
+	{0,			"unity.dk.eu.synirc.net/+7001"},
+	{0,			"nightmare.uk.eu.synirc.net/+6697"},
+	{0,			"naamio.fi.eu.synirc.net/+6697"},
+#endif
+	{0,			"triton.az.us.synirc.net"},
+	{0,			"hades.de.eu.synirc.net"},
+	{0,			"unity.dk.eu.synirc.net"},
+	{0,			"nightmare.uk.eu.synirc.net"},
+	{0,			"naamio.fi.eu.synirc.net"},
+#endif
+#ifdef USE_OPENSSL
+	{0,			"triton.az.us.synirc.net/+6697"},
+	{0,			"hades.de.eu.synirc.net/+6697"},
+	{0,			"unity.dk.eu.synirc.net/+7001"},
+	{0,			"nightmare.uk.eu.synirc.net/+6697"},
+	{0,			"naamio.fi.eu.synirc.net/+6697"},
+	{0,			"toronto.on.ca.synirc.net/+6697"},
+	{0,			"contego.ny.us.synirc.net/+6697"},
+	{0,			"monster.va.us.synirc.net/+6697"},
+	{0,			"destiny.nsw.au.synirc.net/+6697"},
+	{0,			"moonlight.se.eu.synirc.net/+6697"},
+	{0,			"envy.il.us.synirc.net/+7001"},
+#endif
+	{0,			"triton.az.us.synirc.net"},
+	{0,			"hades.de.eu.synirc.net"},
+	{0,			"unity.dk.eu.synirc.net"},
+	{0,			"nightmare.uk.eu.synirc.net"},
+	{0,			"naamio.fi.eu.synirc.net"},
+	{0,			"toronto.on.ca.synirc.net"},
+	{0,			"contego.ny.us.synirc.net"},
+	{0,			"monster.va.us.synirc.net"},
+	{0,			"destiny.nsw.au.synirc.net"},
+	{0,			"moonlight.se.eu.synirc.net"},
+	{0,			"envy.il.us.synirc.net"},
+
 	{"Techman's World IRC",		0},
 #ifdef USE_OPENSSL
 	{0,			"irc.techmansworld.com/+6697"},
