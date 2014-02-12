@@ -176,6 +176,9 @@ userlist_button_cb (GtkWidget * button, char *cmd)
 		if (num_sel < 1)
 		{
 			nick_command_parse (sess, cmd, "", "");
+
+			if (nicks)
+				free (nicks);
 			return;
 		}
 	}

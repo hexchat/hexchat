@@ -1805,7 +1805,10 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 
 	dcc = new_dcc ();
 	if (!dcc)
+	{
+		free (file);
 		return;
+	}
 	dcc->file = file;
 	dcc->maxcps = maxcps;
 

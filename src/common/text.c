@@ -1659,7 +1659,10 @@ pevent_load (char *filename)
 	if (fd == -1)
 		return 1;
 	if (fstat (fd, &st) != 0)
+	{
+		close (fd);
 		return 1;
+	}
 	ibuf = malloc (st.st_size);
 	read (fd, ibuf, st.st_size);
 	close (fd);

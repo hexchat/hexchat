@@ -1029,6 +1029,7 @@ save_config (void)
 
 	if (!cfg_put_str (fh, "version", PACKAGE_VERSION))
 	{
+		close (fh);
 		g_free (new_config);
 		return 0;
 	}
@@ -1041,6 +1042,7 @@ save_config (void)
 		case TYPE_STR:
 			if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
 			{
+				close (fh);
 				g_free (new_config);
 				return 0;
 			}
@@ -1049,6 +1051,7 @@ save_config (void)
 		case TYPE_BOOL:
 			if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
 			{
+				close (fh);
 				g_free (new_config);
 				return 0;
 			}

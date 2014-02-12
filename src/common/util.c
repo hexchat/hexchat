@@ -1404,7 +1404,10 @@ util_exec (const char *cmd)
 #ifndef WIN32
 	pid = fork ();
 	if (pid == -1)
+	{
+		free (argv);
 		return -1;
+	}
 	if (pid == 0)
 	{
 		/* Now close all open file descriptors except stdin, stdout and stderr */
