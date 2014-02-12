@@ -77,7 +77,6 @@ void safe_strcpy (char *dest, const char *src, int bytes_left);
 void canonalize_key (char *key);
 int portable_mode ();
 int unity_mode ();
-GSList *get_subdirs (const char *path);
 char *encode_sasl_pass_plain (char *user, char *pass);
 char *encode_sasl_pass_blowfish (char *user, char *pass, char *data);
 char *encode_sasl_pass_aes (char *user, char *pass, char *data);

@@ -1881,64 +1881,6 @@ unity_mode ()
 	return 0;
 }
 
-/* Routine for listing subfolders of a given folder. ALWAYS free correctly after use, e.g.
-void display_list (GSList *list)
-{
-	GSList *iterator = NULL;
-	for (iterator = list; iterator; iterator = iterator->next)
-	{
-		printf ("%s\t", (char *) iterator->data);
-	}
-}
-
-int main (int argc, char *argv[])
-{
-	GSList *list;
-	list = get_subdirs ("foo");
-	display_list (list);
-#if GLIB_CHECK_VERSION(2,28,0)
-	g_slist_free_full (list, (GDestroyNotify) g_free);
-#else
-	g_slist_foreach (list, (GFunc) g_free, NULL);
-	g_slist_free (list);
-#endif
-	return 0;
-}
-*/
-GSList *
-get_subdirs (const char *path)
-{
-	DIR *dir;
-	struct dirent *entry;
-	GSList *dirlist = NULL;
-
-	if (!path)
-	{
-		path = ".";
-	}
-
-	dir = opendir (path);
-
-	if (!dir)
-	{
-		return NULL;
-	}
-
-	entry = readdir (dir);
-
-	while (entry != NULL)
-	{
-		if (entry->d_type == DT_DIR && strcmp (entry->d_name, ".") != 0 && strcmp (entry->d_name, "..") != 0)
-		{
-			dirlist = g_slist_append (dirlist, g_strdup (entry->d_name));
-		}
-
-		entry = readdir (dir);
-	}
-
-	return dirlist;
-}
-
 char *
 encode_sasl_pass_plain (char *user, char *pass)
 {
