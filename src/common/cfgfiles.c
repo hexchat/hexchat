@@ -722,16 +722,16 @@ get_default_spell_languages (void)
 			g_free(last);
 
 		if (lang_list[0])
-			return ret;
+			return g_strdup (ret);
 	}
 
-	return "en";
+	return g_strdup ("en");
 }
 
 void
 load_default_config(void)
 {
-	const char *username, *realname, *font;
+	const char *username, *realname, *font, *langs;
 	char *sp;
 #ifdef WIN32
 	char out[256];
@@ -905,7 +905,8 @@ load_default_config(void)
 	}
 
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
-	strcpy (prefs.hex_text_spell_langs, get_default_spell_languages ());
+	langs = get_default_spell_languages ();
+	strcpy (prefs.hex_text_spell_langs, langs);
 
 
 	/* private variables */
@@ -917,6 +918,7 @@ load_default_config(void)
 
 	g_free ((char *)username);
 	g_free ((char *)realname);
+	g_free ((char *)langs);
 }
 
 int
