@@ -688,10 +688,15 @@ chanlist_add_column (GtkWidget *tree, int textcol, int size, char *title, gboole
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (tree), textcol);
 	gtk_tree_view_column_set_sort_column_id (col, textcol);
 	gtk_tree_view_column_set_resizable (col, TRUE);
-	if (textcol != COL_TOPIC)
+	if (textcol == COL_CHANNEL)
 	{
 		gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_FIXED);
 		gtk_tree_view_column_set_fixed_width (col, size);
+	}
+	else if (textcol == COL_USERS)
+	{
+		gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+		gtk_tree_view_column_set_resizable (col, FALSE);
 	}
 }
 
