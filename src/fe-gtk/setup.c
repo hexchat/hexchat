@@ -396,7 +396,7 @@ static const setting alert_settings[] =
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
-#ifndef WIN32
+#if !defined (WIN32) && !defined (__APPLE__)
 	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
 #endif
 	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
