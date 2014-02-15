@@ -46,6 +46,7 @@ static int decrypt(int nick_count, char *nicks[]) {
         return 1;
       success:
         fprintf(stderr, "Decrypted text >>>%s<<<\n", msg);
+        free(msg);
     }
     return 0;
 }
@@ -62,6 +63,7 @@ static int encrypt(int nick_count, char *nicks[]) {
             char *encrypted = fish_encrypt_for_nick(nicks[i], message);
             if (encrypted) {
                 fprintf(stderr, "Encrypted [%s]:  >>>%s<<<\n", nicks[i], encrypted);
+                free(encrypted);
             } else {
                 error = true;
             }
