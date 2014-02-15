@@ -404,7 +404,7 @@ chanlist_search_pressed (GtkButton * button, server *serv)
 static void
 chanlist_find_cb (GtkWidget * wid, server *serv)
 {
-	char *pattern = gtk_entry_get_text (GTK_ENTRY (wid));
+	const char *pattern = gtk_entry_get_text (GTK_ENTRY (wid));
 
 	/* recompile the regular expression. */
 	if (serv->gui->have_regex)
