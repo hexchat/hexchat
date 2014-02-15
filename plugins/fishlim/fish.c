@@ -136,7 +136,7 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data) {
         for (i = 0; i < 12; i++) {
             d = fish_unbase64[(const unsigned char)*(data++)];
             if (d == IB) goto decrypt_end;
-            binary[word] |= d << bit;
+            binary[word] |= (unsigned long)d << bit;
             bit += 6;
             if (i == 5) {
                 bit = 0;
