@@ -398,6 +398,10 @@ key_dialog_set_key (GtkCellRendererAccel *accel, gchar *pathstr, guint accel_key
 	GtkTreeIter iter;
 	gchar *label_name, *accel_name;
 
+	/* Shift tab requires an exception, hopefully that list ends here.. */
+	if (accel_key == GDK_KEY_Tab && accel_mods & GDK_SHIFT_MASK)
+		accel_key = GDK_KEY_ISO_Left_Tab;
+
 	label_name = gtk_accelerator_get_label (accel_key, key_modifier_get_valid (accel_mods));
 	accel_name = gtk_accelerator_name (accel_key, key_modifier_get_valid (accel_mods));
 
