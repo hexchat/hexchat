@@ -364,6 +364,7 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 enum
 {
 	KEY_COLUMN,
+	ACCEL_COLUMN,
 	ACTION_COLUMN,
 	D1_COLUMN,
 	D2_COLUMN,
@@ -395,15 +396,18 @@ key_dialog_set_key (GtkCellRendererAccel *accel, gchar *pathstr, guint accel_key
 	GtkTreeModel *model = get_store ();
 	GtkTreePath *path = gtk_tree_path_new_from_string (pathstr);
 	GtkTreeIter iter;
-	gchar *key_name;
+	gchar *label_name, *accel_name;
 
-	key_name = gtk_accelerator_name (accel_key, key_modifier_get_valid (accel_mods));
+	label_name = gtk_accelerator_get_label (accel_key, key_modifier_get_valid (accel_mods));
+	accel_name = gtk_accelerator_name (accel_key, key_modifier_get_valid (accel_mods));
 
 	gtk_tree_model_get_iter (model, &iter, path);
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter, KEY_COLUMN, key_name, -1);
+	gtk_list_store_set (GTK_LIST_STORE (model), &iter, KEY_COLUMN, label_name,
+						ACCEL_COLUMN, accel_name, -1);
 
 	gtk_tree_path_free (path);
-	g_free (key_name);
+	g_free (label_name);
+	g_free (accel_name);
 }
 
 static void
@@ -553,7 +557,7 @@ key_dialog_save (GtkWidget *wid, gpointer userdata)
 		{
 			kb = (struct key_binding *) g_malloc0 (sizeof (struct key_binding));
 
-			gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, KEY_COLUMN, &accel,
+			gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, ACCEL_COLUMN, &accel,
 															ACTION_COLUMN, &actiontext,
 															D1_COLUMN, &data1,
 															D2_COLUMN, &data2,
@@ -643,7 +647,7 @@ key_dialog_treeview_new (GtkWidget *box)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
 
-	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING,
+	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
 								G_TYPE_STRING, G_TYPE_STRING);
 	g_return_val_if_fail (store != NULL, NULL);
 
@@ -670,6 +674,13 @@ key_dialog_treeview_new (GtkWidget *box)
 												"Key", render,
 												"text", KEY_COLUMN,
 												NULL);
+
+	render = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (
+							GTK_TREE_VIEW (view), ACCEL_COLUMN,
+							"Accel", render,
+							"text", ACCEL_COLUMN,
+							NULL);
 
 	combostore = gtk_list_store_new (1, G_TYPE_STRING);
 	for (i = 0; i <= KEY_MAX_ACTIONS; i++)
@@ -721,6 +732,8 @@ key_dialog_treeview_new (GtkWidget *box)
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), KEY_COLUMN);
 	gtk_tree_view_column_set_fixed_width (col, 200);
 	gtk_tree_view_column_set_resizable (col, TRUE);
+	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), ACCEL_COLUMN);
+	gtk_tree_view_column_set_visible (col, FALSE);
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), ACTION_COLUMN);
 	gtk_tree_view_column_set_fixed_width (col, 160);
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), D1_COLUMN);
@@ -742,7 +755,7 @@ static void
 key_dialog_load (GtkListStore *store)
 {
 	struct key_binding *kb = NULL;
-	char *accel_text;
+	char *label_text, *accel_text;
 	GtkTreeIter iter;
 	GSList *list = keybind_list;
 
@@ -750,16 +763,19 @@ key_dialog_load (GtkListStore *store)
 	{
 		kb = (struct key_binding*)list->data;
 
+		label_text = gtk_accelerator_get_label (kb->keyval, kb->mod);
 		accel_text = gtk_accelerator_name (kb->keyval, kb->mod);
 
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter,
-							KEY_COLUMN, accel_text,
+							KEY_COLUMN, label_text,
+							ACCEL_COLUMN, accel_text,
 							ACTION_COLUMN, key_actions[kb->action].name,
 							D1_COLUMN, kb->data1,
 							D2_COLUMN, kb->data2, -1);
 
 		g_free (accel_text);
+		g_free (label_text);
 
 		list = g_slist_next (list);
 	}
