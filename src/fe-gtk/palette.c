@@ -87,7 +87,6 @@ GdkColor colors[] = {
 	{0, 0xa4a4, 0x0000, 0x0000}, /* 41 spell checker color (red) */
 };
 
-
 void
 palette_alloc (GtkWidget * widget)
 {
@@ -104,37 +103,16 @@ palette_alloc (GtkWidget * widget)
 	}
 }
 
-/* maps HexChat 2.0.x colors to current */
-static const int remap[] =
-{
-	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
-	33,	/* 16:marktextback */
-	32,	/* 17:marktextfore */
-	34,	/* 18: fg */
-	35,	/* 19: bg */
-	37,	/* 20: newdata */
-	38,	/* 21: blue */
-	39,	/* 22: newmsg */
-	40		/* 23: away */
-};
-
 void
 palette_load (void)
 {
-	int i, j, l, fh, res;
+	int i, j, l, fh;
 	char prefname[256];
 	struct stat st;
 	char *cfg;
 	int red, green, blue;
-	int upgrade = FALSE;
 
 	fh = hexchat_open_file ("colors.conf", O_RDONLY, 0, 0);
-	if (fh == -1)
-	{
-		fh = hexchat_open_file ("palette.conf", O_RDONLY, 0, 0);
-		upgrade = TRUE;
-	}
-
 	if (fh != -1)
 	{
 		fstat (fh, &st);
@@ -146,57 +124,24 @@ palette_load (void)
 			if (l >= 0)
 				cfg[l] = '\0';
 
-			if (!upgrade)
+			/* mIRC colors 0-31 are here */
+			for (i = 0; i < 32; i++)
 			{
-				/* mIRC colors 0-31 are here */
-				for (i = 0; i < 32; i++)
-				{
-					snprintf (prefname, sizeof prefname, "color_%d", i);
-					cfg_get_color (cfg, prefname, &red, &green, &blue);
-					colors[i].red = red;
-					colors[i].green = green;
-					colors[i].blue = blue;
-				}
+				snprintf (prefname, sizeof prefname, "color_%d", i);
+				cfg_get_color (cfg, prefname, &red, &green, &blue);
+				colors[i].red = red;
+				colors[i].green = green;
+				colors[i].blue = blue;
+			}
 
-				/* our special colors are mapped at 256+ */
-				for (i = 256, j = 32; j < MAX_COL+1; i++, j++)
-				{
-					snprintf (prefname, sizeof prefname, "color_%d", i);
-					cfg_get_color (cfg, prefname, &red, &green, &blue);
-					colors[j].red = red;
-					colors[j].green = green;
-					colors[j].blue = blue;
-				}
-
-			} else
+			/* our special colors are mapped at 256+ */
+			for (i = 256, j = 32; j < MAX_COL+1; i++, j++)
 			{
-				/* loading 2.0.x palette.conf */
-				for (i = 0; i < MAX_COL+1; i++)
-				{
-					snprintf (prefname, sizeof prefname, "color_%d_red", i);
-					red = cfg_get_int (cfg, prefname);
-
-					snprintf (prefname, sizeof prefname, "color_%d_grn", i);
-					green = cfg_get_int (cfg, prefname);
-
-					snprintf (prefname, sizeof prefname, "color_%d_blu", i);
-					blue = cfg_get_int_with_result (cfg, prefname, &res);
-
-					if (res)
-					{
-						colors[remap[i]].red = red;
-						colors[remap[i]].green = green;
-						colors[remap[i]].blue = blue;
-					}
-				}
-
-				/* copy 0-15 to 16-31 */
-				for (i = 0; i < 16; i++)
-				{
-					colors[i+16].red = colors[i].red;
-					colors[i+16].green = colors[i].green;
-					colors[i+16].blue = colors[i].blue;
-				}
+				snprintf (prefname, sizeof prefname, "color_%d", i);
+				cfg_get_color (cfg, prefname, &red, &green, &blue);
+				colors[j].red = red;
+				colors[j].green = green;
+				colors[j].blue = blue;
 			}
 			free (cfg);
 		}
