@@ -1499,41 +1499,43 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	textentry *ent;
 	int offset;
 	unsigned char *word;
+	unsigned char *last, *end;
 	int len;
 	int out_of_bounds = 0;
 	int len_to_offset = 0;
 
 	ent = gtk_xtext_find_char (xtext, x, y, &offset, &out_of_bounds);
-	if (!ent)
-		return 0;
-
-	if (out_of_bounds)
-		return 0;
-
-	if (offset == ent->str_len)
-		return 0;
-
-	if (offset < 1)
-		return 0;
-
-	/*offset--;*/	/* FIXME: not all chars are 1 byte */
+	if (ent == NULL || out_of_bounds || offset < 0 || offset >= ent->str_len)
+		return NULL;
 
 	word = ent->str + offset;
-
-	while (!is_del (*word) && word != ent->str)
+	while ((word = g_utf8_find_prev_char (ent->str, word)))
 	{
-		word--;
-		len_to_offset++;
+		if (is_del (*word))
+		{
+			word++;
+			len_to_offset--;
+			break;
+		}
+		len_to_offset += charlen (word);
 	}
-	word++;
-	len_to_offset--;
+	if (!word)
+		word = ent->str;
 
 	/* remove color characters from the length */
-	gtk_xtext_strip_color (word, len_to_offset, xtext->scratch_buffer, &len_to_offset, slp, FALSE);
+	gtk_xtext_strip_color (word, len_to_offset, xtext->scratch_buffer, &len_to_offset, NULL, FALSE);
 
+	last = word;
+	end = ent->str + ent->str_len;
 	len = 0;
-	while (!is_del (word[len]) && len != ent->str_len)
-		len++;
+	do
+	{
+		if (is_del (*last))
+			break;
+		len += charlen (last);
+		last = g_utf8_find_next_char (last, end);
+	}
+	while (last);
 
 	if (len > 0 && word[len-1]=='.')
 		len--;
