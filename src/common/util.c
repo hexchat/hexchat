@@ -1022,7 +1022,7 @@ static const domain_t domain[] =
 		{"CK", N_("Cook Islands") },
 		{"CL", N_("Chile") },
 		{"CLOTHING", N_("Clothing") },
-		{"CLUB", N_("Clubs, associations, and assemblies")
+		{"CLUB", N_("Clubs, associations, and assemblies") },
 		{"CM", N_("Cameroon") },
 		{"CN", N_("China") },
 		{"CO", N_("Colombia") },
