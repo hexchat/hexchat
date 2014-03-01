@@ -93,6 +93,12 @@ static const struct defaultserver def[] =
 	{0,			"au.alphachat.net"},
 	{0,			"za.alphachat.net"},
 
+	{"Anthrochat", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.anthrochat.net/+6697"},
+#endif
+	{0,			"irc.anthrochat.net"},
+
 	{"ARCNet",	0},
 	{0,			"se1.arcnet.vapor.com"},
 	{0,			"us1.arcnet.vapor.com"},
@@ -237,6 +243,18 @@ static const struct defaultserver def[] =
 	{0,				"chat.freenode.net"},
 	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
+
+	{"Furnet",	0},
+#ifdef USE_IPV6
+#ifdef USE_OPENSSL
+	{0,			"ipv6.furnet.org/+6697"},
+#endif
+	{0,			"ipv6.furnet.org"},
+#endif
+#ifdef USE_OPENSSL
+	{0,			"irc.furnet.org/+6697"},
+#endif
+	{0,			"irc.furnet.org"},
 
 	{"Fusion Latina",	0},
 	{0,					"irc.fusionlatina.org/2012"},
