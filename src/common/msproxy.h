@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * MS Proxy (ISA server) support is (c) 2006 Pavel Fedin <sonic_amiga@rambler.ru>
  * based on Dante source code
@@ -21,9 +21,12 @@
  *      Inferno Nettverk A/S, Norway.  All rights reserved.
  */
 
+#ifndef HEXCHAT_MSPROXY_H
+#define HEXCHAT_MSPROXY_H
+
 #include "network.h"
 
-#define MSPROXY_EXECUTABLE 		"xchat.exe"	/* This probably can be used for access control on the server side */
+#define MSPROXY_EXECUTABLE 		"hexchat.exe"	/* This probably can be used for access control on the server side */
 
 #define MSPROXY_MINLENGTH		172		/* minimum length of packet.				*/
 #define NT_MAXNAMELEN			17		/* maximum name length (domain etc), comes from NetBIOS */
@@ -255,3 +258,5 @@ struct msproxy_response_t {
 
 int traverse_msproxy (int sok, char *serverAddr, int port, struct msproxy_state_t *state, netstore *ns_proxy, int csok4, int csok6, int *csok, char bound);
 void msproxy_keepalive (void);
+
+#endif

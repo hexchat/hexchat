@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -24,22 +24,7 @@
 #include <fcntl.h>
 #include "fe-gtk.h"
 
-#include <gtk/gtkcheckbutton.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtkhseparator.h>
-#include <gtk/gtkversion.h>
-
-#include <gtk/gtkliststore.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkcellrenderertext.h>
-#include <gtk/gtkcellrenderertoggle.h>
-
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/ignore.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
@@ -118,7 +103,7 @@ mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
 		/* delete old mask, and add new one with original flags */
 		ignore_del (old, NULL);
 		flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
-		ignore_add (new, flags);
+		ignore_add (new, flags, TRUE);
 
 		/* update tree */
 		gtk_list_store_set (store, &iter, MASK_COLUMN, new, -1);
@@ -146,7 +131,7 @@ option_toggled (GtkCellRendererToggle *render, gchar *path, gpointer data)
 	/* update ignore list */
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 0, &mask, -1);
 	flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
-	if (ignore_add (mask, flags) != 2)
+	if (ignore_add (mask, flags, TRUE) != 2)
 		g_warning ("ignore treeview is out of sync!\n");
 	
 	g_free (mask);
@@ -187,7 +172,7 @@ ignore_treeview_new (GtkWidget *box)
 	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
 	     col_id++)
 	{
-		GList *list = gtk_tree_view_column_get_cell_renderers (col);
+		GList *list = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (col));
 		GList *tmp;
 
 		for (tmp = list; tmp; tmp = tmp->next)
@@ -259,7 +244,7 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 		return;
 	}
 
-	ignore_add (mask, flags);
+	ignore_add (mask, flags, TRUE);
 
 	gtk_list_store_append (store, &iter);
 	/* ignore everything by default */
@@ -273,13 +258,15 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 }
 
 static void
-ignore_clear_entry_clicked (GtkWidget * wid, gpointer unused)
+ignore_clear_cb (GtkDialog *dialog, gint response)
 {
 	GtkListStore *store = GTK_LIST_STORE (get_store ());
 	GtkTreeIter iter;
 	char *mask;
 
-	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter))
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter) && response == GTK_RESPONSE_OK)
 	{
 		/* remove from ignore_list */
 		do
@@ -294,6 +281,20 @@ ignore_clear_entry_clicked (GtkWidget * wid, gpointer unused)
 		/* remove from GUI */
 		gtk_list_store_clear (store);
 	}
+}
+
+static void
+ignore_clear_entry_clicked (GtkWidget * wid)
+{
+	GtkWidget *dialog;
+
+	dialog = gtk_message_dialog_new (NULL, 0,
+								GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+					_("Are you sure you want to remove all ignores?"));
+	g_signal_connect (G_OBJECT (dialog), "response",
+							G_CALLBACK (ignore_clear_cb), NULL);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_widget_show (dialog);
 }
 
 static void
@@ -349,6 +350,7 @@ ignore_gui_open ()
 			  mg_create_generic_tab ("IgnoreList", _(DISPLAY_NAME": Ignore list"),
 											FALSE, TRUE, close_ignore_gui_callback,
 											NULL, 600, 256, &vbox, 0);
+	gtkutil_destroy_on_esc (ignorewin);
 
 	view = ignore_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (ignorewin), "view", view);

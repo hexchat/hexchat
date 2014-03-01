@@ -23,12 +23,12 @@
 #include <windows.h>
 #include <time.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
-static xchat_plugin *ph;   /* plugin handle */
-static const char name[] = "Exec";
-static const char desc[] = "Execute commands inside HexChat";
-static const char version[] = "1.1";
+static hexchat_plugin *ph;   /* plugin handle */
+static char name[] = "Exec";
+static char desc[] = "Execute commands inside HexChat";
+static char version[] = "1.2";
 
 static int
 run_command (char *word[], char *word_eol[], void *userdata)
@@ -41,6 +41,10 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	time_t start;
 	double timeElapsed;
 
+	char *token;
+	char *context = NULL;
+	int announce = 0;
+
 	HANDLE readPipe;
 	HANDLE writePipe;
 	STARTUPINFO sInfo; 
@@ -51,15 +55,16 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	secattr.nLength = sizeof (secattr);
 	secattr.bInheritHandle = TRUE;
 
+	timeElapsed = 0.0;
+
 	if (strlen (word[2]) > 0)
 	{
 		strcpy (commandLine, "cmd.exe /c ");
 
 		if (!stricmp("-O", word[2]))
 		{
-			/*strcat (commandLine, word_eol[3]);*/
-			xchat_printf (ph, "Printing Exec output to others is not supported yet.\n");
-			return XCHAT_EAT_XCHAT;
+			strcat (commandLine, word_eol[3]);
+			announce = 1;
 		}
 		else
 		{
@@ -88,7 +93,19 @@ run_command (char *word[], char *word_eol[], void *userdata)
 				{
 					/* avoid garbage */
 					buffer[dwRead] = '\0';
-					xchat_printf (ph, "%s", buffer);
+
+					if (announce)
+					{
+						/* Say each line seperately, TODO: improve... */
+						token = strtok_s (buffer, "\n", &context);
+						while (token != NULL)
+						{
+							hexchat_commandf (ph, "SAY %s", token);
+							token = strtok_s (NULL, "\n", &context);
+						}
+					}
+					else
+						hexchat_printf (ph, "%s", buffer);
 				}
 			}
 			else
@@ -98,25 +115,30 @@ run_command (char *word[], char *word_eol[], void *userdata)
 			}
 			timeElapsed = difftime (time (0), start);
 		}
+
+		/* display a newline to separate things */
+		if (!announce)
+			hexchat_printf (ph, "\n");
+
+		if (timeElapsed >= 10)
+		{
+			hexchat_printf (ph, "Command took too much time to run, execution aborted.\n");
+		}
+
+		CloseHandle (readPipe);
+		CloseHandle (pInfo.hProcess);
+		CloseHandle (pInfo.hThread);
 	}
-
-	/* display a newline to separate things */
-	xchat_printf (ph, "\n");
-
-	if (timeElapsed >= 10)
+	else
 	{
-		xchat_printf (ph, "Command took too much time to run, execution aborted.\n");
+		hexchat_command (ph, "help exec");
 	}
 
-	CloseHandle (readPipe);
-	CloseHandle (pInfo.hProcess);
-	CloseHandle (pInfo.hThread);
-
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
 
@@ -124,15 +146,15 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	xchat_hook_command (ph, "EXEC", XCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside XChat", 0);
-	xchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_hook_command (ph, "EXEC", HEXCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside HexChat", 0);
+	hexchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
 }
 
 int
-xchat_plugin_deinit (void)
+hexchat_plugin_deinit (void)
 {
-	xchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

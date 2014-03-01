@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -22,14 +22,8 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkeditable.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkbutton.h>
-
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "gtkutil.h"
 #include "ascii.h"
 #include "maingui.h"
@@ -90,7 +84,6 @@ static const unsigned char table[]=
 0xd1,0x89,0xd1,0x8a,0xd1,0x8b,0xd1,0x8c,0xd1,0x8d,0xd1,0x8e,0xd1,0x8f,0
 };
 
-
 static gboolean
 ascii_enter (GtkWidget * wid, GdkEventCrossing *event, GtkWidget *label)
 {
@@ -133,6 +126,7 @@ ascii_open (void)
 	win = mg_create_generic_tab ("charmap", _("Character Chart"), TRUE, TRUE,
 										  NULL, NULL, 0, 0, &vbox, NULL);
 	gtk_container_set_border_width (GTK_CONTAINER (win), 5);
+	gtkutil_destroy_on_esc (win);
 
 	label = gtk_label_new (NULL);
 

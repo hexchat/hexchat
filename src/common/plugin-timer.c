@@ -1,13 +1,32 @@
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 #ifdef WIN32
 #define g_ascii_strcasecmp stricmp
 #endif
 
-static xchat_plugin *ph;	/* plugin handle */
+static hexchat_plugin *ph;	/* plugin handle */
 static GSList *timer_list = NULL;
 
 #define STATIC
@@ -17,8 +36,8 @@ static GSList *timer_list = NULL;
 
 typedef struct
 {
-	xchat_hook *hook;
-	xchat_context *context;
+	hexchat_hook *hook;
+	hexchat_context *context;
 	char *command;
 	int ref;
 	int repeat;
@@ -31,7 +50,7 @@ timer_del (timer *tim)
 {
 	timer_list = g_slist_remove (timer_list, tim);
 	free (tim->command);
-	xchat_unhook (ph, tim->hook);
+	hexchat_unhook (ph, tim->hook);
 	free (tim);
 }
 
@@ -49,21 +68,21 @@ timer_del_ref (int ref, int quiet)
 		{
 			timer_del (tim);
 			if (!quiet)
-				xchat_printf (ph, "Timer %d deleted.\n", ref);
+				hexchat_printf (ph, "Timer %d deleted.\n", ref);
 			return;
 		}
 		list = list->next;
 	}
 	if (!quiet)
-		xchat_print (ph, "No such ref number found.\n");
+		hexchat_print (ph, "No such ref number found.\n");
 }
 
 static int
 timeout_cb (timer *tim)
 {
-	if (xchat_set_context (ph, tim->context))
+	if (hexchat_set_context (ph, tim->context))
 	{
-		xchat_command (ph, tim->command);
+		hexchat_command (ph, tim->command);
 
 		if (tim->forever)
 			return 1;
@@ -101,13 +120,13 @@ timer_add (int ref, float timeout, int repeat, char *command)
 	tim->repeat = repeat;
 	tim->timeout = timeout;
 	tim->command = strdup (command);
-	tim->context = xchat_get_context (ph);
+	tim->context = hexchat_get_context (ph);
 	tim->forever = FALSE;
 
 	if (repeat == 0)
 		tim->forever = TRUE;
 
-	tim->hook = xchat_hook_timer (ph, timeout * 1000.0, (void *)timeout_cb, tim);
+	tim->hook = hexchat_hook_timer (ph, timeout * 1000.0, (void *)timeout_cb, tim);
 	timer_list = g_slist_append (timer_list, tim);
 }
 
@@ -119,17 +138,17 @@ timer_showlist (void)
 
 	if (timer_list == NULL)
 	{
-		xchat_print (ph, "No timers installed.\n");
-		xchat_print (ph, HELP);
+		hexchat_print (ph, "No timers installed.\n");
+		hexchat_print (ph, HELP);
 		return;
 	}
 							 /*  00000 00000000 0000000 abc */
-	xchat_print (ph, "\026 Ref#  Seconds  Repeat  Command \026\n");
+	hexchat_print (ph, "\026 Ref#  Seconds  Repeat  Command \026\n");
 	list = timer_list;
 	while (list)
 	{
 		tim = list->data;
-		xchat_printf (ph, "%5d %8.1f %7d  %s\n", tim->ref, tim->timeout,
+		hexchat_printf (ph, "%5d %8.1f %7d  %s\n", tim->ref, tim->timeout,
 						  tim->repeat, tim->command);
 		list = list->next;
 	}
@@ -148,7 +167,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	if (!word[2][0])
 	{
 		timer_showlist ();
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if (g_ascii_strcasecmp (word[2], "-quiet") == 0)
@@ -160,7 +179,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	if (g_ascii_strcasecmp (word[2 + offset], "-delete") == 0)
 	{
 		timer_del_ref (atoi (word[3 + offset]), quiet);
-		return XCHAT_EAT_XCHAT;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
 
 	if (g_ascii_strcasecmp (word[2 + offset], "-refnum") == 0)
@@ -179,30 +198,30 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	command = word_eol[3 + offset];
 
 	if (timeout < 0.1 || !command[0])
-		xchat_print (ph, HELP);
+		hexchat_print (ph, HELP);
 	else
 		timer_add (ref, timeout, repeat, command);
 
-	return XCHAT_EAT_XCHAT;
+	return HEXCHAT_EAT_HEXCHAT;
 }
 
 int
 #ifdef STATIC
 timer_plugin_init
 #else
-xchat_plugin_init
+hexchat_plugin_init
 #endif
-				(xchat_plugin *plugin_handle, char **plugin_name,
+				(hexchat_plugin *plugin_handle, char **plugin_name,
 				char **plugin_desc, char **plugin_version, char *arg)
 {
-	/* we need to save this for use with any xchat_* functions */
+	/* we need to save this for use with any hexchat_* functions */
 	ph = plugin_handle;
 
 	*plugin_name = "Timer";
 	*plugin_desc = "IrcII style /TIMER command";
 	*plugin_version = "";
 
-	xchat_hook_command (ph, "TIMER", XCHAT_PRI_NORM, timer_cb, HELP, 0);
+	hexchat_hook_command (ph, "TIMER", HEXCHAT_PRI_NORM, timer_cb, HELP, 0);
 
 	return 1;       /* return 1 for success */
 }

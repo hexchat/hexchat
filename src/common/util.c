@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #define WANTSOCKET
@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -33,28 +34,39 @@
 #include <process.h>
 #include <io.h>
 #include "../dirent/dirent-win32.h"
+#include "../../config-win32.h"
 #else
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
 #include <dirent.h>
+#include "../../config.h"
 #endif
 
 #include <fcntl.h>
 #include <errno.h>
-#include "xchat.h"
-#include "xchatc.h"
-#include <glib.h>
+#include "hexchat.h"
+#include "hexchatc.h"
 #include <ctype.h>
 #include "util.h"
-#include "../../config.h"
 
 #if defined (USING_FREEBSD) || defined (__APPLE__)
 #include <sys/sysctl.h>
 #endif
 #ifdef SOCKS
 #include <socks.h>
+#endif
+
+/* SASL mechanisms */
+#ifdef USE_OPENSSL
+#include <openssl/bn.h>
+#include <openssl/rand.h>
+#include <openssl/blowfish.h>
+#include <openssl/aes.h>
+#ifndef WIN32
+#include <netinet/in.h>
+#endif
 #endif
 
 #ifndef HAVE_SNPRINTF
@@ -83,7 +95,7 @@ struct mem_block
 struct mem_block *mroot = NULL;
 
 void *
-xchat_malloc (int size, char *file, int line)
+hexchat_malloc (int size, char *file, int line)
 {
 	void *ret;
 	struct mem_block *new;
@@ -111,21 +123,21 @@ xchat_malloc (int size, char *file, int line)
 }
 
 void *
-xchat_realloc (char *old, int len, char *file, int line)
+hexchat_realloc (char *old, int len, char *file, int line)
 {
 	char *ret;
 
-	ret = xchat_malloc (len, file, line);
+	ret = hexchat_malloc (len, file, line);
 	if (ret)
 	{
 		strcpy (ret, old);
-		xchat_dfree (old, file, line);
+		hexchat_dfree (old, file, line);
 	}
 	return ret;
 }
 
 void *
-xchat_strdup (char *str, char *file, int line)
+hexchat_strdup (char *str, char *file, int line)
 {
 	void *ret;
 	struct mem_block *new;
@@ -156,7 +168,7 @@ xchat_strdup (char *str, char *file, int line)
 }
 
 void
-xchat_mem_list (void)
+hexchat_mem_list (void)
 {
 	struct mem_block *cur, *p;
 	GSList *totals = 0;
@@ -197,7 +209,7 @@ xchat_mem_list (void)
 }
 
 void
-xchat_dfree (void *buf, char *file, int line)
+hexchat_dfree (void *buf, char *file, int line)
 {
 	struct mem_block *cur, *last;
 
@@ -235,10 +247,10 @@ xchat_dfree (void *buf, char *file, int line)
 	free (cur);
 }
 
-#define malloc(n) xchat_malloc(n, __FILE__, __LINE__)
-#define realloc(n, m) xchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) xchat_dfree(n, __FILE__, __LINE__)
-#define strdup(n) xchat_strdup(n, __FILE__, __LINE__)
+#define malloc(n) hexchat_malloc(n, __FILE__, __LINE__)
+#define realloc(n, m) hexchat_realloc(n, m, __FILE__, __LINE__)
+#define free(n) hexchat_dfree(n, __FILE__, __LINE__)
+#define strdup(n) hexchat_strdup(n, __FILE__, __LINE__)
 
 #endif /* MEMORY_DEBUG */
 
@@ -252,14 +264,14 @@ file_part (char *file)
 	{
 		switch (*file)
 		{
-		case 0:
-			return (filepart);
-		case '/':
+			case 0:
+				return (filepart);
+			case '/':
 #ifdef WIN32
-		case '\\':
+			case '\\':
 #endif
-			filepart = file + 1;
-			break;
+				filepart = file + 1;
+				break;
 		}
 		file++;
 	}
@@ -449,7 +461,7 @@ expand_homedir (char *file)
 		return ret;
 	}
 #endif
-	return strdup (file);
+	return g_strdup (file);
 }
 
 gchar *
@@ -673,7 +685,7 @@ get_cpu_arch (void)
 }
 
 char *
-get_cpu_str (void)
+get_sys_str (int with_cpu)
 {
 	static char verbuf[64];
 	static char winver[20];
@@ -681,7 +693,7 @@ get_cpu_str (void)
 	double mhz;
 
 	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
-	GetVersionEx (&osvi);
+	GetVersionEx ((OSVERSIONINFO*) &osvi);
 
 	switch (osvi.dwMajorVersion)
 	{
@@ -740,7 +752,7 @@ get_cpu_str (void)
 					}
 					else
 					{
-						strcpy (winver, "8 Server");
+						strcpy (winver, "Server 2012");
 					}
 					break;
 			}
@@ -748,7 +760,7 @@ get_cpu_str (void)
 	}
 
 	mhz = get_mhz ();
-	if (mhz)
+	if (mhz && with_cpu)
 	{
 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
@@ -765,7 +777,7 @@ get_cpu_str (void)
 #else
 
 char *
-get_cpu_str (void)
+get_sys_str (int with_cpu)
 {
 #if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
 	double mhz;
@@ -783,7 +795,7 @@ get_cpu_str (void)
 
 #if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
 	get_cpu_info (&mhz, &cpus);
-	if (mhz)
+	if (mhz && with_cpu)
 	{
 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
@@ -791,11 +803,10 @@ get_cpu_str (void)
 					(cpus == 1) ? "%s %s [%s/%.2f%s]" : "%s %s [%s/%.2f%s/SMP]",
 					un.sysname, un.release, un.machine,
 					cpuspeed, cpuspeedstr);
-	} else
+	}
+	else
 #endif
-		snprintf (buf, 128,
-					(cpus == 1) ? "%s %s [%s]" : "%s %s [%s/SMP]",
-					un.sysname, un.release, un.machine);
+		snprintf (buf, 128, "%s %s", un.sysname, un.release);
 
 	return buf;
 }
@@ -923,7 +934,7 @@ for_files (char *dirname, char *mask, void callback (char *file))
 				if (match (mask, ent->d_name))
 				{
 					buf = malloc (strlen (dirname) + strlen (ent->d_name) + 2);
-					sprintf (buf, "%s/%s", dirname, ent->d_name);
+					sprintf (buf, "%s" G_DIR_SEPARATOR_S "%s", dirname, ent->d_name);
 					callback (buf);
 					free (buf);
 				}
@@ -1242,7 +1253,7 @@ country (char *hostname)
 	domain_t *dom;
 
 	if (!hostname || !*hostname || isdigit ((unsigned char) hostname[strlen (hostname) - 1]))
-		return _("Unknown");
+		return NULL;
 	if ((p = strrchr (hostname, '.')))
 		p++;
 	else
@@ -1252,7 +1263,7 @@ country (char *hostname)
 						sizeof (domain_t), country_compare);
 
 	if (!dom)
-		return _("Unknown");
+		return NULL;
 
 	return _(dom->country);
 }
@@ -1318,8 +1329,17 @@ int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr) {
 	    if (*argv[argc]) {
 		buf++, argc++;
 		if (argc == argvAlloced) {
+		    char **temp;
 		    argvAlloced += POPT_ARGV_ARRAY_GROW_DELTA;
-		    argv = realloc(argv, sizeof(*argv) * argvAlloced);
+		    temp = realloc(argv, sizeof(*argv) * argvAlloced);
+		    if (temp)
+			argv = temp;
+		    else
+		    {
+			free(argv);
+			free(bufStart);
+			return 1;
+		    }
 		}
 		argv[argc] = buf;
 	    }
@@ -1384,7 +1404,10 @@ util_exec (const char *cmd)
 #ifndef WIN32
 	pid = fork ();
 	if (pid == -1)
+	{
+		free (argv);
 		return -1;
+	}
 	if (pid == 0)
 	{
 		/* Now close all open file descriptors except stdin, stdout and stderr */
@@ -1438,7 +1461,7 @@ make_ping_time (void)
 	GTimeVal timev;
 	g_get_current_time (&timev);
 #endif
-	return (timev.tv_sec - 50000) * 1000000 + timev.tv_usec;
+	return (timev.tv_sec - 50000) * 1000 + timev.tv_usec/1000;
 }
 
 
@@ -1566,10 +1589,10 @@ rename_utf8 (char *oldname, char *newname)
 	int sav, res;
 	char *fso, *fsn;
 
-	fso = xchat_filename_from_utf8 (oldname, -1, 0, 0, 0);
+	fso = hexchat_filename_from_utf8 (oldname, -1, 0, 0, 0);
 	if (!fso)
 		return FALSE;
-	fsn = xchat_filename_from_utf8 (newname, -1, 0, 0, 0);
+	fsn = hexchat_filename_from_utf8 (newname, -1, 0, 0, 0);
 	if (!fsn)
 	{
 		g_free (fso);
@@ -1590,7 +1613,7 @@ unlink_utf8 (char *fname)
 	int res;
 	char *fs;
 
-	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
+	fs = hexchat_filename_from_utf8 (fname, -1, 0, 0, 0);
 	if (!fs)
 		return FALSE;
 
@@ -1600,42 +1623,31 @@ unlink_utf8 (char *fname)
 }*/
 
 static gboolean
-file_exists_utf8 (char *fname)
+file_exists (char *fname)
 {
-	int res;
-	char *fs;
-
-	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
-	if (!fs)
-		return FALSE;
-
-	res = access (fs, F_OK);
-	g_free (fs);
-	if (res == 0)
-		return TRUE;
-	return FALSE;
+	return (g_access (fname, F_OK) == 0) ? TRUE : FALSE;
 }
 
 static gboolean
-copy_file (char *dl_src, char *dl_dest, int permissions)	/* FS encoding */
+copy_file (char *dl_src, char *dl_dest, int permissions)
 {
 	int tmp_src, tmp_dest;
 	gboolean ok = FALSE;
 	char dl_tmp[4096];
 	int return_tmp, return_tmp2;
 
-	if ((tmp_src = open (dl_src, O_RDONLY | OFLAGS)) == -1)
+	if ((tmp_src = g_open (dl_src, O_RDONLY | OFLAGS, 0600)) == -1)
 	{
-		fprintf (stderr, "Unable to open() file '%s' (%s) !", dl_src,
+		g_fprintf (stderr, "Unable to open() file '%s' (%s) !", dl_src,
 				  strerror (errno));
 		return FALSE;
 	}
 
 	if ((tmp_dest =
-		 open (dl_dest, O_WRONLY | O_CREAT | O_TRUNC | OFLAGS, permissions)) < 0)
+		 g_open (dl_dest, O_WRONLY | O_CREAT | O_TRUNC | OFLAGS, permissions)) < 0)
 	{
 		close (tmp_src);
-		fprintf (stderr, "Unable to create file '%s' (%s) !", dl_src,
+		g_fprintf (stderr, "Unable to create file '%s' (%s) !", dl_src,
 				  strerror (errno));
 		return FALSE;
 	}
@@ -1680,79 +1692,48 @@ copy_file (char *dl_src, char *dl_dest, int permissions)	/* FS encoding */
 	return ok;
 }
 
-/* Takes care of moving a file from a temporary download location to a completed location. Now in UTF-8. */
+/* Takes care of moving a file from a temporary download location to a completed location. */
 void
-move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
+move_file (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
 {
-	char src[4096];
-	char dst[4096];
+	char *src;
+	char *dst;
 	int res, i;
-	char *src_fs;	/* FileSystem encoding */
-	char *dst_fs;
 
 	/* if dcc_dir and dcc_completed_dir are the same then we are done */
 	if (0 == strcmp (src_dir, dst_dir) ||
 		 0 == dst_dir[0])
 		return;			/* Already in "completed dir" */
 
-	snprintf (src, sizeof (src), "%s/%s", src_dir, fname);
-	snprintf (dst, sizeof (dst), "%s/%s", dst_dir, fname);
+	src = g_build_filename (src_dir, fname, NULL);
+	dst = g_build_filename (dst_dir, fname, NULL);
 
 	/* already exists in completed dir? Append a number */
-	if (file_exists_utf8 (dst))
+	if (file_exists (dst))
 	{
 		for (i = 0; ; i++)
 		{
-			snprintf (dst, sizeof (dst), "%s/%s.%d", dst_dir, fname, i);
-			if (!file_exists_utf8 (dst))
+			g_free (dst);
+			dst = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s.%d", dst_dir, fname, i);
+			if (!file_exists (dst))
 				break;
 		}
 	}
 
-	/* convert UTF-8 to filesystem encoding */
-	src_fs = xchat_filename_from_utf8 (src, -1, 0, 0, 0);
-	if (!src_fs)
-		return;
-	dst_fs = xchat_filename_from_utf8 (dst, -1, 0, 0, 0);
-	if (!dst_fs)
-	{
-		g_free (src_fs);
-		return;
-	}
-
 	/* first try a simple rename move */
-	res = rename (src_fs, dst_fs);
+	res = g_rename (src, dst);
 
 	if (res == -1 && (errno == EXDEV || errno == EPERM))
 	{
 		/* link failed because either the two paths aren't on the */
 		/* same filesystem or the filesystem doesn't support hard */
 		/* links, so we have to do a copy. */
-		if (copy_file (src_fs, dst_fs, dccpermissions))
-			unlink (src_fs);
+		if (copy_file (src, dst, dccpermissions))
+			g_unlink (src);
 	}
 
-	g_free (dst_fs);
-	g_free (src_fs);
-}
-
-int
-mkdir_utf8 (char *dir)
-{
-	int ret;
-
-	dir = xchat_filename_from_utf8 (dir, -1, 0, 0, 0);
-	if (!dir)
-		return -1;
-
-#ifdef WIN32
-	ret = mkdir (dir);
-#else
-	ret = mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR);
-#endif
-	g_free (dir);
-
-	return ret;
+	g_free (dst);
+	g_free (src);
 }
 
 /* separates a string according to a 'sep' char, then calls the callback
@@ -1893,18 +1874,407 @@ portable_mode ()
 }
 
 int
-hextray_mode ()
+unity_mode ()
 {
-#ifdef WIN32
-	if ((_access( "plugins/hextray.dll", 0 )) != -1)
-	{
+#ifdef G_OS_UNIX
+	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
+	if (env && strcmp (env, "Unity") == 0)
 		return 1;
-	}
-	else
-	{
-		return 0;
-	}
-#else
+#endif
 	return 0;
+}
+
+char *
+encode_sasl_pass_plain (char *user, char *pass)
+{
+	int authlen;
+	char *buffer;
+	char *encoded;
+
+	/* we can't call strlen() directly on buffer thanks to the atrocious \0 characters it requires */
+	authlen = strlen (user) * 2 + 2 + strlen (pass);
+	buffer = g_strdup_printf ("%s%c%s%c%s", user, '\0', user, '\0', pass);
+	encoded = g_base64_encode ((unsigned char*) buffer, authlen);
+	g_free (buffer);
+
+	return encoded;
+}
+
+#ifdef USE_OPENSSL
+/* Adapted from ZNC's SASL module */
+
+static int
+parse_dh (char *str, DH **dh_out, unsigned char **secret_out, int *keysize_out)
+{
+	DH *dh;
+	guchar *data, *decoded_data;
+	guchar *secret;
+	gsize data_len;
+	guint size;
+	guint16 size16;
+	BIGNUM *pubkey;
+	gint key_size;
+
+	dh = DH_new();
+	data = decoded_data = g_base64_decode (str, &data_len);
+	if (data_len < 2)
+		goto fail;
+
+	/* prime number */
+	memcpy (&size16, data, sizeof(size16));
+	size = ntohs (size16);
+	data += 2;
+	data_len -= 2;
+
+	if (size > data_len)
+		goto fail;
+
+	dh->p = BN_bin2bn (data, size, NULL);
+	data += size;
+
+	/* Generator */
+	if (data_len < 2)
+		goto fail;
+
+	memcpy (&size16, data, sizeof(size16));
+	size = ntohs (size16);
+	data += 2;
+	data_len -= 2;
+	
+	if (size > data_len)
+		goto fail;
+
+	dh->g = BN_bin2bn (data, size, NULL);
+	data += size;
+
+	/* pub key */
+	if (data_len < 2)
+		goto fail;
+
+	memcpy (&size16, data, sizeof(size16));
+	size = ntohs(size16);
+	data += 2;
+	data_len -= 2;
+
+	pubkey = BN_bin2bn (data, size, NULL);
+	if (!(DH_generate_key (dh)))
+		goto fail;
+
+	secret = (unsigned char*)malloc (DH_size(dh));
+	key_size = DH_compute_key (secret, pubkey, dh);
+	if (key_size == -1)
+		goto fail;
+
+	g_free (decoded_data);
+
+	*dh_out = dh;
+	*secret_out = secret;
+	*keysize_out = key_size;
+	return 1;
+
+fail:
+	if (decoded_data)
+		g_free (decoded_data);
+	return 0;
+}
+
+char *
+encode_sasl_pass_blowfish (char *user, char *pass, char *data)
+{
+	DH *dh;
+	char *response, *ret;
+	unsigned char *secret;
+	unsigned char *encrypted_pass;
+	char *plain_pass;
+	BF_KEY key;
+	int key_size, length;
+	int pass_len = strlen (pass) + (8 - (strlen (pass) % 8));
+	int user_len = strlen (user);
+	guint16 size16;
+	char *in_ptr, *out_ptr;
+
+	if (!parse_dh (data, &dh, &secret, &key_size))
+		return NULL;
+	BF_set_key (&key, key_size, secret);
+
+	encrypted_pass = (guchar*)malloc (pass_len);
+	memset (encrypted_pass, 0, pass_len);
+	plain_pass = (char*)malloc (pass_len);
+	memset (plain_pass, 0, pass_len);
+	memcpy (plain_pass, pass, pass_len);
+	out_ptr = (char*)encrypted_pass;
+	in_ptr = (char*)plain_pass;
+
+	for (length = pass_len; length; length -= 8, in_ptr += 8, out_ptr += 8)
+		BF_ecb_encrypt ((unsigned char*)in_ptr, (unsigned char*)out_ptr, &key, BF_ENCRYPT);
+
+	/* Create response */
+	length = 2 + BN_num_bytes (dh->pub_key) + pass_len + user_len + 1;
+	response = (char*)malloc (length);
+	out_ptr = response;
+
+	/* our key */
+	size16 = htons ((guint16)BN_num_bytes (dh->pub_key));
+	memcpy (out_ptr, &size16, sizeof(size16));
+	out_ptr += 2;
+	BN_bn2bin (dh->pub_key, (guchar*)out_ptr);
+	out_ptr += BN_num_bytes (dh->pub_key);
+
+	/* username */
+	memcpy (out_ptr, user, user_len + 1);
+	out_ptr += user_len + 1;
+
+	/* pass */
+	memcpy (out_ptr, encrypted_pass, pass_len);
+	
+	ret = g_base64_encode ((const guchar*)response, length);
+
+	DH_free (dh);
+	free (plain_pass);
+	free (encrypted_pass);
+	free (secret);
+	free (response);
+
+	return ret;
+}
+
+char *
+encode_sasl_pass_aes (char *user, char *pass, char *data)
+{
+	DH *dh;
+	AES_KEY key;
+	char *response = NULL;
+	char *out_ptr, *ret = NULL;
+	unsigned char *secret, *ptr;
+	unsigned char *encrypted_userpass, *plain_userpass;
+	int key_size, length;
+	guint16 size16;
+	unsigned char iv[16], iv_copy[16];
+	int user_len = strlen (user) + 1;
+	int pass_len = strlen (pass) + 1;
+	int len = user_len + pass_len;
+	int padlen = 16 - (len % 16);
+	int userpass_len = len + padlen;
+
+	if (!parse_dh (data, &dh, &secret, &key_size))
+		return NULL;
+
+	encrypted_userpass = (guchar*)malloc (userpass_len);
+	memset (encrypted_userpass, 0, userpass_len);
+	plain_userpass = (guchar*)malloc (userpass_len);
+	memset (plain_userpass, 0, userpass_len);
+
+	/* create message */
+	/* format of: <username>\0<password>\0<padding> */
+	ptr = plain_userpass;
+	memcpy (ptr, user, user_len);
+	ptr += user_len;
+	memcpy (ptr, pass, pass_len);
+	ptr += pass_len;
+	if (padlen)
+	{
+		/* Padding */
+		unsigned char randbytes[16];
+		if (!RAND_bytes (randbytes, padlen))
+			goto end;
+
+		memcpy (ptr, randbytes, padlen);
+	}
+
+	if (!RAND_bytes (iv, sizeof (iv)))
+		goto end;
+
+	memcpy (iv_copy, iv, sizeof(iv));
+
+	/* Encrypt */
+	AES_set_encrypt_key (secret, key_size * 8, &key);
+	AES_cbc_encrypt(plain_userpass, encrypted_userpass, userpass_len, &key, iv_copy, AES_ENCRYPT);
+
+	/* Create response */
+	/* format of:  <size pubkey><pubkey><iv (always 16 bytes)><ciphertext> */
+	length = 2 + key_size + sizeof(iv) + userpass_len;
+	response = (char*)malloc (length);
+	out_ptr = response;
+
+	/* our key */
+	size16 = htons ((guint16)key_size);
+	memcpy (out_ptr, &size16, sizeof(size16));
+	out_ptr += 2;
+	BN_bn2bin (dh->pub_key, (guchar*)out_ptr);
+	out_ptr += key_size;
+
+	/* iv */
+	memcpy (out_ptr, iv, sizeof(iv));
+	out_ptr += sizeof(iv);
+
+	/* userpass */
+	memcpy (out_ptr, encrypted_userpass, userpass_len);
+	
+	ret = g_base64_encode ((const guchar*)response, length);
+
+end:
+	DH_free (dh);
+	free (plain_userpass);
+	free (encrypted_userpass);
+	free (secret);
+	if (response)
+		free (response);
+
+	return ret;
+}
+#endif
+
+#ifdef USE_OPENSSL
+static char *
+str_sha256hash (char *string)
+{
+	int i;
+	unsigned char hash[SHA256_DIGEST_LENGTH];
+	char buf[SHA256_DIGEST_LENGTH * 2 + 1];		/* 64 digit hash + '\0' */
+	SHA256_CTX sha256;
+
+	SHA256_Init (&sha256);
+	SHA256_Update (&sha256, string, strlen (string));
+	SHA256_Final (hash, &sha256);
+
+	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
+	{
+		sprintf (buf + (i * 2), "%02x", hash[i]);
+	}
+
+	buf[SHA256_DIGEST_LENGTH * 2] = 0;
+
+	return g_strdup (buf);
+}
+
+/**
+ * \brief Generate CHALLENGEAUTH response for QuakeNet login.
+ *
+ * \param username QuakeNet user name
+ * \param password password for the user
+ * \param challenge the CHALLENGE response we got from Q
+ *
+ * After a successful connection to QuakeNet a CHALLENGE is requested from Q.
+ * Generate the CHALLENGEAUTH response from this CHALLENGE and our user
+ * credentials as per the
+ * <a href="http://www.quakenet.org/development/challengeauth">CHALLENGEAUTH</a>
+ * docs. As for using OpenSSL HMAC, see
+ * <a href="http://www.askyb.com/cpp/openssl-hmac-hasing-example-in-cpp/">example 1</a>,
+ * <a href="http://stackoverflow.com/questions/242665/understanding-engine-initialization-in-openssl">example 2</a>.
+ */
+char *
+challengeauth_response (char *username, char *password, char *challenge)
+{
+	int i;
+	char *user;
+	char *pass;
+	char *passhash;
+	char *key;
+	char *keyhash;
+	unsigned char *digest;
+	GString *buf = g_string_new_len (NULL, SHA256_DIGEST_LENGTH * 2);
+
+	user = g_strdup (username);
+	*user = rfc_tolower (*username);			/* convert username to lowercase as per the RFC */
+
+	pass = g_strndup (password, 10);			/* truncate to 10 characters */
+	passhash = str_sha256hash (pass);
+	g_free (pass);
+
+	key = g_strdup_printf ("%s:%s", user, passhash);
+	g_free (user);
+	g_free (passhash);
+
+	keyhash = str_sha256hash (key);
+	g_free (key);
+
+	digest = HMAC (EVP_sha256 (), keyhash, strlen (keyhash), (unsigned char *) challenge, strlen (challenge), NULL, NULL);
+	g_free (keyhash);
+
+	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
+	{
+		g_string_append_printf (buf, "%02x", (unsigned int) digest[i]);
+	}
+
+	digest = (unsigned char *) g_string_free (buf, FALSE);
+
+	return (char *) digest;
+}
+#endif
+
+/**
+* \brief Wrapper around strftime for Windows
+*
+* Prevents crashing when using an invalid format by escaping them.
+*
+* Behaves the same as strftime with the addition that
+* it returns 0 if the escaped format string is too large.
+*
+* Based upon work from znc-msvc project.
+*/
+size_t
+strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time)
+{
+#ifndef WIN32
+	return strftime (dest, destsize, format, time);
+#else
+	char safe_format[64];
+	const char *p = format;
+	int i = 0;
+
+	if (strlen (format) >= sizeof(safe_format))
+		return 0;
+
+	memset (safe_format, 0, sizeof(safe_format));
+
+	while (*p)
+	{
+		if (*p == '%')
+		{
+			int has_hash = (*(p + 1) == '#');
+			char c = *(p + (has_hash ? 2 : 1));
+
+			if (i >= sizeof (safe_format))
+				return 0;
+
+			switch (c)
+			{
+			case 'a': case 'A': case 'b': case 'B': case 'c': case 'd': case 'H': case 'I': case 'j': case 'm': case 'M':
+			case 'p': case 'S': case 'U': case 'w': case 'W': case 'x': case 'X': case 'y': case 'Y': case 'z': case 'Z':
+			case '%':
+				/* formatting code is fine */
+				break;
+			default:
+				/* replace bad formatting code with itself, escaped, e.g. "%V" --> "%%V" */
+				g_strlcat (safe_format, "%%", sizeof(safe_format));
+				i += 2;
+				p++;
+				break;
+			}
+
+			/* the current loop run will append % (and maybe #) and the next one will do the actual char. */
+			if (has_hash)
+			{
+				safe_format[i] = *p;
+				p++;
+				i++;
+			}
+			if (c == '%')
+			{
+				safe_format[i] = *p;
+				p++;
+				i++;
+			}
+		}
+
+		if (*p)
+		{
+			safe_format[i] = *p;
+			p++;
+			i++;
+		}
+	}
+
+	return strftime (dest, destsize, safe_format, time);
 #endif
 }

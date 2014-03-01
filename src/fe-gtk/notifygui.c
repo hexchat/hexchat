@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -24,21 +24,7 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkscrolledwindow.h>
-
-#include <gtk/gtklabel.h>
-#include <gtk/gtkliststore.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkcellrenderertext.h>
-
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/notify.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
@@ -74,6 +60,7 @@ static void
 notify_closegui (void)
 {
 	notify_window = 0;
+	notify_save ();
 }
 
 /* Need this to be able to set the foreground colour property of a row
@@ -158,7 +145,7 @@ notify_gui_update (void)
 	GSList *list = notify_list;
 	GSList *slist;
 	gchar *name, *status, *server, *seen;
-	int online, servcount;
+	int online, servcount, lastseenminutes;
 	time_t lastseen;
 	char agobuf[128];
 
@@ -201,7 +188,13 @@ notify_gui_update (void)
 				seen = _("Never");
 			else
 			{
-				snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
+				lastseenminutes = (int)(time (0) - lastseen) / 60;
+				if (lastseenminutes < 60) 
+					snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), lastseenminutes);
+				else if (lastseenminutes < 120)
+					snprintf (agobuf, sizeof (agobuf), _("An hour ago"));
+				else
+					snprintf (agobuf, sizeof (agobuf), _("%d hours ago"), lastseenminutes / 60);
 				seen = agobuf;
 			}
 			if (!valid)	/* create new tree row if required */
@@ -318,10 +311,10 @@ notifygui_add_cb (GtkDialog *dialog, gint response, gpointer entry)
 	char *networks;
 	char *text;
 
-	text = GTK_ENTRY (entry)->text;
+	text = (char *)gtk_entry_get_text (GTK_ENTRY (entry));
 	if (text[0] && response == GTK_RESPONSE_ACCEPT)
 	{
-		networks = GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net"))->text;
+		networks = (char*)gtk_entry_get_text (GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net")));
 		if (g_ascii_strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
 			notify_adduser (text, NULL);
 		else
@@ -360,7 +353,7 @@ fe_notify_ask (char *nick, char *networks)
 	gtk_container_set_border_width (GTK_CONTAINER (table), 12);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 3);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 8);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), table);
 
 	label = gtk_label_new (msg);
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1);
@@ -413,6 +406,7 @@ notify_opengui (void)
 	notify_window =
 		mg_create_generic_tab ("Notify", _(DISPLAY_NAME": Friends List"), FALSE, TRUE,
 		                       notify_closegui, NULL, 400, 250, &vbox, 0);
+	gtkutil_destroy_on_esc (notify_window);
 
 	view = notify_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (notify_window), "view", view);

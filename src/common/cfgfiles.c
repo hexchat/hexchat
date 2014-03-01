@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <fcntl.h>
@@ -23,12 +23,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "cfgfiles.h"
 #include "util.h"
 #include "fe.h"
 #include "text.h"
-#include "xchatc.h"
+#include "hexchatc.h"
+#include "typedef.h"
 
 #ifdef WIN32
 #include <io.h>
@@ -38,15 +39,23 @@
 #endif
 
 #define DEF_FONT "Monospace 9"
-#ifdef WIN32
 #define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,MS Gothic,Unifont"
-#endif
+
+const char * const languages[LANGUAGES_LENGTH] = {
+	"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",      /*  0 ..  9 */
+	"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl",    /* 10 .. 19 */
+	"de", "el", "gu", "hi", "hu", "id", "it", "ja_JP", "kn", "rw",       /* 20 .. 29 */
+	"ko", "lv", "lt", "mk", "ml", "ms", "nb", "no", "pl", "pt",          /* 30 .. 39 */
+	"pt_BR", "pa", "ru", "sr", "sk", "sl", "es", "sv", "th", "tr",       /* 40 .. 49 */
+	"uk", "vi", "wa"                                                     /* 50 .. */
+};
 
 void
 list_addentry (GSList ** list, char *cmd, char *name)
 {
 	struct popup *pop;
-	int cmd_len = 1, name_len;
+	size_t name_len;
+	size_t cmd_len = 1;
 
 	/* remove <2.8.0 stuff */
 	if (!strcmp (cmd, "away") && !strcmp (name, "BACK"))
@@ -107,28 +116,30 @@ list_load_from_data (GSList ** list, char *ibuf, int size)
 void
 list_loadconf (char *file, GSList ** list, char *defaultconf)
 {
-	char filebuf[256];
+	char *filebuf;
 	char *ibuf;
-	int fh;
+	int fd;
 	struct stat st;
 
-	snprintf (filebuf, sizeof (filebuf), "%s/%s", get_xdir_fs (), file);
-	fh = open (filebuf, O_RDONLY | OFLAGS);
-	if (fh == -1)
+	filebuf = g_build_filename (get_xdir (), file, NULL);
+	fd = g_open (filebuf, O_RDONLY | OFLAGS, 0);
+	g_free (filebuf);
+
+	if (fd == -1)
 	{
 		if (defaultconf)
 			list_load_from_data (list, defaultconf, strlen (defaultconf));
 		return;
 	}
-	if (fstat (fh, &st) != 0)
+	if (fstat (fd, &st) != 0)
 	{
 		perror ("fstat");
 		abort ();
 	}
 
 	ibuf = malloc (st.st_size);
-	read (fh, ibuf, st.st_size);
-	close (fh);
+	read (fd, ibuf, st.st_size);
+	close (fd);
 
 	list_load_from_data (list, ibuf, st.st_size);
 
@@ -168,7 +179,7 @@ list_delentry (GSList ** list, char *name)
 }
 
 char *
-cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
+cfg_get_str (char *cfg, const char *var, char *dest, int dest_len)
 {
 	char buffer[128];	/* should be plenty for a variable name */
 
@@ -281,8 +292,7 @@ cfg_get_int (char *cfg, char *var)
 	return atoi (str);
 }
 
-char *xdir_fs = NULL;	/* file system encoding */
-char *xdir_utf = NULL;	/* utf-8 encoding */
+char *xdir = NULL;	/* utf-8 encoding */
 
 #ifdef WIN32
 
@@ -310,308 +320,291 @@ get_reg_str (const char *sub, const char *name, char *out, DWORD len)
 
 	return FALSE;
 }
+#endif
 
 char *
-get_xdir_fs (void)
+get_xdir (void)
 {
-	if (!xdir_fs)
-	{
-			char out[256];
-
-			if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
-			{
-				xdir_fs = ".\\config";
-			}
-			else
-			{
-				xdir_fs = g_strdup_printf ("%s\\" "HexChat", out);
-			}
-	}
-
-	return xdir_fs;
-}
-
-#else
-
-char *
-get_xdir_fs (void)
-{
-	if (!xdir_fs)
-		xdir_fs = g_strdup_printf ("%s/.config/" HEXCHAT_DIR, g_get_home_dir ());
-
-	return xdir_fs;
-}
-
-#endif	/* !WIN32 */
-
-char *
-get_xdir_utf8 (void)
-{
-	if (!xdir_utf)	/* never free this, keep it for program life time */
-		xdir_utf = xchat_filename_to_utf8 (get_xdir_fs (), -1, 0, 0, 0);
-
-	return xdir_utf;
-}
-
-static void
-check_prefs_dir (void)
-{
-	char *dir = get_xdir_fs ();
-	static char *msg = NULL;
-
-	if (access (dir, F_OK) != 0)
+	if (!xdir)
 	{
 #ifdef WIN32
-		if (mkdir (dir) != 0)
-#else
-		if (mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
-#endif
+		char out[256];
+
+		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
 		{
-			msg = malloc (strlen (get_xdir_fs ()) + 15);
-			sprintf (msg, "Cannot create %s", get_xdir_fs ());
-			fe_message (msg, FE_MSG_ERROR);
-			free (msg);
+			char *path;
+			char file[MAX_PATH];
+			HMODULE hModule;
+			
+			hModule = GetModuleHandle (NULL);
+			if (GetModuleFileName (hModule, file, sizeof(file)))
+			{
+				path = g_path_get_dirname (file);
+				xdir = g_build_filename (path, "config", NULL);
+				g_free (path);
+			}
+			else
+				xdir = g_strdup (".\\config");
 		}
+		else
+		{
+			xdir = g_build_filename (out, "HexChat", NULL);
+		}
+#else
+		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
+#endif
 	}
+
+	return xdir;
+}
+
+int
+check_config_dir (void)
+{
+	return g_access (get_xdir (), F_OK);
 }
 
 static char *
 default_file (void)
 {
-	static char *dfile = 0;
+	static char *dfile = NULL;
 
 	if (!dfile)
 	{
-		dfile = malloc (strlen (get_xdir_fs ()) + 12);
-		sprintf (dfile, "%s/xchat.conf", get_xdir_fs ());
+		dfile = g_build_filename (get_xdir (), "hexchat.conf", NULL);
 	}
 	return dfile;
 }
 
 /* Keep these sorted!! */
 
-const struct prefs vars[] = {
-	{"away_auto_unmark", P_OFFINT (auto_unmark_away), TYPE_BOOL},
-	{"away_omit_alerts", P_OFFINT (away_omit_alerts), TYPE_BOOL},
-	{"away_reason", P_OFFSET (awayreason), TYPE_STR},
-	{"away_show_message", P_OFFINT (show_away_message), TYPE_BOOL},
-	{"away_show_once", P_OFFINT (show_away_once), TYPE_BOOL},
-	{"away_size_max", P_OFFINT (away_size_max), TYPE_INT},
-	{"away_timeout", P_OFFINT (away_timeout), TYPE_INT},
-	{"away_track", P_OFFINT (away_track), TYPE_BOOL},
+const struct prefs vars[] =
+{
+	{"away_auto_unmark", P_OFFINT (hex_away_auto_unmark), TYPE_BOOL},
+	{"away_omit_alerts", P_OFFINT (hex_away_omit_alerts), TYPE_BOOL},
+	{"away_reason", P_OFFSET (hex_away_reason), TYPE_STR},
+	{"away_show_once", P_OFFINT (hex_away_show_once), TYPE_BOOL},
+	{"away_size_max", P_OFFINT (hex_away_size_max), TYPE_INT},
+	{"away_timeout", P_OFFINT (hex_away_timeout), TYPE_INT},
+	{"away_track", P_OFFINT (hex_away_track), TYPE_BOOL},
 
-	{"completion_amount", P_OFFINT (completion_amount), TYPE_INT},
-	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
-	{"completion_sort", P_OFFINT (completion_sort), TYPE_INT},
-	{"completion_suffix", P_OFFSET (nick_suffix), TYPE_STR},
+	{"completion_amount", P_OFFINT (hex_completion_amount), TYPE_INT},
+	{"completion_auto", P_OFFINT (hex_completion_auto), TYPE_BOOL},
+	{"completion_sort", P_OFFINT (hex_completion_sort), TYPE_INT},
+	{"completion_suffix", P_OFFSET (hex_completion_suffix), TYPE_STR},
 
-	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_INT},
-	{"dcc_auto_resume", P_OFFINT (autoresume), TYPE_BOOL},
-	{"dcc_auto_send", P_OFFINT (autodccsend), TYPE_INT},
-	{"dcc_blocksize", P_OFFINT (dcc_blocksize), TYPE_INT},
-	{"dcc_completed_dir", P_OFFSET (dcc_completed_dir), TYPE_STR},
-	{"dcc_dir", P_OFFSET (dccdir), TYPE_STR},
+	{"dcc_auto_chat", P_OFFINT (hex_dcc_auto_chat), TYPE_BOOL},
+	{"dcc_auto_recv", P_OFFINT (hex_dcc_auto_recv), TYPE_INT},
+	{"dcc_auto_resume", P_OFFINT (hex_dcc_auto_resume), TYPE_BOOL},
+	{"dcc_blocksize", P_OFFINT (hex_dcc_blocksize), TYPE_INT},
+	{"dcc_completed_dir", P_OFFSET (hex_dcc_completed_dir), TYPE_STR},
+	{"dcc_dir", P_OFFSET (hex_dcc_dir), TYPE_STR},
 #ifndef WIN32
-	{"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL},
+	{"dcc_fast_send", P_OFFINT (hex_dcc_fast_send), TYPE_BOOL},
 #endif
-	{"dcc_global_max_get_cps", P_OFFINT (dcc_global_max_get_cps), TYPE_INT},
-	{"dcc_global_max_send_cps", P_OFFINT (dcc_global_max_send_cps), TYPE_INT},
-	{"dcc_ip", P_OFFSET (dcc_ip_str), TYPE_STR},
-	{"dcc_ip_from_server", P_OFFINT (ip_from_server), TYPE_BOOL},
-	{"dcc_max_get_cps", P_OFFINT (dcc_max_get_cps), TYPE_INT},
-	{"dcc_max_send_cps", P_OFFINT (dcc_max_send_cps), TYPE_INT},
-	{"dcc_permissions", P_OFFINT (dccpermissions), TYPE_INT},
-	{"dcc_port_first", P_OFFINT (first_dcc_send_port), TYPE_INT},
-	{"dcc_port_last", P_OFFINT (last_dcc_send_port), TYPE_INT},
-	{"dcc_remove", P_OFFINT (dcc_remove), TYPE_BOOL},
-	{"dcc_save_nick", P_OFFINT (dccwithnick), TYPE_BOOL},
-	{"dcc_send_fillspaces", P_OFFINT (dcc_send_fillspaces), TYPE_BOOL},
-	{"dcc_stall_timeout", P_OFFINT (dccstalltimeout), TYPE_INT},
-	{"dcc_timeout", P_OFFINT (dcctimeout), TYPE_INT},
+	{"dcc_global_max_get_cps", P_OFFINT (hex_dcc_global_max_get_cps), TYPE_INT},
+	{"dcc_global_max_send_cps", P_OFFINT (hex_dcc_global_max_send_cps), TYPE_INT},
+	{"dcc_ip", P_OFFSET (hex_dcc_ip), TYPE_STR},
+	{"dcc_ip_from_server", P_OFFINT (hex_dcc_ip_from_server), TYPE_BOOL},
+	{"dcc_max_get_cps", P_OFFINT (hex_dcc_max_get_cps), TYPE_INT},
+	{"dcc_max_send_cps", P_OFFINT (hex_dcc_max_send_cps), TYPE_INT},
+	{"dcc_permissions", P_OFFINT (hex_dcc_permissions), TYPE_INT},
+	{"dcc_port_first", P_OFFINT (hex_dcc_port_first), TYPE_INT},
+	{"dcc_port_last", P_OFFINT (hex_dcc_port_last), TYPE_INT},
+	{"dcc_remove", P_OFFINT (hex_dcc_remove), TYPE_BOOL},
+	{"dcc_save_nick", P_OFFINT (hex_dcc_save_nick), TYPE_BOOL},
+	{"dcc_send_fillspaces", P_OFFINT (hex_dcc_send_fillspaces), TYPE_BOOL},
+	{"dcc_stall_timeout", P_OFFINT (hex_dcc_stall_timeout), TYPE_INT},
+	{"dcc_timeout", P_OFFINT (hex_dcc_timeout), TYPE_INT},
 
-	{"dnsprogram", P_OFFSET (dnsprogram), TYPE_STR},
+	{"flood_ctcp_num", P_OFFINT (hex_flood_ctcp_num), TYPE_INT},
+	{"flood_ctcp_time", P_OFFINT (hex_flood_ctcp_time), TYPE_INT},
+	{"flood_msg_num", P_OFFINT (hex_flood_msg_num), TYPE_INT},
+	{"flood_msg_time", P_OFFINT (hex_flood_msg_time), TYPE_INT},
 
-	{"flood_ctcp_num", P_OFFINT (ctcp_number_limit), TYPE_INT},
-	{"flood_ctcp_time", P_OFFINT (ctcp_time_limit), TYPE_INT},
-	{"flood_msg_num", P_OFFINT (msg_number_limit), TYPE_INT},
-	{"flood_msg_time", P_OFFINT (msg_time_limit), TYPE_INT},
+	{"gui_autoopen_chat", P_OFFINT (hex_gui_autoopen_chat), TYPE_BOOL},
+	{"gui_autoopen_dialog", P_OFFINT (hex_gui_autoopen_dialog), TYPE_BOOL},
+	{"gui_autoopen_recv", P_OFFINT (hex_gui_autoopen_recv), TYPE_BOOL},
+	{"gui_autoopen_send", P_OFFINT (hex_gui_autoopen_send), TYPE_BOOL},
+	{"gui_chanlist_maxusers", P_OFFINT (hex_gui_chanlist_maxusers), TYPE_INT},
+	{"gui_chanlist_minusers", P_OFFINT (hex_gui_chanlist_minusers), TYPE_INT},
+	{"gui_compact", P_OFFINT (hex_gui_compact), TYPE_BOOL},
+	{"gui_dialog_height", P_OFFINT (hex_gui_dialog_height), TYPE_INT},
+	{"gui_dialog_left", P_OFFINT (hex_gui_dialog_left), TYPE_INT},
+	{"gui_dialog_top", P_OFFINT (hex_gui_dialog_top), TYPE_INT},
+	{"gui_dialog_width", P_OFFINT (hex_gui_dialog_width), TYPE_INT},
+	{"gui_focus_omitalerts", P_OFFINT (hex_gui_focus_omitalerts), TYPE_BOOL},
+	{"gui_hide_menu", P_OFFINT (hex_gui_hide_menu), TYPE_BOOL},
+	{"gui_input_attr", P_OFFINT (hex_gui_input_attr), TYPE_BOOL},
+	{"gui_input_icon", P_OFFINT (hex_gui_input_icon), TYPE_BOOL},
+	{"gui_input_nick", P_OFFINT (hex_gui_input_nick), TYPE_BOOL},
+	{"gui_input_spell", P_OFFINT (hex_gui_input_spell), TYPE_BOOL},
+	{"gui_input_style", P_OFFINT (hex_gui_input_style), TYPE_BOOL},
+	{"gui_join_dialog", P_OFFINT (hex_gui_join_dialog), TYPE_BOOL},
+	{"gui_lagometer", P_OFFINT (hex_gui_lagometer), TYPE_INT},
+	{"gui_lang", P_OFFINT (hex_gui_lang), TYPE_INT},
+	{"gui_mode_buttons", P_OFFINT (hex_gui_mode_buttons), TYPE_BOOL},
+	{"gui_pane_divider_position", P_OFFINT (hex_gui_pane_divider_position), TYPE_INT},
+	{"gui_pane_left_size", P_OFFINT (hex_gui_pane_left_size), TYPE_INT},
+	{"gui_pane_right_size", P_OFFINT (hex_gui_pane_right_size), TYPE_INT},
+	{"gui_pane_right_size_min", P_OFFINT (hex_gui_pane_right_size_min), TYPE_INT},
+	{"gui_quit_dialog", P_OFFINT (hex_gui_quit_dialog), TYPE_BOOL},
+	{"gui_search_pos", P_OFFINT (hex_gui_search_pos), TYPE_INT},
+	/* {"gui_single", P_OFFINT (hex_gui_single), TYPE_BOOL}, */
+	{"gui_slist_fav", P_OFFINT (hex_gui_slist_fav), TYPE_BOOL},
+	{"gui_slist_select", P_OFFINT (hex_gui_slist_select), TYPE_INT},
+	{"gui_slist_skip", P_OFFINT (hex_gui_slist_skip), TYPE_BOOL},
+	{"gui_tab_chans", P_OFFINT (hex_gui_tab_chans), TYPE_BOOL},
+	{"gui_tab_dialogs", P_OFFINT (hex_gui_tab_dialogs), TYPE_BOOL},
+	{"gui_tab_dots", P_OFFINT (hex_gui_tab_dots), TYPE_BOOL},
+	{"gui_tab_icons", P_OFFINT (hex_gui_tab_icons), TYPE_BOOL},
+	{"gui_tab_layout", P_OFFINT (hex_gui_tab_layout), TYPE_INT},
+	{"gui_tab_newtofront", P_OFFINT (hex_gui_tab_newtofront), TYPE_INT},
+	{"gui_tab_pos", P_OFFINT (hex_gui_tab_pos), TYPE_INT},
+	{"gui_tab_scrollchans", P_OFFINT (hex_gui_tab_scrollchans), TYPE_BOOL},
+	{"gui_tab_server", P_OFFINT (hex_gui_tab_server), TYPE_BOOL},
+	{"gui_tab_small", P_OFFINT (hex_gui_tab_small), TYPE_INT},
+	{"gui_tab_sort", P_OFFINT (hex_gui_tab_sort), TYPE_BOOL},
+	{"gui_tab_trunc", P_OFFINT (hex_gui_tab_trunc), TYPE_INT},
+	{"gui_tab_utils", P_OFFINT (hex_gui_tab_utils), TYPE_BOOL},
+	{"gui_throttlemeter", P_OFFINT (hex_gui_throttlemeter), TYPE_INT},
+	{"gui_topicbar", P_OFFINT (hex_gui_topicbar), TYPE_BOOL},
+	{"gui_transparency", P_OFFINT (hex_gui_transparency), TYPE_INT},
+	{"gui_tray", P_OFFINT (hex_gui_tray), TYPE_BOOL},
+	{"gui_tray_away", P_OFFINT (hex_gui_tray_away), TYPE_BOOL},
+	{"gui_tray_blink", P_OFFINT (hex_gui_tray_blink), TYPE_BOOL},
+	{"gui_tray_close", P_OFFINT (hex_gui_tray_close), TYPE_BOOL},
+	{"gui_tray_minimize", P_OFFINT (hex_gui_tray_minimize), TYPE_BOOL},
+	{"gui_tray_quiet", P_OFFINT (hex_gui_tray_quiet), TYPE_BOOL},
+	{"gui_ulist_buttons", P_OFFINT (hex_gui_ulist_buttons), TYPE_BOOL},
+	{"gui_ulist_color", P_OFFINT (hex_gui_ulist_color), TYPE_BOOL},
+	{"gui_ulist_count", P_OFFINT (hex_gui_ulist_count), TYPE_BOOL},
+	{"gui_ulist_doubleclick", P_OFFSET (hex_gui_ulist_doubleclick), TYPE_STR},
+	{"gui_ulist_hide", P_OFFINT (hex_gui_ulist_hide), TYPE_BOOL},
+	{"gui_ulist_icons", P_OFFINT (hex_gui_ulist_icons), TYPE_BOOL},
+	{"gui_ulist_pos", P_OFFINT (hex_gui_ulist_pos), TYPE_INT},
+	{"gui_ulist_resizable", P_OFFINT (hex_gui_ulist_resizable), TYPE_BOOL},
+	{"gui_ulist_show_hosts", P_OFFINT(hex_gui_ulist_show_hosts), TYPE_BOOL},
+	{"gui_ulist_sort", P_OFFINT (hex_gui_ulist_sort), TYPE_INT},
+	{"gui_ulist_style", P_OFFINT (hex_gui_ulist_style), TYPE_BOOL},
+	{"gui_url_mod", P_OFFINT (hex_gui_url_mod), TYPE_INT},
+	{"gui_usermenu", P_OFFINT (hex_gui_usermenu), TYPE_BOOL},
+	{"gui_win_height", P_OFFINT (hex_gui_win_height), TYPE_INT},
+	{"gui_win_fullscreen", P_OFFINT (hex_gui_win_fullscreen), TYPE_INT},
+	{"gui_win_left", P_OFFINT (hex_gui_win_left), TYPE_INT},
+	{"gui_win_modes", P_OFFINT (hex_gui_win_modes), TYPE_BOOL},
+	{"gui_win_save", P_OFFINT (hex_gui_win_save), TYPE_BOOL},
+	{"gui_win_state", P_OFFINT (hex_gui_win_state), TYPE_INT},
+	{"gui_win_swap", P_OFFINT (hex_gui_win_swap), TYPE_BOOL},
+	{"gui_win_top", P_OFFINT (hex_gui_win_top), TYPE_INT},
+	{"gui_win_ucount", P_OFFINT (hex_gui_win_ucount), TYPE_BOOL},
+	{"gui_win_width", P_OFFINT (hex_gui_win_width), TYPE_INT},
 
-	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
-	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
-	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
-	{"gui_auto_open_send", P_OFFINT (autoopendccsendwindow), TYPE_BOOL},
-	{"gui_chanlist_maxusers", P_OFFINT (gui_chanlist_maxusers), TYPE_INT},
-	{"gui_chanlist_minusers", P_OFFINT (gui_chanlist_minusers), TYPE_INT},
-	{"gui_dialog_height", P_OFFINT (dialog_height), TYPE_INT},
-	{"gui_dialog_left", P_OFFINT (dialog_left), TYPE_INT},
-	{"gui_dialog_top", P_OFFINT (dialog_top), TYPE_INT},
-	{"gui_dialog_width", P_OFFINT (dialog_width), TYPE_INT},
-	{"gui_hide_menu", P_OFFINT (hidemenu), TYPE_BOOL},
-	{"gui_input_spell", P_OFFINT (gui_input_spell), TYPE_BOOL},
-	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
-	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
-	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
-	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
-#ifdef WIN32
-	{"gui_one_instance", P_OFFINT (gui_one_instance), TYPE_BOOL},
+	{"identd", P_OFFINT (hex_identd), TYPE_BOOL},
+
+	{"input_balloon_chans", P_OFFINT (hex_input_balloon_chans), TYPE_BOOL},
+	{"input_balloon_hilight", P_OFFINT (hex_input_balloon_hilight), TYPE_BOOL},
+	{"input_balloon_priv", P_OFFINT (hex_input_balloon_priv), TYPE_BOOL},
+	{"input_balloon_time", P_OFFINT (hex_input_balloon_time), TYPE_INT},
+	{"input_beep_chans", P_OFFINT (hex_input_beep_chans), TYPE_BOOL},
+	{"input_beep_hilight", P_OFFINT (hex_input_beep_hilight), TYPE_BOOL},
+	{"input_beep_priv", P_OFFINT (hex_input_beep_priv), TYPE_BOOL},
+	{"input_command_char", P_OFFSET (hex_input_command_char), TYPE_STR},
+	{"input_filter_beep", P_OFFINT (hex_input_filter_beep), TYPE_BOOL},
+	{"input_flash_chans", P_OFFINT (hex_input_flash_chans), TYPE_BOOL},
+	{"input_flash_hilight", P_OFFINT (hex_input_flash_hilight), TYPE_BOOL},
+	{"input_flash_priv", P_OFFINT (hex_input_flash_priv), TYPE_BOOL},
+	{"input_perc_ascii", P_OFFINT (hex_input_perc_ascii), TYPE_BOOL},
+	{"input_perc_color", P_OFFINT (hex_input_perc_color), TYPE_BOOL},
+	{"input_tray_chans", P_OFFINT (hex_input_tray_chans), TYPE_BOOL},
+	{"input_tray_hilight", P_OFFINT (hex_input_tray_hilight), TYPE_BOOL},
+	{"input_tray_priv", P_OFFINT (hex_input_tray_priv), TYPE_BOOL},
+
+	{"irc_auto_rejoin", P_OFFINT (hex_irc_auto_rejoin), TYPE_BOOL},
+	{"irc_ban_type", P_OFFINT (hex_irc_ban_type), TYPE_INT},
+	{"irc_cap_server_time", P_OFFINT (hex_irc_cap_server_time), TYPE_BOOL},
+	{"irc_conf_mode", P_OFFINT (hex_irc_conf_mode), TYPE_BOOL},
+	{"irc_extra_hilight", P_OFFSET (hex_irc_extra_hilight), TYPE_STR},
+	{"irc_hide_version", P_OFFINT (hex_irc_hide_version), TYPE_BOOL},
+	{"irc_hidehost", P_OFFINT (hex_irc_hidehost), TYPE_BOOL},
+	{"irc_id_ntext", P_OFFSET (hex_irc_id_ntext), TYPE_STR},
+	{"irc_id_ytext", P_OFFSET (hex_irc_id_ytext), TYPE_STR},
+	{"irc_invisible", P_OFFINT (hex_irc_invisible), TYPE_BOOL},
+	{"irc_join_delay", P_OFFINT (hex_irc_join_delay), TYPE_INT},
+	{"irc_logging", P_OFFINT (hex_irc_logging), TYPE_BOOL},
+	{"irc_logmask", P_OFFSET (hex_irc_logmask), TYPE_STR},
+	{"irc_nick1", P_OFFSET (hex_irc_nick1), TYPE_STR},
+	{"irc_nick2", P_OFFSET (hex_irc_nick2), TYPE_STR},
+	{"irc_nick3", P_OFFSET (hex_irc_nick3), TYPE_STR},
+	{"irc_nick_hilight", P_OFFSET (hex_irc_nick_hilight), TYPE_STR},
+	{"irc_no_hilight", P_OFFSET (hex_irc_no_hilight), TYPE_STR},
+	{"irc_notice_pos", P_OFFINT (hex_irc_notice_pos), TYPE_INT},
+	{"irc_part_reason", P_OFFSET (hex_irc_part_reason), TYPE_STR},
+	{"irc_quit_reason", P_OFFSET (hex_irc_quit_reason), TYPE_STR},
+	{"irc_raw_modes", P_OFFINT (hex_irc_raw_modes), TYPE_BOOL},
+	{"irc_real_name", P_OFFSET (hex_irc_real_name), TYPE_STR},
+	{"irc_servernotice", P_OFFINT (hex_irc_servernotice), TYPE_BOOL},
+	{"irc_skip_motd", P_OFFINT (hex_irc_skip_motd), TYPE_BOOL},
+	{"irc_user_name", P_OFFSET (hex_irc_user_name), TYPE_STR},
+	{"irc_wallops", P_OFFINT (hex_irc_wallops), TYPE_BOOL},
+	{"irc_who_join", P_OFFINT (hex_irc_who_join), TYPE_BOOL},
+	{"irc_whois_front", P_OFFINT (hex_irc_whois_front), TYPE_BOOL},
+
+	{"net_auto_reconnect", P_OFFINT (hex_net_auto_reconnect), TYPE_BOOL},
+#ifndef WIN32	/* FIXME fix reconnect crashes and remove this ifdef! */
+	{"net_auto_reconnectonfail", P_OFFINT (hex_net_auto_reconnectonfail), TYPE_BOOL},
 #endif
-	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
-	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
-	{"gui_pane_right_size_min", P_OFFINT (gui_pane_right_size_min), TYPE_INT},
-	{"gui_quit_dialog", P_OFFINT (gui_quit_dialog), TYPE_BOOL},
-	{"gui_slist_fav", P_OFFINT (slist_fav), TYPE_INT},
-	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
-	{"gui_slist_skip", P_OFFINT (slist_skip), TYPE_BOOL},
-	{"gui_throttlemeter", P_OFFINT (throttlemeter), TYPE_INT},
-	{"gui_topicbar", P_OFFINT (topicbar), TYPE_BOOL},
-	{"gui_tray", P_OFFINT (gui_tray), TYPE_BOOL},
-	{"gui_tray_flags", P_OFFINT (gui_tray_flags), TYPE_INT},
-	{"gui_tweaks", P_OFFINT (gui_tweaks), TYPE_INT},
-	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
-	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
-	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
-	{"gui_ulist_left", P_OFFINT (_gui_ulist_left), TYPE_BOOL},	/* obsolete */
-	{"gui_ulist_pos", P_OFFINT (gui_ulist_pos), TYPE_INT},
-	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
-	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
-	{"gui_ulist_sort", P_OFFINT (userlist_sort), TYPE_INT},
-	{"gui_ulist_style", P_OFFINT (style_namelistgad), TYPE_BOOL},
-	{"gui_url_mod", P_OFFINT (gui_url_mod), TYPE_INT},
-	{"gui_usermenu", P_OFFINT (gui_usermenu), TYPE_BOOL},
-	{"gui_win_height", P_OFFINT (mainwindow_height), TYPE_INT},
-	{"gui_win_left", P_OFFINT (mainwindow_left), TYPE_INT},
-	{"gui_win_save", P_OFFINT (mainwindow_save), TYPE_BOOL},
-	{"gui_win_state", P_OFFINT (gui_win_state), TYPE_INT},
-	{"gui_win_top", P_OFFINT (mainwindow_top), TYPE_INT},
-	{"gui_win_width", P_OFFINT (mainwindow_width), TYPE_INT},
+	{"net_bind_host", P_OFFSET (hex_net_bind_host), TYPE_STR},
+	{"net_ping_timeout", P_OFFINT (hex_net_ping_timeout), TYPE_INT},
+	{"net_proxy_auth", P_OFFINT (hex_net_proxy_auth), TYPE_BOOL},
+	{"net_proxy_host", P_OFFSET (hex_net_proxy_host), TYPE_STR},
+	{"net_proxy_pass", P_OFFSET (hex_net_proxy_pass), TYPE_STR},
+	{"net_proxy_port", P_OFFINT (hex_net_proxy_port), TYPE_INT},
+	{"net_proxy_type", P_OFFINT (hex_net_proxy_type), TYPE_INT},
+	{"net_proxy_use", P_OFFINT (hex_net_proxy_use), TYPE_INT},
+	{"net_proxy_user", P_OFFSET (hex_net_proxy_user), TYPE_STR},
+	{"net_reconnect_delay", P_OFFINT (hex_net_reconnect_delay), TYPE_INT},
+	{"net_throttle", P_OFFINT (hex_net_throttle), TYPE_BOOL},
 
-#ifdef WIN32
-	{"identd", P_OFFINT (identd), TYPE_BOOL},
-#endif
-	{"input_balloon_chans", P_OFFINT (input_balloon_chans), TYPE_BOOL},
-	{"input_balloon_hilight", P_OFFINT (input_balloon_hilight), TYPE_BOOL},
-	{"input_balloon_priv", P_OFFINT (input_balloon_priv), TYPE_BOOL},
-	{"input_balloon_time", P_OFFINT (input_balloon_time), TYPE_INT},
-	{"input_beep_chans", P_OFFINT (input_beep_chans), TYPE_BOOL},
-	{"input_beep_hilight", P_OFFINT (input_beep_hilight), TYPE_BOOL},
-	{"input_beep_priv", P_OFFINT (input_beep_priv), TYPE_BOOL},
-	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
-	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},
-	{"input_flash_chans", P_OFFINT (input_flash_chans), TYPE_BOOL},
-	{"input_flash_hilight", P_OFFINT (input_flash_hilight), TYPE_BOOL},
-	{"input_flash_priv", P_OFFINT (input_flash_priv), TYPE_BOOL},
-	{"input_perc_ascii", P_OFFINT (perc_ascii), TYPE_BOOL},
-	{"input_perc_color", P_OFFINT (perc_color), TYPE_BOOL},
-	{"input_tray_chans", P_OFFINT (input_tray_chans), TYPE_BOOL},
-	{"input_tray_hilight", P_OFFINT (input_tray_hilight), TYPE_BOOL},
-	{"input_tray_priv", P_OFFINT (input_tray_priv), TYPE_BOOL},
+	{"notify_timeout", P_OFFINT (hex_notify_timeout), TYPE_INT},
+	{"notify_whois_online", P_OFFINT (hex_notify_whois_online), TYPE_BOOL},
 
-	{"irc_auto_rejoin", P_OFFINT (autorejoin), TYPE_BOOL},
-	{"irc_ban_type", P_OFFINT (bantype), TYPE_INT},
-	{"irc_conf_mode", P_OFFINT (confmode), TYPE_BOOL},
-	{"irc_extra_hilight", P_OFFSET (irc_extra_hilight), TYPE_STR},
-	{"irc_hide_version", P_OFFINT (hidever), TYPE_BOOL},
-	{"irc_id_ntext", P_OFFSET (irc_id_ntext), TYPE_STR},
-	{"irc_id_ytext", P_OFFSET (irc_id_ytext), TYPE_STR},
-	{"irc_invisible", P_OFFINT (invisible), TYPE_BOOL},
-	{"irc_join_delay", P_OFFINT (irc_join_delay), TYPE_INT},
-	{"irc_logging", P_OFFINT (logging), TYPE_BOOL},
-	{"irc_logmask", P_OFFSET (logmask), TYPE_STR},
-	{"irc_nick1", P_OFFSET (nick1), TYPE_STR},
-	{"irc_nick2", P_OFFSET (nick2), TYPE_STR},
-	{"irc_nick3", P_OFFSET (nick3), TYPE_STR},
-	{"irc_nick_hilight", P_OFFSET (irc_nick_hilight), TYPE_STR},
-	{"irc_no_hilight", P_OFFSET (irc_no_hilight), TYPE_STR},
-	{"irc_part_reason", P_OFFSET (partreason), TYPE_STR},
-	{"irc_quit_reason", P_OFFSET (quitreason), TYPE_STR},
-	{"irc_raw_modes", P_OFFINT (raw_modes), TYPE_BOOL},
-	{"irc_real_name", P_OFFSET (realname), TYPE_STR},
-	{"irc_servernotice", P_OFFINT (servernotice), TYPE_BOOL},
-	{"irc_skip_motd", P_OFFINT (skipmotd), TYPE_BOOL},
-	{"irc_user_name", P_OFFSET (username), TYPE_STR},
-	{"irc_wallops", P_OFFINT (wallops), TYPE_BOOL},
-	{"irc_who_join", P_OFFINT (userhost), TYPE_BOOL},
-	{"irc_whois_front", P_OFFINT (irc_whois_front), TYPE_BOOL},
+	{"perl_warnings", P_OFFINT (hex_perl_warnings), TYPE_BOOL},
 
-	{"net_auto_reconnect", P_OFFINT (autoreconnect), TYPE_BOOL},
-	{"net_auto_reconnectonfail", P_OFFINT (autoreconnectonfail), TYPE_BOOL},
-	{"net_bind_host", P_OFFSET (hostname), TYPE_STR},
-	{"net_ping_timeout", P_OFFINT (pingtimeout), TYPE_INT},
-	{"net_proxy_auth", P_OFFINT (proxy_auth), TYPE_BOOL},
-	{"net_proxy_host", P_OFFSET (proxy_host), TYPE_STR},
-	{"net_proxy_pass", P_OFFSET (proxy_pass), TYPE_STR},
-	{"net_proxy_port", P_OFFINT (proxy_port), TYPE_INT},
-	{"net_proxy_type", P_OFFINT (proxy_type), TYPE_INT},
-	{"net_proxy_use", P_OFFINT (proxy_use), TYPE_INT},
-	{"net_proxy_user", P_OFFSET (proxy_user), TYPE_STR},
+	{"stamp_log", P_OFFINT (hex_stamp_log), TYPE_BOOL},
+	{"stamp_log_format", P_OFFSET (hex_stamp_log_format), TYPE_STR},
+	{"stamp_text", P_OFFINT (hex_stamp_text), TYPE_BOOL},
+	{"stamp_text_format", P_OFFSET (hex_stamp_text_format), TYPE_STR},
 
-	{"net_reconnect_delay", P_OFFINT (recon_delay), TYPE_INT},
-	{"net_throttle", P_OFFINT (throttle), TYPE_BOOL},
+	{"text_autocopy_color", P_OFFINT (hex_text_autocopy_color), TYPE_BOOL},	
+	{"text_autocopy_stamp", P_OFFINT (hex_text_autocopy_stamp), TYPE_BOOL},
+	{"text_autocopy_text", P_OFFINT (hex_text_autocopy_text), TYPE_BOOL},
+	{"text_background", P_OFFSET (hex_text_background), TYPE_STR},
+	{"text_color_nicks", P_OFFINT (hex_text_color_nicks), TYPE_BOOL},
+	{"text_font", P_OFFSET (hex_text_font), TYPE_STR},
+	{"text_font_main", P_OFFSET (hex_text_font_main), TYPE_STR},
+	{"text_font_alternative", P_OFFSET (hex_text_font_alternative), TYPE_STR},
+	{"text_indent", P_OFFINT (hex_text_indent), TYPE_BOOL},
+	{"text_max_indent", P_OFFINT (hex_text_max_indent), TYPE_INT},
+	{"text_max_lines", P_OFFINT (hex_text_max_lines), TYPE_INT},
+	{"text_replay", P_OFFINT (hex_text_replay), TYPE_BOOL},
+	{"text_search_case_match", P_OFFINT (hex_text_search_case_match), TYPE_BOOL},
+	{"text_search_highlight_all", P_OFFINT (hex_text_search_highlight_all), TYPE_BOOL},
+	{"text_search_follow", P_OFFINT (hex_text_search_follow), TYPE_BOOL},
+	{"text_search_regexp", P_OFFINT (hex_text_search_regexp), TYPE_BOOL},
+	{"text_show_marker", P_OFFINT (hex_text_show_marker), TYPE_BOOL},
+	{"text_show_sep", P_OFFINT (hex_text_show_sep), TYPE_BOOL},
+	{"text_spell_langs", P_OFFSET (hex_text_spell_langs), TYPE_STR},
+	{"text_stripcolor_msg", P_OFFINT (hex_text_stripcolor_msg), TYPE_BOOL},
+	{"text_stripcolor_replay", P_OFFINT (hex_text_stripcolor_replay), TYPE_BOOL},
+	{"text_stripcolor_topic", P_OFFINT (hex_text_stripcolor_topic), TYPE_BOOL},
+	{"text_thin_sep", P_OFFINT (hex_text_thin_sep), TYPE_BOOL},
+	{"text_transparent", P_OFFINT (hex_text_transparent), TYPE_BOOL},
+	{"text_wordwrap", P_OFFINT (hex_text_wordwrap), TYPE_BOOL},
 
-	{"notify_timeout", P_OFFINT (notify_timeout), TYPE_INT},
-	{"notify_whois_online", P_OFFINT (whois_on_notifyonline), TYPE_BOOL},
-
-	{"perl_warnings", P_OFFINT (perlwarnings), TYPE_BOOL},
-
-	{"sound_command", P_OFFSET (soundcmd), TYPE_STR},
-	{"sound_dir", P_OFFSET (sounddir), TYPE_STR},
-	{"stamp_log", P_OFFINT (timestamp_logs), TYPE_BOOL},
-	{"stamp_log_format", P_OFFSET (timestamp_log_format), TYPE_STR},
-	{"stamp_text", P_OFFINT (timestamp), TYPE_BOOL},
-	{"stamp_text_format", P_OFFSET (stamp_format), TYPE_STR},
-
-	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
-	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
-	{"tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
-	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
-	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
-	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
-	{"tab_pos", P_OFFINT (tab_pos), TYPE_INT},
-	{"tab_position", P_OFFINT (_tabs_position), TYPE_INT}, /* obsolete */
-	{"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
-	{"tab_small", P_OFFINT (tab_small), TYPE_INT},
-	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
-	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
-	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
-
-	{"text_autocopy_color", P_OFFINT (autocopy_color), TYPE_BOOL},	
-	{"text_autocopy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
-	{"text_autocopy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
-	{"text_background", P_OFFSET (background), TYPE_STR},
-	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
-#ifdef WIN32
-	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
-#endif
-	{"text_font", P_OFFSET (font_normal), TYPE_STR},
-#ifdef WIN32
-	{"text_font_main", P_OFFSET (font_main), TYPE_STR},
-	{"text_font_alternative", P_OFFSET (font_alternative), TYPE_STR},
-#endif
-	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
-	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
-	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
-	{"text_replay", P_OFFINT (text_replay), TYPE_BOOL},
-	{"text_search_case_match", P_OFFINT (text_search_case_match), TYPE_BOOL},
-	{"text_search_backward", P_OFFINT (text_search_backward), TYPE_BOOL},
-	{"text_search_highlight_all", P_OFFINT (text_search_highlight_all), TYPE_BOOL},
-	{"text_search_follow", P_OFFINT (text_search_follow), TYPE_BOOL},
-	{"text_search_regexp", P_OFFINT (text_search_regexp), TYPE_BOOL},
-	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
-	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
-	{"text_spell_langs", P_OFFSET (spell_langs), TYPE_STR},
-	{"text_stripcolor_msg", P_OFFINT (text_stripcolor_msg), TYPE_BOOL},
-	{"text_stripcolor_replay", P_OFFINT (text_stripcolor_replay), TYPE_BOOL},
-	{"text_stripcolor_topic", P_OFFINT (text_stripcolor_topic), TYPE_BOOL},
-	{"text_thin_sep", P_OFFINT (thin_separator), TYPE_BOOL},
-	{"text_tint_blue", P_OFFINT (tint_blue), TYPE_INT},
-	{"text_tint_green", P_OFFINT (tint_green), TYPE_INT},
-	{"text_tint_red", P_OFFINT (tint_red), TYPE_INT},
-	{"text_transparent", P_OFFINT (transparent), TYPE_BOOL},
-	{"text_wordwrap", P_OFFINT (wordwrap), TYPE_BOOL},
-
-	{"url_grabber", P_OFFINT (url_grabber), TYPE_BOOL},
-	{"url_grabber_limit", P_OFFINT (url_grabber_limit), TYPE_INT},
-	{"url_logging", P_OFFINT (url_logging), TYPE_BOOL},
+	{"url_grabber", P_OFFINT (hex_url_grabber), TYPE_BOOL},
+	{"url_grabber_limit", P_OFFINT (hex_url_grabber_limit), TYPE_INT},
+	{"url_logging", P_OFFINT (hex_url_logging), TYPE_BOOL},
 	{0, 0, 0},
 };
 
@@ -634,15 +627,116 @@ convert_with_fallback (const char *str, const char *fallback)
 	return utf;
 }
 
-void
-load_config (void)
+static int
+find_language_number (const char * const lang)
 {
-	struct stat st;
-	char *cfg, *sp;
-	const char *username, *realname;
-	int res, val, i, fh;
+	int i;
 
-	check_prefs_dir ();
+	for (i = 0; i < LANGUAGES_LENGTH; i++)
+		if (!strcmp (lang, languages[i]))
+			return i;
+
+	return -1;
+}
+
+/* Return the number of the system language if found, or english otherwise.
+ */
+static int
+get_default_language (void)
+{
+	const char *locale;
+	char *lang;
+	char *p;
+	int lang_no;
+
+	/* LC_ALL overrides LANG, so we must check it first */
+	locale = g_getenv ("LC_ALL");
+
+	if (!locale)
+		locale = g_getenv ("LANG") ? g_getenv ("LANG") : "en";
+
+	/* we might end up with something like "en_US.UTF-8".  We will try to 
+	 * search for "en_US"; if it fails we search for "en".
+	 */
+	lang = g_strdup (locale);
+
+	if ((p = strchr (lang, '.')))
+		*p='\0';
+
+	lang_no = find_language_number (lang);
+
+	if (lang_no >= 0)
+	{
+		free (lang);
+		return lang_no;
+	}
+
+	if ((p = strchr (lang, '_')))
+		*p='\0';
+
+	lang_no = find_language_number (lang);
+
+	free (lang);
+
+	return lang_no >= 0 ? lang_no : find_language_number ("en");
+}
+
+static char *
+get_default_spell_languages (void)
+{
+	const gchar* const *langs = g_get_language_names ();
+	char *last = NULL;
+	char *p;
+	char lang_list[64];
+	char *ret = lang_list;
+	int i;
+
+	if (langs != NULL)
+	{
+		memset (lang_list, 0, sizeof(lang_list));
+
+		for (i = 0; langs[i]; i++)
+		{
+			if (g_ascii_strncasecmp (langs[i], "C", 1) != 0 && strlen (langs[i]) >= 2)
+			{
+				/* Avoid duplicates */
+				if (!last || !g_str_has_prefix (langs[i], last))
+				{
+					if (last != NULL)
+					{
+						g_free(last);
+						g_strlcat (lang_list, ",", sizeof(lang_list));
+					}
+
+					/* ignore .utf8 */
+					if ((p = strchr (langs[i], '.')))
+						*p='\0';
+
+					last = g_strndup (langs[i], 2);
+
+					g_strlcat (lang_list, langs[i], sizeof(lang_list));
+				}
+			}
+		}
+		if (last != NULL)
+			g_free(last);
+
+		if (lang_list[0])
+			return g_strdup (ret);
+	}
+
+	return g_strdup ("en");
+}
+
+void
+load_default_config(void)
+{
+	const char *username, *realname, *font, *langs;
+	char *sp;
+#ifdef WIN32
+	char out[256];
+#endif
+
 	username = g_get_user_name ();
 	if (!username)
 		username = "root";
@@ -656,261 +750,287 @@ load_config (void)
 	username = convert_with_fallback (username, "username");
 	realname = convert_with_fallback (realname, "realname");
 
-	memset (&prefs, 0, sizeof (struct xchatprefs));
+	memset (&prefs, 0, sizeof (struct hexchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
-	prefs.local_ip = 0xffffffff;
-	prefs.irc_join_delay = 3;
-	prefs.show_marker = 1;
-	prefs.newtabstofront = 2;
-	prefs.completion_amount = 5;
-	prefs.away_timeout = 60;
-	prefs.away_size_max = 300;
-	prefs.away_track = 1;
-	prefs.timestamp_logs = 1;
-	prefs.truncchans = 20;
-	prefs.autoresume = 1;
-	prefs.show_away_once = 1;
-	prefs.indent_nicks = 1;
-	prefs.thin_separator = 1;
-	prefs._tabs_position = 2; /* 2 = left */
+	
+	/* BOOLEANS */
+	prefs.hex_away_show_once = 1;
+	prefs.hex_away_track = 1;
+	prefs.hex_dcc_auto_resume = 1;
 #ifndef WIN32
-	prefs.fastdccsend = 1;
+	prefs.hex_dcc_fast_send = 1;
 #endif
-	prefs.wordwrap = 1;
-	prefs.autodialog = 1;
-	prefs.gui_input_spell = 1;
-	prefs.autoreconnect = 1;
-	prefs.recon_delay = 10;
-	prefs.autocopy_text = 1;
-	prefs.text_replay = 1;
-	prefs.text_stripcolor_replay = 1;
-	prefs.text_stripcolor_topic = 1;
-	prefs.tabchannels = 1;
-	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
-	prefs.tab_icons = 1;
-	prefs.tab_sort = 1;
-	prefs.paned_userlist = 1;
-	prefs.newtabstofront = 2;
-	prefs.use_server_tab = 1;
-	prefs.privmsgtab = 1;
-	/* prefs.colorednicks = 1; */
-	prefs.style_inputbox = 1;
-	prefs.style_namelistgad = 1;
-	prefs.dccpermissions = 0600;
-	prefs.max_lines = 500;
-	prefs.mainwindow_width = 640;
-	prefs.mainwindow_height = 400;
-	prefs.dialog_width = 500;
-	prefs.dialog_height = 256;
-	prefs.gui_join_dialog = 1;
-	prefs.gui_quit_dialog = 1;
-	prefs.dcctimeout = 180;
-	prefs.dccstalltimeout = 60;
-	prefs.notify_timeout = 15;
-	prefs.tint_red =
-		prefs.tint_green =
-		prefs.tint_blue = 195;
-	prefs.auto_indent = 1;
-	prefs.max_auto_indent = 256;
-	prefs.show_separator = 1;
-	prefs.dcc_blocksize = 1024;
-	prefs.throttle = 1;
-	 /*FIXME*/ prefs.msg_time_limit = 30;
-	prefs.msg_number_limit = 5;
-	prefs.ctcp_time_limit = 30;
-	prefs.ctcp_number_limit = 5;
-	prefs.topicbar = 1;
-	prefs.lagometer = 1;
-	prefs.throttlemeter = 1;
-	prefs.autoopendccrecvwindow = 1;
-	prefs.autoopendccsendwindow = 1;
-	prefs.autoopendccchatwindow = 1;
-	/* prevent kicks and bans caused by overwhelming who'ing after reconnects */
-	/* prefs.userhost = 1; */
-	prefs.gui_chanlist_maxusers = 9999;
-	prefs.gui_chanlist_minusers = 5;
-	prefs.gui_tray = 1;
-	prefs.gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
-	prefs.gui_pane_right_size = 100;
-	prefs.gui_pane_right_size_min = 80;
-	prefs.mainwindow_save = 1;
-	prefs.bantype = 2;
-	prefs.input_balloon_time = 20;
-	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
-	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
-	prefs.autodccsend = 2;	/* browse mode */
-	prefs.url_grabber = 1;
-	prefs.url_grabber_limit = 100; /* 0 means unlimited */
-	prefs.text_search_follow = 1;
-	prefs.timestamp = 1;
-#ifdef WIN32
-	prefs.identd = 1;
+	prefs.hex_gui_autoopen_chat = 1;
+	prefs.hex_gui_autoopen_dialog = 1;
+	prefs.hex_gui_autoopen_recv = 1;
+	prefs.hex_gui_autoopen_send = 1;
+#ifdef HAVE_GTK_MAC
+	prefs.hex_gui_hide_menu = 1;
 #endif
-	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
-	strcpy (prefs.stamp_format, "[%H:%M:%S] ");
-	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
-	strcpy (prefs.logmask, "%n-%c.log");
-	strcpy (prefs.nick_suffix, ",");
-	strcpy (prefs.cmdchar, "/");
-	strcpy (prefs.nick1, username);
-	strcpy (prefs.nick2, username);
-	strcat (prefs.nick2, "_");
-	strcpy (prefs.nick3, username);
-	strcat (prefs.nick3, "__");
-	strcpy (prefs.realname, realname);
-	strcpy (prefs.username, username);
-#ifdef WIN32
-	strcpy (prefs.sounddir, "./sounds");
-	{
-		char out[256];
+	prefs.hex_gui_input_attr = 1;
+	prefs.hex_gui_input_icon = 1;
+	prefs.hex_gui_input_nick = 1;
+	prefs.hex_gui_input_spell = 1;
+	prefs.hex_gui_input_style = 1;
+	prefs.hex_gui_join_dialog = 1;
+	prefs.hex_gui_quit_dialog = 1;
+	/* prefs.hex_gui_slist_skip = 1; */
+	prefs.hex_gui_tab_chans = 1;
+	prefs.hex_gui_tab_dialogs = 1;
+	prefs.hex_gui_tab_dots = 1;
+	prefs.hex_gui_tab_icons = 1;
+	prefs.hex_gui_tab_server = 1;
+	prefs.hex_gui_tab_sort = 1;
+	prefs.hex_gui_topicbar = 1;
+	prefs.hex_gui_transparency = 255;
+	prefs.hex_gui_tray = 1;
+	prefs.hex_gui_tray_blink = 1;
+	prefs.hex_gui_ulist_count = 1;
+	prefs.hex_gui_ulist_icons = 1;
+	prefs.hex_gui_ulist_resizable = 1;
+	prefs.hex_gui_ulist_style = 1;
+	prefs.hex_gui_win_save = 1;
+	prefs.hex_identd = 1;
+	prefs.hex_input_flash_hilight = 1;
+	prefs.hex_input_flash_priv = 1;
+	prefs.hex_input_tray_hilight = 1;
+	prefs.hex_input_tray_priv = 1;
+	prefs.hex_irc_who_join = 1; /* Can kick with inordinate amount of channels, required for some of our features though, TODO: add cap like away check? */
+	prefs.hex_irc_whois_front = 1;
+	prefs.hex_net_auto_reconnect = 1;
+	prefs.hex_net_throttle = 1;
+	prefs.hex_stamp_log = 1;
+	prefs.hex_stamp_text = 1;
+	prefs.hex_text_autocopy_text = 1;
+	prefs.hex_text_indent = 1;
+	prefs.hex_text_replay = 1;
+	prefs.hex_text_search_follow = 1;
+	prefs.hex_text_show_marker = 1;
+	prefs.hex_text_show_sep = 1;
+	prefs.hex_text_stripcolor_replay = 1;
+	prefs.hex_text_stripcolor_topic = 1;
+	prefs.hex_text_thin_sep = 1;
+	prefs.hex_text_wordwrap = 1;
+	prefs.hex_url_grabber = 1;
+	prefs.hex_irc_cap_server_time = 0;
 
-		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
-		{
-			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\downloads", get_xdir_utf8 ());
-		}
-		else
-		{
-			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", out);
-		}
+	/* NUMBERS */
+	prefs.hex_away_size_max = 300;
+	prefs.hex_away_timeout = 60;
+	prefs.hex_completion_amount = 5;
+	prefs.hex_dcc_auto_recv = 1;			/* browse mode */
+	prefs.hex_dcc_blocksize = 1024;
+	prefs.hex_dcc_permissions = 0600;
+	prefs.hex_dcc_stall_timeout = 60;
+	prefs.hex_dcc_timeout = 180;
+	prefs.hex_flood_ctcp_num = 5;
+	prefs.hex_flood_ctcp_time = 30;
+	prefs.hex_flood_msg_num = 5;
+	/*FIXME*/ prefs.hex_flood_msg_time = 30;
+	prefs.hex_gui_chanlist_maxusers = 9999;
+	prefs.hex_gui_chanlist_minusers = 5;
+	prefs.hex_gui_dialog_height = 256;
+	prefs.hex_gui_dialog_width = 500;
+	prefs.hex_gui_lagometer = 1;
+	prefs.hex_gui_lang = get_default_language();
+	prefs.hex_gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
+	prefs.hex_gui_pane_right_size = 100;
+	prefs.hex_gui_pane_right_size_min = 80;
+	prefs.hex_gui_tab_layout = 2;			/* 0=Tabs 1=Reserved 2=Tree */
+	prefs.hex_gui_tab_newtofront = 2;
+	prefs.hex_gui_tab_pos = 1;
+	prefs.hex_gui_tab_trunc = 20;
+	prefs.hex_gui_throttlemeter = 1;
+	prefs.hex_gui_ulist_pos = 3;
+	prefs.hex_gui_win_height = 400;
+	prefs.hex_gui_win_width = 640;
+	prefs.hex_input_balloon_time = 20;
+	prefs.hex_irc_ban_type = 1;
+	prefs.hex_irc_join_delay = 5;
+	prefs.hex_net_reconnect_delay = 10;
+	prefs.hex_notify_timeout = 15;
+	prefs.hex_text_max_indent = 256;
+	prefs.hex_text_max_lines = 500;
+	prefs.hex_url_grabber_limit = 100; 		/* 0 means unlimited */
+
+	/* STRINGS */
+	strcpy (prefs.hex_away_reason, _("I'm busy"));
+	strcpy (prefs.hex_completion_suffix, ",");
+#ifdef WIN32
+	if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
+	{
+		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
+	}
+	else
+	{
+		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
 	}
 #else
-	snprintf (prefs.sounddir, sizeof (prefs.sounddir), "%s/sounds", get_xdir_utf8 ());
-	snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s/downloads", get_xdir_utf8 ());
-#endif
-	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s %s");
-	strcpy (prefs.awayreason, _("I'm busy"));
-	strcpy (prefs.quitreason, _("Leaving"));
-	strcpy (prefs.partreason, prefs.quitreason);
-	strcpy (prefs.font_normal, DEF_FONT);
-#ifdef WIN32
-	strcpy (prefs.font_main, DEF_FONT);
-	strcpy (prefs.font_alternative, DEF_FONT_ALTER);
-#endif
-	strcpy (prefs.dnsprogram, "host");
-	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
-
-	g_free ((char *)username);
-	g_free ((char *)realname);
-
-	fh = open (default_file (), OFLAGS | O_RDONLY);
-	if (fh != -1)
+	if (g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD))
 	{
-		fstat (fh, &st);
-		cfg = malloc (st.st_size + 1);
-		cfg[0] = '\0';
-		i = read (fh, cfg, st.st_size);
-		if (i >= 0)
-			cfg[i] = '\0';					/* make sure cfg is NULL terminated */
-		close (fh);
-		i = 0;
-		do
-		{
-			switch (vars[i].type)
-			{
-			case TYPE_STR:
-				cfg_get_str (cfg, vars[i].name, (char *) &prefs + vars[i].offset,
-								 vars[i].len);
-				break;
-			case TYPE_BOOL:
-			case TYPE_INT:
-				val = cfg_get_int_with_result (cfg, vars[i].name, &res);
-				if (res)
-					*((int *) &prefs + vars[i].offset) = val;
-				break;
-			}
-			i++;
-		}
-		while (vars[i].name);
-
-		free (cfg);
-
-	} else
-	{
-#ifndef WIN32
-#ifndef __EMX__
-		/* OS/2 uses UID 0 all the time */
-		if (getuid () == 0)
-			fe_message (_("* Running IRC as root is stupid! You should\n"
-							"  create a User Account and use that to login.\n"), FE_MSG_WARN|FE_MSG_WAIT);
-#endif
-#endif /* !WIN32 */
-
-		mkdir_utf8 (prefs.dccdir);
-		mkdir_utf8 (prefs.dcc_completed_dir);
+		strcpy (prefs.hex_dcc_dir, g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD));
 	}
-	if (prefs.mainwindow_height < 138)
-		prefs.mainwindow_height = 138;
-	if (prefs.mainwindow_width < 106)
-		prefs.mainwindow_width = 106;
+	else
+	{
+		strcpy (prefs.hex_dcc_dir, g_build_filename (g_get_home_dir (), "Downloads", NULL));
+	}
+#endif
+	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
+	strcpy (prefs.hex_input_command_char, "/");
+	strcpy (prefs.hex_irc_logmask, g_build_filename ("%n", "%c.log", NULL));
+	strcpy (prefs.hex_irc_nick1, username);
+	strcpy (prefs.hex_irc_nick2, username);
+	strcat (prefs.hex_irc_nick2, "_");
+	strcpy (prefs.hex_irc_nick3, username);
+	strcat (prefs.hex_irc_nick3, "__");
+	strcpy (prefs.hex_irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
+	strcpy (prefs.hex_irc_part_reason, _("Leaving"));
+	strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason);
+	strcpy (prefs.hex_irc_real_name, realname);
+	strcpy (prefs.hex_irc_user_name, username);
+	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
+	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
 
-	sp = strchr (prefs.username, ' ');
+	font = fe_get_default_font ();
+	if (font)
+	{
+		strcpy (prefs.hex_text_font, font);
+		strcpy (prefs.hex_text_font_main, font);
+	}
+	else
+	{
+		strcpy (prefs.hex_text_font, DEF_FONT);
+		strcpy (prefs.hex_text_font_main, DEF_FONT);
+	}
+
+	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
+	langs = get_default_spell_languages ();
+	strcpy (prefs.hex_text_spell_langs, langs);
+
+
+	/* private variables */
+	prefs.local_ip = 0xffffffff;
+
+	sp = strchr (prefs.hex_irc_user_name, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces in username would break the login */
 
-	/* try to make sense of old ulist/tree position settings */
-	if (prefs.gui_ulist_pos == 0)
-	{
-		prefs.gui_ulist_pos = 3;	/* top right */
-		if (prefs._gui_ulist_left)
-			prefs.gui_ulist_pos = 2;	/* bottom left */
+	g_free ((char *)username);
+	g_free ((char *)realname);
+	g_free ((char *)langs);
+}
 
-		switch (prefs._tabs_position)
+int
+make_config_dirs (void)
+{
+	char *buf;
+
+	if (g_mkdir_with_parents (get_xdir (), 0700) != 0)
+		return -1;
+	
+	buf = g_build_filename (get_xdir (), "addons", NULL);
+	if (g_mkdir (buf, 0700) != 0)
+	{
+		g_free (buf);
+		return -1;
+	}
+	g_free (buf);
+	
+	buf = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
+	if (g_mkdir (buf, 0700) != 0)
+	{
+		g_free (buf);
+		return -1;
+	}
+	g_free (buf);
+
+	return 0;
+}
+
+int
+make_dcc_dirs (void)
+{
+	if (g_mkdir (prefs.hex_dcc_dir, 0700) != 0)
+		return -1;
+
+	if (g_mkdir (prefs.hex_dcc_completed_dir, 0700) != 0)
+		return -1;
+
+	return 0;
+}
+
+int
+load_config (void)
+{
+	char *cfg, *sp;
+	int res, val, i;
+
+	g_assert(check_config_dir () == 0);
+
+	if (!g_file_get_contents (default_file (), &cfg, NULL, NULL))
+		return -1;
+
+	/* If the config is incomplete we have the default values loaded */
+	load_default_config();
+
+	i = 0;
+	do
+	{
+		switch (vars[i].type)
 		{
-		case 0:
-			prefs.tab_pos = 6; /* bottom */
+		case TYPE_STR:
+			cfg_get_str (cfg, vars[i].name, (char *) &prefs + vars[i].offset,
+				     vars[i].len);
 			break;
-		case 1:
-			prefs.tab_pos = 5;	/* top */
-			break;
-		case 2:
-			prefs.tab_pos = 1; 	/* left */
-			break;
-		case 3:
-			prefs.tab_pos = 4; 	/* right */
-			break;
-		case 4:
-			prefs.tab_pos = 1;	/* (hidden)left */
-			break;
-		case 5:
-			if (prefs._gui_ulist_left)
-			{
-				prefs.tab_pos = 1; 	/* above ulist left */
-				prefs.gui_ulist_pos = 2;
-			}
-			else
-			{
-				prefs.tab_pos = 3; 	/* above ulist right */
-				prefs.gui_ulist_pos = 4;
-			}
+		case TYPE_BOOL:
+		case TYPE_INT:
+			val = cfg_get_int_with_result (cfg, vars[i].name, &res);
+			if (res)
+				*((int *) &prefs + vars[i].offset) = val;
 			break;
 		}
+		i++;
 	}
+	while (vars[i].name);
+	
+	g_free (cfg);
+
+	if (prefs.hex_gui_win_height < 138)
+		prefs.hex_gui_win_height = 138;
+	if (prefs.hex_gui_win_width < 106)
+		prefs.hex_gui_win_width = 106;
+
+	sp = strchr (prefs.hex_irc_user_name, ' ');
+	if (sp)
+		sp[0] = 0;	/* spaces in username would break the login */
+
+	return 0;
 }
 
 int
 save_config (void)
 {
 	int fh, i;
-	char *new_config, *config;
+	char *config, *new_config;
 
-	check_prefs_dir ();
+	if (check_config_dir () != 0)
+		make_config_dirs ();
 
 	config = default_file ();
-	new_config = malloc (strlen (config) + 5);
-	strcpy (new_config, config);
-	strcat (new_config, ".new");
+	new_config = g_strconcat (config, ".new", NULL);
 	
-	fh = open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
+	fh = g_open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
 	if (fh == -1)
 	{
-		free (new_config);
+		g_free (new_config);
 		return 0;
 	}
 
 	if (!cfg_put_str (fh, "version", PACKAGE_VERSION))
 	{
-		free (new_config);
+		close (fh);
+		g_free (new_config);
 		return 0;
 	}
 		
@@ -922,7 +1042,8 @@ save_config (void)
 		case TYPE_STR:
 			if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
 			{
-				free (new_config);
+				close (fh);
+				g_free (new_config);
 				return 0;
 			}
 			break;
@@ -930,7 +1051,8 @@ save_config (void)
 		case TYPE_BOOL:
 			if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
 			{
-				free (new_config);
+				close (fh);
+				g_free (new_config);
 				return 0;
 			}
 		}
@@ -940,19 +1062,19 @@ save_config (void)
 
 	if (close (fh) == -1)
 	{
-		free (new_config);
+		g_free (new_config);
 		return 0;
 	}
 
 #ifdef WIN32
-	unlink (config);	/* win32 can't rename to an existing file */
+	g_unlink (config);	/* win32 can't rename to an existing file */
 #endif
-	if (rename (new_config, config) == -1)
+	if (g_rename (new_config, config) == -1)
 	{
-		free (new_config);
+		g_free (new_config);
 		return 0;
 	}
-	free (new_config);
+	g_free (new_config);
 
 	return 1;
 }
@@ -960,35 +1082,47 @@ save_config (void)
 static void
 set_showval (session *sess, const struct prefs *var, char *tbuf)
 {
-	int len, dots, j;
+	size_t len;
+	size_t dots;
+	size_t j;
 
 	len = strlen (var->name);
 	memcpy (tbuf, var->name, len);
-	dots = 29 - len;
-	if (dots < 0)
+	if (len > 29)
 		dots = 0;
+	else
+		dots = 29 - len;
+
 	tbuf[len++] = '\003';
 	tbuf[len++] = '2';
-	for (j=0;j<dots;j++)
+
+	for (j = 0; j < dots; j++)
+	{
 		tbuf[j + len] = '.';
+	}
+
 	len += j;
+
 	switch (var->type)
 	{
-	case TYPE_STR:
-		sprintf (tbuf + len, "\0033:\017 %s\n",
-					(char *) &prefs + var->offset);
-		break;
-	case TYPE_INT:
-		sprintf (tbuf + len, "\0033:\017 %d\n",
-					*((int *) &prefs + var->offset));
-		break;
-	case TYPE_BOOL:
-		if (*((int *) &prefs + var->offset))
-			sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
-		else
-			sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
-		break;
+		case TYPE_STR:
+			sprintf (tbuf + len, "\0033:\017 %s\n", (char *) &prefs + var->offset);
+			break;
+		case TYPE_INT:
+			sprintf (tbuf + len, "\0033:\017 %d\n", *((int *) &prefs + var->offset));
+			break;
+		case TYPE_BOOL:
+			if (*((int *) &prefs + var->offset))
+			{
+				sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
+			}
+			else
+			{
+				sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
+			}
+			break;
 	}
+
 	PrintText (sess, tbuf);
 }
 
@@ -1189,33 +1323,47 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 int
-xchat_open_file (char *file, int flags, int mode, int xof_flags)
+hexchat_open_file (char *file, int flags, int mode, int xof_flags)
 {
-	char buf[1024];
+	char *buf;
+	int fd;
 
 	if (xof_flags & XOF_FULLPATH)
 	{
 		if (xof_flags & XOF_DOMODE)
-			return open (file, flags | OFLAGS, mode);
+			return g_open (file, flags | OFLAGS, mode);
 		else
-			return open (file, flags | OFLAGS);
+			return g_open (file, flags | OFLAGS, 0);
 	}
 
-	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
+	buf = g_build_filename (get_xdir (), file, NULL);
+
 	if (xof_flags & XOF_DOMODE)
-		return open (buf, flags | OFLAGS, mode);
+	{
+		fd = g_open (buf, flags | OFLAGS, mode);
+	}
 	else
-		return open (buf, flags | OFLAGS);
+	{
+		fd = g_open (buf, flags | OFLAGS, 0);
+	}
+
+	g_free (buf);
+
+	return fd;
 }
 
 FILE *
-xchat_fopen_file (const char *file, const char *mode, int xof_flags)
+hexchat_fopen_file (const char *file, const char *mode, int xof_flags)
 {
-	char buf[1024];
+	char *buf;
+	FILE *fh;
 
 	if (xof_flags & XOF_FULLPATH)
 		return fopen (file, mode);
 
-	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
-	return fopen (buf, mode);
+	buf = g_build_filename (get_xdir (), file, NULL);
+	fh = g_fopen (buf, mode);
+	g_free (buf);
+
+	return fh;
 }

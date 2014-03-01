@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -30,14 +30,14 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "notify.h"
 #include "cfgfiles.h"
 #include "fe.h"
 #include "server.h"
 #include "text.h"
 #include "util.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 
 GSList *notify_list = 0;
@@ -129,7 +129,7 @@ notify_save (void)
 	struct notify *notify;
 	GSList *list = notify_list;
 
-	fh = xchat_open_file ("notify.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fh = hexchat_open_file ("notify.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		while (list)
@@ -155,7 +155,7 @@ notify_load (void)
 	char buf[256];
 	char *sep;
 
-	fh = xchat_open_file ("notify.conf", O_RDONLY, 0, 0);
+	fh = hexchat_open_file ("notify.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
 	{
 		while (waitline (fh, buf, sizeof buf, FALSE) != -1)
@@ -205,7 +205,8 @@ notify_find (server *serv, char *nick)
 
 static void
 notify_announce_offline (server * serv, struct notify_per_server *servnot,
-								char *nick, int quiet)
+								 char *nick, int quiet, 
+								 const message_tags_data *tags_data)
 {
 	session *sess;
 
@@ -214,15 +215,16 @@ notify_announce_offline (server * serv, struct notify_per_server *servnot,
 	servnot->ison = FALSE;
 	servnot->lastoff = time (0);
 	if (!quiet)
-		EMIT_SIGNAL (XP_TE_NOTIFYOFFLINE, sess, nick, serv->servername,
-						 server_get_network (serv, TRUE), NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYOFFLINE, sess, nick, serv->servername,
+									  server_get_network (serv, TRUE), NULL, 0,
+									  tags_data->timestamp);
 	fe_notify_update (nick);
 	fe_notify_update (0);
 }
 
 static void
 notify_announce_online (server * serv, struct notify_per_server *servnot,
-								char *nick)
+								char *nick, const message_tags_data *tags_data)
 {
 	session *sess;
 
@@ -234,12 +236,13 @@ notify_announce_online (server * serv, struct notify_per_server *servnot,
 
 	servnot->ison = TRUE;
 	servnot->laston = time (0);
-	EMIT_SIGNAL (XP_TE_NOTIFYONLINE, sess, nick, serv->servername,
-					 server_get_network (serv, TRUE), NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYONLINE, sess, nick, serv->servername,
+					 server_get_network (serv, TRUE), NULL, 0,
+					 tags_data->timestamp);
 	fe_notify_update (nick);
 	fe_notify_update (0);
 
-	if (prefs.whois_on_notifyonline)
+	if (prefs.hex_notify_whois_online)
 	{
 
 	    /* Let's do whois with idle time (like in /quote WHOIS %s %s) */
@@ -254,7 +257,8 @@ notify_announce_online (server * serv, struct notify_per_server *servnot,
 /* handles numeric 601 */
 
 void
-notify_set_offline (server * serv, char *nick, int quiet)
+notify_set_offline (server * serv, char *nick, int quiet,
+						  const message_tags_data *tags_data)
 {
 	struct notify_per_server *servnot;
 
@@ -262,13 +266,14 @@ notify_set_offline (server * serv, char *nick, int quiet)
 	if (!servnot)
 		return;
 
-	notify_announce_offline (serv, servnot, nick, quiet);
+	notify_announce_offline (serv, servnot, nick, quiet, tags_data);
 }
 
 /* handles numeric 604 and 600 */
 
 void
-notify_set_online (server * serv, char *nick)
+notify_set_online (server * serv, char *nick,
+						 const message_tags_data *tags_data)
 {
 	struct notify_per_server *servnot;
 
@@ -276,17 +281,89 @@ notify_set_online (server * serv, char *nick)
 	if (!servnot)
 		return;
 
-	notify_announce_online (serv, servnot, nick);
+	notify_announce_online (serv, servnot, nick, tags_data);
+}
+
+/* monitor can send lists for numeric 730/731 */
+
+void
+notify_set_offline_list (server * serv, char *users, int quiet,
+						  const message_tags_data *tags_data)
+{
+	struct notify_per_server *servnot;
+	char nick[NICKLEN];
+	char *token, *chr;
+	int pos;
+
+	token = strtok (users, ",");
+	while (token != NULL)
+	{
+		chr = strchr (token, '!');
+		if (!chr)
+			goto end;
+
+		pos = chr - token;
+		if (pos + 1 >= sizeof(nick))
+			goto end;
+
+		memset (nick, 0, sizeof(nick));
+		strncpy (nick, token, pos);
+
+		servnot = notify_find (serv, nick);
+		if (servnot)
+			notify_announce_offline (serv, servnot, nick, quiet, tags_data);
+end:
+		token = strtok (NULL, ",");
+	}
+}
+
+void
+notify_set_online_list (server * serv, char *users,
+						 const message_tags_data *tags_data)
+{
+	struct notify_per_server *servnot;
+	char nick[NICKLEN];
+	char *token, *chr;
+	int pos;
+
+	token = strtok (users, ",");
+	while (token != NULL)
+	{
+		chr = strchr (token, '!');
+		if (!chr)
+			goto end;
+
+		pos = chr - token;
+		if (pos + 1 >= sizeof(nick))
+			goto end;
+
+		memset (nick, 0, sizeof(nick));
+		strncpy (nick, token, pos);
+
+		servnot = notify_find (serv, nick);
+		if (servnot)
+			notify_announce_online (serv, servnot, nick, tags_data);
+end:
+		token = strtok (NULL, ",");
+	}
 }
 
 static void
 notify_watch (server * serv, char *nick, int add)
 {
 	char tbuf[256];
+	char addchar = '+';
 
-	snprintf (tbuf, sizeof (tbuf), "WATCH +%s", nick);
 	if (!add)
-		tbuf[6] = '-';
+		addchar = '-';
+
+	if (serv->supports_monitor)
+		snprintf (tbuf, sizeof (tbuf), "MONITOR %c %s", addchar, nick);
+	else if (serv->supports_watch)
+		snprintf (tbuf, sizeof (tbuf), "WATCH %c%s", addchar, nick);
+	else
+		return;
+
 	serv->p_raw (serv, tbuf);
 }
 
@@ -298,8 +375,7 @@ notify_watch_all (struct notify *notify, int add)
 	while (list)
 	{
 		serv = list->data;
-		if (serv->connected && serv->end_of_motd && serv->supports_watch &&
-			 notify_do_network (notify, serv))
+		if (serv->connected && serv->end_of_motd && notify_do_network (notify, serv))
 			notify_watch (serv, notify->name, add);
 		list = list->next;
 	}
@@ -312,14 +388,17 @@ notify_flush_watches (server * serv, GSList *from, GSList *end)
 	GSList *list;
 	struct notify *notify;
 
-	strcpy (tbuf, "WATCH");
+	serv->supports_monitor ? strcpy (tbuf, "MONITOR + ") : strcpy (tbuf, "WATCH");
 
 	list = from;
 	while (list != end)
 	{
 		notify = list->data;
-		strcat (tbuf, " +");
-		strcat (tbuf, notify->name);
+		if (serv->supports_monitor)
+			g_strlcat (tbuf, ",", sizeof(tbuf));
+		else
+			g_strlcat (tbuf, " +", sizeof(tbuf));
+		g_strlcat (tbuf, notify->name, sizeof(tbuf));
 		list = list->next;
 	}
 	serv->p_raw (serv, tbuf);
@@ -343,11 +422,11 @@ notify_send_watches (server * serv)
 
 		if (notify_do_network (notify, serv))
 		{
-			len += strlen (notify->name) + 2 /* + and space */;
+			len += strlen (notify->name) + serv->supports_monitor ? 1 : 2; /* just , for monitor or + and space for watch */;
 			if (len > 500)
 			{
 				notify_flush_watches (serv, point, list);
-				len = strlen (notify->name) + 2;
+				len = strlen (notify->name) + serv->supports_monitor ? 1 : 2;
 				point = list;
 			}
 		}
@@ -362,7 +441,7 @@ notify_send_watches (server * serv)
 /* called when receiving a ISON 303 - should this func go? */
 
 void
-notify_markonline (server *serv, char *word[])
+notify_markonline (server *serv, char *word[], const message_tags_data *tags_data)
 {
 	struct notify *notify;
 	struct notify_per_server *servnot;
@@ -385,7 +464,7 @@ notify_markonline (server *serv, char *word[])
 			if (!serv->p_cmp (notify->name, word[i]))
 			{
 				seen = TRUE;
-				notify_announce_online (serv, servnot, notify->name);
+				notify_announce_online (serv, servnot, notify->name, tags_data);
 				break;
 			}
 			i++;
@@ -393,13 +472,13 @@ notify_markonline (server *serv, char *word[])
 			   about 27 people */
 			if (i > PDIWORDS - 5)
 			{
-				/*fprintf (stderr, _("*** XCHAT WARNING: notify list too large.\n"));*/
+				/*fprintf (stderr, _("*** HEXCHAT WARNING: notify list too large.\n"));*/
 				break;
 			}
 		}
 		if (!seen && servnot->ison)
 		{
-			notify_announce_offline (serv, servnot, notify->name, FALSE);
+			notify_announce_offline (serv, servnot, notify->name, FALSE, tags_data);
 		}
 		list = list->next;
 	}
@@ -430,7 +509,7 @@ notify_checklist_for_server (server *serv)
 				/* LAME: we can't send more than 512 bytes to the server, but     *
 				 * if we split it in two packets, our offline detection wouldn't  *
 				 work                                                           */
-				/*fprintf (stderr, _("*** XCHAT WARNING: notify list too large.\n"));*/
+				/*fprintf (stderr, _("*** HEXCHAT WARNING: notify list too large.\n"));*/
 				break;
 			}
 		}
@@ -450,7 +529,7 @@ notify_checklist (void)	/* check ISON list */
 	while (list)
 	{
 		serv = list->data;
-		if (serv->connected && serv->end_of_motd && !serv->supports_watch)
+		if (serv->connected && serv->end_of_motd && !serv->supports_watch && !serv->supports_monitor)
 		{
 			notify_checklist_for_server (serv);
 		}
@@ -460,7 +539,7 @@ notify_checklist (void)	/* check ISON list */
 }
 
 void
-notify_showlist (struct session *sess)
+notify_showlist (struct session *sess, const message_tags_data *tags_data)
 {
 	char outbuf[256];
 	struct notify *notify;
@@ -468,7 +547,8 @@ notify_showlist (struct session *sess)
 	struct notify_per_server *servnot;
 	int i = 0;
 
-	EMIT_SIGNAL (XP_TE_NOTIFYHEAD, sess, NULL, NULL, NULL, NULL, 0);
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYHEAD, sess, NULL, NULL, NULL, NULL, 0,
+								  tags_data->timestamp);
 	while (list)
 	{
 		i++;
@@ -478,15 +558,17 @@ notify_showlist (struct session *sess)
 			snprintf (outbuf, sizeof (outbuf), _("  %-20s online\n"), notify->name);
 		else
 			snprintf (outbuf, sizeof (outbuf), _("  %-20s offline\n"), notify->name);
-		PrintText (sess, outbuf);
+		PrintTextTimeStamp (sess, outbuf, tags_data->timestamp);
 		list = list->next;
 	}
 	if (i)
 	{
 		sprintf (outbuf, "%d", i);
-		EMIT_SIGNAL (XP_TE_NOTIFYNUMBER, sess, outbuf, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYNUMBER, sess, outbuf, NULL, NULL, NULL,
+									  0, tags_data->timestamp);
 	} else
-		EMIT_SIGNAL (XP_TE_NOTIFYEMPTY, sess, NULL, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTIFYEMPTY, sess, NULL, NULL, NULL, NULL, 0,
+									  tags_data->timestamp);
 }
 
 int

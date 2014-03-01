@@ -14,12 +14,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 #define PLAYING 1
 #define PAUSED 3
 
-static xchat_plugin *ph;   /* plugin handle */
+static hexchat_plugin *ph;   /* plugin handle */
 
 BOOL winamp_found = FALSE;
 
@@ -66,43 +66,43 @@ HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
 			   	   SendMessage(hwndWinamp, WM_COMMAND, 40046, 0);
 			
 			       if (SendMessage(hwndWinamp, WM_USER, 0, 104) == PLAYING)
-			   	       xchat_printf(ph, "Winamp: playing");
+			   	       hexchat_printf(ph, "Winamp: playing");
 			       else
-                       xchat_printf(ph, "Winamp: paused");
+                       hexchat_printf(ph, "Winamp: paused");
 				}
             }
 			else
 		        if (!stricmp("STOP", word[2]))
 			    {
 			       SendMessage(hwndWinamp, WM_COMMAND, 40047, 0);
-			       xchat_printf(ph, "Winamp: stopped");
+			       hexchat_printf(ph, "Winamp: stopped");
 			    }
 			else
 			    if (!stricmp("PLAY", word[2]))
 			    {
 			         SendMessage(hwndWinamp, WM_COMMAND, 40045, 0);
-			         xchat_printf(ph, "Winamp: playing");
+			         hexchat_printf(ph, "Winamp: playing");
 			    }
         	else
 
 			    if (!stricmp("NEXT", word[2]))
 			    {
 			         SendMessage(hwndWinamp, WM_COMMAND, 40048, 0);
-			         xchat_printf(ph, "Winamp: next playlist entry");
+			         hexchat_printf(ph, "Winamp: next playlist entry");
 			    }
 			else
 
                 if (!stricmp("PREV", word[2]))
 			    {
 			         SendMessage(hwndWinamp, WM_COMMAND, 40044, 0);
-			         xchat_printf(ph, "Winamp: previous playlist entry");
+			         hexchat_printf(ph, "Winamp: previous playlist entry");
 			    }
 		    else
 
                 if (!stricmp("START", word[2]))
 			    {
 			         SendMessage(hwndWinamp, WM_COMMAND, 40154, 0);
-			         xchat_printf(ph, "Winamp: playlist start");
+			         hexchat_printf(ph, "Winamp: playlist start");
 			    }
 
 		    else
@@ -141,49 +141,49 @@ HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
 						sprintf(truc, "me is now playing:%s", cur_esc);
 					}
 	
-	   				xchat_commandf(ph, truc);
+	   				hexchat_commandf(ph, truc);
 	
 				}
-				else xchat_print(ph, "Winamp: Nothing being played.");
+				else hexchat_print(ph, "Winamp: Nothing being played.");
 			}
 		    else
-                xchat_printf(ph, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START]\n");
+                hexchat_printf(ph, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START]\n");
          }
 
 	}
 	else
 	{
-       xchat_print(ph, "Winamp not found.\n");
+       hexchat_print(ph, "Winamp not found.\n");
 	}
-	return XCHAT_EAT_ALL;
+	return HEXCHAT_EAT_ALL;
 }
 
 int
-xchat_plugin_init(xchat_plugin *plugin_handle,
+hexchat_plugin_init(hexchat_plugin *plugin_handle,
                       char **plugin_name,
                       char **plugin_desc,
                       char **plugin_version,
                       char *arg)
 {
-	/* we need to save this for use with any xchat_* functions */
+	/* we need to save this for use with any hexchat_* functions */
 	ph = plugin_handle;
 
 	*plugin_name = "Winamp";
 	*plugin_desc = "Winamp plugin for HexChat";
 	*plugin_version = "0.5";
 
-	xchat_hook_command (ph, "WINAMP", XCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
-   	xchat_command (ph, "MENU -ietc\\music.png ADD \"Window/Display Current Song (Winamp)\" \"WINAMP\"");
+	hexchat_hook_command (ph, "WINAMP", HEXCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
+   	hexchat_command (ph, "MENU -ishare\\music.png ADD \"Window/Display Current Song (Winamp)\" \"WINAMP\"");
 
-	xchat_print (ph, "Winamp plugin loaded\n");
+	hexchat_print (ph, "Winamp plugin loaded\n");
 
 	return 1;       /* return 1 for success */
 }
 
 int
-xchat_plugin_deinit(void)
+hexchat_plugin_deinit(void)
 {
-	xchat_command (ph, "MENU DEL \"Window/Display Current Song (Winamp)\"");
-	xchat_print (ph, "Winamp plugin unloaded\n");
+	hexchat_command (ph, "MENU DEL \"Window/Display Current Song (Winamp)\"");
+	hexchat_print (ph, "Winamp plugin unloaded\n");
 	return 1;
 }

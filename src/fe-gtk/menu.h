@@ -1,7 +1,30 @@
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
+#ifndef HEXCHAT_MENU_H
+#define HEXCHAT_MENU_H
+
 GtkWidget *menu_create_main (void *accel_group, int bar, int away, int toplevel, GtkWidget **menu_widgets);
 void menu_urlmenu (GdkEventButton * event, char *url);
 void menu_chanmenu (session *sess, GdkEventButton * event, char *chan);
-void menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel);
+void menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel, gboolean istree);
+void menu_addconnectmenu (server *serv, GtkWidget *menu);
 void menu_nickmenu (session *sess, GdkEventButton * event, char *nick, int num_sel);
 void menu_middlemenu (session *sess, GdkEventButton *event);
 void userlist_button_cb (GtkWidget * button, char *cmd);
@@ -15,6 +38,9 @@ void menu_create (GtkWidget *menu, GSList *list, char *target, int check_path);
 void menu_bar_toggle (void);
 void menu_add_plugin_items (GtkWidget *menu, char *root, char *target);
 void menu_change_layout (void);
+
+void menu_set_away (session_gui *gui, int away);
+void menu_set_fullscreen (session_gui *gui, int fullscreen);
 
 /* for menu_quick functions */
 #define XCMENU_DOLIST 1
@@ -35,7 +61,10 @@ void menu_change_layout (void);
 #define MENU_ID_RECONNECT 10
 #define MENU_ID_JOIN 11
 #define MENU_ID_USERMENU 12
+#define MENU_ID_FULLSCREEN 13
 
-#if (MENU_ID_NUM < MENU_ID_USERMENU)
+#if (MENU_ID_NUM < MENU_ID_FULLSCREEN)
 #error MENU_ID_NUM is set wrong
+#endif
+
 #endif

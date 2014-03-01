@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros">
-    <!-- SPECIFY YOUR DEPENDENCY DIRECTORIES HERE -->
-    <YourDepsPath>c:\mozilla-build\hexchat\build</YourDepsPath>
-    <YourGendefPath>c:\mozilla-build\gendef</YourGendefPath>
-    <YourMsgfmtPath>c:\mozilla-build\msgfmt</YourMsgfmtPath>
-    <YourTclPath>c:\mozilla-build\tcl-8.5</YourTclPath>
-    <YourPerl512Path>c:\mozilla-build\perl-5.12</YourPerl512Path>
-    <YourPerl514Path>c:\mozilla-build\perl-5.14</YourPerl514Path>
-    <YourPerl516Path>c:\mozilla-build\perl-5.16</YourPerl516Path>
-    <YourPythonPath>c:\mozilla-build\python-2.7</YourPythonPath>
-    <!-- YOU SHOULDN'T TOUCH ANYTHING BELOW -->
-    <OwnFlags>G_DISABLE_CAST_CHECKS;G_DISABLE_DEPRECATED;GDK_PIXBUF_DISABLE_DEPRECATED;GDK_DISABLE_DEPRECATED;HAVE_STRTOULL;strtoull=_strtoui64;strcasecmp=stricmp;strncasecmp=strnicmp;__inline__=__inline;</OwnFlags>
-    <DepsRoot>$(YourDepsPath)\$(PlatformName)</DepsRoot>
-    <GendefPath>$(YourGendefPath)</GendefPath>
-    <MsgfmtPath>$(YourMsgfmtPath)</MsgfmtPath>
-    <LuaLib>lua51</LuaLib>
-    <LuaOutput>hclua</LuaOutput>
-    <TclPath>$(YourTclPath)\$(PlatformName)</TclPath>
-    <TclLib>tcl85</TclLib>
-    <TclOutput>hctcl</TclOutput>
-    <Perl512Path>$(YourPerl512Path)\$(PlatformName)</Perl512Path>
-    <Perl512Lib>perl512</Perl512Lib>
-    <Perl512Output>hcperl-512</Perl512Output>
-    <Perl514Path>$(YourPerl514Path)\$(PlatformName)</Perl514Path>
-    <Perl514Lib>perl514</Perl514Lib>
-    <Perl514Output>hcperl-514</Perl514Output>
-    <Perl516Path>$(YourPerl516Path)\$(PlatformName)</Perl516Path>
-    <Perl516Lib>perl516</Perl516Lib>
-    <Perl516Output>hcperl-516</Perl516Output>
-    <PythonPath>$(YourPythonPath)\$(PlatformName)</PythonPath>
-    <PythonLib>python27</PythonLib>
-    <PythonOutput>hcpython</PythonOutput>
-    <Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
-    <Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
-    <Pixmaps>bookpng "$(SolutionDir)\..\src\pixmaps\book.png" hoppng "$(SolutionDir)\..\src\pixmaps\hop.png" oppng "$(SolutionDir)\..\src\pixmaps\op.png" purplepng "$(SolutionDir)\..\src\pixmaps\purple.png" redpng "$(SolutionDir)\..\src\pixmaps\red.png" trayfilepng "$(SolutionDir)\..\src\pixmaps\fileoffer.png" trayhilightpng "$(SolutionDir)\..\src\pixmaps\highlight.png" traymsgpng "$(SolutionDir)\..\src\pixmaps\message.png" voicepng "$(SolutionDir)\..\src\pixmaps\voice.png" channelpng "$(SolutionDir)\..\src\pixmaps\channel.png" dialogpng "$(SolutionDir)\..\src\pixmaps\dialog.png" serverpng "$(SolutionDir)\..\src\pixmaps\server.png" utilpng "$(SolutionDir)\..\src\pixmaps\util.png" hexchatpng "$(SolutionDir)\..\hexchat.png"</Pixmaps>
-    <DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;libintl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
-    <HexChatBuild>$(SolutionDir)build</HexChatBuild>
-    <HexChatBin>$(HexChatBuild)\$(PlatformName)\bin\</HexChatBin>
-    <HexChatObj>$(HexChatBuild)\$(PlatformName)\obj\</HexChatObj>
-    <HexChatRel>$(HexChatBuild)\$(PlatformName)\rel</HexChatRel>
-	<HexChatCopy>
+	<ImportGroup Label="PropertySheets" />
+
+	<PropertyGroup Label="UserMacros">
+
+		<!-- SPECIFY YOUR DEPENDENCY DIRECTORIES HERE -->
+
+		<YourDepsPath>c:\mozilla-build\hexchat\gtk</YourDepsPath>
+		<YourGendefPath>c:\mozilla-build\gendef</YourGendefPath>
+		<YourMsgfmtPath>c:\mozilla-build\msgfmt</YourMsgfmtPath>
+		<YourPerlPath>c:\mozilla-build\perl-5.18</YourPerlPath>
+		<YourPython2Path>c:\mozilla-build\python-2.7</YourPython2Path>
+		<YourPython3Path>c:\mozilla-build\python-3.3</YourPython3Path>
+
+		<!-- YOU SHOULDN'T TOUCH ANYTHING BELOW -->
+
+		<!-- G_DISABLE_DEPRECATED is unfeasible due to g_completion_* -->
+		<!-- must be buildable with GSEAL_ENABLE in the future, xtext, setup, and chanview-tabs stand in the way --> 
+		<OwnFlags>GTK_DISABLE_DEPRECATED;GDK_PIXBUF_DISABLE_DEPRECATED;G_DISABLE_SINGLE_INCLUDES;GDK_PIXBUF_DISABLE_SINGLE_INCLUDES;GTK_DISABLE_SINGLE_INCLUDES;HAVE_STRTOULL;strtoull=_strtoui64;strcasecmp=stricmp;strncasecmp=strnicmp;__inline__=__inline</OwnFlags>
+		<DepsRoot>$(YourDepsPath)\$(PlatformName)</DepsRoot>
+		<GendefPath>$(YourGendefPath)</GendefPath>
+		<MsgfmtPath>$(YourMsgfmtPath)</MsgfmtPath>
+		<PerlPath>$(YourPerlPath)\$(PlatformName)</PerlPath>
+		<PerlLib>perl518</PerlLib>
+		<PerlOutput>hcperl</PerlOutput>
+		<Python2Path>$(YourPython2Path)\$(PlatformName)</Python2Path>
+		<Python2Lib>python27</Python2Lib>
+		<Python2Output>hcpython2</Python2Output>
+		<Python3Path>$(YourPython3Path)\$(PlatformName)</Python3Path>
+		<Python3Lib>python33</Python3Lib>
+		<Python3Output>hcpython3</Python3Output>
+		<Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
+		<Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
+		<DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;libintl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
+		<DataDir>$(SolutionDir)..\data\</DataDir>
+		<HexChatBuild>$(SolutionDir)..\..\hexchat-build</HexChatBuild>
+		<HexChatBin>$(HexChatBuild)\$(PlatformName)\bin\</HexChatBin>
+		<HexChatObj>$(HexChatBuild)\$(PlatformName)\obj\</HexChatObj>
+		<HexChatRel>$(HexChatBuild)\$(PlatformName)\rel</HexChatRel>
+		<HexChatCopy>
 rmdir /q /s "$(HexChatRel)"
 mkdir "$(HexChatRel)"
 echo 2&gt; portable-mode
 move portable-mode "$(HexChatRel)"
+copy changelog.url "$(HexChatRel)"
+copy readme.url "$(HexChatRel)"
+copy "$(DepsRoot)\bin\cert.pem" "$(HexChatRel)"
 copy "$(HexChatBin)hexchat.exe" "$(HexChatRel)"
 copy "$(HexChatBin)hexchat-text.exe" "$(HexChatRel)"
 copy "$(HexChatBin)thememan.exe" "$(HexChatRel)"
@@ -60,66 +60,57 @@ copy "$(DepsRoot)\bin\gmodule-2.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\gobject-2.0.dll" "$(HexChatRel)
 copy "$(DepsRoot)\bin\gthread-2.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\gtk-win32-2.0.dll" "$(HexChatRel)"
+copy "$(DepsRoot)\bin\harfbuzz.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\iconv.dll" "$(HexChatRel)"
+copy "$(DepsRoot)\bin\libeay32.dll" "$(HexChatRel)"
+copy "$(DepsRoot)\bin\libenchant.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\libintl.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\libpng15.dll" "$(HexChatRel)"
+copy "$(DepsRoot)\bin\libpng16.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\libxml2.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pango-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangocairo-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangoft2-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangowin32-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pixman-1.dll" "$(HexChatRel)"
-::xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\2.10.0\engines" "$(HexChatRel)\lib\gtk-2.0\2.10.0\engines"
-::xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\modules\libgail.dll" "$(HexChatRel)\lib\gtk-2.0\modules\"
-xcopy /q /s /i etc "$(HexChatRel)\etc"
-xcopy /q /s /i share "$(HexChatRel)\share"
-copy "..\..\COPYING" "$(HexChatRel)"
-copy "$(DepsRoot)\LICENSE.ATK" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.CAIRO" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.ENCHANT" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.FONTCONFIG" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.FREETYPE" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.GDKPIXBUF" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.GETTEXT" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.GLIB" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.GTK" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.LIBFFI" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.LIBPNG" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.LIBXML2" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.OPENSSL" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.PANGO" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.PIXMAN" "$(HexChatRel)\share"
-copy "$(DepsRoot)\LICENSE.ZLIB" "$(HexChatRel)\share"
-copy "$(DepsRoot)\bin\libeay32.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\ssleay32.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\zlib1.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\cert.pem" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\libenchant.dll" "$(HexChatRel)"
+xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\i686-pc-vs10\engines" "$(HexChatRel)\lib\gtk-2.0\i686-pc-vs10\engines"
+xcopy /q /s /i etc "$(HexChatRel)\etc"
+xcopy /q /s /i share "$(HexChatRel)\share"
+xcopy /q /s /i "..\..\COPYING" "$(HexChatRel)\"
 xcopy /q /s /i "$(DepsRoot)\lib\enchant\libenchant_myspell.dll" "$(HexChatRel)\lib\enchant\"
 xcopy /q /s /i "$(HexChatBin)hcchecksum.dll" "$(HexChatRel)\plugins\"
 copy "$(HexChatBin)hcdns.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcdoat.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcexec.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcfishlim.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hclua.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcmpcinfo.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcperl-512.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcperl-514.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcperl-516.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcpython.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hctcl.dll" "$(HexChatRel)\plugins"
+copy "$(HexChatBin)hcperl.dll" "$(HexChatRel)\plugins"
+copy "$(HexChatBin)hcpython2.dll" "$(HexChatRel)\plugins"
+copy "$(HexChatBin)hcpython3.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcupd.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcsasl.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hextray.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcwinamp.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcwinsys.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcwmpa.dll" "$(HexChatRel)\plugins"
-copy "$(DepsRoot)\bin\lua51.dll" "$(HexChatRel)"
-xcopy /q /s /i "$(HexChatBin)locale" "$(HexChatRel)\locale"
+copy "$(HexChatBin)hcsysinfo.dll" "$(HexChatRel)\plugins"
+xcopy /q /s /i "$(HexChatBin)locale" "$(HexChatRel)\share\locale"
 xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
-copy "$(ProgramFiles)\Codejock Software\ISSkin\ISSkinU.dll" "$(HexChatRel)"
-	</HexChatCopy>
-  </PropertyGroup>
-  <ItemDefinitionGroup />
-  <ItemGroup />
+		</HexChatCopy>
+		<IsccPath Condition="'$(Platform)'=='Win32'">"%PROGRAMFILES%\Inno Setup 5\iscc.exe"</IsccPath>
+		<IsccPath Condition="'$(Platform)'=='x64'">"%PROGRAMFILES(x86)%\Inno Setup 5\iscc.exe"</IsccPath>
+	</PropertyGroup>
+
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<WarningLevel>Level3</WarningLevel>
+			<DisableSpecificWarnings>4996</DisableSpecificWarnings>
+			<AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions> 
+			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<!-- UNCOMMENT ONLY ONE -->
+			<!--Optimization>Disabled</Optimization-->
+			<Optimization>MaxSpeed</Optimization>
+			<!--Optimization>MinSpace</Optimization-->
+			<!--Optimization>Full</Optimization-->
+		</ClCompile>
+	</ItemDefinitionGroup>
+
+	<ItemGroup />
 </Project>

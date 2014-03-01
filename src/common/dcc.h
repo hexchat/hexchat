@@ -1,9 +1,29 @@
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
 /* dcc.h */
 
 #include <time.h>						/* for time_t */
+#include "proto-irc.h"
 
-#ifndef XCHAT_DCC_H
-#define XCHAT_DCC_H
+#ifndef HEXCHAT_DCC_H
+#define HEXCHAT_DCC_H
 
 #define STAT_QUEUED 0
 #define STAT_ACTIVE 1
@@ -62,13 +82,12 @@ struct DCC
 	time_t lasttime;
 	char *file;					/* utf8 */
 	char *destfile;			/* utf8 */
-	char *destfile_fs;		/* local filesystem encoding */
 	char *nick;
 	unsigned char type;		  /* 0 = SEND  1 = RECV  2 = CHAT */
 	unsigned char dccstat;	  /* 0 = QUEUED  1 = ACTIVE  2 = FAILED  3 = DONE */
 	unsigned int resume_sent:1;	/* resume request sent */
 	unsigned int fastsend:1;
-	unsigned int ackoffset:1;	/* is reciever sending acks as an offset from */
+	unsigned int ackoffset:1;	/* is receiver sending acks as an offset from */
 										/* the resume point? */
 	unsigned int throttled:2;	/* 0x1 = per send/get throttle
 											0x2 = global throttle */
@@ -98,6 +117,7 @@ struct dccstat_info
 extern struct dccstat_info dccstat[];
 
 gboolean is_dcc (struct DCC *dcc);
+gboolean is_dcc_completed (struct DCC *dcc);
 void dcc_abort (session *sess, struct DCC *dcc);
 void dcc_get (struct DCC *dcc);
 int dcc_resume (struct DCC *dcc);
@@ -109,7 +129,8 @@ void dcc_send (struct session *sess, char *to, char *file, int maxcps, int passi
 struct DCC *find_dcc (char *nick, char *file, int type);
 void dcc_get_nick (struct session *sess, char *nick);
 void dcc_chat (session *sess, char *nick, int passive);
-void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[]);
+void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[],
+					  const message_tags_data *tags_data);
 void dcc_show_list (session *sess);
 guint32 dcc_get_my_address (void);
 void dcc_get_with_destfile (struct DCC *dcc, char *utf8file);

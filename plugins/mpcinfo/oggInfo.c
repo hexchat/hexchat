@@ -11,7 +11,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 static int getOggInt(char *buff, int beg, int bytes){
@@ -51,7 +51,7 @@ struct tagInfo getOggHeader(char *file){
 	info.artist=NULL;
 	f = fopen(file,"rb");
 	if (f==NULL){
-       xchat_print(ph,"file not found while trying to read ogg header");
+       hexchat_print(ph,"file not found while trying to read ogg header");
        //if (DEBUG==1) putlog("file not found while trying to read ogg header");
        return info;
     }
@@ -77,7 +77,7 @@ struct tagInfo getOggHeader(char *file){
 	info.bitrate=nomBr;
 	if (((maxBr==nomBr)&&(nomBr=minBr))||((minBr==0)&&(maxBr==0))||((minBr=-1)&&(maxBr=-1)) )info.cbr=1;else info.cbr=0;
 	printf("bitrates: %i|%i|%i\n",maxBr,nomBr,minBr);
-	printf("freq: %i\n",info.freq);
+	printf("freq: %u\n",info.freq);
 	pos=h3pos+7;
 	pos+=getOggInt(header,pos,4)+4;
 	count=getOggInt(header,pos,4);

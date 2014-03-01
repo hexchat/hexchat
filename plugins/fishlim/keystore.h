@@ -25,11 +25,7 @@
 #ifndef KEYSTORE_H
 #define KEYSTORE_H
 
-#ifdef _MSC_VER
-#include "bool.h"
-#else
 #include <stdbool.h>
-#endif
 #include <stddef.h>
 
 char *keystore_get_key(const char *nick);

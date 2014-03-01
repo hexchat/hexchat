@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdlib.h>
@@ -29,13 +29,14 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "ignore.h"
 #include "cfgfiles.h"
 #include "fe.h"
 #include "text.h"
 #include "util.h"
-#include "xchatc.h"
+#include "hexchatc.h"
+#include "typedef.h"
 
 
 int ignored_ctcp = 0;			  /* keep a count of all we ignore */
@@ -76,7 +77,7 @@ ignore_exists (char *mask)
  */
 
 int
-ignore_add (char *mask, int type)
+ignore_add (char *mask, int type, gboolean overwrite)
 {
 	struct ignore *ig = 0;
 	int change_only = FALSE;
@@ -93,7 +94,11 @@ ignore_add (char *mask, int type)
 		return 0;
 
 	ig->mask = strdup (mask);
-	ig->type = type;
+
+	if (!overwrite && change_only)
+		ig->type |= type;
+	else
+		ig->type = type;
 
 	if (!change_only)
 		ignore_list = g_slist_prepend (ignore_list, ig);
@@ -278,7 +283,7 @@ ignore_load ()
 	char *cfg, *my_cfg;
 	int fh, i;
 
-	fh = xchat_open_file ("ignore.conf", O_RDONLY, 0, 0);
+	fh = hexchat_open_file ("ignore.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
 	{
 		fstat (fh, &st);
@@ -313,7 +318,7 @@ ignore_save ()
 	GSList *temp = ignore_list;
 	struct ignore *ig;
 
-	fh = xchat_open_file ("ignore.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fh = hexchat_open_file ("ignore.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		while (temp)
@@ -321,7 +326,7 @@ ignore_save ()
 			ig = (struct ignore *) temp->data;
 			if (!(ig->type & IG_NOSAVE))
 			{
-				snprintf (buf, sizeof (buf), "mask = %s\ntype = %d\n\n",
+				snprintf (buf, sizeof (buf), "mask = %s\ntype = %u\n\n",
 							 ig->mask, ig->type);
 				write (fh, buf, strlen (buf));
 			}
@@ -335,7 +340,7 @@ ignore_save ()
 static gboolean
 flood_autodialog_timeout (gpointer data)
 {
-	prefs.autodialog = 1;
+	prefs.hex_gui_autoopen_dialog = 1;
 	return FALSE;
 }
 
@@ -364,10 +369,10 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 			serv->ctcp_counter++;
 		} else
 		{
-			if (difftime (current_time, serv->ctcp_last_time) < prefs.ctcp_time_limit)	/*if we got the ctcp in the seconds limit */
+			if (difftime (current_time, serv->ctcp_last_time) < prefs.hex_flood_ctcp_time)	/*if we got the ctcp in the seconds limit */
 			{
 				serv->ctcp_counter++;
-				if (serv->ctcp_counter == prefs.ctcp_number_limit)	/*if we reached the maximun numbers of ctcp in the seconds limits */
+				if (serv->ctcp_counter == prefs.hex_flood_ctcp_num)	/*if we reached the maximun numbers of ctcp in the seconds limits */
 				{
 					serv->ctcp_last_time = current_time;	/*we got the flood, restore all the vars for next one */
 					serv->ctcp_counter = 0;
@@ -375,16 +380,14 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 						if (ip[i] == '@')
 							break;
 					snprintf (real_ip, sizeof (real_ip), "*!*%s", &ip[i]);
-					/*ignore_add (char *mask, int priv, int noti, int chan,
-					   int ctcp, int invi, int unignore, int no_save) */
 
 					snprintf (buf, sizeof (buf),
 								 _("You are being CTCP flooded from %s, ignoring %s\n"),
 								 nick, real_ip);
 					PrintText (sess, buf);
 
-					/*FIXME: only ignore ctcp or all?, its ignoring ctcps for now */
-					ignore_add (real_ip, IG_CTCP);
+					/* ignore CTCP */
+					ignore_add (real_ip, IG_CTCP, FALSE);
 					return 0;
 				}
 			}
@@ -398,24 +401,21 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 		} else
 		{
 			if (difftime (current_time, serv->msg_last_time) <
-				 prefs.msg_time_limit)
+				 prefs.hex_flood_msg_time)
 			{
 				serv->msg_counter++;
-				if (serv->msg_counter == prefs.msg_number_limit)	/*if we reached the maximun numbers of ctcp in the seconds limits */
+				if (serv->msg_counter == prefs.hex_flood_msg_num)	/*if we reached the maximun numbers of ctcp in the seconds limits */
 				{
 					snprintf (buf, sizeof (buf),
-					 _("You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"),
+					 _("You are being MSG flooded from %s, setting gui_autoopen_dialog OFF.\n"),
 								 ip);
 					PrintText (sess, buf);
 					serv->msg_last_time = current_time;	/*we got the flood, restore all the vars for next one */
 					serv->msg_counter = 0;
-					/*ignore_add (char *mask, int priv, int noti, int chan,
-					   int ctcp, int invi, int unignore, int no_save) */
 
-					if (prefs.autodialog)
+					if (prefs.hex_gui_autoopen_dialog)
 					{
-						/*FIXME: only ignore ctcp or all?, its ignoring ctcps for now */
-						prefs.autodialog = 0;
+						prefs.hex_gui_autoopen_dialog = 0;
 						/* turn it back on in 30 secs */
 						fe_timeout_add (30000, flood_autodialog_timeout, NULL);
 					}

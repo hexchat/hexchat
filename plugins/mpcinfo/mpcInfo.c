@@ -11,7 +11,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 //static int DEBUG=0;
@@ -23,8 +23,8 @@ static char *VERSION="0.0.6";
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
-#include "xchat-plugin.h"
-static xchat_plugin *ph;
+#include "hexchat-plugin.h"
+static hexchat_plugin *ph;
 
 #include "functions.c"
 #include "mp3Info.c"
@@ -33,36 +33,36 @@ static xchat_plugin *ph;
 
 static int print_themes (char *word[], char *word_eol[], void *userdata){
        printThemes();
-       return XCHAT_EAT_ALL;
+       return HEXCHAT_EAT_ALL;
 }
 
 static int mpc_themeReload(char *word[], char *word_eol[], void *userdata){
    themeInit();
    loadThemes();
-   return XCHAT_EAT_ALL;
+   return HEXCHAT_EAT_ALL;
 }
 
 static int mpc_tell(char *word[], char *word_eol[], void *userdata){
        char *tTitle, *zero, *oggLine, *line;
 	   struct tagInfo info;
 	   HWND hwnd = FindWindow("MediaPlayerClassicW",NULL);
-       if (hwnd==0) {xchat_command(ph, randomLine(notRunTheme));return XCHAT_EAT_ALL;}
+       if (hwnd==0) {hexchat_print(ph, randomLine(notRunTheme));return HEXCHAT_EAT_ALL;}
        
        tTitle=(char*)malloc(sizeof(char)*1024);
        GetWindowText(hwnd, tTitle, 1024);
        zero=strstr(tTitle," - Media Player Classic");
        if (zero!=NULL) zero[0]=0;
-       else xchat_print(ph,"pattern not found");
+       else hexchat_print(ph,"pattern not found");
        
        if ((tTitle[1]==':')&&(tTitle[2]=='\\')){
-          //xchat_print(ph,"seams to be full path");
+          //hexchat_print(ph,"seams to be full path");
           if (endsWith(tTitle,".mp3")==1){
-             //xchat_print(ph,"seams to be a mp3 file");
+             //hexchat_print(ph,"seams to be a mp3 file");
              info = readHeader(tTitle);
              
              if ((info.artist!=NULL)&&(strcmp(info.artist,"")!=0)){
                 char *mode=MODES[info.mode];
-                //xchat_printf(ph,"mode: %s\n",mode);
+                //hexchat_printf(ph,"mode: %s\n",mode);
                 char *mp3Line=randomLine(mp3Theme);
                 mp3Line=replace(mp3Line,"%art",info.artist);
                 mp3Line=replace(mp3Line,"%tit",info.title);
@@ -82,19 +82,19 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
                 //mp3Line=intReplace(mp3Line,"%perc",perc);
                 //mp3Line=replace(mp3Line,"%plTitle",title);
                 mp3Line=replace(mp3Line,"%file",tTitle);
-                xchat_command(ph, mp3Line);
-                return XCHAT_EAT_ALL;
+                hexchat_command(ph, mp3Line);
+                return HEXCHAT_EAT_ALL;
              }
           }
           if (endsWith(tTitle,".ogg")==1){
-             xchat_printf(ph,"Ogg detected\n");
+             hexchat_printf(ph,"Ogg detected\n");
              info = getOggHeader(tTitle);
              if (info.artist!=NULL){
                 char *cbr;
                 if (info.cbr==1) cbr="CBR"; else cbr="VBR";
                 oggLine=randomLine(oggTheme);
                 //if (cue==1) oggLine=cueLine;
-                //xchat_printf(ph,"ogg-line: %s\n",oggLine);
+                //hexchat_printf(ph,"ogg-line: %s\n",oggLine);
                 oggLine=replace(oggLine,"%art",info.artist);
                 oggLine=replace(oggLine,"%tit",info.title);
                 oggLine=replace(oggLine,"%alb",info.album);
@@ -111,39 +111,39 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
                 //oggLine=intReplace(oggLine,"%perc",perc);
                 //oggLine=replace(oggLine,"%plTitle",title);
                 oggLine=replace(oggLine,"%file",tTitle);
-                xchat_command(ph, oggLine);
-                return XCHAT_EAT_ALL;
+                hexchat_command(ph, oggLine);
+                return HEXCHAT_EAT_ALL;
              }
           }
        }
        line=randomLine(titleTheme);
        line=replace(line,"%title", tTitle);
-       xchat_command(ph,line); 
-       return XCHAT_EAT_ALL;
+       hexchat_command(ph,line); 
+       return HEXCHAT_EAT_ALL;
 }
 
-int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg){
+int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg){
 	ph = plugin_handle;
 	*plugin_name = "mpcInfo";
 	*plugin_desc = "Information-Script for Media Player Classic"; 
 	*plugin_version=VERSION;
 
-	xchat_hook_command(ph, "mpc", XCHAT_PRI_NORM, mpc_tell,"no help text", 0);
-	xchat_hook_command(ph, "mpc_themes", XCHAT_PRI_NORM, print_themes,"no help text", 0);
-	xchat_hook_command(ph, "mpc_reloadthemes", XCHAT_PRI_NORM, mpc_themeReload,"no help text", 0);
-	xchat_command (ph, "MENU -ietc\\music.png ADD \"Window/Display Current Song (MPC)\" \"MPC\"");
+	hexchat_hook_command(ph, "mpc", HEXCHAT_PRI_NORM, mpc_tell,"no help text", 0);
+	hexchat_hook_command(ph, "mpc_themes", HEXCHAT_PRI_NORM, print_themes,"no help text", 0);
+	hexchat_hook_command(ph, "mpc_reloadthemes", HEXCHAT_PRI_NORM, mpc_themeReload,"no help text", 0);
+	hexchat_command (ph, "MENU -ishare\\music.png ADD \"Window/Display Current Song (MPC)\" \"MPC\"");
 
 	themeInit();
 	loadThemes();
-	xchat_printf(ph, "%s %s plugin loaded\n",*plugin_name, VERSION);
+	hexchat_printf(ph, "%s plugin loaded\n", *plugin_name);
 
 	return 1;
 }
 
 int
-xchat_plugin_deinit (void)
+hexchat_plugin_deinit (void)
 {
-	xchat_command (ph, "MENU DEL \"Window/Display Current Song (MPC)\"");
-	xchat_print (ph, "mpcInfo plugin unloaded\n");
+	hexchat_command (ph, "MENU DEL \"Window/Display Current Song (MPC)\"");
+	hexchat_print (ph, "mpcInfo plugin unloaded\n");
 	return 1;
 }

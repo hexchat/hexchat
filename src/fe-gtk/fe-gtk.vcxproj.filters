@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="about.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ascii.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -54,9 +51,6 @@
     <ClInclude Include="menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mmx_cmod.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="notifygui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,22 +69,13 @@
     <ClInclude Include="rawlog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="search.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sexy-iso-codes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sexy-marshal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sexy-spell-entry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="textgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="typedef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="urlgrab.h">
@@ -110,9 +95,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="about.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ascii.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -173,9 +155,6 @@
     <ClCompile Include="rawlog.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="search.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="servlistgui.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -183,9 +162,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sexy-iso-codes.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sexy-marshal.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sexy-spell-entry.c">
@@ -203,6 +179,9 @@
     <ClCompile Include="xtext.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="resources.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="hexchat.exe.manifest">
@@ -215,8 +194,12 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\hexchat.ico">
+    <None Include="..\..\data\icons\hexchat.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="hexchat.rc.tt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\data\hexchat.gresource.xml" />
   </ItemGroup>
 </Project>

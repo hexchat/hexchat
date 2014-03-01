@@ -1,16 +1,35 @@
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
 /* abstract channel view: tabs or tree or anything you like */
 
 #include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-
-#include "chanview.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
+#include "fe-gtk.h"
+#include "maingui.h"
 #include "gtkutil.h"
-
+#include "chanview.h"
 
 /* treeStore columns */
-
 #define COL_NAME 0		/* (char *) */
 #define COL_CHAN 1		/* (chan *) */
 #define COL_ATTR 2		/* (PangoAttrList *) */
@@ -583,9 +602,9 @@ chan_remove (chan *ch, gboolean force)
 {
 	chan *new_ch;
 	int i, num;
-	extern int xchat_is_quitting;
+	extern int hexchat_is_quitting;
 
-	if (xchat_is_quitting)	/* avoid lots of looping on exit */
+	if (hexchat_is_quitting)	/* avoid lots of looping on exit */
 		return TRUE;
 
 	/* is this ch allowed to be closed while still having children? */

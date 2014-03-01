@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -22,18 +22,8 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkscrolledwindow.h>
-
-#include <gtk/gtkliststore.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkcellrenderertext.h>
-
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
 #include "../common/url.h"
@@ -59,13 +49,22 @@ url_treeview_url_clicked_cb (GtkWidget *view, GdkEventButton *event,
 {
 	GtkTreeIter iter;
 	gchar *url;
+	GtkTreeSelection *sel;
+	GtkTreePath *path;
+	GtkTreeView *tree = GTK_TREE_VIEW (view);
 
-	if (!event ||
-	    !gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
-	                                    URL_COLUMN, &url, -1))
-	{
+	if (!event || !gtk_tree_view_get_path_at_pos (tree, event->x, event->y, &path, 0, 0, 0))
 		return FALSE;
-	}
+
+	/* select what they right-clicked on */
+	sel = gtk_tree_view_get_selection (tree); 
+	gtk_tree_selection_unselect_all (sel);
+	gtk_tree_selection_select_path (sel, path);
+	gtk_tree_path_free (path); 
+
+	if (!gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
+	                                    URL_COLUMN, &url, -1))
+		return FALSE;
 	
 	switch (event->button)
 	{
@@ -147,7 +146,7 @@ static void
 url_button_save (void)
 {
 	gtkutil_file_req (_("Select an output filename"),
-							url_save_callback, NULL, get_xdir_utf8 (), NULL, FRF_WRITE|FRF_FILTERISINITIAL);
+							url_save_callback, NULL, NULL, NULL, FRF_WRITE);
 }
 
 void
@@ -167,10 +166,10 @@ fe_url_add (const char *urltext)
 		                    -1);
 
 		/* remove any overflow */
-		if (prefs.url_grabber_limit > 0)
+		if (prefs.hex_url_grabber_limit > 0)
 		{
 			valid = gtk_tree_model_iter_nth_child (
-				GTK_TREE_MODEL (store), &iter, NULL, prefs.url_grabber_limit);
+				GTK_TREE_MODEL (store), &iter, NULL, prefs.hex_url_grabber_limit);
 			while (valid)
 				valid = gtk_list_store_remove (store, &iter);
 		}
@@ -198,6 +197,7 @@ url_opengui ()
 	urlgrabberwindow =
 		mg_create_generic_tab ("UrlGrabber", _(DISPLAY_NAME": URL Grabber"), FALSE,
 							 TRUE, url_closegui, NULL, 400, 256, &vbox, 0);
+	gtkutil_destroy_on_esc (urlgrabberwindow);
 	view = url_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (urlgrabberwindow), "model",
 	                   gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
@@ -217,7 +217,7 @@ url_opengui ()
 
 	gtk_widget_show (urlgrabberwindow);
 
-	if (prefs.url_grabber)
+	if (prefs.hex_url_grabber)
 		tree_foreach (url_tree, (tree_traverse_func *)populate_cb, NULL);
 	else
 	{

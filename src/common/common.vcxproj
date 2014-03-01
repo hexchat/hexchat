@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Configuration">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -11,7 +14,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\config.h" />
     <ClInclude Include="cfgfiles.h" />
     <ClInclude Include="chanopt.h" />
     <ClInclude Include="ctcp.h" />
@@ -22,6 +24,7 @@
     <ClInclude Include="ignore.h" />
     <ClInclude Include="inbound.h" />
     <ClInclude Include="inet.h" />
+    <ClInclude Include="marshal.h" />
     <ClInclude Include="modes.h" />
     <ClInclude Include="msproxy.h" />
     <ClInclude Include="network.h" />
@@ -33,18 +36,17 @@
     <ClInclude Include="server.h" />
     <ClInclude Include="servlist.h" />
     <ClInclude Include="ssl.h" />
-    <ClInclude Include="strlutil.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="textenums.h" />
     <ClInclude Include="textevents.h" />
-    <ClInclude Include="thread.h" />
     <ClInclude Include="tree.h" />
+    <ClInclude Include="typedef.h" />
     <ClInclude Include="url.h" />
     <ClInclude Include="userlist.h" />
     <ClInclude Include="util.h" />
-    <ClInclude Include="xchat-plugin.h" />
-    <ClInclude Include="xchat.h" />
-    <ClInclude Include="xchatc.h" />
+    <ClInclude Include="hexchat-plugin.h" />
+    <ClInclude Include="hexchat.h" />
+    <ClInclude Include="hexchatc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cfgfiles.c" />
@@ -55,6 +57,7 @@
     <ClCompile Include="identd.c" />
     <ClCompile Include="ignore.c" />
     <ClCompile Include="inbound.c" />
+    <ClCompile Include="marshal.c" />
     <ClCompile Include="modes.c" />
     <ClCompile Include="msproxy.c" />
     <ClCompile Include="network.c" />
@@ -66,14 +69,16 @@
     <ClCompile Include="server.c" />
     <ClCompile Include="servlist.c" />
     <ClCompile Include="ssl.c" />
-    <ClCompile Include="strlutil.c" />
     <ClCompile Include="text.c" />
-    <ClCompile Include="thread.c" />
     <ClCompile Include="tree.c" />
     <ClCompile Include="url.c" />
     <ClCompile Include="userlist.c" />
     <ClCompile Include="util.c" />
-    <ClCompile Include="xchat.c" />
+    <ClCompile Include="hexchat.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\config-win32.h.tt" />
+    <ClInclude Include="..\..\config-win32.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{87554B59-006C-4D94-9714-897B27067BA3}</ProjectGuid>
@@ -115,14 +120,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level1</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(DepsRoot)\include;$(Glib);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -134,15 +137,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level1</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_LIB;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(DepsRoot)\include;$(Glib);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,4 +156,18 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ItemDefinitionGroup>
+    <PreBuildEvent>
+      <Command><![CDATA[
+SET SOLUTIONDIR=$(SolutionDir)..\
+powershell "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\config-win32.h.tt" "$(SolutionDir)..\config-win32.h"
+powershell "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\win32\version.txt.tt" "$(SolutionDir)..\win32\version.txt.tmp"
+REM version.txt must be in UTF-8 without trailing newline
+powershell "[string] $content = Get-Content '$(SolutionDir)..\win32\version.txt.tmp' -Encoding UTF8; [System.IO.File]::WriteAllText('$(SolutionDir)..\win32\version.txt', $content); Remove-Item '$(SolutionDir)..\win32\version.txt.tmp';"
+"$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --header "$(ProjectDir)marshalers.list" > "$(ProjectDir)marshal.h"
+"$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --body "$(ProjectDir)marshalers.list" > "$(ProjectDir)marshal.c"
+
+      ]]></Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
 </Project>

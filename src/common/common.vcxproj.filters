@@ -83,9 +83,6 @@
     <ClInclude Include="textevents.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -98,19 +95,22 @@
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="xchat.h">
+    <ClInclude Include="hexchat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="xchatc.h">
+    <ClInclude Include="hexchatc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="xchat-plugin.h">
+    <ClInclude Include="hexchat-plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\config.h">
+    <ClInclude Include="..\..\config-win32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="strlutil.h">
+    <ClInclude Include="typedef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="marshal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -175,9 +175,6 @@
     <ClCompile Include="text.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="thread.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tree.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -190,11 +187,14 @@
     <ClCompile Include="util.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="xchat.c">
+    <ClCompile Include="hexchat.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="strlutil.c">
+    <ClCompile Include="marshal.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\config-win32.h.tt" />
   </ItemGroup>
 </Project>

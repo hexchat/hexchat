@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * MS Proxy (ISA server) support is (c) 2006 Pavel Fedin <sonic_amiga@rambler.ru>
  * based on Dante source code
@@ -42,12 +42,12 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "fe.h"
 #include "cfgfiles.h"
 #include "network.h"
 #include "notify.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 #include "inbound.h"
 #include "outbound.h"
 #include "text.h"
@@ -76,7 +76,7 @@
 #endif
 
 #ifdef USE_OPENSSL
-extern SSL_CTX *ctx;				  /* xchat.c */
+extern SSL_CTX *ctx;				  /* hexchat.c */
 /* local variables */
 static struct session *g_sess = NULL;
 #endif
@@ -157,6 +157,8 @@ server_send_real (server *serv, char *buf, int len)
 {
 	fe_add_rawlog (serv, buf, len, TRUE);
 
+	url_check_line (buf, len);
+
 	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, serv->using_irc,
 								 buf, len);
 }
@@ -230,7 +232,7 @@ tcp_send_len (server *serv, char *buf, int len)
 	char *dbuf;
 	int noqueue = !serv->outbound_queue;
 
-	if (!prefs.throttle)
+	if (!prefs.hex_net_throttle)
 		return server_send_real (serv, buf, len);
 
 	dbuf = malloc (len + 2);	/* first byte is the priority */
@@ -310,13 +312,6 @@ static void
 server_inline (server *serv, char *line, int len)
 {
 	char *utf_line_allocated = NULL;
-
-#ifdef WIN32
-#if 0
-	char *cleaned_line;
-	int cleaned_len;
-#endif
-#endif
 
 	/* Checks whether we're set to use UTF-8 charset */
 	if (serv->using_irc ||				/* 1. using CP1252/UTF-8 Hybrid */
@@ -404,27 +399,10 @@ server_inline (server *serv, char *line, int len)
 		}
 	}
 
-#ifdef WIN32
-#if 0
-	cleaned_line = text_replace_non_bmp (line, len, &cleaned_len);
-	if (cleaned_line != NULL ) {
-		line = cleaned_line;
-		len = cleaned_len;
-	}
-#endif
-	text_replace_non_bmp2 (line);
-#endif
-
 	fe_add_rawlog (serv, line, len, FALSE);
 
 	/* let proto-irc.c handle it */
 	serv->p_inline (serv, line, len);
-
-#ifdef WIN32
-#if 0
-	g_free (cleaned_line);
-#endif
-#endif
 
 	if (utf_line_allocated != NULL) /* only if a special copy was allocated */
 		g_free (utf_line_allocated);
@@ -463,12 +441,12 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 				server_disconnect (serv->server_session, FALSE, error);
 				if (!servlist_cycle (serv))
 				{
-					if (prefs.autoreconnect)
+					if (prefs.hex_net_auto_reconnect)
 						auto_reconnect (serv, FALSE, error);
 				}
 			} else
 			{
-				if (prefs.autoreconnect)
+				if (prefs.hex_net_auto_reconnect)
 					auto_reconnect (serv, FALSE, error);
 				else
 					server_disconnect (serv->server_session, FALSE, error);
@@ -511,6 +489,7 @@ server_connected (server * serv)
 {
 	prefs.wait_on_exit = TRUE;
 	serv->ping_recv = time (0);
+	serv->lag_sent = 0;
 	serv->connected = TRUE;
 	set_nonblocking (serv->sok);
 	serv->iotag = fe_input_add (serv->sok, FIA_READ|FIA_EX, server_read, serv);
@@ -524,14 +503,14 @@ server_connected (server * serv)
 								(!(((ircnet *)serv->network)->flags & FLAG_USE_GLOBAL) &&
 								 (((ircnet *)serv->network)->user)) ?
 								(((ircnet *)serv->network)->user) :
-								prefs.username,
+								prefs.hex_irc_user_name,
 								(!(((ircnet *)serv->network)->flags & FLAG_USE_GLOBAL) &&
 								 (((ircnet *)serv->network)->real)) ?
 								(((ircnet *)serv->network)->real) :
-								prefs.realname);
+								prefs.hex_irc_real_name);
 		} else
 		{
-			serv->p_login (serv, prefs.username, prefs.realname);
+			serv->p_login (serv, prefs.hex_irc_user_name, prefs.hex_irc_real_name);
 		}
 	} else
 	{
@@ -666,7 +645,7 @@ ssl_do_connect (server * serv)
 
 			server_cleanup (serv);
 
-			if (prefs.autoreconnectonfail)
+			if (prefs.hex_net_auto_reconnectonfail)
 				auto_reconnect (serv, FALSE, -1);
 
 			return (0);				  /* remove it (0) */
@@ -789,7 +768,7 @@ ssl_do_connect (server * serv)
 							 NULL, NULL, 0);
 			server_cleanup (serv); /* ->connecting = FALSE */
 
-			if (prefs.autoreconnectonfail)
+			if (prefs.hex_net_auto_reconnectonfail)
 				auto_reconnect (serv, FALSE, -1);
 
 			return (0);				  /* remove it (0) */
@@ -839,7 +818,7 @@ auto_reconnect (server *serv, int send_quit, int err)
 	if (serv->connected)
 		server_disconnect (serv->server_session, send_quit, err);
 
-	del = prefs.recon_delay * 1000;
+	del = prefs.hex_net_reconnect_delay * 1000;
 	if (del < 1000)
 		del = 500;				  /* so it doesn't block the gui */
 
@@ -940,7 +919,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 #endif
 		EMIT_SIGNAL (XP_TE_UKNHOST, sess, NULL, NULL, NULL, NULL, 0);
 		if (!servlist_cycle (serv))
-			if (prefs.autoreconnectonfail)
+			if (prefs.hex_net_auto_reconnectonfail)
 				auto_reconnect (serv, FALSE, -1);
 		break;
 	case '2':						  /* connection failed */
@@ -958,7 +937,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		EMIT_SIGNAL (XP_TE_CONNFAIL, sess, errorstring (atoi (tbuf)), NULL,
 						 NULL, NULL, 0);
 		if (!servlist_cycle (serv))
-			if (prefs.autoreconnectonfail)
+			if (prefs.hex_net_auto_reconnectonfail)
 				auto_reconnect (serv, FALSE, -1);
 		break;
 	case '3':						  /* gethostbyname finished */
@@ -967,7 +946,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, outbuf, sizeof outbuf);
 		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
 #ifdef WIN32
-		if (prefs.identd)
+		if (prefs.hex_identd)
 		{
 			if (serv->network && ((ircnet *)serv->network)->user)
 			{
@@ -975,7 +954,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 			}
 			else
 			{
-				identd_start (prefs.username);
+				identd_start (prefs.hex_irc_user_name);
 			}
 		}
 #else
@@ -984,7 +963,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		if (access (outbuf, X_OK) == 0)
 		{
 			snprintf (outbuf, sizeof (outbuf), "exec -d %s/auth/xchat_auth %s",
-						 g_get_home_dir (), prefs.username);
+						 g_get_home_dir (), prefs.hex_irc_user_name);
 			handle_command (serv->server_session, outbuf, FALSE);
 		}
 #endif
@@ -1028,10 +1007,10 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, tbuf, sizeof tbuf);
 		prefs.local_ip = inet_addr (tbuf);
 		break;
-	case '7':						  /* gethostbyname (prefs.hostname) failed */
+	case '7':						  /* gethostbyname (prefs.hex_net_bind_host) failed */
 		sprintf (outbuf,
 					_("Cannot resolve hostname %s\nCheck your IP Settings!\n"),
-					prefs.hostname);
+					prefs.hex_net_bind_host);
 		PrintText (sess, outbuf);
 		break;
 	case '8':
@@ -1053,7 +1032,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 static int
 server_cleanup (server * serv)
 {
-	fe_set_lag (serv, 0.0);
+	fe_set_lag (serv, 0);
 
 	if (serv->iotag)
 	{
@@ -1070,7 +1049,8 @@ server_cleanup (server * serv)
 #ifdef USE_OPENSSL
 	if (serv->ssl)
 	{
-		_SSL_close (serv->ssl);
+		SSL_shutdown (serv->ssl);
+		SSL_free (serv->ssl);
 		serv->ssl = NULL;
 	}
 #endif
@@ -1198,7 +1178,7 @@ traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 	sc.type = 1;
 	sc.port = htons (port);
 	sc.address = inet_addr (serverAddr);
-	strncpy (sc.username, prefs.username, 9);
+	strncpy (sc.username, prefs.hex_irc_user_name, 9);
 
 	send (sok, (char *) &sc, 8 + strlen (sc.username) + 1, 0);
 	buf[1] = 0;
@@ -1225,7 +1205,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	unsigned char *sc2;
 	unsigned int packetlen, addrlen;
 	unsigned char buf[260];
-	int auth = prefs.proxy_auth && prefs.proxy_user[0] && prefs.proxy_pass[0];
+	int auth = prefs.hex_net_proxy_auth && prefs.hex_net_proxy_user[0] && prefs.hex_net_proxy_pass[0];
 
 	sc1.version = 5;
 	sc1.nmethods = 1;
@@ -1261,13 +1241,13 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 		memset (buf, 0, sizeof(buf));
 
 		/* form the UPA request */
-		len_u = strlen (prefs.proxy_user);
-		len_p = strlen (prefs.proxy_pass);
+		len_u = strlen (prefs.hex_net_proxy_user);
+		len_p = strlen (prefs.hex_net_proxy_pass);
 		buf[0] = 1;
 		buf[1] = len_u;
-		memcpy (buf + 2, prefs.proxy_user, len_u);
+		memcpy (buf + 2, prefs.hex_net_proxy_user, len_u);
 		buf[2 + len_u] = len_p;
-		memcpy (buf + 3 + len_u, prefs.proxy_pass, len_p);
+		memcpy (buf + 3 + len_u, prefs.hex_net_proxy_pass, len_p);
 
 		send (sok, buf, 3 + len_u + len_p, 0);
 		if ( recv (sok, buf, 2, 0) != 2 )
@@ -1379,15 +1359,21 @@ base64_encode (char *to, char *from, unsigned int len)
 	}
 	if (len)
 	{
-		char three[3]={0,0,0};
-		int i=0;
-		for (i=0;i<len;i++)
+		char three[3] = {0,0,0};
+		unsigned int i;
+		for (i = 0; i < len; i++)
+		{
 			three[i] = *from++;
+		}
 		three_to_four (three, to);
 		if (len == 1)
+		{
 			to[2] = to[3] = '=';
+		}
 		else if (len == 2)
+		{
 			to[3] = '=';
+		}
 		to += 4;
 	};
 	to[0] = 0;
@@ -1426,10 +1412,10 @@ traverse_http (int print_fd, int sok, char *serverAddr, int port)
 
 	n = snprintf (buf, sizeof (buf), "CONNECT %s:%d HTTP/1.0\r\n",
 					  serverAddr, port);
-	if (prefs.proxy_auth)
+	if (prefs.hex_net_proxy_auth)
 	{
 		n2 = snprintf (auth_data2, sizeof (auth_data2), "%s:%s",
-							prefs.proxy_user, prefs.proxy_pass);
+							prefs.hex_net_proxy_user, prefs.hex_net_proxy_pass);
 		base64_encode (auth_data, auth_data2, n2);
 		n += snprintf (buf+n, sizeof (buf)-n, "Proxy-Authorization: Basic %s\r\n", auth_data);
 	}
@@ -1500,10 +1486,10 @@ server_child (server * serv)
 	ns_server = net_store_new ();
 
 	/* is a hostname set? - bind to it */
-	if (prefs.hostname[0])
+	if (prefs.hex_net_bind_host[0])
 	{
 		ns_local = net_store_new ();
-		local_ip = net_resolve (ns_local, prefs.hostname, 0, &real_hostname);
+		local_ip = net_resolve (ns_local, prefs.hex_net_bind_host, 0, &real_hostname);
 		if (local_ip != NULL)
 		{
 			snprintf (buf, sizeof (buf), "5\n%s\n", local_ip);
@@ -1522,7 +1508,7 @@ server_child (server * serv)
 		if (FALSE)
 			;
 #ifdef USE_LIBPROXY
-		else if (prefs.proxy_type == 5)
+		else if (prefs.hex_net_proxy_type == 5)
 		{
 			char **proxy_list;
 			char *url, *proxy;
@@ -1556,13 +1542,13 @@ server_child (server * serv)
 			g_free (url);
 		}
 #endif
-		else if (prefs.proxy_host[0] &&
-			   prefs.proxy_type > 0 &&
-			   prefs.proxy_use != 2) /* proxy is NOT dcc-only */
+		else if (prefs.hex_net_proxy_host[0] &&
+			   prefs.hex_net_proxy_type > 0 &&
+			   prefs.hex_net_proxy_use != 2) /* proxy is NOT dcc-only */
 		{
-			proxy_type = prefs.proxy_type;
-			proxy_host = strdup (prefs.proxy_host);
-			proxy_port = prefs.proxy_port;
+			proxy_type = prefs.hex_net_proxy_type;
+			proxy_host = strdup (prefs.hex_net_proxy_host);
+			proxy_port = prefs.hex_net_proxy_port;
 		}
 	}
 
@@ -1670,6 +1656,7 @@ xit:
 #endif
 
 	return 0;
+	/* cppcheck-suppress memleak */
 }
 
 static void
@@ -1718,21 +1705,28 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 #ifdef USE_OPENSSL
 	if (serv->use_ssl)
 	{
-		char cert_file[256];
+		char *cert_file;
+		serv->have_cert = FALSE;
 
 		/* first try network specific cert/key */
-		snprintf (cert_file, sizeof (cert_file), "%s/%s.pem",
-					 get_xdir_fs (), server_get_network (serv, TRUE));
+		cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "certs" G_DIR_SEPARATOR_S "%s.pem",
+					 get_xdir (), server_get_network (serv, TRUE));
 		if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
-			SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
+		{
+			if (SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
+				serv->have_cert = TRUE;
+		}
 		else
 		{
-			/* if that doesn't exist, try ~/.xchat2/client.pem */
-			snprintf (cert_file, sizeof (cert_file), "%s/%s.pem",
-						 get_xdir_fs (), "client");
+			/* if that doesn't exist, try <config>/certs/client.pem */
+			cert_file = g_build_filename (get_xdir (), "certs", "client.pem", NULL);
 			if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
-				SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
+			{
+				if (SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
+					serv->have_cert = TRUE;
+			}
 		}
+		g_free (cert_file);
 	}
 #endif
 
@@ -1777,7 +1771,11 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 										serv, 0, (DWORD *)&pid));
 #else
 #ifdef LOOKUPD
-	rand();	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different seed for each child. This method giver a bigger variation in seed values than calling srand(time(0)) in the child itself. */
+	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different
+	 * seed for each child. This method gives a bigger variation in seed values
+	 * than calling srand(time(0)) in the child itself.
+	 */
+	rand();
 #endif
 	switch (pid = fork ())
 	{
@@ -1858,7 +1856,7 @@ server_new (void)
 
 	serv->id = id++;
 	serv->sok = -1;
-	strcpy (serv->nick, prefs.nick1);
+	strcpy (serv->nick, prefs.hex_irc_nick1);
 	server_set_defaults (serv);
 
 	serv_list = g_slist_prepend (serv_list, serv);
@@ -1892,25 +1890,35 @@ server_set_defaults (server *serv)
 	serv->nick_modes = strdup ("ohv");
 
 	serv->nickcount = 1;
-	serv->nickservtype = 1;
 	serv->end_of_motd = FALSE;
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;
+	serv->supports_monitor = FALSE;
 	serv->bad_prefix = FALSE;
 	serv->use_who = TRUE;
 	serv->have_namesx = FALSE;
+	serv->have_awaynotify = FALSE;
 	serv->have_uhnames = FALSE;
 	serv->have_whox = FALSE;
-	serv->have_capab = FALSE;
 	serv->have_idmsg = FALSE;
+	serv->have_accnotify = FALSE;
+	serv->have_extjoin = FALSE;
+	serv->have_server_time = FALSE;
+	serv->have_sasl = FALSE;
 	serv->have_except = FALSE;
+	serv->have_invite = FALSE;
 }
 
 char *
 server_get_network (server *serv, gboolean fallback)
 {
+	/* check the network list */
 	if (serv->network)
 		return ((ircnet *)serv->network)->name;
+
+	/* check the network name given in 005 NETWORK=... */
+	if (serv->server_session && *serv->server_session->channel)
+		return serv->server_session->channel;
 
 	if (fallback)
 		return serv->servername;
@@ -2037,8 +2045,8 @@ server_free (server *serv)
 		free (serv->last_away_reason);
 	if (serv->encoding)
 		free (serv->encoding);
-	if (serv->autojoin)
-		free (serv->autojoin);
+	if (serv->favlist)
+		g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free);
 
 	fe_server_callback (serv);
 

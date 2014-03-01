@@ -14,19 +14,26 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
+
+#ifdef __APPLE__
+#define __AVAILABILITYMACROS__
+#define DEPRECATED_IN_MAC_OS_X_VERSION_10_7_AND_LATER
+#endif
 
 #include "inet.h"				  /* make it first to avoid macro redefinitions */
 #include <openssl/ssl.h>		  /* SSL_() */
 #include <openssl/err.h>		  /* ERR_() */
 #ifdef WIN32
 #include <openssl/rand.h>		  /* RAND_seed() */
+#include "../../config-win32.h"	  /* HAVE_SNPRINTF */
+#else
+#include "../../config.h"
 #endif
 #include <time.h>				  /* asctime() */
 #include <string.h>				  /* strncpy() */
 #include "ssl.h"				  /* struct cert_info */
-#include "../../config.h"		  /* HAVE_SNPRINTF */
 
 #ifndef HAVE_SNPRINTF
 #include <glib.h>
@@ -75,7 +82,7 @@ _SSL_context_init (void (*info_cb_func), int server)
 
 	SSLeay_add_ssl_algorithms ();
 	SSL_load_error_strings ();
-	ctx = SSL_CTX_new (server ? SSLv3_server_method() : SSLv3_client_method ());
+	ctx = SSL_CTX_new (server ? SSLv23_server_method() : SSLv23_client_method ());
 
 	SSL_CTX_set_session_cache_mode (ctx, SSL_SESS_CACHE_BOTH);
 	SSL_CTX_set_timeout (ctx, 300);
@@ -204,7 +211,7 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 struct chiper_info *
 _SSL_get_cipher_info (SSL * ssl)
 {
-	SSL_CIPHER *c;
+	const SSL_CIPHER *c;
 
 
 	c = SSL_get_current_cipher (ssl);
@@ -286,7 +293,7 @@ _SSL_socket (SSL_CTX *ctx, int sd)
 		__SSL_critical_error ("SSL_new");
 
 	SSL_set_fd (ssl, sd);
-	if (ctx->method == SSLv3_client_method())
+	if (ctx->method == SSLv23_client_method())
 		SSL_set_connect_state (ssl);
 	else
 	        SSL_set_accept_state(ssl);

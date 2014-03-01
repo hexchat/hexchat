@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 /* ipv4 and ipv6 networking functions with a common interface */
@@ -23,11 +23,12 @@
 #include <stdio.h>
 #include <glib.h>
 
-#ifndef WIN32
+#ifdef WIN32
+#include "../../config-win32.h"			/* grab USE_IPV6 and LOOKUPD defines */
+#else
 #include <unistd.h>
+#include "../../config.h"
 #endif
-
-#include "../../config.h"				  /* grab USE_IPV6 and LOOKUPD defines */
 
 #define WANTSOCKET
 #define WANTARPA
@@ -204,7 +205,7 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 
 	memset (&hints, 0, sizeof (struct addrinfo));
 	hints.ai_family = PF_UNSPEC; /* support ipv6 and ipv4 */
-	hints.ai_flags = AI_CANONNAME;
+	hints.ai_flags = AI_CANONNAME | AI_ADDRCONFIG;
 	hints.ai_socktype = SOCK_STREAM;
 
 	if (port == 0)

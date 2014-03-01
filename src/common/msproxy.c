@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * MS Proxy (ISA server) support is (c) 2006 Pavel Fedin <sonic_amiga@rambler.ru>
  * based on Dante source code
@@ -36,9 +36,9 @@
 #define WANTARPA
 #include "inet.h"
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "network.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 #include "server.h"
 #include "msproxy.h"
 
@@ -72,7 +72,7 @@ send_msprequest(s, state, request, end)
 
 	if ((w = send(s, request, l, 0)) != l) {
 #ifdef DEBUG_MSPROXY
-		printf ("send_msprequest(): send() failed (%d bytes sent instead of %d\n", w, l);
+		printf ("send_msprequest(): send() failed (%ld bytes sent instead of %Iu\n", w, l);
 		perror ("Error is");
 #endif
 		return -1;
@@ -93,7 +93,7 @@ recv_mspresponse(s, state, response)
 	do {
 		if ((r = recv (s, response, sizeof (*response), 0)) < MSPROXY_MINLENGTH) {
 #ifdef DEBUG_MSPROXY
-			printf ("recv_mspresponse(): expected to read atleast %d, read %d\n", MSPROXY_MINLENGTH, r);
+			printf ("recv_mspresponse(): expected to read atleast %d, read %ld\n", MSPROXY_MINLENGTH, r);
 #endif
 			return -1;
 		}
@@ -124,7 +124,7 @@ traverse_msproxy (int sok, char *serverAddr, int port, struct msproxy_state_t *s
 	guint32 destaddr;
 	guint32 flags;
 
-	if (!prefs.proxy_auth || !prefs.proxy_user[0] || !prefs.proxy_pass[0] )
+	if (!prefs.hex_net_proxy_auth || !prefs.hex_net_proxy_user[0] || !prefs.hex_net_proxy_pass[0] )
 		return 1;
 
 	/* MS proxy protocol implementation currently doesn't support IPv6 */
@@ -158,8 +158,8 @@ traverse_msproxy (int sok, char *serverAddr, int port, struct msproxy_state_t *s
 	req.packet.hello.magic45	= htons(0x4400);
 	req.packet.hello.magic50	= htons(0x3900);
 	data = req.packet.hello.data;
-	strcpy (data, prefs.proxy_user);		/* Append a username				*/
-	data += strlen (prefs.proxy_user)+2;		/* +2 automatically creates second empty string	*/
+	strcpy (data, prefs.hex_net_proxy_user);		/* Append a username				*/
+	data += strlen (prefs.hex_net_proxy_user)+2;		/* +2 automatically creates second empty string	*/
 	strcpy (data, MSPROXY_EXECUTABLE);		/* Append an application name			*/
 	data += strlen (MSPROXY_EXECUTABLE)+1;
 	strcpy (data, hostname);				/* Append a hostname				*/
@@ -290,13 +290,13 @@ traverse_msproxy (int sok, char *serverAddr, int port, struct msproxy_state_t *s
 		req.packet.auth2.ntlm_resp.len = 24;				/* Fill in NTLM response security buffer	*/
 		req.packet.auth2.ntlm_resp.alloc = 24;
 		req.packet.auth2.ntlm_resp.offset = data - req.packet.auth2.NTLMSSP;
-		ntlm_smb_nt_encrypt(prefs.proxy_pass, challenge, data);		/* Append an NTLM response			*/
+		ntlm_smb_nt_encrypt(prefs.hex_net_proxy_pass, challenge, data);		/* Append an NTLM response			*/
 		data += 24;	
 	} else {
 		req.packet.auth2.lm_resp.len	= 24;				/* Fill in LM response security buffer		*/
 		req.packet.auth2.lm_resp.alloc	= 24;
 		req.packet.auth2.lm_resp.offset	= data - req.packet.auth2.NTLMSSP;
-		ntlm_smb_encrypt(prefs.proxy_pass, challenge, data);		/* Append an LM response			*/
+		ntlm_smb_encrypt(prefs.hex_net_proxy_pass, challenge, data);		/* Append an LM response			*/
 		data += 24;
 		req.packet.auth2.ntlm_resp.len = 0;				/* NTLM response is empty			*/
 		req.packet.auth2.ntlm_resp.alloc = 0;
@@ -307,10 +307,10 @@ traverse_msproxy (int sok, char *serverAddr, int port, struct msproxy_state_t *s
 	req.packet.auth2.ntdomain_buf.offset = data - req.packet.auth2.NTLMSSP;
 	strcpy(data, ntdomain);
 	data += req.packet.auth2.ntdomain_buf.len;
-	req.packet.auth2.username_buf.len = strlen(prefs.proxy_user);		/* Username					*/
+	req.packet.auth2.username_buf.len = strlen(prefs.hex_net_proxy_user);		/* Username					*/
 	req.packet.auth2.username_buf.alloc = req.packet.auth2.username_buf.len;
 	req.packet.auth2.username_buf.offset = data - req.packet.auth2.NTLMSSP;
-	strcpy(data, prefs.proxy_user);
+	strcpy(data, prefs.hex_net_proxy_user);
 	data += req.packet.auth2.username_buf.len;
 	req.packet.auth2.clienthost_buf.len = strlen(hostname);			/* Hostname					*/
 	req.packet.auth2.clienthost_buf.alloc = req.packet.auth2.clienthost_buf.len;

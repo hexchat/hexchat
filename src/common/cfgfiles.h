@@ -1,31 +1,56 @@
+/* HexChat
+ * Copyright (C) 1998-2010 Peter Zelezny.
+ * Copyright (C) 2009-2013 Berke Viktor.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ */
+
 /* cfgfiles.h */
 
-#ifndef XCHAT_CFGFILES_H
-#define XCHAT_CFGFILES_H
+#ifndef HEXCHAT_CFGFILES_H
+#define HEXCHAT_CFGFILES_H
 
-#include "xchat.h"
+#include "hexchat.h"
 
-extern char *xdir_fs;
-extern char *xdir_utf;
+#define LANGUAGES_LENGTH 53
 
-char *cfg_get_str (char *cfg, char *var, char *dest, int dest_len);
+extern char *xdir;
+extern const char * const languages[LANGUAGES_LENGTH];
+
+char *cfg_get_str (char *cfg, const char *var, char *dest, int dest_len);
 int cfg_get_bool (char *var);
 int cfg_get_int_with_result (char *cfg, char *var, int *result);
 int cfg_get_int (char *cfg, char *var);
 int cfg_put_int (int fh, int value, char *var);
 int cfg_get_color (char *cfg, char *var, int *r, int *g, int *b);
 int cfg_put_color (int fh, int r, int g, int b, char *var);
-char *get_xdir_fs (void);
-char *get_xdir_utf8 (void);
-void load_config (void);
+char *get_xdir (void);
+int check_config_dir (void);
+void load_default_config (void);
+int make_config_dirs (void);
+int make_dcc_dirs (void);
+int load_config (void);
 int save_config (void);
 void list_free (GSList ** list);
 void list_loadconf (char *file, GSList ** list, char *defaultconf);
 int list_delentry (GSList ** list, char *name);
 void list_addentry (GSList ** list, char *cmd, char *name);
 int cmd_set (session *sess, char *tbuf, char *word[], char *word_eol[]);
-int xchat_open_file (char *file, int flags, int mode, int xof_flags);
-FILE *xchat_fopen_file (const char *file, const char *mode, int xof_flags);
+int hexchat_open_file (char *file, int flags, int mode, int xof_flags);
+FILE *hexchat_fopen_file (const char *file, const char *mode, int xof_flags);
+
 #define XOF_DOMODE 1
 #define XOF_FULLPATH 2
 
@@ -35,10 +60,10 @@ FILE *xchat_fopen_file (const char *file, const char *mode, int xof_flags);
 #define STRUCT_OFFSET_INT(type,field) \
 ( (unsigned int) (((int *) (&(((type *) NULL)->field)))- ((int *) NULL)) )
 
-#define P_OFFSET(field) STRUCT_OFFSET_STR(struct xchatprefs, field),sizeof(prefs.field)
-#define P_OFFSETNL(field) STRUCT_OFFSET_STR(struct xchatprefs, field)
-#define P_OFFINT(field) STRUCT_OFFSET_INT(struct xchatprefs, field),0
-#define P_OFFINTNL(field) STRUCT_OFFSET_INT(struct xchatprefs, field)
+#define P_OFFSET(field) STRUCT_OFFSET_STR(struct hexchatprefs, field),sizeof(prefs.field)
+#define P_OFFSETNL(field) STRUCT_OFFSET_STR(struct hexchatprefs, field)
+#define P_OFFINT(field) STRUCT_OFFSET_INT(struct hexchatprefs, field),0
+#define P_OFFINTNL(field) STRUCT_OFFSET_INT(struct hexchatprefs, field)
 
 struct prefs
 {
@@ -51,5 +76,7 @@ struct prefs
 #define TYPE_STR 0
 #define TYPE_INT 1
 #define TYPE_BOOL 2
+
+#define HEXCHAT_SOUND_DIR "sounds"
 
 #endif

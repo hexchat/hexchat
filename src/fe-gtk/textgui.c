@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -26,18 +26,8 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkliststore.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkvbox.h>
-#include <gtk/gtkvpaned.h>
-#include <gtk/gtkvscrollbar.h>
-
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/outbound.h"
 #include "../common/fe.h"
@@ -53,14 +43,13 @@ extern char *pntevts_text[];
 extern char *pntevts[];
 
 static GtkWidget *pevent_dialog = NULL, *pevent_dialog_twid,
-	*pevent_dialog_entry,
 	*pevent_dialog_list, *pevent_dialog_hlist;
 
 enum
 {
-	COL_EVENT_NAME,
-	COL_EVENT_TEXT,
-	COL_ROW,
+	EVENT_COLUMN,
+	TEXT_COLUMN,
+	ROW_COLUMN,
 	N_COLUMNS
 };
 
@@ -69,7 +58,7 @@ enum
 int
 xtext_get_stamp_str (time_t tim, char **ret)
 {
-	return get_stamp_str (prefs.stamp_format, tim, ret);
+	return get_stamp_str (prefs.hex_stamp_text_format, tim, ret);
 }
 
 static void
@@ -83,7 +72,7 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent, ti
 
 	if (!indent)
 	{
-		if (prefs.timestamp)
+		if (prefs.hex_stamp_text)
 		{
 			int stamp_size;
 			char *stamp;
@@ -91,7 +80,7 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent, ti
 			if (timet == 0)
 				timet = time (0);
 
-			stamp_size = get_stamp_str (prefs.stamp_format, timet, &stamp);
+			stamp_size = get_stamp_str (prefs.hex_stamp_text_format, timet, &stamp);
 			new_text = malloc (len + stamp_size + 1);
 			memcpy (new_text, stamp, stamp_size);
 			g_free (stamp);
@@ -141,7 +130,7 @@ PrintTextRaw (void *xtbuf, unsigned char *text, int indent, time_t stamp)
 			if (!beep_done) /* beeps may be slow, so only do 1 per line */
 			{
 				beep_done = TRUE;
-				if (!prefs.filterbeep)
+				if (!prefs.hex_input_filter_beep)
 					gdk_beep ();
 			}
 		default:
@@ -159,21 +148,23 @@ pevent_dialog_close (GtkWidget *wid, gpointer arg)
 }
 
 static void
-pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
+pevent_edited (GtkCellRendererText *render, gchar *pathstr, gchar *new_text, gpointer data)
 {
+	GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_list));
+	GtkTreePath *path;
+	GtkTreeIter iter;
+	GtkXText *xtext = GTK_XTEXT (pevent_dialog_twid);
 	int len, m;
 	const char *text;
 	char *out;
 	int sig;
-	GtkTreeIter iter;
-	GtkListStore *store;
 
 	if (!gtkutil_treeview_get_selected (GTK_TREE_VIEW (pevent_dialog_list),
-													&iter, COL_ROW, &sig, -1))
+											&iter, ROW_COLUMN, &sig, -1))
 		return;
 
-	text = gtk_entry_get_text (GTK_ENTRY (wid));
-	len = strlen (text);
+	text = new_text;
+	len = strlen (new_text);
 
 	if (pevt_build_string (text, &out, &m) != 0)
 	{
@@ -185,15 +176,17 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 		free (out);
 		out = malloc (4096);
 		snprintf (out, 4096,
-					 _("This signal is only passed %d args, $%d is invalid"),
-					 te[sig].num_args & 0x7f, m);
+					_("This signal is only passed %d args, $%d is invalid"),
+					te[sig].num_args & 0x7f, m);
 		fe_message (out, FE_MSG_WARN);
 		free (out);
 		return;
 	}
 
-	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_list));
-	gtk_list_store_set (store, &iter, COL_EVENT_TEXT, text, -1);
+	path = gtk_tree_path_new_from_string (pathstr);
+	gtk_tree_model_get_iter (model, &iter, path);
+	gtk_list_store_set (GTK_LIST_STORE (model), &iter, TEXT_COLUMN, new_text, -1);
+	gtk_tree_path_free (path);
 
 	if (pntevts_text[sig])
 		free (pntevts_text[sig]);
@@ -210,23 +203,27 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 	out[len + 1] = 0;
 	check_special_chars (out, TRUE);
 
-	PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0, 0);
+	PrintTextRaw (xtext->buffer, out, 0, 0);
 	free (out);
+
+	/* Scroll to bottom */
+	gtk_adjustment_set_value (xtext->adj, gtk_adjustment_get_upper (xtext->adj));
 
 	/* save this when we exit */
 	prefs.save_pevents = 1;
 }
 
 static void
-pevent_dialog_hfill (GtkWidget * list, int e)
+pevent_dialog_hfill (GtkWidget *list, int e)
 {
 	int i = 0;
 	char *text;
 	GtkTreeIter iter;
 	GtkListStore *store;
 
-	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_hlist));
+	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (list)));
 	gtk_list_store_clear (store);
+
 	while (i < (te[e].num_args & 0x7f))
 	{
 		text = _(te[e].help[i]);
@@ -240,41 +237,29 @@ pevent_dialog_hfill (GtkWidget * list, int e)
 }
 
 static void
-pevent_dialog_unselect (void)
+pevent_selection_changed (GtkTreeSelection *sel, gpointer userdata)
 {
-	gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), "");
-	gtk_list_store_clear ((GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_hlist)));
-}
-
-static void
-pevent_dialog_select (GtkTreeSelection *sel, gpointer store)
-{
-	char *text;
-	int sig;
 	GtkTreeIter iter;
+	int sig;
 
 	if (!gtkutil_treeview_get_selected (GTK_TREE_VIEW (pevent_dialog_list),
-													&iter, COL_ROW, &sig, -1))
+										&iter, ROW_COLUMN, &sig, -1))
 	{
-		pevent_dialog_unselect ();
+		gtk_list_store_clear (GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_hlist))));
+		return;
 	}
-	else
-	{
-		gtk_tree_model_get (store, &iter, COL_EVENT_TEXT, &text, -1);
-		gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), text);
-		g_free (text);
-		pevent_dialog_hfill (pevent_dialog_hlist, sig);
-	}
+
+	pevent_dialog_hfill (pevent_dialog_hlist, sig);
 }
 
 static void
-pevent_dialog_fill (GtkWidget * list)
+pevent_dialog_fill (GtkWidget *list)
 {
 	int i;
 	GtkListStore *store;
 	GtkTreeIter iter;
 
-	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (list));
+	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (list)));
 	gtk_list_store_clear (store);
 
 	i = NUM_XP;
@@ -282,9 +267,9 @@ pevent_dialog_fill (GtkWidget * list)
 	{
 		i--;
 		gtk_list_store_insert_with_values (store, &iter, 0,
-													  COL_EVENT_NAME, te[i].name,
-													  COL_EVENT_TEXT, pntevts_text[i],
-													  COL_ROW, i, -1);
+													  EVENT_COLUMN, te[i].name,
+													  TEXT_COLUMN, pntevts_text[i],
+													  ROW_COLUMN, i, -1);
 	}
 	while (i != 0);
 }
@@ -316,7 +301,6 @@ pevent_load_req_cb (void *arg1, char *file)
 		pevent_load (file);
 		pevent_make_pntevts ();
 		pevent_dialog_fill (pevent_dialog_list);
-		pevent_dialog_unselect ();
 		prefs.save_pevents = 1;
 	}
 }
@@ -355,12 +339,109 @@ pevent_test_cb (GtkWidget * wid, GtkWidget * twid)
 	}
 }
 
+static GtkWidget *
+pevent_treeview_new (GtkWidget *box)
+{
+	GtkWidget *scroll;
+	GtkListStore *store;
+	GtkTreeViewColumn *col;
+	GtkTreeSelection *sel;
+	GtkWidget *view;
+	GtkCellRenderer *render;
+
+	scroll = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
+	gtk_widget_set_size_request (GTK_WIDGET (scroll), -1, 250);
+
+	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
+	g_return_val_if_fail (store != NULL, NULL);
+
+	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
+	gtk_tree_view_set_fixed_height_mode (GTK_TREE_VIEW (view), TRUE);
+	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view), TRUE);
+	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
+
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view));
+	g_signal_connect (G_OBJECT (sel), "changed",
+		G_CALLBACK (pevent_selection_changed), NULL);
+
+	render = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (
+			GTK_TREE_VIEW (view), EVENT_COLUMN,
+			_("Event"), render,
+			"text", EVENT_COLUMN,
+			NULL);
+
+	render = gtk_cell_renderer_text_new ();
+	g_object_set (render, "editable", TRUE, NULL);
+	g_signal_connect (G_OBJECT (render), "edited",
+		G_CALLBACK (pevent_edited), NULL);
+	gtk_tree_view_insert_column_with_attributes (
+			GTK_TREE_VIEW (view), TEXT_COLUMN,
+			_("Text"), render,
+			"text", TEXT_COLUMN,
+			NULL);
+
+	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), EVENT_COLUMN);
+	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_resizable (col, TRUE);
+	gtk_tree_view_column_set_min_width (col, 100);
+
+	gtk_container_add (GTK_CONTAINER (scroll), view);
+	gtk_container_add (GTK_CONTAINER (box), scroll);
+
+	return view;
+}
+
+static GtkWidget *
+pevent_hlist_treeview_new (GtkWidget *box)
+{
+	GtkWidget *scroll;
+	GtkListStore *store;
+	GtkTreeViewColumn *col;
+	GtkWidget *view;
+	GtkCellRenderer *render;
+
+	scroll = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
+
+	store = gtk_list_store_new (2, G_TYPE_INT, G_TYPE_STRING);
+	g_return_val_if_fail (store != NULL, NULL);
+
+	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
+	gtk_tree_view_set_fixed_height_mode (GTK_TREE_VIEW (view), TRUE);
+	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view), FALSE);
+	gtk_widget_set_can_focus (view, FALSE);
+
+	render = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (
+			GTK_TREE_VIEW (view), 0,
+			_("$ Number"), render,
+			"text", 0,
+			NULL);
+
+	render = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (
+			GTK_TREE_VIEW (view), 1,
+			_("Description"), render,
+			"text", 1,
+			NULL);
+
+	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), 0);
+	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+
+	gtk_container_add (GTK_CONTAINER (scroll), view);
+	gtk_container_add (GTK_CONTAINER (box), scroll);
+
+	return view;
+}
+
 void
 pevent_dialog_show ()
 {
-	GtkWidget *vbox, *hbox, *tbox, *wid, *bh, *th;
-	GtkListStore *store, *hstore;
-	GtkTreeSelection *sel;
+	GtkWidget *vbox, *hbox, *wid, *pane;
 
 	if (pevent_dialog)
 	{
@@ -373,84 +454,35 @@ pevent_dialog_show ()
 											 TRUE, FALSE, pevent_dialog_close, NULL,
 											 600, 455, &vbox, 0);
 
-	wid = gtk_vpaned_new ();
-	th = gtk_vbox_new (0, 2);
-	bh = gtk_vbox_new (0, 2);
-	gtk_widget_show (th);
-	gtk_widget_show (bh);
-	gtk_paned_pack1 (GTK_PANED (wid), th, 1, 1);
-	gtk_paned_pack2 (GTK_PANED (wid), bh, 0, 1);
-	gtk_box_pack_start (GTK_BOX (vbox), wid, 1, 1, 0);
-	gtk_widget_show (wid);
+	pane = gtk_vpaned_new ();
+	gtk_box_pack_start (GTK_BOX (vbox), pane, TRUE, TRUE, 0);
+	
+	pevent_dialog_list = pevent_treeview_new (pane);
+	pevent_dialog_fill (pevent_dialog_list);
 
-	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING,
-	                            G_TYPE_STRING, G_TYPE_INT);
-	pevent_dialog_list = gtkutil_treeview_new (th, GTK_TREE_MODEL (store), NULL,
-															 COL_EVENT_NAME, _("Event"),
-															 COL_EVENT_TEXT, _("Text"), -1);
-	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (pevent_dialog_list));
-	g_signal_connect (G_OBJECT (sel), "changed",
-							G_CALLBACK (pevent_dialog_select), store);
+	pevent_dialog_hlist = pevent_hlist_treeview_new (pane);
+
+	wid = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (wid), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+	gtk_box_pack_start (GTK_BOX (vbox), wid, FALSE, TRUE, 0);
 
 	pevent_dialog_twid = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_tint (GTK_XTEXT (pevent_dialog_twid), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
-	gtk_xtext_set_background (GTK_XTEXT (pevent_dialog_twid),
-									  channelwin_pix, prefs.transparent);
-
-	pevent_dialog_entry = gtk_entry_new_with_max_length (255);
-	g_signal_connect (G_OBJECT (pevent_dialog_entry), "activate",
-							G_CALLBACK (pevent_dialog_update), pevent_dialog_twid);
-	gtk_box_pack_start (GTK_BOX (bh), pevent_dialog_entry, 0, 0, 0);
-	gtk_widget_show (pevent_dialog_entry);
-
-	tbox = gtk_hbox_new (0, 0);
-	gtk_container_add (GTK_CONTAINER (bh), tbox);
-	gtk_widget_show (tbox);
-
-	gtk_widget_set_usize (pevent_dialog_twid, 150, 20);
-	gtk_container_add (GTK_CONTAINER (tbox), pevent_dialog_twid);
-	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.font_normal);
-
-	wid = gtk_vscrollbar_new (GTK_XTEXT (pevent_dialog_twid)->adj);
-	gtk_box_pack_start (GTK_BOX (tbox), wid, FALSE, FALSE, 0);
-	show_and_unfocus (wid);
-
-	gtk_widget_show (pevent_dialog_twid);
-
-	hstore = gtk_list_store_new (2, G_TYPE_INT, G_TYPE_STRING);
-	pevent_dialog_hlist = gtkutil_treeview_new (bh, GTK_TREE_MODEL (hstore),
-															  NULL,
-															  0, _("$ Number"),
-															  1, _("Description"), -1);
-	gtk_widget_show (pevent_dialog_hlist);
-
-	pevent_dialog_fill (pevent_dialog_list);
-	gtk_widget_show (pevent_dialog_list);
+	gtk_widget_set_sensitive (pevent_dialog_twid, FALSE);
+	gtk_widget_set_size_request (pevent_dialog_twid, -1, 75);
+	gtk_container_add (GTK_CONTAINER (wid), pevent_dialog_twid);
+	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.hex_text_font);
 
 	hbox = gtk_hbutton_box_new ();
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 2);
-	/*wid = gtk_button_new_with_label (_("Save"));
-	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
-							  GTK_SIGNAL_FUNC (pevent_save_cb), NULL);
-	gtk_widget_show (wid);*/
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_SPREAD);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 4);
 	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, NULL, pevent_save_cb,
 						 (void *) 1, _("Save As..."));
 	gtkutil_button (hbox, GTK_STOCK_OPEN, NULL, pevent_load_cb,
-						 (void *) 0, _("Load From..."));
-	wid = gtk_button_new_with_label (_("Test All"));
-	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
-	g_signal_connect (G_OBJECT (wid), "clicked",
-							G_CALLBACK (pevent_test_cb), pevent_dialog_twid);
-	gtk_widget_show (wid);
+						 NULL, _("Load From..."));
+	gtkutil_button (hbox, NULL, NULL, pevent_test_cb,
+						pevent_dialog_twid, _("Test All"));
+	gtkutil_button (hbox, GTK_STOCK_OK, NULL, pevent_ok_cb,
+						NULL, _("OK"));
 
-	wid = gtk_button_new_from_stock (GTK_STOCK_OK);
-	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
-	g_signal_connect (G_OBJECT (wid), "clicked",
-							G_CALLBACK (pevent_ok_cb), NULL);
-	gtk_widget_show (wid);
-
-	gtk_widget_show (hbox);
-
-	gtk_widget_show (pevent_dialog);
+	gtk_widget_show_all (pevent_dialog);
 }

@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -29,14 +29,10 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkhbbox.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkvscrollbar.h>
-#include <gtk/gtkstock.h>
+#include <gdk/gdkkeysyms.h>
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/server.h"
 #include "gtkutil.h"
@@ -44,7 +40,7 @@
 #include "maingui.h"
 #include "rawlog.h"
 #include "xtext.h"
-
+#include "fkeys.h"
 
 static void
 close_rawlog (GtkWidget *wid, server *serv)
@@ -61,7 +57,7 @@ rawlog_save (server *serv, char *file)
 	if (file)
 	{
 		if (serv->gui->rawlog_window)
-			fh = xchat_open_file (file, O_TRUNC | O_WRONLY | O_CREAT,
+			fh = hexchat_open_file (file, O_TRUNC | O_WRONLY | O_CREAT,
 										 0600, XOF_DOMODE | XOF_FULLPATH);
 		if (fh != -1)
 		{
@@ -85,10 +81,26 @@ rawlog_savebutton (GtkWidget * wid, server *serv)
 	return FALSE;
 }
 
+static gboolean
+rawlog_key_cb (GtkWidget * wid, GdkEventKey * key, gpointer userdata)
+{
+	/* Copy rawlog selection to clipboard when Ctrl+Shift+C is pressed,
+	 * but make sure not to copy twice, i.e. when auto-copy is enabled.
+	 */
+	if (!prefs.hex_text_autocopy_text &&
+		(key->keyval == GDK_KEY_c || key->keyval == GDK_KEY_C) &&
+		key->state & STATE_SHIFT &&
+		key->state & STATE_CTRL)
+	{
+		gtk_xtext_copy_selection (userdata);
+	}
+	return FALSE;
+}
+
 void
 open_rawlog (struct server *serv)
 {
-	GtkWidget *hbox, *vscrollbar, *vbox;
+	GtkWidget *bbox, *scrolledwindow, *vbox;
 	char tbuf[256];
 
 	if (serv->gui->rawlog_window)
@@ -97,61 +109,64 @@ open_rawlog (struct server *serv)
 		return;
 	}
 
-	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Rawlog (%s)"), serv->servername);
+	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Raw Log (%s)"), serv->servername);
 	serv->gui->rawlog_window =
 		mg_create_generic_tab ("RawLog", tbuf, FALSE, TRUE, close_rawlog, serv,
 							 640, 320, &vbox, serv);
+	gtkutil_destroy_on_esc (serv->gui->rawlog_window);
 
-	hbox = gtk_hbox_new (FALSE, 2);
-	gtk_container_add (GTK_CONTAINER (vbox), hbox);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
-	gtk_widget_show (hbox);
+	scrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow), GTK_SHADOW_IN);
+	gtk_container_add (GTK_CONTAINER (vbox), scrolledwindow);
 
 	serv->gui->rawlog_textlist = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_tint (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
-	gtk_xtext_set_background (GTK_XTEXT (serv->gui->rawlog_textlist),
-									  channelwin_pix, prefs.transparent);
-
-	gtk_container_add (GTK_CONTAINER (hbox), serv->gui->rawlog_textlist);
-	gtk_xtext_set_font (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.font_normal);
+	gtk_container_add (GTK_CONTAINER (scrolledwindow), serv->gui->rawlog_textlist);
+	gtk_xtext_set_font (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.hex_text_font);
 	GTK_XTEXT (serv->gui->rawlog_textlist)->ignore_hidden = 1;
-	gtk_widget_show (serv->gui->rawlog_textlist);
 
-	vscrollbar = gtk_vscrollbar_new (GTK_XTEXT (serv->gui->rawlog_textlist)->adj);
-	gtk_box_pack_start (GTK_BOX (hbox), vscrollbar, FALSE, FALSE, 0);
-	show_and_unfocus (vscrollbar);
+	bbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_SPREAD);
+	gtk_box_pack_end (GTK_BOX (vbox), bbox, 0, 0, 4);
 
-	hbox = gtk_hbutton_box_new ();
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_SPREAD);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
-	gtk_widget_show (hbox);
+	gtkutil_button (bbox, GTK_STOCK_CLEAR, NULL, rawlog_clearbutton,
+						 serv, _("Clear Raw Log"));
 
-	gtkutil_button (hbox, GTK_STOCK_CLEAR, NULL, rawlog_clearbutton,
-						 serv, _("Clear rawlog"));
-
-	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, NULL, rawlog_savebutton,
+	gtkutil_button (bbox, GTK_STOCK_SAVE_AS, NULL, rawlog_savebutton,
 						 serv, _("Save As..."));
 
-	gtk_widget_show (serv->gui->rawlog_window);
+	/* Copy selection to clipboard when Ctrl+Shift+C is pressed AND text auto-copy is disabled */
+	g_signal_connect (G_OBJECT (serv->gui->rawlog_window), "key_press_event", G_CALLBACK (rawlog_key_cb), serv->gui->rawlog_textlist);
+
+	gtk_widget_show_all (serv->gui->rawlog_window);
 }
 
 void
 fe_add_rawlog (server *serv, char *text, int len, int outbound)
 {
+	char **split_text;
 	char *new_text;
+	int i;
 
 	if (!serv->gui->rawlog_window)
 		return;
 
-	new_text = malloc (len + 7);
+	split_text = g_strsplit (text, "\r\n", 0);
 
-	len = sprintf (new_text, "\0033>>\017 %s", text);
-	if (outbound)
+	for (i = 0; i < g_strv_length (split_text); i++)
 	{
-		new_text[1] = '4';
-		new_text[2] = '<';
-		new_text[3] = '<';
+		if (split_text[i][0] == 0)
+			break;
+
+		if (outbound)
+			new_text = g_strconcat ("\0034<<\017 ", split_text[i], NULL);
+		else
+			new_text = g_strconcat ("\0033>>\017 ", split_text[i], NULL);
+
+		gtk_xtext_append (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer, new_text, strlen (new_text));
+
+		g_free (new_text);
 	}
-	gtk_xtext_append (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer, new_text, len);
-	free (new_text);
+
+	g_strfreev (split_text);
 }

@@ -11,7 +11,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 //#include <stdio.h>
@@ -81,12 +81,12 @@ int str2int(char *text){
     int ret=0;
     for (i=1;i<=strlen(text);i++){
         if ((text[strlen(text)-i]>57)||(text[strlen(text)-i]<48)){
-           xchat_printf(ph,"invalid char in string: %i",text[strlen(text)-i]);
+           hexchat_printf(ph,"invalid char in string: %i",text[strlen(text)-i]);
            return 255;
         }
         ret+=((int)text[strlen(text)-i]-48)*iPow(10,i-1);
     }
-    //xchat_printf(ph, "str2int(%s)=%i",text,ret);
+    //hexchat_printf(ph, "str2int(%s)=%i",text,ret);
     //if (DEBUG==1) putlog("int converted");
     return ret;
 }
@@ -135,7 +135,7 @@ static char *tagExtract(char *tag, int tagLen, char* info){
 //if (DEBUG==1) putlog("extracting tag");
 	int pos, len, i;
 	pos=inStr(tag,tagLen,info);
-//xchat_printf(ph,"pos=%i",pos);
+//hexchat_printf(ph,"pos=%i",pos);
 	if (pos==-1) return "";//NULL;
 	//printf("position of %s = %i\n",info,pos);
 	len=0;
@@ -163,7 +163,7 @@ struct tagInfo readID3V1(char *file){
 	ret.artist=NULL;
 	f=fopen(file,"rb");
 	if (f==NULL){
-       xchat_print(ph,"file not found while trying to read id3v1");
+       hexchat_print(ph,"file not found while trying to read id3v1");
        //if (DEBUG==1) putlog("file not found while trying to read id3v1");
        return ret;
     }
@@ -174,14 +174,14 @@ struct tagInfo readID3V1(char *file){
 	//printf("position= %li\n",pos);
 	for (i=0;i<128;i++) {
 		c=fgetc(f);
-		if (c==EOF) {xchat_printf(ph,"read ID3V1 failed\n");fclose(f);return ret;}
+		if (c==EOF) {hexchat_printf(ph,"read ID3V1 failed\n");fclose(f);return ret;}
 		tag[i]=(char)c;
 	}
 	fclose(f);
 	//printf("tag readed: \n");
 	id=substring(tag,0,3);
 	//printf("header: %s\n",id);
-	if (strcmp(id,"TAG")!=0){xchat_printf(ph,"no id3 v1 found\n");return ret;}
+	if (strcmp(id,"TAG")!=0){hexchat_printf(ph,"no id3 v1 found\n");return ret;}
 	ret.title=subString(tag,3,30,1);
 	ret.artist=subString(tag,33,30,1);
 	ret.album=subString(tag,63,30,1);
@@ -191,15 +191,15 @@ struct tagInfo readID3V1(char *file){
 	
 	val=(int)tmp[0];
 	if (val<0)val+=256;
-	//xchat_printf(ph, "tmp[0]=%i (%i)",val,tmp[0]);
+	//hexchat_printf(ph, "tmp[0]=%i (%i)",val,tmp[0]);
 	if ((val<148)&&(val>=0)) 
        ret.genre=GENRES[val];//#############changed
 	else {
          ret.genre="unknown";
-         //xchat_printf(ph, "tmp[0]=%i (%i)",val,tmp[0]);
+         //hexchat_printf(ph, "tmp[0]=%i (%i)",val,tmp[0]);
     }
-	//xchat_printf(ph, "tmp: \"%s\" -> %i",tmp,tmp[0]);
-	//xchat_printf(ph,"genre \"%s\"",ret.genre);
+	//hexchat_printf(ph, "tmp: \"%s\" -> %i",tmp,tmp[0]);
+	//hexchat_printf(ph,"genre \"%s\"",ret.genre);
 	//if (DEBUG==1) putlog("id3v1 extracted");
 	return ret;
 }
@@ -214,7 +214,7 @@ char *extractID3Genre(char *tag){
      }
      else{
           int i;
-          //xchat_print(ph, "Using 2 criteria");
+          //hexchat_print(ph, "Using 2 criteria");
           for (i=0;i<strlen(tag);i++){
               if (tag[i]==')'){ tag=&tag[i]+1;return tag;}
           //return tag;
@@ -232,10 +232,10 @@ struct tagInfo readID3V2(char *file){
 	struct tagInfo ret;
 
 	f = fopen(file,"rb");
-	//xchat_printf(ph,"file :%s",file);
+	//hexchat_printf(ph,"file :%s",file);
 	if (f==NULL)
 	{
-       xchat_print(ph,"file not found whilt trying to read ID3V2");
+       hexchat_print(ph,"file not found whilt trying to read ID3V2");
        //if (DEBUG==1)putlog("file not found while trying to read ID3V2");
        return ret;
     }
@@ -244,35 +244,36 @@ struct tagInfo readID3V2(char *file){
 	for (i=0;i<10;i++){
         c=fgetc(f);
         if (c==EOF){
+            fclose(f);
            //putlog("found eof while reading id3v2");
            return ret;
         }
         header[i]=(char)c;
     }
 	if (strstr(header,"ID3")==header){
-		//xchat_printf(ph,"found id3v2\n");
+		//hexchat_printf(ph,"found id3v2\n");
 		len=0;
 		for (i=6;i<10;i++) len+=(int)header[i]*iPow(256,9-i);
 		
 		//char *tag=(char*)malloc(sizeof(char)*len);
 		tag=(char*) calloc(len,sizeof(char)); //malloc(sizeof(char)*len);
 		for (i=0;i<len;i++){c=fgetc(f);tag[i]=(char)c;}
-//xchat_printf(ph,"tag length: %i\n",len);
-//xchat_printf(ph,"tag: %s\n",tag);
+//hexchat_printf(ph,"tag length: %i\n",len);
+//hexchat_printf(ph,"tag: %s\n",tag);
 		fclose(f);
 		ret.comment=tagExtract(tag,len,"COMM");
-//xchat_printf(ph,"Comment: %s\n",ret.comment);
+//hexchat_printf(ph,"Comment: %s\n",ret.comment);
 		ret.genre=tagExtract(tag,len,"TCON");
 		//if (strcmp(ret.genre,"(127)")==0) ret.genre="unknown";
-//xchat_printf(ph, "ret.genre = %s",ret.genre);
+//hexchat_printf(ph, "ret.genre = %s",ret.genre);
 		if ((ret.genre!=NULL)&&(ret.genre[0]=='(')) ret.genre=extractID3Genre(ret.genre);
-//xchat_printf(ph,"genre: %s\n",ret.genre);
+//hexchat_printf(ph,"genre: %s\n",ret.genre);
 		ret.title=tagExtract(tag,len,"TIT2");
-//xchat_printf(ph,"Title: %s\n",ret.title);
+//hexchat_printf(ph,"Title: %s\n",ret.title);
 		ret.album=tagExtract(tag,len,"TALB");
-//xchat_printf(ph,"Album: %s\n",ret.album);
+//hexchat_printf(ph,"Album: %s\n",ret.album);
 		ret.artist=tagExtract(tag,len,"TPE1");
-//xchat_printf(ph,"Artist: %s\n",ret.artist);
+//hexchat_printf(ph,"Artist: %s\n",ret.artist);
 	}
 	else{fclose(f);printf("no id3v2 tag found\n"); return ret;}
 	//printf("id2v2 done\n");
@@ -294,7 +295,7 @@ struct tagInfo readHeader(char *file){
 	f = fopen(file,"rb");
 	if (f==NULL)
 	{
-       xchat_print(ph,"file not found while trying to read mp3 header");
+       hexchat_print(ph,"file not found while trying to read mp3 header");
        //if (DEBUG==1) putlog("file not found while trying to read mp3 header");
        return info;
     }

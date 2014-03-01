@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * Wayne Conrad, 3 Apr 1999: Color-coded DCC file transfer status windows
  * Bernhard Valenti <bernhard.valenti@gmx.net> 2000-11-21: Fixed DCC send behind nat
@@ -45,7 +45,7 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "util.h"
 #include "fe.h"
 #include "outbound.h"
@@ -55,7 +55,7 @@
 #include "server.h"
 #include "text.h"
 #include "url.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
@@ -143,14 +143,14 @@ dcc_calc_cps (struct DCC *dcc)
 		pos = dcc->pos - ((dcc->pos - dcc->ack) / 2);
 		glob_throttle_bit = 0x1;
 		cpssum = &dcc_sendcpssum;
-		glob_limit = prefs.dcc_global_max_send_cps;
+		glob_limit = prefs.hex_dcc_global_max_send_cps;
 	}
 	else
 	{
 		pos = dcc->pos;
 		glob_throttle_bit = 0x2;
 		cpssum = &dcc_getcpssum;
-		glob_limit = prefs.dcc_global_max_get_cps;
+		glob_limit = prefs.hex_dcc_global_max_get_cps;
 	}
 
 	if (!dcc->firstcpstv.tv_sec && !dcc->firstcpstv.tv_usec)
@@ -227,7 +227,16 @@ is_dcc (struct DCC *dcc)
 	return FALSE;
 }
 
-/* this is called from xchat.c:xchat_misc_checks() every 1 second. */
+gboolean
+is_dcc_completed (struct DCC *dcc)
+{
+	if (dcc != NULL)
+		return (dcc->dccstat == STAT_FAILED || dcc->dccstat == STAT_DONE || dcc->dccstat == STAT_ABORTED);
+
+	return FALSE;
+}
+
+/* this is called from hexchat.c:hexchat_misc_checks() every 1 second. */
 
 void
 dcc_check_timeouts (void)
@@ -249,10 +258,10 @@ dcc_check_timeouts (void)
 
 			if (dcc->type == TYPE_SEND || dcc->type == TYPE_RECV)
 			{
-				if (prefs.dccstalltimeout > 0)
+				if (prefs.hex_dcc_stall_timeout > 0)
 				{
 					if (!dcc->throttled
-						&& tim - dcc->lasttime > prefs.dccstalltimeout)
+						&& tim - dcc->lasttime > prefs.hex_dcc_stall_timeout)
 					{
 						EMIT_SIGNAL (XP_TE_DCCSTALL, dcc->serv->front_session,
 										 dcctypes[dcc->type],
@@ -265,9 +274,9 @@ dcc_check_timeouts (void)
 		case STAT_QUEUED:
 			if (dcc->type == TYPE_SEND || dcc->type == TYPE_CHATSEND)
 			{
-				if (tim - dcc->offertime > prefs.dcctimeout)
+				if (tim - dcc->offertime > prefs.hex_dcc_timeout)
 				{
-					if (prefs.dcctimeout > 0)
+					if (prefs.hex_dcc_timeout > 0)
 					{
 						EMIT_SIGNAL (XP_TE_DCCTOUT, dcc->serv->front_session,
 										 dcctypes[dcc->type],
@@ -280,7 +289,7 @@ dcc_check_timeouts (void)
 		case STAT_DONE:
 		case STAT_FAILED:
 		case STAT_ABORTED:
-			if (prefs.dcc_remove)
+			if (prefs.hex_dcc_remove)
 				dcc_close (dcc, 0, TRUE);
 			break;
 		}
@@ -313,13 +322,14 @@ dcc_lookup_proxy (char *host, struct sockaddr_in *addr)
 		memcpy (&addr->sin_addr, h->h_addr, 4);
 		memcpy (&cache_addr, h->h_addr, 4);
 		cache_host = strdup (host);
+		/* cppcheck-suppress memleak */
 		return TRUE;
 	}
 
 	return FALSE;
 }
 
-#define DCC_USE_PROXY() (prefs.proxy_host[0] && prefs.proxy_type>0 && prefs.proxy_type<5 && prefs.proxy_use!=1)
+#define DCC_USE_PROXY() (prefs.hex_net_proxy_host[0] && prefs.hex_net_proxy_type>0 && prefs.hex_net_proxy_type<5 && prefs.hex_net_proxy_use!=1)
 
 static int
 dcc_connect_sok (struct DCC *dcc)
@@ -335,12 +345,12 @@ dcc_connect_sok (struct DCC *dcc)
 	addr.sin_family = AF_INET;
 	if (DCC_USE_PROXY ())
 	{
-		if (!dcc_lookup_proxy (prefs.proxy_host, &addr))
+		if (!dcc_lookup_proxy (prefs.hex_net_proxy_host, &addr))
 		{
 			closesocket (sok);
 			return -1;
 		}
-		addr.sin_port = htons (prefs.proxy_port);
+		addr.sin_port = htons (prefs.hex_net_proxy_port);
 	}
 	else
 	{
@@ -384,14 +394,13 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 
 		if(dccstat == STAT_DONE)
 		{
-			/* if we just completed a dcc recieve, move the */
+			/* if we just completed a dcc receive, move the */
 			/* completed file to the completed directory */
 			if(dcc->type == TYPE_RECV)
 			{			
-				/* mgl: change this to use destfile_fs for correctness and to */
-				/* handle the case where dccwithnick is set */
-				move_file_utf8 (prefs.dccdir, prefs.dcc_completed_dir, 
-									 file_part (dcc->destfile), prefs.dccpermissions);
+				/* mgl: change this to handle the case where dccwithnick is set */
+				move_file (prefs.hex_dcc_dir, prefs.hex_dcc_completed_dir, 
+									 file_part (dcc->destfile), prefs.hex_dcc_permissions);
 			}
 
 		}
@@ -414,8 +423,6 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 			free (dcc->file);
 		if (dcc->destfile)
 			g_free (dcc->destfile);
-		if (dcc->destfile_fs)
-			g_free (dcc->destfile_fs);
 		free (dcc->nick);
 		free (dcc);
 		return;
@@ -511,6 +518,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	int len;
 	gsize utf_len;
 	char portbuf[32];
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	len = strlen (line);
 	if (dcc->serv->using_cp1255)
@@ -549,7 +557,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 
-	ret = plugin_emit_print (sess, word);
+	ret = plugin_emit_print (sess, word, 0);
 
 	/* did the plugin close it? */
 	if (!g_slist_find (dcc_list, dcc))
@@ -578,10 +586,11 @@ dcc_chat_line (struct DCC *dcc, char *line)
 		po = strchr (line + 8, '\001');
 		if (po)
 			po[0] = 0;
-		inbound_action (sess, dcc->serv->nick, dcc->nick, "", line + 8, FALSE, FALSE);
+		inbound_action (sess, dcc->serv->nick, dcc->nick, "", line + 8, FALSE,
+							 FALSE, &no_tags);
 	} else
 	{
-		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE);
+		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE, &no_tags);
 	}
 	if (utf)
 		g_free (utf);
@@ -687,38 +696,35 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	{
 
 		/* try to create the download dir (even if it exists, no harm) */
-		mkdir_utf8 (prefs.dccdir);
+		g_mkdir (prefs.hex_dcc_dir, 0700);
 
 		if (dcc->resumable)
 		{
-			dcc->fp = open (dcc->destfile_fs, O_WRONLY | O_APPEND | OFLAGS);
+			dcc->fp = g_open (dcc->destfile, O_WRONLY | O_APPEND | OFLAGS, 0);
 			dcc->pos = dcc->resumable;
 			dcc->ack = dcc->resumable;
 		} else
 		{
-			if (access (dcc->destfile_fs, F_OK) == 0)
+			if (g_access (dcc->destfile, F_OK) == 0)
 			{
 				n = 0;
 				do
 				{
 					n++;
-					snprintf (buf, sizeof (buf), "%s.%d", dcc->destfile_fs, n);
+					snprintf (buf, sizeof (buf), "%s.%d", dcc->destfile, n);
 				}
 				while (access (buf, F_OK) == 0);
 
-				g_free (dcc->destfile_fs);
-				dcc->destfile_fs = g_strdup (buf);
-
 				old = dcc->destfile;
-				dcc->destfile = xchat_filename_to_utf8 (buf, -1, 0, 0, 0);
+				dcc->destfile = g_strdup (buf);
 
 				EMIT_SIGNAL (XP_TE_DCCRENAME, dcc->serv->front_session,
 								 old, dcc->destfile, NULL, NULL, 0);
 				g_free (old);
 			}
 			dcc->fp =
-				open (dcc->destfile_fs, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
-						prefs.dccpermissions);
+				g_open (dcc->destfile, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
+						prefs.hex_dcc_permissions);
 		}
 	}
 	if (dcc->fp == -1)
@@ -785,6 +791,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 			dcc_send_ack (dcc);
 			dcc_close (dcc, STAT_DONE, FALSE);
 			dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
+			/* cppcheck-suppress deallocuse */
 			sprintf (buf, "%d", dcc->cps);
 			EMIT_SIGNAL (XP_TE_DCCRECVCOMP, dcc->serv->front_session,
 							 dcc->file, dcc->destfile, dcc->nick, buf, 0);
@@ -796,7 +803,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 static void
 dcc_open_query (server *serv, char *nick)
 {
-	if (prefs.autodialog)
+	if (prefs.hex_gui_autoopen_dialog)
 		open_query (serv, nick, FALSE);
 }
 
@@ -874,7 +881,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 		break;
 	case TYPE_SEND:
 		/* passive send */
-		dcc->fastsend = prefs.fastdccsend;
+		dcc->fastsend = prefs.hex_dcc_fast_send;
 		if (dcc->fastsend)
 			dcc->wiotag = fe_input_add (dcc->sok, FIA_WRITE, dcc_send_data, dcc);
 		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_ack, dcc);
@@ -1022,7 +1029,7 @@ dcc_socks_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC
 		sc.type = 1;
 		sc.port = htons (dcc->port);
 		sc.address = htonl (dcc->addr);
-		strncpy (sc.username, prefs.username, 9);
+		strncpy (sc.username, prefs.hex_irc_user_name, 9);
 		memcpy (proxy->buffer, &sc, sizeof (sc));
 		proxy->buffersize = 8 + strlen (sc.username) + 1;
 		proxy->bufferused = 0;
@@ -1072,7 +1079,7 @@ static gboolean
 dcc_socks5_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
 	struct proxy_state *proxy = dcc->proxy;
-	int auth = prefs.proxy_auth && prefs.proxy_user[0] && prefs.proxy_pass[0];
+	int auth = prefs.hex_net_proxy_auth && prefs.hex_net_proxy_user[0] && prefs.hex_net_proxy_pass[0];
 
 	if (proxy->phase == 0)
 	{
@@ -1132,13 +1139,13 @@ dcc_socks5_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DC
 			memset (proxy->buffer, 0, MAX_PROXY_BUFFER);
 
 			/* form the UPA request */
-			len_u = strlen (prefs.proxy_user);
-			len_p = strlen (prefs.proxy_pass);
+			len_u = strlen (prefs.hex_net_proxy_user);
+			len_p = strlen (prefs.hex_net_proxy_pass);
 			proxy->buffer[0] = 1;
 			proxy->buffer[1] = len_u;
-			memcpy (proxy->buffer + 2, prefs.proxy_user, len_u);
+			memcpy (proxy->buffer + 2, prefs.hex_net_proxy_user, len_u);
 			proxy->buffer[2 + len_u] = len_p;
-			memcpy (proxy->buffer + 3 + len_u, prefs.proxy_pass, len_p);
+			memcpy (proxy->buffer + 3 + len_u, prefs.hex_net_proxy_pass, len_p);
 
 			proxy->buffersize = 3 + len_u + len_p;
 			proxy->bufferused = 0;
@@ -1283,10 +1290,10 @@ dcc_http_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC 
 
 		n = snprintf (buf, sizeof (buf), "CONNECT %s:%d HTTP/1.0\r\n",
                                           net_ip(dcc->addr), dcc->port);
-		if (prefs.proxy_auth)
+		if (prefs.hex_net_proxy_auth)
 		{
 			n2 = snprintf (auth_data2, sizeof (auth_data2), "%s:%s",
-							prefs.proxy_user, prefs.proxy_pass);
+							prefs.hex_net_proxy_user, prefs.hex_net_proxy_pass);
 			base64_encode (auth_data, auth_data2, n2);
 			n += snprintf (buf+n, sizeof (buf)-n, "Proxy-Authorization: Basic %s\r\n", auth_data);
 		}
@@ -1375,7 +1382,7 @@ dcc_proxy_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	}
 	memset (dcc->proxy, 0, sizeof (struct proxy_state));
 
-	switch (prefs.proxy_type)
+	switch (prefs.hex_net_proxy_type)
 	{
 		case 1: return dcc_wingate_proxy_traverse (source, condition, dcc);
 		case 2: return dcc_socks_proxy_traverse (source, condition, dcc);
@@ -1441,11 +1448,11 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	char *buf;
 	int len, sent, sok = dcc->sok;
 
-	if (prefs.dcc_blocksize < 1) /* this is too little! */
-		prefs.dcc_blocksize = 1024;
+	if (prefs.hex_dcc_blocksize < 1) /* this is too little! */
+		prefs.hex_dcc_blocksize = 1024;
 
-	if (prefs.dcc_blocksize > 102400)	/* this is too much! */
-		prefs.dcc_blocksize = 102400;
+	if (prefs.hex_dcc_blocksize > 102400)	/* this is too much! */
+		prefs.hex_dcc_blocksize = 102400;
 
 	if (dcc->throttled)
 	{
@@ -1462,12 +1469,12 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	else if (!dcc->wiotag)
 		dcc->wiotag = fe_input_add (sok, FIA_WRITE, dcc_send_data, dcc);
 
-	buf = malloc (prefs.dcc_blocksize);
+	buf = malloc (prefs.hex_dcc_blocksize);
 	if (!buf)
 		return TRUE;
 
 	lseek (dcc->fp, dcc->pos, SEEK_SET);
-	len = read (dcc->fp, buf, prefs.dcc_blocksize);
+	len = read (dcc->fp, buf, prefs.hex_dcc_blocksize);
 	if (len < 1)
 		goto abortit;
 	sent = send (sok, buf, len, 0);
@@ -1530,6 +1537,7 @@ dcc_handle_new_ack (struct DCC *dcc)
 		dcc->ack = dcc->size;	/* force 100% ack for >4 GB */
 		dcc_close (dcc, STAT_DONE, FALSE);
 		dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
+		/* cppcheck-suppress deallocuse */
 		sprintf (buf, "%d", dcc->cps);
 		EMIT_SIGNAL (XP_TE_DCCSENDCOMP, dcc->serv->front_session,
 						 file_part (dcc->file), dcc->nick, buf, NULL, 0);
@@ -1612,7 +1620,7 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 	dcc->dccstat = STAT_ACTIVE;
 	dcc->lasttime = dcc->starttime = time (0);
-	dcc->fastsend = prefs.fastdccsend;
+	dcc->fastsend = prefs.hex_dcc_fast_send;
 
 	snprintf (host, sizeof (host), "%s:%d", net_ip (dcc->addr), dcc->port);
 
@@ -1648,11 +1656,11 @@ dcc_get_my_address (void)	/* the address we'll tell the other person */
 	struct hostent *dns_query;
 	guint32 addr = 0;
 
-	if (prefs.ip_from_server && prefs.dcc_ip)
+	if (prefs.hex_dcc_ip_from_server && prefs.dcc_ip)
 		addr = prefs.dcc_ip;
-	else if (prefs.dcc_ip_str[0])
+	else if (prefs.hex_dcc_ip[0])
 	{
-	   dns_query = gethostbyname ((const char *) prefs.dcc_ip_str);
+	   dns_query = gethostbyname ((const char *) prefs.hex_dcc_ip);
 
 	   if (dns_query != NULL &&
 	       dns_query->h_length == 4 &&
@@ -1696,14 +1704,14 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 		my_addr = SAddr.sin_addr.s_addr;
 
 	/*if we have a valid portrange try to use that*/
-	if (prefs.first_dcc_send_port > 0)
+	if (prefs.hex_dcc_port_first > 0)
 	{
 		SAddr.sin_port = 0;
 		i = 0;
-		while ((prefs.last_dcc_send_port > ntohs(SAddr.sin_port)) &&
+		while ((prefs.hex_dcc_port_last > ntohs(SAddr.sin_port)) &&
 				(bindretval == -1))
 		{
-			SAddr.sin_port = htons (prefs.first_dcc_send_port + i);
+			SAddr.sin_port = htons (prefs.hex_dcc_port_first + i);
 			i++;
 			/*printf("Trying to bind against port: %d\n",ntohs(SAddr.sin_port));*/
 			bindretval = bind (dcc->sok, (struct sockaddr *) &SAddr, sizeof (SAddr));
@@ -1733,7 +1741,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 	dcc->port = ntohs (SAddr.sin_port);
 
 	/*if we have a dcc_ip, we use that, so the remote client can connect*/
-	/*else we try to take an address from dcc_ip_str*/
+	/*else we try to take an address from hex_dcc_ip*/
 	/*if something goes wrong we tell the client to connect to our LAN ip*/
 	dcc->addr = dcc_get_my_address ();
 
@@ -1767,18 +1775,15 @@ void
 dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 {
 	char outbuf[512];
-	struct stat st;
+	GStatBuf st;
 	struct DCC *dcc;
-	char *file_fs;
 
-	/* this is utf8 */
 	file = expand_homedir (file);
 
 	if (!recursive && (strchr (file, '*') || strchr (file, '?')))
 	{
 		char path[256];
 		char wild[256];
-		char *path_fs;	/* local filesystem encoding */
 
 		safe_strcpy (wild, file_part (file), sizeof (wild));
 		path_part (file, path, sizeof (path));
@@ -1791,29 +1796,23 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 
 		free (file);
 
-		/* for_files() will use opendir, so we need local FS encoding */
-		path_fs = xchat_filename_from_utf8 (path, -1, 0, 0, 0);
-		if (path_fs)
-		{
-			recursive = TRUE;
-			for_files (path_fs, wild, dcc_send_wild);
-			recursive = FALSE;
-			g_free (path_fs);
-		}
+		recursive = TRUE;
+		for_files (path, wild, dcc_send_wild);
+		recursive = FALSE;
 
 		return;
 	}
 
 	dcc = new_dcc ();
 	if (!dcc)
+	{
+		free (file);
 		return;
+	}
 	dcc->file = file;
 	dcc->maxcps = maxcps;
 
-	/* get the local filesystem encoding */
-	file_fs = xchat_filename_from_utf8 (file, -1, 0, 0, 0);
-
-	if (stat (file_fs, &st) != -1)
+	if (g_stat (file, &st) != -1)
 	{
 
 #ifndef USE_DCC64
@@ -1824,7 +1823,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		}
 #endif
 
-		if (!(*file_part (file_fs)) || S_ISDIR (st.st_mode) || st.st_size < 1)
+		if (!(*file_part (file)) || S_ISDIR (st.st_mode) || st.st_size < 1)
 		{
 			PrintText (sess, "Cannot send directories or empty files.\n");
 			goto xit;
@@ -1835,19 +1834,17 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		dcc->dccstat = STAT_QUEUED;
 		dcc->size = st.st_size;
 		dcc->type = TYPE_SEND;
-		dcc->fp = open (file_fs, OFLAGS | O_RDONLY);
+		dcc->fp = g_open (file, OFLAGS | O_RDONLY, 0);
 		if (dcc->fp != -1)
 		{
-			g_free (file_fs);
 			if (passive || dcc_listen_init (dcc, sess))
 			{
 				char havespaces = 0;
-				file = dcc->file;
 				while (*file)
 				{
 					if (*file == ' ')
 					{
-						if (prefs.dcc_send_fillspaces)
+						if (prefs.hex_dcc_send_fillspaces)
 				    		*file = '_';
 					  	else
 					   	havespaces = 1;
@@ -1855,7 +1852,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 					file++;
 				}
 				dcc->nick = strdup (to);
-				if (prefs.autoopendccsendwindow)
+				if (prefs.hex_gui_autoopen_send)
 				{
 					if (fe_dcc_open_send_win (TRUE))	/* already open? add */
 						fe_dcc_add (dcc);
@@ -1866,11 +1863,12 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 				{
 					dcc->pasvid = new_id();
 					snprintf (outbuf, sizeof (outbuf), (havespaces) ?
-							"DCC SEND \"%s\" 199 0 %"DCC_SFMT" %d" :
-							"DCC SEND %s 199 0 %"DCC_SFMT" %d",
+							"DCC SEND \"%s\" 199 0 %" DCC_SFMT " %d" :
+							"DCC SEND %s 199 0 %" DCC_SFMT " %d",
 							file_part (dcc->file),
 							dcc->size, dcc->pasvid);
-				} else
+				}
+				else
 				{
 					snprintf (outbuf, sizeof (outbuf), (havespaces) ?
 							"DCC SEND \"%s\" %u %d %"DCC_SFMT :
@@ -1892,8 +1890,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 	PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
 	PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
 xit:
-	g_free (file_fs);
-	dcc_close (dcc, 0, TRUE);
+	dcc_close (dcc, 0, TRUE);		/* dcc_close will free dcc->file */
 }
 
 static struct DCC *
@@ -1983,7 +1980,7 @@ static int
 is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 {
 #ifndef WIN32
-	struct stat st_a, st_b;
+	GStatBuf st_a, st_b;
 #endif
 
 	/* if it's the same filename, must be same */
@@ -1995,9 +1992,9 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 	/* warning no win32 implementation - behaviour may be unreliable */
 #else
 	/* this fstat() shouldn't really fail */
-	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
+	if ((dcc->fp == -1 ? g_stat (dcc->destfile, &st_a) : fstat (dcc->fp, &st_a)) == -1)
 		return FALSE;
-	if (stat (new_dcc->destfile_fs, &st_b) == -1)
+	if (g_stat (new_dcc->destfile, &st_b) == -1)
 		return FALSE;
 
 	/* same inode, same device, same file! */
@@ -2015,11 +2012,11 @@ is_resumable (struct DCC *dcc)
 	dcc->resumable = 0;
 
 	/* Check the file size */
-	if (access (dcc->destfile_fs, W_OK) == 0)
+	if (g_access (dcc->destfile, W_OK) == 0)
 	{
-		struct stat st;
+		GStatBuf st;
 
-		if (stat (dcc->destfile_fs, &st) != -1)
+		if (g_stat (dcc->destfile, &st) != -1)
 		{
 			if (st.st_size < dcc->size)
 			{
@@ -2074,7 +2071,7 @@ dcc_get (struct DCC *dcc)
 	case STAT_QUEUED:
 		if (dcc->type != TYPE_CHATSEND)
 		{
-			if (dcc->type == TYPE_RECV && prefs.autoresume && dcc->resumable)
+			if (dcc->type == TYPE_RECV && prefs.hex_dcc_auto_resume && dcc->resumable)
 			{
 				dcc_resume (dcc);
 			}
@@ -2101,10 +2098,6 @@ dcc_get_with_destfile (struct DCC *dcc, char *file)
 {
 	g_free (dcc->destfile);
 	dcc->destfile = g_strdup (file);	/* utf-8 */
-
-	/* get the local filesystem encoding */
-	g_free (dcc->destfile_fs);
-	dcc->destfile_fs = xchat_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
 
 	/* since destfile changed, must check resumability again */
 	is_resumable (dcc);
@@ -2197,7 +2190,7 @@ dcc_chat (struct session *sess, char *nick, int passive)
 	dcc->nick = strdup (nick);
 	if (passive || dcc_listen_init (dcc, sess))
 	{
-		if (prefs.autoopendccchatwindow)
+		if (prefs.hex_gui_autoopen_chat)
 		{
 			if (fe_dcc_open_chat_win (TRUE))	/* already open? add only */
 				fe_dcc_add (dcc);
@@ -2300,16 +2293,18 @@ dcc_add_chat (session *sess, char *nick, int port, guint32 addr, int pasvid)
 		EMIT_SIGNAL (XP_TE_DCCCHATOFFER, sess->server->front_session, nick,
 						 NULL, NULL, NULL, 0);
 
-		if (prefs.autoopendccchatwindow)
+		if (prefs.hex_gui_autoopen_chat)
 		{
 			if (fe_dcc_open_chat_win (TRUE))	/* already open? add only */
 				fe_dcc_add (dcc);
 		} else
 			fe_dcc_add (dcc);
 
-		if (prefs.autodccchat == 1)
+		if (prefs.hex_dcc_auto_chat)
+		{
 			dcc_connect (dcc);
-		else if (prefs.autodccchat == 2)
+		}
+		else
 		{
 			char buff[128];
 			snprintf (buff, sizeof (buff), "%s is offering DCC Chat. Do you want to accept?", nick);
@@ -2331,13 +2326,13 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 	{
 		dcc->file = strdup (file);
 
-		dcc->destfile = g_malloc (strlen (prefs.dccdir) + strlen (nick) +
+		dcc->destfile = g_malloc (strlen (prefs.hex_dcc_dir) + strlen (nick) +
 										  strlen (file) + 4);
 
-		strcpy (dcc->destfile, prefs.dccdir);
-		if (prefs.dccdir[strlen (prefs.dccdir) - 1] != '/')
-			strcat (dcc->destfile, "/");
-		if (prefs.dccwithnick)
+		strcpy (dcc->destfile, prefs.hex_dcc_dir);
+		if (prefs.hex_dcc_dir[strlen (prefs.hex_dcc_dir) - 1] != G_DIR_SEPARATOR)
+			strcat (dcc->destfile, G_DIR_SEPARATOR_S);
+		if (prefs.hex_dcc_save_nick)
 		{
 #ifdef WIN32
 			char *t = strlen (dcc->destfile) + dcc->destfile;
@@ -2355,9 +2350,6 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 		}
 		strcat (dcc->destfile, file);
 
-		/* get the local filesystem encoding */
-		dcc->destfile_fs = xchat_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
-
 		dcc->resumable = 0;
 		dcc->pos = 0;
 		dcc->serv = sess->server;
@@ -2368,22 +2360,20 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 		dcc->pasvid = pasvid;
 		dcc->size = size;
 		dcc->nick = strdup (nick);
-		dcc->maxcps = prefs.dcc_max_get_cps;
+		dcc->maxcps = prefs.hex_dcc_max_get_cps;
 
 		is_resumable (dcc);
 
-		/* autodccsend is really autodccrecv.. right? */
-
-		if (prefs.autodccsend == 1)
-		{
-			dcc_get (dcc);
-		}
-		else if (prefs.autodccsend == 2)
+		if (prefs.hex_dcc_auto_recv == 1)
 		{
 			snprintf (tbuf, sizeof (tbuf), _("%s is offering \"%s\". Do you want to accept?"), nick, file);
 			fe_confirm (tbuf, dcc_confirm_send, dcc_deny_send, dcc);
 		}
-		if (prefs.autoopendccrecvwindow)
+		else if (prefs.hex_dcc_auto_recv == 2)
+		{
+			dcc_get (dcc);
+		}
+		if (prefs.hex_gui_autoopen_recv)
 		{
 			if (fe_dcc_open_recv_win (TRUE))	/* was already open? just add*/
 				fe_dcc_add (dcc);
@@ -2399,8 +2389,8 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 }
 
 void
-handle_dcc (struct session *sess, char *nick, char *word[],
-				char *word_eol[])
+handle_dcc (struct session *sess, char *nick, char *word[], char *word_eol[],
+				const message_tags_data *tags_data)
 {
 	char tbuf[512];
 	struct DCC *dcc;
@@ -2496,8 +2486,9 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 				dcc->serv->p_ctcp (dcc->serv, dcc->nick, tbuf);
 			}
 			sprintf (tbuf, "%"DCC_SFMT, dcc->pos);
-			EMIT_SIGNAL (XP_TE_DCCRESUMEREQUEST, sess, nick,
-							 file_part (dcc->file), tbuf, NULL, 0);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_DCCRESUMEREQUEST, sess, nick,
+										  file_part (dcc->file), tbuf, NULL, 0,
+										  tags_data->timestamp);
 		}
 		return;
 	}
@@ -2567,8 +2558,9 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 
 	} else
 	{
-		EMIT_SIGNAL (XP_TE_DCCGENERICOFFER, sess->server->front_session,
-						 word_eol[4] + 2, nick, NULL, NULL, 0);
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_DCCGENERICOFFER, sess->server->front_session,
+									  word_eol[4] + 2, nick, NULL, NULL, 0,
+									  tags_data->timestamp);
 	}
 }
 

@@ -127,7 +127,7 @@ sub IRC::channel_list {
 
 sub IRC::get_info {
   my $id = shift;
-  my @ids = qw(version nick channel server xchatdir away network host topic);
+  my @ids = qw(version nick channel server configdir xchatdir away network host topic);
   
   if( $id >= 0 && $id <= 8 && $id != 5 ) {
     my $info = Xchat::get_info($ids[$id]);

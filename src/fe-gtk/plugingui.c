@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <string.h>
@@ -22,27 +22,18 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkbox.h>
-#include <gtk/gtkscrolledwindow.h>
-
-#include <gtk/gtkliststore.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkcellrenderertext.h>
-
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #define PLUGIN_C
-typedef struct session xchat_context;
-#include "../common/xchat-plugin.h"
+typedef struct session hexchat_context;
+#include "../common/hexchat-plugin.h"
 #include "../common/plugin.h"
 #include "../common/util.h"
 #include "../common/outbound.h"
 #include "../common/fe.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "gtkutil.h"
+#include "maingui.h"
 
 /* model for the plugin treeview */
 enum
@@ -78,14 +69,32 @@ plugingui_treeview_new (GtkWidget *box)
 	     col_id++)
 			gtk_tree_view_column_set_alignment (col, 0.5);
 
-	gtk_widget_show (view);
 	return view;
 }
 
-static void
-plugingui_close_button (GtkWidget * wid, gpointer a)
+static char *
+plugingui_getfilename (GtkTreeView *view)
 {
-	gtk_widget_destroy (plugin_window);
+	GtkTreeModel *model;
+	GtkTreeSelection *sel;
+	GtkTreeIter iter;
+	GValue file;
+	char *str;
+
+	memset (&file, 0, sizeof (file));
+
+	sel = gtk_tree_view_get_selection (view);
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	{
+		gtk_tree_model_get_value (model, &iter, FILE_COLUMN, &file);
+
+		str = g_value_dup_string (&file);
+		g_value_unset (&file);
+
+		return str;
+	}
+
+	return NULL;
 }
 
 static void
@@ -99,7 +108,7 @@ extern GSList *plugin_list;
 void
 fe_pluginlist_update (void)
 {
-	xchat_plugin *pl;
+	hexchat_plugin *pl;
 	GSList *list;
 	GtkTreeView *view;
 	GtkListStore *store;
@@ -147,30 +156,18 @@ plugingui_load_cb (session *sess, char *file)
 void
 plugingui_load (void)
 {
-	/* let's do it the Perl way */
-	const char *xdir;
 	char *sub_dir;
 
-	xdir = get_xdir_utf8 ();
-	sub_dir = malloc (strlen (xdir) + 8);
-	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/addons");
+	sub_dir = g_build_filename (get_xdir(), "addons", NULL);
 
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
-#if 0	/* native file dialogs */
 #ifdef WIN32
-							"Plugins and Scripts\0*.dll;*.lua;*.pl;*.py;*.tcl\0"
-							"All files\0*.*\0\0", 0);
+							sub_dir, "*.dll;*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 #else
-#endif
-#endif	/* native file dialogs */
-#ifdef WIN32
-							sub_dir, "*.dll;*.lua;*.pl;*.py;*.tcl", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
-#else
-							sub_dir, "*.so;*.lua;*.pl;*.py;*.tcl", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
+							sub_dir, "*.so;*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 #endif
 
-	free (sub_dir);
+	g_free (sub_dir);
 }
 
 static void
@@ -221,42 +218,61 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	g_free (file);
 }
 
+static void
+plugingui_reloadbutton_cb (GtkWidget *wid, GtkTreeView *view)
+{
+	char *file = plugingui_getfilename(view);
+
+	if (file)
+	{
+		char *buf = malloc (strlen (file) + 9);
+
+		if (strchr (file, ' '))
+			sprintf (buf, "RELOAD \"%s\"", file);
+		else
+			sprintf (buf, "RELOAD %s", file);
+		handle_command (current_sess, buf, FALSE);
+		free (buf);
+		g_free (file);
+	}
+}
+
 void
 plugingui_open (void)
 {
 	GtkWidget *view;
-	GtkWidget *vbox, *action_area;
+	GtkWidget *vbox, *hbox;
 
 	if (plugin_window)
 	{
-		gtk_window_present (GTK_WINDOW (plugin_window));
+		mg_bring_tofront (plugin_window);
 		return;
 	}
 
-	plugin_window = gtk_dialog_new ();
-	g_signal_connect (G_OBJECT (plugin_window), "destroy",
-							G_CALLBACK (plugingui_close), 0);
-	gtk_window_set_default_size (GTK_WINDOW (plugin_window), 500, 250);
-	vbox = GTK_DIALOG (plugin_window)->vbox;
-	action_area = GTK_DIALOG (plugin_window)->action_area;
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
-	gtk_window_set_position (GTK_WINDOW (plugin_window), GTK_WIN_POS_CENTER);
-	gtk_window_set_title (GTK_WINDOW (plugin_window), _(DISPLAY_NAME": Plugins and Scripts"));
+	plugin_window = mg_create_generic_tab ("Addons", _(DISPLAY_NAME": Plugins and Scripts"),
+														 FALSE, TRUE, plugingui_close, NULL,
+														 500, 250, &vbox, 0);
+	gtkutil_destroy_on_esc (plugin_window);
 
 	view = plugingui_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (plugin_window), "view", view);
 
-	gtkutil_button (action_area, GTK_STOCK_REVERT_TO_SAVED, NULL,
+
+	hbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_SPREAD);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
+	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
+
+	gtkutil_button (hbox, GTK_STOCK_REVERT_TO_SAVED, NULL,
 	                plugingui_loadbutton_cb, NULL, _("_Load..."));
 
-	gtkutil_button (action_area, GTK_STOCK_DELETE, NULL,
-	                plugingui_unload, NULL, _("_UnLoad"));
+	gtkutil_button (hbox, GTK_STOCK_DELETE, NULL,
+	                plugingui_unload, NULL, _("_Unload"));
 
-	gtkutil_button (action_area,
-						 GTK_STOCK_CLOSE, NULL, plugingui_close_button,
-						 NULL, _("_Close"));
- 
+	gtkutil_button (hbox, GTK_STOCK_REFRESH, NULL,
+	                plugingui_reloadbutton_cb, view, _("_Reload"));
+
 	fe_pluginlist_update ();
 
-	gtk_widget_show (plugin_window);
+	gtk_widget_show_all (plugin_window);
 }

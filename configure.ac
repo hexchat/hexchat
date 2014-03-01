@@ -1,15 +1,17 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([HexChat],[2.9.3],[http://www.hexchat.org/],[hexchat])
+AC_INIT([HexChat],[2.9.6])
 
 AC_PREREQ([2.60])
 AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([configure.ac])
+
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE([1.9 dist-bzip2 subdir-objects no-define])
+AM_INIT_AUTOMAKE([1.11 dist-bzip2 subdir-objects no-define foreign])
+AM_SILENT_RULES([yes])
 
 AC_USE_SYSTEM_EXTENSIONS
 AM_MAINTAINER_MODE
@@ -19,6 +21,7 @@ AC_PROG_CPP
 AM_PROG_AS
 AM_DISABLE_STATIC
 AC_PROG_LIBTOOL
+AC_PATH_PROG(MDTOOL, mdtool, no)
 
 dnl -----------------------------------------------------------
 dnl Language Support
@@ -26,9 +29,8 @@ dnl -----------------------------------------------------------
 GETTEXT_PACKAGE=hexchat
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
-
-ALL_LINGUAS="am az be bg ca cs de el en_GB es et fi fr gl hi hu it ja kn ko lt lv mk ms nb nl no pa pl pt pt_BR ru sk sl sq sr sv th uk vi wa zh_CN zh_TW"
-AM_GNU_GETTEXT
+IT_PROG_INTLTOOL([0.40.0])
+AM_GLIB_GNU_GETTEXT
 
 dnl displaced from acconfig.h
 AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
@@ -38,29 +40,22 @@ AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
-dnl AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
-AH_VERBATIM([USE_SHM],[#undef USE_SHM])
-AH_VERBATIM([USE_GTKSPELL],[#undef USE_GTKSPELL])
-AH_VERBATIM([USE_LIBSEXY],[#undef USE_LIBSEXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
+AH_VERBATIM([HAVE_GTK_MAC],[#undef HAVE_GTK_MAC])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
+AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
-AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
-AH_VERBATIM([USE_XFT],[#undef USE_XFT])
-AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
 AH_VERBATIM([USE_SIGACTION],[#undef USE_SIGACTION])
 AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
 AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
 AH_VERBATIM([socklen_t],[#undef socklen_t])
 AH_VERBATIM([USE_DBUS],[#undef USE_DBUS])
 
-AC_DEFINE([XCHAT_REVISION],["1521"],[XChat SVN Revision])
-
 AC_PATH_PROG(sedpath, sed)
 if test "_$sedpath" = _; then
-	AC_MSG_ERROR("Cannot find sed: I need it\!")
+	AC_MSG_ERROR(Cannot find sed: I need it!)
 fi
 
 AC_PATH_PROG(unamepath, uname)
@@ -83,195 +78,147 @@ dnl ** configure switches ***********************************************
 dnl *********************************************************************
 
 AC_ARG_ENABLE(socks,
-[  --enable-socks          link with SOCKS5 library (default: no)],
+	[AS_HELP_STRING([--enable-socks],[link with SOCKS5 library (default: no)])],
         socks=$enableval, socks=no)
 
 AC_ARG_ENABLE(ipv6,
-[  --enable-ipv6           enable IPv6 (default: no)],
-        ipv6=$enableval, ipv6=no)
-
-AC_ARG_ENABLE(xft,
-[  --enable-xft            enable use of Xft directly (default: no)],
-        xft=$enableval, xft=no)
+	[AS_HELP_STRING([--disable-ipv6],[disable IPv6])],
+        ipv6=$enableval, ipv6=yes)
 
 AC_ARG_ENABLE(openssl,
-[  --enable-openssl[=PATH]   enable use of openSSL],
+	[AS_HELP_STRING([--enable-openssl[=PATH]],[enable use of openSSL])],
         openssl=$enableval, openssl=yes)
 
 AC_ARG_ENABLE(gtkfe,
-[  --disable-gtkfe         disable building gtk frontend],
+	[AS_HELP_STRING([--disable-gtkfe],[disable building gtk frontend])],
         gtkfe=$enableval, gtkfe=yes)
 
 AC_ARG_ENABLE(textfe,
-[  --enable-textfe         build the text frontend (default: no)],
+	[AS_HELP_STRING([--enable-textfe],[build the text frontend (default: no)])],
         textfe=$enableval, textfe=no)
 
-dnl AC_ARG_ENABLE(gnome,
-dnl [  --disable-gnome         disable use of gnome],
-dnl        gnome=$enableval, gnome=yes)
-
-AC_ARG_ENABLE(xlib,
-[  --disable-xlib          disable use of xlib (for non X11 systems)],
-        xlib=$enableval, xlib=yes)
-
 AC_ARG_ENABLE(python,
-[  --disable-python        don't build the python plugin],
-        python=$enableval, python=yes)
+	[AS_HELP_STRING([--enable-python=pythonversion],[build the python plugin; possible values: "python2", "python3" or specific such as "python3.3" (default on, python2)])],
+        python=$enableval, python=python2)
+AS_IF([test "x$python" = "xyes"], [python=python2])
 
 AC_ARG_ENABLE(perl,
-[  --disable-perl          don't build the perl plugin],
+	[AS_HELP_STRING([--disable-perl],[don\'t build the perl plugin])],
         perl=$enableval, perl=yes)
 
 AC_ARG_ENABLE(perl_old,
-[  --disable-perl_old      no backwards compatibility for perl plugin],
+	[AS_HELP_STRING([--disable-perl_old],[no backwards compatibility for perl plugin])],
         perl_old=$enableval, perl_old=yes)
 
-AC_ARG_ENABLE(tcl,
-[  --enable-tcl[=PATH]       directory with Tcl config file: tclConfig.sh],
-        tcl=$enableval, tcl=yes)
-
 AC_ARG_ENABLE(plugin,
-[  --disable-plugin        disable plugin support],
+	[AS_HELP_STRING([--disable-plugin],[disable plugin support])],
         plugin=$enableval, plugin=yes)
 
 AC_ARG_ENABLE(checksum,
-[  --disable-checksum      disable the Checksum plugin],
+	[AS_HELP_STRING([--disable-checksum],[disable the Checksum plugin])],
         checksum=$enableval, checksum=yes)
 
 AC_ARG_ENABLE(doat,
-[  --disable-doat          disable the Do At plugin],
+	[AS_HELP_STRING([--disable-doat],[disable the Do At plugin])],
         doat=$enableval, doat=yes)
 
 AC_ARG_ENABLE(fishlim,
-[  --disable-fishlim       disable the FiSHLiM plugin],
+	[AS_HELP_STRING([--disable-fishlim],[disable the FiSHLiM plugin])],
         fishlim=$enableval, fishlim=yes)
 
-AC_ARG_ENABLE(sasl,
-[  --disable-sasl          disable the SASL plugin],
-        sasl=$enableval, sasl=yes)
+AC_ARG_ENABLE(sysinfo,
+	[AS_HELP_STRING([--disable-sysinfo],[disable the SysInfo plugin])],
+        sysinfo=$enableval, sysinfo=yes)
 
 AC_ARG_ENABLE(dbus,
-[  --disable-dbus          disable DBUS support],
+	[AS_HELP_STRING([--disable-dbus],[disable DBUS support])],
         dbus=$enableval, dbus=yes)
 
 AC_ARG_ENABLE(libnotify,
-[  --disable-libnotify     disable libnotify support],
+	[AS_HELP_STRING([--disable-libnotify],[disable libnotify support])],
         libnotify=$enableval, libnotify=yes)
 
-AC_ARG_ENABLE(mmx,
-[  --disable-mmx           disable MMX assembly routines],
-        mmx=$enableval, mmx=yes)
-
-AC_ARG_ENABLE(shm,
-[  --enable-shm            enable use of XShm for fast tinting (default: no)],
-        shm=$enableval, shm=no)
-
-AC_ARG_ENABLE(spell,
-[  --enable-spell=type     enable spelling type: none static libsexy gtkspell],
-		  spell=$enableval, spell=static)
+AC_ARG_ENABLE(libcanberra,
+	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
+		libcanberra=$enableval, libcanberra=yes)
 
 AC_ARG_ENABLE(ntlm,
-[  --enable-ntlm           enable Microsoft's NTLM auth (libntlm) library support (default: no)],
+	[AS_HELP_STRING([--enable-ntlm],[enable Microsoft\'s NTLM auth (libntlm) library support (default: no)])],
 	ntlm=$enableval, ntlm=no)
 
 AC_ARG_ENABLE(libproxy,
-[  --disable-libproxy      disable libproxy support (default: auto)],
+	[AS_HELP_STRING([--disable-libproxy],[disable libproxy support (default: auto)])],
         libproxy=$enableval, libproxy=auto)
+
+AC_ARG_ENABLE(isocodes,
+	[AS_HELP_STRING([--disable-isocodes],[disable iso-codes with spell-check])],
+        isocodes=$enableval, isocodes=yes)
+
+AC_ARG_ENABLE(minimal-flags,
+	[AS_HELP_STRING([--enable-minimal-flags],[only add those CFLAGS that are really needed or not intrusive (default: no)])],
+        minimalflags=$enableval, minimalflags=no)
+
+AC_ARG_WITH(theme-manager,
+	[AS_HELP_STRING([--with-theme-manager],[compile theme manager (needs monodevelop, default: off)])],
+		theme_manager=$withval, theme_manager=no)
+
+
+
+dnl *********************************************************************
+dnl ** THEME-MANAGER ****************************************************
+dnl *********************************************************************
+if test "x$theme_manager" != "xno" ; then
+	if test "x$MDTOOL" = "xno"; then
+		AC_MSG_ERROR([No "mdtool" found, you need to install monodevelop!])
+	fi
+fi
 
 
 dnl *********************************************************************
 dnl ** GLIB *************************************************************
 dnl *********************************************************************
 
-AM_PATH_GLIB_2_0(2.12.0, glib=yes, glib=no)
+AM_PATH_GLIB_2_0(2.28.0, glib=yes, glib=no)
 if test "$glib" = no; then
-	AC_MSG_ERROR("Cannot find glib")
+	AC_MSG_ERROR(Cannot find GLib!)
 fi
 
-COMMON_CFLAGS="$GLIB_CFLAGS"
-COMMON_LIBS="$GLIB_LIBS"
-COMMON_LIBS="$COMMON_LIBS -lgmodule-2.0"
+PKG_CHECK_MODULES([GOBJECT], [gobject-2.0], [], [AC_MSG_ERROR(Cannot find gobject-2.0!)])
+PKG_CHECK_MODULES([GIO], [gio-2.0], [], [AC_MSG_ERROR(Cannot find gio-2.0!)])
+
+COMMON_CFLAGS="$GLIB_CFLAGS $GIO_CFLAGS $GOBJECT_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
+COMMON_LIBS="$GLIB_LIBS $GIO_LIBS $GOBJECT_LIBS -lgmodule-2.0"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
 dnl *********************************************************************
 
-AM_PATH_GTK_2_0(2.10.0, havegtk=yes, havegtk=no)
+# we might get undefined macro without this test
+if test "$gtkfe" = yes ; then
+	AM_PATH_GTK_2_0(2.24.0, havegtk=yes, havegtk=no)
 
-if test "$havegtk" = no; then
-	gtkfe=no
-	echo
-	echo Cannot find GTK\! Not building GTK FrontEnd.
-	echo
+	if test "$havegtk" = no; then
+		gtkfe=no
+		echo
+		echo Cannot find GTK\! Not building GTK FrontEnd.
+		echo
+	fi
 fi
-
-if test "$gtkfe" != yes; then
-	gnome=no
-	COMMON_LIBS="$GLIB_LIBS"
-	COMMON_CFLAGS="$GLIB_CFLAGS"
-fi
-
-dnl *********************************************************************
-dnl ** GNOME ************************************************************
-dnl *********************************************************************
 
 GUI_LIBS="$GUI_LIBS $GTK_LIBS"
-GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
-
-gnome=no
-#if test "$gnome" = yes; then
-#	AC_PATH_PROG(pkgconfigpath, pkg-config)
-#	AC_MSG_CHECKING(Gnome2 compile flags)
-#	GNOME_CFLAGS="`$pkgconfigpath libgnome-2.0 --cflags 2>/dev/null`"
-#	if test "_$GNOME_CFLAGS" = _ ; then
-#		gnome=no
-#		AC_MSG_RESULT([Gnome not found, building without it.])
-#	else
-#		GNOME_VER="`$pkgconfigpath libgnome-2.0 --modversion`"
-#		GUI_LIBS="$GUI_LIBS `$pkgconfigpath libgnome-2.0 --libs`"
-#		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
-#		AC_DEFINE(USE_GNOME)
-#		AC_MSG_RESULT(ok)
-#	fi
-#fi
-
-# GConf
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_DEPRECATED"
 
 dnl *********************************************************************
-dnl ** XFT **************************************************************
+dnl ** MAC_INTEGRATION **************************************************
 dnl *********************************************************************
 
-if test "$xft" = yes; then
-	AC_PATH_PROG(pkgconfigpath, pkg-config)
-	if $pkgconfigpath xft --exists; then
-		GUI_CFLAGS="$GUI_CFLAGS `$pkgconfigpath xft --cflags`"
-		GUI_LIBS="$GUI_LIBS `$pkgconfigpath xft --libs`"
-	else
-		xft=no
-		oldCPPFLAGS=$CPPFLAGS
-		CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
-		AC_CHECK_HEADERS(X11/Xft/Xft.h, xft=yes)
-		CPPFLAGS=$oldCPPFLAGS
-	fi
-	if test "$xft" = yes; then
-		AC_DEFINE(USE_XFT)
-	fi
-fi
-
-dnl *********************************************************************
-dnl ** XLIB *************************************************************
-dnl *********************************************************************
-
-if test "$xlib" = yes; then
-	AC_DEFINE(USE_XLIB)
-	if test "$system" = "SunOS"; then
-		LIBS="$LIBS -L/usr/openwin/lib -lX11"
-	else
-		AC_CHECK_LIB(X11, XSetWMHints)
-	fi
-else
-	shm=no
+_gdk_tgt=`$PKG_CONFIG --variable=target gdk-2.0`
+if test "x$_gdk_tgt" = xquartz; then
+		PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration, [
+			GUI_LIBS="$GUI_LIBS $GTK_MAC_LIBS"
+			GUI_CFLAGS="$GUI_CFLAGS $GTK_MAC_CFLAGS"
+			AC_DEFINE(HAVE_GTK_MAC)
+		])
 fi
 
 dnl *********************************************************************
@@ -279,45 +226,59 @@ dnl ** PERL *************************************************************
 dnl *********************************************************************
 
 if test "$perl" = yes; then
-	AC_PATH_PROG(perlpath, perl)
-	AC_MSG_CHECKING(for Perl compile flags)
-	PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
-	if test "_$PERL_CFLAGS" = _ ; then
-		AC_MSG_RESULT([not found, building without perl.])
-		perl=no
-	else
-		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts |$sedpath 's/-lgdbm //'`
-		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-ldb //'`
-		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lndbm //'`
-		if test "$system" = "Linux"; then
-			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lnsl //'`
-			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lposix //'`
-		fi
-		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lc //'`
-		AC_MSG_RESULT(ok)
-
-#		oldLIBS=$LIBS
-#		LIBS="$LIBS $PERL_LDFLAGS"
-#		AC_CHECK_FUNC(eval_pv)
-#		AC_CHECK_FUNC(call_pv)
-#		LIBS=$oldLIBS
-
-		AC_MSG_CHECKING(for perl >= 5.8.0)
-		PERL_VER=`$perlpath -e 'print $]>= 5.008?"yes":"no"'`
-		if test "$PERL_VER" = "yes"; then
-			AC_MSG_RESULT(yes)
-			AC_MSG_CHECKING(if perl plugin will be backward compatible)
-			if test "$perl_old" = "yes"; then
-					  AC_MSG_RESULT(yes)
-					  AC_DEFINE(OLD_PERL)
-			else
-					  AC_MSG_RESULT(no)
-			fi
-		else
-			AC_MSG_RESULT(no)
-			echo "perl version too old, building without perl."
+	AC_MSG_CHECKING(for plugin interface used by Perl)
+	if test "$plugin" = yes; then
+		AC_MSG_RESULT([yes])
+		AC_PATH_PROG(perlpath, perl)
+		AC_MSG_CHECKING(for Perl compile flags)
+		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
+		if test "_$PERL_CFLAGS" = _ ; then
+			AC_MSG_RESULT([not found, building without perl.])
 			perl=no
+		else
+			PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts |$sedpath 's/-lgdbm //'`
+			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-ldb //'`
+			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lndbm //'`
+			if test "$system" = "Linux"; then
+				PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lnsl //'`
+				PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lposix //'`
+			fi
+			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lc //'`
+			AC_MSG_RESULT(ok)
+
+			AC_MSG_CHECKING(for perl >= 5.8.0)
+			PERL_VER=`$perlpath -e 'print $]>= 5.008?"yes":"no"'`
+			if test "$PERL_VER" = "yes"; then
+				original_cflags="$CFLAGS"
+				original_ldflags="$LDFLAGS"
+				CFLAGS="$PERL_CFLAGS"
+				LDFLAGS="$PERL_LDFLAGS"
+				AC_TRY_LINK([#include <EXTERN.h>
+	#include <perl.h>], [], perl_is_usable=yes, perl_is_usable=no)
+				CFLAGS="$original_cflags"
+				LDFLAGS="$original_ldflags"
+				if test x$perl_is_usable = xno ; then
+					AC_MSG_RESULT(no)
+					perl=no
+				else
+					AC_MSG_RESULT(yes)
+					AC_MSG_CHECKING(if perl plugin will be backward compatible)
+					if test "$perl_old" = "yes"; then
+							  AC_MSG_RESULT(yes)
+							  AC_DEFINE(OLD_PERL)
+					else
+							  AC_MSG_RESULT(no)
+					fi
+				fi
+			else
+				AC_MSG_RESULT(no)
+				echo "perl version too old, building without perl."
+				perl=no
+			fi
 		fi
+	else
+		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for Perl])
+		perl=no
 	fi
 fi
 
@@ -325,63 +286,41 @@ dnl *********************************************************************
 dnl ** PYTHON ***********************************************************
 dnl *********************************************************************
 
-if test "$python" = yes; then
-        AC_PATH_PROG(pythonpath, python2)
-        if test "_$pythonpath" = _ ; then
-                AC_PATH_PROG(pythonpath, python)
-        fi
-        if test "_$pythonpath" = _ ; then
-                python=no
-        else
-                AC_MSG_CHECKING(Python version)
-                changequote(<<, >>)dnl
-                PY_VER=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_config_vars("VERSION")[0];'`
-                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_lib(standard_lib=1);'`
-                PY_INC=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_config_vars("INCLUDEPY")[0];'`
-                $pythonpath -c "import sys; map(int,sys.version[:3].split('.')) >= [2,2] or sys.exit(1)"
-                changequote([, ])dnl
-                AC_MSG_RESULT($PY_VER)
-                if test "$?" != "1"; then
-                        AC_MSG_CHECKING(Python compile flags)
-                        PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
-                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
-                        if test -f $PY_INC/Python.h; then
-                                PY_LIBS="-L$PY_LIB/config -lpython$PY_VER -lpthread -lutil"
-                                PY_CFLAGS="-I$PY_INC"
-                                AC_MSG_RESULT(ok)
-                        else
-                                python=no
-                                AC_MSG_RESULT([Can't find Python.h])
-                        fi
-                else
-                        echo "Python too old. Only 2.2 or above is supported."
-                        python=no
-                fi
-        fi
-fi
+if test "x$python" != xno ; then
+	AC_MSG_CHECKING(for plugin interface used by Python)
+	if test "$plugin" = yes; then
+		AC_MSG_RESULT([yes])
+		case $python in
+			dnl set python2 default here
+			python2)
+				PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_WARN(Cannot find python-2.7!)])
+				PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
+			dnl set python3 default here
+			python3)
+				PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_WARN(Cannot find python-3.3!)])
+				PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+			dnl add broken versions here
+			python2.5|python2.6|python3.1|python3.2)
+				AC_MSG_ERROR(Unsupported Python version ${python}!);;
+			python*)
+				python="python-${python#python}" # stay posix compliant
+				PKG_CHECK_MODULES([PY], [${python}], [], [AC_MSG_WARN(Cannot find "${python}.pc"!)])
+				PY_VER="`$PKG_CONFIG --modversion ${python}`";;
+			*)
+				AC_MSG_WARN(Unsupported Python ${python}!)
+		esac
+		AC_MSG_CHECKING(Python version)
 
-dnl *********************************************************************
-dnl ** TCL **************************************************************
-dnl *********************************************************************
-
-AC_MSG_CHECKING(for location of tclConfig.sh)
-dirs="$tcl /lib /usr/lib /usr/tcl/lib /usr/lib/tcl8.4 /usr/local/lib /usr/local/tcl-8.4/lib /usr/local/tcl/lib /opt/lib /usr/lib/tcl8.3"
-found=0
-if test "$tcl" != "no"; then
-	tcl=no
-	for try in $dirs; do
-		if test -f $try/tclConfig.sh; then
-			found=1
-			. $try/tclConfig.sh
-			TCL_LIBS="$TCL_LIB_SPEC $TCL_LIBS"
-			TCL_CFLAGS="-I${TCL_PREFIX}/include $TCL_INCLUDE_SPEC"
-			tcl=yes
-			AC_MSG_RESULT($try/tclConfig.sh)
-			break
+		if test "$PY_VER"; then
+			AC_MSG_RESULT($PY_VER)
+			python="python-${PY_VER}"
+		else
+			AC_MSG_RESULT(Not found)
+			python=no
 		fi
-	done
-	if test "$found" -eq 0 ; then
-		AC_MSG_RESULT([tclConfig.sh not found - use the --enable-tcl option])
+	else
+		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for Python])
+		python=no
 	fi
 fi
 
@@ -417,11 +356,10 @@ dnl *********************************************************************
 
 retry=no
 if test "$openssl" != no; then
-	AC_PATH_PROG(pkgconfigpath, pkg-config)
 	AC_MSG_CHECKING(for openssl through pkg-config)
-	if $pkgconfigpath openssl --exists; then
-		CPPFLAGS="$CPPFLAGS `$pkgconfigpath openssl --cflags`"
-		LIBS="$LIBS `$pkgconfigpath openssl --libs`"
+	if $PKG_CONFIG openssl --exists; then
+		CPPFLAGS="$CPPFLAGS `$PKG_CONFIG openssl --cflags`"
+		LIBS="$LIBS `$PKG_CONFIG openssl --libs`"
 		AC_DEFINE(USE_OPENSSL)
 		AC_MSG_RESULT(yes)
 		openssl=yes
@@ -475,7 +413,7 @@ if test "x$libproxy" = "xyes" -o "x$libproxy" = "xauto" ; then
 		libproxy=yes
 	], [
 		if test "x$libproxy" = "xyes" ; then
-			AC_MSG_ERROR(Can't find libproxy!)
+			AC_MSG_ERROR(Cannot find libproxy!)
 		fi
 		libproxy=no
 	])
@@ -497,9 +435,8 @@ if test "$plugin" = yes; then
 	fi
 	if test "$have_dl" = yes; then
 		AC_DEFINE(USE_PLUGIN)
-		AC_PATH_PROG(pkgconfigpath, pkg-config)
 		dnl we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
-		RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
+		RDYNAMIC_FLAGS="`$PKG_CONFIG gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
 		LIBS="$LIBS $RDYNAMIC_FLAGS"
 		if test "$LD" = ""; then
 			VS="`ld --help | grep version-script 2> /dev/null`"
@@ -572,17 +509,17 @@ if test "$fishlim" != "no"; then
 fi
 
 dnl *********************************************************************
-dnl ** SASL *************************************************************
+dnl ** SYSINFO **********************************************************
 dnl *********************************************************************
 
-if test "$sasl" != "no"; then
-	AC_MSG_CHECKING(for plugin interface used by SASL)
-	sasl=no
+if test "$sysinfo" != "no"; then
+	AC_MSG_CHECKING(for plugin interface used by SysInfo)
 	if test "$plugin" = yes; then
-		sasl=yes
 		AC_MSG_RESULT([yes])
+		PKG_CHECK_MODULES(LIBPCI, libpci >= 3.0.0, [sysinfo=yes], [sysinfo=no])
 	else
-		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for SASL])
+		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for SysInfo])
+		sysinfo=no
 	fi
 fi
 
@@ -625,41 +562,35 @@ if test "x$libnotify" = "xyes" ; then
 fi
 
 dnl *********************************************************************
-dnl ** SPELL ************************************************************
+dnl ** LIBCANBERRA ******************************************************
 dnl *********************************************************************
 
-if test "$spell" = "gtkspell" ; then
-	PKG_CHECK_MODULES(GTKSPELL, gtkspell-2.0 >= 2.0.2, [], [
-		spell=no
+if test "x$libcanberra" = "xyes" ; then
+	PKG_CHECK_MODULES(LIBCANBERRA, libcanberra >= 0.22, [], [
+		libcanberra=no
 	])
-	if test "$spell" != "no" ; then
-		GUI_LIBS="$GUI_LIBS $GTKSPELL_LIBS"
-		GUI_CFLAGS="$GUI_CFLAGS $GTKSPELL_CFLAGS"
-		AC_DEFINE(USE_GTKSPELL)
+	if test "$libcanberra" != "no" ; then
+		COMMON_LIBS="$COMMON_LIBS $LIBCANBERRA_LIBS"
+		COMMON_CFLAGS="$COMMON_CFLAGS $LIBCANBERRA_CFLAGS"
+		AC_DEFINE(USE_LIBCANBERRA)
 	fi
 fi
 
-if test "$spell" = "libsexy" ; then
-	PKG_CHECK_MODULES([LIBSEXY], [libsexy >= 0.1.8], [
-		libsexy=yes
-		GUI_LIBS="$GUI_LIBS $LIBSEXY_LIBS"
-		GUI_CFLAGS="$GUI_CFLAGS $LIBSEXY_CFLAGS"
-		AC_DEFINE(USE_LIBSEXY)
-	], [
-		dnl use builtin static one
-		spell="static"
-	])
-fi
+dnl *********************************************************************
+dnl ** SPELL ************************************************************
+dnl *********************************************************************
 
-if test "$spell" = "static" ; then
-	PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.0.0, [
-	AC_DEFINE(HAVE_ISO_CODES)
-	AC_DEFINE(USE_LIBSEXY)
-	GUI_CFLAGS="$GUI_CFLAGS -I/usr/include/libxml2"
-	LIBS="$LIBS -lxml2"
-	], [
-	AC_MSG_ERROR("Cannot find libxml2")
-	])
+if test "x$isocodes" = "xyes" ; then
+	PKG_CHECK_MODULES(ISOCODES, "iso-codes", [
+		iso_codes_prefix=`$PKG_CONFIG --variable=prefix iso-codes 2>/dev/null || echo /usr`
+    	AC_MSG_NOTICE([iso-codes prefix: $iso_codes_prefix])
+    	AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$iso_codes_prefix"], [ISO codes prefix])
+    	AC_DEFINE_UNQUOTED([ISO_CODES_LOCALEDIR], ["$iso_codes_prefix/share/locale"], [ISO codes locale dir])
+    	AC_DEFINE([HAVE_ISO_CODES], [1], [iso-codes available])
+    	], [
+    	isocodes=no
+    	AC_MSG_WARN(iso-codes not found!)
+    ])
 fi
 
 dnl *********************************************************************
@@ -667,20 +598,21 @@ dnl ** CONDITIONALS *****************************************************
 dnl *********************************************************************
 
 AM_CONDITIONAL(USE_OPENSSL, test "x$openssl" = "xyes")
-AM_CONDITIONAL(USE_LIBSEXY, test "x$spell" = "xstatic")
 AM_CONDITIONAL(USE_LIBNOTIFY, test "x$libnotify" = "xyes")
+AM_CONDITIONAL(USE_LIBCANBERRA, test "x$libcanberra" = "xyes")
+AM_CONDITIONAL(USE_MSPROXY, test "x$ntlm" = "xyes")
 AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
 AM_CONDITIONAL(DO_GTK, test "x$gtkfe" = "xyes")
 AM_CONDITIONAL(DO_PERL, test "x$perl" = "xyes")
-AM_CONDITIONAL(DO_PYTHON, test "x$python" = "xyes")
-AM_CONDITIONAL(DO_TCL, test "x$tcl" = "xyes")
+AM_CONDITIONAL(DO_PYTHON, test "x$python" != "xno")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
 AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
-AM_CONDITIONAL(DO_SASL, test "x$sasl" = "xyes")
+AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
-AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
+AM_CONDITIONAL(HAVE_ISO_CODES, test "x$isocodes" = "xyes")
+AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
 
 dnl *********************************************************************
 dnl ** SOCKS5 ***********************************************************
@@ -714,61 +646,6 @@ if test "x$ntlm" = "xyes" ; then
 fi
 
 dnl *********************************************************************
-dnl ** XShm *************************************************************
-dnl *********************************************************************
-
-if test "$shm" = yes; then
-	oldl=$LIBS
-	oldc=$CPPFLAGS
-	LIBS="$LIBS `$pkgconfigpath --libs-only-L xft`"
-	CPPFLAGS="$CPPFLAGS `$pkgconfigpath --cflags-only-I xft`"
-	shm=no
-	AC_CHECK_LIB(Xext, XShmAttach, shm=yes)
-	if test "$shm" = yes; then
-		shm=no
-		AC_CHECK_HEADERS(sys/ipc.h, shm=yes)
-		if test "$shm" = yes; then
-			shm=no
-			AC_CHECK_HEADERS(sys/shm.h, shm=yes)
-		fi
-	fi
-
-	LIBS=$oldl
-	if test "$shm" = yes; then
-		GUI_LIBS="$GUI_LIBS `$pkgconfigpath --libs-only-L xft` -lX11 -lXext"
-		AC_DEFINE(USE_SHM)
-	else
-		CPPFLAGS=$oldc
-	fi
-fi
-
-dnl *********************************************************************
-dnl ** MMX **************************************************************
-dnl *********************************************************************
-
-dnl we don't need mmx on *this* machine, just i386, because
-dnl it's checked at runtime.
-if test "$mmx" = "yes"; then
-	case $host_cpu in
-    i386|i486|i586|i686|i786|k6|k7)
-    mmx=yes
-        ;;
-     *)
-    mmx=no
-	esac
-	if test "$system" = "OpenBSD"; then
-		dnl openbsd fails because mmx_cmod doesn't prefix its symbols with underscore.
-		dnl xtext.o: Undefined symbol `_shade_ximage_15_mmx' referenced from text segment
-		mmx=no
-	fi
-	if test "$mmx" = "yes"; then
-		AC_DEFINE(USE_MMX)
-	fi
-fi
-
-AM_CONDITIONAL(USE_MMX, test "$mmx" = "yes")
-
-dnl *********************************************************************
 dnl ** GCC FLAGS ********************************************************
 dnl *********************************************************************
 
@@ -777,24 +654,27 @@ if test "x$GCC" = "xyes"; then
 	if test -z "`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`" ; then
 		CFLAGS="$CFLAGS -Wall"
 	fi
-	if test "$system" = "Linux" -o "$system" = "FreeBSD"; then
-		if test -z "`echo "$CFLAGS" | grep "\-pipe" 2> /dev/null`" ; then
-			CFLAGS="$CFLAGS -pipe"
+	dnl these flags might be unwanted
+	if test x$minimalflags != xyes; then
+		if test "$system" = "Linux" -o "$system" = "FreeBSD"; then
+			if test -z "`echo "$CFLAGS" | grep "\-pipe" 2> /dev/null`" ; then
+				CFLAGS="$CFLAGS -pipe"
+			fi
 		fi
-	fi
-	if test -z "`echo "$CFLAGS" | grep "\-g " 2> /dev/null`" ; then
-		CFLAGS="$CFLAGS -g"
+		if test -z "`echo "$CFLAGS" | grep "\-g " 2> /dev/null`" ; then
+			CFLAGS="$CFLAGS -g"
+		fi
 	fi
 fi
 
 dnl does this compiler support -Wno-pointer-sign ?
-AC_MSG_CHECKING([if gcc accepts -Wno-pointer-sign ])
+AC_MSG_CHECKING([if $CC accepts -Wno-pointer-sign ])
 
 safe_CFLAGS=$CFLAGS
 CFLAGS="-Wno-pointer-sign"
 
 AC_TRY_COMPILE(, [
-int main () { return 0 ; }
+return 0;
 ],
 [
 no_pointer_sign=yes
@@ -810,13 +690,13 @@ if test x$no_pointer_sign = xyes; then
 fi
 
 dnl does this compiler support -funsigned-char ?
-AC_MSG_CHECKING([if gcc accepts -funsigned-char ])
+AC_MSG_CHECKING([if $CC accepts -funsigned-char ])
 
 safe_CFLAGS=$CFLAGS
 CFLAGS="-funsigned-char"
 
 AC_TRY_COMPILE(, [
-int main () { return 0 ; }
+return 0;
 ],
 [
 unsigned_char=yes
@@ -831,12 +711,34 @@ if test x$unsigned_char = xyes; then
 	CFLAGS="$CFLAGS -funsigned-char"
 fi
 
+dnl does this compiler support -Wno-unused-result ?
+AC_MSG_CHECKING([if $CC accepts -Wno-unused-result ])
+
+safe_CFLAGS=$CFLAGS
+CFLAGS="-Wno-unused-result"
+
+AC_TRY_COMPILE(, [
+return 0;
+],
+[
+no_unused_result=yes
+AC_MSG_RESULT([yes])
+], [
+no_unused_result=no
+AC_MSG_RESULT([no])
+])
+CFLAGS=$safe_CFLAGS
+
+if test x$no_unused_result = xyes; then
+	CFLAGS="$CFLAGS -Wno-unused-result"
+fi
+
 dnl *********************************************************************
 dnl ** FUNCTIONS/LIBS/CFLAGS ********************************************
 dnl *********************************************************************
 
 AC_MSG_CHECKING(for modern sigaction)
-dnl libc5 on linux and FreeBSD 3.x doesn't have siginfo_t
+dnl libc5 on linux and FreeBSD 3.x doesn\'t have siginfo_t
 dnl and the sa_sigation field.
 AC_TRY_COMPILE(
 	[#include <signal.h>],
@@ -849,13 +751,7 @@ AC_TRY_COMPILE(
 	],
 	AC_MSG_RESULT(no))
 
-AC_PATH_PROG(gdkpixbufcsourcepath, gdk-pixbuf-csource)
-AC_SUBST(gdkpixbufcsourcepath)
-if test "$gtkfe" != no -a "_$gdkpixbufcsourcepath" = _; then
-	AC_MSG_ERROR("Cannot find gdk-pixbuf-csource: Install GTK+ 2.0\!")
-fi
-
-dnl if we don't have this, use g_snprintf instead
+dnl if we don\'t have this, use g_snprintf instead
 AC_CHECK_FUNCS(snprintf vsnprintf memrchr strtoull)
 
 AC_CHECK_FUNC(gethostbyname, ,
@@ -903,11 +799,10 @@ AC_SUBST(PERL_CFLAGS)
 AC_SUBST(PERL_LDFLAGS)
 AC_SUBST(PY_CFLAGS)
 AC_SUBST(PY_LIBS)
-AC_SUBST(TCL_LIBS)
-AC_SUBST(TCL_CFLAGS)
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 
+m4_ifdef([PKG_INSTALLDIR], [PKG_INSTALLDIR], AC_SUBST([pkgconfigdir], ${libdir}/pkgconfig))
 
 PLUGIN_INCLUDES='-I$(top_srcdir)/plugins'
 AC_SUBST(PLUGIN_INCLUDES)
@@ -918,53 +813,55 @@ test "x$exec_prefix" = xNONE && exec_prefix="$prefix"
 
 AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
 
-AS_AC_EXPAND(HEXCHATLIBDIR, "${libdir}/hexchat")
+AS_AC_EXPAND(HEXCHATLIBDIR, "${libdir}/hexchat/plugins")
 AC_DEFINE_UNQUOTED(HEXCHATLIBDIR, "$HEXCHATLIBDIR")
 
 AS_AC_EXPAND(HEXCHATSHAREDIR, "$datadir")
 AC_DEFINE_UNQUOTED(HEXCHATSHAREDIR, "$HEXCHATSHAREDIR")
 
 dnl for plugins/xxx/Makefile.am
-hexchatlibdir=${libdir}/hexchat
+hexchatlibdir=${libdir}/hexchat/plugins
 AC_SUBST(hexchatlibdir)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
+data/Makefile
+data/icons/Makefile
+data/misc/Makefile
+data/man/Makefile
+data/pkgconfig/Makefile
+data/pkgconfig/hexchat-plugin.pc
 src/Makefile
 src/common/Makefile
 src/common/dbus/Makefile
 src/fe-text/Makefile
 src/fe-gtk/Makefile
-src/pixmaps/Makefile
+src/htm/Makefile
+src/htm/thememan
+osx/Info.plist
 plugins/Makefile
 plugins/python/Makefile
 plugins/perl/Makefile
-plugins/tcl/Makefile
 plugins/checksum/Makefile
 plugins/doat/Makefile
 plugins/fishlim/Makefile
-plugins/sasl/Makefile
-intl/Makefile
+plugins/sysinfo/Makefile
 po/Makefile.in
 ])
+
+AC_OUTPUT
 
 echo
 echo HexChat $VERSION
 echo
 echo GTK+ interface ........ : $gtkfe
 echo Text interface ........ : $textfe
+echo Theme manager ......... : $theme_manager
 echo
-echo MMX tinting ........... : $mmx
-echo XShm tinting .......... : $shm
-if test "$xft" = no; then
-  echo Text backend .......... : Pango
-else
-  echo Text backend .......... : Xft
-fi
 echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
-echo Spelling .............. : $spell
+echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
 echo NLS/gettext ........... : $USE_NLS
 echo IPv6 support .......... : $ipv6
@@ -973,23 +870,17 @@ echo libproxy support ...... : $libproxy
 echo
 echo Perl .................. : $perl
 echo Python ................ : $python
-echo Tcl ................... : $tcl
 echo
 echo Checksum .............. : $checksum
 echo Do At ................. : $doat
 echo FiSHLiM ............... : $fishlim
-echo SASL .................. : $sasl
+echo SysInfo ............... : $sysinfo
 echo
 echo The binary will be installed in $prefix/bin
 echo
 
 if test "$gtkfe" = no; then
 	echo Warning: The GTK \(GUI\) frontend will not be built.
-	echo
-fi
-
-if test "$spell" = "gtkspell"; then
-	echo Warning: GTK SPELL is not the recommended spelling library.
 	echo
 fi
 

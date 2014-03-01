@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 #define _FILE_OFFSET_BITS 64 /* allow selection of large files */
 #include <stdio.h>
@@ -26,38 +26,22 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkbutton.h>
-#include <gtk/gtkclist.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkwindow.h>
-#include <gtk/gtkhbox.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtktooltips.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkspinbutton.h>
-#include <gtk/gtkclipboard.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkcellrenderertext.h>
-#include <gtk/gtkcellrenderertoggle.h>
-#include <gtk/gtkversion.h>
-#include <gtk/gtkfilechooserdialog.h>
+#include <gdk/gdkkeysyms.h>
+#if defined (WIN32) || defined (__APPLE__)
+#include <pango/pangocairo.h>
+#endif
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
+#include "../common/cfgfiles.h"
+#include "../common/hexchatc.h"
+#include "../common/typedef.h"
 #include "gtkutil.h"
 #include "pixmaps.h"
 
 #ifdef WIN32
 #include <io.h>
-#if 0	/* native file dialogs */
-#include "../common/fe.h"
-#include "../common/thread.h"
-#endif
 #else
 #include <unistd.h>
 #endif
@@ -66,26 +50,13 @@
 
 extern void path_part (char *file, char *path, int pathlen);
 
-
 struct file_req
 {
 	GtkWidget *dialog;
 	void *userdata;
 	filereqcallback callback;
 	int flags;		/* FRF_* flags */
-
-#if 0	/* native file dialogs */
-#ifdef WIN32
-	int multiple;
-	thread *th;
-	char *title;	/* native locale */
-	char *filter;
-#endif
-#endif
 };
-
-static char last_dir[256] = "";
-
 
 static void
 gtkutil_file_req_destroy (GtkWidget * wid, struct file_req *freq)
@@ -99,13 +70,14 @@ gtkutil_check_file (char *file, struct file_req *freq)
 {
 	struct stat st;
 	int axs = FALSE;
+	char temp[256];
 
-	path_part (file, last_dir, sizeof (last_dir));
+	path_part (file, temp, sizeof (temp));
 
 	/* check if the file is readable or writable */
 	if (freq->flags & FRF_WRITE)
 	{
-		if (access (last_dir, W_OK) == 0)
+		if (access (temp, W_OK) == 0)
 			axs = TRUE;
 	} else
 	{
@@ -121,7 +93,7 @@ gtkutil_check_file (char *file, struct file_req *freq)
 		char *utf8_file;
 		/* convert to UTF8. It might be converted back to locale by
 			server.c's g_convert */
-		utf8_file = xchat_filename_to_utf8 (file, -1, NULL, NULL, NULL);
+		utf8_file = hexchat_filename_to_utf8 (file, -1, NULL, NULL, NULL);
 		if (utf8_file)
 		{
 			freq->callback (freq->userdata, utf8_file);
@@ -183,192 +155,6 @@ gtkutil_file_req_response (GtkWidget *dialog, gint res, struct file_req *freq)
 	}
 }
 
-#if 0	/* native file dialogs */
-#ifdef WIN32
-static int
-win32_openfile (char *file_buf, int file_buf_len, char *title_text, char *filter,
-			   int multiple)
-{
-	OPENFILENAME o;
-
-	memset (&o, 0, sizeof (o));
-
-	o.lStructSize = sizeof (o);
-	o.lpstrFilter = filter;
-	o.lpstrFile = file_buf;
-	o.nMaxFile = file_buf_len;
-	o.lpstrTitle = title_text;
-	o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
-				OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
-	if (multiple)
-	{
-		o.Flags |= OFN_ALLOWMULTISELECT;
-	}
-
-	return GetOpenFileName (&o);
-}
-
-static int
-win32_savefile (char *file_buf, int file_buf_len, char *title_text, char *filter,
-               int multiple)
-{
-	/* we need the filter to get the default filename. it is from fe-gtk.c (fe_confirm);
-	 * but that filter is actually the whole filename, so apply an empty filter and all good.
-	 * in win32_thread2 we copy the filter ( = the filename) after the last dir into our
-	 * LPTSTR file buffer to make it actually work. the docs for this amazingly retard api:
-	 *
-	 * http://msdn.microsoft.com/en-us/library/ms646839%28VS.85%29.aspx
-	 */
-
-	OPENFILENAME o;
-
-	memset (&o, 0, sizeof (o));
-
-	o.lStructSize = sizeof (o);
-	o.lpstrFilter = "All files\0*.*\0\0";
-	o.lpstrFile = file_buf;
-	o.nMaxFile = file_buf_len;
-	o.lpstrTitle = title_text;
-	o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
-				OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
-	if (multiple)
-	{
-		o.Flags |= OFN_ALLOWMULTISELECT;
-	}
-
-	return GetSaveFileName (&o);
-}
-
-static void *
-win32_thread (struct file_req *freq)
-{
-	char buf[1024 + 32];
-	char file[1024];
-
-	memset (file, 0, sizeof (file));
-	safe_strcpy (file, last_dir, sizeof (file));
-
-	if (win32_openfile (file, sizeof (file), freq->title, freq->filter, freq->multiple))
-	{
-		if (freq->multiple)
-		{
-			char *f = file;
-
-			if (f[strlen (f) + 1] == 0)	/* only selected one file */
-			{
-				snprintf (buf, sizeof (buf), "1\n%s\n", file);
-				write (freq->th->pipe_fd[1], buf, strlen (buf));
-			} else
-			{
-				f += strlen (f) + 1; /* skip first, it's only the dir */
-				while (f[0])
-				{
-					snprintf (buf, sizeof (buf), "1\n%s\\%s\n", /*dir!*/file, f);
-					write (freq->th->pipe_fd[1], buf, strlen (buf));
-					f += strlen (f) + 1;
-				}
-			}
-
-		} else
-		{
-			snprintf (buf, sizeof (buf), "1\n%s\n", file);
-			write (freq->th->pipe_fd[1], buf, strlen (buf));
-		}
-	}
-
-	write (freq->th->pipe_fd[1], "0\n", 2);
-	Sleep (2000);
-
-	return NULL;
-}
-
-static void *
-win32_thread2 (struct file_req *freq)
-{
-	char buf[1024 + 32];
-	char file[1024];
-
-	memset (file, 0, sizeof (file));
-	safe_strcpy (file, last_dir, sizeof (file));
-	safe_strcpy (file, freq->filter, sizeof (file));
-
-	if (win32_savefile (file, sizeof (file), freq->title, NULL, freq->multiple))
-	{
-		if (freq->multiple)
-		{
-			char *f = file;
-
-			if (f[strlen (f) + 1] == 0)    /* only selected one file */
-			{
-				snprintf (buf, sizeof (buf), "1\n%s\n", file);
-				write (freq->th->pipe_fd[1], buf, strlen (buf));
-			} else
-			{
-				f += strlen (f) + 1; /* skip first, it's only the dir */
-				while (f[0])
-				{
-					snprintf (buf, sizeof (buf), "1\n%s\\%s\n", /*dir!*/file, f);
-					write (freq->th->pipe_fd[1], buf, strlen (buf));
-					f += strlen (f) + 1;
-				}
-			}
-
-		} else
-		{
-			snprintf (buf, sizeof (buf), "1\n%s\n", file);
-			write (freq->th->pipe_fd[1], buf, strlen (buf));
-		}
-	}
-
-	write (freq->th->pipe_fd[1], "0\n", 2);
-	Sleep (2000);
-
-	return NULL;
-}
-
-static gboolean
-win32_close_pipe (int fd)
-{
-	close (fd);
-	return 0;
-}
-
-static gboolean
-win32_read_thread (GIOChannel *source, GIOCondition cond, struct file_req *freq)
-{
-	char buf[512];
-	char *file;
-
-	waitline2 (source, buf, sizeof buf);
-
-	switch (buf[0])
-	{
-	case '0':	/* filedialog has closed */
-		freq->callback (freq->userdata, NULL);
-		break;
-
-	case '1':	/* got a filename! */
-		waitline2 (source, buf, sizeof buf);
-		file = g_filename_to_utf8 (buf, -1, 0, 0, 0);
-		freq->callback (freq->userdata, file);
-		g_free (file);
-		return TRUE;
-	}
-
-	/* it doesn't work to close them here, because of the weird
-		way giowin32 works. We must _return_ before closing them */
-	g_timeout_add(3000, (GSourceFunc)win32_close_pipe, freq->th->pipe_fd[0]);
-	g_timeout_add(2000, (GSourceFunc)win32_close_pipe, freq->th->pipe_fd[1]);
-
-	g_free (freq->title);
-	free (freq->th);
-	free (freq);
-
-	return FALSE;
-}
-#endif
-#endif	/* native file dialogs */
-
 void
 gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter, char *extensions,
 						int flags)
@@ -380,60 +166,6 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	char *token;
 	char *tokenbuffer;
 
-#if 0	/* native file dialogs */
-#ifdef WIN32
-	if (!(flags & FRF_WRITE))
-	{
-		freq = malloc (sizeof (struct file_req));
-		freq->th = thread_new ();
-		freq->flags = 0;
-		freq->multiple = (flags & FRF_MULTIPLE);
-		freq->callback = callback;
-		freq->userdata = userdata;
-		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
-		if (!filter)
-		{
-			freq->filter =	"All files\0*.*\0"
-							"Executables\0*.exe\0"
-							"ZIP files\0*.zip\0\0";
-		}
-		else
-		{
-			freq->filter = filter;
-		}
-
-		thread_start (freq->th, win32_thread, freq);
-		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
-
-		return;
-
-	}
-	
-	else {
-		freq = malloc (sizeof (struct file_req));
-		freq->th = thread_new ();
-		freq->flags = 0;
-		freq->multiple = (flags & FRF_MULTIPLE);
-		freq->callback = callback;
-		freq->userdata = userdata;
-		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
-		if (!filter)
-		{
-			freq->filter = "All files\0*.*\0\0";
-		}
-		else
-		{
-			freq->filter = filter;
-		}
-
-		thread_start (freq->th, win32_thread2, freq);
-		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
-
-	return;
-	}
-#endif
-#endif
-
 	if (flags & FRF_WRITE)
 	{
 		dialog = gtk_file_chooser_dialog_new (title, NULL,
@@ -441,13 +173,6 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 												GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 												GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 												NULL);
-		if (filter && filter[0])	/* filter becomes initial name when saving */
-		{
-			char temp[1024];
-			path_part (filter, temp, sizeof (temp));
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), temp);
-			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), file_part (filter));
-		}
 
 		if (!(flags & FRF_NOASKOVERWRITE))
 			gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
@@ -458,25 +183,28 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 												GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 												GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 												NULL);
-	if (flags & FRF_MULTIPLE)
-		gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (dialog), TRUE);
-	if (last_dir[0])
-		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), last_dir);
-	if (flags & FRF_ADDFOLDER)
-		gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
-														  get_xdir_fs (), NULL);
-	if (flags & FRF_CHOOSEFOLDER)
+
+	if (filter && filter[0] && (flags & FRF_FILTERISINITIAL))
 	{
-		gtk_file_chooser_set_action (GTK_FILE_CHOOSER (dialog), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
-	}
-	else
-	{
-		if (filter && (flags & FRF_FILTERISINITIAL))
+		if (flags & FRF_WRITE)
+		{
+			char temp[1024];
+			path_part (filter, temp, sizeof (temp));
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), temp);
+			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), file_part (filter));
+		}
+		else
 			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
 	}
+	else if (!(flags & FRF_RECENTLYUSED))
+		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), get_xdir ());
 
-	if (flags & FRF_EXTENSIONS && extensions != NULL)
+	if (flags & FRF_MULTIPLE)
+		gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (dialog), TRUE);
+	if (flags & FRF_CHOOSEFOLDER)
+		gtk_file_chooser_set_action (GTK_FILE_CHOOSER (dialog), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+
+	if ((flags & FRF_EXTENSIONS || flags & FRF_MIMETYPES) && extensions != NULL)
 	{
 		filefilter = gtk_file_filter_new ();
 		tokenbuffer = g_strdup (extensions);
@@ -484,13 +212,18 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 
 		while (token != NULL)
 		{
-			gtk_file_filter_add_pattern (filefilter, token);
+			if (flags & FRF_EXTENSIONS)
+				gtk_file_filter_add_pattern (filefilter, token);
+			else
+				gtk_file_filter_add_mime_type (filefilter, token);
 			token = strtok (NULL, ";");
 		}
 
 		g_free (tokenbuffer);
 		gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filefilter);
 	}
+
+	gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog), get_xdir (), NULL);
 
 	freq = malloc (sizeof (struct file_req));
 	freq->dialog = dialog;
@@ -503,6 +236,34 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	g_signal_connect (G_OBJECT (dialog), "destroy",
 						   G_CALLBACK (gtkutil_file_req_destroy), (gpointer) freq);
 	gtk_widget_show (dialog);
+}
+
+static gboolean
+gtkutil_esc_destroy (GtkWidget * win, GdkEventKey * key, gpointer userdata)
+{
+	GtkWidget *wid;
+
+	/* Destroy the window of detached utils */
+	if (!gtk_widget_is_toplevel (win))
+	{
+		if (gdk_window_get_type_hint (gtk_widget_get_window (win)) == GDK_WINDOW_TYPE_HINT_DIALOG)
+			wid = gtk_widget_get_parent (win);
+		else
+			return FALSE;
+	}
+	else
+		wid = win;
+
+	if (key->keyval == GDK_KEY_Escape)
+		gtk_widget_destroy (wid);
+			
+	return FALSE;
+}
+
+void
+gtkutil_destroy_on_esc (GtkWidget *win)
+{
+	g_signal_connect (G_OBJECT (win), "key_press_event", G_CALLBACK (gtkutil_esc_destroy), win);
 }
 
 void
@@ -548,13 +309,25 @@ fe_get_str (char *msg, char *def, void *callback, void *userdata)
 	GtkWidget *entry;
 	GtkWidget *hbox;
 	GtkWidget *label;
+	extern GtkWidget *parent_window;
 
 	dialog = gtk_dialog_new_with_buttons (msg, NULL, 0,
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 										NULL);
-	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
-	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
+
+	if (userdata == (void *)1)	/* nick box is usually on the very bottom, make it centered */
+	{
+		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+	}
+	else
+	{
+		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	}
+
 	hbox = gtk_hbox_new (TRUE, 0);
 
 	g_object_set_data (G_OBJECT (dialog), "cb", callback);
@@ -572,7 +345,7 @@ fe_get_str (char *msg, char *def, void *callback, void *userdata)
 	g_signal_connect (G_OBJECT (dialog), "response",
 						   G_CALLBACK (gtkutil_get_str_response), entry);
 
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox);
 
 	gtk_widget_show_all (dialog);
 }
@@ -601,6 +374,28 @@ gtkutil_get_number_response (GtkDialog *dialog, gint arg1, gpointer spin)
 	}
 }
 
+static void
+gtkutil_get_bool_response (GtkDialog *dialog, gint arg1, gpointer spin)
+{
+	void (*callback) (int value, void *user_data);
+	void *user_data;
+
+	callback = g_object_get_data (G_OBJECT (dialog), "cb");
+	user_data = g_object_get_data (G_OBJECT (dialog), "ud");
+
+	switch (arg1)
+	{
+	case GTK_RESPONSE_REJECT:
+		callback (0, user_data);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+		break;
+	case GTK_RESPONSE_ACCEPT:
+		callback (1, user_data);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+		break;
+	}
+}
+
 void
 fe_get_int (char *msg, int def, void *callback, void *userdata)
 {
@@ -609,13 +404,16 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 	GtkWidget *hbox;
 	GtkWidget *label;
 	GtkAdjustment *adj;
+	extern GtkWidget *parent_window;
 
 	dialog = gtk_dialog_new_with_buttons (msg, NULL, 0,
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 										NULL);
-	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+
 	hbox = gtk_hbox_new (TRUE, 0);
 
 	g_object_set_data (G_OBJECT (dialog), "cb", callback);
@@ -623,9 +421,9 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 
 	spin = gtk_spin_button_new (NULL, 1, 0);
 	adj = gtk_spin_button_get_adjustment ((GtkSpinButton*)spin);
-	adj->lower = 0;
-	adj->upper = 1024;
-	adj->step_increment = 1;
+	gtk_adjustment_set_lower (adj, 0);
+	gtk_adjustment_set_upper (adj, 1024);
+	gtk_adjustment_set_step_increment (adj, 1);
 	gtk_adjustment_changed (adj);
 	gtk_spin_button_set_value ((GtkSpinButton*)spin, def);
 	gtk_box_pack_end (GTK_BOX (hbox), spin, 0, 0, 0);
@@ -636,7 +434,36 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 	g_signal_connect (G_OBJECT (dialog), "response",
 						   G_CALLBACK (gtkutil_get_number_response), spin);
 
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox);
+
+	gtk_widget_show_all (dialog);
+}
+
+void
+fe_get_bool (char *title, char *prompt, void *callback, void *userdata)
+{
+	GtkWidget *dialog;
+	GtkWidget *prompt_label;
+	extern GtkWidget *parent_window;
+
+	dialog = gtk_dialog_new_with_buttons (title, NULL, 0,
+		GTK_STOCK_NO, GTK_RESPONSE_REJECT,
+		GTK_STOCK_YES, GTK_RESPONSE_ACCEPT,
+		NULL);
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+
+
+	g_object_set_data (G_OBJECT (dialog), "cb", callback);
+	g_object_set_data (G_OBJECT (dialog), "ud", userdata);
+
+	prompt_label = gtk_label_new (prompt);
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+		G_CALLBACK (gtkutil_get_bool_response), NULL);
+
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), prompt_label);
 
 	gtk_widget_show_all (dialog);
 }
@@ -664,10 +491,6 @@ gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 		gtk_widget_show (bbox);
 
 		img = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
-		if (strcmp (stock, GTK_STOCK_GOTO_LAST) == 0)
-		{
-			gtk_widget_set_usize (img, 10, 6);
-		}
 		gtk_container_add (GTK_CONTAINER (bbox), img);
 		gtk_widget_show (img);
 		gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
@@ -677,7 +500,7 @@ gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 							G_CALLBACK (callback), userdata);
 	gtk_widget_show (wid);
 	if (tip)
-		add_tip (wid, tip);
+		gtk_widget_set_tooltip_text (wid, tip);
 
 	return wid;
 }
@@ -694,7 +517,8 @@ GtkWidget *
 gtkutil_entry_new (int max, GtkWidget * box, void *callback,
 						 gpointer userdata)
 {
-	GtkWidget *entry = gtk_entry_new_with_max_length (max);
+	GtkWidget *entry = gtk_entry_new ();
+	gtk_entry_set_max_length (GTK_ENTRY (entry), max);
 	gtk_container_add (GTK_CONTAINER (box), entry);
 	if (callback)
 		g_signal_connect (G_OBJECT (entry), "changed",
@@ -703,96 +527,22 @@ gtkutil_entry_new (int max, GtkWidget * box, void *callback,
 	return entry;
 }
 
-GtkWidget *
-gtkutil_clist_new (int columns, char *titles[],
-						 GtkWidget * box, int policy,
-						 void *select_callback, gpointer select_userdata,
-						 void *unselect_callback,
-						 gpointer unselect_userdata, int selection_mode)
-{
-	GtkWidget *clist, *win;
-
-	win = gtk_scrolled_window_new (0, 0);
-	gtk_container_add (GTK_CONTAINER (box), win);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (win),
-											  GTK_POLICY_AUTOMATIC, policy);
-	gtk_widget_show (win);
-
-	if (titles)
-		clist = gtk_clist_new_with_titles (columns, titles);
-	else
-		clist = gtk_clist_new (columns);
-
-	gtk_clist_set_selection_mode (GTK_CLIST (clist), selection_mode);
-	gtk_clist_column_titles_passive (GTK_CLIST (clist));
-	gtk_container_add (GTK_CONTAINER (win), clist);
-	if (select_callback)
-	{
-		g_signal_connect (G_OBJECT (clist), "select_row",
-								G_CALLBACK (select_callback), select_userdata);
-	}
-	if (unselect_callback)
-	{
-		g_signal_connect (G_OBJECT (clist), "unselect_row",
-								G_CALLBACK (unselect_callback), unselect_userdata);
-	}
-	gtk_widget_show (clist);
-
-	return clist;
-}
-
-int
-gtkutil_clist_selection (GtkWidget * clist)
-{
-	if (GTK_CLIST (clist)->selection)
-		return GPOINTER_TO_INT(GTK_CLIST (clist)->selection->data);
-	return -1;
-}
-
-static int
-int_compare (const int * elem1, const int * elem2)
-{
-	return (*elem1) - (*elem2);
-}
-
-int
-gtkutil_clist_multiple_selection (GtkWidget * clist, int ** rows, const int max_rows)
-{
-	int i = 0;
-	GList *tmp_clist;
-	*rows = malloc (sizeof (int) * max_rows );
-	memset( *rows, -1, max_rows * sizeof(int) );
-
-	for( tmp_clist = GTK_CLIST(clist)->selection;
-			tmp_clist && i < max_rows; tmp_clist = tmp_clist->next, i++)
-	{
-		(*rows)[i] = GPOINTER_TO_INT( tmp_clist->data );
-	}
-	qsort(*rows, i, sizeof(int), (void *)int_compare);
-	return i;
-
-}
-
-void
-add_tip (GtkWidget * wid, char *text)
-{
-	static GtkTooltips *tip = NULL;
-	if (!tip)
-		tip = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tip, wid, text, 0);
-}
-
 void
 show_and_unfocus (GtkWidget * wid)
 {
-	GTK_WIDGET_UNSET_FLAGS (wid, GTK_CAN_FOCUS);
+	gtk_widget_set_can_focus (wid, FALSE);
 	gtk_widget_show (wid);
 }
 
 void
 gtkutil_set_icon (GtkWidget *win)
 {
-	gtk_window_set_icon (GTK_WINDOW (win), pix_xchat);
+#ifndef WIN32
+	/* FIXME: Magically breaks icon rendering in most
+	 * (sub)windows, but OFC only on Windows. GTK <3
+	 */
+	gtk_window_set_icon (GTK_WINDOW (win), pix_hexchat);
+#endif
 }
 
 extern GtkWidget *parent_window;	/* maingui.c */
@@ -805,7 +555,7 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 	win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtkutil_set_icon (win);
 #ifdef WIN32
-	gtk_window_set_wmclass (GTK_WINDOW (win), "XChat", "xchat");
+	gtk_window_set_wmclass (GTK_WINDOW (win), "HexChat", "hexchat");
 #endif
 	gtk_window_set_title (GTK_WINDOW (win), title);
 	gtk_window_set_default_size (GTK_WINDOW (win), width, height);
@@ -816,6 +566,7 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 	{
 		gtk_window_set_type_hint (GTK_WINDOW (win), GDK_WINDOW_TYPE_HINT_DIALOG);
 		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (parent_window));
+		gtk_window_set_destroy_with_parent (GTK_WINDOW (win), TRUE);
 	}
 
 	return win;
@@ -830,7 +581,7 @@ gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
 	GtkClipboard *clip, *clip2;
 
 	win = gtk_widget_get_toplevel (GTK_WIDGET (widget));
-	if (GTK_WIDGET_TOPLEVEL (win))
+	if (gtk_widget_is_toplevel (win))
 	{
 		int len = strlen (str);
 
@@ -952,3 +703,33 @@ gtkutil_treeview_get_selected (GtkTreeView *view, GtkTreeIter *iter_ret, ...)
 	return has_selected;
 }
 
+#if defined (WIN32) || defined (__APPLE__)
+gboolean
+gtkutil_find_font (const char *fontname)
+{
+	int i;
+	int n_families;
+	const char *family_name;
+	PangoFontMap *fontmap;
+	PangoFontFamily *family;
+	PangoFontFamily **families;
+
+	fontmap = pango_cairo_font_map_get_default ();
+	pango_font_map_list_families (fontmap, &families, &n_families);
+
+	for (i = 0; i < n_families; i++)
+	{
+		family = families[i];
+		family_name = pango_font_family_get_name (family);
+
+		if (!g_ascii_strcasecmp (family_name, fontname))
+		{
+			g_free (families);
+			return TRUE;
+		}
+	}
+
+	g_free (families);
+	return FALSE;
+}
+#endif

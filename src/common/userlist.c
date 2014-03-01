@@ -13,19 +13,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "modes.h"
 #include "fe.h"
 #include "notify.h"
 #include "tree.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 #include "util.h"
 
 
@@ -61,7 +61,7 @@ nick_cmp_alpha (struct User *user1, struct User *user2, server *serv)
 static int
 nick_cmp (struct User *user1, struct User *user2, server *serv)
 {
-	switch (prefs.userlist_sort)
+	switch (prefs.hex_gui_ulist_sort)
 	{
 	case 0:
 		return nick_cmp_az_ops (serv, user1, user2);
@@ -113,33 +113,59 @@ userlist_set_away (struct session *sess, char *nick, unsigned int away)
 	}
 }
 
-int
-userlist_add_hostname (struct session *sess, char *nick, char *hostname,
-							  char *realname, char *servername, unsigned int away)
+void
+userlist_set_account (struct session *sess, char *nick, char *account)
 {
 	struct User *user;
 
 	user = userlist_find (sess, nick);
 	if (user)
 	{
+		if (user->account)
+			free (user->account);
+			
+		if (strcmp (account, "*") == 0)
+			user->account = NULL;
+		else
+			user->account = strdup (account);
+			
+		/* gui doesnt currently reflect login status, maybe later
+		fe_userlist_rehash (sess, user); */
+	}
+}
+
+int
+userlist_add_hostname (struct session *sess, char *nick, char *hostname,
+							  char *realname, char *servername, char *account, unsigned int away)
+{
+	struct User *user;
+	gboolean do_rehash = FALSE;
+
+	user = userlist_find (sess, nick);
+	if (user)
+	{
 		if (!user->hostname && hostname)
+		{
+			if (prefs.hex_gui_ulist_show_hosts)
+				do_rehash = TRUE;
 			user->hostname = strdup (hostname);
-		if (!user->realname && realname)
+		}
+		if (!user->realname && realname && *realname)
 			user->realname = strdup (realname);
 		if (!user->servername && servername)
 			user->servername = strdup (servername);
-
+		if (!user->account && account && strcmp (account, "0") != 0)
+			user->account = strdup (account);
 		if (away != 0xff)
 		{
-			if (prefs.showhostname_in_userlist || user->away != away)
-			{
-				user->away = away;
-				fe_userlist_rehash (sess, user);
-			}
+			if (user->away != away)
+				do_rehash = TRUE;
 			user->away = away;
 		}
 
 		fe_userlist_update (sess, user);
+		if (do_rehash)
+			fe_userlist_rehash (sess, user);
 
 		return 1;
 	}
@@ -155,6 +181,8 @@ free_user (struct User *user, gpointer data)
 		free (user->hostname);
 	if (user->servername)
 		free (user->servername);
+	if (user->account)
+		free (user->account);
 	free (user);
 
 	return TRUE;
@@ -192,7 +220,7 @@ find_cmp (const char *name, struct User *user, server *serv)
 }
 
 struct User *
-userlist_find (struct session *sess, char *name)
+userlist_find (struct session *sess, const char *name)
 {
 	int pos;
 
@@ -358,7 +386,8 @@ userlist_remove_user (struct session *sess, struct User *user)
 }
 
 void
-userlist_add (struct session *sess, char *name, char *hostname)
+userlist_add (struct session *sess, char *name, char *hostname,
+				  char *account, char *realname, const message_tags_data *tags_data)
 {
 	struct User *user;
 	int row, prefix_chars;
@@ -366,7 +395,7 @@ userlist_add (struct session *sess, char *name, char *hostname)
 
 	acc = nick_access (sess->server, name, &prefix_chars);
 
-	notify_set_online (sess->server, name + prefix_chars);
+	notify_set_online (sess->server, name + prefix_chars, tags_data);
 
 	user = malloc (sizeof (struct User));
 	memset (user, 0, sizeof (struct User));
@@ -384,6 +413,15 @@ userlist_add (struct session *sess, char *name, char *hostname)
 	/* is it me? */
 	if (!sess->server->p_cmp (user->nick, sess->server->nick))
 		user->me = TRUE;
+	/* extended join info */
+	if (sess->server->have_extjoin)
+	{
+		if (account && strcmp (account, "*") != 0)
+			user->account = strdup (account);
+		if (realname && *realname)
+			user->realname = strdup (realname);
+	}
+
 	row = userlist_insertname (sess, user);
 
 	/* duplicate? some broken servers trigger this */
@@ -391,13 +429,17 @@ userlist_add (struct session *sess, char *name, char *hostname)
 	{
 		if (user->hostname)
 			free (user->hostname);
+		if (user->account)
+			free (user->account);
+		if (user->realname)
+			free (user->realname);
 		free (user);
 		return;
 	}
 
 	sess->total++;
 
-	/* most ircds don't support multiple modechars infront of the nickname
+	/* most ircds don't support multiple modechars in front of the nickname
       for /NAMES - though they should. */
 	while (prefix_chars)
 	{

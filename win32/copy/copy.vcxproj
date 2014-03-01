@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Configuration">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -49,8 +52,6 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
@@ -60,14 +61,11 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>$(HexChatCopy)
-copy "..\installer\watercolorlite-green.cjstyles" "$(HexChatRel)"</Command>
+      <Command>$(HexChatCopy)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
@@ -77,16 +75,17 @@ copy "..\installer\watercolorlite-green.cjstyles" "$(HexChatRel)"</Command>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>$(HexChatCopy)
-copy "..\installer\watercolorlite-blue.cjstyles" "$(HexChatRel)"</Command>
+      <Command>$(HexChatCopy)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="changelog.url" />
     <None Include="etc\download.png" />
     <None Include="etc\gtk-2.0\gtkrc" />
     <None Include="etc\gtkpref.png" />
     <None Include="etc\music.png" />
     <None Include="etc\system.png" />
+    <None Include="readme.url" />
     <None Include="share\xml\iso-codes\iso_3166.xml" />
     <None Include="share\xml\iso-codes\iso_639.xml" />
   </ItemGroup>

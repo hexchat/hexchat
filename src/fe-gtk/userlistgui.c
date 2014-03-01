@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 #include <stdio.h>
@@ -22,24 +22,15 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkbox.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkdnd.h>
-#include <gtk/gtkentry.h>
-#include <gtk/gtktreeview.h>
-#include <gtk/gtktreeselection.h>
-#include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkcellrendererpixbuf.h>
-#include <gtk/gtkcellrenderertext.h>
-#include <gtk/gtkliststore.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/util.h"
 #include "../common/userlist.h"
 #include "../common/modes.h"
+#include "../common/text.h"
 #include "../common/notify.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "../common/fe.h"
 #include "gtkutil.h"
 #include "palette.h"
@@ -47,11 +38,7 @@
 #include "menu.h"
 #include "pixmaps.h"
 #include "userlistgui.h"
-
-#ifdef USE_GTKSPELL
-#include <gtk/gtktextview.h>
-#endif
-
+#include "fkeys.h"
 
 enum
 {
@@ -75,10 +62,10 @@ get_user_icon (server *serv, struct User *user)
 	/* these ones are hardcoded */
 	switch (user->prefix[0])
 	{
-	case 0: return NULL;
-	case '@': return pix_op;
-	case '%': return pix_hop;
-	case '+': return pix_voice;
+		case 0: return NULL;
+		case '+': return pix_ulist_voice;
+		case '%': return pix_ulist_halfop;
+		case '@': return pix_ulist_op;
 	}
 
 	/* find out how many levels above Op this user is */
@@ -93,10 +80,11 @@ get_user_icon (server *serv, struct User *user)
 			{
 				switch (level)
 				{
-				case 0: return pix_red;	/* 1 level above op */
-				case 1: return pix_purple;	 /* 2 levels above op */
+					case 0: return pix_ulist_owner;		/* 1 level above op */
+					case 1: return pix_ulist_founder;	/* 2 levels above op */
+					case 2: return pix_ulist_netop;		/* 3 levels above op */
 				}
-				break;	/* 3+, no icons */
+				break;	/* 4+, no icons */
 			}
 			level++;
 			if (pre == serv->nick_prefixes)
@@ -125,7 +113,7 @@ fe_userlist_numbers (session *sess)
 			gtk_label_set_text (GTK_LABEL (sess->gui->namelistinfo), NULL);
 		}
 
-		if (sess->type == SESS_CHANNEL && prefs.gui_tweaks & 1)
+		if (sess->type == SESS_CHANNEL && prefs.hex_gui_win_ucount)
 			fe_set_title (sess);
 	}
 }
@@ -286,7 +274,7 @@ userlist_set_value (GtkWidget *treeview, gfloat val)
 gfloat
 userlist_get_value (GtkWidget *treeview)
 {
-	return gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (treeview))->value;
+	return gtk_adjustment_get_value (gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (treeview)));
 }
 
 int
@@ -325,21 +313,21 @@ fe_userlist_rehash (session *sess, struct User *user)
 {
 	GtkTreeIter *iter;
 	int sel;
-	int do_away = TRUE;
+	int nick_color = 0;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
 						  sess->res->user_model, user, &sel);
 	if (!iter)
 		return;
 
-	if (prefs.away_size_max < 1 || !prefs.away_track)
-		do_away = FALSE;
+	if (prefs.hex_away_track && user->away)
+		nick_color = COL_AWAY;
+	else if (prefs.hex_gui_ulist_color)
+		nick_color = text_color_of(user->nick);
 
 	gtk_list_store_set (GTK_LIST_STORE (sess->res->user_model), iter,
 							  COL_HOST, user->hostname,
-							  COL_GDKCOLOR, (do_away)
-									?	(user->away ? &colors[COL_AWAY] : NULL)
-									:	(NULL),
+							  COL_GDKCOLOR, nick_color ? &colors[nick_color] : NULL,
 							  -1);
 }
 
@@ -349,14 +337,16 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	GtkTreeModel *model = sess->res->user_model;
 	GdkPixbuf *pix = get_user_icon (sess->server, newuser);
 	GtkTreeIter iter;
-	int do_away = TRUE;
 	char *nick;
+	int nick_color = 0;
 
-	if (prefs.away_size_max < 1 || !prefs.away_track)
-		do_away = FALSE;
+	if (prefs.hex_away_track && newuser->away)
+		nick_color = COL_AWAY;
+	else if (prefs.hex_gui_ulist_color)
+		nick_color = text_color_of(newuser->nick);
 
 	nick = newuser->nick;
-	if (prefs.gui_tweaks & 64)
+	if (!prefs.hex_gui_ulist_icons)
 	{
 		nick = malloc (strlen (newuser->nick) + 2);
 		nick[0] = newuser->prefix[0];
@@ -372,13 +362,13 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 									COL_NICK, nick,
 									COL_HOST, newuser->hostname,
 									COL_USER, newuser,
-									COL_GDKCOLOR, (do_away)
-										?	(newuser->away ? &colors[COL_AWAY] : NULL)
-										:	(NULL),
+									COL_GDKCOLOR, nick_color ? &colors[nick_color] : NULL,
 								  -1);
 
-	if (prefs.gui_tweaks & 64)
+	if (!prefs.hex_gui_ulist_icons)
+	{
 		free (nick);
+	}
 
 	/* is it me? */
 	if (newuser->me && sess->gui->nick_box)
@@ -435,7 +425,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 		return;
 	gtk_tree_model_get (model, &iter, COL_USER, &user, -1);
 
-	mg_dnd_drop_file (current_sess, user->nick, selection_data->data);
+	mg_dnd_drop_file (current_sess, user->nick, (char *)gtk_selection_data_get_data (selection_data));
 }
 
 static gboolean
@@ -479,7 +469,7 @@ userlist_add_columns (GtkTreeView * treeview)
 
 	/* icon column */
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	if (prefs.gui_tweaks & 32)
+	if (prefs.hex_gui_compact)
 		g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
@@ -487,18 +477,18 @@ userlist_add_columns (GtkTreeView * treeview)
 
 	/* nick column */
 	renderer = gtk_cell_renderer_text_new ();
-	if (prefs.gui_tweaks & 32)
+	if (prefs.hex_gui_compact)
 		g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
 	gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT (renderer), 1);
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
 													"text", 1, "foreground-gdk", 4, NULL);
 
-	if (prefs.showhostname_in_userlist)
+	if (prefs.hex_gui_ulist_show_hosts)
 	{
 		/* hostname column */
 		renderer = gtk_cell_renderer_text_new ();
-		if (prefs.gui_tweaks & 32)
+		if (prefs.hex_gui_compact)
 			g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
 		gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT (renderer), 1);
 		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
@@ -518,13 +508,13 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 	if (!event)
 		return FALSE;
 
-	if (!(event->state & GDK_CONTROL_MASK) &&
-		event->type == GDK_2BUTTON_PRESS && prefs.doubleclickuser[0])
+	if (!(event->state & STATE_CTRL) &&
+		event->type == GDK_2BUTTON_PRESS && prefs.hex_gui_ulist_doubleclick[0])
 	{
 		nicks = userlist_selection_list (widget, &i);
 		if (nicks)
 		{
-			nick_command_parse (current_sess, prefs.doubleclickuser, nicks[0],
+			nick_command_parse (current_sess, prefs.hex_gui_ulist_doubleclick, nicks[0],
 									  nicks[0]);
 			while (i)
 			{
@@ -589,7 +579,7 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 static gboolean
 userlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
 {
-	if (evt->keyval >= GDK_asterisk && evt->keyval <= GDK_z)
+	if (evt->keyval >= GDK_KEY_asterisk && evt->keyval <= GDK_KEY_z)
 	{
 		/* dirty trick to avoid auto-selection */
 		SPELL_ENTRY_SET_EDITABLE (current_sess->gui->input_box, FALSE);
@@ -609,18 +599,18 @@ userlist_create (GtkWidget *box)
 	static const GtkTargetEntry dnd_dest_targets[] =
 	{
 		{"text/uri-list", 0, 1},
-		{"XCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
+		{"HEXCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
 	};
 	static const GtkTargetEntry dnd_src_target[] =
 	{
-		{"XCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
+		{"HEXCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
 	};
 
 	sw = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
 													 GTK_SHADOW_ETCHED_IN);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-											  prefs.showhostname_in_userlist ?
+											  prefs.hex_gui_ulist_show_hosts ?
 												GTK_POLICY_AUTOMATIC :
 												GTK_POLICY_NEVER,
 											  GTK_POLICY_AUTOMATIC);
@@ -628,7 +618,7 @@ userlist_create (GtkWidget *box)
 	gtk_widget_show (sw);
 
 	treeview = gtk_tree_view_new ();
-	gtk_widget_set_name (treeview, "xchat-userlist");
+	gtk_widget_set_name (treeview, "hexchat-userlist");
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
 	gtk_tree_selection_set_mode (gtk_tree_view_get_selection
 										  (GTK_TREE_VIEW (treeview)),

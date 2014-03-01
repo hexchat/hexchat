@@ -1,4 +1,4 @@
-/* dbus-client.c - XChat command-line options for D-Bus
+/* dbus-client.c - HexChat command-line options for D-Bus
  * Copyright (C) 2006 Claessens Xavier
  *
  * This program is free software; you can redistribute it and/or modify
@@ -13,16 +13,17 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * Claessens Xavier
  * xclaesse@gmail.com
  */
 
+#define GLIB_DISABLE_DEPRECATION_WARNINGS
 #include <dbus/dbus-glib.h>
 #include "dbus-client.h"
-#include "../xchat.h"
-#include "../xchatc.h"
+#include "../hexchat.h"
+#include "../hexchatc.h"
 
 #define DBUS_SERVICE "org.hexchat.service"
 #define DBUS_REMOTE "/org/hexchat/Remote"
@@ -40,7 +41,7 @@ write_error (char *message,
 }
 
 void
-xchat_remote (void)
+hexchat_remote (void)
 /* TODO: dbus_g_connection_unref (connection) are commented because it makes
  * dbus to crash. Fixed in dbus >=0.70 ?!?
  * https://launchpad.net/distros/ubuntu/+source/dbus/+bug/54375
@@ -49,9 +50,10 @@ xchat_remote (void)
 	DBusGConnection *connection;
 	DBusGProxy *dbus = NULL;
 	DBusGProxy *remote_object = NULL;
-	gboolean xchat_running;
+	gboolean hexchat_running;
 	GError *error = NULL;
 	char *command = NULL;
+	int i;
 
 	/* GnomeVFS >=2.15 uses D-Bus and threads, so threads should be
 	 * initialised before opening for the first time a D-Bus connection */
@@ -61,7 +63,7 @@ xchat_remote (void)
 	dbus_g_thread_init ();
 
 	/* if there is nothing to do, return now. */
-	if (!arg_existing || !(arg_url || arg_command)) {
+	if (!arg_existing || !(arg_url || arg_urls || arg_command)) {
 		return;
 	}
 
@@ -73,7 +75,7 @@ xchat_remote (void)
 		return;
 	}
 
-	/* Checks if xchat is already running */
+	/* Checks if HexChat is already running */
 	dbus = dbus_g_proxy_new_for_name (connection,
 					  DBUS_SERVICE_DBUS,
 					  DBUS_PATH_DBUS,
@@ -81,14 +83,14 @@ xchat_remote (void)
 	if (!dbus_g_proxy_call (dbus, "NameHasOwner", &error,
 				G_TYPE_STRING, DBUS_SERVICE,
 				G_TYPE_INVALID,
-				G_TYPE_BOOLEAN, &xchat_running,
+				G_TYPE_BOOLEAN, &hexchat_running,
 				G_TYPE_INVALID)) {
 		write_error (_("Failed to complete NameHasOwner"), &error);
-		xchat_running = FALSE;
+		hexchat_running = FALSE;
 	}
 	g_object_unref (dbus);
 
-	if (!xchat_running) {
+	if (!hexchat_running) {
 		//dbus_g_connection_unref (connection);
 		return;
 	}
@@ -113,6 +115,22 @@ xchat_remote (void)
 		}
 		g_free (command);
 	}
+	
+	if (arg_urls)
+	{
+		for (i = 0; i < g_strv_length(arg_urls); i++)
+		{
+			command = g_strdup_printf ("url %s", arg_urls[i]);
+			if (!dbus_g_proxy_call (remote_object, "Command",
+					&error,
+					G_TYPE_STRING, command,
+					G_TYPE_INVALID, G_TYPE_INVALID)) {
+				write_error (_("Failed to complete Command"), &error);
+			}
+			g_free (command);
+		}
+		g_strfreev (arg_urls);
+	} 	
 
 	exit (0);
 }

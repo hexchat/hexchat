@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * Claessens Xavier
  * xclaesse@gmail.com
@@ -22,7 +22,7 @@
 #include <config.h>
 #include <dbus/dbus-glib.h>
 #include <stdlib.h>
-#include "marshallers.h"
+#include "../marshal.c"
 
 #define DBUS_SERVICE "org.hexchat.service"
 #define DBUS_REMOTE "/org/hexchat/Remote"
@@ -73,7 +73,7 @@ test_command_cb (DBusGProxy *proxy,
 					G_TYPE_INVALID, G_TYPE_INVALID)) {
 			write_error ("Failed to complete unhook", &error);
 		}
-		/* Now if you write "/test blah" again in the xchat window
+		/* Now if you write "/test blah" again in the HexChat window
 		 * you'll get a "Unknown command" error message */
 		g_print ("test command received: %s\n", word_eol[1]);
 		if (!dbus_g_proxy_call (proxy, "Print",
@@ -102,7 +102,9 @@ main (int argc, char **argv)
 	gchar *path;
 	GError *error = NULL;
 
+#if ! GLIB_CHECK_VERSION (2, 36, 0)
 	g_type_init ();
+#endif
 
 	connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
 	if (connection == NULL) {
@@ -157,7 +159,7 @@ main (int argc, char **argv)
 	g_print ("Server hook id=%d\n", server_id);
 
 	dbus_g_object_register_marshaller (
-		g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT,
+		_hexchat_marshal_VOID__POINTER_POINTER_UINT_UINT,
 		G_TYPE_NONE,
 		G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT,
 		G_TYPE_INVALID);
@@ -193,7 +195,7 @@ main (int argc, char **argv)
 				     G_CALLBACK (unload_cb),
 				     NULL, NULL);
 
-	/* Now you can write on the xchat windows: "/test arg1 arg2 ..." */
+	/* Now you can write on the HexChat windows: "/test arg1 arg2 ..." */
 	mainloop = g_main_loop_new (NULL, FALSE);
 	g_main_loop_run (mainloop);
 

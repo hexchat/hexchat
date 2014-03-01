@@ -1,4 +1,4 @@
-/* dbus-client.h - XChat command-line options for D-Bus
+/* dbus-client.h - HexChat command-line options for D-Bus
  * Copyright (C) 2006 Claessens Xavier
  *
  * This program is free software; you can redistribute it and/or modify
@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  *
  * Claessens Xavier
  * xclaesse@gmail.com
@@ -22,6 +22,6 @@
 #ifndef __DBUS_PLUGIN_H__
 #define __DBUS_PLUGIN_H__
 
-void xchat_remote (void);
+void hexchat_remote (void);
 
 #endif /* __DBUS_PLUGIN_H__ */

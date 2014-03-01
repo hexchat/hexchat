@@ -20,12 +20,17 @@
  * THE SOFTWARE.
  */
 
+#ifdef __APPLE__
+#define __AVAILABILITYMACROS__
+#define DEPRECATED_IN_MAC_OS_X_VERSION_10_7_AND_LATER
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <malloc.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <openssl/sha.h>
 #include <glib.h>
 
@@ -33,9 +38,7 @@
 #ifndef snprintf
 #define snprintf _snprintf
 #endif
-#ifndef stat64
-#define stat64 _stat64
-#endif
+#define stat _stat64
 #else
 /* for INT_MAX */
 #include <limits.h>
@@ -44,17 +47,15 @@
 #define _LARGEFILE64_SOURCE
 #endif
 
-#include <sys/stat.h>
-
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 #define BUFSIZE 32768
 #define DEFAULT_LIMIT 256									/* default size is 256 MiB */
 
-static xchat_plugin *ph;									/* plugin handle */
-static const char name[] = "Checksum";
-static const char desc[] = "Calculate checksum for DCC file transfers";
-static const char version[] = "3.1";
+static hexchat_plugin *ph;									/* plugin handle */
+static char name[] = "Checksum";
+static char desc[] = "Calculate checksum for DCC file transfers";
+static char version[] = "3.1";
 
 /* Use of OpenSSL SHA256 interface: http://adamlamers.com/?p=5 */
 static void
@@ -68,6 +69,7 @@ sha256_hash_string (unsigned char hash[SHA256_DIGEST_LENGTH], char outputBuffer[
 	outputBuffer[64] = 0;
 }
 
+#if 0
 static void
 sha256 (char *string, char outputBuffer[65])
 {
@@ -85,6 +87,7 @@ sha256 (char *string, char outputBuffer[65])
 	}
 	outputBuffer[64] = 0;
 }
+#endif
 
 static int
 sha256_file (char *path, char outputBuffer[65])
@@ -106,6 +109,7 @@ sha256_file (char *path, char outputBuffer[65])
 
 	if (!buffer)
 	{
+		fclose (file);
 		return ENOMEM;
 	}
 
@@ -129,25 +133,25 @@ set_limit (char* size)
 
 	if (buffer > 0 && buffer < INT_MAX)
 	{
-		if (xchat_pluginpref_set_int (ph, "limit", buffer))
+		if (hexchat_pluginpref_set_int (ph, "limit", buffer))
 		{
-			xchat_printf (ph, "File size limit has successfully been set to: %d MiB\n", buffer);
+			hexchat_printf (ph, "File size limit has successfully been set to: %d MiB\n", buffer);
 		}
 		else
 		{
-			xchat_printf (ph, "File access error while saving!\n");
+			hexchat_printf (ph, "File access error while saving!\n");
 		}
 	}
 	else
 	{
-		xchat_printf (ph, "Invalid input!\n");
+		hexchat_printf (ph, "Invalid input!\n");
 	}
 }
 
 static int
 get_limit ()
 {
-	int size = xchat_pluginpref_get_int (ph, "limit");
+	int size = hexchat_pluginpref_get_int (ph, "limit");
 
 	if (size <= -1 || size >= INT_MAX)
 	{
@@ -162,71 +166,83 @@ get_limit ()
 static void
 print_limit ()
 {
-	xchat_printf (ph, "File size limit for checksums: %d MiB", get_limit ());
+	hexchat_printf (ph, "File size limit for checksums: %d MiB", get_limit ());
 }
 
 static int
 dccrecv_cb (char *word[], void *userdata)
 {
 	int result;
-	struct stat64 buffer;									/* buffer for storing file info */
+	struct stat buffer;									/* buffer for storing file info */
 	char sum[65];											/* buffer for checksum */
+	const char *file;
+	char *cfile;
 
-	result = stat64 (word[2], &buffer);
+	if (hexchat_get_prefs (ph, "dcc_completed_dir", &file, NULL) == 1 && file[0] != 0)
+	{
+		cfile = g_strconcat (file, G_DIR_SEPARATOR_S, word[1], NULL);
+	}
+	else
+	{
+		cfile = g_strdup(word[2]);
+	}
+
+	result = stat (cfile, &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
 		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
 		{
-			sha256_file (word[2], sum);						/* word[2] is the full filename */
+			sha256_file (cfile, sum);						/* file is the full filename even if completed dir set */
 			/* try to print the checksum in the privmsg tab of the sender */
-			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
-			xchat_printf (ph, "SHA-256 checksum for %s (local):  %s\n", word[1], sum);
+			hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
+			hexchat_printf (ph, "SHA-256 checksum for %s (local):  %s\n", word[1], sum);
 		}
 		else
 		{
-			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
-			xchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM INC)\n", word[1]);
+			hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
+			hexchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM INC)\n", word[1]);
 		}
 	}
 	else
 	{
-		xchat_printf (ph, "File access error!\n");
+		hexchat_printf (ph, "File access error!\n");
 	}
 
-	return XCHAT_EAT_NONE;
+	g_free (cfile);
+	return HEXCHAT_EAT_NONE;
 }
 
 static int
 dccoffer_cb (char *word[], void *userdata)
 {
 	int result;
-	struct stat64 buffer;									/* buffer for storing file info */
+	struct stat buffer;									/* buffer for storing file info */
 	char sum[65];											/* buffer for checksum */
 
-	result = stat64 (word[3], &buffer);
+	result = stat (word[3], &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
 		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
 		{
 			sha256_file (word[3], sum);						/* word[3] is the full filename */
-			xchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], sum);
+			hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], sum);
 		}
 		else
 		{
-			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
-			xchat_printf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): (size limit reached, no checksum calculated)", word[2], word[1]);
+			hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
+			hexchat_printf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): (size limit reached, no checksum calculated)", word[2], word[1]);
 		}
 	}
 	else
 	{
-		xchat_printf (ph, "File access error!\n");
+		hexchat_printf (ph, "File access error!\n");
 	}
 
-	return XCHAT_EAT_NONE;
+	return HEXCHAT_EAT_NONE;
 }
 
-static void
-checksum (char *word[], void *userdata)
+static int
+checksum (char *word[], char *word_eol[], void *userdata)
 {
 	if (!g_ascii_strcasecmp ("GET", word[2]))
 	{
@@ -238,14 +254,16 @@ checksum (char *word[], void *userdata)
 	}
 	else
 	{
-		xchat_printf (ph, "Usage: /CHECKSUM GET|INC|DEC\n");
-		xchat_printf (ph, "  GET - print the maximum file size (in MiB) to be hashed\n");
-		xchat_printf (ph, "  SET <filesize> - set the maximum file size (in MiB) to be hashed\n");
+		hexchat_printf (ph, "Usage: /CHECKSUM GET|SET\n");
+		hexchat_printf (ph, "  GET - print the maximum file size (in MiB) to be hashed\n");
+		hexchat_printf (ph, "  SET <filesize> - set the maximum file size (in MiB) to be hashed\n");
 	}
+
+	return HEXCHAT_EAT_NONE;
 }
 
 int
-xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
 
@@ -254,22 +272,22 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_version = version;
 
 	/* this is required for the very first run */
-	if (xchat_pluginpref_get_int (ph, "limit") == -1)
+	if (hexchat_pluginpref_get_int (ph, "limit") == -1)
 	{
-		xchat_pluginpref_set_int (ph, "limit", DEFAULT_LIMIT);
+		hexchat_pluginpref_set_int (ph, "limit", DEFAULT_LIMIT);
 	}
 
-	xchat_hook_command (ph, "CHECKSUM", XCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|SET", 0);
-	xchat_hook_print (ph, "DCC RECV Complete", XCHAT_PRI_NORM, dccrecv_cb, NULL);
-	xchat_hook_print (ph, "DCC Offer", XCHAT_PRI_NORM, dccoffer_cb, NULL);
+	hexchat_hook_command (ph, "CHECKSUM", HEXCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|SET", 0);
+	hexchat_hook_print (ph, "DCC RECV Complete", HEXCHAT_PRI_NORM, dccrecv_cb, NULL);
+	hexchat_hook_print (ph, "DCC Offer", HEXCHAT_PRI_NORM, dccoffer_cb, NULL);
 
-	xchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_printf (ph, "%s plugin loaded\n", name);
 	return 1;
 }
 
 int
-xchat_plugin_deinit (void)
+hexchat_plugin_deinit (void)
 {
-	xchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

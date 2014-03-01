@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Configuration">
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -47,10 +50,8 @@
     <OutDir>$(HexChatBin)</OutDir>
     <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
@@ -60,50 +61,21 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>echo [Setup] &gt; "$(OutDir)\hexchat-x86.iss"
-echo WizardImageFile="$(ProjectDir)\wizardimage.bmp" &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-"$(OutDir)\version" -a &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-"$(OutDir)\version" -v &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-"$(OutDir)\version" -i &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-"$(OutDir)\version" -o &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-echo SetupIconFile="$(SolutionDir)\..\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-type hexchat-x86.skel.iss &gt;&gt; "$(OutDir)\hexchat-x86.iss"
-"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\hexchat-x86.iss"</Command>
-    </PreBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-    <PreBuildEvent>
-      <Command>echo [Setup] &gt; "$(OutDir)\hexchat-x64.iss"
-echo WizardImageFile="$(ProjectDir)\wizardimage.bmp" &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-"$(OutDir)\version" -a &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-"$(OutDir)\version" -v &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-"$(OutDir)\version" -i &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-"$(OutDir)\version" -o &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-echo SetupIconFile="$(SolutionDir)\..\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-type hexchat-x64.skel.iss &gt;&gt; "$(OutDir)\hexchat-x64.iss"
-"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\hexchat-x64.iss"</Command>
+      <Command>
+      <![CDATA[
+SET SOLUTIONDIR=$(SolutionDir)..\
+powershell "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\win32\installer\hexchat.iss.tt" "$(SolutionDir)..\win32\installer\hexchat.iss"
+del "$(OutDir)hexchat.iss"
+type hexchat.iss >> "$(OutDir)hexchat.iss"
+$(IsccPath) /dPROJECTDIR="$(ProjectDir)" /dAPPARCH="$(Platform)" "$(OutDir)hexchat.iss"
+      ]]>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="watercolorlite-blue.cjstyles" />
-    <None Include="watercolorlite-green.cjstyles" />
     <None Include="wizardimage.bmp" />
     <None Include="wizardsmallimage.bmp" />
-    <None Include="hexchat-x64.skel.iss" />
-    <None Include="hexchat-x86.skel.iss" />
+    <None Include="hexchat.iss" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

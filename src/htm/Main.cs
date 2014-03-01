@@ -1,4 +1,5 @@
-/* HexChat Theme Manager
+/**
+ * HexChat Theme Manager
  *
  * Copyright (C) 2012 Patrick Griffs
  * Copyright (C) 2012 Berke Viktor
@@ -15,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
 using System;
@@ -189,6 +190,10 @@ namespace thememan
                 {
                     File.Copy(Path.Combine(themedir, themelist.SelectedItem.ToString(), "pevents.conf"), Path.Combine(hexchatdir, "pevents.conf"), true);
                 }
+                else if (File.Exists(Path.Combine(hexchatdir, "pevents.conf")))
+                {
+                    File.Delete(Path.Combine(hexchatdir, "pevents.conf"));
+                }
             }
         }
 
@@ -281,7 +286,7 @@ namespace thememan
 
             try
             {
-                using (Package zip = Package.Open(zipFile.FullName, FileMode.Open))
+                using (Package zip = Package.Open(zipFile.FullName, FileMode.Open, FileAccess.Read))
                 {
                     PackagePartCollection parts = zip.GetParts();
 
