@@ -245,12 +245,6 @@ static const struct defaultserver def[] =
 	{0,				"irc.freenode.net"},
 
 	{"Furnet",	0},
-#ifdef USE_IPV6
-#ifdef USE_OPENSSL
-	{0,			"ipv6.furnet.org/+6697"},
-#endif
-	{0,			"ipv6.furnet.org"},
-#endif
 #ifdef USE_OPENSSL
 	{0,			"irc.furnet.org/+6697"},
 #endif
