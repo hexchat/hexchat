@@ -1184,7 +1184,7 @@ static const domain_t domain[] =
 		{"PF", N_("French Polynesia") },
 		{"PG", N_("Papua New Guinea") },
 		{"PH", N_("Philippines") },
-		{"PHOTOGRAPHY" N_("Photography") },
+		{"PHOTOGRAPHY", N_("Photography") },
 		{"PK", N_("Pakistan") },
 		{"PL", N_("Poland") },
 		{"PLUMBING", N_("Plumbers and related sites") },
