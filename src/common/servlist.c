@@ -182,13 +182,8 @@ static const struct defaultserver def[] =
 
 	{"ElectroCode",		0},
 #ifdef USE_OPENSSL
-#ifdef USE_IPV6
-	{0,			"irc6.electrocode.net/+6697"},
-#endif
+
 	{0,			"irc.electrocode.net/+6697"},
-#endif
-#ifdef USE_IPV6
-	{0,			"irc6.electrocode.net"},
 #endif
 	{0,			"irc.electrocode.net"},
 
