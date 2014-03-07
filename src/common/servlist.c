@@ -180,11 +180,17 @@ static const struct defaultserver def[] =
 	{0,			"irc.easynews.com"},
 	{0,			"irc.servercentral.net"},
 
-	{"ElectronIRC",		0},
+	{"ElectroCode",		0},
 #ifdef USE_OPENSSL
-	{0,			"irc.electronirc.tk/+6697"},
+#ifdef USE_IPV6
+	{0,			"irc6.electrocode.net/+6697"},
 #endif
-	{0,			"irc.electronirc.tk"},
+	{0,			"irc.electrocode.net/+6697"},
+#endif
+#ifdef USE_IPV6
+	{0,			"irc6.electrocode.net"},
+#endif
+	{0,			"irc.electrocode.net"},
 
 	{"EnterTheGame",	0},
 	{0,			"IRC.EnterTheGame.Com"},
