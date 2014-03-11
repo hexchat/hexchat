@@ -285,6 +285,9 @@ gtk_entry_find_position (GtkEntry *entry, gint x)
 static void
 insert_hiddenchar (SexySpellEntry *entry, guint start, guint end)
 {
+	/* FIXME: Pango does not properly reflect the new widths after a char
+	 * is 'hidden' */
+#if 0
 	PangoAttribute *hattr;
 	PangoRectangle *rect = g_malloc (sizeof (PangoRectangle));
 
@@ -299,6 +302,7 @@ insert_hiddenchar (SexySpellEntry *entry, guint start, guint end)
 	pango_attr_list_insert (entry->priv->attr_list, hattr);
 
 	g_free (rect);
+#endif
 }
 
 static void
