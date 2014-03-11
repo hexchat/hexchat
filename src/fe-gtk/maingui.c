@@ -2317,7 +2317,7 @@ mg_update_xtext (GtkWidget *wid)
 static void
 mg_create_textarea (session *sess, GtkWidget *box)
 {
-	GtkWidget *scrolledwindow;
+	GtkWidget *inbox, *vbox, *frame;
 	GtkXText *xtext;
 	session_gui *gui = sess->gui;
 	static const GtkTargetEntry dnd_targets[] =
@@ -2330,12 +2330,14 @@ mg_create_textarea (session *sess, GtkWidget *box)
 		{"HEXCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
 	};
 
+	vbox = gtk_vbox_new (FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (box), vbox);
+	inbox = gtk_hbox_new (FALSE, 2);
+	gtk_container_add (GTK_CONTAINER (vbox), inbox);
 
-	scrolledwindow = gtk_scrolled_window_new (NULL, NULL);
-	gui->vscrollbar = gtk_scrolled_window_get_vscrollbar (GTK_SCROLLED_WINDOW (scrolledwindow)); /* For fkeys */
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(scrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow), GTK_SHADOW_IN);
-	gtk_container_add (GTK_CONTAINER (box), scrolledwindow);
+	frame = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+	gtk_container_add (GTK_CONTAINER (inbox), frame);
 
 	gui->xtext = gtk_xtext_new (colors, TRUE);
 	xtext = GTK_XTEXT (gui->xtext);
@@ -2343,12 +2345,16 @@ mg_create_textarea (session *sess, GtkWidget *box)
 	gtk_xtext_set_thin_separator (xtext, prefs.hex_text_thin_sep);
 	gtk_xtext_set_urlcheck_function (xtext, mg_word_check);
 	gtk_xtext_set_max_lines (xtext, prefs.hex_text_max_lines);
-	gtk_container_add (GTK_CONTAINER (scrolledwindow), GTK_WIDGET (xtext));
+	gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (xtext));
 
 	mg_update_xtext (GTK_WIDGET (xtext));
 
 	g_signal_connect (G_OBJECT (xtext), "word_click",
 							G_CALLBACK (mg_word_clicked), NULL);
+
+	gui->vscrollbar = gtk_vscrollbar_new (GTK_XTEXT (xtext)->adj);
+	gtk_box_pack_start (GTK_BOX (inbox), gui->vscrollbar, FALSE, TRUE, 0);
+
 #ifndef WIN32	/* needs more work */
 	gtk_drag_dest_set (gui->vscrollbar, 5, dnd_dest_targets, 2,
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
