@@ -4562,7 +4562,8 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 															gtk_xtext_render_page_timeout,
 															buf->xtext);
 		}
-	} else if (buf->scrollbar_down)
+	}
+	if (buf->scrollbar_down)
 	{
 		buf->old_value = buf->num_lines - buf->xtext->adj->page_size;
 		if (buf->old_value < 0)
@@ -4857,6 +4858,8 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 		{
 			buf->window_height = h;
 			buf->pagetop_ent = NULL;
+			if (buf->scrollbar_down)
+				xtext->adj->value = xtext->adj->upper;
 			gtk_xtext_adjustment_set (buf, FALSE);
 		}
 
