@@ -76,7 +76,7 @@ Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disable
 Name: "langs\perl"; Description: "Perl (requires Perl 5.18)"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\python"; Description: "Python Interface"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\python\python2"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning exclusive
-Name: "langs\python\python3"; Description: "Python (requires Python 3.3)"; Types: custom; Flags: disablenouninstallwarning exclusive
+Name: "langs\python\python3"; Description: "Python (requires Python 3.4)"; Types: custom; Flags: disablenouninstallwarning exclusive
 
 [Tasks]
 Name: portable; Description: "Yes"; GroupDescription: "Portable Mode: Stores configuration files within install directory for portable drives."; Flags: unchecked
@@ -254,12 +254,12 @@ begin
 		REDIST := 'http://dl.hexchat.net/misc/vcredist_2013_x64.exe';
 		PERL := 'http://dl.hexchat.net/misc/perl/Perl-5.18.2-x64.exe';
 		PY2 := 'http://python.org/ftp/python/2.7.6/python-2.7.6.amd64.msi';
-		PY3 := 'http://python.org/ftp/python/3.3.4/python-3.3.4.amd64.msi';
+		PY3 := 'http://python.org/ftp/python/3.4.0/python-3.4.0.amd64.msi';
 #else
 		REDIST := 'http://dl.hexchat.net/misc/vcredist_2013_x86.exe';
 		PERL := 'http://dl.hexchat.net/misc/perl/Perl-5.18.2-x86.exe';
 		PY2 := 'http://python.org/ftp/python/2.7.6/python-2.7.6.msi';
-		PY3 := 'http://python.org/ftp/python/3.3.4/python-3.3.4.msi';
+		PY3 := 'http://python.org/ftp/python/3.4.0/python-3.4.0.msi';
 #endif
 		DOTNET := 'http://dl.hexchat.net/misc/dotnet_40.exe';
 		SPELL := 'http://dl.hexchat.net/hexchat/HexChat%20Spelling%20Dictionaries%20r2.exe';
