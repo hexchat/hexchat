@@ -64,7 +64,7 @@
       <Command>
       <![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
-powershell "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\win32\installer\hexchat.iss.tt" "$(SolutionDir)..\win32\installer\hexchat.iss"
+powershell -File "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\win32\installer\hexchat.iss.tt" "$(SolutionDir)..\win32\installer\hexchat.iss"
 del "$(OutDir)hexchat.iss"
 type hexchat.iss >> "$(OutDir)hexchat.iss"
 $(IsccPath) /dPROJECTDIR="$(ProjectDir)" /dAPPARCH="$(Platform)" "$(OutDir)hexchat.iss"
