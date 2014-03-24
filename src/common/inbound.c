@@ -48,6 +48,7 @@
 #include "text.h"
 #include "ctcp.h"
 #include "hexchatc.h"
+#include "chanopt.h"
 
 
 void
@@ -583,6 +584,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
 					const message_tags_data *tags_data)
 {
 	session *sess;
+	int found_unused = FALSE;
 
 	/* already joined? probably a bnc */
 	sess = find_channel (serv, chan);
@@ -594,6 +596,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
 		{
 			/* find a "<none>" tab and use that */
 			sess = find_unused_session (serv);
+			found_unused = sess != NULL;
 			if (!sess)
 				/* last resort, open a new tab/window */
 				sess = new_ircwindow (serv, chan, SESS_CHANNEL, 1);
@@ -601,6 +604,11 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
 	}
 
 	safe_strcpy (sess->channel, chan, CHANLEN);
+	if (found_unused)
+	{
+		chanopt_load (sess);
+		scrollback_load (sess);
+	}
 
 	fe_set_channel (sess);
 	fe_set_title (sess);
