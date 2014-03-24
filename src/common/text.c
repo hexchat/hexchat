@@ -79,7 +79,10 @@ scrollback_get_filename (session *sess)
 	g_free (buf);
 
 	chan = log_create_filename (sess->channel);
-	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, chan);
+	if (chan[0])
+		buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, chan);
+	else
+		buf = NULL;
 	free (chan);
 
 	return buf;
@@ -207,7 +210,7 @@ scrollback_save (session *sess, char *text)
 	time_t stamp;
 	int len;
 
-	if (sess->type == SESS_SERVER)
+	if (sess->type == SESS_SERVER && prefs.hex_gui_tab_server == 1)
 		return;
 
 	if (sess->text_scrollback == SET_DEFAULT)
