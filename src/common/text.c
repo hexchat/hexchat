@@ -303,6 +303,12 @@ scrollback_load (session *sess)
 			buf = g_strndup (buf_tmp, n_bytes);
 			g_free (buf_tmp);
 
+			/*
+			 * Some scrollback lines have three blanks after the timestamp and a newline
+			 * Some have only one blank and a newline
+			 * Some don't even have a timestamp
+			 * Some don't have any text at all
+			 */
 			if (buf[0] == 'T')
 			{
 				if (sizeof (time_t) == 4)
@@ -310,7 +316,7 @@ scrollback_load (session *sess)
 				else
 					stamp = strtoull (buf + 2, NULL, 10); /* in case time_t is 64 bits */
 				text = strchr (buf + 3, ' ');
-				if (text)
+				if (text && text[1])
 				{
 					if (prefs.hex_text_stripcolor_replay)
 					{
@@ -324,8 +330,19 @@ scrollback_load (session *sess)
 						g_free (text);
 					}
 				}
-				lines++;
+				else
+				{
+					fe_print_text (sess, "  ", stamp, TRUE);
+				}
 			}
+			else
+			{
+				if (strlen (buf))
+					fe_print_text (sess, buf, 0, TRUE);
+				else
+					fe_print_text (sess, "  ", 0, TRUE);
+			}
+			lines++;
 
 			g_free (buf);
 		}
