@@ -608,6 +608,8 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
 	{
 		chanopt_load (sess);
 		scrollback_load (sess);
+		if (sess->scrollwritten && sess->scrollback_replay_marklast)
+			sess->scrollback_replay_marklast (sess);
 	}
 
 	fe_set_channel (sess);

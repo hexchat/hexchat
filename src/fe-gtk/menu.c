@@ -42,6 +42,7 @@
 #include "../common/servlist.h"
 #include "../common/notify.h"
 #include "../common/util.h"
+#include "../common/text.h"
 #include "xtext.h"
 #include "ascii.h"
 #include "banlist.h"
@@ -1282,6 +1283,36 @@ menu_resetmarker (GtkWidget * wid, gpointer none)
 }
 
 static void
+menu_movetomarker (GtkWidget *wid, gpointer none)
+{
+	marker_reset_reason reason;
+	char *str;
+
+	if (!prefs.hex_text_show_marker)
+		PrintText (current_sess, _("Marker line disabled."));
+	else
+	{
+		reason = gtk_xtext_moveto_marker_pos (GTK_XTEXT (current_sess->gui->xtext));
+		switch (reason) {
+		case MARKER_WAS_NEVER_SET:
+			str = _("Marker line never set."); break;
+		case MARKER_IS_SET:
+			str = ""; break;
+		case MARKER_RESET_MANUALLY:
+			str = _("Marker line reset manually."); break;
+		case MARKER_RESET_BY_KILL:
+			str = _("Marker line reset because exceeded scrollback limit."); break;
+		case MARKER_RESET_BY_CLEAR:
+			str = _("Marker line reset by CLEAR command."); break;
+		default:
+			str = _("Marker line state unknown."); break;
+		}
+		if (str[0])
+			PrintText (current_sess, str);
+	}
+}
+
+static void
 menu_copy_selection (GtkWidget * wid, gpointer none)
 {
 	gtk_xtext_copy_selection (GTK_XTEXT (current_sess->gui->xtext));
@@ -1789,6 +1820,7 @@ static struct mymenu mymenu[] = {
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_m},
+	{N_("Move to Marker Line"), menu_movetomarker, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_M},
 	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
