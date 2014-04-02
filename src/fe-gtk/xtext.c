@@ -3862,7 +3862,12 @@ gtk_xtext_kill_ent (xtext_buffer *buffer, textentry *ent)
 		buffer->last_ent_end = NULL;
 	}
 
-	if (buffer->marker_pos == ent) buffer->marker_pos = NULL;
+	if (buffer->marker_pos == ent)
+	{
+		/* Allow for "Marker line reset because exceeded scrollback limit. to appear. */
+		buffer->marker_pos = ent->next;
+		buffer->marker_state = MARKER_RESET_BY_KILL;
+	}
 
 	if (ent->marks)
 	{
@@ -3961,6 +3966,7 @@ void
 gtk_xtext_clear (xtext_buffer *buf, int lines)
 {
 	textentry *next;
+	int marker_reset = FALSE;
 
 	if (lines != 0)
 	{
@@ -3970,6 +3976,8 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 			lines *= -1;
 			while (lines)
 			{
+				if (buf->text_last == buf->marker_pos)
+					marker_reset = TRUE;
 				gtk_xtext_remove_bottom (buf);
 				lines--;
 			}
@@ -3979,6 +3987,8 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 			/* delete lines from top */
 			while (lines)
 			{
+				if (buf->text_first == buf->marker_pos)
+					marker_reset = TRUE;
 				gtk_xtext_remove_top (buf);
 				lines--;
 			}
@@ -3995,6 +4005,8 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 		buf->last_ent_start = NULL;
 		buf->last_ent_end = NULL;
 		buf->marker_pos = NULL;
+		if (buf->text_first)
+			marker_reset = TRUE;
 		dontscroll (buf);
 
 		while (buf->text_first)
@@ -4014,6 +4026,9 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 	{
 		gtk_xtext_calc_lines (buf, FALSE);
 	}
+
+	if (marker_reset)
+		buf->marker_state = MARKER_RESET_BY_CLEAR;
 }
 
 static gboolean
@@ -4528,14 +4543,13 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 	ent->sublines = NULL;
 	buf->num_lines += gtk_xtext_lines_taken (buf, ent);
 
-	if (buf->reset_marker_pos || 
-		((buf->marker_pos == NULL || buf->marker_seen) && (buf->xtext->buffer != buf || 
-		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))))))
+	if ((buf->marker_pos == NULL || buf->marker_seen) && (buf->xtext->buffer != buf || 
+		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext))))))
 	{
 		buf->marker_pos = ent;
+		buf->marker_state = MARKER_IS_SET;
 		dontscroll (buf); /* force scrolling off */
 		buf->marker_seen = FALSE;
-		buf->reset_marker_pos = FALSE;
 	}
 
 	if (buf->xtext->max_lines > 2 && buf->xtext->max_lines < buf->num_lines)
@@ -4783,12 +4797,63 @@ gtk_xtext_set_wordwrap (GtkXText *xtext, gboolean wordwrap)
 }
 
 void
+gtk_xtext_set_marker_last (session *sess)
+{
+	xtext_buffer *buf = sess->res->buffer;
+
+	buf->marker_pos = buf->text_last;
+	buf->marker_state = MARKER_IS_SET;
+}
+
+void
 gtk_xtext_reset_marker_pos (GtkXText *xtext)
 {
-	xtext->buffer->marker_pos = NULL;
-	dontscroll (xtext->buffer); /* force scrolling off */
-	gtk_xtext_render_page (xtext);
-	xtext->buffer->reset_marker_pos = TRUE;
+	if (xtext->buffer->marker_pos)
+	{
+		xtext->buffer->marker_pos = NULL;
+		dontscroll (xtext->buffer); /* force scrolling off */
+		gtk_xtext_render_page (xtext);
+		xtext->buffer->marker_state = MARKER_RESET_MANUALLY;
+	}
+}
+
+int
+gtk_xtext_moveto_marker_pos (GtkXText *xtext)
+{
+	gdouble value = 0;
+	xtext_buffer *buf = xtext->buffer;
+	textentry *ent = buf->text_first;
+	GtkAdjustment *adj = xtext->adj;
+
+	if (buf->marker_pos == NULL)
+		return buf->marker_state;
+
+	if (gtk_xtext_check_ent_visibility (xtext, buf->marker_pos, 1) == FALSE)
+	{
+		while (ent)
+		{
+			if (ent == buf->marker_pos)
+				break;
+			value += g_slist_length (ent->sublines);
+			ent = ent->next;
+		}
+		if (value >= adj->value && value < adj->value + adj->page_size)
+			return MARKER_IS_SET;
+		value -= adj->page_size / 2;
+		if (value < 0)
+			value = 0;
+		if (value > adj->upper - adj->page_size)
+			value = adj->upper - adj->page_size;
+		gtk_adjustment_set_value (adj, value);
+		gtk_xtext_render_page (xtext);
+	}
+
+	/* If we previously lost marker position to scrollback limit -- */
+	if (buf->marker_pos == buf->text_first &&
+		 buf->marker_state == MARKER_RESET_BY_KILL)
+		return MARKER_RESET_BY_KILL;
+	else
+		return MARKER_IS_SET;
 }
 
 void

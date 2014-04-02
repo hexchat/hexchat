@@ -459,6 +459,7 @@ typedef struct session
 	int doing_who:1;		/* /who sent on this channel */
 	int done_away_check:1;	/* done checking for away status changes */
 	gtk_xtext_search_flags lastlog_flags;
+	void (*scrollback_replay_marklast) (struct session *sess);
 } session;
 
 struct msproxy_state_t

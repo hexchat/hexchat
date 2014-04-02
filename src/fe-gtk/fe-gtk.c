@@ -407,6 +407,8 @@ fe_new_window (session *sess, int focus)
 
 	if (!sess_list->next)
 		g_idle_add (fe_idle, NULL);
+
+	sess->scrollback_replay_marklast = gtk_xtext_set_marker_last;
 }
 
 void
