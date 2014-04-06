@@ -778,7 +778,7 @@ inbound_join (server *serv, char *chan, char *user, char *ip, char *account,
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_JOIN, sess, user, chan, ip, NULL, 0,
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_JOIN, sess, user, chan, ip, account, 0,
 									  tags_data->timestamp);
 		userlist_add (sess, user, ip, account, realname, tags_data);
 	}
