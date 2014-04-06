@@ -1026,6 +1026,7 @@ static char * const pevt_join_help[] = {
 	N_("The nick of the joining person"),
 	N_("The channel being joined"),
 	N_("The host of the person"),
+	N_("The account of the person"),
 };
 
 static char * const pevt_chanaction_help[] = {

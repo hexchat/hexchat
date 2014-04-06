@@ -1042,8 +1042,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			{
 				char *chan = word[3];
 				char *account = word[4];
-				char *realname = word_eol[5] + 1;
+				char *realname = word_eol[5];
 
+				if (account && strcmp (account, "*") == 0)
+					account = NULL;
+				if (realname && *realname == ':')
+					realname++;
 				if (*chan == ':')
 					chan++;
 				if (!serv->p_cmp (nick, serv->nick))
