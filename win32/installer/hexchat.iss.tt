@@ -279,7 +279,7 @@ begin
 		if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
 			idpAddFile(PY2, ExpandConstant('{tmp}\python.msi'));
 			
-		if IsComponentSelected('langs\python\python3') and not CheckDLL('python33.dll') then
+		if IsComponentSelected('langs\python\python3') and not CheckDLL('python34.dll') then
 			idpAddFile(PY3, ExpandConstant('{tmp}\python.msi'));
 	end;
   end;
