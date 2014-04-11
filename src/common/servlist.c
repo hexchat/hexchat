@@ -530,11 +530,11 @@ static const struct defaultserver def[] =
 #endif
 	{0,			"irc.windfyre.net"},
 
-    {"Xertion", 0, 0, 0, LOGIN_SASL},
+	{"Xertion", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
-    {0,			"irc.xertion.org/+6697"},
+	{0,			"irc.xertion.org/+6697"},
 #endif
-    {0,			"irc.xertion.org"},
+	{0,			"irc.xertion.org"},
 
 	{0,0}
 };
