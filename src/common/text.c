@@ -300,7 +300,10 @@ scrollback_load (session *sess)
 
 			/* If nothing but funny trailing matter e.g. 0x0d or 0x0d0a, toss it */
 			if (n_bytes >= 1 && buf[0] == 0x0d)
+			{
+				g_free (buf);
 				continue;
+			}
 
 			n_bytes--;
 			buf_tmp = buf;
