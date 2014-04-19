@@ -842,7 +842,7 @@ servlist_favchan_find (ircnet *net, char *channel, int *pos)
 	while (list)
 	{
 		favchan = list->data;
-		if (strcmp (favchan->name, channel) == 0)
+		if (g_ascii_strcasecmp (favchan->name, channel) == 0)
 		{
 			if (pos)
 			{

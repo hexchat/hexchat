@@ -1088,8 +1088,11 @@ servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 	else
 	{
 		fav = servlist_favchan_find (net, channel, NULL);
-		servlist_favchan_remove (net, fav);
-		servlist_save ();
+		if (fav)
+		{
+			servlist_favchan_remove (net, fav);
+			servlist_save ();
+		}
 	}
 }
 
