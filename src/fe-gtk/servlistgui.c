@@ -2193,11 +2193,11 @@ servlist_open_networks (void)
 	gtk_widget_set_can_default (button_connect, TRUE);
 
 	g_signal_connect (G_OBJECT (entry_guser), "changed", 
-					servlist_username_changed_cb, button_connect);
+					G_CALLBACK(servlist_username_changed_cb), button_connect);
 	g_signal_connect (G_OBJECT (entry_nick1), "changed",
-					servlist_nick_changed_cb, button_connect);
+					G_CALLBACK(servlist_nick_changed_cb), button_connect);
 	g_signal_connect (G_OBJECT (entry_nick2), "changed",
-					servlist_nick_changed_cb, button_connect);
+					G_CALLBACK(servlist_nick_changed_cb), button_connect);
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);
