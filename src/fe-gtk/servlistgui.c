@@ -1126,11 +1126,6 @@ servlist_connect_cb (GtkWidget *button, gpointer userdata)
 		fe_message (_("User name cannot be left blank."), FE_MSG_ERROR);
 		return;
 	}
-	else if (servlist_err == 2)
-	{
-		fe_message (_("You must have a unique nickname for Second Choice."), FE_MSG_ERROR);
-		return;
-	}
 
  	if (!is_session (servlist_sess))
 		servlist_sess = NULL;	/* open a new one */
@@ -1550,6 +1545,45 @@ servlist_logintypecombo_cb (GtkComboBox *cb, gpointer *userdata)
 		gtk_widget_set_sensitive (edit_entry_pass, TRUE);
 }
 
+static void
+servlist_username_changed_cb (GtkEntry *entry, gpointer userdata)
+{
+	GtkWidget *connect_btn = GTK_WIDGET (userdata);
+
+	if (gtk_entry_get_text (entry)[0] == 0)
+	{
+		gtk_entry_set_icon_from_stock (entry, GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
+		gtk_entry_set_icon_tooltip_text (entry, GTK_ENTRY_ICON_SECONDARY,
+										_("User name cannot be left blank."));
+		gtk_widget_set_sensitive (connect_btn, FALSE);
+	}
+	else
+	{
+		gtk_entry_set_icon_from_stock (entry, GTK_ENTRY_ICON_SECONDARY, NULL);
+		gtk_widget_set_sensitive (connect_btn, TRUE);
+	}
+}
+
+static void
+servlist_nick_changed_cb (GtkEntry *entry, gpointer userdata)
+{
+	GtkWidget *connect_btn = GTK_WIDGET (userdata);
+	const gchar *nick1 = gtk_entry_get_text (GTK_ENTRY (entry_nick1));
+	const gchar *nick2 = gtk_entry_get_text (GTK_ENTRY (entry_nick2));
+
+	if (!rfc_casecmp (nick1, nick2))
+	{
+		gtk_entry_set_icon_from_stock (entry, GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
+		gtk_entry_set_icon_tooltip_text (entry, GTK_ENTRY_ICON_SECONDARY,
+										_("You must have two unique nick names."));
+		gtk_widget_set_sensitive (connect_btn, FALSE);
+	}
+	else
+	{
+		gtk_entry_set_icon_from_stock (entry, GTK_ENTRY_ICON_SECONDARY, NULL);
+		gtk_widget_set_sensitive (connect_btn, TRUE);
+	}
+}
 
 static GtkWidget *
 servlist_create_charsetcombo (void)
@@ -2157,6 +2191,13 @@ servlist_open_networks (void)
 	button_connect = gtkutil_button (hbuttonbox1, GTK_STOCK_CONNECT, NULL,
 												servlist_connect_cb, NULL, _("C_onnect"));
 	gtk_widget_set_can_default (button_connect, TRUE);
+
+	g_signal_connect (G_OBJECT (entry_guser), "changed", 
+					servlist_username_changed_cb, button_connect);
+	g_signal_connect (G_OBJECT (entry_nick1), "changed",
+					servlist_nick_changed_cb, button_connect);
+	g_signal_connect (G_OBJECT (entry_nick2), "changed",
+					servlist_nick_changed_cb, button_connect);
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);
