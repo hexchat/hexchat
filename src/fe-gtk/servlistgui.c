@@ -1580,7 +1580,8 @@ servlist_nick_changed_cb (GtkEntry *entry, gpointer userdata)
 	}
 	else
 	{
-		gtk_entry_set_icon_from_stock (entry, GTK_ENTRY_ICON_SECONDARY, NULL);
+		gtk_entry_set_icon_from_stock (GTK_ENTRY(entry_nick1), GTK_ENTRY_ICON_SECONDARY, NULL);
+		gtk_entry_set_icon_from_stock (GTK_ENTRY(entry_nick2), GTK_ENTRY_ICON_SECONDARY, NULL);
 		gtk_widget_set_sensitive (connect_btn, TRUE);
 	}
 }
