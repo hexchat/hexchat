@@ -540,7 +540,6 @@ log_create_pathname (char *servname, char *channame, char *netname)
 {
 	char fname[384];
 	char fnametime[384];
-	struct tm *tm;
 	time_t now;
 
 	if (!netname)
@@ -568,8 +567,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 
 	/* insert time/date */
 	now = time (NULL);
-	tm = localtime (&now);
-	strftime_validated (fnametime, sizeof (fnametime), fname, tm);
+	strftime_utf8 (fnametime, sizeof (fnametime), fname, now);
 
 	/* create final path/filename */
 	if (logmask_is_fullpath ())

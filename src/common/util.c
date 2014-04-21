@@ -2203,15 +2203,17 @@ challengeauth_response (char *username, char *password, char *challenge)
 #endif
 
 /**
-* \brief Wrapper around strftime for Windows
-*
-* Prevents crashing when using an invalid format by escaping them.
-*
-* Behaves the same as strftime with the addition that
-* it returns 0 if the escaped format string is too large.
-*
-* Based upon work from znc-msvc project.
-*/
+ * \brief Wrapper around strftime for Windows
+ *
+ * Prevents crashing when using an invalid format by escaping them.
+ *
+ * Behaves the same as strftime with the addition that
+ * it returns 0 if the escaped format string is too large.
+ *
+ * Based upon work from znc-msvc project.
+ *
+ * This assumes format is a locale-encoded string. For utf-8 strings, use strftime_utf8
+ */
 size_t
 strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time)
 {
@@ -2277,4 +2279,18 @@ strftime_validated (char *dest, size_t destsize, const char *format, const struc
 
 	return strftime (dest, destsize, safe_format, time);
 #endif
+}
+
+/**
+ * \brief Similar to strftime except it works with utf-8 formats, since strftime treats the format as locale-encoded.
+ */
+gsize
+strftime_utf8 (char *dest, gsize destsize, const char *format, time_t time)
+{
+	gsize result;
+	GDate* date = g_date_new ();
+	g_date_set_time_t (date, time);
+	result = g_date_strftime (dest, destsize, format, date);
+	g_date_free (date);
+	return result;
 }
