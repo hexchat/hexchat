@@ -295,31 +295,8 @@ cfg_get_int (char *cfg, char *var)
 char *xdir = NULL;	/* utf-8 encoding */
 
 #ifdef WIN32
-
-#include <windows.h>
-
-static gboolean
-get_reg_str (const char *sub, const char *name, char *out, DWORD len)
-{
-	HKEY hKey;
-	DWORD t;
-
-	if (RegOpenKeyEx (HKEY_CURRENT_USER, sub, 0, KEY_READ, &hKey) ==
-			ERROR_SUCCESS)
-	{
-		if (RegQueryValueEx (hKey, name, NULL, &t, out, &len) != ERROR_SUCCESS ||
-			 t != REG_SZ)
-		{
-			RegCloseKey (hKey);
-			return FALSE;
-		}
-		out[len-1] = 0;
-		RegCloseKey (hKey);
-		return TRUE;
-	}
-
-	return FALSE;
-}
+#include <Windows.h>
+#include <ShlObj.h>
 #endif
 
 char *
@@ -327,10 +304,13 @@ get_xdir (void)
 {
 	if (!xdir)
 	{
-#ifdef WIN32
-		char out[256];
+#ifndef WIN32
+		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
+#else
+		wchar_t* roaming_path_wide;
+		gchar* roaming_path;
 
-		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+		if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_RoamingAppData, 0, NULL, &roaming_path_wide) != S_OK)
 		{
 			char *path;
 			char file[MAX_PATH];
@@ -348,10 +328,13 @@ get_xdir (void)
 		}
 		else
 		{
-			xdir = g_build_filename (out, "HexChat", NULL);
+			roaming_path = g_utf16_to_utf8 (roaming_path_wide, -1, NULL, NULL, NULL);
+			CoTaskMemFree (roaming_path_wide);
+
+			xdir = g_build_filename (roaming_path, "HexChat", NULL);
+
+			g_free (roaming_path);
 		}
-#else
-		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
 #endif
 	}
 
@@ -737,7 +720,8 @@ load_default_config(void)
 	const char *username, *realname, *font, *langs;
 	char *sp;
 #ifdef WIN32
-	char out[256];
+	wchar_t* roaming_path_wide;
+	gchar* roaming_path;
 #endif
 
 	username = g_get_user_name ();
@@ -861,13 +845,18 @@ load_default_config(void)
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.hex_completion_suffix, ",");
 #ifdef WIN32
-	if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
+	if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_Downloads, 0, NULL, &roaming_path_wide) != S_OK)
 	{
 		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
 	}
 	else
 	{
-		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
+		roaming_path = g_utf16_to_utf8 (roaming_path_wide, -1, NULL, NULL, NULL);
+		CoTaskMemFree (roaming_path_wide);
+
+		g_strlcpy (prefs.hex_dcc_dir, roaming_path, sizeof (prefs.hex_dcc_dir));
+
+		g_free (roaming_path);
 	}
 #else
 	if (g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD))
