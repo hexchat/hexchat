@@ -749,6 +749,7 @@ get_sys_str (int with_cpu)
 					if (osvi.wProductType == VER_NT_WORKSTATION)
 					{
 						strcpy (winver, "8");
+						strcpy (winver, "8.1");
 					}
 					else
 					{
