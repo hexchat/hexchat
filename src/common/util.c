@@ -33,6 +33,7 @@
 #include <sys/timeb.h>
 #include <process.h>
 #include <io.h>
+#include <VersionHelpers.h>
 #include "../dirent/dirent-win32.h"
 #include "../../config-win32.h"
 #else
@@ -689,74 +690,88 @@ get_sys_str (int with_cpu)
 {
 	static char verbuf[64];
 	static char winver[20];
-	OSVERSIONINFOEX osvi;
 	double mhz;
 
-	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
-	GetVersionEx ((OSVERSIONINFO*) &osvi);
-
-	switch (osvi.dwMajorVersion)
+	if (IsWindows8Point1OrGreater ())
 	{
-		case 5:
-			switch (osvi.dwMinorVersion)
-			{
-				case 1:
-					strcpy (winver, "XP");
-					break;
-				case 2:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "XP x64 Edition");
-					}
-					else
-					{
-						if (GetSystemMetrics(SM_SERVERR2) == 0)
-						{
-							strcpy (winver, "Server 2003");
-						}
-						else
-						{
-							strcpy (winver, "Server 2003 R2");
-						}
-					}
-					break;
-			}
-			break;
-		case 6:
-			switch (osvi.dwMinorVersion)
-			{
-				case 0:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "Vista");
-					}
-					else
-					{
-						strcpy (winver, "Server 2008");
-					}
-					break;
-				case 1:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "7");
-					}
-					else
-					{
-						strcpy (winver, "Server 2008 R2");
-					}
-					break;
-				case 2:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "8");
-					}
-					else
-					{
-						strcpy (winver, "Server 2012");
-					}
-					break;
-			}
-			break;
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2012 R2");
+		}
+		else
+		{
+			strcpy (winver, "8.1");
+		}
+	}
+	else if (IsWindows8OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2012");
+		}
+		else
+		{
+			strcpy (winver, "8");
+		}
+	}
+	else if (IsWindows7SP1OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008 R2 SP1");
+		}
+		else
+		{
+			strcpy (winver, "7 SP1");
+		}
+	}
+	else if (IsWindows7OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008 R2");
+		}
+		else
+		{
+			strcpy (winver, "7");
+		}
+	}
+	else if (IsWindowsVistaSP2OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008 SP2");
+		}
+		else
+		{
+			strcpy (winver, "Vista SP2");
+		}
+	}
+	else if (IsWindowsVistaSP1OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008 SP1");
+		}
+		else
+		{
+			strcpy (winver, "Vista SP1");
+		}
+	}
+	else if (IsWindowsVistaOrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008");
+		}
+		else
+		{
+			strcpy (winver, "Vista");
+		}
+	}
+	else
+	{
+		strcpy (winver, "Unknown");
 	}
 
 	mhz = get_mhz ();
