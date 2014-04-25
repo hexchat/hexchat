@@ -1841,8 +1841,10 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				char **argv;
 				int argc;
 
-				my_poptParseArgvString (cmd, &argc, &argv);
+				g_shell_parse_argv (cmd, &argc, &argv, NULL);
 				execvp (argv[0], argv);
+
+				g_strfreev (argv);
 			}
 			/* not reached unless error */
 			/*printf("exec error\n");*/

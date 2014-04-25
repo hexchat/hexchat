@@ -991,47 +991,12 @@ hexchat_exit (void)
 	fe_exit ();
 }
 
-#ifndef WIN32
-
-static int
-child_handler (gpointer userdata)
-{
-	int pid = GPOINTER_TO_INT (userdata);
-
-	if (waitpid (pid, 0, WNOHANG) == pid)
-		return 0;					  /* remove timeout handler */
-	return 1;						  /* keep the timeout handler */
-}
-
-#endif
-
 void
 hexchat_exec (const char *cmd)
 {
-#ifdef WIN32
 	util_exec (cmd);
-#else
-	int pid = util_exec (cmd);
-	if (pid != -1)
-	/* zombie avoiding system. Don't ask! it has to be like this to work
-      with zvt (which overrides the default handler) */
-		fe_timeout_add (1000, child_handler, GINT_TO_POINTER (pid));
-#endif
 }
 
-void
-hexchat_execv (char * const argv[])
-{
-#ifdef WIN32
-	util_execv (argv);
-#else
-	int pid = util_execv (argv);
-	if (pid != -1)
-	/* zombie avoiding system. Don't ask! it has to be like this to work
-      with zvt (which overrides the default handler) */
-		fe_timeout_add (1000, child_handler, GINT_TO_POINTER (pid));
-#endif
-}
 
 static void
 set_locale (void)

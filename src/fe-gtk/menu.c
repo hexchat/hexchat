@@ -403,8 +403,10 @@ toggle_cb (GtkWidget *item, char *pref_name)
 static int
 is_in_path (char *cmd)
 {
-	char *prog = strdup (cmd + 1);	/* 1st char is "!" */
+	char *prog = g_strdup (cmd + 1);	/* 1st char is "!" */
 	char *space, *path, *orig;
+	char **argv;
+	int argc;
 
 	orig = prog; /* save for free()ing */
 	/* special-case these default entries. */
@@ -413,16 +415,17 @@ is_in_path (char *cmd)
 	/* don't check for gnome-terminal, but the thing it's executing! */
 		prog += 18;
 
-	space = strchr (prog, ' ');	/* this isn't 100% but good enuf */
-	if (space)
-		*space = 0;
-
-	path = g_find_program_in_path (prog);
-	if (path)
+	if (g_shell_parse_argv (prog, &argc, &argv, NULL))
 	{
-		g_free (path);
-		g_free (orig);
-		return 1;
+		path = g_find_program_in_path (argv[0]);
+		if (path)
+		{
+			g_free (path);
+			g_free (orig);
+			g_strfreev (argv);
+			return 1;
+		}
+		g_strfreev (argv);
 	}
 
 	g_free (orig);
