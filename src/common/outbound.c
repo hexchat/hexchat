@@ -2486,7 +2486,7 @@ cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		}
 		j++;
 	}
-	if (*word_eol[j])
+	if (word_eol[j] != NULL && *word_eol[j])
 	{
 		lastlog (sess, word_eol[j], flags);
 		return TRUE;
