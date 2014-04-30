@@ -600,7 +600,7 @@ convert_with_fallback (const char *str, const char *fallback)
 	/* On non-Windows, g_get_user_name and g_get_real_name return a string in system locale, so convert it to utf-8. */
 	utf = g_locale_to_utf8 (str, -1, NULL, NULL, 0);
 
-	g_free (str);
+	g_free ((char*)str);
 
 	/* The returned string is NULL if conversion from locale to utf-8 failed for any reason. Return the fallback. */
 	if (!utf)
