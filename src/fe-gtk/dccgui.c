@@ -107,11 +107,20 @@ static short view_mode;	/* 1=download 2=upload 3=both */
 static void
 proper_unit (DCC_SIZE size, char *buf, int buf_len)
 {
-	gchar *formated_str = g_format_size ((guint64)size);
+	gchar *formatted_str;
+	GFormatSizeFlags format_flags = G_FORMAT_SIZE_DEFAULT;
 
-	g_strlcpy (buf, formated_str, buf_len);
+#ifndef __APPLE__ /* OS X uses SI */
+#ifndef WIN32 /* Windows uses IEC size (with SI format) */
+	if (prefs.hex_gui_filesize_iec) /* Linux can't decide... */
+#endif
+		format_flags = G_FORMAT_SIZE_IEC_UNITS;
+#endif
 
-	g_free (formated_str);
+	formatted_str = g_format_size_full ((guint64)size, format_flags);
+	g_strlcpy (buf, formatted_str, buf_len);
+
+	g_free (formatted_str);
 }
 
 static void
