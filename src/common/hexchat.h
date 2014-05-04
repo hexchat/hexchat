@@ -156,6 +156,7 @@ struct hexchatprefs
 	unsigned int hex_gui_autoopen_recv;
 	unsigned int hex_gui_autoopen_send;
 	unsigned int hex_gui_compact;
+	unsigned int hex_gui_filesize_iec;
 	unsigned int hex_gui_focus_omitalerts;
 	unsigned int hex_gui_hide_menu;
 	unsigned int hex_gui_input_attr;
