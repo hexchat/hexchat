@@ -2173,6 +2173,12 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 		if (sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
 		break;
+
+	/* ===Nick change message=== */
+	case XP_TE_CHANGENICK:
+		if (prefs.hex_irc_hide_nickchange)
+			return;
+		break;
 	}
 
 	sound_play_event (index);
