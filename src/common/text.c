@@ -690,7 +690,7 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 }
 
 static void
-log_write (session *sess, char *text)
+log_write (session *sess, char *text, time_t ts)
 {
 	char *temp;
 	char *stamp;
@@ -727,7 +727,8 @@ log_write (session *sess, char *text)
 
 	if (prefs.hex_stamp_log)
 	{
-		len = get_stamp_str (prefs.hex_stamp_log_format, time (0), &stamp);
+		if (!ts) ts = time(0);
+		len = get_stamp_str (prefs.hex_stamp_log_format, ts, &stamp);
 		if (len)
 		{
 			write (sess->logfd, stamp, len);
@@ -911,7 +912,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 		conv = text_validate ((char **)&text, &len);
 	}
 
-	log_write (sess, text);
+	log_write (sess, text, timestamp);
 	scrollback_save (sess, text);
 	fe_print_text (sess, text, timestamp, FALSE);
 
