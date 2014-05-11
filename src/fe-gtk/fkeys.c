@@ -287,8 +287,16 @@ key_free (gpointer data)
 static inline GdkModifierType
 key_modifier_get_valid (GdkModifierType mod)
 {
+	GdkModifierType ret;
+
+#ifdef __APPLE__
+	ret = mod & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK | GDK_META_MASK);
+#else
 	/* These masks work on both Windows and Unix */
-	return mod & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
+	ret = mod & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
+#endif
+
+	return ret;
 }
 
 gboolean
