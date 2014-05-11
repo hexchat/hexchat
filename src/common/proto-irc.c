@@ -1075,8 +1075,14 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			return;
 
 		case WORDL('K','I','L','L'):
-			EMIT_SIGNAL_TIMESTAMP (XP_TE_KILL, sess, nick, word_eol[5], NULL, NULL,
-										  0, tags_data->timestamp);
+			{
+				char *reason = word_eol[4];
+				if (*reason == ':')
+					reason++;
+
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_KILL, sess, nick, reason, NULL, NULL,
+											  0, tags_data->timestamp);
+			}
 			return;
 
 		case WORDL('M','O','D','E'):
