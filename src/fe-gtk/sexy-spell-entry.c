@@ -162,8 +162,14 @@ initialize_enchant ()
 	{
 #ifndef WIN32
 		enchant = g_module_open("libenchant.so.1", 0);
-				if (enchant == NULL)
-					return;
+		if (enchant == NULL)
+		{
+#ifdef __APPLE__
+			enchant = g_module_open("libenchant.dylib", 0);
+			if (enchant == NULL)
+#endif
+				return;
+		}
 #else
 		return;
 #endif
