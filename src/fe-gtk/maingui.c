@@ -146,6 +146,9 @@ set_window_urgency (GtkWidget *win, gboolean set)
 static void
 flash_window (GtkWidget *win)
 {
+#ifdef HAVE_GTK_MAC
+	gtkosx_application_attention_request (osx_app, INFO_REQUEST);
+#endif
 	set_window_urgency (win, TRUE);
 }
 
