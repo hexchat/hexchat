@@ -948,19 +948,8 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 	if (is_channel (serv, ptr))
 		sess = find_channel (serv, ptr);
 
-	if (!sess && ptr[0] == '@')
-	{
-		ptr++;
-		sess = find_channel (serv, ptr);
-	}
-
-	if (!sess && ptr[0] == '%')
-	{
-		ptr++;
-		sess = find_channel (serv, ptr);
-	}
-
-	if (!sess && ptr[0] == '+')
+	// /notice [mode-prefix]#channel should end up in that channel
+	if (!sess && strchr(serv->nick_prefixes, ptr[0]))
 	{
 		ptr++;
 		sess = find_channel (serv, ptr);
@@ -991,7 +980,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 				}
 			}
 			if (!sess)
-				sess = find_session_from_nick (nick, serv);
+				sess = find_dialog (serv, nick);
 		} else if (prefs.hex_irc_notice_pos == 1)
 		{
 			int stype = server_notice ? SESS_SNOTICES : SESS_NOTICES;
