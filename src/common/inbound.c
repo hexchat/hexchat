@@ -944,14 +944,12 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 	char *po,*ptr=to;
 	session *sess = 0;
 	int server_notice = FALSE;
-	const char *prefixes = "@+%";
 
 	if (is_channel (serv, ptr))
 		sess = find_channel (serv, ptr);
 
 	// /notice [mode-prefix]#channel should end up in that channel
-	if (serv->nick_prefixes && *serv->nick_prefixes) prefixes = serv->nick_prefixes;
-	if (!sess && strchr(prefixes, ptr[0]))
+	if (!sess && strchr(serv->nick_prefixes, ptr[0]))
 	{
 		ptr++;
 		sess = find_channel (serv, ptr);
