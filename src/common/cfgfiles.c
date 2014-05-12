@@ -808,6 +808,7 @@ load_default_config(void)
 	prefs.hex_away_size_max = 300;
 	prefs.hex_away_timeout = 60;
 	prefs.hex_completion_amount = 5;
+	prefs.hex_completion_sort = 1;
 	prefs.hex_dcc_auto_recv = 1;			/* browse mode */
 	prefs.hex_dcc_blocksize = 1024;
 	prefs.hex_dcc_permissions = 0600;
