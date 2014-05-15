@@ -420,6 +420,12 @@ static const struct defaultserver def[] =
 
 	{"SeilEn.de",	0},
 	{0,			"irc.seilen.de"},
+	
+	{"SeionIRC", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.seion.us/+6697"},
+#endif
+	{0,			"irc.seion.us"},
 
 	{"Serenity-IRC",	0},
 	{0,			"irc.serenity-irc.net"},
