@@ -172,6 +172,7 @@ gtk_xtext_text_width_8bit (GtkXText *xtext, unsigned char *str, int len)
 
 #define EMPH_ITAL 1
 #define EMPH_BOLD 2
+#define EMPH_HIDDEN 4
 static PangoAttrList *attr_lists[4];
 static int fontwidths[4][128];
 
@@ -310,6 +311,10 @@ backend_get_text_width_emph (GtkXText *xtext, guchar *str, int len, int emphasis
 
 	if (*str == 0)
 		return 0;
+
+	if ((emphasis & EMPH_HIDDEN))
+		return 0;
+	emphasis &= (EMPH_ITAL | EMPH_BOLD);
 
 	width = 0;
 	pango_layout_set_attributes (xtext->layout, attr_lists[emphasis]);
@@ -823,6 +828,7 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 	int xx = indent;
 	int suboff;
 	GSList *list;
+	GSList *hid = NULL;
 	offlen_t *meta;
 	int off, len, wid, mbl, mbw;
 
@@ -847,6 +853,8 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 	meta = list->data;
 	off = meta->off;
 	len = meta->len;
+	if (meta->emph & EMPH_HIDDEN)
+		hid = list;
 	while (len > 0)
 	{
 		if (off >= suboff)
@@ -873,6 +881,8 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 		off += mbl;
 		if (len <= 0)
 		{
+			if (meta->emph & EMPH_HIDDEN)
+				hid = list;
 			list = g_slist_next (list);
 			if (list == NULL)
 				return ent->str_len;
@@ -880,6 +890,13 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 			off = meta->off;
 			len = meta->len;
 		}
+	}
+
+	/* If previous chunk exists and is marked hidden, regard it as unhidden */
+	if (hid && list && hid->next == list)
+	{
+		meta = hid->data;
+		off = meta->off;
 	}
 
 	/* Return offset of character at x within subline */
@@ -908,7 +925,8 @@ gtk_xtext_find_x (GtkXText * xtext, int x, textentry * ent, int subline,
 	if (str >= ent->str + ent->str_len)
 		return 0;
 
-	if (x < indent)
+	/* Let user select left a few pixels to grab hidden text e.g. '<' */
+	if (x < indent - xtext->space_width)
 	{
 		*out_of_bounds = 1;
 		return (str - ent->str);
@@ -2410,10 +2428,11 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 				break;
 			case ATTR_HIDDEN:
 				xtext_do_chunk (&c);
+				c.emph ^= EMPH_HIDDEN;
 				hidden = !hidden;
 				break;
 			default:
-				if (!(hidden && strip_hidden))
+				if (strip_hidden == 2 || (!(hidden && strip_hidden)))
 				{
 					if (c.len1 == 0)
 						c.off1 = text - text0;
@@ -2459,7 +2478,7 @@ gtk_xtext_text_width_ent (GtkXText *xtext, textentry *ent)
 	}
 
 	new_buf = gtk_xtext_strip_color (ent->str, ent->str_len, xtext->scratch_buffer,
-												NULL, &slp0, !xtext->ignore_hidden);
+												NULL, &slp0, 2);
 
 	width =  backend_get_text_width_slp (xtext, new_buf, slp0);
 	ent->slp = slp0;
