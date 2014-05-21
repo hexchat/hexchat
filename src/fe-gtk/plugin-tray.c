@@ -884,6 +884,8 @@ tray_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 
 	hexchat_hook_print (ph, "Private Message", -1, tray_priv_cb, NULL);
 	hexchat_hook_print (ph, "Private Message to Dialog", -1, tray_priv_cb, NULL);
+	hexchat_hook_print (ph, "Private Action", -1, tray_priv_cb, NULL);
+	hexchat_hook_print (ph, "Private Action to Dialog", -1, tray_priv_cb, NULL);
 	hexchat_hook_print (ph, "Notice", -1, tray_priv_cb, NULL);
 	hexchat_hook_print (ph, "Invited", -1, tray_invited_cb, NULL);
 
