@@ -3769,7 +3769,7 @@ mg_is_gui_target (GdkDragContext *context)
 	{
 		/* if it's not HEXCHAT_CHANVIEW or HEXCHAT_USERLIST */
 		/* we should ignore it. */
-		if (target_name[0] != 'X')
+		if (target_name[0] != 'H')
 		{
 			g_free (target_name);
 			return FALSE;
