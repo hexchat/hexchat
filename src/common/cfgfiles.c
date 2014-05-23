@@ -767,7 +767,6 @@ load_default_config(void)
 	/* prefs.hex_gui_slist_skip = 1; */
 	prefs.hex_gui_tab_chans = 1;
 	prefs.hex_gui_tab_dialogs = 1;
-	prefs.hex_gui_tab_dots = 1;
 	prefs.hex_gui_tab_icons = 1;
 	prefs.hex_gui_tab_server = 1;
 	prefs.hex_gui_tab_sort = 1;
@@ -785,6 +784,7 @@ load_default_config(void)
 	prefs.hex_input_flash_priv = 1;
 	prefs.hex_input_tray_hilight = 1;
 	prefs.hex_input_tray_priv = 1;
+	prefs.hex_irc_cap_server_time = 1;
 	prefs.hex_irc_who_join = 1; /* Can kick with inordinate amount of channels, required for some of our features though, TODO: add cap like away check? */
 	prefs.hex_irc_whois_front = 1;
 	prefs.hex_net_auto_reconnect = 1;
@@ -802,7 +802,6 @@ load_default_config(void)
 	prefs.hex_text_thin_sep = 1;
 	prefs.hex_text_wordwrap = 1;
 	prefs.hex_url_grabber = 1;
-	prefs.hex_irc_cap_server_time = 0;
 
 	/* NUMBERS */
 	prefs.hex_away_size_max = 300;
