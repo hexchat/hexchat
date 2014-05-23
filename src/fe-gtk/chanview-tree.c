@@ -167,7 +167,6 @@ cv_tree_init (chanview *cv)
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
 	gtk_drag_source_set (view, GDK_BUTTON1_MASK, dnd_src_target, 1, GDK_ACTION_COPY);
 
-#ifndef WIN32
 	g_signal_connect (G_OBJECT (view), "drag_begin",
 							G_CALLBACK (mg_drag_begin_cb), NULL);
 	g_signal_connect (G_OBJECT (view), "drag_drop",
@@ -176,7 +175,6 @@ cv_tree_init (chanview *cv)
 							G_CALLBACK (mg_drag_motion_cb), NULL);
 	g_signal_connect (G_OBJECT (view), "drag_end",
 							G_CALLBACK (mg_drag_end_cb), NULL);
-#endif
 
 	((treeview *)cv)->tree = GTK_TREE_VIEW (view);
 	((treeview *)cv)->scrollw = win;

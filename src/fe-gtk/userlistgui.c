@@ -643,7 +643,6 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (userlist_key_cb), 0);
 
 	/* tree/chanview DND */
-#ifndef WIN32	/* leaks GDI pool memory, don't enable */
 	g_signal_connect (G_OBJECT (treeview), "drag_begin",
 							G_CALLBACK (mg_drag_begin_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "drag_drop",
@@ -652,7 +651,6 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (mg_drag_motion_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "drag_end",
 							G_CALLBACK (mg_drag_end_cb), NULL);
-#endif
 
 	userlist_add_columns (GTK_TREE_VIEW (treeview));
 
