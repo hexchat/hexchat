@@ -413,6 +413,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 						 guint info, guint ttime, gpointer userdata)
 {
 	struct User *user;
+	gchar *data;
 	GtkTreePath *path;
 	GtkTreeModel *model;
 	GtkTreeIter iter;
@@ -425,7 +426,10 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 		return;
 	gtk_tree_model_get (model, &iter, COL_USER, &user, -1);
 
-	mg_dnd_drop_file (current_sess, user->nick, (char *)gtk_selection_data_get_data (selection_data));
+	data = (char *)gtk_selection_data_get_data (selection_data);
+
+	if (data)
+		mg_dnd_drop_file (current_sess, user->nick, data);
 }
 
 static gboolean
