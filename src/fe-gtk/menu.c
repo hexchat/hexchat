@@ -1740,7 +1740,7 @@ menu_about (GtkWidget *wid, gpointer sess)
 }
 
 static struct mymenu mymenu[] = {
-	{N_("He_xChat"), 0, 0, M_NEWMENU, 0, 0, 1},
+	{N_("He_xChat"), 0, 0, M_NEWMENU, MENU_ID_HEXCHAT, 0, 1},
 	{N_("Network Li_st..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_KEY_s},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
@@ -2249,9 +2249,17 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	char *key_theme = NULL;
 	GtkSettings *settings;
 	GSList *group = NULL;
+#ifdef HAVE_GTK_MAC
+	int appmenu_offset = 1; /* 0 is for about */
+#endif
 
 	if (bar)
+	{
 		menu_bar = gtk_menu_bar_new ();
+#ifdef HAVE_GTK_MAC
+		gtkosx_application_set_menu_bar (osx_app, GTK_MENU_SHELL (menu_bar));
+#endif
+	}
 	else
 		menu_bar = gtk_menu_new ();
 
@@ -2355,7 +2363,10 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 			menu_item = gtk_menu_item_new_with_mnemonic (_(mymenu[i].text));
 			/* record the English name for /menu */
 			g_object_set_data (G_OBJECT (menu_item), "name", mymenu[i].text);
-			gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar), menu_item);
+#ifdef HAVE_GTK_MAC /* Added to app menu, see below */
+			if (!bar || mymenu[i].id != MENU_ID_HEXCHAT)		
+#endif
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar), menu_item);
 			gtk_widget_show (menu_item);
 			break;
 
@@ -2456,6 +2467,15 @@ togitem:
 		if (mymenu[i].id != 0 && menu_widgets)
 			/* this ends up in sess->gui->menu_item[MENU_ID_XXX] */
 			menu_widgets[mymenu[i].id] = item;
+
+#ifdef HAVE_GTK_MAC
+		/* We want HexChat to be the app menu, not including Quit or HexChat itself */
+		if (bar && item && i <= CLOSE_OFFSET + 1 && mymenu[i].id != MENU_ID_HEXCHAT)
+		{
+			if (!submenu || mymenu[i].type == M_MENUSUB)
+				gtkosx_application_insert_app_menu_item (osx_app, item, appmenu_offset++);
+		}
+#endif
 
 		i++;
 	}
