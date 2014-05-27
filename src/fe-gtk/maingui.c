@@ -3108,10 +3108,6 @@ mg_create_menu (session_gui *gui, GtkWidget *table, int away_state)
 											gui->menu_item);
 	gtk_table_attach (GTK_TABLE (table), gui->menu, 0, 3, 0, 1,
 						   GTK_EXPAND | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-
-#ifdef HAVE_GTK_MAC
-	gtkosx_application_set_menu_bar(osx_app, GTK_MENU_SHELL(gui->menu));
-#endif
 }
 
 static void
