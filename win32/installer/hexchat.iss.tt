@@ -273,7 +273,7 @@ begin
 		if IsComponentSelected('spell') and not CheckSpellInstall() then
 			idpAddFile(SPELL, ExpandConstant('{tmp}\spelling-dicts.exe'));
 			
-		if IsComponentSelected('langs\perl') and not CheckDLL('perl518.dll') then
+		if IsComponentSelected('langs\perl') and not CheckDLL('perl520.dll') then
 			idpAddFile(PERL, ExpandConstant('{tmp}\perl.exe'));
 			
 		if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
