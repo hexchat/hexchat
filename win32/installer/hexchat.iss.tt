@@ -101,7 +101,7 @@ Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizar
 Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
 Filename: "{tmp}\vcredist.exe"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing Visual C++ Redist"; Flags: skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\dotnet4.exe"; Parameters: "/q /norestart"; StatusMsg: "Installing .NET"; Components: xtm; Flags: skipifdoesntexist; Tasks: not portable
-Filename: "{tmp}\perl.exe"; StatusMsg: "Installing Perl"; Components: langs\perl; Flags: shellexec skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\perl.msi"; StatusMsg: "Installing Perl"; Components: langs\perl; Flags: shellexec skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\python.msi"; StatusMsg: "Installing Python"; Components: langs\python; Flags: shellexec skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\spelling-dicts.exe"; Parameters: "/verysilent"; StatusMsg: "Installing Spelling Dictionaries"; Components: spell; Flags: skipifdoesntexist; Tasks: not portable
 
@@ -252,12 +252,12 @@ begin
 	
 #if APPARCH == "x64"
 		REDIST := 'http://dl.hexchat.net/misc/vcredist_2013_x64.exe';
-		PERL := 'http://dl.hexchat.net/misc/perl/Perl-5.20-x64.exe';
+		PERL := 'http://dl.hexchat.net/misc/perl/Perl%205.20.0%20x64.msi';
 		PY2 := 'http://python.org/ftp/python/2.7.6/python-2.7.6.amd64.msi';
 		PY3 := 'http://python.org/ftp/python/3.4.0/python-3.4.0.amd64.msi';
 #else
 		REDIST := 'http://dl.hexchat.net/misc/vcredist_2013_x86.exe';
-		PERL := 'http://dl.hexchat.net/misc/perl/Perl-5.20-x86.exe';
+		PERL := 'http://dl.hexchat.net/misc/perl/Perl%205.20.0%20x86.msi';
 		PY2 := 'http://python.org/ftp/python/2.7.6/python-2.7.6.msi';
 		PY3 := 'http://python.org/ftp/python/3.4.0/python-3.4.0.msi';
 #endif
@@ -274,7 +274,7 @@ begin
 			idpAddFile(SPELL, ExpandConstant('{tmp}\spelling-dicts.exe'));
 			
 		if IsComponentSelected('langs\perl') and not CheckDLL('perl520.dll') then
-			idpAddFile(PERL, ExpandConstant('{tmp}\perl.exe'));
+			idpAddFile(PERL, ExpandConstant('{tmp}\perl.msi'));
 			
 		if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
 			idpAddFile(PY2, ExpandConstant('{tmp}\python.msi'));
