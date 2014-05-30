@@ -26,6 +26,7 @@ gtk-toolbar-icon-size = large-toolbar
 gtk-auto-mnemonics    = 1
 gtk-error-bell = 0
 gtk-show-input-method-menu = 0
+gtk-key-theme-name="Mac"
 
 style "default" {
     xthickness = 1
@@ -431,89 +432,3 @@ widget_class "*.<GtkToolbar>.*.<GtkComboBox>.*" style "toolbar-combo-box"
 widget "*MainToolbar*.GtkComboBox.*" style "toolbar-combo-box"
 
 widget "gtk-tooltip*"       style "tooltip"
-
-binding "gtk-mac-expand-collapse-cursor-row"
-{
-  unbind "Left"
-  unbind "Right"
-  bind "Left"  { "expand-collapse-cursor-row" (0, 0, 0) }
-  bind "Right" { "expand-collapse-cursor-row" (0, 1, 0) }
-}
-
-binding "gtk-osx-editable"
-{
-  bind "<primary>a" {
-    "move-cursor" (buffer-ends, -1, 0)
-    "move-cursor" (buffer-ends, 1, 1)
-  }
-
-  unbind "<control>a"
-
-  bind "<primary>c" { "copy-clipboard" () }
-  bind "<primary>x" { "cut-clipboard" () }
-  bind "<primary>v" { "paste-clipboard" () }
-
-  unbind "<control>c"
-  unbind "<control>x"
-  unbind "<control>v"
-
-  bind "<primary>Left" { "move-cursor" (display-line-ends, -1, 0) }
-  bind "<primary>KP_Left" { "move-cursor" (display-line-ends, -1, 0) }
-  bind "<primary><shift>Left" { "move-cursor" (display-line-ends, -1, 1) }
-  bind "<primary><shift>KP_Left" { "move-cursor" (display-line-ends, -1, 1) }
-
-  bind "<primary>Right" { "move-cursor" (display-line-ends, 1, 0) }
-  bind "<primary>KP_Right" { "move-cursor" (display-line-ends, 1, 0) }
-  bind "<primary><shift>Right" { "move-cursor" (display-line-ends, 1, 1) }
-  bind "<primary><shift>KP_Right" { "move-cursor" (display-line-ends, 1, 1) }
-
-  unbind "<control>Left"
-  unbind "<control>KP_Left"
-  unbind "<control><shift>Left"
-  unbind "<control><shift>KP_Left"
-  unbind "<control>Right"
-  unbind "<control>KP_Right"
-  unbind "<control><shift>Right"
-  unbind "<control><shift>KP_Right"
-
-  bind "<alt>Right"           { "move-cursor" (words, 1, 0) }
-  bind "<alt>KP_Right"        { "move-cursor" (words, 1, 0) }
-  bind "<alt>Left"            { "move-cursor" (words, -1, 0) }
-  bind "<alt>KP_Left"         { "move-cursor" (words, -1, 0) }
-  bind "<shift><alt>Right"    { "move-cursor" (words, 1, 1) }
-  bind "<shift><alt>KP_Right" { "move-cursor" (words, 1, 1) }
-  bind "<shift><alt>Left"     { "move-cursor" (words, -1, 1) }
-  bind "<shift><alt>KP_Left"  { "move-cursor" (words, -1, 1) }
-
-  bind "<alt>delete"          { "delete-from-cursor" (word-ends, 1) }
-  bind "<alt>KP_delete"       { "delete-from-cursor" (word-ends, 1) }
-  bind "<alt>backspace"       { "delete-from-cursor" (word-ends, -1) }
-
-  bind "<primary>Down"           { "move-cursor" (buffer-ends, 1, 0) }
-  bind "<primary><shift>Down"    { "move-cursor" (buffer-ends, 1, 1) }
-  bind "<primary>KP_Down"        { "move-cursor" (buffer-ends, 1, 0) }
-  bind "<primary><shift>KP_Down" { "move-cursor" (buffer-ends, 1, 1) }
-
-  bind "<primary>Up"             { "move-cursor" (buffer-ends, -1, 0) }
-  bind "<primary><shift>Up"      { "move-cursor" (buffer-ends, -1, 1) }
-  bind "<primary>KP_Up"          { "move-cursor" (buffer-ends, -1, 0) }
-  bind "<primary><shift>KP_Up"   { "move-cursor" (buffer-ends, -1, 1) }
-
-  unbind "<control>Down"
-  unbind "<control>KP_Down"
-  unbind "<control><shift>Down"
-  unbind "<control><shift>KP_Down"
-  unbind "<control>Up"
-  unbind "<control>KP_Up"
-  unbind "<control><shift>Up"
-  unbind "<control><shift>KP_Up"
-}
-
-binding "gtk-osx-tree-view"
-{
-  bind "<primary>s" { "start-interactive-search" () }
-  unbind "<control>s"
-}
-
-class "GtkEntry" binding "gtk-osx-editable"
-class "GtkTreeView" binding "gtk-osx-tree-view"
