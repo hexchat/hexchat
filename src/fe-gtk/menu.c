@@ -906,11 +906,14 @@ menu_fullscreen_toggle (GtkWidget *wid, gpointer ud)
 		gtk_window_unfullscreen (GTK_WINDOW(parent_window));
 
 #ifdef WIN32
-		/* other window managers seem to handle this */
-		gtk_window_resize (GTK_WINDOW(parent_window),
-					prefs.hex_gui_win_width, prefs.hex_gui_win_height);
-		gtk_window_move (GTK_WINDOW(parent_window),
-					prefs.hex_gui_win_left, prefs.hex_gui_win_top);
+		if (!prefs.hex_gui_win_state) /* not maximized */
+		{
+			/* other window managers seem to handle this */
+			gtk_window_resize (GTK_WINDOW (parent_window),
+				prefs.hex_gui_win_width, prefs.hex_gui_win_height);
+			gtk_window_move (GTK_WINDOW (parent_window),
+				prefs.hex_gui_win_left, prefs.hex_gui_win_top);
+		}
 #endif
 	}
 }
