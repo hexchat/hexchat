@@ -246,6 +246,8 @@ notify_gui_update (void)
                                       &iter);
 		gtk_list_store_remove (store, &old);
 	}
+
+	notify_row_cb (gtk_tree_view_get_selection (view), view);
 }
 
 static void
