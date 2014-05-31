@@ -732,6 +732,7 @@ ssl_do_connect (server * serv)
 		case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
 		case X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN:
 		case X509_V_ERR_CERT_HAS_EXPIRED:
+                case X509_V_ERR_CERT_UNTRUSTED:
 			if (serv->accept_invalid_cert)
 			{
 				snprintf (buf, sizeof (buf), "* Verify E: %s.? (%d) -- Ignored",
