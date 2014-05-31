@@ -40,6 +40,8 @@ export PYTHON="$bundle_contents/MacOS/python"
 export PYTHONHOME="$bundle_res"
 export PYTHONPATH="$bundle_lib/python2.7:$bundle_lib/python2.7/site-packages"
 
+export OPENSSL_CONF="/System/Library/OpenSSL/openssl.cnf"
+
 export HEXCHAT_LIBDIR="$bundle_lib/hexchat/plugins"
 
 APP=name
