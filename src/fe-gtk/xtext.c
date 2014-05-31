@@ -1150,11 +1150,11 @@ gtk_xtext_selection_down (GtkXText *xtext, textentry *start, textentry *end,
 }
 
 static void
-gtk_xtext_selection_render (GtkXText *xtext,
-									 textentry *start_ent, int start_offset,
-									 textentry *end_ent, int end_offset)
+gtk_xtext_selection_render (GtkXText *xtext, textentry *start_ent, textentry *end_ent)
 {
 	textentry *ent;
+	int start_offset = start_ent->mark_start;
+	int end_offset = end_ent->mark_end;
 	int start, end;
 
 	xtext->skip_border_fills = TRUE;
@@ -1307,11 +1307,14 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	int high_x;
 	int high_y;
 	int tmp;
+	int oob;
+	int marking_up;
 
 	if (xtext->select_start_y > xtext->select_end_y)
 	{
 		low_x = xtext->select_end_x;
 		low_y = xtext->select_end_y;
+		marking_up = TRUE;
 		high_x = xtext->select_start_x;
 		high_y = xtext->select_start_y;
 	} else
@@ -1320,20 +1323,22 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		low_y = xtext->select_start_y;
 		high_x = xtext->select_end_x;
 		high_y = xtext->select_end_y;
+		marking_up = FALSE;
 	}
 
-	ent_start = gtk_xtext_find_char (xtext, low_x, low_y, &offset_start, &tmp);
+	ent_start = gtk_xtext_find_char (xtext, low_x, low_y, &offset_start, &oob);
 	if (!ent_start)
 	{
 		if (xtext->adj->value != xtext->buffer->old_value)
 			gtk_xtext_render_page (xtext);
 		return;
 	}
-	else if (tmp) {
-		offset_start = xtext->buffer->last_offset_start;
+	else if (oob)
+	{
+		offset_start = marking_up == TRUE? 0: xtext->buffer->last_offset_start;
 	}
 
-	ent_end = gtk_xtext_find_char (xtext, high_x, high_y, &offset_end, &tmp);
+	ent_end = gtk_xtext_find_char (xtext, high_x, high_y, &offset_end, &oob);
 	if (!ent_end)
 	{
 		ent_end = xtext->buffer->text_last;
@@ -1345,9 +1350,9 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		}
 		offset_end = ent_end->str_len;
 	}
-	else if (tmp)
+	else if (oob)
 	{
-		offset_end = xtext->buffer->last_offset_end;
+		offset_end = marking_up == FALSE? ent_end->str_len: xtext->buffer->last_offset_end;
 	}
 
 	/* marking less than a complete line? */
@@ -1390,7 +1395,7 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	}
 
 	if (render)
-		gtk_xtext_selection_render (xtext, ent_start, offset_start, ent_end, offset_end);
+		gtk_xtext_selection_render (xtext, ent_start, ent_end);
 }
 
 static int
@@ -1997,7 +2002,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			gtk_xtext_selection_clear (xtext->buffer);
 			ent->mark_start = offset;
 			ent->mark_end = offset + len;
-			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
+			gtk_xtext_selection_render (xtext, ent, ent);
 			xtext->word_or_line_select = TRUE;
 			if (prefs.hex_text_autocopy_text)
 			{
@@ -2016,7 +2021,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			gtk_xtext_selection_clear (xtext->buffer);
 			ent->mark_start = 0;
 			ent->mark_end = ent->str_len;
-			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
+			gtk_xtext_selection_render (xtext, ent, ent);
 			xtext->word_or_line_select = TRUE;
 			if (prefs.hex_text_autocopy_text)
 			{
