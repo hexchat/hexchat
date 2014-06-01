@@ -185,9 +185,10 @@ fi
 
 PKG_CHECK_MODULES([GOBJECT], [gobject-2.0], [], [AC_MSG_ERROR(Cannot find gobject-2.0!)])
 PKG_CHECK_MODULES([GIO], [gio-2.0], [], [AC_MSG_ERROR(Cannot find gio-2.0!)])
+PKG_CHECK_MODULES([GMODULE], [gmodule-2.0], [], [AC_MSG_ERROR(Cannot find gmodule-2.0!)])
 
-COMMON_CFLAGS="$GLIB_CFLAGS $GIO_CFLAGS $GOBJECT_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
-COMMON_LIBS="$GLIB_LIBS $GIO_LIBS $GOBJECT_LIBS -lgmodule-2.0"
+COMMON_CFLAGS="$GLIB_CFLAGS $GIO_CFLAGS $GOBJECT_CFLAGS $GMODULE_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
+COMMON_LIBS="$GLIB_LIBS $GIO_LIBS $GOBJECT_LIBS $GMODULE_LIBS"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
@@ -426,29 +427,7 @@ dnl ** PLUGIN ***********************************************************
 dnl *********************************************************************
 
 if test "$plugin" = yes; then
-	AC_CHECK_FUNCS(dlopen, have_dl=yes)
-	if test "$have_dl" != yes; then
-		AC_CHECK_LIB(dl, dlopen, have_dl=yes)
-		if test "$have_dl" = yes; then
-			LIBS="$LIBS -ldl"
-		fi
-	fi
-	if test "$have_dl" = yes; then
-		AC_DEFINE(USE_PLUGIN)
-		dnl we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
-		RDYNAMIC_FLAGS="`$PKG_CONFIG gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
-		LIBS="$LIBS $RDYNAMIC_FLAGS"
-		if test "$LD" = ""; then
-			VS="`ld --help | grep version-script 2> /dev/null`"
-		else
-			VS="`$LD --help | grep version-script 2> /dev/null`"
-		fi
-		if test "$VS" != ""; then
-			GUI_LIBS="$GUI_LIBS -Wl,--version-script,\$(srcdir)/../version-script"
-		fi
-	else
-		plugin=no
-	fi
+	AC_DEFINE(USE_PLUGIN)
 fi
 
 dnl *********************************************************************
