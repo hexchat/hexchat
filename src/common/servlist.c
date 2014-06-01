@@ -316,12 +316,6 @@ static const struct defaultserver def[] =
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
 
-	{"IronDust", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.irondust.net/+6697"},
-#endif
-	{0,			"irc.irondust.net"},
-
 	{"iZ-smart.net",	0},
 	{0,			"irc.iZ-smart.net/6666"},
 	{0,			"irc.iZ-smart.net/6667"},
