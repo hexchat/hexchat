@@ -52,11 +52,7 @@ typedef struct session hexchat_context;
 /* the USE_PLUGIN define only removes libdl stuff */
 
 #ifdef USE_PLUGIN
-#ifdef USE_GMODULE
 #include <gmodule.h>
-#else
-#include <dlfcn.h>
-#endif
 #endif
 
 #define DEBUG(x) {x;}
@@ -159,11 +155,7 @@ plugin_free (hexchat_plugin *pl, int do_deinit, int allow_refuse)
 
 #ifdef USE_PLUGIN
 	if (pl->handle)
-#ifdef USE_GMODULE
 		g_module_close (pl->handle);
-#else
-		dlclose (pl->handle);
-#endif
 #endif
 
 xit:
@@ -378,21 +370,16 @@ plugin_load (session *sess, char *filename, char *arg)
 	char *filepart;
 	hexchat_init_func *init_func;
 	hexchat_deinit_func *deinit_func;
-#ifndef USE_GMODULE
-	char *error;
-#else
 	char *pluginpath;
-#endif
 
 	/* get the filename without path */
 	filepart = file_part (filename);
 
-#ifdef USE_GMODULE
 	/* load the plugin */
 	if (!g_ascii_strcasecmp (filepart, filename))
 	{
 		/* no path specified, it's just the filename, try to load from config dir */
-		pluginpath = g_build_filename (get_xdir (), filename, NULL);
+		pluginpath = g_build_filename (get_xdir (), "addons", filename, NULL);
 		handle = g_module_open (pluginpath, 0);
 		g_free (pluginpath);
 	}
@@ -416,43 +403,6 @@ plugin_load (session *sess, char *filename, char *arg)
 	if (!g_module_symbol (handle, "hexchat_plugin_deinit", (gpointer *)&deinit_func))
 		deinit_func = NULL;
 
-#else
-
-/* OpenBSD lacks this! */
-#ifndef RTLD_GLOBAL
-#define RTLD_GLOBAL 0
-#endif
-
-#ifndef RTLD_NOW
-#define RTLD_NOW 0
-#endif
-
-	/* load the plugin */
-	if (filepart &&
-		 /* xsys draws in libgtk-1.2, causing crashes, so force RTLD_LOCAL */
-		 (strstr (filepart, "local") || strncmp (filepart, "libxsys-1", 9) == 0)
-		)
-		handle = dlopen (filename, RTLD_NOW);
-	else
-		handle = dlopen (filename, RTLD_GLOBAL | RTLD_NOW);
-	if (handle == NULL)
-		return (char *)dlerror ();
-	dlerror ();		/* Clear any existing error */
-
-	/* find the init routine hexchat_plugin_init */
-	init_func = dlsym (handle, "hexchat_plugin_init");
-	error = (char *)dlerror ();
-	if (error != NULL)
-	{
-		dlclose (handle);
-		return _("No hexchat_plugin_init symbol; is this really a HexChat plugin?");
-	}
-
-	/* find the plugin's deinit routine, if any */
-	deinit_func = dlsym (handle, "hexchat_plugin_deinit");
-	error = (char *)dlerror ();
-#endif
-
 	/* add it to our linked list */
 	plugin_add (sess, filename, handle, init_func, deinit_func, arg, FALSE);
 
@@ -465,11 +415,6 @@ static void
 plugin_auto_load_cb (char *filename)
 {
 	char *pMsg;
-
-#ifndef WIN32	/* black listed */
-	if (!strcmp (file_part (filename), "dbus.so"))
-		return;
-#endif
 
 	pMsg = plugin_load (ps, filename, NULL);
 	if (pMsg)
@@ -1180,7 +1125,11 @@ hexchat_get_info (hexchat_plugin *ph, const char *id)
 	switch (hash)
 	{
 		case 0x325acab5:	/* libdirfs */
+#ifdef USE_PLUGIN
 			return plugin_get_libdir ();
+#else
+			return NULL;
+#endif
 
 		case 0x14f51cd8: /* version */
 			return PACKAGE_VERSION;
