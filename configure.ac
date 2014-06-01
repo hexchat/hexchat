@@ -829,6 +829,7 @@ data/Makefile
 data/icons/Makefile
 data/misc/Makefile
 data/man/Makefile
+data/man/hexchat.1
 data/pkgconfig/Makefile
 data/pkgconfig/hexchat-plugin.pc
 src/Makefile
