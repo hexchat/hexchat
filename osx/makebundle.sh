@@ -22,4 +22,5 @@ find ./HexChat.app/Contents/Resources/lib/python2.7 -name "*.pyo" -delete
 
 echo "Compressing bundle"
 #hdiutil create -format UDBZ -srcdir HexChat.app -quiet HexChat-2.9.6.1-$(git rev-parse --short master).dmg
-zip -9rXq ./HexChat-2.9.6.1-$(git rev-parse --short master).app.zip ./HexChat.app 
+zip -9rXq ./HexChat-$(git describe --tags).app.zip ./HexChat.app
+
