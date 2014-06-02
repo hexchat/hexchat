@@ -295,19 +295,30 @@ if test "x$python" != xno ; then
 		case $python in
 			dnl set python2 default here
 			python2)
-				PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_WARN(Cannot find python-2.7!)])
-				PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
+				PKG_CHECK_MODULES([PY], [python-2.7],
+								  [PY_VER="`$PKG_CONFIG --modversion python-2.7`"],
+								  [true])
+				;;
 			dnl set python3 default here
 			python3)
-				PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_WARN(Cannot find python-3.3!)])
-				PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+				PKG_CHECK_MODULES([PY], [python-3.4],
+								  [PY_VER="`$PKG_CONFIG --modversion python-3.4`"],
+								  [true])
+				if test "$PY_VER" = "" ; then
+					PKG_CHECK_MODULES([PY], [python-3.3],
+									  [PY_VER="`$PKG_CONFIG --modversion python-3.3`"],
+									  [true])
+				fi
+				;;
 			dnl add broken versions here
 			python2.5|python2.6|python3.1|python3.2)
-				AC_MSG_ERROR(Unsupported Python version ${python}!);;
+				AC_MSG_WARN(Unsupported Python version ${python}!);;
 			python*)
 				python="python-${python#python}" # stay posix compliant
-				PKG_CHECK_MODULES([PY], [${python}], [], [AC_MSG_WARN(Cannot find "${python}.pc"!)])
-				PY_VER="`$PKG_CONFIG --modversion ${python}`";;
+				PKG_CHECK_MODULES([PY], [${python}],
+								  [PY_VER="`$PKG_CONFIG --modversion ${python}`"],
+								  [AC_MSG_WARN(Cannot find "${python}.pc"!)])
+				;;
 			*)
 				AC_MSG_WARN(Unsupported Python ${python}!)
 		esac
