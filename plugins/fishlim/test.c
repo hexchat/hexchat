@@ -31,7 +31,7 @@
 // We can't use the HexChat plugin API from here...
 gchar *get_config_filename() {
     const gchar *homedir = g_get_home_dir();
-    return g_build_filename(homedir, ".xchat2", "blow.ini", NULL);
+    return g_build_filename(homedir, ".config", "hexchat", "blow.ini", NULL);
 }
 
 
