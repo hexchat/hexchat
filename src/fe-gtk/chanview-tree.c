@@ -73,8 +73,8 @@ cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 	return ret;
 }
 
-static void
-cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event)
+static gboolean
+cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
 {
 	if (prefs.hex_gui_tab_scrollchans)
 	{
@@ -82,7 +82,11 @@ cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event)
 			mg_switch_page (1, 1);
 		else if (event->direction == GDK_SCROLL_UP)
 			mg_switch_page (1, -1);
+
+		return TRUE;
 	}
+
+	return FALSE;
 }
 
 static void
