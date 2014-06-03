@@ -161,9 +161,6 @@
       <Command><![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
 powershell -File "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\config-win32.h.tt" "$(SolutionDir)..\config-win32.h"
-powershell -File "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\win32\version.txt.tt" "$(SolutionDir)..\win32\version.txt.tmp"
-REM version.txt must be in UTF-8 without trailing newline
-powershell "[string] $content = Get-Content '$(SolutionDir)..\win32\version.txt.tmp' -Encoding UTF8; [System.IO.File]::WriteAllText('$(SolutionDir)..\win32\version.txt', $content); Remove-Item '$(SolutionDir)..\win32\version.txt.tmp';"
 "$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --header "$(ProjectDir)marshalers.list" > "$(ProjectDir)marshal.h"
 "$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --body "$(ProjectDir)marshalers.list" > "$(ProjectDir)marshal.c"
 
