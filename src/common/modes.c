@@ -861,9 +861,7 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 			serv->have_whox = TRUE;
 		} else if (strcmp (word[w], "EXCEPTS") == 0)
 		{
-#ifndef WIN32
 			serv->have_except = TRUE;
-#endif
 		} else if (strcmp (word[w], "INVEX") == 0)
 		{
 			/* supports mode letter +I, default channel invite */
