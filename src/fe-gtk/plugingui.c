@@ -161,11 +161,7 @@ plugingui_load (void)
 	sub_dir = g_build_filename (get_xdir(), "addons", NULL);
 
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
-#ifdef WIN32
-							sub_dir, "*.dll;*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
-#else
-							sub_dir, "*.so;*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
-#endif
+							sub_dir, "*."G_MODULE_SUFFIX";*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 
 	g_free (sub_dir);
 }
@@ -179,7 +175,6 @@ plugingui_loadbutton_cb (GtkWidget * wid, gpointer unused)
 static void
 plugingui_unload (GtkWidget * wid, gpointer unused)
 {
-	int len;
 	char *modname, *file, *buf;
 	GtkTreeView *view;
 	GtkTreeIter iter;
@@ -189,16 +184,7 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	                                    FILE_COLUMN, &file, -1))
 		return;
 
-	len = strlen (file);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (file + len - 4, ".dll") == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (file + len - 3, ".sl") == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (file + len - 3, ".so") == 0)
-#endif
-#endif
+	if (g_str_has_suffix (file, "."G_MODULE_SUFFIX))
 	{
 		if (plugin_kill (modname, FALSE) == 2)
 			fe_message (_("That plugin is refusing to unload.\n"), FE_MSG_ERROR);
