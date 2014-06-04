@@ -47,7 +47,7 @@
 
 #else
 
-#include "../../config-win32.h"
+#include "../../config.h"
 #ifdef USE_IPV6
 #include <winsock2.h>
 #include <ws2tcpip.h>

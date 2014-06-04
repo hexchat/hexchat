@@ -35,16 +35,15 @@
 #include <io.h>
 #include <VersionHelpers.h>
 #include "../dirent/dirent-win32.h"
-#include "../../config-win32.h"
 #else
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
 #include <dirent.h>
-#include "../../config.h"
 #endif
 
+#include "../../config.h"
 #include <fcntl.h>
 #include <errno.h>
 #include "hexchat.h"

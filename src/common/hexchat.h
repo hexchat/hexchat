@@ -17,11 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef WIN32
-#include "../../config-win32.h"
-#else
 #include "../../config.h"
-#endif
 
 #include <glib.h>
 #include <glib/gstdio.h>

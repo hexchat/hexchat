@@ -60,12 +60,12 @@
 #include <direct.h>
 #include <glib/gstdio.h>
 #include "../../src/dirent/dirent-win32.h"
-#include "../../config-win32.h"
 #else
 #include <unistd.h>
 #include <dirent.h>
 #endif
 
+#include "../../config.h"
 #include "hexchat-plugin.h"
 #undef _POSIX_C_SOURCE	/* Avoid warning: also in /usr/include/features.h from glib.h */
 #include <Python.h>
