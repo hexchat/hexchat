@@ -404,7 +404,7 @@ static int
 is_in_path (char *cmd)
 {
 	char *prog = g_strdup (cmd + 1);	/* 1st char is "!" */
-	char *space, *path, *orig;
+	char *path, *orig;
 	char **argv;
 	int argc;
 
