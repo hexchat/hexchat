@@ -460,17 +460,11 @@ plugin_auto_load (session *sess)
 	for_files (lib_dir, "hcupd.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcwinamp.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcsysinfo.dll", plugin_auto_load_cb);
+#else
+	for_files (lib_dir, "*."G_MODULE_SUFFIX, plugin_auto_load_cb);
+#endif
 
-	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
-#else
-#if defined(__hpux)
-	for_files (lib_dir, "*.sl", plugin_auto_load_cb);
-	for_files (sub_dir, "*.sl", plugin_auto_load_cb);
-#else
-	for_files (lib_dir, "*.so", plugin_auto_load_cb);
-	for_files (sub_dir, "*.so", plugin_auto_load_cb);
-#endif
-#endif
+	for_files (sub_dir, "*."G_MODULE_SUFFIX, plugin_auto_load_cb);
 
 	g_free (sub_dir);
 }

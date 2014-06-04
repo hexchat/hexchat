@@ -153,11 +153,8 @@ initialize_enchant ()
 	GModule *enchant;
 	gpointer funcptr;
 
-#ifdef WIN32
-	enchant = g_module_open("libenchant.dll", 0);
-#else
-	enchant = g_module_open("libenchant", 0);
-#endif
+
+	enchant = g_module_open("libenchant."G_MODULE_SUFFIX, 0);
 	if (enchant == NULL)
 	{
 #ifndef WIN32

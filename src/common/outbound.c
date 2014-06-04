@@ -2541,7 +2541,6 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *file, *buf;
 #ifdef USE_PLUGIN
 	char *error, *arg;
-	int len;
 #endif
 
 	if (!word[2][0])
@@ -2562,16 +2561,7 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 #ifdef USE_PLUGIN
-	len = strlen (word[2]);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (".dll", word[2] + len - 4) == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (".sl", word[2] + len - 3) == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (".so", word[2] + len - 3) == 0)
-#endif
-#endif
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
 	{
 		arg = NULL;
 		if (word_eol[3][0])
@@ -3567,18 +3557,9 @@ static int
 cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 #ifdef USE_PLUGIN
-	int len, by_file = FALSE;
+	gboolean by_file = FALSE;
 
-	len = strlen (word[2]);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (word[2] + len - 4, ".dll") == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".sl") == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".so") == 0)
-#endif
-#endif
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
 		by_file = TRUE;
 
 	switch (plugin_kill (word[2], by_file))
@@ -3601,18 +3582,9 @@ static int
 cmd_reload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 #ifdef USE_PLUGIN
-	int len, by_file = FALSE;
+	gboolean by_file = FALSE;
 
-	len = strlen (word[2]);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (word[2] + len - 4, ".dll") == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".sl") == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".so") == 0)
-#endif
-#endif
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
 		by_file = TRUE;
 
 	switch (plugin_reload (sess, word[2], by_file))
