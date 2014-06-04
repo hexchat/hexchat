@@ -52,14 +52,13 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
 
 #ifdef WIN32
 #include <direct.h>
-#include <glib/gstdio.h>
-#include "../../src/dirent/dirent-win32.h"
 #else
 #include <unistd.h>
 #include <dirent.h>
@@ -459,26 +458,31 @@ Util_BuildEOLList(char *word[])
 static void
 Util_Autoload_from (const char *dir_name)
 {
-#ifndef PATH_MAX
-#define PATH_MAX 1024	/* Hurd doesn't define it */
-#endif
-	char oldcwd[PATH_MAX];
-	struct dirent *ent;
-	DIR *dir;
-	if (getcwd(oldcwd, PATH_MAX) == NULL)
+	gchar *oldcwd;
+	const char *entry_name;
+	GDir *dir;
+
+	oldcwd = g_get_current_dir ();
+	if (oldcwd == NULL)
 		return;
-	if (chdir(dir_name) != 0)
+	if (g_chdir(dir_name) != 0)
+	{
+		g_free (oldcwd);
 		return;
-	dir = opendir(".");
-	if (dir == NULL)
-		return;
-	while ((ent = readdir(dir))) {
-		int len = strlen(ent->d_name);
-		if (len > 3 && strcmp(".py", ent->d_name+len-3) == 0)
-			Command_PyLoad(ent->d_name);
 	}
-	closedir(dir);
-	chdir(oldcwd);
+	dir = g_dir_open (".", 0, NULL);
+	if (dir == NULL)
+	{
+		g_free (oldcwd);
+		return;
+	}
+	while ((entry_name = g_dir_read_name (dir)))
+	{
+		if (g_str_has_suffix (entry_name, ".py"))
+			Command_PyLoad((char*)entry_name);
+	}
+	g_dir_close (dir);
+	g_chdir (oldcwd);
 }
 
 static void
@@ -486,7 +490,7 @@ Util_Autoload()
 {
 	const char *xdir;
 	char *sub_dir;
-	/* we need local filesystem encoding for chdir, opendir etc */
+	/* we need local filesystem encoding for g_chdir, g_dir_open etc */
 
 	xdir = hexchat_get_info(ph, "configdir");
 

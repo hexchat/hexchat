@@ -34,13 +34,11 @@
 #include <process.h>
 #include <io.h>
 #include <VersionHelpers.h>
-#include "../dirent/dirent-win32.h"
 #else
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
-#include <dirent.h>
 #endif
 
 #include "../../config.h"
@@ -934,27 +932,26 @@ break_while:
 void
 for_files (char *dirname, char *mask, void callback (char *file))
 {
-	DIR *dir;
-	struct dirent *ent;
+	GDir *dir;
+	const gchar *entry_name;
 	char *buf;
 
-	dir = opendir (dirname);
+	dir = g_dir_open (dirname, 0, NULL);
 	if (dir)
 	{
-		while ((ent = readdir (dir)))
+		while ((entry_name = g_dir_read_name (dir)))
 		{
-			if (strcmp (ent->d_name, ".") && strcmp (ent->d_name, ".."))
+			if (strcmp (entry_name, ".") && strcmp (entry_name, ".."))
 			{
-				if (match (mask, ent->d_name))
+				if (match (mask, entry_name))
 				{
-					buf = malloc (strlen (dirname) + strlen (ent->d_name) + 2);
-					sprintf (buf, "%s" G_DIR_SEPARATOR_S "%s", dirname, ent->d_name);
+					buf = g_build_filename (dirname, entry_name, NULL);
 					callback (buf);
-					free (buf);
+					g_free (buf);
 				}
 			}
 		}
-		closedir (dir);
+		g_dir_close (dir);
 	}
 }
 
