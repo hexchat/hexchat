@@ -22,12 +22,7 @@
 #include "sexy-iso-codes.h"
 #include <libintl.h>
 #include <string.h>
-
-#ifdef G_OS_WIN32
-#include "../../config-win32.h"
-#else
 #include "../../config.h"
-#endif
 
 #define ISO_639_DOMAIN	"iso_639"
 #define ISO_3166_DOMAIN	"iso_3166"

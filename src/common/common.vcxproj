@@ -77,8 +77,8 @@
     <ClCompile Include="hexchat.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\config-win32.h.tt" />
-    <ClInclude Include="..\..\config-win32.h" />
+    <None Include="..\..\win32\config.h.tt" />
+    <ClInclude Include="..\..\config.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{87554B59-006C-4D94-9714-897B27067BA3}</ProjectGuid>
@@ -160,7 +160,7 @@
     <PreBuildEvent>
       <Command><![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
-powershell -File "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\config-win32.h.tt" "$(SolutionDir)..\config-win32.h"
+powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\win32\config.h.tt" "$(SolutionDir)..\config.h"
 "$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --header "$(ProjectDir)marshalers.list" > "$(ProjectDir)marshal.h"
 "$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --body "$(ProjectDir)marshalers.list" > "$(ProjectDir)marshal.c"
 

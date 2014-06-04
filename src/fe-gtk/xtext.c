@@ -31,12 +31,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#ifdef WIN32
-#include "../../config-win32.h"
-#else
 #include "../../config.h"
-#endif
-
 #include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
