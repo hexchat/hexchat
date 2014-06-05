@@ -2168,7 +2168,7 @@ setup_apply (struct hexchatprefs *pr)
 						" restart to take full effect."), FE_MSG_WARN);
 
 #ifndef WIN32
-	if (prefs.hex_dcc_auto_recv)
+	if (prefs.hex_dcc_auto_recv == 2) /* Auto */
 	{
 		if (!strcmp ((char *)g_get_home_dir (), prefs.hex_dcc_dir))
 		{
