@@ -69,14 +69,14 @@ libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
 
 textenums.h: textevents.h
 
-textevents.h: textevents.in make-te
-	$(AM_V_GEN) ./make-te < textevents.in > textevents.h 2> textenums.h
+textevents.h: $(srcdir)/textevents.in make-te
+	$(AM_V_GEN) ./make-te < $< > $@ 2> textenums.h
 
-marshal.h: marshalers.list
-	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_hexchat_marshal --header $(srcdir)/marshalers.list > $@
+marshal.h: $(srcdir)/marshalers.list
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_hexchat_marshal --header $< > $@
 
-marshal.c: marshalers.list
-	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_hexchat_marshal --body $(srcdir)/marshalers.list > $@
+marshal.c: $(srcdir)/marshalers.list
+	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_hexchat_marshal --body $< > $@
 
 
 BUILT_SOURCES = textenums.h textevents.h marshal.c marshal.h
