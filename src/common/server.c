@@ -61,10 +61,6 @@
 #include "ssl.h"
 #endif
 
-#ifdef WIN32
-#include "identd.h"
-#endif
-
 #ifdef USE_LIBPROXY
 #include <proxy.h>
 #endif
@@ -944,28 +940,6 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, ip, sizeof ip);
 		waitline2 (source, outbuf, sizeof outbuf);
 		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
-#ifdef WIN32
-		if (prefs.hex_identd)
-		{
-			if (serv->network && ((ircnet *)serv->network)->user)
-			{
-				identd_start (((ircnet *)serv->network)->user);
-			}
-			else
-			{
-				identd_start (prefs.hex_irc_user_name);
-			}
-		}
-#else
-		g_snprintf (outbuf, sizeof (outbuf), "%s/auth/xchat_auth",
-					 g_get_home_dir ());
-		if (access (outbuf, X_OK) == 0)
-		{
-			g_snprintf (outbuf, sizeof (outbuf), "exec -d %s/auth/xchat_auth %s",
-						 g_get_home_dir (), prefs.hex_irc_user_name);
-			handle_command (serv->server_session, outbuf, FALSE);
-		}
-#endif
 		break;
 	case '4':						  /* success */
 		waitline2 (source, tbuf, sizeof (tbuf));
@@ -982,6 +956,29 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 			else
 				closesocket (serv->proxy_sok4);
 		}
+
+		{
+			struct sockaddr addr;
+			int addr_len = sizeof (addr);
+			guint16 port;
+
+			if (!getsockname (serv->sok, &addr, &addr_len))
+			{
+				if (addr.sa_family == AF_INET)
+					port = ntohs(((struct sockaddr_in *)&addr)->sin_port);
+				else
+					port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
+
+				g_snprintf (outbuf, sizeof (outbuf), "IDENTD %"G_GUINT16_FORMAT" ", port);
+				if (serv->network && ((ircnet *)serv->network)->user)
+					g_strlcat (outbuf, ((ircnet *)serv->network)->user, sizeof (outbuf));
+				else
+					g_strlcat (outbuf, prefs.hex_irc_user_name, sizeof (outbuf));
+
+				handle_command (serv->server_session, outbuf, FALSE);
+			}
+		}
+
 		server_connect_success (serv);
 		break;
 	case '5':						  /* prefs ip discovered */

@@ -26,6 +26,7 @@ EXTRA_DIST = \
 	notify.h \
 	outbound.h \
 	plugin.h \
+	plugin-identd.h \
 	plugin-timer.h \
 	proto-irc.h \
 	server.h \
@@ -60,7 +61,7 @@ noinst_PROGRAMS = make-te
 
 libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c hexchat.c \
 	history.c ignore.c inbound.c marshal.c modes.c network.c notify.c \
-	outbound.c plugin.c plugin-timer.c proto-irc.c server.c servlist.c \
+	outbound.c plugin.c plugin-identd.c plugin-timer.c proto-irc.c server.c servlist.c \
 	$(ssl_c) text.c tree.c url.c userlist.c util.c
 libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
 

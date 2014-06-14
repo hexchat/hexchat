@@ -477,6 +477,7 @@ const struct prefs vars[] =
 	{"gui_win_width", P_OFFINT (hex_gui_win_width), TYPE_INT},
 
 	{"identd", P_OFFINT (hex_identd), TYPE_BOOL},
+	{"identd_port", P_OFFINT (hex_identd_port), TYPE_INT},
 
 	{"input_balloon_chans", P_OFFINT (hex_input_balloon_chans), TYPE_BOOL},
 	{"input_balloon_hilight", P_OFFINT (hex_input_balloon_hilight), TYPE_BOOL},
@@ -772,7 +773,6 @@ load_default_config(void)
 	prefs.hex_gui_ulist_resizable = 1;
 	prefs.hex_gui_ulist_style = 1;
 	prefs.hex_gui_win_save = 1;
-	prefs.hex_identd = 1;
 	prefs.hex_input_flash_hilight = 1;
 	prefs.hex_input_flash_priv = 1;
 	prefs.hex_input_tray_hilight = 1;

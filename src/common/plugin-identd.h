@@ -17,9 +17,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef HEXCHAT_IDENTD_H
-#define HEXCHAT_IDENTD_H
+#ifndef HEXCHAT_PLUGIN_IDENTD_H
+#define HEXCHAT_PLUGIN_IDENTD_H
 
-void identd_start (char *username);
+int identd_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
+				char **plugin_desc, char **plugin_version, char *arg);
+
+int identd_plugin_deinit ();
 
 #endif
