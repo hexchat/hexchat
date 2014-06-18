@@ -53,7 +53,6 @@ typedef struct banlist_info_s {
 	int current;	/* index of currently processing mode */
 	int line_ct;	/* count of presented lines */
 	int select_ct;	/* count of selected lines */
-		/* Not really; 1 if any are selected otherwise 0 */
 	GtkWidget *window;
 	GtkWidget *treeview;
 	GtkWidget *checkboxes[MODE_CT];
