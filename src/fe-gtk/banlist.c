@@ -239,6 +239,9 @@ banlist_sensitize (banlist_info *banl)
 	int checkable, i;
 	gboolean is_op = FALSE;
 
+	if (banl->sess->me == NULL)
+		return;
+
 	/* FIXME: More access levels than these can unban */
 	if (banl->sess->me->op || banl->sess->me->hop)
 		is_op = TRUE;
@@ -283,7 +286,7 @@ banlist_sensitize (banlist_info *banl)
 		else
 		{
 			gtk_widget_set_sensitive (banl->but_clear, FALSE);
-			gtk_widget_set_sensitive (banl->but_crop, TRUE);
+			gtk_widget_set_sensitive (banl->but_crop, banl->line_ct == banl->select_ct? FALSE: TRUE);
 			gtk_widget_set_sensitive (banl->but_remove, TRUE);
 		}
 	}
@@ -410,7 +413,7 @@ banlist_select_changed (GtkWidget *item, banlist_info *banl)
 	else
 	{
 		list = gtk_tree_selection_get_selected_rows (GTK_TREE_SELECTION (item), NULL);
-		banl->select_ct = list? 1: 0;
+		banl->select_ct = g_list_length (list);
 		g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
 		g_list_free (list);
 	}
@@ -426,7 +429,6 @@ banlist_do_refresh (banlist_info *banl)
 	session *sess = banl->sess;
 	char tbuf[256];
 	int i;
-	char *tbufp;
 
 	banlist_sensitize (banl);
 
@@ -444,14 +446,12 @@ banlist_do_refresh (banlist_info *banl)
 		banl->pending = banl->checked;
 		if (banl->pending)
 		{
-			tbufp = tbuf + g_snprintf (tbuf, sizeof tbuf, "quote mode %s +", sess->channel);
 			for (i = 0; i < MODE_CT; i++)
 				if (banl->pending & 1<<i)
 				{
-					*tbufp++ = modes[i].letter;
+					g_snprintf (tbuf, sizeof tbuf, "quote mode %s +%c", sess->channel, modes[i].letter);
+					handle_command (sess, tbuf, FALSE);
 				}
-			*tbufp = 0;
-			handle_command (sess, tbuf, FALSE);
 		}
 	}
 	else
