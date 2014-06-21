@@ -45,12 +45,13 @@ typedef enum banlist_modes_e {
 
 typedef struct banlist_info_s {
 	session *sess;
+	gchar user_prefix;
+	gboolean user_is_op;
 	int capable;	/* MODE bitmask */
 	int readable;	/* subset of capable if not op */
 	int writeable;	/* subset of capable if op */
 	int checked;	/* subset of (op? writeable: readable) */
 	int pending;	/* subset of checked */
-	int current;	/* index of currently processing mode */
 	int line_ct;	/* count of presented lines */
 	int select_ct;	/* count of selected lines */
 	GtkWidget *window;

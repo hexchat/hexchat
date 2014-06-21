@@ -232,19 +232,45 @@ fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rp
 	else return FALSE;
 }
 
+static gboolean
+banlist_is_op (banlist_info *banl, struct User *user)
+{
+	struct server *serv = banl->sess->server;
+	gboolean retval = banl->user_is_op;
+
+	if (banl->user_prefix != user->prefix[0])
+	{
+		/* Find index within serv->nick_modes of 'h' or at least 'o' */
+		char *cp_s, *cp_u;
+
+		cp_s = strchr (serv->nick_modes, 'h');
+		if (cp_s == NULL)
+			cp_s = strchr (serv->nick_modes, 'o');
+
+		/* Find index within serv->nick_prefixes of user->prefix[0] */
+		banl->user_prefix = user->prefix[0];
+		cp_u = strchr (serv->nick_prefixes, banl->user_prefix);
+
+		/* Compute whether user has op or better, or at least half-op */
+		banl->user_is_op = (cp_u - serv->nick_prefixes) <= (cp_s - serv->nick_modes);
+		retval = banl->user_is_op;
+	}
+
+	return retval;
+}
+
 /* Sensitize checkboxes and buttons as appropriate for the moment  */
 static void
 banlist_sensitize (banlist_info *banl)
 {
+	struct User *user = banl->sess->me;
 	int checkable, i;
-	gboolean is_op = FALSE;
+	gboolean is_op;
 
-	if (banl->sess->me == NULL)
+	if (user == NULL)
 		return;
 
-	/* FIXME: More access levels than these can unban */
-	if (banl->sess->me->op || banl->sess->me->hop)
-		is_op = TRUE;
+	is_op = banlist_is_op (banl, user);
 
 	/* CHECKBOXES -- */
 	checkable = is_op? banl->writeable: banl->readable;
@@ -278,7 +304,7 @@ banlist_sensitize (banlist_info *banl)
 		/* If no lines are selected, only the CLEAR button should be sensitive */
 		if (banl->select_ct == 0)
 		{
-			gtk_widget_set_sensitive (banl->but_clear, TRUE);
+			gtk_widget_set_sensitive (banl->but_clear, (banl->line_ct != 0));
 			gtk_widget_set_sensitive (banl->but_crop, FALSE);
 			gtk_widget_set_sensitive (banl->but_remove, FALSE);
 		}
@@ -286,7 +312,7 @@ banlist_sensitize (banlist_info *banl)
 		else
 		{
 			gtk_widget_set_sensitive (banl->but_clear, FALSE);
-			gtk_widget_set_sensitive (banl->but_crop, banl->line_ct == banl->select_ct? FALSE: TRUE);
+			gtk_widget_set_sensitive (banl->but_crop, (banl->line_ct != banl->select_ct));
 			gtk_widget_set_sensitive (banl->but_remove, TRUE);
 		}
 	}
@@ -430,8 +456,6 @@ banlist_do_refresh (banlist_info *banl)
 	char tbuf[256];
 	int i;
 
-	banlist_sensitize (banl);
-
 	if (sess->server->connected)
 	{
 		GtkListStore *store;
@@ -443,7 +467,7 @@ banlist_do_refresh (banlist_info *banl)
 		store = get_store (sess);
 		gtk_list_store_clear (store);
 		banl->line_ct = 0;
-		banl->pending = banl->checked;
+		banl->pending = sess->me? banl->checked: 0;
 		if (banl->pending)
 		{
 			for (i = 0; i < MODE_CT; i++)
@@ -453,6 +477,7 @@ banlist_do_refresh (banlist_info *banl)
 					handle_command (sess, tbuf, FALSE);
 				}
 		}
+		banlist_sensitize (banl);
 	}
 	else
 	{
