@@ -65,9 +65,7 @@
 #endif
 
 /* force a 32bit CMP.L */
-#define CMPL(a, c0, c1, c2, c3) (a == (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24)))
 #define WORDL(c0, c1, c2, c3) (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24))
-#define WORDW(c0, c1) (guint16)(c0 | (c1 << 8))
 
 #ifdef WIN32						/* for win32 */
 #define OFLAGS O_BINARY
