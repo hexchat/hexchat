@@ -44,17 +44,6 @@
 #define vsnprintf _vsnprintf
 #endif
 
-#ifdef USE_DEBUG
-#define malloc(n) hexchat_malloc(n, __FILE__, __LINE__)
-#define realloc(n, m) hexchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) hexchat_dfree(n, __FILE__, __LINE__)
-#define strdup(n) hexchat_strdup(n, __FILE__, __LINE__)
-void *hexchat_malloc (int size, char *file, int line);
-void *hexchat_strdup (char *str, char *file, int line);
-void hexchat_dfree (void *buf, char *file, int line);
-void *hexchat_realloc (char *old, int len, char *file, int line);
-#endif
-
 #ifdef SOCKS
 #ifdef __sgi
 #include <sys/time.h>

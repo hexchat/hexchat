@@ -1119,10 +1119,6 @@ main (int argc, char *argv[])
 		_SSL_context_free (ctx);
 #endif
 
-#ifdef USE_DEBUG
-	hexchat_mem_list ();
-#endif
-
 #ifdef WIN32
 	WSACleanup ();
 #endif
