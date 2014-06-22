@@ -26,6 +26,8 @@
 #define g_ascii_strcasecmp stricmp
 #endif
 
+#define _(x) hexchat_gettext(ph,x)
+
 static hexchat_plugin *ph;	/* plugin handle */
 static GSList *timer_list = NULL;
 
@@ -68,13 +70,13 @@ timer_del_ref (int ref, int quiet)
 		{
 			timer_del (tim);
 			if (!quiet)
-				hexchat_printf (ph, "Timer %d deleted.\n", ref);
+				hexchat_printf (ph, _("Timer %d deleted.\n"), ref);
 			return;
 		}
 		list = list->next;
 	}
 	if (!quiet)
-		hexchat_print (ph, "No such ref number found.\n");
+		hexchat_print (ph, _("No such ref number found.\n"));
 }
 
 static int
@@ -138,17 +140,17 @@ timer_showlist (void)
 
 	if (timer_list == NULL)
 	{
-		hexchat_print (ph, "No timers installed.\n");
-		hexchat_print (ph, HELP);
+		hexchat_print (ph, _("No timers installed.\n"));
+		hexchat_print (ph, _(HELP));
 		return;
 	}
 							 /*  00000 00000000 0000000 abc */
-	hexchat_print (ph, "\026 Ref#  Seconds  Repeat  Command \026\n");
+	hexchat_print (ph, _("\026 Ref#  Seconds  Repeat  Command \026\n"));
 	list = timer_list;
 	while (list)
 	{
 		tim = list->data;
-		hexchat_printf (ph, "%5d %8.1f %7d  %s\n", tim->ref, tim->timeout,
+		hexchat_printf (ph, _("%5d %8.1f %7d  %s\n"), tim->ref, tim->timeout,
 						  tim->repeat, tim->command);
 		list = list->next;
 	}
@@ -221,7 +223,7 @@ hexchat_plugin_init
 	*plugin_desc = "IrcII style /TIMER command";
 	*plugin_version = "";
 
-	hexchat_hook_command (ph, "TIMER", HEXCHAT_PRI_NORM, timer_cb, HELP, 0);
+	hexchat_hook_command (ph, "TIMER", HEXCHAT_PRI_NORM, timer_cb, _(HELP), 0);
 
 	return 1;       /* return 1 for success */
 }
