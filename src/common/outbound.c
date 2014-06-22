@@ -56,9 +56,6 @@
 #include "outbound.h"
 #include "chanopt.h"
 
-#ifdef USE_DEBUG
-extern int current_mem_usage;
-#endif
 #define TBUFSIZE 4096
 
 static void help (session *sess, char *tbuf, char *helpcmd, int quiet);
@@ -922,10 +919,6 @@ cmd_debug (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				"current_tab: %p\n\n",
 				sess->server->front_session, current_tab);
 	PrintText (sess, tbuf);
-#ifdef USE_DEBUG
-	sprintf (tbuf, "current mem: %d\n\n", current_mem_usage);
-	PrintText (sess, tbuf);
-#endif  /* !MEMORY_DEBUG */
 
 	return TRUE;
 }
