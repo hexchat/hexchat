@@ -843,7 +843,6 @@ echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
 echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
-echo NLS/gettext ........... : $USE_NLS
 echo IPv6 support .......... : $ipv6
 echo MS Proxy NTLM \(ISA\) ... : $have_ntlm
 echo libproxy support ...... : $libproxy
