@@ -58,7 +58,6 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
 Name: "libs"; Description: "HexChat"; Types: normal minimal custom; Flags: fixed
-Name: "gtktheme"; Description: "GTK+ Theme (Native Windows look)"; Types: normal minimal custom; Flags: disablenouninstallwarning
 Name: "xctext"; Description: "HexChat-Text"; Types: custom; Flags: disablenouninstallwarning
 Name: "xtm"; Description: "HexChat Theme Manager"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal custom; Flags: disablenouninstallwarning
@@ -111,9 +110,9 @@ Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 Source: "changelog.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "readme.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: gtktheme
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "share\doc\*"; DestDir: "{app}\share\doc"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
+Source: "share\themes\MS-Windows\*"; DestDir: "{app}\share\themes\MS-Windows"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
 
 Source: "atk-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -246,10 +245,10 @@ begin
   if(CurPageID = wpReady) then
   begin
     idpClearFiles;
-	
+
 	if not IsTaskSelected('portable') then
 	begin
-	
+
 #if APPARCH == "x64"
 		REDIST := 'http://dl.hexchat.net/misc/vcredist_2013_x64.exe';
 		PERL := 'http://dl.hexchat.net/misc/perl/Perl%205.20.0%20x64.msi';
@@ -272,13 +271,13 @@ begin
 
 		if IsComponentSelected('spell') and not CheckSpellInstall() then
 			idpAddFile(SPELL, ExpandConstant('{tmp}\spelling-dicts.exe'));
-			
+
 		if IsComponentSelected('langs\perl') and not CheckDLL('perl520.dll') then
 			idpAddFile(PERL, ExpandConstant('{tmp}\perl.msi'));
-			
+
 		if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
 			idpAddFile(PY2, ExpandConstant('{tmp}\python.msi'));
-			
+
 		if IsComponentSelected('langs\python\python3') and not CheckDLL('python34.dll') then
 			idpAddFile(PY3, ExpandConstant('{tmp}\python.msi'));
 	end;
