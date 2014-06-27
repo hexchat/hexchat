@@ -299,8 +299,12 @@ if test "x$python" != xno ; then
 				PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
 			dnl set python3 default here
 			python3)
-				PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_WARN(Cannot find python-3.3!)])
-				PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+				pyrelease=""
+				PKG_CHECK_MODULES([PY], [python-3.4], [pyrelease=3.4], [AC_MSG_WARN(Cannot find python-3.4!)])
+				if test "x$pyrelease" = x ; then
+					PKG_CHECK_MODULES([PY], [python-3.3], [pyrelease=3.3], [AC_MSG_WARN(Cannot find python-3.3!)])
+				fi
+				PY_VER="`$PKG_CONFIG --modversion python-${pyrelease}`";;
 			dnl add broken versions here
 			python2.5|python2.6|python3.1|python3.2)
 				AC_MSG_ERROR(Unsupported Python version ${python}!);;
