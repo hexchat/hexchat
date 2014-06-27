@@ -75,12 +75,16 @@ static const struct defaultserver def[] =
 #endif
 #ifdef USE_OPENSSL
 	{0,			"irc.data.lt/+6668"},
-	{0,			"irc-ssl.omnitel.net/+6668"},
+	{0,			"irc.omnitel.net/+6668"},
+	{0,			"irc.ktu.lt/+6668"},
+	{0,			"irc.kis.lt/+6668"},
+	{0,			"irc.vub.lt/+6668"},
 #endif
 	{0,			"irc.data.lt"},
 	{0,			"irc.omnitel.net"},
 	{0,			"irc.ktu.lt"},
 	{0,			"irc.kis.lt"},
+	{0,			"irc.vub.lt"},
 
 	{"AlphaChat",	0, 0, 0, LOGIN_SASL},
 	{0,			"irc.alphachat.net"},
