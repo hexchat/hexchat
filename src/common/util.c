@@ -1547,7 +1547,8 @@ unity_mode ()
 {
 #ifdef G_OS_UNIX
 	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
-	if (env && strcmp (env, "Unity") == 0)
+	if (env && (strcmp (env, "Unity") == 0
+			|| strcmp (env, "Pantheon") == 0))
 		return 1;
 #endif
 	return 0;
