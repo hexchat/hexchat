@@ -199,6 +199,9 @@ static const struct defaultserver def[] =
 	{0,			"irc6.entropynet.net"},
 #endif
 
+	{"Epiknet",	0},
+	{0,			"irc.epiknet.org"},
+
 	{"EsperNet", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,			"irc.esper.net/+6697"},
@@ -351,6 +354,12 @@ static const struct defaultserver def[] =
 	{0, 		"irc.ponychat.net/+6697"},
 #endif
 	{0,			"irc.ponychat.net"},
+
+	{"Powanet",	0},
+	{0,			"irc.powanet.org"},
+#ifdef USE_OPENSSL
+	{0,			"irc.powanet.org/+6697"},
+#endif
 
 	{"PTNet.org",   0},
 	{0,			"irc.PTNet.org"},
