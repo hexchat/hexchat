@@ -245,6 +245,9 @@ static const struct defaultserver def[] =
 	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 	
+	{"GeeksIRC", 0},
+	{0,			"irc.geeksirc.net"},
+
 	{"GeekShed",	0},
 	{0,			"irc.geekshed.net"},
 
