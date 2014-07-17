@@ -1,6 +1,7 @@
 language: c
 compiler: gcc
 before_script:
+    - sudo apt-get update
     - sudo apt-get build-dep -qq xchat
     - sudo apt-get install -qq libnotify-dev libproxy-dev libpci-dev libcanberra-dev monodevelop gnome-common
 script: 
