@@ -27,7 +27,6 @@
 #endif
 #ifdef WIN32
 #include <windows.h>
-#include <process.h>
 #else
 #include <dirent.h>
 #endif
@@ -64,7 +63,7 @@ thread_mbox (char *str)
 {
 	DWORD tid;
 
-	CloseHandle ((HANDLE)_beginthreadex (NULL, 0, (LPTHREAD_START_ROUTINE) child,
+	CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) child,
 										str, 0, &tid));
 }
 
