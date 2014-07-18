@@ -3713,8 +3713,8 @@ userlist_cb (struct User *user, session *sess)
 	else
 		lt = time (0) - user->lasttalk;
 	PrintTextf (sess,
-				"\00306%s\t\00314[\00310%-38s\00314] \017ov\0033=\017%d%d away=%u lt\0033=\017%d\n",
-				user->nick, user->hostname, user->op, user->voice, user->away, lt);
+				"\00306%s\t\00314[\00310%-38s\00314] \017ov\0033=\017%d%d away=%u lt\0033=\017%ld\n",
+				user->nick, user->hostname, user->op, user->voice, user->away, (long)lt);
 
 	return TRUE;
 }
