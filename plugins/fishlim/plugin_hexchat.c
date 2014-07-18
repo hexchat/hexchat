@@ -221,7 +221,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     if (keystore_store_key(nick, key)) {
         hexchat_printf(ph, "Stored key for %s\n", nick);
     } else {
-        hexchat_printf(ph, "\00305Failed to store key in addon_fishlim.conf\n", nick, key);
+        hexchat_printf(ph, "\00305Failed to store key in addon_fishlim.conf\n");
     }
     
     return HEXCHAT_EAT_HEXCHAT;
@@ -245,7 +245,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     if (keystore_delete_nick(nick)) {
         hexchat_printf(ph, "Deleted key for %s\n", nick);
     } else {
-        hexchat_printf(ph, "\00305Failed to delete key in addon_fishlim.conf!\n", nick);
+        hexchat_printf(ph, "\00305Failed to delete key in addon_fishlim.conf!\n");
     }
     
     return HEXCHAT_EAT_HEXCHAT;
