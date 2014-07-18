@@ -23,13 +23,14 @@
 #include "hexchat.h"
 #include "hexchatc.h"
 #include "text.h"
+#include <process.h>
 
 static int identd_is_running = FALSE;
 #ifdef USE_IPV6
 static int identd_ipv6_is_running = FALSE;
 #endif
 
-static int
+static int WINAPI
 identd (char *username)
 {
 	int sok, read_sok, len;
@@ -105,7 +106,7 @@ identd (char *username)
 }
 
 #ifdef USE_IPV6
-static int
+static int WINAPI
 identd_ipv6 (char *username)
 {
 	int sok, read_sok, len;
@@ -187,7 +188,7 @@ identd_start (char *username)
 	if (identd_ipv6_is_running == FALSE)
 	{
 		identd_ipv6_is_running = TRUE;
-		CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) identd_ipv6,
+		CloseHandle ((HANDLE)_beginthreadex (NULL, 0, (LPTHREAD_START_ROUTINE) identd_ipv6,
 						 strdup (username), 0, &tidv6));
 	}
 #endif
@@ -195,7 +196,7 @@ identd_start (char *username)
 	if (identd_is_running == FALSE)
 	{
 		identd_is_running = TRUE;
-		CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) identd,
+		CloseHandle ((HANDLE)_beginthreadex (NULL, 0, (LPTHREAD_START_ROUTINE) identd,
 						 strdup (username), 0, &tid));
 	}
 }
