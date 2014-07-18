@@ -273,7 +273,7 @@ tcp_send (server *serv, char *buf)
 }*/
 
 void
-tcp_sendf (server *serv, char *fmt, ...)
+tcp_sendf (server *serv, const char *fmt, ...)
 {
 	va_list args;
 	/* keep this buffer in BSS. Converting UTF-8 to ISO-8859-x might make the
