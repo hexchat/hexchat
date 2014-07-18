@@ -1850,8 +1850,9 @@ server_new (void)
 	static int id = 0;
 	server *serv;
 
-	serv = malloc (sizeof (struct server));
-	memset (serv, 0, sizeof (struct server));
+    serv = calloc (1, sizeof (*serv));
+	if (!serv)
+		return NULL;
 
 	/* use server.c and proto-irc.c functions */
 	server_fill_her_up (serv);
