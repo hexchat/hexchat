@@ -927,7 +927,7 @@ PrintText (session *sess, char *text)
 }
 
 void
-PrintTextf (session *sess, char *format, ...)
+PrintTextf (session *sess, const char *format, ...)
 {
 	va_list args;
 	char *buf;
@@ -941,7 +941,7 @@ PrintTextf (session *sess, char *format, ...)
 }
 
 void
-PrintTextTimeStampf (session *sess, time_t timestamp, char *format, ...)
+PrintTextTimeStampf (session *sess, time_t timestamp, const char *format, ...)
 {
 	va_list args;
 	char *buf;
