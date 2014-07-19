@@ -717,8 +717,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 
 	if (numeric_324 && !using_front_tab)
 	{
-		if (sess->current_modes)
-			free (sess->current_modes);
+		free (sess->current_modes);
 		sess->current_modes = strdup (word_eol[offset+1]);
 	}
 
@@ -820,8 +819,7 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 				/* bad! some ircds don't give us the modes. */
 				/* in this case, we use it only to strip /NAMES */
 				serv->bad_prefix = TRUE;
-				if (serv->bad_nick_prefixes)
-					free (serv->bad_nick_prefixes);
+				free (serv->bad_nick_prefixes);
 				serv->bad_nick_prefixes = strdup (word[w] + 7);
 			}
 		} else if (strncmp (word[w], "WATCH=", 6) == 0)

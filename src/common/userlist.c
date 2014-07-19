@@ -121,8 +121,7 @@ userlist_set_account (struct session *sess, char *nick, char *account)
 	user = userlist_find (sess, nick);
 	if (user)
 	{
-		if (user->account)
-			free (user->account);
+		free (user->account);
 			
 		if (strcmp (account, "*") == 0)
 			user->account = NULL;
