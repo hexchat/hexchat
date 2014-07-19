@@ -69,12 +69,12 @@
 static char *dcctypes[] = { "SEND", "RECV", "CHAT", "CHAT" };
 
 struct dccstat_info dccstat[] = {
-	{N_("Waiting"), 1 /*black */ },
-	{N_("Active"), 12 /*cyan */ },
-	{N_("Failed"), 4 /*red */ },
-	{N_("Done"), 3 /*green */ },
-	{N_("Connect"), 1 /*black */ },
-	{N_("Aborted"), 4 /*red */ },
+	{ .name = N_("Waiting"), .color = 1 /*black */ },
+	{ .name = N_("Active"), .color = 12 /*cyan */ },
+	{ .name = N_("Failed"), .color = 4 /*red */ },
+	{ .name = N_("Done"), .color = 3 /*green */ },
+	{ .name = N_("Connect"), .color = 1 /*black */ },
+	{ .name = N_("Aborted"), .color = 4 /*red */ },
 };
 
 static int dcc_global_throttle;	/* 0x1 = sends, 0x2 = gets */
