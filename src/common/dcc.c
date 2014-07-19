@@ -2133,10 +2133,9 @@ dcc_get_nick (struct session *sess, char *nick)
 static struct DCC *
 new_dcc (void)
 {
-	struct DCC *dcc = malloc (sizeof (struct DCC));
+	struct DCC *dcc = calloc (1, sizeof (struct DCC));
 	if (!dcc)
 		return 0;
-	memset (dcc, 0, sizeof (struct DCC));
 	dcc->sok = -1;
 	dcc->fp = -1;
 	dcc_list = g_slist_prepend (dcc_list, dcc);

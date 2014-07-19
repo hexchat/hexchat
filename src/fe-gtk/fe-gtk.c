@@ -424,8 +424,7 @@ fe_new_window (session *sess, int focus)
 void
 fe_new_server (struct server *serv)
 {
-	serv->gui = malloc (sizeof (struct server_gui));
-	memset (serv->gui, 0, sizeof (struct server_gui));
+	serv->gui = calloc (1, sizeof (struct server_gui));
 }
 
 void

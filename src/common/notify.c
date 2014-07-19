@@ -111,10 +111,9 @@ notify_find_server_entry (struct notify *notify, struct server *serv)
 	if (!notify_do_network (notify, serv))
 		return NULL;
 
-	servnot = malloc (sizeof (struct notify_per_server));
+	servnot = calloc (1, sizeof (struct notify_per_server));
 	if (servnot)
 	{
-		memset (servnot, 0, sizeof (struct notify_per_server));
 		servnot->server = serv;
 		servnot->notify = notify;
 		notify->server_list = g_slist_prepend (notify->server_list, servnot);
@@ -627,10 +626,9 @@ notify_deluser (char *name)
 void
 notify_adduser (char *name, char *networks)
 {
-	struct notify *notify = malloc (sizeof (struct notify));
+	struct notify *notify = calloc (1, sizeof (struct notify));
 	if (notify)
 	{
-		memset (notify, 0, sizeof (struct notify));
 		if (strlen (name) >= NICKLEN)
 		{
 			notify->name = malloc (NICKLEN);
