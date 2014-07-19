@@ -1024,11 +1024,13 @@ dcc_socks_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC
 
 	if (proxy->phase == 0)
 	{
-		struct sock_connect sc;
-		sc.version = 4;
-		sc.type = 1;
-		sc.port = htons (dcc->port);
-		sc.address = htonl (dcc->addr);
+		struct sock_connect sc = {
+			.version = 4,
+			.type = 1,
+			.port = htons(dcc->port),
+			.address = htonl(dcc->addr)
+		};
+		
 		strncpy (sc.username, prefs.hex_irc_user_name, 9);
 		memcpy (proxy->buffer, &sc, sizeof (sc));
 		proxy->buffersize = 8 + strlen (sc.username) + 1;
@@ -1083,11 +1085,12 @@ dcc_socks5_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DC
 
 	if (proxy->phase == 0)
 	{
-		struct sock5_connect1 sc1;
+		struct sock5_connect1 sc1 = {
+			.version = 5,
+			.nmethods = 1,
+			.method = 0
+		};
 
-		sc1.version = 5;
-		sc1.nmethods = 1;
-		sc1.method = 0;
 		if (auth)
 			sc1.method = 2;
 		memcpy (proxy->buffer, &sc1, 3);
