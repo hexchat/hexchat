@@ -188,7 +188,7 @@ plugin_list_add (hexchat_context *ctx, char *filename, const char *name,
 {
 	hexchat_plugin *pl;
 
-	pl = malloc (sizeof (hexchat_plugin));
+	pl = calloc (1, sizeof (hexchat_plugin));
 	pl->handle = handle;
 	pl->filename = filename;
 	pl->context = ctx;
