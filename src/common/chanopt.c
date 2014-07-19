@@ -49,8 +49,8 @@ static gboolean chanopt_changed = FALSE;
 
 typedef struct
 {
-	char *name;
-	char *alias;	/* old names from 2.8.4 */
+	const char *name;
+	const char *alias;	/* old names from 2.8.4 */
 	int offset;
 } channel_options;
 
