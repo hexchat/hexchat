@@ -1172,13 +1172,13 @@ struct sock_connect
 static int
 traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 {
-	struct sock_connect sc;
 	unsigned char buf[256];
-
-	sc.version = 4;
-	sc.type = 1;
-	sc.port = htons (port);
-	sc.address = inet_addr (serverAddr);
+	struct sock_connect sc = {
+		.version = 4,
+		.type = 1,
+		.port = htons(port),
+		.address = inet_addr(serverAddr)
+	};
 	strncpy (sc.username, prefs.hex_irc_user_name, 9);
 
 	send (sok, (char *) &sc, 8 + strlen (sc.username) + 1, 0);
@@ -1202,14 +1202,16 @@ struct sock5_connect1
 static int
 traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 {
-	struct sock5_connect1 sc1;
+	struct sock5_connect1 sc1 = 
+	{
+		.version = 5,
+		.nmethods = 1
+	};
 	unsigned char *sc2;
 	unsigned int packetlen, addrlen;
 	unsigned char buf[260];
 	int auth = prefs.hex_net_proxy_auth && prefs.hex_net_proxy_user[0] && prefs.hex_net_proxy_pass[0];
 
-	sc1.version = 5;
-	sc1.nmethods = 1;
 	if (auth)
 		sc1.method = 2;  /* Username/Password Authentication (UPA) */
 	else
