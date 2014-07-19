@@ -1137,10 +1137,15 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 			gchar *start;
 
 			/* Find the end of this string */
-			cend = i;
-			while ((!log_attrs[cend].is_word_end || !log_attrs[cend].is_word_boundary)
-					&& !log_attrs[cend].is_white)
-				cend++;
+			for (cend = i; cend < n_attrs; cend++)
+			{
+				PangoLogAttr a = log_attrs[cend];
+
+				if (a.is_white)
+					break;
+				if (a.is_word_end && a.is_word_boundary)
+					break;
+			}
 
 			/* Copy sub-string */
 			start = g_utf8_offset_to_pointer(text, i);
