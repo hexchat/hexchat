@@ -175,14 +175,10 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 static int
 free_user (struct User *user, gpointer data)
 {
-	if (user->realname)
-		free (user->realname);
-	if (user->hostname)
-		free (user->hostname);
-	if (user->servername)
-		free (user->servername);
-	if (user->account)
-		free (user->account);
+	free (user->realname);
+	free (user->hostname);
+	free (user->servername);
+	free (user->account);
 	free (user);
 
 	return TRUE;
@@ -428,12 +424,9 @@ userlist_add (struct session *sess, char *name, char *hostname,
 	/* duplicate? some broken servers trigger this */
 	if (row == -1)
 	{
-		if (user->hostname)
-			free (user->hostname);
-		if (user->account)
-			free (user->account);
-		if (user->realname)
-			free (user->realname);
+		free (user->hostname);
+		free (user->account);
+		free (user->realname);
 		free (user);
 		return;
 	}
