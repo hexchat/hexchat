@@ -521,6 +521,8 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 		break;
 	case SESS_DIALOG:
 		sess = session_new (serv, name, type, focus);
+		if (!sess)
+			return NULL;
 		log_open_or_close (sess);
 		break;
 	default:
@@ -528,6 +530,8 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	case SESS_NOTICES:
 	case SESS_SNOTICES:*/
 		sess = session_new (serv, name, type, focus);
+		if (!sess)
+			return NULL;
 		break;
 	}
 
