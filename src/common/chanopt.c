@@ -58,14 +58,14 @@ typedef struct
 
 static const channel_options chanopt[] =
 {
-	{"alert_beep", "BEEP", S_F(alert_beep)},
-	{"alert_taskbar", NULL, S_F(alert_taskbar)},
-	{"alert_tray", "TRAY", S_F(alert_tray)},
+	{ .name = "alert_beep", .alias = "BEEP", .offset = S_F(alert_beep)},
+	{ .name = "alert_taskbar", .offset = S_F(alert_taskbar) },
+	{ .name = "alert_tray", .alias = "TRAY", .offset = S_F(alert_tray) },
 
-	{"text_hidejoinpart", "CONFMODE", S_F(text_hidejoinpart)},
-	{"text_logging", NULL, S_F(text_logging)},
-	{"text_scrollback", NULL, S_F(text_scrollback)},
-	{"text_strip", NULL, S_F(text_strip)},
+	{ .name = "text_hidejoinpart", .alias = "CONFMODE", .offset = S_F(text_hidejoinpart) },
+	{ .name = "text_logging", .offset = S_F(text_logging) },
+	{ .name = "text_scrollback", .offset = S_F(text_scrollback) },
+	{ .name = "text_strip", .offset = S_F(text_strip) },
 };
 
 #undef S_F
