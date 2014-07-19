@@ -1373,14 +1373,13 @@ dcc_proxy_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	if (!dcc_did_connect (source, condition, dcc))
 		return TRUE;
 
-	dcc->proxy = malloc (sizeof (struct proxy_state));
+	dcc->proxy = calloc (1, sizeof (struct proxy_state));
 	if (!dcc->proxy)
 	{
 		dcc->dccstat = STAT_FAILED;
 		fe_dcc_update (dcc);
 		return TRUE;
 	}
-	memset (dcc->proxy, 0, sizeof (struct proxy_state));
 
 	switch (prefs.hex_net_proxy_type)
 	{
@@ -2135,7 +2134,7 @@ new_dcc (void)
 {
 	struct DCC *dcc = calloc (1, sizeof (struct DCC));
 	if (!dcc)
-		return 0;
+		return NULL;
 	dcc->sok = -1;
 	dcc->fp = -1;
 	dcc_list = g_slist_prepend (dcc_list, dcc);
