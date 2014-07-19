@@ -675,14 +675,12 @@ get_default_spell_languages (void)
 	const gchar* const *langs = g_get_language_names ();
 	char *last = NULL;
 	char *p;
-	char lang_list[64];
+	char lang_list[64] = { 0 };
 	char *ret = lang_list;
 	int i;
 
 	if (langs != NULL)
 	{
-		memset (lang_list, 0, sizeof(lang_list));
-
 		for (i = 0; langs[i]; i++)
 		{
 			if (g_ascii_strncasecmp (langs[i], "C", 1) != 0 && strlen (langs[i]) >= 2)

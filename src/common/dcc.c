@@ -335,13 +335,12 @@ static int
 dcc_connect_sok (struct DCC *dcc)
 {
 	int sok;
-	struct sockaddr_in addr;
+	struct sockaddr_in addr = { 0 };
 
 	sok = socket (AF_INET, SOCK_STREAM, 0);
 	if (sok == -1)
 		return -1;
 
-	memset (&addr, 0, sizeof (addr));
 	addr.sin_family = AF_INET;
 	if (DCC_USE_PROXY ())
 	{
@@ -829,11 +828,11 @@ dcc_did_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	}
 
 #else
-	struct sockaddr_in addr;
-
-	memset (&addr, 0, sizeof (addr));
-	addr.sin_port = htons (dcc->port);
-	addr.sin_family = AF_INET;
+	struct sockaddr_in addr = 
+	{ 
+		.sin_port = htons (dcc->port),
+		.sin_family = AF_INET
+	};
 	addr.sin_addr.s_addr = htonl (dcc->addr);
 
 	/* check if it's already connected; This always fails on winXP */
@@ -1680,15 +1679,13 @@ static int
 dcc_listen_init (struct DCC *dcc, session *sess)
 {
 	guint32 my_addr;
-	struct sockaddr_in SAddr;
+	struct sockaddr_in SAddr = { 0 };
 	int i, bindretval = -1;
 	socklen_t len;
 
 	dcc->sok = socket (AF_INET, SOCK_STREAM, 0);
 	if (dcc->sok == -1)
 		return FALSE;
-
-	memset (&SAddr, 0, sizeof (struct sockaddr_in));
 
 	len = sizeof (SAddr);
 	getsockname (dcc->serv->sok, (struct sockaddr *) &SAddr, &len);

@@ -190,7 +190,7 @@ net_getsockport (int sok4, int sok6)
 char *
 net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 {
-	struct addrinfo hints;
+	struct addrinfo hints = { 0 };
 	char ipstring[MAX_HOSTNAME];
 	char portstring[MAX_HOSTNAME];
 	int ret;
@@ -200,7 +200,6 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 
 	sprintf (portstring, "%d", port);
 
-	memset (&hints, 0, sizeof (struct addrinfo));
 	hints.ai_family = PF_UNSPEC; /* support ipv6 and ipv4 */
 	hints.ai_flags = AI_CANONNAME | AI_ADDRCONFIG;
 	hints.ai_socktype = SOCK_STREAM;
@@ -369,7 +368,7 @@ net_getsockaddr_v4 (netstore *ns)
 int
 net_getsockport (int sok4, int sok6)
 {
-	struct sockaddr_in addr;
+	struct sockaddr_in addr = { 0 };
 	int len = sizeof (addr);
 
 	if (getsockname (sok4, (struct sockaddr *)&addr, &len) == -1)

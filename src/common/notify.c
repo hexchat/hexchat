@@ -290,7 +290,7 @@ notify_set_offline_list (server * serv, char *users, int quiet,
 						  const message_tags_data *tags_data)
 {
 	struct notify_per_server *servnot;
-	char nick[NICKLEN];
+	char nick[NICKLEN] = { 0 };
 	char *token, *chr;
 	int pos;
 
@@ -305,7 +305,6 @@ notify_set_offline_list (server * serv, char *users, int quiet,
 		if (pos + 1 >= sizeof(nick))
 			goto end;
 
-		memset (nick, 0, sizeof(nick));
 		strncpy (nick, token, pos);
 
 		servnot = notify_find (serv, nick);
@@ -321,7 +320,7 @@ notify_set_online_list (server * serv, char *users,
 						 const message_tags_data *tags_data)
 {
 	struct notify_per_server *servnot;
-	char nick[NICKLEN];
+	char nick[NICKLEN] = { 0 };
 	char *token, *chr;
 	int pos;
 
@@ -336,7 +335,6 @@ notify_set_online_list (server * serv, char *users,
 		if (pos + 1 >= sizeof(nick))
 			goto end;
 
-		memset (nick, 0, sizeof(nick));
 		strncpy (nick, token, pos);
 
 		servnot = notify_find (serv, nick);

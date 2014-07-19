@@ -1905,14 +1905,12 @@ strftime_validated (char *dest, size_t destsize, const char *format, const struc
 #ifndef WIN32
 	return strftime (dest, destsize, format, time);
 #else
-	char safe_format[64];
+	char safe_format[64] = { 0 };
 	const char *p = format;
 	int i = 0;
 
 	if (strlen (format) >= sizeof(safe_format))
 		return 0;
-
-	memset (safe_format, 0, sizeof(safe_format));
 
 	while (*p)
 	{
