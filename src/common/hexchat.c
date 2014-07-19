@@ -505,10 +505,17 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	{
 	case SESS_SERVER:
 		serv = server_new ();
+		if (!serv)
+			return NULL;
 		if (prefs.hex_gui_tab_server)
 			sess = session_new (serv, name, SESS_SERVER, focus);
 		else
 			sess = session_new (serv, name, SESS_CHANNEL, focus);
+		if (!sess)
+		{
+			free(serv);
+			return NULL;
+		}
 		serv->server_session = sess;
 		serv->front_session = sess;
 		break;
