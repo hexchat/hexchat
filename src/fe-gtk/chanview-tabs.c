@@ -62,12 +62,13 @@ cv_tabs_sizerequest (GtkWidget *viewport, GtkRequisition *requisition, chanview 
 static void
 cv_tabs_sizealloc (GtkWidget *widget, GtkAllocation *allocation, chanview *cv)
 {
+	GdkWindow *parent_win;
 	GtkAdjustment *adj;
 	GtkWidget *inner;
 	gint viewport_size;
 
 	inner = ((tabview *)cv)->inner;
-	GdkWindow *parent_win = gtk_widget_get_window (gtk_widget_get_parent (inner));
+	parent_win = gtk_widget_get_window (gtk_widget_get_parent (inner));
 
 	if (cv->vertical)
 	{

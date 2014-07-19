@@ -878,11 +878,11 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 int
 hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
+	char buffer[bsize];
 	ph = plugin_handle;
 	*plugin_name    = name;
 	*plugin_desc    = desc;
 	*plugin_version = version;
-	char buffer[bsize];
 
 	hexchat_hook_command (ph, "SYSINFO",	HEXCHAT_PRI_NORM,	sysinfo_cb,	sysinfo_help, NULL);
 	hexchat_hook_command (ph, "NETDATA",	HEXCHAT_PRI_NORM,	netdata_cb,	NULL, NULL);

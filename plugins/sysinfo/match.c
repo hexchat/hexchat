@@ -32,12 +32,12 @@ float percentage(unsigned long long *free, unsigned long long *total)
 
 char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned long long *total_k)
 {
-        char *result, **quantity;
+	char *quantities[] = { "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB", 0 };
+	char *result, **quantity;
 	double free_space, total_space;
 	free_space = *free_k;
 	total_space = *total_k;
         result = malloc(bsize * sizeof(char));
-	char *quantities[] = { "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB", 0 };
 	if (total_space == 0)
 	{
 		snprintf(result, bsize, "%s: none", desc);

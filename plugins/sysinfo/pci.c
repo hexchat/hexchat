@@ -115,9 +115,10 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 	char devicename[bsize/2] = "";
 	char *position;
 	int cardfound = 0;
+	FILE *fp;
 
 	sysinfo_get_pciids (buffer);
-	FILE *fp = fopen (buffer, "r");
+	fp = fopen (buffer, "r");
 
 	if(fp == NULL) {
 		snprintf(fullname, bsize, "%s:%s", vendor, device);

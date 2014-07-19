@@ -53,8 +53,9 @@ void get_hwmon_chip_name(char *name)
 void get_hwmon_temp(unsigned int *value, unsigned int *sensor)
 {
 	char buffer[bsize];
+	FILE *fp;
 	snprintf(buffer, bsize, "/sys/class/hwmon/hwmon0/device/temp%i_input", *sensor);
-	FILE *fp = fopen(buffer, "r");
+	fp = fopen(buffer, "r");
 	if(fp != NULL) {
 		if(fgets(buffer, bsize, fp) != NULL)
 			*value = atoi(buffer);

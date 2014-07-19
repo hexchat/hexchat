@@ -921,7 +921,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 }
 
 void
-PrintText (session *sess, char *text)
+PrintText (session *sess, const char *text)
 {
 	PrintTextTimeStamp (sess, text, 0);
 }

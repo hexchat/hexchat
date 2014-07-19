@@ -33,7 +33,7 @@ guint command_id;
 guint server_id;
 
 static void
-write_error (char *message,
+write_error (const char *message,
 	     GError **error)
 {
 	if (error == NULL || *error == NULL) {

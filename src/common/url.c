@@ -429,7 +429,7 @@ regex_match (const GRegex *re, const char *word, int *start, int *end)
 #define OPT_PORT "(" PORT ")?"
 
 static GRegex *
-make_re (char *grist)
+make_re (const char *grist)
 {
 	GRegex *ret;
 	GError *err = NULL;
