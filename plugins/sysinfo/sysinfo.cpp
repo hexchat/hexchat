@@ -20,7 +20,6 @@
  * THE SOFTWARE.
  */
 
-//#include <cstdio>
 #include <windows.h>
 #include <comutil.h>
 #include <comdef.h>
@@ -46,14 +45,13 @@ namespace{
 	_COM_SMARTPTR_TYPEDEF(IEnumWbemClassObject, __uuidof(IEnumWbemClassObject));
 	_COM_SMARTPTR_TYPEDEF(IWbemClassObject, __uuidof(IWbemClassObject));
 
-static hexchat_plugin *ph;   /* plugin handle */
-static char name[] = "SysInfo";
-static char desc[] = "Display info about your hardware and OS";
-static char version[] = "1.1";
-static char helptext[] = "USAGE: /sysinfo - Sends info about your hardware and OS to current channel.";
+	static hexchat_plugin *ph;   /* plugin handle */
+	static const char name[] = "SysInfo";
+	static const char desc[] = "Display info about your hardware and OS";
+	static const char version[] = "1.1";
+	static const char helptext[] = "USAGE: /sysinfo - Sends info about your hardware and OS to current channel.";
 	static bool firstRun;
 	static ::std::string wmiOs;
-	//static char *wmiOs;
 	static ::std::string wmiCpu;
 	static ::std::string wmiVga;
 
@@ -79,155 +77,26 @@ static char helptext[] = "USAGE: /sysinfo - Sends info about your hardware and O
 		return conversion.to_bytes(in);
 	}
 
-static int
+	static int
 		getCpuArch()
-{
-		OSVERSIONINFOEX osvi{ 0 };
+	{
+		OSVERSIONINFOEX osvi = { 0 };
 		SYSTEM_INFO si = { 0 };
 
-	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 		GetVersionEx((LPOSVERSIONINFOW)::std::addressof(osvi));
 
-	GetSystemInfo (&si);
+		GetSystemInfo(&si);
 
-	if (si.wProcessorArchitecture == 9)
-	{
-		return 64;
-	}
-	else
-	{
-		return 86;
-	}
-}
-
-#if 0
-/* use WMI instead, wProcessorArchitecture displays current binary arch instead of OS arch anyway */
-static char *
-getOsName (void)
-{
-	static char winver[32];
-	double mhz;
-	OSVERSIONINFOEX osvi;
-	SYSTEM_INFO si;
-
-	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
-	GetVersionEx ((LPOSVERSIONINFOW) &osvi);
-
-	GetSystemInfo (&si);
-
-	strcpy (winver, "Windows ");
-
-	switch (osvi.dwMajorVersion)
-	{
-		case 5:
-			switch (osvi.dwMinorVersion)
-			{
-				case 1:
-					strcat (winver, "XP");
-					break;
-				case 2:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcat (winver, "XP x64 Edition");
-					}
-					else
-					{
-						if (GetSystemMetrics(SM_SERVERR2) == 0)
-						{
-							strcat (winver, "Server 2003");
-						}
-						else
-						{
-							strcat (winver, "Server 2003 R2");
-						}
-					}
-					break;
-			}
-			break;
-		case 6:
-			switch (osvi.dwMinorVersion)
-			{
-				case 0:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcat (winver, "Vista");
-					}
-					else
-					{
-						strcat (winver, "Server 2008");
-					}
-					break;
-				case 1:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcat (winver, "7");
-					}
-					else
-					{
-						strcat (winver, "Server 2008 R2");
-					}
-					break;
-				case 2:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcat (winver, "8");
-					}
-					else
-					{
-						strcat (winver, "8 Server");
-					}
-					break;
-			}
-			break;
-	}
-
-	if (si.wProcessorArchitecture == 9)
-	{
-		strcat (winver, " (x64)");
-	}
-	else
-	{
-		strcat (winver, " (x86)");
-	}
-
-	return winver;
-}
-
-/* x86-only, SDK-only, use WMI instead */
-static char *
-getCpuName (void)
-{
-	// Get extended ids.
-	unsigned int nExIds;
-	unsigned int i;
-	int CPUInfo[4] = {-1};
-	static char CPUBrandString[128];
-
-	__cpuid (CPUInfo, 0x80000000);
-	nExIds = CPUInfo[0];
-
-	/* Get the information associated with each extended ID. */
-	for (i=0x80000000; i <= nExIds; ++i)
-	{
-		__cpuid (CPUInfo, i);
-
-		if (i == 0x80000002)
+		if (si.wProcessorArchitecture == 9)
 		{
-			memcpy (CPUBrandString, CPUInfo, sizeof (CPUInfo));
+			return 64;
 		}
-		else if (i == 0x80000003)
+		else
 		{
-			memcpy( CPUBrandString + 16, CPUInfo, sizeof (CPUInfo));
-		}
-		else if (i == 0x80000004)
-		{
-			memcpy (CPUBrandString + 32, CPUInfo, sizeof (CPUInfo));
+			return 86;
 		}
 	}
-
-	return CPUBrandString;
-}
-#endif
 
 	struct reg_key{
 		const HKEY key;
@@ -239,41 +108,36 @@ getCpuName (void)
 	};
 
 	static ::std::string
-getCpuMhz (void)
-{
-	HKEY hKey;
-	int result;
-	int data;
-		DWORD dataSize;
-	double cpuspeed;
-		::std::stringstream buffer;
-		//static char buffer[16];
-		//const char *cpuspeedstr;
-
-	if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, TEXT("Hardware\\Description\\System\\CentralProcessor\\0"), 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
+		getCpuMhz(void)
 	{
-			reg_key regKey(hKey);
-		dataSize = sizeof (data);
-			result = RegQueryValueEx(hKey, TEXT("~MHz"), nullptr, nullptr, (LPBYTE)&data, &dataSize);
-		if (result == ERROR_SUCCESS)
+		HKEY hKey;
+		::std::stringstream buffer;
+
+		if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, TEXT("Hardware\\Description\\System\\CentralProcessor\\0"), 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
 		{
-				cpuspeed = static_cast<double>( (data > 1000) ? data / 1000 : data);
+			int data;
+			reg_key regKey(hKey);
+			DWORD dataSize = sizeof(data);
+			LSTATUS result = RegQueryValueEx(hKey, TEXT("~MHz"), nullptr, nullptr, (LPBYTE)&data, &dataSize);
+			if (result == ERROR_SUCCESS)
+			{
+				double cpuspeed = static_cast<double>((data > 1000) ? data / 1000 : data);
 				buffer << cpuspeed << " " << ((data > 1000) ? "GHz" : "MHz");
+			}
 		}
-	}
 
 		return buffer.str();
-}
+	}
 
 	static ::std::string
-getMemoryInfo (void)
-{
+		getMemoryInfo(void)
+	{
 		::std::stringstream buffer;
 		//static char buffer[32] = { 0 };
 		MEMORYSTATUSEX meminfo = { 0 };
 
-	meminfo.dwLength = sizeof (meminfo);
-	GlobalMemoryStatusEx (&meminfo);
+		meminfo.dwLength = sizeof(meminfo);
+		GlobalMemoryStatusEx(&meminfo);
 		buffer << meminfo.ullTotalPhys / 1024 / 1024 << " MB Total (" << meminfo.ullAvailPhys / 1024 / 1024 << " MB Free)";
 		return buffer.str();
 	}
@@ -287,59 +151,58 @@ getMemoryInfo (void)
 
 	static ::std::string
 		getWmiInfo(wmi_info_mode mode)
-{
-	/* for more details about this wonderful API, see 
-	http://msdn.microsoft.com/en-us/site/aa394138
-	http://msdn.microsoft.com/en-us/site/aa390423
-	http://msdn.microsoft.com/en-us/library/windows/desktop/aa394138%28v=vs.85%29.aspx
-	http://social.msdn.microsoft.com/forums/en-US/vcgeneral/thread/d6420012-e432-4964-8506-6f6b65e5a451
-	*/
+	{
+		/* for more details about this wonderful API, see
+		http://msdn.microsoft.com/en-us/site/aa394138
+		http://msdn.microsoft.com/en-us/site/aa390423
+		http://msdn.microsoft.com/en-us/library/windows/desktop/aa394138%28v=vs.85%29.aspx
+		http://social.msdn.microsoft.com/forums/en-US/vcgeneral/thread/d6420012-e432-4964-8506-6f6b65e5a451
+		*/
 		coInitialize init(COINIT_APARTMENTTHREADED);
-		//char *buffer = (char *)malloc(128);
-	HRESULT hres;
-	HRESULT hr;
+		HRESULT hres;
+		HRESULT hr;
 		IWbemLocatorPtr pLoc;
 		IWbemServicesPtr pSvc;
-		IEnumWbemClassObjectPtr pEnumerator;		
+		IEnumWbemClassObjectPtr pEnumerator;
 
 		if (FAILED(init))
-	{
+		{
 			return "Error Code 0";
-	}
+		}
 
 		hres = CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, nullptr);
 
-	/* mysteriously failing after the first execution, but only when used as a plugin, skip it */
-	/*if (FAILED (hres))
-	{
+		/* mysteriously failing after the first execution, but only when used as a plugin, skip it */
+		/*if (FAILED (hres))
+		{
 		CoUninitialize ();
 		strcpy (buffer, "Error Code 1");
 		return buffer;
-	}*/
+		}*/
 
 		hres = pLoc.CreateInstance(CLSID_WbemLocator, nullptr, CLSCTX_INPROC_SERVER);
 
-	if (FAILED (hres))
-	{
+		if (FAILED(hres))
+		{
 			return "Error Code 2";
-	}
+		}
 
 		hres = pLoc->ConnectServer(_bstr_t(L"root\\CIMV2"), nullptr, nullptr, nullptr, 0, nullptr, nullptr, &pSvc);
 
-	if (FAILED (hres))
-	{
+		if (FAILED(hres))
+		{
 			return "Error Code 3";
-	}
+		}
 
 		hres = CoSetProxyBlanket(pSvc, RPC_C_AUTHN_WINNT, RPC_C_AUTHZ_NONE, nullptr, RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE);
 
-	if (FAILED (hres))
-	{
+		if (FAILED(hres))
+		{
 			return "Error Code 4";
-	}
+		}
 
-	switch (mode)
-	{
+		switch (mode)
+		{
 		case wmi_info_mode::os:
 			hres = pSvc->ExecQuery(_bstr_t(L"WQL"), _bstr_t(L"SELECT * FROM Win32_OperatingSystem"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, nullptr, &pEnumerator);
 			break;
@@ -350,25 +213,26 @@ getMemoryInfo (void)
 			hres = pSvc->ExecQuery(_bstr_t(L"WQL"), _bstr_t(L"SELECT * FROM Win32_VideoController"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, nullptr, &pEnumerator);
 			break;
 
-	}
+		}
 
-	if (FAILED (hres))
-	{
+		if (FAILED(hres))
+		{
 			return "Error Code 5";
-	}
+		}
 		::std::wstringstream buffer;
-	while (pEnumerator)
-	{
+		while (pEnumerator)
+		{
 			ULONG uReturn = 0;
 			IWbemClassObjectPtr pclsObj;
-		hr = pEnumerator->Next (WBEM_INFINITE, 1, &pclsObj, &uReturn);
-		if (0 == uReturn)
-		{
-			break;
-		}
+			hr = pEnumerator->Next(WBEM_INFINITE, 1, &pclsObj, &uReturn);
+			if (0 == uReturn)
+			{
+				break;
+			}
+
 			_variant_t vtProp;
-		switch (mode)
-		{
+			switch (mode)
+			{
 			case wmi_info_mode::os:
 				hr = pclsObj->Get(L"Caption", 0, &vtProp, nullptr, nullptr);
 				break;
@@ -378,80 +242,80 @@ getMemoryInfo (void)
 			case wmi_info_mode::vga:
 				hr = pclsObj->Get(L"Name", 0, &vtProp, nullptr, nullptr);
 				break;
-		}
-			buffer<< vtProp.bstrVal;
+			}
+			buffer << vtProp.bstrVal;
 		}
 		return narrow(buffer.str());
-    }
+	}
 
 	static std::mutex g_mutex;
 
-static int
-printInfo (char *word[], char *word_eol[], void *user_data)
-{
-		std::chrono::milliseconds ticks(GetTickCount64());
-		using fp_hours = ::std::chrono::duration < float, ::std::chrono::hours::period >;
-	/* query WMI info only at the first time SysInfo is called, then cache it to save time */
-	if (firstRun)
+	static int
+		printInfo(char *word[], char *word_eol[], void *user_data)
 	{
+		std::chrono::milliseconds ticks(GetTickCount64());
+		using fp_hours = ::std::chrono::duration < float, ::std::chrono::hours::period > ;
+		/* query WMI info only at the first time SysInfo is called, then cache it to save time */
+		if (firstRun)
+		{
 			::std::lock_guard<::std::mutex> guard(g_mutex);
-		hexchat_printf (ph, "%s first execution, querying and caching WMI info...\n", name);
+			hexchat_printf(ph, "%s first execution, querying and caching WMI info...\n", name);
 			wmiOs = getWmiInfo(wmi_info_mode::os);
 			wmiCpu = getWmiInfo(wmi_info_mode::processor);
 			wmiVga = getWmiInfo(wmi_info_mode::vga);
 			firstRun = false;
-	}
+		}
 		if (hexchat_list_int(ph, nullptr, "type") >= 2)
-	{
-			
-		/* uptime will work correctly for up to 50 days, should be enough */
-		hexchat_commandf (ph, "ME ** SysInfo ** Client: HexChat %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
-			hexchat_get_info (ph, "version"),
-			getCpuArch (),
+		{
+
+			/* uptime will work correctly for up to 50 days, should be enough */
+			hexchat_commandf(ph, "ME ** SysInfo ** Client: HexChat %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
+				hexchat_get_info(ph, "version"),
+				getCpuArch(),
 				wmiOs.c_str(),
 				wmiCpu.c_str(),
 				getCpuMhz().c_str(),
 				getMemoryInfo().c_str(),
 				wmiVga.c_str(), fp_hours(ticks).count());
-	}
-	else
-	{
-		hexchat_printf (ph, " * Client:  HexChat %s (x%d)\n", hexchat_get_info (ph, "version"), getCpuArch ());
+		}
+		else
+		{
+			hexchat_printf(ph, " * Client:  HexChat %s (x%d)\n", hexchat_get_info(ph, "version"), getCpuArch());
 			hexchat_printf(ph, " * OS:      %s\n", wmiOs.c_str());
 			hexchat_printf(ph, " * CPU:     %s (%s)\n", wmiCpu.c_str(), getCpuMhz().c_str());
 			hexchat_printf(ph, " * RAM:     %s\n", getMemoryInfo().c_str());
 			hexchat_printf(ph, " * VGA:     %s\n", wmiVga.c_str());
 			hexchat_printf(ph, " * Uptime:  %.2f Hours\n", fp_hours(ticks).count());
-	}
+		}
 
-	return HEXCHAT_EAT_HEXCHAT;
-}
+		return HEXCHAT_EAT_HEXCHAT;
+	}
 }
 
 int
-hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
 
-	*plugin_name = name;
-	*plugin_desc = desc;
-	*plugin_version = version;
+	*plugin_name = const_cast<char*>(name);
+	*plugin_desc = const_cast<char*>(desc);
+	*plugin_version = const_cast<char*>(version);
 
 	firstRun = true;
 
-	hexchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, printInfo, helptext, nullptr);
-	hexchat_command (ph, "MENU -ishare\\system.png ADD \"Window/Send System Info\" \"SYSINFO\"");
+	hexchat_hook_command(ph, "SYSINFO", HEXCHAT_PRI_NORM, printInfo, helptext, nullptr);
+	hexchat_command(ph, "MENU -ishare\\system.png ADD \"Window/Send System Info\" \"SYSINFO\"");
 
-	hexchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_printf(ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
 }
 
 
 int
-hexchat_plugin_deinit (void)
+hexchat_plugin_deinit(void)
 {
-	hexchat_command (ph, "MENU DEL \"Window/Display System Info\"");
-	hexchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_command(ph, "MENU DEL \"Window/Display System Info\"");
+	hexchat_printf(ph, "%s plugin unloaded\n", name);
 	return 1;
 }
