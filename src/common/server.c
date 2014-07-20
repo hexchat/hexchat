@@ -1996,8 +1996,7 @@ server_away_free_messages (server *serv)
 		if (away->server == serv)
 		{
 			away_list = g_slist_remove (away_list, away);
-			if (away->message)
-				free (away->message);
+			free (away->message);
 			free (away);
 			next = away_list;
 		}

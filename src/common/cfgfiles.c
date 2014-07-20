@@ -153,8 +153,8 @@ list_free (GSList ** list)
 	while (*list)
 	{
 		data = (void *) (*list)->data;
+		*list = g_slist_remove(*list, data);
 		free (data);
-		*list = g_slist_remove (*list, data);
 	}
 }
 
