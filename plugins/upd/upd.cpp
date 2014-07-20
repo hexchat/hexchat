@@ -32,9 +32,9 @@
 #define DOWNLOAD_URL "http://dl.hexchat.net/hexchat"
 namespace{
 	static hexchat_plugin *ph;   /* plugin handle */
-	static char name[] = "Update Checker";
-	static char desc[] = "Check for HexChat updates automatically";
-	static char version[] = "4.0";
+	static const char name[] = "Update Checker";
+	static const char desc[] = "Check for HexChat updates automatically";
+	static const char version[] = "4.0";
 	static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexChat updates\n  /UPDCHK SET delay|freq, set startup delay or check frequency\n";
 
 	struct inet_handle{
@@ -251,9 +251,9 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name, char **pl
 	int delay;
 	ph = plugin_handle;
 
-	*plugin_name = name;
-	*plugin_desc = desc;
-	*plugin_version = version;
+	*plugin_name = const_cast<char*>(name);
+	*plugin_desc = const_cast<char*>(desc);
+	*plugin_version = const_cast<char*>(version);
 
 	/* these are required for the very first run */
 	delay = hexchat_pluginpref_get_int(ph, "delay");
