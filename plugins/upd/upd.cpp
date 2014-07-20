@@ -19,18 +19,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <wininet.h>
-
+#include <cstdlib>
 #include <glib.h>
 
 #include "hexchat-plugin.h"
 
-#define DEFAULT_DELAY 30	/* 30 seconds */
-#define DEFAULT_FREQ 360	/* 6 hours */
-#define DOWNLOAD_URL "http://dl.hexchat.net/hexchat"
+
 namespace{
+	const int DEFAULT_DELAY = 30;	/* 30 seconds */
+	const int DEFAULT_FREQ = 360;	/* 6 hours */
+	const char DOWNLOAD_URL[] = "http://dl.hexchat.net/hexchat";
 	static hexchat_plugin *ph;   /* plugin handle */
 	static const char name[] = "Update Checker";
 	static const char desc[] = "Check for HexChat updates automatically";
@@ -95,7 +96,7 @@ namespace{
 			int statuscode;
 
 			DWORD dwRead;
-			DWORD infolen = sizeof(infobuffer);
+			DWORD infolen = sizeof(infobuffer) - 1;
 
 			HttpAddRequestHeaders(hResource, TEXT("Connection: close\r\n"), -1L, HTTP_ADDREQ_FLAG_ADD);	/* workaround for GC bug */
 			HttpSendRequest(hResource, nullptr, 0, nullptr, 0);
@@ -114,7 +115,8 @@ namespace{
 				&infobuffer,
 				&infolen,
 				nullptr);
-
+			
+			infobuffer[31] = 0; // ensure null termination;
 			statuscode = atoi(infobuffer);
 			if (statuscode == 200)
 				return buffer;
