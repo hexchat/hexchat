@@ -37,12 +37,23 @@ namespace{
 	static char version[] = "4.0";
 	static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexChat updates\n  /UPDCHK SET delay|freq, set startup delay or check frequency\n";
 
+	struct inet_handle{
+		HINTERNET handle;
+		inet_handle(HINTERNET handle)
+			:handle(handle){}
+		~inet_handle()
+		{
+			InternetCloseHandle(handle);
+		}
+		operator HINTERNET()
+		{
+			return handle;
+		}
+	};
 	static char*
 		check_version()
 	{
-		HINTERNET hOpen, hConnect, hResource;
-
-		hOpen = InternetOpen(TEXT("Update Checker"),
+		inet_handle hOpen = InternetOpen(TEXT("Update Checker"),
 			INTERNET_OPEN_TYPE_PRECONFIG,
 			NULL,
 			NULL,
@@ -52,7 +63,7 @@ namespace{
 			return "Unknown";
 		}
 
-		hConnect = InternetConnect(hOpen,
+		inet_handle hConnect = InternetConnect(hOpen,
 			TEXT("raw.github.com"),
 			INTERNET_DEFAULT_HTTPS_PORT,
 			NULL,
@@ -62,11 +73,10 @@ namespace{
 			0);
 		if (!hConnect)
 		{
-			InternetCloseHandle(hOpen);
 			return "Unknown";
 		}
 
-		hResource = HttpOpenRequest(hConnect,
+		inet_handle hResource = HttpOpenRequest(hConnect,
 			TEXT("GET"),
 			TEXT("/hexchat/hexchat/master/win32/version.txt"),
 			TEXT("HTTP/1.0"),
@@ -76,8 +86,6 @@ namespace{
 			0);
 		if (!hResource)
 		{
-			InternetCloseHandle(hConnect);
-			InternetCloseHandle(hOpen);
 			return "Unknown";
 		}
 		else
@@ -106,10 +114,6 @@ namespace{
 				&infobuffer,
 				&infolen,
 				NULL);
-
-			InternetCloseHandle(hResource);
-			InternetCloseHandle(hConnect);
-			InternetCloseHandle(hOpen);
 
 			statuscode = atoi(infobuffer);
 			if (statuscode == 200)
