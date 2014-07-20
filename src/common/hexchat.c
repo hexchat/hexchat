@@ -799,7 +799,7 @@ xchat_init (void)
 #ifdef USE_IPV6
 	if (WSAStartup(0x0202, &wsadata) != 0)
 	{
-		MessageBox (NULL, "Cannot find winsock 2.2+", "Error", MB_OK);
+		MessageBoxW (NULL, L"Cannot find winsock 2.2+", L"Error", MB_OK);
 		exit (0);
 	}
 #else
