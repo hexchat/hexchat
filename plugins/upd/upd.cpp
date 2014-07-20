@@ -23,6 +23,7 @@
 #include <windows.h>
 #include <wininet.h>
 #include <cstdlib>
+#include <string>
 #include <glib.h>
 
 #include "hexchat-plugin.h"
@@ -92,11 +93,11 @@ namespace{
 		else
 		{
 			static char buffer[1024];
-			char infobuffer[32];
+			wchar_t infobuffer[32];
 			int statuscode;
 
 			DWORD dwRead;
-			DWORD infolen = sizeof(infobuffer) - 1;
+			DWORD infolen = sizeof(infobuffer);
 
 			HttpAddRequestHeaders(hResource, TEXT("Connection: close\r\n"), -1L, HTTP_ADDREQ_FLAG_ADD);	/* workaround for GC bug */
 			HttpSendRequest(hResource, nullptr, 0, nullptr, 0);
@@ -115,9 +116,8 @@ namespace{
 				&infobuffer,
 				&infolen,
 				nullptr);
-			
-			infobuffer[31] = 0; // ensure null termination;
-			statuscode = atoi(infobuffer);
+			::std::wstring status_code_string(infobuffer, 32);
+			statuscode = std::stoi(status_code_string);
 			if (statuscode == 200)
 				return buffer;
 			else
