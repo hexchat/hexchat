@@ -30,218 +30,219 @@
 #define DEFAULT_DELAY 30	/* 30 seconds */
 #define DEFAULT_FREQ 360	/* 6 hours */
 #define DOWNLOAD_URL "http://dl.hexchat.net/hexchat"
+namespace{
+	static hexchat_plugin *ph;   /* plugin handle */
+	static char name[] = "Update Checker";
+	static char desc[] = "Check for HexChat updates automatically";
+	static char version[] = "4.0";
+	static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexChat updates\n  /UPDCHK SET delay|freq, set startup delay or check frequency\n";
 
-static hexchat_plugin *ph;   /* plugin handle */
-static char name[] = "Update Checker";
-static char desc[] = "Check for HexChat updates automatically";
-static char version[] = "4.0";
-static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexChat updates\n  /UPDCHK SET delay|freq, set startup delay or check frequency\n";
-
-static char*
-check_version ()
-{
-	HINTERNET hOpen, hConnect, hResource;
-
-	hOpen = InternetOpen (TEXT ("Update Checker"),
-						INTERNET_OPEN_TYPE_PRECONFIG,
-						NULL,
-						NULL,
-						0);
-	if (!hOpen)
+	static char*
+		check_version()
 	{
-		return "Unknown";
-	}
+		HINTERNET hOpen, hConnect, hResource;
 
-	hConnect = InternetConnect (hOpen,
-								TEXT ("raw.github.com"),
-								INTERNET_DEFAULT_HTTPS_PORT,
-								NULL,
-								NULL,
-								INTERNET_SERVICE_HTTP,
-								0,
-								0);
-	if (!hConnect)
-	{
-		InternetCloseHandle (hOpen);
-		return "Unknown";
-	}
-
-	hResource = HttpOpenRequest (hConnect,
-								TEXT ("GET"),
-								TEXT ("/hexchat/hexchat/master/win32/version.txt"),
-								TEXT ("HTTP/1.0"),
-								NULL,
-								NULL,
-								INTERNET_FLAG_SECURE | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
-								0);
-	if (!hResource)
-	{
-		InternetCloseHandle (hConnect);
-		InternetCloseHandle (hOpen);
-		return "Unknown";
-	}
-	else
-	{
-		static char buffer[1024];
-		char infobuffer[32];
-		int statuscode;
-
-		DWORD dwRead;
-		DWORD infolen = sizeof(infobuffer);
-
-		HttpAddRequestHeaders (hResource, TEXT ("Connection: close\r\n"), -1L, HTTP_ADDREQ_FLAG_ADD);	/* workaround for GC bug */
-		HttpSendRequest (hResource, NULL, 0, NULL, 0);
-
-		while (InternetReadFile (hResource, buffer, 1023, &dwRead))
+		hOpen = InternetOpen(TEXT("Update Checker"),
+			INTERNET_OPEN_TYPE_PRECONFIG,
+			NULL,
+			NULL,
+			0);
+		if (!hOpen)
 		{
-			if (dwRead == 0)
-			{
-				break;
-			}
-			buffer[dwRead] = 0;
-		}
-
-		HttpQueryInfo(hResource,
-					HTTP_QUERY_STATUS_CODE,
-					&infobuffer,
-					&infolen,
-					NULL);
-
-		InternetCloseHandle (hResource);
-		InternetCloseHandle (hConnect);
-		InternetCloseHandle (hOpen);
-
-		statuscode = atoi(infobuffer);
-		if (statuscode == 200)
-			return buffer;
-		else
 			return "Unknown";
-	}
-}
-
-static int
-print_version (char *word[], char *word_eol[], void *userdata)
-{
-	char *version;
-	int prevbuf;
-	int convbuf;
-
-	if (!g_ascii_strcasecmp ("HELP", word[2]))
-	{
-		hexchat_printf (ph, upd_help);
-		return HEXCHAT_EAT_HEXCHAT;
-	}
-	else if (!g_ascii_strcasecmp ("SET", word[2]))
-	{
-		if (!g_ascii_strcasecmp ("", word_eol[4]))
-		{
-			hexchat_printf (ph, "%s\tEnter a value!\n", name);
-			return HEXCHAT_EAT_HEXCHAT;
 		}
-		if (!g_ascii_strcasecmp ("delay", word[3]))
-		{
-			convbuf = atoi (word[4]);	/* don't use word_eol, numbers must not contain spaces */
 
-			if (convbuf > 0 && convbuf < INT_MAX)
-			{
-				prevbuf = hexchat_pluginpref_get_int (ph, "delay");
-				hexchat_pluginpref_set_int (ph, "delay", convbuf);
-				hexchat_printf (ph, "%s\tUpdate check startup delay is set to %d seconds (from %d).\n", name, convbuf, prevbuf);
-			}
-			else
-			{
-				hexchat_printf (ph, "%s\tInvalid input!\n", name);
-			}
+		hConnect = InternetConnect(hOpen,
+			TEXT("raw.github.com"),
+			INTERNET_DEFAULT_HTTPS_PORT,
+			NULL,
+			NULL,
+			INTERNET_SERVICE_HTTP,
+			0,
+			0);
+		if (!hConnect)
+		{
+			InternetCloseHandle(hOpen);
+			return "Unknown";
 		}
-		else if (!g_ascii_strcasecmp ("freq", word[3]))
-		{
-			convbuf = atoi (word[4]);	/* don't use word_eol, numbers must not contain spaces */
 
-			if (convbuf > 0 && convbuf < INT_MAX)
-			{
-				prevbuf = hexchat_pluginpref_get_int (ph, "freq");
-				hexchat_pluginpref_set_int (ph, "freq", convbuf);
-				hexchat_printf (ph, "%s\tUpdate check frequency is set to %d minutes (from %d).\n", name, convbuf, prevbuf);
-			}
-			else
-			{
-				hexchat_printf (ph, "%s\tInvalid input!\n", name);
-			}
+		hResource = HttpOpenRequest(hConnect,
+			TEXT("GET"),
+			TEXT("/hexchat/hexchat/master/win32/version.txt"),
+			TEXT("HTTP/1.0"),
+			NULL,
+			NULL,
+			INTERNET_FLAG_SECURE | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
+			0);
+		if (!hResource)
+		{
+			InternetCloseHandle(hConnect);
+			InternetCloseHandle(hOpen);
+			return "Unknown";
 		}
 		else
 		{
-			hexchat_printf (ph, "%s\tInvalid variable name! Use 'delay' or 'freq'!\n", name);
+			static char buffer[1024];
+			char infobuffer[32];
+			int statuscode;
+
+			DWORD dwRead;
+			DWORD infolen = sizeof(infobuffer);
+
+			HttpAddRequestHeaders(hResource, TEXT("Connection: close\r\n"), -1L, HTTP_ADDREQ_FLAG_ADD);	/* workaround for GC bug */
+			HttpSendRequest(hResource, NULL, 0, NULL, 0);
+
+			while (InternetReadFile(hResource, buffer, 1023, &dwRead))
+			{
+				if (dwRead == 0)
+				{
+					break;
+				}
+				buffer[dwRead] = 0;
+			}
+
+			HttpQueryInfo(hResource,
+				HTTP_QUERY_STATUS_CODE,
+				&infobuffer,
+				&infolen,
+				NULL);
+
+			InternetCloseHandle(hResource);
+			InternetCloseHandle(hConnect);
+			InternetCloseHandle(hOpen);
+
+			statuscode = atoi(infobuffer);
+			if (statuscode == 200)
+				return buffer;
+			else
+				return "Unknown";
+		}
+	}
+
+	static int
+		print_version(char *word[], char *word_eol[], void *userdata)
+	{
+		char *version;
+		int prevbuf;
+		int convbuf;
+
+		if (!g_ascii_strcasecmp("HELP", word[2]))
+		{
+			hexchat_printf(ph, upd_help);
 			return HEXCHAT_EAT_HEXCHAT;
 		}
+		else if (!g_ascii_strcasecmp("SET", word[2]))
+		{
+			if (!g_ascii_strcasecmp("", word_eol[4]))
+			{
+				hexchat_printf(ph, "%s\tEnter a value!\n", name);
+				return HEXCHAT_EAT_HEXCHAT;
+			}
+			if (!g_ascii_strcasecmp("delay", word[3]))
+			{
+				convbuf = atoi(word[4]);	/* don't use word_eol, numbers must not contain spaces */
 
-		return HEXCHAT_EAT_HEXCHAT;
-	}
-	else if (!g_ascii_strcasecmp ("", word[2]))
-	{
-		version = check_version ();
+				if (convbuf > 0 && convbuf < INT_MAX)
+				{
+					prevbuf = hexchat_pluginpref_get_int(ph, "delay");
+					hexchat_pluginpref_set_int(ph, "delay", convbuf);
+					hexchat_printf(ph, "%s\tUpdate check startup delay is set to %d seconds (from %d).\n", name, convbuf, prevbuf);
+				}
+				else
+				{
+					hexchat_printf(ph, "%s\tInvalid input!\n", name);
+				}
+			}
+			else if (!g_ascii_strcasecmp("freq", word[3]))
+			{
+				convbuf = atoi(word[4]);	/* don't use word_eol, numbers must not contain spaces */
 
-		if (strcmp (version, hexchat_get_info (ph, "version")) == 0)
-		{
-			hexchat_printf (ph, "%s\tYou have the latest version of HexChat installed!\n", name);
+				if (convbuf > 0 && convbuf < INT_MAX)
+				{
+					prevbuf = hexchat_pluginpref_get_int(ph, "freq");
+					hexchat_pluginpref_set_int(ph, "freq", convbuf);
+					hexchat_printf(ph, "%s\tUpdate check frequency is set to %d minutes (from %d).\n", name, convbuf, prevbuf);
+				}
+				else
+				{
+					hexchat_printf(ph, "%s\tInvalid input!\n", name);
+				}
+			}
+			else
+			{
+				hexchat_printf(ph, "%s\tInvalid variable name! Use 'delay' or 'freq'!\n", name);
+				return HEXCHAT_EAT_HEXCHAT;
+			}
+
+			return HEXCHAT_EAT_HEXCHAT;
 		}
-		else if (strcmp (version, "Unknown") == 0)
+		else if (!g_ascii_strcasecmp("", word[2]))
 		{
-			hexchat_printf (ph, "%s\tUnable to check for HexChat updates!\n", name);
-		}
-		else
-		{
+			version = check_version();
+
+			if (strcmp(version, hexchat_get_info(ph, "version")) == 0)
+			{
+				hexchat_printf(ph, "%s\tYou have the latest version of HexChat installed!\n", name);
+			}
+			else if (strcmp(version, "Unknown") == 0)
+			{
+				hexchat_printf(ph, "%s\tUnable to check for HexChat updates!\n", name);
+			}
+			else
+			{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for some reason */
-			hexchat_printf (ph, "%s:\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x64.exe\n", name, DOWNLOAD_URL, version);
+				hexchat_printf(ph, "%s:\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x64.exe\n", name, DOWNLOAD_URL, version);
 #else
-			hexchat_printf (ph, "%s:\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x86.exe\n", name, DOWNLOAD_URL, version);
+				hexchat_printf (ph, "%s:\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x86.exe\n", name, DOWNLOAD_URL, version);
 #endif
+			}
+			return HEXCHAT_EAT_HEXCHAT;
 		}
-		return HEXCHAT_EAT_HEXCHAT;
+		else
+		{
+			hexchat_printf(ph, upd_help);
+			return HEXCHAT_EAT_HEXCHAT;
+		}
 	}
-	else
-	{
-		hexchat_printf (ph, upd_help);
-		return HEXCHAT_EAT_HEXCHAT;
-	}
-}
 
-static int
-print_version_quiet (void *userdata)
-{
-	char *version = check_version ();
-
-	/* if it's not the current version AND not network error */
-	if (!(strcmp (version, hexchat_get_info (ph, "version")) == 0) && !(strcmp (version, "Unknown") == 0))
+	static int
+		print_version_quiet(void *userdata)
 	{
+		char *version = check_version();
+
+		/* if it's not the current version AND not network error */
+		if (!(strcmp(version, hexchat_get_info(ph, "version")) == 0) && !(strcmp(version, "Unknown") == 0))
+		{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for plugins for some reason */
-		hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x64.exe\n", name, DOWNLOAD_URL, version);
+			hexchat_printf(ph, "%s\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x64.exe\n", name, DOWNLOAD_URL, version);
 #else
-		hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x86.exe\n", name, DOWNLOAD_URL, version);
+			hexchat_printf (ph, "%s\tA HexChat update is available! You can download it from here:\n%s/HexChat%%20%s%%20x86.exe\n", name, DOWNLOAD_URL, version);
 #endif
-		/* print update url once, then stop the timer */
-		return 0;
+			/* print update url once, then stop the timer */
+			return 0;
+		}
+		/* keep checking */
+		return 1;
 	}
-	/* keep checking */
-	return 1;
-}
 
-static int
-delayed_check (void *userdata)
-{
-	int freq = hexchat_pluginpref_get_int (ph, "freq");
-
-	/* only start the timer if there's no update available during startup */
-	if (print_version_quiet (NULL))
+	static int
+		delayed_check(void *userdata)
 	{
-		/* check for updates, every 6 hours by default */
-		hexchat_hook_timer (ph, freq * 1000 * 60, print_version_quiet, NULL);
-	}
+		int freq = hexchat_pluginpref_get_int(ph, "freq");
 
-	return 0;	/* run delayed_check() only once */
+		/* only start the timer if there's no update available during startup */
+		if (print_version_quiet(NULL))
+		{
+			/* check for updates, every 6 hours by default */
+			hexchat_hook_timer(ph, freq * 1000 * 60, print_version_quiet, NULL);
+		}
+
+		return 0;	/* run delayed_check() only once */
+	}
 }
 
 int
-hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	int delay;
 	ph = plugin_handle;
@@ -251,30 +252,30 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	*plugin_version = version;
 
 	/* these are required for the very first run */
-	delay = hexchat_pluginpref_get_int (ph, "delay");
+	delay = hexchat_pluginpref_get_int(ph, "delay");
 	if (delay == -1)
 	{
 		delay = DEFAULT_DELAY;
-		hexchat_pluginpref_set_int (ph, "delay", DEFAULT_DELAY);
+		hexchat_pluginpref_set_int(ph, "delay", DEFAULT_DELAY);
 	}
 
-	if (hexchat_pluginpref_get_int (ph, "freq") == -1)
+	if (hexchat_pluginpref_get_int(ph, "freq") == -1)
 	{
-		hexchat_pluginpref_set_int (ph, "freq", DEFAULT_FREQ);
+		hexchat_pluginpref_set_int(ph, "freq", DEFAULT_FREQ);
 	}
 
-	hexchat_hook_command (ph, "UPDCHK", HEXCHAT_PRI_NORM, print_version, upd_help, NULL);
-	hexchat_hook_timer (ph, delay * 1000, delayed_check, NULL);
-	hexchat_command (ph, "MENU -ishare\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
-	hexchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_hook_command(ph, "UPDCHK", HEXCHAT_PRI_NORM, print_version, upd_help, NULL);
+	hexchat_hook_timer(ph, delay * 1000, delayed_check, NULL);
+	hexchat_command(ph, "MENU -ishare\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
+	hexchat_printf(ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
 }
 
 int
-hexchat_plugin_deinit (void)
+hexchat_plugin_deinit(void)
 {
-	hexchat_command (ph, "MENU DEL \"Help/Check for updates\"");
-	hexchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_command(ph, "MENU DEL \"Help/Check for updates\"");
+	hexchat_printf(ph, "%s plugin unloaded\n", name);
 	return 1;
 }
