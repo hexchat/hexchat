@@ -43,6 +43,8 @@ tree *
 tree_new (tree_cmp_func *cmp, void *data)
 {
 	tree *t = calloc (1, sizeof (tree));
+	if (!t)
+		return NULL;
 	t->cmp = cmp;
 	t->data = data;
 	return t;
@@ -51,12 +53,8 @@ tree_new (tree_cmp_func *cmp, void *data)
 void
 tree_destroy (tree *t)
 {
-	if (t)
-	{
-		if (t->array)
-			free (t->array);
-		free (t);
-	}
+	free (t->array);
+	free (t);
 }
 
 static int
