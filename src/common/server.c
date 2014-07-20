@@ -559,7 +559,7 @@ server_stopconnecting (server * serv)
 	close (serv->childwrite);
 	close (serv->childread);
 #else
-	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
+	PostThreadMessageW (serv->childpid, WM_QUIT, 0, 0);
 
 	{
 		/* if we close the pipe now, giowin32 will crash. */
