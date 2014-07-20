@@ -299,6 +299,8 @@ cfg_get_int (char *cfg, char *var)
 char *xdir = NULL;	/* utf-8 encoding */
 
 #ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#define STRICT_TYPED_ITEMIDS
 #include <Windows.h>
 #include <ShlObj.h>
 #endif
@@ -320,7 +322,7 @@ get_xdir (void)
 			char file[MAX_PATH];
 			HMODULE hModule;
 			
-			hModule = GetModuleHandle (NULL);
+			hModule = GetModuleHandleW (NULL);
 			if (GetModuleFileName (hModule, file, sizeof(file)))
 			{
 				path = g_path_get_dirname (file);
