@@ -665,10 +665,8 @@ session_free (session *killsess)
 	send_quit_or_part (killsess);
 
 	history_free (&killsess->history);
-	if (killsess->topic)
-		free (killsess->topic);
-	if (killsess->current_modes)
-		free (killsess->current_modes);
+	free (killsess->topic);
+	free (killsess->current_modes);
 
 	fe_session_callback (killsess);
 
