@@ -55,8 +55,8 @@ namespace{
 	{
 		inet_handle hOpen = InternetOpen(TEXT("Update Checker"),
 			INTERNET_OPEN_TYPE_PRECONFIG,
-			NULL,
-			NULL,
+			nullptr,
+			nullptr,
 			0);
 		if (!hOpen)
 		{
@@ -66,8 +66,8 @@ namespace{
 		inet_handle hConnect = InternetConnect(hOpen,
 			TEXT("raw.github.com"),
 			INTERNET_DEFAULT_HTTPS_PORT,
-			NULL,
-			NULL,
+			nullptr,
+			nullptr,
 			INTERNET_SERVICE_HTTP,
 			0,
 			0);
@@ -79,9 +79,9 @@ namespace{
 		inet_handle hResource = HttpOpenRequest(hConnect,
 			TEXT("GET"),
 			TEXT("/hexchat/hexchat/master/win32/version.txt"),
-			TEXT("HTTP/1.0"),
-			NULL,
-			NULL,
+			nullptr, // use system setting to determine HTTP version
+			nullptr,
+			nullptr,
 			INTERNET_FLAG_SECURE | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
 			0);
 		if (!hResource)
@@ -98,7 +98,7 @@ namespace{
 			DWORD infolen = sizeof(infobuffer);
 
 			HttpAddRequestHeaders(hResource, TEXT("Connection: close\r\n"), -1L, HTTP_ADDREQ_FLAG_ADD);	/* workaround for GC bug */
-			HttpSendRequest(hResource, NULL, 0, NULL, 0);
+			HttpSendRequest(hResource, nullptr, 0, nullptr, 0);
 
 			while (InternetReadFile(hResource, buffer, 1023, &dwRead))
 			{
@@ -113,7 +113,7 @@ namespace{
 				HTTP_QUERY_STATUS_CODE,
 				&infobuffer,
 				&infolen,
-				NULL);
+				nullptr);
 
 			statuscode = atoi(infobuffer);
 			if (statuscode == 200)
@@ -235,10 +235,10 @@ namespace{
 		int freq = hexchat_pluginpref_get_int(ph, "freq");
 
 		/* only start the timer if there's no update available during startup */
-		if (print_version_quiet(NULL))
+		if (print_version_quiet(nullptr))
 		{
 			/* check for updates, every 6 hours by default */
-			hexchat_hook_timer(ph, freq * 1000 * 60, print_version_quiet, NULL);
+			hexchat_hook_timer(ph, freq * 1000 * 60, print_version_quiet, nullptr);
 		}
 
 		return 0;	/* run delayed_check() only once */
@@ -268,8 +268,8 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name, char **pl
 		hexchat_pluginpref_set_int(ph, "freq", DEFAULT_FREQ);
 	}
 
-	hexchat_hook_command(ph, "UPDCHK", HEXCHAT_PRI_NORM, print_version, upd_help, NULL);
-	hexchat_hook_timer(ph, delay * 1000, delayed_check, NULL);
+	hexchat_hook_command(ph, "UPDCHK", HEXCHAT_PRI_NORM, print_version, upd_help, nullptr);
+	hexchat_hook_timer(ph, delay * 1000, delayed_check, nullptr);
 	hexchat_command(ph, "MENU -ishare\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
 	hexchat_printf(ph, "%s plugin loaded\n", name);
 
