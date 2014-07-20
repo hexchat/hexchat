@@ -2044,12 +2044,10 @@ server_free (server *serv)
 	free (serv->nick_prefixes);
 	free (serv->chanmodes);
 	free (serv->chantypes);
-	if (serv->bad_nick_prefixes)
-		free (serv->bad_nick_prefixes);
-	if (serv->last_away_reason)
-		free (serv->last_away_reason);
-	if (serv->encoding)
-		free (serv->encoding);
+
+	free (serv->bad_nick_prefixes);
+	free (serv->last_away_reason);
+	free (serv->encoding);
 	if (serv->favlist)
 		g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free);
 
