@@ -114,7 +114,7 @@ list_load_from_data (GSList ** list, char *ibuf, int size)
 }
 
 void
-list_loadconf (char *file, GSList ** list, char *defaultconf)
+list_loadconf (const char *file, GSList ** list, const char *defaultconf)
 {
 	char *filebuf;
 	char *ibuf;
@@ -128,7 +128,11 @@ list_loadconf (char *file, GSList ** list, char *defaultconf)
 	if (fd == -1)
 	{
 		if (defaultconf)
-			list_load_from_data (list, defaultconf, strlen (defaultconf));
+		{
+			char* mutableDefaultConf = strdup(defaultconf);
+			list_load_from_data(list, mutableDefaultConf, strlen(mutableDefaultConf));
+			free(mutableDefaultConf);
+		}			
 		return;
 	}
 	if (fstat (fd, &st) != 0)

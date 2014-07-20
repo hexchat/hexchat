@@ -707,16 +707,16 @@ free_sessions (void)
 }
 
 
-static char defaultconf_ctcp[] =
+static const char defaultconf_ctcp[] =
 	"NAME TIME\n"				"CMD nctcp %s TIME %t\n\n"\
 	"NAME PING\n"				"CMD nctcp %s PING %d\n\n";
 
-static char defaultconf_replace[] =
+static const char defaultconf_replace[] =
 	"NAME teh\n"				"CMD the\n\n";
 /*	"NAME r\n"					"CMD are\n\n"\
 	"NAME u\n"					"CMD you\n\n"*/
 
-static char defaultconf_commands[] =
+static const char defaultconf_commands[] =
 	"NAME ACTION\n"		"CMD me &2\n\n"\
 	"NAME AME\n"			"CMD allchan me &2\n\n"\
 	"NAME ANICK\n"			"CMD allserv nick &2\n\n"\
@@ -748,7 +748,7 @@ static char defaultconf_commands[] =
         "NAME WI\n"                     "CMD quote WHOIS %2\n\n"\
 	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n";
 
-static char defaultconf_urlhandlers[] =
+static const char defaultconf_urlhandlers[] =
 		"NAME Open Link in a new Firefox Window\n"		"CMD !firefox -new-window %s\n\n";
 
 #ifdef USE_SIGACTION
