@@ -245,6 +245,12 @@ static const struct defaultserver def[] =
 	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 	
+	{"GeeksIRC", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.geeksirc.net/+6697"},
+#endif
+	{0,			"irc.geeksirc.net"},
+
 	{"GeekShed",	0},
 	{0,			"irc.geekshed.net"},
 
@@ -273,6 +279,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.interlinked.me/+6697"},
 #endif
 	{0,			"irc.interlinked.me"},
+
+	{"IRC4Fun", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,				"irc.irc4fun.net/+6697"},
+#endif
+	{0,				"irc.irc4fun.net"},
 
 	{"IRCHighWay",	0},
 #ifdef USE_OPENSSL
