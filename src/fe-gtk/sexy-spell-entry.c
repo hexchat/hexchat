@@ -1115,34 +1115,37 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 	const PangoLogAttr  *log_attrs;
 	const gchar   *text;
 	gint           n_attrs, n_strings, i, j;
+	PangoLogAttr a;
 
 	layout = gtk_entry_get_layout(GTK_ENTRY(entry));
 	text = gtk_entry_get_text(GTK_ENTRY(entry));
 	log_attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
 
 	/* Find how many words we have */
-	n_strings = 0;
-	for (i = 0; i < n_attrs; i++)
-		if (log_attrs[i].is_word_start)
+	for (i = 0, n_strings = 0; i < n_attrs; i++)
+	{
+		a = log_attrs[i];
+		if (a.is_word_start && a.is_word_boundary)
 			n_strings++;
+	}
 
 	*set    = g_new0(gchar *, n_strings + 1);
 	*starts = g_new0(gint, n_strings);
 	*ends   = g_new0(gint, n_strings);
 
 	/* Copy out strings */
-	for (i = 0, j = 0; i < n_attrs; i++) {
-		if (log_attrs[i].is_word_start) {
+	for (i = 0, j = 0; i < n_attrs; i++)
+	{
+		a = log_attrs[i];
+		if (a.is_word_start && a.is_word_boundary)
+		{
 			gint cend, bytes;
 			gchar *start;
 
 			/* Find the end of this string */
 			for (cend = i; cend < n_attrs; cend++)
 			{
-				PangoLogAttr a = log_attrs[cend];
-
-				if (a.is_white)
-					break;
+				a = log_attrs[cend];
 				if (a.is_word_end && a.is_word_boundary)
 					break;
 			}
