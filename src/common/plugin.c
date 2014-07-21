@@ -1885,56 +1885,39 @@ hexchat_pluginpref_set_str (hexchat_plugin *pl, const char *var, const char *val
 	return hexchat_pluginpref_set_str_real (pl, var, value, 1);
 }
 
-int
-hexchat_pluginpref_get_str (hexchat_plugin *pl, const char *var, char *dest)
+static int
+hexchat_pluginpref_get_str_real (hexchat_plugin *pl, const char *var, char *dest, int dest_len)
 {
-	int fh;
-	int l;
-	char confname[64];
-	char *canon;
-	char *cfg;
-	struct stat st;
+	char *confname, *canon, *cfg;
 
 	canon = g_strdup (pl->name);
 	canonalize_key (canon);
-	sprintf (confname, "addon_%s.conf", canon);
+	confname = g_strdup_printf ("%s%caddon_%s.conf", get_xdir(), G_DIR_SEPARATOR, canon);
 	g_free (canon);
 
-	/* partly borrowed from palette.c */
-	fh = hexchat_open_file (confname, O_RDONLY, 0, 0);
-
-	if (fh == -1)
+	if (!g_file_get_contents (confname, &cfg, NULL, NULL))
 	{
+		g_free (confname);
 		return 0;
 	}
 
-	fstat (fh, &st);
-	cfg = malloc (st.st_size + 1);
+	g_free (confname);
 
-	if (!cfg)
+	if (!cfg_get_str (cfg, var, dest, dest_len))
 	{
-		close (fh);
+		g_free (cfg);
 		return 0;
 	}
 
-	cfg[0] = '\0';
-	l = read (fh, cfg, st.st_size);
-
-	if (l >= 0)
-	{
-		cfg[l] = '\0';
-	}
-
-	if (!cfg_get_str (cfg, var, dest, 512)) /* dest_len is the same as buffer size in set */
-	{
-		free (cfg);
-		close (fh);
-		return 0;
-	}
-
-	free (cfg);
-	close (fh);
+	g_free (cfg);
 	return 1;
+}
+
+int
+hexchat_pluginpref_get_str (hexchat_plugin *pl, const char *var, char *dest)
+{
+	/* All users of this must ensure dest is >= 512... */
+	return hexchat_pluginpref_get_str_real (pl, var, dest, 512);
 }
 
 int
@@ -1951,7 +1934,7 @@ hexchat_pluginpref_get_int (hexchat_plugin *pl, const char *var)
 {
 	char buffer[12];
 
-	if (hexchat_pluginpref_get_str (pl, var, buffer))
+	if (hexchat_pluginpref_get_str_real (pl, var, buffer, sizeof(buffer)))
 	{
 		return atoi (buffer);
 	}
