@@ -180,18 +180,14 @@ identd_ipv6(::std::string username)
 #endif
 }
 
-extern "C"{
-
 void
-identd_start (char *username)
+identd_start(const ::std::string& username)
 {
-	::std::string usr(username);
-
 #ifdef USE_IPV6
 	if (identd_ipv6_is_running == false)
 	{
 		identd_ipv6_is_running = true;
-		::std::thread ipv6(identd_ipv6, usr);
+		::std::thread ipv6(identd_ipv6, username);
 		ipv6.detach();
 	}
 #endif
@@ -199,9 +195,7 @@ identd_start (char *username)
 	if (identd_is_running == false)
 	{
 		identd_is_running = true;
-		::std::thread ipv4(identd, usr);
+		::std::thread ipv4(identd, username);
 		ipv4.detach();
 	}
 }
-
-} //extern "C"

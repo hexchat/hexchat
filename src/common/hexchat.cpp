@@ -126,9 +126,7 @@ struct hexchatprefs prefs;
 
 
 #ifdef USE_OPENSSL
-extern "C"{
-	SSL_CTX *ctx = NULL;
-}
+SSL_CTX *ctx = NULL;
 #endif
 
 #ifdef USE_LIBPROXY
