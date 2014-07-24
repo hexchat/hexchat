@@ -53,7 +53,8 @@ tree_new (tree_cmp_func *cmp, void *data)
 void
 tree_destroy (tree *t)
 {
-	free (t->array);
+	if (t)
+		free (t->array);
 	free (t);
 }
 
