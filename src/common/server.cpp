@@ -1215,7 +1215,7 @@ traverse_socks5 (int print_fd, int sok, const std::string & serverAddr, int port
 	sc1.version = 5;
 	sc1.nmethods = 1;
 	std::vector<unsigned char> sc2;
-	unsigned int packetlen, addrlen;
+	unsigned int packetlen;
 	unsigned char buf[260];
 	int auth = prefs.hex_net_proxy_auth && prefs.hex_net_proxy_user[0] && prefs.hex_net_proxy_pass[0];
 
