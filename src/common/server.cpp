@@ -42,7 +42,8 @@ extern "C"{
 #ifdef WIN32
 #include <winbase.h>
 #include <io.h>
-#include <process.h>
+//#include <process.h>
+#include <thread>
 #else
 #include <signal.h>
 #include <sys/wait.h>
@@ -1474,11 +1475,7 @@ traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, struc
 }
 
 /* this is the child process making the connection attempt */
-#ifdef WIN32
-static int WINAPI
-#else
 static int
-#endif
 server_child (server * serv)
 {
 	netstore *ns_server;
@@ -1783,8 +1780,8 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 
 #ifdef WIN32
-	using server_start = unsigned(__stdcall *) (void *);
-	CloseHandle((HANDLE)_beginthreadex(NULL, 0, (server_start)server_child, serv, 0, &pid));
+	std::thread server_thread(server_child, serv);
+	server_thread.detach();
 #else
 #ifdef LOOKUPD
 	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different
