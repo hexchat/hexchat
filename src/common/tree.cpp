@@ -119,7 +119,7 @@ tree_new (tree_cmp_func *cmp, void *data)
 {
 	tree *t = new(::std::nothrow)tree(cmp, data);// calloc(1, sizeof(tree));
 	if (!t)
-		return NULL;
+		return nullptr;
 	return t;
 }
 
@@ -153,7 +153,7 @@ namespace {
 			}
 		}
 
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -161,7 +161,7 @@ void *
 tree_find (tree *t, const void *key, tree_cmp_func *cmp, void *data, int *pos)
 {
 	if (!t)
-		return NULL;
+		return nullptr;
 
 	return mybsearch (key, t->data_array, t->elements, cmp, data, pos);
 }
@@ -170,7 +170,7 @@ void *
 tree_remove_at_pos (tree *t, int pos)
 {
 	if (!t)
-		return NULL;
+		return nullptr;
 	void *ret = t->data_array[pos];
 
 	t->elements--;
