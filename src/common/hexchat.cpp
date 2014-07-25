@@ -314,14 +314,14 @@ away_check (void)
 {
 	session *sess;
 	GSList *list;
-	int full, sent, loop = 0;
-
+	int sent, loop = 0;
+	bool full;
 	if (!prefs.hex_away_track)
 		return 1;
 
 doover:
 	/* request an update of AWAY status of 1 channel every 30 seconds */
-	full = TRUE;
+	full = true;
 	sent = 0;	/* number of WHOs (users) requested */
 	list = sess_list;
 	while (list)
@@ -335,7 +335,7 @@ doover:
 		{
 			if (!sess->done_away_check)
 			{
-				full = FALSE;
+				full = false;
 
 				/* if we're under 31 WHOs, send another channels worth */
 				if (sent < 31 && !sess->doing_who)
@@ -410,14 +410,14 @@ hexchat_misc_checks (void)		/* this gets called every 1/2 second */
 static void
 irc_init (session *sess)
 {
-	static int done_init = FALSE;
+	static bool done_init = false;
 	char *buf;
 	int i;
 
 	if (done_init)
 		return;
 
-	done_init = TRUE;
+	done_init = true;
 
 	plugin_add (sess, NULL, NULL, timer_plugin_init, NULL, NULL, FALSE);
 
@@ -493,7 +493,7 @@ session_new (server *serv, char *from, int type, int focus)
 
 	sess->lastact_idx = LACT_NONE;
 
-	if (from != NULL)
+	if (from)
 		safe_strcpy (sess->channel, from, CHANLEN);
 
 	sess_list = g_slist_prepend (sess_list, sess);
@@ -520,7 +520,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 			sess = session_new (serv, name, SESS_CHANNEL, focus);
 		if (!sess)
 		{
-			free(serv);
+			server_free(serv);
 			return NULL;
 		}
 		serv->server_session = sess;
