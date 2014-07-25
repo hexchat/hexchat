@@ -24,6 +24,7 @@
 #include <unistd.h>
 #endif
 
+extern "C" {
 #include "hexchat.h"
 #include "cfgfiles.h"
 #include "util.h"
@@ -36,51 +37,53 @@
 #include "ctcp.h"
 #include "server.h"
 #include "hexchatc.h"
-
-
-static void
-ctcp_reply (session *sess, char *nick, char *word[], char *word_eol[],
-				char *conf)
-{
-	char tbuf[4096];	/* can receive 2048 from IRC, so this is enough */
-
-	conf = strdup (conf);
-	/* process %C %B etc */
-	check_special_chars (conf, TRUE);
-	auto_insert (tbuf, sizeof (tbuf), conf, word, word_eol, "", "", word_eol[5],
-					 server_get_network (sess->server, TRUE), "", "", nick, "");
-	free (conf);
-	handle_command (sess, tbuf, FALSE);
 }
 
-static int
-ctcp_check (session *sess, char *nick, char *word[], char *word_eol[],
-				char *ctcp)
-{
-	int ret = 0;
-	char *po;
-	struct popup *pop;
-	GSList *list = ctcp_list;
-
-	po = strchr (ctcp, '\001');
-	if (po)
-		*po = 0;
-
-	po = strchr (word_eol[5], '\001');
-	if (po)
-		*po = 0;
-
-	while (list)
+namespace {
+	static void
+		ctcp_reply(session *sess, char *nick, char *word[], char *word_eol[],
+		char *conf)
 	{
-		pop = (struct popup *) list->data;
-		if (!g_ascii_strcasecmp (ctcp, pop->name))
-		{
-			ctcp_reply (sess, nick, word, word_eol, pop->cmd);
-			ret = 1;
-		}
-		list = list->next;
+		char tbuf[4096];	/* can receive 2048 from IRC, so this is enough */
+
+		conf = strdup(conf);
+		/* process %C %B etc */
+		check_special_chars(conf, TRUE);
+		auto_insert(tbuf, sizeof(tbuf), reinterpret_cast<unsigned char*>(conf), word, word_eol, "", "", word_eol[5],
+			server_get_network(sess->server, TRUE), "", "", nick, "");
+		free(conf);
+		handle_command(sess, tbuf, FALSE);
 	}
-	return ret;
+
+	static int
+		ctcp_check(session *sess, char *nick, char *word[], char *word_eol[],
+		char *ctcp)
+	{
+		int ret = 0;
+		char *po;
+		struct popup *pop;
+		GSList *list = ctcp_list;
+
+		po = strchr(ctcp, '\001');
+		if (po)
+			*po = 0;
+
+		po = strchr(word_eol[5], '\001');
+		if (po)
+			*po = 0;
+
+		while (list)
+		{
+			pop = (struct popup *) list->data;
+			if (!g_ascii_strcasecmp(ctcp, pop->name))
+			{
+				ctcp_reply(sess, nick, word, word_eol, pop->cmd);
+				ret = 1;
+			}
+			list = list->next;
+		}
+		return ret;
+	}
 }
 
 void
