@@ -18,7 +18,6 @@
 
 #include <string>
 #include <sstream>
-#include <iomanip>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -653,25 +652,64 @@ banlist_toggle (GtkWidget *item, gpointer data)
 	}
 }
 
+/* NOTICE:  The official strptime() is not available on all platforms so
+ * I've implemented a special version here.  The official version is
+ * vastly more general than this:  it uses locales for weekday and month
+ * names and its second arg is a format character-string.  This special
+ * version depends on the format returned by ctime(3) whose manpage
+ * says it returns:
+ *     "a null-terminated string of the form "Wed Jun 30 21:49:08 1993\n"
+ *
+ * If the real strpftime() comes available, use this format string:
+ *		#define DATE_FORMAT "%a %b %d %T %Y"
+ */
+static void
+banlist_strptime (char *ti, struct tm *tm)
+{
+	/* Expect something like "Sat Mar 16 21:24:27 2013" */
+	static char *mon[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+								  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", nullptr };
+	int M = -1, d = -1, h = -1, m = -1, s = -1, y = -1;
+
+	if (*ti == 0)
+	{
+		memset (tm, 0, sizeof *tm);
+		return;
+	}
+	/* No need to supply tm->tm_wday; mktime() doesn't read it */
+	ti += 4;
+	while ((mon[++M]))
+		if (strncmp (ti, mon[M], 3) == 0)
+			break;
+	ti += 4;
+
+	d = strtol (ti, &ti, 10);
+	h = strtol (++ti, &ti, 10);
+	m = strtol (++ti, &ti, 10);
+	s = strtol (++ti, &ti, 10);
+	y = strtol (++ti, nullptr, 10) - 1900;
+
+	tm->tm_sec = s;
+	tm->tm_min = m;
+	tm->tm_hour = h;
+	tm->tm_mday = d;
+	tm->tm_mon = M;
+	tm->tm_year = y;
+}
+
 gint
 banlist_date_sort (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data)
 {
-	const char DATE_FORMAT[] = "%a %b %d %T %Y";
-	std::tm tm1, tm2;
+	struct tm tm1, tm2;
 	time_t t1, t2;
 	char *time1, *time2;
 
 	gtk_tree_model_get(model, a, DATE_COLUMN, &time1, -1);
 	gtk_tree_model_get(model, b, DATE_COLUMN, &time2, -1);
-	std::istringstream stream1(time1);
-	stream1.imbue(std::locale("EN_us"));
-	stream1 >> std::get_time(&tm1, DATE_FORMAT);
-	std::istringstream stream2(time1);
-	stream2.imbue(std::locale("EN_us"));
-	stream2 >> std::get_time(&tm1, DATE_FORMAT);
-
-	t1 = std::mktime (&tm1);
-	t2 = std::mktime (&tm2);
+	banlist_strptime (time1, &tm1);
+	banlist_strptime (time2, &tm2);
+	t1 = mktime (&tm1);
+	t2 = mktime (&tm2);
 
 	if (t1 < t2) return 1;
 	if (t1 == t2) return 0;
