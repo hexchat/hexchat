@@ -16,14 +16,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 
+extern "C"{
 #include "fe-gtk.h"
-
+}
 #include <gdk/gdkkeysyms.h>
 
+extern "C"{
 #include "../common/hexchat.h"
 #include "../common/util.h"
 #include "../common/userlist.h"
@@ -39,6 +41,7 @@
 #include "pixmaps.h"
 #include "userlistgui.h"
 #include "fkeys.h"
+}
 
 enum
 {
@@ -188,7 +191,7 @@ userlist_selection_list (GtkWidget *widget, int *num_ret)
 	if (num_sel < 1)
 		return NULL;
 
-	nicks = malloc (sizeof (char *) * (num_sel + 1));
+	nicks = static_cast<char**>(malloc (sizeof (char *) * (num_sel + 1)));
 
 	i = 0;
 	gtk_tree_model_get_iter_first (model, &iter);
@@ -211,7 +214,7 @@ userlist_selection_list (GtkWidget *widget, int *num_ret)
 void
 fe_userlist_set_selected (struct session *sess)
 {
-	GtkListStore *store = sess->res->user_model;
+	GtkListStore *store = static_cast<GtkListStore *>( sess->res->user_model);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (sess->gui->user_tree));
 	GtkTreeIter iter;
 	struct User *user;
@@ -286,14 +289,14 @@ fe_userlist_remove (session *sess, struct User *user)
 	int sel;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
-						  sess->res->user_model, user, &sel);
+						  static_cast<GtkTreeModel*>(sess->res->user_model), user, &sel);
 	if (!iter)
 		return 0;
 
 /*	adj = gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (sess->gui->user_tree));
 	val = adj->value;*/
 
-	gtk_list_store_remove (sess->res->user_model, iter);
+	gtk_list_store_remove (static_cast<GtkListStore*>(sess->res->user_model), iter);
 
 	/* is it the front-most tab? */
 /*	if (gtk_tree_view_get_model (GTK_TREE_VIEW (sess->gui->user_tree))
@@ -316,7 +319,7 @@ fe_userlist_rehash (session *sess, struct User *user)
 	int nick_color = 0;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
-						  sess->res->user_model, user, &sel);
+			static_cast<GtkTreeModel*>(sess->res->user_model), user, &sel);
 	if (!iter)
 		return;
 
@@ -334,7 +337,7 @@ fe_userlist_rehash (session *sess, struct User *user)
 void
 fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 {
-	GtkTreeModel *model = sess->res->user_model;
+	GtkTreeModel *model = static_cast<GtkTreeModel*>(sess->res->user_model);
 	GdkPixbuf *pix = get_user_icon (sess->server, newuser);
 	GtkTreeIter iter;
 	char *nick;
@@ -348,7 +351,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	nick = newuser->nick;
 	if (!prefs.hex_gui_ulist_icons)
 	{
-		nick = malloc (strlen (newuser->nick) + 2);
+		nick = static_cast<char*>(malloc (strlen (newuser->nick) + 2));
 		nick[0] = newuser->prefix[0];
 		if (!nick[0] || nick[0] == ' ')
 			strcpy (nick, newuser->nick);
@@ -404,7 +407,7 @@ fe_userlist_move (session *sess, struct User *user, int new_row)
 void
 fe_userlist_clear (session *sess)
 {
-	gtk_list_store_clear (sess->res->user_model);
+	gtk_list_store_clear (static_cast<GtkListStore*>(sess->res->user_model));
 }
 
 static void
@@ -630,7 +633,7 @@ userlist_create (GtkWidget *box)
 
 	/* set up drops */
 	gtk_drag_dest_set (treeview, GTK_DEST_DEFAULT_ALL, dnd_dest_targets, 2,
-							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
+							 static_cast<GdkDragAction>(GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK));
 	gtk_drag_source_set (treeview, GDK_BUTTON1_MASK, dnd_src_target, 1, GDK_ACTION_MOVE);
 
 	/* file DND (for DCC) */
@@ -668,7 +671,7 @@ void
 userlist_show (session *sess)
 {
 	gtk_tree_view_set_model (GTK_TREE_VIEW (sess->gui->user_tree),
-									 sess->res->user_model);
+									 static_cast<GtkTreeModel*>(sess->res->user_model));
 }
 
 void
