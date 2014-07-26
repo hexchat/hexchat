@@ -30,6 +30,7 @@
 #include <unistd.h>
 #endif
 
+extern "C" {
 #include "hexchat.h"
 #include "fe.h"
 #include "util.h"
@@ -48,8 +49,9 @@ typedef struct session hexchat_context;
 #include "typedef.h"
 
 
-#include "hexchatc.h"
 
+#include "hexchatc.h"
+}
 /* the USE_PLUGIN define only removes libdl stuff */
 
 #ifdef USE_PLUGIN
@@ -116,10 +118,10 @@ enum
 	HOOK_DELETED      = 1 << 7  /* marked for deletion */
 };
 
-GSList *plugin_list = NULL;	/* export for plugingui.c */
+extern "C"{ GSList *plugin_list = NULL; } /* export for plugingui.c */
 static GSList *hook_list = NULL;
 
-extern const struct prefs vars[];	/* cfgfiles.c */
+extern "C" const struct prefs vars[];	/* cfgfiles.c */
 
 
 /* unload a plugin and remove it from our linked list */
