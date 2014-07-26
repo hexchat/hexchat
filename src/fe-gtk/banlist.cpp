@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <string>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -40,15 +41,15 @@ extern "C"{
 }
 
 namespace {
-typedef struct mode_info_s {
-	char *name;		/* Checkbox name, e.g. "Bans" */
-	char *type;		/* Type for type column, e.g. "Ban" */
+struct mode_info {
+	std::string name;		/* Checkbox name, e.g. "Bans" */
+	std::string type;		/* Type for type column, e.g. "Ban" */
 	char letter;	/* /mode-command letter, e.g. 'b' for MODE_BAN */
 	int code;		/* rfc RPL_foo code, e.g. 367 for RPL_BANLIST */
 	int endcode;	/* rfc RPL_ENDOFfoo code, e.g. 368 for RPL_ENDOFBANLIST */
 	int bit;			/* Mask bit, e.g., 1<<MODE_BAN  */
 	void(*tester)(banlist_info *, int);	/* Function returns true to set bit into checkable */
-} mode_info;
+};
 /*
  * These supports_* routines set capable, readable, writable bits */
 static void supports_bans (banlist_info *, int);
@@ -56,7 +57,7 @@ static void supports_exempt (banlist_info *, int);
 static void supports_invite (banlist_info *, int);
 static void supports_quiet (banlist_info *, int);
 
-static mode_info modes[MODE_CT] = {
+static const mode_info modes[MODE_CT] = {
 	{
 		N_("Bans"),
 		N_("Ban"),
@@ -236,7 +237,7 @@ fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rp
 		store = get_store (sess);
 		gtk_list_store_append (store, &iter);
 
-		gtk_list_store_set (store, &iter, TYPE_COLUMN, _(modes[i].type), MASK_COLUMN, mask,
+		gtk_list_store_set (store, &iter, TYPE_COLUMN, _(modes[i].type.c_str()), MASK_COLUMN, mask,
 						FROM_COLUMN, who, DATE_COLUMN, when, -1);
 
 		banl->line_ct++;
@@ -514,7 +515,7 @@ banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 			gtk_tree_model_get (model, &iter, TYPE_COLUMN, &type, MASK_COLUMN, &mask, -1);
 
 			/* If it's the wrong type of mask, just continue */
-			if (strcmp (_(modes[mode_num].type), type) != 0)
+			if (strcmp (_(modes[mode_num].type.c_str()), type) != 0)
 				continue;
 
 			/* Otherwise add it to our array of mask pointers */
@@ -844,7 +845,7 @@ banlist_opengui (struct session *sess)
 	{
 		if (!(banl->capable & 1<<i))
 			continue;
-		banl->checkboxes[i] = gtk_check_button_new_with_label (_(modes[i].name));
+		banl->checkboxes[i] = gtk_check_button_new_with_label (_(modes[i].name.c_str()));
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (banl->checkboxes[i]), (banl->checked & 1<<i? TRUE: FALSE));
 		g_signal_connect (G_OBJECT (banl->checkboxes[i]), "toggled",
 								G_CALLBACK (banlist_toggle), banl);
