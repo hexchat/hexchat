@@ -217,7 +217,6 @@ yes:
 static void
 banlist_sensitize (banlist_info *banl)
 {
-	int checkable, i;
 	bool is_op = false;
 
 	if (banl->sess->me == nullptr)
@@ -228,8 +227,8 @@ banlist_sensitize (banlist_info *banl)
 		is_op = true;
 
 	/* CHECKBOXES -- */
-	checkable = is_op? banl->writeable: banl->readable;
-	for (i = 0; i < MODE_CT; i++)
+	int checkable = is_op ? banl->writeable: banl->readable;
+	for (int i = 0; i < MODE_CT; i++)
 	{
 		if (banl->checkboxes[i] == nullptr)
 			continue;
@@ -282,17 +281,17 @@ banlist_copyentry (GtkWidget *menuitem, GtkTreeView *view)
 	GtkTreeModel *model;
 	GtkTreeSelection *sel;
 	GtkTreeIter iter;
-	GValue mask = { 0 };
-	GValue from = { 0 };
-	GValue date = { 0 };
-	char *str;
-	
+
 	/* get selection (which should have been set on click)
 	 * and temporarily switch to single mode to get selected iter */
 	sel = gtk_tree_view_get_selection (view);
 	gtk_tree_selection_set_mode (sel, GTK_SELECTION_SINGLE);
 	if (gtk_tree_selection_get_selected (sel, &model, &iter))
 	{
+		GValue mask = { 0 };
+		GValue from = { 0 };
+		GValue date = { 0 };
+		char *str;
 		gtk_tree_model_get_value (model, &iter, MASK_COLUMN, &mask);
 		gtk_tree_model_get_value (model, &iter, FROM_COLUMN, &from);
 		gtk_tree_model_get_value (model, &iter, DATE_COLUMN, &date);
@@ -318,15 +317,14 @@ banlist_copyentry (GtkWidget *menuitem, GtkTreeView *view)
 static gboolean
 banlist_button_pressed (GtkWidget *wid, GdkEventButton *event, gpointer userdata)
 {
-	GtkTreePath *path;
-	GtkWidget *menu, *maskitem, *allitem;
-
 	/* Check for right click */
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
 	{
+		GtkTreePath *path;
 		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (wid), event->x, event->y,
 												&path, nullptr, nullptr, nullptr))
 		{
+			GtkWidget *menu, *maskitem, *allitem;
 			/* Must set the row active for use in callback */
 			gtk_tree_view_set_cursor (GTK_TREE_VIEW(wid), path, nullptr, FALSE);
 			gtk_tree_path_free (path);
@@ -353,13 +351,11 @@ banlist_button_pressed (GtkWidget *wid, GdkEventButton *event, gpointer userdata
 static void
 banlist_select_changed (GtkWidget *item, banlist_info *banl)
 {
-	GList *list;
-
 	if (banl->line_ct == 0)
 		banl->select_ct = 0;
 	else
 	{
-		list = gtk_tree_selection_get_selected_rows (GTK_TREE_SELECTION (item), nullptr);
+		GList *list = gtk_tree_selection_get_selected_rows(GTK_TREE_SELECTION(item), nullptr);
 		banl->select_ct = g_list_length (list);
 		g_list_foreach (list, (GFunc) gtk_tree_path_free, nullptr);
 		g_list_free (list);
@@ -374,8 +370,6 @@ static void
 banlist_do_refresh (banlist_info *banl)
 {
 	session *sess = banl->sess;
-	char tbuf[256];
-	int i;
 
 	banlist_sensitize (banl);
 
@@ -392,9 +386,10 @@ banlist_do_refresh (banlist_info *banl)
 		banl->pending = banl->checked;
 		if (banl->pending)
 		{
-			for (i = 0; i < MODE_CT; i++)
+			for (int i = 0; i < MODE_CT; i++)
 				if (banl->pending & 1<<i)
 				{
+					char tbuf[256];
 					g_snprintf (tbuf, sizeof tbuf, "quote mode %s +%c", sess->channel, modes[i].letter);
 					handle_command (sess, tbuf, FALSE);
 				}
