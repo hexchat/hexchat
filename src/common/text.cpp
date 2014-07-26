@@ -16,11 +16,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <time.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cctype>
+#include <ctime>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -31,7 +31,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #endif
-
+extern "C"{
 #include "hexchat.h"
 #include "cfgfiles.h"
 #include "chanopt.h"
@@ -43,7 +43,10 @@
 #include "hexchatc.h"
 #include "text.h"
 #include "typedef.h"
+}
 #ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <windows.h>
 #endif
 
@@ -803,10 +806,10 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 	};
 
 	if (len == -1)
-		len = strlen (text);
+		len = strlen ((const char*) text);
 
 	/* worst case scenario: every byte turns into 3 bytes */
-	res = output = g_malloc ((len * 3) + 1);
+	res = output = static_cast<unsigned char*>(g_malloc ((len * 3) + 1));
 	if (!output)
 		return NULL;
 
@@ -867,13 +870,13 @@ text_validate (char **text, int *len)
 	if (prefs.utf8_locale)
 #endif
 		/* fallback to iso-8859-1 */
-		utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
+		utf = (char*)iso_8859_1_to_utf8 ((unsigned char*) *text, *len, &utf_len);
 	else
 	{
 		/* fallback to locale */
 		utf = g_locale_to_utf8 (*text, *len, 0, &utf_len, NULL);
 		if (!utf)
-			utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
+			utf = (char*)iso_8859_1_to_utf8((unsigned char*)*text, *len, &utf_len);
 	}
 
 	if (!utf) 
@@ -1010,9 +1013,10 @@ PrintTextTimeStampf (session *sess, time_t timestamp, const char *format, ...)
 
    --AGL
  */
-
+extern "C" {
 char *pntevts_text[NUM_XP];
 char *pntevts[NUM_XP];
+}
 
 #define pevt_generic_none_help NULL
 
@@ -1560,7 +1564,9 @@ static char * const pevt_discon_help[] = {
 	N_("Error"),
 };
 
+extern "C" {
 #include "textevents.h"
+}
 
 static void
 pevent_load_defaults ()
@@ -1630,7 +1636,7 @@ pevent_trigger_load (int *i_penum, char **i_text, char **i_snd)
 		len = strlen (text) + 1;
 		if (pntevts_text[penum])
 			free (pntevts_text[penum]);
-		pntevts_text[penum] = malloc (len);
+		pntevts_text[penum] = static_cast<char*>(malloc (len));
 		memcpy (pntevts_text[penum], text, len);
 	}
 
@@ -1690,7 +1696,7 @@ pevent_load (char *filename)
 		close (fd);
 		return 1;
 	}
-	ibuf = malloc (st.st_size);
+	ibuf = static_cast<char*>(malloc (st.st_size));
 	read (fd, ibuf, st.st_size);
 	close (fd);
 
@@ -1908,7 +1914,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 	int oi, ii, max = -1, len, x;
 
 	len = strlen (input);
-	i = malloc (len + 1);
+	i = static_cast<char*>(malloc (len + 1));
 	memcpy (i, input, len + 1);
 	check_special_chars (i, TRUE);
 
@@ -1940,7 +1946,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 				last->next = s;
 			last = s;
 			s->next = NULL;
-			s->data = malloc (oi + sizeof (int) + 1);
+			s->data = static_cast<char*>(malloc (oi + sizeof (int) + 1));
 			s->len = oi + sizeof (int) + 1;
 			clen += oi + sizeof (int) + 1;
 			s->data[0] = 0;
@@ -1994,7 +2000,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 				last->next = s;
 			last = s;
 			s->next = NULL;
-			s->data = malloc (1);
+			s->data = static_cast<char*>(malloc(1));
 			s->len = 1;
 			clen += 1;
 			s->data[0] = 3;
@@ -2017,7 +2023,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 			last->next = s;
 		last = s;
 		s->next = NULL;
-		s->data = malloc (2);
+		s->data = static_cast<char*>(malloc(2));
 		s->len = 2;
 		clen += 2;
 		s->data[0] = 1;
@@ -2032,7 +2038,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 			last->next = s;
 		last = s;
 		s->next = NULL;
-		s->data = malloc (oi + sizeof (int) + 1);
+		s->data = static_cast<char*>(malloc(oi + sizeof(int) + 1));
 		s->len = oi + sizeof (int) + 1;
 		clen += oi + sizeof (int) + 1;
 		s->data[0] = 0;
@@ -2047,14 +2053,14 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		last->next = s;
 	last = s;
 	s->next = NULL;
-	s->data = malloc (1);
+	s->data = static_cast<char*>(malloc(1));
 	s->len = 1;
 	clen += 1;
 	s->data[0] = 2;
 
 	oi = 0;
 	s = base;
-	obuf = malloc (clen);
+	obuf = static_cast<char*>(malloc(clen));
 	while (s)
 	{
 		next = s->next;
@@ -2251,8 +2257,9 @@ pevent_save (char *fn)
 /* =========================== */
 /* ========== SOUND ========== */
 /* =========================== */
-
-char *sound_files[NUM_XP];
+extern "C"{
+ char *sound_files[NUM_XP];
+}
 
 void
 sound_beep (session *sess)
