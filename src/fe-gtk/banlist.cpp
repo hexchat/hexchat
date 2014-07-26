@@ -17,6 +17,7 @@
  */
 
 #include <string>
+#include <sstream>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -251,14 +252,14 @@ static void
 banlist_sensitize (banlist_info *banl)
 {
 	int checkable, i;
-	gboolean is_op = FALSE;
+	bool is_op = false;
 
 	if (banl->sess->me == NULL)
 		return;
 
 	/* FIXME: More access levels than these can unban */
 	if (banl->sess->me->op || banl->sess->me->hop)
-		is_op = TRUE;
+		is_op = true;
 
 	/* CHECKBOXES -- */
 	checkable = is_op? banl->writeable: banl->readable;
@@ -345,14 +346,10 @@ banlist_copyentry (GtkWidget *menuitem, GtkTreeView *view)
 	GtkTreeModel *model;
 	GtkTreeSelection *sel;
 	GtkTreeIter iter;
-	GValue mask;
-	GValue from;
-	GValue date;
+	GValue mask = { 0 };
+	GValue from = { 0 };
+	GValue date = { 0 };
 	char *str;
-
-	memset (&mask, 0, sizeof (mask));
-	memset (&from, 0, sizeof (from));
-	memset (&date, 0, sizeof (date));
 	
 	/* get selection (which should have been set on click)
 	 * and temporarily switch to single mode to get selected iter */
@@ -449,10 +446,9 @@ banlist_do_refresh (banlist_info *banl)
 	if (sess->server->connected)
 	{
 		GtkListStore *store;
-
-		g_snprintf (tbuf, sizeof tbuf, DISPLAY_NAME": Ban List (%s, %s)",
-						sess->channel, sess->server->servername);
-		mg_set_title (banl->window, tbuf);
+		std::ostringstream stream;
+		stream << DISPLAY_NAME": Ban List (" << sess->channel << ", " << sess->server->servername << ")";
+		mg_set_title (banl->window, stream.str().c_str());
 
 		store = get_store (sess);
 		gtk_list_store_clear (store);

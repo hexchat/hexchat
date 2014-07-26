@@ -34,7 +34,7 @@ void mg_bring_tofront_sess (session *sess);
 void mg_decide_userlist (session *sess, gboolean switch_to_current);
 void mg_set_topic_tip (session *sess);
 GtkWidget *mg_create_generic_tab (char *name, char *title, int force_toplevel, int link_buttons, void *close_callback, void *userdata, int width, int height, GtkWidget **vbox_ret, void *family);
-void mg_set_title (GtkWidget *button, char *title);
+void mg_set_title (GtkWidget *button, const char *title);
 void mg_set_access_icon (session_gui *gui, GdkPixbuf *pix, gboolean away);
 void mg_apply_setup (void);
 void mg_close_sess (session *);

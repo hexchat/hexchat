@@ -3621,7 +3621,7 @@ mg_move_tab_family (session *sess, int delta)
 }
 
 void
-mg_set_title (GtkWidget *vbox, char *title) /* for non-irc tab/window only */
+mg_set_title (GtkWidget *vbox, const char *title) /* for non-irc tab/window only */
 {
 	char *old;
 
