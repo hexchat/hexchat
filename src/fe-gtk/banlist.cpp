@@ -16,16 +16,17 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <fcntl.h>
-#include <time.h>
+#include <ctime>
 
 #ifndef WIN32
 #include <unistd.h>
 #endif
 
+extern "C"{
 #include "fe-gtk.h"
 
 #include "../common/hexchat.h"
@@ -36,7 +37,9 @@
 #include "gtkutil.h"
 #include "maingui.h"
 #include "banlist.h"
+}
 
+namespace {
 typedef struct mode_info_s {
 	char *name;		/* Checkbox name, e.g. "Bans" */
 	char *type;		/* Type for type column, e.g. "Ban" */
@@ -205,6 +208,7 @@ yes:
 	banl->capable |= bit;
 	banl->readable |= bit;
 	banl->writeable |= bit;
+}
 }
 
 /* fe_add_ban_list() and fe_ban_list_end() return TRUE if consumed, FALSE otherwise */
@@ -500,7 +504,7 @@ banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 	if (!gtk_tree_model_get_iter_first (model, &iter))
 		return 0;
 
-	masks = g_malloc (sizeof (char *) * banl->line_ct);
+	masks = static_cast<char**>(g_malloc (sizeof (char *) * banl->line_ct));
 	num_sel = 0;
 	do
 	{
@@ -554,7 +558,7 @@ banlist_unban (GtkWidget * wid, banlist_info *banl)
 static void
 banlist_clear_cb (GtkDialog *dialog, gint response, gpointer data)
 {
-	banlist_info *banl = data;
+	banlist_info *banl = static_cast<banlist_info*>(data);
 	GtkTreeSelection *sel;
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
@@ -572,7 +576,7 @@ banlist_clear (GtkWidget * wid, banlist_info *banl)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_message_dialog_new (NULL, 0,
+	dialog = gtk_message_dialog_new (NULL, static_cast<GtkDialogFlags>(0),
 								GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
 					_("Are you sure you want to remove all listed items in %s?"), banl->sess->channel);
 
@@ -585,13 +589,13 @@ banlist_clear (GtkWidget * wid, banlist_info *banl)
 static void
 banlist_add_selected_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
-	GSList **lp = data;
+	GSList **lp = static_cast<GSList**>(data);
 	GSList *list = NULL;
 	GtkTreeIter *copy;
 
 	if (!lp) return;
 	list = *lp;
-	copy = g_malloc (sizeof (GtkTreeIter));
+	copy = static_cast<GtkTreeIter*>(g_malloc (sizeof (GtkTreeIter)));
 	g_return_if_fail (copy != NULL);
 	*copy = *iter;
 
@@ -620,7 +624,7 @@ banlist_crop (GtkWidget * wid, banlist_info *banl)
 		gtk_tree_selection_select_all (select);
 
 		for (node = list; node; node = node->next)
-			gtk_tree_selection_unselect_iter (select, node->data);
+			gtk_tree_selection_unselect_iter(select, static_cast<GtkTreeIter*>(node->data));
 
 		g_slist_foreach (list, (GFunc)g_free, NULL);
 		g_slist_free (list);
@@ -633,7 +637,7 @@ banlist_crop (GtkWidget * wid, banlist_info *banl)
 static void
 banlist_toggle (GtkWidget *item, gpointer data)
 {
-	banlist_info *banl = data;
+	banlist_info *banl = static_cast<banlist_info*>(data);
 	int i, bit = 0;
 
 	for (i = 0; i < MODE_CT; i++)
@@ -797,7 +801,7 @@ banlist_opengui (struct session *sess)
 
 	if (!sess->res->banlist)
 	{
-		sess->res->banlist = g_malloc0 (sizeof (banlist_info));
+		sess->res->banlist = static_cast<banlist_info*>(g_malloc0 (sizeof (banlist_info)));
 		if (!sess->res->banlist)
 		{
 			fe_message (_("Banlist initialization failed."), FE_MSG_ERROR);
