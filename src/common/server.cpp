@@ -1287,12 +1287,14 @@ traverse_socks5 (int print_fd, int sok, const std::string & serverAddr, int port
 	sc2[2] = 0;						  /* reserved */
 	sc2[3] = 3;						  /* address type */
 	sc2[4] = static_cast<unsigned char>(serverAddr.length());	/* hostname length */
-	auto it = sc2.begin() + 5;
-	::std::copy(serverAddr.cbegin(), serverAddr.cend(), it);
-	//memcpy (sc2[5], serverAddr, addrlen);
-	it += serverAddr.length();
-	*((unsigned short *) &(*it)) = htons (port);
-	send (sok, (char*)&sc2[0], packetlen, 0);
+	{
+		auto it = sc2.begin() + 5;
+		::std::copy(serverAddr.cbegin(), serverAddr.cend(), it);
+		//memcpy (sc2[5], serverAddr, addrlen);
+		it += serverAddr.length();
+		*((unsigned short *)&(*it)) = htons(port);
+		send(sok, (char*)&sc2[0], packetlen, 0);
+	}
 	//free (sc2);
 
 	/* consume all of the reply */
@@ -1781,6 +1783,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 
 #ifdef WIN32
 	std::thread server_thread(server_child, serv);
+	pid = GetThreadId(server_thread.native_handle());
 	server_thread.detach();
 #else
 #ifdef LOOKUPD
