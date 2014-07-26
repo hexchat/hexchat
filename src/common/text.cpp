@@ -382,8 +382,6 @@ scrollback_load (session *sess)
 void
 log_close (session *sess)
 {
-	char obuf[512];
-
 	if (sess->logfd != -1)
 	{
 		std::time_t currenttime = std::time (NULL);
