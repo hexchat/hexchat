@@ -16,6 +16,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <string>
+#include <sstream>
+#include <iomanip>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -380,14 +383,14 @@ void
 log_close (session *sess)
 {
 	char obuf[512];
-	time_t currenttime;
 
 	if (sess->logfd != -1)
 	{
-		currenttime = time (NULL);
-		write (sess->logfd, obuf,
-			 snprintf (obuf, sizeof (obuf) - 1, _("**** ENDING LOGGING AT %s\n"),
-						  ctime (&currenttime)));
+		std::time_t currenttime = std::time (NULL);
+		std::ostringstream stream(_("**** ENDING LOGGING AT %s\n"), std::ios_base::ate);
+		stream << std::ctime(&currenttime) <<"\n";
+		auto to_output = stream.str();
+		write (sess->logfd, to_output.c_str(), to_output.length());
 		close (sess->logfd);
 		sess->logfd = -1;
 	}
