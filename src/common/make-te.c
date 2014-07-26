@@ -53,7 +53,7 @@ int main()
 	char *defines[512];
   	int i = 0, max;
 
-	printf("/* this file is auto generated, edit textevents.in instead! */\n\nconst struct text_event te[] = {\n");
+	printf("/* this file is auto generated, edit textevents.in instead! */\n #ifdef __cplusplus\n#define EXPORT extern \"C\"\n#else\n #define EXPORT\n#endif\n\nEXPORT const struct text_event te[] = {\n");
 	while(fgets(name, sizeof(name), stdin))
 	{
 		name[strlen(name)-1] = 0;

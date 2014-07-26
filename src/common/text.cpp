@@ -1564,9 +1564,7 @@ static char * const pevt_discon_help[] = {
 	N_("Error"),
 };
 
-extern "C" {
 #include "textevents.h"
-}
 
 static void
 pevent_load_defaults ()
