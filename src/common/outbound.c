@@ -150,7 +150,7 @@ server_sendquit (session * sess)
 }
 
 void
-process_data_init (char *buf, const char *cmd, char *word[],
+process_data_init (char *buf, char *cmd, char *word[],
 						 char *word_eol[], gboolean handle_quotes,
 						 gboolean allow_escape_quotes)
 {
