@@ -524,7 +524,7 @@ banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 
 	/* and send to server */
 	if (num_sel)
-		send_channel_modes (sess, tbuf, masks, 0, num_sel, '-', modes[mode_num].letter, 0);
+		send_channel_modes (sess, tbuf, const_cast<const char* const*>(masks), 0, num_sel, '-', modes[mode_num].letter, 0);
 
 	/* now free everything */
 	for (i=0; i < num_sel; i++)

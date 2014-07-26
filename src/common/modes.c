@@ -61,7 +61,7 @@ static int mode_chanmode_type (server * serv, char mode);
    sign   - a char, e.g. '+' or '-'
    mode   - a mode, e.g. 'o' or 'v'	*/
 void
-send_channel_modes (session *sess, char *tbuf, char *word[], int wpos,
+send_channel_modes (session *sess, char *tbuf, const char * const word[], int wpos,
 						  int end, char sign, char mode, int modes_per_line)
 {
 	int usable_modes, orig_len, len, wlen, i, max;
