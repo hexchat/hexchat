@@ -659,7 +659,7 @@ void
 fe_beep (session *sess)
 {
 #ifdef WIN32
-	if (!PlaySound ("Notification.IM", NULL, SND_ALIAS|SND_ASYNC))
+	if (!PlaySoundW (L"Notification.IM", NULL, SND_ALIAS|SND_ASYNC))
 	{
 		/* This is really just a fallback attempt, may or may not work on new Windows releases, especially on x64.
 		 * You should set up the "Instant Message Notification" system sound instead, supported on Vista and up.
