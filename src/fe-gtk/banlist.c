@@ -37,6 +37,15 @@
 #include "maingui.h"
 #include "banlist.h"
 
+typedef struct mode_info_s {
+	char *name;		/* Checkbox name, e.g. "Bans" */
+	char *type;		/* Type for type column, e.g. "Ban" */
+	char letter;	/* /mode-command letter, e.g. 'b' for MODE_BAN */
+	int code;		/* rfc RPL_foo code, e.g. 367 for RPL_BANLIST */
+	int endcode;	/* rfc RPL_ENDOFfoo code, e.g. 368 for RPL_ENDOFBANLIST */
+	int bit;			/* Mask bit, e.g., 1<<MODE_BAN  */
+	void(*tester)(banlist_info *, int);	/* Function returns true to set bit into checkable */
+} mode_info;
 /*
  * These supports_* routines set capable, readable, writable bits */
 static void supports_bans (banlist_info *, int);
