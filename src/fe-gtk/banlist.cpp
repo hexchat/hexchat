@@ -212,6 +212,41 @@ yes:
 	banl->readable |= bit;
 	banl->writeable |= bit;
 }
+}
+
+/* fe_add_ban_list() and fe_ban_list_end() return TRUE if consumed, FALSE otherwise */
+gboolean
+fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rplcode)
+{
+	banlist_info *banl = sess->res->banlist;
+	int i;
+	GtkListStore *store;
+	GtkTreeIter iter;
+
+	if (!banl)
+		return FALSE;
+
+	for (i = 0; i < MODE_CT; i++)
+		if (modes[i].code == rplcode)
+			break;
+	if (i == MODE_CT)
+	{
+		/* printf ("Unexpected value in fe_add_ban_list:  %d\n", rplcode); */
+		return FALSE;
+	}
+	if (banl->pending & 1<<i)
+	{
+		store = get_store (sess);
+		gtk_list_store_append (store, &iter);
+
+		gtk_list_store_set (store, &iter, TYPE_COLUMN, _(modes[i].type.c_str()), MASK_COLUMN, mask,
+						FROM_COLUMN, who, DATE_COLUMN, when, -1);
+
+		banl->line_ct++;
+		return TRUE;
+	}
+	else return FALSE;
+}
 
 /* Sensitize checkboxes and buttons as appropriate for the moment  */
 static void
@@ -274,6 +309,36 @@ banlist_sensitize (banlist_info *banl)
 
 	/* Set "Refresh" sensitvity */
 	gtk_widget_set_sensitive (banl->but_refresh, banl->pending? FALSE: banl->checked? TRUE: FALSE);
+}
+/* fe_ban_list_end() returns TRUE if consumed, FALSE otherwise */
+gboolean
+fe_ban_list_end (struct session *sess, int rplcode)
+{
+	banlist_info *banl = sess->res->banlist;
+	int i;
+
+	if (!banl)
+		return FALSE;
+
+	for (i = 0; i < MODE_CT; i++)
+		if (modes[i].endcode == rplcode)
+			break;
+	if (i == MODE_CT)
+	{
+		/* printf ("Unexpected rplcode value in fe_ban_list_end:  %d\n", rplcode); */
+		return FALSE;
+	}
+	if (banl->pending & modes[i].bit)
+	{
+		banl->pending &= ~modes[i].bit;
+		if (!banl->pending)
+		{
+			gtk_widget_set_sensitive (banl->but_refresh, TRUE);
+			banlist_sensitize (banl);
+		}
+		return TRUE;
+	}
+	else return FALSE;
 }
 
 static void
@@ -677,72 +742,6 @@ banlist_closegui (GtkWidget *wid, banlist_info *banl)
 		g_free (banl);
 		sess->res->banlist = nullptr;
 	}
-}
-}
-
-/* fe_ban_list_end() returns TRUE if consumed, FALSE otherwise */
-gboolean
-fe_ban_list_end(struct session *sess, int rplcode)
-{
-	banlist_info *banl = sess->res->banlist;
-	int i;
-
-	if (!banl)
-		return FALSE;
-
-	for (i = 0; i < MODE_CT; i++)
-		if (modes[i].endcode == rplcode)
-			break;
-	if (i == MODE_CT)
-	{
-		/* printf ("Unexpected rplcode value in fe_ban_list_end:  %d\n", rplcode); */
-		return FALSE;
-	}
-	if (banl->pending & modes[i].bit)
-	{
-		banl->pending &= ~modes[i].bit;
-		if (!banl->pending)
-		{
-			gtk_widget_set_sensitive(banl->but_refresh, TRUE);
-			banlist_sensitize(banl);
-		}
-		return TRUE;
-	}
-	else return FALSE;
-}
-
-/* fe_add_ban_list() and fe_ban_list_end() return TRUE if consumed, FALSE otherwise */
-gboolean
-fe_add_ban_list(struct session *sess, char *mask, char *who, char *when, int rplcode)
-{
-	banlist_info *banl = sess->res->banlist;
-	int i;
-	GtkListStore *store;
-	GtkTreeIter iter;
-
-	if (!banl)
-		return FALSE;
-
-	for (i = 0; i < MODE_CT; i++)
-		if (modes[i].code == rplcode)
-			break;
-	if (i == MODE_CT)
-	{
-		/* printf ("Unexpected value in fe_add_ban_list:  %d\n", rplcode); */
-		return FALSE;
-	}
-	if (banl->pending & 1 << i)
-	{
-		store = get_store(sess);
-		gtk_list_store_append(store, &iter);
-
-		gtk_list_store_set(store, &iter, TYPE_COLUMN, _(modes[i].type.c_str()), MASK_COLUMN, mask,
-			FROM_COLUMN, who, DATE_COLUMN, when, -1);
-
-		banl->line_ct++;
-		return TRUE;
-	}
-	else return FALSE;
 }
 
 void
