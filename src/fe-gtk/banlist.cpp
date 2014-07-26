@@ -254,7 +254,7 @@ banlist_sensitize (banlist_info *banl)
 	int checkable, i;
 	bool is_op = false;
 
-	if (banl->sess->me == NULL)
+	if (banl->sess->me == nullptr)
 		return;
 
 	/* FIXME: More access levels than these can unban */
@@ -265,7 +265,7 @@ banlist_sensitize (banlist_info *banl)
 	checkable = is_op? banl->writeable: banl->readable;
 	for (i = 0; i < MODE_CT; i++)
 	{
-		if (banl->checkboxes[i] == NULL)
+		if (banl->checkboxes[i] == nullptr)
 			continue;
 		if ((checkable & 1<<i) == 0)
 		/* Checkbox is not checkable.  Grey it and uncheck it. */
@@ -369,7 +369,7 @@ banlist_copyentry (GtkWidget *menuitem, GtkTreeView *view)
 								g_value_get_string (&date), g_value_get_string (&from));
 
 		if (str[0] != 0)
-			gtkutil_copy_to_clipboard (menuitem, NULL, str);
+			gtkutil_copy_to_clipboard (menuitem, nullptr, str);
 			
 		g_value_unset (&mask);
 		g_value_unset (&from);
@@ -389,10 +389,10 @@ banlist_button_pressed (GtkWidget *wid, GdkEventButton *event, gpointer userdata
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
 	{
 		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (wid), event->x, event->y,
-												&path, NULL, NULL, NULL))
+												&path, nullptr, nullptr, nullptr))
 		{
 			/* Must set the row active for use in callback */
-			gtk_tree_view_set_cursor (GTK_TREE_VIEW(wid), path, NULL, FALSE);
+			gtk_tree_view_set_cursor (GTK_TREE_VIEW(wid), path, nullptr, FALSE);
 			gtk_tree_path_free (path);
 			
 			menu = gtk_menu_new ();
@@ -404,7 +404,7 @@ banlist_button_pressed (GtkWidget *wid, GdkEventButton *event, gpointer userdata
 			gtk_menu_shell_append (GTK_MENU_SHELL(menu), allitem);
 			gtk_widget_show_all (menu);
 			
-			gtk_menu_popup (GTK_MENU(menu), NULL, NULL, NULL, NULL, 
+			gtk_menu_popup (GTK_MENU(menu), nullptr, nullptr, nullptr, nullptr, 
 							event->button, gtk_get_current_event_time ());
 		}
 		
@@ -423,9 +423,9 @@ banlist_select_changed (GtkWidget *item, banlist_info *banl)
 		banl->select_ct = 0;
 	else
 	{
-		list = gtk_tree_selection_get_selected_rows (GTK_TREE_SELECTION (item), NULL);
+		list = gtk_tree_selection_get_selected_rows (GTK_TREE_SELECTION (item), nullptr);
 		banl->select_ct = g_list_length (list);
-		g_list_foreach (list, (GFunc) gtk_tree_path_free, NULL);
+		g_list_foreach (list, (GFunc) gtk_tree_path_free, nullptr);
 		g_list_free (list);
 	}
 	banlist_sensitize (banl);
@@ -564,7 +564,7 @@ banlist_clear_cb (GtkDialog *dialog, gint response, gpointer data)
 	{
 		sel = gtk_tree_view_get_selection (get_view (banl->sess));
 		gtk_tree_selection_select_all (sel);
-		banlist_unban (NULL, banl);
+		banlist_unban (nullptr, banl);
 	}
 }
 
@@ -573,7 +573,7 @@ banlist_clear (GtkWidget * wid, banlist_info *banl)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_message_dialog_new (NULL, static_cast<GtkDialogFlags>(0),
+	dialog = gtk_message_dialog_new (nullptr, static_cast<GtkDialogFlags>(0),
 								GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
 					_("Are you sure you want to remove all listed items in %s?"), banl->sess->channel);
 
@@ -587,13 +587,13 @@ static void
 banlist_add_selected_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
 	GSList **lp = static_cast<GSList**>(data);
-	GSList *list = NULL;
+	GSList *list = nullptr;
 	GtkTreeIter *copy;
 
 	if (!lp) return;
 	list = *lp;
 	copy = static_cast<GtkTreeIter*>(g_malloc (sizeof (GtkTreeIter)));
-	g_return_if_fail (copy != NULL);
+	g_return_if_fail (copy != nullptr);
 	*copy = *iter;
 
 	list = g_slist_append (list, copy);
@@ -605,7 +605,7 @@ banlist_crop (GtkWidget * wid, banlist_info *banl)
 {
 	session *sess = banl->sess;
 	GtkTreeSelection *select;
-	GSList *list = NULL, *node;
+	GSList *list = nullptr, *node;
 	int num_sel;
 
 	/* remember which bans are selected */
@@ -623,10 +623,10 @@ banlist_crop (GtkWidget * wid, banlist_info *banl)
 		for (node = list; node; node = node->next)
 			gtk_tree_selection_unselect_iter(select, static_cast<GtkTreeIter*>(node->data));
 
-		g_slist_foreach (list, (GFunc)g_free, NULL);
+		g_slist_foreach (list, (GFunc)g_free, nullptr);
 		g_slist_free (list);
 
-		banlist_unban (NULL, banl);
+		banlist_unban (nullptr, banl);
 	} else
 		fe_message (_("You must select some bans."), FE_MSG_ERROR);
 }
@@ -668,7 +668,7 @@ banlist_strptime (char *ti, struct tm *tm)
 {
 	/* Expect something like "Sat Mar 16 21:24:27 2013" */
 	static char *mon[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-								  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", NULL };
+								  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", nullptr };
 	int M = -1, d = -1, h = -1, m = -1, s = -1, y = -1;
 
 	if (*ti == 0)
@@ -687,7 +687,7 @@ banlist_strptime (char *ti, struct tm *tm)
 	h = strtol (++ti, &ti, 10);
 	m = strtol (++ti, &ti, 10);
 	s = strtol (++ti, &ti, 10);
-	y = strtol (++ti, NULL, 10) - 1900;
+	y = strtol (++ti, nullptr, 10) - 1900;
 
 	tm->tm_sec = s;
 	tm->tm_min = m;
@@ -727,17 +727,17 @@ banlist_treeview_new (GtkWidget *box, banlist_info *banl)
 
 	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING,
 										 G_TYPE_STRING, G_TYPE_STRING);
-	g_return_val_if_fail (store != NULL, NULL);
+	g_return_val_if_fail (store != nullptr, nullptr);
 
 	sortable = GTK_TREE_SORTABLE (store);
-	gtk_tree_sortable_set_sort_func (sortable, DATE_COLUMN, banlist_date_sort, GINT_TO_POINTER (DATE_COLUMN), NULL);
+	gtk_tree_sortable_set_sort_func (sortable, DATE_COLUMN, banlist_date_sort, GINT_TO_POINTER (DATE_COLUMN), nullptr);
 
-	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
+	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), nullptr,
 										  TYPE_COLUMN, _("Type"),
 										  MASK_COLUMN, _("Mask"),
 										  FROM_COLUMN, _("From"),
 										  DATE_COLUMN, _("Date"), -1);
-	g_signal_connect (G_OBJECT (view), "button-press-event", G_CALLBACK (banlist_button_pressed), NULL);
+	g_signal_connect (G_OBJECT (view), "button-press-event", G_CALLBACK (banlist_button_pressed), nullptr);
 
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), MASK_COLUMN);
 	gtk_tree_view_column_set_alignment (col, 0.5);
@@ -778,7 +778,7 @@ banlist_closegui (GtkWidget *wid, banlist_info *banl)
 	if (sess->res->banlist == banl)
 	{
 		g_free (banl);
-		sess->res->banlist = NULL;
+		sess->res->banlist = nullptr;
 	}
 }
 
