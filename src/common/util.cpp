@@ -22,6 +22,10 @@
 #define __APPLE_API_STRICT_CONFORMANCE
 
 #define _FILE_OFFSET_BITS 64
+#include <sstream>
+#include <algorithm>
+#include <string>
+#include <unordered_map>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -784,19 +788,14 @@ tolowerStr (char *str)
 	}
 }*/
 
-typedef struct
-{
-	char *code, *country;
-} domain_t;
+//static int
+//country_compare (const void *a, const void *b)
+//{
+//	return g_ascii_strcasecmp (static_cast<const gchar*>(a), ((domain_t *)b)->code.c_str());
+//}
 
-static int
-country_compare (const void *a, const void *b)
-{
-	return g_ascii_strcasecmp (static_cast<const gchar*>(a), ((domain_t *)b)->code);
-}
-
-static const domain_t domain[] =
-{
+static const std::unordered_map<std::string, std::string> domain =
+{ {
 		{"AC", N_("Ascension Island") },
 		{"AD", N_("Andorra") },
 		{"AE", N_("United Arab Emirates") },
@@ -1074,42 +1073,37 @@ static const domain_t domain[] =
 		{"ZA", N_("South Africa") },
 		{"ZM", N_("Zambia") },
 		{"ZW", N_("Zimbabwe") },
-};
+}};
 
-char *
-country (char *hostname)
+const char *
+country (const char *hostname)
 {
-	char *p;
-	domain_t *dom;
-
+	const char *p;
 	if (!hostname || !*hostname || isdigit ((unsigned char) hostname[strlen (hostname) - 1]))
 		return NULL;
 	if ((p = strrchr (hostname, '.')))
 		p++;
 	else
 		p = hostname;
+	std::string lowercased_domain(p);
+	std::string uppercased_domain(lowercased_domain.length(), '\0');
+	std::transform(lowercased_domain.cbegin(), lowercased_domain.cend(), uppercased_domain.begin(), std::toupper);
+	auto dom = domain.find(uppercased_domain);
 
-	dom = static_cast<domain_t*>(bsearch (p, domain, sizeof (domain) / sizeof (domain_t),
-						sizeof (domain_t), country_compare));
-
-	if (!dom)
+	if (dom == domain.cend())
 		return NULL;
 
-	return _(dom->country);
+	return _(dom->second.c_str());
 }
 
 void
 country_search (char *pattern, void *ud, void (*print)(void *, char *, ...))
 {
-	const domain_t *dom;
-	int i;
-
-	for (i = 0; i < sizeof (domain) / sizeof (domain_t); i++)
+	for (const auto & bucket : domain)
 	{
-		dom = &domain[i];
-		if (match (pattern, dom->country) || match (pattern, _(dom->country)))
+		if (match (pattern, bucket.first.c_str()) || match (pattern, _(bucket.second.c_str())))
 		{
-			print (ud, "%s = %s\n", dom->code, _(dom->country));
+			print(ud, "%s = %s\n", bucket.first.c_str(), _(bucket.second.c_str()));
 		}
 	}
 }
@@ -1291,10 +1285,10 @@ unlink_utf8 (char *fname)
 	return res;
 }*/
 
-static gboolean
+static bool
 file_exists (char *fname)
 {
-	return (g_access (fname, F_OK) == 0) ? TRUE : FALSE;
+	return (g_access (fname, F_OK) == 0);
 }
 
 static gboolean

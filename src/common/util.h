@@ -50,7 +50,7 @@ int rfc_casecmp (const char *, const char *);
 int rfc_ncasecmp (char *, char *, int);
 int buf_get_line (char *, char **, int *, int len);
 char *nocasestrstr (const char *text, const char *tofind);
-char *country (char *);
+const char *country (const char *);
 void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
 char *get_sys_str (int with_cpu);
 void util_exec (const char *cmd);
