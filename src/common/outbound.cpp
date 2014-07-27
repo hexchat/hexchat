@@ -17,12 +17,12 @@
  */
 
 #define _GNU_SOURCE	/* for memrchr */
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <limits.h>
-#include <errno.h>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
+#include <cctype>
+#include <climits>
+#include <cerrno>
 
 #define WANTSOCKET
 #define WANTARPA
@@ -299,7 +299,7 @@ cmd_allchannels (session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->type == SESS_CHANNEL && sess->channel[0] && sess->server->connected)
 		{
 			handle_command (sess, word_eol[2], FALSE);
@@ -321,7 +321,7 @@ cmd_allchannelslocal (session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->type == SESS_CHANNEL && sess->channel[0] &&
 			 sess->server->connected && sess->server == serv)
 		{
@@ -346,7 +346,7 @@ cmd_allservers (struct session *sess, char *tbuf, char *word[],
 	list = serv_list;
 	while (list)
 	{
-		serv = list->data;
+		serv = static_cast<server*>(list->data);
 		if (serv->connected)
 			handle_command (serv->front_session, word_eol[2], FALSE);
 		list = list->next;
@@ -635,9 +635,9 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		while (list)
 		{
-			sess = list->data;
+			sess = static_cast<session*>(list->data);
 			if (!sess->nick_said)
-				fe_text_clear (list->data, 0);
+				fe_text_clear(static_cast<session*>(list->data), 0);
 			list = list->next;
 		}
 		return TRUE;
@@ -660,7 +660,7 @@ cmd_close (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		list = sess_list;
 		while (list)
 		{
-			sess = list->data;
+			sess = static_cast<session*>(list->data);
 			list = list->next;
 			if (sess->type == SESS_DIALOG)
 				fe_close_window (sess);
@@ -717,14 +717,14 @@ cmd_country (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		/* search? */
 		if (strcmp (code, "-s") == 0)
 		{
-			country_search (word[3], sess, (void *)PrintTextf);
+			country_search (word[3], sess, (void (*)(void*, char*, ...))PrintTextf);
 			return TRUE;
 		}
 
 		/* search, but forgot the -s */
 		if (strchr (code, '*'))
 		{
-			country_search (code, sess, (void *)PrintTextf);
+			country_search(code, sess, (void(*)(void*, char*, ...))PrintTextf);
 			return TRUE;
 		}
 
@@ -1002,12 +1002,12 @@ mdehop_cb (struct User *user, multidata *data)
 static int
 cmd_mdehop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * sess->hops);
+	char **nicks = static_cast<char**>(malloc (sizeof (char *) * sess->hops));
 	multidata data;
 
 	data.nicks = nicks;
 	data.i = 0;
-	tree_foreach (sess->usertree, (tree_traverse_func *)mdehop_cb, &data);
+	tree_foreach (static_cast<tree*>(sess->usertree), (tree_traverse_func *)mdehop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'h', 0);
 	free (nicks);
 
@@ -1028,12 +1028,12 @@ mdeop_cb (struct User *user, multidata *data)
 static int
 cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * sess->ops);
+	char **nicks = static_cast<char**>(malloc(sizeof(char *) * sess->ops));
 	multidata data;
 
 	data.nicks = nicks;
 	data.i = 0;
-	tree_foreach (sess->usertree, (tree_traverse_func *)mdeop_cb, &data);
+	tree_foreach(static_cast<tree*>(sess->usertree), (tree_traverse_func *)mdeop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'o', 0);
 	free (nicks);
 
@@ -1094,7 +1094,7 @@ menu_entry_find (char *path, char *label)
 	list = menu_list;
 	while (list)
 	{
-		me = list->data;
+		me = static_cast<menu_entry*>(list->data);
 		if (!strcmp (path, me->path))
 		{
 			if (me->label && label && !strcmp (label, me->label))
@@ -1122,7 +1122,7 @@ menu_del_children (char *path, char *label)
 	list = menu_list;
 	while (list)
 	{
-		me = list->data;
+		me = static_cast<menu_entry*>(list->data);
 		next = list->next;
 		if (!menu_streq (buf, me->path, 0))
 		{
@@ -1142,7 +1142,7 @@ menu_del (char *path, char *label)
 	list = menu_list;
 	while (list)
 	{
-		me = list->data;
+		me = static_cast<menu_entry*>(list->data);
 		if (!menu_streq (me->label, label, 1) && !menu_streq (me->path, path, 1))
 		{
 			menu_list = g_slist_remove (menu_list, me);
@@ -1193,7 +1193,7 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 		return;
 	}
 
-	me = malloc (sizeof (menu_entry));
+	me = static_cast<menu_entry*>(malloc(sizeof(menu_entry)));
 	me->pos = pos;
 	me->modifier = mod;
 	me->is_main = menu_is_mainmenu_root (path, &me->root_offset);
@@ -1373,8 +1373,8 @@ cmd_mkick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	data.sess = sess;
 	data.reason = word_eol[2];
-	tree_foreach (sess->usertree, (tree_traverse_func *)mkickops_cb, &data);
-	tree_foreach (sess->usertree, (tree_traverse_func *)mkick_cb, &data);
+	tree_foreach(static_cast<tree*>(sess->usertree), (tree_traverse_func *)mkickops_cb, &data);
+	tree_foreach(static_cast<tree*>(sess->usertree), (tree_traverse_func *)mkick_cb, &data);
 
 	return TRUE;
 }
@@ -1955,7 +1955,7 @@ cmd_getbool (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[4][0])
 		return FALSE;
 
-	info = malloc (sizeof (*info));
+	info = static_cast<getvalinfo*>(malloc (sizeof (*info)));
 	info->cmd = strdup (word[2]);
 	info->sess = sess;
 
@@ -1988,7 +1988,7 @@ cmd_getint (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[4][0])
 		return FALSE;
 
-	info = malloc (sizeof (*info));
+	info = static_cast<getvalinfo*>(malloc(sizeof(*info)));
 	info->cmd = strdup (word[3]);
 	info->sess = sess;
 
@@ -2043,7 +2043,7 @@ cmd_getfile (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		idx++;
 	}
 
-	fe_get_file (word[idx+1], word[idx+2], (void *)get_file_cb, strdup (word[idx]), flags);
+	fe_get_file (word[idx+1], word[idx+2], (void (*)(void*, char*))get_file_cb, strdup (word[idx]), flags);
 
 	return TRUE;
 }
@@ -2072,7 +2072,7 @@ cmd_getstr (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[4][0])
 		return FALSE;
 
-	info = malloc (sizeof (*info));
+	info = static_cast<getvalinfo*>(malloc(sizeof(*info)));
 	info->cmd = strdup (word[3]);
 	info->sess = sess;
 
@@ -2094,21 +2094,21 @@ cmd_ghost (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	switch (str_ihash (word[2]))
+	switch (str_ihash ((const unsigned char*)word[2]))
 	{
-	case 0x058b836e: fe_ctrl_gui (sess, 8, 0); break; /* APPLY */
-	case 0xac1eee45: fe_ctrl_gui (sess, 7, 2); break; /* ATTACH */
-	case 0x05a72f63: fe_ctrl_gui (sess, 4, atoi (word[3])); break; /* COLOR */
-	case 0xb06a1793: fe_ctrl_gui (sess, 7, 1); break; /* DETACH */
-	case 0x05cfeff0: fe_ctrl_gui (sess, 3, 0); break; /* FLASH */
-	case 0x05d154d8: fe_ctrl_gui (sess, 2, 0); break; /* FOCUS */
-	case 0x0030dd42: fe_ctrl_gui (sess, 0, 0); break; /* HIDE */
-	case 0x61addbe3: fe_ctrl_gui (sess, 5, 0); break; /* ICONIFY */
+	case 0x058b836e: fe_ctrl_gui (sess, FE_GUI_APPLY, 0); break; /* APPLY */
+	case 0xac1eee45: fe_ctrl_gui(sess, FE_GUI_ATTACH, 2); break; /* ATTACH */
+	case 0x05a72f63: fe_ctrl_gui(sess, FE_GUI_COLOR, atoi(word[3])); break; /* COLOR */
+	case 0xb06a1793: fe_ctrl_gui(sess, FE_GUI_ATTACH, 1); break; /* DETACH */
+	case 0x05cfeff0: fe_ctrl_gui(sess, FE_GUI_FLASH, 0); break; /* FLASH */
+	case 0x05d154d8: fe_ctrl_gui(sess, FE_GUI_FOCUS, 0); break; /* FOCUS */
+	case 0x0030dd42: fe_ctrl_gui(sess, FE_GUI_HIDE, 0); break; /* HIDE */
+	case 0x61addbe3: fe_ctrl_gui(sess, FE_GUI_ICONIFY, 0); break; /* ICONIFY */
 	case 0xc0851aaa: fe_message (word[3], FE_MSG_INFO|FE_MSG_MARKUP); break; /* MSGBOX */
-	case 0x0035dafd: fe_ctrl_gui (sess, 1, 0); break; /* SHOW */
+	case 0x0035dafd: fe_ctrl_gui (sess, FE_GUI_SHOW, 0); break; /* SHOW */
 	case 0x0033155f: /* MENU */
 		if (!g_ascii_strcasecmp (word[3], "TOGGLE"))
-			fe_ctrl_gui (sess, 6, 0);
+			fe_ctrl_gui (sess, FE_GUI_MENU, 0);
 		else
 			return FALSE;
 		break;
@@ -2199,7 +2199,7 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	} else
 	{
 		struct popup *pop;
-		char *buf = malloc (4096);
+		char *buf = static_cast<char*>(malloc(4096));
 		help_list hl;
 
 		hl.longfmt = longfmt;
@@ -2228,7 +2228,7 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		list = command_list;
 		while (list)
 		{
-			pop = list->data;
+			pop = static_cast<popup*>(list->data);
 			show_help_line (sess, &hl, pop->name, pop->cmd);
 			list = list->next;
 		}
@@ -2241,7 +2241,7 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		buf[2] = 0;
 		hl.t = 0;
 		hl.i = 0;
-		plugin_command_foreach (sess, &hl, (void *)show_help_line);
+		plugin_command_foreach (sess, &hl, (void (*)(session*, void*, char*, char*))show_help_line);
 		strcat (buf, "\n");
 		PrintText (sess, buf);
 		free (buf);
@@ -2371,7 +2371,7 @@ cmd_join (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 		}
 		else
-			fe_ctrl_gui (sess_find, 2, 0);	/* bring-to-front */
+			fe_ctrl_gui(sess_find, FE_GUI_FOCUS, 0);	/* bring-to-front */
 		
 		return TRUE;
 	}
@@ -2455,7 +2455,7 @@ static int
 cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int j = 2;
-	gtk_xtext_search_flags flags = 0;
+	gtk_xtext_search_flags flags = static_cast<gtk_xtext_search_flags>(0);
 	gboolean doublehyphen = FALSE;
 
 	while (word_eol[j] != NULL && word_eol [j][0] == '-' && !doublehyphen)
@@ -2720,12 +2720,12 @@ mop_cb (struct User *user, multidata *data)
 static int
 cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * (sess->total - sess->ops));
+	char **nicks = static_cast<char**>(malloc(sizeof(char *) * (sess->total - sess->ops)));
 	multidata data;
 
 	data.nicks = nicks;
 	data.i = 0;
-	tree_foreach (sess->usertree, (tree_traverse_func *)mop_cb, &data);
+	tree_foreach(static_cast<tree*>(sess->usertree), (tree_traverse_func *)mop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'o', 0);
 
 	free (nicks);
@@ -3005,7 +3005,7 @@ open_query (server *serv, char *nick, gboolean focus_existing)
 	if (!sess)
 		sess = new_ircwindow (serv, nick, SESS_DIALOG, focus_existing);
 	else if (focus_existing)
-		fe_ctrl_gui (sess, 2, 0);	/* bring-to-front */
+		fe_ctrl_gui(sess, FE_GUI_FOCUS, 0);	/* bring-to-front */
 
 	return sess;
 }
@@ -3143,7 +3143,7 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		list = serv_list;
 		while (list)
 		{
-			serv = list->data;
+			serv = static_cast<server*>(list->data);
 			if (serv->connected)
 				serv->auto_reconnect (serv, TRUE, -1);
 			list = list->next;
@@ -3496,7 +3496,7 @@ cmd_tray (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (strcmp (word[2], "-i") == 0)
 	{
-		fe_tray_set_icon (atoi (word[3]));
+		fe_tray_set_icon (static_cast<feicon>(atoi (word[3])));
 		return TRUE;
 	}
 
@@ -3601,7 +3601,7 @@ find_server_from_hostname (char *hostname)
 
 	while (list)
 	{
-		serv = list->data;
+		serv = static_cast<server*>(list->data);
 		if (!g_ascii_strcasecmp (hostname, serv->hostname) && serv->connected)
 			return serv;
 		list = list->next;
@@ -3618,7 +3618,7 @@ find_server_from_net (void *net)
 
 	while (list)
 	{
-		serv = list->data;
+		serv = static_cast<server*>(list->data);
 		if (serv->network == net && serv->connected)
 			return serv;
 		list = list->next;
@@ -3743,7 +3743,7 @@ static int
 cmd_userlist (struct session *sess, char *tbuf, char *word[],
 				  char *word_eol[])
 {
-	tree_foreach (sess->usertree, (tree_traverse_func *)userlist_cb, sess);
+	tree_foreach (static_cast<tree*>(sess->usertree), (tree_traverse_func *)userlist_cb, sess);
 	return TRUE;
 }
 
@@ -3784,7 +3784,7 @@ cmd_wallchop (struct session *sess, char *tbuf, char *word[],
 	data.tbuf = tbuf;
 	data.i = 0;
 	data.sess = sess;
-	tree_foreach (sess->usertree, (tree_traverse_func*)wallchop_cb, &data);
+	tree_foreach(static_cast<tree*>(sess->usertree), (tree_traverse_func*)wallchop_cb, &data);
 
 	if (data.i)
 	{
@@ -3807,7 +3807,7 @@ cmd_wallchan (struct session *sess, char *tbuf, char *word[],
 		list = sess_list;
 		while (list)
 		{
-			sess = list->data;
+			sess = static_cast<session*>(list->data);
 			if (sess->type == SESS_CHANNEL)
 			{
 				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
@@ -4069,15 +4069,15 @@ const struct commands xc_cmds[] = {
 static int
 command_compare (const void *a, const void *b)
 {
-	return g_ascii_strcasecmp (a, ((struct commands *)b)->name);
+	return g_ascii_strcasecmp (static_cast<const gchar*>(a), ((struct commands *)b)->name);
 }
 
 static struct commands *
 find_internal_command (char *name)
 {
 	/* the "-1" is to skip the NULL terminator */
-	return bsearch (name, xc_cmds, (sizeof (xc_cmds) /
-				sizeof (xc_cmds[0])) - 1, sizeof (xc_cmds[0]), command_compare);
+	return static_cast<commands*>(bsearch (name, xc_cmds, (sizeof (xc_cmds) /
+				sizeof (xc_cmds[0])) - 1, sizeof (xc_cmds[0]), command_compare));
 }
 
 static gboolean
@@ -4309,7 +4309,7 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 	if (!len)
 		return;
 
-	buf = malloc (len + 1);
+	buf = static_cast<char*>(malloc (len + 1));
 
 	if (buf)
 	{
@@ -4443,7 +4443,7 @@ perform_nick_completion (struct session *sess, char *cmd, char *tbuf)
 				data.best = NULL;
 				data.tbuf = tbuf;
 				data.space = space - 1;
-				tree_foreach (sess->usertree, (tree_traverse_func *)nick_comp_cb, &data);
+				tree_foreach(static_cast<tree*>(sess->usertree), (tree_traverse_func *)nick_comp_cb, &data);
 
 				if (data.len == -1)
 					return;
@@ -4464,7 +4464,7 @@ static void
 user_command (session * sess, char *tbuf, char *cmd, char *word[],
 				  char *word_eol[])
 {
-	if (!auto_insert (tbuf, 2048, cmd, word, word_eol, "", sess->channel, "",
+	if (!auto_insert (tbuf, 2048, (unsigned char*)cmd, word, word_eol, "", sess->channel, "",
 							server_get_network (sess->server, TRUE), "",
 							sess->server->nick, "", ""))
 	{
@@ -4499,10 +4499,10 @@ handle_say (session *sess, char *text, int check_spch)
 
 	len = strlen (text);
 	if (len >= sizeof pdibuf_static)
-		pdibuf = malloc (len + 1);
+		pdibuf = static_cast<char*>(malloc(len + 1));
 
 	if (len + NICKLEN >= newcmdlen)
-		newcmd = malloc (newcmdlen = len + NICKLEN + 1);
+		newcmd = static_cast<char*>(malloc(newcmdlen = len + NICKLEN + 1));
 
 	if (check_spch && prefs.hex_input_perc_color)
 		check_special_chars (text, prefs.hex_input_perc_ascii);
@@ -4691,7 +4691,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 	len = strlen (cmd);
 	if (len >= sizeof (pdibuf_static))
 	{
-		pdibuf = malloc (len + 1);
+		pdibuf = static_cast<char*>(malloc(len + 1));
 	}
 	else
 	{
@@ -4700,7 +4700,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 
 	if ((len * 2) >= sizeof (tbuf_static))
 	{
-		tbuf = malloc ((len * 2) + 1);
+		tbuf = static_cast<char*>(malloc((len * 2) + 1));
 	}
 	else
 	{

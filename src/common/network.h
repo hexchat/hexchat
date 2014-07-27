@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_NETWORK_H
 #define HEXCHAT_NETWORK_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct netstore_
 {
 #ifdef NETWORK_PRIVATE
@@ -49,5 +53,9 @@ void net_store_fill_any (netstore *ns);
 void net_store_fill_v4 (netstore *ns, guint32 addr, int port);
 guint32 net_getsockaddr_v4 (netstore *ns);
 int net_getsockport(int sok4, int sok6);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

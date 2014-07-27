@@ -369,6 +369,13 @@ typedef enum gtk_xtext_search_flags_e {
 	regexp = 16
 } gtk_xtext_search_flags;
 
+#ifdef __cplusplus
+inline gtk_xtext_search_flags operator |=(gtk_xtext_search_flags a, gtk_xtext_search_flags b)
+{
+	return static_cast<gtk_xtext_search_flags>(static_cast<int>(a) | static_cast<int>(b));
+}
+#endif
+
 typedef struct session
 {
 	/* Per-Channel Alerts */
