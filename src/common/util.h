@@ -35,6 +35,10 @@
 
 #define rfc_tolower(c) (rfc_tolowertab[(unsigned char)(c)])
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 extern const unsigned char rfc_tolowertab[];
 
 char *expand_homedir (char *file);
@@ -81,4 +85,9 @@ char *encode_sasl_pass_aes (char *user, char *pass, char *data);
 char *challengeauth_response (char *username, char *password, char *challenge);
 size_t strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time);
 size_t strftime_utf8 (char *dest, size_t destsize, const char *format, time_t time);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

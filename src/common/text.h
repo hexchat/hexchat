@@ -29,6 +29,10 @@
 #define EMIT_SIGNAL(i, sess, a, b, c, d, e) \
 	text_emit(i, sess, a, b, c, d, 0)
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 struct text_event
 {
 	char *name;
@@ -67,5 +71,9 @@ void sound_play_event (int i);
 void sound_beep (session *);
 void sound_load ();
 void sound_save ();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -29,7 +29,6 @@
 #else
 #include <unistd.h>
 #endif
-extern "C"{
 #include "hexchat.h"
 #include "ignore.h"
 #include "cfgfiles.h"
@@ -38,7 +37,7 @@ extern "C"{
 #include "util.h"
 #include "hexchatc.h"
 #include "typedef.h"
-}
+
 
 int ignored_ctcp = 0;			  /* keep a count of all we ignore */
 int ignored_priv = 0;
