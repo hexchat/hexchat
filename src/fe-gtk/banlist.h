@@ -21,6 +21,9 @@
 #define HEXCHAT_BANLIST_H
 
 #include "../common/hexchat.h"
+#ifdef __cplusplus
+extern "C"{
+#endif
 void banlist_opengui (session *sess);
 
 #ifndef RPL_BANLIST
@@ -61,5 +64,9 @@ typedef struct banlist_info_s {
 	GtkWidget *but_clear;
 	GtkWidget *but_refresh;
 } banlist_info;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* HEXCHAT_BANLIST_H */

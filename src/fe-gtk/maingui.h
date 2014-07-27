@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_MAINGUI_H
 #define HEXCHAT_MAINGUI_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern GtkStyle *input_style;
 extern GtkWidget *parent_window;
 
@@ -57,5 +61,9 @@ gboolean mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, i
 void mg_search_toggle(session *sess);
 void mg_search_handle_previous(GtkWidget *wid, session *sess);
 void mg_search_handle_next(GtkWidget *wid, session *sess);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

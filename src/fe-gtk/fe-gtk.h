@@ -48,6 +48,10 @@
 #define flag_b flag_wid[8]
 #define NUM_FLAG_WIDS 9
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 #ifdef HAVE_GTK_MAC
 extern GtkosxApplication *osx_app;
 #endif
@@ -188,5 +192,9 @@ extern GdkPixmap *dialogwin_pix;
 #define SPELL_ENTRY_GET_POS(e) gtk_editable_get_position(GTK_EDITABLE(e))
 #define SPELL_ENTRY_SET_POS(e,p) gtk_editable_set_position(GTK_EDITABLE(e),p);
 #define SPELL_ENTRY_INSERT(e,t,l,p) gtk_editable_insert_text(GTK_EDITABLE(e),t,l,p)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
