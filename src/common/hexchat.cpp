@@ -38,7 +38,6 @@ extern "C"{
 #include <signal.h>
 #include <unistd.h>
 #endif
-extern "C"{
 #include "hexchat.h"
 #include "fe.h"
 #include "util.h"
@@ -47,7 +46,7 @@ extern "C"{
 #include "ignore.h"
 #include "hexchat-plugin.h"
 #include "plugin.h"
-#include "plugin-timer.h"
+#include "plugin-timer.hpp"
 #include "notify.h"
 #include "server.h"
 #include "servlist.h"
@@ -55,7 +54,6 @@ extern "C"{
 #include "text.h"
 #include "url.h"
 #include "hexchatc.h"
-}
 
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
 #include <glib-object.h>			/* for g_type_init() */

@@ -17,9 +17,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdlib.h>
-#include <string.h>
-#include <glib.h>
+#include <string>
+#include <algorithm>
+#include <unordered_map>
+#include <memory>
 #include "hexchat-plugin.h"
 
 #ifdef WIN32
@@ -28,117 +29,95 @@
 
 #define _(x) hexchat_gettext(ph,x)
 
+namespace {
 static hexchat_plugin *ph;	/* plugin handle */
-static GSList *timer_list = NULL;
 
 #define STATIC
 #define HELP \
 "Usage: TIMER [-refnum <num>] [-repeat <num>] <seconds> <command>\n" \
 "       TIMER [-quiet] -delete <num>"
 
-typedef struct
+struct timer;
+static int
+timeout_cb(timer &tim);
+
+struct timer
 {
-	hexchat_hook *hook;
-	hexchat_context *context;
-	char *command;
+	std::string command;
 	int ref;
 	int repeat;
 	float timeout;
-	unsigned int forever:1;
-} timer;
+	bool forever;
+	hexchat_context *context;
+	hexchat_hook *hook;
 
-static void
-timer_del (timer *tim)
-{
-	timer_list = g_slist_remove (timer_list, tim);
-	free (tim->command);
-	hexchat_unhook (ph, tim->hook);
-	free (tim);
-}
-
-static void
-timer_del_ref (int ref, int quiet)
-{
-	GSList *list;
-	timer *tim;
-
-	list = timer_list;
-	while (list)
+	timer(const std::string& command, int ref, int repeat, float timeout, hexchat_context* context)
+		:command(command), ref(ref), repeat(repeat), timeout(timeout), forever(repeat == 0), context(context)
 	{
-		tim = list->data;
-		if (tim->ref == ref)
-		{
-			timer_del (tim);
-			if (!quiet)
-				hexchat_printf (ph, _("Timer %d deleted.\n"), ref);
-			return;
-		}
-		list = list->next;
+		this->hook = hexchat_hook_timer(ph, static_cast<int>(timeout * 1000.0f), (int(*) (void *))timeout_cb, this);
 	}
+	~timer()
+	{
+		hexchat_unhook(ph, this->hook);
+	}
+};
+	
+
+static ::std::unordered_map<int, std::unique_ptr<timer> > timer_map;
+
+static void
+timer_del_ref (int ref, bool quiet)
+{
+	if (timer_map.erase(ref))
+	{
+		if (!quiet)
+			hexchat_printf(ph, _("Timer %d deleted.\n"), ref);
+		return;
+	}
+
 	if (!quiet)
 		hexchat_print (ph, _("No such ref number found.\n"));
 }
 
 static int
-timeout_cb (timer *tim)
+timeout_cb (timer &tim)
 {
-	if (hexchat_set_context (ph, tim->context))
+	if (hexchat_set_context (ph, tim.context))
 	{
-		hexchat_command (ph, tim->command);
+		hexchat_command (ph, tim.command.c_str());
 
-		if (tim->forever)
+		if (tim.forever)
 			return 1;
 
-		tim->repeat--;
-		if (tim->repeat > 0)
+		tim.repeat--;
+		if (tim.repeat > 0)
 			return 1;
 	}
 
-	timer_del (tim);
+	timer_map.erase(tim.ref);
 	return 0;
 }
 
 static void
-timer_add (int ref, float timeout, int repeat, char *command)
+timer_add (int ref, float timeout, int repeat, const std::string & command)
 {
-	timer *tim;
-	GSList *list;
-
 	if (ref == 0)
 	{
 		ref = 1;
-		list = timer_list;
-		while (list)
+
+		for (const auto & bucket : timer_map)
 		{
-			tim = list->data;
-			if (tim->ref >= ref)
-				ref = tim->ref + 1;
-			list = list->next;
+			ref = std::max(bucket.second->ref, ref);
 		}
 	}
 
-	tim = malloc (sizeof (timer));
-	tim->ref = ref;
-	tim->repeat = repeat;
-	tim->timeout = timeout;
-	tim->command = strdup (command);
-	tim->context = hexchat_get_context (ph);
-	tim->forever = FALSE;
-
-	if (repeat == 0)
-		tim->forever = TRUE;
-
-	tim->hook = hexchat_hook_timer (ph, timeout * 1000.0, (void *)timeout_cb, tim);
-	timer_list = g_slist_append (timer_list, tim);
+	timer_map.emplace(ref, std::unique_ptr<timer>( new timer(command, ref, repeat, timeout, hexchat_get_context(ph))));
 }
 
 static void
 timer_showlist (void)
 {
-	GSList *list;
-	timer *tim;
-
-	if (timer_list == NULL)
+	if (timer_map.empty())
 	{
 		hexchat_print (ph, _("No timers installed.\n"));
 		hexchat_print (ph, _(HELP));
@@ -146,13 +125,11 @@ timer_showlist (void)
 	}
 							 /*  00000 00000000 0000000 abc */
 	hexchat_print (ph, _("\026 Ref#  Seconds  Repeat  Command \026\n"));
-	list = timer_list;
-	while (list)
+
+	for (const auto & bucket: timer_map)
 	{
-		tim = list->data;
-		hexchat_printf (ph, _("%5d %8.1f %7d  %s\n"), tim->ref, tim->timeout,
-						  tim->repeat, tim->command);
-		list = list->next;
+		hexchat_printf(ph, _("%5d %8.1f %7d  %s\n"), bucket.second->ref, bucket.second->timeout,
+			bucket.second->repeat, bucket.second->command.c_str());
 	}
 }
 
@@ -163,7 +140,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	float timeout;
 	int offset = 0;
 	int ref = 0;
-	int quiet = FALSE;
+	bool quiet = false;
 	char *command;
 
 	if (!word[2][0])
@@ -174,7 +151,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 
 	if (g_ascii_strcasecmp (word[2], "-quiet") == 0)
 	{
-		quiet = TRUE;
+		quiet = true;
 		offset++;
 	}
 
@@ -196,7 +173,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 		offset += 2;
 	}
 
-	timeout = atof (word[2 + offset]);
+	timeout = std::strtof(word[2 + offset], nullptr);
 	command = word_eol[3 + offset];
 
 	if (timeout < 0.1 || !command[0])
@@ -205,6 +182,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 		timer_add (ref, timeout, repeat, command);
 
 	return HEXCHAT_EAT_HEXCHAT;
+}
 }
 
 int
