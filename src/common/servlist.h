@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_SERVLIST_H
 #define HEXCHAT_SERVLIST_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct ircserver
 {
 	char *hostname;
@@ -126,4 +130,8 @@ gboolean joinlist_is_in_list (server *serv, char *channel);
 void joinlist_split (char *autojoin, GSList **channels, GSList **keys);
 void joinlist_free (GSList *channels, GSList *keys);
 */
+
+#ifdef __cplusplus
+}
+#endif
 #endif

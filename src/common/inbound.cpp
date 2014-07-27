@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstring>
+#include <cctype>
+#include <cstdlib>
+#include <cstdio>
 #include <sys/types.h>
 #include <time.h>
 
@@ -46,7 +46,6 @@
 #include "server.h"
 #include "servlist.h"
 #include "text.h"
-#include "ctcp.h"
 #include "hexchatc.h"
 #include "chanopt.h"
 
@@ -113,7 +112,7 @@ find_session_from_nick (char *nick, server *serv)
 
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->server == serv)
 		{
 			if (userlist_find (sess, nick))
@@ -257,7 +256,7 @@ alert_match_word (char *word, char *masks)
 gboolean
 alert_match_text (char *text, char *masks)
 {
-	unsigned char *p = text;
+	unsigned char *p = (unsigned char*)text;
 	unsigned char endchar;
 	int res;
 
@@ -285,7 +284,7 @@ alert_match_text (char *text, char *masks)
 		/* if it's a 0, space or comma, the word has ended. */
 		if (*p == 0 || *p == ' ' || *p == ',' ||
 			/* if it's anything BUT a letter, the word has ended. */
-			 (!g_unichar_isalpha (g_utf8_get_char (p))))
+			 (!g_unichar_isalpha (g_utf8_get_char ((const gchar*)p))))
 		{
 			endchar = *p;
 			*p = 0;
@@ -295,7 +294,7 @@ alert_match_text (char *text, char *masks)
 			if (res)
 				return TRUE;	/* yes, matched! */
 
-			text = p + g_utf8_skip [p[0]];
+			text = (char*)(p + g_utf8_skip [p[0]]);
 			if (*p == 0)
 				return FALSE;
 		}
@@ -509,7 +508,7 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet,
 
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->server == serv)
 		{
 			if (userlist_change (sess, nick, newnick) || (me && sess->type == SESS_SERVER))
@@ -872,7 +871,7 @@ inbound_account (server *serv, char *nick, char *account,
 	list = sess_list;
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->server == serv)
 			userlist_set_account (sess, nick, account);
 		list = list->next;
@@ -929,7 +928,7 @@ find_session_from_type (int type, server *serv)
 	GSList *list = sess_list;
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->type == type && serv == sess->server)
 			return sess;
 		list = list->next;
@@ -1073,7 +1072,7 @@ inbound_away (server *serv, char *nick, char *msg,
 	list = sess_list;
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->server == serv)
 			userlist_set_away (sess, nick, TRUE);
 		list = list->next;
@@ -1090,7 +1089,7 @@ inbound_away_notify (server *serv, char *nick, char *reason,
 	list = sess_list;
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->server == serv)
 		{
 			userlist_set_away (sess, nick, reason ? TRUE : FALSE);
@@ -1120,7 +1119,7 @@ inbound_nameslist_end (server *serv, char *chan,
 		list = sess_list;
 		while (list)
 		{
-			sess = list->data;
+			sess = static_cast<session*>(list->data);
 			if (sess->server == serv)
 			{
 				sess->end_of_names = TRUE;
@@ -1158,7 +1157,7 @@ check_autojoin_channels (server *serv)
 	/* If there's a session (i.e. this is a reconnect), autojoin to everything that was open previously. */
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 
 		if (sess->server == serv)
 		{
@@ -1167,7 +1166,7 @@ check_autojoin_channels (server *serv)
 				strcpy (sess->waitchannel, sess->willjoinchannel);
 				sess->willjoinchannel[0] = 0;
 
-				fav = servlist_favchan_find (serv->network, sess->waitchannel, NULL);	/* Is this channel in our favorites? */
+				fav = servlist_favchan_find (static_cast<ircnet*>(serv->network), sess->waitchannel, NULL);	/* Is this channel in our favorites? */
 
 				/* session->channelkey is initially unset for channels joined from the favorites. You have to fill them up manually from favorites settings. */
 				if (fav)
@@ -1232,7 +1231,7 @@ inbound_next_nick (session *sess, char *nick, int error,
 	{
 	case 2:
 		newnick = prefs.hex_irc_nick2;
-		net = serv->network;
+		net = static_cast<ircnet*>(serv->network);
 		/* use network specific "Second choice"? */
 		if (net && !(net->flags & FLAG_USE_GLOBAL) && net->nick2)
 		{
@@ -1306,7 +1305,7 @@ dns_name_callback (GObject *obj, GAsyncResult *result, gpointer user_data)
 
 		for (list = g_list_first (addrs); list; list = g_list_next (list))
 		{
-			addr = g_inet_address_to_string (list->data);
+			addr = g_inet_address_to_string (static_cast<GInetAddress*>(list->data));
 			PrintTextf (sess, "    %s", addr);
 		}
 
@@ -1389,7 +1388,7 @@ inbound_set_all_away_status (server *serv, char *nick, unsigned int status)
 	list = sess_list;
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->server == serv)
 			userlist_set_away (sess, nick, status);
 		list = list->next;
@@ -1455,7 +1454,7 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 
 	if (user && host)
 	{
-		uhost = g_malloc (strlen (user) + strlen (host) + 2);
+		uhost = static_cast<char*>(g_malloc (strlen (user) + strlen (host) + 2));
 		sprintf (uhost, "%s@%s", user, host);
 	}
 
@@ -1475,7 +1474,7 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 		/* came from WHOIS, not channel specific */
 		for (list = sess_list; list; list = list->next)
 		{
-			sess = list->data;
+			sess = static_cast<session*>(list->data);
 			if (sess->type == SESS_CHANNEL && sess->server == serv)
 			{
 				userlist_add_hostname (sess, nick, uhost, realname, servname, account, away);
@@ -1580,7 +1579,7 @@ inbound_login_end (session *sess, char *text, const message_tags_data *tags_data
 			cmdlist = ((ircnet *)serv->network)->commandlist;
 			while (cmdlist)
 			{
-				cmd = cmdlist->data;
+				cmd = static_cast<commandentry*>(cmdlist->data);
 				inbound_exec_eom_cmd (cmd->command, sess);
 				cmdlist = cmdlist->next;
 			}

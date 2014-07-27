@@ -22,6 +22,10 @@
 #ifndef HEXCHAT_INBOUND_H
 #define HEXCHAT_INBOUND_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void inbound_next_nick (session *sess, char *nick, int error,
 								const message_tags_data *tags_data);
 void inbound_uback (server *serv, const message_tags_data *tags_data);
@@ -102,5 +106,9 @@ void do_dns (session *sess, char *nick, char *host,
 				 const message_tags_data *tags_data);
 gboolean alert_match_word (char *word, char *masks);
 gboolean alert_match_text (char *text, char *masks);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

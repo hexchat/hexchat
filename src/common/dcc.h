@@ -50,6 +50,10 @@
 #define DCC_SFMT "u"
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct DCC
 {
 	struct server *serv;
@@ -134,5 +138,9 @@ void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[],
 void dcc_show_list (session *sess);
 guint32 dcc_get_my_address (void);
 void dcc_get_with_destfile (struct DCC *dcc, char *utf8file);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

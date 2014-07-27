@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_SERVER_H
 #define HEXCHAT_SERVER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern GSList *serv_list;
 
 /* eventually need to keep the tcp_* functions isolated to server.c */
@@ -41,5 +45,9 @@ void server_away_save_message (server *serv, char *nick, char *msg);
 struct away_msg *server_away_find_message (server *serv, char *nick);
 
 void base64_encode (char *to, char *from, unsigned int len);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
