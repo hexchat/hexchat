@@ -417,7 +417,7 @@ irc_init (session *sess)
 
 	done_init = true;
 
-	plugin_add (sess, NULL, NULL, timer_plugin_init, NULL, NULL, FALSE);
+	plugin_add(sess, NULL, NULL, timer_plugin_init, timer_plugin_deinit, NULL, FALSE);
 
 #ifdef USE_PLUGIN
 	if (!arg_skip_plugins)

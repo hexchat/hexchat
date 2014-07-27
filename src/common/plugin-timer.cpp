@@ -63,7 +63,7 @@ struct timer
 };
 	
 
-static ::std::unordered_map<int, std::unique_ptr<timer> > timer_map;
+static ::std::unordered_map<int, std::shared_ptr<timer> > timer_map;
 
 static void
 timer_del_ref (int ref, bool quiet)
@@ -107,11 +107,11 @@ timer_add (int ref, float timeout, int repeat, const std::string & command)
 
 		for (const auto & bucket : timer_map)
 		{
-			ref = std::max(bucket.second->ref, ref);
+			ref = std::max(bucket.second->ref, ref + 1);
 		}
 	}
 
-	timer_map.emplace(ref, std::unique_ptr<timer>( new timer(command, ref, repeat, timeout, hexchat_get_context(ph))));
+	timer_map.emplace(ref, std::make_shared<timer>(command, ref, repeat, timeout, hexchat_get_context(ph)));
 }
 
 static void
@@ -204,4 +204,15 @@ hexchat_plugin_init
 	hexchat_hook_command (ph, "TIMER", HEXCHAT_PRI_NORM, timer_cb, _(HELP), 0);
 
 	return 1;       /* return 1 for success */
+}
+
+int
+#ifdef STATIC
+timer_plugin_deinit(void)
+#else
+hexchat_plugin_deinit(void)
+#endif
+{
+	timer_map.clear();
+	return 1;
 }

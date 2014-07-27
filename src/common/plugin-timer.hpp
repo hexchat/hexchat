@@ -23,4 +23,7 @@
 int timer_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 				char **plugin_desc, char **plugin_version, char *arg);
 
+int
+timer_plugin_deinit(void);
+
 #endif
