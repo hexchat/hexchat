@@ -55,7 +55,7 @@ static GtkWidget *num_invi;
 static GtkTreeModel *
 get_store (void)
 {
-	return gtk_tree_view_get_model (g_object_get_data (G_OBJECT (ignorewin), "view"));
+	return gtk_tree_view_get_model (static_cast<GtkTreeView*>(g_object_get_data (G_OBJECT (ignorewin), "view")));
 }
 
 static int
@@ -84,7 +84,7 @@ ignore_get_flags (GtkTreeModel *model, GtkTreeIter *iter)
 }
 
 static void
-mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
+mask_edited (GtkCellRendererText *render, gchar *path, gchar *newStr, gpointer dat)
 {
 	GtkListStore *store = GTK_LIST_STORE (get_store ());
 	GtkTreeIter iter;
@@ -94,19 +94,19 @@ mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
 	gtkutil_treemodel_string_to_iter (GTK_TREE_MODEL (store), path, &iter);
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 0, &old, -1);
 	
-	if (!strcmp (old, new))	/* no change */
+	if (!strcmp (old, newStr))	/* no change */
 		;
-	else if (ignore_exists (new))	/* duplicate, ignore */
+	else if (ignore_exists (newStr))	/* duplicate, ignore */
 		fe_message (_("That mask already exists."), FE_MSG_ERROR);
 	else
 	{
 		/* delete old mask, and add new one with original flags */
 		ignore_del (old, NULL);
 		flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
-		ignore_add (new, flags, TRUE);
+		ignore_add (newStr, flags, TRUE);
 
 		/* update tree */
-		gtk_list_store_set (store, &iter, MASK_COLUMN, new, -1);
+		gtk_list_store_set (store, &iter, MASK_COLUMN, newStr, -1);
 	}
 	g_free (old);
 	
@@ -177,7 +177,7 @@ ignore_treeview_new (GtkWidget *box)
 
 		for (tmp = list; tmp; tmp = tmp->next)
 		{
-			render = tmp->data;
+			render = static_cast<GtkCellRenderer*>(tmp->data);
 			if (col_id > 0)	/* it's a toggle button column */
 			{
 				g_signal_connect (render, "toggled", G_CALLBACK (option_toggled),
@@ -204,7 +204,7 @@ ignore_treeview_new (GtkWidget *box)
 static void
 ignore_delete_entry_clicked (GtkWidget * wid, struct session *sess)
 {
-	GtkTreeView *view = g_object_get_data (G_OBJECT (ignorewin), "view");
+	GtkTreeView *view = static_cast<GtkTreeView *>(g_object_get_data(G_OBJECT(ignorewin), "view"));
 	GtkListStore *store = GTK_LIST_STORE (gtk_tree_view_get_model (view));
 	GtkTreeIter iter;
 	GtkTreePath *path;
@@ -229,7 +229,7 @@ ignore_delete_entry_clicked (GtkWidget * wid, struct session *sess)
 static void
 ignore_store_new (int cancel, char *mask, gpointer data)
 {
-	GtkTreeView *view = g_object_get_data (G_OBJECT (ignorewin), "view");
+	GtkTreeView *view = static_cast<GtkTreeView *>(g_object_get_data(G_OBJECT(ignorewin), "view"));
 	GtkListStore *store = GTK_LIST_STORE (get_store ());
 	GtkTreeIter iter;
 	GtkTreePath *path;
@@ -288,7 +288,7 @@ ignore_clear_entry_clicked (GtkWidget * wid)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_message_dialog_new (NULL, 0,
+	dialog = gtk_message_dialog_new (NULL, static_cast<GtkDialogFlags>(0),
 								GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
 					_("Are you sure you want to remove all ignores?"));
 	g_signal_connect (G_OBJECT (dialog), "response",
@@ -338,7 +338,7 @@ ignore_gui_open ()
 	GtkTreeIter iter;
 	GSList *temp = ignore_list;
 	char *mask;
-	gboolean private, chan, notice, ctcp, dcc, invite, unignore;
+	gboolean priv, chan, notice, ctcp, dcc, invite, unignore;
 
 	if (ignorewin)
 	{
@@ -388,11 +388,11 @@ ignore_gui_open ()
 
 	while (temp)
 	{
-		struct ignore *ignore = temp->data;
+		struct ignore *ignore = static_cast<struct ignore *>(temp->data);
 
 		mask = ignore->mask;
 		chan = (ignore->type & IG_CHAN);
-		private = (ignore->type & IG_PRIV);
+		priv = (ignore->type & IG_PRIV);
 		notice = (ignore->type & IG_NOTI);
 		ctcp = (ignore->type & IG_CTCP);
 		dcc = (ignore->type & IG_DCC);
@@ -403,7 +403,7 @@ ignore_gui_open ()
 		gtk_list_store_set (store, &iter,
 		                    MASK_COLUMN, mask,
 		                    CHAN_COLUMN, chan,
-		                    PRIV_COLUMN, private,
+		                    PRIV_COLUMN, priv,
 		                    NOTICE_COLUMN, notice,
 		                    CTCP_COLUMN, ctcp,
 		                    DCC_COLUMN, dcc,
