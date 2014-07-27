@@ -22,10 +22,10 @@
 #define __APPLE_API_STRICT_CONFORMANCE
 
 #define _FILE_OFFSET_BITS 64
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <ctime>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -43,10 +43,10 @@
 
 #include "../../config.h"
 #include <fcntl.h>
-#include <errno.h>
+#include <cerrno>
 #include "hexchat.h"
 #include "hexchatc.h"
-#include <ctype.h>
+#include <cctype>
 #include "util.h"
 
 #if defined (USING_FREEBSD) || defined (__APPLE__)
@@ -147,10 +147,10 @@ errorstring (int err)
 	if (err >= WSABASEERR)
 	{
 		static char tbuf[384];
-		OSVERSIONINFO osvi;
+		OSVERSIONINFOW osvi;
 
-		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
-		GetVersionEx (&osvi);
+		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOW);
+		GetVersionExW (&osvi);
 
 		/* FormatMessage works on WSA*** errors starting from Win2000 */
 		if (osvi.dwMajorVersion >= 5)
@@ -289,7 +289,7 @@ strip_color (const char *text, int len, int flags)
 	if (len == -1)
 		len = strlen (text);
 
-	new_str = g_malloc (len + 2);
+	new_str = static_cast<char*>(g_malloc(len + 2));
 	strip_color2 (text, len, new_str, flags);
 
 	if (flags & STRIP_ESCMARKUP)
@@ -470,13 +470,13 @@ static int
 get_mhz (void)
 {
 	HKEY hKey;
-	int result, data, dataSize;
+	int result, data;
 
-	if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, "Hardware\\Description\\System\\"
-		"CentralProcessor\\0", 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
+	if (RegOpenKeyExW (HKEY_LOCAL_MACHINE, L"Hardware\\Description\\System\\"
+		L"CentralProcessor\\0", 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
 	{
-		dataSize = sizeof (data);
-		result = RegQueryValueEx (hKey, "~MHz", 0, 0, (LPBYTE)&data, &dataSize);
+		DWORD dataSize = sizeof (data);
+		result = RegQueryValueExW (hKey, L"~MHz", 0, 0, (LPBYTE)&data, &dataSize);
 		RegCloseKey (hKey);
 		if (result == ERROR_SUCCESS)
 			return data;
@@ -792,7 +792,7 @@ typedef struct
 static int
 country_compare (const void *a, const void *b)
 {
-	return g_ascii_strcasecmp (a, ((domain_t *)b)->code);
+	return g_ascii_strcasecmp (static_cast<const gchar*>(a), ((domain_t *)b)->code);
 }
 
 static const domain_t domain[] =
@@ -1089,8 +1089,8 @@ country (char *hostname)
 	else
 		p = hostname;
 
-	dom = bsearch (p, domain, sizeof (domain) / sizeof (domain_t),
-						sizeof (domain_t), country_compare);
+	dom = static_cast<domain_t*>(bsearch (p, domain, sizeof (domain) / sizeof (domain_t),
+						sizeof (domain_t), country_compare));
 
 	if (!dom)
 		return NULL;
@@ -1460,7 +1460,7 @@ str_hash (const char *key)
 guint32
 str_ihash (const unsigned char *key)
 {
-	const char *p = key;
+	const char *p = (const char*)key;
 	guint32 h = rfc_tolowertab [(guint)*p];
 
 	if (h)
@@ -1667,8 +1667,8 @@ encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 		return NULL;
 	BF_set_key (&key, key_size, secret);
 
-	encrypted_pass = calloc (1, pass_len);
-	plain_pass = calloc (1, pass_len);
+	encrypted_pass = static_cast<unsigned char*>(calloc (1, pass_len));
+	plain_pass = static_cast<char*>(calloc(1, pass_len));
 
 	if (!encrypted_pass && !plain_pass)
 	{
@@ -1685,7 +1685,7 @@ encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 
 	/* Create response */
 	length = 2 + BN_num_bytes (dh->pub_key) + pass_len + user_len + 1;
-	response = calloc (length, sizeof(char));
+	response = static_cast<char*>(calloc(length, sizeof(char)));
 
 	if (!response)
 		goto cleanup;
@@ -1740,8 +1740,8 @@ encode_sasl_pass_aes (char *user, char *pass, char *data)
 	if (!parse_dh (data, &dh, &secret, &key_size))
 		return NULL;
 
-	encrypted_userpass = calloc (userpass_len, sizeof(*encrypted_userpass));
-	plain_userpass = calloc (userpass_len, sizeof(*plain_userpass));
+	encrypted_userpass = static_cast<unsigned char*>(calloc(userpass_len, sizeof(*encrypted_userpass)));
+	plain_userpass = static_cast<unsigned char*>(calloc(userpass_len, sizeof(*plain_userpass)));
 	if (!encrypted_userpass && !plain_userpass)
 	{
 		DH_free(dh);
