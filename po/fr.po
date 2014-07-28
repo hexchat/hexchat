@@ -8,14 +8,16 @@
 # Calinou, 2014
 # Misdre <misdre@hexchat.misdre.info>, 2013
 # Misdre <misdre@hexchat.misdre.info>, 2013
+# Towinet, 2014
 # Calinou, 2013
+# Yannick Le Guen <leguen.yannick@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2014-05-14 13:20-0400\n"
-"PO-Revision-Date: 2014-05-14 17:20+0000\n"
-"Last-Translator: TingPing <tingping@tingping.se>\n"
+"PO-Revision-Date: 2014-07-21 15:47+0000\n"
+"Last-Translator: Towinet\n"
 "Language-Team: French (http://www.transifex.com/projects/p/hexchat/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1416,7 +1418,7 @@ msgstr "Hôte de la personne"
 
 #: ../src/common/text.c:1035
 msgid "The account of the person"
-msgstr ""
+msgstr "Le compte de la personne"
 
 #: ../src/common/text.c:1039 ../src/common/text.c:1046
 #: ../src/common/text.c:1053 ../src/common/text.c:1265
@@ -3211,7 +3213,7 @@ msgstr "_Télécharger"
 
 #: ../src/fe-gtk/chanlist.c:806
 msgid "Save _List..."
-msgstr "Sauver la _Liste"
+msgstr "Enregistrer la _Liste..."
 
 #. =============================================================
 #: ../src/fe-gtk/chanlist.c:819
@@ -3317,7 +3319,7 @@ msgstr "Envois"
 
 #: ../src/fe-gtk/dccgui.c:858
 msgid "Downloads"
-msgstr "Récupération"
+msgstr "Récupérations"
 
 #: ../src/fe-gtk/dccgui.c:863
 msgid "Details"
@@ -3454,7 +3456,7 @@ msgid ""
 "When run all \\n characters in Data 1 are used to deliminate separate "
 "commands so it is possible to run more than one command. If you want a \\ "
 "in the actual text run then enter \\\\"
-msgstr ""
+msgstr "La commande d'action Exécuter (Run) lance la donnée dans Data 1 telle que si elle avait été tapée dans la boîte de saisie dans laquelle vous pressez la séquence de touches. Ainsi elle peut contenir du texte (qui sera envoyé à la chaîne/personne), des commandes ou des commandes d'utilisateur. Lorsqu'elle est exécutée tous les caractères \\n dans Données 1 sont utilisés pour délimiter les commandes séparées, afin qu'il soit possible de faire fonctionner davantage qu'une commande. Si vous voulez un \\n dans le texte réel alors entrez \\\\"
 
 #: ../src/fe-gtk/fkeys.c:143
 msgid ""
@@ -3464,7 +3466,7 @@ msgid ""
 "switch to the page with the most recent and important activity (queries "
 "first, then channels with hilight, channels with dialogue, channels with "
 "other data)"
-msgstr ""
+msgstr "La page changements (Change Page) commande le basculement entre les pages du carnet. Si Donnée 2 est paramétrée à n'importe quoi alors le commutateur sera relatif à la position actuelle. Paramétrer Donnée 1 à auto afin de commuter vers la page ayant l'activité la plus récente et la plus fréquente (requêtes d'abord, puis canaux mis en évidence, canaux avec des dialogues, canaux avec d'autres données)"
 
 #: ../src/fe-gtk/fkeys.c:145
 msgid ""
@@ -3476,7 +3478,7 @@ msgstr "La commande Insert in Buffer insérera le contenu de Données 1 dans l
 msgid ""
 "The Scroll Page command scrolls the text widget up or down one page or one"
 " line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
-msgstr ""
+msgstr "La commande Scroll Page fait défiler le widget textuel vers le haut ou vers le bas d'une page ou d'une ligne. Définir Data 1 soit à Top, Bottom, Up, Down, +1 ou -1."
 
 #: ../src/fe-gtk/fkeys.c:149
 msgid ""
@@ -3578,7 +3580,7 @@ msgstr "DCC"
 
 #: ../src/fe-gtk/ignoregui.c:165
 msgid "Unignore"
-msgstr "Ne plus exclure"
+msgstr "Ne plus ignorer"
 
 #: ../src/fe-gtk/ignoregui.c:293
 msgid "Are you sure you want to remove all ignores?"
@@ -3975,27 +3977,27 @@ msgstr "Éditer ce menu..."
 
 #: ../src/fe-gtk/menu.c:1292
 msgid "Marker line disabled."
-msgstr ""
+msgstr "Ligne de repérage désactivée."
 
 #: ../src/fe-gtk/menu.c:1298
 msgid "Marker line never set."
-msgstr ""
+msgstr "Ligne de repérage jamais définie."
 
 #: ../src/fe-gtk/menu.c:1302
 msgid "Marker line reset manually."
-msgstr ""
+msgstr "Ligne de repérage repositionnée manuellement."
 
 #: ../src/fe-gtk/menu.c:1304
 msgid "Marker line reset because exceeded scrollback limit."
-msgstr ""
+msgstr "Ligne de repérage repositionnée à cause de la limite de défilement."
 
 #: ../src/fe-gtk/menu.c:1306
 msgid "Marker line reset by CLEAR command."
-msgstr ""
+msgstr "Ligne de repérage repositionnée avec la commande CLEAR."
 
 #: ../src/fe-gtk/menu.c:1308
 msgid "Marker line state unknown."
-msgstr ""
+msgstr "État de la ligne de repérage inconnu."
 
 #: ../src/fe-gtk/menu.c:1395
 msgid "Retrieve channel list..."
@@ -4327,7 +4329,7 @@ msgstr "Repositionner la ligne de repérage"
 
 #: ../src/fe-gtk/menu.c:1823
 msgid "Move to Marker Line"
-msgstr ""
+msgstr "Aller à la ligne de repérage"
 
 #: ../src/fe-gtk/menu.c:1824
 msgid "_Copy Selection"
@@ -4588,7 +4590,7 @@ msgstr "Le nom d'utilisateur ne peut être vide."
 
 #: ../src/fe-gtk/servlistgui.c:1578
 msgid "You must have two unique nick names."
-msgstr ""
+msgstr "Vous devez avoir deux pseudonymes uniques."
 
 #: ../src/fe-gtk/servlistgui.c:1630
 msgid ""
@@ -5425,7 +5427,7 @@ msgstr "Faire clignoter l'icône de barre d'état"
 
 #: ../src/fe-gtk/setup.c:404
 msgid "Bounce dock icon on:"
-msgstr ""
+msgstr "Faire rebondir l'icône du dock sur :"
 
 #: ../src/fe-gtk/setup.c:407 ../src/fe-gtk/setup.c:453
 msgid "Blink task bar on:"
@@ -5577,7 +5579,7 @@ msgstr "Cacher les messages d'entrée/sortie par défaut."
 
 #: ../src/fe-gtk/setup.c:485
 msgid "Hide nick change messages"
-msgstr ""
+msgstr "Cacher les messages de changement de pseudonyme"
 
 #: ../src/fe-gtk/setup.c:492
 msgid "*!*@*.host"
@@ -5627,7 +5629,7 @@ msgstr "Ajouter automatiquement les informations de couleur"
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
-msgstr "Ajouter automatiquement les informations de couleurs dans les lignes de texte copiées. Sinon, la couleur sera ajouté uniquement si la touche Control est appuyée lors de la sélection."
+msgstr "Ajouter automatiquement les informations de couleurs dans les lignes de texte copiées. Sinon, la couleur sera ajoutée uniquement si la touche Control est appuyée lors de la sélection."
 
 #: ../src/fe-gtk/setup.c:515
 msgid "Real name:"
@@ -5858,7 +5860,7 @@ msgstr "Sélectionner une image"
 
 #: ../src/fe-gtk/setup.c:1088
 msgid "Select Download Folder"
-msgstr "Choisir le dossier pour le réception de fichiers"
+msgstr "Choisir le dossier pour la réception de fichiers"
 
 #: ../src/fe-gtk/setup.c:1098
 msgid "Select font"
@@ -6089,7 +6091,7 @@ msgstr "Tout tester"
 
 #: ../src/fe-gtk/textgui.c:485
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../src/fe-gtk/urlgrab.c:198
 msgid ": URL Grabber"
