@@ -249,7 +249,7 @@ char *
 expand_homedir (char *file)
 {
 #ifndef WIN32
-	char *ret, *user;
+	char *user;
 	struct passwd *pw;
 
 	if (file[0] == '~')
