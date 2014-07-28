@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([HexChat],[2.10.0])
+AC_INIT([HexChat],[2.10.1])
 
 AC_PREREQ([2.60])
 AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
