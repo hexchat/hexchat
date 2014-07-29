@@ -18,11 +18,11 @@
 
 /* IRC RFC1459(+commonly used extensions) protocol implementation */
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdarg.h>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <cctype>
+#include <cstdarg>
 
 #ifndef WIN32
 #include <unistd.h>
@@ -45,6 +45,7 @@
 #include "url.h"
 #include "servlist.h"
 
+namespace {
 static void
 irc_login (server *serv, char *user, char *realname)
 {
@@ -157,7 +158,7 @@ irc_join_list_flush (server *serv, GString *channels, GString *keys, int send_ke
 static void
 irc_join_list (server *serv, GSList *favorites)
 {
-	int first_item = 1;										/* determine whether we add commas or not */
+	bool first_item = true;										/* determine whether we add commas or not */
 	int send_keys = 0;										/* if none of our channels have keys, we can omit the 'x' fillers altogether */
 	int len = 9;											/* JOIN<space>channels<space>keys\r\n\0 */
 	favchannel *fav;
@@ -185,7 +186,7 @@ irc_join_list (server *serv, GSList *favorites)
 			keylist = g_string_new (NULL);
 
 			len = 9;
-			first_item = 1;									/* list dumped, omit commas once again */
+			first_item = true;									/* list dumped, omit commas once again */
 			send_keys = 0;									/* also omit keys until we actually find one */
 		}
 
@@ -214,7 +215,7 @@ irc_join_list (server *serv, GSList *favorites)
 			g_string_append_c (keylist, 'x');				/* 'x' filler for keyless channels so that our JOIN command is always well-formatted */
 		}
 
-		first_item = 0;
+		first_item = false;
 		favlist = favlist->next;
 	}
 
@@ -1568,6 +1569,7 @@ irc_inline (server *serv, char *buf, int len)
 xit:
 	if (pdibuf != pdibuf_static)
 		free (pdibuf);
+}
 }
 
 void
