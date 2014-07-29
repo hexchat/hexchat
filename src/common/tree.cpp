@@ -26,9 +26,8 @@ a tree, but it could be :)
 #include <vector>
 #include <algorithm>
 
-extern "C"{
+
 #include "tree.h"
-}
 
 static const int ARRAY_GROW = 32;
 

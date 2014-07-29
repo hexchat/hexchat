@@ -34,7 +34,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #endif
-extern "C"{
+
 #include "hexchat.h"
 #include "cfgfiles.h"
 #include "chanopt.h"
@@ -46,7 +46,7 @@ extern "C"{
 #include "hexchatc.h"
 #include "text.h"
 #include "typedef.h"
-}
+
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
