@@ -100,7 +100,7 @@ GSList *tabmenu_list = 0;
  * beginning of one of the lists.  The aim is to be able to switch to the
  * session with the most important/recent activity.
  */
-GList *sess_list_by_lastact[5] = {NULL, NULL, NULL, NULL, NULL};
+GList *sess_list_by_lastact[5] = {nullptr, nullptr, nullptr, nullptr, nullptr};
 
 
 static int in_hexchat_exit = FALSE;
@@ -108,9 +108,9 @@ int hexchat_is_quitting = FALSE;
 /* command-line args */
 int arg_dont_autoconnect = FALSE;
 int arg_skip_plugins = FALSE;
-char *arg_url = NULL;
-char **arg_urls = NULL;
-char *arg_command = NULL;
+char *arg_url = nullptr;
+char **arg_urls = nullptr;
+char *arg_command = nullptr;
 gint arg_existing = FALSE;
 
 #ifdef USE_DBUS
@@ -124,7 +124,7 @@ struct hexchatprefs prefs;
 
 
 #ifdef USE_OPENSSL
-SSL_CTX *ctx = NULL;
+SSL_CTX *ctx = nullptr;
 #endif
 
 #ifdef USE_LIBPROXY
@@ -177,7 +177,7 @@ session *
 lastact_getfirst(int (*filter) (session *sess))
 {
 	int i;
-	session *sess = NULL;
+	session *sess = nullptr;
 	GList *curitem;
 
 	/* 5 is the number of priority classes LACT_ */
@@ -189,7 +189,7 @@ lastact_getfirst(int (*filter) (session *sess))
 			sess = static_cast<session*>(g_list_nth_data(curitem, 0));
 			if (!sess || (filter && !filter(sess)))
 			{
-				sess = NULL;
+				sess = nullptr;
 				curitem = g_list_next(curitem);
 			}
 		}
@@ -287,8 +287,8 @@ lag_check (void)
 			if (prefs.hex_net_ping_timeout && lag > prefs.hex_net_ping_timeout && lag > 0)
 			{
 				sprintf (tbuf, "%d", lag);
-				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, NULL,
-								 NULL, NULL, 0);
+				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, nullptr,
+								 nullptr, nullptr, 0);
 				if (prefs.hex_net_auto_reconnect)
 					serv->auto_reconnect (serv, FALSE, -1);
 			} else
@@ -417,7 +417,7 @@ irc_init (session *sess)
 
 	done_init = true;
 
-	plugin_add(sess, NULL, NULL, timer_plugin_init, timer_plugin_deinit, NULL, FALSE);
+	plugin_add(sess, nullptr, nullptr, timer_plugin_init, timer_plugin_deinit, nullptr, FALSE);
 
 #ifdef USE_PLUGIN
 	if (!arg_skip_plugins)
@@ -425,7 +425,7 @@ irc_init (session *sess)
 #endif
 
 #ifdef USE_DBUS
-	plugin_add (sess, NULL, NULL, dbus_plugin_init, NULL, NULL, FALSE);
+	plugin_add (sess, nullptr, nullptr, dbus_plugin_init, nullptr, nullptr, FALSE);
 #endif
 
 	if (prefs.hex_notify_timeout)
@@ -435,7 +435,7 @@ irc_init (session *sess)
 	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, 0);
 	fe_timeout_add (500, hexchat_misc_checks, 0);
 
-	if (arg_url != NULL)
+	if (arg_url != nullptr)
 	{
 		buf = g_strdup_printf ("server %s", arg_url);
 		g_free (arg_url);	/* from GOption */
@@ -443,7 +443,7 @@ irc_init (session *sess)
 		g_free (buf);
 	}
 	
-	if (arg_urls != NULL)
+	if (arg_urls != nullptr)
 	{
 		for (i = 0; i < g_strv_length(arg_urls); i++)
 		{
@@ -454,7 +454,7 @@ irc_init (session *sess)
 		g_strfreev (arg_urls);
 	}
 
-	if (arg_command != NULL)
+	if (arg_command != nullptr)
 	{
 		handle_command (sess, arg_command, FALSE);
 		g_free (arg_command);
@@ -470,9 +470,9 @@ session_new (server *serv, char *from, int type, int focus)
 	session *sess;
 
 	sess = new(std::nothrow) session();// calloc(1, sizeof(struct session));
-	if (sess == NULL)
+	if (sess == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	sess->server = serv;
@@ -511,7 +511,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	case SESS_SERVER:
 		serv = server_new ();
 		if (!serv)
-			return NULL;
+			return nullptr;
 		if (prefs.hex_gui_tab_server)
 			sess = session_new (serv, name, SESS_SERVER, focus);
 		else
@@ -519,7 +519,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 		if (!sess)
 		{
 			server_free(serv);
-			return NULL;
+			return nullptr;
 		}
 		serv->server_session = sess;
 		serv->front_session = sess;
@@ -527,7 +527,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	case SESS_DIALOG:
 		sess = session_new (serv, name, type, focus);
 		if (!sess)
-			return NULL;
+			return nullptr;
 		log_open_or_close (sess);
 		break;
 	default:
@@ -536,7 +536,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	case SESS_SNOTICES:*/
 		sess = session_new (serv, name, type, focus);
 		if (!sess)
-			return NULL;
+			return nullptr;
 		break;
 	}
 
@@ -555,12 +555,12 @@ exec_notify_kill (session * sess)
 {
 #ifndef WIN32
 	struct nbexec *re;
-	if (sess->running_exec != NULL)
+	if (sess->running_exec != nullptr)
 	{
 		re = sess->running_exec;
-		sess->running_exec = NULL;
+		sess->running_exec = nullptr;
 		kill (re->childpid, SIGKILL);
-		waitpid (re->childpid, NULL, WNOHANG);
+		waitpid (re->childpid, nullptr, WNOHANG);
 		fe_input_remove (re->iotag);
 		close (re->myfd);
 		free(re->linebuf);
@@ -625,15 +625,15 @@ session_free (session *killsess)
 	plugin_emit_dummy_print (killsess, "Close Context");
 
 	if (current_tab == killsess)
-		current_tab = NULL;
+		current_tab = nullptr;
 
 	if (killserv->server_session == killsess)
-		killserv->server_session = NULL;
+		killserv->server_session = nullptr;
 
 	if (killserv->front_session == killsess)
 	{
 		/* front_session is closed, find a valid replacement */
-		killserv->front_session = NULL;
+		killserv->front_session = nullptr;
 		list = sess_list;
 		while (list)
 		{
@@ -677,7 +677,7 @@ session_free (session *killsess)
 
 	if (current_sess == killsess)
 	{
-		current_sess = NULL;
+		current_sess = nullptr;
 		if (sess_list)
 			current_sess = static_cast<session*>(sess_list->data);
 	}
@@ -788,7 +788,7 @@ sigusr2_handler (int signal, siginfo_t *si, void *un)
 static gint
 xchat_auto_connect (gpointer userdata)
 {
-	servlist_auto_connect (NULL);
+	servlist_auto_connect (nullptr);
 	return 0;
 }
 
@@ -796,7 +796,7 @@ static void
 xchat_init (void)
 {
 	char buf[3068];
-	const char *cs = NULL;
+	const char *cs = nullptr;
 
 #ifdef WIN32
 	WSADATA wsadata;
@@ -804,7 +804,7 @@ xchat_init (void)
 #ifdef USE_IPV6
 	if (WSAStartup(0x0202, &wsadata) != 0)
 	{
-		MessageBoxW (NULL, L"Cannot find winsock 2.2+", L"Error", MB_OK);
+		MessageBoxW (nullptr, L"Cannot find winsock 2.2+", L"Error", MB_OK);
 		exit (0);
 	}
 #else
@@ -819,18 +819,18 @@ xchat_init (void)
 	act.sa_handler = SIG_IGN;
 	act.sa_flags = 0;
 	sigemptyset (&act.sa_mask);
-	sigaction (SIGPIPE, &act, NULL);
+	sigaction (SIGPIPE, &act, nullptr);
 
 	/* Deal with SIGUSR1's & SIGUSR2's */
 	act.sa_sigaction = sigusr1_handler;
 	act.sa_flags = 0;
 	sigemptyset (&act.sa_mask);
-	sigaction (SIGUSR1, &act, NULL);
+	sigaction (SIGUSR1, &act, nullptr);
 
 	act.sa_sigaction = sigusr2_handler;
 	act.sa_flags = 0;
 	sigemptyset (&act.sa_mask);
-	sigaction (SIGUSR2, &act, NULL);
+	sigaction (SIGUSR2, &act, nullptr);
 #else
 #ifndef WIN32
 	/* good enough for these old systems */
@@ -946,7 +946,7 @@ xchat_init (void)
 				_("Ping"));
 	list_loadconf ("dlgbuttons.conf", &dlgbutton_list, buf);
 
-	list_loadconf ("tabmenu.conf", &tabmenu_list, NULL);
+	list_loadconf ("tabmenu.conf", &tabmenu_list, nullptr);
 	list_loadconf ("ctcpreply.conf", &ctcp_list, defaultconf_ctcp);
 	list_loadconf ("commands.conf", &command_list, defaultconf_commands);
 	list_loadconf ("replace.conf", &replace_list, defaultconf_replace);
@@ -957,7 +957,7 @@ xchat_init (void)
 
 	/* if we got a URL, don't open the server list GUI */
 	if (!prefs.hex_gui_slist_skip && !arg_url && !arg_urls)
-		fe_serverlist_open (NULL);
+		fe_serverlist_open (nullptr);
 
 	/* turned OFF via -a arg or by passing urls */
 	if (!arg_dont_autoconnect && !arg_urls)
@@ -968,15 +968,15 @@ xchat_init (void)
 			/* and no serverlist gui ... */
 			if (prefs.hex_gui_slist_skip || arg_url || arg_urls)
 				/* we'll have to open one. */
-				new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+				new_ircwindow (nullptr, nullptr, SESS_SERVER, 0);
 		} else
 		{
-			fe_idle_add (xchat_auto_connect, NULL);
+			fe_idle_add (xchat_auto_connect, nullptr);
 		}
 	} else
 	{
 		if (prefs.hex_gui_slist_skip || arg_url || arg_urls)
-			new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+			new_ircwindow (nullptr, nullptr, SESS_SERVER, 0);
 	}
 }
 
@@ -991,7 +991,7 @@ hexchat_exit (void)
 	save_config ();
 	if (prefs.save_pevents)
 	{
-		pevent_save (NULL);
+		pevent_save (nullptr);
 	}
 
 	sound_save ();
