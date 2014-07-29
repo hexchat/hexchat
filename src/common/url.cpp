@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
 #include "hexchat.h"
 #include "hexchatc.h"
 #include "cfgfiles.h"
