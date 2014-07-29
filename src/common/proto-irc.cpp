@@ -169,7 +169,7 @@ irc_join_list (server *serv, GSList *favorites)
 
 	while (favlist)
 	{
-		fav = favlist->data;
+		fav = static_cast<favchannel*>(favlist->data);
 
 		len += strlen (fav->name);
 		if (fav->key)
@@ -1487,7 +1487,7 @@ irc_inline (server *serv, char *buf, int len)
 
 	/* need more than 522? fall back to malloc */
 	if (len >= sizeof (pdibuf_static))
-		pdibuf = malloc (len + 1);
+		pdibuf = static_cast<char*>(malloc (len + 1));
 
 	sess = serv->front_session;
 

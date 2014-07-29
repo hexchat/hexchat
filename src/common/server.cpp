@@ -49,7 +49,6 @@ extern "C"{
 #include <sys/wait.h>
 #include <unistd.h>
 #endif
-extern "C"{
 #include "hexchat.h"
 #include "fe.h"
 #include "cfgfiles.h"
@@ -64,7 +63,7 @@ extern "C"{
 #include "proto-irc.h"
 #include "servlist.h"
 #include "server.h"
-}
+
 
 #ifdef USE_OPENSSL
 extern "C"{
