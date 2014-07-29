@@ -60,8 +60,8 @@ url_free (char *url, void *data)
 void
 url_clear (void)
 {
-	tree_foreach (url_tree, (tree_traverse_func *)url_free, NULL);
-	tree_destroy (url_tree);
+	tree_foreach (static_cast<tree*>(url_tree), (tree_traverse_func *)url_free, NULL);
+	tree_destroy (static_cast<tree*>(url_tree));
 	url_tree = NULL;
 	g_tree_destroy (url_btree);
 	url_btree = NULL;
@@ -86,7 +86,7 @@ url_save_tree (const char *fname, const char *mode, gboolean fullpath)
 	if (fd == NULL)
 		return;
 
-	tree_foreach (url_tree, (tree_traverse_func *)url_save_cb, fd);
+	tree_foreach (static_cast<tree*>(url_tree), (tree_traverse_func *)url_save_cb, fd);
 	fclose (fd);
 }
 
@@ -124,7 +124,7 @@ url_add (char *urltext, int len)
 		return;
 	}
 
-	data = malloc (len + 1);
+	data = static_cast<char*>(malloc (len + 1));
 	if (!data)
 	{
 		return;
@@ -167,7 +167,7 @@ url_add (char *urltext, int len)
 		return;
 	}
 
-	size = tree_size (url_tree);
+	size = tree_size (static_cast<tree*>(url_tree));
 	/* 0 is unlimited */
 	if (prefs.hex_url_grabber_limit > 0 && size >= prefs.hex_url_grabber_limit)
 	{
@@ -178,14 +178,14 @@ url_add (char *urltext, int len)
 		{
 			char *pos;
 
-			pos = tree_remove_at_pos (url_tree, 0);
+			pos = static_cast<char*>(tree_remove_at_pos(static_cast<tree*>(url_tree), 0));
 			g_tree_remove (url_btree, pos);
 			free (pos);
 		}
 	}
 
-	tree_append (url_tree, data);
-	g_tree_insert (url_btree, data, GINT_TO_POINTER (tree_size (url_tree) - 1));
+	tree_append(static_cast<tree*>(url_tree), data);
+	g_tree_insert(url_btree, data, GINT_TO_POINTER(tree_size(static_cast<tree*>(url_tree))-1));
 	fe_url_add (data);
 }
 
@@ -368,7 +368,7 @@ url_check_line (char *buf, int len)
 		return;
 	po++;
 
-	g_regex_match(re_url(), po, 0, &gmi);
+	g_regex_match(re_url(), po, static_cast<GRegexMatchFlags>(0), &gmi);
 	while (g_match_info_matches(gmi))
 	{
 		int start, end;
@@ -395,7 +395,7 @@ regex_match (const GRegex *re, const char *word, int *start, int *end)
 {
 	GMatchInfo *gmi;
 
-	g_regex_match (re, word, 0, &gmi);
+	g_regex_match (re, word, static_cast<GRegexMatchFlags>(0), &gmi);
 	
 	if (!g_match_info_matches (gmi))
 	{
@@ -434,7 +434,7 @@ make_re (char *grist)
 	GRegex *ret;
 	GError *err = NULL;
 
-	ret = g_regex_new (grist, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, 0, &err);
+	ret = g_regex_new(grist, static_cast<GRegexCompileFlags>(G_REGEX_CASELESS | G_REGEX_OPTIMIZE), static_cast<GRegexMatchFlags>(0), &err);
 
 	return ret;
 }
