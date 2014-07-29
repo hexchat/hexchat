@@ -17,9 +17,10 @@
  */
 
 #include <fcntl.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <string>
+#include <cstdlib>
+#include <cstring.>
+#include <cstdio>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -65,7 +66,7 @@ list_addentry (GSList ** list, char *cmd, char *name)
 		cmd_len = strlen (cmd) + 1;
 	name_len = strlen (name) + 1;
 
-	pop = malloc (sizeof (struct popup) + cmd_len + name_len);
+	pop = static_cast<popup*>(malloc (sizeof (struct popup) + cmd_len + name_len));
 	pop->name = (char *) pop + sizeof (struct popup);
 	pop->cmd = pop->name + name_len;
 
@@ -141,7 +142,7 @@ list_loadconf (const char *file, GSList ** list, const char *defaultconf)
 		abort ();
 	}
 
-	ibuf = malloc (st.st_size);
+	ibuf = static_cast<char*>(malloc (st.st_size));
 	read (fd, ibuf, st.st_size);
 	close (fd);
 
@@ -316,7 +317,7 @@ get_xdir (void)
 		wchar_t* roaming_path_wide;
 		gchar* roaming_path;
 
-		if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_RoamingAppData, 0, NULL, &roaming_path_wide) != S_OK)
+		if (portable_mode () || SHGetKnownFolderPath (FOLDERID_RoamingAppData, 0, NULL, &roaming_path_wide) != S_OK)
 		{
 			char *path;
 			char file[MAX_PATH];
@@ -334,7 +335,7 @@ get_xdir (void)
 		}
 		else
 		{
-			roaming_path = g_utf16_to_utf8 (roaming_path_wide, -1, NULL, NULL, NULL);
+			roaming_path = g_utf16_to_utf8 ((const gunichar2*)roaming_path_wide, -1, NULL, NULL, NULL);
 			CoTaskMemFree (roaming_path_wide);
 
 			xdir = g_build_filename (roaming_path, "HexChat", NULL);
@@ -615,7 +616,7 @@ convert_with_fallback (const char *str, const char *fallback)
 		utf = g_strdup (fallback);
 #else
 	/* On Windows, they return a string in utf-8, so don't do anything to it. The fallback isn't needed. */
-	utf = str;
+	utf = g_strdup(str);
 #endif
 
 	return utf;
@@ -700,13 +701,17 @@ get_default_spell_languages (void)
 						g_strlcat (lang_list, ",", sizeof(lang_list));
 					}
 
+					std::string lang_without_utf8(langs[i]);
+					size_t location = lang_without_utf8.find_last_of('.');
+					if (location > 0)
+						lang_without_utf8[location] = '\0';
 					/* ignore .utf8 */
-					if ((p = strchr (langs[i], '.')))
-						*p='\0';
+					/*if ((p = strchr (langs[i], '.')))
+						*p='\0';*/
 
-					last = g_strndup (langs[i], 2);
+					last = g_strndup (lang_without_utf8.c_str(), 2);
 
-					g_strlcat (lang_list, langs[i], sizeof(lang_list));
+					g_strlcat (lang_list, lang_without_utf8.c_str(), sizeof(lang_list));
 				}
 			}
 		}
@@ -852,13 +857,13 @@ load_default_config(void)
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.hex_completion_suffix, ",");
 #ifdef WIN32
-	if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_Downloads, 0, NULL, &roaming_path_wide) != S_OK)
+	if (portable_mode () || SHGetKnownFolderPath (FOLDERID_Downloads, 0, NULL, &roaming_path_wide) != S_OK)
 	{
 		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
 	}
 	else
 	{
-		roaming_path = g_utf16_to_utf8 (roaming_path_wide, -1, NULL, NULL, NULL);
+		roaming_path = g_utf16_to_utf8 ((const gunichar2*)roaming_path_wide, -1, NULL, NULL, NULL);
 		CoTaskMemFree (roaming_path_wide);
 
 		g_strlcpy (prefs.hex_dcc_dir, roaming_path, sizeof (prefs.hex_dcc_dir));
