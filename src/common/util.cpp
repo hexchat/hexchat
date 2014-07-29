@@ -25,7 +25,9 @@
 #include <sstream>
 #include <algorithm>
 #include <string>
+#include <functional>
 #include <unordered_map>
+#include <locale>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -35,7 +37,6 @@
 
 #ifdef WIN32
 #include <sys/timeb.h>
-#include <process.h>
 #include <io.h>
 #include <VersionHelpers.h>
 #else
@@ -50,7 +51,6 @@
 #include <cerrno>
 #include "hexchat.h"
 #include "hexchatc.h"
-#include <cctype>
 #include "util.h"
 
 #if defined (USING_FREEBSD) || defined (__APPLE__)
@@ -286,7 +286,7 @@ expand_homedir (char *file)
 }
 
 gchar *
-strip_color (const char *text, int len, int flags)
+strip_color(const char *text, int len, strip_flags flags)
 {
 	char *new_str;
 
@@ -309,7 +309,7 @@ strip_color (const char *text, int len, int flags)
 /* CL: strip_color2 strips src and writes the output at dst; pass the same pointer
 	in both arguments to strip in place. */
 int
-strip_color2 (const char *src, int len, char *dst, int flags)
+strip_color2 (const char *src, int len, char *dst, strip_flags flags)
 {
 	int rcol = 0, bgcol = 0;
 	char *start = dst;
@@ -1085,9 +1085,11 @@ country (const char *hostname)
 		p++;
 	else
 		p = hostname;
+
+	auto upper = std::bind(std::toupper<char>, std::placeholders::_1, std::locale());
 	std::string lowercased_domain(p);
 	std::string uppercased_domain(lowercased_domain.length(), '\0');
-	std::transform(lowercased_domain.cbegin(), lowercased_domain.cend(), uppercased_domain.begin(), std::toupper);
+	std::transform(lowercased_domain.cbegin(), lowercased_domain.cend(), uppercased_domain.begin(), upper);
 	auto dom = domain.find(uppercased_domain);
 
 	if (dom == domain.cend())

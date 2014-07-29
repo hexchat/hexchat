@@ -54,13 +54,20 @@ const char *country (const char *);
 void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
 char *get_sys_str (int with_cpu);
 void util_exec (const char *cmd);
-#define STRIP_COLOR 1
-#define STRIP_ATTRIB 2
-#define STRIP_HIDDEN 4
-#define STRIP_ESCMARKUP 8
-#define STRIP_ALL 7
-gchar *strip_color (const char *text, int len, int flags);
-int strip_color2 (const char *src, int len, char *dst, int flags);
+typedef enum{
+	STRIP_COLOR = 1,
+    STRIP_ATTRIB = 2,
+	STRIP_HIDDEN = 4,
+	STRIP_ESCMARKUP = 8,
+	STRIP_ALL = 7
+} strip_flags;
+//#define STRIP_COLOR 1
+//#define STRIP_ATTRIB 2
+//#define STRIP_HIDDEN 4
+//#define STRIP_ESCMARKUP 8
+//#define STRIP_ALL 7
+gchar *strip_color (const char *text, int len, strip_flags flags);
+int strip_color2(const char *src, int len, char *dst, strip_flags flags);
 int strip_hidden_attribute (char *src, char *dst);
 char *errorstring (int err);
 int waitline (int sok, char *buf, int bufsize, int);

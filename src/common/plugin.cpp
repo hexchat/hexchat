@@ -1742,7 +1742,7 @@ hexchat_send_modes (hexchat_plugin *ph, const char **targets, int ntargets, int 
 char *
 hexchat_strip (hexchat_plugin *ph, const char *str, int len, int flags)
 {
-	return strip_color ((char *)str, len, flags);
+	return strip_color ((char *)str, len, static_cast<strip_flags>(flags));
 }
 
 void
