@@ -43,9 +43,9 @@
 extern "C" {
 #endif
 
-typedef struct _hexchat_plugin hexchat_plugin;
-typedef struct _hexchat_list hexchat_list;
-typedef struct _hexchat_hook hexchat_hook;
+typedef struct t_hexchat_plugin hexchat_plugin;
+typedef struct t_hexchat_list hexchat_list;
+typedef struct t_hexchat_hook hexchat_hook;
 #ifndef PLUGIN_C
 typedef struct _hexchat_context hexchat_context;
 #endif
@@ -55,7 +55,7 @@ typedef struct
 } hexchat_event_attrs;
 
 #ifndef PLUGIN_C
-struct _hexchat_plugin
+struct t_hexchat_plugin
 {
 	/* these are only used on win32 */
 	hexchat_hook *(*hexchat_hook_command) (hexchat_plugin *ph,

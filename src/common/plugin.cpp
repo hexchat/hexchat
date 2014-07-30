@@ -30,7 +30,6 @@
 #include <unistd.h>
 #endif
 
-extern "C" {
 #include "hexchat.h"
 #include "fe.h"
 #include "util.h"
@@ -51,7 +50,7 @@ typedef struct session hexchat_context;
 
 
 #include "hexchatc.h"
-}
+
 /* the USE_PLUGIN define only removes libdl stuff */
 
 #ifdef USE_PLUGIN
@@ -61,7 +60,7 @@ typedef struct session hexchat_context;
 #define DEBUG(x) {x;}
 
 /* crafted to be an even 32 bytes */
-struct _hexchat_hook
+struct t_hexchat_hook
 {
 	hexchat_plugin *pl;	/* the plugin to which it belongs */
 	char *name;			/* "xdcc" */
@@ -73,7 +72,7 @@ struct _hexchat_hook
 	int pri;	/* fd */	/* priority / fd for HOOK_FD only */
 };
 
-struct _hexchat_list
+struct t_hexchat_list
 {
 	int type;			/* LIST_* */
 	GSList *pos;		/* current pos */

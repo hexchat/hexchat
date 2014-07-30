@@ -25,7 +25,7 @@ extern "C" {
 #endif
 
 #ifdef PLUGIN_C
-struct _hexchat_plugin
+struct t_hexchat_plugin
 {
 	/* Keep these in sync with hexchat-plugin.h */
 	/* !!don't change the order, to keep binary compat!! */
