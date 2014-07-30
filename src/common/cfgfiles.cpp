@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <string>
 #include <cstdlib>
-#include <cstring.>
+#include <cstring>
 #include <cstdio>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -368,7 +368,7 @@ default_file (void)
 
 /* Keep these sorted!! */
 
-const struct prefs vars[] =
+struct prefs vars[] =
 {
 	{"away_auto_unmark", P_OFFINT (hex_away_auto_unmark), TYPE_BOOL},
 	{"away_omit_alerts", P_OFFINT (hex_away_omit_alerts), TYPE_BOOL},
@@ -681,7 +681,7 @@ get_default_spell_languages (void)
 {
 	const gchar* const *langs = g_get_language_names ();
 	char *last = NULL;
-	char *p;
+	//char *p;
 	char lang_list[64] = { 0 };
 	char *ret = lang_list;
 	int i;

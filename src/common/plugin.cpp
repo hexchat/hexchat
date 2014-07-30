@@ -121,7 +121,7 @@ enum
 extern "C"{ GSList *plugin_list = NULL; } /* export for plugingui.c */
 static GSList *hook_list = NULL;
 
-extern "C" const struct prefs vars[];	/* cfgfiles.c */
+extern struct prefs vars[];	/* cfgfiles.c */
 
 
 /* unload a plugin and remove it from our linked list */
