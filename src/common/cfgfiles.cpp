@@ -701,13 +701,11 @@ get_default_spell_languages (void)
 						g_strlcat (lang_list, ",", sizeof(lang_list));
 					}
 
+					/* ignore .utf8 */
 					std::string lang_without_utf8(langs[i]);
 					size_t location = lang_without_utf8.find_last_of('.');
 					if (location > 0)
 						lang_without_utf8[location] = '\0';
-					/* ignore .utf8 */
-					/*if ((p = strchr (langs[i], '.')))
-						*p='\0';*/
 
 					last = g_strndup (lang_without_utf8.c_str(), 2);
 
