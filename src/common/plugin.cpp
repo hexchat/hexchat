@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <new>
 #include <vector>
 #include <cstdlib>
 #include <cstring>
@@ -120,6 +121,7 @@ enum
 extern "C"{ GSList *plugin_list = NULL; } /* export for plugingui.c */
 static GSList *hook_list = NULL;
 
+
 extern struct prefs vars[];	/* cfgfiles.c */
 
 
@@ -170,11 +172,11 @@ xit:
 		if (pl->version)
 			free (pl->version);
 	}
-	if (pl->filename)
-		free ((char *)pl->filename);
-	free (pl);
-
+	free ((char *)pl->filename);
+	
 	plugin_list = g_slist_remove (plugin_list, pl);
+
+	delete pl;
 
 #ifdef USE_PLUGIN
 	fe_pluginlist_update ();
@@ -190,13 +192,13 @@ plugin_list_add (hexchat_context *ctx, char *filename, const char *name,
 {
 	hexchat_plugin *pl;
 
-	pl = static_cast<hexchat_plugin*>(calloc (1, sizeof (hexchat_plugin)));
+	pl = new(std::nothrow) hexchat_plugin();// static_cast<hexchat_plugin*>(calloc(1, sizeof(hexchat_plugin)));
 	pl->handle = handle;
 	pl->filename = filename;
 	pl->context = ctx;
-	pl->name = (char *)name;
-	pl->desc = (char *)desc;
-	pl->version = (char *)version;
+	pl->name = const_cast<char *>(name);
+	pl->desc = const_cast<char *>(desc);
+	pl->version = const_cast<char *>(version);
 	pl->deinit_callback = deinit_func;
 	pl->fake = fake;
 	pl->free_strings = free_strings;	/* free() name,desc,version? */
