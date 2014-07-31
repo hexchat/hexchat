@@ -114,6 +114,18 @@ static const struct defaultserver def[] =
 	{0,			"uk2.arcnet.vapor.com"},
 	{0,			"fr1.arcnet.vapor.com"},
 
+	{"ASoTNet", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_IPV6
+#ifdef USE_OPENSSL
+	{0,			"irc6.aseriesoftubez.com/+6697"),
+#endif
+	{0,			"irc6.aseriesoftubez.com"},
+#endif
+#ifdef USE_OPENSSL
+	{0,			"irc.aseriesoftubez.com/+6697"},
+#endif
+	{0,			"irc.aseriesoftubez.com"},
+
 	{"AustNet",	0},
 	{0,			"au.austnet.org"},
 	{0,			"us.austnet.org"},
@@ -224,6 +236,18 @@ static const struct defaultserver def[] =
 
 	{"FEFNet", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.fef.net"},
+
+	{"FireIRC", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_IPV6
+#ifdef USE_OPENSSL
+	{0,			"irc6.fireirc.co/+6697"),
+#endif
+	{0,			"irc6.fireirc.co"},
+#endif
+#ifdef USE_OPENSSL
+	{0,			"irc.fireirc.co/+6697"},
+#endif
+	{0,			"irc.fireirc.co"},
 
 	{"freenode", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
