@@ -2,7 +2,8 @@
 <app-bundle>
 
   <meta>
-    <prefix name="default">${env:JHBUILD_PREFIX}</prefix>
+    <prefix name="default">/usr/local</prefix>
+    <prefix name="enchant">/usr/local/opt/enchant-applespell</prefix>
     <destination overwrite="yes">${project}</destination>
 
     <run-install-name-tool/>
@@ -21,24 +22,11 @@
   </binary>
 
   <binary>
-    ${prefix}/lib/libenchant.dylib
+    ${prefix:enchant}/lib/libenchant.dylib
   </binary>
   <binary>
-    ${prefix}/lib/enchant/libenchant_applespell.so
+    ${prefix:enchant}/lib/enchant/libenchant_applespell.so
   </binary>
-
-  <binary dest="${bundle}/Contents/MacOS">
-    ${prefix}/bin/python
-  </binary>
-  <binary>
-    ${prefix}/lib/libpython2.7.dylib
-  </binary>
-  <data>
-    ${prefix}/lib/python2.7/
-  </data>
-  <data>
-    ${prefix}/include/python2.7/pyconfig.h
-  </data>
 
   <binary>
     ${prefix}/lib/${gtkdir}/modules/*.so
@@ -59,7 +47,7 @@
     ${prefix}/lib/pango/${pkg:pango:pango_module_version}/modules/
   </binary>
   <data>
-    ${prefix}/share/themes/Mac/
+    ${prefix}/share/themes/Mac/gtk-2.0-key/gtkrc
   </data>
 
   <translations name="gtk20">
@@ -76,8 +64,5 @@
   <data dest="${bundle}/Contents/Resources">
     ${project}/hexchat.icns
   </data>
-
-  <!-- icon-theme icons="none">
-  </icon-theme -->
 
 </app-bundle>
