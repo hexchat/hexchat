@@ -30,17 +30,13 @@
 #endif
 #include "../../config.h"
 #include <string>
+#include <iterator>
 #include <iostream>
 #include <sstream>
+#include <memory>
 #include <ctime>				  /* asctime() */
 #include <cstring>				  /* strncpy() */
 #include "ssl.hpp"				  /* struct cert_info */
-
-#ifndef HAVE_SNPRINTF
-#include <glib.h>
-#include <glib/gprintf.h>
-#define snprintf g_snprintf
-#endif
 
 /* globals */
 static struct chiper_info chiper_info;		/* static buffer for _SSL_get_cipher_info() */
@@ -48,31 +44,28 @@ static char err_buf[256];			/* generic error buffer */
 
 
 /* +++++ Internal functions +++++ */
-
+namespace {
 static std::string
 __SSL_fill_err_buf (const std::string & funcname)
 {
-	int err;
 	char buf[256] = { 0 };
-	err = ERR_get_error ();
+	unsigned long err = ERR_get_error ();
 	ERR_error_string_n (err, buf, sizeof(buf));
 
-	std::ostringstream stream;
-	stream << funcname << ": " << buf << " (" << err << ")\n";
-	snprintf (err_buf, sizeof (err_buf), "%s: %s (%d)\n", funcname.c_str(), buf, err);
-	return stream.str();
+	std::ostringstream stream(funcname);
+	stream << ": " << buf << " (" << err << ")\n";
+	auto err_string = stream.str();
+	std::copy(err_string.cbegin(), err_string.cend(), std::begin(err_buf));
+	return err_string;
 }
 
-
 static void
-__SSL_critical_error (char *funcname)
+__SSL_critical_error (const std::string & funcname)
 {
-	auto err_string = __SSL_fill_err_buf (funcname);
-	
-	std::cerr << err_string << std::endl;
-	//fprintf (stderr, "%s\n", err_buf);
+	std::cerr << __SSL_fill_err_buf(funcname) << std::endl;
 
-	exit (1);
+	std::exit (1);
+}
 }
 
 /* +++++ SSL functions +++++ */
@@ -106,22 +99,24 @@ _SSL_context_init (void (*info_cb_func), int server)
 
 	return(ctx);
 }
+namespace {
 
-static void
-ASN1_TIME_snprintf (char *buf, int buf_len, ASN1_TIME * tm)
+auto bio_deleter = [](BIO* d){ BIO_free(d); };
+static std::string
+ASN1_TIME_snprintf (ASN1_TIME * tm)
 {
-	char *expires = NULL;
-	BIO *inMem = BIO_new (BIO_s_mem ());
+	char *expires = nullptr;
+	std::unique_ptr<BIO, decltype(bio_deleter)> inMem(BIO_new (BIO_s_mem ()), bio_deleter);
 
-	ASN1_TIME_print (inMem, tm);
-	BIO_get_mem_data (inMem, &expires);
-	buf[0] = 0;
-	if (expires != NULL)
+	ASN1_TIME_print (inMem.get(), tm);
+	BIO_get_mem_data (inMem.get(), &expires);
+	std::string buf;
+	if (expires)
 	{
-		memset (buf, 0, buf_len);
-		strncpy (buf, expires, 24);
+		buf.append(expires, 24);
+		//strncpy (buf, expires, 24);
 	}
-	BIO_free (inMem);
+	return buf;
 }
 
 
@@ -143,7 +138,7 @@ broke_oneline (char *oneline, char *parray[])
 	parray[i++] = ppt;
 	parray[i] = NULL;
 }
-
+}
 
 /*
     FIXME: Master-Key, Extensions, CA bits
@@ -156,8 +151,6 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 	EVP_PKEY *peer_pkey;
 	/* EVP_PKEY *ca_pkey; */
 	/* EVP_PKEY *tmp_pkey; */
-	char notBefore[64];
-	char notAfter[64];
 	int alg;
 	int sign_alg;
 
@@ -174,10 +167,8 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 
 	alg = OBJ_obj2nid (peer_cert->cert_info->key->algor->algorithm);
 	sign_alg = OBJ_obj2nid (peer_cert->sig_alg->algorithm);
-	ASN1_TIME_snprintf (notBefore, sizeof (notBefore),
-							  X509_get_notBefore (peer_cert));
-	ASN1_TIME_snprintf (notAfter, sizeof (notAfter),
-							  X509_get_notAfter (peer_cert));
+	auto notBefore = ASN1_TIME_snprintf (X509_get_notBefore (peer_cert));
+	auto notAfter = ASN1_TIME_snprintf (X509_get_notAfter (peer_cert));
 
 	peer_pkey = X509_get_pubkey (peer_cert);
 
@@ -190,8 +181,8 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 				sizeof (cert_info->sign_algorithm));
 	/* EVP_PKEY_bits(ca_pkey)); */
 	cert_info->sign_algorithm_bits = 0;
-	strncpy (cert_info->notbefore, notBefore, sizeof (cert_info->notbefore));
-	strncpy (cert_info->notafter, notAfter, sizeof (cert_info->notafter));
+	std::copy(notBefore.cbegin(), notBefore.cend(), std::begin(cert_info->notbefore));
+	std::copy(notAfter.cbegin(), notAfter.cend(), std::begin(cert_info->notafter));
 
 	EVP_PKEY_free (peer_pkey);
 
@@ -242,10 +233,7 @@ _SSL_send (SSL * ssl, char *buf, int len)
 	{
 	case SSL_ERROR_SSL:			  /* setup errno! */
 		/* ??? */
-	{
-		auto err_string = __SSL_fill_err_buf("SSL_write");
-		std::cerr << err_string << std::endl;
-	}
+		std::cerr << __SSL_fill_err_buf("SSL_write") << std::endl;
 		break;
 	case SSL_ERROR_SYSCALL:
 		/* ??? */
@@ -272,8 +260,7 @@ _SSL_recv (SSL * ssl, char *buf, int len)
 	{
 	case SSL_ERROR_SSL:
 		/* ??? */
-		__SSL_fill_err_buf ("SSL_read");
-		fprintf (stderr, "%s\n", err_buf);
+		std::cerr << __SSL_fill_err_buf("SSL_read") << std::endl;
 		break;
 	case SSL_ERROR_SYSCALL:
 		/* ??? */
