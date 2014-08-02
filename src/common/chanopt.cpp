@@ -19,13 +19,13 @@
 
 /* per-channel/dialog settings :: /CHANOPT */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <errno.h>
+#include <cerrno>
 
 #ifdef WIN32
 #include <io.h>
@@ -34,6 +34,7 @@
 #endif
 
 #include "hexchat.h"
+#include "chanopt.h"
 
 #include "cfgfiles.h"
 #include "server.h"
@@ -58,14 +59,14 @@ typedef struct
 
 static const channel_options chanopt[] =
 {
-	{ .name = "alert_beep", .alias = "BEEP", .offset = S_F(alert_beep)},
-	{ .name = "alert_taskbar", .offset = S_F(alert_taskbar) },
-	{ .name = "alert_tray", .alias = "TRAY", .offset = S_F(alert_tray) },
+	{ "alert_beep",  "BEEP",  S_F(alert_beep)},
+	{ "alert_taskbar", nullptr, S_F(alert_taskbar) },
+	{ "alert_tray", "TRAY",  S_F(alert_tray) },
 
-	{ .name = "text_hidejoinpart", .alias = "CONFMODE", .offset = S_F(text_hidejoinpart) },
-	{ .name = "text_logging", .offset = S_F(text_logging) },
-	{ .name = "text_scrollback", .offset = S_F(text_scrollback) },
-	{ .name = "text_strip", .offset = S_F(text_strip) },
+	{ "text_hidejoinpart", "CONFMODE", S_F(text_hidejoinpart) },
+	{ "text_logging", nullptr, S_F(text_logging) },
+	{ "text_scrollback", nullptr, S_F(text_scrollback) },
+	{ "text_strip", nullptr, S_F(text_strip) },
 };
 
 #undef S_F
@@ -198,7 +199,7 @@ chanopt_find (char *network, char *channel, gboolean add_new)
 
 	for (list = chanopt_list; list; list = list->next)
 	{
-		co = list->data;
+		co = static_cast<chanopt_in_memory *>(list->data);
 		if (!g_ascii_strcasecmp (co->channel, channel) &&
 			 !g_ascii_strcasecmp (co->network, network))
 			return co;
@@ -208,7 +209,7 @@ chanopt_find (char *network, char *channel, gboolean add_new)
 		return NULL;
 
 	/* allocate a new one */
-	co = g_malloc0 (sizeof (chanopt_in_memory));
+	co = static_cast<chanopt_in_memory *>(g_malloc0(sizeof(chanopt_in_memory)));
 	co->channel = g_strdup (channel);
 	co->network = g_strdup (network);
 
@@ -410,7 +411,7 @@ chanopt_save_all (void)
 
 	for (num_saved = 0, list = chanopt_list; list; list = list->next)
 	{
-		co = list->data;
+		co = static_cast<chanopt_in_memory *>(list->data);
 
 		i = 0;
 		while (i < sizeof (chanopt) / sizeof (channel_options))
