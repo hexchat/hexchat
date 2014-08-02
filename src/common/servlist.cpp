@@ -566,7 +566,7 @@ servlist_favchan_copy (favchannel *fav)
 {
 	favchannel *newfav;
 
-	newfav = calloc (1, sizeof (favchannel));
+	newfav = static_cast<favchannel*>(calloc (1, sizeof (favchannel)));
 	if (!newfav)
 		return NULL;
 
@@ -595,7 +595,7 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		list = net->servlist;
 	if (!list)
 		return;
-	ircserv = list->data;
+	ircserv = static_cast<ircserver*>(list->data);
 
 	/* in case a protocol switch is added to the servlist gui */
 	server_fill_her_up (sess->server);
@@ -682,7 +682,7 @@ servlist_connect_by_netname (session *sess, char *network, gboolean join)
 
 	while (list)
 	{
-		net = list->data;
+		net = static_cast<ircnet *>(list->data);
 
 		if (g_ascii_strcasecmp (net->name, network) == 0)
 		{
@@ -704,7 +704,7 @@ servlist_have_auto (void)
 
 	while (list)
 	{
-		net = list->data;
+		net = static_cast<ircnet *>(list->data);
 
 		if (net->flags & FLAG_AUTO_CONNECT)
 			return 1;
@@ -724,7 +724,7 @@ servlist_auto_connect (session *sess)
 
 	while (list)
 	{
-		net = list->data;
+		net = static_cast<ircnet *>(list->data);
 
 		if (net->flags & FLAG_AUTO_CONNECT)
 		{
@@ -745,7 +745,7 @@ servlist_cycle_cb (server *serv)
 	{
 		PrintTextf (serv->server_session,
 			_("Cycling to next server in %s...\n"), ((ircnet *)serv->network)->name);
-		servlist_connect (serv->server_session, serv->network, TRUE);
+		servlist_connect(serv->server_session, static_cast<ircnet *>(serv->network), TRUE);
 	}
 
 	return 0;
@@ -757,7 +757,7 @@ servlist_cycle (server *serv)
 	ircnet *net;
 	int max, del;
 
-	net = serv->network;
+	net = static_cast<ircnet *>(serv->network);
 	if (net)
 	{
 		max = g_slist_length (net->servlist);
@@ -796,7 +796,7 @@ servlist_server_find (ircnet *net, char *name, int *pos)
 
 	while (list)
 	{
-		serv = list->data;
+		serv = static_cast<ircserver*>(list->data);
 		if (strcmp (serv->hostname, name) == 0)
 		{
 			if (pos)
@@ -826,7 +826,7 @@ servlist_favchan_find (ircnet *net, char *channel, int *pos)
 
 	while (list)
 	{
-		favchan = list->data;
+		favchan = static_cast<favchannel*>(list->data);
 		if (g_ascii_strcasecmp (favchan->name, channel) == 0)
 		{
 			if (pos)
@@ -851,7 +851,7 @@ servlist_command_find (ircnet *net, char *cmd, int *pos)
 
 	while (list)
 	{
-		entry = list->data;
+		entry = static_cast<commandentry*>(list->data);
 		if (strcmp (entry->command, cmd) == 0)
 		{
 			if (pos)
@@ -880,12 +880,12 @@ servlist_net_find_from_server (char *server_name)
 
 	while (list)
 	{
-		net = list->data;
+		net = static_cast<ircnet *>(list->data);
 
 		slist = net->servlist;
 		while (slist)
 		{
-			serv = slist->data;
+			serv = static_cast<ircserver*>(slist->data);
 			if (g_ascii_strcasecmp (serv->hostname, server_name) == 0)
 				return net;
 			slist = slist->next;
@@ -906,7 +906,7 @@ servlist_net_find (char *name, int *pos, int (*cmpfunc) (const char *, const cha
 
 	while (list)
 	{
-		net = list->data;
+		net = static_cast<ircnet *>(list->data);
 		if (cmpfunc (net->name, name) == 0)
 		{
 			if (pos)
@@ -925,7 +925,7 @@ servlist_server_add (ircnet *net, char *name)
 {
 	ircserver *serv;
 
-	serv = calloc (1, sizeof (ircserver));
+	serv = static_cast<ircserver*>(calloc(1, sizeof(ircserver)));
 	if (!serv)
 		return NULL;
 	serv->hostname = strdup (name);
@@ -940,7 +940,7 @@ servlist_command_add (ircnet *net, char *cmd)
 {
 	commandentry *entry;
 
-	entry = calloc (1, sizeof (*entry));
+	entry = static_cast<commandentry*>(calloc(1, sizeof(*entry)));
 	if (!entry)
 		return NULL;
 	entry->command = strdup (cmd);
@@ -955,7 +955,7 @@ servlist_favchan_listadd (GSList *chanlist, char *channel, char *key)
 {
 	favchannel *chan;
 
-	chan = calloc (1, sizeof (*chan));
+	chan = static_cast<favchannel*>(calloc(1, sizeof(*chan)));
 	if (!chan)
 		return NULL;
 
@@ -1006,7 +1006,7 @@ servlist_server_remove_all (ircnet *net)
 
 	while (net->servlist)
 	{
-		serv = net->servlist->data;
+		serv = static_cast<ircserver*>(net->servlist->data);
 		servlist_server_remove (net, serv);
 	}
 }
@@ -1062,7 +1062,7 @@ servlist_cleanup (void)
 
 	for (list = network_list; list; list = list->next)
 	{
-		net = list->data;
+		net = static_cast<ircnet *>(list->data);
 		free_and_clear (net->pass);
 	}
 }
@@ -1100,7 +1100,7 @@ servlist_net_remove (ircnet *net)
 	list = serv_list;
 	while (list)
 	{
-		serv = list->data;
+		serv = static_cast<server*>(list->data);
 		if (serv->network == net)
 		{
 			serv->network = NULL;
@@ -1114,7 +1114,7 @@ servlist_net_add (char *name, char *comment, int prepend)
 {
 	ircnet *net;
 
-	net = calloc (1, sizeof (*net));
+	net = static_cast<ircnet *>(calloc(1, sizeof(*net)));
 	if (!net)
 		return NULL;
 	net->name = strdup (name);
@@ -1369,7 +1369,7 @@ servlist_save (void)
 	list = network_list;
 	while (list)
 	{
-		net = list->data;
+		net = static_cast<ircnet *>(list->data);
 
 		fprintf (fp, "N=%s\n", net->name);
 		if (net->nick)
@@ -1402,7 +1402,7 @@ servlist_save (void)
 		netlist = net->servlist;
 		while (netlist)
 		{
-			serv = netlist->data;
+			serv = static_cast<ircserver*>(netlist->data);
 			fprintf (fp, "S=%s\n", serv->hostname);
 			netlist = netlist->next;
 		}
@@ -1410,7 +1410,7 @@ servlist_save (void)
 		cmdlist = net->commandlist;
 		while (cmdlist)
 		{
-			cmd = cmdlist->data;
+			cmd = static_cast<commandentry*>(cmdlist->data);
 			fprintf (fp, "C=%s\n", cmd->command);
 			cmdlist = cmdlist->next;
 		}
@@ -1418,7 +1418,7 @@ servlist_save (void)
 		favlist = net->favchanlist;
 		while (favlist)
 		{
-			favchan = favlist->data;
+			favchan = static_cast<favchannel*>(favlist->data);
 
 			if (favchan->key)
 			{
