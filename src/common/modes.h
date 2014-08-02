@@ -26,10 +26,10 @@
 extern "C" {
 #endif
 
-int is_channel (server *serv, char *chan);
-char get_nick_prefix (server *serv, unsigned int access);
-unsigned int nick_access (server *serv, const char *nick, int *modechars);
-int mode_access (server *serv, char mode, char *prefix);
+int is_channel (const server *serv, const char *chan);
+char get_nick_prefix (const server *serv, unsigned int access);
+unsigned int nick_access (const server *serv, const char *nick, int *modechars);
+int mode_access (const server *serv, char mode, char *prefix);
 void inbound_005 (server *serv, char *word[], const message_tags_data *tags_data);
 void handle_mode (server *serv, char *word[], char *word_eol[], char *nick,
 						int numeric_324, const message_tags_data *tags_data);

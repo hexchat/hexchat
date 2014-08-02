@@ -34,18 +34,18 @@
 
 #include <glib/gprintf.h>
 
-typedef struct
+struct mode_run
 {
 	server *serv;
 	char *op;
 	char *deop;
 	char *voice;
 	char *devoice;
-} mode_run;
+};
 
-static int is_prefix_char (server * serv, char c);
+static int is_prefix_char (const server * serv, char c);
 static void record_chan_mode (session *sess, char sign, char mode, char *arg);
-static char *mode_cat (char *str, char *addition);
+static char *mode_cat (char *str, const char *addition);
 static void handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 										  char *chan, char *arg, int quiet, int is_324,
 										  const message_tags_data *tags_data);
@@ -126,7 +126,7 @@ send_channel_modes (session *sess, char *tbuf, const char * const word[], int wp
 /* does 'chan' have a valid prefix? e.g. # or & */
 
 int
-is_channel (server * serv, char *chan)
+is_channel (const server * serv, const char *chan)
 {
 	if (strchr (serv->chantypes, chan[0]))
 		return 1;
@@ -136,7 +136,7 @@ is_channel (server * serv, char *chan)
 /* is the given char a valid nick mode char? e.g. @ or + */
 
 static int
-is_prefix_char (server * serv, char c)
+is_prefix_char (const server * serv, char c)
 {
 	int pos = 0;
 	char *np = serv->nick_prefixes;
@@ -162,14 +162,11 @@ is_prefix_char (server * serv, char c)
 /* returns '@' for ops etc... */
 
 char
-get_nick_prefix (server * serv, unsigned int access)
+get_nick_prefix (const server * serv, unsigned int access)
 {
-	int pos;
-	char c;
-
-	for (pos = 0; pos < USERACCESS_SIZE; pos++)
+	for (int pos = 0; pos < USERACCESS_SIZE; pos++)
 	{
-		c = serv->nick_prefixes[pos];
+		char c = serv->nick_prefixes[pos];
 		if (c == 0)
 			break;
 		if (access & (1 << pos))
@@ -185,7 +182,7 @@ get_nick_prefix (server * serv, unsigned int access)
 	+nick would return 001000 in binary */
 
 unsigned int
-nick_access (server * serv, const char *nick, int *modechars)
+nick_access (const server * serv, const char *nick, int *modechars)
 {
 	int i;
 	unsigned int access = 0;
@@ -217,7 +214,7 @@ nick_access (server * serv, const char *nick, int *modechars)
 	Also puts the nick-prefix-char in 'prefix' */
 
 int
-mode_access (server * serv, char mode, char *prefix)
+mode_access (const server * serv, char mode, char *prefix)
 {
 	int pos = 0;
 
@@ -367,7 +364,7 @@ record_chan_mode (session *sess, char sign, char mode, char *arg)
 }
 
 static char *
-mode_cat (char *str, char *addition)
+mode_cat (char *str, const char *addition)
 {
 	int len;
 
@@ -397,7 +394,7 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 	server *serv = mr->serv;
 	char outbuf[4];
 	char *cm = serv->chanmodes;
-	gboolean supportsq = FALSE;
+	bool supportsq = false;
 
 	outbuf[0] = sign;
 	outbuf[1] = 0;
@@ -430,7 +427,7 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 			if (*cm == ',')
 				break;
 			if (*cm == 'q')
-				supportsq = TRUE;
+				supportsq = true;
 			cm++;
 		}
 
@@ -681,12 +678,11 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 	int i, num_args;
 	int num_modes;
 	int offset = 3;
-	int all_modes_have_args = FALSE;
-	int using_front_tab = FALSE;
-	mode_run mr;
+	bool all_modes_have_args = false;
+	bool using_front_tab = false;
+	mode_run mr = { 0 };
 
 	mr.serv = serv;
-	mr.op = mr.deop = mr.voice = mr.devoice = NULL;
 
 	/* numeric 324 has everything 1 word later (as opposed to MODE) */
 	if (numeric_324)
@@ -704,7 +700,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 	if (!sess)
 	{
 		sess = serv->front_session;
-		using_front_tab = TRUE;
+		using_front_tab = true;
 	}
 	/* remove trailing space */
 	len = strlen (word_eol[offset]) - 1;
@@ -747,7 +743,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 	}
 
 	if (num_args == num_modes)
-		all_modes_have_args = TRUE;
+		all_modes_have_args = true;
 
 	while (*modes)
 	{
