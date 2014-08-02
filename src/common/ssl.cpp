@@ -142,7 +142,7 @@ broke_oneline (char *oneline, char *parray[])
 	    (openssl x509 -text -in servcert.pem)
 */
 int
-_SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
+_SSL_get_cert_info (cert_info &cert_info, SSL * ssl)
 {
 	X509 *peer_cert;
 	EVP_PKEY *peer_pkey;
@@ -155,12 +155,12 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 	if (!(peer_cert = SSL_get_peer_certificate (ssl)))
 		return (1);				  /* FATAL? */
 
-	X509_NAME_oneline (X509_get_subject_name (peer_cert), cert_info->subject,
-							 sizeof (cert_info->subject));
-	X509_NAME_oneline (X509_get_issuer_name (peer_cert), cert_info->issuer,
-							 sizeof (cert_info->issuer));
-	broke_oneline (cert_info->subject, cert_info->subject_word);
-	broke_oneline (cert_info->issuer, cert_info->issuer_word);
+	X509_NAME_oneline (X509_get_subject_name (peer_cert), cert_info.subject,
+							 sizeof (cert_info.subject));
+	X509_NAME_oneline (X509_get_issuer_name (peer_cert), cert_info.issuer,
+							 sizeof (cert_info.issuer));
+	broke_oneline (cert_info.subject, cert_info.subject_word);
+	broke_oneline (cert_info.issuer, cert_info.issuer_word);
 
 	alg = OBJ_obj2nid (peer_cert->cert_info->key->algor->algorithm);
 	sign_alg = OBJ_obj2nid (peer_cert->sig_alg->algorithm);
@@ -169,17 +169,17 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 
 	peer_pkey = X509_get_pubkey (peer_cert);
 
-	strncpy (cert_info->algorithm,
+	strncpy (cert_info.algorithm,
 				(alg == NID_undef) ? "Unknown" : OBJ_nid2ln (alg),
-				sizeof (cert_info->algorithm));
-	cert_info->algorithm_bits = EVP_PKEY_bits (peer_pkey);
-	strncpy (cert_info->sign_algorithm,
+				sizeof (cert_info.algorithm));
+	cert_info.algorithm_bits = EVP_PKEY_bits (peer_pkey);
+	strncpy (cert_info.sign_algorithm,
 				(sign_alg == NID_undef) ? "Unknown" : OBJ_nid2ln (sign_alg),
-				sizeof (cert_info->sign_algorithm));
+				sizeof (cert_info.sign_algorithm));
 	/* EVP_PKEY_bits(ca_pkey)); */
-	cert_info->sign_algorithm_bits = 0;
-	std::copy(notBefore.cbegin(), notBefore.cend(), std::begin(cert_info->notbefore));
-	std::copy(notAfter.cbegin(), notAfter.cend(), std::begin(cert_info->notafter));
+	cert_info.sign_algorithm_bits = 0;
+	std::copy(notBefore.cbegin(), notBefore.cend(), std::begin(cert_info.notbefore));
+	std::copy(notAfter.cbegin(), notAfter.cend(), std::begin(cert_info.notafter));
 
 	EVP_PKEY_free (peer_pkey);
 
@@ -193,7 +193,7 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 	} else
 		fprintf(stderr, "REMOTE SIDE DOESN'T PROVIDES ->peer_rsa_tmp\n");
 */
-	cert_info->rsa_tmp_bits = 0;
+	cert_info.rsa_tmp_bits = 0;
 
 	X509_free (peer_cert);
 
