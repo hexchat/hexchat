@@ -556,7 +556,7 @@ static int
 mg_progressbar_update (GtkWidget *bar)
 {
 	static int type = 0;
-	static float pos = 0;
+	static gdouble pos = 0;
 
 	pos += 0.05;
 	if (pos >= 0.99)
