@@ -44,16 +44,16 @@
 
 
 static GSList *chanopt_list = NULL;
-static gboolean chanopt_open = FALSE;
-static gboolean chanopt_changed = FALSE;
+static bool chanopt_open = false;
+static bool chanopt_changed = false;
 
 
-typedef struct
+struct channel_options
 {
 	const char *name;
 	const char *alias;	/* old names from 2.8.4 */
 	int offset;
-} channel_options;
+};
 
 #define S_F(xx) STRUCT_OFFSET_STR(struct session,xx)
 
@@ -94,12 +94,12 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 	guint8 val;
 	int offset = 2;
 	char *find;
-	gboolean quiet = FALSE;
+	bool quiet = false;
 	int newval = -1;
 
 	if (!strcmp (word[2], "-quiet"))
 	{
-		quiet = TRUE;
+		quiet = true;
 		offset++;
 	}
 
@@ -129,7 +129,7 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (newval != -1)	/* set new value */
 			{
 				*(guint8 *)G_STRUCT_MEMBER_P(sess, chanopt[i].offset) = newval;
-				chanopt_changed = TRUE;
+				chanopt_changed = true;
 			}
 
 			if (!quiet)	/* print value */
@@ -222,7 +222,7 @@ chanopt_find (char *network, char *channel, gboolean add_new)
 	}
 
 	chanopt_list = g_slist_prepend (chanopt_list, co);
-	chanopt_changed = TRUE;
+	chanopt_changed = true;
 
 	return co;
 }
@@ -277,7 +277,7 @@ chanopt_load_all (void)
 			else if (!strcmp (buf, "channel"))
 			{
 				current = chanopt_find (network, eq + 2, TRUE);
-				chanopt_changed = FALSE;
+				chanopt_changed = false;
 			}
 			else
 			{
@@ -308,7 +308,7 @@ chanopt_load (session *sess)
 
 	if (!chanopt_open)
 	{
-		chanopt_open = TRUE;
+		chanopt_open = true;
 		chanopt_load_all ();
 	}
 
@@ -355,7 +355,7 @@ chanopt_save (session *sess)
 		if (vals != valm)
 		{
 			*(guint8 *)G_STRUCT_MEMBER_P(co, chanopt[i].offset) = vals;
-			chanopt_changed = TRUE;
+			chanopt_changed = true;
 		}
 
 		i++;
@@ -441,6 +441,6 @@ cont:
 	g_slist_free (chanopt_list);
 	chanopt_list = NULL;
 
-	chanopt_open = FALSE;
-	chanopt_changed = FALSE;
+	chanopt_open = false;
+	chanopt_changed = false;
 }
