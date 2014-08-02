@@ -3509,8 +3509,7 @@ mg_changui_new (session *sess, restore_gui *res, int tab, int focus)
 
 	if (!res)
 	{
-		res = malloc (sizeof (restore_gui));
-		memset (res, 0, sizeof (restore_gui));
+		res = calloc (1, sizeof (restore_gui));
 	}
 
 	sess->res = res;
@@ -3523,8 +3522,7 @@ mg_changui_new (session *sess, restore_gui *res, int tab, int focus)
 
 	if (!tab)
 	{
-		gui = malloc (sizeof (session_gui));
-		memset (gui, 0, sizeof (session_gui));
+		gui = calloc (1, sizeof (session_gui));
 		gui->is_tab = FALSE;
 		sess->gui = gui;
 		mg_create_topwindow (sess);

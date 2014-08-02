@@ -36,6 +36,7 @@
 #ifdef WIN32
 #include <winbase.h>
 #include <io.h>
+#include <process.h>
 #else
 #include <signal.h>
 #include <sys/wait.h>
@@ -1461,8 +1462,11 @@ traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, struc
 }
 
 /* this is the child process making the connection attempt */
-
+#ifdef WIN32
+static int WINAPI
+#else
 static int
+#endif
 server_child (server * serv)
 {
 	netstore *ns_server;
@@ -1766,9 +1770,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 
 #ifdef WIN32
-	CloseHandle (CreateThread (NULL, 0,
-										(LPTHREAD_START_ROUTINE)server_child,
-										serv, 0, (DWORD *)&pid));
+    CloseHandle((HANDLE)_beginthreadex(NULL, 0, (LPTHREAD_START_ROUTINE)server_child, serv, 0, (DWORD *)&pid));
 #else
 #ifdef LOOKUPD
 	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different
@@ -1848,8 +1850,9 @@ server_new (void)
 	static int id = 0;
 	server *serv;
 
-	serv = malloc (sizeof (struct server));
-	memset (serv, 0, sizeof (struct server));
+    serv = calloc (1, sizeof (*serv));
+	if (!serv)
+		return NULL;
 
 	/* use server.c and proto-irc.c functions */
 	server_fill_her_up (serv);
