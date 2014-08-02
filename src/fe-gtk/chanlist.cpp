@@ -16,11 +16,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <fcntl.h>
-#include <time.h>
+#include <ctime>
 
 #ifdef WIN32
 #include <io.h>
@@ -42,7 +42,7 @@
 #include "gtkutil.h"
 #include "maingui.h"
 #include "menu.h"
-
+#include "chanlist.h"
 #include "custom-list.h"
 
 enum
@@ -80,7 +80,7 @@ chanlist_match (server *serv, const char *str)
 		if (!serv->gui->have_regex)
 			return 0;
 
-		return g_regex_match (serv->gui->chanlist_match_regex, str, 0, NULL);
+		return g_regex_match (serv->gui->chanlist_match_regex, str, static_cast<GRegexMatchFlags>(0), NULL);
 	default:	/* case 0: */
 		return nocasestrstr (str, gtk_entry_get_text (GTK_ENTRY (serv->gui->chanlist_wild))) ? 1 : 0;
 	}
@@ -145,7 +145,7 @@ chanlist_data_free (server *serv)
 		for (rows = serv->gui->chanlist_data_stored_rows; rows != NULL;
 			  rows = rows->next)
 		{
-			data = rows->data;
+			data = static_cast<chanlistrow*>(rows->data);
 			g_free (data->topic);
 			g_free (data->collation_key);
 			free (data);
@@ -178,7 +178,7 @@ chanlist_flush_pending (server *serv)
 
 	while (list)
 	{
-		row = list->data;
+		row = static_cast<chanlistrow*>(list->data);
 		custom_list_append (CUSTOM_LIST (model), row);
 		list = list->next;
 	}
@@ -353,7 +353,7 @@ chanlist_build_gui_list (server *serv)
 	for (rows = serv->gui->chanlist_data_stored_rows; rows != NULL;
 		  rows = rows->next)
 	{
-		chanlist_place_row_in_gui (serv, rows->data, TRUE);
+		chanlist_place_row_in_gui(serv, static_cast<chanlistrow*>(rows->data), TRUE);
 	}
 
 	custom_list_resort ((CustomList *)GET_MODEL (serv));
@@ -370,7 +370,7 @@ fe_add_chan_list (server *serv, char *chan, char *users, char *topic)
 	int len = strlen (chan) + 1;
 
 	/* we allocate the struct and channel string in one go */
-	next_row = malloc (sizeof (chanlistrow) + len);
+	next_row = static_cast<chanlistrow*>(malloc(sizeof(chanlistrow) + len));
 	memcpy (((char *)next_row) + sizeof (chanlistrow), chan, len);
 	next_row->topic = strip_color (topic, -1, STRIP_ALL);
 	next_row->collation_key = g_utf8_collate_key (chan, len-1);
@@ -413,7 +413,7 @@ chanlist_find_cb (GtkWidget * wid, server *serv)
 		g_regex_unref (serv->gui->chanlist_match_regex);
 	}
 
-	serv->gui->chanlist_match_regex = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_EXTENDED,
+	serv->gui->chanlist_match_regex = g_regex_new(pattern, static_cast<GRegexCompileFlags>(G_REGEX_CASELESS | G_REGEX_EXTENDED),
 												G_REGEX_MATCH_NOTBOL, NULL);
 
 	if (serv->gui->chanlist_match_regex)
@@ -794,32 +794,32 @@ chanlist_opengui (server *serv, int do_refresh)
 								 _("_Search"));
 	serv->gui->chanlist_search = wid;
 	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, 3, 4,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 
 	wid = gtkutil_button (NULL, GTK_STOCK_REFRESH, 0, chanlist_refresh, serv,
 								 _("_Download List"));
 	serv->gui->chanlist_refresh = wid;
 	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, 2, 3,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 
 	wid = gtkutil_button (NULL, GTK_STOCK_SAVE_AS, 0, chanlist_save, serv,
 								 _("Save _List..."));
 	serv->gui->chanlist_savelist = wid;
 	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, 1, 2,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 
 	wid = gtkutil_button (NULL, GTK_STOCK_JUMP_TO, 0, chanlist_join, serv,
 						 _("_Join Channel"));
 	serv->gui->chanlist_join = wid;
 	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, 0, 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 
 	/* ============================================================= */
 
 	wid = gtk_label_new (_("Show only:"));
 	gtk_misc_set_alignment (GTK_MISC (wid), 0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, 3, 4,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 	gtk_widget_show (wid);
 
 	hbox = gtk_hbox_new (0, 0);
@@ -862,7 +862,7 @@ chanlist_opengui (server *serv, int do_refresh)
 	wid = gtk_label_new (_("Look in:"));
 	gtk_misc_set_alignment (GTK_MISC (wid), 0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, 2, 3,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 	gtk_widget_show (wid);
 
 	hbox = gtk_hbox_new (0, 0);
@@ -894,7 +894,7 @@ chanlist_opengui (server *serv, int do_refresh)
 	wid = gtk_label_new (_("Search type:"));
 	gtk_misc_set_alignment (GTK_MISC (wid), 0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, 1, 2,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 	gtk_widget_show (wid);
 
 	wid = gtk_combo_box_text_new ();
@@ -903,7 +903,7 @@ chanlist_opengui (server *serv, int do_refresh)
 	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (wid), _("Regular Expression"));
 	gtk_combo_box_set_active (GTK_COMBO_BOX (wid), serv->gui->chanlist_search_type);
 	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 1, 2,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 	g_signal_connect (G_OBJECT (wid), "changed",
 							G_CALLBACK (chanlist_combo_cb), serv);
 	gtk_widget_show (wid);
@@ -913,7 +913,7 @@ chanlist_opengui (server *serv, int do_refresh)
 	wid = gtk_label_new (_("Find:"));
 	gtk_misc_set_alignment (GTK_MISC (wid), 0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, 0, 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 	gtk_widget_show (wid);
 
 	wid = gtk_entry_new ();
@@ -924,7 +924,7 @@ chanlist_opengui (server *serv, int do_refresh)
 							  G_CALLBACK (chanlist_search_pressed),
 							  (gpointer) serv);
 	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 0, 1,
-							GTK_EXPAND | GTK_FILL, 0, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_EXPAND | GTK_FILL), static_cast<GtkAttachOptions>(0), 0, 0);
 	gtk_widget_show (wid);
 	serv->gui->chanlist_wild = wid;
 
@@ -934,7 +934,7 @@ chanlist_opengui (server *serv, int do_refresh)
 
 	wid = gtk_vseparator_new ();
 	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, 0, 5,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+		static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), static_cast<GtkAttachOptions>(GTK_SHRINK | GTK_FILL), 0, 0);
 	gtk_widget_show (wid);
 
 	g_signal_connect (G_OBJECT (serv->gui->chanlist_window), "destroy",
