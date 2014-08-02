@@ -29,8 +29,11 @@
 #include <openssl/rand.h>		  /* RAND_seed() */
 #endif
 #include "../../config.h"
-#include <time.h>				  /* asctime() */
-#include <string.h>				  /* strncpy() */
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <ctime>				  /* asctime() */
+#include <cstring>				  /* strncpy() */
 #include "ssl.h"				  /* struct cert_info */
 
 #ifndef HAVE_SNPRINTF
@@ -46,24 +49,28 @@ static char err_buf[256];			/* generic error buffer */
 
 /* +++++ Internal functions +++++ */
 
-static void
-__SSL_fill_err_buf (char *funcname)
+static std::string
+__SSL_fill_err_buf (const std::string & funcname)
 {
 	int err;
-	char buf[256];
-
-
+	char buf[256] = { 0 };
 	err = ERR_get_error ();
-	ERR_error_string (err, buf);
-	snprintf (err_buf, sizeof (err_buf), "%s: %s (%d)\n", funcname, buf, err);
+	ERR_error_string_n (err, buf, sizeof(buf));
+
+	std::ostringstream stream;
+	stream << funcname << ": " << buf << " (" << err << ")\n";
+	snprintf (err_buf, sizeof (err_buf), "%s: %s (%d)\n", funcname.c_str(), buf, err);
+	return stream.str();
 }
 
 
 static void
 __SSL_critical_error (char *funcname)
 {
-	__SSL_fill_err_buf (funcname);
-	fprintf (stderr, "%s\n", err_buf);
+	auto err_string = __SSL_fill_err_buf (funcname);
+	
+	std::cerr << err_string << std::endl;
+	//fprintf (stderr, "%s\n", err_buf);
 
 	exit (1);
 }
@@ -86,7 +93,7 @@ _SSL_context_init (void (*info_cb_func), int server)
 	SSL_CTX_set_timeout (ctx, 300);
 
 	/* used in SSL_connect(), SSL_accept() */
-	SSL_CTX_set_info_callback (ctx, info_cb_func);
+	SSL_CTX_set_info_callback(ctx, (void(*)(const SSL *, int, int)) info_cb_func);
 
 #ifdef WIN32
 	/* under win32, OpenSSL needs to be seeded with some randomness */
@@ -235,8 +242,10 @@ _SSL_send (SSL * ssl, char *buf, int len)
 	{
 	case SSL_ERROR_SSL:			  /* setup errno! */
 		/* ??? */
-		__SSL_fill_err_buf ("SSL_write");
-		fprintf (stderr, "%s\n", err_buf);
+	{
+		auto err_string = __SSL_fill_err_buf("SSL_write");
+		std::cerr << err_string << std::endl;
+	}
 		break;
 	case SSL_ERROR_SYSCALL:
 		/* ??? */
@@ -318,7 +327,7 @@ _SSL_set_verify (SSL_CTX *ctx, void *verify_callback, char *cacert)
 		}
 	}
 */
-	SSL_CTX_set_verify (ctx, SSL_VERIFY_PEER, verify_callback);
+	SSL_CTX_set_verify (ctx, SSL_VERIFY_PEER, (int(*)(int, X509_STORE_CTX*))verify_callback);
 
 	return (NULL);
 }
