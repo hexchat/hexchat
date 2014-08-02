@@ -47,7 +47,7 @@ int notify_tag = 0;
 static char *
 despacify_dup (char *str)
 {
-	char *p, *res = malloc (strlen (str) + 1);
+	char *p, *res = static_cast<char*>(malloc (strlen (str) + 1));
 
 	p = res;
 	while (1)
@@ -66,7 +66,7 @@ despacify_dup (char *str)
 static int
 notify_netcmp (char *str, void *serv)
 {
-	char *net = despacify_dup (server_get_network (serv, TRUE));
+	char *net = despacify_dup (server_get_network (static_cast<server*>(serv), TRUE));
 
 	if (rfc_casecmp (str, net) == 0)
 	{
@@ -111,7 +111,7 @@ notify_find_server_entry (struct notify *notify, struct server *serv)
 	if (!notify_do_network (notify, serv))
 		return NULL;
 
-	servnot = calloc (1, sizeof (struct notify_per_server));
+	servnot = static_cast<notify_per_server*>(calloc (1, sizeof (struct notify_per_server)));
 	if (servnot)
 	{
 		servnot->server = serv;
@@ -246,7 +246,7 @@ notify_announce_online (server * serv, struct notify_per_server *servnot,
 
 	    /* Let's do whois with idle time (like in /quote WHOIS %s %s) */
 
-	    char *wii_str = malloc (strlen (nick) * 2 + 2);
+	    char *wii_str = static_cast<char*>(malloc (strlen (nick) * 2 + 2));
 	    sprintf (wii_str, "%s %s", nick, nick);
 	    serv->p_whois (serv, wii_str);
 	    free (wii_str);
@@ -371,7 +371,7 @@ notify_watch_all (struct notify *notify, int add)
 	GSList *list = serv_list;
 	while (list)
 	{
-		serv = list->data;
+		serv = static_cast<server*>(list->data);
 		if (serv->connected && serv->end_of_motd && notify_do_network (notify, serv))
 			notify_watch (serv, notify->name, add);
 		list = list->next;
@@ -390,7 +390,7 @@ notify_flush_watches (server * serv, GSList *from, GSList *end)
 	list = from;
 	while (list != end)
 	{
-		notify = list->data;
+		notify = static_cast<struct notify*>(list->data);
 		if (serv->supports_monitor)
 			g_strlcat (tbuf, ",", sizeof(tbuf));
 		else
@@ -417,7 +417,7 @@ notify_send_watches (server * serv)
 	list = notify_list;
 	while (list)
 	{
-		notify = list->data;
+		notify = static_cast<struct notify*>(list->data);
 
 		if (notify_do_network (notify, serv))
 		{
@@ -431,7 +431,7 @@ notify_send_watches (server * serv)
 	point = list = send_list;
 	while (list)
 	{
-		notify = list->data;
+		notify = static_cast<struct notify*>(list->data);
 
 		len += strlen (notify->name) + format_len;
 		if (len > 500)
@@ -513,7 +513,7 @@ notify_checklist_for_server (server *serv)
 	strcpy (outbuf, "ISON ");
 	while (list)
 	{
-		notify = list->data;
+		notify = static_cast<struct notify*>(list->data);
 		if (notify_do_network (notify, serv))
 		{
 			i++;
@@ -543,7 +543,7 @@ notify_checklist (void)	/* check ISON list */
 
 	while (list)
 	{
-		serv = list->data;
+		serv = static_cast<server*>(list->data);
 		if (serv->connected && serv->end_of_motd && !serv->supports_watch && !serv->supports_monitor)
 		{
 			notify_checklist_for_server (serv);
@@ -624,12 +624,12 @@ notify_deluser (char *name)
 void
 notify_adduser (char *name, char *networks)
 {
-	struct notify *notify = calloc (1, sizeof (struct notify));
+	struct notify *notify = static_cast<struct notify*>(calloc(1, sizeof(struct notify)));
 	if (notify)
 	{
 		if (strlen (name) >= NICKLEN)
 		{
-			notify->name = malloc (NICKLEN);
+			notify->name = static_cast<char*>(malloc (NICKLEN));
 			safe_strcpy (notify->name, name, NICKLEN);
 		} else
 		{
