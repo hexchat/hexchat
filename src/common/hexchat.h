@@ -497,7 +497,7 @@ typedef struct server
 	void (*p_names)(struct server *, char *channel);
 	void (*p_ping)(struct server *, char *to, char *timestring);
 /*	void (*p_set_away)(struct server *);*/
-	int (*p_raw)(struct server *, char *raw);
+	int (*p_raw)(struct server *, const char *raw);
 	int (*p_cmp)(const char *s1, const char *s2);
 
 	int port;

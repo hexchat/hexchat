@@ -421,7 +421,7 @@ irc_ping (server *serv, char *to, char *timestring)
 }
 
 static int
-irc_raw (server *serv, char *raw)
+irc_raw (server *serv, const char *raw)
 {
 	int len;
 	char tbuf[4096];
