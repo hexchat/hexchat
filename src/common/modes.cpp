@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
 
 #include "hexchat.h"
 #include "hexchatc.h"
@@ -185,11 +185,11 @@ get_nick_prefix (server * serv, unsigned int access)
 	+nick would return 001000 in binary */
 
 unsigned int
-nick_access (server * serv, char *nick, int *modechars)
+nick_access (server * serv, const char *nick, int *modechars)
 {
 	int i;
 	unsigned int access = 0;
-	char *orig = nick;
+	const char *orig = nick;
 
 	while (*nick)
 	{
@@ -374,7 +374,7 @@ mode_cat (char *str, char *addition)
 	if (str)
 	{
 		len = strlen (str) + strlen (addition) + 2;
-		str = realloc (str, len);
+		str = static_cast<char*>(realloc (str, len));
 		strcat (str, " ");
 		strcat (str, addition);
 	} else
@@ -560,7 +560,7 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 	{
 		if (*arg)
 		{
-			char *buf = malloc (strlen (chan) + strlen (arg) + 2);
+			char *buf = static_cast<char*>(malloc (strlen (chan) + strlen (arg) + 2));
 			sprintf (buf, "%s %s", chan, arg);
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODEGEN, sess, nick, outbuf,
 										  outbuf + 2, buf, 0, tags_data->timestamp);
@@ -843,7 +843,7 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 		} else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
 		{
 			if (strcmp (word[w] + 12, "ascii") == 0)	/* bahamut */
-				serv->p_cmp = (void *)g_ascii_strcasecmp;
+				serv->p_cmp = (int(*)(const char*, const char*))g_ascii_strcasecmp;
 		} else if (strncmp (word[w], "CHARSET=", 8) == 0)
 		{
 			if (g_ascii_strncasecmp (word[w] + 8, "UTF-8", 5) == 0)
