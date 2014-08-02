@@ -113,7 +113,7 @@ url_find (char *urltext)
 }
 
 static void
-url_add (char *urltext, int len)
+url_add (const char *urltext, int len)
 {
 	char *data;
 	int size;
@@ -332,11 +332,11 @@ static char *commands[] = {
 #define ARRAY_SIZE(a) (sizeof (a) / sizeof ((a)[0]))
 
 void
-url_check_line (char *buf, int len)
+url_check_line (const char *buf, int len)
 {
 	GRegex *re(void);
 	GMatchInfo *gmi;
-	char *po = buf;
+	const char *po = buf;
 	int i;
 
 	/* Skip over message prefix */

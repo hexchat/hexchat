@@ -219,7 +219,7 @@ _SSL_get_cipher_info (SSL * ssl)
 
 
 int
-_SSL_send (SSL * ssl, char *buf, int len)
+_SSL_send (SSL * ssl, const char *buf, int len)
 {
 	int num;
 

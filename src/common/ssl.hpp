@@ -59,7 +59,7 @@ struct chiper_info *_SSL_get_cipher_info (SSL * ssl);
 /*char *_SSL_add_keypair (SSL_CTX *ctx, char *privkey, char *cert);*/
 /*void _SSL_add_random_keypair(SSL_CTX *ctx, int bits);*/
 
-int _SSL_send (SSL * ssl, char *buf, int len);
+int _SSL_send (SSL * ssl, const char *buf, int len);
 int _SSL_recv (SSL * ssl, char *buf, int len);
 
 /* misc */

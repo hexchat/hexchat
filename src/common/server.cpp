@@ -105,7 +105,7 @@ extern pxProxyFactory *libproxy_factory;
    send via SSL. server/dcc both use this function. */
 
 int
-tcp_send_real (void *ssl, int sok, char *encoding, int using_irc, char *buf, int len)
+tcp_send_real (void *ssl, int sok, const char *encoding, int using_irc, const char *buf, int len)
 {
 	int ret;
 	char *locale;
@@ -161,7 +161,7 @@ tcp_send_real (void *ssl, int sok, char *encoding, int using_irc, char *buf, int
 }
 
 static int
-server_send_real (server *serv, char *buf, int len)
+server_send_real (server *serv, const char *buf, int len)
 {
 	fe_add_rawlog (serv, buf, len, TRUE);
 
@@ -235,7 +235,7 @@ tcp_send_queue (server *serv)
 }
 
 int
-tcp_send_len (server *serv, char *buf, int len)
+tcp_send_len (server *serv, const char *buf, int len)
 {
 	char *dbuf;
 	int noqueue = !serv->outbound_queue;

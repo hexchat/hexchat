@@ -142,7 +142,7 @@ open_rawlog (struct server *serv)
 }
 
 void
-fe_add_rawlog (server *serv, char *text, int len, int outbound)
+fe_add_rawlog (server *serv, const char *text, int len, int outbound)
 {
 	char **split_text;
 	char *new_text;

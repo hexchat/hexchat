@@ -57,7 +57,7 @@ int fe_timeout_add (int interval, void *callback, void *userdata);
 void fe_timeout_remove (int tag);
 void fe_new_window (struct session *sess, int focus);
 void fe_new_server (struct server *serv);
-void fe_add_rawlog (struct server *serv, char *text, int len, int outbound);
+void fe_add_rawlog (struct server *serv, const char *text, int len, int outbound);
 #define FE_MSG_WAIT 1
 #define FE_MSG_INFO 2
 #define FE_MSG_WARN 4

@@ -40,7 +40,7 @@ void url_clear (void);
 void url_save_tree (const char *fname, const char *mode, gboolean fullpath);
 int url_last (int *, int *);
 int url_check_word (const char *word);
-void url_check_line (char *buf, int len);
+void url_check_line (const char *buf, int len);
 
 #ifdef __cplusplus
 }
