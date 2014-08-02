@@ -151,7 +151,7 @@ errorstring (int err)
 	if (err >= WSABASEERR)
 	{
 		static char tbuf[384];
-		OSVERSIONINFOW osvi;
+		OSVERSIONINFOW osvi = { 0 };
 
 		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOW);
 		GetVersionExW (&osvi);
