@@ -384,9 +384,12 @@ notify_watch_all (struct notify *notify, int add)
 static void
 notify_flush_watches(server * serv, std::vector<struct notify*>::const_iterator from, std::vector<struct notify*>::const_iterator end)
 {
-	std::ostringstream buffer(serv->supports_monitor ? "MONITOR + " : "WATCH");
-	
-	for (auto it = from; it != end; ++it)
+	std::ostringstream buffer;
+	buffer << (serv->supports_monitor ? "MONITOR + " : "WATCH");
+	auto it = from;
+	buffer << (*it)->name;
+	++it;
+	for (;it != end; ++it)
 	{
 		struct notify *notify = *it;
 		if (serv->supports_monitor)
