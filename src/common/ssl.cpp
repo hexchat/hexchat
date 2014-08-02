@@ -34,6 +34,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <algorithm>
 #include <ctime>				  /* asctime() */
 #include <cstring>				  /* strncpy() */
 #include "ssl.hpp"				  /* struct cert_info */
@@ -74,9 +75,6 @@ SSL_CTX *
 _SSL_context_init (void (*info_cb_func), int server)
 {
 	SSL_CTX *ctx;
-#ifdef WIN32
-	int i, r;
-#endif
 
 	SSLeay_add_ssl_algorithms ();
 	SSL_load_error_strings ();
@@ -90,9 +88,9 @@ _SSL_context_init (void (*info_cb_func), int server)
 
 #ifdef WIN32
 	/* under win32, OpenSSL needs to be seeded with some randomness */
-	for (i = 0; i < 128; i++)
+	for (int i = 0; i < 128; i++)
 	{
-		r = rand ();
+		int r = rand ();
 		RAND_seed ((unsigned char *)&r, sizeof (r));
 	}
 #endif
@@ -103,7 +101,7 @@ namespace {
 
 auto bio_deleter = [](BIO* d){ BIO_free(d); };
 static std::string
-ASN1_TIME_snprintf (ASN1_TIME * tm)
+ASN1_TIME_to_string (ASN1_TIME * tm)
 {
 	char *expires = nullptr;
 	std::unique_ptr<BIO, decltype(bio_deleter)> inMem(BIO_new (BIO_s_mem ()), bio_deleter);
@@ -114,7 +112,6 @@ ASN1_TIME_snprintf (ASN1_TIME * tm)
 	if (expires)
 	{
 		buf.append(expires, 24);
-		//strncpy (buf, expires, 24);
 	}
 	return buf;
 }
@@ -167,8 +164,8 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 
 	alg = OBJ_obj2nid (peer_cert->cert_info->key->algor->algorithm);
 	sign_alg = OBJ_obj2nid (peer_cert->sig_alg->algorithm);
-	auto notBefore = ASN1_TIME_snprintf (X509_get_notBefore (peer_cert));
-	auto notAfter = ASN1_TIME_snprintf (X509_get_notAfter (peer_cert));
+	auto notBefore = ASN1_TIME_to_string (X509_get_notBefore (peer_cert));
+	auto notAfter = ASN1_TIME_to_string (X509_get_notAfter (peer_cert));
 
 	peer_pkey = X509_get_pubkey (peer_cert);
 
@@ -217,7 +214,7 @@ _SSL_get_cipher_info (SSL * ssl)
 				sizeof (chiper_info.chiper));
 	SSL_CIPHER_get_bits (c, &chiper_info.chiper_bits);
 
-	return (&chiper_info);
+	return &chiper_info;
 }
 
 

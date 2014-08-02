@@ -663,12 +663,11 @@ ssl_do_connect (server * serv)
 
 	if (SSL_is_init_finished (serv->ssl))
 	{
-		struct cert_info cert_info;
+		cert_info cert_info = { 0 };
 		struct chiper_info *chiper_info;
 		int verify_error;
-		int i;
 
-		if (!_SSL_get_cert_info (&cert_info, serv->ssl))
+		if (!_SSL_get_cert_info (cert_info, serv->ssl))
 		{
 			snprintf (buf, sizeof (buf), "* Certification info:");
 			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
@@ -676,7 +675,7 @@ ssl_do_connect (server * serv)
 			snprintf (buf, sizeof (buf), "  Subject:");
 			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
 							 NULL, 0);
-			for (i = 0; cert_info.subject_word[i]; i++)
+			for (int i = 0; cert_info.subject_word[i]; i++)
 			{
 				snprintf (buf, sizeof (buf), "    %s", cert_info.subject_word[i]);
 				EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
@@ -685,7 +684,7 @@ ssl_do_connect (server * serv)
 			snprintf (buf, sizeof (buf), "  Issuer:");
 			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
 							 NULL, 0);
-			for (i = 0; cert_info.issuer_word[i]; i++)
+			for (int i = 0; cert_info.issuer_word[i]; i++)
 			{
 				snprintf (buf, sizeof (buf), "    %s", cert_info.issuer_word[i]);
 				EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
