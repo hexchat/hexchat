@@ -34,7 +34,7 @@
 #include <sstream>
 #include <ctime>				  /* asctime() */
 #include <cstring>				  /* strncpy() */
-#include "ssl.h"				  /* struct cert_info */
+#include "ssl.hpp"				  /* struct cert_info */
 
 #ifndef HAVE_SNPRINTF
 #include <glib.h>

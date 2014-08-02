@@ -68,7 +68,7 @@ extern "C"{
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */
 #include <openssl/err.h>		  /* ERR_() */
-#include "ssl.h"
+#include "ssl.hpp"
 #endif
 
 #ifdef USE_MSPROXY
