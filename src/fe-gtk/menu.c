@@ -59,7 +59,6 @@
 #include "search.h"
 #include "textgui.h"
 #include "urlgrab.h"
-#include "userlistgui.h"
 #include "menu.h"
 #include "servlistgui.h"
 

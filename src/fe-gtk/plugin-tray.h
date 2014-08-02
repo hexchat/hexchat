@@ -20,9 +20,17 @@
 #ifndef HEXCHAT_PLUGIN_TRAY_H
 #define HEXCHAT_PLUGIN_TRAY_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 int tray_plugin_init (void *, char **, char **, char **, char *);
 int tray_plugin_deinit (void *);
 gboolean tray_toggle_visibility (gboolean force_hide);
 void tray_apply_setup (void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

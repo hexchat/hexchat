@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_PALETTE_H
 #define HEXCHAT_PALETTE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern GdkColor colors[];
 
 #define COL_MARK_FG 32
@@ -37,5 +41,9 @@ extern GdkColor colors[];
 void palette_alloc (GtkWidget * widget);
 void palette_load (void);
 void palette_save (void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

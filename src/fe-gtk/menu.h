@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_MENU_H
 #define HEXCHAT_MENU_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 GtkWidget *menu_create_main (void *accel_group, int bar, int away, int toplevel, GtkWidget **menu_widgets);
 void menu_urlmenu (GdkEventButton * event, char *url);
 void menu_chanmenu (session *sess, GdkEventButton * event, char *chan);
@@ -66,6 +70,10 @@ void menu_set_fullscreen (session_gui *gui, int fullscreen);
 
 #if (MENU_ID_NUM < MENU_ID_HEXCHAT)
 #error MENU_ID_NUM is set wrong
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

@@ -19,8 +19,13 @@
 
 #ifndef HEXCHAT_JOIND_H
 #define HEXCHAT_JOIND_H
-
+#ifdef __cplusplus
+extern "C"{
+#endif
 void joind_open (server *serv);
 void joind_close (server *serv);
+#ifdef __cplusplus
+}
+#endif
 
 #endif

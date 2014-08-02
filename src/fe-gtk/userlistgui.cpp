@@ -20,12 +20,10 @@
 #include <cstring>
 #include <cstdlib>
 
-extern "C"{
 #include "fe-gtk.h"
-}
+
 #include <gdk/gdkkeysyms.h>
 
-extern "C"{
 #include "../common/hexchat.h"
 #include "../common/util.h"
 #include "../common/userlist.h"
@@ -41,7 +39,6 @@ extern "C"{
 #include "pixmaps.h"
 #include "userlistgui.h"
 #include "fkeys.h"
-}
 
 enum
 {
