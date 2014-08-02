@@ -16,13 +16,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <vector>
+#include <sstream>
+#include <string>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <time.h>
+#include <ctime>
 
 #ifdef WIN32
 #include <io.h>
@@ -80,16 +83,16 @@ notify_netcmp (char *str, void *serv)
 
 /* monitor this nick on this particular network? */
 
-static gboolean
+static bool
 notify_do_network (struct notify *notify, server *serv)
 {
 	if (!notify->networks)	/* ALL networks for this nick */
-		return TRUE;
+		return true;
 
 	if (token_foreach (notify->networks, ',', notify_netcmp, serv))
-		return FALSE;	/* network list doesn't contain this one */
+		return false;	/* network list doesn't contain this one */
 
-	return TRUE;
+	return true;
 }
 
 struct notify_per_server *
@@ -346,7 +349,7 @@ end:
 }
 
 static void
-notify_watch (server * serv, char *nick, int add)
+notify_watch (server * serv, const char *nick, int add)
 {
 	char tbuf[256];
 	char addchar = '+';
@@ -379,26 +382,20 @@ notify_watch_all (struct notify *notify, int add)
 }
 
 static void
-notify_flush_watches (server * serv, GSList *from, GSList *end)
+notify_flush_watches(server * serv, std::vector<struct notify*>::const_iterator from, std::vector<struct notify*>::const_iterator end)
 {
-	char tbuf[512];
-	GSList *list;
-	struct notify *notify;
-
-	serv->supports_monitor ? strcpy (tbuf, "MONITOR + ") : strcpy (tbuf, "WATCH");
-
-	list = from;
-	while (list != end)
+	std::ostringstream buffer(serv->supports_monitor ? "MONITOR + " : "WATCH");
+	
+	for (auto it = from; it != end; ++it)
 	{
-		notify = static_cast<struct notify*>(list->data);
+		struct notify *notify = *it;
 		if (serv->supports_monitor)
-			g_strlcat (tbuf, ",", sizeof(tbuf));
+			buffer << ",";
 		else
-			g_strlcat (tbuf, " +", sizeof(tbuf));
-		g_strlcat (tbuf, notify->name, sizeof(tbuf));
-		list = list->next;
+			buffer << " +";
+		buffer << notify->name;
 	}
-	serv->p_raw (serv, tbuf);
+	serv->p_raw (serv, buffer.str().c_str());
 }
 
 /* called when logging in. e.g. when End of motd. */
@@ -409,8 +406,7 @@ notify_send_watches (server * serv)
 	struct notify *notify;
 	const int format_len = serv->supports_monitor ? 1 : 2; /* just , for monitor or + and space for watch */
 	GSList *list;
-	GSList *point;
-	GSList *send_list = NULL;
+	std::vector<struct notify*> send_list;
 	int len = 0;
 
 	/* Only get the list for this network */
@@ -421,36 +417,32 @@ notify_send_watches (server * serv)
 
 		if (notify_do_network (notify, serv))
 		{
-			send_list = g_slist_append (send_list, notify);
+			send_list.push_back(notify);
 		}
 
 		list = list->next;
 	}
 
 	/* Now send that list in batches */
-	point = list = send_list;
-	while (list)
+	auto point = send_list.cbegin();
+	for (auto it = send_list.cbegin(); it != send_list.cend(); ++it)
 	{
-		notify = static_cast<struct notify*>(list->data);
+		notify = *it;
 
 		len += strlen (notify->name) + format_len;
 		if (len > 500)
 		{
 			/* Too long send existing list */
-			notify_flush_watches (serv, point, list);
+			notify_flush_watches (serv, send_list.begin(), it);
 			len = strlen (notify->name) + format_len;
-			point = list; /* We left off here */
+			point = it; /* We left off here */
 		}
-
-		list = g_slist_next (list);
 	}
 
 	if (len) /* We had leftovers under 500, send them all */
 	{
-		notify_flush_watches (serv, point, NULL);
+		notify_flush_watches (serv, point, send_list.cend());
 	}
-
-	g_slist_free (send_list);
 }
 
 /* called when receiving a ISON 303 - should this func go? */
