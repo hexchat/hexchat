@@ -20,7 +20,15 @@
 #ifndef HEXCHAT_NOTIFYGUI_H
 #define HEXCHAT_NOTIFYGUI_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void notify_gui_update (void);
 void notify_opengui (void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

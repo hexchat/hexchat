@@ -16,12 +16,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <fcntl.h>
-#include <string.h>
+#include <cstring>
 
 #ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <io.h>
 #else
@@ -56,11 +57,12 @@
 #include "rawlog.h"
 #include "palette.h"
 #include "plugingui.h"
-#include "search.h"
+#include <search.h>
 #include "textgui.h"
 #include "urlgrab.h"
 #include "menu.h"
 #include "servlistgui.h"
+#include "userlistgui.hpp"
 
 static GSList *submenu_list;
 
@@ -136,9 +138,9 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 
 	/* this can't overflow, since popup->cmd is only 256 */
 	len = strlen (cmd) + strlen (nick) + strlen (allnick) + 512;
-	buf = malloc (len);
+	buf = static_cast<char*>(malloc (len));
 
-	auto_insert (buf, len, cmd, 0, 0, allnick, sess->channel, "",
+	auto_insert (buf, len, (unsigned char*)cmd, 0, 0, allnick, sess->channel, "",
 					 server_get_network (sess->server, TRUE), host,
 					 sess->server->nick, nick, account);
 
@@ -165,7 +167,7 @@ userlist_button_cb (GtkWidget * button, char *cmd)
 	if (sess->type == SESS_DIALOG)
 	{
 		/* fake a selection */
-		nicks = malloc (sizeof (char *) * 2);
+		nicks = static_cast<char**>(malloc(sizeof(char *) * 2));
 		nicks[0] = g_strdup (sess->channel);
 		nicks[1] = NULL;
 		num_sel = 1;
@@ -184,7 +186,7 @@ userlist_button_cb (GtkWidget * button, char *cmd)
 	}
 
 	/* create "allnicks" string */
-	allnicks = malloc (((NICKLEN + 1) * num_sel) + 1);
+	allnicks = static_cast<char*>(malloc(((NICKLEN + 1) * num_sel) + 1));
 	*allnicks = 0;
 
 	i = 0;
@@ -229,7 +231,7 @@ popup_menu_cb (GtkWidget * item, char *cmd)
 	char *nick;
 
 	/* the userdata is set in menu_quick_item() */
-	nick = g_object_get_data (G_OBJECT (item), "u");
+	nick = static_cast<char*>(g_object_get_data(G_OBJECT(item), "u"));
 
 	if (!nick)	/* userlist popup menu */
 	{
@@ -239,7 +241,7 @@ popup_menu_cb (GtkWidget * item, char *cmd)
 	}
 
 	if (!current_sess)	/* for url grabber window */
-		nick_command_parse (sess_list->data, cmd, nick, nick);
+		nick_command_parse (static_cast<session*>(sess_list->data), cmd, nick, nick);
 	else
 		nick_command_parse (current_sess, cmd, nick, nick);
 }
@@ -381,7 +383,7 @@ menu_quick_endsub ()
 		submenu_list = g_slist_remove (submenu_list, submenu_list->data);
 
 	if (submenu_list)
-		return (submenu_list->data);
+		return static_cast<GtkWidget*>(submenu_list->data);
 	else
 		return NULL;
 }
@@ -594,7 +596,7 @@ menu_nickinfo_cb (GtkWidget *menu, session *sess)
 }
 
 static void
-copy_to_clipboard_cb (GtkWidget *item, char *url)
+copy_to_clipboard_cb (GtkWidget *item, const char *url)
 {
 	gtkutil_copy_to_clipboard (item, NULL, url);
 }
@@ -606,7 +608,8 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 {
 	char buf[512];
 	char unknown[96];
-	char *real, *fmt, *users_country;
+	char *real, *fmt;
+	const char *users_country;
 	struct away_msg *away;
 	gboolean missing = FALSE;
 	GtkWidget *item;
@@ -617,7 +620,7 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 
 	if (user->realname)
 	{
-		real = strip_color (user->realname, -1, STRIP_ALL|STRIP_ESCMARKUP);
+		real = strip_color (user->realname, -1, static_cast<strip_flags>(STRIP_ALL|STRIP_ESCMARKUP));
 		snprintf (buf, sizeof (buf), fmt, _("Real Name:"), real);
 		g_free (real);
 	} else
@@ -643,13 +646,13 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 							G_CALLBACK (copy_to_clipboard_cb), 
 							user->account ? user->account : unknown);
 
-	users_country = country (user->hostname);
+	users_country = country(user->hostname);
 	if (users_country)
 	{
 		snprintf (buf, sizeof (buf), fmt, _ ("Country:"), users_country);
 		item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 		g_signal_connect (G_OBJECT (item), "activate",
-			G_CALLBACK (copy_to_clipboard_cb), users_country);
+			G_CALLBACK (copy_to_clipboard_cb), (gpointer)users_country);
 	}
 
 	snprintf (buf, sizeof (buf), fmt, _("Server:"),
@@ -677,7 +680,7 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 		away = server_away_find_message (current_sess->server, user->nick);
 		if (away)
 		{
-			char *msg = strip_color (away->message ? away->message : unknown, -1, STRIP_ALL|STRIP_ESCMARKUP);
+			char *msg = strip_color (away->message ? away->message : unknown, -1, static_cast<strip_flags>(STRIP_ALL|STRIP_ESCMARKUP));
 			snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), msg);
 			g_free (msg);
 			item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
@@ -712,7 +715,7 @@ fe_userlist_update (session *sess, struct User *user)
 	while (items)
 	{
 		next = items->next;
-		gtk_widget_destroy (items->data);
+		gtk_widget_destroy(static_cast<GtkWidget*>(items->data));
 		items = next;
 	}
 
@@ -833,7 +836,7 @@ menu_setting_foreach (void (*callback) (session *), int id, guint state)
 	list = sess_list;
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 
 		if (!sess->gui->is_tab || !maindone)
 		{
@@ -1054,13 +1057,13 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 static void
 menu_delfav_cb (GtkWidget *item, server *serv)
 {
-	servlist_autojoinedit (serv->network, str_copy, FALSE);
+	servlist_autojoinedit (static_cast<ircnet*>(serv->network), str_copy, FALSE);
 }
 
 static void
 menu_addfav_cb (GtkWidget *item, server *serv)
 {
-	servlist_autojoinedit (serv->network, str_copy, TRUE);
+	servlist_autojoinedit(static_cast<ircnet*>(serv->network), str_copy, TRUE);
 }
 
 void
@@ -1129,10 +1132,10 @@ menu_open_server_list (GtkWidget *wid, gpointer none)
 	fe_serverlist_open (current_sess);
 }
 
+extern "C"{ void setup_open(void); }
 static void
 menu_settings (GtkWidget * wid, gpointer none)
 {
-	extern void setup_open (void);
 	setup_open ();
 }
 
@@ -1160,7 +1163,7 @@ usermenu_destroy (GtkWidget * menu)
 	while (items)
 	{
 		next = items->next;
-		gtk_widget_destroy (items->data);
+		gtk_widget_destroy(static_cast<GtkWidget*>(items->data));
 		items = next;
 	}
 }
@@ -1175,7 +1178,7 @@ usermenu_update (void)
 
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		menu = sess->gui->menu_item[MENU_ID_USERMENU];
 		if (sess->gui->is_tab)
 		{
@@ -1297,7 +1300,7 @@ menu_movetomarker (GtkWidget *wid, gpointer none)
 		PrintText (current_sess, _("Marker line disabled."));
 	else
 	{
-		reason = gtk_xtext_moveto_marker_pos (GTK_XTEXT (current_sess->gui->xtext));
+		reason = static_cast<marker_reset_reason>(gtk_xtext_moveto_marker_pos (GTK_XTEXT (current_sess->gui->xtext)));
 		switch (reason) {
 		case MARKER_WAS_NEVER_SET:
 			str = _("Marker line never set."); break;
@@ -1396,7 +1399,7 @@ menu_join (GtkWidget * wid, gpointer none)
 	GtkWidget *hbox, *dialog, *entry, *label;
 
 	dialog = gtk_dialog_new_with_buttons (_("Join Channel"),
-									GTK_WINDOW (parent_window), 0,
+									GTK_WINDOW (parent_window), static_cast<GtkDialogFlags>(0),
 									_("Retrieve channel list..."), GTK_RESPONSE_HELP,
 									GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 									GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -1869,7 +1872,7 @@ create_icon_menu (char *labeltext, void *stock_name, int is_stock)
 	GtkWidget *item, *img;
 
 	if (is_stock)
-		img = gtk_image_new_from_stock (stock_name, GTK_ICON_SIZE_MENU);
+		img = gtk_image_new_from_stock (static_cast<const gchar*>(stock_name), GTK_ICON_SIZE_MENU);
 	else
 		img = gtk_image_new_from_pixbuf (*((GdkPixbuf **)stock_name));
 	item = gtk_image_menu_item_new_with_mnemonic (labeltext);
@@ -1900,11 +1903,11 @@ menu_find_item (GtkWidget *menu, char *name)
 
 	while (items)
 	{
-		item = items->data;
+		item = static_cast<GtkMenuItem*>(items->data);
 		child = GTK_BIN (item)->child;
 		if (child)	/* separators arn't labels, skip them */
 		{
-			labeltext = g_object_get_data (G_OBJECT (item), "name");
+			labeltext = static_cast<const char*>(g_object_get_data (G_OBJECT (item), "name"));
 			if (!labeltext)
 				labeltext = gtk_label_get_text (GTK_LABEL (child));
 			if (!menu_streq (labeltext, name, 1))
@@ -1975,7 +1978,7 @@ menu_foreach_gui (menu_entry *me, void (*callback) (GtkWidget *, menu_entry *, c
 
 	while (list)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		/* do it only once for tab sessions, since they share a GUI */
 		if (!sess->gui->is_tab || !tabdone)
 		{
@@ -2165,10 +2168,10 @@ menu_add_cb (GtkWidget *menu, menu_entry *me, char *target)
 		gtk_widget_set_sensitive (item, me->enable);
 		if (me->key)
 		{
-			accel_group = g_object_get_data (G_OBJECT (menu), "accel");
+			accel_group = static_cast<GtkAccelGroup*>(g_object_get_data (G_OBJECT (menu), "accel"));
 			if (accel_group)	/* popup menus don't have them */
 				gtk_widget_add_accelerator (item, "activate", accel_group, me->key,
-													 me->modifier, GTK_ACCEL_VISIBLE);
+													 static_cast<GdkModifierType>(me->modifier), GTK_ACCEL_VISIBLE);
 		}
 	}
 }
@@ -2213,7 +2216,7 @@ menu_add_plugin_mainmenu_items (GtkWidget *menu)
 	list = menu_list;	/* outbound.c */
 	while (list)
 	{
-		me = list->data;
+		me = static_cast<menu_entry*>(list->data);
 		if (me->is_main)
 			menu_add_cb (menu, me, NULL);
 		list = list->next;
@@ -2229,7 +2232,7 @@ menu_add_plugin_items (GtkWidget *menu, char *root, char *target)
 	list = menu_list;	/* outbound.c */
 	while (list)
 	{
-		me = list->data;
+		me = static_cast<menu_entry*>(list->data);
 		if (!me->is_main && !strncmp (me->path, root + 1, root[0]))
 			menu_add_cb (menu, me, target);
 		list = list->next;
@@ -2387,13 +2390,13 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 			item = gtk_menu_item_new_with_mnemonic (_(mymenu[i].text));
 normalitem:
 			if (mymenu[i].key != 0)
-				gtk_widget_add_accelerator (item, "activate", accel_group,
+				gtk_widget_add_accelerator (item, "activate",static_cast<GtkAccelGroup*>(accel_group),
 										mymenu[i].key,
-										mymenu[i].key == GDK_KEY_F1 ? 0 :
+										static_cast<GdkModifierType>(mymenu[i].key == GDK_KEY_F1 ? 0 :
 										mymenu[i].key == GDK_KEY_w ? close_mask :
 										(g_ascii_isupper (mymenu[i].key)) ?
 											STATE_SHIFT | STATE_CTRL :
-											STATE_CTRL,
+											STATE_CTRL),
 										GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "activate",
@@ -2413,11 +2416,11 @@ togitem:
 			/*gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item),
 													 mymenu[i].state);*/
 			if (mymenu[i].key != 0)
-				gtk_widget_add_accelerator (item, "activate", accel_group,
+				gtk_widget_add_accelerator (item, "activate", static_cast<GtkAccelGroup*>(accel_group),
 											mymenu[i].key,
-											mymenu[i].id == MENU_ID_FULLSCREEN ? 0 :
+											static_cast<GdkModifierType>(mymenu[i].id == MENU_ID_FULLSCREEN ? 0 :
 											mymenu[i].id == MENU_ID_AWAY ? away_mask :
-											STATE_CTRL, GTK_ACCEL_VISIBLE);
+											STATE_CTRL), GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "toggled",
 									G_CALLBACK (mymenu[i].callback), NULL);

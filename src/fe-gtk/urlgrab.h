@@ -20,6 +20,14 @@
 #ifndef HEXCHAT_URLGRAB_H
 #define HEXCHAT_URLGRAB_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void url_opengui (void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

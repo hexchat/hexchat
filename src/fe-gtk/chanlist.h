@@ -20,6 +20,14 @@
 #ifndef HEXCHAT_CHANLIST_H
 #define HEXCHAT_CHANLIST_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void chanlist_opengui (server *serv, int do_refresh);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

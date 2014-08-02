@@ -20,6 +20,14 @@
 #ifndef HEXCHAT_EDITLIST_H
 #define HEXCHAT_EDITLIST_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void editlist_gui_open (char *title1, char *title2, GSList * list, char *title, char *wmclass, char *file, char *help);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

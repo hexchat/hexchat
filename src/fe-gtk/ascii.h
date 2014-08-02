@@ -20,6 +20,14 @@
 #ifndef HEXCHAT_ASCII_H
 #define HEXCHAT_ASCII_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void ascii_open (void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
