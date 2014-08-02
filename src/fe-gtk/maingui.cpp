@@ -1720,12 +1720,12 @@ mg_add_chan (session *sess)
 }
 
 static void
-mg_userlist_button (GtkWidget * box, char *label, char *cmd,
+mg_userlist_button (GtkWidget * box, const char *label, const char *cmd,
 						  int a, int b, int c, int d)
 {
 	GtkWidget *wid = gtk_button_new_with_label (label);
 	g_signal_connect (G_OBJECT (wid), "clicked",
-							G_CALLBACK (userlist_button_cb), cmd);
+							G_CALLBACK (userlist_button_cb), (gpointer)cmd);
 	gtk_table_attach_defaults (GTK_TABLE (box), wid, a, b, c, d);
 	show_and_unfocus (wid);
 }

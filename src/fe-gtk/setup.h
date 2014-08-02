@@ -20,6 +20,14 @@
 #ifndef HEXCHAT_SETUP_H
 #define HEXCHAT_SETUP_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void setup_apply_real (int new_pix, int do_ulist, int do_layout);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -16,6 +16,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <vector>
+#include <string>
+#include <functional>
+#include <sstream>
 #include <cstdio>
 #include <cstdlib>
 #include <fcntl.h>
@@ -110,7 +114,7 @@ nick_command (session * sess, char *cmd)
 /* fill in the %a %s %n etc and execute the command */
 
 void
-nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
+nick_command_parse (session *sess, const std::string & cmd, const std::string& nick, const std::string& allnick)
 {
 	char *buf;
 	char *host = _("Host unknown");
@@ -126,7 +130,7 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 			host = buf + 1;
 	} else*/
 	{
-		user = userlist_find (sess, nick);
+		user = userlist_find (sess, nick.c_str());
 		if (user)
 		{
 			if (user->hostname)
@@ -137,12 +141,12 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 	}
 
 	/* this can't overflow, since popup->cmd is only 256 */
-	len = strlen (cmd) + strlen (nick) + strlen (allnick) + 512;
+	len = cmd.length() + nick.length() + allnick.length() + 512;
 	buf = static_cast<char*>(malloc (len));
 
-	auto_insert (buf, len, (unsigned char*)cmd, 0, 0, allnick, sess->channel, "",
+	auto_insert (buf, len, (const unsigned char*)cmd.c_str(), 0, 0, allnick.c_str(), sess->channel, "",
 					 server_get_network (sess->server, TRUE), host,
-					 sess->server->nick, nick, account);
+					 sess->server->nick, nick.c_str(), account);
 
 	nick_command (sess, buf);
 
@@ -152,75 +156,52 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 /* userlist button has been clicked */
 
 void
-userlist_button_cb (GtkWidget * button, char *cmd)
+userlist_button_cb (GtkWidget * button, const char *cmd)
 {
-	int i, num_sel, using_allnicks = FALSE;
-	char **nicks, *allnicks;
-	char *nick = NULL;
+	bool using_allnicks = false;
+	//char *allnicks;
+	std::vector<std::string> nicks;
+	std::string nick;
 	session *sess;
 
 	sess = current_sess;
 
 	if (strstr (cmd, "%a"))
-		using_allnicks = TRUE;
+		using_allnicks = true;
 
 	if (sess->type == SESS_DIALOG)
 	{
 		/* fake a selection */
-		nicks = static_cast<char**>(malloc(sizeof(char *) * 2));
-		nicks[0] = g_strdup (sess->channel);
-		nicks[1] = NULL;
-		num_sel = 1;
+		nicks.emplace_back(sess->channel);
 	} else
 	{
 		/* find number of selected rows */
-		nicks = userlist_selection_list (sess->gui->user_tree, &num_sel);
-		if (num_sel < 1)
+		nicks = userlist_selection_list (sess->gui->user_tree);
+		if (nicks.size() < 1)
 		{
 			nick_command_parse (sess, cmd, "", "");
-
-			if (nicks)
-				free (nicks);
 			return;
 		}
 	}
 
 	/* create "allnicks" string */
-	allnicks = static_cast<char*>(malloc(((NICKLEN + 1) * num_sel) + 1));
-	*allnicks = 0;
-
-	i = 0;
-	while (nicks[i])
+	std::ostringstream allnicks;
+	for (const auto & nick_str : nicks)
 	{
-		if (i > 0)
-			strcat (allnicks, " ");
-		strcat (allnicks, nicks[i]);
+		allnicks << nick_str << " ";
 
-		if (!nick)
-			nick = nicks[0];
+		//if (!nick)
+		nick = nick_str;
 
 		/* if not using "%a", execute the command once for each nickname */
 		if (!using_allnicks)
-			nick_command_parse (sess, cmd, nicks[i], "");
-
-		i++;
+			nick_command_parse (sess, cmd, nick_str, "");
 	}
 
 	if (using_allnicks)
 	{
-		if (!nick)
-			nick = "";
-		nick_command_parse (sess, cmd, nick, allnicks);
+		nick_command_parse (sess, cmd, nick, allnicks.str());
 	}
-
-	while (num_sel)
-	{
-		num_sel--;
-		g_free (nicks[num_sel]);
-	}
-
-	free (nicks);
-	free (allnicks);
 }
 
 /* a popup-menu-item has been selected */
@@ -340,7 +321,7 @@ menu_quick_item_with_callback (void *callback, char *label, GtkWidget * menu,
 }
 
 GtkWidget *
-menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags, int pos)
+menu_quick_sub (const char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags, int pos)
 {
 	GtkWidget *sub_menu;
 	GtkWidget *sub_item;
@@ -724,7 +705,7 @@ fe_userlist_update (session *sess, struct User *user)
 }
 
 void
-menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
+menu_nickmenu (session *sess, GdkEventButton *event, const char *nick, int num_sel)
 {
 	char buf[512];
 	struct User *user;

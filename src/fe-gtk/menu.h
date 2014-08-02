@@ -21,6 +21,8 @@
 #define HEXCHAT_MENU_H
 
 #ifdef __cplusplus
+#include <string>
+void nick_command_parse(session *sess, const std::string &cmd, const std::string &nick, const std::string &allnick);
 extern "C" {
 #endif
 
@@ -29,14 +31,14 @@ void menu_urlmenu (GdkEventButton * event, char *url);
 void menu_chanmenu (session *sess, GdkEventButton * event, char *chan);
 void menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel, gboolean istree);
 void menu_addconnectmenu (server *serv, GtkWidget *menu);
-void menu_nickmenu (session *sess, GdkEventButton * event, char *nick, int num_sel);
+void menu_nickmenu (session *sess, GdkEventButton * event, const char *nick, int num_sel);
 void menu_middlemenu (session *sess, GdkEventButton *event);
-void userlist_button_cb (GtkWidget * button, char *cmd);
-void nick_command_parse (session *sess, char *cmd, char *nick, char *allnick);
+void userlist_button_cb (GtkWidget * button, const char *cmd);
+
 void usermenu_update (void);
 GtkWidget *menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata, int state);
 GtkWidget *menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags, gpointer userdata, char *icon);
-GtkWidget *menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags, int pos);
+GtkWidget *menu_quick_sub (const char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags, int pos);
 GtkWidget *create_icon_menu (char *labeltext, void *stock_name, int is_stock);
 void menu_create (GtkWidget *menu, GSList *list, char *target, int check_path);
 void menu_bar_toggle (void);

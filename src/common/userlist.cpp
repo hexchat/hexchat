@@ -231,7 +231,7 @@ userlist_find (struct session *sess, const char *name)
 }
 
 struct User *
-userlist_find_global (struct server *serv, char *name)
+userlist_find_global (struct server *serv, const char *name)
 {
 	struct User *user;
 	session *sess;

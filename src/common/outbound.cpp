@@ -4143,15 +4143,15 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
  * - this beast is used for UserCommands, UserlistButtons and CTCP replies   */
 
 int
-auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
-				 char *word_eol[], char *a, char *c, char *d, char *e, char *h,
-				 char *n, char *s, char *u)
+auto_insert (char *dest, int destlen, const unsigned char *src, char *word[],
+				 char *word_eol[], const char *a, const char *c, const char *d, const char *e, const char *h,
+				 const char *n, const char *s, const char *u)
 {
 	int num;
 	char buf[32];
 	time_t now;
 	struct tm *tm_ptr;
-	char *utf;
+	const char *utf;
 	gsize utf_len;
 	char *orig = dest;
 
@@ -4175,12 +4175,12 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 					{
 						if ((dest - orig) + utf_len >= destlen)
 						{
-							g_free (utf);
+							g_free ((gpointer)utf);
 							return 2;
 						}
 
 						memcpy (dest, utf, utf_len);
-						g_free (utf);
+						g_free ((gpointer)utf);
 						dest += utf_len;
 					}
 					src += 3;
@@ -4240,7 +4240,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 				case 't':
 					now = time (0);
 					utf = ctime (&now);
-					utf[19] = 0;
+					//utf[19] = 0;
 					break;
 				case 'u':
 					utf = u; break;
@@ -4464,7 +4464,7 @@ static void
 user_command (session * sess, char *tbuf, char *cmd, char *word[],
 				  char *word_eol[])
 {
-	if (!auto_insert (tbuf, 2048, (unsigned char*)cmd, word, word_eol, "", sess->channel, "",
+	if (!auto_insert (tbuf, 2048, (const unsigned char*)cmd, word, word_eol, "", sess->channel, "",
 							server_get_network (sess->server, TRUE), "",
 							sess->server->nick, "", ""))
 	{

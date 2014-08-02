@@ -21,9 +21,8 @@
 #include <cstdlib>
 #include <memory>
 
-extern "C"{
 #include "fe-gtk.h"
-}
+
 
 #ifdef WIN32
 #include <gdk/gdkwin32.h>
@@ -32,7 +31,6 @@ extern "C"{
 #include <unistd.h>
 #endif
 
-extern "C"{
 #include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
@@ -56,7 +54,6 @@ extern "C"{
 #include "plugin-tray.h"
 #include "urlgrab.h"
 #include "setup.h"
-}
 
 #ifdef USE_LIBCANBERRA
 #include <canberra.h>
