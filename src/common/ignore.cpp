@@ -51,20 +51,20 @@ static int ignored_total = 0;
  *          NULL, otherwise
  */
 struct ignore *
-ignore_exists (char *mask)
+ignore_exists (const std::string& mask)
 {
-	struct ignore *ig = 0;
+	struct ignore *ig = nullptr;
 	GSList *list;
 
 	list = ignore_list;
 	while (list)
 	{
-		ig = (struct ignore *) list->data;
-		if (!rfc_casecmp (ig->mask, mask))
+		ig = static_cast<struct ignore *>(list->data);
+		if (!rfc_casecmp (ig->mask.c_str(), mask.c_str()))
 			return ig;
 		list = list->next;
 	}
-	return NULL;
+	return nullptr;
 
 }
 
@@ -77,23 +77,23 @@ ignore_exists (char *mask)
  */
 
 int
-ignore_add (char *mask, int type, gboolean overwrite)
+ignore_add(const std::string& mask, int type, bool overwrite)
 {
 	struct ignore *ig = NULL;
-	int change_only = FALSE;
+	bool change_only = false;
 
 	/* first check if it's already ignored */
 	ig = ignore_exists (mask);
 	if (ig)
-		change_only = TRUE;
+		change_only = true;
 
 	if (!change_only)
-		ig = static_cast<ignore*>(malloc (sizeof (struct ignore)));
+		ig = new struct ignore();
 
 	if (!ig)
 		return 0;
 
-	ig->mask = strdup (mask);
+	ig->mask = mask;
 
 	if (!overwrite && change_only)
 		ig->type |= type;
@@ -125,7 +125,7 @@ ignore_showlist (session *sess)
 		ig = static_cast<ignore*>(list->data);
 		i++;
 
-		snprintf (tbuf, sizeof (tbuf), " %-25s ", ig->mask);
+		snprintf (tbuf, sizeof (tbuf), " %-25s ", ig->mask.c_str());
 		if (ig->type & IG_PRIV)
 			strcat (tbuf, _("YES  "));
 		else
@@ -173,8 +173,8 @@ ignore_showlist (session *sess)
  *
  */
 
-int
-ignore_del (char *mask, struct ignore *ig)
+bool
+ignore_del(const std::string& mask, struct ignore *ig)
 {
 	if (!ig)
 	{
@@ -183,7 +183,7 @@ ignore_del (char *mask, struct ignore *ig)
 		while (list)
 		{
 			ig = (struct ignore *) list->data;
-			if (!rfc_casecmp (ig->mask, mask))
+			if (!rfc_casecmp (ig->mask.c_str(), mask.c_str()))
 				break;
 			list = list->next;
 			ig = 0;
@@ -192,18 +192,17 @@ ignore_del (char *mask, struct ignore *ig)
 	if (ig)
 	{
 		ignore_list = g_slist_remove (ignore_list, ig);
-		free (ig->mask);
-		free (ig);
+		delete ig;
 		fe_ignore_update (1);
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 /* check if a msg should be ignored by browsing our ignore list */
 
-int
-ignore_check (char *host, int type)
+bool
+ignore_check(const std::string& mask, int type)
 {
 	struct ignore *ig;
 	GSList *list = ignore_list;
@@ -211,13 +210,13 @@ ignore_check (char *host, int type)
 	/* check if there's an UNIGNORE first, they take precendance. */
 	while (list)
 	{
-		ig = (struct ignore *) list->data;
+		ig = static_cast<struct ignore *>(list->data);
 		if (ig->type & IG_UNIG)
 		{
 			if (ig->type & type)
 			{
-				if (match (ig->mask, host))
-					return FALSE;
+				if (match (ig->mask.c_str(), mask.c_str()))
+					return false;
 			}
 		}
 		list = list->next;
@@ -226,11 +225,11 @@ ignore_check (char *host, int type)
 	list = ignore_list;
 	while (list)
 	{
-		ig = (struct ignore *) list->data;
+		ig = static_cast<struct ignore *>(list->data);
 
 		if (ig->type & type)
 		{
-			if (match (ig->mask, host))
+			if (match (ig->mask.c_str(), mask.c_str()))
 			{
 				ignored_total++;
 				if (type & IG_PRIV)
@@ -244,13 +243,13 @@ ignore_check (char *host, int type)
 				if (type & IG_INVI)
 					ignored_invi++;
 				fe_ignore_update (2);
-				return TRUE;
+				return true;
 			}
 		}
 		list = list->next;
 	}
 
-	return FALSE;
+	return true;
 }
 
 static char *
@@ -265,7 +264,7 @@ ignore_read_next_entry (char *my_cfg, struct ignore *ignore)
 		my_cfg = cfg_get_str (my_cfg, "mask", tbuf, sizeof (tbuf));
 		if (!my_cfg)
 			return NULL;
-		ignore->mask = strdup (tbuf);
+		ignore->mask = tbuf;
 	}
 	if (my_cfg)
 	{
@@ -289,7 +288,7 @@ ignore_load ()
 		fstat (fh, &st);
 		if (st.st_size)
 		{
-			std::vector<char> cfg(st.st_size + 1);
+			std::string cfg(st.st_size + 1, '\0');
 			cfg[0] = '\0';
 			i = read (fh, &cfg[0], st.st_size);
 			if (i >= 0)
@@ -297,11 +296,11 @@ ignore_load ()
 			my_cfg = &cfg[0];
 			while (my_cfg)
 			{
-				ignore = static_cast<struct ignore*>(calloc (1, sizeof (struct ignore)));
-				if ((my_cfg = ignore_read_next_entry (my_cfg, ignore)))
-					ignore_list = g_slist_prepend (ignore_list, ignore);
+				ignore = new struct ignore();
+				if ((my_cfg = ignore_read_next_entry(my_cfg, ignore)))
+					ignore_list = g_slist_prepend(ignore_list, ignore);
 				else
-					free (ignore);
+					delete ignore;
 			}
 		}
 		close (fh);
@@ -321,11 +320,11 @@ ignore_save ()
 	{
 		while (temp)
 		{
-			ig = (struct ignore *) temp->data;
+			ig = static_cast<struct ignore *>(temp->data);
 			if (!(ig->type & IG_NOSAVE))
 			{
 				snprintf (buf, sizeof (buf), "mask = %s\ntype = %u\n\n",
-							 ig->mask, ig->type);
+							 ig->mask.c_str(), ig->type);
 				write (fh, buf, strlen (buf));
 			}
 			temp = temp->next;
@@ -343,7 +342,7 @@ flood_autodialog_timeout (gpointer data)
 }
 
 int
-flood_check (char *nick, char *ip, server *serv, session *sess, FLOOD_WHAT what)	/*0=ctcp  1=priv */
+flood_check (char *nick, char *ip, server *serv, session *sess, flood_check_type what)	/*0=ctcp  1=priv */
 {
 	/*
 	   serv
@@ -359,7 +358,7 @@ flood_check (char *nick, char *ip, server *serv, session *sess, FLOOD_WHAT what)
 	time_t current_time;
 	current_time = time (NULL);
 
-	if (what == CTCP)
+	if (what == flood_check_type::CTCP)
 	{
 		if (serv->ctcp_last_time == 0)	/*first ctcp in this server */
 		{

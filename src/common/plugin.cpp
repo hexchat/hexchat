@@ -1485,7 +1485,7 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		switch (hash)
 		{
 		case 0x3306ec:	/* mask */
-			return ((struct ignore *)data)->mask;
+			return ((struct ignore *)data)->mask.c_str();
 		}
 		break;
 

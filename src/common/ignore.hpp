@@ -20,6 +20,8 @@
 #ifndef HEXCHAT_IGNORE_HPP
 #define HEXCHAT_IGNORE_HPP
 
+#include <string>
+
 extern GSList *ignore_list;
 
 extern int ignored_ctcp;
@@ -39,25 +41,25 @@ extern int ignored_invi;
 
 struct ignore
 {
-	char *mask;
+	std::string mask;
 	unsigned int type;	/* one of more of IG_* ORed together */
 };
 
-typedef enum
+enum class flood_check_type
 {
 	CTCP,
 	PRIV
-} FLOOD_WHAT;
+};
 
-struct ignore *ignore_exists (char *mask);
-int ignore_add (char *mask, int type, gboolean overwrite);
+struct ignore *ignore_exists (const std::string& mask);
+int ignore_add(const std::string& mask, int type, bool overwrite);
 void ignore_showlist (session *sess);
-int ignore_del (char *mask, struct ignore *ig);
-int ignore_check (char *mask, int type);
+bool ignore_del(const std::string& mask, struct ignore *ig);
+bool ignore_check(const std::string& mask, int type);
 void ignore_load (void);
 void ignore_save (void);
 void ignore_gui_open (void);
 void ignore_gui_update (int level);
-int flood_check (char *nick, char *ip, server *serv, session *sess, FLOOD_WHAT what);
+int flood_check (char *nick, char *ip, server *serv, session *sess, flood_check_type what);
 
 #endif

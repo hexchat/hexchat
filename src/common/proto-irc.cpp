@@ -1233,7 +1233,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						text[len - 1] = 0;
 						text++;
 						if (g_ascii_strncasecmp (text, "ACTION", 6) != 0)
-							flood_check (nick, ip, serv, sess, CTCP);
+							flood_check(nick, ip, serv, sess, flood_check_type::CTCP);
 						if (g_ascii_strncasecmp (text, "DCC ", 4) == 0)
 							/* redo this with handle_quotes TRUE */
 							process_data_init (word[1], word_eol[1], word, word_eol, TRUE, FALSE);

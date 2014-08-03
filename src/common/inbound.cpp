@@ -175,7 +175,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 		/*0=ctcp  1=priv will set hex_gui_autoopen_dialog=0 here is flud detected */
 		if (!sess)
 		{
-			if (flood_check (from, ip, serv, current_sess, PRIV))
+			if (flood_check(from, ip, serv, current_sess, flood_check_type::PRIV))
 				/* Create a dialog session */
 				sess = inbound_open_dialog (serv, from, tags_data);
 			else
@@ -362,7 +362,7 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 			if (!sess && prefs.hex_gui_autoopen_dialog)
 			{
 				/* but only if it wouldn't flood */
-				if (flood_check (from, ip, serv, current_sess, PRIV))
+				if (flood_check(from, ip, serv, current_sess, flood_check_type::PRIV))
 					sess = inbound_open_dialog (serv, from, tags_data);
 				else
 					sess = serv->server_session;
