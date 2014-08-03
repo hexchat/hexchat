@@ -17,17 +17,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef HEXCHAT_ASCII_H
-#define HEXCHAT_ASCII_H
-
-#ifdef __cplusplus
-extern "C"{
-#endif
+#ifndef HEXCHAT_ASCII_HPP
+#define HEXCHAT_ASCII_HPP
 
 void ascii_open (void);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
