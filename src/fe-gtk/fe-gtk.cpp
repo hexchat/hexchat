@@ -49,7 +49,7 @@
 #include "xtext.h"
 #include "palette.h"
 #include "menu.h"
-#include "notifygui.h"
+#include "notifygui.hpp"
 #include "textgui.h"
 #include "fkeys.h"
 #include "plugin-tray.h"

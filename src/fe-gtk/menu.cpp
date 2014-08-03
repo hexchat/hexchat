@@ -56,7 +56,7 @@
 #include "fkeys.h"
 #include "gtkutil.h"
 #include "maingui.h"
-#include "notifygui.h"
+#include "notifygui.hpp"
 #include "pixmaps.h"
 #include "rawlog.h"
 #include "palette.h"

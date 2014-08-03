@@ -35,7 +35,7 @@
 #include "gtkutil.h"
 #include "maingui.h"
 #include "palette.h"
-#include "notifygui.h"
+#include "notifygui.hpp"
 
 
 /* model for the notify treeview */
