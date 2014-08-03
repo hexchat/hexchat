@@ -110,7 +110,7 @@ struct dcc_chat
 
 struct dccstat_info
 {
-	char *name;						  /* Display name */
+	const char *name;						  /* Display name */
 	int color;						  /* Display color (index into colors[] ) */
 };
 
