@@ -134,14 +134,14 @@ timer_showlist (void)
 }
 
 static int
-timer_cb (char *word[], char *word_eol[], void *userdata)
+timer_cb(const char * const word[], const char * const word_eol[], void *userdata)
 {
 	int repeat = 1;
 	float timeout;
 	int offset = 0;
 	int ref = 0;
 	bool quiet = false;
-	char *command;
+	const char *command;
 
 	if (!word[2][0])
 	{

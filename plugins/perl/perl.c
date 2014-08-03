@@ -230,7 +230,7 @@ execute_perl (SV * function, char *args)
 }
 
 static char *
-get_filename (char *word[], char *word_eol[])
+get_filename(const char * const word[], const char * const word_eol[])
 {
 	int len;
 	char *file;
@@ -1564,7 +1564,7 @@ perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_load (char *word[], char *word_eol[], void *userdata)
+perl_command_load(const char * const word[], const char * const word_eol[], void *userdata)
 {
 	char *file = get_filename (word, word_eol);
 
@@ -1578,7 +1578,7 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_unload (char *word[], char *word_eol[], void *userdata)
+perl_command_unload(const char * const word[], const char * const word_eol[], void *userdata)
 {
 	char *file = get_filename (word, word_eol);
 	
@@ -1591,7 +1591,7 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_reload (char *word[], char *word_eol[], void *eat)
+perl_command_reload(const char * const word[], const char * const word_eol[], void *eat)
 {
 	char *file = get_filename (word, word_eol);
 	
@@ -1607,7 +1607,7 @@ perl_command_reload (char *word[], char *word_eol[], void *eat)
 }
 
 static int
-perl_command_eval (char *word[], char *word_eol[], void *userdata)
+perl_command_eval(const char * const word[], const char * const word_eol[], void *userdata)
 {
 	if (my_perl != NULL)
 		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::evaluate", 0)), word_eol[2]);

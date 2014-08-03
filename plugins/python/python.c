@@ -269,15 +269,15 @@ typedef struct {
 /* ===================================================================== */
 /* Function declarations */
 
-static PyObject *Util_BuildList(char *word[]);
-static PyObject *Util_BuildEOLList(char *word[]);
+static PyObject *Util_BuildList(const char * const *word[]);
+static PyObject *Util_BuildEOLList(const char * const word[]);
 static void Util_Autoload();
 static char *Util_Expand(char *filename);
 
-static int Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata);
-static int Callback_Command(char *word[], char *word_eol[], void *userdata);
-static int Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata);
-static int Callback_Print(char *word[], void *userdata);
+static int Callback_Server(const char * const word[], const char * const word_eol[], hexchat_event_attrs *attrs, void *userdata);
+static int Callback_Command(const char * const word[], const char * const word_eol[], void *userdata);
+static int Callback_Print_Attrs(const char * const word[], hexchat_event_attrs *attrs, void *userdata);
+static int Callback_Print(const char * const word[], void *userdata);
 static int Callback_Timer(void *userdata);
 static int Callback_ThreadTimer(void *userdata);
 
@@ -379,7 +379,7 @@ static const char about[] = "HexChat Python interface version " VERSION "\n";
 /* Utility functions */
 
 static PyObject *
-Util_BuildList(char *word[])
+Util_BuildList(const char * const word[])
 {
 	PyObject *list;
 	int listsize = 31;
@@ -409,7 +409,7 @@ Util_BuildList(char *word[])
 }
 
 static PyObject *
-Util_BuildEOLList(char *word[])
+Util_BuildEOLList(const char * const word[])
 {
 	PyObject *list;
 	int listsize = 31;
@@ -560,7 +560,7 @@ Util_ReleaseThread(PyThreadState *tstate)
  * the load function, and the hooks for interactive interpreter. */
 
 static int
-Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata)
+Callback_Server(const char * const word[], const char * const word_eol[], hexchat_event_attrs *attrs, void *userdata)
 {
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;
@@ -612,7 +612,7 @@ Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void
 }
 
 static int
-Callback_Command(char *word[], char *word_eol[], void *userdata)
+Callback_Command(const char * const word[], const char * const word_eol[], void *userdata)
 {
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;
@@ -656,7 +656,7 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
+Callback_Print_Attrs(const char * const word[], hexchat_event_attrs *attrs, void *userdata)
 {
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;
@@ -706,7 +706,7 @@ Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
 }
 
 static int
-Callback_Print(char *word[], void *userdata)
+Callback_Print(const char * const word[], void *userdata)
 {
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;

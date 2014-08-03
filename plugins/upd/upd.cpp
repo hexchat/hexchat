@@ -127,7 +127,7 @@ namespace{
 	}
 
 	static int
-		print_version(char *word[], char *word_eol[], void *userdata)
+		print_version(const char * const word[], const char * const word_eol[], void *userdata)
 	{
 		char *version;
 		int prevbuf;

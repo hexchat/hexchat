@@ -251,7 +251,7 @@ namespace{
 	static std::mutex g_mutex;
 
 	static int
-		printInfo(char *word[], char *word_eol[], void *user_data)
+		printInfo(const char * const word[], const char * const word_eol[], void *user_data)
 	{
 		std::chrono::milliseconds ticks(GetTickCount64());
 		using fp_hours = ::std::chrono::duration < float, ::std::chrono::hours::period > ;

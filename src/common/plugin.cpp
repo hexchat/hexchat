@@ -83,11 +83,11 @@ struct t_hexchat_list
 	struct notify_per_server *notifyps;	/* notify_per_server * */
 };
 
-typedef int (hexchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
-typedef int (hexchat_serv_cb) (char *word[], char *word_eol[], void *user_data);
-typedef int (hexchat_print_cb) (char *word[], void *user_data);
-typedef int (hexchat_serv_attrs_cb) (char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *user_data);
-typedef int (hexchat_print_attrs_cb) (char *word[], hexchat_event_attrs *attrs, void *user_data);
+typedef int (hexchat_cmd_cb)(const char * const word[], const char * const word_eol[], void *user_data);
+typedef int (hexchat_serv_cb)(const char * const word[], const char * const word_eol[], void *user_data);
+typedef int (hexchat_print_cb)(const char * const word[], void *user_data);
+typedef int (hexchat_serv_attrs_cb) (const char * const word[], const char * const word_eol[], hexchat_event_attrs *attrs, void *user_data);
+typedef int (hexchat_print_attrs_cb)(const char * const word[], hexchat_event_attrs *attrs, void *user_data);
 typedef int (hexchat_fd_cb) (int fd, int flags, void *user_data);
 typedef int (hexchat_timer_cb) (void *user_data);
 typedef int (hexchat_init_func) (hexchat_plugin *, char **, char **, char **, char *);
@@ -515,7 +515,7 @@ plugin_reload (session *sess, char *name, int by_filename)
 #endif
 
 static GSList *
-plugin_hook_find (GSList *list, int type, char *name)
+plugin_hook_find (GSList *list, int type, const char *name)
 {
 	hexchat_hook *hook;
 
@@ -540,7 +540,7 @@ plugin_hook_find (GSList *list, int type, char *name)
 /* check for plugin hooks and run them */
 
 static int
-plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[],
+plugin_hook_run (session *sess, const char *name, char *word[], char *word_eol[],
 				 hexchat_event_attrs *attrs, int type)
 {
 	GSList *list, *next;

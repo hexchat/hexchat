@@ -32,18 +32,18 @@ struct t_hexchat_plugin
 	hexchat_hook *(*hexchat_hook_command) (hexchat_plugin *ph,
 		    const char *name,
 		    int pri,
-		    int (*callback) (char *word[], char *word_eol[], void *user_data),
+			int(*callback) (const char * const word[], const char * const word_eol[], void *user_data),
 		    const char *help_text,
 		    void *userdata);
 	hexchat_hook *(*hexchat_hook_server) (hexchat_plugin *ph,
 		   const char *name,
 		   int pri,
-		   int (*callback) (char *word[], char *word_eol[], void *user_data),
+		   int(*callback) (const char * const word[], const char * const word_eol[], void *user_data),
 		   void *userdata);
 	hexchat_hook *(*hexchat_hook_print) (hexchat_plugin *ph,
 		  const char *name,
 		  int pri,
-		  int (*callback) (char *word[], void *user_data),
+		  int(*callback) (const char * const word[], void *user_data),
 		  void *userdata);
 	hexchat_hook *(*hexchat_hook_timer) (hexchat_plugin *ph,
 		  int timeout,
@@ -139,13 +139,13 @@ struct t_hexchat_plugin
 	hexchat_hook *(*hexchat_hook_server_attrs) (hexchat_plugin *ph,
 		   const char *name,
 		   int pri,
-		   int (*callback) (char *word[], char *word_eol[],
+		   int(*callback) (const char * const word[], const char * const word_eol[],
 							hexchat_event_attrs *attrs, void *user_data),
 		   void *userdata);
 	hexchat_hook *(*hexchat_hook_print_attrs) (hexchat_plugin *ph,
 		  const char *name,
 		  int pri,
-		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
+		  int(*callback) (const char * const word[], hexchat_event_attrs *attrs,
 						   void *user_data),
 		  void *userdata);
 	int (*hexchat_emit_print_attrs) (hexchat_plugin *ph, hexchat_event_attrs *attrs,
