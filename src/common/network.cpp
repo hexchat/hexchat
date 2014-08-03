@@ -18,6 +18,7 @@
 
 /* ipv4 and ipv6 networking functions with a common interface */
 
+#include <new>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -68,7 +69,7 @@ net_store_destroy (netstore * ns)
 	if (ns->ip6_hostent)
 		freeaddrinfo (ns->ip6_hostent);
 #endif
-	free (ns);
+	delete (ns);
 }
 
 netstore *
@@ -76,7 +77,7 @@ net_store_new (void)
 {
 	netstore *ns;
 
-	ns = calloc (1, sizeof (netstore));
+	ns = new(std::nothrow) netstore();// calloc(1, sizeof(netstore));
 
 	return ns;
 }
@@ -308,12 +309,12 @@ net_store_fill_any (netstore *ns)
 
 	ai = ns->ip6_hostent;
 	if (!ai) {
-		ai = calloc (1, sizeof (struct addrinfo));
+		ai = new(std::nothrow) addrinfo();
 		ns->ip6_hostent = ai;
 	}
 	sin = (struct sockaddr_in *)ai->ai_addr;
 	if (!sin) {
-		sin = calloc (1, sizeof (struct sockaddr_in));
+		sin = new(std::nothrow) sockaddr_in();
 		ai->ai_addr = (struct sockaddr *)sin;
 	}
 	ai->ai_family = AF_INET;
@@ -332,12 +333,12 @@ net_store_fill_v4 (netstore *ns, guint32 addr, int port)
 
 	ai = ns->ip6_hostent;
 	if (!ai) {
-		ai = calloc (1, sizeof (struct addrinfo));
+		ai = new(std::nothrow) addrinfo();
 		ns->ip6_hostent = ai;
 	}
 	sin = (struct sockaddr_in *)ai->ai_addr;
 	if (!sin) {
-		sin = calloc (1, sizeof (struct sockaddr_in));
+		sin = new(std::nothrow) sockaddr_in();
 		ai->ai_addr = (struct sockaddr *)sin;
 	}
 	ai->ai_family = AF_INET;
