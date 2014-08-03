@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-/* dcc.h */
+/* dcc.hpp */
 
 #include <time.h>						/* for time_t */
 #include "proto-irc.h"

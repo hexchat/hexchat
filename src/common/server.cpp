@@ -63,7 +63,7 @@ extern "C"{
 #include "proto-irc.h"
 #include "servlist.h"
 #include "server.h"
-#include "dcc.h"
+#include "dcc.hpp"
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */

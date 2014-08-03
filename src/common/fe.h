@@ -18,7 +18,6 @@
  */
 
 #include "userlist.h"
-//#include "dcc.h"
 
 #ifndef HEXCHAT_FE_H
 #define HEXCHAT_FE_H

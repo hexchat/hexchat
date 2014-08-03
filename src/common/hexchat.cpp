@@ -52,7 +52,7 @@
 #include "text.h"
 #include "url.h"
 #include "hexchatc.h"
-#include "dcc.h"
+#include "dcc.hpp"
 
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
 #include <glib-object.h>			/* for g_type_init() */

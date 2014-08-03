@@ -31,7 +31,7 @@
 #include "outbound.h"
 #include "ignore.h"
 #include "inbound.h"
-#include "dcc.h"
+#include "dcc.hpp"
 #include "text.h"
 #include "ctcp.h"
 #include "server.h"

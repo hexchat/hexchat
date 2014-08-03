@@ -28,7 +28,7 @@
 #define WANTARPA
 #include "../common/inet.h"
 #include "fe-gtk.h"
-#include "../common/dcc.h"
+#include "../common/dcc.hpp"
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
 #include "../common/fe.h"

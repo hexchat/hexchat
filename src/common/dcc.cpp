@@ -45,7 +45,7 @@
 #include <unistd.h>
 #endif
 
-#include "dcc.h"
+#include "dcc.hpp"
 #include "hexchat.h"
 #include "util.h"
 #include "fe.h"
