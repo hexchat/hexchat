@@ -118,7 +118,7 @@ enum
 	HOOK_DELETED      = 1 << 7  /* marked for deletion */
 };
 
-extern "C"{ GSList *plugin_list = NULL; } /* export for plugingui.c */
+GSList *plugin_list = NULL;  /* export for plugingui.c */
 static GSList *hook_list = NULL;
 
 

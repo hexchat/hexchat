@@ -20,15 +20,7 @@
 #ifndef HEXCHAT_PLUGINGUI_H
 #define HEXCHAT_PLUGINGUI_H
 
-#ifdef __cplusplus
-extern "C"{
-#endif
-
 void plugingui_open (void);
 void plugingui_load (void);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

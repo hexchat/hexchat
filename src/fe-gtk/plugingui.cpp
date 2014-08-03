@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
 
 #include "fe-gtk.h"
 
@@ -117,14 +117,14 @@ fe_pluginlist_update (void)
 	if (!plugin_window)
 		return;
 
-	view = g_object_get_data (G_OBJECT (plugin_window), "view");
+	view = static_cast<GtkTreeView*>(g_object_get_data (G_OBJECT (plugin_window), "view"));
 	store = GTK_LIST_STORE (gtk_tree_view_get_model (view));
 	gtk_list_store_clear (store);
 
 	list = plugin_list;
 	while (list)
 	{
-		pl = list->data;
+		pl = static_cast<hexchat_plugin*>( list->data);
 		if (pl->version[0] != 0)
 		{
 			gtk_list_store_append (store, &iter);
@@ -142,7 +142,7 @@ plugingui_load_cb (session *sess, char *file)
 {
 	if (file)
 	{
-		char *buf = malloc (strlen (file) + 9);
+		char *buf = static_cast<char*>(malloc (strlen (file) + 9));
 
 		if (strchr (file, ' '))
 			sprintf (buf, "LOAD \"%s\"", file);
@@ -179,7 +179,7 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	GtkTreeView *view;
 	GtkTreeIter iter;
 	
-	view = g_object_get_data (G_OBJECT (plugin_window), "view");
+	view = static_cast<GtkTreeView*>(g_object_get_data(G_OBJECT(plugin_window), "view"));
 	if (!gtkutil_treeview_get_selected (view, &iter, NAME_COLUMN, &modname,
 	                                    FILE_COLUMN, &file, -1))
 		return;
@@ -191,7 +191,7 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	} else
 	{
 		/* let python.so or perl.so handle it */
-		buf = malloc (strlen (file) + 10);
+		buf = static_cast<char*>(malloc (strlen (file) + 10));
 		if (strchr (file, ' '))
 			sprintf (buf, "UNLOAD \"%s\"", file);
 		else
@@ -211,7 +211,7 @@ plugingui_reloadbutton_cb (GtkWidget *wid, GtkTreeView *view)
 
 	if (file)
 	{
-		char *buf = malloc (strlen (file) + 9);
+		char *buf = static_cast<char*>(malloc (strlen (file) + 9));
 
 		if (strchr (file, ' '))
 			sprintf (buf, "RELOAD \"%s\"", file);
