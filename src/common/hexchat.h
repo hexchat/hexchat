@@ -92,7 +92,9 @@
 #define PDIWORDS		32
 #define USERNAMELEN 10
 #define HIDDEN_CHAR	8			/* invisible character for xtext */
-
+#ifdef __cplusplus
+extern "C"{
+#endif
 struct nbexec
 {
 	int myfd;
@@ -367,6 +369,13 @@ typedef enum gtk_xtext_search_flags_e {
 	regexp = 16
 } gtk_xtext_search_flags;
 
+#ifdef __cplusplus
+inline gtk_xtext_search_flags operator |=(gtk_xtext_search_flags a, gtk_xtext_search_flags b)
+{
+	return static_cast<gtk_xtext_search_flags>(static_cast<int>(a) | static_cast<int>(b));
+}
+#endif
+
 typedef struct session
 {
 	/* Per-Channel Alerts */
@@ -460,7 +469,7 @@ typedef struct server
 	void (*p_inline)(struct server *, char *buf, int len);
 	void (*p_invite)(struct server *, char *channel, char *nick);
 	void (*p_cycle)(struct server *, char *channel, char *key);
-	void (*p_ctcp)(struct server *, char *to, char *msg);
+	void (*p_ctcp)(struct server *, const char *to, char *msg);
 	void (*p_nctcp)(struct server *, char *to, char *msg);
 	void (*p_quit)(struct server *, char *reason);
 	void (*p_kick)(struct server *, char *channel, char *nick, char *reason);
@@ -488,7 +497,7 @@ typedef struct server
 	void (*p_names)(struct server *, char *channel);
 	void (*p_ping)(struct server *, char *to, char *timestring);
 /*	void (*p_set_away)(struct server *);*/
-	int (*p_raw)(struct server *, char *raw);
+	int (*p_raw)(struct server *, const char *raw);
 	int (*p_cmp)(const char *s1, const char *s2);
 
 	int port;
@@ -633,5 +642,7 @@ struct popup
 
 #define hexchat_filename_from_utf8 g_filename_from_utf8
 #define hexchat_filename_to_utf8 g_filename_to_utf8
-
+#ifdef __cplusplus
+}
+#endif
 #endif

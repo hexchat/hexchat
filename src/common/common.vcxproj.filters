@@ -20,19 +20,10 @@
     <ClInclude Include="ctcp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dcc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="fe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="history.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="identd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ignore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inbound.h">
@@ -59,9 +50,6 @@
     <ClInclude Include="plugin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="plugin-timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="proto-irc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,9 +57,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="servlist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ssl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="text.h">
@@ -101,9 +86,6 @@
     <ClInclude Include="hexchatc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hexchat-plugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -113,84 +95,102 @@
     <ClInclude Include="marshal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="identd.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hexchat-plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin-timer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ssl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dcc.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ignore.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cfgfiles.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="chanopt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ctcp.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dcc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="history.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="identd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ignore.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="inbound.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="modes.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="msproxy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="network.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="notify.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="outbound.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="plugin.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="plugin-timer.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="proto-irc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="server.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="servlist.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ssl.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="text.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tree.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="url.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="userlist.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="util.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="hexchat.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="marshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="identd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hexchat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ctcp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="userlist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ignore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="inbound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="outbound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plugin-timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="proto-irc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="url.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cfgfiles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="history.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="servlist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="chanopt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ssl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dcc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="notify.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="network.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

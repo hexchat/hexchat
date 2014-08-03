@@ -10,21 +10,24 @@
 #include <stdio.h>
 #include "hexchat-plugin.h"
 
+#if defined(_WIN32) || defined(_WIN64)
+#define strtok_r strtok_s
+#endif
 static hexchat_plugin *ph;
 
 static int
-parse_command( char *word[], char *word_eol[], void *userdata ) {
+parse_command(const char *const word[], const char *const word_eol[], void *userdata) {
 	char *channel = NULL, *server = NULL, *token = NULL;
-/*	char *save_ptr1 = NULL;*/
+	char *save_ptr1 = NULL;
 	char *str1 = NULL;
 	char *delimiter = NULL;
 
 	hexchat_context *ctx = NULL;
 
 	if( word[2] != NULL && word[3] != NULL ) {
-		for( str1 = word[2]; ; str1 = NULL ) {
-/*			token = strtok_r( str1, ",", &save_ptr1 );*/
-			token = strtok( str1, "," );
+		for( str1 = strdup(word[2]); ; str1 = NULL ) {
+			token = strtok_r( str1, ",", &save_ptr1 );
+			/*token = strtok( str1, "," );*/
 /*			printf( "token: %s\n", token );*/
 
 			if( token == NULL ) {
@@ -66,6 +69,7 @@ parse_command( char *word[], char *word_eol[], void *userdata ) {
 				free( server );
 			}
 		}
+		free(str1);
 	}
 	return HEXCHAT_EAT_HEXCHAT;
 }

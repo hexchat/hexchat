@@ -20,6 +20,14 @@
 #ifndef HEXCHAT_RAWLOG_H
 #define HEXCHAT_RAWLOG_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void open_rawlog (server *serv);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

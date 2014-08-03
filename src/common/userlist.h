@@ -23,6 +23,10 @@
 #ifndef HEXCHAT_USERLIST_H
 #define HEXCHAT_USERLIST_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct User
 {
 	char nick[NICKLEN];
@@ -49,7 +53,7 @@ int userlist_add_hostname (session *sess, char *nick,
 void userlist_set_away (session *sess, char *nick, unsigned int away);
 void userlist_set_account (session *sess, char *nick, char *account);
 struct User *userlist_find (session *sess, const char *name);
-struct User *userlist_find_global (server *serv, char *name);
+struct User *userlist_find_global (server *serv, const char *name);
 void userlist_clear (session *sess);
 void userlist_free (session *sess);
 void userlist_add (session *sess, char *name, char *hostname, char *account,
@@ -61,5 +65,9 @@ void userlist_update_mode (session *sess, char *name, char mode, char sign);
 GSList *userlist_flat_list (session *sess);
 GList *userlist_double_list (session *sess);
 void userlist_rehash (session *sess);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

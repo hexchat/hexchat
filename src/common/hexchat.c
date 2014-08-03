@@ -464,12 +464,11 @@ session_new (server *serv, char *from, int type, int focus)
 {
 	session *sess;
 
-	sess = malloc (sizeof (struct session));
+	sess = calloc (1, sizeof (struct session));
 	if (sess == NULL)
 	{
 		return NULL;
 	}
-	memset (sess, 0, sizeof (struct session));
 
 	sess->server = serv;
 	sess->logfd = -1;
@@ -506,15 +505,24 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	{
 	case SESS_SERVER:
 		serv = server_new ();
+		if (!serv)
+			return NULL;
 		if (prefs.hex_gui_tab_server)
 			sess = session_new (serv, name, SESS_SERVER, focus);
 		else
 			sess = session_new (serv, name, SESS_CHANNEL, focus);
+		if (!sess)
+		{
+			free(serv);
+			return NULL;
+		}
 		serv->server_session = sess;
 		serv->front_session = sess;
 		break;
 	case SESS_DIALOG:
 		sess = session_new (serv, name, type, focus);
+		if (!sess)
+			return NULL;
 		log_open_or_close (sess);
 		break;
 	default:
@@ -522,6 +530,8 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	case SESS_NOTICES:
 	case SESS_SNOTICES:*/
 		sess = session_new (serv, name, type, focus);
+		if (!sess)
+			return NULL;
 		break;
 	}
 
@@ -548,8 +558,7 @@ exec_notify_kill (session * sess)
 		waitpid (re->childpid, NULL, WNOHANG);
 		fe_input_remove (re->iotag);
 		close (re->myfd);
-		if (re->linebuf)
-			free(re->linebuf);
+		free(re->linebuf);
 		free (re);
 	}
 #endif
@@ -656,10 +665,8 @@ session_free (session *killsess)
 	send_quit_or_part (killsess);
 
 	history_free (&killsess->history);
-	if (killsess->topic)
-		free (killsess->topic);
-	if (killsess->current_modes)
-		free (killsess->current_modes);
+	free (killsess->topic);
+	free (killsess->current_modes);
 
 	fe_session_callback (killsess);
 
@@ -700,16 +707,16 @@ free_sessions (void)
 }
 
 
-static char defaultconf_ctcp[] =
+static const char defaultconf_ctcp[] =
 	"NAME TIME\n"				"CMD nctcp %s TIME %t\n\n"\
 	"NAME PING\n"				"CMD nctcp %s PING %d\n\n";
 
-static char defaultconf_replace[] =
+static const char defaultconf_replace[] =
 	"NAME teh\n"				"CMD the\n\n";
 /*	"NAME r\n"					"CMD are\n\n"\
 	"NAME u\n"					"CMD you\n\n"*/
 
-static char defaultconf_commands[] =
+static const char defaultconf_commands[] =
 	"NAME ACTION\n"		"CMD me &2\n\n"\
 	"NAME AME\n"			"CMD allchan me &2\n\n"\
 	"NAME ANICK\n"			"CMD allserv nick &2\n\n"\
@@ -741,7 +748,7 @@ static char defaultconf_commands[] =
         "NAME WI\n"                     "CMD quote WHOIS %2\n\n"\
 	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n";
 
-static char defaultconf_urlhandlers[] =
+static const char defaultconf_urlhandlers[] =
 		"NAME Open Link in a new Firefox Window\n"		"CMD !firefox -new-window %s\n\n";
 
 #ifdef USE_SIGACTION
@@ -792,7 +799,7 @@ xchat_init (void)
 #ifdef USE_IPV6
 	if (WSAStartup(0x0202, &wsadata) != 0)
 	{
-		MessageBox (NULL, "Cannot find winsock 2.2+", "Error", MB_OK);
+		MessageBoxW (NULL, L"Cannot find winsock 2.2+", L"Error", MB_OK);
 		exit (0);
 	}
 #else

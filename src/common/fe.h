@@ -18,10 +18,13 @@
  */
 
 #include "userlist.h"
-#include "dcc.h"
 
 #ifndef HEXCHAT_FE_H
 #define HEXCHAT_FE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* for storage of /menu entries */
 typedef struct
@@ -53,13 +56,13 @@ int fe_timeout_add (int interval, void *callback, void *userdata);
 void fe_timeout_remove (int tag);
 void fe_new_window (struct session *sess, int focus);
 void fe_new_server (struct server *serv);
-void fe_add_rawlog (struct server *serv, char *text, int len, int outbound);
+void fe_add_rawlog (struct server *serv, const char *text, int len, int outbound);
 #define FE_MSG_WAIT 1
 #define FE_MSG_INFO 2
 #define FE_MSG_WARN 4
 #define FE_MSG_ERROR 8
 #define FE_MSG_MARKUP 16
-void fe_message (char *msg, int flags);
+void fe_message (const char *msg, int flags);
 #define FIA_READ 1
 #define FIA_WRITE 2
 #define FIA_EX 4
@@ -80,8 +83,7 @@ void fe_add_chan_list (struct server *serv, char *chan, char *users,
 void fe_chan_list_end (struct server *serv);
 gboolean fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rplcode);
 gboolean fe_ban_list_end (struct session *sess, int rplcode);
-void fe_notify_update (char *name);
-void fe_notify_ask (char *name, char *networks);
+void fe_notify_update(char *name);
 void fe_text_clear (struct session *sess, int lines);
 void fe_close_window (struct session *sess);
 void fe_progressbar_start (struct session *sess);
@@ -97,9 +99,6 @@ void fe_userlist_numbers (struct session *sess);
 void fe_userlist_clear (struct session *sess);
 void fe_userlist_set_selected (struct session *sess);
 void fe_uselect (session *sess, char *word[], int do_clear, int scroll_to);
-void fe_dcc_add (struct DCC *dcc);
-void fe_dcc_update (struct DCC *dcc);
-void fe_dcc_remove (struct DCC *dcc);
 int fe_dcc_open_recv_win (int passive);
 int fe_dcc_open_send_win (int passive);
 int fe_dcc_open_chat_win (int passive);
@@ -182,5 +181,8 @@ void fe_tray_set_tooltip (const char *text);
 void fe_tray_set_balloon (const char *title, const char *text);
 void fe_open_chan_list (server *serv, char *filter, int do_refresh);
 const char *fe_get_default_font ();
+#ifdef __cplusplus
+}
+#endif
 
 #endif

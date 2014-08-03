@@ -27,6 +27,7 @@
 #endif
 #ifdef WIN32
 #include <windows.h>
+#include <process.h>
 #else
 #include <dirent.h>
 #endif
@@ -38,7 +39,7 @@
 
 static hexchat_plugin *ph;		  /* plugin handle */
 
-static int perl_load_file (char *script_name);
+static int perl_load_file (const char *script_name);
 
 #ifdef WIN32
 /* STRINGIFY is from perl's CORE/config.h */
@@ -63,7 +64,7 @@ thread_mbox (char *str)
 {
 	DWORD tid;
 
-	CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) child,
+	CloseHandle ((HANDLE)_beginthreadex (NULL, 0, (LPTHREAD_START_ROUTINE) child,
 										str, 0, &tid));
 }
 
@@ -197,7 +198,7 @@ extern void boot_DynaLoader (pTHX_ CV * cv);
   this is used for autoload and shutdown callbacks
 */
 static int
-execute_perl (SV * function, char *args)
+execute_perl (SV * function, const char *args)
 {
 
 	int count, ret_value = 1;
@@ -228,11 +229,11 @@ execute_perl (SV * function, char *args)
 	return ret_value;
 }
 
-static char *
-get_filename (char *word[], char *word_eol[])
+static const char *
+get_filename(const char * const word[], const char * const word_eol[])
 {
 	int len;
-	char *file;
+	const char *file;
 
 	len = strlen (word[2]);
 
@@ -300,7 +301,7 @@ list_item_to_sv ( hexchat_list *list, const char *const *fields )
 }
 
 static AV *
-array2av (char *array[])
+array2av(const char *const array[])
 {
 	int count = 0;
 	SV *temp = NULL;
@@ -441,7 +442,7 @@ timer_cb (void *userdata)
 }
 
 static int
-server_cb (char *word[], char *word_eol[], void *userdata)
+server_cb(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	HookData *data = (HookData *) userdata;
 	int retVal = 0;
@@ -490,7 +491,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-command_cb (char *word[], char *word_eol[], void *userdata)
+command_cb(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	HookData *data = (HookData *) userdata;
 	int retVal = 0;
@@ -539,7 +540,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-print_cb (char *word[], void *userdata)
+print_cb(const char *const word[], void *userdata)
 {
 
 	HookData *data = (HookData *) userdata;
@@ -723,7 +724,7 @@ XS (XS_HexChat_send_modes)
 	char sign;
 	char mode;
 	int i = 0;
-	const char **targets;
+	char **targets;
 	int target_count = 0;
 	SV **elem;
 
@@ -1468,7 +1469,7 @@ perl_init (void)
 
 
 static int
-perl_load_file (char *filename)
+perl_load_file (const char *filename)
 {
 #ifdef WIN32
 	static HMODULE lib = NULL;
@@ -1539,7 +1540,7 @@ perl_end (void)
 }
 
 static int
-perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
+perl_command_unloadall(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	if (my_perl != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::unload_all", 0)), "");
@@ -1550,7 +1551,7 @@ perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
+perl_command_reloadall(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	if (my_perl != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::reload_all", 0)), "");
@@ -1563,9 +1564,9 @@ perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_load (char *word[], char *word_eol[], void *userdata)
+perl_command_load(const char * const word[], const char * const word_eol[], void *userdata)
 {
-	char *file = get_filename (word, word_eol);
+	const char *file = get_filename (word, word_eol);
 
 	if (file != NULL )
 	{
@@ -1577,9 +1578,9 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_unload (char *word[], char *word_eol[], void *userdata)
+perl_command_unload(const char * const word[], const char * const word_eol[], void *userdata)
 {
-	char *file = get_filename (word, word_eol);
+	const char *file = get_filename (word, word_eol);
 	
 	if (my_perl != NULL && file != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::unload", 0)), file);
@@ -1590,9 +1591,9 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_reload (char *word[], char *word_eol[], void *eat)
+perl_command_reload(const char * const word[], const char * const word_eol[], void *eat)
 {
-	char *file = get_filename (word, word_eol);
+	const char *file = get_filename (word, word_eol);
 	
 	if (my_perl != NULL && file != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::reload", 0)), file);
@@ -1606,7 +1607,7 @@ perl_command_reload (char *word[], char *word_eol[], void *eat)
 }
 
 static int
-perl_command_eval (char *word[], char *word_eol[], void *userdata)
+perl_command_eval(const char * const word[], const char * const word_eol[], void *userdata)
 {
 	if (my_perl != NULL)
 		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::evaluate", 0)), word_eol[2]);

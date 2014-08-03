@@ -22,7 +22,9 @@
 
 #include <gtk/gtk.h>
 #include "../common/fe.h"
-
+#ifdef __cplusplus
+extern "C"{
+#endif
 typedef void (*filereqcallback) (void *, char *file);
 
 void gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter, char *extensions, int flags);
@@ -43,7 +45,7 @@ int gtkutil_clist_multiple_selection (GtkWidget * clist,
 													int ** rows, const int max_rows);
 void show_and_unfocus (GtkWidget * wid);
 void gtkutil_set_icon (GtkWidget *win);
-GtkWidget *gtkutil_window_new (char *title, char *role, int width, int height, int flags);
+GtkWidget *gtkutil_window_new (const char *title, const char *role, int width, int height, int flags);
 void gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
                                 const gchar *str);
 GtkWidget *gtkutil_treeview_new (GtkWidget *box, GtkTreeModel *model,
@@ -56,4 +58,7 @@ gboolean gtkutil_treeview_get_selected (GtkTreeView *view, GtkTreeIter *iter_ret
 gboolean gtkutil_find_font (const char *fontname);
 #endif
 
+#ifdef __cplusplus
+}
+#endif
 #endif

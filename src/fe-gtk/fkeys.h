@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_FKEYS_H
 #define HEXCHAT_FKEYS_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 /* These are cp'ed from history.c --AGL */
 #define STATE_SHIFT		GDK_SHIFT_MASK
 #define STATE_ALT		GDK_MOD1_MASK
@@ -34,5 +38,8 @@ void key_dialog_show (void);
 int key_handle_key_press (GtkWidget * wid, GdkEventKey * evt, session *sess);
 int key_action_insert (GtkWidget * wid, GdkEventKey * evt, char *d1, char *d2,
 						 session *sess);
+#ifdef __cplusplus
+}
+#endif
 
 #endif

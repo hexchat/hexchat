@@ -25,6 +25,9 @@
 #include "hexchat.h"
 
 #define LANGUAGES_LENGTH 53
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 extern char *xdir;
 extern const char * const languages[LANGUAGES_LENGTH];
@@ -44,7 +47,7 @@ int make_dcc_dirs (void);
 int load_config (void);
 int save_config (void);
 void list_free (GSList ** list);
-void list_loadconf (char *file, GSList ** list, char *defaultconf);
+void list_loadconf (const char *file, GSList ** list, const char *defaultconf);
 int list_delentry (GSList ** list, char *name);
 void list_addentry (GSList ** list, char *cmd, char *name);
 int cmd_set (session *sess, char *tbuf, char *word[], char *word_eol[]);
@@ -72,6 +75,10 @@ struct prefs
 	unsigned short len;
 	unsigned short type;
 };
+
+#ifdef __cplusplus
+}
+#endif
 
 #define TYPE_STR 0
 #define TYPE_INT 1

@@ -79,7 +79,7 @@ ignore_exists (char *mask)
 int
 ignore_add (char *mask, int type, gboolean overwrite)
 {
-	struct ignore *ig = 0;
+	struct ignore *ig = NULL;
 	int change_only = FALSE;
 
 	/* first check if it's already ignored */
@@ -297,8 +297,7 @@ ignore_load ()
 			my_cfg = cfg;
 			while (my_cfg)
 			{
-				ignore = malloc (sizeof (struct ignore));
-				memset (ignore, 0, sizeof (struct ignore));
+				ignore = calloc (1, sizeof (struct ignore));
 				if ((my_cfg = ignore_read_next_entry (my_cfg, ignore)))
 					ignore_list = g_slist_prepend (ignore_list, ignore);
 				else
@@ -345,7 +344,7 @@ flood_autodialog_timeout (gpointer data)
 }
 
 int
-flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ctcp  1=priv */
+flood_check (char *nick, char *ip, server *serv, session *sess, FLOOD_WHAT what)	/*0=ctcp  1=priv */
 {
 	/*
 	   serv
@@ -361,7 +360,7 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 	time_t current_time;
 	current_time = time (NULL);
 
-	if (what == 0)
+	if (what == CTCP)
 	{
 		if (serv->ctcp_last_time == 0)	/*first ctcp in this server */
 		{

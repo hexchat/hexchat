@@ -20,13 +20,17 @@
 #ifndef HEXCHAT_SERVER_H
 #define HEXCHAT_SERVER_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern GSList *serv_list;
 
 /* eventually need to keep the tcp_* functions isolated to server.c */
-int tcp_send_len (server *serv, char *buf, int len);
+int tcp_send_len (server *serv, const char *buf, int len);
 int tcp_send (server *serv, char *buf);
 void tcp_sendf (server *serv, const char *fmt, ...) G_GNUC_PRINTF (2, 3);
-int tcp_send_real (void *ssl, int sok, char *encoding, int using_irc, char *buf, int len);
+int tcp_send_real (void *ssl, int sok, const char *encoding, int using_irc, const char *buf, int len);
 
 server *server_new (void);
 int is_server (server *serv);
@@ -41,5 +45,9 @@ void server_away_save_message (server *serv, char *nick, char *msg);
 struct away_msg *server_away_find_message (server *serv, char *nick);
 
 void base64_encode (char *to, char *from, unsigned int len);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

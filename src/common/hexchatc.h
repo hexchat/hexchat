@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_C_H
 #define HEXCHAT_C_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern struct hexchatprefs prefs;
 
 extern int hexchat_is_quitting;
@@ -41,7 +45,6 @@ extern GSList *ctcp_list;
 extern GSList *replace_list;
 extern GSList *sess_list;
 extern GSList *dcc_list;
-extern GSList *ignore_list;
 extern GSList *usermenu_list;
 extern GSList *urlhandler_list;
 extern GSList *tabmenu_list;
@@ -57,5 +60,9 @@ void session_free (session *killsess);
 void lag_check (void);
 void hexchat_exit (void);
 void hexchat_exec (const char *cmd);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

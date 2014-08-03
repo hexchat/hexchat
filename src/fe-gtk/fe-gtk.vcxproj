@@ -108,7 +108,7 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ascii.h" />
+    <ClInclude Include="ascii.hpp" />
     <ClInclude Include="banlist.h" />
     <ClInclude Include="chanlist.h" />
     <ClInclude Include="chanview.h" />
@@ -120,11 +120,11 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
     <ClInclude Include="joind.h" />
     <ClInclude Include="maingui.h" />
     <ClInclude Include="menu.h" />
-    <ClInclude Include="notifygui.h" />
+    <ClInclude Include="notifygui.hpp" />
     <ClInclude Include="palette.h" />
     <ClInclude Include="pixmaps.h" />
     <ClInclude Include="plugin-tray.h" />
-    <ClInclude Include="plugingui.h" />
+    <ClInclude Include="plugingui.hpp" />
     <ClInclude Include="rawlog.h" />
     <ClInclude Include="servlistgui.h" />
     <ClInclude Include="setup.h" />
@@ -132,38 +132,38 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
     <ClInclude Include="sexy-spell-entry.h" />
     <ClInclude Include="textgui.h" />
     <ClInclude Include="urlgrab.h" />
-    <ClInclude Include="userlistgui.h" />
+    <ClInclude Include="userlistgui.hpp" />
     <ClInclude Include="xtext.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ascii.c" />
-    <ClCompile Include="banlist.c" />
-    <ClCompile Include="chanlist.c" />
+    <ClCompile Include="ascii.cpp" />
+    <ClCompile Include="banlist.cpp" />
+    <ClCompile Include="chanlist.cpp" />
     <ClCompile Include="chanview.c" />
     <ClCompile Include="custom-list.c" />
-    <ClCompile Include="dccgui.c" />
+    <ClCompile Include="dccgui.cpp" />
     <ClCompile Include="editlist.c" />
-    <ClCompile Include="fe-gtk.c" />
+    <ClCompile Include="fe-gtk.cpp" />
     <ClCompile Include="fkeys.c" />
     <ClCompile Include="gtkutil.c" />
-    <ClCompile Include="ignoregui.c" />
+    <ClCompile Include="ignoregui.cpp" />
     <ClCompile Include="joind.c" />
-    <ClCompile Include="maingui.c" />
-    <ClCompile Include="menu.c" />
-    <ClCompile Include="notifygui.c" />
+    <ClCompile Include="maingui.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="notifygui.cpp" />
     <ClCompile Include="palette.c" />
     <ClCompile Include="pixmaps.c" />
-    <ClCompile Include="plugin-tray.c" />
-    <ClCompile Include="plugingui.c" />
+    <ClCompile Include="plugin-tray.cpp" />
+    <ClCompile Include="plugingui.cpp" />
     <ClCompile Include="rawlog.c" />
     <ClCompile Include="resources.c" />
-    <ClCompile Include="servlistgui.c" />
+    <ClCompile Include="servlistgui.cpp" />
     <ClCompile Include="setup.c" />
     <ClCompile Include="sexy-iso-codes.c" />
     <ClCompile Include="sexy-spell-entry.c" />
     <ClCompile Include="textgui.c" />
     <ClCompile Include="urlgrab.c" />
-    <ClCompile Include="userlistgui.c" />
+    <ClCompile Include="userlistgui.cpp" />
     <ClCompile Include="xtext.c" />
   </ItemGroup>
   <ItemGroup>

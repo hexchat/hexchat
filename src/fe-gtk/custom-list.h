@@ -21,7 +21,9 @@
 #define HEXCHAT_CUSTOM_LIST_H
 
 #include <gtk/gtk.h>
-
+#ifdef __cplusplus
+extern "C"{
+#endif
 GType custom_list_get_type (void);
 
 /* Some boilerplate GObject defines. 'klass' is used
@@ -102,5 +104,8 @@ CustomList *custom_list_new (void);
 void custom_list_append (CustomList *, chanlistrow *);
 void custom_list_resort (CustomList *);
 void custom_list_clear (CustomList *);
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* HEXCHAT_CUSTOM_LIST_H */

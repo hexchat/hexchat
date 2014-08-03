@@ -20,26 +20,30 @@
 #ifndef HEXCHAT_COMMONPLUGIN_H
 #define HEXCHAT_COMMONPLUGIN_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef PLUGIN_C
-struct _hexchat_plugin
+struct t_hexchat_plugin
 {
 	/* Keep these in sync with hexchat-plugin.h */
 	/* !!don't change the order, to keep binary compat!! */
 	hexchat_hook *(*hexchat_hook_command) (hexchat_plugin *ph,
 		    const char *name,
 		    int pri,
-		    int (*callback) (char *word[], char *word_eol[], void *user_data),
+			int(*callback) (const char * const word[], const char * const word_eol[], void *user_data),
 		    const char *help_text,
 		    void *userdata);
 	hexchat_hook *(*hexchat_hook_server) (hexchat_plugin *ph,
 		   const char *name,
 		   int pri,
-		   int (*callback) (char *word[], char *word_eol[], void *user_data),
+		   int(*callback) (const char * const word[], const char * const word_eol[], void *user_data),
 		   void *userdata);
 	hexchat_hook *(*hexchat_hook_print) (hexchat_plugin *ph,
 		  const char *name,
 		  int pri,
-		  int (*callback) (char *word[], void *user_data),
+		  int(*callback) (const char * const word[], void *user_data),
 		  void *userdata);
 	hexchat_hook *(*hexchat_hook_timer) (hexchat_plugin *ph,
 		  int timeout,
@@ -135,13 +139,13 @@ struct _hexchat_plugin
 	hexchat_hook *(*hexchat_hook_server_attrs) (hexchat_plugin *ph,
 		   const char *name,
 		   int pri,
-		   int (*callback) (char *word[], char *word_eol[],
+		   int(*callback) (const char * const word[], const char * const word_eol[],
 							hexchat_event_attrs *attrs, void *user_data),
 		   void *userdata);
 	hexchat_hook *(*hexchat_hook_print_attrs) (hexchat_plugin *ph,
 		  const char *name,
 		  int pri,
-		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
+		  int(*callback) (const char * const word[], hexchat_event_attrs *attrs,
 						   void *user_data),
 		  void *userdata);
 	int (*hexchat_emit_print_attrs) (hexchat_plugin *ph, hexchat_event_attrs *attrs,
@@ -172,11 +176,15 @@ void plugin_auto_load (session *sess);
 int plugin_emit_command (session *sess, char *name, char *word[], char *word_eol[]);
 int plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[],
 						time_t server_time);
-int plugin_emit_print (session *sess, char *word[], time_t server_time);
+int plugin_emit_print(session *sess, const char *const word[], time_t server_time);
 int plugin_emit_dummy_print (session *sess, char *name);
 int plugin_emit_keypress (session *sess, unsigned int state, unsigned int keyval, int len, char *string);
 GList* plugin_command_list(GList *tmp_list);
 int plugin_show_help (session *sess, char *cmd);
 void plugin_command_foreach (session *sess, void *userdata, void (*cb) (session *sess, void *userdata, char *name, char *usage));
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

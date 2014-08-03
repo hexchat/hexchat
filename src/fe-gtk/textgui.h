@@ -20,7 +20,15 @@
 #ifndef HEXCHAT_TEXTGUI_H
 #define HEXCHAT_TEXTGUI_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void PrintTextRaw (void *xtbuf, unsigned char *text, int indent, time_t stamp);
 void pevent_dialog_show (void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

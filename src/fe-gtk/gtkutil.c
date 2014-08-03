@@ -548,7 +548,7 @@ gtkutil_set_icon (GtkWidget *win)
 extern GtkWidget *parent_window;	/* maingui.c */
 
 GtkWidget *
-gtkutil_window_new (char *title, char *role, int width, int height, int flags)
+gtkutil_window_new (const char *title, const char *role, int width, int height, int flags)
 {
 	GtkWidget *win;
 

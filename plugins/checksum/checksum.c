@@ -90,7 +90,7 @@ sha256 (char *string, char outputBuffer[65])
 #endif
 
 static int
-sha256_file (char *path, char outputBuffer[65])
+sha256_file (const char *path, char outputBuffer[65])
 {
 	int bytesRead;
 	unsigned char *buffer;
@@ -127,7 +127,7 @@ sha256_file (char *path, char outputBuffer[65])
 }
 
 static void
-set_limit (char* size)
+set_limit (const char* size)
 {
 	int buffer = atoi (size);
 
@@ -170,7 +170,7 @@ print_limit ()
 }
 
 static int
-dccrecv_cb (char *word[], void *userdata)
+dccrecv_cb(const char *const word[], void *userdata)
 {
 	int result;
 	struct stat buffer;									/* buffer for storing file info */
@@ -213,7 +213,7 @@ dccrecv_cb (char *word[], void *userdata)
 }
 
 static int
-dccoffer_cb (char *word[], void *userdata)
+dccoffer_cb(const char *const word[], void *userdata)
 {
 	int result;
 	struct stat buffer;									/* buffer for storing file info */
@@ -242,7 +242,7 @@ dccoffer_cb (char *word[], void *userdata)
 }
 
 static int
-checksum (char *word[], char *word_eol[], void *userdata)
+checksum(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	if (!g_ascii_strcasecmp ("GET", word[2]))
 	{

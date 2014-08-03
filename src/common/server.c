@@ -36,6 +36,7 @@
 #ifdef WIN32
 #include <winbase.h>
 #include <io.h>
+#include <process.h>
 #else
 #include <signal.h>
 #include <sys/wait.h>
@@ -558,7 +559,7 @@ server_stopconnecting (server * serv)
 	close (serv->childwrite);
 	close (serv->childread);
 #else
-	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
+	PostThreadMessageW (serv->childpid, WM_QUIT, 0, 0);
 
 	{
 		/* if we close the pipe now, giowin32 will crash. */
@@ -1171,13 +1172,13 @@ struct sock_connect
 static int
 traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 {
-	struct sock_connect sc;
 	unsigned char buf[256];
-
-	sc.version = 4;
-	sc.type = 1;
-	sc.port = htons (port);
-	sc.address = inet_addr (serverAddr);
+	struct sock_connect sc = {
+		.version = 4,
+		.type = 1,
+		.port = htons(port),
+		.address = inet_addr(serverAddr)
+	};
 	strncpy (sc.username, prefs.hex_irc_user_name, 9);
 
 	send (sok, (char *) &sc, 8 + strlen (sc.username) + 1, 0);
@@ -1201,14 +1202,16 @@ struct sock5_connect1
 static int
 traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 {
-	struct sock5_connect1 sc1;
+	struct sock5_connect1 sc1 = 
+	{
+		.version = 5,
+		.nmethods = 1
+	};
 	unsigned char *sc2;
 	unsigned int packetlen, addrlen;
 	unsigned char buf[260];
 	int auth = prefs.hex_net_proxy_auth && prefs.hex_net_proxy_user[0] && prefs.hex_net_proxy_pass[0];
 
-	sc1.version = 5;
-	sc1.nmethods = 1;
 	if (auth)
 		sc1.method = 2;  /* Username/Password Authentication (UPA) */
 	else
@@ -1461,8 +1464,11 @@ traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, struc
 }
 
 /* this is the child process making the connection attempt */
-
+#ifdef WIN32
+static int WINAPI
+#else
 static int
+#endif
 server_child (server * serv)
 {
 	netstore *ns_server;
@@ -1766,9 +1772,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 
 #ifdef WIN32
-	CloseHandle (CreateThread (NULL, 0,
-										(LPTHREAD_START_ROUTINE)server_child,
-										serv, 0, (DWORD *)&pid));
+    CloseHandle((HANDLE)_beginthreadex(NULL, 0, (LPTHREAD_START_ROUTINE)server_child, serv, 0, (DWORD *)&pid));
 #else
 #ifdef LOOKUPD
 	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different
@@ -1848,8 +1852,9 @@ server_new (void)
 	static int id = 0;
 	server *serv;
 
-	serv = malloc (sizeof (struct server));
-	memset (serv, 0, sizeof (struct server));
+    serv = calloc (1, sizeof (*serv));
+	if (!serv)
+		return NULL;
 
 	/* use server.c and proto-irc.c functions */
 	server_fill_her_up (serv);
@@ -1991,8 +1996,7 @@ server_away_free_messages (server *serv)
 		if (away->server == serv)
 		{
 			away_list = g_slist_remove (away_list, away);
-			if (away->message)
-				free (away->message);
+			free (away->message);
 			free (away);
 			next = away_list;
 		}
@@ -2039,12 +2043,10 @@ server_free (server *serv)
 	free (serv->nick_prefixes);
 	free (serv->chanmodes);
 	free (serv->chantypes);
-	if (serv->bad_nick_prefixes)
-		free (serv->bad_nick_prefixes);
-	if (serv->last_away_reason)
-		free (serv->last_away_reason);
-	if (serv->encoding)
-		free (serv->encoding);
+
+	free (serv->bad_nick_prefixes);
+	free (serv->last_away_reason);
+	free (serv->encoding);
 	if (serv->favlist)
 		g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free);
 

@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_MAINGUI_H
 #define HEXCHAT_MAINGUI_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern GtkStyle *input_style;
 extern GtkWidget *parent_window;
 
@@ -34,7 +38,7 @@ void mg_bring_tofront_sess (session *sess);
 void mg_decide_userlist (session *sess, gboolean switch_to_current);
 void mg_set_topic_tip (session *sess);
 GtkWidget *mg_create_generic_tab (char *name, char *title, int force_toplevel, int link_buttons, void *close_callback, void *userdata, int width, int height, GtkWidget **vbox_ret, void *family);
-void mg_set_title (GtkWidget *button, char *title);
+void mg_set_title (GtkWidget *button, const char *title);
 void mg_set_access_icon (session_gui *gui, GdkPixbuf *pix, gboolean away);
 void mg_apply_setup (void);
 void mg_close_sess (session *);
@@ -57,5 +61,9 @@ gboolean mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, i
 void mg_search_toggle(session *sess);
 void mg_search_handle_previous(GtkWidget *wid, session *sess);
 void mg_search_handle_next(GtkWidget *wid, session *sess);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -29,6 +29,10 @@
 #define EMIT_SIGNAL(i, sess, a, b, c, d, e) \
 	text_emit(i, sess, a, b, c, d, 0)
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 struct text_event
 {
 	char *name;
@@ -52,7 +56,7 @@ void pevent_save (char *fn);
 int pevt_build_string (const char *input, char **output, int *max_arg);
 int pevent_load (char *filename);
 void pevent_make_pntevts (void);
-int text_color_of (char *name);
+int text_color_of (const char *name);
 void text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 		time_t timestamp);
 int text_emit_by_name (char *name, session *sess, time_t timestamp,
@@ -67,5 +71,9 @@ void sound_play_event (int i);
 void sound_beep (session *);
 void sound_load ();
 void sound_save ();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

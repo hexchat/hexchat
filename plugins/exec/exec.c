@@ -31,7 +31,7 @@ static char desc[] = "Execute commands inside HexChat";
 static char version[] = "1.2";
 
 static int
-run_command (char *word[], char *word_eol[], void *userdata)
+run_command(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	char commandLine[1024];
 	char buffer[4096];

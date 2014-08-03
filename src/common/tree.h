@@ -20,6 +20,10 @@
 #ifndef HEXCHAT_TREE_H
 #define HEXCHAT_TREE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct _tree tree;
 
 typedef int (tree_cmp_func) (const void *keya, const void *keyb, void *data);
@@ -34,5 +38,9 @@ void tree_foreach (tree *t, tree_traverse_func *func, void *data);
 int tree_insert (tree *t, void *key);
 void tree_append (tree* t, void *key);
 int tree_size (tree *t);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

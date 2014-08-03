@@ -17,11 +17,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <time.h>
-#include "hexchat.h"
+
 
 #ifndef HEXCHAT_PROTO_H
 #define HEXCHAT_PROTO_H
+
+#include <time.h>
+#include "hexchat.h"
+#ifdef __cplusplus
+extern "C"{
+#endif
 
 #define MESSAGE_TAGS_DATA_INIT			\
 	{									\
@@ -38,5 +43,9 @@ typedef struct
 } message_tags_data;
 
 void proto_fill_her_up (server *serv);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

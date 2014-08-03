@@ -20,6 +20,14 @@
 #ifndef HEXCHAT_SERVLISTGUI_H
 #define HEXCHAT_SERVLISTGUI_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
+
 void servlist_autojoinedit (ircnet *net, char *channel, gboolean add);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
