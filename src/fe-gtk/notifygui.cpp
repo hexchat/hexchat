@@ -157,7 +157,7 @@ notify_gui_update (void)
 	if (!notify_window)
 		return;
 
-	view = g_object_get_data (G_OBJECT (notify_window), "view");
+	view = static_cast<GtkTreeView*>(g_object_get_data (G_OBJECT (notify_window), "view"));
 	store = GTK_LIST_STORE (gtk_tree_view_get_model (view));
 	valid = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter);
 
@@ -257,7 +257,7 @@ notify_opendialog_clicked (GtkWidget * igad)
 	GtkTreeIter iter;
 	struct notify_per_server *servnot;
 
-	view = g_object_get_data (G_OBJECT (notify_window), "view");
+	view = static_cast<GtkTreeView*>(g_object_get_data(G_OBJECT(notify_window), "view"));
 	if (gtkutil_treeview_get_selected (view, &iter, NPS_COLUMN, &servnot, -1))
 	{
 		if (servnot)
@@ -275,7 +275,7 @@ notify_remove_clicked (GtkWidget * igad)
 	gboolean found = FALSE;
 	char *name;
 
-	view = g_object_get_data (G_OBJECT (notify_window), "view");
+	view = static_cast<GtkTreeView*>(g_object_get_data(G_OBJECT(notify_window), "view"));
 	if (gtkutil_treeview_get_selected (view, &iter, USER_COLUMN, &name, -1))
 	{
 		model = gtk_tree_view_get_model (view);
@@ -343,7 +343,7 @@ fe_notify_ask (char *nick, char *networks)
 	char *msg = _("Enter nickname to add:");
 	char buf[256];
 
-	dialog = gtk_dialog_new_with_buttons (msg, NULL, 0,
+	dialog = gtk_dialog_new_with_buttons (msg, NULL, static_cast<GtkDialogFlags>(0),
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 										NULL);
