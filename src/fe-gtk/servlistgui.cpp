@@ -16,10 +16,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cctype>
 
 #include <gdk/gdkkeysyms.h>
 
@@ -35,6 +35,7 @@
 #include "menu.h"
 #include "pixmaps.h"
 #include "fkeys.h"
+#include "servlistgui.h"
 
 #define SERVLIST_X_PADDING 4			/* horizontal paddig in the network editor */
 #define SERVLIST_Y_PADDING 0			/* vertical padding in the network editor */
@@ -213,7 +214,7 @@ servlist_channels_populate (ircnet *net, GtkWidget *treeview)
 	i = 0;
 	while (list)
 	{
-		favchan = list->data;
+		favchan = static_cast<favchannel *>(list->data);
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter, 0, favchan->name, 1, favchan->key, 2, TRUE, -1);
 
@@ -243,7 +244,7 @@ servlist_servers_populate (ircnet *net, GtkWidget *treeview)
 	i = 0;
 	while (list)
 	{
-		serv = list->data;
+		serv = static_cast<ircserver*>(list->data);
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter, 0, serv->hostname, 1, 1, -1);
 
@@ -273,7 +274,7 @@ servlist_commands_populate (ircnet *net, GtkWidget *treeview)
 	i = 0;
 	while (list)
 	{
-		entry = list->data;
+		entry = static_cast<commandentry*>(list->data);
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter, 0, entry->command, 1, 1, -1);
 
@@ -308,7 +309,7 @@ servlist_networks_populate_ (GtkWidget *treeview, GSList *netlist, gboolean favo
 	i = 0;
 	while (netlist)
 	{
-		net = netlist->data;
+		net = static_cast<ircnet*>(netlist->data);
 		if (!favorites || (net->flags & FLAG_FAVORITE))
 		{
 			if (favorites)
@@ -750,8 +751,8 @@ servlist_deletenet_cb (GtkWidget *item, ircnet *net)
 	if (!net)
 		return;
 	dialog = gtk_message_dialog_new (GTK_WINDOW (serverlist_win),
-												GTK_DIALOG_DESTROY_WITH_PARENT |
-												GTK_DIALOG_MODAL,
+												static_cast<GtkDialogFlags>(GTK_DIALOG_DESTROY_WITH_PARENT |
+												GTK_DIALOG_MODAL),
 												GTK_MESSAGE_QUESTION,
 												GTK_BUTTONS_OK_CANCEL,
 							_("Really remove network \"%s\" and all its servers?"),
@@ -1139,7 +1140,7 @@ servlist_connect_cb (GtkWidget *button, gpointer userdata)
 
 		for (list = sess_list; list; list = list->next)
 		{
-			sess = list->data;
+			sess = static_cast<session*>(list->data);
 			if (sess->server->network == selected_net)
 			{
 				servlist_sess = sess;
@@ -1249,7 +1250,7 @@ servlist_create_check (int num, int state, GtkWidget *table, int row, int col, c
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (but), state);
 	g_signal_connect (G_OBJECT (but), "toggled",
 							G_CALLBACK (servlist_check_cb), GINT_TO_POINTER (num));
-	gtk_table_attach (GTK_TABLE (table), but, col, col+2, row, row+1, GTK_FILL|GTK_EXPAND, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
+	gtk_table_attach(GTK_TABLE(table), but, col, col + 2, row, row + 1, static_cast<GtkAttachOptions>(GTK_FILL | GTK_EXPAND), static_cast<GtkAttachOptions>(0), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 	gtk_widget_show (but);
 
 	return but;
@@ -1265,7 +1266,7 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	if (label_ret)
 		*label_ret = label;
 	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1, GTK_FILL, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
+	gtk_table_attach(GTK_TABLE(table), label, 0, 1, row, row + 1, GTK_FILL, GtkAttachOptions(), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
 	entry = gtk_entry_new ();
@@ -1274,7 +1275,7 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	gtk_entry_set_text (GTK_ENTRY (entry), def ? def : "");
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
 
-	gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row+1, GTK_FILL|GTK_EXPAND, 0, SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
+	gtk_table_attach(GTK_TABLE(table), entry, 1, 2, row, row + 1, static_cast<GtkAttachOptions>(GTK_FILL | GTK_EXPAND), GtkAttachOptions(), SERVLIST_X_PADDING, SERVLIST_Y_PADDING);
 
 	return entry;
 }
