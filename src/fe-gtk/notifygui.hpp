@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifndef HEXCHAT_NOTIFYGUI_H
-#define HEXCHAT_NOTIFYGUI_H
+#ifndef HEXCHAT_NOTIFYGUI_HPP
+#define HEXCHAT_NOTIFYGUI_HPP
 
 namespace hexchat{
 namespace fe{
