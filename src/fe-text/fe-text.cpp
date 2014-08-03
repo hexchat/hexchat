@@ -16,9 +16,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <string>
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
@@ -31,7 +33,7 @@
 #include <sys/time.h>
 #endif
 #include <sys/types.h>
-#include <ctype.h>
+#include <cctype>
 #include <glib-object.h>
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
@@ -41,8 +43,10 @@
 #include "../common/fe.h"
 #include "fe-text.h"
 
+struct server_gui{ int foo; };
+struct session_gui{ int bar; };
 
-static int done = FALSE;		  /* finished ? */
+static bool done = false;		  /* finished ? */
 
 
 static void
@@ -78,7 +82,7 @@ fe_new_window (struct session *sess, int focus)
 {
 	char buf[512];
 
-	sess->gui = malloc (4);
+	sess->gui = new session_gui;
 	current_sess = sess;
 
 	if (!sess->server->front_session)
@@ -118,13 +122,13 @@ fe_new_window (struct session *sess, int focus)
 	fflush (stdout);
 }
 
-static int
-get_stamp_str (time_t tim, char *dest, int size)
+static size_t
+get_stamp_str (time_t tim, char *dest, size_t size)
 {
 	return strftime_validated (dest, size, prefs.hex_stamp_text_format, localtime (&tim));
 }
 
-static int
+static size_t
 timecat (char *buf, time_t stamp)
 {
 	char stampbuf[64];
@@ -316,23 +320,24 @@ void
 fe_print_text (struct session *sess, char *text, time_t stamp,
 			   gboolean no_activity)
 {
-	int dotime = FALSE;
-	int comma, k, i = 0, j = 0, len = strlen (text);
+	bool dotime = false, comma = false;
+	int k, i = 0;
+	size_t j = 0, len = strlen(text);
 
-	unsigned char *newtext = malloc (len + 1024);
+	std::string newtext(len + 1024, '\0');
 
 	if (prefs.hex_stamp_text)
 	{
 		newtext[0] = 0;
-		j += timecat (newtext, stamp);
+		j += timecat (&newtext[0], stamp);
 	}
 	while (i < len)
 	{
 		if (dotime && text[i] != 0)
 		{
-			dotime = FALSE;
+			dotime = false;
 			newtext[j] = 0;
-			j += timecat (newtext, stamp);
+			j += timecat(&newtext[0], stamp);
 		}
 		switch (text[i])
 		{
@@ -343,7 +348,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 				goto endloop;
 			}
 			k = 0;
-			comma = FALSE;
+			comma = false;
 			while (i < len)
 			{
 				if (text[i] >= '0' && text[i] <= '9' && k < 2)
@@ -354,7 +359,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 					switch (text[i])
 					{
 					case ',':
-						comma = TRUE;
+						comma = true;
 						break;
 					default:
 						goto endloop;
@@ -387,7 +392,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 			newtext[j] = '\r';
 			j++;
 			if (prefs.hex_stamp_text)
-				dotime = TRUE;
+				dotime = true;
 		default:
 			newtext[j] = text[i];
 			j++;
@@ -402,8 +407,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 		newtext[j++] = '\n';
 
 	newtext[j] = 0;
-	write (STDOUT_FILENO, newtext, j);
-	free (newtext);
+	write (STDOUT_FILENO, newtext.c_str(), j);
 }
 #endif
 
@@ -447,7 +451,7 @@ fe_input_add (int sok, int flags, void *func, void *data)
 	if (flags & FIA_EX)
 		type |= G_IO_PRI;
 
-	tag = g_io_add_watch (channel, type, (GIOFunc) func, data);
+	tag = g_io_add_watch (channel, static_cast<GIOCondition>(type), (GIOFunc) func, data);
 	g_io_channel_unref (channel);
 
 	return tag;
@@ -508,14 +512,13 @@ fe_args (int argc, char *argv[])
 	{
 #ifdef WIN32
 		/* see the chdir() below */
-		char *sl, *exe = strdup (argv[0]);
-		sl = strrchr (exe, '\\');
-		if (sl)
+		std::string exe(argv[0]);
+		auto location = exe.find_last_of('\\');
+		if (location != std::string::npos)
 		{
-			*sl = 0;
-			printf ("%s\\plugins\n", exe);
+			std::string directory = exe.substr(0, location);
+			printf ("%s\\plugins\n", directory.c_str());
 		}
-		free (exe);
 #else
 		printf ("%s\n", HEXCHATLIBDIR);
 #endif
@@ -576,27 +579,27 @@ fe_main (void)
 void
 fe_exit (void)
 {
-	done = TRUE;
+	done = true;
 	g_main_loop_quit(main_loop);
 }
 
 void
 fe_new_server (struct server *serv)
 {
-	serv->gui = malloc (4);
+	serv->gui = new server_gui;
 }
 
 void
-fe_message (char *msg, int flags)
+fe_message (const char *msg, int flags)
 {
-	puts (msg);
+	std::cout << msg << "\n";
 }
 
 void
 fe_close_window (struct session *sess)
 {
 	session_free (sess);
-	done = TRUE;
+	done = true;
 }
 
 void
@@ -832,7 +835,7 @@ fe_get_int (char *prompt, int def, void *callback, void *ud)
 void
 fe_idle_add (void *func, void *data)
 {
-	g_idle_add (func, data);
+	g_idle_add (static_cast<GSourceFunc>(func), data);
 }
 void
 fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
