@@ -25,9 +25,7 @@
 #include <sys/stat.h>
 
 #define WANTSOCKET
-extern "C"{
 #include "inet.h"
-}
 
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
