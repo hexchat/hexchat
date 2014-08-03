@@ -60,7 +60,7 @@
 #include "pixmaps.h"
 #include "rawlog.h"
 #include "palette.h"
-#include "plugingui.h"
+#include "plugingui.hpp"
 #include <search.h>
 #include "textgui.h"
 #include "urlgrab.h"
