@@ -59,7 +59,8 @@
 #ifdef USE_LIBCANBERRA
 #include <canberra.h>
 #endif
-
+namespace fe = hexchat::fe;
+namespace dcc = hexchat::dcc;
 GdkPixmap *channelwin_pix;
 
 #ifdef USE_LIBCANBERRA
@@ -863,7 +864,7 @@ fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 }
 
 static void
-dcc_saveas_cb (struct DCC *dcc, char *file)
+dcc_saveas_cb (dcc::DCC *dcc, char *file)
 {
 	if (is_dcc (dcc))
 	{
@@ -881,7 +882,7 @@ void
 fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud)
 {
 	/* warning, assuming fe_confirm is used by DCC only! */
-	struct DCC *dcc = static_cast<DCC*>(ud);
+	dcc::DCC *dcc = static_cast<dcc::DCC*>(ud);
 	char *filepath;
 
 	if (dcc->file)

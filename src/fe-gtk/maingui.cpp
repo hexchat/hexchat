@@ -53,6 +53,8 @@
 #include "xtext.h"
 #include "sexy-spell-entry.h"
 
+namespace dcc = hexchat::dcc;
+
 #define GUI_SPACING (3)
 #define GUI_BORDER (0)
 
@@ -1154,13 +1156,13 @@ static int
 mg_count_dccs (void)
 {
 	GSList *list;
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	int dccs = 0;
 
 	list = dcc_list;
 	while (list)
 	{
-		dcc = static_cast<DCC*>(list->data);
+		dcc = static_cast<dcc::DCC*>(list->data);
 		if ((dcc->type == TYPE_SEND || dcc->type == TYPE_RECV) &&
 			 dcc->dccstat == STAT_ACTIVE)
 			dccs++;
@@ -1655,7 +1657,7 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 				p = hexchat_filename_to_utf8 (fname, -1, 0, 0, 0);
 				if (p)
 				{
-					dcc_send (sess, target, p, prefs.hex_dcc_max_send_cps, 0);
+					dcc::dcc_send (sess, target, p, prefs.hex_dcc_max_send_cps, 0);
 					g_free (p);
 				}
 				g_free (fname);

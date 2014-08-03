@@ -57,6 +57,7 @@
 #include "chanopt.h"
 #include "dcc.hpp"
 
+namespace dcc = hexchat::dcc;
 #define TBUFSIZE 4096
 
 static void help (session *sess, char *tbuf, char *helpcmd, int quiet);
@@ -765,7 +766,7 @@ static int
 cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int goodtype;
-	struct DCC *dcc = 0;
+	dcc::DCC *dcc = 0;
 	char *type = word[2];
 	if (*type)
 	{
@@ -778,21 +779,21 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				goodtype = 0;
 				if (!g_ascii_strcasecmp (word[3], "SEND"))
 				{
-					dcc = find_dcc (word[4], word[5], TYPE_SEND);
+					dcc = dcc::find_dcc (word[4], word[5], TYPE_SEND);
 					dcc_abort (sess, dcc);
 					goodtype = TRUE;
 				}
 				if (!g_ascii_strcasecmp (word[3], "GET"))
 				{
-					dcc = find_dcc (word[4], word[5], TYPE_RECV);
+					dcc = dcc::find_dcc (word[4], word[5], TYPE_RECV);
 					dcc_abort (sess, dcc);
 					goodtype = TRUE;
 				}
 				if (!g_ascii_strcasecmp (word[3], "CHAT"))
 				{
-					dcc = find_dcc (word[4], "", TYPE_CHATRECV);
+					dcc = dcc::find_dcc (word[4], "", TYPE_CHATRECV);
 					if (!dcc)
-						dcc = find_dcc (word[4], "", TYPE_CHATSEND);
+						dcc = dcc::find_dcc (word[4], "", TYPE_CHATSEND);
 					dcc_abort (sess, dcc);
 					goodtype = TRUE;
 				}
@@ -813,12 +814,12 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			char *nick = word[3];
 			int passive = (!g_ascii_strcasecmp(type, "PCHAT")) ? 1 : 0;
 			if (*nick)
-				dcc_chat (sess, nick, passive);
+				dcc::dcc_chat (sess, nick, passive);
 			return TRUE;
 		}
 		if (!g_ascii_strcasecmp (type, "LIST"))
 		{
-			dcc_show_list (sess);
+			dcc::dcc_show_list (sess);
 			return TRUE;
 		}
 		if (!g_ascii_strcasecmp (type, "GET"))
@@ -828,10 +829,10 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (!*file)
 			{
 				if (*nick)
-					dcc_get_nick (sess, nick);
+					dcc::dcc_get_nick (sess, nick);
 			} else
 			{
-				dcc = find_dcc (nick, file, TYPE_RECV);
+				dcc = dcc::find_dcc (nick, file, TYPE_RECV);
 				if (dcc)
 					dcc_get (dcc);
 				else
@@ -870,7 +871,7 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 			do
 			{
-				dcc_send (sess, nick, file, maxcps, passive);
+				dcc::dcc_send (sess, nick, file, maxcps, passive);
 				i++;
 				file = word[i];
 			}
@@ -882,7 +883,7 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return FALSE;
 	}
 
-	dcc_show_list (sess);
+	dcc::dcc_show_list (sess);
 	return TRUE;
 }
 
@@ -2653,7 +2654,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	snprintf (tbuf, TBUFSIZE, "\001ACTION %s\001\r", act);
 	/* first try through DCC CHAT */
-	if (dcc_write_chat (sess->channel, tbuf))
+	if (dcc::dcc_write_chat (sess->channel, tbuf))
 	{
 		/* print it to screen */
 		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE,
@@ -2760,7 +2761,7 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (*nick == '=')
 			{
 				nick++;
-				if (!dcc_write_chat (nick, msg))
+				if (!dcc::dcc_write_chat (nick, msg))
 				{
 					EMIT_SIGNAL (XP_TE_NODCC, sess, NULL, NULL, NULL, NULL, 0);
 					return TRUE;
@@ -3217,7 +3218,7 @@ cmd_send (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[2][0])
 		return FALSE;
 
-	addr = dcc_get_my_address ();
+	addr = dcc::dcc_get_my_address ();
 	if (addr == 0)
 	{
 		/* use the one from our connected server socket */
@@ -4481,7 +4482,7 @@ user_command (session * sess, char *tbuf, char *cmd, char *word[],
 static void
 handle_say (session *sess, char *text, int check_spch)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	char *word[PDIWORDS+1];
 	char *word_eol[PDIWORDS+1];
 	char pdibuf_static[1024];
@@ -4539,7 +4540,7 @@ handle_say (session *sess, char *text, int check_spch)
 	if (sess->type == SESS_DIALOG)
 	{
 		/* try it via dcc, if possible */
-		dcc = dcc_write_chat (sess->channel, text);
+		dcc = dcc::dcc_write_chat (sess->channel, text);
 		if (dcc)
 		{
 			inbound_chanmsg (sess->server, NULL, sess->channel,

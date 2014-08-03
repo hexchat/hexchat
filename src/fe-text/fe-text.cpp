@@ -41,6 +41,7 @@
 #include "../common/outbound.h"
 #include "../common/util.h"
 #include "../common/fe.h"
+#include "../common/dcc.hpp"
 #include "fe-text.h"
 
 struct server_gui{ int foo; };
@@ -713,17 +714,23 @@ void
 fe_userlist_set_selected (struct session *sess)
 {
 }
+namespace hexchat{
+namespace fe{
+namespace dcc{
 void
-fe_dcc_add (struct DCC *dcc)
+fe_dcc_add (struct ::hexchat::dcc::DCC *dcc)
 {
 }
 void
-fe_dcc_update (struct DCC *dcc)
+fe_dcc_update(struct ::hexchat::dcc::DCC *dcc)
 {
 }
 void
-fe_dcc_remove (struct DCC *dcc)
+fe_dcc_remove(struct ::hexchat::dcc::DCC *dcc)
 {
+}
+}
+}
 }
 void
 fe_clear_channel (struct session *sess)

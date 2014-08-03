@@ -38,6 +38,8 @@
 #include "palette.h"
 #include "maingui.h"
 
+namespace dcc = ::hexchat::dcc;
+namespace fe = ::hexchat::fe::dcc;
 
 enum	/* DCC SEND/RECV */
 {
@@ -50,7 +52,7 @@ enum	/* DCC SEND/RECV */
 	COL_SPEED,
 	COL_ETA,
 	COL_NICK,
-	COL_DCC, /* struct DCC * */
+	COL_DCC, /* dcc::DCC * */
 	COL_COLOR,	/* GdkColor */
 	N_COLUMNS
 };
@@ -62,7 +64,7 @@ enum	/* DCC CHAT */
 	CCOL_RECV,
 	CCOL_SENT,
 	CCOL_START,
-	CCOL_DCC,	/* struct DCC * */
+	CCOL_DCC,	/* dcc::DCC * */
 	CCOL_COLOR,	/* GdkColor * */
 	CN_COLUMNS
 };
@@ -106,7 +108,7 @@ static short view_mode;	/* 1=download 2=upload 3=both */
 
 
 static void
-proper_unit (DCC_SIZE size, char *buf, int buf_len)
+proper_unit (dcc::DCC_SIZE size, char *buf, int buf_len)
 {
 	gchar *formatted_str;
 	GFormatSizeFlags format_flags = G_FORMAT_SIZE_DEFAULT;
@@ -128,7 +130,7 @@ static void
 dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 {
 	if (file)
-		dcc_send (mdc->sess, mdc->nick.c_str(), file, mdc->maxcps, mdc->passive);
+		dcc::dcc_send (mdc->sess, mdc->nick.c_str(), file, mdc->maxcps, mdc->passive);
 	else
 	{
 		delete mdc;
@@ -148,7 +150,7 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
 }
 
 static void
-dcc_prepare_row_chat (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
+dcc_prepare_row_chat (dcc::DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 							 gboolean update_only)
 {
 	static char pos[16], siz[16];
@@ -161,21 +163,21 @@ dcc_prepare_row_chat (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 	proper_unit (dcc->size, siz, sizeof (siz));
 
 	gtk_list_store_set (store, iter,
-							  CCOL_STATUS, _(dccstat[dcc->dccstat].name),
+							  CCOL_STATUS, _(dcc::dccstat[dcc->dccstat].name),
 							  CCOL_NICK, dcc->nick,
 							  CCOL_RECV, pos,
 							  CCOL_SENT, siz,
 							  CCOL_START, date,
 							  CCOL_DCC, dcc,
 							  CCOL_COLOR,
-							  dccstat[dcc->dccstat].color == 1 ?
+							  dcc::dccstat[dcc->dccstat].color == 1 ?
 								NULL :
-								colors + dccstat[dcc->dccstat].color,
+								colors + dcc::dccstat[dcc->dccstat].color,
 							  -1);
 }
 
 static void
-dcc_prepare_row_send (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
+dcc_prepare_row_send (dcc::DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 							 gboolean update_only)
 {
 	static char pos[16], size[16], kbs[14], perc[14], eta[14];
@@ -203,20 +205,20 @@ dcc_prepare_row_send (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 
 	if (update_only)
 		gtk_list_store_set (store, iter,
-								  COL_STATUS, _(dccstat[dcc->dccstat].name),
+								  COL_STATUS, _(dcc::dccstat[dcc->dccstat].name),
 								  COL_POS, pos,
 								  COL_PERC, perc,
 								  COL_SPEED, kbs,
 								  COL_ETA, eta,
 								  COL_COLOR,
-								  dccstat[dcc->dccstat].color == 1 ?
+								  dcc::dccstat[dcc->dccstat].color == 1 ?
 									NULL :
-									colors + dccstat[dcc->dccstat].color,
+									colors + dcc::dccstat[dcc->dccstat].color,
 									-1);
 	else
 		gtk_list_store_set (store, iter,
 								  COL_TYPE, pix_up,
-								  COL_STATUS, _(dccstat[dcc->dccstat].name),
+								  COL_STATUS, _(dcc::dccstat[dcc->dccstat].name),
 								  COL_FILE, file_part (dcc->file),
 								  COL_SIZE, size,
 								  COL_POS, pos,
@@ -226,14 +228,14 @@ dcc_prepare_row_send (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 								  COL_NICK, dcc->nick,
 								  COL_DCC, dcc,
 								  COL_COLOR,
-								  dccstat[dcc->dccstat].color == 1 ?
+								  dcc::dccstat[dcc->dccstat].color == 1 ?
 									NULL :
-									colors + dccstat[dcc->dccstat].color,
+									colors + dcc::dccstat[dcc->dccstat].color,
 									-1);
 }
 
 static void
-dcc_prepare_row_recv (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
+dcc_prepare_row_recv (dcc::DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 							 gboolean update_only)
 {
 	static char size[16], pos[16], kbs[16], perc[14], eta[16];
@@ -263,20 +265,20 @@ dcc_prepare_row_recv (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 
 	if (update_only)
 		gtk_list_store_set (store, iter,
-								  COL_STATUS, _(dccstat[dcc->dccstat].name),
+								  COL_STATUS, _(dcc::dccstat[dcc->dccstat].name),
 								  COL_POS, pos,
 								  COL_PERC, perc,
 								  COL_SPEED, kbs,
 								  COL_ETA, eta,
 								  COL_COLOR,
-								  dccstat[dcc->dccstat].color == 1 ?
+								  dcc::dccstat[dcc->dccstat].color == 1 ?
 									NULL :
-									colors + dccstat[dcc->dccstat].color,
+									colors + dcc::dccstat[dcc->dccstat].color,
 									-1);
 	else
 		gtk_list_store_set (store, iter,
 								  COL_TYPE, pix_dn,
-								  COL_STATUS, _(dccstat[dcc->dccstat].name),
+								  COL_STATUS, _(dcc::dccstat[dcc->dccstat].name),
 								  COL_FILE, file_part (dcc->file),
 								  COL_SIZE, size,
 								  COL_POS, pos,
@@ -286,16 +288,16 @@ dcc_prepare_row_recv (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 								  COL_NICK, dcc->nick,
 								  COL_DCC, dcc,
 								  COL_COLOR,
-								  dccstat[dcc->dccstat].color == 1 ?
+								  dcc::dccstat[dcc->dccstat].color == 1 ?
 									NULL :
-									colors + dccstat[dcc->dccstat].color,
+									colors + dcc::dccstat[dcc->dccstat].color,
 									-1);
 }
 
 static gboolean
-dcc_find_row (struct DCC *find_dcc, GtkTreeModel *model, GtkTreeIter *iter, int col)
+dcc_find_row (dcc::DCC *find_dcc, GtkTreeModel *model, GtkTreeIter *iter, int col)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 
 	if (gtk_tree_model_get_iter_first (model, iter))
 	{
@@ -312,7 +314,7 @@ dcc_find_row (struct DCC *find_dcc, GtkTreeModel *model, GtkTreeIter *iter, int 
 }
 
 static void
-dcc_update_recv (struct DCC *dcc)
+dcc_update_recv (dcc::DCC *dcc)
 {
 	GtkTreeIter iter;
 
@@ -326,7 +328,7 @@ dcc_update_recv (struct DCC *dcc)
 }
 
 static void
-dcc_update_chat (struct DCC *dcc)
+dcc_update_chat (dcc::DCC *dcc)
 {
 	GtkTreeIter iter;
 
@@ -340,7 +342,7 @@ dcc_update_chat (struct DCC *dcc)
 }
 
 static void
-dcc_update_send (struct DCC *dcc)
+dcc_update_send (dcc::DCC *dcc)
 {
 	GtkTreeIter iter;
 
@@ -360,7 +362,7 @@ close_dcc_file_window (GtkWindow *win, gpointer data)
 }
 
 static void
-dcc_append (struct DCC *dcc, GtkListStore *store, bool prepend)
+dcc_append (dcc::DCC *dcc, GtkListStore *store, bool prepend)
 {
 	GtkTreeIter iter;
 
@@ -379,7 +381,7 @@ dcc_append (struct DCC *dcc, GtkListStore *store, bool prepend)
 static GSList *
 dcc_get_completed (void)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GtkTreeIter iter;
 	GtkTreeModel *model;	
 	GSList *completed = NULL;
@@ -422,7 +424,7 @@ update_clear_button_sensitivity (void)
 static void
 dcc_fill_window (int flags)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *list;
 	GtkTreeIter iter;
 	int i = 0;
@@ -434,7 +436,7 @@ dcc_fill_window (int flags)
 		list = dcc_list;
 		while (list)
 		{
-			dcc = static_cast<DCC*>(list->data);
+			dcc = static_cast<dcc::DCC*>(list->data);
 			if (dcc->type == TYPE_SEND)
 			{
 				dcc_append (dcc, dccfwin.store, false);
@@ -449,7 +451,7 @@ dcc_fill_window (int flags)
 		list = dcc_list;
 		while (list)
 		{
-			dcc = static_cast<DCC*>(list->data);
+			dcc = static_cast<dcc::DCC*>(list->data);
 			if (dcc->type == TYPE_RECV)
 			{
 				dcc_append (dcc, dccfwin.store, false);
@@ -504,14 +506,14 @@ dcc_get_selected (void)
 static void
 resume_clicked (GtkWidget * wid, gpointer none)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	char buf[512];
 	GSList *list;
 
 	list = dcc_get_selected ();
 	if (!list)
 		return;
-	dcc = static_cast<DCC*>(list->data);
+	dcc = static_cast<dcc::DCC*>(list->data);
 	g_slist_free (list);
 
 	if (dcc->type == TYPE_RECV && !dcc_resume (dcc))
@@ -542,13 +544,13 @@ resume_clicked (GtkWidget * wid, gpointer none)
 static void
 abort_clicked (GtkWidget * wid, gpointer none)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *start, *list;
 
 	start = list = dcc_get_selected ();
 	for (; list; list = list->next)
 	{
-		dcc = static_cast<DCC*>(list->data);
+		dcc = static_cast<dcc::DCC*>(list->data);
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 	g_slist_free (start);
@@ -560,13 +562,13 @@ abort_clicked (GtkWidget * wid, gpointer none)
 static void
 accept_clicked (GtkWidget * wid, gpointer none)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *start, *list;
 
 	start = list = dcc_get_selected ();
 	for (; list; list = list->next)
 	{
-		dcc = static_cast<DCC*>(list->data);
+		dcc = static_cast<dcc::DCC*>(list->data);
 		if (dcc->type != TYPE_SEND)
 			dcc_get (dcc);
 	}
@@ -576,7 +578,7 @@ accept_clicked (GtkWidget * wid, gpointer none)
 static void
 clear_completed (GtkWidget * wid, gpointer none)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *completed;
 
 	/* Make a new list of only the completed items and abort each item.
@@ -585,7 +587,7 @@ clear_completed (GtkWidget * wid, gpointer none)
 	*/
 	for (completed = dcc_get_completed (); completed; completed = completed->next)
 	{
-		dcc = static_cast<DCC*>(completed->data);
+		dcc = static_cast<dcc::DCC*>(completed->data);
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 
@@ -618,7 +620,7 @@ browse_dcc_folder (void)
 }
 
 static void
-dcc_details_populate (struct DCC *dcc)
+dcc_details_populate (dcc::DCC *dcc)
 {
 	char buf[128];
 
@@ -643,7 +645,7 @@ dcc_details_populate (struct DCC *dcc)
 static void
 dcc_row_cb (GtkTreeSelection *sel, gpointer user_data)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *list;
 
 	list = dcc_get_selected ();
@@ -662,12 +664,12 @@ dcc_row_cb (GtkTreeSelection *sel, gpointer user_data)
 	{
 		gtk_widget_set_sensitive (dccfwin.accept_button, TRUE);
 		gtk_widget_set_sensitive (dccfwin.resume_button, TRUE);
-		dcc_details_populate(static_cast<DCC*>(list->data));
+		dcc_details_populate(static_cast<dcc::DCC*>(list->data));
 	}
 	else
 	{
 		/* turn OFF/ON appropriate buttons */
-		dcc = static_cast<DCC*>(list->data);
+		dcc = static_cast<dcc::DCC*>(list->data);
 		if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_RECV)
 		{
 			gtk_widget_set_sensitive (dccfwin.accept_button, TRUE);
@@ -689,13 +691,13 @@ static void
 dcc_dclick_cb (GtkTreeView *view, GtkTreePath *path,
 					GtkTreeViewColumn *column, gpointer data)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *list;
 
 	list = dcc_get_selected ();
 	if (!list)
 		return;
-	dcc = static_cast<DCC*>(list->data);
+	dcc = static_cast<dcc::DCC*>(list->data);
 	g_slist_free (list);
 
 	if (dcc->type == TYPE_RECV)
@@ -910,13 +912,13 @@ dcc_chat_get_selected (void)
 static void
 accept_chat_clicked (GtkWidget * wid, gpointer none)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *start, *list;
 
 	start = list = dcc_chat_get_selected ();
 	for (; list; list = list->next)
 	{
-		dcc = static_cast<DCC*>(list->data);
+		dcc = static_cast<dcc::DCC*>(list->data);
 		dcc_get (dcc);
 	}
 	g_slist_free (start);
@@ -925,13 +927,13 @@ accept_chat_clicked (GtkWidget * wid, gpointer none)
 static void
 abort_chat_clicked (GtkWidget * wid, gpointer none)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *start, *list;
 
 	start = list = dcc_chat_get_selected ();
 	for (; list; list = list->next)
 	{
-		dcc = static_cast<DCC*>(list->data);
+		dcc = static_cast<dcc::DCC*>(list->data);
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 	g_slist_free (start);
@@ -944,7 +946,7 @@ dcc_chat_close_cb (void)
 }
 
 static void
-dcc_chat_append (struct DCC *dcc, GtkListStore *store, gboolean prepend)
+dcc_chat_append (dcc::DCC *dcc, GtkListStore *store, gboolean prepend)
 {
 	GtkTreeIter iter;
 
@@ -959,7 +961,7 @@ dcc_chat_append (struct DCC *dcc, GtkListStore *store, gboolean prepend)
 static void
 dcc_chat_fill_win (void)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *list;
 	GtkTreeIter iter;
 	int i = 0;
@@ -969,7 +971,7 @@ dcc_chat_fill_win (void)
 	list = dcc_list;
 	while (list)
 	{
-		dcc = static_cast<DCC*>(list->data);
+		dcc = static_cast<dcc::DCC*>(list->data);
 		if (dcc->type == TYPE_CHATSEND || dcc->type == TYPE_CHATRECV)
 		{
 			dcc_chat_append (dcc, dcccwin.store, FALSE);
@@ -989,7 +991,7 @@ dcc_chat_fill_win (void)
 static void
 dcc_chat_row_cb (GtkTreeSelection *sel, gpointer user_data)
 {
-	struct DCC *dcc;
+	dcc::DCC *dcc;
 	GSList *list;
 
 	list = dcc_chat_get_selected ();
@@ -1007,7 +1009,7 @@ dcc_chat_row_cb (GtkTreeSelection *sel, gpointer user_data)
 	else
 	{
 		/* turn OFF/ON appropriate buttons */
-		dcc = static_cast<DCC*>(list->data);
+		dcc = static_cast<dcc::DCC*>(list->data);
 		if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_CHATRECV)
 			gtk_widget_set_sensitive (dcccwin.accept_button, TRUE);
 		else
@@ -1084,8 +1086,11 @@ fe_dcc_open_chat_win (int passive)
 	return FALSE;
 }
 
+namespace hexchat{
+namespace fe{
+namespace dcc{
 void
-fe_dcc_add (struct DCC *dcc)
+fe_dcc_add (::dcc::DCC *dcc)
 {
 	switch (dcc->type)
 	{
@@ -1106,7 +1111,7 @@ fe_dcc_add (struct DCC *dcc)
 }
 
 void
-fe_dcc_update (struct DCC *dcc)
+fe_dcc_update (::dcc::DCC *dcc)
 {
 	switch (dcc->type)
 	{
@@ -1127,7 +1132,7 @@ fe_dcc_update (struct DCC *dcc)
 }
 
 void
-fe_dcc_remove (struct DCC *dcc)
+fe_dcc_remove (::dcc::DCC *dcc)
 {
 	GtkTreeIter iter;
 
@@ -1150,4 +1155,7 @@ fe_dcc_remove (struct DCC *dcc)
 		}
 		break;
 	}
+}
+}
+}
 }

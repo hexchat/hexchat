@@ -65,6 +65,8 @@ extern "C"{
 #include "server.h"
 #include "dcc.hpp"
 
+namespace dcc = ::hexchat::dcc;
+
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */
 #include <openssl/err.h>		  /* ERR_() */
@@ -2043,7 +2045,7 @@ server_free (server *serv)
 
 	serv_list = g_slist_remove (serv_list, serv);
 
-	dcc_notify_kill (serv);
+	dcc::dcc_notify_kill (serv);
 	serv->flush_queue (serv);
 	server_away_free_messages (serv);
 

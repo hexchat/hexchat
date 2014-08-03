@@ -37,6 +37,8 @@
 #include "server.h"
 #include "hexchatc.h"
 
+namespace dcc = hexchat::dcc;
+
 namespace {
 static void
 	ctcp_reply(session *sess, char *nick, char *word[], char *word_eol[],
@@ -105,7 +107,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		if (!ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 		{
 			if (!ignore_check (word[1], IG_DCC))
-				handle_dcc (sess, nick, word, word_eol, tags_data);
+				dcc::handle_dcc (sess, nick, word, word_eol, tags_data);
 		}
 		return;
 	}

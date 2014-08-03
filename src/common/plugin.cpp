@@ -60,6 +60,7 @@ typedef struct session hexchat_context;
 #endif
 
 #define DEBUG(x) {x;}
+namespace dcc = hexchat::dcc;
 
 /* crafted to be an even 32 bytes */
 struct t_hexchat_hook
@@ -540,7 +541,7 @@ plugin_hook_find (GSList *list, int type, const char *name)
 /* check for plugin hooks and run them */
 
 static int
-plugin_hook_run (session *sess, const char *name, char *word[], char *word_eol[],
+plugin_hook_run(session *sess, const char *name, const char *const word[], const char *const word_eol[],
 				 hexchat_event_attrs *attrs, int type)
 {
 	GSList *list, *next;
@@ -652,7 +653,7 @@ plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[],
 /* see if any plugins are interested in this print event */
 
 int
-plugin_emit_print (session *sess, char *word[], time_t server_time)
+plugin_emit_print(session *sess, const char *const word[], time_t server_time)
 {
 	hexchat_event_attrs attrs;
 
@@ -1472,11 +1473,11 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		switch (hash)
 		{
 		case 0x3d9ad31e:	/* destfile */
-			return ((struct DCC *)data)->destfile;
+			return ((dcc::DCC *)data)->destfile;
 		case 0x2ff57c:	/* file */
-			return ((struct DCC *)data)->file;
+			return ((dcc::DCC *)data)->file;
 		case 0x339763: /* nick */
-			return ((struct DCC *)data)->nick;
+			return ((dcc::DCC *)data)->nick;
 		}
 		break;
 
@@ -1539,27 +1540,27 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		switch (hash)
 		{
 		case 0x34207553: /* address32 */
-			return ((struct DCC *)data)->addr;
+			return ((dcc::DCC *)data)->addr;
 		case 0x181a6: /* cps */
-			return ((struct DCC *)data)->cps;
+			return ((dcc::DCC *)data)->cps;
 		case 0x349881: /* port */
-			return ((struct DCC *)data)->port;
+			return ((dcc::DCC *)data)->port;
 		case 0x1b254: /* pos */
-			return ((struct DCC *)data)->pos & 0xffffffff;
+			return ((dcc::DCC *)data)->pos & 0xffffffff;
 		case 0xe8a945f6: /* poshigh */
-			return (((struct DCC *)data)->pos >> 32) & 0xffffffff;
+			return (((dcc::DCC *)data)->pos >> 32) & 0xffffffff;
 		case 0xc84dc82d: /* resume */
-			return ((struct DCC *)data)->resumable & 0xffffffff;
+			return ((dcc::DCC *)data)->resumable & 0xffffffff;
 		case 0xded4c74f: /* resumehigh */
-			return (((struct DCC *)data)->resumable >> 32) & 0xffffffff;
+			return (((dcc::DCC *)data)->resumable >> 32) & 0xffffffff;
 		case 0x35e001: /* size */
-			return ((struct DCC *)data)->size & 0xffffffff;
+			return ((dcc::DCC *)data)->size & 0xffffffff;
 		case 0x3284d523: /* sizehigh */
-			return (((struct DCC *)data)->size >> 32) & 0xffffffff;
+			return (((dcc::DCC *)data)->size >> 32) & 0xffffffff;
 		case 0xcacdcff2: /* status */
-			return ((struct DCC *)data)->dccstat;
+			return ((dcc::DCC *)data)->dccstat;
 		case 0x368f3a: /* type */
-			return ((struct DCC *)data)->type;
+			return ((dcc::DCC *)data)->type;
 		}
 		break;
 

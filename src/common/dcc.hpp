@@ -24,7 +24,7 @@
 
 #include <ctime>						/* for time_t */
 #include "proto-irc.h"
-
+namespace hexchat{
 #define STAT_QUEUED 0
 #define STAT_ACTIVE 1
 #define STAT_FAILED 2
@@ -38,7 +38,7 @@
 #define TYPE_CHATSEND 3
 
 #define CPS_AVG_WINDOW 10
-
+namespace dcc{
 /* can we do 64-bit dcc? */
 #if defined(G_GINT64_FORMAT) && defined(HAVE_STRTOULL)
 #define USE_DCC64
@@ -49,10 +49,11 @@ using DCC_SIZE = gint64;
 using DCC_SIZE = unsigned int;
 #define DCC_SFMT "u"
 #endif
+struct proxy_state;
 
 struct DCC
 {
-	struct server *serv;
+	struct ::server *serv;
 	struct dcc_chat *dccchat;
 	struct proxy_state *proxy;
 	guint32 addr;					/* the 32bit IP number, host byte order */
@@ -116,8 +117,8 @@ struct dccstat_info
 
 extern struct dccstat_info dccstat[];
 
-gboolean is_dcc (struct DCC *dcc);
-gboolean is_dcc_completed (struct DCC *dcc);
+bool is_dcc (struct DCC *dcc);
+bool is_dcc_completed (struct DCC *dcc);
 void dcc_abort (session *sess, struct DCC *dcc);
 void dcc_get (struct DCC *dcc);
 int dcc_resume (struct DCC *dcc);
@@ -134,8 +135,14 @@ void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[],
 void dcc_show_list (session *sess);
 guint32 dcc_get_my_address (void);
 void dcc_get_with_destfile (struct DCC *dcc, char *utf8file);
-void fe_dcc_add(struct DCC *dcc);
-void fe_dcc_update(struct DCC *dcc);
-void fe_dcc_remove(struct DCC *dcc);
+}
+namespace fe{
+namespace dcc{
+void fe_dcc_add(hexchat::dcc::DCC *dcc);
+void fe_dcc_update(hexchat::dcc::DCC *dcc);
+void fe_dcc_remove(hexchat::dcc::DCC *dcc);
+}
+}
+}
 
 #endif

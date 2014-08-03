@@ -52,6 +52,8 @@
 #include "chanopt.h"
 #include "dcc.hpp"
 
+namespace dcc = hexchat::dcc;
+
 void
 clear_channel (session *sess)
 {
@@ -536,7 +538,7 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet,
 		list = list->next;
 	}
 
-	dcc_change_nick (serv, nick, newnick);
+	dcc::dcc_change_nick (serv, nick, newnick);
 
 	if (me)
 		fe_set_nick (serv, newnick);

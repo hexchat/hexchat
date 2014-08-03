@@ -71,6 +71,8 @@
 #include <proxy.h>
 #endif
 
+namespace dcc = hexchat::dcc;
+
 GSList *popup_list = 0;
 GSList *button_list = 0;
 GSList *dlgbutton_list = 0;
@@ -381,7 +383,7 @@ hexchat_misc_checks (void)		/* this gets called every 1/2 second */
 	lagcheck_update ();			/* every 500ms */
 
 	if (count % 2)
-		dcc_check_timeouts ();	/* every 1 second */
+		dcc::dcc_check_timeouts ();	/* every 1 second */
 
 	if (count >= 60)				/* every 30 seconds */
 	{
