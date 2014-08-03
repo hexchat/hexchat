@@ -48,6 +48,7 @@
 #include "text.h"
 #include "ctcp.h"
 #include "hexchatc.h"
+#include "chanopt.h"
 
 
 void
@@ -583,6 +584,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
 					const message_tags_data *tags_data)
 {
 	session *sess;
+	int found_unused = FALSE;
 
 	/* already joined? probably a bnc */
 	sess = find_channel (serv, chan);
@@ -594,6 +596,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
 		{
 			/* find a "<none>" tab and use that */
 			sess = find_unused_session (serv);
+			found_unused = sess != NULL;
 			if (!sess)
 				/* last resort, open a new tab/window */
 				sess = new_ircwindow (serv, chan, SESS_CHANNEL, 1);
@@ -601,6 +604,13 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip,
 	}
 
 	safe_strcpy (sess->channel, chan, CHANLEN);
+	if (found_unused)
+	{
+		chanopt_load (sess);
+		scrollback_load (sess);
+		if (sess->scrollwritten && sess->scrollback_replay_marklast)
+			sess->scrollback_replay_marklast (sess);
+	}
 
 	fe_set_channel (sess);
 	fe_set_title (sess);
@@ -768,7 +778,7 @@ inbound_join (server *serv, char *chan, char *user, char *ip, char *account,
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_JOIN, sess, user, chan, ip, NULL, 0,
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_JOIN, sess, user, chan, ip, account, 0,
 									  tags_data->timestamp);
 		userlist_add (sess, user, ip, account, realname, tags_data);
 	}
@@ -938,19 +948,8 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 	if (is_channel (serv, ptr))
 		sess = find_channel (serv, ptr);
 
-	if (!sess && ptr[0] == '@')
-	{
-		ptr++;
-		sess = find_channel (serv, ptr);
-	}
-
-	if (!sess && ptr[0] == '%')
-	{
-		ptr++;
-		sess = find_channel (serv, ptr);
-	}
-
-	if (!sess && ptr[0] == '+')
+	/* /notice [mode-prefix]#channel should end up in that channel */
+	if (!sess && strchr(serv->nick_prefixes, ptr[0]) != NULL)
 	{
 		ptr++;
 		sess = find_channel (serv, ptr);

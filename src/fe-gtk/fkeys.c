@@ -170,43 +170,43 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 };
 
 #define default_kb_cfg \
-	"C\nPrior\nChange Page\nD1:-1\nD2:Relative\n\n"\
-	"C\nNext\nChange Page\nD1:1\nD2:Relative\n\n"\
-	"A\n9\nChange Page\nD1:9\nD2!\n\n"\
-	"A\n8\nChange Page\nD1:8\nD2!\n\n"\
-	"A\n7\nChange Page\nD1:7\nD2!\n\n"\
-	"A\n6\nChange Page\nD1:6\nD2!\n\n"\
-	"A\n5\nChange Page\nD1:5\nD2!\n\n"\
-	"A\n4\nChange Page\nD1:4\nD2!\n\n"\
-	"A\n3\nChange Page\nD1:3\nD2!\n\n"\
-	"A\n2\nChange Page\nD1:2\nD2!\n\n"\
-	"A\n1\nChange Page\nD1:1\nD2!\n\n"\
-	"A\ngrave\nChange Page\nD1:auto\nD2!\n\n"\
-	"C\no\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"C\nb\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"C\nk\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"C\ni\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"C\nu\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"S\nNext\nChange Selected Nick\nD1!\nD2!\n\n"\
-	"S\nPrior\nChange Selected Nick\nD1:Up\nD2!\n\n"\
-	"None\nNext\nScroll Page\nD1:Down\nD2!\n\n"\
-	"C\nHome\nScroll Page\nD1:Top\nD2!\n\n"\
-	"C\nEnd\nScroll Page\nD1:Bottom\nD2!\n\n"\
-	"None\nPrior\nScroll Page\nD1:Up\nD2!\n\n"\
-	"S\nDown\nScroll Page\nD1:+1\nD2!\n\n"\
-	"S\nUp\nScroll Page\nD1:-1\nD2!\n\n"\
-	"None\nDown\nNext Command\nD1!\nD2!\n\n"\
-	"None\nUp\nLast Command\nD1!\nD2!\n\n"\
-	"None\nTab\nComplete nick/command\nD1!\nD2!\n\n"\
-	"None\nspace\nCheck For Replace\nD1!\nD2!\n\n"\
-	"None\nReturn\nCheck For Replace\nD1!\nD2!\n\n"\
-	"None\nKP_Enter\nCheck For Replace\nD1!\nD2!\n\n"\
-	"C\nTab\nComplete nick/command\nD1:Up\nD2!\n\n"\
-	"A\nLeft\nMove front tab left\nD1!\nD2!\n\n"\
-	"A\nRight\nMove front tab right\nD1!\nD2!\n\n"\
-	"CS\nPrior\nMove tab family left\nD1!\nD2!\n\n"\
-	"CS\nNext\nMove tab family right\nD1!\nD2!\n\n"\
-	"None\nF9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
+	"ACCEL=<Primary>Page_Up\nChange Page\nD1:-1\nD2:Relative\n\n"\
+	"ACCEL=<Primary>Page_Down\nChange Page\nD1:1\nD2:Relative\n\n"\
+	"ACCEL=<Alt>9\nChange Page\nD1:9\nD2!\n\n"\
+	"ACCEL=<Alt>8\nChange Page\nD1:8\nD2!\n\n"\
+	"ACCEL=<Alt>7\nChange Page\nD1:7\nD2!\n\n"\
+	"ACCEL=<Alt>6\nChange Page\nD1:6\nD2!\n\n"\
+	"ACCEL=<Alt>5\nChange Page\nD1:5\nD2!\n\n"\
+	"ACCEL=<Alt>4\nChange Page\nD1:4\nD2!\n\n"\
+	"ACCEL=<Alt>3\nChange Page\nD1:3\nD2!\n\n"\
+	"ACCEL=<Alt>2\nChange Page\nD1:2\nD2!\n\n"\
+	"ACCEL=<Alt>1\nChange Page\nD1:1\nD2!\n\n"\
+	"ACCEL=<Alt>grave\nChange Page\nD1:auto\nD2!\n\n"\
+	"ACCEL=<Primary>o\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"ACCEL=<Primary>b\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"ACCEL=<Primary>k\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"ACCEL=<Primary>i\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"ACCEL=<Primary>u\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"ACCEL=<Shift>Page_Down\nChange Selected Nick\nD1!\nD2!\n\n"\
+	"ACCEL=<Shift>Page_Up\nChange Selected Nick\nD1:Up\nD2!\n\n"\
+	"ACCEL=Page_Down\nScroll Page\nD1:Down\nD2!\n\n"\
+	"ACCEL=<Primary>Home\nScroll Page\nD1:Top\nD2!\n\n"\
+	"ACCEL=<Primary>End\nScroll Page\nD1:Bottom\nD2!\n\n"\
+	"ACCEL=Page_Up\nScroll Page\nD1:Up\nD2!\n\n"\
+	"ACCEL=<Shift>Down\nScroll Page\nD1:+1\nD2!\n\n"\
+	"ACCEL=<Shift>Up\nScroll Page\nD1:-1\nD2!\n\n"\
+	"ACCEL=Down\nNext Command\nD1!\nD2!\n\n"\
+	"ACCEL=Up\nLast Command\nD1!\nD2!\n\n"\
+	"ACCEL=Tab\nComplete nick/command\nD1!\nD2!\n\n"\
+	"ACCEL=space\nCheck For Replace\nD1!\nD2!\n\n"\
+	"ACCEL=Return\nCheck For Replace\nD1!\nD2!\n\n"\
+	"ACCEL=KP_Enter\nCheck For Replace\nD1!\nD2!\n\n"\
+	"ACCEL=<Primary>Tab\nComplete nick/command\nD1:Up\nD2!\n\n"\
+	"ACCEL=<Alt>Left\nMove front tab left\nD1!\nD2!\n\n"\
+	"ACCEL=<Alt>Right\nMove front tab right\nD1!\nD2!\n\n"\
+	"ACCEL=<Primary><Shift>Page_Up\nMove tab family left\nD1!\nD2!\n\n"\
+	"ACCEL=<Primary><Shift>Page_Down\nMove tab family right\nD1!\nD2!\n\n"\
+	"ACCEL=F9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
 
 void
 key_init ()
@@ -287,8 +287,16 @@ key_free (gpointer data)
 static inline GdkModifierType
 key_modifier_get_valid (GdkModifierType mod)
 {
+	GdkModifierType ret;
+
+#ifdef __APPLE__
+	ret = mod & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK | GDK_META_MASK);
+#else
 	/* These masks work on both Windows and Unix */
-	return mod & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
+	ret = mod & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK);
+#endif
+
+	return ret;
 }
 
 gboolean

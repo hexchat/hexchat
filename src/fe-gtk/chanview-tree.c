@@ -73,8 +73,8 @@ cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 	return ret;
 }
 
-static void
-cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event)
+static gboolean
+cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
 {
 	if (prefs.hex_gui_tab_scrollchans)
 	{
@@ -82,7 +82,11 @@ cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event)
 			mg_switch_page (1, 1);
 		else if (event->direction == GDK_SCROLL_UP)
 			mg_switch_page (1, -1);
+
+		return TRUE;
 	}
+
+	return FALSE;
 }
 
 static void
@@ -167,7 +171,6 @@ cv_tree_init (chanview *cv)
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
 	gtk_drag_source_set (view, GDK_BUTTON1_MASK, dnd_src_target, 1, GDK_ACTION_COPY);
 
-#ifndef WIN32
 	g_signal_connect (G_OBJECT (view), "drag_begin",
 							G_CALLBACK (mg_drag_begin_cb), NULL);
 	g_signal_connect (G_OBJECT (view), "drag_drop",
@@ -176,7 +179,6 @@ cv_tree_init (chanview *cv)
 							G_CALLBACK (mg_drag_motion_cb), NULL);
 	g_signal_connect (G_OBJECT (view), "drag_end",
 							G_CALLBACK (mg_drag_end_cb), NULL);
-#endif
 
 	((treeview *)cv)->tree = GTK_TREE_VIEW (view);
 	((treeview *)cv)->scrollw = win;

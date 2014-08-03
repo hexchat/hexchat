@@ -88,11 +88,19 @@ struct _hexchat_plugin
 	void (*hexchat_print) (hexchat_plugin *ph,
 	     const char *text);
 	void (*hexchat_printf) (hexchat_plugin *ph,
-	      const char *format, ...);
+	      const char *format, ...)
+#ifdef __GNUC__
+	__attribute__((format(printf, 2, 3)))
+#endif
+	;
 	void (*hexchat_command) (hexchat_plugin *ph,
 	       const char *command);
 	void (*hexchat_commandf) (hexchat_plugin *ph,
-		const char *format, ...);
+		const char *format, ...)
+#ifdef __GNUC__
+	__attribute__((format(printf, 2, 3)))
+#endif
+	;
 	int (*hexchat_nickcmp) (hexchat_plugin *ph,
 	       const char *s1,
 	       const char *s2);
@@ -254,7 +262,11 @@ hexchat_print (hexchat_plugin *ph,
 
 void
 hexchat_printf (hexchat_plugin *ph,
-	      const char *format, ...);
+	      const char *format, ...)
+#ifdef __GNUC__
+	__attribute__((format(printf, 2, 3)))
+#endif
+;
 
 void
 hexchat_command (hexchat_plugin *ph,
@@ -262,7 +274,11 @@ hexchat_command (hexchat_plugin *ph,
 
 void
 hexchat_commandf (hexchat_plugin *ph,
-		const char *format, ...);
+		const char *format, ...)
+#ifdef __GNUC__
+	__attribute__((format(printf, 2, 3)))
+#endif
+;
 
 int
 hexchat_nickcmp (hexchat_plugin *ph,

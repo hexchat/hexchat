@@ -413,6 +413,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 						 guint info, guint ttime, gpointer userdata)
 {
 	struct User *user;
+	gchar *data;
 	GtkTreePath *path;
 	GtkTreeModel *model;
 	GtkTreeIter iter;
@@ -425,7 +426,10 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 		return;
 	gtk_tree_model_get (model, &iter, COL_USER, &user, -1);
 
-	mg_dnd_drop_file (current_sess, user->nick, (char *)gtk_selection_data_get_data (selection_data));
+	data = (char *)gtk_selection_data_get_data (selection_data);
+
+	if (data)
+		mg_dnd_drop_file (current_sess, user->nick, data);
 }
 
 static gboolean
@@ -643,7 +647,6 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (userlist_key_cb), 0);
 
 	/* tree/chanview DND */
-#ifndef WIN32	/* leaks GDI pool memory, don't enable */
 	g_signal_connect (G_OBJECT (treeview), "drag_begin",
 							G_CALLBACK (mg_drag_begin_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "drag_drop",
@@ -652,7 +655,6 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (mg_drag_motion_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "drag_end",
 							G_CALLBACK (mg_drag_end_cb), NULL);
-#endif
 
 	userlist_add_columns (GTK_TREE_VIEW (treeview));
 

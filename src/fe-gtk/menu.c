@@ -42,6 +42,7 @@
 #include "../common/servlist.h"
 #include "../common/notify.h"
 #include "../common/util.h"
+#include "../common/text.h"
 #include "xtext.h"
 #include "ascii.h"
 #include "banlist.h"
@@ -402,8 +403,10 @@ toggle_cb (GtkWidget *item, char *pref_name)
 static int
 is_in_path (char *cmd)
 {
-	char *prog = strdup (cmd + 1);	/* 1st char is "!" */
-	char *space, *path, *orig;
+	char *prog = g_strdup (cmd + 1);	/* 1st char is "!" */
+	char *path, *orig;
+	char **argv;
+	int argc;
 
 	orig = prog; /* save for free()ing */
 	/* special-case these default entries. */
@@ -412,16 +415,17 @@ is_in_path (char *cmd)
 	/* don't check for gnome-terminal, but the thing it's executing! */
 		prog += 18;
 
-	space = strchr (prog, ' ');	/* this isn't 100% but good enuf */
-	if (space)
-		*space = 0;
-
-	path = g_find_program_in_path (prog);
-	if (path)
+	if (g_shell_parse_argv (prog, &argc, &argv, NULL))
 	{
-		g_free (path);
-		g_free (orig);
-		return 1;
+		path = g_find_program_in_path (argv[0]);
+		if (path)
+		{
+			g_free (path);
+			g_free (orig);
+			g_strfreev (argv);
+			return 1;
+		}
+		g_strfreev (argv);
 	}
 
 	g_free (orig);
@@ -905,11 +909,14 @@ menu_fullscreen_toggle (GtkWidget *wid, gpointer ud)
 		gtk_window_unfullscreen (GTK_WINDOW(parent_window));
 
 #ifdef WIN32
-		/* other window managers seem to handle this */
-		gtk_window_resize (GTK_WINDOW(parent_window),
-					prefs.hex_gui_win_width, prefs.hex_gui_win_height);
-		gtk_window_move (GTK_WINDOW(parent_window),
-					prefs.hex_gui_win_left, prefs.hex_gui_win_top);
+		if (!prefs.hex_gui_win_state) /* not maximized */
+		{
+			/* other window managers seem to handle this */
+			gtk_window_resize (GTK_WINDOW (parent_window),
+				prefs.hex_gui_win_width, prefs.hex_gui_win_height);
+			gtk_window_move (GTK_WINDOW (parent_window),
+				prefs.hex_gui_win_left, prefs.hex_gui_win_top);
+		}
 #endif
 	}
 }
@@ -1279,6 +1286,36 @@ static void
 menu_resetmarker (GtkWidget * wid, gpointer none)
 {
 	gtk_xtext_reset_marker_pos (GTK_XTEXT (current_sess->gui->xtext));
+}
+
+static void
+menu_movetomarker (GtkWidget *wid, gpointer none)
+{
+	marker_reset_reason reason;
+	char *str;
+
+	if (!prefs.hex_text_show_marker)
+		PrintText (current_sess, _("Marker line disabled."));
+	else
+	{
+		reason = gtk_xtext_moveto_marker_pos (GTK_XTEXT (current_sess->gui->xtext));
+		switch (reason) {
+		case MARKER_WAS_NEVER_SET:
+			str = _("Marker line never set."); break;
+		case MARKER_IS_SET:
+			str = ""; break;
+		case MARKER_RESET_MANUALLY:
+			str = _("Marker line reset manually."); break;
+		case MARKER_RESET_BY_KILL:
+			str = _("Marker line reset because exceeded scrollback limit."); break;
+		case MARKER_RESET_BY_CLEAR:
+			str = _("Marker line reset by CLEAR command."); break;
+		default:
+			str = _("Marker line state unknown."); break;
+		}
+		if (str[0])
+			PrintText (current_sess, str);
+	}
 }
 
 static void
@@ -1698,7 +1735,7 @@ menu_about (GtkWidget *wid, gpointer sess)
 	gtk_about_dialog_set_website (dialog, "http://hexchat.github.io");
 	gtk_about_dialog_set_website_label (dialog, "Website");
 	gtk_about_dialog_set_logo (dialog, pix_hexchat);
-	gtk_about_dialog_set_copyright (dialog, "\302\251 1998-2010 Peter \305\275elezn\303\275\n\302\251 2009-2013 Berke Viktor");
+	gtk_about_dialog_set_copyright (dialog, "\302\251 1998-2010 Peter \305\275elezn\303\275\n\302\251 2009-2014 Berke Viktor");
 	gtk_about_dialog_set_comments (dialog, comment);
 
 	gtk_window_set_transient_for (GTK_WINDOW(dialog), GTK_WINDOW(parent_window));
@@ -1709,7 +1746,7 @@ menu_about (GtkWidget *wid, gpointer sess)
 }
 
 static struct mymenu mymenu[] = {
-	{N_("He_xChat"), 0, 0, M_NEWMENU, 0, 0, 1},
+	{N_("He_xChat"), 0, 0, M_NEWMENU, MENU_ID_HEXCHAT, 0, 1},
 	{N_("Network Li_st..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_KEY_s},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
@@ -1789,6 +1826,7 @@ static struct mymenu mymenu[] = {
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_m},
+	{N_("Move to Marker Line"), menu_movetomarker, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_M},
 	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
@@ -2217,9 +2255,17 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	char *key_theme = NULL;
 	GtkSettings *settings;
 	GSList *group = NULL;
+#ifdef HAVE_GTK_MAC
+	int appmenu_offset = 1; /* 0 is for about */
+#endif
 
 	if (bar)
+	{
 		menu_bar = gtk_menu_bar_new ();
+#ifdef HAVE_GTK_MAC
+		gtkosx_application_set_menu_bar (osx_app, GTK_MENU_SHELL (menu_bar));
+#endif
+	}
 	else
 		menu_bar = gtk_menu_new ();
 
@@ -2323,7 +2369,10 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 			menu_item = gtk_menu_item_new_with_mnemonic (_(mymenu[i].text));
 			/* record the English name for /menu */
 			g_object_set_data (G_OBJECT (menu_item), "name", mymenu[i].text);
-			gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar), menu_item);
+#ifdef HAVE_GTK_MAC /* Added to app menu, see below */
+			if (!bar || mymenu[i].id != MENU_ID_HEXCHAT)		
+#endif
+				gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar), menu_item);
 			gtk_widget_show (menu_item);
 			break;
 
@@ -2424,6 +2473,15 @@ togitem:
 		if (mymenu[i].id != 0 && menu_widgets)
 			/* this ends up in sess->gui->menu_item[MENU_ID_XXX] */
 			menu_widgets[mymenu[i].id] = item;
+
+#ifdef HAVE_GTK_MAC
+		/* We want HexChat to be the app menu, not including Quit or HexChat itself */
+		if (bar && item && i <= CLOSE_OFFSET + 1 && mymenu[i].id != MENU_ID_HEXCHAT)
+		{
+			if (!submenu || mymenu[i].type == M_MENUSUB)
+				gtkosx_application_insert_app_menu_item (osx_app, item, appmenu_offset++);
+		}
+#endif
 
 		i++;
 	}

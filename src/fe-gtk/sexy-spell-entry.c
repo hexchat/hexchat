@@ -153,17 +153,20 @@ initialize_enchant ()
 	GModule *enchant;
 	gpointer funcptr;
 
-#ifdef WIN32
-	enchant = g_module_open("libenchant.dll", 0);
-#else
-	enchant = g_module_open("libenchant", 0);
-#endif
+
+	enchant = g_module_open("libenchant."G_MODULE_SUFFIX, 0);
 	if (enchant == NULL)
 	{
 #ifndef WIN32
 		enchant = g_module_open("libenchant.so.1", 0);
-				if (enchant == NULL)
-					return;
+		if (enchant == NULL)
+		{
+#ifdef __APPLE__
+			enchant = g_module_open("libenchant.dylib", 0);
+			if (enchant == NULL)
+#endif
+				return;
+		}
 #else
 		return;
 #endif
@@ -285,6 +288,9 @@ gtk_entry_find_position (GtkEntry *entry, gint x)
 static void
 insert_hiddenchar (SexySpellEntry *entry, guint start, guint end)
 {
+	/* FIXME: Pango does not properly reflect the new widths after a char
+	 * is 'hidden' */
+#if 0
 	PangoAttribute *hattr;
 	PangoRectangle *rect = g_malloc (sizeof (PangoRectangle));
 
@@ -299,6 +305,7 @@ insert_hiddenchar (SexySpellEntry *entry, guint start, guint end)
 	pango_attr_list_insert (entry->priv->attr_list, hattr);
 
 	g_free (rect);
+#endif
 }
 
 static void
@@ -1105,32 +1112,40 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 	const PangoLogAttr  *log_attrs;
 	const gchar   *text;
 	gint           n_attrs, n_strings, i, j;
+	PangoLogAttr a;
 
 	layout = gtk_entry_get_layout(GTK_ENTRY(entry));
 	text = gtk_entry_get_text(GTK_ENTRY(entry));
 	log_attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
 
 	/* Find how many words we have */
-	n_strings = 0;
-	for (i = 0; i < n_attrs; i++)
-		if (log_attrs[i].is_word_start)
+	for (i = 0, n_strings = 0; i < n_attrs; i++)
+	{
+		a = log_attrs[i];
+		if (a.is_word_start && a.is_word_boundary)
 			n_strings++;
+	}
 
 	*set    = g_new0(gchar *, n_strings + 1);
 	*starts = g_new0(gint, n_strings);
 	*ends   = g_new0(gint, n_strings);
 
 	/* Copy out strings */
-	for (i = 0, j = 0; i < n_attrs; i++) {
-		if (log_attrs[i].is_word_start) {
+	for (i = 0, j = 0; i < n_attrs; i++)
+	{
+		a = log_attrs[i];
+		if (a.is_word_start && a.is_word_boundary)
+		{
 			gint cend, bytes;
 			gchar *start;
 
 			/* Find the end of this string */
-			cend = i;
-			while ((!log_attrs[cend].is_word_end || !log_attrs[cend].is_word_boundary)
-					&& !log_attrs[cend].is_white)
-				cend++;
+			for (cend = i; cend < n_attrs; cend++)
+			{
+				a = log_attrs[cend];
+				if (a.is_word_end && a.is_word_boundary)
+					break;
+			}
 
 			/* Copy sub-string */
 			start = g_utf8_offset_to_pointer(text, i);

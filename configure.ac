@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([HexChat],[2.9.6])
+AC_INIT([HexChat],[2.10.0])
 
 AC_PREREQ([2.60])
 AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
@@ -19,6 +19,7 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CPP
 AM_PROG_AS
+AM_PROG_AR
 AM_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PATH_PROG(MDTOOL, mdtool, no)
@@ -185,9 +186,10 @@ fi
 
 PKG_CHECK_MODULES([GOBJECT], [gobject-2.0], [], [AC_MSG_ERROR(Cannot find gobject-2.0!)])
 PKG_CHECK_MODULES([GIO], [gio-2.0], [], [AC_MSG_ERROR(Cannot find gio-2.0!)])
+PKG_CHECK_MODULES([GMODULE], [gmodule-2.0], [], [AC_MSG_ERROR(Cannot find gmodule-2.0!)])
 
-COMMON_CFLAGS="$GLIB_CFLAGS $GIO_CFLAGS $GOBJECT_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
-COMMON_LIBS="$GLIB_LIBS $GIO_LIBS $GOBJECT_LIBS -lgmodule-2.0"
+COMMON_CFLAGS="$GLIB_CFLAGS $GIO_CFLAGS $GOBJECT_CFLAGS $GMODULE_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
+COMMON_LIBS="$GLIB_LIBS $GIO_LIBS $GOBJECT_LIBS $GMODULE_LIBS"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
@@ -214,7 +216,7 @@ dnl *********************************************************************
 
 _gdk_tgt=`$PKG_CONFIG --variable=target gdk-2.0`
 if test "x$_gdk_tgt" = xquartz; then
-		PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration, [
+		PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration-gtk2, [
 			GUI_LIBS="$GUI_LIBS $GTK_MAC_LIBS"
 			GUI_CFLAGS="$GUI_CFLAGS $GTK_MAC_CFLAGS"
 			AC_DEFINE(HAVE_GTK_MAC)
@@ -293,19 +295,30 @@ if test "x$python" != xno ; then
 		case $python in
 			dnl set python2 default here
 			python2)
-				PKG_CHECK_MODULES([PY], [python-2.7], [], [AC_MSG_WARN(Cannot find python-2.7!)])
-				PY_VER="`$PKG_CONFIG --modversion python-2.7`";;
+				PKG_CHECK_MODULES([PY], [python-2.7],
+								  [PY_VER="`$PKG_CONFIG --modversion python-2.7`"],
+								  [true])
+				;;
 			dnl set python3 default here
 			python3)
-				PKG_CHECK_MODULES([PY], [python-3.3], [], [AC_MSG_WARN(Cannot find python-3.3!)])
-				PY_VER="`$PKG_CONFIG --modversion python-3.3`";;
+				PKG_CHECK_MODULES([PY], [python-3.4],
+								  [PY_VER="`$PKG_CONFIG --modversion python-3.4`"],
+								  [true])
+				if test "$PY_VER" = "" ; then
+					PKG_CHECK_MODULES([PY], [python-3.3],
+									  [PY_VER="`$PKG_CONFIG --modversion python-3.3`"],
+									  [true])
+				fi
+				;;
 			dnl add broken versions here
 			python2.5|python2.6|python3.1|python3.2)
-				AC_MSG_ERROR(Unsupported Python version ${python}!);;
+				AC_MSG_WARN(Unsupported Python version ${python}!);;
 			python*)
 				python="python-${python#python}" # stay posix compliant
-				PKG_CHECK_MODULES([PY], [${python}], [], [AC_MSG_WARN(Cannot find "${python}.pc"!)])
-				PY_VER="`$PKG_CONFIG --modversion ${python}`";;
+				PKG_CHECK_MODULES([PY], [${python}],
+								  [PY_VER="`$PKG_CONFIG --modversion ${python}`"],
+								  [AC_MSG_WARN(Cannot find "${python}.pc"!)])
+				;;
 			*)
 				AC_MSG_WARN(Unsupported Python ${python}!)
 		esac
@@ -426,29 +439,7 @@ dnl ** PLUGIN ***********************************************************
 dnl *********************************************************************
 
 if test "$plugin" = yes; then
-	AC_CHECK_FUNCS(dlopen, have_dl=yes)
-	if test "$have_dl" != yes; then
-		AC_CHECK_LIB(dl, dlopen, have_dl=yes)
-		if test "$have_dl" = yes; then
-			LIBS="$LIBS -ldl"
-		fi
-	fi
-	if test "$have_dl" = yes; then
-		AC_DEFINE(USE_PLUGIN)
-		dnl we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
-		RDYNAMIC_FLAGS="`$PKG_CONFIG gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
-		LIBS="$LIBS $RDYNAMIC_FLAGS"
-		if test "$LD" = ""; then
-			VS="`ld --help | grep version-script 2> /dev/null`"
-		else
-			VS="`$LD --help | grep version-script 2> /dev/null`"
-		fi
-		if test "$VS" != ""; then
-			GUI_LIBS="$GUI_LIBS -Wl,--version-script,\$(srcdir)/../version-script"
-		fi
-	else
-		plugin=no
-	fi
+	AC_DEFINE(USE_PLUGIN)
 fi
 
 dnl *********************************************************************
@@ -829,6 +820,7 @@ data/Makefile
 data/icons/Makefile
 data/misc/Makefile
 data/man/Makefile
+data/man/hexchat.1
 data/pkgconfig/Makefile
 data/pkgconfig/hexchat-plugin.pc
 src/Makefile
@@ -863,7 +855,6 @@ echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
 echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
-echo NLS/gettext ........... : $USE_NLS
 echo IPv6 support .......... : $ipv6
 echo MS Proxy NTLM \(ISA\) ... : $have_ntlm
 echo libproxy support ...... : $libproxy

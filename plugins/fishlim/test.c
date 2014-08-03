@@ -24,13 +24,14 @@
 
 #include <glib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "fish.h"
 
 // We can't use the HexChat plugin API from here...
 gchar *get_config_filename() {
     const gchar *homedir = g_get_home_dir();
-    return g_build_filename(homedir, ".xchat2", "blow.ini", NULL);
+    return g_build_filename(homedir, ".config", "hexchat", "blow.ini", NULL);
 }
 
 
@@ -46,6 +47,7 @@ static int decrypt(int nick_count, char *nicks[]) {
         return 1;
       success:
         fprintf(stderr, "Decrypted text >>>%s<<<\n", msg);
+        free(msg);
     }
     return 0;
 }
@@ -62,6 +64,7 @@ static int encrypt(int nick_count, char *nicks[]) {
             char *encrypted = fish_encrypt_for_nick(nicks[i], message);
             if (encrypted) {
                 fprintf(stderr, "Encrypted [%s]:  >>>%s<<<\n", nicks[i], encrypted);
+                free(encrypted);
             } else {
                 error = true;
             }

@@ -146,6 +146,9 @@ set_window_urgency (GtkWidget *win, gboolean set)
 static void
 flash_window (GtkWidget *win)
 {
+#ifdef HAVE_GTK_MAC
+	gtkosx_application_attention_request (osx_app, INFO_REQUEST);
+#endif
 	set_window_urgency (win, TRUE);
 }
 
@@ -2317,7 +2320,7 @@ mg_update_xtext (GtkWidget *wid)
 static void
 mg_create_textarea (session *sess, GtkWidget *box)
 {
-	GtkWidget *scrolledwindow;
+	GtkWidget *inbox, *vbox, *frame;
 	GtkXText *xtext;
 	session_gui *gui = sess->gui;
 	static const GtkTargetEntry dnd_targets[] =
@@ -2330,12 +2333,14 @@ mg_create_textarea (session *sess, GtkWidget *box)
 		{"HEXCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
 	};
 
+	vbox = gtk_vbox_new (FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (box), vbox);
+	inbox = gtk_hbox_new (FALSE, 2);
+	gtk_container_add (GTK_CONTAINER (vbox), inbox);
 
-	scrolledwindow = gtk_scrolled_window_new (NULL, NULL);
-	gui->vscrollbar = gtk_scrolled_window_get_vscrollbar (GTK_SCROLLED_WINDOW (scrolledwindow)); /* For fkeys */
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(scrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow), GTK_SHADOW_IN);
-	gtk_container_add (GTK_CONTAINER (box), scrolledwindow);
+	frame = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+	gtk_container_add (GTK_CONTAINER (inbox), frame);
 
 	gui->xtext = gtk_xtext_new (colors, TRUE);
 	xtext = GTK_XTEXT (gui->xtext);
@@ -2343,13 +2348,16 @@ mg_create_textarea (session *sess, GtkWidget *box)
 	gtk_xtext_set_thin_separator (xtext, prefs.hex_text_thin_sep);
 	gtk_xtext_set_urlcheck_function (xtext, mg_word_check);
 	gtk_xtext_set_max_lines (xtext, prefs.hex_text_max_lines);
-	gtk_container_add (GTK_CONTAINER (scrolledwindow), GTK_WIDGET (xtext));
+	gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (xtext));
 
 	mg_update_xtext (GTK_WIDGET (xtext));
 
 	g_signal_connect (G_OBJECT (xtext), "word_click",
 							G_CALLBACK (mg_word_clicked), NULL);
-#ifndef WIN32	/* needs more work */
+
+	gui->vscrollbar = gtk_vscrollbar_new (GTK_XTEXT (xtext)->adj);
+	gtk_box_pack_start (GTK_BOX (inbox), gui->vscrollbar, FALSE, TRUE, 0);
+
 	gtk_drag_dest_set (gui->vscrollbar, 5, dnd_dest_targets, 2,
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
 	g_signal_connect (G_OBJECT (gui->vscrollbar), "drag_begin",
@@ -2365,7 +2373,6 @@ mg_create_textarea (session *sess, GtkWidget *box)
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
 	g_signal_connect (G_OBJECT (gui->xtext), "drag_data_received",
 							G_CALLBACK (mg_dialog_dnd_drop), NULL);
-#endif
 }
 
 static GtkWidget *
@@ -3101,10 +3108,6 @@ mg_create_menu (session_gui *gui, GtkWidget *table, int away_state)
 											gui->menu_item);
 	gtk_table_attach (GTK_TABLE (table), gui->menu, 0, 3, 0, 1,
 						   GTK_EXPAND | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-
-#ifdef HAVE_GTK_MAC
-	gtkosx_application_set_menu_bar(osx_app, GTK_MENU_SHELL(gui->menu));
-#endif
 }
 
 static void
@@ -3760,7 +3763,7 @@ mg_is_gui_target (GdkDragContext *context)
 	{
 		/* if it's not HEXCHAT_CHANVIEW or HEXCHAT_USERLIST */
 		/* we should ignore it. */
-		if (target_name[0] != 'X')
+		if (target_name[0] != 'H')
 		{
 			g_free (target_name);
 			return FALSE;
@@ -3776,7 +3779,6 @@ mg_is_gui_target (GdkDragContext *context)
 gboolean
 mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 {
-#ifndef WIN32	/* leaks GDI pool memory - don't use on win32 */
 	int width, height;
 	GdkColormap *cmap;
 	GdkPixbuf *pix, *pix2;
@@ -3795,7 +3797,6 @@ mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 
 	gtk_drag_set_icon_pixbuf (context, pix2, 0, 0);
 	g_object_set_data (G_OBJECT (widget), "ico", pix2);
-#endif
 
 	return TRUE;
 }
@@ -3807,9 +3808,7 @@ mg_drag_end_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 	if (!mg_is_gui_target (context))
 		return;
 
-#ifndef WIN32
 	g_object_unref (g_object_get_data (G_OBJECT (widget), "ico"));
-#endif
 }
 
 /* drop complete */

@@ -56,9 +56,6 @@
 #include "outbound.h"
 #include "chanopt.h"
 
-#ifdef USE_DEBUG
-extern int current_mem_usage;
-#endif
 #define TBUFSIZE 4096
 
 static void help (session *sess, char *tbuf, char *helpcmd, int quiet);
@@ -922,10 +919,6 @@ cmd_debug (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				"current_tab: %p\n\n",
 				sess->server->front_session, current_tab);
 	PrintText (sess, tbuf);
-#ifdef USE_DEBUG
-	sprintf (tbuf, "current mem: %d\n\n", current_mem_usage);
-	PrintText (sess, tbuf);
-#endif  /* !MEMORY_DEBUG */
 
 	return TRUE;
 }
@@ -1841,8 +1834,10 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				char **argv;
 				int argc;
 
-				my_poptParseArgvString (cmd, &argc, &argv);
+				g_shell_parse_argv (cmd, &argc, &argv, NULL);
 				execvp (argv[0], argv);
+
+				g_strfreev (argv);
 			}
 			/* not reached unless error */
 			/*printf("exec error\n");*/
@@ -2486,7 +2481,7 @@ cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		}
 		j++;
 	}
-	if (*word_eol[j])
+	if (word_eol[j] != NULL && *word_eol[j])
 	{
 		lastlog (sess, word_eol[j], flags);
 		return TRUE;
@@ -2539,7 +2534,6 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *file, *buf;
 #ifdef USE_PLUGIN
 	char *error, *arg;
-	int len;
 #endif
 
 	if (!word[2][0])
@@ -2560,16 +2554,7 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 #ifdef USE_PLUGIN
-	len = strlen (word[2]);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (".dll", word[2] + len - 4) == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (".sl", word[2] + len - 3) == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (".so", word[2] + len - 3) == 0)
-#endif
-#endif
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
 	{
 		arg = NULL;
 		if (word_eol[3][0])
@@ -3565,18 +3550,9 @@ static int
 cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 #ifdef USE_PLUGIN
-	int len, by_file = FALSE;
+	gboolean by_file = FALSE;
 
-	len = strlen (word[2]);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (word[2] + len - 4, ".dll") == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".sl") == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".so") == 0)
-#endif
-#endif
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
 		by_file = TRUE;
 
 	switch (plugin_kill (word[2], by_file))
@@ -3599,18 +3575,9 @@ static int
 cmd_reload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 #ifdef USE_PLUGIN
-	int len, by_file = FALSE;
+	gboolean by_file = FALSE;
 
-	len = strlen (word[2]);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (word[2] + len - 4, ".dll") == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".sl") == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".so") == 0)
-#endif
-#endif
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
 		by_file = TRUE;
 
 	switch (plugin_reload (sess, word[2], by_file))
@@ -3746,8 +3713,8 @@ userlist_cb (struct User *user, session *sess)
 	else
 		lt = time (0) - user->lasttalk;
 	PrintTextf (sess,
-				"\00306%s\t\00314[\00310%-38s\00314] \017ov\0033=\017%d%d away=%u lt\0033=\017%d\n",
-				user->nick, user->hostname, user->op, user->voice, user->away, lt);
+				"\00306%s\t\00314[\00310%-38s\00314] \017ov\0033=\017%d%d away=%u lt\0033=\017%ld\n",
+				user->nick, user->hostname, user->op, user->voice, user->away, (long)lt);
 
 	return TRUE;
 }

@@ -52,11 +52,7 @@ typedef struct session hexchat_context;
 /* the USE_PLUGIN define only removes libdl stuff */
 
 #ifdef USE_PLUGIN
-#ifdef USE_GMODULE
 #include <gmodule.h>
-#else
-#include <dlfcn.h>
-#endif
 #endif
 
 #define DEBUG(x) {x;}
@@ -159,11 +155,7 @@ plugin_free (hexchat_plugin *pl, int do_deinit, int allow_refuse)
 
 #ifdef USE_PLUGIN
 	if (pl->handle)
-#ifdef USE_GMODULE
 		g_module_close (pl->handle);
-#else
-		dlclose (pl->handle);
-#endif
 #endif
 
 xit:
@@ -378,21 +370,16 @@ plugin_load (session *sess, char *filename, char *arg)
 	char *filepart;
 	hexchat_init_func *init_func;
 	hexchat_deinit_func *deinit_func;
-#ifndef USE_GMODULE
-	char *error;
-#else
 	char *pluginpath;
-#endif
 
 	/* get the filename without path */
 	filepart = file_part (filename);
 
-#ifdef USE_GMODULE
 	/* load the plugin */
 	if (!g_ascii_strcasecmp (filepart, filename))
 	{
 		/* no path specified, it's just the filename, try to load from config dir */
-		pluginpath = g_build_filename (get_xdir (), filename, NULL);
+		pluginpath = g_build_filename (get_xdir (), "addons", filename, NULL);
 		handle = g_module_open (pluginpath, 0);
 		g_free (pluginpath);
 	}
@@ -416,43 +403,6 @@ plugin_load (session *sess, char *filename, char *arg)
 	if (!g_module_symbol (handle, "hexchat_plugin_deinit", (gpointer *)&deinit_func))
 		deinit_func = NULL;
 
-#else
-
-/* OpenBSD lacks this! */
-#ifndef RTLD_GLOBAL
-#define RTLD_GLOBAL 0
-#endif
-
-#ifndef RTLD_NOW
-#define RTLD_NOW 0
-#endif
-
-	/* load the plugin */
-	if (filepart &&
-		 /* xsys draws in libgtk-1.2, causing crashes, so force RTLD_LOCAL */
-		 (strstr (filepart, "local") || strncmp (filepart, "libxsys-1", 9) == 0)
-		)
-		handle = dlopen (filename, RTLD_NOW);
-	else
-		handle = dlopen (filename, RTLD_GLOBAL | RTLD_NOW);
-	if (handle == NULL)
-		return (char *)dlerror ();
-	dlerror ();		/* Clear any existing error */
-
-	/* find the init routine hexchat_plugin_init */
-	init_func = dlsym (handle, "hexchat_plugin_init");
-	error = (char *)dlerror ();
-	if (error != NULL)
-	{
-		dlclose (handle);
-		return _("No hexchat_plugin_init symbol; is this really a HexChat plugin?");
-	}
-
-	/* find the plugin's deinit routine, if any */
-	deinit_func = dlsym (handle, "hexchat_plugin_deinit");
-	error = (char *)dlerror ();
-#endif
-
 	/* add it to our linked list */
 	plugin_add (sess, filename, handle, init_func, deinit_func, arg, FALSE);
 
@@ -465,11 +415,6 @@ static void
 plugin_auto_load_cb (char *filename)
 {
 	char *pMsg;
-
-#ifndef WIN32	/* black listed */
-	if (!strcmp (file_part (filename), "dbus.so"))
-		return;
-#endif
 
 	pMsg = plugin_load (ps, filename, NULL);
 	if (pMsg)
@@ -515,17 +460,11 @@ plugin_auto_load (session *sess)
 	for_files (lib_dir, "hcupd.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcwinamp.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcsysinfo.dll", plugin_auto_load_cb);
+#else
+	for_files (lib_dir, "*."G_MODULE_SUFFIX, plugin_auto_load_cb);
+#endif
 
-	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
-#else
-#if defined(__hpux)
-	for_files (lib_dir, "*.sl", plugin_auto_load_cb);
-	for_files (sub_dir, "*.sl", plugin_auto_load_cb);
-#else
-	for_files (lib_dir, "*.so", plugin_auto_load_cb);
-	for_files (sub_dir, "*.so", plugin_auto_load_cb);
-#endif
-#endif
+	for_files (sub_dir, "*."G_MODULE_SUFFIX, plugin_auto_load_cb);
 
 	g_free (sub_dir);
 }
@@ -1180,7 +1119,11 @@ hexchat_get_info (hexchat_plugin *ph, const char *id)
 	switch (hash)
 	{
 		case 0x325acab5:	/* libdirfs */
+#ifdef USE_PLUGIN
 			return plugin_get_libdir ();
+#else
+			return NULL;
+#endif
 
 		case 0x14f51cd8: /* version */
 			return PACKAGE_VERSION;
@@ -1942,56 +1885,39 @@ hexchat_pluginpref_set_str (hexchat_plugin *pl, const char *var, const char *val
 	return hexchat_pluginpref_set_str_real (pl, var, value, 1);
 }
 
-int
-hexchat_pluginpref_get_str (hexchat_plugin *pl, const char *var, char *dest)
+static int
+hexchat_pluginpref_get_str_real (hexchat_plugin *pl, const char *var, char *dest, int dest_len)
 {
-	int fh;
-	int l;
-	char confname[64];
-	char *canon;
-	char *cfg;
-	struct stat st;
+	char *confname, *canon, *cfg;
 
 	canon = g_strdup (pl->name);
 	canonalize_key (canon);
-	sprintf (confname, "addon_%s.conf", canon);
+	confname = g_strdup_printf ("%s%caddon_%s.conf", get_xdir(), G_DIR_SEPARATOR, canon);
 	g_free (canon);
 
-	/* partly borrowed from palette.c */
-	fh = hexchat_open_file (confname, O_RDONLY, 0, 0);
-
-	if (fh == -1)
+	if (!g_file_get_contents (confname, &cfg, NULL, NULL))
 	{
+		g_free (confname);
 		return 0;
 	}
 
-	fstat (fh, &st);
-	cfg = malloc (st.st_size + 1);
+	g_free (confname);
 
-	if (!cfg)
+	if (!cfg_get_str (cfg, var, dest, dest_len))
 	{
-		close (fh);
+		g_free (cfg);
 		return 0;
 	}
 
-	cfg[0] = '\0';
-	l = read (fh, cfg, st.st_size);
-
-	if (l >= 0)
-	{
-		cfg[l] = '\0';
-	}
-
-	if (!cfg_get_str (cfg, var, dest, 512)) /* dest_len is the same as buffer size in set */
-	{
-		free (cfg);
-		close (fh);
-		return 0;
-	}
-
-	free (cfg);
-	close (fh);
+	g_free (cfg);
 	return 1;
+}
+
+int
+hexchat_pluginpref_get_str (hexchat_plugin *pl, const char *var, char *dest)
+{
+	/* All users of this must ensure dest is >= 512... */
+	return hexchat_pluginpref_get_str_real (pl, var, dest, 512);
 }
 
 int
@@ -2008,7 +1934,7 @@ hexchat_pluginpref_get_int (hexchat_plugin *pl, const char *var)
 {
 	char buffer[12];
 
-	if (hexchat_pluginpref_get_str (pl, var, buffer))
+	if (hexchat_pluginpref_get_str_real (pl, var, buffer, sizeof(buffer)))
 	{
 		return atoi (buffer);
 	}

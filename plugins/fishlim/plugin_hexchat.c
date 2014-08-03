@@ -40,7 +40,7 @@
 
 static const char plugin_name[] = "FiSHLiM";
 static const char plugin_desc[] = "Encryption plugin for the FiSH protocol. Less is More!";
-static const char plugin_version[] = "0.0.16";
+static const char plugin_version[] = "0.0.17";
 
 static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
 static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
@@ -119,6 +119,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     size_t ew;
     size_t uw;
     size_t length;
+    char prefix_char = 0;
 
     if (!irc_parse_message((const char **)word, &prefix, &command, &w))
         return HEXCHAT_EAT_NONE;
@@ -129,6 +130,8 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     // Look for encrypted data
     for (ew = w+1; ew < HEXCHAT_MAX_WORDS-1; ew++) {
         const char *s = (ew == w+1 ? word[ew]+1 : word[ew]);
+        if (*s && (s[1] == '+' || s[1] == 'm')) { prefix_char = *(s++); }
+        else { prefix_char = 0; }
         if (strcmp(s, "+OK") == 0 || strcmp(s, "mcps") == 0) goto has_encrypted_data;
     }
     return HEXCHAT_EAT_NONE;
@@ -161,6 +164,11 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
             if (ew == w+1) {
                 // Prefix with colon, which gets stripped out otherwise
                 if (!append(&message, &length, ":")) goto decrypt_error;
+            }
+            
+            if (prefix_char) {
+                char prefix_str[2] = { prefix_char, '\0' };
+                if (!append(&message, &length, prefix_str)) goto decrypt_error;
             }
             
         } else {
@@ -213,7 +221,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     if (keystore_store_key(nick, key)) {
         hexchat_printf(ph, "Stored key for %s\n", nick);
     } else {
-        hexchat_printf(ph, "\00305Failed to store key in blow.ini\n", nick, key);
+        hexchat_printf(ph, "\00305Failed to store key in addon_fishlim.conf\n");
     }
     
     return HEXCHAT_EAT_HEXCHAT;
@@ -237,7 +245,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     if (keystore_delete_nick(nick)) {
         hexchat_printf(ph, "Deleted key for %s\n", nick);
     } else {
-        hexchat_printf(ph, "\00305Failed to delete key in blow.ini!\n", nick);
+        hexchat_printf(ph, "\00305Failed to delete key in addon_fishlim.conf!\n");
     }
     
     return HEXCHAT_EAT_HEXCHAT;

@@ -62,8 +62,9 @@ void menu_set_fullscreen (session_gui *gui, int fullscreen);
 #define MENU_ID_JOIN 11
 #define MENU_ID_USERMENU 12
 #define MENU_ID_FULLSCREEN 13
+#define MENU_ID_HEXCHAT 14
 
-#if (MENU_ID_NUM < MENU_ID_FULLSCREEN)
+#if (MENU_ID_NUM < MENU_ID_HEXCHAT)
 #error MENU_ID_NUM is set wrong
 #endif
 

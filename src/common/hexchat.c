@@ -528,6 +528,8 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	irc_init (sess);
 	chanopt_load (sess);
 	scrollback_load (sess);
+	if (sess->scrollwritten && sess->scrollback_replay_marklast)
+		sess->scrollback_replay_marklast (sess);
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
@@ -989,47 +991,12 @@ hexchat_exit (void)
 	fe_exit ();
 }
 
-#ifndef WIN32
-
-static int
-child_handler (gpointer userdata)
-{
-	int pid = GPOINTER_TO_INT (userdata);
-
-	if (waitpid (pid, 0, WNOHANG) == pid)
-		return 0;					  /* remove timeout handler */
-	return 1;						  /* keep the timeout handler */
-}
-
-#endif
-
 void
 hexchat_exec (const char *cmd)
 {
-#ifdef WIN32
 	util_exec (cmd);
-#else
-	int pid = util_exec (cmd);
-	if (pid != -1)
-	/* zombie avoiding system. Don't ask! it has to be like this to work
-      with zvt (which overrides the default handler) */
-		fe_timeout_add (1000, child_handler, GINT_TO_POINTER (pid));
-#endif
 }
 
-void
-hexchat_execv (char * const argv[])
-{
-#ifdef WIN32
-	util_execv (argv);
-#else
-	int pid = util_execv (argv);
-	if (pid != -1)
-	/* zombie avoiding system. Don't ask! it has to be like this to work
-      with zvt (which overrides the default handler) */
-		fe_timeout_add (1000, child_handler, GINT_TO_POINTER (pid));
-#endif
-}
 
 static void
 set_locale (void)
@@ -1150,10 +1117,6 @@ main (int argc, char *argv[])
 #ifdef USE_OPENSSL
 	if (ctx)
 		_SSL_context_free (ctx);
-#endif
-
-#ifdef USE_DEBUG
-	hexchat_mem_list ();
 #endif
 
 #ifdef WIN32

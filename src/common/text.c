@@ -79,7 +79,10 @@ scrollback_get_filename (session *sess)
 	g_free (buf);
 
 	chan = log_create_filename (sess->channel);
-	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, chan);
+	if (chan[0])
+		buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, chan);
+	else
+		buf = NULL;
 	free (chan);
 
 	return buf;
@@ -207,7 +210,7 @@ scrollback_save (session *sess, char *text)
 	time_t stamp;
 	int len;
 
-	if (sess->type == SESS_SERVER)
+	if (sess->type == SESS_SERVER && prefs.hex_gui_tab_server == 1)
 		return;
 
 	if (sess->text_scrollback == SET_DEFAULT)
@@ -295,11 +298,24 @@ scrollback_load (session *sess)
 		{
 			char *buf_tmp;
 
+			/* If nothing but funny trailing matter e.g. 0x0d or 0x0d0a, toss it */
+			if (n_bytes >= 1 && buf[0] == 0x0d)
+			{
+				g_free (buf);
+				continue;
+			}
+
 			n_bytes--;
 			buf_tmp = buf;
 			buf = g_strndup (buf_tmp, n_bytes);
 			g_free (buf_tmp);
 
+			/*
+			 * Some scrollback lines have three blanks after the timestamp and a newline
+			 * Some have only one blank and a newline
+			 * Some don't even have a timestamp
+			 * Some don't have any text at all
+			 */
 			if (buf[0] == 'T')
 			{
 				if (sizeof (time_t) == 4)
@@ -307,7 +323,7 @@ scrollback_load (session *sess)
 				else
 					stamp = strtoull (buf + 2, NULL, 10); /* in case time_t is 64 bits */
 				text = strchr (buf + 3, ' ');
-				if (text)
+				if (text && text[1])
 				{
 					if (prefs.hex_text_stripcolor_replay)
 					{
@@ -321,8 +337,19 @@ scrollback_load (session *sess)
 						g_free (text);
 					}
 				}
-				lines++;
+				else
+				{
+					fe_print_text (sess, "  ", stamp, TRUE);
+				}
 			}
+			else
+			{
+				if (strlen (buf))
+					fe_print_text (sess, buf, 0, TRUE);
+				else
+					fe_print_text (sess, "  ", 0, TRUE);
+			}
+			lines++;
 
 			g_free (buf);
 		}
@@ -513,7 +540,6 @@ log_create_pathname (char *servname, char *channame, char *netname)
 {
 	char fname[384];
 	char fnametime[384];
-	struct tm *tm;
 	time_t now;
 
 	if (!netname)
@@ -541,8 +567,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 
 	/* insert time/date */
 	now = time (NULL);
-	tm = localtime (&now);
-	strftime_validated (fnametime, sizeof (fnametime), fname, tm);
+	strftime_utf8 (fnametime, sizeof (fnametime), fname, now);
 
 	/* create final path/filename */
 	if (logmask_is_fullpath ())
@@ -665,7 +690,7 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 }
 
 static void
-log_write (session *sess, char *text)
+log_write (session *sess, char *text, time_t ts)
 {
 	char *temp;
 	char *stamp;
@@ -702,7 +727,8 @@ log_write (session *sess, char *text)
 
 	if (prefs.hex_stamp_log)
 	{
-		len = get_stamp_str (prefs.hex_stamp_log_format, time (0), &stamp);
+		if (!ts) ts = time(0);
+		len = get_stamp_str (prefs.hex_stamp_log_format, ts, &stamp);
 		if (len)
 		{
 			write (sess->logfd, stamp, len);
@@ -886,7 +912,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 		conv = text_validate ((char **)&text, &len);
 	}
 
-	log_write (sess, text);
+	log_write (sess, text, timestamp);
 	scrollback_save (sess, text);
 	fe_print_text (sess, text, timestamp, FALSE);
 
@@ -901,7 +927,7 @@ PrintText (session *sess, char *text)
 }
 
 void
-PrintTextf (session *sess, char *format, ...)
+PrintTextf (session *sess, const char *format, ...)
 {
 	va_list args;
 	char *buf;
@@ -915,7 +941,7 @@ PrintTextf (session *sess, char *format, ...)
 }
 
 void
-PrintTextTimeStampf (session *sess, time_t timestamp, char *format, ...)
+PrintTextTimeStampf (session *sess, time_t timestamp, const char *format, ...)
 {
 	va_list args;
 	char *buf;
@@ -1006,6 +1032,7 @@ static char * const pevt_join_help[] = {
 	N_("The nick of the joining person"),
 	N_("The channel being joined"),
 	N_("The host of the person"),
+	N_("The account of the person"),
 };
 
 static char * const pevt_chanaction_help[] = {
@@ -2145,6 +2172,12 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 			fe_flash_window (sess);
 		if (sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
+		break;
+
+	/* ===Nick change message=== */
+	case XP_TE_CHANGENICK:
+		if (prefs.hex_irc_hide_nickchange)
+			return;
 		break;
 	}
 

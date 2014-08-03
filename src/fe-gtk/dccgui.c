@@ -103,26 +103,24 @@ static short view_mode;	/* 1=download 2=upload 3=both */
 #define VIEW_UPLOAD 2
 #define VIEW_BOTH 3
 
-#define KILOBYTE 1024
-#define MEGABYTE (KILOBYTE * 1024)
-#define GIGABYTE (MEGABYTE * 1024)
-
 
 static void
 proper_unit (DCC_SIZE size, char *buf, int buf_len)
 {
-	if (size <= KILOBYTE)
-	{
-		snprintf (buf, buf_len, "%"DCC_SFMT"B", size);
-	}
-	else if (size > KILOBYTE && size <= MEGABYTE)
-	{
-		snprintf (buf, buf_len, "%"DCC_SFMT"kB", size / KILOBYTE);
-	}
-	else
-	{
-		snprintf (buf, buf_len, "%.2fMB", (float)size / MEGABYTE);
-	}
+	gchar *formatted_str;
+	GFormatSizeFlags format_flags = G_FORMAT_SIZE_DEFAULT;
+
+#ifndef __APPLE__ /* OS X uses SI */
+#ifndef WIN32 /* Windows uses IEC size (with SI format) */
+	if (prefs.hex_gui_filesize_iec) /* Linux can't decide... */
+#endif
+		format_flags = G_FORMAT_SIZE_IEC_UNITS;
+#endif
+
+	formatted_str = g_format_size_full ((guint64)size, format_flags);
+	g_strlcpy (buf, formatted_str, buf_len);
+
+	g_free (formatted_str);
 }
 
 static void

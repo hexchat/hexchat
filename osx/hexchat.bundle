@@ -2,7 +2,8 @@
 <app-bundle>
 
   <meta>
-    <prefix name="default">${env:JHBUILD_PREFIX}</prefix>
+    <prefix name="default">/usr/local</prefix>
+    <prefix name="enchant">/usr/local/opt/enchant-applespell</prefix>
     <destination overwrite="yes">${project}</destination>
 
     <run-install-name-tool/>
@@ -20,18 +21,12 @@
     ${prefix}/lib/hexchat/plugins/*.so
   </binary>
 
-  <binary dest="${bundle}/Contents/MacOS">
-    ${prefix}/bin/python
+  <binary>
+    ${prefix:enchant}/lib/libenchant.dylib
   </binary>
   <binary>
-    ${prefix}/lib/libpython2.7.dylib
+    ${prefix:enchant}/lib/enchant/libenchant_applespell.so
   </binary>
-  <data>
-    ${prefix}/lib/python2.7/
-  </data>
-  <data>
-    ${prefix}/include/python2.7/pyconfig.h
-  </data>
 
   <binary>
     ${prefix}/lib/${gtkdir}/modules/*.so
@@ -40,7 +35,7 @@
     ${prefix}/lib/${gtkdir}/${pkg:${gtk}:gtk_binary_version}/engines/libquartz.so
   </binary>
   <binary>
-    ${prefix}/lib/${gtkdir}/${pkg:${gtk}:gtk_binary_version}/engines/libclearlooks.so
+    ${prefix}/lib/${gtkdir}/${pkg:${gtk}:gtk_binary_version}/engines/libxamarin.so
   </binary>
   <binary>
     ${prefix}/lib/${gtkdir}/${pkg:${gtk}:gtk_binary_version}/printbackends/*.so
@@ -51,6 +46,9 @@
   <binary>
     ${prefix}/lib/pango/${pkg:pango:pango_module_version}/modules/
   </binary>
+  <data>
+    ${prefix}/share/themes/Mac/gtk-2.0-key/gtkrc
+  </data>
 
   <translations name="gtk20">
     ${prefix}/share/locale
@@ -66,8 +64,5 @@
   <data dest="${bundle}/Contents/Resources">
     ${project}/hexchat.icns
   </data>
-
-  <!-- icon-theme icons="none">
-  </icon-theme -->
 
 </app-bundle>

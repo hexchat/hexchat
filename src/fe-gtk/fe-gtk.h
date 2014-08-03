@@ -20,11 +20,7 @@
 #ifndef HEXCHAT_FE_GTK_H
 #define HEXCHAT_FE_GTK_H
 
-#ifdef WIN32
-#include "../../config-win32.h"
-#else
 #include "../../config.h"
-#endif
 
 #define DISPLAY_NAME "HexChat"
 
@@ -32,21 +28,7 @@
 #include <sys/types.h>
 #endif
 
-#if defined(ENABLE_NLS) && !defined(_)
-#  include <libintl.h>
-#  define _(x) gettext(x)
-#  ifdef gettext_noop
-#    define N_(String) gettext_noop (String)
-#  else
-#    define N_(String) (String)
-#  endif
-#endif
-#if !defined(ENABLE_NLS) && defined(_)
-#  undef _
-#  define N_(String) (String)
-#  define _(x) (x)
-#endif
-
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #ifdef HAVE_GTK_MAC
@@ -182,7 +164,7 @@ typedef struct session_gui
 		GtkWidget *shbox, *shentry;	/* search bar hbox */
 		gulong search_changed_signal; /* hook for search change event so blanking the box doesn't suck */
 
-#define MENU_ID_NUM 13
+#define MENU_ID_NUM 14
 	GtkWidget *menu_item[MENU_ID_NUM+1]; /* some items we may change state of */
 
 	void *chanview;	/* chanview.h */

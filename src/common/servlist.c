@@ -53,8 +53,8 @@ static const struct defaultserver def[] =
 	{0,			"irc.2600.net"},
 
 	{"2ch", 0, 0, "iso-2022-jp", 0, 0},
-	{0,			"irc.2ch.net"},
-	{0,			"irc2.2ch.net"},
+	{0,			"irc.2ch.sc"},
+	{0,			"irc.nurs.or.jp"},
 	{0,			"irc.juggler.jp"},
 
 	{"AccessIRC",	0},
@@ -75,16 +75,16 @@ static const struct defaultserver def[] =
 #endif
 #ifdef USE_OPENSSL
 	{0,			"irc.data.lt/+6668"},
-	{0,			"irc-ssl.omnitel.net/+6668"},
-	{0,			"irc-ssl.le.lt/+9999"},
+	{0,			"irc.omnitel.net/+6668"},
+	{0,			"irc.ktu.lt/+6668"},
+	{0,			"irc.kis.lt/+6668"},
+	{0,			"irc.vub.lt/+6668"},
 #endif
 	{0,			"irc.data.lt"},
 	{0,			"irc.omnitel.net"},
 	{0,			"irc.ktu.lt"},
-	{0,			"irc.le.lt"},
-	{0,			"irc.takas.lt"},
-	{0,			"irc.5ci.net"},
 	{0,			"irc.kis.lt"},
+	{0,			"irc.vub.lt"},
 
 	{"AlphaChat",	0, 0, 0, LOGIN_SASL},
 	{0,			"irc.alphachat.net"},
@@ -117,14 +117,10 @@ static const struct defaultserver def[] =
 	{"AustNet",	0},
 	{0,			"au.austnet.org"},
 	{0,			"us.austnet.org"},
-	{0,			"ca.austnet.org"},
 
 	{"AzzurraNet",	0},
 	{0,			"irc.azzurra.org"},
 	{0,			"crypto.azzurra.org"},
-
-	{"Beirut", 0},
-	{0,			"irc.beirut.com"},
 
 	{"Canternet", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
@@ -147,7 +143,6 @@ static const struct defaultserver def[] =
 
 	{"ChatNet",	0},
 	{0,			"US.ChatNet.Org"},
-	{0,			"EU.ChatNet.Org"},
 
 	{"ChatSpike", 0},
 	{0,			"irc.chatspike.net"},
@@ -164,7 +159,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.d-t-net.de"},
 	{0,			"bw.d-t-net.de"},
 	{0,			"nc.d-t-net.de"},
-	{0,			"wakka.d-t-net.de"},
 
 	{"DarkMyst", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.darkmyst.org"},
@@ -180,10 +174,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.Prison.NET"},
 	{0,			"irc.Qeast.net"},
 	{0,			"irc.efnet.pl"},
-	{0,			"efnet.demon.co.uk"},
 	{0,			"irc.lightning.net"},
-	{0,			"irc.mindspring.com"},
-	{0,			"irc.easynews.com"},
 	{0,			"irc.servercentral.net"},
 
 	{"ElectroCode",		0},
@@ -221,7 +212,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.ffm.de.euirc.net"},
 	{0,			"irc.bre.de.euirc.net"},
 	{0,			"irc.hes.de.euirc.net"},
-	{0,			"irc.vie.at.euirc.net"},
 	{0,			"irc.inn.at.euirc.net"},
 	{0,			"irc.bas.ch.euirc.net"},
 
@@ -234,8 +224,6 @@ static const struct defaultserver def[] =
 
 	{"FEFNet", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.fef.net"},
-	{0,			"irc.ggn.net"},
-	{0,			"irc.vendetta.com"},
 
 	{"freenode", 0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
@@ -251,15 +239,18 @@ static const struct defaultserver def[] =
 #endif
 	{0,			"irc.furnet.org"},
 
-	{"Fusion Latina",	0},
-	{0,					"irc.fusionlatina.org/2012"},
-
 	{"GalaxyNet",	0},
 	{0,			"irc.galaxynet.org"},
 
 	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 	
+	{"GeeksIRC", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.geeksirc.net/+6697"},
+#endif
+	{0,			"irc.geeksirc.net"},
+
 	{"GeekShed",	0},
 	{0,			"irc.geekshed.net"},
 
@@ -270,7 +261,6 @@ static const struct defaultserver def[] =
 	{"GIMPNet",		0},
 	{0,			"irc.gimp.org"},
 	{0,			"irc.gnome.org"},
-	{0,			"irc.us.gimp.org"},
 
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
@@ -289,6 +279,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.interlinked.me/+6697"},
 #endif
 	{0,			"irc.interlinked.me"},
+
+	{"IRC4Fun", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,				"irc.irc4fun.net/+6697"},
+#endif
+	{0,				"irc.irc4fun.net"},
 
 	{"IRCHighWay",	0},
 #ifdef USE_OPENSSL
@@ -315,12 +311,6 @@ static const struct defaultserver def[] =
 
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
-
-	{"IronDust", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.irondust.net/+6697"},
-#endif
-	{0,			"irc.irondust.net"},
 
 	{"iZ-smart.net",	0},
 	{0,			"irc.iZ-smart.net/6666"},
@@ -349,14 +339,6 @@ static const struct defaultserver def[] =
 
 	{"Moznet",		0},
 	{0,			"irc.mozilla.org"},
-
-	{"NeverNET",	0},
-	{0,			"irc.nevernet.net"},
-	{0,			"imagine.nevernet.net"},
-	{0,			"dimension.nevernet.net"},
-	{0,			"universe.nevernet.net"},
-	{0,			"wayland.nevernet.net"},
-	{0,			"forte.nevernet.net"},
 	
 	{"ObsidianIRC",  0},
 	{0,      "irc.obsidianirc.net"}, 
@@ -400,7 +382,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.fi.quakenet.org"},
 	{0,			"irc.be.quakenet.org"},
 	{0,			"irc.uk.quakenet.org"},
-	{0,			"irc.de.quakenet.org"},
 	{0,			"irc.it.quakenet.org"},
 
 	{"Rizon", 0},
@@ -408,7 +389,6 @@ static const struct defaultserver def[] =
 
 	{"RusNet", 0, 0, "KOI8-R (Cyrillic)"},
 	{0,			"irc.tomsk.net"},
-	{0,			"irc.rinet.ru"},
 	{0,			"irc.run.net"},
 	{0,			"irc.ru"},
 	{0,			"irc.lucky.net"},
@@ -420,6 +400,12 @@ static const struct defaultserver def[] =
 
 	{"SeilEn.de",	0},
 	{0,			"irc.seilen.de"},
+
+	{"SeionIRC", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.seion.us/+6697"},
+#endif
+	{0,			"irc.seion.us"},
 
 	{"Serenity-IRC",	0},
 	{0,			"irc.serenity-irc.net"},
@@ -475,7 +461,13 @@ static const struct defaultserver def[] =
 	{0,			"irc.station51.net/+6697"},
 #endif
 	{0,			"irc.station51.net"},
-	
+
+	{"StormBit", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.stormbit.net/+6697"},
+#endif
+	{0,			"irc.stormbit.net"},
+
 	{"SwiftIRC", 0},
 #ifdef USE_OPENSSL
 	{0,			"irc.swiftirc.net/+6697"},
@@ -488,7 +480,7 @@ static const struct defaultserver def[] =
 #endif
 	{0, "irc.synirc.net/6667"},
 
-	{"Techman's World IRC",		0},
+	{"Techman's World IRC",	0, 0, 0, LOGIN_SASL},
 #ifdef USE_OPENSSL
 	{0,			"irc.techmansworld.com/+6697"},
 #endif
@@ -504,31 +496,29 @@ static const struct defaultserver def[] =
 
 	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM, "MSG x@channels.undernet.org login %u %p"},
 	{0,			"us.undernet.org"},
-	{0,			"eu.undernet.org"},
 
 	{"UniBG", 0, 0, 0, LOGIN_CUSTOM, "MSG NS IDENTIFY %p"},
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
-	{0,			"irc.spnet.net"},
 	{0,			"irc.techno-link.com"},
-	{0,			"irc.telecoms.bg"},
-	{0,			"irc.tu-varna.edu"},
 	
 	{"ValleyNode", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.valleynode.net"},
 
-	{"Whiffle",	0},
-	{0,			"irc.whiffle.org"},
-
 	{"Worldnet",		0},
 	{0,			"irc.worldnet.net"},
-	{0,			"irc.fr.worldnet.net"},
 
 	{"Windfyre",		0},
 #ifdef USE_OPENSSL
 	{0,			"irc.windfyre.net/+6697"},
 #endif
 	{0,			"irc.windfyre.net"},
+
+	{"Xertion", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.xertion.org/+6697"},
+#endif
+	{0,			"irc.xertion.org"},
 
 	{0,0}
 };
@@ -836,7 +826,7 @@ servlist_favchan_find (ircnet *net, char *channel, int *pos)
 	while (list)
 	{
 		favchan = list->data;
-		if (strcmp (favchan->name, channel) == 0)
+		if (g_ascii_strcasecmp (favchan->name, channel) == 0)
 		{
 			if (pos)
 			{

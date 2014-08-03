@@ -31,12 +31,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#ifdef WIN32
-#include "../../config-win32.h"
-#else
 #include "../../config.h"
-#endif
-
 #include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
@@ -172,6 +167,7 @@ gtk_xtext_text_width_8bit (GtkXText *xtext, unsigned char *str, int len)
 
 #define EMPH_ITAL 1
 #define EMPH_BOLD 2
+#define EMPH_HIDDEN 4
 static PangoAttrList *attr_lists[4];
 static int fontwidths[4][128];
 
@@ -310,6 +306,10 @@ backend_get_text_width_emph (GtkXText *xtext, guchar *str, int len, int emphasis
 
 	if (*str == 0)
 		return 0;
+
+	if ((emphasis & EMPH_HIDDEN))
+		return 0;
+	emphasis &= (EMPH_ITAL | EMPH_BOLD);
 
 	width = 0;
 	pango_layout_set_attributes (xtext->layout, attr_lists[emphasis]);
@@ -823,6 +823,7 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 	int xx = indent;
 	int suboff;
 	GSList *list;
+	GSList *hid = NULL;
 	offlen_t *meta;
 	int off, len, wid, mbl, mbw;
 
@@ -847,6 +848,8 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 	meta = list->data;
 	off = meta->off;
 	len = meta->len;
+	if (meta->emph & EMPH_HIDDEN)
+		hid = list;
 	while (len > 0)
 	{
 		if (off >= suboff)
@@ -873,6 +876,8 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 		off += mbl;
 		if (len <= 0)
 		{
+			if (meta->emph & EMPH_HIDDEN)
+				hid = list;
 			list = g_slist_next (list);
 			if (list == NULL)
 				return ent->str_len;
@@ -880,6 +885,13 @@ find_x (GtkXText *xtext, textentry *ent, int x, int subline, int indent)
 			off = meta->off;
 			len = meta->len;
 		}
+	}
+
+	/* If previous chunk exists and is marked hidden, regard it as unhidden */
+	if (hid && list && hid->next == list)
+	{
+		meta = hid->data;
+		off = meta->off;
 	}
 
 	/* Return offset of character at x within subline */
@@ -908,7 +920,8 @@ gtk_xtext_find_x (GtkXText * xtext, int x, textentry * ent, int subline,
 	if (str >= ent->str + ent->str_len)
 		return 0;
 
-	if (x < indent)
+	/* Let user select left a few pixels to grab hidden text e.g. '<' */
+	if (x < indent - xtext->space_width)
 	{
 		*out_of_bounds = 1;
 		return (str - ent->str);
@@ -1132,11 +1145,11 @@ gtk_xtext_selection_down (GtkXText *xtext, textentry *start, textentry *end,
 }
 
 static void
-gtk_xtext_selection_render (GtkXText *xtext,
-									 textentry *start_ent, int start_offset,
-									 textentry *end_ent, int end_offset)
+gtk_xtext_selection_render (GtkXText *xtext, textentry *start_ent, textentry *end_ent)
 {
 	textentry *ent;
+	int start_offset = start_ent->mark_start;
+	int end_offset = end_ent->mark_end;
 	int start, end;
 
 	xtext->skip_border_fills = TRUE;
@@ -1289,11 +1302,14 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	int high_x;
 	int high_y;
 	int tmp;
+	int oob;
+	int marking_up;
 
 	if (xtext->select_start_y > xtext->select_end_y)
 	{
 		low_x = xtext->select_end_x;
 		low_y = xtext->select_end_y;
+		marking_up = TRUE;
 		high_x = xtext->select_start_x;
 		high_y = xtext->select_start_y;
 	} else
@@ -1302,20 +1318,22 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		low_y = xtext->select_start_y;
 		high_x = xtext->select_end_x;
 		high_y = xtext->select_end_y;
+		marking_up = FALSE;
 	}
 
-	ent_start = gtk_xtext_find_char (xtext, low_x, low_y, &offset_start, &tmp);
+	ent_start = gtk_xtext_find_char (xtext, low_x, low_y, &offset_start, &oob);
 	if (!ent_start)
 	{
 		if (xtext->adj->value != xtext->buffer->old_value)
 			gtk_xtext_render_page (xtext);
 		return;
 	}
-	else if (tmp) {
-		offset_start = xtext->buffer->last_offset_start;
+	else if (oob)
+	{
+		offset_start = marking_up == TRUE? 0: xtext->buffer->last_offset_start;
 	}
 
-	ent_end = gtk_xtext_find_char (xtext, high_x, high_y, &offset_end, &tmp);
+	ent_end = gtk_xtext_find_char (xtext, high_x, high_y, &offset_end, &oob);
 	if (!ent_end)
 	{
 		ent_end = xtext->buffer->text_last;
@@ -1327,9 +1345,9 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		}
 		offset_end = ent_end->str_len;
 	}
-	else if (tmp)
+	else if (oob)
 	{
-		offset_end = xtext->buffer->last_offset_end;
+		offset_end = marking_up == FALSE? ent_end->str_len: xtext->buffer->last_offset_end;
 	}
 
 	/* marking less than a complete line? */
@@ -1372,7 +1390,7 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	}
 
 	if (render)
-		gtk_xtext_selection_render (xtext, ent_start, offset_start, ent_end, offset_end);
+		gtk_xtext_selection_render (xtext, ent_start, ent_end);
 }
 
 static int
@@ -1499,41 +1517,43 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	textentry *ent;
 	int offset;
 	unsigned char *word;
+	unsigned char *last, *end;
 	int len;
 	int out_of_bounds = 0;
 	int len_to_offset = 0;
 
 	ent = gtk_xtext_find_char (xtext, x, y, &offset, &out_of_bounds);
-	if (!ent)
-		return 0;
-
-	if (out_of_bounds)
-		return 0;
-
-	if (offset == ent->str_len)
-		return 0;
-
-	if (offset < 1)
-		return 0;
-
-	/*offset--;*/	/* FIXME: not all chars are 1 byte */
+	if (ent == NULL || out_of_bounds || offset < 0 || offset >= ent->str_len)
+		return NULL;
 
 	word = ent->str + offset;
-
-	while (!is_del (*word) && word != ent->str)
+	while ((word = g_utf8_find_prev_char (ent->str, word)))
 	{
-		word--;
-		len_to_offset++;
+		if (is_del (*word))
+		{
+			word++;
+			len_to_offset--;
+			break;
+		}
+		len_to_offset += charlen (word);
 	}
-	word++;
-	len_to_offset--;
+	if (!word)
+		word = ent->str;
 
 	/* remove color characters from the length */
-	gtk_xtext_strip_color (word, len_to_offset, xtext->scratch_buffer, &len_to_offset, slp, FALSE);
+	gtk_xtext_strip_color (word, len_to_offset, xtext->scratch_buffer, &len_to_offset, NULL, FALSE);
 
+	last = word;
+	end = ent->str + ent->str_len;
 	len = 0;
-	while (!is_del (word[len]) && len != ent->str_len)
-		len++;
+	do
+	{
+		if (is_del (*last))
+			break;
+		len += charlen (last);
+		last = g_utf8_find_next_char (last, end);
+	}
+	while (last);
 
 	if (len > 0 && word[len-1]=='.')
 		len--;
@@ -1977,7 +1997,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			gtk_xtext_selection_clear (xtext->buffer);
 			ent->mark_start = offset;
 			ent->mark_end = offset + len;
-			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
+			gtk_xtext_selection_render (xtext, ent, ent);
 			xtext->word_or_line_select = TRUE;
 			if (prefs.hex_text_autocopy_text)
 			{
@@ -1996,7 +2016,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			gtk_xtext_selection_clear (xtext->buffer);
 			ent->mark_start = 0;
 			ent->mark_end = ent->str_len;
-			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
+			gtk_xtext_selection_render (xtext, ent, ent);
 			xtext->word_or_line_select = TRUE;
 			if (prefs.hex_text_autocopy_text)
 			{
@@ -2408,10 +2428,11 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 				break;
 			case ATTR_HIDDEN:
 				xtext_do_chunk (&c);
+				c.emph ^= EMPH_HIDDEN;
 				hidden = !hidden;
 				break;
 			default:
-				if (!(hidden && strip_hidden))
+				if (strip_hidden == 2 || (!(hidden && strip_hidden)))
 				{
 					if (c.len1 == 0)
 						c.off1 = text - text0;
@@ -2457,7 +2478,7 @@ gtk_xtext_text_width_ent (GtkXText *xtext, textentry *ent)
 	}
 
 	new_buf = gtk_xtext_strip_color (ent->str, ent->str_len, xtext->scratch_buffer,
-												NULL, &slp0, !xtext->ignore_hidden);
+												NULL, &slp0, 2);
 
 	width =  backend_get_text_width_slp (xtext, new_buf, slp0);
 	ent->slp = slp0;
@@ -3860,7 +3881,12 @@ gtk_xtext_kill_ent (xtext_buffer *buffer, textentry *ent)
 		buffer->last_ent_end = NULL;
 	}
 
-	if (buffer->marker_pos == ent) buffer->marker_pos = NULL;
+	if (buffer->marker_pos == ent)
+	{
+		/* Allow for "Marker line reset because exceeded scrollback limit. to appear. */
+		buffer->marker_pos = ent->next;
+		buffer->marker_state = MARKER_RESET_BY_KILL;
+	}
 
 	if (ent->marks)
 	{
@@ -3959,6 +3985,7 @@ void
 gtk_xtext_clear (xtext_buffer *buf, int lines)
 {
 	textentry *next;
+	int marker_reset = FALSE;
 
 	if (lines != 0)
 	{
@@ -3968,6 +3995,8 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 			lines *= -1;
 			while (lines)
 			{
+				if (buf->text_last == buf->marker_pos)
+					marker_reset = TRUE;
 				gtk_xtext_remove_bottom (buf);
 				lines--;
 			}
@@ -3977,6 +4006,8 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 			/* delete lines from top */
 			while (lines)
 			{
+				if (buf->text_first == buf->marker_pos)
+					marker_reset = TRUE;
 				gtk_xtext_remove_top (buf);
 				lines--;
 			}
@@ -3993,6 +4024,8 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 		buf->last_ent_start = NULL;
 		buf->last_ent_end = NULL;
 		buf->marker_pos = NULL;
+		if (buf->text_first)
+			marker_reset = TRUE;
 		dontscroll (buf);
 
 		while (buf->text_first)
@@ -4012,6 +4045,9 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 	{
 		gtk_xtext_calc_lines (buf, FALSE);
 	}
+
+	if (marker_reset)
+		buf->marker_state = MARKER_RESET_BY_CLEAR;
 }
 
 static gboolean
@@ -4526,14 +4562,13 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 	ent->sublines = NULL;
 	buf->num_lines += gtk_xtext_lines_taken (buf, ent);
 
-	if (buf->reset_marker_pos || 
-		((buf->marker_pos == NULL || buf->marker_seen) && (buf->xtext->buffer != buf || 
-		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))))))
+	if ((buf->marker_pos == NULL || buf->marker_seen) && (buf->xtext->buffer != buf || 
+		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext))))))
 	{
 		buf->marker_pos = ent;
+		buf->marker_state = MARKER_IS_SET;
 		dontscroll (buf); /* force scrolling off */
 		buf->marker_seen = FALSE;
-		buf->reset_marker_pos = FALSE;
 	}
 
 	if (buf->xtext->max_lines > 2 && buf->xtext->max_lines < buf->num_lines)
@@ -4560,7 +4595,8 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 															gtk_xtext_render_page_timeout,
 															buf->xtext);
 		}
-	} else if (buf->scrollbar_down)
+	}
+	if (buf->scrollbar_down)
 	{
 		buf->old_value = buf->num_lines - buf->xtext->adj->page_size;
 		if (buf->old_value < 0)
@@ -4780,12 +4816,63 @@ gtk_xtext_set_wordwrap (GtkXText *xtext, gboolean wordwrap)
 }
 
 void
+gtk_xtext_set_marker_last (session *sess)
+{
+	xtext_buffer *buf = sess->res->buffer;
+
+	buf->marker_pos = buf->text_last;
+	buf->marker_state = MARKER_IS_SET;
+}
+
+void
 gtk_xtext_reset_marker_pos (GtkXText *xtext)
 {
-	xtext->buffer->marker_pos = NULL;
-	dontscroll (xtext->buffer); /* force scrolling off */
-	gtk_xtext_render_page (xtext);
-	xtext->buffer->reset_marker_pos = TRUE;
+	if (xtext->buffer->marker_pos)
+	{
+		xtext->buffer->marker_pos = NULL;
+		dontscroll (xtext->buffer); /* force scrolling off */
+		gtk_xtext_render_page (xtext);
+		xtext->buffer->marker_state = MARKER_RESET_MANUALLY;
+	}
+}
+
+int
+gtk_xtext_moveto_marker_pos (GtkXText *xtext)
+{
+	gdouble value = 0;
+	xtext_buffer *buf = xtext->buffer;
+	textentry *ent = buf->text_first;
+	GtkAdjustment *adj = xtext->adj;
+
+	if (buf->marker_pos == NULL)
+		return buf->marker_state;
+
+	if (gtk_xtext_check_ent_visibility (xtext, buf->marker_pos, 1) == FALSE)
+	{
+		while (ent)
+		{
+			if (ent == buf->marker_pos)
+				break;
+			value += g_slist_length (ent->sublines);
+			ent = ent->next;
+		}
+		if (value >= adj->value && value < adj->value + adj->page_size)
+			return MARKER_IS_SET;
+		value -= adj->page_size / 2;
+		if (value < 0)
+			value = 0;
+		if (value > adj->upper - adj->page_size)
+			value = adj->upper - adj->page_size;
+		gtk_adjustment_set_value (adj, value);
+		gtk_xtext_render_page (xtext);
+	}
+
+	/* If we previously lost marker position to scrollback limit -- */
+	if (buf->marker_pos == buf->text_first &&
+		 buf->marker_state == MARKER_RESET_BY_KILL)
+		return MARKER_RESET_BY_KILL;
+	else
+		return MARKER_IS_SET;
 }
 
 void
@@ -4855,6 +4942,8 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 		{
 			buf->window_height = h;
 			buf->pagetop_ent = NULL;
+			if (buf->scrollbar_down)
+				xtext->adj->value = xtext->adj->upper;
 			gtk_xtext_adjustment_set (buf, FALSE);
 		}
 

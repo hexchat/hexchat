@@ -9,9 +9,9 @@
 		<YourDepsPath>c:\mozilla-build\hexchat\gtk</YourDepsPath>
 		<YourGendefPath>c:\mozilla-build\gendef</YourGendefPath>
 		<YourMsgfmtPath>c:\mozilla-build\msgfmt</YourMsgfmtPath>
-		<YourPerlPath>c:\mozilla-build\perl-5.18</YourPerlPath>
+		<YourPerlPath>c:\mozilla-build\perl-5.20</YourPerlPath>
 		<YourPython2Path>c:\mozilla-build\python-2.7</YourPython2Path>
-		<YourPython3Path>c:\mozilla-build\python-3.3</YourPython3Path>
+		<YourPython3Path>c:\mozilla-build\python-3.4</YourPython3Path>
 
 		<!-- YOU SHOULDN'T TOUCH ANYTHING BELOW -->
 
@@ -22,18 +22,18 @@
 		<GendefPath>$(YourGendefPath)</GendefPath>
 		<MsgfmtPath>$(YourMsgfmtPath)</MsgfmtPath>
 		<PerlPath>$(YourPerlPath)\$(PlatformName)</PerlPath>
-		<PerlLib>perl518</PerlLib>
+		<PerlLib>perl520</PerlLib>
 		<PerlOutput>hcperl</PerlOutput>
 		<Python2Path>$(YourPython2Path)\$(PlatformName)</Python2Path>
 		<Python2Lib>python27</Python2Lib>
 		<Python2Output>hcpython2</Python2Output>
 		<Python3Path>$(YourPython3Path)\$(PlatformName)</Python3Path>
-		<Python3Lib>python33</Python3Lib>
+		<Python3Lib>python34</Python3Lib>
 		<Python3Output>hcpython3</Python3Output>
 		<Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
 		<Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
 		<DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;libintl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
-		<DataDir>$(SolutionDir)..\data\</DataDir>
+		<DataDir>$(SolutionDir)..\data\\</DataDir>
 		<HexChatBuild>$(SolutionDir)..\..\hexchat-build</HexChatBuild>
 		<HexChatBin>$(HexChatBuild)\$(PlatformName)\bin\</HexChatBin>
 		<HexChatObj>$(HexChatBuild)\$(PlatformName)\obj\</HexChatObj>
@@ -75,12 +75,12 @@ copy "$(DepsRoot)\bin\pixman-1.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\ssleay32.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\zlib1.dll" "$(HexChatRel)"
 xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\i686-pc-vs10\engines" "$(HexChatRel)\lib\gtk-2.0\i686-pc-vs10\engines"
-xcopy /q /s /i etc "$(HexChatRel)\etc"
 xcopy /q /s /i share "$(HexChatRel)\share"
-xcopy /q /s /i "..\..\COPYING" "$(HexChatRel)\"
+xcopy /q /s /i "..\..\COPYING" "$(HexChatRel)\share\doc\hexchat\"
+xcopy /q /s /i "$(DepsRoot)\share\doc" "$(HexChatRel)\share\doc"
+xcopy /q /s /i "$(DepsRoot)\share\themes\MS-Windows" "$(HexChatRel)\share\themes\MS-Windows"
 xcopy /q /s /i "$(DepsRoot)\lib\enchant\libenchant_myspell.dll" "$(HexChatRel)\lib\enchant\"
 xcopy /q /s /i "$(HexChatBin)hcchecksum.dll" "$(HexChatRel)\plugins\"
-copy "$(HexChatBin)hcdns.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcdoat.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcexec.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcfishlim.dll" "$(HexChatRel)\plugins"

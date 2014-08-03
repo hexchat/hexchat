@@ -37,7 +37,6 @@
 
 extern const unsigned char rfc_tolowertab[];
 
-int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr);
 char *expand_homedir (char *file);
 void path_part (char *file, char *path, int pathlen);
 int match (const char *mask, const char *string);
@@ -50,8 +49,7 @@ char *nocasestrstr (const char *text, const char *tofind);
 char *country (char *);
 void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
 char *get_sys_str (int with_cpu);
-int util_exec (const char *cmd);
-int util_execv (char * const argv[]);
+void util_exec (const char *cmd);
 #define STRIP_COLOR 1
 #define STRIP_ATTRIB 2
 #define STRIP_HIDDEN 4
@@ -82,4 +80,5 @@ char *encode_sasl_pass_blowfish (char *user, char *pass, char *data);
 char *encode_sasl_pass_aes (char *user, char *pass, char *data);
 char *challengeauth_response (char *username, char *password, char *challenge);
 size_t strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time);
+size_t strftime_utf8 (char *dest, size_t destsize, const char *format, time_t time);
 #endif

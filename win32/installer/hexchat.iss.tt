@@ -16,7 +16,7 @@ AppPublisherURL=http://hexchat.github.io
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
 AppSupportURL=https://github.com/hexchat/hexchat/issues
 AppUpdatesURL=http://hexchat.github.io/downloads.html
-LicenseFile=COPYING
+LicenseFile=share\doc\hexchat\COPYING
 UninstallDisplayIcon={app}\hexchat.exe
 UninstallDisplayName=HexChat
 #if APPARCH == "x64"
@@ -46,7 +46,7 @@ ArchitecturesInstallIn64BitMode=x64
 #else
 ArchitecturesAllowed=x86 x64
 #endif
-MinVersion=6.0
+MinVersion=6.1
 WizardImageFile={#PROJECTDIR}wizardimage.bmp
 WizardSmallImageFile={#PROJECTDIR}wizardsmallimage.bmp
 SetupIconFile={#PROJECTDIR}..\..\data\icons\hexchat.ico
@@ -58,7 +58,6 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
 Name: "libs"; Description: "HexChat"; Types: normal minimal custom; Flags: fixed
-Name: "gtktheme"; Description: "GTK+ Theme"; Types: normal minimal custom; Flags: disablenouninstallwarning
 Name: "xctext"; Description: "HexChat-Text"; Types: custom; Flags: disablenouninstallwarning
 Name: "xtm"; Description: "HexChat Theme Manager"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal custom; Flags: disablenouninstallwarning
@@ -73,10 +72,10 @@ Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disableno
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
-Name: "langs\perl"; Description: "Perl (requires Perl 5.18)"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\perl"; Description: "Perl (requires Perl 5.20)"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\python"; Description: "Python Interface"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\python\python2"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning exclusive
-Name: "langs\python\python3"; Description: "Python (requires Python 3.3)"; Types: custom; Flags: disablenouninstallwarning exclusive
+Name: "langs\python\python3"; Description: "Python (requires Python 3.4)"; Types: custom; Flags: disablenouninstallwarning exclusive
 
 [Tasks]
 Name: portable; Description: "Yes"; GroupDescription: "Portable Mode: Stores configuration files within install directory for portable drives."; Flags: unchecked
@@ -99,9 +98,9 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 [Run]
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
 Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
-Filename: "{tmp}\vcredist.exe"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing Visual C++ Redist"; Flags: skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\vcredist.exe"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing Visual C++ Redistributable"; Flags: skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\dotnet4.exe"; Parameters: "/q /norestart"; StatusMsg: "Installing .NET"; Components: xtm; Flags: skipifdoesntexist; Tasks: not portable
-Filename: "{tmp}\perl.exe"; StatusMsg: "Installing Perl"; Components: langs\perl; Flags: shellexec skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\perl.msi"; StatusMsg: "Installing Perl"; Components: langs\perl; Flags: shellexec skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\python.msi"; StatusMsg: "Installing Python"; Components: langs\python; Flags: shellexec skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\spelling-dicts.exe"; Parameters: "/verysilent"; StatusMsg: "Installing Spelling Dictionaries"; Components: spell; Flags: skipifdoesntexist; Tasks: not portable
 
@@ -111,9 +110,9 @@ Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 Source: "changelog.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "readme.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: gtktheme
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
-Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "share\doc\*"; DestDir: "{app}\share\doc"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
+Source: "share\themes\MS-Windows\*"; DestDir: "{app}\share\themes\MS-Windows"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
 
 Source: "atk-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -246,20 +245,20 @@ begin
   if(CurPageID = wpReady) then
   begin
     idpClearFiles;
-	
+
 	if not IsTaskSelected('portable') then
 	begin
-	
+
 #if APPARCH == "x64"
 		REDIST := 'http://dl.hexchat.net/misc/vcredist_2013_x64.exe';
-		PERL := 'http://dl.hexchat.net/misc/perl/Perl-5.18.2-x64.exe';
-		PY2 := 'http://python.org/ftp/python/2.7.6/python-2.7.6.amd64.msi';
-		PY3 := 'http://python.org/ftp/python/3.3.4/python-3.3.4.amd64.msi';
+		PERL := 'http://dl.hexchat.net/misc/perl/Perl%205.20.0%20x64.msi';
+		PY2 := 'http://python.org/ftp/python/2.7.8/python-2.7.8.amd64.msi';
+		PY3 := 'http://python.org/ftp/python/3.4.1/python-3.4.1.amd64.msi';
 #else
 		REDIST := 'http://dl.hexchat.net/misc/vcredist_2013_x86.exe';
-		PERL := 'http://dl.hexchat.net/misc/perl/Perl-5.18.2-x86.exe';
-		PY2 := 'http://python.org/ftp/python/2.7.6/python-2.7.6.msi';
-		PY3 := 'http://python.org/ftp/python/3.3.4/python-3.3.4.msi';
+		PERL := 'http://dl.hexchat.net/misc/perl/Perl%205.20.0%20x86.msi';
+		PY2 := 'http://python.org/ftp/python/2.7.8/python-2.7.8.msi';
+		PY3 := 'http://python.org/ftp/python/3.4.1/python-3.4.1.msi';
 #endif
 		DOTNET := 'http://dl.hexchat.net/misc/dotnet_40.exe';
 		SPELL := 'http://dl.hexchat.net/hexchat/HexChat%20Spelling%20Dictionaries%20r2.exe';
@@ -272,15 +271,18 @@ begin
 
 		if IsComponentSelected('spell') and not CheckSpellInstall() then
 			idpAddFile(SPELL, ExpandConstant('{tmp}\spelling-dicts.exe'));
-			
-		if IsComponentSelected('langs\perl') and not CheckDLL('perl518.dll') then
-			idpAddFile(PERL, ExpandConstant('{tmp}\perl.exe'));
-			
-		if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
-			idpAddFile(PY2, ExpandConstant('{tmp}\python.msi'));
-			
-		if IsComponentSelected('langs\python\python3') and not CheckDLL('python33.dll') then
-			idpAddFile(PY3, ExpandConstant('{tmp}\python.msi'));
+
+		if not WizardSilent() then
+		begin
+			if IsComponentSelected('langs\perl') and not CheckDLL('perl520.dll') then
+				idpAddFile(PERL, ExpandConstant('{tmp}\perl.msi'));
+
+			if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
+				idpAddFile(PY2, ExpandConstant('{tmp}\python.msi'));
+
+			if IsComponentSelected('langs\python\python3') and not CheckDLL('python34.dll') then
+				idpAddFile(PY3, ExpandConstant('{tmp}\python.msi'));
+		end;
 	end;
   end;
 end;
@@ -356,7 +358,7 @@ begin
 	sUnInstallString := GetUninstallString();
 	if sUnInstallString <> '' then begin
 		sUnInstallString := RemoveQuotes(sUnInstallString);
-		if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
+		if Exec(sUnInstallString, '/VERYSILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
 			Result := 3
 		else
 			Result := 2;

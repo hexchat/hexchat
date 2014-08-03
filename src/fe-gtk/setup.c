@@ -400,7 +400,13 @@ static const setting alert_settings[] =
 	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
 #endif
 	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
+#ifdef HAVE_GTK_MAC
+	{ST_3OGGLE, N_("Bounce dock icon on:"), 0, 0, (void *)taskbarlist, 0},
+#else
+#ifndef __APPLE__
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+#endif
+#endif
 #ifdef WIN32
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play the \"Instant Message Notification\" system sound upon the selected events"), (void *)beeplist, 0},
 #else
@@ -476,6 +482,7 @@ static const setting general_settings[] =
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("WHOIS on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list."), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default."), 0, 0},
+	{ST_TOGGLE,	N_("Hide nick change messages"), P_OFFINTNL(hex_irc_hide_nickchange), 0, 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -2161,7 +2168,7 @@ setup_apply (struct hexchatprefs *pr)
 						" restart to take full effect."), FE_MSG_WARN);
 
 #ifndef WIN32
-	if (prefs.hex_dcc_auto_recv)
+	if (prefs.hex_dcc_auto_recv == 2) /* Auto */
 	{
 		if (!strcmp ((char *)g_get_home_dir (), prefs.hex_dcc_dir))
 		{

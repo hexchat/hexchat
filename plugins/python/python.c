@@ -52,20 +52,19 @@
  */
 
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
 
 #ifdef WIN32
 #include <direct.h>
-#include <glib/gstdio.h>
-#include "../../src/dirent/dirent-win32.h"
-#include "../../config-win32.h"
 #else
 #include <unistd.h>
 #include <dirent.h>
 #endif
 
+#include "../../config.h"
 #include "hexchat-plugin.h"
 #undef _POSIX_C_SOURCE	/* Avoid warning: also in /usr/include/features.h from glib.h */
 #include <Python.h>
@@ -271,6 +270,7 @@ typedef struct {
 /* Function declarations */
 
 static PyObject *Util_BuildList(char *word[]);
+static PyObject *Util_BuildEOLList(char *word[]);
 static void Util_Autoload();
 static char *Util_Expand(char *filename);
 
@@ -382,50 +382,107 @@ static PyObject *
 Util_BuildList(char *word[])
 {
 	PyObject *list;
-	int listsize = 0;
+	int listsize = 31;
 	int i;
-	while (word[listsize] && word[listsize][0])
-		listsize++;
+	/* Find the last valid array member; there may be intermediate NULLs that
+	 * would otherwise cause us to drop some members. */
+	while (listsize > 0 &&
+	       (word[listsize] == NULL || word[listsize][0] == 0))
+		listsize--;
 	list = PyList_New(listsize);
 	if (list == NULL) {
-                PyErr_Print();
+		PyErr_Print();
 		return NULL;
 	}
-	for (i = 0; i != listsize; i++) {
-		PyObject *o = PyUnicode_FromString(word[i]);
-		if (o == NULL) {
-			Py_DECREF(list);
-			PyErr_Print();
-			return NULL;
+	for (i = 1; i <= listsize; i++) {
+		PyObject *o;
+		if (word[i] == NULL) {
+			Py_INCREF(Py_None);
+			o = Py_None;
+		} else {
+			/* This handles word[i][0] == 0 automatically. */
+			o = PyUnicode_FromString(word[i]);
 		}
-		PyList_SetItem(list, i, o);
+		PyList_SetItem(list, i - 1, o);
 	}
+	return list;
+}
+
+static PyObject *
+Util_BuildEOLList(char *word[])
+{
+	PyObject *list;
+	int listsize = 31;
+	int i;
+	/* Find the last valid array member; there may be intermediate NULLs that
+	 * would otherwise cause us to drop some members. */
+	while (listsize > 0 &&
+	       (word[listsize] == NULL || word[listsize][0] == 0))
+		listsize--;
+	list = PyList_New(listsize);
+	if (list == NULL) {
+		PyErr_Print();
+		return NULL;
+	}
+	char *accum = NULL;
+	char *last = NULL;
+	for (i = listsize; i > 0; i--) {
+		char *part = word[i];
+		if (accum == NULL) {
+			accum = g_strdup (part);
+		} else if (part != NULL && part[0] != 0) {
+			last = accum;
+			accum = g_strjoin(" ", part, last, NULL);
+			g_free (last);
+			last = NULL;
+
+			if (accum == NULL) {
+				Py_DECREF(list);
+				hexchat_print(ph, "Not enough memory to alloc accum"
+				              "for python plugin callback");
+				return NULL;
+			}
+		}
+		PyObject *uni_part = PyUnicode_FromString(accum);
+		PyList_SetItem(list, i - 1, uni_part);
+	}
+
+	if (last)
+		g_free (last);
+	if (accum)
+		g_free (accum);
+
 	return list;
 }
 
 static void
 Util_Autoload_from (const char *dir_name)
 {
-#ifndef PATH_MAX
-#define PATH_MAX 1024	/* Hurd doesn't define it */
-#endif
-	char oldcwd[PATH_MAX];
-	struct dirent *ent;
-	DIR *dir;
-	if (getcwd(oldcwd, PATH_MAX) == NULL)
+	gchar *oldcwd;
+	const char *entry_name;
+	GDir *dir;
+
+	oldcwd = g_get_current_dir ();
+	if (oldcwd == NULL)
 		return;
-	if (chdir(dir_name) != 0)
+	if (g_chdir(dir_name) != 0)
+	{
+		g_free (oldcwd);
 		return;
-	dir = opendir(".");
-	if (dir == NULL)
-		return;
-	while ((ent = readdir(dir))) {
-		int len = strlen(ent->d_name);
-		if (len > 3 && strcmp(".py", ent->d_name+len-3) == 0)
-			Command_PyLoad(ent->d_name);
 	}
-	closedir(dir);
-	chdir(oldcwd);
+	dir = g_dir_open (".", 0, NULL);
+	if (dir == NULL)
+	{
+		g_free (oldcwd);
+		return;
+	}
+	while ((entry_name = g_dir_read_name (dir)))
+	{
+		if (g_str_has_suffix (entry_name, ".py"))
+			Command_PyLoad((char*)entry_name);
+	}
+	g_dir_close (dir);
+	g_chdir (oldcwd);
 }
 
 static void
@@ -433,7 +490,7 @@ Util_Autoload()
 {
 	const char *xdir;
 	char *sub_dir;
-	/* we need local filesystem encoding for chdir, opendir etc */
+	/* we need local filesystem encoding for g_chdir, g_dir_open etc */
 
 	xdir = hexchat_get_info(ph, "configdir");
 
@@ -515,12 +572,12 @@ Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void
 	plugin = hook->plugin;
 	BEGIN_PLUGIN(plugin);
 
-	word_list = Util_BuildList(word+1);
+	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
 		return 0;
 	}
-	word_eol_list = Util_BuildList(word_eol+1);
+	word_eol_list = Util_BuildList(word_eol);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
@@ -566,12 +623,12 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	plugin = hook->plugin;
 	BEGIN_PLUGIN(plugin);
 
-	word_list = Util_BuildList(word+1);
+	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
 		return 0;
 	}
-	word_eol_list = Util_BuildList(word_eol+1);
+	word_eol_list = Util_BuildList(word_eol);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
@@ -606,58 +663,19 @@ Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
 	PyObject *word_list;
 	PyObject *word_eol_list;
 	PyObject *attributes;
-	char **word_eol;
-	char *word_eol_raw;
-	int listsize = 0;
-	int next = 0;
-	int i;
 	int ret = 0;
 	PyObject *plugin;
-
-	/* Cut off the message identifier. */
-	word += 1;
-
-	/* HexChat doesn't provide a word_eol for print events, so we
-	 * build our own here. */
-	while (word[listsize] && word[listsize][0])
-		listsize++;
-	word_eol = (char **) g_malloc(sizeof(char*)*(listsize+1));
-	if (word_eol == NULL) {
-		hexchat_print(ph, "Not enough memory to alloc word_eol "
-				"for python plugin callback.");
-		return 0;
-	}
-	/* First build a word clone, but NULL terminated. */
-	memcpy(word_eol, word, listsize*sizeof(char*));
-	word_eol[listsize] = NULL;
-	/* Then join it. */
-	word_eol_raw = g_strjoinv(" ", word_eol);
-	if (word_eol_raw == NULL) {
-		hexchat_print(ph, "Not enough memory to alloc word_eol_raw "
-				"for python plugin callback.");
-		return 0;
-	}
-	/* And rebuild the real word_eol. */
-	for (i = 0; i != listsize; i++) {
-		word_eol[i] = word_eol_raw+next;
-		next += strlen(word[i])+1;
-	}
-	word_eol[i] = "";
 
 	plugin = hook->plugin;
 	BEGIN_PLUGIN(plugin);
 
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
-		g_free(word_eol_raw);
-		g_free(word_eol);
 		END_PLUGIN(plugin);
 		return 0;
 	}
-	word_eol_list = Util_BuildList(word_eol);
+	word_eol_list = Util_BuildEOLList(word);
 	if (word_eol_list == NULL) {
-		g_free(word_eol_raw);
-		g_free(word_eol);
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
 		return 0;
@@ -672,8 +690,6 @@ Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
 	Py_DECREF(word_eol_list);
 	Py_DECREF(attributes);
 
-	g_free(word_eol_raw);
-	g_free(word_eol);
 	if (retobj == Py_None) {
 		ret = HEXCHAT_EAT_NONE;
 		Py_DECREF(retobj);
@@ -696,63 +712,23 @@ Callback_Print(char *word[], void *userdata)
 	PyObject *retobj;
 	PyObject *word_list;
 	PyObject *word_eol_list;
-	char **word_eol;
-	char *word_eol_raw;
-	int listsize = 0;
-	int next = 0;
-	int i;
 	int ret = 0;
 	PyObject *plugin;
-
-	/* Cut off the message identifier. */
-	word += 1;
-
-	/* HexChat doesn't provide a word_eol for print events, so we
-	 * build our own here. */
-	while (word[listsize] && word[listsize][0])
-		listsize++;
-	word_eol = (char **) g_malloc(sizeof(char*)*(listsize+1));
-	if (word_eol == NULL) {
-		hexchat_print(ph, "Not enough memory to alloc word_eol "
-				"for python plugin callback.");
-		return 0;
-	}
-	/* First build a word clone, but NULL terminated. */
-	memcpy(word_eol, word, listsize*sizeof(char*));
-	word_eol[listsize] = NULL;
-	/* Then join it. */
-	word_eol_raw = g_strjoinv(" ", word_eol);
-	if (word_eol_raw == NULL) {
-		hexchat_print(ph, "Not enough memory to alloc word_eol_raw "
-				"for python plugin callback.");
-		return 0;
-	}
-	/* And rebuild the real word_eol. */
-	for (i = 0; i != listsize; i++) {
-		word_eol[i] = word_eol_raw+next;
-		next += strlen(word[i])+1;
-	}
-	word_eol[i] = "";
 
 	plugin = hook->plugin;
 	BEGIN_PLUGIN(plugin);
 
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
-		g_free(word_eol_raw);
-		g_free(word_eol);
 		END_PLUGIN(plugin);
 		return 0;
 	}
-	word_eol_list = Util_BuildList(word_eol);
+	word_eol_list = Util_BuildEOLList(word);
 	if (word_eol_list == NULL) {
-		g_free(word_eol_raw);
-		g_free(word_eol);
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
 		return 0;
 	}
-
 
 	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
 					       word_eol_list, hook->userdata);
@@ -760,8 +736,6 @@ Callback_Print(char *word[], void *userdata)
 	Py_DECREF(word_list);
 	Py_DECREF(word_eol_list);
 
-	g_free(word_eol_raw);
-	g_free(word_eol);
 	if (retobj == Py_None) {
 		ret = HEXCHAT_EAT_NONE;
 		Py_DECREF(retobj);

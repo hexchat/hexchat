@@ -17,14 +17,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef WIN32
-#include "../../config-win32.h"
-#else
 #include "../../config.h"
-#endif
 
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <glib/gi18n.h>
 
 #include <time.h>			/* need time_t */
 
@@ -48,17 +45,6 @@
 #define vsnprintf _vsnprintf
 #endif
 
-#ifdef USE_DEBUG
-#define malloc(n) hexchat_malloc(n, __FILE__, __LINE__)
-#define realloc(n, m) hexchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) hexchat_dfree(n, __FILE__, __LINE__)
-#define strdup(n) hexchat_strdup(n, __FILE__, __LINE__)
-void *hexchat_malloc (int size, char *file, int line);
-void *hexchat_strdup (char *str, char *file, int line);
-void hexchat_dfree (void *buf, char *file, int line);
-void *hexchat_realloc (char *old, int len, char *file, int line);
-#endif
-
 #ifdef SOCKS
 #ifdef __sgi
 #include <sys/time.h>
@@ -80,9 +66,7 @@ void *hexchat_realloc (char *old, int len, char *file, int line);
 #endif
 
 /* force a 32bit CMP.L */
-#define CMPL(a, c0, c1, c2, c3) (a == (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24)))
 #define WORDL(c0, c1, c2, c3) (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24))
-#define WORDW(c0, c1) (guint16)(c0 | (c1 << 8))
 
 #ifdef WIN32						/* for win32 */
 #define OFLAGS O_BINARY
@@ -108,20 +92,6 @@ void *hexchat_realloc (char *old, int len, char *file, int line);
 #define PDIWORDS		32
 #define USERNAMELEN 10
 #define HIDDEN_CHAR	8			/* invisible character for xtext */
-
-#if defined(ENABLE_NLS) && !defined(_)
-#  include <libintl.h>
-#  define _(x) gettext(x)
-#  ifdef gettext_noop
-#    define N_(String) gettext_noop (String)
-#  else
-#    define N_(String) (String)
-#  endif
-#endif
-#if !defined(_)
-#  define N_(String) (String)
-#  define _(x) (x)
-#endif
 
 struct nbexec
 {
@@ -156,6 +126,7 @@ struct hexchatprefs
 	unsigned int hex_gui_autoopen_recv;
 	unsigned int hex_gui_autoopen_send;
 	unsigned int hex_gui_compact;
+	unsigned int hex_gui_filesize_iec;
 	unsigned int hex_gui_focus_omitalerts;
 	unsigned int hex_gui_hide_menu;
 	unsigned int hex_gui_input_attr;
@@ -216,6 +187,7 @@ struct hexchatprefs
 	unsigned int hex_irc_auto_rejoin;
 	unsigned int hex_irc_conf_mode;
 	unsigned int hex_irc_hidehost;
+	unsigned int hex_irc_hide_nickchange;
 	unsigned int hex_irc_hide_version;
 	unsigned int hex_irc_invisible;
 	unsigned int hex_irc_logging;
@@ -459,6 +431,7 @@ typedef struct session
 	int doing_who:1;		/* /who sent on this channel */
 	int done_away_check:1;	/* done checking for away status changes */
 	gtk_xtext_search_flags lastlog_flags;
+	void (*scrollback_replay_marklast) (struct session *sess);
 } session;
 
 struct msproxy_state_t

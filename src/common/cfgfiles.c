@@ -295,31 +295,8 @@ cfg_get_int (char *cfg, char *var)
 char *xdir = NULL;	/* utf-8 encoding */
 
 #ifdef WIN32
-
-#include <windows.h>
-
-static gboolean
-get_reg_str (const char *sub, const char *name, char *out, DWORD len)
-{
-	HKEY hKey;
-	DWORD t;
-
-	if (RegOpenKeyEx (HKEY_CURRENT_USER, sub, 0, KEY_READ, &hKey) ==
-			ERROR_SUCCESS)
-	{
-		if (RegQueryValueEx (hKey, name, NULL, &t, out, &len) != ERROR_SUCCESS ||
-			 t != REG_SZ)
-		{
-			RegCloseKey (hKey);
-			return FALSE;
-		}
-		out[len-1] = 0;
-		RegCloseKey (hKey);
-		return TRUE;
-	}
-
-	return FALSE;
-}
+#include <Windows.h>
+#include <ShlObj.h>
 #endif
 
 char *
@@ -327,10 +304,13 @@ get_xdir (void)
 {
 	if (!xdir)
 	{
-#ifdef WIN32
-		char out[256];
+#ifndef WIN32
+		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
+#else
+		wchar_t* roaming_path_wide;
+		gchar* roaming_path;
 
-		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+		if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_RoamingAppData, 0, NULL, &roaming_path_wide) != S_OK)
 		{
 			char *path;
 			char file[MAX_PATH];
@@ -348,10 +328,13 @@ get_xdir (void)
 		}
 		else
 		{
-			xdir = g_build_filename (out, "HexChat", NULL);
+			roaming_path = g_utf16_to_utf8 (roaming_path_wide, -1, NULL, NULL, NULL);
+			CoTaskMemFree (roaming_path_wide);
+
+			xdir = g_build_filename (roaming_path, "HexChat", NULL);
+
+			g_free (roaming_path);
 		}
-#else
-		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
 #endif
 	}
 
@@ -433,6 +416,7 @@ const struct prefs vars[] =
 	{"gui_dialog_left", P_OFFINT (hex_gui_dialog_left), TYPE_INT},
 	{"gui_dialog_top", P_OFFINT (hex_gui_dialog_top), TYPE_INT},
 	{"gui_dialog_width", P_OFFINT (hex_gui_dialog_width), TYPE_INT},
+	{"gui_filesize_iec", P_OFFINT (hex_gui_filesize_iec), TYPE_BOOL},
 	{"gui_focus_omitalerts", P_OFFINT (hex_gui_focus_omitalerts), TYPE_BOOL},
 	{"gui_hide_menu", P_OFFINT (hex_gui_hide_menu), TYPE_BOOL},
 	{"gui_input_attr", P_OFFINT (hex_gui_input_attr), TYPE_BOOL},
@@ -525,6 +509,7 @@ const struct prefs vars[] =
 	{"irc_cap_server_time", P_OFFINT (hex_irc_cap_server_time), TYPE_BOOL},
 	{"irc_conf_mode", P_OFFINT (hex_irc_conf_mode), TYPE_BOOL},
 	{"irc_extra_hilight", P_OFFSET (hex_irc_extra_hilight), TYPE_STR},
+	{"irc_hide_nickchange", P_OFFINT (hex_irc_hide_nickchange), TYPE_BOOL},
 	{"irc_hide_version", P_OFFINT (hex_irc_hide_version), TYPE_BOOL},
 	{"irc_hidehost", P_OFFINT (hex_irc_hidehost), TYPE_BOOL},
 	{"irc_id_ntext", P_OFFSET (hex_irc_id_ntext), TYPE_STR},
@@ -613,16 +598,19 @@ convert_with_fallback (const char *str, const char *fallback)
 {
 	char *utf;
 
-	utf = g_locale_to_utf8 (str, -1, 0, 0, 0);
+#ifndef WIN32
+	/* On non-Windows, g_get_user_name and g_get_real_name return a string in system locale, so convert it to utf-8. */
+	utf = g_locale_to_utf8 (str, -1, NULL, NULL, 0);
+
+	g_free ((char*)str);
+
+	/* The returned string is NULL if conversion from locale to utf-8 failed for any reason. Return the fallback. */
 	if (!utf)
-	{
-		/* this can happen if CHARSET envvar is set wrong */
-		/* maybe it's already utf8 (breakage!) */
-		if (!g_utf8_validate (str, -1, NULL))
-			utf = g_strdup (fallback);
-		else
-			utf = g_strdup (str);
-	}
+		utf = g_strdup (fallback);
+#else
+	/* On Windows, they return a string in utf-8, so don't do anything to it. The fallback isn't needed. */
+	utf = str;
+#endif
 
 	return utf;
 }
@@ -734,18 +722,19 @@ load_default_config(void)
 	const char *username, *realname, *font, *langs;
 	char *sp;
 #ifdef WIN32
-	char out[256];
+	wchar_t* roaming_path_wide;
+	gchar* roaming_path;
 #endif
 
 	username = g_get_user_name ();
 	if (!username)
-		username = "root";
+		username = g_strdup ("root");
 
 	/* We hid Real name from the Network List, so don't use the user's name unnoticeably */
 	/* realname = g_get_real_name ();
 	if ((realname && realname[0] == 0) || !realname)
 		realname = username; */
-	realname = "realname";
+	realname = g_strdup ("realname");
 
 	username = convert_with_fallback (username, "username");
 	realname = convert_with_fallback (realname, "realname");
@@ -778,7 +767,6 @@ load_default_config(void)
 	/* prefs.hex_gui_slist_skip = 1; */
 	prefs.hex_gui_tab_chans = 1;
 	prefs.hex_gui_tab_dialogs = 1;
-	prefs.hex_gui_tab_dots = 1;
 	prefs.hex_gui_tab_icons = 1;
 	prefs.hex_gui_tab_server = 1;
 	prefs.hex_gui_tab_sort = 1;
@@ -796,6 +784,8 @@ load_default_config(void)
 	prefs.hex_input_flash_priv = 1;
 	prefs.hex_input_tray_hilight = 1;
 	prefs.hex_input_tray_priv = 1;
+	prefs.hex_irc_cap_server_time = 1;
+	prefs.hex_irc_logging = 1;
 	prefs.hex_irc_who_join = 1; /* Can kick with inordinate amount of channels, required for some of our features though, TODO: add cap like away check? */
 	prefs.hex_irc_whois_front = 1;
 	prefs.hex_net_auto_reconnect = 1;
@@ -813,12 +803,12 @@ load_default_config(void)
 	prefs.hex_text_thin_sep = 1;
 	prefs.hex_text_wordwrap = 1;
 	prefs.hex_url_grabber = 1;
-	prefs.hex_irc_cap_server_time = 0;
 
 	/* NUMBERS */
 	prefs.hex_away_size_max = 300;
 	prefs.hex_away_timeout = 60;
 	prefs.hex_completion_amount = 5;
+	prefs.hex_completion_sort = 1;
 	prefs.hex_dcc_auto_recv = 1;			/* browse mode */
 	prefs.hex_dcc_blocksize = 1024;
 	prefs.hex_dcc_permissions = 0600;
@@ -858,13 +848,18 @@ load_default_config(void)
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.hex_completion_suffix, ",");
 #ifdef WIN32
-	if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
+	if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_Downloads, 0, NULL, &roaming_path_wide) != S_OK)
 	{
 		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
 	}
 	else
 	{
-		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
+		roaming_path = g_utf16_to_utf8 (roaming_path_wide, -1, NULL, NULL, NULL);
+		CoTaskMemFree (roaming_path_wide);
+
+		g_strlcpy (prefs.hex_dcc_dir, roaming_path, sizeof (prefs.hex_dcc_dir));
+
+		g_free (roaming_path);
 	}
 #else
 	if (g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD))

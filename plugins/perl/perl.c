@@ -32,11 +32,8 @@
 #endif
 
 #undef PACKAGE
-#ifdef WIN32
-#include "../../config-win32.h"		  /* for #define OLD_PERL */
-#else
 #include "../../config.h"
-#endif
+
 #include "hexchat-plugin.h"
 
 static hexchat_plugin *ph;		  /* plugin handle */
@@ -1483,9 +1480,9 @@ perl_load_file (char *filename)
 				/* http://forum.xchat.org/viewtopic.php?t=3277 */
 				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
 #ifdef _WIN64
-								 "64-bit Hexchat Perl is required.");
+								 "64-bit HexChat Perl is required.");
 #else
-								 "32-bit Hexchat Perl is required.");
+								 "32-bit HexChat Perl is required.");
 #endif
 			else {
 				/* a lot of people install this old version */

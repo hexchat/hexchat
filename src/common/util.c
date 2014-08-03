@@ -33,17 +33,15 @@
 #include <sys/timeb.h>
 #include <process.h>
 #include <io.h>
-#include "../dirent/dirent-win32.h"
-#include "../../config-win32.h"
+#include <VersionHelpers.h>
 #else
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
-#include <dirent.h>
-#include "../../config.h"
 #endif
 
+#include "../../config.h"
 #include <fcntl.h>
 #include <errno.h>
 #include "hexchat.h"
@@ -72,187 +70,6 @@
 #ifndef HAVE_SNPRINTF
 #define snprintf g_snprintf
 #endif
-
-#ifdef USE_DEBUG
-
-#undef free
-#undef malloc
-#undef realloc
-#undef strdup
-
-int current_mem_usage;
-
-struct mem_block
-{
-	char *file;
-	void *buf;
-	int size;
-	int line;
-	int total;
-	struct mem_block *next;
-};
-
-struct mem_block *mroot = NULL;
-
-void *
-hexchat_malloc (int size, char *file, int line)
-{
-	void *ret;
-	struct mem_block *new;
-
-	current_mem_usage += size;
-	ret = malloc (size);
-	if (!ret)
-	{
-		printf ("Out of memory! (%d)\n", current_mem_usage);
-		exit (255);
-	}
-
-	new = malloc (sizeof (struct mem_block));
-	new->buf = ret;
-	new->size = size;
-	new->next = mroot;
-	new->line = line;
-	new->file = strdup (file);
-	mroot = new;
-
-	printf ("%s:%d Malloc'ed %d bytes, now \033[35m%d\033[m\n", file, line,
-				size, current_mem_usage);
-
-	return ret;
-}
-
-void *
-hexchat_realloc (char *old, int len, char *file, int line)
-{
-	char *ret;
-
-	ret = hexchat_malloc (len, file, line);
-	if (ret)
-	{
-		strcpy (ret, old);
-		hexchat_dfree (old, file, line);
-	}
-	return ret;
-}
-
-void *
-hexchat_strdup (char *str, char *file, int line)
-{
-	void *ret;
-	struct mem_block *new;
-	int size;
-
-	size = strlen (str) + 1;
-	current_mem_usage += size;
-	ret = malloc (size);
-	if (!ret)
-	{
-		printf ("Out of memory! (%d)\n", current_mem_usage);
-		exit (255);
-	}
-	strcpy (ret, str);
-
-	new = malloc (sizeof (struct mem_block));
-	new->buf = ret;
-	new->size = size;
-	new->next = mroot;
-	new->line = line;
-	new->file = strdup (file);
-	mroot = new;
-
-	printf ("%s:%d strdup (\"%-.40s\") size: %d, total: \033[35m%d\033[m\n",
-				file, line, str, size, current_mem_usage);
-
-	return ret;
-}
-
-void
-hexchat_mem_list (void)
-{
-	struct mem_block *cur, *p;
-	GSList *totals = 0;
-	GSList *list;
-
-	cur = mroot;
-	while (cur)
-	{
-		list = totals;
-		while (list)
-		{
-			p = list->data;
-			if (p->line == cur->line &&
-					strcmp (p->file, cur->file) == 0)
-			{
-				p->total += p->size;
-				break;
-			}
-			list = list->next;
-		}
-		if (!list)
-		{
-			cur->total = cur->size;
-			totals = g_slist_prepend (totals, cur);
-		}
-		cur = cur->next;
-	}
-
-	fprintf (stderr, "file              line   size    num  total\n");  
-	list = totals;
-	while (list)
-	{
-		cur = list->data;
-		fprintf (stderr, "%-15.15s %6d %6d %6d %6d\n", cur->file, cur->line,
-					cur->size, cur->total/cur->size, cur->total);
-		list = list->next;
-	}
-}
-
-void
-hexchat_dfree (void *buf, char *file, int line)
-{
-	struct mem_block *cur, *last;
-
-	if (buf == NULL)
-	{
-		printf ("%s:%d \033[33mTried to free NULL\033[m\n", file, line);
-		return;
-	}
-
-	last = NULL;
-	cur = mroot;
-	while (cur)
-	{
-		if (buf == cur->buf)
-			break;
-		last = cur;
-		cur = cur->next;
-	}
-	if (cur == NULL)
-	{
-		printf ("%s:%d \033[31mTried to free unknown block %lx!\033[m\n",
-				  file, line, (unsigned long) buf);
-		/*      abort(); */
-		free (buf);
-		return;
-	}
-	current_mem_usage -= cur->size;
-	printf ("%s:%d Free'ed %d bytes, usage now \033[35m%d\033[m\n",
-				file, line, cur->size, current_mem_usage);
-	if (last)
-		last->next = cur->next;
-	else
-		mroot = cur->next;
-	free (cur->file);
-	free (cur);
-}
-
-#define malloc(n) hexchat_malloc(n, __FILE__, __LINE__)
-#define realloc(n, m) hexchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) hexchat_dfree(n, __FILE__, __LINE__)
-#define strdup(n) hexchat_strdup(n, __FILE__, __LINE__)
-
-#endif /* MEMORY_DEBUG */
 
 char *
 file_part (char *file)
@@ -432,33 +249,33 @@ char *
 expand_homedir (char *file)
 {
 #ifndef WIN32
-	char *ret, *user;
+	char *user;
 	struct passwd *pw;
 
-	if (*file == '~')
+	if (file[0] == '~')
 	{
-		if (file[1] != '\0' && file[1] != '/')
-		{
-			user = strdup(file);
-			if (strchr(user,'/') != NULL)
-				*(strchr(user,'/')) = '\0';
-			if ((pw = getpwnam(user + 1)) == NULL)
-			{
-				free(user);
-				return strdup(file);
-			}
-			free(user);
-			user = strchr(file, '/') != NULL ? strchr(file,'/') : file;
-			ret = malloc(strlen(user) + strlen(pw->pw_dir) + 1);
-			strcpy(ret, pw->pw_dir);
-			strcat(ret, user);
-		}
+		if (file[1] == '\0' || file[1] == '/')
+			return g_strconcat (g_get_home_dir (), &file[1], NULL);
+
+		char *slash_pos;
+
+		user = g_strdup(file);
+
+		slash_pos = strchr(user, '/');
+		if (slash_pos != NULL)
+			*slash_pos = '\0';
+
+		pw = getpwnam(user + 1);
+		g_free(user);
+
+		if (pw == NULL)
+			return g_strdup(file);
+
+		slash_pos = strchr(file, '/');
+		if (slash_pos == NULL)
+			return g_strdup (pw->pw_dir);
 		else
-		{
-			ret = malloc (strlen (file) + strlen (g_get_home_dir ()) + 1);
-			sprintf (ret, "%s%s", g_get_home_dir (), file + 1);
-		}
-		return ret;
+			return g_strconcat (pw->pw_dir, slash_pos, NULL);
 	}
 #endif
 	return g_strdup (file);
@@ -689,74 +506,88 @@ get_sys_str (int with_cpu)
 {
 	static char verbuf[64];
 	static char winver[20];
-	OSVERSIONINFOEX osvi;
 	double mhz;
 
-	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
-	GetVersionEx ((OSVERSIONINFO*) &osvi);
-
-	switch (osvi.dwMajorVersion)
+	if (IsWindows8Point1OrGreater ())
 	{
-		case 5:
-			switch (osvi.dwMinorVersion)
-			{
-				case 1:
-					strcpy (winver, "XP");
-					break;
-				case 2:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "XP x64 Edition");
-					}
-					else
-					{
-						if (GetSystemMetrics(SM_SERVERR2) == 0)
-						{
-							strcpy (winver, "Server 2003");
-						}
-						else
-						{
-							strcpy (winver, "Server 2003 R2");
-						}
-					}
-					break;
-			}
-			break;
-		case 6:
-			switch (osvi.dwMinorVersion)
-			{
-				case 0:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "Vista");
-					}
-					else
-					{
-						strcpy (winver, "Server 2008");
-					}
-					break;
-				case 1:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "7");
-					}
-					else
-					{
-						strcpy (winver, "Server 2008 R2");
-					}
-					break;
-				case 2:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "8");
-					}
-					else
-					{
-						strcpy (winver, "Server 2012");
-					}
-					break;
-			}
-			break;
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2012 R2");
+		}
+		else
+		{
+			strcpy (winver, "8.1");
+		}
+	}
+	else if (IsWindows8OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2012");
+		}
+		else
+		{
+			strcpy (winver, "8");
+		}
+	}
+	else if (IsWindows7SP1OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008 R2 SP1");
+		}
+		else
+		{
+			strcpy (winver, "7 SP1");
+		}
+	}
+	else if (IsWindows7OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008 R2");
+		}
+		else
+		{
+			strcpy (winver, "7");
+		}
+	}
+	else if (IsWindowsVistaSP2OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008 SP2");
+		}
+		else
+		{
+			strcpy (winver, "Vista SP2");
+		}
+	}
+	else if (IsWindowsVistaSP1OrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008 SP1");
+		}
+		else
+		{
+			strcpy (winver, "Vista SP1");
+		}
+	}
+	else if (IsWindowsVistaOrGreater ())
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 2008");
+		}
+		else
+		{
+			strcpy (winver, "Vista");
+		}
+	}
+	else
+	{
+		strcpy (winver, "Unknown");
 	}
 
 	mhz = get_mhz ();
@@ -920,27 +751,26 @@ break_while:
 void
 for_files (char *dirname, char *mask, void callback (char *file))
 {
-	DIR *dir;
-	struct dirent *ent;
+	GDir *dir;
+	const gchar *entry_name;
 	char *buf;
 
-	dir = opendir (dirname);
+	dir = g_dir_open (dirname, 0, NULL);
 	if (dir)
 	{
-		while ((ent = readdir (dir)))
+		while ((entry_name = g_dir_read_name (dir)))
 		{
-			if (strcmp (ent->d_name, ".") && strcmp (ent->d_name, ".."))
+			if (strcmp (entry_name, ".") && strcmp (entry_name, ".."))
 			{
-				if (match (mask, ent->d_name))
+				if (match (mask, entry_name))
 				{
-					buf = malloc (strlen (dirname) + strlen (ent->d_name) + 2);
-					sprintf (buf, "%s" G_DIR_SEPARATOR_S "%s", dirname, ent->d_name);
+					buf = g_build_filename (dirname, entry_name, NULL);
 					callback (buf);
-					free (buf);
+					g_free (buf);
 				}
 			}
 		}
-		closedir (dir);
+		g_dir_close (dir);
 	}
 }
 
@@ -1284,171 +1114,10 @@ country_search (char *pattern, void *ud, void (*print)(void *, char *, ...))
 	}
 }
 
-/* I think gnome1.0.x isn't necessarily linked against popt, ah well! */
-/* !!! For now use this inlined function, or it would break fe-text building */
-/* .... will find a better solution later. */
-/*#ifndef USE_GNOME*/
-
-/* this is taken from gnome-libs 1.2.4 */
-#define POPT_ARGV_ARRAY_GROW_DELTA 5
-
-int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr) {
-    char * buf, * bufStart, * dst;
-    const char * src;
-    char quote = '\0';
-    int argvAlloced = POPT_ARGV_ARRAY_GROW_DELTA;
-    char ** argv = malloc(sizeof(*argv) * argvAlloced);
-    const char ** argv2;
-    int argc = 0;
-    int i, buflen;
-
-    buflen = strlen(s) + 1;
-/*    bufStart = buf = alloca(buflen);*/
-	 bufStart = buf = malloc (buflen);
-    memset(buf, '\0', buflen);
-
-    src = s;
-    argv[argc] = buf;
-
-    while (*src) {
-	if (quote == *src) {
-	    quote = '\0';
-	} else if (quote) {
-	    if (*src == '\\') {
-		src++;
-		if (!*src) {
-		    free(argv);
-			 free(bufStart);
-		    return 1;
-		}
-		if (*src != quote) *buf++ = '\\';
-	    }
-	    *buf++ = *src;
-	/*} else if (isspace((unsigned char) *src)) {*/
-	} else if (*src == ' ') {
-	    if (*argv[argc]) {
-		buf++, argc++;
-		if (argc == argvAlloced) {
-		    char **temp;
-		    argvAlloced += POPT_ARGV_ARRAY_GROW_DELTA;
-		    temp = realloc(argv, sizeof(*argv) * argvAlloced);
-		    if (temp)
-			argv = temp;
-		    else
-		    {
-			free(argv);
-			free(bufStart);
-			return 1;
-		    }
-		}
-		argv[argc] = buf;
-	    }
-	} else switch (*src) {
-	  case '"':
-	  case '\'':
-	    quote = *src;
-	    break;
-	  case '\\':
-	    src++;
-	    if (!*src) {
-		free(argv);
-		free(bufStart);
-		return 1;
-	    }
-	    /* fallthrough */
-	  default:
-	    *buf++ = *src;
-	}
-
-	src++;
-    }
-
-    if (strlen(argv[argc])) {
-	argc++, buf++;
-    }
-
-    dst = malloc((argc + 1) * sizeof(*argv) + (buf - bufStart));
-    argv2 = (void *) dst;
-    dst += (argc + 1) * sizeof(*argv);
-    memcpy((void *)argv2, argv, argc * sizeof(*argv));
-    argv2[argc] = NULL;
-    memcpy(dst, bufStart, buf - bufStart);
-
-    for (i = 0; i < argc; i++) {
-	argv2[i] = dst + (argv[i] - bufStart);
-    }
-
-    free(argv);
-
-    *argvPtr = (char **)argv2;	/* XXX don't change the API */
-    *argcPtr = argc;
-
-	 free (bufStart);
-
-    return 0;
-}
-
-int
+void
 util_exec (const char *cmd)
 {
-	char **argv;
-	int argc;
-#ifndef WIN32
-	int pid;
-	int fd;
-#endif
-
-	if (my_poptParseArgvString (cmd, &argc, &argv) != 0)
-		return -1;
-
-#ifndef WIN32
-	pid = fork ();
-	if (pid == -1)
-	{
-		free (argv);
-		return -1;
-	}
-	if (pid == 0)
-	{
-		/* Now close all open file descriptors except stdin, stdout and stderr */
-		for (fd = 3; fd < 1024; fd++) close(fd);
-		execvp (argv[0], argv);
-		_exit (0);
-	} else
-	{
-		free (argv);
-		return pid;
-	}
-#else
-	spawnvp (_P_DETACH, argv[0], argv);
-	free (argv);
-	return 0;
-#endif
-}
-
-int
-util_execv (char * const argv[])
-{
-#ifndef WIN32
-	int pid, fd;
-
-	pid = fork ();
-	if (pid == -1)
-		return -1;
-	if (pid == 0)
-	{
-		/* Now close all open file descriptors except stdin, stdout and stderr */
-		for (fd = 3; fd < 1024; fd++) close(fd);
-		execv (argv[0], argv);
-		_exit (0);
-	} else
-	{
-		return pid;
-	}
-#else
-	spawnv (_P_DETACH, argv[0], argv);
-	return 0;
-#endif
+	g_spawn_command_line_async (cmd, NULL);
 }
 
 unsigned long
@@ -1878,7 +1547,8 @@ unity_mode ()
 {
 #ifdef G_OS_UNIX
 	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
-	if (env && strcmp (env, "Unity") == 0)
+	if (env && (strcmp (env, "Unity") == 0
+			|| strcmp (env, "Pantheon") == 0))
 		return 1;
 #endif
 	return 0;
@@ -2203,15 +1873,17 @@ challengeauth_response (char *username, char *password, char *challenge)
 #endif
 
 /**
-* \brief Wrapper around strftime for Windows
-*
-* Prevents crashing when using an invalid format by escaping them.
-*
-* Behaves the same as strftime with the addition that
-* it returns 0 if the escaped format string is too large.
-*
-* Based upon work from znc-msvc project.
-*/
+ * \brief Wrapper around strftime for Windows
+ *
+ * Prevents crashing when using an invalid format by escaping them.
+ *
+ * Behaves the same as strftime with the addition that
+ * it returns 0 if the escaped format string is too large.
+ *
+ * Based upon work from znc-msvc project.
+ *
+ * This assumes format is a locale-encoded string. For utf-8 strings, use strftime_utf8
+ */
 size_t
 strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time)
 {
@@ -2277,4 +1949,18 @@ strftime_validated (char *dest, size_t destsize, const char *format, const struc
 
 	return strftime (dest, destsize, safe_format, time);
 #endif
+}
+
+/**
+ * \brief Similar to strftime except it works with utf-8 formats, since strftime treats the format as locale-encoded.
+ */
+gsize
+strftime_utf8 (char *dest, gsize destsize, const char *format, time_t time)
+{
+	gsize result;
+	GDate* date = g_date_new ();
+	g_date_set_time_t (date, time);
+	result = g_date_strftime (dest, destsize, format, date);
+	g_date_free (date);
+	return result;
 }

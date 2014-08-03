@@ -300,11 +300,21 @@ fe_init (void)
 	input_style = create_input_style (gtk_style_new ());
 }
 
+#ifdef HAVE_GTK_MAC
+static void
+gtkosx_application_terminate (GtkosxApplication *app, gpointer userdata)
+{
+	hexchat_exit();
+}
+#endif
+
 void
 fe_main (void)
 {
 #ifdef HAVE_GTK_MAC
 	gtkosx_application_ready(osx_app);
+	g_signal_connect (G_OBJECT(osx_app), "NSApplicationWillTerminate",
+					G_CALLBACK(gtkosx_application_terminate), NULL);
 #endif
 
 	gtk_main ();
@@ -407,6 +417,8 @@ fe_new_window (session *sess, int focus)
 
 	if (!sess_list->next)
 		g_idle_add (fe_idle, NULL);
+
+	sess->scrollback_replay_marklast = gtk_xtext_set_marker_last;
 }
 
 void

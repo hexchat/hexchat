@@ -410,32 +410,50 @@ void
 notify_send_watches (server * serv)
 {
 	struct notify *notify;
+	const int format_len = serv->supports_monitor ? 1 : 2; /* just , for monitor or + and space for watch */
 	GSList *list;
 	GSList *point;
-	int len;
+	GSList *send_list = NULL;
+	int len = 0;
 
-	len = 0;
-	point = list = notify_list;
+	/* Only get the list for this network */
+	list = notify_list;
 	while (list)
 	{
 		notify = list->data;
 
 		if (notify_do_network (notify, serv))
 		{
-			len += strlen (notify->name) + serv->supports_monitor ? 1 : 2; /* just , for monitor or + and space for watch */;
-			if (len > 500)
-			{
-				notify_flush_watches (serv, point, list);
-				len = strlen (notify->name) + serv->supports_monitor ? 1 : 2;
-				point = list;
-			}
+			send_list = g_slist_append (send_list, notify);
 		}
 
 		list = list->next;
 	}
 
-	if (point)
+	/* Now send that list in batches */
+	point = list = send_list;
+	while (list)
+	{
+		notify = list->data;
+
+		len += strlen (notify->name) + format_len;
+		if (len > 500)
+		{
+			/* Too long send existing list */
+			notify_flush_watches (serv, point, list);
+			len = strlen (notify->name) + format_len;
+			point = list; /* We left off here */
+		}
+
+		list = g_slist_next (list);
+	}
+
+	if (len) /* We had leftovers under 500, send them all */
+	{
 		notify_flush_watches (serv, point, NULL);
+	}
+
+	g_slist_free (send_list);
 }
 
 /* called when receiving a ISON 303 - should this func go? */

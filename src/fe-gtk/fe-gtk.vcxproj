@@ -99,10 +99,10 @@
     <PreBuildEvent>
       <Command><![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
-powershell "$(SolutionDir)..\version-template.ps1" "$(SolutionDir)..\src\fe-gtk\hexchat.rc.tt" "$(SolutionDir)..\src\fe-gtk\hexchat.rc.utf8"
+powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\src\fe-gtk\hexchat.rc.tt" "$(SolutionDir)..\src\fe-gtk\hexchat.rc.utf8"
 REM hexchat.rc needs to be in UCS-2 or Resource Compiler will complain
 powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.utf8' | Out-File '$(SolutionDir)..\src\fe-gtk\hexchat.rc'; Remove-Item '$(SolutionDir)..\src\fe-gtk\hexchat.rc.utf8'"
-"$(DepsRoot)\bin\glib-compile-resources.exe" --generate-source --sourcedir $(DataDir) --target "$(ProjectDir)resources.c" "$(DataDir)hexchat.gresource.xml"
+"$(DepsRoot)\bin\glib-compile-resources.exe" --generate-source --sourcedir "$(DataDir)" --target "$(ProjectDir)resources.c" "$(DataDir)hexchat.gresource.xml"
       ]]></Command>
       <Message>Build hexchat.rc and gresource file</Message>
     </PreBuildEvent>

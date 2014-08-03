@@ -416,7 +416,7 @@ userlist_add (struct session *sess, char *name, char *hostname,
 	/* extended join info */
 	if (sess->server->have_extjoin)
 	{
-		if (account && strcmp (account, "*") != 0)
+		if (account && *account)
 			user->account = strdup (account);
 		if (realname && *realname)
 			user->realname = strdup (realname);
