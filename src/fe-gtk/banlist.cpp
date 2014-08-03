@@ -28,7 +28,6 @@
 #include <unistd.h>
 #endif
 
-extern "C"{
 #include "fe-gtk.h"
 
 #include "../common/hexchat.h"
@@ -39,7 +38,6 @@ extern "C"{
 #include "gtkutil.h"
 #include "maingui.h"
 #include "banlist.h"
-}
 
 namespace {
 struct mode_info {
