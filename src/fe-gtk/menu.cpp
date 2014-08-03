@@ -1801,7 +1801,7 @@ static struct mymenu mymenu[] = {
 	{N_("Character Chart..."), ascii_open, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Direct Chat..."), menu_dcc_chat_win, 0, M_MENUITEM, 0, 0, 1},
 	{N_("File _Transfers..."), menu_dcc_win, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Friends List..."), notify_opengui, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Friends List..."), hexchat::gui::notify::notify_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Ignore List..."), ignore_gui_open, 0, M_MENUITEM, 0, 0, 1},
 	{N_("_Plugins and Scripts..."), menu_pluginlist, 0, M_MENUITEM, 0, 0, 1},
 	{N_("_Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 61 */

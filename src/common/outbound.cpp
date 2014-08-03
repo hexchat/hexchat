@@ -57,7 +57,16 @@
 #include "chanopt.h"
 #include "dcc.hpp"
 
+namespace hexchat{
+namespace fe{
+namespace notify{
+	void fe_notify_ask(char *name, char *networks);
+} // ::hexchat::fe::notify
+} // ::hexchat::fe
+} // ::hexchat
+
 namespace dcc = hexchat::dcc;
+namespace fe_notify = hexchat::fe::notify;
 #define TBUFSIZE 4096
 
 static void help (session *sess, char *tbuf, char *helpcmd, int quiet);
@@ -2933,7 +2942,7 @@ cmd_notify (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 
 			if (net && strcmp (net, "ASK") == 0)
-				fe_notify_ask (word[i], NULL);
+				::hexchat::fe::notify::fe_notify_ask (word[i], NULL);
 			else
 			{
 				notify_adduser (word[i], net);

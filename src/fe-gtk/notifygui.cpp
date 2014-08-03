@@ -37,7 +37,7 @@
 #include "palette.h"
 #include "notifygui.hpp"
 
-
+namespace{
 /* model for the notify treeview */
 enum
 {
@@ -136,6 +136,158 @@ notify_treeview_new (GtkWidget *box)
 	gtk_widget_show (view);
 	return view;
 }
+
+static void
+notify_add_clicked(GtkWidget * igad)
+{
+	::hexchat::fe::notify::fe_notify_ask("", NULL);
+}
+
+static void
+notify_opendialog_clicked(GtkWidget * igad)
+{
+	GtkTreeView *view;
+	GtkTreeIter iter;
+	struct notify_per_server *servnot;
+
+	view = static_cast<GtkTreeView*>(g_object_get_data(G_OBJECT(notify_window), "view"));
+	if (gtkutil_treeview_get_selected(view, &iter, NPS_COLUMN, &servnot, -1))
+	{
+		if (servnot)
+			open_query(servnot->server, servnot->notify->name, TRUE);
+	}
+}
+
+static void
+notify_remove_clicked(GtkWidget * igad)
+{
+	GtkTreeView *view;
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+	GtkTreePath *path = NULL;
+	gboolean found = FALSE;
+	char *name;
+
+	view = static_cast<GtkTreeView*>(g_object_get_data(G_OBJECT(notify_window), "view"));
+	if (gtkutil_treeview_get_selected(view, &iter, USER_COLUMN, &name, -1))
+	{
+		model = gtk_tree_view_get_model(view);
+		found = (*name != 0);
+		while (!found)	/* the real nick is some previous node */
+		{
+			g_free(name); /* it's useless to us */
+			if (!path)
+				path = gtk_tree_model_get_path(model, &iter);
+			if (!gtk_tree_path_prev(path))	/* arrgh! no previous node! */
+			{
+				g_warning("notify list state is invalid\n");
+				break;
+			}
+			if (!gtk_tree_model_get_iter(model, &iter, path))
+				break;
+			gtk_tree_model_get(model, &iter, USER_COLUMN, &name, -1);
+			found = (*name != 0);
+		}
+		if (path)
+			gtk_tree_path_free(path);
+		if (!found)
+			return;
+
+		/* ok, now we can remove it */
+		gtk_list_store_remove(GTK_LIST_STORE(model), &iter);
+		notify_deluser(name);
+		g_free(name);
+	}
+}
+
+static void
+notifygui_add_cb(GtkDialog *dialog, gint response, gpointer entry)
+{
+	char *networks;
+	char *text;
+
+	text = (char *)gtk_entry_get_text(GTK_ENTRY(entry));
+	if (text[0] && response == GTK_RESPONSE_ACCEPT)
+	{
+		networks = (char*)gtk_entry_get_text(GTK_ENTRY(g_object_get_data(G_OBJECT(entry), "net")));
+		if (g_ascii_strcasecmp(networks, "ALL") == 0 || networks[0] == 0)
+			notify_adduser(text, NULL);
+		else
+			notify_adduser(text, networks);
+	}
+
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+}
+
+static void
+notifygui_add_enter(GtkWidget *entry, GtkWidget *dialog)
+{
+	gtk_dialog_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
+}
+
+}
+
+namespace hexchat{
+namespace fe{
+namespace notify{
+	void
+		fe_notify_ask(char *nick, char *networks)
+	{
+		GtkWidget *dialog;
+		GtkWidget *entry;
+		GtkWidget *label;
+		GtkWidget *wid;
+		GtkWidget *table;
+		char *msg = _("Enter nickname to add:");
+		char buf[256];
+
+		dialog = gtk_dialog_new_with_buttons(msg, NULL, static_cast<GtkDialogFlags>(0),
+			GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+			GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+			NULL);
+		if (parent_window)
+			gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(parent_window));
+		gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
+
+		table = gtk_table_new(2, 3, FALSE);
+		gtk_container_set_border_width(GTK_CONTAINER(table), 12);
+		gtk_table_set_row_spacings(GTK_TABLE(table), 3);
+		gtk_table_set_col_spacings(GTK_TABLE(table), 8);
+		gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), table);
+
+		label = gtk_label_new(msg);
+		gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 0, 1);
+
+		entry = gtk_entry_new();
+		gtk_entry_set_text(GTK_ENTRY(entry), nick);
+		g_signal_connect(G_OBJECT(entry), "activate",
+			G_CALLBACK(notifygui_add_enter), dialog);
+		gtk_table_attach_defaults(GTK_TABLE(table), entry, 1, 2, 0, 1);
+
+		g_signal_connect(G_OBJECT(dialog), "response",
+			G_CALLBACK(notifygui_add_cb), entry);
+
+		label = gtk_label_new(_("Notify on these networks:"));
+		gtk_table_attach_defaults(GTK_TABLE(table), label, 0, 1, 2, 3);
+
+		wid = gtk_entry_new();
+		g_object_set_data(G_OBJECT(entry), "net", wid);
+		g_signal_connect(G_OBJECT(wid), "activate",
+			G_CALLBACK(notifygui_add_enter), dialog);
+		gtk_entry_set_text(GTK_ENTRY(wid), networks ? networks : "ALL");
+		gtk_table_attach_defaults(GTK_TABLE(table), wid, 1, 2, 2, 3);
+
+		label = gtk_label_new(NULL);
+		snprintf(buf, sizeof(buf), "<i><span size=\"smaller\">%s</span></i>", _("Comma separated list of networks is accepted."));
+		gtk_label_set_markup(GTK_LABEL(label), buf);
+		gtk_table_attach_defaults(GTK_TABLE(table), label, 1, 2, 3, 4);
+
+		gtk_widget_show_all(dialog);
+	}
+} // ::hexchat::fe::notify
+} // ::hexchat::fe
+namespace gui{
+namespace notify{
 
 void
 notify_gui_update (void)
@@ -250,149 +402,6 @@ notify_gui_update (void)
 	notify_row_cb (gtk_tree_view_get_selection (view), view);
 }
 
-static void
-notify_opendialog_clicked (GtkWidget * igad)
-{
-	GtkTreeView *view;
-	GtkTreeIter iter;
-	struct notify_per_server *servnot;
-
-	view = static_cast<GtkTreeView*>(g_object_get_data(G_OBJECT(notify_window), "view"));
-	if (gtkutil_treeview_get_selected (view, &iter, NPS_COLUMN, &servnot, -1))
-	{
-		if (servnot)
-			open_query (servnot->server, servnot->notify->name, TRUE);
-	}
-}
-
-static void
-notify_remove_clicked (GtkWidget * igad)
-{
-	GtkTreeView *view;
-	GtkTreeModel *model;
-	GtkTreeIter iter;
-	GtkTreePath *path = NULL;
-	gboolean found = FALSE;
-	char *name;
-
-	view = static_cast<GtkTreeView*>(g_object_get_data(G_OBJECT(notify_window), "view"));
-	if (gtkutil_treeview_get_selected (view, &iter, USER_COLUMN, &name, -1))
-	{
-		model = gtk_tree_view_get_model (view);
-		found = (*name != 0);
-		while (!found)	/* the real nick is some previous node */
-		{
-			g_free (name); /* it's useless to us */
-			if (!path)
-				path = gtk_tree_model_get_path (model, &iter);
-			if (!gtk_tree_path_prev (path))	/* arrgh! no previous node! */
-			{
-				g_warning ("notify list state is invalid\n");
-				break;
-			}
-			if (!gtk_tree_model_get_iter (model, &iter, path))
-				break;
-			gtk_tree_model_get (model, &iter, USER_COLUMN, &name, -1);
-			found = (*name != 0);
-		}
-		if (path)
-			gtk_tree_path_free (path);
-		if (!found)
-			return;
-
-		/* ok, now we can remove it */
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
-		notify_deluser (name);
-		g_free (name);
-	}
-}
-
-static void
-notifygui_add_cb (GtkDialog *dialog, gint response, gpointer entry)
-{
-	char *networks;
-	char *text;
-
-	text = (char *)gtk_entry_get_text (GTK_ENTRY (entry));
-	if (text[0] && response == GTK_RESPONSE_ACCEPT)
-	{
-		networks = (char*)gtk_entry_get_text (GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net")));
-		if (g_ascii_strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
-			notify_adduser (text, NULL);
-		else
-			notify_adduser (text, networks);
-	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
-}
-
-static void
-notifygui_add_enter (GtkWidget *entry, GtkWidget *dialog)
-{
-	gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
-}
-
-void
-fe_notify_ask (char *nick, char *networks)
-{
-	GtkWidget *dialog;
-	GtkWidget *entry;
-	GtkWidget *label;
-	GtkWidget *wid;
-	GtkWidget *table;
-	char *msg = _("Enter nickname to add:");
-	char buf[256];
-
-	dialog = gtk_dialog_new_with_buttons (msg, NULL, static_cast<GtkDialogFlags>(0),
-										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-										NULL);
-	if (parent_window)
-		gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
-	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-
-	table = gtk_table_new (2, 3, FALSE);
-	gtk_container_set_border_width (GTK_CONTAINER (table), 12);
-	gtk_table_set_row_spacings (GTK_TABLE (table), 3);
-	gtk_table_set_col_spacings (GTK_TABLE (table), 8);
-	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), table);
-
-	label = gtk_label_new (msg);
-	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1);
-
-	entry = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry), nick);
-	g_signal_connect (G_OBJECT (entry), "activate",
-						 	G_CALLBACK (notifygui_add_enter), dialog);
-	gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, 0, 1);
-
-	g_signal_connect (G_OBJECT (dialog), "response",
-						   G_CALLBACK (notifygui_add_cb), entry);
-
-	label = gtk_label_new (_("Notify on these networks:"));
-	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3);
-
-	wid = gtk_entry_new ();
-	g_object_set_data (G_OBJECT (entry), "net", wid);
-	g_signal_connect (G_OBJECT (wid), "activate",
-						 	G_CALLBACK (notifygui_add_enter), dialog);
-	gtk_entry_set_text (GTK_ENTRY (wid), networks ? networks : "ALL");
-	gtk_table_attach_defaults (GTK_TABLE (table), wid, 1, 2, 2, 3);
-
-	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", _("Comma separated list of networks is accepted."));
-	gtk_label_set_markup (GTK_LABEL (label), buf);
-	gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 3, 4);
-
-	gtk_widget_show_all (dialog);
-}
-
-static void
-notify_add_clicked (GtkWidget * igad)
-{
-	fe_notify_ask ("", NULL);
-}
-
 void
 notify_opengui (void)
 {
@@ -437,3 +446,7 @@ notify_opengui (void)
 
 	gtk_widget_show (notify_window);
 }
+
+} // ::hexchat::gui::notify
+} // ::hexchat::gui
+} // ::hexchat

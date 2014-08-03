@@ -20,15 +20,21 @@
 #ifndef HEXCHAT_NOTIFYGUI_H
 #define HEXCHAT_NOTIFYGUI_H
 
-#ifdef __cplusplus
-extern "C"{
-#endif
+namespace hexchat{
+namespace fe{
+namespace notify{
+	void fe_notify_ask(char *name, char *networks);
+} // ::hexchat::fe::notify
+} // ::hexchat::fe
+
+namespace gui{
+namespace notify{
 
 void notify_gui_update (void);
 void notify_opengui (void);
 
-#ifdef __cplusplus
-}
-#endif
+} // ::hexchat::gui::notify
+} // ::hexchat::gui
+} // ::hexchat
 
 #endif

@@ -587,7 +587,7 @@ void
 fe_notify_update (char *name)
 {
 	if (!name)
-		notify_gui_update ();
+		hexchat::gui::notify::notify_gui_update ();
 }
 
 void

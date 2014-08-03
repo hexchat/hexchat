@@ -669,9 +669,15 @@ void
 fe_notify_update (char *name)
 {
 }
+namespace hexchat{
+namespace fe{
+namespace notify{
 void
 fe_notify_ask (char *name, char *networks)
 {
+}
+}
+}
 }
 void
 fe_text_clear (struct session *sess, int lines)

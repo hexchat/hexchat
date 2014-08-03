@@ -83,8 +83,7 @@ void fe_add_chan_list (struct server *serv, char *chan, char *users,
 void fe_chan_list_end (struct server *serv);
 gboolean fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int rplcode);
 gboolean fe_ban_list_end (struct session *sess, int rplcode);
-void fe_notify_update (char *name);
-void fe_notify_ask (char *name, char *networks);
+void fe_notify_update(char *name);
 void fe_text_clear (struct session *sess, int lines);
 void fe_close_window (struct session *sess);
 void fe_progressbar_start (struct session *sess);
