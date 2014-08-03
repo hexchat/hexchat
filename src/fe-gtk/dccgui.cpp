@@ -16,12 +16,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <string>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <time.h>
+#include <ctime>
 
 #define WANTSOCKET
 #define WANTARPA
@@ -87,7 +88,7 @@ struct dccwindow
 struct my_dcc_send
 {
 	struct session *sess;
-	char *nick;
+	std::string nick;
 	int maxcps;
 	int passive;
 };
@@ -127,11 +128,10 @@ static void
 dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 {
 	if (file)
-		dcc_send (mdc->sess, mdc->nick, file, mdc->maxcps, mdc->passive);
+		dcc_send (mdc->sess, mdc->nick.c_str(), file, mdc->maxcps, mdc->passive);
 	else
 	{
-		free (mdc->nick);
-		free (mdc);
+		delete mdc;
 	}
 }
 
@@ -141,11 +141,7 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
 	char tbuf[128];
 	struct my_dcc_send *mdc;
 	
-	mdc = malloc (sizeof (*mdc));
-	mdc->sess = sess;
-	mdc->nick = strdup (nick);
-	mdc->maxcps = maxcps;
-	mdc->passive = passive;
+	mdc = new my_dcc_send{ sess, nick, maxcps, passive };
 
 	snprintf (tbuf, sizeof tbuf, _("Send file to %s"), nick);
 	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, prefs.hex_dcc_dir, NULL, FRF_MULTIPLE|FRF_FILTERISINITIAL);
@@ -364,7 +360,7 @@ close_dcc_file_window (GtkWindow *win, gpointer data)
 }
 
 static void
-dcc_append (struct DCC *dcc, GtkListStore *store, gboolean prepend)
+dcc_append (struct DCC *dcc, GtkListStore *store, bool prepend)
 {
 	GtkTreeIter iter;
 
@@ -438,10 +434,10 @@ dcc_fill_window (int flags)
 		list = dcc_list;
 		while (list)
 		{
-			dcc = list->data;
+			dcc = static_cast<DCC*>(list->data);
 			if (dcc->type == TYPE_SEND)
 			{
-				dcc_append (dcc, dccfwin.store, FALSE);
+				dcc_append (dcc, dccfwin.store, false);
 				i++;
 			}
 			list = list->next;
@@ -453,10 +449,10 @@ dcc_fill_window (int flags)
 		list = dcc_list;
 		while (list)
 		{
-			dcc = list->data;
+			dcc = static_cast<DCC*>(list->data);
 			if (dcc->type == TYPE_RECV)
 			{
-				dcc_append (dcc, dccfwin.store, FALSE);
+				dcc_append (dcc, dccfwin.store, false);
 				i++;
 			}
 			list = list->next;
@@ -515,7 +511,7 @@ resume_clicked (GtkWidget * wid, gpointer none)
 	list = dcc_get_selected ();
 	if (!list)
 		return;
-	dcc = list->data;
+	dcc = static_cast<DCC*>(list->data);
 	g_slist_free (list);
 
 	if (dcc->type == TYPE_RECV && !dcc_resume (dcc))
@@ -552,7 +548,7 @@ abort_clicked (GtkWidget * wid, gpointer none)
 	start = list = dcc_get_selected ();
 	for (; list; list = list->next)
 	{
-		dcc = list->data;
+		dcc = static_cast<DCC*>(list->data);
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 	g_slist_free (start);
@@ -570,7 +566,7 @@ accept_clicked (GtkWidget * wid, gpointer none)
 	start = list = dcc_get_selected ();
 	for (; list; list = list->next)
 	{
-		dcc = list->data;
+		dcc = static_cast<DCC*>(list->data);
 		if (dcc->type != TYPE_SEND)
 			dcc_get (dcc);
 	}
@@ -589,7 +585,7 @@ clear_completed (GtkWidget * wid, gpointer none)
 	*/
 	for (completed = dcc_get_completed (); completed; completed = completed->next)
 	{
-		dcc = completed->data;
+		dcc = static_cast<DCC*>(completed->data);
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 
@@ -666,12 +662,12 @@ dcc_row_cb (GtkTreeSelection *sel, gpointer user_data)
 	{
 		gtk_widget_set_sensitive (dccfwin.accept_button, TRUE);
 		gtk_widget_set_sensitive (dccfwin.resume_button, TRUE);
-		dcc_details_populate (list->data);
+		dcc_details_populate(static_cast<DCC*>(list->data));
 	}
 	else
 	{
 		/* turn OFF/ON appropriate buttons */
-		dcc = list->data;
+		dcc = static_cast<DCC*>(list->data);
 		if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_RECV)
 		{
 			gtk_widget_set_sensitive (dccfwin.accept_button, TRUE);
@@ -699,7 +695,7 @@ dcc_dclick_cb (GtkTreeView *view, GtkTreePath *path,
 	list = dcc_get_selected ();
 	if (!list)
 		return;
-	dcc = list->data;
+	dcc = static_cast<DCC*>(list->data);
 	g_slist_free (list);
 
 	if (dcc->type == TYPE_RECV)
@@ -861,7 +857,7 @@ fe_dcc_open_recv_win (int passive)
 	gtk_table_attach (GTK_TABLE (table), radio, 2, 3, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
 
 	exp = gtk_expander_new (_("Details"));
-	gtk_table_attach (GTK_TABLE (table), exp, 0, 1, 0, 1, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+	gtk_table_attach (GTK_TABLE (table), exp, 0, 1, 0, 1, static_cast<GtkAttachOptions>(GTK_EXPAND | GTK_FILL), GTK_FILL, 0, 0);
 
 	detailbox = gtk_table_new (3, 3, FALSE);
 	gtk_table_set_col_spacings (GTK_TABLE (detailbox), 6);
@@ -869,7 +865,7 @@ fe_dcc_open_recv_win (int passive)
 	gtk_container_set_border_width (GTK_CONTAINER (detailbox), 6);
 	g_signal_connect (G_OBJECT (exp), "activate",
 							G_CALLBACK (dcc_exp_cb), detailbox);
-	gtk_table_attach (GTK_TABLE (table), detailbox, 0, 4, 1, 2, GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+	gtk_table_attach(GTK_TABLE(table), detailbox, 0, 4, 1, 2, static_cast<GtkAttachOptions>(GTK_EXPAND | GTK_FILL), GTK_FILL, 0, 0);
 
 	dccfwin.file_label = dcc_detail_label (_("File:"), detailbox, 0);
 	dccfwin.address_label = dcc_detail_label (_("Address:"), detailbox, 1);
@@ -920,7 +916,7 @@ accept_chat_clicked (GtkWidget * wid, gpointer none)
 	start = list = dcc_chat_get_selected ();
 	for (; list; list = list->next)
 	{
-		dcc = list->data;
+		dcc = static_cast<DCC*>(list->data);
 		dcc_get (dcc);
 	}
 	g_slist_free (start);
@@ -935,7 +931,7 @@ abort_chat_clicked (GtkWidget * wid, gpointer none)
 	start = list = dcc_chat_get_selected ();
 	for (; list; list = list->next)
 	{
-		dcc = list->data;
+		dcc = static_cast<DCC*>(list->data);
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 	g_slist_free (start);
@@ -973,7 +969,7 @@ dcc_chat_fill_win (void)
 	list = dcc_list;
 	while (list)
 	{
-		dcc = list->data;
+		dcc = static_cast<DCC*>(list->data);
 		if (dcc->type == TYPE_CHATSEND || dcc->type == TYPE_CHATRECV)
 		{
 			dcc_chat_append (dcc, dcccwin.store, FALSE);
@@ -1011,7 +1007,7 @@ dcc_chat_row_cb (GtkTreeSelection *sel, gpointer user_data)
 	else
 	{
 		/* turn OFF/ON appropriate buttons */
-		dcc = list->data;
+		dcc = static_cast<DCC*>(list->data);
 		if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_CHATRECV)
 			gtk_widget_set_sensitive (dcccwin.accept_button, TRUE);
 		else
@@ -1095,12 +1091,12 @@ fe_dcc_add (struct DCC *dcc)
 	{
 	case TYPE_RECV:
 		if (dccfwin.window && (view_mode & VIEW_DOWNLOAD))
-			dcc_append (dcc, dccfwin.store, TRUE);
+			dcc_append (dcc, dccfwin.store, true);
 		break;
 
 	case TYPE_SEND:
 		if (dccfwin.window && (view_mode & VIEW_UPLOAD))
-			dcc_append (dcc, dccfwin.store, TRUE);
+			dcc_append (dcc, dccfwin.store, true);
 		break;
 
 	default: /* chat */

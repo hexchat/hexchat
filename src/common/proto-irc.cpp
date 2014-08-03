@@ -264,7 +264,7 @@ irc_set_away (server *serv, char *reason)
 }
 
 static void
-irc_ctcp (server *serv, char *to, char *msg)
+irc_ctcp (server *serv, const char *to, char *msg)
 {
 	tcp_sendf (serv, "PRIVMSG %s :\001%s\001\r\n", to, msg);
 }

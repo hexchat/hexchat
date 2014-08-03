@@ -1758,7 +1758,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 }
 
 static struct session *dccsess;
-static char *dccto;				  /* lame!! */
+static const char *dccto;				  /* lame!! */
 static int dccmaxcps;
 static int recursive = FALSE;
 
@@ -1769,7 +1769,7 @@ dcc_send_wild (char *file)
 }
 
 void
-dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
+dcc_send (struct session *sess, const char *to, char *file, int maxcps, int passive)
 {
 	char outbuf[512];
 	GStatBuf st;
@@ -1875,8 +1875,10 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 				}
 				sess->server->p_ctcp (sess->server, to, outbuf);
 
+				char * mutable_to = strdup(to);
 				EMIT_SIGNAL (XP_TE_DCCOFFER, sess, file_part (dcc->file),
-								 to, dcc->file, NULL, 0);
+								 mutable_to, dcc->file, NULL, 0);
+				free(mutable_to);
 			} else
 			{
 				dcc_close (dcc, 0, TRUE);

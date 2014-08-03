@@ -2088,7 +2088,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 static char rcolors[] = { 19, 20, 22, 24, 25, 26, 27, 28, 29 };
 
 int
-text_color_of (char *name)
+text_color_of (const char *name)
 {
 	int i = 0, sum = 0;
 

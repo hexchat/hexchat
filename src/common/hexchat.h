@@ -469,7 +469,7 @@ typedef struct server
 	void (*p_inline)(struct server *, char *buf, int len);
 	void (*p_invite)(struct server *, char *channel, char *nick);
 	void (*p_cycle)(struct server *, char *channel, char *key);
-	void (*p_ctcp)(struct server *, char *to, char *msg);
+	void (*p_ctcp)(struct server *, const char *to, char *msg);
 	void (*p_nctcp)(struct server *, char *to, char *msg);
 	void (*p_quit)(struct server *, char *reason);
 	void (*p_kick)(struct server *, char *channel, char *nick, char *reason);
