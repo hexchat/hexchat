@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include "fe-gtk.h"
 
@@ -27,7 +27,7 @@
 #include "gtkutil.h"
 #include "ascii.h"
 #include "maingui.h"
-
+namespace{
 static const unsigned char table[]=
 {
 /* Line 1 */ '\n', 
@@ -114,7 +114,7 @@ ascii_click (GtkWidget * wid, gpointer userdata)
 		SPELL_ENTRY_SET_POS (wid, tmp_pos);
 	}
 }
-
+}
 void
 ascii_open (void)
 {
