@@ -50,7 +50,7 @@
 #include "text.h"
 #include "hexchatc.h"
 #include "chanopt.h"
-
+#include "dcc.h"
 
 void
 clear_channel (session *sess)

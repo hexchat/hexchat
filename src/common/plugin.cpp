@@ -42,6 +42,7 @@
 #include "modes.h"
 #include "notify.h"
 #include "text.h"
+#include "dcc.h"
 #define PLUGIN_C
 typedef struct session hexchat_context;
 #include "hexchat-plugin.h"

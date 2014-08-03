@@ -36,6 +36,7 @@
 #include "../common/text.h"
 #include "../common/chanopt.h"
 #include "../common/cfgfiles.h"
+#include "../common/dcc.h"
 
 #include "fe-gtk.h"
 #include "banlist.h"

@@ -40,6 +40,7 @@
 #include "../common/plugin.h"
 #include "../common/server.h"
 #include "../common/url.h"
+#include "../common/dcc.h"
 #include "gtkutil.h"
 #include "maingui.h"
 #include "pixmaps.h"

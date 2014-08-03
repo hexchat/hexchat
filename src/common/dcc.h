@@ -138,6 +138,9 @@ void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[],
 void dcc_show_list (session *sess);
 guint32 dcc_get_my_address (void);
 void dcc_get_with_destfile (struct DCC *dcc, char *utf8file);
+void fe_dcc_add(struct DCC *dcc);
+void fe_dcc_update(struct DCC *dcc);
+void fe_dcc_remove(struct DCC *dcc);
 
 #ifdef __cplusplus
 }

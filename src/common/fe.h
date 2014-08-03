@@ -18,7 +18,7 @@
  */
 
 #include "userlist.h"
-#include "dcc.h"
+//#include "dcc.h"
 
 #ifndef HEXCHAT_FE_H
 #define HEXCHAT_FE_H
@@ -101,9 +101,6 @@ void fe_userlist_numbers (struct session *sess);
 void fe_userlist_clear (struct session *sess);
 void fe_userlist_set_selected (struct session *sess);
 void fe_uselect (session *sess, char *word[], int do_clear, int scroll_to);
-void fe_dcc_add (struct DCC *dcc);
-void fe_dcc_update (struct DCC *dcc);
-void fe_dcc_remove (struct DCC *dcc);
 int fe_dcc_open_recv_win (int passive);
 int fe_dcc_open_send_win (int passive);
 int fe_dcc_open_chat_win (int passive);

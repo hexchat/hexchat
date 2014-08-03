@@ -55,6 +55,7 @@
 #include "tree.h"
 #include "outbound.h"
 #include "chanopt.h"
+#include "dcc.h"
 
 #define TBUFSIZE 4096
 
