@@ -32,7 +32,7 @@
 #include "proto-irc.h"
 #include "ctcp.h"
 #include "fe.h"
-#include "ignore.h"
+#include "ignore.hpp"
 #include "inbound.h"
 #include "modes.h"
 #include "notify.h"

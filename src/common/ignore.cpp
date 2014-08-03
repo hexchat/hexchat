@@ -30,7 +30,7 @@
 #include <unistd.h>
 #endif
 #include "hexchat.h"
-#include "ignore.h"
+#include "ignore.hpp"
 #include "cfgfiles.h"
 #include "fe.h"
 #include "text.h"

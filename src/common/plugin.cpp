@@ -36,7 +36,7 @@
 #include "util.h"
 #include "outbound.h"
 #include "cfgfiles.h"
-#include "ignore.h"
+#include "ignore.hpp"
 #include "server.h"
 #include "servlist.h"
 #include "modes.h"

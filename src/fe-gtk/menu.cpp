@@ -41,7 +41,7 @@
 #include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/outbound.h"
-#include "../common/ignore.h"
+#include "../common/ignore.hpp"
 #include "../common/fe.h"
 #include "../common/server.h"
 #include "../common/servlist.h"

@@ -41,7 +41,7 @@
 #include "util.h"
 #include "cfgfiles.h"
 #include "chanopt.h"
-#include "ignore.h"
+#include "ignore.hpp"
 #include "hexchat-plugin.h"
 #include "plugin.h"
 #include "plugin-timer.hpp"

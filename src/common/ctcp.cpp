@@ -29,7 +29,7 @@
 #include "util.h"
 #include "modes.h"
 #include "outbound.h"
-#include "ignore.h"
+#include "ignore.hpp"
 #include "inbound.h"
 #include "dcc.hpp"
 #include "text.h"

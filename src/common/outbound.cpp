@@ -40,7 +40,7 @@
 
 #include "hexchat.h"
 #include "plugin.h"
-#include "ignore.h"
+#include "ignore.hpp"
 #include "util.h"
 #include "fe.h"
 #include "cfgfiles.h"			  /* hexchat_fopen_file() */

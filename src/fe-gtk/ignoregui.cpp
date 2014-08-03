@@ -25,7 +25,7 @@
 #include "fe-gtk.h"
 
 #include "../common/hexchat.h"
-#include "../common/ignore.h"
+#include "../common/ignore.hpp"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
 #include "gtkutil.h"
