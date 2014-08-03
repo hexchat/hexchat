@@ -19,11 +19,11 @@
 
 /* dcc.hpp */
 
-#include <time.h>						/* for time_t */
-#include "proto-irc.h"
+#ifndef HEXCHAT_DCC_HPP
+#define HEXCHAT_DCC_HPP
 
-#ifndef HEXCHAT_DCC_H
-#define HEXCHAT_DCC_H
+#include <ctime>						/* for time_t */
+#include "proto-irc.h"
 
 #define STAT_QUEUED 0
 #define STAT_ACTIVE 1
@@ -43,15 +43,11 @@
 #if defined(G_GINT64_FORMAT) && defined(HAVE_STRTOULL)
 #define USE_DCC64
 /* we really get only 63 bits, since st_size is signed */
-#define DCC_SIZE gint64
+using DCC_SIZE = gint64;
 #define DCC_SFMT G_GINT64_FORMAT
 #else
-#define DCC_SIZE unsigned int
+using DCC_SIZE = unsigned int;
 #define DCC_SFMT "u"
-#endif
-
-#ifdef __cplusplus
-extern "C" {
 #endif
 
 struct DCC
@@ -141,9 +137,5 @@ void dcc_get_with_destfile (struct DCC *dcc, char *utf8file);
 void fe_dcc_add(struct DCC *dcc);
 void fe_dcc_update(struct DCC *dcc);
 void fe_dcc_remove(struct DCC *dcc);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
