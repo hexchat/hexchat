@@ -19,9 +19,9 @@
 /* ipv4 and ipv6 networking functions with a common interface */
 
 #include <new>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 #include <glib.h>
 
 #ifndef WIN32
