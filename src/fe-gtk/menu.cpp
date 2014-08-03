@@ -61,7 +61,6 @@
 #include "rawlog.h"
 #include "palette.h"
 #include "plugingui.hpp"
-#include <search.h>
 #include "textgui.h"
 #include "urlgrab.h"
 #include "menu.h"
