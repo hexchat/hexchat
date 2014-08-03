@@ -25,7 +25,7 @@
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
 #include "gtkutil.h"
-#include "ascii.h"
+#include "ascii.hpp"
 #include "maingui.h"
 namespace{
 static const unsigned char table[]=

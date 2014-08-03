@@ -49,7 +49,7 @@
 #include "../common/util.h"
 #include "../common/text.h"
 #include "xtext.h"
-#include "ascii.h"
+#include "ascii.hpp"
 #include "banlist.h"
 #include "chanlist.h"
 #include "editlist.h"
