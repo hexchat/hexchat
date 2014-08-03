@@ -699,7 +699,7 @@ tray_init (void)
 }
 
 static int
-tray_hilight_cb (char *word[], void *userdata)
+tray_hilight_cb(const char *const word[], void *userdata)
 {
 	/*if (tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;*/
@@ -726,7 +726,7 @@ tray_hilight_cb (char *word[], void *userdata)
 }
 
 static int
-tray_message_cb (char *word[], void *userdata)
+tray_message_cb(const char *const word[], void *userdata)
 {
 	if (/*tray_status == TS_MESSAGE ||*/ tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;
@@ -751,7 +751,7 @@ tray_message_cb (char *word[], void *userdata)
 }
 
 static void
-tray_priv (char *from, char *text)
+tray_priv (const char *from, const char *text)
 {
 	const char *network;
 
@@ -781,7 +781,7 @@ tray_priv (char *from, char *text)
 }
 
 static int
-tray_priv_cb (char *word[], void *userdata)
+tray_priv_cb(const char *const word[], void *userdata)
 {
 	tray_priv (word[1], word[2]);
 
@@ -789,7 +789,7 @@ tray_priv_cb (char *word[], void *userdata)
 }
 
 static int
-tray_invited_cb (char *word[], void *userdata)
+tray_invited_cb(const char *const word[], void *userdata)
 {
 	if (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1)
 		tray_priv (word[2], "Invited");
@@ -798,7 +798,7 @@ tray_invited_cb (char *word[], void *userdata)
 }
 
 static int
-tray_dcc_cb (char *word[], void *userdata)
+tray_dcc_cb(const char *const word[], void *userdata)
 {
 	const char *network;
 
@@ -830,7 +830,7 @@ tray_dcc_cb (char *word[], void *userdata)
 }
 
 static int
-tray_focus_cb (char *word[], void *userdata)
+tray_focus_cb(const char *const word[], void *userdata)
 {
 	tray_stop_flash ();
 	tray_reset_counts ();

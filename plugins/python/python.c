@@ -66,6 +66,7 @@
 
 #include "../../config.h"
 #include "hexchat-plugin.h"
+#define HAVE_ROUND
 #undef _POSIX_C_SOURCE	/* Avoid warning: also in /usr/include/features.h from glib.h */
 #include <Python.h>
 #include <structmember.h>
@@ -269,10 +270,10 @@ typedef struct {
 /* ===================================================================== */
 /* Function declarations */
 
-static PyObject *Util_BuildList(const char * const *word[]);
+static PyObject *Util_BuildList(const char * const word[]);
 static PyObject *Util_BuildEOLList(const char * const word[]);
 static void Util_Autoload();
-static char *Util_Expand(char *filename);
+static char *Util_Expand(const char *filename);
 
 static int Callback_Server(const char * const word[], const char * const word_eol[], hexchat_event_attrs *attrs, void *userdata);
 static int Callback_Command(const char * const word[], const char * const word_eol[], void *userdata);
@@ -297,9 +298,9 @@ static PyObject *Context_compare(ContextObject *a, ContextObject *b, int op);
 static PyObject *Context_FromContext(hexchat_context *context);
 static PyObject *Context_FromServerAndChannel(char *server, char *channel);
 
-static PyObject *Plugin_New(char *filename, PyObject *xcoobj);
+static PyObject *Plugin_New(const char *filepath, PyObject *xcoobj);
 static PyObject *Plugin_GetCurrent();
-static PluginObject *Plugin_ByString(char *str);
+static PluginObject *Plugin_ByString(const char *str);
 static Hook *Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
 			    PyObject *userdata, char *name, void *data);
 static Hook *Plugin_FindHook(PyObject *plugin, char *name);
@@ -331,15 +332,15 @@ static PyObject *Module_hexchat_pluginpref_get(PyObject *self, PyObject *args);
 static PyObject *Module_hexchat_pluginpref_delete(PyObject *self, PyObject *args);
 static PyObject *Module_hexchat_pluginpref_list(PyObject *self, PyObject *args);
 
-static void IInterp_Exec(char *command);
-static int IInterp_Cmd(char *word[], char *word_eol[], void *userdata);
+static void IInterp_Exec(const char *command);
+static int IInterp_Cmd(const char * const word[], const char * const word_eol[], void *userdata);
 
 static void Command_PyList();
-static void Command_PyLoad(char *filename);
-static void Command_PyUnload(char *name);
-static void Command_PyReload(char *name);
+static void Command_PyLoad(const char *filename);
+static void Command_PyUnload(const char *name);
+static void Command_PyReload(const char *name);
 static void Command_PyAbout();
-static int Command_Py(char *word[], char *word_eol[], void *userdata);
+static int Command_Py(const char * const word[], const char * const word_eol[], void *userdata);
 
 /* ===================================================================== */
 /* Static declarations and definitions */
@@ -427,7 +428,7 @@ Util_BuildEOLList(const char * const word[])
 	char *accum = NULL;
 	char *last = NULL;
 	for (i = listsize; i > 0; i--) {
-		char *part = word[i];
+		const char *part = word[i];
 		if (accum == NULL) {
 			accum = g_strdup (part);
 		} else if (part != NULL && part[0] != 0) {
@@ -501,7 +502,7 @@ Util_Autoload()
 }
 
 static char *
-Util_Expand(char *filename)
+Util_Expand(const char *filename)
 {
 	char *expanded;
 
@@ -1378,7 +1379,7 @@ Plugin_GetHandle(PluginObject *plugin)
 }
 
 static PluginObject *
-Plugin_ByString(char *str)
+Plugin_ByString(const char *str)
 {
 	GSList *list;
 	PluginObject *plugin;
@@ -1520,7 +1521,7 @@ Plugin_Delete(PyObject *plugin)
 }
 
 static PyObject *
-Plugin_New(char *filename, PyObject *xcoobj)
+Plugin_New(const char *filepath, PyObject *xcoobj)
 {
 	PluginObject *plugin = NULL;
 	PyObject *m, *o;
@@ -1529,11 +1530,11 @@ Plugin_New(char *filename, PyObject *xcoobj)
 #else
 	char *argv[] = { "<hexchat>", 0 };
 #endif
-
-	if (filename) {
-		char *old_filename = filename;
-		filename = Util_Expand(filename);
-		if (filename == NULL) {
+	char * filename = NULL;
+	if (filepath) {
+		const char *old_filename = filepath;
+		filename = Util_Expand(filepath);
+		if (filepath == NULL) {
 			hexchat_printf(ph, "File not found: %s", old_filename);
 			return NULL;
 		}
@@ -2517,7 +2518,7 @@ initxchat(void)
 /* Python interactive interpreter functions */
 
 static void
-IInterp_Exec(char *command)
+IInterp_Exec(const char *command)
 {
 	PyObject *m, *d, *o;
 	char *buffer;
@@ -2555,7 +2556,7 @@ fail:
 }
 
 static int
-IInterp_Cmd(char *word[], char *word_eol[], void *userdata)
+IInterp_Cmd(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	char *channel = (char *) hexchat_get_info(ph, "channel");
 	if (channel && channel[0] == '>' && strcmp(channel, ">>python<<") == 0) {
@@ -2599,7 +2600,7 @@ Command_PyList()
 }
 
 static void
-Command_PyLoad(char *filename)
+Command_PyLoad(const char *filename)
 {
 	PyObject *plugin;
 	RELEASE_XCHAT_LOCK();
@@ -2610,7 +2611,7 @@ Command_PyLoad(char *filename)
 }
 
 static void
-Command_PyUnload(char *name)
+Command_PyUnload(const char *name)
 {
 	PluginObject *plugin = Plugin_ByString(name);
 	if (!plugin) {
@@ -2624,7 +2625,7 @@ Command_PyUnload(char *name)
 }
 
 static void
-Command_PyReload(char *name)
+Command_PyReload(const char *name)
 {
 	PluginObject *plugin = Plugin_ByString(name);
 	if (!plugin) {
@@ -2644,9 +2645,9 @@ Command_PyAbout()
 }
 
 static int
-Command_Py(char *word[], char *word_eol[], void *userdata)
+Command_Py(const char *const word[], const char *const word_eol[], void *userdata)
 {
-	char *cmd = word[2];
+	const char *cmd = word[2];
 	int ok = 0;
 	if (strcasecmp(cmd, "LIST") == 0) {
 		ok = 1;
@@ -2684,7 +2685,7 @@ Command_Py(char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-Command_Load(char *word[], char *word_eol[], void *userdata)
+Command_Load(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {
@@ -2695,7 +2696,7 @@ Command_Load(char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-Command_Reload(char *word[], char *word_eol[], void *userdata)
+Command_Reload(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {
@@ -2706,7 +2707,7 @@ Command_Reload(char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-Command_Unload(char *word[], char *word_eol[], void *userdata)
+Command_Unload(const char *const word[], const char *const word_eol[], void *userdata)
 {
 	int len = strlen(word[2]);
 	if (len > 3 && strcasecmp(".py", word[2]+len-3) == 0) {

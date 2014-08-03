@@ -31,18 +31,18 @@ static hexchat_plugin *ph;
 #include "oggInfo.c"
 #include "theme.c"
 
-static int print_themes (char *word[], char *word_eol[], void *userdata){
+static int print_themes(const char *const word[], const char *const word_eol[], void *userdata){
        printThemes();
        return HEXCHAT_EAT_ALL;
 }
 
-static int mpc_themeReload(char *word[], char *word_eol[], void *userdata){
+static int mpc_themeReload(const char *const word[], const char *const word_eol[], void *userdata){
    themeInit();
    loadThemes();
    return HEXCHAT_EAT_ALL;
 }
 
-static int mpc_tell(char *word[], char *word_eol[], void *userdata){
+static int mpc_tell(const char *const word[], const char *const word_eol[], void *userdata){
        char *tTitle, *zero, *oggLine, *line;
 	   struct tagInfo info;
 	   HWND hwnd = FindWindow("MediaPlayerClassicW",NULL);

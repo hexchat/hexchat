@@ -104,7 +104,7 @@ int inbound_sasl_error (server *serv);
 void inbound_sasl_supportedmechs (server *serv, char *list);
 void do_dns (session *sess, char *nick, char *host,
 				 const message_tags_data *tags_data);
-gboolean alert_match_word (char *word, char *masks);
+gboolean alert_match_word (const char *word, const char *masks);
 gboolean alert_match_text (char *text, char *masks);
 
 #ifdef __cplusplus

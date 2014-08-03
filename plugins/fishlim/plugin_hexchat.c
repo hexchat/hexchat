@@ -85,7 +85,7 @@ static bool append(char **s, size_t *length, const char *data) {
 /**
  * Called when a message is to be sent.
  */
-static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
+static int handle_outgoing(const char *const word[], const char *const word_eol[], void *userdata) {
     const char *own_nick;
     // Encrypt the message if possible
     const char *channel = hexchat_get_info(ph, "channel");
@@ -106,7 +106,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
 /**
  * Called when a channel message or private message is received.
  */
-static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
+static int handle_incoming(const char *const word[], const char *const word_eol[], void *userdata) {
     const char *prefix;
     const char *command;
     const char *recipient;
@@ -197,7 +197,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
 /**
  * Command handler for /setkey
  */
-static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
+static int handle_setkey(const char *const word[], const char *const word_eol[], void *userdata) {
     const char *nick;
     const char *key;
     
@@ -230,7 +230,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
 /**
  * Command handler for /delkey
  */
-static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
+static int handle_delkey(const char *const word[], const char *const word_eol[], void *userdata) {
     const char *nick;
     
     // Check syntax

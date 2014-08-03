@@ -47,7 +47,7 @@ song_strcpy (char *dest, char *src)
 }
 
 static int
-winamp(char *word[], char *word_eol[], void *userdata)
+winamp(const char *const word[], const char *const word_eol[], void *userdata)
 {
 
 char current_play[2048], *p;

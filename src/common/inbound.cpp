@@ -227,9 +227,10 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 /* used for Alerts section. Masks can be separated by commas and spaces. */
 
 gboolean
-alert_match_word (char *word, char *masks)
+alert_match_word (const char *word, const char *masks)
 {
-	char *p = masks;
+	char * mutable_masks = strdup(masks),* mutable_word = strdup(word);
+	char *p = mutable_masks;
 	char endchar;
 	int res;
 
@@ -243,7 +244,7 @@ alert_match_word (char *word, char *masks)
 		{
 			endchar = *p;
 			*p = 0;
-			res = match (masks, word);
+			res = match (mutable_masks, mutable_word);
 			*p = endchar;
 
 			if (res)
@@ -255,6 +256,8 @@ alert_match_word (char *word, char *masks)
 		}
 		p++;
 	}
+	free(mutable_word);
+	free(mutable_masks);
 }
 
 gboolean
