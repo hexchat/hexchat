@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <string.h>
+#include <cstring>
 #include "../common/hexchat-plugin.h"
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
@@ -125,7 +125,7 @@ tray_count_channels (void)
 
 	for (list = sess_list; list; list = list->next)
 	{
-		sess = list->data;
+		sess = static_cast<session*>(list->data);
 		if (sess->server->connected && sess->channel[0] &&
 			 sess->type == SESS_CHANNEL)
 			cons++;
@@ -504,7 +504,7 @@ tray_find_away_status (void)
 
 	for (list = serv_list; list; list = list->next)
 	{
-		serv = list->data;
+		serv = static_cast<server*>(list->data);
 
 		if (serv->is_away || serv->reconnect_away)
 			away++;
@@ -529,7 +529,7 @@ tray_foreach_server (GtkWidget *item, char *cmd)
 
 	for (list = serv_list; list; list = list->next)
 	{
-		serv = list->data;
+		serv = static_cast<server*>(list->data);
 		if (serv->connected)
 			handle_command (serv->server_session, cmd, FALSE);
 	}
