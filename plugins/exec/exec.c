@@ -22,116 +22,211 @@
 
 #include <windows.h>
 #include <time.h>
+#include <stdio.h>
 
 #include "hexchat-plugin.h"
 
-static hexchat_plugin *ph;   /* plugin handle */
+static hexchat_plugin *ph;
 static char name[] = "Exec";
 static char desc[] = "Execute commands inside HexChat";
-static char version[] = "1.2";
+static char version[] = "2.0";
+
+#define MAX_COMMANDLINE_LENGTH 1024
+
+#define TIMEOUT_SINGLE 250
+#define TIMEOUT_TRIES 40
+#define TIMEOUT_IN_SECONDS 10
+
+#define PROCESS_CREATED 1
+#define PROCESS_CREATION_FAILED 0
+
+typedef struct execution_context
+{
+	int pending;
+
+	hexchat_context *context;
+	int to_channel;
+	char commandline[MAX_COMMANDLINE_LENGTH];
+	
+	PROCESS_INFORMATION process_info;
+	time_t startup;
+	HANDLE pipe;
+
+	hexchat_hook *hook;
+} execution_context;
+
+static execution_context current;
+
+static void
+prepare_execution_context (execution_context *context)
+{
+	ZeroMemory (context, sizeof(execution_context));
+}
 
 static int
-run_command (char *word[], char *word_eol[], void *userdata)
+timer_callback (execution_context *userdata)
 {
-	char commandLine[1024];
-	char buffer[4096];
-	DWORD dwRead = 0;
-	DWORD dwLeft = 0;
-	DWORD dwAvail = 0;
-	time_t start;
-	double timeElapsed;
+	char buffer[1024];	
+	double elapsed = difftime (time (NULL), userdata->startup);
+	DWORD wait_result = WAIT_FAILED;
 
-	char *token;
-	char *context = NULL;
-	int announce = 0;
-
-	HANDLE readPipe;
-	HANDLE writePipe;
-	STARTUPINFO sInfo; 
-	PROCESS_INFORMATION pInfo; 
-	SECURITY_ATTRIBUTES secattr; 
-
-	ZeroMemory (&secattr, sizeof (secattr));
-	secattr.nLength = sizeof (secattr);
-	secattr.bInheritHandle = TRUE;
-
-	timeElapsed = 0.0;
-
-	if (strlen (word[2]) > 0)
+	if ((elapsed > TIMEOUT_IN_SECONDS) 
+		|| (wait_result = WaitForSingleObject (userdata->process_info.hProcess, 0)) == WAIT_OBJECT_0)
 	{
-		strcpy (commandLine, "cmd.exe /c ");
+		char error[64] = { 0 };
+		DWORD result;
+		DWORD total = 0;
+		hexchat_context *backup = hexchat_get_context (ph);
+		int force_print = 0;
+		char *token = NULL;
+		char *c = NULL;
 
-		if (!stricmp("-O", word[2]))
+		if (backup != userdata->context)
 		{
-			strcat (commandLine, word_eol[3]);
-			announce = 1;
+			force_print = !hexchat_set_context (ph, userdata->context);
+		}
+
+		if (wait_result == WAIT_OBJECT_0)
+		{			
+			while (ReadFile (userdata->pipe, buffer, sizeof(buffer)-1, &result, NULL) && result > 0)
+			{
+				buffer[result] = '\0';
+
+				token = strtok_s (buffer, "\n", &c);
+				while (token != NULL)
+				{
+					if (userdata->to_channel && !force_print)
+					{
+						hexchat_commandf (ph, "SAY %s", token);
+					}
+					else
+					{
+						hexchat_print (ph, token);
+					}
+					token = strtok_s (NULL, "\n", &c);
+				}
+
+				total += result;
+			}
+
+			if (total == 0)
+			{
+				strcat (error, "No output available.");
+			}
 		}
 		else
 		{
-			strcat (commandLine, word_eol[2]);
+			sprintf (error, "Timeout after %dms", TIMEOUT_IN_SECONDS);
 		}
 
-		CreatePipe (&readPipe, &writePipe, &secattr, 0); /* might be replaced with MyCreatePipeEx */
-
-		ZeroMemory (&sInfo, sizeof (sInfo));
-		ZeroMemory (&pInfo, sizeof (pInfo));
-		sInfo.cb = sizeof (sInfo);
-		sInfo.dwFlags = STARTF_USESTDHANDLES;
-		sInfo.hStdInput = NULL;
-		sInfo.hStdOutput = writePipe;
-		sInfo.hStdError = writePipe;
-
-		CreateProcess (0, commandLine, 0, 0, TRUE, NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, 0, 0, &sInfo, &pInfo);
-		CloseHandle (writePipe);
-
-		start = time (0);
-		while (PeekNamedPipe (readPipe, buffer, 1, &dwRead, &dwAvail, &dwLeft) && timeElapsed < 10)
+		if (error[0])
 		{
-			if (dwRead)
+			if (force_print || !userdata->to_channel)
 			{
-				if (ReadFile (readPipe, buffer, sizeof (buffer) - 1, &dwRead, NULL) && dwRead != 0 )
-				{
-					/* avoid garbage */
-					buffer[dwRead] = '\0';
-
-					if (announce)
-					{
-						/* Say each line seperately, TODO: improve... */
-						token = strtok_s (buffer, "\n", &context);
-						while (token != NULL)
-						{
-							hexchat_commandf (ph, "SAY %s", token);
-							token = strtok_s (NULL, "\n", &context);
-						}
-					}
-					else
-						hexchat_printf (ph, "%s", buffer);
-				}
+				hexchat_print (ph, error);
 			}
 			else
 			{
-				/* this way we'll more likely get full lines */
-				SleepEx (100, TRUE);
-			}
-			timeElapsed = difftime (time (0), start);
+				hexchat_commandf (ph, "SAY %s", error);
+			}			
 		}
 
-		/* display a newline to separate things */
-		if (!announce)
-			hexchat_printf (ph, "\n");
-
-		if (timeElapsed >= 10)
+		if (backup != userdata->context)
 		{
-			hexchat_printf (ph, "Command took too much time to run, execution aborted.\n");
+			hexchat_set_context (ph, backup);
 		}
 
-		CloseHandle (readPipe);
-		CloseHandle (pInfo.hProcess);
-		CloseHandle (pInfo.hThread);
+		CloseHandle (userdata->pipe);
+		CloseHandle (userdata->process_info.hProcess);
+		CloseHandle (userdata->process_info.hThread);
+		userdata->pending = 0;
+		return 0;
+	}
+
+	return 1;
+}
+
+static int
+exec_command (hexchat_context *contex, char *commandline, int to_channel)
+{
+	prepare_execution_context (&current);
+	strncpy (current.commandline, commandline, MAX_COMMANDLINE_LENGTH);
+	current.context = contex;
+	current.to_channel = to_channel;
+	current.pending = 1;
+
+	HANDLE read_pipe;
+	HANDLE write_pipe;
+	STARTUPINFO startup_info;
+	SECURITY_ATTRIBUTES attr;
+
+	ZeroMemory (&attr, sizeof (attr));
+	attr.nLength = sizeof (attr);
+	attr.bInheritHandle = TRUE;
+
+	CreatePipe (&read_pipe, &write_pipe, &attr, 0);
+	current.pipe = read_pipe;
+
+	ZeroMemory (&startup_info, sizeof (startup_info));
+	startup_info.cb = sizeof (startup_info);
+	startup_info.dwFlags = STARTF_USESTDHANDLES;
+	startup_info.hStdInput = NULL;
+	startup_info.hStdOutput = write_pipe;
+	startup_info.hStdError = write_pipe;
+
+	BOOL created = CreateProcess (0, current.commandline, 0, 0, TRUE, NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, 0, 0, &startup_info, &current.process_info);
+	CloseHandle (write_pipe);
+
+	int result = PROCESS_CREATION_FAILED;
+
+	if (created)
+	{
+		current.startup = time (NULL);
+		current.hook = hexchat_hook_timer (ph, 500, timer_callback, &current);
+		result = PROCESS_CREATED;
+	}
+
+	return result;
+}
+
+static int
+exec_hook (char *word[], char *word_eol[], void *userdata)
+{
+	if (!current.pending)
+	{
+		if (strlen (word[2]) > 0)
+		{
+			char *commandline = malloc(MAX_COMMANDLINE_LENGTH);
+			int to_channel = 0;
+
+			strcpy (commandline, "cmd.exe /c ");
+
+			if (!stricmp ("-O", word[2]))
+			{
+				strcat (commandline, word_eol[3]);
+				to_channel = 1;
+			}
+			else
+			{
+				strcat (commandline, word_eol[2]);
+			}
+
+			hexchat_context *xcontext = hexchat_get_context (ph);
+			if (!exec_command (xcontext, commandline, to_channel))
+			{
+				hexchat_print (ph, "Failed to create thread.");
+			}
+
+			free (commandline);
+		}
+		else
+		{
+			hexchat_command (ph, "help exec");
+		}
 	}
 	else
 	{
-		hexchat_command (ph, "help exec");
+		hexchat_print (ph, "Plugin already busy.");
 	}
 
 	return HEXCHAT_EAT_HEXCHAT;
@@ -146,10 +241,12 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	hexchat_hook_command (ph, "EXEC", HEXCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside HexChat", 0);
+	prepare_execution_context (&current);
+
+	hexchat_hook_command (ph, "EXEC", HEXCHAT_PRI_NORM, exec_hook, "Usage: /EXEC [-O] - execute commands inside HexChat", 0);
 	hexchat_printf (ph, "%s plugin loaded\n", name);
 
-	return 1;       /* return 1 for success */
+	return 1;
 }
 
 int
