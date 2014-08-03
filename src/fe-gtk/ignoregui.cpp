@@ -336,7 +336,7 @@ ignore_gui_open ()
 	GtkWidget *view;
 	GtkListStore *store;
 	GtkTreeIter iter;
-	GSList *temp = ignore_list;
+	GSList *temp = get_ignore_list();
 	const char *mask;
 	gboolean priv, chan, notice, ctcp, dcc, invite, unignore;
 

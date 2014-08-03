@@ -82,6 +82,7 @@ struct t_hexchat_list
 	GSList *next;		/* next pos */
 	GSList *head;		/* for LIST_USERS only */
 	struct notify_per_server *notifyps;	/* notify_per_server * */
+	bool is_vector;
 };
 
 typedef int (hexchat_cmd_cb)(const char * const word[], const char * const word_eol[], void *user_data);
@@ -1272,7 +1273,7 @@ hexchat_list_get (hexchat_plugin *ph, const char *name)
 {
 	hexchat_list *list;
 
-	list = static_cast<hexchat_list*>(malloc (sizeof (hexchat_list)));
+	list = new(std::nothrow) hexchat_list();
 	if (!list)
 		return NULL;
 	list->pos = NULL;
@@ -1291,7 +1292,7 @@ hexchat_list_get (hexchat_plugin *ph, const char *name)
 
 	case 0xb90bfdd2:	/* ignore */
 		list->type = LIST_IGNORE;
-		list->next = ignore_list;
+		list->next = get_ignore_list();
 		break;
 
 	case 0xc2079749:	/* notify */
@@ -1322,7 +1323,7 @@ hexchat_list_free (hexchat_plugin *ph, hexchat_list *xlist)
 {
 	if (xlist->type == LIST_USERS)
 		g_slist_free (xlist->head);
-	free (xlist);
+	delete xlist;
 }
 
 int

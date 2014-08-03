@@ -21,8 +21,9 @@
 #define HEXCHAT_IGNORE_HPP
 
 #include <string>
+#include <vector>
 
-extern GSList *ignore_list;
+//extern GSList *ignore_list;
 
 extern int ignored_ctcp;
 extern int ignored_priv;
@@ -51,6 +52,7 @@ enum class flood_check_type
 	PRIV
 };
 
+GSList * get_ignore_list();
 struct ignore *ignore_exists (const std::string& mask);
 int ignore_add(const std::string& mask, int type, bool overwrite);
 void ignore_showlist (session *sess);

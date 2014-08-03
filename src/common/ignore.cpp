@@ -45,7 +45,7 @@ int ignored_chan = 0;
 int ignored_noti = 0;
 int ignored_invi = 0;
 static int ignored_total = 0;
-
+static GSList *ignore_list = nullptr;
 /* ignore_exists ():
  * returns: struct ig, if this mask is in the ignore list already
  *          NULL, otherwise
@@ -422,5 +422,11 @@ flood_check (char *nick, char *ip, server *serv, session *sess, flood_check_type
 		}
 	}
 	return 1;
+}
+
+GSList * 
+get_ignore_list()
+{
+	return ignore_list;
 }
 

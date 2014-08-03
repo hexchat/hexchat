@@ -81,7 +81,6 @@ GSList *ctcp_list = 0;
 GSList *replace_list = 0;
 GSList *sess_list = 0;
 GSList *dcc_list = 0;
-GSList *ignore_list = 0;
 GSList *usermenu_list = 0;
 GSList *urlhandler_list = 0;
 GSList *tabmenu_list = 0;
