@@ -340,6 +340,11 @@ static const struct defaultserver def[] =
 	{"Moznet",		0},
 	{0,			"irc.mozilla.org"},
 	
+	{"NetFuze",	0},
+	{0,			"irc.netfuze.net"},
+	{0,			"alpha.netfuze.net"},
+	{0,			"beta.netfuze.net"},
+	
 	{"ObsidianIRC",  0},
 	{0,      "irc.obsidianirc.net"}, 
 
