@@ -437,6 +437,7 @@ static const setting alert_settings[] =
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
 
 	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY,      N_("Channels to watch:"), P_OFFSETNL(hex_irc_chan_balloon_limit), 0, 0, sizeof prefs.hex_irc_chan_balloon_limit},
 	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
 	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
@@ -460,6 +461,7 @@ static const setting alert_settings_unity[] =
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
 
 	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY,      N_("Channels to watch:"), P_OFFSETNL(hex_irc_chan_balloon_limit), 0, 0, sizeof prefs.hex_irc_chan_balloon_limit},
 	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
 	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},

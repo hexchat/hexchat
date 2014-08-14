@@ -730,7 +730,7 @@ tray_message_cb (char *word[], void *userdata)
 {
 	if (/*tray_status == TS_MESSAGE ||*/ tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;
-		
+
 	if (prefs.hex_input_tray_chans)
 	{
 		tray_set_flash (ICON_MSG);
@@ -744,8 +744,21 @@ tray_message_cb (char *word[], void *userdata)
 	}
 
 	if (prefs.hex_input_balloon_chans)
-		tray_set_balloonf (word[2], _("Channel message from: %s (%s)"),
-								 word[1], hexchat_get_info (ph, "channel"));
+	{
+		if(prefs.hex_irc_chan_balloon_limit[0]!=0)
+		{
+			if(alert_match_word(hexchat_get_info(ph, "channel"), prefs.hex_irc_chan_balloon_limit))
+			{
+				tray_set_balloonf (word[2], _("Channel message from: %s (%s)"),
+									word[1], hexchat_get_info (ph, "channel"));
+			}
+		}
+		else
+		{
+			tray_set_balloonf (word[2], _("Channel message from: %s (%s)"),
+								word[1], hexchat_get_info (ph, "channel"));
+		}
+	}
 
 	return HEXCHAT_EAT_NONE;
 }

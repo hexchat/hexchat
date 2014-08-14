@@ -300,6 +300,7 @@ struct hexchatprefs
 	char hex_gui_ulist_doubleclick[256];
 	char hex_input_command_char[4];
 	char hex_irc_extra_hilight[300];
+	char hex_irc_chan_balloon_limit[300];
 	char hex_irc_id_ntext[64];
 	char hex_irc_id_ytext[64];
 	char hex_irc_logmask[256];
