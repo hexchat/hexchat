@@ -1,4 +1,4 @@
-# HexChat [![Build Status](https://travis-ci.org/hexchat/hexchat.png)](https://travis-ci.org/hexchat/hexchat) [![Build Status](http://nekomimi.cloudapp.net:8080/job/hexchat/badge/icon)](http://nekomimi.cloudapp.net:8080/job/hexchat/) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/hexchat/hexchat/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+# HexChat [![Build Status](https://travis-ci.org/hexchat/hexchat.png)](https://travis-ci.org/hexchat/hexchat) [![Build Status](http://nekomimi.cloudapp.net:8080/job/hexchat/badge/icon)](http://nekomimi.cloudapp.net:8080/job/hexchat/)
 
 HexChat is an IRC client for Windows and UNIX-like operating systems.  
 See [IRCHelp.org](http://irchelp.org) for information about IRC in general.  
