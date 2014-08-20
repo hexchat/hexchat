@@ -66,48 +66,69 @@ gtkutil_file_req_destroy (GtkWidget * wid, struct file_req *freq)
 }
 
 static void
-gtkutil_check_file (char *file, struct file_req *freq)
+gtkutil_check_file (char *filename, struct file_req *freq)
 {
-	struct stat st;
 	int axs = FALSE;
-	char temp[256];
 
-	path_part (file, temp, sizeof (temp));
+	GFile *file = g_file_new_for_path (filename);
 
-	/* check if the file is readable or writable */
 	if (freq->flags & FRF_WRITE)
 	{
-		if (access (temp, W_OK) == 0)
-			axs = TRUE;
-	} else
-	{
-		if (stat (file, &st) != -1)
+		GFile *parent = g_file_get_parent (file);
+
+		GFileInfo *fi = g_file_query_info (parent, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+		if (fi != NULL)
 		{
-			if (!S_ISDIR (st.st_mode) || (freq->flags & FRF_CHOOSEFOLDER))
+			if (g_file_info_get_attribute_boolean (fi, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE))
+			{
 				axs = TRUE;
+			}
+
+			g_object_unref (fi);
+		}
+
+		g_object_unref (parent);
+	}
+	else
+	{
+		GFileInfo *fi = g_file_query_info (file, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+
+		if (fi != NULL)
+		{
+			if (g_file_info_get_file_type (fi) != G_FILE_TYPE_DIRECTORY || (freq->flags & FRF_CHOOSEFOLDER))
+			{
+				axs = TRUE;
+			}
+
+			g_object_unref (fi);
 		}
 	}
 
+	g_object_unref (file);
+
 	if (axs)
 	{
-		char *utf8_file;
-		/* convert to UTF8. It might be converted back to locale by
-			server.c's g_convert */
-		utf8_file = hexchat_filename_to_utf8 (file, -1, NULL, NULL, NULL);
-		if (utf8_file)
+		char *filename_utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
+		if (filename_utf8 != NULL)
 		{
-			freq->callback (freq->userdata, utf8_file);
-			g_free (utf8_file);
-		} else
+			freq->callback (freq->userdata, filename_utf8);
+			g_free (filename_utf8);
+		}
+		else
 		{
 			fe_message ("Filename encoding is corrupt.", FE_MSG_ERROR);
 		}
-	} else
+	}
+	else
 	{
 		if (freq->flags & FRF_WRITE)
+		{
 			fe_message (_("Cannot write to that file."), FE_MSG_ERROR);
+		}
 		else
+		{
 			fe_message (_("Cannot read that file."), FE_MSG_ERROR);
+		}
 	}
 }
 
@@ -128,12 +149,21 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 		}
 		if (files)
 			g_slist_free (files);
-	} else
+	}
+	else
 	{
 		if (freq->flags & FRF_CHOOSEFOLDER)
-			gtkutil_check_file (gtk_file_chooser_get_current_folder (fs), freq);
+		{
+			gchar *filename = gtk_file_chooser_get_current_folder (fs);
+			gtkutil_check_file (filename, freq);
+			g_free (filename);
+		}
 		else
+		{
+			gchar *filename = gtk_file_chooser_get_filename (fs);
 			gtkutil_check_file (gtk_file_chooser_get_filename (fs), freq);
+			g_free (filename);
+		}
 	}
 
 	/* this should call the "destroy" cb, where we free(freq) */
