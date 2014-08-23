@@ -1526,13 +1526,14 @@ servlist_logintypecombo_cb (GtkComboBox *cb, gpointer *userdata)
 
 	index = gtk_combo_box_get_active (cb);	/* starts at 0, returns -1 for invalid selections */
 
-	if (index != -1)
-	{
-		/* The selection is valid. It can be 0, which is the default type, but we need to allow
-		* that so that you can revert from other types. servlist_save() will dump 0 anyway.
-		*/
-		selected_net->logintype = login_types_conf[index];
-	}
+	if (index == -1)
+		return; /* Invalid */
+
+	/* The selection is valid. It can be 0, which is the default type, but we need to allow
+	 * that so that you can revert from other types. servlist_save() will dump 0 anyway.
+	 */
+	selected_net->logintype = login_types_conf[index];
+
 	if (login_types_conf[index] == LOGIN_CUSTOM)
 	{
 		gtk_notebook_set_current_page (GTK_NOTEBOOK (userdata), 2);		/* FIXME avoid hardcoding? */
