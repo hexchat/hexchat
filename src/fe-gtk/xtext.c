@@ -138,6 +138,7 @@ static void gtk_xtext_search_textentry_del (xtext_buffer *, textentry *);
 static void gtk_xtext_search_textentry_fini (gpointer, gpointer);
 static void gtk_xtext_search_fini (xtext_buffer *);
 static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_flags flags, GError **perr);
+static char * gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent, int *ret_off, int *ret_len, GSList **slp);
 
 /* Avoid warning messages for this unused function */
 #if 0
@@ -934,7 +935,7 @@ gtk_xtext_find_x (GtkXText * xtext, int x, textentry * ent, int subline,
 
 static textentry *
 gtk_xtext_find_char (GtkXText * xtext, int x, int y, int *off,
-							int *out_of_bounds)
+							int *out_of_bounds, int *ret_subline)
 {
 	textentry *ent;
 	int line;
@@ -951,6 +952,9 @@ gtk_xtext_find_char (GtkXText * xtext, int x, int y, int *off,
 
 	if (off)
 		*off = gtk_xtext_find_x (xtext, x, ent, subline, line, out_of_bounds);
+
+	if (ret_subline)
+		*ret_subline = subline;
 
 	return ent;
 }
@@ -1045,14 +1049,14 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 		return;
 	}
 
-	ent_start = gtk_xtext_find_char (xtext, area->x, area->y, NULL, NULL);
+	ent_start = gtk_xtext_find_char (xtext, area->x, area->y, NULL, NULL, NULL);
 	if (!ent_start)
 	{
 		xtext_draw_bg (xtext, area->x, area->y, area->width, area->height);
 		goto xit;
 	}
 	ent_end = gtk_xtext_find_char (xtext, area->x + area->width,
-											 area->y + area->height, NULL, NULL);
+											 area->y + area->height, NULL, NULL, NULL);
 	if (!ent_end)
 		ent_end = xtext->buffer->text_last;
 
@@ -1297,84 +1301,95 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	textentry *ent_start;
 	int offset_start;
 	int offset_end;
-	int low_x;
-	int low_y;
-	int high_x;
-	int high_y;
-	int tmp;
+	int subline_start;
+	int subline_end;
 	int oob;
-	int marking_up;
+	int marking_up = FALSE;
+	int len_start;
+	int len_end;
 
-	if (xtext->select_start_y > xtext->select_end_y)
-	{
-		low_x = xtext->select_end_x;
-		low_y = xtext->select_end_y;
-		marking_up = TRUE;
-		high_x = xtext->select_start_x;
-		high_y = xtext->select_start_y;
-	} else
-	{
-		low_x = xtext->select_start_x;
-		low_y = xtext->select_start_y;
-		high_x = xtext->select_end_x;
-		high_y = xtext->select_end_y;
-		marking_up = FALSE;
-	}
+	ent_start = gtk_xtext_find_char (xtext, xtext->select_start_x, xtext->select_start_y, &offset_start, &oob, &subline_start);
+	ent_end = gtk_xtext_find_char (xtext, xtext->select_end_x, xtext->select_end_y, &offset_end, &oob, &subline_end);
 
-	ent_start = gtk_xtext_find_char (xtext, low_x, low_y, &offset_start, &oob);
-	if (!ent_start)
+	if ((!ent_start || !ent_end) && !xtext->buffer->text_last && xtext->adj->value != xtext->buffer->old_value)
 	{
-		if (xtext->adj->value != xtext->buffer->old_value)
-			gtk_xtext_render_page (xtext);
+		gtk_xtext_render_page (xtext);
 		return;
 	}
-	else if (oob)
+
+	if (!ent_start)
 	{
-		offset_start = marking_up == TRUE? 0: xtext->buffer->last_offset_start;
+		ent_start = xtext->buffer->text_last;
+		offset_start = ent_start->str_len;
 	}
 
-	ent_end = gtk_xtext_find_char (xtext, high_x, high_y, &offset_end, &oob);
 	if (!ent_end)
 	{
 		ent_end = xtext->buffer->text_last;
-		if (!ent_end)
-		{
-			if (xtext->adj->value != xtext->buffer->old_value)
-				gtk_xtext_render_page (xtext);
-			return;
-		}
 		offset_end = ent_end->str_len;
 	}
-	else if (oob)
+
+	if ((ent_start != ent_end && xtext->select_start_y > xtext->select_end_y) || /* different entries */
+		(ent_start == ent_end && subline_start > subline_end) || /* different lines */
+		(ent_start == ent_end && subline_start == subline_end && xtext->select_start_x > xtext->select_end_x)) /* marking to the left */
 	{
-		offset_end = marking_up == FALSE? ent_end->str_len: xtext->buffer->last_offset_end;
+		marking_up = TRUE;
 	}
 
-	/* marking less than a complete line? */
-	/* make sure "start" is smaller than "end" (swap them if need be) */
-	if (ent_start == ent_end && offset_start > offset_end)
+	/* word selection */
+	if (xtext->word_select)
 	{
-		tmp = offset_start;
+		/* a word selection cannot be started if the cursor is out of bounds in gtk_xtext_button_press */
+		gtk_xtext_get_word (xtext, xtext->select_start_x, xtext->select_start_y, NULL, &offset_start, &len_start, NULL);
+
+		/* in case the cursor is out of bounds we keep offset_end from gtk_xtext_find_char and fix the length */
+		if (gtk_xtext_get_word (xtext, xtext->select_end_x, xtext->select_end_y, NULL, &offset_end, &len_end, NULL) == NULL)
+			len_end = offset_end == ent_end->str_len? 0: -1; /* -1 for the space, 0 if at the end */
+
+		if (!marking_up)
+			offset_end += len_end;
+		else
+			offset_start += len_start;
+	}
+	/* line/ent selection */
+	else if (xtext->line_select)
+	{
+		offset_start = marking_up? ent_start->str_len: 0;
+		offset_end = marking_up? 0: ent_end->str_len;
+	}
+
+	if (marking_up)
+	{
+		int temp;
+
+		/* ensure ent_start is above ent_end */
+		if (ent_start != ent_end)
+		{
+			ent = ent_start;
+			ent_start = ent_end;
+			ent_end = ent;
+		}
+
+		/* switch offsets as well */
+		temp = offset_start;
 		offset_start = offset_end;
-		offset_end = tmp;
+		offset_end = temp;
 	}
 
 	/* set all the old mark_ fields to -1 */
 	gtk_xtext_selection_clear (xtext->buffer);
 
-	ent_start->mark_start = offset_start;
-	ent_start->mark_end = offset_end;
+	/* set the default values */
+	ent_start->mark_end = ent_start->str_len;
+	ent_end->mark_start = 0;
 
+	/* set the calculated values (this overwrites the default values if we're on the same ent) */
+	ent_start->mark_start = offset_start;
+	ent_end->mark_end = offset_end;
+
+	/* set all the mark_ fields of the ents within the selection */
 	if (ent_start != ent_end)
 	{
-		ent_start->mark_end = ent_start->str_len;
-		if (offset_end != 0)
-		{
-			ent_end->mark_start = 0;
-			ent_end->mark_end = offset_end;
-		}
-
-		/* set all the mark_ fields of the ents within the selection */
 		ent = ent_start->next;
 		while (ent && ent != ent_end)
 		{
@@ -1382,11 +1397,6 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 			ent->mark_end = ent->str_len;
 			ent = ent->next;
 		}
-	}
-	else
-	{
-		if (xtext->mark_stamp)
-			offset_start = 0;
 	}
 
 	if (render)
@@ -1522,7 +1532,7 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	int out_of_bounds = 0;
 	int len_to_offset = 0;
 
-	ent = gtk_xtext_find_char (xtext, x, y, &offset, &out_of_bounds);
+	ent = gtk_xtext_find_char (xtext, x, y, &offset, &out_of_bounds, NULL);
 	if (ent == NULL || out_of_bounds || offset < 0 || offset >= ent->str_len)
 		return NULL;
 
@@ -1907,13 +1917,6 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		return FALSE;
 	}
 
-	if (xtext->word_or_line_select)
-	{
-		xtext->word_or_line_select = FALSE;
-		xtext->button_down = FALSE;
-		return FALSE;
-	}
-
 	if (event->button == 1)
 	{
 		xtext->button_down = FALSE;
@@ -1936,6 +1939,13 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 			{
 				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 			}
+		}
+
+		if (xtext->word_select || xtext->line_select)
+		{
+			xtext->word_select = FALSE;
+			xtext->line_select = FALSE;
+			return FALSE;
 		}
 
 		if (xtext->select_start_x == event->x &&
@@ -1998,11 +2008,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_start = offset;
 			ent->mark_end = offset + len;
 			gtk_xtext_selection_render (xtext, ent, ent);
-			xtext->word_or_line_select = TRUE;
-			if (prefs.hex_text_autocopy_text)
-			{
-				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-			}
+			xtext->word_select = TRUE;
 		}
 
 		return FALSE;
@@ -2017,11 +2023,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_start = 0;
 			ent->mark_end = ent->str_len;
 			gtk_xtext_selection_render (xtext, ent, ent);
-			xtext->word_or_line_select = TRUE;
-			if (prefs.hex_text_autocopy_text)
-			{
-				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-			}
+			xtext->line_select = TRUE;
 		}
 
 		return FALSE;
