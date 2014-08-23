@@ -216,7 +216,8 @@ struct _GtkXText
 
 	/* various state information */
 	unsigned int moving_separator:1;
-	unsigned int word_or_line_select:1;
+	unsigned int word_select:1;
+	unsigned int line_select:1;
 	unsigned int button_down:1;
 	unsigned int hilighting:1;
 	unsigned int dont_render:1;
