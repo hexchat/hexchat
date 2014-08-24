@@ -1329,9 +1329,9 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		offset_end = ent_end->str_len;
 	}
 
-	if (ent_start != ent_end && xtext->select_start_y > xtext->select_end_y || /* different entries */
-		ent_start == ent_end && subline_start > subline_end || /* different lines */
-		ent_start == ent_end && subline_start == subline_end && xtext->select_start_x > xtext->select_end_x) /* marking to the left */
+	if ((ent_start != ent_end && xtext->select_start_y > xtext->select_end_y) || /* different entries */
+		(ent_start == ent_end && subline_start > subline_end) || /* different lines */
+		(ent_start == ent_end && subline_start == subline_end && xtext->select_start_x > xtext->select_end_x)) /* marking to the left */
 	{
 		marking_up = TRUE;
 	}
