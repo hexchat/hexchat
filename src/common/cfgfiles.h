@@ -50,6 +50,7 @@ void list_addentry (GSList ** list, char *cmd, char *name);
 int cmd_set (session *sess, char *tbuf, char *word[], char *word_eol[]);
 int hexchat_open_file (const char *file, int flags, int mode, int xof_flags);
 FILE *hexchat_fopen_file (const char *file, const char *mode, int xof_flags);
+GFile *hexchat_open_gfile (const char *filename);
 
 #define XOF_DOMODE 1
 #define XOF_FULLPATH 2

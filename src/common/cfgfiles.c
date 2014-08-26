@@ -1357,3 +1357,25 @@ hexchat_fopen_file (const char *file, const char *mode, int xof_flags)
 
 	return fh;
 }
+
+/*
+ * Returns a #GFile* to a file in HexChat's config dir.
+ * Must be g_object_unref()'d when done.
+ * @filename must be in utf8 encoding.
+ */
+GFile *
+hexchat_open_gfile (const char *filename)
+{
+	GFile *file;
+	gchar *full_path, *full_path_fs;
+
+	full_path = g_build_filename (get_xdir(), filename, NULL);
+	full_path_fs = g_filename_from_utf8 (full_path, -1, NULL, NULL, NULL);
+
+	file = g_file_new_for_path (full_path_fs);
+
+	g_free (full_path);
+	g_free (full_path_fs);
+
+	return file;
+}

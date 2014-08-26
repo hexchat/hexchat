@@ -998,9 +998,10 @@ servlist_load_defaults (void)
 static int
 servlist_load (void)
 {
-	FILE *fp;
-	char buf[2048];
-	int len;
+	GFile *file;
+	GInputStream *stream;
+	GDataInputStream *istream;
+	gchar *buf;
 	ircnet *net = NULL;
 
 	/* simple migration we will keep for a short while */
@@ -1015,15 +1016,19 @@ servlist_load (void)
 	g_free (oldfile);
 	g_free (newfile);
 
-	fp = hexchat_fopen_file ("servlist.conf", "r", 0);
-	if (!fp)
+
+	file = hexchat_open_gfile ("servlist.conf");
+
+	stream = G_INPUT_STREAM(g_file_read (file, NULL, NULL));
+	if (!stream)
 		return FALSE;
 
-	while (fgets (buf, sizeof (buf) - 2, fp))
+	istream = g_data_input_stream_new (stream);
+	g_data_input_stream_set_newline_type (istream, G_DATA_STREAM_NEWLINE_TYPE_ANY);
+	g_object_unref (stream);
+
+	while ((buf = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL)))
 	{
-		len = strlen (buf);
-		buf[len] = 0;
-		buf[len-1] = 0;	/* remove the trailing \n */
 		if (net)
 		{
 			switch (buf[0])
@@ -1096,8 +1101,12 @@ servlist_load (void)
 		}
 		if (buf[0] == 'N')
 			net = servlist_net_add (buf + 2, /* comment */ NULL, FALSE);
+
+		g_free (buf);
 	}
-	fclose (fp);
+
+	g_object_unref (file);
+	g_object_unref (istream);
 
 	return TRUE;
 }
@@ -1135,11 +1144,27 @@ servlist_check_encoding (char *charset)
 	return FALSE;
 }
 
+G_GNUC_PRINTF (2, 3)
+static gsize
+servlist_writeline (GOutputStream *ostream, const char *fmt, ...)
+{
+	char buf[512];
+	va_list args;
+	gsize len;
+
+	va_start (args, fmt);
+	len = g_vsnprintf (buf, sizeof (buf), fmt, args);
+	va_end (args);
+
+	return g_output_stream_write (ostream, buf, len, NULL, NULL);
+}
+
 int
 servlist_save (void)
 {
-	FILE *fp;
-	char *buf;
+	GFile *file;
+	GOutputStream *ostream;
+	gchar *buf;
 	ircnet *net;
 	ircserver *serv;
 	commandentry *cmd;
@@ -1148,52 +1173,37 @@ servlist_save (void)
 	GSList *netlist;
 	GSList *cmdlist;
 	GSList *favlist;
-#ifndef WIN32
-	int first = FALSE;
 
-	buf = g_build_filename (get_xdir (), "servlist.conf", NULL);
-	if (g_access (buf, F_OK) != 0)
-		first = TRUE;
-#endif
+	file = hexchat_open_gfile ("servlist.conf");
 
-	fp = hexchat_fopen_file ("servlist.conf", "w", 0);
-	if (!fp)
-	{
-#ifndef WIN32
-		g_free (buf);
-#endif
+	ostream = G_OUTPUT_STREAM(g_file_replace (file, NULL, TRUE, 
+							G_FILE_CREATE_PRIVATE, NULL, NULL));
+	if (!ostream)
 		return FALSE;
-	}
 
-#ifndef WIN32
-	if (first)
-		g_chmod (buf, 0600);
-
-	g_free (buf);
-#endif
-	fprintf (fp, "v=" PACKAGE_VERSION "\n\n");
+	servlist_writeline (ostream, "v=%s\n\n", PACKAGE_VERSION);
 
 	list = network_list;
 	while (list)
 	{
 		net = list->data;
 
-		fprintf (fp, "N=%s\n", net->name);
+		servlist_writeline (ostream, "N=%s\n", net->name);
 		if (net->nick)
-			fprintf (fp, "I=%s\n", net->nick);
+			servlist_writeline (ostream, "I=%s\n", net->nick);
 		if (net->nick2)
-			fprintf (fp, "i=%s\n", net->nick2);
+			servlist_writeline (ostream, "i=%s\n", net->nick2);
 		if (net->user)
-			fprintf (fp, "U=%s\n", net->user);
+			servlist_writeline (ostream, "U=%s\n", net->user);
 		if (net->real)
-			fprintf (fp, "R=%s\n", net->real);
+			servlist_writeline (ostream, "R=%s\n", net->real);
 		if (net->pass)
-			fprintf (fp, "P=%s\n", net->pass);
+			servlist_writeline (ostream, "P=%s\n", net->pass);
 		if (net->logintype)
-			fprintf (fp, "L=%d\n", net->logintype);
+			servlist_writeline (ostream, "L=%d\n", net->logintype);
 		if (net->encoding)
 		{
-			fprintf (fp, "E=%s\n", net->encoding);
+			servlist_writeline (ostream, "E=%s\n", net->encoding);
 			if (!servlist_check_encoding (net->encoding))
 			{
 				buf = g_strdup_printf (_("Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."),
@@ -1203,13 +1213,13 @@ servlist_save (void)
 			}
 		}
 
-		fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);
+		servlist_writeline (ostream, "F=%d\nD=%d\n", net->flags, net->selected);
 
 		netlist = net->servlist;
 		while (netlist)
 		{
 			serv = netlist->data;
-			fprintf (fp, "S=%s\n", serv->hostname);
+			servlist_writeline (ostream, "S=%s\n", serv->hostname);
 			netlist = netlist->next;
 		}
 
@@ -1217,7 +1227,7 @@ servlist_save (void)
 		while (cmdlist)
 		{
 			cmd = cmdlist->data;
-			fprintf (fp, "C=%s\n", cmd->command);
+			servlist_writeline (ostream, "C=%s\n", cmd->command);
 			cmdlist = cmdlist->next;
 		}
 
@@ -1228,26 +1238,24 @@ servlist_save (void)
 
 			if (favchan->key)
 			{
-				fprintf (fp, "J=%s,%s\n", favchan->name, favchan->key);
+				servlist_writeline (ostream, "J=%s,%s\n", favchan->name, favchan->key);
 			}
 			else
 			{
-				fprintf (fp, "J=%s\n", favchan->name);
+				servlist_writeline (ostream, "J=%s\n", favchan->name);
 			}
 
 			favlist = favlist->next;
 		}
 
-		if (fprintf (fp, "\n") < 1)
-		{
-			fclose (fp);
+		if (!servlist_writeline (ostream, "\n"))
 			return FALSE;
-		}
 
 		list = list->next;
 	}
 
-	fclose (fp);
+	g_object_unref (file);
+	g_object_unref (ostream);
 	return TRUE;
 }
 
