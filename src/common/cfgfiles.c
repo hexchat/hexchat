@@ -1379,3 +1379,22 @@ hexchat_open_gfile (const char *filename)
 
 	return file;
 }
+
+G_GNUC_PRINTF (2, 3)
+gsize
+stream_writef (GOutputStream *ostream, const char *fmt, ...)
+{
+	char *tmp;
+	va_list args;
+	gint len;
+	gsize ret;
+
+	va_start (args, fmt);
+	len = g_vasprintf (&tmp, fmt, args);
+	va_end (args);
+
+	ret = g_output_stream_write (ostream, tmp, len, NULL, NULL);
+	g_free (tmp);
+	
+	return ret;
+}
