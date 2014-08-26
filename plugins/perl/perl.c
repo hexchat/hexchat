@@ -441,11 +441,12 @@ timer_cb (void *userdata)
 }
 
 static int
-server_cb (char *word[], char *word_eol[], void *userdata)
+server_cb (char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata)
 {
 	HookData *data = (HookData *) userdata;
 	int retVal = 0;
 	int count = 0;
+	HV *event_attrs;
 
 	dSP;
 	ENTER;
@@ -454,12 +455,17 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	if (data->depth)
 		return HEXCHAT_EAT_NONE;
 
+	event_attrs = newHV ();
+	sv_2mortal ((SV *) event_attrs);
+	(void)hv_store (event_attrs, "time", 4, newSViv ((long)attrs->server_time_utc), 0);
+
 	/*               hexchat_printf (ph, */
 	/*                               "Received %d words in server callback", av_len (wd)); */
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) array2av (word)));
 	XPUSHs (newRV_noinc ((SV *) array2av (word_eol)));
 	XPUSHs (data->userdata);
+	XPUSHs (newRV_noinc ((SV *) event_attrs));
 	PUTBACK;
 
 	data->depth++;
@@ -539,7 +545,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-print_cb (char *word[], void *userdata)
+print_cb (char *word[], hexchat_event_attrs *attrs, void *userdata)
 {
 
 	HookData *data = (HookData *) userdata;
@@ -549,6 +555,7 @@ print_cb (char *word[], void *userdata)
 	int last_index = 31;
 	/* must be initialized after SAVETMPS */
 	AV *wd = NULL;
+	HV *event_attrs;
 
 	dSP;
 	ENTER;
@@ -559,6 +566,10 @@ print_cb (char *word[], void *userdata)
 
 	wd = newAV ();
 	sv_2mortal ((SV *) wd);
+
+	event_attrs = newHV();
+	sv_2mortal ((SV *) event_attrs);
+	(void)hv_store (event_attrs, "time", 4, newSViv ((long)attrs->server_time_utc), 0);
 
 	/* need to scan backwards to find the index of the last element since some
 	   events such as "DCC Timeout" can have NULL elements in between non NULL
@@ -585,6 +596,7 @@ print_cb (char *word[], void *userdata)
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) wd));
 	XPUSHs (data->userdata);
+	XPUSHs (newRV_noinc ((SV *) event_attrs));
 	PUTBACK;
 
 	data->depth++;
@@ -665,54 +677,44 @@ static
 XS (XS_HexChat_emit_print)
 {
 	char *event_name;
+	char **args;
 	int RETVAL;
-	int count;
+	int i;
+	hexchat_event_attrs *attrs;
+	SV **time;
+
+	attrs = hexchat_event_attrs_create (ph);
+	attrs->server_time_utc = (time_t)0; 
+	args = malloc (4 * sizeof(char*));
 
 	dXSARGS;
+
+	/* check if last value is a hash */
+	if (SvTYPE (SvRV (ST (items - 1))) == SVt_PVHV) {
+		time = hv_fetch ((HV *)SvRV (ST (items - 1)), "time", 4, 0);
+
+		if (time != NULL) {
+			attrs->server_time_utc = (time_t)SvIV (*time);
+		}
+
+		items--;
+	}
+
 	if (items < 1) {
-		hexchat_print (ph, "Usage: HexChat::emit_print(event_name, ...)");
+		hexchat_print (ph, "Usage: HexChat::emit_print(event_name, ... [, { 'time' => $time } ])");
 	} else {
 		event_name = (char *) SvPV_nolen (ST (0));
 		RETVAL = 0;
 
-		/* we need to figure out the number of defined values passed in */
-		for (count = 0; count < items; count++) {
-			if (!SvOK (ST (count))) {
-				break;
-			}
+		for (i = 0; i < 4; i++) {
+			args[i] = SvOK (ST (i + 1)) ? SvPV_nolen (ST (i + 1)) : NULL;
 		}
 
-		switch (count) {
-		case 1:
-			RETVAL = hexchat_emit_print (ph, event_name, NULL);
-			break;
-		case 2:
-			RETVAL = hexchat_emit_print (ph, event_name,
-												SvPV_nolen (ST (1)), NULL);
-			break;
-		case 3:
-			RETVAL = hexchat_emit_print (ph, event_name,
-												SvPV_nolen (ST (1)),
-												SvPV_nolen (ST (2)), NULL);
-			break;
-		case 4:
-			RETVAL = hexchat_emit_print (ph, event_name,
-												SvPV_nolen (ST (1)),
-												SvPV_nolen (ST (2)),
-												SvPV_nolen (ST (3)), NULL);
-			break;
-		case 5:
-			RETVAL = hexchat_emit_print (ph, event_name,
-												SvPV_nolen (ST (1)),
-												SvPV_nolen (ST (2)),
-												SvPV_nolen (ST (3)),
-												SvPV_nolen (ST (4)), NULL);
-			break;
-
-		}
-
+		RETVAL = hexchat_emit_print_attrs (ph, attrs, event_name, args[0], args[1], args[2], args[3]);
 		XSRETURN_IV (RETVAL);
 	}
+
+	hexchat_event_attrs_free (ph, attrs);
 }
 
 static
@@ -893,7 +895,7 @@ XS (XS_HexChat_hook_server)
 		data->depth = 0;
 		data->package = newSVsv (package);
 
-		hook = hexchat_hook_server (ph, name, pri, server_cb, data);
+		hook = hexchat_hook_server_attrs (ph, name, pri, server_cb, data);
 
 		XSRETURN_IV (PTR2IV (hook));
 	}
@@ -981,7 +983,7 @@ XS (XS_HexChat_hook_print)
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
 		data->package = newSVsv (package);
-		hook = hexchat_hook_print (ph, name, pri, print_cb, data);
+		hook = hexchat_hook_print_attrs (ph, name, pri, print_cb, data);
 
 		XSRETURN_IV (PTR2IV (hook));
 	}
