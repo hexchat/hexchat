@@ -530,7 +530,7 @@ get_sys_str (int with_cpu)
 #endif
 
 int
-buf_get_line (char *ibuf, char **buf, int *position, int len)
+buf_get_line (char *ibuf, char **buf, int *position, gsize len)
 {
 	int pos = *position, spos = pos;
 

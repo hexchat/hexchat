@@ -146,26 +146,33 @@ palette_load (void)
 void
 palette_save (void)
 {
-	int i, j, fh;
+	GFile *file;
+	GOutputStream *ostream;
+	int i, j;
 	char prefname[256];
 
-	fh = hexchat_open_file ("colors.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
-	if (fh != -1)
+	file = hexchat_open_gfile ("colors.conf");
+	
+	ostream = G_OUTPUT_STREAM(g_file_replace (file, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL));
+	
+	if (ostream)
 	{
 		/* mIRC colors 0-31 are here */
 		for (i = 0; i < 32; i++)
 		{
 			g_snprintf (prefname, sizeof prefname, "color_%d", i);
-			cfg_put_color (fh, colors[i].red, colors[i].green, colors[i].blue, prefname);
+			cfg_put_color (ostream, colors[i].red, colors[i].green, colors[i].blue, prefname);
 		}
 
 		/* our special colors are mapped at 256+ */
 		for (i = 256, j = 32; j < MAX_COL+1; i++, j++)
 		{
 			g_snprintf (prefname, sizeof prefname, "color_%d", i);
-			cfg_put_color (fh, colors[j].red, colors[j].green, colors[j].blue, prefname);
+			cfg_put_color (ostream, colors[j].red, colors[j].green, colors[j].blue, prefname);
 		}
-
-		close (fh);
+		
+		g_object_unref (ostream);
 	}
+	
+	g_object_unref (file);
 }

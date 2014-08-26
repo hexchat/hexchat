@@ -77,7 +77,7 @@ list_addentry (GSList ** list, char *cmd, char *name)
 /* read it in from a buffer to our linked list */
 
 static void
-list_load_from_data (GSList ** list, char *ibuf, int size)
+list_load_from_data (GSList ** list, char *ibuf, gsize size)
 {
 	char cmd[384];
 	char name[128];
@@ -110,36 +110,28 @@ list_load_from_data (GSList ** list, char *ibuf, int size)
 }
 
 void
-list_loadconf (char *file, GSList ** list, char *defaultconf)
+list_loadconf (char *filename, GSList ** list, char *defaultconf)
 {
-	char *filebuf;
-	char *ibuf;
-	int fd;
-	struct stat st;
+	GFile *file;
+	char *data;
+	gsize len;
 
-	filebuf = g_build_filename (get_xdir (), file, NULL);
-	fd = g_open (filebuf, O_RDONLY | OFLAGS, 0);
-	g_free (filebuf);
+	file = hexchat_open_gfile (filename);
 
-	if (fd == -1)
+	if (!g_file_query_exists (file, NULL))
 	{
 		if (defaultconf)
 			list_load_from_data (list, defaultconf, strlen (defaultconf));
 		return;
 	}
-	if (fstat (fd, &st) != 0)
+
+	if (g_file_load_contents (file, NULL, &data, &len, NULL, NULL))
 	{
-		perror ("fstat");
-		abort ();
+		list_load_from_data (list, data, len);
+		g_free (data);
 	}
 
-	ibuf = g_malloc (st.st_size);
-	read (fd, ibuf, st.st_size);
-	close (fd);
-
-	list_load_from_data (list, ibuf, st.st_size);
-
-	g_free (ibuf);
+	g_object_unref (file);
 }
 
 void
@@ -214,40 +206,25 @@ cfg_get_str (char *cfg, const char *var, char *dest, int dest_len)
 	}
 }
 
-static int
-cfg_put_str (int fh, char *var, char *value)
+int
+cfg_put_str (GOutputStream *ostream, const char *var, const char *value)
 {
-	char buf[512];
-	int len;
-
-	g_snprintf (buf, sizeof buf, "%s = %s\n", var, value);
-	len = strlen (buf);
-	return (write (fh, buf, len) == len);
+	return (stream_writef (ostream, "%s = %s\n", var, value) != 0);
 }
 
 int
-cfg_put_color (int fh, guint16 r, guint16 g, guint16 b, char *var)
+cfg_put_color (GOutputStream *ostream, guint16 r, guint16 g, guint16 b, char *var)
 {
-	char buf[400];
-	int len;
-
-	g_snprintf (buf, sizeof buf, "%s = %04hx %04hx %04hx\n", var, r, g, b);
-	len = strlen (buf);
-	return (write (fh, buf, len) == len);
+	return (stream_writef (ostream, "%s = %04x %04x %04x\n", var, r, g, b) != 0);
 }
 
 int
-cfg_put_int (int fh, int value, char *var)
+cfg_put_int (GOutputStream *ostream, int value, char *var)
 {
-	char buf[400];
-	int len;
-
 	if (value == -1)
 		value = 1;
 
-	g_snprintf (buf, sizeof buf, "%s = %d\n", var, value);
-	len = strlen (buf);
-	return (write (fh, buf, len) == len);
+	return (stream_writef (ostream, "%s = %d\n", var, value) != 0);
 }
 
 int
@@ -336,18 +313,6 @@ int
 check_config_dir (void)
 {
 	return g_access (get_xdir (), F_OK);
-}
-
-static char *
-default_file (void)
-{
-	static char *dfile = NULL;
-
-	if (!dfile)
-	{
-		dfile = g_build_filename (get_xdir (), "hexchat.conf", NULL);
-	}
-	return dfile;
 }
 
 /* Keep these sorted!! */
@@ -953,13 +918,21 @@ make_dcc_dirs (void)
 int
 load_config (void)
 {
+	GFile *file;
 	char *cfg, *sp;
 	int res, val, i;
 
 	g_assert(check_config_dir () == 0);
+	
+	file = hexchat_open_gfile ("hexchat.conf");
 
-	if (!g_file_get_contents (default_file (), &cfg, NULL, NULL))
+	if (!g_file_load_contents (file, NULL, &cfg, NULL, NULL, NULL))
+	{
+		g_object_unref (file);
 		return -1;
+	}
+	
+	g_object_unref (file);
 
 	/* If the config is incomplete we have the default values loaded */
 	load_default_config();
@@ -1001,26 +974,26 @@ load_config (void)
 int
 save_config (void)
 {
-	int fh, i;
-	char *config, *new_config;
+	GFile *file, *tmpfile;
+	GOutputStream *ostream;
+	GFileIOStream *tmpstream;
+	gboolean ret;
+	int i;
 
 	if (check_config_dir () != 0)
 		make_config_dirs ();
-
-	config = default_file ();
-	new_config = g_strconcat (config, ".new", NULL);
 	
-	fh = g_open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
-	if (fh == -1)
+	tmpfile = g_file_new_tmp (NULL, &tmpstream, NULL);
+	if (!tmpfile)
 	{
-		g_free (new_config);
 		return 0;
 	}
+	
+	ostream = g_io_stream_get_output_stream (G_IO_STREAM(tmpstream));
 
-	if (!cfg_put_str (fh, "version", PACKAGE_VERSION))
+	if (!cfg_put_str (ostream, "version", PACKAGE_VERSION))
 	{
-		close (fh);
-		g_free (new_config);
+		g_object_unref (tmpfile);
 		return 0;
 	}
 		
@@ -1030,19 +1003,17 @@ save_config (void)
 		switch (vars[i].type)
 		{
 		case TYPE_STR:
-			if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
+			if (!cfg_put_str (ostream, vars[i].name, (char *) &prefs + vars[i].offset))
 			{
-				close (fh);
-				g_free (new_config);
+				g_object_unref (tmpfile);
 				return 0;
 			}
 			break;
 		case TYPE_INT:
 		case TYPE_BOOL:
-			if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
+			if (!cfg_put_int (ostream, *((int *) &prefs + vars[i].offset), vars[i].name))
 			{
-				close (fh);
-				g_free (new_config);
+				g_object_unref (tmpfile);
 				return 0;
 			}
 		}
@@ -1050,23 +1021,15 @@ save_config (void)
 	}
 	while (vars[i].name);
 
-	if (close (fh) == -1)
-	{
-		g_free (new_config);
-		return 0;
-	}
+	g_object_unref (ostream);
 
-#ifdef WIN32
-	g_unlink (config);	/* win32 can't rename to an existing file */
-#endif
-	if (g_rename (new_config, config) == -1)
-	{
-		g_free (new_config);
-		return 0;
-	}
-	g_free (new_config);
+	file = hexchat_open_gfile ("hexchat.conf");
+	ret = g_file_move (tmpfile, file, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, NULL);
 
-	return 1;
+	g_object_unref (tmpfile);
+	g_object_unref (file);
+
+	return ret;
 }
 
 static void

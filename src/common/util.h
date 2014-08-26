@@ -44,7 +44,7 @@ char *file_part (char *file);
 void for_files (char *dirname, char *mask, void callback (char *file));
 int rfc_casecmp (const char *, const char *);
 int rfc_ncasecmp (char *, char *, int);
-int buf_get_line (char *, char **, int *, int len);
+int buf_get_line (char *, char **, int *, gsize len);
 char *nocasestrstr (const char *text, const char *tofind);
 char *country (char *);
 void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
