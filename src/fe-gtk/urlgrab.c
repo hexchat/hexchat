@@ -138,7 +138,7 @@ url_save_callback (void *arg1, char *file)
 {
 	if (file)
 	{
-		url_save_tree (file, "w", TRUE);
+		url_save_tree (file);
 	}
 }
 

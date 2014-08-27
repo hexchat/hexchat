@@ -1332,7 +1332,10 @@ hexchat_open_gfile (const char *filename)
 	GFile *file;
 	gchar *full_path, *full_path_fs;
 
-	full_path = g_build_filename (get_xdir(), filename, NULL);
+	if (g_path_is_absolute (filename))
+		full_path = g_strdup (filename);
+	else
+		full_path = g_build_filename (get_xdir(), filename, NULL);
 	full_path_fs = g_filename_from_utf8 (full_path, -1, NULL, NULL, NULL);
 
 	file = g_file_new_for_path (full_path_fs);

@@ -68,42 +68,47 @@ url_clear (void)
 }
 
 static int
-url_save_cb (char *url, FILE *fd)
+url_save_cb (char *url, GOutputStream *ostream)
 {
-	fprintf (fd, "%s\n", url);
+	stream_writef (ostream, "%s\n", url);
 	return TRUE;
 }
 
 void
-url_save_tree (const char *fname, const char *mode, gboolean fullpath)
+url_save_tree (const char *fname)
 {
-	FILE *fd;
+	GFile *file;
+	GOutputStream *ostream;
 
-	if (fullpath)
-		fd = hexchat_fopen_file (fname, mode, XOF_FULLPATH);
-	else
-		fd = hexchat_fopen_file (fname, mode, 0);
-	if (fd == NULL)
-		return;
+	file = hexchat_open_gfile (fname);
 
-	tree_foreach (url_tree, (tree_traverse_func *)url_save_cb, fd);
-	fclose (fd);
+	ostream = G_OUTPUT_STREAM(g_file_append_to (file, G_FILE_CREATE_NONE, NULL, NULL));
+	if (ostream)
+	{
+		tree_foreach (url_tree, (tree_traverse_func *)url_save_cb, ostream);
+		g_object_unref (ostream);
+	}
+	
+	g_object_unref (file);
 }
 
 static void
 url_save_node (char* url)
 {
-	FILE *fd;
+	GFile *file;
+	GOutputStream *ostream;
 
 	/* open <config>/url.log in append mode */
-	fd = hexchat_fopen_file ("url.log", "a", 0);
-	if (fd == NULL)
+	file = hexchat_open_gfile ("url.log");
+
+	ostream = G_OUTPUT_STREAM(g_file_append_to (file, G_FILE_CREATE_NONE, NULL, NULL));
+	if (ostream)
 	{
-		return;
+		stream_writef (ostream, "%s\n", url);
+		g_object_unref (ostream);
 	}
 
-	fprintf (fd, "%s\n", url);
-	fclose (fd);	
+	g_object_unref (file);
 }
 
 static int
