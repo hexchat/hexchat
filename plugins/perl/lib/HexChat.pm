@@ -254,9 +254,20 @@ sub hook_print {
 
 	}
 
+	my @special_events = (
+		'Close Context',
+		'DCC Chat Text',
+		'Focus Tab',
+		'Focus Window',
+		'Key Press',
+		'Open Context',
+	);
+
+	my $attrs = !grep { $_ eq $event } @special_events;
+
 	my $pkg_info = HexChat::Embed::pkg_info( $package );
 	my $hook = HexChat::Internal::hook_print(
-		$event, $priority, $callback, $data, $package
+		$event, $priority, $callback, $data, $attrs, $package
 	);
 	push @{$pkg_info->{hooks}}, $hook if defined $hook;
 	return $hook;

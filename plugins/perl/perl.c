@@ -288,7 +288,7 @@ list_item_to_sv ( hexchat_list *list, const char *const *fields )
 			field_value = newSVuv (hexchat_list_int (ph, list, field_name));
 			break;
 		case 't':
-			field_value = newSVnv (hexchat_list_time (ph, list, field_name));
+			field_value = newSVnv ((long)hexchat_list_time (ph, list, field_name));
 			break;
 		default:
 			field_value = &PL_sv_undef;
@@ -545,7 +545,83 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-print_cb (char *word[], hexchat_event_attrs *attrs, void *userdata)
+print_cb (char *word[], void *userdata)
+{
+
+	HookData *data = (HookData *) userdata;
+	SV *temp = NULL;
+	int retVal = 0;
+	int count = 1;
+	int last_index = 31;
+	/* must be initialized after SAVETMPS */
+	AV *wd = NULL;
+
+	dSP;
+	ENTER;
+	SAVETMPS;
+
+	if (data->depth)
+		return HEXCHAT_EAT_NONE;
+
+	wd = newAV ();
+	sv_2mortal ((SV *) wd);
+
+	/* need to scan backwards to find the index of the last element since some
+	   events such as "DCC Timeout" can have NULL elements in between non NULL
+	   elements */
+
+	while (last_index >= 0
+			 && (word[last_index] == NULL || word[last_index][0] == 0)) {
+		last_index--;
+	}
+
+	for (count = 1; count <= last_index; count++) {
+		if (word[count] == NULL) {
+			av_push (wd, &PL_sv_undef);
+		} else if (word[count][0] == 0) {
+			av_push (wd, newSVpvn ("",0));	
+		} else {
+			temp = newSVpv (word[count], 0);
+			SvUTF8_on (temp);
+			av_push (wd, temp);
+		}
+	}
+
+	/*hexchat_printf (ph, "Received %d words in print callback", av_len (wd)+1); */
+	PUSHMARK (SP);
+	XPUSHs (newRV_noinc ((SV *) wd));
+	XPUSHs (data->userdata);
+	PUTBACK;
+
+	data->depth++;
+	set_current_package (data->package);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
+	set_current_package (&PL_sv_undef);
+	data->depth--;
+	SPAGAIN;
+	if (SvTRUE (ERRSV)) {
+		hexchat_printf (ph, "Error in print callback %s", SvPV_nolen (ERRSV));
+		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
+		retVal = HEXCHAT_EAT_NONE;
+	} else {
+		if (count != 1) {
+			hexchat_print (ph, "Print handler should only return 1 value.");
+			retVal = HEXCHAT_EAT_NONE;
+		} else {
+			retVal = POPi;
+		}
+
+	}
+
+	PUTBACK;
+	FREETMPS;
+	LEAVE;
+
+	return retVal;
+}
+
+static int
+print_attrs_cb (char *word[], hexchat_event_attrs *attrs, void *userdata)
 {
 
 	HookData *data = (HookData *) userdata;
@@ -690,7 +766,7 @@ XS (XS_HexChat_emit_print)
 	dXSARGS;
 
 	/* check if last value is a hash */
-	if (SvTYPE (SvRV (ST (items - 1))) == SVt_PVHV) {
+	if (SvROK (ST (items - 1)) && SvTYPE (SvRV (ST (items - 1))) == SVt_PVHV) {
 		time = hv_fetch ((HV *)SvRV (ST (items - 1)), "time", 4, 0);
 
 		if (time != NULL) {
@@ -707,7 +783,7 @@ XS (XS_HexChat_emit_print)
 		RETVAL = 0;
 
 		for (i = 0; i < 4; i++) {
-			args[i] = SvOK (ST (i + 1)) ? SvPV_nolen (ST (i + 1)) : NULL;
+			args[i] = i + 1 < items && SvOK (ST (i + 1)) ? SvPV_nolen (ST (i + 1)) : NULL;
 		}
 
 		RETVAL = hexchat_emit_print_attrs (ph, attrs, event_name, args[0], args[1], args[2], args[3]);
@@ -725,7 +801,7 @@ XS (XS_HexChat_send_modes)
 	char sign;
 	char mode;
 	int i = 0;
-	const char **targets;
+	char **targets;
 	int target_count = 0;
 	SV **elem;
 
@@ -766,7 +842,7 @@ XS (XS_HexChat_send_modes)
 			modes_per_line = (int) SvIV (ST (3)); 
 		}
 
-		hexchat_send_modes (ph, targets, target_count, modes_per_line, sign, mode);
+		hexchat_send_modes (ph, (const char **)targets, target_count, modes_per_line, sign, mode);
 		free (targets);
 	}
 }
@@ -959,20 +1035,22 @@ XS (XS_HexChat_hook_print)
 	int pri;
 	SV *callback;
 	SV *userdata;
+	SV *attrs;
 	SV *package;
 	hexchat_hook *hook;
 	HookData *data;
 	dXSARGS;
-	if (items != 5) {
+	if (items != 6) {
 		hexchat_print (ph,
-						 "Usage: HexChat::Internal::hook_print(name, priority, callback, userdata, package)");
+						 "Usage: HexChat::Internal::hook_print(name, priority, callback, userdata, attrs, package)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int) SvIV (ST (1));
 		callback = ST (2);
 		data = NULL;
 		userdata = ST (3);
-		package = ST (4);
+		attrs = ST (4);
+		package = ST (5);
 
 		data = malloc (sizeof (HookData));
 		if (data == NULL) {
@@ -983,7 +1061,13 @@ XS (XS_HexChat_hook_print)
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
 		data->package = newSVsv (package);
-		hook = hexchat_hook_print_attrs (ph, name, pri, print_cb, data);
+
+		if (SvTRUE (attrs)) {
+			hook = hexchat_hook_print_attrs (ph, name, pri, print_attrs_cb, data);
+		}
+		else {
+			hook = hexchat_hook_print (ph, name, pri, print_cb, data);
+		}
 
 		XSRETURN_IV (PTR2IV (hook));
 	}
@@ -1478,34 +1562,28 @@ perl_load_file (char *filename)
 	if (!lib) {
 		lib = LoadLibraryA (PERL_DLL);
 		if (!lib) {
-			if (GetLastError () == ERROR_BAD_EXE_FORMAT)
+			long last_error = GetLastError ();
+			if (last_error == ERROR_BAD_EXE_FORMAT)
 				/* http://forum.xchat.org/viewtopic.php?t=3277 */
 				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
 #ifdef _WIN64
-								 "64-bit HexChat Perl is required.");
+								 "64"
 #else
-								 "32-bit HexChat Perl is required.");
+								 "32"
 #endif
+								 "-bit HexChat Perl is required.");
+			else if (last_error == ERROR_MOD_NOT_FOUND) {
+				thread_mbox ("Could not find "  PERL_DLL " in your PATH.\n\n"
+								 "You must have a Visual C++ build of Perl "
+								 PERL_REQUIRED_VERSION " installed\n"
+								 "in order to run Perl scripts.\n\n"
+								 "http://hexchat.github.io/downloads.html");
+			}
 			else {
-				/* a lot of people install this old version */
-				lib = LoadLibraryA ("perl56.dll");
-				if (lib) {
-					FreeLibrary (lib);
-					lib = NULL;
-					thread_mbox ("Cannot open " PERL_DLL "!\n\n"
-									 "You must have a Visual C++ build of Perl "
-									 PERL_REQUIRED_VERSION " installed in order to\n"
-									 "run Perl scripts. A reboot may be required.\n\n"
-									 "http://hexchat.github.io/downloads.html\n\n"
-									 "I have found Perl 5.6, but that is too old.");
-				} else {
-					thread_mbox ("Cannot open " PERL_DLL "!\n\n"
-									 "You must have a Visual C++ build of Perl "
-									 PERL_REQUIRED_VERSION " installed in order to\n"
-									 "run Perl scripts. A reboot may be required.\n\n"
-									 "http://hexchat.github.io/downloads.html\n\n"
-									 "Make sure Perl's bin directory is in your PATH.");
-				}
+				thread_mbox ("You must have a Visual C++ build of Perl "
+								 PERL_REQUIRED_VERSION " installed\n"
+								 "in order to run Perl scripts.\n\n"
+								 "http://hexchat.github.io/downloads.html");
 			}
 			/* failure */
 			return FALSE;
