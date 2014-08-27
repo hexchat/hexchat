@@ -1361,3 +1361,25 @@ stream_writef (GOutputStream *ostream, const char *fmt, ...)
 	
 	return ret;
 }
+
+GDataInputStream *
+file_get_datainputstream (GFile *file)
+{
+	GInputStream *stream;
+	GDataInputStream *datastream;
+
+	stream = G_INPUT_STREAM(g_file_read (file, NULL, NULL));
+	if (!stream)
+		return NULL;
+
+	datastream = g_data_input_stream_new (stream);
+	/*
+	* This is to avoid any issues moving between windows/unix
+	* but the docs mention an invalid \r without a following \n
+	* can lock up the program
+	*/
+	g_data_input_stream_set_newline_type (datastream, G_DATA_STREAM_NEWLINE_TYPE_ANY);
+	g_object_unref (stream);
+	
+	return datastream;
+}

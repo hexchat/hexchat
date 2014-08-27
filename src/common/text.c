@@ -218,7 +218,6 @@ scrollback_save (session *sess, char *text, time_t stamp)
 void
 scrollback_load (session *sess)
 {
-	GInputStream *stream;
 	GDataInputStream *istream;
 	gchar *buf, *text;
 	gint lines = 0;
@@ -244,18 +243,9 @@ scrollback_load (session *sess)
 		g_free (buf);
 	}
 
-	stream = G_INPUT_STREAM(g_file_read (sess->scrollfile, NULL, NULL));
-	if (!stream)
+	istream = file_get_datainputstream (sess->scrollfile);
+	if (!istream)
 		return;
-
-	istream = g_data_input_stream_new (stream);
-	/*
-	 * This is to avoid any issues moving between windows/unix
-	 * but the docs mention an invalid \r without a following \n
-	 * can lock up the program... (Our write() always adds \n)
-	 */
-	g_data_input_stream_set_newline_type (istream, G_DATA_STREAM_NEWLINE_TYPE_ANY);
-	g_object_unref (stream);
 
 	while (1)
 	{

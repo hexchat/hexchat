@@ -53,6 +53,7 @@ int hexchat_open_file (const char *file, int flags, int mode, int xof_flags);
 FILE *hexchat_fopen_file (const char *file, const char *mode, int xof_flags);
 GFile *hexchat_open_gfile (const char *filename);
 gsize stream_writef (GOutputStream *ostream, const char *fmt, ...) G_GNUC_PRINTF (2, 3);
+GDataInputStream *file_get_datainputstream (GFile *file);
 
 #define XOF_DOMODE 1
 #define XOF_FULLPATH 2
