@@ -78,40 +78,72 @@ notc_msg (struct session *sess)
 static char *
 random_line (char *file_name)
 {
-	FILE *fh;
-	char buf[512];
-	int lines, ran;
+	GFile *file;
+	char *data, *p, *ret = NULL;
+	int lines = 0, ran;
+	gsize len;
 
 	if (!file_name[0])
-		goto nofile;
+		return g_strdup ("");
 
-	fh = hexchat_fopen_file (file_name, "r", 0);
-	if (!fh)
+	file = hexchat_open_gfile (file_name);
+
+	if (!g_file_query_exists (file, NULL))
 	{
-	 nofile:
 		/* reason is not a file, an actual reason! */
 		return g_strdup (file_name);
 	}
 
-	/* count number of lines in file */
-	lines = 0;
-	while (fgets (buf, sizeof (buf), fh))
-		lines++;
-
-	if (lines < 1)
-		goto nofile;
-
-	/* go down a random number */
-	rewind (fh);
-	ran = RAND_INT (lines);
-	do
+	if (!g_file_load_contents (file, NULL, &data, &len, NULL, NULL))
 	{
-		fgets (buf, sizeof (buf), fh);
-		lines--;
+		g_object_unref (file);
+		return g_strdup (file_name);
 	}
-	while (lines > ran);
-	fclose (fh);
-	return g_strdup (buf);
+	
+	g_object_unref (file);
+
+	/* count number of lines in file */
+	p = data;
+	while (p != data + len)
+	{
+		if (*p == '\n')
+			lines++;
+		p++;
+	}
+	
+	if (!lines)
+	{
+		g_free (data);
+		return g_strdup (file_name);
+	}
+
+	/* create random number */
+	ran = RAND_INT (lines);
+
+	/* get that random line */
+	p = data;
+	while (p != data + len)
+	{
+		if (*p == '\n')
+		{
+			if (!--ran)
+			{
+				char *end;
+				end = strchr (++p, '\n');
+				*end = '\0';
+				ret = g_strdup (p);
+				break;
+			}
+		}
+		p++;
+	}
+
+	g_free (data);
+	if (ret)
+		return ret;
+	else
+		return g_strdup (file_name);
+
 }
 
 void
