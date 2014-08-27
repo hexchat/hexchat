@@ -2519,30 +2519,32 @@ cmd_list (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 gboolean
-load_perform_file (session *sess, char *file)
+load_perform_file (session *sess, char *filename)
 {
-	char tbuf[1024 + 4];
-	char *nl;
-	FILE *fp;
+	GFile *file;
+	GDataInputStream *istream;
+	gchar *buf;
 
-	fp = hexchat_fopen_file (file, "r", 0);		/* load files from config dir */
-	if (!fp)
-		return FALSE;
+	file = hexchat_open_gfile (filename);
 
-	tbuf[1024] = 0;
-	while (fgets (tbuf, 1024, fp))
+	istream = file_get_datainputstream (file);
+	if (!istream)
 	{
-		nl = strchr (tbuf, '\n');
-		if (nl == tbuf) /* skip empty commands */
-			continue;
-		if (nl)
-			*nl = 0;
-		if (tbuf[0] == prefs.hex_input_command_char[0])
-			handle_command (sess, tbuf + 1, TRUE);
-		else
-			handle_command (sess, tbuf, TRUE);
+		g_object_unref (file);
+		return FALSE;
 	}
-	fclose (fp);
+
+	while ((buf = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL)))
+	{
+		if (g_str_has_prefix (buf, prefs.hex_input_command_char))
+			handle_command (sess, buf + 1, TRUE);
+		else
+			handle_command (sess, buf, TRUE);
+		g_free (buf);
+	}
+
+	g_object_unref (file);
+	g_object_unref (istream);
 	return TRUE;
 }
 
