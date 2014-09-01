@@ -1751,6 +1751,7 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	int prevSetting;
 	char *confname;
 	char *confname_tmp;
+	char *escaped_value;
 	char *buffer;
 	char *buffer_tmp;
 	char line_buffer[512];		/* the same as in cfg_put_str */
@@ -1776,7 +1777,9 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	{
 		if (mode)
 		{
-			buffer = g_strdup_printf ("%s = %s\n", var, value);
+			escaped_value = g_strescape (value, NULL);
+			buffer = g_strdup_printf ("%s = %s\n", var, escaped_value);
+			g_free (escaped_value);
 			write (fhOut, buffer, strlen (buffer));
 			g_free (buffer);
 			close (fhOut);
@@ -1824,7 +1827,9 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 			{
 				if (mode)									/* overwrite the existing matching setting if we are in save mode */
 				{
-					buffer = g_strdup_printf ("%s = %s\n", var, value);
+					escaped_value = g_strescape (value, NULL);
+					buffer = g_strdup_printf ("%s = %s\n", var, escaped_value);
+					g_free (escaped_value);
 				}
 				else										/* erase the setting in delete mode */
 				{
@@ -1848,7 +1853,9 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 
 		if (!prevSetting && mode)	/* var doesn't exist currently, append if we're in save mode */
 		{
-			buffer = g_strdup_printf ("%s = %s\n", var, value);
+			escaped_value = g_strescape (value, NULL);
+			buffer = g_strdup_printf ("%s = %s\n", var, escaped_value);
+			g_free (escaped_value);
 			write (fhOut, buffer, strlen (buffer));
 			g_free (buffer);
 		}
@@ -1888,7 +1895,8 @@ hexchat_pluginpref_set_str (hexchat_plugin *pl, const char *var, const char *val
 static int
 hexchat_pluginpref_get_str_real (hexchat_plugin *pl, const char *var, char *dest, int dest_len)
 {
-	char *confname, *canon, *cfg;
+	char *confname, *canon, *cfg, *unescaped_value;
+	char buf[512];
 
 	canon = g_strdup (pl->name);
 	canonalize_key (canon);
@@ -1903,12 +1911,16 @@ hexchat_pluginpref_get_str_real (hexchat_plugin *pl, const char *var, char *dest
 
 	g_free (confname);
 
-	if (!cfg_get_str (cfg, var, dest, dest_len))
+	if (!cfg_get_str (cfg, var, buf, sizeof(buf)))
 	{
 		g_free (cfg);
 		return 0;
 	}
 
+	unescaped_value = g_strcompress (buf);
+	g_strlcpy (dest, unescaped_value, dest_len);
+
+	g_free (unescaped_value);
 	g_free (cfg);
 	return 1;
 }
