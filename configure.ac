@@ -123,6 +123,10 @@ AC_ARG_ENABLE(doat,
 	[AS_HELP_STRING([--disable-doat],[disable the Do At plugin])],
         doat=$enableval, doat=yes)
 
+AC_ARG_ENABLE(znc,
+	[AS_HELP_STRING([--disable-znc],[disable the ZNC plugin])],
+		znc=$enableval, znc=yes)
+
 AC_ARG_ENABLE(fishlim,
 	[AS_HELP_STRING([--disable-fishlim],[disable the FiSHLiM plugin])],
         fishlim=$enableval, fishlim=yes)
@@ -479,6 +483,21 @@ if test "$doat" != "no"; then
 fi
 
 dnl *********************************************************************
+dnl ** ZNC **************************************************************
+dnl *********************************************************************
+
+if test "$znc" != "no"; then
+	AC_MSG_CHECKING(for plugin interface used by ZNC)
+	znc=no
+	if test "$plugin" = yes; then
+		znc=yes
+		AC_MSG_RESULT([yes])
+	else
+		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for ZNC])
+	fi
+fi
+
+dnl *********************************************************************
 dnl ** FiSHLiM **********************************************************
 dnl *********************************************************************
 
@@ -599,6 +618,7 @@ AM_CONDITIONAL(DO_PYTHON, test "x$python" != "xno")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
 AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
+AM_CONDITIONAL(DO_ZNC, test "x$znc" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
@@ -836,6 +856,7 @@ plugins/python/Makefile
 plugins/perl/Makefile
 plugins/checksum/Makefile
 plugins/doat/Makefile
+plugins/znc/Makefile
 plugins/fishlim/Makefile
 plugins/sysinfo/Makefile
 po/Makefile.in
@@ -864,6 +885,7 @@ echo Python ................ : $python
 echo
 echo Checksum .............. : $checksum
 echo Do At ................. : $doat
+echo ZNC Extras ............ : $znc
 echo FiSHLiM ............... : $fishlim
 echo SysInfo ............... : $sysinfo
 echo

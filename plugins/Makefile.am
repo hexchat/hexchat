@@ -10,6 +10,10 @@ if DO_DOAT
 doatdir = doat
 endif
 
+if DO_ZNC
+zncdir = znc
+endif
+
 if DO_FISHLIM
 fishlimdir = fishlim
 endif
@@ -22,4 +26,4 @@ if DO_SYSINFO
 sysinfodir = sysinfo
 endif
 
-SUBDIRS = $(pythondir) $(perldir) $(checksumdir) $(doatdir) $(fishlimdir) $(sysinfodir)
+SUBDIRS = $(pythondir) $(perldir) $(checksumdir) $(doatdir) $(fishlimdir) $(sysinfodir) $(zncdir)
