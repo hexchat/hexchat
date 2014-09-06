@@ -370,13 +370,13 @@ strip_hidden_attribute (char *src, char *dst)
 	return len;
 }
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
 
 static void
 get_cpu_info (double *mhz, int *cpus)
 {
 
-#ifdef USING_LINUX
+#if defined(USING_LINUX) || defined (__CYGWIN__)
 
 	char buf[256];
 	int fh;
@@ -610,7 +610,7 @@ get_sys_str (int with_cpu)
 char *
 get_sys_str (int with_cpu)
 {
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
 	double mhz;
 #endif
 	int cpus = 1;
@@ -624,7 +624,7 @@ get_sys_str (int with_cpu)
 
 	uname (&un);
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
 	get_cpu_info (&mhz, &cpus);
 	if (mhz && with_cpu)
 	{
