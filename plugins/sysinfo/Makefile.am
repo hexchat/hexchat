@@ -2,6 +2,6 @@ libdir = $(hexchatlibdir)
 
 lib_LTLIBRARIES = sysinfo.la
 sysinfo_la_SOURCES = match.c parse.c pci.c xsys.c
-sysinfo_la_LDFLAGS = -avoid-version -module
-sysinfo_la_LIBADD = -lpci
-AM_CPPFLAGS = $(COMMON_CFLAGS) -I$(srcdir)/../../src/common
+sysinfo_la_LDFLAGS = $(PLUGIN_LDFLAGS) -module
+sysinfo_la_LIBADD = $(LIBPCI_LIBS) $(GLIB_LIBS)
+sysinfo_la_CFLAGS = $(LIBPCI_CFLAGS) $(GLIB_CFLAGS) -I$(srcdir)/../../src/common

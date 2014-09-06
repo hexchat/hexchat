@@ -74,6 +74,13 @@ else
 	fi
 fi
 
+platform_win32=no
+case $host_os in
+	*mingw*|*cygwin*|*msys*)
+		platform_win32=yes;;
+	*);;
+esac
+
 dnl *********************************************************************
 dnl ** configure switches ***********************************************
 dnl *********************************************************************
@@ -183,17 +190,9 @@ dnl *********************************************************************
 dnl ** GLIB *************************************************************
 dnl *********************************************************************
 
-AM_PATH_GLIB_2_0(2.28.0, glib=yes, glib=no)
-if test "$glib" = no; then
-	AC_MSG_ERROR(Cannot find GLib!)
-fi
-
-PKG_CHECK_MODULES([GOBJECT], [gobject-2.0], [], [AC_MSG_ERROR(Cannot find gobject-2.0!)])
-PKG_CHECK_MODULES([GIO], [gio-2.0], [], [AC_MSG_ERROR(Cannot find gio-2.0!)])
-PKG_CHECK_MODULES([GMODULE], [gmodule-2.0], [], [AC_MSG_ERROR(Cannot find gmodule-2.0!)])
-
-COMMON_CFLAGS="$GLIB_CFLAGS $GIO_CFLAGS $GOBJECT_CFLAGS $GMODULE_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
-COMMON_LIBS="$GLIB_LIBS $GIO_LIBS $GOBJECT_LIBS $GMODULE_LIBS"
+AM_PATH_GLIB_2_0([2.28.0], [], [AC_MSG_ERROR([Glib not found!])], [gmodule gobject gio])
+COMMON_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
+COMMON_LIBS="$GLIB_LIBS"
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************
@@ -376,17 +375,14 @@ dnl *********************************************************************
 
 retry=no
 if test "$openssl" != no; then
-	AC_MSG_CHECKING(for openssl through pkg-config)
-	if $PKG_CONFIG openssl --exists; then
-		CPPFLAGS="$CPPFLAGS `$PKG_CONFIG openssl --cflags`"
-		LIBS="$LIBS `$PKG_CONFIG openssl --libs`"
+	PKG_CHECK_MODULES(OPENSSL, [openssl], [
 		AC_DEFINE(USE_OPENSSL)
-		AC_MSG_RESULT(yes)
 		openssl=yes
-	else
-		AC_MSG_RESULT(no)
+		COMMON_LIBS="$COMMON_LIBS $OPENSSL_LIBS"
+		COMMON_CFLAGS="$COMMON_CFLAGS $OPENSSL_CFLAGS"
+	], [
 		retry=yes
-	fi
+	])
 fi
 
 if test "$retry" = "yes"; then
@@ -395,30 +391,29 @@ if test "$retry" = "yes"; then
 		openssl_path=$openssl
 	fi
 	openssl=no
-	SAVED_LIBS=$LIBS
-	LIBS="$LIBS -lcrypto"
+	OPENSSL_LIBS="-lcrypto"
 	if test -n "$openssl_path"; then
-		LIBS="-L$openssl_path/lib $LIBS"
+		OPENSSL_LIBS="-L$openssl_path/lib $OPENSSL_LIBS"
 	fi
-	AC_CHECK_LIB(ssl, SSL_new, have_openssl=yes)
-	LIBS=$SAVED_LIBS
-	if test "$have_openssl" = yes; then
-		SAVED_CPPFLAGS=$CPPFLAGS
+	SAVED_LIBS=$LIBS
+	LIBS="$LIBS $OPENSSL_LIBS"
+	AC_CHECK_LIB(ssl, SSL_new, [
 		if test -n "$openssl_path"; then
-			CPPFLAGS="-I$openssl_path/include $CPPFLAGS"
+			OPENSSL_CFLAGS="-I$openssl_path/include"
 		fi
-		AC_CHECK_HEADERS(openssl/ssl.h, have_openssl_h=yes)
-		if test "$have_openssl_h" = yes; then
+		SAVED_CFLAGS=$CFLAGS
+		CFLAGS="$CFLAGS $OPENSSL_CFLAGS"
+		AC_CHECK_HEADERS(openssl/ssl.h, [
 			openssl=yes
 			AC_DEFINE(USE_OPENSSL)
-			LIBS="$LIBS -lssl -lcrypto"
-			if test -n "$openssl_path"; then
-				LIBS="-L$openssl_path/lib $LIBS"
-			fi
-		else
-			CPPFLAGS=$SAVED_CPPFLAGS
-		fi
-	fi
+			OPENSSL_LIBS="$OPENSSL_LIBS -lssl"
+
+			COMMON_LIBS="$COMMON_LIBS $OPENSSL_LIBS"
+			COMMON_CFLAGS="$COMMON_CFLAGS $OPENSSL_CFLAGS"
+		])
+		CFLAGS=$SAVED_CFLAGS
+	])
+	LIBS=$SAVED_LIBS
 fi
 
 dnl *********************************************************************
@@ -447,6 +442,10 @@ dnl *********************************************************************
 
 if test "$plugin" = yes; then
 	AC_DEFINE(USE_PLUGIN)
+	PLUGIN_LDFLAGS="-avoid-version"
+	if test "$platform_win32" = yes; then
+		PLUGIN_LDFLAGS="$PLUGIN_LDFLAGS -no-undefined"
+	fi
 fi
 
 dnl *********************************************************************
@@ -524,8 +523,7 @@ if test "x$dbus" = "xyes" ; then
 		dbus=no
 	])
 	AC_PATH_PROG(DBUS_BINDING_TOOL, dbus-binding-tool, no)
-	AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, no)
-	if test "x$DBUS_BINDING_TOOL" = "xno" || test "x$GLIB_GENMARSHAL" = "xno" || test "x$dbus" = "xno" ; then
+	if test "x$DBUS_BINDING_TOOL" = "xno" || test "x$dbus" = "xno" ; then
 		dbus="no"
 	else
 		COMMON_LIBS="$COMMON_LIBS $DBUS_LIBS"
@@ -805,11 +803,11 @@ AC_SUBST(PY_CFLAGS)
 AC_SUBST(PY_LIBS)
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
+AC_SUBST(OPENSSL_LIBS)
+AC_SUBST(OPENSSL_CFLAGS)
+AC_SUBST(PLUGIN_LDFLAGS)
 
 m4_ifdef([PKG_INSTALLDIR], [PKG_INSTALLDIR], AC_SUBST([pkgconfigdir], ${libdir}/pkgconfig))
-
-PLUGIN_INCLUDES='-I$(top_srcdir)/plugins'
-AC_SUBST(PLUGIN_INCLUDES)
 
 dnl for plugin.c and pixmaps.c
 test "x$prefix" = xNONE && prefix="$ac_default_prefix"
