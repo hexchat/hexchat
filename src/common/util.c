@@ -31,7 +31,6 @@
 
 #ifdef WIN32
 #include <sys/timeb.h>
-#include <process.h>
 #include <io.h>
 #include <VersionHelpers.h>
 #else
