@@ -25,7 +25,7 @@
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #include <glib/gi18n.h>
-#include "../hexchat-plugin.h"
+#include "hexchat-plugin.h"
 
 #define PNAME _("remote access")
 #define PDESC _("plugin for remote access using DBUS")

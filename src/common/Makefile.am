@@ -2,7 +2,7 @@
 
 noinst_LIBRARIES = libhexchatcommon.a
 
-AM_CPPFLAGS = $(COMMON_CFLAGS)
+AM_CPPFLAGS = $(COMMON_CFLAGS) -I$(top_srcdir)
 
 EXTRA_DIST = \
 	cfgfiles.h \
@@ -70,7 +70,7 @@ libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
 textenums.h: textevents.h
 
 textevents.h: $(srcdir)/textevents.in make-te
-	$(AM_V_GEN) ./make-te < $< > $@ 2> textenums.h
+	$(AM_V_GEN) $(srcdir)/make-te < $< > $@ 2> textenums.h
 
 marshal.h: $(srcdir)/marshalers.list
 	$(AM_V_GEN) $(GLIB_GENMARSHAL) --prefix=_hexchat_marshal --header $< > $@

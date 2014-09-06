@@ -15,7 +15,7 @@ BUILT_SOURCES =				\
 
 CLEANFILES = $(BUILT_SOURCES)
 
-AM_CPPFLAGS = $(COMMON_CFLAGS) $(DBUS_CFLAGS)
+AM_CPPFLAGS = $(COMMON_CFLAGS) $(DBUS_CFLAGS) -I$(top_srcdir)/src/common
 
 noinst_PROGRAMS = example
 example_SOURCES = example.c

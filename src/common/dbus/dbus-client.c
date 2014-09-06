@@ -22,8 +22,8 @@
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
 #include <dbus/dbus-glib.h>
 #include "dbus-client.h"
-#include "../hexchat.h"
-#include "../hexchatc.h"
+#include "hexchat.h"
+#include "hexchatc.h"
 
 #define DBUS_SERVICE "org.hexchat.service"
 #define DBUS_REMOTE "/org/hexchat/Remote"

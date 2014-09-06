@@ -15,4 +15,4 @@ CLEANFILES = hexchat.pm.h irc.pm.h
 hexchat.pm.h irc.pm.h: lib/HexChat.pm lib/Xchat.pm lib/HexChat/Embed.pm \
 	lib/HexChat/List/Network.pm lib/HexChat/List/Network/Entry.pm \
 	lib/HexChat/List/Network/AutoJoin.pm lib/IRC.pm
-	perl generate_header
+	cd $(srcdir); perl generate_header
