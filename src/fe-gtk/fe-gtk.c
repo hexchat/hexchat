@@ -983,23 +983,75 @@ fe_set_inputbox_contents (session *sess, char *text)
 	}
 }
 
+#ifdef __APPLE__
+static char *
+url_escape_hostname (const char *url)
+{
+    char *host_start, *host_end, *ret, *hostname;
+
+    host_start = strstr (url, "://");
+    if (host_start != NULL)
+    {
+        *host_start = '\0';
+        host_start += 3;
+        host_end = strchr (host_start, '/');
+
+        if (host_end != NULL)
+        {
+            *host_end = '\0';
+            host_end++;
+        }
+
+        hostname = g_hostname_to_ascii (host_start);
+        if (host_end != NULL)
+            ret = g_strdup_printf ("%s://%s/%s", url, hostname, host_end);
+        else
+            ret = g_strdup_printf ("%s://%s", url, hostname);
+
+        g_free (hostname);
+        return ret;
+    }
+
+    return g_strdup (url);
+}
+
+static void
+osx_show_uri (const char *url)
+{
+    char *escaped_url, *encoded_url, *open, *cmd;
+
+    escaped_url = url_escape_hostname (url);
+    encoded_url = g_filename_from_utf8 (escaped_url, -1, NULL, NULL, NULL);
+    if (encoded_url)
+    {
+        open = g_find_program_in_path ("open");
+        cmd = g_strjoin (" ", open, encoded_url, NULL);
+
+        hexchat_exec (cmd);
+
+        g_free (encoded_url);
+        g_free (cmd);
+    }
+
+    g_free (escaped_url);
+}
+
+#endif
+
 static void
 fe_open_url_inner (const char *url)
 {
 #ifdef WIN32
 	ShellExecute (0, "open", url, NULL, NULL, SW_SHOWNORMAL);
-#elif defined __APPLE__
-	/* on Mac you can just 'open http://foo.bar/' */
-	gchar open[512];
-	g_snprintf (open, sizeof(open), "%s %s", g_find_program_in_path ("open"), url, NULL);
-	hexchat_exec (open);
+#elif defined(__APPLE__)
+    osx_show_uri (url);
 #else
 	gtk_show_uri (NULL, url, GDK_CURRENT_TIME, NULL);
 #endif
 }
 
-static void
-fe_open_url_locale (const char *url)
+void
+fe_open_url (const char *url)
 {
 	int url_type = url_check_word (url);
 	char *uri;
@@ -1038,27 +1090,6 @@ fe_open_url_locale (const char *url)
 	else
 	{
 		fe_open_url_inner (url);
-	}
-}
-
-void
-fe_open_url (const char *url)
-{
-	char *loc;
-
-	if (prefs.utf8_locale)
-	{
-		fe_open_url_locale (url);
-		return;
-	}
-
-	/* the OS expects it in "locale" encoding. This makes it work on
-	   unix systems that use ISO-8859-x and Win32. */
-	loc = g_locale_from_utf8 (url, -1, 0, 0, 0);
-	if (loc)
-	{
-		fe_open_url_locale (loc);
-		g_free (loc);
 	}
 }
 
