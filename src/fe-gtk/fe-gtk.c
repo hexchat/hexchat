@@ -1042,7 +1042,16 @@ static void
 fe_open_url_inner (const char *url)
 {
 #ifdef WIN32
-	ShellExecute (0, "open", url, NULL, NULL, SW_SHOWNORMAL);
+	gunichar2 *url_utf16 = g_utf8_to_utf16 (url, -1, NULL, NULL, NULL);
+
+	if (url_utf16 == NULL)
+	{
+		return;
+	}
+
+	ShellExecuteW (0, L"open", url_utf16, NULL, NULL, SW_SHOWNORMAL);
+
+	g_free (url_utf16);
 #elif defined(__APPLE__)
     osx_show_uri (url);
 #else
