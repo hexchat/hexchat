@@ -2300,7 +2300,14 @@ sound_play (const char *file, gboolean quiet)
 	if (g_access (wavfile, R_OK) == 0)
 	{
 #ifdef WIN32
-		PlaySound (wavfile, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
+		gunichar2 *wavfile_utf16 = g_utf8_to_utf16 (wavfile, -1, NULL, NULL, NULL);
+
+		if (wavfile_utf16 != NULL)
+		{
+			PlaySoundW (wavfile_utf16, NULL, SND_NODEFAULT | SND_FILENAME | SND_ASYNC);
+
+			g_free (wavfile_utf16);
+		}
 #else
 #ifdef USE_LIBCANBERRA
 		if (ca_con == NULL)
