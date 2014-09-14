@@ -3254,7 +3254,7 @@ gtk_xtext_render_stamp (GtkXText * xtext, textentry * ent,
 {
 	textentry tmp_ent;
 	int jo, ji, hs;
-	int xsize, y;
+	int xsize, y, emphasis;
 
 	/* trashing ent here, so make a backup first */
 	memcpy (&tmp_ent, ent, sizeof (tmp_ent));
@@ -3264,7 +3264,7 @@ gtk_xtext_render_stamp (GtkXText * xtext, textentry * ent,
 	xtext->jump_out_offset = 0;
 	xtext->jump_in_offset = 0;
 	xtext->hilight_start = 0xffff;	/* temp disable */
-	int emphasis = 0;
+	emphasis = 0;
 
 	if (xtext->mark_stamp)
 	{

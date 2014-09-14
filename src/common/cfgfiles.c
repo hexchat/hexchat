@@ -1315,7 +1315,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 int
-hexchat_open_file (char *file, int flags, int mode, int xof_flags)
+hexchat_open_file (const char *file, int flags, int mode, int xof_flags)
 {
 	char *buf;
 	int fd;

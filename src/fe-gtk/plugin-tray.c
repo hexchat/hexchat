@@ -186,9 +186,10 @@ fe_tray_set_balloon (const char *title, const char *text)
 
 	if (!notify_is_initted())
 	{
+		GList* server_caps;
 		notify_init(PACKAGE_NAME);
 
-		GList* server_caps = notify_get_server_caps ();
+		server_caps = notify_get_server_caps ();
 		if (g_list_find_custom (server_caps, "body-markup", (GCompareFunc)strcmp))
 		{
 			notify_text_strip_flags |= STRIP_ESCMARKUP;

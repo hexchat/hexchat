@@ -1526,7 +1526,7 @@ canonalize_key (char *key)
 }
 
 int
-portable_mode ()
+portable_mode (void)
 {
 #ifdef WIN32
 	if ((_access( "portable-mode", 0 )) != -1)
@@ -1543,7 +1543,7 @@ portable_mode ()
 }
 
 int
-unity_mode ()
+unity_mode (void)
 {
 #ifdef G_OS_UNIX
 	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
