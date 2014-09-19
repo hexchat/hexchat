@@ -25,7 +25,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <io.h>
 #else
 #include <unistd.h>
@@ -43,7 +43,7 @@
 #include "hexchatc.h"
 #include "text.h"
 #include "typedef.h"
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #endif
 
@@ -414,7 +414,7 @@ log_create_filename (char *channame)
 		mbl = g_utf8_skip[((unsigned char *)tmp)[0]];
 		if (mbl == 1)
 		{
-#ifndef WIN32
+#ifndef _WIN32
 			*tmp = rfc_tolower (*tmp);
 			if (*tmp == '/')
 #else
@@ -517,7 +517,7 @@ logmask_is_fullpath ()
 	 * full path if the 2nd character is a colon since Windows doesn't allow
 	 * colons in filenames.
 	 */
-#ifdef WIN32
+#ifdef _WIN32
 	/* Treat it as full path if it
 	 * - starts with '\' which denotes the root directory of the current drive letter
 	 * - starts with a drive letter and followed by ':'
@@ -597,7 +597,7 @@ log_open_file (char *servname, char *channame, char *netname)
 	if (!file)
 		return -1;
 
-#ifdef WIN32
+#ifdef _WIN32
 	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY, S_IREAD|S_IWRITE);
 #else
 	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY, 0644);
@@ -861,7 +861,7 @@ text_validate (char **text, int *len)
 	if (g_utf8_validate (*text, *len, 0))
 		return NULL;
 
-#ifdef WIN32
+#ifdef _WIN32
 	if (GetACP () == 1252) /* our routine is better than iconv's 1252 */
 #else
 	if (prefs.utf8_locale)
@@ -2273,7 +2273,7 @@ sound_play (const char *file, gboolean quiet)
 {
 	char *buf;
 	char *wavfile;
-#ifndef WIN32
+#ifndef _WIN32
 	char *cmd;
 #endif
 
@@ -2283,7 +2283,7 @@ sound_play (const char *file, gboolean quiet)
 		return;
 	}
 
-#ifdef WIN32
+#ifdef _WIN32
 	/* check for fullpath */
 	if (file[0] == '\\' || (((file[0] >= 'A' && file[0] <= 'Z') || (file[0] >= 'a' && file[0] <= 'z')) && file[1] == ':'))
 #else
@@ -2299,7 +2299,7 @@ sound_play (const char *file, gboolean quiet)
 
 	if (g_access (wavfile, R_OK) == 0)
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		gunichar2 *wavfile_utf16 = g_utf8_to_utf16 (wavfile, -1, NULL, NULL, NULL);
 
 		if (wavfile_utf16 != NULL)

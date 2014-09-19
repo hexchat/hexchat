@@ -25,7 +25,7 @@
 #include "inet.h"				  /* make it first to avoid macro redefinitions */
 #include <openssl/ssl.h>		  /* SSL_() */
 #include <openssl/err.h>		  /* ERR_() */
-#ifdef WIN32
+#ifdef _WIN32
 #include <openssl/rand.h>		  /* RAND_seed() */
 #endif
 #include "../../config.h"
@@ -74,7 +74,7 @@ SSL_CTX *
 _SSL_context_init (void (*info_cb_func), int server)
 {
 	SSL_CTX *ctx;
-#ifdef WIN32
+#ifdef _WIN32
 	int i, r;
 #endif
 
@@ -88,7 +88,7 @@ _SSL_context_init (void (*info_cb_func), int server)
 	/* used in SSL_connect(), SSL_accept() */
 	SSL_CTX_set_info_callback (ctx, info_cb_func);
 
-#ifdef WIN32
+#ifdef _WIN32
 	/* under win32, OpenSSL needs to be seeded with some randomness */
 	for (i = 0; i < 128; i++)
 	{

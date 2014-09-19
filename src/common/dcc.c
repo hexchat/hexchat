@@ -38,7 +38,7 @@
 #define WANTDNS
 #include "inet.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #include <io.h>
 #else
@@ -59,7 +59,7 @@
 
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
-#ifdef WIN32
+#ifdef _WIN32
 #define stat _stat64
 #endif
 #else
@@ -812,7 +812,7 @@ dcc_did_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
 	int er;
 	
-#ifdef WIN32
+#ifdef _WIN32
 	if (condition & G_IO_ERR)
 	{
 		int len;
@@ -1979,7 +1979,7 @@ dcc_change_nick (struct server *serv, char *oldnick, char *newnick)
 static int
 is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 {
-#ifndef WIN32
+#ifndef _WIN32
 	GStatBuf st_a, st_b;
 #endif
 
@@ -1988,7 +1988,7 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 		return TRUE;
 
 	/* now handle case-insensitive Filesystems: HFS+, FAT */
-#ifdef WIN32
+#ifdef _WIN32
 	/* warning no win32 implementation - behaviour may be unreliable */
 #else
 	/* this fstat() shouldn't really fail */
@@ -2334,7 +2334,7 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 			strcat (dcc->destfile, G_DIR_SEPARATOR_S);
 		if (prefs.hex_dcc_save_nick)
 		{
-#ifdef WIN32
+#ifdef _WIN32
 			char *t = strlen (dcc->destfile) + dcc->destfile;
 			strcpy (t, nick);
 			while (*t)

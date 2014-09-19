@@ -31,7 +31,7 @@
 #include "hexchatc.h"
 #include "typedef.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <io.h>
 #else
 #include <unistd.h>
@@ -294,7 +294,7 @@ cfg_get_int (char *cfg, char *var)
 
 char *xdir = NULL;	/* utf-8 encoding */
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <Windows.h>
 #include <ShlObj.h>
 #endif
@@ -304,7 +304,7 @@ get_xdir (void)
 {
 	if (!xdir)
 	{
-#ifndef WIN32
+#ifndef _WIN32
 		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
 #else
 		wchar_t* roaming_path_wide;
@@ -379,7 +379,7 @@ const struct prefs vars[] =
 	{"dcc_blocksize", P_OFFINT (hex_dcc_blocksize), TYPE_INT},
 	{"dcc_completed_dir", P_OFFSET (hex_dcc_completed_dir), TYPE_STR},
 	{"dcc_dir", P_OFFSET (hex_dcc_dir), TYPE_STR},
-#ifndef WIN32
+#ifndef _WIN32
 	{"dcc_fast_send", P_OFFINT (hex_dcc_fast_send), TYPE_BOOL},
 #endif
 	{"dcc_global_max_get_cps", P_OFFINT (hex_dcc_global_max_get_cps), TYPE_INT},
@@ -533,7 +533,7 @@ const struct prefs vars[] =
 	{"irc_whois_front", P_OFFINT (hex_irc_whois_front), TYPE_BOOL},
 
 	{"net_auto_reconnect", P_OFFINT (hex_net_auto_reconnect), TYPE_BOOL},
-#ifndef WIN32	/* FIXME fix reconnect crashes and remove this ifdef! */
+#ifndef _WIN32	/* FIXME fix reconnect crashes and remove this ifdef! */
 	{"net_auto_reconnectonfail", P_OFFINT (hex_net_auto_reconnectonfail), TYPE_BOOL},
 #endif
 	{"net_bind_host", P_OFFSET (hex_net_bind_host), TYPE_STR},
@@ -595,7 +595,7 @@ convert_with_fallback (const char *str, const char *fallback)
 {
 	char *utf;
 
-#ifndef WIN32
+#ifndef _WIN32
 	/* On non-Windows, g_get_user_name and g_get_real_name return a string in system locale, so convert it to utf-8. */
 	utf = g_locale_to_utf8 (str, -1, NULL, NULL, 0);
 
@@ -718,7 +718,7 @@ load_default_config(void)
 {
 	const char *username, *realname, *font, *langs;
 	char *sp;
-#ifdef WIN32
+#ifdef _WIN32
 	wchar_t* roaming_path_wide;
 	gchar* roaming_path;
 #endif
@@ -744,7 +744,7 @@ load_default_config(void)
 	prefs.hex_away_show_once = 1;
 	prefs.hex_away_track = 1;
 	prefs.hex_dcc_auto_resume = 1;
-#ifndef WIN32
+#ifndef _WIN32
 	prefs.hex_dcc_fast_send = 1;
 #endif
 	prefs.hex_gui_autoopen_chat = 1;
@@ -844,7 +844,7 @@ load_default_config(void)
 	/* STRINGS */
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.hex_completion_suffix, ",");
-#ifdef WIN32
+#ifdef _WIN32
 	if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_Downloads, 0, NULL, &roaming_path_wide) != S_OK)
 	{
 		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
@@ -1058,7 +1058,7 @@ save_config (void)
 		return 0;
 	}
 
-#ifdef WIN32
+#ifdef _WIN32
 	g_unlink (config);	/* win32 can't rename to an existing file */
 #endif
 	if (g_rename (new_config, config) == -1)

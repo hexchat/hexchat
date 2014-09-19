@@ -22,7 +22,7 @@
 #include <glib.h>
 #include "hexchat-plugin.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #define g_ascii_strcasecmp stricmp
 #endif
 

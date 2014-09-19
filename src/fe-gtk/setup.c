@@ -37,7 +37,7 @@
 #include "menu.h"
 #include "plugin-tray.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include "../common/fe.h"
 #endif
 #include "sexy-spell-entry.h"
@@ -82,7 +82,7 @@ typedef struct
 	int extra;
 } setting;
 
-#ifdef WIN32
+#ifdef _WIN32
 static const char *const langsmenu[] =
 {
 	N_("Afrikaans"),
@@ -145,7 +145,7 @@ static const char *const langsmenu[] =
 static const setting appearance_settings[] =
 {
 	{ST_HEADER,	N_("General"),0,0,0},
-#ifdef WIN32
+#ifdef _WIN32
 	{ST_MENU,   N_("Language:"), P_OFFINTNL(hex_gui_lang), 0, langsmenu, 0},
 	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(hex_text_font_main), 0, 0, sizeof prefs.hex_text_font_main},
 #else
@@ -164,7 +164,7 @@ static const setting appearance_settings[] =
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(hex_stamp_text),0,0,1},
 	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(hex_stamp_text_format),
-#ifdef WIN32
+#ifdef _WIN32
 					N_("See the strftime MSDN article for details."),0,sizeof prefs.hex_stamp_text_format},
 #else
 					N_("See the strftime manpage for details."),0,sizeof prefs.hex_stamp_text_format},
@@ -193,7 +193,7 @@ static const setting inputbox_settings[] =
 	{ST_TOGGLE, N_("Show user mode icon in nick box"), P_OFFINTNL(hex_gui_input_icon),0,0,0},
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,1},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(hex_text_spell_langs),0,0,sizeof prefs.hex_text_spell_langs},
-#ifdef WIN32
+#ifdef _WIN32
 	{ST_LABEL,	N_("Use language codes (as in \"%LOCALAPPDATA%\\enchant\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
 #else
 	{ST_LABEL,	N_("Use language codes. Separate multiple entries with commas.")},
@@ -396,7 +396,7 @@ static const setting alert_settings[] =
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
-#if !defined (WIN32) && !defined (__APPLE__)
+#if !defined (_WIN32) && !defined (__APPLE__)
 	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
 #endif
 	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
@@ -407,7 +407,7 @@ static const setting alert_settings[] =
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 #endif
 #endif
-#ifdef WIN32
+#ifdef _WIN32
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play the \"Instant Message Notification\" system sound upon the selected events"), (void *)beeplist, 0},
 #else
 #ifdef USE_LIBCANBERRA
@@ -421,7 +421,7 @@ static const setting alert_settings[] =
 	{ST_TOGGLE,	N_("Omit alerts while the window is focused"), P_OFFINTNL(hex_gui_focus_omitalerts), 0, 0, 0},
 
 	{ST_HEADER,	N_("Tray Behavior"), 0, 0, 0},
-#ifdef WIN32
+#ifdef _WIN32
 	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 3},
 #else
 	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 4},
@@ -429,7 +429,7 @@ static const setting alert_settings[] =
 	{ST_TOGGLE,	N_("Minimize to tray"), P_OFFINTNL(hex_gui_tray_minimize), 0, 0, 0},
 	{ST_TOGGLE,	N_("Close to tray"), P_OFFINTNL(hex_gui_tray_close), 0, 0, 0},
 	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("Automatically change status when hiding to tray."), 0, 0},
-#ifndef WIN32
+#ifndef _WIN32
 	{ST_TOGGLE,	N_("Only show tray balloons when hidden or iconified"), P_OFFINTNL(hex_gui_tray_quiet), 0, 0, 0},
 #endif
 
@@ -513,7 +513,7 @@ static const setting advanced_settings[] =
 
 	{ST_HEADER,	N_("Miscellaneous"), 0, 0, 0},
 	{ST_ENTRY,  N_("Real name:"), P_OFFSETNL(hex_irc_real_name), 0, 0, sizeof prefs.hex_irc_real_name},
-#ifdef WIN32
+#ifdef _WIN32
 	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), N_("Separate multiple entries with commas without spaces before or after."), 0, sizeof prefs.hex_text_font_alternative},
 #endif
 	{ST_TOGGLE,	N_("Display lists in compact mode"), P_OFFINTNL(hex_gui_compact), N_("Use less spacing between user list/channel tree rows."), 0, 0},
@@ -538,7 +538,7 @@ static const setting logging_settings[] =
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(hex_stamp_log), 0, 0, 1},
 	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(hex_stamp_log_format), 0, 0, sizeof prefs.hex_stamp_log_format},
-#ifdef WIN32
+#ifdef _WIN32
 	{ST_LABEL,	N_("See the strftime MSDN article for details.")},
 #else
 	{ST_LABEL,	N_("See the strftime manpage for details.")},
@@ -849,7 +849,7 @@ setup_create_hscale (GtkWidget *table, int row, const setting *set)
 	gtk_table_attach (GTK_TABLE (table), wid, 3, 6, row, row + 1,
 							GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 
-#ifndef WIN32 /* Windows always supports this */
+#ifndef _WIN32 /* Windows always supports this */
 	/* Only used for transparency currently */
 	if (!gtk_widget_is_composited (current_sess->gui->window))
 		gtk_widget_set_sensitive (wid, FALSE);
@@ -1042,7 +1042,7 @@ setup_browsefile_cb (GtkWidget *button, GtkWidget *entry)
 	char *filter;
 	int filter_type;
 
-#ifdef WIN32
+#ifdef _WIN32
 	filter = "*png;*.tiff;*.gif;*.jpeg;*.jpg";
 	filter_type = FRF_EXTENSIONS;
 #else
@@ -1647,7 +1647,7 @@ setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 	char *sounds_dir = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
 	char *filter = NULL;
 	int filter_type;
-#ifdef WIN32 /* win32 only supports wav, others could support anything */
+#ifdef _WIN32 /* win32 only supports wav, others could support anything */
 	filter = "*.wav";
 	filter_type = FRF_EXTENSIONS;
 #else
@@ -2005,7 +2005,7 @@ unslash (char *dir)
 	if (dir[0])
 	{
 		int len = strlen (dir) - 1;
-#ifdef WIN32
+#ifdef _WIN32
 		if (dir[len] == '/' || dir[len] == '\\')
 #else
 		if (dir[len] == '/')
@@ -2072,7 +2072,7 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 static void
 setup_apply (struct hexchatprefs *pr)
 {
-#ifdef WIN32
+#ifdef _WIN32
 	PangoFontDescription *old_desc;
 	PangoFontDescription *new_desc;
 	char buffer[4 * FONTNAMELEN + 1];
@@ -2087,7 +2087,7 @@ setup_apply (struct hexchatprefs *pr)
 
 #define DIFF(a) (pr->a != prefs.a)
 
-#ifdef WIN32
+#ifdef _WIN32
 	if (DIFF (hex_gui_lang))
 		noapply = TRUE;
 #endif
@@ -2139,7 +2139,7 @@ setup_apply (struct hexchatprefs *pr)
 
 	memcpy (&prefs, pr, sizeof (prefs));
 
-#ifdef WIN32
+#ifdef _WIN32
 	/* merge hex_font_main and hex_font_alternative into hex_font_normal */
 	old_desc = pango_font_description_from_string (prefs.hex_text_font_main);
 	sprintf (buffer, "%s,%s", pango_font_description_get_family (old_desc), prefs.hex_text_font_alternative);
@@ -2167,7 +2167,7 @@ setup_apply (struct hexchatprefs *pr)
 		fe_message (_("Some settings were changed that require a"
 						" restart to take full effect."), FE_MSG_WARN);
 
-#ifndef WIN32
+#ifndef _WIN32
 	if (prefs.hex_dcc_auto_recv == 2) /* Auto */
 	{
 		if (!strcmp ((char *)g_get_home_dir (), prefs.hex_dcc_dir))
