@@ -68,7 +68,7 @@
 /* force a 32bit CMP.L */
 #define WORDL(c0, c1, c2, c3) (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24))
 
-#ifdef WIN32						/* for win32 */
+#ifdef _WIN32						/* for win32 */
 #define OFLAGS O_BINARY
 #define sleep(t) Sleep(t*1000)
 #include <direct.h>

@@ -26,7 +26,7 @@
 #define WANTSOCKET
 #include "inet.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #else
 #include <sys/wait.h>
@@ -538,7 +538,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 static void
 exec_notify_kill (session * sess)
 {
-#ifndef WIN32
+#ifndef _WIN32
 	struct nbexec *re;
 	if (sess->running_exec != NULL)
 	{
@@ -786,7 +786,7 @@ xchat_init (void)
 	char buf[3068];
 	const char *cs = NULL;
 
-#ifdef WIN32
+#ifdef _WIN32
 	WSADATA wsadata;
 
 #ifdef USE_IPV6
@@ -798,7 +798,7 @@ xchat_init (void)
 #else
 	WSAStartup(0x0101, &wsadata);
 #endif	/* !USE_IPV6 */
-#endif	/* !WIN32 */
+#endif	/* !_WIN32 */
 
 #ifdef USE_SIGACTION
 	struct sigaction act;
@@ -820,7 +820,7 @@ xchat_init (void)
 	sigemptyset (&act.sa_mask);
 	sigaction (SIGUSR2, &act, NULL);
 #else
-#ifndef WIN32
+#ifndef _WIN32
 	/* good enough for these old systems */
 	signal (SIGPIPE, SIG_IGN);
 #endif
@@ -1001,7 +1001,7 @@ hexchat_exec (const char *cmd)
 static void
 set_locale (void)
 {
-#ifdef WIN32
+#ifdef _WIN32
 	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of hex_gui_lang and trailing \0 */
 
 	strcpy (hexchat_lang, "LC_ALL=");
@@ -1097,14 +1097,14 @@ main (int argc, char *argv[])
 		fe_message (buf, FE_MSG_ERROR);
 	}
 
-#ifndef WIN32
+#ifndef _WIN32
 #ifndef __EMX__
 	/* OS/2 uses UID 0 all the time */
 	if (getuid () == 0)
 		fe_message (_("* Running IRC as root is stupid! You should\n"
 			      "  create a User Account and use that to login.\n"), FE_MSG_WARN|FE_MSG_WAIT);
 #endif
-#endif /* !WIN32 */
+#endif /* !_WIN32 */
 
 	xchat_init ();
 
@@ -1119,7 +1119,7 @@ main (int argc, char *argv[])
 		_SSL_context_free (ctx);
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 	WSACleanup ();
 #endif
 

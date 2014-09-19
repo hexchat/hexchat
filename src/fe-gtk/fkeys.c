@@ -24,7 +24,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <io.h>
 #else
 #include <unistd.h>
@@ -438,7 +438,7 @@ key_dialog_combo_changed (GtkCellRendererCombo *combo, gchar *pathstr,
 
 	if (actiontext)
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		/* We need to manually update the store */
 		GtkTreePath *path;
 		GtkTreeIter iter;
@@ -676,7 +676,7 @@ key_dialog_treeview_new (GtkWidget *box)
 
 	render = gtk_cell_renderer_accel_new ();
 	g_object_set (render, "editable", TRUE,
-#ifndef WIN32
+#ifndef _WIN32
 					"accel-mode", GTK_CELL_RENDERER_ACCEL_MODE_OTHER,
 #endif
 					NULL);

@@ -34,7 +34,7 @@
 #include <openssl/sha.h>
 #include <glib.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #ifndef snprintf
 #define snprintf _snprintf
 #endif

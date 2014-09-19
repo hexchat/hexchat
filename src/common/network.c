@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <glib.h>
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <unistd.h>
 #endif
 #include "../../config.h"

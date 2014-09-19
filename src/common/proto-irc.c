@@ -24,7 +24,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <unistd.h>
 #endif
 
@@ -1366,7 +1366,7 @@ get_timezone(void)
 	/* gmtime() and localtime() are thread-safe on windows.
 	 * on other systems we should use {gmtime,localtime}_r().
 	 */
-#if WIN32
+#if _WIN32
 	tm_utc = *gmtime (&t);
 	tm_local = *localtime (&t);
 #else
