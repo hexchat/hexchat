@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #include <io.h>
 #else
@@ -908,7 +908,7 @@ menu_fullscreen_toggle (GtkWidget *wid, gpointer ud)
 	{
 		gtk_window_unfullscreen (GTK_WINDOW(parent_window));
 
-#ifdef WIN32
+#ifdef _WIN32
 		if (!prefs.hex_gui_win_state) /* not maximized */
 		{
 			/* other window managers seem to handle this */
@@ -1718,12 +1718,12 @@ menu_about (GtkWidget *wid, gpointer sess)
 					"along with this program. If not, see <http://www.gnu.org/licenses/>";
 
 	g_snprintf  (comment, sizeof(comment), "Compiled: "__DATE__"\n"
-#ifdef WIN32
+#ifdef _WIN32
 				"Portable Mode: %s\n"
 				"Build Type: x%d\n"
 #endif
 				"OS: %s",
-#ifdef WIN32
+#ifdef _WIN32
 				(portable_mode () ? "Yes" : "No"),
 				get_cpu_arch (),
 #endif

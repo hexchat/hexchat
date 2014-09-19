@@ -30,7 +30,7 @@
 #include "maingui.h"
 #include "menu.h"
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <unistd.h>
 #endif
 
@@ -75,7 +75,7 @@ typedef GdkPixbuf* TrayIcon;
 static GtkStatusIcon *sticon;
 static gint flash_tag;
 static TrayStatus tray_status;
-#ifdef WIN32
+#ifdef _WIN32
 static guint tray_menu_timer;
 static gint64 tray_menu_inactivetime;
 #endif
@@ -157,7 +157,7 @@ fe_tray_set_tooltip (const char *text)
 void
 fe_tray_set_balloon (const char *title, const char *text)
 {
-#ifndef WIN32
+#ifndef _WIN32
 #if 0
 	const char *argv[8];
 	const char *path;
@@ -569,12 +569,12 @@ tray_menu_destroy (GtkWidget *menu, gpointer userdata)
 {
 	gtk_widget_destroy (menu);
 	g_object_unref (menu);
-#ifdef WIN32
+#ifdef _WIN32
 	g_source_remove (tray_menu_timer);
 #endif
 }
 
-#ifdef WIN32
+#ifdef _WIN32
 static void
 tray_menu_enter_cb (GtkWidget *menu)
 {
@@ -630,7 +630,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		tray_make_item (menu, _("_Hide Window"), tray_menu_restore_cb, NULL);
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 
-#ifndef WIN32 /* submenus are buggy on win32 */
+#ifndef _WIN32 /* submenus are buggy on win32 */
 	submenu = mg_submenu (menu, _("_Blink on"));
 	blink_item (&prefs.hex_input_tray_chans, submenu, _("Channel Message"));
 	blink_item (&prefs.hex_input_tray_priv, submenu, _("Private Message"));
@@ -651,7 +651,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		gtk_widget_set_sensitive (item, FALSE);
 
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
-#ifdef WIN32
+#ifdef _WIN32
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 	mg_create_icon_item (_("_Preferences"), GTK_STOCK_PREFERENCES, menu, tray_menu_settings, NULL);
 #endif
@@ -663,7 +663,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	g_object_unref (menu);
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (tray_menu_destroy), NULL);
-#ifdef WIN32
+#ifdef _WIN32
 	g_signal_connect (G_OBJECT (menu), "leave-notify-event",
 							G_CALLBACK (tray_menu_left_cb), NULL);
 	g_signal_connect (G_OBJECT (menu), "enter-notify-event",
@@ -902,7 +902,7 @@ tray_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 int
 tray_plugin_deinit (hexchat_plugin *plugin_handle)
 {
-#ifdef WIN32
+#ifdef _WIN32
 	tray_cleanup ();
 #elif defined(USE_LIBNOTIFY)
 	notify_uninit ();

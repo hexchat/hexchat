@@ -23,7 +23,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <io.h>
 #else
 #include <unistd.h>
@@ -210,7 +210,7 @@ hexchat_dummy (hexchat_plugin *ph)
 	return NULL;
 }
 
-#ifdef WIN32
+#ifdef _WIN32
 static int
 hexchat_read_fd (hexchat_plugin *ph, GIOChannel *source, char *buf, int *len)
 {
@@ -274,7 +274,7 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_plugingui_add = hexchat_plugingui_add;
 		pl->hexchat_plugingui_remove = hexchat_plugingui_remove;
 		pl->hexchat_emit_print = hexchat_emit_print;
-#ifdef WIN32
+#ifdef _WIN32
 		pl->hexchat_read_fd = (void *) hexchat_read_fd;
 #else
 		pl->hexchat_read_fd = hexchat_dummy;
@@ -446,7 +446,7 @@ plugin_auto_load (session *sess)
 	lib_dir = plugin_get_libdir ();
 	sub_dir = g_build_filename (get_xdir (), "addons", NULL);
 
-#ifdef WIN32
+#ifdef _WIN32
 	/* a long list of bundled plugins that should be loaded automatically,
 	 * user plugins should go to <config>, leave Program Files alone! */
 	for_files (lib_dir, "hcchecksum.dll", plugin_auto_load_cb);
@@ -1789,7 +1789,7 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 			buffer_tmp = g_build_filename (get_xdir (), confname_tmp, NULL);
 			g_free (confname_tmp);
 
-#ifdef WIN32
+#ifdef _WIN32
 			g_unlink (buffer);
 #endif
 
@@ -1867,7 +1867,7 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 		buffer_tmp = g_build_filename (get_xdir (), confname_tmp, NULL);
 		g_free (confname_tmp);
 
-#ifdef WIN32
+#ifdef _WIN32
 		g_unlink (buffer);
 #endif
 

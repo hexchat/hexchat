@@ -33,7 +33,7 @@
 #define WANTARPA
 #include "inet.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winbase.h>
 #include <io.h>
 #else
@@ -67,7 +67,7 @@
 #include "msproxy.h"
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #include "identd.h"
 #endif
 
@@ -522,7 +522,7 @@ server_connected (server * serv)
 	fe_server_event (serv, FE_SE_CONNECT, 0);
 }
 
-#ifdef WIN32
+#ifdef _WIN32
 
 static gboolean
 server_close_pipe (int *pipefd)	/* see comments below */
@@ -550,7 +550,7 @@ server_stopconnecting (server * serv)
 		serv->joindelay_tag = 0;
 	}
 
-#ifndef WIN32
+#ifndef _WIN32
 	/* kill the child process trying to connect */
 	kill (serv->childpid, SIGKILL);
 	waitpid (serv->childpid, NULL, 0);
@@ -822,7 +822,7 @@ auto_reconnect (server *serv, int send_quit, int err)
 	if (del < 1000)
 		del = 500;				  /* so it doesn't block the gui */
 
-#ifndef WIN32
+#ifndef _WIN32
 	if (err == -1 || err == 0 || err == ECONNRESET || err == ETIMEDOUT)
 #else
 	if (err == -1 || err == 0 || err == WSAECONNRESET || err == WSAETIMEDOUT)
@@ -945,7 +945,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, ip, sizeof ip);
 		waitline2 (source, outbuf, sizeof outbuf);
 		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
-#ifdef WIN32
+#ifdef _WIN32
 		if (prefs.hex_identd)
 		{
 			if (serv->network && ((ircnet *)serv->network)->user)
@@ -1637,7 +1637,7 @@ server_child (server * serv)
 
 xit:
 
-#if defined (USE_IPV6) || defined (WIN32)
+#if defined (USE_IPV6) || defined (_WIN32)
 	/* this is probably not needed */
 	net_store_destroy (ns_server);
 	if (ns_proxy)
@@ -1645,7 +1645,7 @@ xit:
 #endif
 
 	/* no need to free ip/real_hostname, this process is exiting */
-#ifdef WIN32
+#ifdef _WIN32
 	/* under win32 we use a thread -> shared memory, must free! */
 	if (proxy_ip)
 		free (proxy_ip);
@@ -1739,7 +1739,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	fe_set_away (serv);
 	server_flush_queue (serv);
 
-#ifdef WIN32
+#ifdef _WIN32
 	if (_pipe (read_des, 4096, _O_BINARY) < 0)
 #else
 	if (pipe (read_des) < 0)
@@ -1765,7 +1765,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 		serv->proxy_sok6 = -1;
 	}
 
-#ifdef WIN32
+#ifdef _WIN32
 	CloseHandle (CreateThread (NULL, 0,
 										(LPTHREAD_START_ROUTINE)server_child,
 										serv, 0, (DWORD *)&pid));
@@ -1790,7 +1790,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 #endif
 	serv->childpid = pid;
-#ifdef WIN32
+#ifdef _WIN32
 	serv->iotag = fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child,
 #else
 	serv->iotag = fe_input_add (serv->childread, FIA_READ, server_read_child,

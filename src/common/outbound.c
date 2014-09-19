@@ -28,7 +28,7 @@
 #define WANTARPA
 #include "inet.h"
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <sys/wait.h>
 #include <unistd.h>
 #endif
@@ -1440,7 +1440,7 @@ cmd_echo (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
-#ifndef WIN32
+#ifndef _WIN32
 
 static void
 exec_check_process (struct session *sess)
@@ -3911,7 +3911,7 @@ const struct commands xc_cmds[] = {
 	{"DISCON", cmd_discon, 0, 0, 1, N_("DISCON, Disconnects from server")},
 	{"DNS", cmd_dns, 0, 0, 1, N_("DNS <nick|host|ip>, Resolves an IP or hostname")},
 	{"ECHO", cmd_echo, 0, 0, 1, N_("ECHO <text>, Prints text locally")},
-#ifndef WIN32
+#ifndef _WIN32
 	{"EXEC", cmd_exec, 0, 0, 1,
 	 N_("EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box")},
 #ifndef __EMX__

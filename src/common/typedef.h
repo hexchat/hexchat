@@ -20,7 +20,7 @@
 #ifndef HEXCHAT_TYPEDEF_H
 #define HEXCHAT_TYPEDEF_H
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #ifndef SSIZE_T_DEFINED
 #ifdef ssize_t

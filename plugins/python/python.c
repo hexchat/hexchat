@@ -57,7 +57,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <direct.h>
 #else
 #include <unistd.h>
@@ -102,7 +102,7 @@
 #define PyUnicode_FromString PyString_FromString
 #define PyUnicode_AsUTF8 PyString_AsString
 
-#ifdef WIN32
+#ifdef _WIN32
 #undef WITH_THREAD
 #endif
 #endif
@@ -786,7 +786,7 @@ static int
 Callback_ThreadTimer(void *userdata)
 {
 	RELEASE_XCHAT_LOCK();
-#ifndef WIN32
+#ifndef _WIN32
 	usleep(1);
 #endif
 	ACQUIRE_XCHAT_LOCK();
@@ -1572,7 +1572,7 @@ Plugin_New(char *filename, PyObject *xcoobj)
 	PySys_SetObject("stderr", xcoobj);
 
 	if (filename) {
-#ifdef WIN32
+#ifdef _WIN32
 		char *file;
 		if (!g_file_get_contents_utf8(filename, &file, NULL, NULL)) {
 			hexchat_printf(ph, "Can't open file %s: %s\n",
