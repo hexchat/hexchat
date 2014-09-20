@@ -37,7 +37,7 @@ struct cert_info {
 
 struct chiper_info {
     char version[16];
-    char chiper[24];
+    char chiper[48];
     int chiper_bits;
 };
 
