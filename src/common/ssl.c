@@ -35,11 +35,9 @@
 #include <string.h>				  /* strncpy() */
 #include "ssl.h"				  /* struct cert_info */
 
-#ifndef HAVE_SNPRINTF
 #include <glib.h>
 #include <glib/gprintf.h>
-#define snprintf g_snprintf
-#endif
+#include "util.h"
 
 /* globals */
 static struct chiper_info chiper_info;		/* static buffer for _SSL_get_cipher_info() */
@@ -57,7 +55,7 @@ __SSL_fill_err_buf (char *funcname)
 
 	err = ERR_get_error ();
 	ERR_error_string (err, buf);
-	snprintf (err_buf, sizeof (err_buf), "%s: %s (%d)\n", funcname, buf, err);
+	g_snprintf (err_buf, sizeof (err_buf), "%s: %s (%d)\n", funcname, buf, err);
 }
 
 
