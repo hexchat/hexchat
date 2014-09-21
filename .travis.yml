@@ -1,5 +1,7 @@
 language: c
-compiler: gcc
+compiler: 
+    - gcc
+    - clang
 before_script:
     - sudo apt-get update
     - sudo apt-get build-dep -qq xchat
@@ -7,9 +9,11 @@ before_script:
 script: 
     - ./autogen.sh
     - ./configure --enable-textfe --with-theme-manager
-    - make V=1
+    - make V=1 -j$(nproc)
 notifications:
     irc:
         channels: "chat.freenode.net#hexchat-devel"
         template: "Build #%{build_number} (%{commit}) by %{author}: %{message}"
         on_success: change
+matrix:
+     fast_finish: true
