@@ -441,7 +441,8 @@ mg_windowstate_cb (GtkWindow *wid, GdkEventWindowState *event, gpointer userdata
 {
 	if ((event->changed_mask & GDK_WINDOW_STATE_ICONIFIED) &&
 		 (event->new_window_state & GDK_WINDOW_STATE_ICONIFIED) &&
-		 prefs.hex_gui_tray_minimize && !unity_mode ())
+		 prefs.hex_gui_tray_minimize && prefs.hex_gui_tray &&
+		 !unity_mode ())
 	{
 		tray_toggle_visibility (TRUE);
 		gtk_window_deiconify (wid);
