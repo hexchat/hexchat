@@ -128,7 +128,7 @@ print_version (char *word[], char *word_eol[], void *userdata)
 
 	if (!g_ascii_strcasecmp ("HELP", word[2]))
 	{
-		hexchat_printf (ph, upd_help);
+		hexchat_printf (ph, "%s", upd_help);
 		return HEXCHAT_EAT_HEXCHAT;
 	}
 	else if (!g_ascii_strcasecmp ("SET", word[2]))
@@ -200,7 +200,7 @@ print_version (char *word[], char *word_eol[], void *userdata)
 	}
 	else
 	{
-		hexchat_printf (ph, upd_help);
+		hexchat_printf (ph, "%s", upd_help);
 		return HEXCHAT_EAT_HEXCHAT;
 	}
 }

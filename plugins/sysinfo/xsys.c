@@ -750,7 +750,7 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 
 	if (!g_ascii_strcasecmp ("HELP", word[2+offset]))
 	{
-		hexchat_printf (ph, sysinfo_help);
+		hexchat_printf (ph, "%s", sysinfo_help);
 		return HEXCHAT_EAT_ALL;
 	}
 	else if (!g_ascii_strcasecmp ("LIST", word[2+offset]))
@@ -870,7 +870,7 @@ sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 	}
 	else
 	{
-		hexchat_printf (ph, sysinfo_help);
+		hexchat_printf (ph, "%s", sysinfo_help);
 		return HEXCHAT_EAT_ALL;
 	}
 }
