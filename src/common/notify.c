@@ -293,26 +293,20 @@ notify_set_offline_list (server * serv, char *users, int quiet,
 	struct notify_per_server *servnot;
 	char nick[NICKLEN];
 	char *token, *chr;
-	int pos;
 
 	token = strtok (users, ",");
 	while (token != NULL)
 	{
 		chr = strchr (token, '!');
-		if (!chr)
-			goto end;
+		if (chr != NULL)
+			*chr = '\0';
 
-		pos = chr - token;
-		if (pos + 1 >= sizeof(nick))
-			goto end;
-
-		memset (nick, 0, sizeof(nick));
-		strncpy (nick, token, pos);
+		g_strlcpy (nick, token, sizeof(nick));
 
 		servnot = notify_find (serv, nick);
 		if (servnot)
 			notify_announce_offline (serv, servnot, nick, quiet, tags_data);
-end:
+
 		token = strtok (NULL, ",");
 	}
 }
@@ -324,26 +318,20 @@ notify_set_online_list (server * serv, char *users,
 	struct notify_per_server *servnot;
 	char nick[NICKLEN];
 	char *token, *chr;
-	int pos;
 
 	token = strtok (users, ",");
 	while (token != NULL)
 	{
 		chr = strchr (token, '!');
-		if (!chr)
-			goto end;
+		if (chr != NULL)
+			*chr = '\0';
 
-		pos = chr - token;
-		if (pos + 1 >= sizeof(nick))
-			goto end;
-
-		memset (nick, 0, sizeof(nick));
-		strncpy (nick, token, pos);
+		g_strlcpy (nick, token, sizeof(nick));
 
 		servnot = notify_find (serv, nick);
 		if (servnot)
 			notify_announce_online (serv, servnot, nick, tags_data);
-end:
+
 		token = strtok (NULL, ",");
 	}
 }
