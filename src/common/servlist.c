@@ -352,6 +352,12 @@ static const struct defaultserver def[] =
 	{"OtherNet",	0},
 	{0,			"irc.othernet.org"},
 
+	{"OVERdrive-IRC", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0, 		"irc.overdrive.pw/+6697"},
+#endif
+	{0,			"irc.overdrive.pw"},
+
 	{"OzNet",	0},
 	{0,			"irc.oz.org"},
 
