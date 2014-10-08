@@ -484,7 +484,10 @@ gtk_xtext_adjustment_set (xtext_buffer *buf, int fire_signal)
 		adj->page_increment = adj->page_size;
 
 		if (adj->value > adj->upper - adj->page_size)
+		{
+			buf->scrollbar_down = TRUE;
 			adj->value = adj->upper - adj->page_size;
+		}
 
 		if (adj->value < 0)
 			adj->value = 0;
