@@ -55,11 +55,6 @@
 #include <glib-object.h>			/* for g_type_init() */
 #endif
 
-#ifdef USE_OPENSSL
-#include <openssl/ssl.h>			/* SSL_() */
-#include "ssl.h"
-#endif
-
 #ifdef USE_MSPROXY
 #include "msproxy.h"
 #endif
@@ -117,10 +112,6 @@ gint arg_existing = FALSE;
 struct session *current_tab;
 struct session *current_sess = 0;
 struct hexchatprefs prefs;
-
-#ifdef USE_OPENSSL
-SSL_CTX *ctx = NULL;
-#endif
 
 #ifdef USE_LIBPROXY
 pxProxyFactory *libproxy_factory;
@@ -1147,15 +1138,6 @@ main (int argc, char *argv[])
 
 #ifdef USE_LIBPROXY
 	px_proxy_factory_free(libproxy_factory);
-#endif
-
-#ifdef USE_OPENSSL
-	if (ctx)
-		_SSL_context_free (ctx);
-#endif
-
-#ifdef USE_DEBUG
-	hexchat_mem_list ();
 #endif
 
 #ifdef WIN32

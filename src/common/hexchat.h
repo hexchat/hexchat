@@ -532,6 +532,7 @@ typedef struct server
 	struct msproxy_state_t msp_state;
 	int id;					/* unique ID number (for plugin API) */
 #ifdef USE_OPENSSL
+	SSL_CTX *ctx;
 	SSL *ssl;
 	int ssl_do_connect_tag;
 #else
