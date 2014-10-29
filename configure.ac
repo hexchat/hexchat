@@ -255,8 +255,11 @@ if test "$perl" = yes; then
 				original_ldflags="$LDFLAGS"
 				CFLAGS="$PERL_CFLAGS"
 				LDFLAGS="$PERL_LDFLAGS"
-				AC_TRY_LINK([#include <EXTERN.h>
-	#include <perl.h>], [], perl_is_usable=yes, perl_is_usable=no)
+				AC_TRY_LINK([
+						#define PERL_NO_INLINE_FUNCTIONS
+						#include <EXTERN.h>
+						#include <perl.h>
+					], [], perl_is_usable=yes, perl_is_usable=no)
 				CFLAGS="$original_cflags"
 				LDFLAGS="$original_ldflags"
 				if test x$perl_is_usable = xno ; then
