@@ -1667,10 +1667,8 @@ encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 		return NULL;
 	BF_set_key (&key, key_size, secret);
 
-	encrypted_pass = (guchar*)malloc (pass_len);
-	memset (encrypted_pass, 0, pass_len);
-	plain_pass = (char*)malloc (pass_len);
-	memset (plain_pass, 0, pass_len);
+	encrypted_pass = (guchar*)calloc (pass_len);
+	plain_pass = (char*)calloc (pass_len);
 	memcpy (plain_pass, pass, pass_len);
 	out_ptr = (char*)encrypted_pass;
 	in_ptr = (char*)plain_pass;
@@ -1729,10 +1727,9 @@ encode_sasl_pass_aes (char *user, char *pass, char *data)
 	if (!parse_dh (data, &dh, &secret, &key_size))
 		return NULL;
 
-	encrypted_userpass = (guchar*)malloc (userpass_len);
-	memset (encrypted_userpass, 0, userpass_len);
-	plain_userpass = (guchar*)malloc (userpass_len);
-	memset (plain_userpass, 0, userpass_len);
+
+	encrypted_userpass = (guchar*)calloc (userpass_len);
+	plain_userpass = (guchar*)calloc (userpass_len);
 
 	/* create message */
 	/* format of: <username>\0<password>\0<padding> */
