@@ -2111,6 +2111,8 @@ gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret)
 
 	/* now allocate mem and copy buffer */
 	pos = txt = malloc (len);
+	if (!txt)
+		return NULL;
 	ent = buf->last_ent_start;
 	while (ent)
 	{
@@ -4962,8 +4964,9 @@ gtk_xtext_buffer_new (GtkXText *xtext)
 {
 	xtext_buffer *buf;
 
-	buf = malloc (sizeof (xtext_buffer));
-	memset (buf, 0, sizeof (xtext_buffer));
+	buf = calloc (1, sizeof (xtext_buffer));
+	if (!buf)
+		return NULL;
 	buf->old_value = -1;
 	buf->xtext = xtext;
 	buf->scrollbar_down = TRUE;

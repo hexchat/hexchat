@@ -796,8 +796,9 @@ plugin_add_hook (hexchat_plugin *pl, int type, int pri, const char *name,
 {
 	hexchat_hook *hook;
 
-	hook = malloc (sizeof (hexchat_hook));
-	memset (hook, 0, sizeof (hexchat_hook));
+	hook = calloc (1, sizeof (hexchat_hook));
+	if (!hook)
+		return NULL;
 
 	hook->type = type;
 	hook->pri = pri;

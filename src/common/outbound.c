@@ -1803,8 +1803,7 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			return FALSE;
 		}
 #endif
-		s = (struct nbexec *) malloc (sizeof (struct nbexec));
-		memset(s, 0, sizeof(*s));
+		s = (struct nbexec *) calloc (1, sizeof (struct nbexec));
 		s->myfd = fds[0];
 		s->tochannel = tochannel;
 		s->sess = sess;
