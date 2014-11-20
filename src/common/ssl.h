@@ -52,7 +52,7 @@ char *_SSL_set_verify (SSL_CTX *ctx, void *(verify_callback), char *cacert);
     int SSL_get_fd(SSL *);
 */
 void _SSL_close (SSL * ssl);
-
+int _SSL_check_hostname(X509 *cert, const char *host);
 int _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl);
 struct chiper_info *_SSL_get_cipher_info (SSL * ssl);
 

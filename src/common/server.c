@@ -723,9 +723,22 @@ ssl_do_connect (server * serv)
 		switch (verify_error)
 		{
 		case X509_V_OK:
+			{
+				X509 *cert = SSL_get_peer_certificate (serv->ssl);
+				int hostname_err;
+				if ((hostname_err = _SSL_check_hostname(cert, serv->hostname)) != 0)
+				{
+					snprintf (buf, sizeof (buf), "* Verify E: Failed to validate hostname? (%d)%s",
+							 hostname_err, serv->accept_invalid_cert ? " -- Ignored" : "");
+					if (serv->accept_invalid_cert)
+						EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL, NULL, 0);
+					else
+						goto conn_fail;
+				}
+				break;
+			}
 			/* snprintf (buf, sizeof (buf), "* Verify OK (?)"); */
 			/* EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL, NULL, 0); */
-			break;
 		case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY:
 		case X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE:
 		case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
@@ -744,6 +757,7 @@ ssl_do_connect (server * serv)
 			snprintf (buf, sizeof (buf), "%s.? (%d)",
 						 X509_verify_cert_error_string (verify_error),
 						 verify_error);
+conn_fail:
 			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, buf, NULL, NULL,
 							 NULL, 0);
 
