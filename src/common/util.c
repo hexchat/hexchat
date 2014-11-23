@@ -2017,7 +2017,7 @@ encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 	memset (encrypted_pass, 0, pass_len);
 	plain_pass = (char*)malloc (pass_len);
 	memset (plain_pass, 0, pass_len);
-	memcpy (plain_pass, pass, pass_len);
+	memcpy (plain_pass, pass, strlen(pass));
 	out_ptr = (char*)encrypted_pass;
 	in_ptr = (char*)plain_pass;
 
