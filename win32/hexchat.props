@@ -30,9 +30,9 @@
 		<Python3Path>$(YourPython3Path)\$(PlatformName)</Python3Path>
 		<Python3Lib>python34</Python3Lib>
 		<Python3Output>hcpython3</Python3Output>
-		<Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
+		<Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include</Glib>
 		<Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
-		<DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;libintl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
+		<DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;libintl.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
 		<DataDir>$(SolutionDir)..\data\\</DataDir>
 		<HexChatBuild>$(SolutionDir)..\..\hexchat-build</HexChatBuild>
 		<HexChatBin>$(HexChatBuild)\$(PlatformName)\bin\</HexChatBin>
@@ -51,7 +51,6 @@ copy "$(HexChatBin)hexchat-text.exe" "$(HexChatRel)"
 copy "$(HexChatBin)thememan.exe" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\atk-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\cairo.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\fontconfig.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\gdk_pixbuf-2.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\gdk-win32-2.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\gio-2.0.dll" "$(HexChatRel)"
@@ -66,10 +65,8 @@ copy "$(DepsRoot)\bin\libeay32.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\libenchant.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\libintl.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\libpng16.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\libxml2.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pango-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangocairo-1.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\pangoft2-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pangowin32-1.0.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\pixman-1.dll" "$(HexChatRel)"
 copy "$(DepsRoot)\bin\ssleay32.dll" "$(HexChatRel)"
