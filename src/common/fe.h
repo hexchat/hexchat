@@ -181,6 +181,12 @@ void fe_tray_set_icon (feicon icon);
 void fe_tray_set_tooltip (const char *text);
 void fe_tray_set_balloon (const char *title, const char *text);
 void fe_open_chan_list (server *serv, char *filter, int do_refresh);
-const char *fe_get_default_font ();
+typedef enum
+{
+	FONT_NOTHING,
+	FONT_GET_DEFAULT,
+	FONT_SET_ALTS
+} font_code;
+const char *fe_get_default_font (font_code);
 
 #endif

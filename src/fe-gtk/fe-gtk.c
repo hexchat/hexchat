@@ -25,6 +25,7 @@
 #ifdef WIN32
 #include <gdk/gdkwin32.h>
 #include <windows.h>
+#include <pango/pangocairo.h>
 #else
 #include <unistd.h>
 #endif
@@ -1167,19 +1168,52 @@ fe_open_chan_list (server *serv, char *filter, int do_refresh)
 	chanlist_opengui (serv, do_refresh);
 }
 
+/* Perform special initializations for fonts */
 const char *
-fe_get_default_font (void)
+fe_get_default_font (font_code code)
 {
 #ifdef WIN32
-	if (gtkutil_find_font ("Consolas"))
-		return "Consolas 10";
-	else
+			PangoFontDescription *old_desc, *new_desc;
+			char buffer[4 * FONTNAMELEN + 1];
+#endif
+
+	switch (code)
+	{
+		case FONT_NOTHING:
+			return NULL;
+
+		case FONT_GET_DEFAULT:
+#ifdef WIN32
+			if (gtkutil_find_font ("Consolas"))
+				return "Consolas 10";
+			else
 #else
 #ifdef __APPLE__
-	if (gtkutil_find_font ("Menlo"))
-		return "Menlo 13";
-	else
+			if (gtkutil_find_font ("Menlo"))
+				return "Menlo 13";
+			else
 #endif
 #endif
-		return NULL;
+				return NULL;
+
+		case FONT_SET_ALTS:
+#ifdef WIN32
+			/* merge hex_font_main and hex_font_alternative into hex_font_normal */
+			old_desc = pango_font_description_from_string (prefs.hex_text_font_main);
+			sprintf (buffer, "%s,%s", pango_font_description_get_family (old_desc), prefs.hex_text_font_alternative);
+			new_desc = pango_font_description_from_string (buffer);
+			pango_font_description_set_weight (new_desc, pango_font_description_get_weight (old_desc));
+			pango_font_description_set_style (new_desc, pango_font_description_get_style (old_desc));
+			pango_font_description_set_size (new_desc, pango_font_description_get_size (old_desc));
+			sprintf (prefs.hex_text_font, "%s", pango_font_description_to_string (new_desc));
+		
+			/* FIXME this is not required after pango_font_description_from_string()
+			g_free (old_desc);
+			g_free (new_desc);
+			*/
+#endif
+			return NULL;
+	}
+	return NULL;
+		
 }

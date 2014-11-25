@@ -880,7 +880,7 @@ load_default_config(void)
 	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
 
-	font = fe_get_default_font ();
+	font = fe_get_default_font (FONT_GET_DEFAULT);
 	if (font)
 	{
 		strcpy (prefs.hex_text_font, font);
@@ -893,6 +893,7 @@ load_default_config(void)
 	}
 
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
+	fe_get_default_font (FONT_SET_ALTS);
 	langs = get_default_spell_languages ();
 	strcpy (prefs.hex_text_spell_langs, langs);
 
@@ -981,6 +982,8 @@ load_config (void)
 		i++;
 	}
 	while (vars[i].name);
+
+	fe_get_default_font (FONT_SET_ALTS);
 	
 	g_free (cfg);
 
