@@ -1018,23 +1018,27 @@ main (int argc, char *argv[])
 	 * load_config() must come before fe_args() because fe_args() calls gtk_init() which needs to
 	 * know the language which is set in the config. The code below is copy-pasted from fe_args()
 	 * for the most part. */
-	if (argc >= 3)
+	if (argc >= 2)
 	{
-		for (i = 1; i < argc - 1; i++)
+		for (i = 1; i < argc; i++)
 		{
-			if (strcmp (argv[i], "-d") == 0)
+			if ((strcmp (argv[i], "-d") == 0 || strcmp (argv[i], "--cfgdir") == 0)
+				&& i + 1 < argc)
 			{
-				if (xdir)
-				{
-					g_free (xdir);
-				}
-
 				xdir = strdup (argv[i + 1]);
+			}
+			else if (strncmp (argv[i], "--cfgdir=", 9) == 0)
+			{
+				xdir = strdup (argv[i] + 9);
+			}
 
+			if (xdir != NULL)
+			{
 				if (xdir[strlen (xdir) - 1] == G_DIR_SEPARATOR)
 				{
 					xdir[strlen (xdir) - 1] = 0;
 				}
+				break;
 			}
 		}
 	}
