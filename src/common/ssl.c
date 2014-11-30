@@ -44,6 +44,10 @@
 #define SSL_OP_SINGLE_ECDH_USE 0
 #endif
 
+#ifndef SSL_OP_NO_COMPRESSION
+#define SSL_OP_NO_COMPRESSION 0
+#endif
+
 /* globals */
 static struct chiper_info chiper_info;		/* static buffer for _SSL_get_cipher_info() */
 static char err_buf[256];			/* generic error buffer */
@@ -90,9 +94,7 @@ _SSL_context_init (void (*info_cb_func), int server)
 	SSL_CTX_set_session_cache_mode (ctx, SSL_SESS_CACHE_BOTH);
 	SSL_CTX_set_timeout (ctx, 300);
 	SSL_CTX_set_options (ctx, SSL_OP_NO_SSLv2|SSL_OP_NO_SSLv3
-#ifdef SSL_OP_NO_COMPRESSION
 							  |SSL_OP_NO_COMPRESSION
-#endif
 							  |SSL_OP_SINGLE_DH_USE|SSL_OP_SINGLE_ECDH_USE
 							  |SSL_OP_NO_TICKET
 							  |SSL_OP_CIPHER_SERVER_PREFERENCE);
