@@ -4685,7 +4685,7 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 }
 
 void
-gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len)
+gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp)
 {
 	textentry *ent;
 
@@ -4707,7 +4707,7 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len)
 	ent->indent = 0;
 	ent->left_len = -1;
 
-	gtk_xtext_append_entry (buf, ent, 0);
+	gtk_xtext_append_entry (buf, ent, stamp);
 }
 
 gboolean
@@ -4742,7 +4742,7 @@ gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area)
 			}
 			else
 			{
-				gtk_xtext_append (out, ent->str, ent->str_len);
+				gtk_xtext_append (out, ent->str, ent->str_len, 0);
 			}
 
 			out->text_last->stamp = ent->stamp;

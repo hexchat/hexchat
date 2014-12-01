@@ -163,7 +163,7 @@ fe_add_rawlog (server *serv, char *text, int len, int outbound)
 		else
 			new_text = g_strconcat ("\0033>>\017 ", split_text[i], NULL);
 
-		gtk_xtext_append (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer, new_text, strlen (new_text));
+		gtk_xtext_append (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer, new_text, strlen (new_text), 0);
 
 		g_free (new_text);
 	}
