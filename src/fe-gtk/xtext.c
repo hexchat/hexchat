@@ -1649,7 +1649,8 @@ gtk_xtext_check_mark_stamp (GtkXText *xtext, GdkModifierType mask)
 {
 	gboolean redraw = FALSE;
 
-	if (mask & STATE_SHIFT || prefs.hex_text_autocopy_stamp)
+	if ((mask & STATE_SHIFT || prefs.hex_text_autocopy_stamp)
+	    && (!prefs.hex_stamp_text || prefs.hex_text_indent))
 	{
 		if (!xtext->mark_stamp)
 		{
