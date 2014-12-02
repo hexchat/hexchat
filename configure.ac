@@ -159,6 +159,10 @@ AC_ARG_ENABLE(minimal-flags,
 	[AS_HELP_STRING([--enable-minimal-flags],[only add those CFLAGS that are really needed or not intrusive (default: no)])],
         minimalflags=$enableval, minimalflags=no)
 
+AC_ARG_ENABLE(static-analysis,
+	[AS_HELP_STRING([--enable-static-analysis],[if using clang run static analysis during build (default: no)])],
+        analyze=$enableval, analyze=no)
+
 AC_ARG_WITH(theme-manager,
 	[AS_HELP_STRING([--with-theme-manager],[compile theme manager (needs monodevelop, default: off)])],
 		theme_manager=$withval, theme_manager=no)
@@ -588,6 +592,17 @@ if test "x$isocodes" = "xyes" ; then
 fi
 
 dnl *********************************************************************
+dnl ** Static Analysis **************************************************
+dnl *********************************************************************
+
+if test "x$analyze" = "xyes"; then
+	if test "$CC" != "clang"; then
+		AC_MSG_WARN(CC is not clang for static analysis)
+		analyze=no
+	fi
+fi
+
+dnl *********************************************************************
 dnl ** CONDITIONALS *****************************************************
 dnl *********************************************************************
 
@@ -604,6 +619,7 @@ AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
 AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
+AM_CONDITIONAL(DO_STATIC_ANALYSIS, test "x$analyze" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 AM_CONDITIONAL(HAVE_ISO_CODES, test "x$isocodes" = "xyes")
 AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
