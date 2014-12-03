@@ -4306,7 +4306,7 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 	char *buf, *utf;
 	char tbuf[4];
 	int i = 0, j = 0;
-	gssize utf_len;
+	gsize utf_len;
 
 	if (!len)
 		return;
