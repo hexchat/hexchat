@@ -260,7 +260,7 @@ lag_check (void)
 	unsigned long tim;
 	char tbuf[128];
 	time_t now = time (0);
-	int lag;
+	time_t lag;
 
 	tim = make_ping_time ();
 
@@ -272,7 +272,7 @@ lag_check (void)
 			lag = now - serv->ping_recv;
 			if (prefs.hex_net_ping_timeout && lag > prefs.hex_net_ping_timeout && lag > 0)
 			{
-				sprintf (tbuf, "%d", lag);
+				sprintf (tbuf, "%d", (int)lag);
 				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, NULL,
 								 NULL, NULL, 0);
 				if (prefs.hex_net_auto_reconnect)
@@ -396,7 +396,7 @@ irc_init (session *sess)
 {
 	static int done_init = FALSE;
 	char *buf;
-	int i;
+	guint i;
 
 	if (done_init)
 		return;
@@ -1012,7 +1012,7 @@ main (int argc, char *argv[])
 	int i;
 	int ret;
 
-	srand (time (0));	/* CL: do this only once! */
+	srand ((unsigned int)time (0));	/* CL: do this only once! */
 
 	/* We must check for the config dir parameter, otherwise load_config() will behave incorrectly.
 	 * load_config() must come before fe_args() because fe_args() calls gtk_init() which needs to

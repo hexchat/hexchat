@@ -1355,7 +1355,7 @@ process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol
 /* Returns the timezone offset. This should be the same as the variable
  * "timezone" in time.h, but *BSD doesn't have it.
  */
-static int
+static time_t
 get_timezone(void)
 {
 	struct tm tm_utc, tm_local;

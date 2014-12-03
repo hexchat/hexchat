@@ -4145,7 +4145,7 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
  * - this beast is used for UserCommands, UserlistButtons and CTCP replies   */
 
 int
-auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
+auto_insert (char *dest, gsize destlen, unsigned char *src, char *word[],
 				 char *word_eol[], char *a, char *c, char *d, char *e, char *h,
 				 char *n, char *s, char *u)
 {
@@ -4175,7 +4175,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 					utf = g_locale_to_utf8 (dest, 1, 0, &utf_len, 0);
 					if (utf)
 					{
-						if ((dest - orig) + utf_len >= destlen)
+						if ((gsize)(dest - orig) + utf_len >= destlen)
 						{
 							g_free (utf);
 							return 2;
@@ -4201,7 +4201,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 							utf = word_eol[num];
 
 						/* avoid recusive usercommand overflow */
-						if ((dest - orig) + strlen (utf) >= destlen)
+						if ((gsize)(dest - orig) + strlen (utf) >= destlen)
 							return 2;
 
 						strcpy (dest, utf);
@@ -4217,7 +4217,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 				switch (src[0])
 				{
 				case '%':
-					if ((dest - orig) + 2 >= destlen)
+					if ((gsize)(dest - orig) + 2 >= destlen)
 						return 2;
 					dest[0] = '%';
 					dest[1] = 0;
@@ -4263,7 +4263,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 
 				if (utf)
 				{
-					if ((dest - orig) + strlen (utf) >= destlen)
+					if ((gsize)(dest - orig) + strlen (utf) >= destlen)
 						return 2;
 					strcpy (dest, utf);
 					dest += strlen (dest);
@@ -4275,7 +4275,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 		{
 			utf_len = g_utf8_skip[src[0]];
 
-			if ((dest - orig) + utf_len >= destlen)
+			if ((gsize)(dest - orig) + utf_len >= destlen)
 				return 2;
 
 			if (utf_len == 1)

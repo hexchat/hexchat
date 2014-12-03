@@ -77,7 +77,7 @@ int iPow(int x, int y){return (int)(pow((double)x,(double) y));}
 
 int str2int(char *text){
     //if (DEBUG==1) putlog("converting string to int");
-    int i;
+    size_t i;
     int ret=0;
     for (i=1;i<=strlen(text);i++){
         if ((text[strlen(text)-i]>57)||(text[strlen(text)-i]<48)){
@@ -213,7 +213,7 @@ char *extractID3Genre(char *tag){
         //return tag;
      }
      else{
-          int i;
+          size_t i;
           //hexchat_print(ph, "Using 2 criteria");
           for (i=0;i<strlen(tag);i++){
               if (tag[i]==')'){ tag=&tag[i]+1;return tag;}

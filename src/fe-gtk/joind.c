@@ -151,7 +151,7 @@ joind_show_dialog (server *serv)
 	image1 = gtk_image_new_from_stock (GTK_STOCK_NETWORK, GTK_ICON_SIZE_LARGE_TOOLBAR);
 	gtk_widget_show (image1);
 	gtk_box_pack_start (GTK_BOX (hbox1), image1, FALSE, TRUE, 24);
-	gtk_misc_set_alignment (GTK_MISC (image1), 0.5, 0.06);
+	gtk_misc_set_alignment (GTK_MISC (image1), (gfloat)0.5, (gfloat)0.06);
 
 	vbox2 = gtk_vbox_new (FALSE, 10);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox2), 6);

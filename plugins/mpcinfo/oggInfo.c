@@ -28,7 +28,7 @@ static int getOggInt(char *buff, int beg, int bytes){
 static char *upperStr(char *text){
 //if (DEBUG==1) putlog("converting text to uc");
     //printf("upperStr(%s)\n",text);
-	int i;
+	size_t i;
 	char *ret=(char*) malloc(sizeof(char)*(strlen(text)+1));
 	ret[strlen(text)]=0;
 	for (i=0;i<strlen(text);i++) ret[i]=toupper(text[i]);
