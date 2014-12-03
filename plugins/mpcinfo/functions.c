@@ -55,7 +55,7 @@ int dllProc(char *name, char *data)
 
 char *split(char *text, char seperator){
      //if (DEBUG==1) putlog("splitting");
-     int i;int pos=-1;
+     size_t i;int pos=-1;
      for (i=0;i<strlen(text);i++){
          if (text[i]==seperator){pos=i;i=strlen(text)+1;}
      }
@@ -73,7 +73,7 @@ int endsWith(char *text, char *suffix){
 
 int inStr(char *s1, int sl1, char *s2){
     //if (DEBUG==1) putlog("checking instr");
-	int i;int j;
+	size_t i;size_t j;
 	for(i=0;i<sl1-strlen(s2);i++){
 		for (j=0;j<strlen(s2);j++){
 			if (s1[i+j]!=s2[j]) j=strlen(s2)+2;
@@ -124,7 +124,7 @@ char *readLine(FILE *f){
 char *toUpper(char *text){
      //if (DEBUG==1) putlog("converting text to upper case");
      char *ret=(char*) calloc(strlen(text)+1,sizeof(char));
-     int i;
+     size_t i;
      for (i=0;i<strlen(text);i++) ret[i]=toupper(text[i]);
      ret[strlen(text)]=0;
      //if (DEBUG==1) putlog("uc done");

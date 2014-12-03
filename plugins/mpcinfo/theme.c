@@ -51,7 +51,7 @@ void printThemes(){
 
 void cbFix(char *line){
      //if (DEBUG==1) putlog("cbfix");
-     int i, j;
+     size_t i, j;
      for (i=0;i<strlen(line);i++){
          if (line[i]=='%'){
             if ((line[i+1]=='C')||(line[i+1]=='B')||(line[i+1]=='U')||(line[i+1]=='O')||(line[i+1]=='R')){

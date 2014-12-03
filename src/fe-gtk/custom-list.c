@@ -336,7 +336,7 @@ custom_list_get_iter (GtkTreeModel * tree_model,
 	gint n;
 
 	n = gtk_tree_path_get_indices (path)[0];
-	if (n >= custom_list->num_rows || n < 0)
+	if ((guint)n >= custom_list->num_rows || n < 0)
 		return FALSE;
 
 	record = custom_list->rows[n];
@@ -533,7 +533,7 @@ custom_list_iter_nth_child (GtkTreeModel * tree_model,
 		return FALSE;
 
 	/* special case: if parent == NULL, set iter to n-th top-level row */
-	if (n >= custom_list->num_rows)
+	if ((guint)n >= custom_list->num_rows)
 		return FALSE;
 
 	iter->user_data = custom_list->rows[n];

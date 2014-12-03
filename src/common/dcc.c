@@ -169,8 +169,8 @@ dcc_calc_cps (struct DCC *dcc)
 
 		posdiff = pos - dcc->lastcpspos;
 		oldcps = dcc->cps;
-		dcc->cps = ((double) posdiff / timediff) * (timediff / startdiff) +
-			(double) dcc->cps * (1.0 - (timediff / startdiff));
+		dcc->cps = (int)(((double) posdiff / timediff) * (timediff / startdiff) +
+			(double) dcc->cps * (1.0 - (timediff / startdiff)));
 
 		*cpssum += dcc->cps - oldcps;
 	}
@@ -671,9 +671,9 @@ dcc_calc_average_cps (struct DCC *dcc)
 	if (sec < 1)
 		sec = 1;
 	if (dcc->type == TYPE_SEND)
-		dcc->cps = (dcc->ack - dcc->resumable) / sec;
+		dcc->cps = (int)((dcc->ack - dcc->resumable) / sec);
 	else
-		dcc->cps = (dcc->pos - dcc->resumable) / sec;
+		dcc->cps = (int)((dcc->pos - dcc->resumable) / sec);
 }
 
 static void
@@ -1473,7 +1473,7 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	if (!buf)
 		return TRUE;
 
-	lseek (dcc->fp, dcc->pos, SEEK_SET);
+	lseek (dcc->fp, (off_t)dcc->pos, SEEK_SET);
 	len = read (dcc->fp, buf, prefs.hex_dcc_blocksize);
 	if (len < 1)
 		goto abortit;
@@ -2006,7 +2006,7 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 	return FALSE;
 }
 
-static int
+static void
 is_resumable (struct DCC *dcc)
 {
 	dcc->resumable = 0;
@@ -2060,7 +2060,7 @@ is_resumable (struct DCC *dcc)
 		}
 	}
 
-	return dcc->resumable;
+	return;
 }
 
 void
@@ -2469,7 +2469,7 @@ handle_dcc (struct session *sess, char *nick, char *word[], char *word_eol[],
 			{
 				dcc->pos = dcc->resumable;
 				dcc->ack = dcc->resumable;
-				lseek (dcc->fp, dcc->pos, SEEK_SET);
+				lseek (dcc->fp, (off_t)dcc->pos, SEEK_SET);
 
 				/* Checking if dcc is passive and if filename contains spaces */
 				if (dcc->pasvid)

@@ -115,7 +115,7 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 	char *host = _("Host unknown");
 	char *account = _("Account unknown");
 	struct User *user;
-	int len;
+	gsize len;
 
 /*	if (sess->type == SESS_DIALOG)
 	{

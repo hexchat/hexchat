@@ -344,7 +344,7 @@ server_inline (server *serv, char *line, int len)
 		if (encoding != NULL)
 		{
 			char *conv_line; /* holds a copy of the original string */
-			int conv_len; /* tells g_convert how much of line to convert */
+			gsize conv_len; /* tells g_convert how much of line to convert */
 			gsize utf_len;
 			gsize read_len;
 			GError *err;

@@ -677,8 +677,8 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 	char *argstr;
 	char sign;
 	int len;
-	int arg;
-	int i, num_args;
+	size_t arg;
+	size_t i, num_args;
 	int num_modes;
 	int offset = 3;
 	int all_modes_have_args = FALSE;

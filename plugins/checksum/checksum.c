@@ -190,7 +190,7 @@ dccrecv_cb (char *word[], void *userdata)
 	result = stat (cfile, &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
-		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
+		if (buffer.st_size <= (off_t)get_limit () * 1048576)
 		{
 			sha256_file (cfile, sum);						/* file is the full filename even if completed dir set */
 			/* try to print the checksum in the privmsg tab of the sender */
@@ -222,7 +222,7 @@ dccoffer_cb (char *word[], void *userdata)
 	result = stat (word[3], &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
-		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
+		if (buffer.st_size <= (off_t)get_limit () * 1048576)
 		{
 			sha256_file (word[3], sum);						/* word[3] is the full filename */
 			hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], sum);

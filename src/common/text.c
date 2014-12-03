@@ -1855,7 +1855,7 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo, unsig
 				printf ("arg[%d] is NULL in print event\n", a + 1);
 			} else
 			{
-				if (strlen (ar) > sizeofo - oi - 4)
+				if ((int)strlen (ar) > sizeofo - oi - 4)
 					ar[sizeofo - oi - 4] = 0;	/* Avoid buffer overflow */
 				if (stripcolor_args & ARG_FLAG(a + 1)) len = strip_color2 (ar, -1, &o[oi], STRIP_ALL);
 				else len = strip_hidden_attribute (ar, &o[oi]);

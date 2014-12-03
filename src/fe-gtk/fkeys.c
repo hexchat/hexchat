@@ -1600,7 +1600,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			old_gcomp.elen = elen;
 
 			/* Get the first nick and put out the data for future nickcompletes */
-			if (prefs.hex_completion_amount && g_list_length (list) <= prefs.hex_completion_amount)
+			if (prefs.hex_completion_amount && (gint)g_list_length (list) <= prefs.hex_completion_amount)
 			{
 				g_free(result);
 				result = (char*)list->data;
@@ -1610,7 +1610,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 				/* bash style completion */
 				if (g_list_next(list) != NULL)
 				{
-					if (strlen (result) > elen) /* the largest common prefix is larger than nick, change the data */
+					if ((gint)strlen (result) > elen) /* the largest common prefix is larger than nick, change the data */
 					{
 						if (prefix_len)
 							g_utf8_strncpy (buf, text, prefix_len);

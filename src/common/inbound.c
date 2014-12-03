@@ -682,7 +682,7 @@ inbound_nameslist (server *serv, char *chan, char *names,
 	char **name_list;
 	char *host, *nopre_name;
 	char name[NICKLEN];
-	int i, offset;
+	size_t i, offset;
 
 	sess = find_channel (serv, chan);
 	if (!sess)

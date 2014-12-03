@@ -219,7 +219,7 @@ execute_perl (SV * function, char *args)
 		hexchat_printf (ph, "Perl error: expected 1 value from %s, "
 						  "got: %d\n", SvPV_nolen (function), count);
 	} else {
-		ret_value = POPi;
+		ret_value = (int)POPi;
 	}
 	PUTBACK;
 	FREETMPS;
@@ -288,7 +288,7 @@ list_item_to_sv ( hexchat_list *list, const char *const *fields )
 			field_value = newSVuv (hexchat_list_int (ph, list, field_name));
 			break;
 		case 't':
-			field_value = newSVnv (hexchat_list_time (ph, list, field_name));
+			field_value = newSVnv ((const NV)hexchat_list_time (ph, list, field_name));
 			break;
 		default:
 			field_value = &PL_sv_undef;
@@ -357,7 +357,7 @@ fd_cb (int fd, int flags, void *userdata)
 			hexchat_print (ph, "Fd handler should only return 1 value.");
 			retVal = HEXCHAT_EAT_NONE;
 		} else {
-			retVal = POPi;
+			retVal = (int)POPi;
 			if (retVal == 0) {
 				/* if 0 is returned, the fd is going to get unhooked */
 				PUSHMARK (SP);
@@ -418,7 +418,7 @@ timer_cb (void *userdata)
 			hexchat_print (ph, "Timer handler should only return 1 value.");
 			retVal = HEXCHAT_EAT_NONE;
 		} else {
-			retVal = POPi;
+			retVal = (int)POPi;
 			if (retVal == 0) {
 				/* if 0 is return the timer is going to get unhooked */
 				PUSHMARK (SP);
@@ -477,7 +477,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 			hexchat_print (ph, "Server handler should only return 1 value.");
 			retVal = HEXCHAT_EAT_NONE;
 		} else {
-			retVal = POPi;
+			retVal = (int)POPi;
 		}
 
 	}
@@ -526,7 +526,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 			hexchat_print (ph, "Command handler should only return 1 value.");
 			retVal = HEXCHAT_EAT_NONE;
 		} else {
-			retVal = POPi;
+			retVal = (int)POPi;
 		}
 
 	}
@@ -602,7 +602,7 @@ print_cb (char *word[], void *userdata)
 			hexchat_print (ph, "Print handler should only return 1 value.");
 			retVal = HEXCHAT_EAT_NONE;
 		} else {
-			retVal = POPi;
+			retVal = (int)POPi;
 		}
 
 	}
@@ -735,7 +735,7 @@ XS (XS_HexChat_send_modes)
 	} else {
 		if (SvROK (ST (0))) {
 			p_targets = (AV*) SvRV (ST (0));
-			target_count = av_len (p_targets) + 1;
+			target_count = (int)av_len (p_targets) + 1;
 			targets = malloc (target_count * sizeof (char *));
 			for (i = 0; i < target_count; i++ ) {
 				elem = av_fetch (p_targets, i, 0);
@@ -753,7 +753,7 @@ XS (XS_HexChat_send_modes)
 		}
 		
 		if (target_count == 0) {
-			free (targets);
+			free ((void *)targets);
 			XSRETURN_EMPTY;
 		}
 
@@ -765,7 +765,7 @@ XS (XS_HexChat_send_modes)
 		}
 
 		hexchat_send_modes (ph, targets, target_count, modes_per_line, sign, mode);
-		free (targets);
+		free ((void *)targets);
 	}
 }
 static
