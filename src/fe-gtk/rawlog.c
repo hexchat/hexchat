@@ -146,7 +146,7 @@ fe_add_rawlog (server *serv, char *text, int len, int outbound)
 {
 	char **split_text;
 	char *new_text;
-	int i;
+	size_t i;
 
 	if (!serv->gui->rawlog_window)
 		return;

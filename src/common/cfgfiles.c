@@ -586,10 +586,10 @@ const struct prefs vars[] =
 	{0, 0, 0},
 };
 
-static char *
+static const char *
 convert_with_fallback (const char *str, const char *fallback)
 {
-	char *utf;
+	const char *utf;
 
 #ifndef WIN32
 	/* On non-Windows, g_get_user_name and g_get_real_name return a string in system locale, so convert it to utf-8. */

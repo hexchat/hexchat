@@ -753,7 +753,7 @@ XS (XS_HexChat_send_modes)
 		}
 		
 		if (target_count == 0) {
-			free (targets);
+			free ((char**) targets);
 			XSRETURN_EMPTY;
 		}
 
@@ -765,7 +765,7 @@ XS (XS_HexChat_send_modes)
 		}
 
 		hexchat_send_modes (ph, targets, target_count, modes_per_line, sign, mode);
-		free (targets);
+		free ((char**) targets);
 	}
 }
 static

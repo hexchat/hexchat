@@ -142,7 +142,7 @@ tab_scroll_left_up_clicked (GtkWidget *widget, chanview *cv)
 	gfloat new_value;
 	GtkWidget *inner;
 	GdkWindow *parent_win;
-	gfloat i;
+	gdouble i;
 
 	inner = ((tabview *)cv)->inner;
 	parent_win = gtk_widget_get_window (gtk_widget_get_parent (inner));
@@ -191,7 +191,7 @@ tab_scroll_right_down_clicked (GtkWidget *widget, chanview *cv)
 	gfloat new_value;
 	GtkWidget *inner;
 	GdkWindow *parent_win;
-	gfloat i;
+	gdouble i;
 
 	inner = ((tabview *)cv)->inner;
 	parent_win = gtk_widget_get_window (gtk_widget_get_parent (inner));

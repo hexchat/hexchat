@@ -14,54 +14,25 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-/*
-typedef int (*MYPROC)(HWND,HWND,char*,char*,BOOL,BOOL); 
-
-int dllProc(char *name, char *data){
-    HINSTANCE hinstLib; 
-    hinstLib = LoadLibrary("mpcinfo");
-    //MYPROC proc;
-    int res;
-    if (hinstLib != NULL){
-       //proc = ;
-       if ((MYPROC) GetProcAddress(hinstLib, name)!=NULL){
-          res=(MYPROC)(NULL,NULL,data,NULL,TRUE,TRUE);
-       }
-       else{fprintf(stderr,"can't get proc: %s\n",name);res=-2;}
-    }
-    else{fprintf(stderr,"can't access dll\n");return -1;}
-    FreeLibrary(hinstLib);
-    return res;
-}
-*/
-
-/*
-int dllProc(char *name, char *data)
+char *split(char *text, char separator)
 {
-	static HMODULE lib = NULL;
-	if (!lib)
+	int pos = -1;
+	size_t i;
+	for (i = 0; i < strlen(text); i++)
 	{
-		lib = LoadLibraryA ("mpcinfo");
-		if (!lib)
-		{
-			return FALSE;
+		if (text[i] == separator) {
+			pos = i;
+			i = strlen(text) + 1;
 		}
-		FreeLibrary (lib);
 	}
 
-	return TRUE;
-}
-*/
+	if (pos == -1)
+	{
+		return text;
+	}
 
-char *split(char *text, char seperator){
-     //if (DEBUG==1) putlog("splitting");
-     int i;int pos=-1;
-     for (i=0;i<strlen(text);i++){
-         if (text[i]==seperator){pos=i;i=strlen(text)+1;}
-     }
-     if (pos==-1) return text;
-     text[pos]=0;
-     return &(text[pos+1]);
+	text[pos] = 0;
+	return &(text[pos + 1]);
 }
 
 int endsWith(char *text, char *suffix){
@@ -71,15 +42,26 @@ int endsWith(char *text, char *suffix){
     return 0;
 }
 
-int inStr(char *s1, int sl1, char *s2){
-    //if (DEBUG==1) putlog("checking instr");
-	int i;int j;
-	for(i=0;i<sl1-strlen(s2);i++){
-		for (j=0;j<strlen(s2);j++){
-			if (s1[i+j]!=s2[j]) j=strlen(s2)+2;
+int inStr(char *s1, size_t sl1, char *s2)
+{
+	size_t i;
+	for (i = 0; i < sl1 - strlen(s2); i++)
+	{
+		size_t j;
+		for (j = 0; j < strlen(s2); j++)
+		{
+			if (s1[i + j] != s2[j])
+			{
+				j = strlen(s2) + 2;
+			}
 		}
-		if (j==strlen(s2)) return i;
+
+		if (j == strlen(s2))
+		{
+			return i;
+		}
 	}
+
 	return -1;
 }
 
@@ -121,14 +103,19 @@ char *readLine(FILE *f){
      return buffer;
 }
 
-char *toUpper(char *text){
-     //if (DEBUG==1) putlog("converting text to upper case");
-     char *ret=(char*) calloc(strlen(text)+1,sizeof(char));
-     int i;
-     for (i=0;i<strlen(text);i++) ret[i]=toupper(text[i]);
-     ret[strlen(text)]=0;
-     //if (DEBUG==1) putlog("uc done");
-     return ret;
+char *toUpper(char *text)
+{
+	char *ret = (char*) calloc(strlen(text) + 1, sizeof(char));
+
+	size_t i;
+	for (i = 0; i < strlen(text); i++)
+	{
+		ret[i] = toupper(text[i]);
+	}
+
+	ret[strlen(text)] = 0;
+
+	return ret;
 }
 
 static char *str3cat(char *s1, char *s2, char *s3){

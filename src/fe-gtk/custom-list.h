@@ -77,10 +77,10 @@ struct _CustomList
 {
 	GObject parent;
 
-	guint num_rows;				  /* number of rows that we have used */
-	guint num_alloc;					/* number of rows allocated */
-	chanlistrow **rows;			  /* a dynamically allocated array of pointers to the
-										   *  CustomRecord structure for each row */
+	guint num_rows;     /* number of rows that we have used */
+	guint num_alloc;    /* number of rows allocated */
+	chanlistrow **rows; /* a dynamically allocated array of pointers to the
+	                     * CustomRecord structure for each row */
 
 	gint n_columns;
 	GType column_types[CUSTOM_LIST_N_COLUMNS];
