@@ -468,7 +468,7 @@ fe_input_remove (int tag)
 }
 
 int
-fe_input_add (int sok, int flags, void *func, void *data)
+fe_input_add (int sok, int flags, GIOFunc func, void *data)
 {
 	int tag, type = 0;
 	GIOChannel *channel;
@@ -489,7 +489,7 @@ fe_input_add (int sok, int flags, void *func, void *data)
 	if (flags & FIA_EX)
 		type |= G_IO_PRI;
 
-	tag = g_io_add_watch (channel, type, (GIOFunc) func, data);
+	tag = g_io_add_watch (channel, type, func, data);
 	g_io_channel_unref (channel);
 
 	return tag;

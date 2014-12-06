@@ -373,9 +373,7 @@ const struct prefs vars[] =
 	{"dcc_blocksize", P_OFFINT (hex_dcc_blocksize), TYPE_INT},
 	{"dcc_completed_dir", P_OFFSET (hex_dcc_completed_dir), TYPE_STR},
 	{"dcc_dir", P_OFFSET (hex_dcc_dir), TYPE_STR},
-#ifndef WIN32
 	{"dcc_fast_send", P_OFFINT (hex_dcc_fast_send), TYPE_BOOL},
-#endif
 	{"dcc_global_max_get_cps", P_OFFINT (hex_dcc_global_max_get_cps), TYPE_INT},
 	{"dcc_global_max_send_cps", P_OFFINT (hex_dcc_global_max_send_cps), TYPE_INT},
 	{"dcc_ip", P_OFFSET (hex_dcc_ip), TYPE_STR},
@@ -741,9 +739,7 @@ load_default_config(void)
 	prefs.hex_away_show_once = 1;
 	prefs.hex_away_track = 1;
 	prefs.hex_dcc_auto_resume = 1;
-#ifndef WIN32
 	prefs.hex_dcc_fast_send = 1;
-#endif
 	prefs.hex_gui_autoopen_chat = 1;
 	prefs.hex_gui_autoopen_dialog = 1;
 	prefs.hex_gui_autoopen_recv = 1;

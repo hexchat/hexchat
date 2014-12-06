@@ -47,6 +47,7 @@ struct DCC
 	guint32 addr;					/* the 32bit IP number, host byte order */
 	int fp;							/* file pointer */
 	int sok;
+	GIOChannel* channel;
 	int iotag;						/* reading io tag */
 	int wiotag;						/* writing/sending io tag */
 	int port;
