@@ -88,7 +88,7 @@ struct my_dcc_send
 {
 	struct session *sess;
 	char *nick;
-	int maxcps;
+	gint64 maxcps;
 	int passive;
 };
 
@@ -105,7 +105,7 @@ static short view_mode;	/* 1=download 2=upload 3=both */
 
 
 static void
-proper_unit (DCC_SIZE size, char *buf, int buf_len)
+proper_unit (guint64 size, char *buf, size_t buf_len)
 {
 	gchar *formatted_str;
 	GFormatSizeFlags format_flags = G_FORMAT_SIZE_DEFAULT;
@@ -117,7 +117,7 @@ proper_unit (DCC_SIZE size, char *buf, int buf_len)
 		format_flags = G_FORMAT_SIZE_IEC_UNITS;
 #endif
 
-	formatted_str = g_format_size_full ((guint64)size, format_flags);
+	formatted_str = g_format_size_full (size, format_flags);
 	g_strlcpy (buf, formatted_str, buf_len);
 
 	g_free (formatted_str);
@@ -155,20 +155,20 @@ static void
 dcc_prepare_row_chat (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 							 gboolean update_only)
 {
-	static char pos[16], siz[16];
+	static char pos[16], size[16];
 	char *date;
 
 	date = ctime (&dcc->starttime);
 	date[strlen (date) - 1] = 0;	/* remove the \n */
 
 	proper_unit (dcc->pos, pos, sizeof (pos));
-	proper_unit (dcc->size, siz, sizeof (siz));
+	proper_unit (dcc->size, size, sizeof (size));
 
 	gtk_list_store_set (store, iter,
 							  CCOL_STATUS, _(dccstat[dcc->dccstat].name),
 							  CCOL_NICK, dcc->nick,
 							  CCOL_RECV, pos,
-							  CCOL_SENT, siz,
+							  CCOL_SENT, size,
 							  CCOL_START, date,
 							  CCOL_DCC, dcc,
 							  CCOL_COLOR,
@@ -195,7 +195,6 @@ dcc_prepare_row_send (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 	proper_unit (dcc->size, size, sizeof (size));
 	proper_unit (dcc->pos, pos, sizeof (pos));
 	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
-/*	proper_unit (dcc->ack, ack, sizeof (ack));*/
 	snprintf (perc, sizeof (perc), "%.0f%%", per);
 	if (dcc->cps != 0)
 	{

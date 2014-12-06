@@ -39,17 +39,6 @@
 
 #define CPS_AVG_WINDOW 10
 
-/* can we do 64-bit dcc? */
-#if defined(G_GINT64_FORMAT) && defined(HAVE_STRTOULL)
-#define USE_DCC64
-/* we really get only 63 bits, since st_size is signed */
-#define DCC_SIZE gint64
-#define DCC_SFMT G_GINT64_FORMAT
-#else
-#define DCC_SIZE unsigned int
-#define DCC_SFMT "u"
-#endif
-
 struct DCC
 {
 	struct server *serv;
@@ -62,21 +51,21 @@ struct DCC
 	int wiotag;						/* writing/sending io tag */
 	int port;
 	int pasvid;						/* mIRC's passive DCC id */
-	int cps;
+	gint64 cps;
 	int resume_error;
 	int resume_errno;
 
 	GTimeVal lastcpstv, firstcpstv;
-	DCC_SIZE lastcpspos;
-	int maxcps;
+	goffset lastcpspos;
+	gint64 maxcps;
 
 	unsigned char ack_buf[4];	/* buffer for reading 4-byte ack */
 	int ack_pos;
 
-	DCC_SIZE size;
-	DCC_SIZE resumable;
-	DCC_SIZE ack;
-	DCC_SIZE pos;
+	guint64 size;
+	guint64 resumable;
+	guint64 ack;
+	guint64 pos;
 	time_t starttime;
 	time_t offertime;
 	time_t lasttime;
@@ -125,7 +114,7 @@ void dcc_check_timeouts (void);
 void dcc_change_nick (server *serv, char *oldnick, char *newnick);
 void dcc_notify_kill (struct server *serv);
 struct DCC *dcc_write_chat (char *nick, char *text);
-void dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive);
+void dcc_send (struct session *sess, char *to, char *file, gint64 maxcps, int passive);
 struct DCC *find_dcc (char *nick, char *file, int type);
 void dcc_get_nick (struct session *sess, char *nick);
 void dcc_chat (session *sess, char *nick, int passive);

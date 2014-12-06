@@ -1531,7 +1531,14 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		case 0x34207553: /* address32 */
 			return ((struct DCC *)data)->addr;
 		case 0x181a6: /* cps */
-			return ((struct DCC *)data)->cps;
+		{
+			gint64 cps = ((struct DCC *)data)->cps;
+			if (cps <= INT_MAX)
+			{
+				return (int) cps;
+			}
+			return INT_MAX;
+		}
 		case 0x349881: /* port */
 			return ((struct DCC *)data)->port;
 		case 0x1b254: /* pos */
