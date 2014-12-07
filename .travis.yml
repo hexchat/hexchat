@@ -8,8 +8,10 @@ before_script:
     - sudo apt-get install -qq libnotify-dev libproxy-dev libpci-dev libcanberra-dev monodevelop gnome-common
 script: 
     - ./autogen.sh
-    - ./configure --enable-textfe --with-theme-manager
+    - mkdir -p build && cd build
+    - ../configure --enable-textfe --with-theme-manager
     - make V=1 -j$(nproc)
+    - sudo make install
 notifications:
     irc:
         channels: "chat.freenode.net#hexchat-devel"
