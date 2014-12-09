@@ -262,6 +262,7 @@ struct hexchatprefs
 	int hex_gui_search_pos;
 	int hex_gui_slist_select;
 	int hex_gui_tab_layout;
+	int hex_gui_tab_middleclose;
 	int hex_gui_tab_newtofront;
 	int hex_gui_tab_pos;
 	int hex_gui_tab_small;
