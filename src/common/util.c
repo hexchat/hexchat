@@ -1791,9 +1791,7 @@ challengeauth_response (char *username, char *password, char *challenge)
 		g_string_append_printf (buf, "%02x", (unsigned int) digest[i]);
 	}
 
-	digest = (unsigned char *) g_string_free (buf, FALSE);
-
-	return (char *) digest;
+	return g_string_free (buf, FALSE);
 }
 #endif
 

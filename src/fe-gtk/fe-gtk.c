@@ -1091,9 +1091,9 @@ fe_open_url (const char *url)
 	/* the http:// part's missing, prepend it, otherwise it won't always work */
 	else if (strchr (url, ':') == NULL)
 	{
-		url = g_strdup_printf ("http://%s", url);
-		fe_open_url_inner (url);
-		g_free ((char *)url);
+		uri = g_strdup_printf ("http://%s", url);
+		fe_open_url_inner (uri);
+		g_free (uri);
 	}
 	/* we have a sane URL, send it to the browser untouched */
 	else
