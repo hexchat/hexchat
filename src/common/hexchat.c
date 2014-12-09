@@ -935,20 +935,14 @@ xchat_init (void)
 
 	servlist_init ();							/* load server list */
 
-	/* if we got a URL, don't open the server list GUI */
-	if (!prefs.hex_gui_slist_skip && !arg_url && !arg_urls)
-		fe_serverlist_open (NULL);
-
 	/* turned OFF via -a arg or by passing urls */
 	if (!arg_dont_autoconnect && !arg_urls)
 	{
 		/* do any auto connects */
 		if (!servlist_have_auto ())	/* if no new windows open .. */
 		{
-			/* and no serverlist gui ... */
-			if (prefs.hex_gui_slist_skip || arg_url || arg_urls)
-				/* we'll have to open one. */
-				new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+			/* open the main irc window */
+			new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 		} else
 		{
 			fe_idle_add (xchat_auto_connect, NULL);
@@ -958,6 +952,10 @@ xchat_init (void)
 		if (prefs.hex_gui_slist_skip || arg_url || arg_urls)
 			new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	}
+
+	/* if we have URL(s), don't open the server list GUI */
+	if (!prefs.hex_gui_slist_skip && !arg_url && !arg_urls)
+		fe_serverlist_open (NULL);
 }
 
 void
