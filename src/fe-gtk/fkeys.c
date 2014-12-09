@@ -1440,8 +1440,8 @@ static int
 key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 							struct session *sess)
 {
-	int len = 0, elen = 0, i = 0, cursor_pos, ent_start = 0, comp = 0, found = 0,
-	    prefix_len, skip_len = 0, is_nick, is_cmd = 0;
+	int len = 0, elen = 0, i = 0, cursor_pos, ent_start = 0, comp = 0, prefix_len, skip_len = 0;
+	gboolean is_nick, is_cmd = FALSE, found = FALSE;
 	char ent[CHANLEN], *postfix = NULL, *result, *ch;
 	GList *list = NULL, *tmp_list = NULL;
 	const char *text;
@@ -1498,7 +1498,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 	if (ent_start == 0 && text[0] == prefs.hex_input_command_char[0])
 	{
 		ent_start++;
-		is_cmd = 1;
+		is_cmd = TRUE;
 	}
 	
 	prefix_len = ent_start;
@@ -1506,7 +1506,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 
 	g_utf8_strncpy (ent, g_utf8_offset_to_pointer (text, prefix_len), elen);
 
-	is_nick = (ent[0] == '#' || ent[0] == '&' || is_cmd) ? 0 : 1;
+	is_nick = (is_cmd || strchr (sess->server->chantypes, ent[0]) != NULL) ? FALSE : TRUE;
 	
 	if (sess->type == SESS_DIALOG && is_nick)
 	{
@@ -1514,7 +1514,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		if (rfc_ncasecmp (sess->channel, ent, elen) == 0)
 		{
 			result =  sess->channel;
-			is_nick = 0;
+			is_nick = FALSE;
 		}
 		else
 			return 2;
@@ -1571,7 +1571,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			{
 				if(rfc_ncasecmp(list->data, ent, elen) == 0)
 				{
-					found = 1;
+					found = TRUE;
 					break;
 				}
 				list = list->next;
