@@ -1824,10 +1824,10 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 	filename_fs = g_filename_from_utf8 (filename, -1, NULL, NULL, NULL);
 	if (filename_fs == NULL)
 	{
-		PrintTextf(sess, _("Cannot access %s\n"), dcc->file);
-		PrintTextf(sess, "%s %d: %s\n", _("Error"), errno, errorstring(errno));
+		PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
+		PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
 
-		dcc_close(dcc, 0, TRUE); /* dcc_close will free dcc->file */
+		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
 
 		return;
 	}
@@ -1835,6 +1835,13 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 	file = g_file_new_for_path (filename_fs);
 	if (file == NULL)
 	{
+		PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
+		PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
+
+		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
+
+		g_free (filename_fs);
+
 		return;
 	}
 
@@ -1849,6 +1856,8 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 
 		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
 
+		g_free (filename_fs);
+
 		return;
 	}
 
@@ -1862,6 +1871,8 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 		PrintText (sess, "Cannot send directories or empty files.\n");
 
 		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
+
+		g_free (filename_fs);
 
 		return;
 	}
