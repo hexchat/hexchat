@@ -308,9 +308,7 @@ get_xdir (void)
 
 		if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_RoamingAppData, 0, NULL, &roaming_path_wide) != S_OK)
 		{
-			char *path;
-
-			path = g_win32_get_package_installation_directory_of_module (NULL);
+			char *path = g_win32_get_package_installation_directory_of_module (NULL);
 			if (path)
 			{
 				xdir = g_build_filename (path, "config", NULL);

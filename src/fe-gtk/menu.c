@@ -403,12 +403,11 @@ toggle_cb (GtkWidget *item, char *pref_name)
 static int
 is_in_path (char *cmd)
 {
-	char *prog = g_strdup (cmd + 1);	/* 1st char is "!" */
-	char *path, *orig;
+	char *orig = g_strdup (cmd + 1);	/* 1st char is "!" */
+	char *prog = orig;
 	char **argv;
 	int argc;
 
-	orig = prog; /* save for free()ing */
 	/* special-case these default entries. */
 	/*                  123456789012345678 */
 	if (strncmp (prog, "gnome-terminal -x ", 18) == 0)
@@ -417,15 +416,14 @@ is_in_path (char *cmd)
 
 	if (g_shell_parse_argv (prog, &argc, &argv, NULL))
 	{
-		path = g_find_program_in_path (argv[0]);
+		char *path = g_find_program_in_path (argv[0]);
+		g_strfreev (argv);
 		if (path)
 		{
 			g_free (path);
 			g_free (orig);
-			g_strfreev (argv);
 			return 1;
 		}
-		g_strfreev (argv);
 	}
 
 	g_free (orig);

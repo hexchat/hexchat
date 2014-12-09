@@ -393,9 +393,7 @@ log_close (session *sess)
 static void
 mkdir_p (char *filename)
 {
-	char *dirname;
-	
-	dirname = g_path_get_dirname (filename);
+	char *dirname = g_path_get_dirname (filename);
 
 	g_mkdir_with_parents (dirname, 0700);
 
@@ -582,7 +580,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	/* create all the subdirectories */
 	mkdir_p (fname);
 
-	return g_strdup(fname);
+	return g_strdup (fname);
 }
 
 static int
@@ -711,15 +709,13 @@ log_write (session *sess, char *text, time_t ts)
 		log_open (sess);
 
 	/* change to a different log file? */
-	file = log_create_pathname (sess->server->servername, sess->channel,
-										 server_get_network (sess->server, FALSE));
+	file = log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE));
 	if (file)
 	{
 		if (g_access (file, F_OK) != 0)
 		{
 			close (sess->logfd);
-			sess->logfd = log_open_file (sess->server->servername, sess->channel,
-												  server_get_network (sess->server, FALSE));
+			sess->logfd = log_open_file (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE));
 		}
 		g_free (file);
 	}
@@ -905,7 +901,8 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 	{
 		text = "\n";
 		conv = NULL;
-	} else
+	}
+	else
 	{
 		int len = -1;
 		conv = text_validate ((char **)&text, &len);

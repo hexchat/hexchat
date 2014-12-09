@@ -596,7 +596,8 @@ key_dialog_save (GtkWidget *wid, gpointer userdata)
 			else
 				keybind_list = g_slist_append (keybind_list, kb);
 
-		} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
+		}
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
 	}
 
 	if (key_save_kbs () == 0)

@@ -87,10 +87,9 @@ pixmap_load_from_file (char *filename)
 static GdkPixbuf *
 load_pixmap (const char *filename)
 {
-	gchar *path;
 	GdkPixbuf *pixbuf;
 
-	path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S "%s.png", get_xdir (), filename);
+	gchar *path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S "%s.png", get_xdir (), filename);
 	pixbuf = gdk_pixbuf_new_from_file (path, 0);
 	g_free (path);
 

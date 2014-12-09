@@ -2287,7 +2287,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 	case WORD_EMAIL:
 		word[end] = 0;
 		word += start;
-		tmp = g_strdup_printf("mailto:%s", word + (ispunct (*word)? 1: 0));
+		tmp = g_strdup_printf ("mailto:%s", word + (ispunct (*word) ? 1 : 0));
 		menu_urlmenu (even, tmp);
 		g_free (tmp);
 		break;
