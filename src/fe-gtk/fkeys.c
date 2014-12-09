@@ -1441,7 +1441,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 							struct session *sess)
 {
 	int len = 0, elen = 0, i = 0, cursor_pos, ent_start = 0, comp = 0, prefix_len, skip_len = 0;
-	gboolean is_nick, is_cmd = FALSE, found = FALSE;
+	gboolean is_nick = FALSE, is_cmd = FALSE, found = FALSE, has_nick_prefix = FALSE;
 	char ent[CHANLEN], *postfix = NULL, *result, *ch;
 	GList *list = NULL, *tmp_list = NULL;
 	const char *text;
@@ -1500,13 +1500,21 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		ent_start++;
 		is_cmd = TRUE;
 	}
-	
+	else if (strchr (sess->server->chantypes, text[ent_start]) == NULL)
+	{
+		is_nick = TRUE;
+		if (strchr (sess->server->nick_prefixes, text[ent_start]) != NULL)
+		{
+			if (ent_start == 0)
+				has_nick_prefix = TRUE;
+			ent_start++;
+		}
+	}
+
 	prefix_len = ent_start;
 	elen = cursor_pos - ent_start;
 
 	g_utf8_strncpy (ent, g_utf8_offset_to_pointer (text, prefix_len), elen);
-
-	is_nick = (is_cmd || strchr (sess->server->chantypes, ent[0]) != NULL) ? FALSE : TRUE;
 	
 	if (sess->type == SESS_DIALOG && is_nick)
 	{
@@ -1670,7 +1678,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		if (prefix_len)
 			g_string_append_len (buf, text, offset_to_len (text, prefix_len));
 		g_string_append (buf, result);
-		if(!prefix_len && is_nick)
+		if((!prefix_len || has_nick_prefix) && is_nick)
 			g_string_append_unichar (buf, g_utf8_get_char_validated ((const char*)&prefs.hex_completion_suffix, -1));
 		g_string_append_c (buf, ' ');
 		cursor_pos = buf->len;
