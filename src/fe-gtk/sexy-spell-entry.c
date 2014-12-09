@@ -758,12 +758,9 @@ sexy_spell_entry_finalize(GObject *obj)
 		pango_attr_list_unref(entry->priv->attr_list);
 	if (entry->priv->dict_hash)
 		g_hash_table_destroy(entry->priv->dict_hash);
-	if (entry->priv->words)
-		g_strfreev(entry->priv->words);
-	if (entry->priv->word_starts)
-		g_free(entry->priv->word_starts);
-	if (entry->priv->word_ends)
-		g_free(entry->priv->word_ends);
+	g_strfreev(entry->priv->words);
+	g_free(entry->priv->word_starts);
+	g_free(entry->priv->word_ends);
 
 	if (have_enchant) {
 		if (entry->priv->broker) {

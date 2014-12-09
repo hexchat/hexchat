@@ -252,7 +252,7 @@ struct _GtkXTextClass
 };
 
 GtkWidget *gtk_xtext_new (GdkColor palette[], int separator);
-void gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len);
+void gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp);
 void gtk_xtext_append_indent (xtext_buffer *buf,
 										unsigned char *left_text, int left_len,
 										unsigned char *right_text, int right_len,

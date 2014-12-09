@@ -177,7 +177,7 @@ scrollback_shrink (session *sess)
 	g_free (file);
 	if (fh == -1)
 	{
-		free (buf);
+		g_free (buf);
 		return;
 	}
 
@@ -200,7 +200,7 @@ scrollback_shrink (session *sess)
 	}
 
 	close (fh);
-	free (buf);
+	g_free (buf);
 }
 
 static void
@@ -393,9 +393,7 @@ log_close (session *sess)
 static void
 mkdir_p (char *filename)
 {
-	char *dirname;
-	
-	dirname = g_path_get_dirname (filename);
+	char *dirname = g_path_get_dirname (filename);
 
 	g_mkdir_with_parents (dirname, 0700);
 
@@ -582,7 +580,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	/* create all the subdirectories */
 	mkdir_p (fname);
 
-	return g_strdup(fname);
+	return g_strdup (fname);
 }
 
 static int
@@ -625,14 +623,15 @@ log_open (session *sess)
 
 	if (!log_error && sess->logfd == -1)
 	{
-		char *message;
+		char *filename = log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE));
+		char *message = g_strdup_printf (_("* Can't open log file(s) for writing. Check the\npermissions on %s"), filename);
 
-		message = g_strdup_printf (_("* Can't open log file(s) for writing. Check the\npermissions on %s"),
-			log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE)));
+		g_free (filename);
 
 		fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
 
 		g_free (message);
+
 		log_error = TRUE;
 	}
 }
@@ -683,8 +682,7 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 			*ret = g_locale_to_utf8 (dest, len, 0, &len, 0);
 	}
 
-	if (loc)
-		g_free (loc);
+	g_free (loc);
 
 	return len;
 }
@@ -712,15 +710,13 @@ log_write (session *sess, char *text, time_t ts)
 		log_open (sess);
 
 	/* change to a different log file? */
-	file = log_create_pathname (sess->server->servername, sess->channel,
-										 server_get_network (sess->server, FALSE));
+	file = log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE));
 	if (file)
 	{
 		if (g_access (file, F_OK) != 0)
 		{
 			close (sess->logfd);
-			sess->logfd = log_open_file (sess->server->servername, sess->channel,
-												  server_get_network (sess->server, FALSE));
+			sess->logfd = log_open_file (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE));
 		}
 		g_free (file);
 	}
@@ -906,7 +902,8 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 	{
 		text = "\n";
 		conv = NULL;
-	} else
+	}
+	else
 	{
 		int len = -1;
 		conv = text_validate ((char **)&text, &len);
@@ -916,8 +913,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 	scrollback_save (sess, text);
 	fe_print_text (sess, text, timestamp, FALSE);
 
-	if (conv)
-		g_free (conv);
+	g_free (conv);
 }
 
 void

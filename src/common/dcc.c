@@ -23,8 +23,9 @@
  * Jim Seymour (jseymour@LinxNet.com)
  */
 
-/* we only use 32 bits, but without this define, you get only 31! */
+/* Required to make lseek use off64_t, but doesn't work on Windows */
 #define _FILE_OFFSET_BITS 64
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -45,6 +46,8 @@
 #include <unistd.h>
 #endif
 
+#include <gio/gio.h>
+
 #include "hexchat.h"
 #include "util.h"
 #include "fe.h"
@@ -57,13 +60,9 @@
 #include "url.h"
 #include "hexchatc.h"
 
-#ifdef USE_DCC64
-#define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
+/* Setting _FILE_OFFSET_BITS to 64 doesn't change lseek to use off64_t on Windows, so override lseek to the version that does */
 #ifdef WIN32
-#define stat _stat64
-#endif
-#else
-#define BIG_STR_TO_INT(x) strtoul(x,NULL,10)
+#define lseek _lseeki64
 #endif
 
 static char *dcctypes[] = { "SEND", "RECV", "CHAT", "CHAT" };
@@ -78,7 +77,7 @@ struct dccstat_info dccstat[] = {
 };
 
 static int dcc_global_throttle;	/* 0x1 = sends, 0x2 = gets */
-/*static*/ int dcc_sendcpssum, dcc_getcpssum;
+static gint64 dcc_sendcpssum, dcc_getcpssum;
 
 static struct DCC *new_dcc (void);
 static void dcc_close (struct DCC *dcc, int dccstat, int destroy);
@@ -127,11 +126,12 @@ static void
 dcc_calc_cps (struct DCC *dcc)
 {
 	GTimeVal now;
-	int oldcps;
+	gint64 oldcps;
 	double timediff, startdiff;
 	int glob_throttle_bit, wasthrottled;
-	int *cpssum, glob_limit;
-	DCC_SIZE pos, posdiff;
+	gint64 *cpssum;
+	int glob_limit;
+	goffset pos, posdiff;
 
 	g_get_current_time (&now);
 
@@ -169,8 +169,7 @@ dcc_calc_cps (struct DCC *dcc)
 
 		posdiff = pos - dcc->lastcpspos;
 		oldcps = dcc->cps;
-		dcc->cps = ((double) posdiff / timediff) * (timediff / startdiff) +
-			(double) dcc->cps * (1.0 - (timediff / startdiff));
+		dcc->cps = (gint64) ((posdiff / timediff) * (timediff / startdiff) + dcc->cps * (1.0 - (timediff / startdiff)));
 
 		*cpssum += dcc->cps - oldcps;
 	}
@@ -417,14 +416,11 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 	{
 		dcc_list = g_slist_remove (dcc_list, dcc);
 		fe_dcc_remove (dcc);
-		if (dcc->proxy)
-			free (dcc->proxy);
-		if (dcc->file)
-			free (dcc->file);
-		if (dcc->destfile)
-			g_free (dcc->destfile);
+		g_free (dcc->proxy);
+		g_free (dcc->file);
+		g_free (dcc->destfile);
 		free (dcc->nick);
-		free (dcc);
+		g_free (dcc);
 		return;
 	}
 
@@ -562,20 +558,16 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	/* did the plugin close it? */
 	if (!g_slist_find (dcc_list, dcc))
 	{
-		if (utf)
-			g_free (utf);
-		if (conv)
-			g_free (conv);
+		g_free (utf);
+		g_free (conv);
 		return 1;
 	}
 
 	/* did the plugin eat the event? */
 	if (ret)
 	{
-		if (utf)
-			g_free (utf);
-		if (conv)
-			g_free (conv);
+		g_free (utf);
+		g_free (conv);
 		return 0;
 	}
 
@@ -592,10 +584,8 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	{
 		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE, &no_tags);
 	}
-	if (utf)
-		g_free (utf);
-	if (conv)
-		g_free (conv);
+	g_free (utf);
+	g_free (conv);
 	return 0;
 }
 
@@ -700,11 +690,17 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 		if (dcc->resumable)
 		{
-			dcc->fp = g_open (dcc->destfile, O_WRONLY | O_APPEND | OFLAGS, 0);
+			gchar *filename_fs = g_filename_from_utf8(dcc->destfile, -1, NULL, NULL, NULL);
+			dcc->fp = g_open(dcc->destfile, O_WRONLY | O_APPEND | OFLAGS, 0);
+			g_free (filename_fs);
+
 			dcc->pos = dcc->resumable;
 			dcc->ack = dcc->resumable;
-		} else
+		}
+		else
 		{
+			gchar *filename_fs;
+
 			if (g_access (dcc->destfile, F_OK) == 0)
 			{
 				n = 0;
@@ -713,7 +709,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 					n++;
 					snprintf (buf, sizeof (buf), "%s.%d", dcc->destfile, n);
 				}
-				while (access (buf, F_OK) == 0);
+				while (g_access (buf, F_OK) == 0);
 
 				old = dcc->destfile;
 				dcc->destfile = g_strdup (buf);
@@ -722,9 +718,10 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 								 old, dcc->destfile, NULL, NULL, 0);
 				g_free (old);
 			}
-			dcc->fp =
-				g_open (dcc->destfile, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
-						prefs.hex_dcc_permissions);
+
+			filename_fs = g_filename_from_utf8 (dcc->destfile, -1, NULL, NULL, NULL);
+			dcc->fp = g_open (filename_fs, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, prefs.hex_dcc_permissions);
+			g_free (filename_fs);
 		}
 	}
 	if (dcc->fp == -1)
@@ -792,7 +789,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 			dcc_close (dcc, STAT_DONE, FALSE);
 			dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
 			/* cppcheck-suppress deallocuse */
-			sprintf (buf, "%d", dcc->cps);
+			sprintf (buf, "%" G_GINT64_FORMAT, dcc->cps);
 			EMIT_SIGNAL (XP_TE_DCCRECVCOMP, dcc->serv->front_session,
 							 dcc->file, dcc->destfile, dcc->nick, buf, 0);
 			return TRUE;
@@ -1373,14 +1370,13 @@ dcc_proxy_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	if (!dcc_did_connect (source, condition, dcc))
 		return TRUE;
 
-	dcc->proxy = malloc (sizeof (struct proxy_state));
+	dcc->proxy = g_new0 (struct proxy_state, 1);
 	if (!dcc->proxy)
 	{
 		dcc->dccstat = STAT_FAILED;
 		fe_dcc_update (dcc);
 		return TRUE;
 	}
-	memset (dcc->proxy, 0, sizeof (struct proxy_state));
 
 	switch (prefs.hex_net_proxy_type)
 	{
@@ -1416,8 +1412,8 @@ dcc_connect (struct DCC *dcc)
 		/* possible problems with filenames containing spaces? */
 		if (dcc->type == TYPE_RECV)
 			snprintf (tbuf, sizeof (tbuf), strchr (dcc->file, ' ') ?
-					"DCC SEND \"%s\" %u %d %"DCC_SFMT" %d" :
-					"DCC SEND %s %u %d %"DCC_SFMT" %d", dcc->file,
+					"DCC SEND \"%s\" %u %d %" G_GUINT64_FORMAT " %d" :
+					"DCC SEND %s %u %d %" G_GUINT64_FORMAT " %d", dcc->file,
 					dcc->addr, dcc->port, dcc->size, dcc->pasvid);
 		else
 			snprintf (tbuf, sizeof (tbuf), "DCC CHAT chat %u %d %d",
@@ -1463,7 +1459,7 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 	if (!dcc->fastsend)
 	{
-		if (dcc->ack < dcc->pos)
+		if (dcc->ack < (dcc->pos & 0xFFFFFFFF))
 			return TRUE;
 	}
 	else if (!dcc->wiotag)
@@ -1538,7 +1534,7 @@ dcc_handle_new_ack (struct DCC *dcc)
 		dcc_close (dcc, STAT_DONE, FALSE);
 		dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
 		/* cppcheck-suppress deallocuse */
-		sprintf (buf, "%d", dcc->cps);
+		sprintf (buf, "%" G_GINT64_FORMAT, dcc->cps);
 		EMIT_SIGNAL (XP_TE_DCCSENDCOMP, dcc->serv->front_session,
 						 file_part (dcc->file), dcc->nick, buf, NULL, 0);
 		done = TRUE;
@@ -1548,12 +1544,10 @@ dcc_handle_new_ack (struct DCC *dcc)
 		dcc_send_data (NULL, 0, (gpointer)dcc);
 	}
 
-#ifdef USE_DCC64
 	/* take the top 32 of "bytes send" and bottom 32 of "ack" */
 	dcc->ack = (dcc->pos & G_GINT64_CONSTANT (0xffffffff00000000)) |
 					(dcc->ack & 0xffffffff);
 	/* dcc->ack is only used for CPS and PERCENTAGE calcs from now on... */
-#endif
 
 	return done;
 }
@@ -1762,7 +1756,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 
 static struct session *dccsess;
 static char *dccto;				  /* lame!! */
-static int dccmaxcps;
+static gint64 dccmaxcps;
 static int recursive = FALSE;
 
 static void
@@ -1772,21 +1766,25 @@ dcc_send_wild (char *file)
 }
 
 void
-dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
+dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int passive)
 {
 	char outbuf[512];
-	GStatBuf st;
+	GFileInfo *file_info;
+	GFile *file;
 	struct DCC *dcc;
+	gchar *filename_fs;
+	GFileType file_type;
+	goffset file_size;
 
-	file = expand_homedir (file);
+	filename = expand_homedir (filename);
 
-	if (!recursive && (strchr (file, '*') || strchr (file, '?')))
+	if (!recursive && (strchr (filename, '*') || strchr (filename, '?')))
 	{
 		char path[256];
 		char wild[256];
 
-		safe_strcpy (wild, file_part (file), sizeof (wild));
-		path_part (file, path, sizeof (path));
+		safe_strcpy (wild, file_part (filename), sizeof (wild));
+		path_part (filename, path, sizeof (path));
 		if (path[0] != '/' || path[1] != '\0')
 			path[strlen (path) - 1] = 0;	/* remove trailing slash */
 
@@ -1794,7 +1792,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		dccto = to;
 		dccmaxcps = maxcps;
 
-		free (file);
+		g_free (filename);
 
 		recursive = TRUE;
 		for_files (path, wild, dcc_send_wild);
@@ -1806,91 +1804,134 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 	dcc = new_dcc ();
 	if (!dcc)
 	{
-		free (file);
+		g_free (filename);
 		return;
 	}
-	dcc->file = file;
+
+	dcc->file = filename;
 	dcc->maxcps = maxcps;
 
-	if (g_stat (file, &st) != -1)
+	filename_fs = g_filename_from_utf8 (filename, -1, NULL, NULL, NULL);
+	if (filename_fs == NULL)
 	{
+		PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
+		PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
 
-#ifndef USE_DCC64
-		if (sizeof (st.st_size) > 4 && st.st_size > 4294967295U)
-		{
-			PrintText (sess, "Cannot send files larger than 4 GB.\n");
-			goto xit;
-		}
-#endif
+		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
 
-		if (!(*file_part (file)) || S_ISDIR (st.st_mode) || st.st_size < 1)
-		{
-			PrintText (sess, "Cannot send directories or empty files.\n");
-			goto xit;
-		}
-
-		dcc->starttime = dcc->offertime = time (0);
-		dcc->serv = sess->server;
-		dcc->dccstat = STAT_QUEUED;
-		dcc->size = st.st_size;
-		dcc->type = TYPE_SEND;
-		dcc->fp = g_open (file, OFLAGS | O_RDONLY, 0);
-		if (dcc->fp != -1)
-		{
-			if (passive || dcc_listen_init (dcc, sess))
-			{
-				char havespaces = 0;
-				while (*file)
-				{
-					if (*file == ' ')
-					{
-						if (prefs.hex_dcc_send_fillspaces)
-				    		*file = '_';
-					  	else
-					   	havespaces = 1;
-					}
-					file++;
-				}
-				dcc->nick = strdup (to);
-				if (prefs.hex_gui_autoopen_send)
-				{
-					if (fe_dcc_open_send_win (TRUE))	/* already open? add */
-						fe_dcc_add (dcc);
-				} else
-					fe_dcc_add (dcc);
-
-				if (passive)
-				{
-					dcc->pasvid = new_id();
-					snprintf (outbuf, sizeof (outbuf), (havespaces) ?
-							"DCC SEND \"%s\" 199 0 %" DCC_SFMT " %d" :
-							"DCC SEND %s 199 0 %" DCC_SFMT " %d",
-							file_part (dcc->file),
-							dcc->size, dcc->pasvid);
-				}
-				else
-				{
-					snprintf (outbuf, sizeof (outbuf), (havespaces) ?
-							"DCC SEND \"%s\" %u %d %"DCC_SFMT :
-							"DCC SEND %s %u %d %"DCC_SFMT,
-							file_part (dcc->file), dcc->addr,
-							dcc->port, dcc->size);
-				}
-				sess->server->p_ctcp (sess->server, to, outbuf);
-
-				EMIT_SIGNAL (XP_TE_DCCOFFER, sess, file_part (dcc->file),
-								 to, dcc->file, NULL, 0);
-			} else
-			{
-				dcc_close (dcc, 0, TRUE);
-			}
-			return;
-		}
+		return;
 	}
-	PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
-	PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
-xit:
-	dcc_close (dcc, 0, TRUE);		/* dcc_close will free dcc->file */
+
+	file = g_file_new_for_path (filename_fs);
+	if (file == NULL)
+	{
+		PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
+		PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
+
+		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
+
+		g_free (filename_fs);
+
+		return;
+	}
+
+	file_info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_SIZE "," G_FILE_ATTRIBUTE_STANDARD_TYPE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+
+	g_object_unref (file);
+
+	if (file_info == NULL)
+	{
+		PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
+		PrintTextf (sess, "%s %d: %s\n", _("Error"), errno, errorstring (errno));
+
+		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
+
+		g_free (filename_fs);
+
+		return;
+	}
+
+	file_type = g_file_info_get_file_type (file_info);
+	file_size = g_file_info_get_size (file_info);
+
+	g_object_unref (file_info);
+
+	if (*file_part (filename) == '\0' || file_type == G_FILE_TYPE_DIRECTORY || file_size <= 0)
+	{
+		PrintText (sess, "Cannot send directories or empty files.\n");
+
+		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
+
+		g_free (filename_fs);
+
+		return;
+	}
+
+	dcc->starttime = dcc->offertime = time (0);
+	dcc->serv = sess->server;
+	dcc->dccstat = STAT_QUEUED;
+	dcc->size = file_size;
+	dcc->type = TYPE_SEND;
+	dcc->fp = g_open (filename_fs, OFLAGS | O_RDONLY, 0);
+
+	g_free (filename_fs);
+
+	if (dcc->fp == -1)
+	{
+		PrintText (sess, "Cannot send directories or empty files.\n");
+
+		g_object_unref (file_info);
+		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
+	}
+
+	if (passive || dcc_listen_init (dcc, sess))
+	{
+		char havespaces = 0;
+		while (*filename)
+		{
+			if (*filename == ' ')
+			{
+				if (prefs.hex_dcc_send_fillspaces)
+				    *filename = '_';
+				else
+				havespaces = 1;
+			}
+			filename++;
+		}
+		dcc->nick = strdup (to);
+		if (prefs.hex_gui_autoopen_send)
+		{
+			if (fe_dcc_open_send_win (TRUE))	/* already open? add */
+				fe_dcc_add (dcc);
+		} else
+			fe_dcc_add (dcc);
+
+		if (passive)
+		{
+			dcc->pasvid = new_id();
+			snprintf (outbuf, sizeof (outbuf), (havespaces) ?
+					"DCC SEND \"%s\" 199 0 %" G_GUINT64_FORMAT " %d" :
+					"DCC SEND %s 199 0 %" G_GUINT64_FORMAT " %d",
+					file_part (dcc->file),
+					dcc->size, dcc->pasvid);
+		}
+		else
+		{
+			snprintf (outbuf, sizeof (outbuf), (havespaces) ?
+					"DCC SEND \"%s\" %u %d %" G_GUINT64_FORMAT :
+					"DCC SEND %s %u %d %" G_GUINT64_FORMAT,
+					file_part (dcc->file), dcc->addr,
+					dcc->port, dcc->size);
+		}
+		sess->server->p_ctcp (sess->server, to, outbuf);
+
+		EMIT_SIGNAL (XP_TE_DCCOFFER, sess, file_part (dcc->file),
+							to, dcc->file, NULL, 0);
+	}
+	else
+	{
+		dcc_close (dcc, 0, TRUE);
+	}
 }
 
 static struct DCC *
@@ -1976,68 +2017,153 @@ dcc_change_nick (struct server *serv, char *oldnick, char *newnick)
 
 /* is the destination file the same? new_dcc is not opened yet */
 
-static int
+static gboolean
 is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 {
-#ifndef WIN32
-	GStatBuf st_a, st_b;
-#endif
+	gboolean result = FALSE;
+	gchar *filename_fs = NULL, *new_filename_fs = NULL;
+	GFile *file = NULL, *new_file = NULL;
+	GFileInfo *file_info = NULL, *new_file_info = NULL;
+	char *file_id = NULL, *new_file_id = NULL;
+	char *filesystem_id = NULL, *new_filesystem_id = NULL;
 
 	/* if it's the same filename, must be same */
 	if (strcmp (dcc->destfile, new_dcc->destfile) == 0)
+	{
 		return TRUE;
+	}
 
-	/* now handle case-insensitive Filesystems: HFS+, FAT */
-#ifdef WIN32
-	/* warning no win32 implementation - behaviour may be unreliable */
-#else
-	/* this fstat() shouldn't really fail */
-	if ((dcc->fp == -1 ? g_stat (dcc->destfile, &st_a) : fstat (dcc->fp, &st_a)) == -1)
-		return FALSE;
-	if (g_stat (new_dcc->destfile, &st_b) == -1)
-		return FALSE;
+	filename_fs = g_filename_from_utf8 (dcc->file, -1, NULL, NULL, NULL);
+	if (filename_fs == NULL)
+	{
+		goto exit;
+	}
 
-	/* same inode, same device, same file! */
-	if (st_a.st_ino == st_b.st_ino &&
-		 st_a.st_dev == st_b.st_dev)
-		return TRUE;
-#endif
+	new_filename_fs = g_filename_from_utf8 (new_dcc->file, -1, NULL, NULL, NULL);
+	if (new_filename_fs == NULL)
+	{
+		goto exit;
+	}
 
-	return FALSE;
+	file = g_file_new_for_path (filename_fs);
+	if (file == NULL)
+	{
+		goto exit;
+	}
+
+	new_file = g_file_new_for_path (new_filename_fs);
+	if (new_file == NULL)
+	{
+		goto exit;
+	}
+
+	file_info = g_file_query_info (file, G_FILE_ATTRIBUTE_ID_FILE "," G_FILE_ATTRIBUTE_ID_FILESYSTEM, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+	if (file_info == NULL)
+	{
+		goto exit;
+	}
+
+	new_file_info = g_file_query_info (new_file, G_FILE_ATTRIBUTE_ID_FILE "," G_FILE_ATTRIBUTE_ID_FILESYSTEM, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+	if (file_info == NULL)
+	{
+		goto exit;
+	}
+
+	file_id = g_file_info_get_attribute_as_string (file_info, G_FILE_ATTRIBUTE_ID_FILE);
+	new_file_id = g_file_info_get_attribute_as_string (new_file_info, G_FILE_ATTRIBUTE_ID_FILE);
+
+	filesystem_id = g_file_info_get_attribute_as_string (file_info, G_FILE_ATTRIBUTE_ID_FILE);
+	new_filesystem_id = g_file_info_get_attribute_as_string (new_file_info, G_FILE_ATTRIBUTE_ID_FILE);
+
+	if (file_id != NULL && new_file_id != NULL && filesystem_id != NULL && new_filesystem_id != NULL && strcmp (file_id, new_file_id) == 0 && strcmp (filesystem_id, new_filesystem_id) == 0)
+	{
+		result = TRUE;
+	}
+
+exit:
+	g_free (filename_fs);
+	g_free (new_filename_fs);
+
+	if (file != NULL)
+	{
+		g_object_unref (file);
+	}
+
+	if (new_file != NULL)
+	{
+		g_object_unref (new_file);
+	}
+
+	if (file_info != NULL)
+	{
+		g_object_unref (file_info);
+	}
+
+	if (new_file_info != NULL)
+	{
+		g_object_unref (new_file_info);
+	}
+
+	g_free (file_id);
+	g_free (new_file_id);
+	g_free(filesystem_id);
+	g_free(new_filesystem_id);
+
+	return result;
 }
 
-static int
-is_resumable (struct DCC *dcc)
+static void
+update_is_resumable (struct DCC *dcc)
 {
+	gchar *filename_fs = g_filename_from_utf8 (dcc->destfile, -1, NULL, NULL, NULL);
+
 	dcc->resumable = 0;
 
 	/* Check the file size */
-	if (g_access (dcc->destfile, W_OK) == 0)
+	if (filename_fs != NULL && g_access(filename_fs, W_OK) == 0)
 	{
-		GStatBuf st;
-
-		if (g_stat (dcc->destfile, &st) != -1)
+		GFile *file = g_file_new_for_path (filename_fs);
+		if (file != NULL)
 		{
-			if (st.st_size < dcc->size)
+			GFileInfo *file_info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_SIZE "," G_FILE_ATTRIBUTE_STANDARD_TYPE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+
+			if (file_info != NULL)
 			{
-				dcc->resumable = st.st_size;
-				dcc->pos = st.st_size;
+				goffset file_size_offset = g_file_info_get_size (file_info);
+				guint64 file_size = (file_size_offset >= 0) ? (guint64) file_size_offset : 0;
+				if (file_size < dcc->size)
+				{
+					dcc->resumable = file_size;
+					dcc->pos = file_size;
+				}
+				else
+				{
+					dcc->resume_error = 2;
+				}
+
+				g_object_unref (file_info);
 			}
 			else
-				dcc->resume_error = 2;
-		} else
+			{
+				dcc->resume_errno = errno;
+				dcc->resume_error = 1;
+			}
+
+			g_object_unref(file);
+		}
+		else
 		{
 			dcc->resume_errno = errno;
 			dcc->resume_error = 1;
 		}
-	} else
+	}
+	else
 	{
 		dcc->resume_errno = errno;
 		dcc->resume_error = 1;
 	}
 
 	/* Now verify that this DCC is not already in progress from someone else */
-
 	if (dcc->resumable)
 	{
 		GSList *list = dcc_list;
@@ -2059,8 +2185,6 @@ is_resumable (struct DCC *dcc)
 			list = list->next;
 		}
 	}
-
-	return dcc->resumable;
 }
 
 void
@@ -2100,7 +2224,7 @@ dcc_get_with_destfile (struct DCC *dcc, char *file)
 	dcc->destfile = g_strdup (file);	/* utf-8 */
 
 	/* since destfile changed, must check resumability again */
-	is_resumable (dcc);
+	update_is_resumable (dcc);
 
 	dcc_get (dcc);
 }
@@ -2133,14 +2257,16 @@ dcc_get_nick (struct session *sess, char *nick)
 static struct DCC *
 new_dcc (void)
 {
-	struct DCC *dcc = malloc (sizeof (struct DCC));
+	struct DCC *dcc = g_new0 (struct DCC, 1);
 	if (!dcc)
-		return 0;
-	memset (dcc, 0, sizeof (struct DCC));
+	{
+		return NULL;
+	}
+
 	dcc->sok = -1;
 	dcc->fp = -1;
 	dcc_list = g_slist_prepend (dcc_list, dcc);
-	return (dcc);
+	return dcc;
 }
 
 void
@@ -2231,8 +2357,8 @@ dcc_resume (struct DCC *dcc)
 		dcc->resume_sent = 1;
 		/* filename contains spaces? Quote them! */
 		snprintf (tbuf, sizeof (tbuf) - 10, strchr (dcc->file, ' ') ?
-					  "DCC RESUME \"%s\" %d %"DCC_SFMT :
-					  "DCC RESUME %s %d %"DCC_SFMT,
+					  "DCC RESUME \"%s\" %d %" G_GUINT64_FORMAT :
+					  "DCC RESUME %s %d %" G_GUINT64_FORMAT,
 					  dcc->file, dcc->port, dcc->resumable);
 
 		if (dcc->pasvid)
@@ -2316,7 +2442,7 @@ dcc_add_chat (session *sess, char *nick, int port, guint32 addr, int pasvid)
 }
 
 static struct DCC *
-dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, guint32 addr, int pasvid)
+dcc_add_file (session *sess, char *file, guint64 size, int port, char *nick, guint32 addr, int pasvid)
 {
 	struct DCC *dcc;
 	char tbuf[512];
@@ -2324,7 +2450,7 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 	dcc = new_dcc ();
 	if (dcc)
 	{
-		dcc->file = strdup (file);
+		dcc->file = g_strdup (file);
 
 		dcc->destfile = g_malloc (strlen (prefs.hex_dcc_dir) + strlen (nick) +
 										  strlen (file) + 4);
@@ -2362,7 +2488,7 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 		dcc->nick = strdup (nick);
 		dcc->maxcps = prefs.hex_dcc_max_get_cps;
 
-		is_resumable (dcc);
+		update_is_resumable (dcc);
 
 		if (prefs.hex_dcc_auto_recv == 1)
 		{
@@ -2380,7 +2506,7 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 		} else
 			fe_dcc_add (dcc);
 	}
-	sprintf (tbuf, "%"DCC_SFMT, size);
+	sprintf (tbuf, "%" G_GUINT64_FORMAT, size);
 	snprintf (tbuf + 24, 300, "%s:%d", net_ip (addr), port);
 	EMIT_SIGNAL (XP_TE_DCCSENDOFFER, sess->server->front_session, nick,
 					 file, tbuf, tbuf + 24, 0);
@@ -2397,7 +2523,7 @@ handle_dcc (struct session *sess, char *nick, char *word[], char *word_eol[],
 	char *type = word[5];
 	int port, pasvid = 0;
 	guint32 addr;
-	DCC_SIZE size;
+	guint64 size;
 	int psend = 0;
 
 	if (!g_ascii_strcasecmp (type, "CHAT"))
@@ -2463,7 +2589,7 @@ handle_dcc (struct session *sess, char *nick, char *word[], char *word_eol[],
 			dcc = find_dcc (nick, word[6], TYPE_SEND);
 		if (dcc)
 		{
-			size = BIG_STR_TO_INT (word[8]);
+			size = g_ascii_strtoull (word[8], NULL, 10);
 			dcc->resumable = size;
 			if (dcc->resumable < dcc->size)
 			{
@@ -2474,18 +2600,18 @@ handle_dcc (struct session *sess, char *nick, char *word[], char *word_eol[],
 				/* Checking if dcc is passive and if filename contains spaces */
 				if (dcc->pasvid)
 					snprintf (tbuf, sizeof (tbuf), strchr (file_part (dcc->file), ' ') ?
-							"DCC ACCEPT \"%s\" %d %"DCC_SFMT" %d" :
-							"DCC ACCEPT %s %d %"DCC_SFMT" %d",
+							"DCC ACCEPT \"%s\" %d %" G_GUINT64_FORMAT " %d" :
+							"DCC ACCEPT %s %d %" G_GUINT64_FORMAT " %d",
 							file_part (dcc->file), port, dcc->resumable, dcc->pasvid);
 				else
 					snprintf (tbuf, sizeof (tbuf), strchr (file_part (dcc->file), ' ') ?
-							"DCC ACCEPT \"%s\" %d %"DCC_SFMT :
-							"DCC ACCEPT %s %d %"DCC_SFMT,
+							"DCC ACCEPT \"%s\" %d %" G_GUINT64_FORMAT :
+							"DCC ACCEPT %s %d %" G_GUINT64_FORMAT,
 							file_part (dcc->file), port, dcc->resumable);
 
 				dcc->serv->p_ctcp (dcc->serv, dcc->nick, tbuf);
 			}
-			sprintf (tbuf, "%"DCC_SFMT, dcc->pos);
+			sprintf (tbuf, "%" G_GUINT64_FORMAT, dcc->pos);
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_DCCRESUMEREQUEST, sess, nick,
 										  file_part (dcc->file), tbuf, NULL, 0,
 										  tags_data->timestamp);
@@ -2508,7 +2634,7 @@ handle_dcc (struct session *sess, char *nick, char *word[], char *word_eol[],
 
 		port = atoi (word[8]);
 		addr = strtoul (word[7], NULL, 10);
-		size = BIG_STR_TO_INT (word[9]);
+		size = g_ascii_strtoull (word[9], NULL, 10);
 
 		if (port == 0) /* Passive dcc requested */
 			pasvid = atoi (word[10]);
@@ -2576,7 +2702,7 @@ dcc_show_list (struct session *sess)
 	{
 		dcc = (struct DCC *) list->data;
 		i++;
-		PrintTextf (sess, " %s  %-10.10s %-7.7s %-7"DCC_SFMT" %-7"DCC_SFMT" %s\n",
+		PrintTextf (sess, " %s  %-10.10s %-7.7s %-7" G_GUINT64_FORMAT " %-7" G_GUINT64_FORMAT " %s\n",
 					 dcctypes[dcc->type], dcc->nick,
 					 _(dccstat[dcc->dccstat].name), dcc->size, dcc->pos,
 					 file_part (dcc->file));

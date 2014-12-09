@@ -124,6 +124,13 @@ Source: "gio-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "glib-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gmodule-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gobject-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#if APPARCH == "x64"
+Source: "gspawn-win64-helper.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gspawn-win64-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#else
+Source: "gspawn-win32-helper.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gspawn-win32-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#endif
 Source: "gthread-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gtk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "harfbuzz.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs

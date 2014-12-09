@@ -92,9 +92,9 @@ struct server_gui
 	guint chanlist_channels_shown_count;	/* total number of displayed 
 														   channels */
 
-	int chanlist_maxusers;
-	int chanlist_minusers;
-	int chanlist_minusers_downloaded;	/* used by LIST IRC command */
+	guint32 chanlist_maxusers;
+	guint32 chanlist_minusers;
+	guint32 chanlist_minusers_downloaded;	/* used by LIST IRC command */
 	int chanlist_search_type;		/* 0=simple 1=pattern/wildcard 2=regexp */
 	gboolean chanlist_caption_is_stale;
 };

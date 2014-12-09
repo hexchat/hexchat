@@ -57,10 +57,6 @@ list_addentry (GSList ** list, char *cmd, char *name)
 	size_t name_len;
 	size_t cmd_len = 1;
 
-	/* remove <2.8.0 stuff */
-	if (!strcmp (cmd, "away") && !strcmp (name, "BACK"))
-		return;
-
 	if (cmd)
 		cmd_len = strlen (cmd) + 1;
 	name_len = strlen (name) + 1;
@@ -312,9 +308,7 @@ get_xdir (void)
 
 		if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_RoamingAppData, 0, NULL, &roaming_path_wide) != S_OK)
 		{
-			char *path;
-
-			path = g_win32_get_package_installation_directory_of_module (NULL);
+			char *path = g_win32_get_package_installation_directory_of_module (NULL);
 			if (path)
 			{
 				xdir = g_build_filename (path, "config", NULL);
@@ -590,10 +584,10 @@ const struct prefs vars[] =
 	{0, 0, 0},
 };
 
-static char *
+static const char *
 convert_with_fallback (const char *str, const char *fallback)
 {
-	char *utf;
+	const char *utf;
 
 #ifndef WIN32
 	/* On non-Windows, g_get_user_name and g_get_real_name return a string in system locale, so convert it to utf-8. */
@@ -703,8 +697,8 @@ get_default_spell_languages (void)
 				}
 			}
 		}
-		if (last != NULL)
-			g_free(last);
+
+		g_free (last);
 
 		if (lang_list[0])
 			return g_strdup (ret);
@@ -1315,7 +1309,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 int
-hexchat_open_file (char *file, int flags, int mode, int xof_flags)
+hexchat_open_file (const char *file, int flags, int mode, int xof_flags)
 {
 	char *buf;
 	int fd;

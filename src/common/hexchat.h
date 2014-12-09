@@ -502,6 +502,7 @@ typedef struct server
 	struct msproxy_state_t msp_state;
 	int id;					/* unique ID number (for plugin API) */
 #ifdef USE_OPENSSL
+	SSL_CTX *ctx;
 	SSL *ssl;
 	int ssl_do_connect_tag;
 #else
@@ -630,8 +631,5 @@ struct popup
 
 /* CL: get a random int in the range [0..n-1]. DON'T use rand() % n, it gives terrible results. */
 #define RAND_INT(n) ((int)(rand() / (RAND_MAX + 1.0) * (n)))
-
-#define hexchat_filename_from_utf8 g_filename_from_utf8
-#define hexchat_filename_to_utf8 g_filename_to_utf8
 
 #endif

@@ -241,10 +241,8 @@ key_free (gpointer data)
 
 	g_return_if_fail (kb != NULL);
 
-	if (kb->data1)
-		g_free (kb->data1);
-	if (kb->data2)
-		g_free (kb->data2);
+	g_free (kb->data1);
+	g_free (kb->data2);
 	g_free (kb);
 }
 
@@ -598,7 +596,8 @@ key_dialog_save (GtkWidget *wid, gpointer userdata)
 			else
 				keybind_list = g_slist_append (keybind_list, kb);
 
-		} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
+		}
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
 	}
 
 	if (key_save_kbs () == 0)
@@ -1600,7 +1599,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			old_gcomp.elen = elen;
 
 			/* Get the first nick and put out the data for future nickcompletes */
-			if (prefs.hex_completion_amount && g_list_length (list) <= prefs.hex_completion_amount)
+			if (prefs.hex_completion_amount > 0 && g_list_length (list) <= (guint) prefs.hex_completion_amount)
 			{
 				g_free(result);
 				result = (char*)list->data;

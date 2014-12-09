@@ -1217,80 +1217,6 @@ const unsigned char rfc_tolowertab[] =
 	0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
 };
 
-/*static unsigned char touppertab[] =
-	{ 0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa,
-	0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x11, 0x12, 0x13, 0x14,
-	0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d,
-	0x1e, 0x1f,
-	' ', '!', '"', '#', '$', '%', '&', 0x27, '(', ')',
-	'*', '+', ',', '-', '.', '/',
-	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	':', ';', '<', '=', '>', '?',
-	'@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-	'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-	'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^',
-	0x5f,
-	'`', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-	'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-	'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^',
-	0x7f,
-	0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89,
-	0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f,
-	0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99,
-	0x9a, 0x9b, 0x9c, 0x9d, 0x9e, 0x9f,
-	0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9,
-	0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf,
-	0xb0, 0xb1, 0xb2, 0xb3, 0xb4, 0xb5, 0xb6, 0xb7, 0xb8, 0xb9,
-	0xba, 0xbb, 0xbc, 0xbd, 0xbe, 0xbf,
-	0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9,
-	0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf,
-	0xd0, 0xd1, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9,
-	0xda, 0xdb, 0xdc, 0xdd, 0xde, 0xdf,
-	0xe0, 0xe1, 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9,
-	0xea, 0xeb, 0xec, 0xed, 0xee, 0xef,
-	0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9,
-	0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
-};*/
-
-/*static int
-rename_utf8 (char *oldname, char *newname)
-{
-	int sav, res;
-	char *fso, *fsn;
-
-	fso = hexchat_filename_from_utf8 (oldname, -1, 0, 0, 0);
-	if (!fso)
-		return FALSE;
-	fsn = hexchat_filename_from_utf8 (newname, -1, 0, 0, 0);
-	if (!fsn)
-	{
-		g_free (fso);
-		return FALSE;
-	}
-
-	res = rename (fso, fsn);
-	sav = errno;
-	g_free (fso);
-	g_free (fsn);
-	errno = sav;
-	return res;
-}
-
-static int
-unlink_utf8 (char *fname)
-{
-	int res;
-	char *fs;
-
-	fs = hexchat_filename_from_utf8 (fname, -1, 0, 0, 0);
-	if (!fs)
-		return FALSE;
-
-	res = unlink (fs);
-	g_free (fs);
-	return res;
-}*/
-
 static gboolean
 file_exists (char *fname)
 {
@@ -1526,7 +1452,7 @@ canonalize_key (char *key)
 }
 
 int
-portable_mode ()
+portable_mode (void)
 {
 #ifdef WIN32
 	if ((_access( "portable-mode", 0 )) != -1)
@@ -1543,7 +1469,7 @@ portable_mode ()
 }
 
 int
-unity_mode ()
+unity_mode (void)
 {
 #ifdef G_OS_UNIX
 	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
@@ -1643,8 +1569,7 @@ parse_dh (char *str, DH **dh_out, unsigned char **secret_out, int *keysize_out)
 	return 1;
 
 fail:
-	if (decoded_data)
-		g_free (decoded_data);
+	g_free (decoded_data);
 	return 0;
 }
 
@@ -1671,7 +1596,7 @@ encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 	memset (encrypted_pass, 0, pass_len);
 	plain_pass = (char*)malloc (pass_len);
 	memset (plain_pass, 0, pass_len);
-	memcpy (plain_pass, pass, pass_len);
+	memcpy (plain_pass, pass, strlen(pass));
 	out_ptr = (char*)encrypted_pass;
 	in_ptr = (char*)plain_pass;
 
@@ -1866,9 +1791,7 @@ challengeauth_response (char *username, char *password, char *challenge)
 		g_string_append_printf (buf, "%02x", (unsigned int) digest[i]);
 	}
 
-	digest = (unsigned char *) g_string_free (buf, FALSE);
-
-	return (char *) digest;
+	return g_string_free (buf, FALSE);
 }
 #endif
 

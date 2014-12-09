@@ -557,7 +557,7 @@ static int
 mg_progressbar_update (GtkWidget *bar)
 {
 	static int type = 0;
-	static float pos = 0;
+	static gdouble pos = 0;
 
 	pos += 0.05;
 	if (pos >= 0.99)
@@ -1652,7 +1652,7 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 			if (fname)
 			{
 				/* dcc_send() expects utf-8 */
-				p = hexchat_filename_to_utf8 (fname, -1, 0, 0, 0);
+				p = g_filename_from_utf8 (fname, -1, 0, 0, 0);
 				if (p)
 				{
 					dcc_send (sess, target, p, prefs.hex_dcc_max_send_cps, 0);
@@ -2287,7 +2287,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 	case WORD_EMAIL:
 		word[end] = 0;
 		word += start;
-		tmp = g_strdup_printf("mailto:%s", word + (ispunct (*word)? 1: 0));
+		tmp = g_strdup_printf ("mailto:%s", word + (ispunct (*word) ? 1 : 0));
 		menu_urlmenu (even, tmp);
 		g_free (tmp);
 		break;

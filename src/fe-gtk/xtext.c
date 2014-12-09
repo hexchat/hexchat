@@ -484,7 +484,10 @@ gtk_xtext_adjustment_set (xtext_buffer *buf, int fire_signal)
 		adj->page_increment = adj->page_size;
 
 		if (adj->value > adj->upper - adj->page_size)
+		{
+			buf->scrollbar_down = TRUE;
 			adj->value = adj->upper - adj->page_size;
+		}
 
 		if (adj->value < 0)
 			adj->value = 0;
@@ -1646,7 +1649,8 @@ gtk_xtext_check_mark_stamp (GtkXText *xtext, GdkModifierType mask)
 {
 	gboolean redraw = FALSE;
 
-	if (mask & STATE_SHIFT || prefs.hex_text_autocopy_stamp)
+	if ((mask & STATE_SHIFT || prefs.hex_text_autocopy_stamp)
+	    && (!prefs.hex_stamp_text || prefs.hex_text_indent))
 	{
 		if (!xtext->mark_stamp)
 		{
@@ -3254,7 +3258,7 @@ gtk_xtext_render_stamp (GtkXText * xtext, textentry * ent,
 {
 	textentry tmp_ent;
 	int jo, ji, hs;
-	int xsize, y;
+	int xsize, y, emphasis;
 
 	/* trashing ent here, so make a backup first */
 	memcpy (&tmp_ent, ent, sizeof (tmp_ent));
@@ -3264,7 +3268,7 @@ gtk_xtext_render_stamp (GtkXText * xtext, textentry * ent,
 	xtext->jump_out_offset = 0;
 	xtext->jump_in_offset = 0;
 	xtext->hilight_start = 0xffff;	/* temp disable */
-	int emphasis = 0;
+	emphasis = 0;
 
 	if (xtext->mark_stamp)
 	{
@@ -4681,7 +4685,7 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 }
 
 void
-gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len)
+gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp)
 {
 	textentry *ent;
 
@@ -4703,7 +4707,7 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len)
 	ent->indent = 0;
 	ent->left_len = -1;
 
-	gtk_xtext_append_entry (buf, ent, 0);
+	gtk_xtext_append_entry (buf, ent, stamp);
 }
 
 gboolean
@@ -4738,7 +4742,7 @@ gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area)
 			}
 			else
 			{
-				gtk_xtext_append (out, ent->str, ent->str_len);
+				gtk_xtext_append (out, ent->str, ent->str_len, 0);
 			}
 
 			out->text_last->stamp = ent->stamp;

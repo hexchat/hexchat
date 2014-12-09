@@ -75,61 +75,24 @@ static char MODES [][13]={"Stereo","Joint-Stereo","Dual-Channel","Mono"};
 
 int iPow(int x, int y){return (int)(pow((double)x,(double) y));}
 
-int str2int(char *text){
-    //if (DEBUG==1) putlog("converting string to int");
-    int i;
-    int ret=0;
-    for (i=1;i<=strlen(text);i++){
-        if ((text[strlen(text)-i]>57)||(text[strlen(text)-i]<48)){
-           hexchat_printf(ph,"invalid char in string: %i",text[strlen(text)-i]);
-           return 255;
-        }
-        ret+=((int)text[strlen(text)-i]-48)*iPow(10,i-1);
-    }
-    //hexchat_printf(ph, "str2int(%s)=%i",text,ret);
-    //if (DEBUG==1) putlog("int converted");
-    return ret;
-}
-/*
-static int getSize(char *file){
-    //if (DEBUG==1) putlog("reading filesize");
-	struct stat info;
-	if (stat(file,&info)!=0) return -1;
-	return info.st_size;
-}*/
-/*
-int inStr(char *s1, int sl1, char *s2){
-    //if (DEBUG==1) putlog("checking instr");
-	int i;int j;
-	for(i=0;i<sl1-strlen(s2);i++){
-		for (j=0;j<strlen(s2);j++){
-			if (s1[i+j]!=s2[j]) j=strlen(s2)+2;
-		}
-		if (j==strlen(s2)) return i;
-	}
-	return -1;
-}
+int str2int(char *text)
+{
+	int ret = 0;
 
-static char *subString(char *text, int first, int length, int spcKill){
-//if (DEBUG==1) putlog("creating substring");
-	char *ret=(char*) calloc (length+1,sizeof(char)); //malloc(sizeof(char)*(length+1));
-	ret[length]=0;int i;
-	for (i=0;i<length;i++){
-		ret[i]=text[i+first];
-		//if (ret[i]==0) ret[i]='0';
+	size_t i;
+	for (i = 1; i <= strlen(text); i++)
+	{
+		if ((text[strlen(text) - i] > 57) || (text[strlen(text) - i] < 48))
+		{
+			hexchat_printf(ph, "invalid char in string: %i", (int) text[strlen(text) - i]);
+			return 255;
+		}
+
+		ret += ((int) text[strlen(text) - i] - 48)*iPow(10, i - 1);
 	}
-	if (spcKill==1){
-	   for (i=length-1;i>=0;i--){
-           if (ret[i]==32) ret[i]=0;
-           else i=-1;
-       }
-    }
-    //if (DEBUG==1) putlog("substring created");
+
 	return ret;
 }
-
-static char *substring(char *text, int first, int length){return subString(text,first,length,0);} //1
-*/
 
 static char *tagExtract(char *tag, int tagLen, char* info){
 //if (DEBUG==1) putlog("extracting tag");
@@ -204,23 +167,28 @@ struct tagInfo readID3V1(char *file){
 	return ret;
 }
 
-char *extractID3Genre(char *tag){
-     //if (DEBUG==1) putlog("extracting id3 genre");
-     if (tag[strlen(tag)-1]==')'){
-        tag[strlen(tag)-1]=0;
-        tag=&tag[1];
-        return GENRES[str2int(tag)];
-        //return tag;
-     }
-     else{
-          int i;
-          //hexchat_print(ph, "Using 2 criteria");
-          for (i=0;i<strlen(tag);i++){
-              if (tag[i]==')'){ tag=&tag[i]+1;return tag;}
-          //return tag;
-          }
-     }
-     return "[152] failed";
+char *extractID3Genre(char *tag)
+{
+	if (tag[strlen(tag) - 1] == ')')
+	{
+		tag[strlen(tag) - 1] = 0;
+		tag = &tag[1];
+		return GENRES[str2int(tag)];
+	}
+	else
+	{
+		size_t i;
+		for (i = 0; i < strlen(tag); i++)
+		{
+			if (tag[i] == ')')
+			{
+				tag = &tag[i] + 1;
+				return tag;
+			}
+		}
+	}
+
+	return "[152] failed";
 }
 
 struct tagInfo readID3V2(char *file){

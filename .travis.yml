@@ -13,7 +13,7 @@ script:
 notifications:
     irc:
         channels: "chat.freenode.net#hexchat-devel"
-        template: "Build #%{build_number} (%{commit}) by %{author}: %{message}"
+        template: "Build %{build_url} (%{commit} in %{branch}) by %{author}: %{message}"
         on_success: change
 matrix:
      fast_finish: true

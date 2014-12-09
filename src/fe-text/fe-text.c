@@ -530,8 +530,7 @@ fe_args (int argc, char *argv[])
 
 	if (arg_cfgdir)	/* we want filesystem encoding */
 	{
-		if (xdir)
-			g_free (xdir);
+		g_free (xdir);
 		xdir = strdup (arg_cfgdir);
 		if (xdir[strlen (xdir) - 1] == '/')
 			xdir[strlen (xdir) - 1] = 0;

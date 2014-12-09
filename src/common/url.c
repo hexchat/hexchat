@@ -429,7 +429,7 @@ regex_match (const GRegex *re, const char *word, int *start, int *end)
 #define OPT_PORT "(" PORT ")?"
 
 static GRegex *
-make_re (char *grist)
+make_re (const char *grist)
 {
 	GRegex *ret;
 	GError *err = NULL;
@@ -587,18 +587,14 @@ re_url (void)
 		
 		if (uri[i].flags & URI_PATH)
 		{
-			char *sep_escaped;
-			
-			sep_escaped = g_regex_escape_string (uri[i].path_sep, 
-							     strlen(uri[i].path_sep));
+			char *sep_escaped = g_regex_escape_string (uri[i].path_sep, strlen(uri[i].path_sep));
 
-			g_string_append_printf(grist_gstr, "(" "%s" PATH ")?",
-					       sep_escaped);
+			g_string_append_printf (grist_gstr, "(" "%s" PATH ")?", sep_escaped);
 
-			g_free(sep_escaped);
+			g_free (sep_escaped);
 		}
 
-		g_string_append(grist_gstr, ")");
+		g_string_append (grist_gstr, ")");
 	}
 
 	grist = g_string_free (grist_gstr, FALSE);

@@ -34,6 +34,7 @@
 #include "match.h"
 #include "hwmon.h"
 #include "xsys.h"
+#include "parse.h"
 
 int xs_parse_cpu(char *model, char *vendor, double *freq, char *cache, unsigned int *count)
 {

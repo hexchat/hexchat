@@ -55,11 +55,6 @@
 #include <glib-object.h>			/* for g_type_init() */
 #endif
 
-#ifdef USE_OPENSSL
-#include <openssl/ssl.h>			/* SSL_() */
-#include "ssl.h"
-#endif
-
 #ifdef USE_MSPROXY
 #include "msproxy.h"
 #endif
@@ -117,10 +112,6 @@ gint arg_existing = FALSE;
 struct session *current_tab;
 struct session *current_sess = 0;
 struct hexchatprefs prefs;
-
-#ifdef USE_OPENSSL
-SSL_CTX *ctx = NULL;
-#endif
 
 #ifdef USE_LIBPROXY
 pxProxyFactory *libproxy_factory;
@@ -269,7 +260,7 @@ lag_check (void)
 	unsigned long tim;
 	char tbuf[128];
 	time_t now = time (0);
-	int lag;
+	time_t lag;
 
 	tim = make_ping_time ();
 
@@ -279,14 +270,15 @@ lag_check (void)
 		if (serv->connected && serv->end_of_motd)
 		{
 			lag = now - serv->ping_recv;
-			if (prefs.hex_net_ping_timeout && lag > prefs.hex_net_ping_timeout && lag > 0)
+			if (prefs.hex_net_ping_timeout != 0 && lag > prefs.hex_net_ping_timeout && lag > 0)
 			{
-				sprintf (tbuf, "%d", lag);
+				sprintf (tbuf, "%" G_GINT64_FORMAT, (gint64) lag);
 				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, NULL,
 								 NULL, NULL, 0);
 				if (prefs.hex_net_auto_reconnect)
 					serv->auto_reconnect (serv, FALSE, -1);
-			} else
+			}
+			else
 			{
 				snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
 				serv->p_ping (serv, "", tbuf);
@@ -405,7 +397,6 @@ irc_init (session *sess)
 {
 	static int done_init = FALSE;
 	char *buf;
-	int i;
 
 	if (done_init)
 		return;
@@ -440,7 +431,8 @@ irc_init (session *sess)
 	
 	if (arg_urls != NULL)
 	{
-		for (i = 0; i < g_strv_length(arg_urls); i++)
+		guint i;
+		for (i = 0; i < g_strv_length (arg_urls); i++)
 		{
 			buf = g_strdup_printf ("%s %s", i==0? "server" : "newserver", arg_urls[i]);
 			handle_command (sess, buf, FALSE);
@@ -1021,29 +1013,33 @@ main (int argc, char *argv[])
 	int i;
 	int ret;
 
-	srand (time (0));	/* CL: do this only once! */
+	srand ((unsigned int) time (NULL)); /* CL: do this only once! */
 
 	/* We must check for the config dir parameter, otherwise load_config() will behave incorrectly.
 	 * load_config() must come before fe_args() because fe_args() calls gtk_init() which needs to
 	 * know the language which is set in the config. The code below is copy-pasted from fe_args()
 	 * for the most part. */
-	if (argc >= 3)
+	if (argc >= 2)
 	{
-		for (i = 1; i < argc - 1; i++)
+		for (i = 1; i < argc; i++)
 		{
-			if (strcmp (argv[i], "-d") == 0)
+			if ((strcmp (argv[i], "-d") == 0 || strcmp (argv[i], "--cfgdir") == 0)
+				&& i + 1 < argc)
 			{
-				if (xdir)
-				{
-					g_free (xdir);
-				}
-
 				xdir = strdup (argv[i + 1]);
+			}
+			else if (strncmp (argv[i], "--cfgdir=", 9) == 0)
+			{
+				xdir = strdup (argv[i] + 9);
+			}
 
+			if (xdir != NULL)
+			{
 				if (xdir[strlen (xdir) - 1] == G_DIR_SEPARATOR)
 				{
 					xdir[strlen (xdir) - 1] = 0;
 				}
+				break;
 			}
 		}
 	}
@@ -1112,11 +1108,6 @@ main (int argc, char *argv[])
 
 #ifdef USE_LIBPROXY
 	px_proxy_factory_free(libproxy_factory);
-#endif
-
-#ifdef USE_OPENSSL
-	if (ctx)
-		_SSL_context_free (ctx);
 #endif
 
 #ifdef WIN32

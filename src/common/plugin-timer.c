@@ -43,7 +43,7 @@ typedef struct
 	char *command;
 	int ref;
 	int repeat;
-	float timeout;
+	int timeout;
 	unsigned int forever:1;
 } timer;
 
@@ -99,7 +99,7 @@ timeout_cb (timer *tim)
 }
 
 static void
-timer_add (int ref, float timeout, int repeat, char *command)
+timer_add (int ref, int timeout, int repeat, char *command)
 {
 	timer *tim;
 	GSList *list;
@@ -128,7 +128,7 @@ timer_add (int ref, float timeout, int repeat, char *command)
 	if (repeat == 0)
 		tim->forever = TRUE;
 
-	tim->hook = hexchat_hook_timer (ph, timeout * 1000.0, (void *)timeout_cb, tim);
+	tim->hook = hexchat_hook_timer (ph, timeout, (void *)timeout_cb, tim);
 	timer_list = g_slist_append (timer_list, tim);
 }
 
@@ -150,7 +150,7 @@ timer_showlist (void)
 	while (list)
 	{
 		tim = list->data;
-		hexchat_printf (ph, _("%5d %8.1f %7d  %s\n"), tim->ref, tim->timeout,
+		hexchat_printf (ph, _("%5d %8.1f %7d  %s\n"), tim->ref, tim->timeout / 1000.0f,
 						  tim->repeat, tim->command);
 		list = list->next;
 	}
@@ -160,7 +160,7 @@ static int
 timer_cb (char *word[], char *word_eol[], void *userdata)
 {
 	int repeat = 1;
-	float timeout;
+	double timeout;
 	int offset = 0;
 	int ref = 0;
 	int quiet = FALSE;
@@ -199,10 +199,10 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	timeout = atof (word[2 + offset]);
 	command = word_eol[3 + offset];
 
-	if (timeout < 0.1 || !command[0])
+	if (timeout < 0.1 || timeout * 1000 > INT_MAX || !command[0])
 		hexchat_print (ph, HELP);
 	else
-		timer_add (ref, timeout, repeat, command);
+		timer_add (ref, (int) timeout * 1000, repeat, command);
 
 	return HEXCHAT_EAT_HEXCHAT;
 }

@@ -49,24 +49,32 @@ void printThemes(){
      hexchat_printf(ph,"\nTitle-Theme:\n");printTheme(titleTheme);
 }
 
-void cbFix(char *line){
-     //if (DEBUG==1) putlog("cbfix");
-     int i, j;
-     for (i=0;i<strlen(line);i++){
-         if (line[i]=='%'){
-            if ((line[i+1]=='C')||(line[i+1]=='B')||(line[i+1]=='U')||(line[i+1]=='O')||(line[i+1]=='R')){
-               if(line[i+1]=='C') line[i]=3;
-               if(line[i+1]=='B') line[i]=2;
-               if(line[i+1]=='U') line[i]=37;
-               if(line[i+1]=='O') line[i]=17;
-               if(line[i+1]=='R') line[i]=26;
+void cbFix(char *line)
+{
+	size_t i;
+	for (i = 0; i < strlen(line); i++)
+	{
+		size_t j;
 
-               for (j=i+1;j<strlen(line)-1;j++) line[j]=line[j+1];
-               line[strlen(line)-1]=0;
-            }
-         }
-     }
-     //if (DEBUG==1) putlog("cbfix done");
+		if (line[i] == '%')
+		{
+			if ((line[i + 1] == 'C') || (line[i + 1] == 'B') || (line[i + 1] == 'U') || (line[i + 1] == 'O') || (line[i + 1] == 'R'))
+			{
+				if (line[i + 1] == 'C') line[i] = 3;
+				if (line[i + 1] == 'B') line[i] = 2;
+				if (line[i + 1] == 'U') line[i] = 37;
+				if (line[i + 1] == 'O') line[i] = 17;
+				if (line[i + 1] == 'R') line[i] = 26;
+
+				for (j = i + 1; j < strlen(line) - 1; j++)
+				{
+					line[j] = line[j + 1];
+				}
+
+				line[strlen(line) - 1] = 0;
+			}
+		}
+	}
 }
 
 struct theme themeAdd(struct theme data, char *info){

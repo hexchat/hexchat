@@ -882,11 +882,10 @@ fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *)
 {
 	/* warning, assuming fe_confirm is used by DCC only! */
 	struct DCC *dcc = ud;
-	char *filepath;
 
 	if (dcc->file)
 	{
-		filepath = g_build_filename (prefs.hex_dcc_dir, dcc->file, NULL);
+		char *filepath = g_build_filename (prefs.hex_dcc_dir, dcc->file, NULL);
 		gtkutil_file_req (message, dcc_saveas_cb, ud, filepath, NULL,
 								FRF_WRITE|FRF_NOASKOVERWRITE|FRF_FILTERISINITIAL);
 		g_free (filepath);
@@ -1092,9 +1091,9 @@ fe_open_url (const char *url)
 	/* the http:// part's missing, prepend it, otherwise it won't always work */
 	else if (strchr (url, ':') == NULL)
 	{
-		url = g_strdup_printf ("http://%s", url);
-		fe_open_url_inner (url);
-		g_free ((char *)url);
+		uri = g_strdup_printf ("http://%s", url);
+		fe_open_url_inner (uri);
+		g_free (uri);
 	}
 	/* we have a sane URL, send it to the browser untouched */
 	else
