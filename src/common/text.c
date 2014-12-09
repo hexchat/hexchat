@@ -623,14 +623,15 @@ log_open (session *sess)
 
 	if (!log_error && sess->logfd == -1)
 	{
-		char *message;
+		char *filename = log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE));
+		char *message = g_strdup_printf (_("* Can't open log file(s) for writing. Check the\npermissions on %s"), filename);
 
-		message = g_strdup_printf (_("* Can't open log file(s) for writing. Check the\npermissions on %s"),
-			log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE)));
+		g_free (filename);
 
 		fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
 
 		g_free (message);
+
 		log_error = TRUE;
 	}
 }
