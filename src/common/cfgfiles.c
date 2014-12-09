@@ -434,6 +434,7 @@ const struct prefs vars[] =
 	{"gui_tab_dots", P_OFFINT (hex_gui_tab_dots), TYPE_BOOL},
 	{"gui_tab_icons", P_OFFINT (hex_gui_tab_icons), TYPE_BOOL},
 	{"gui_tab_layout", P_OFFINT (hex_gui_tab_layout), TYPE_INT},
+	{"gui_tab_middleclose", P_OFFINT (hex_gui_tab_middleclose), TYPE_BOOL},
 	{"gui_tab_newtofront", P_OFFINT (hex_gui_tab_newtofront), TYPE_INT},
 	{"gui_tab_pos", P_OFFINT (hex_gui_tab_pos), TYPE_INT},
 	{"gui_tab_scrollchans", P_OFFINT (hex_gui_tab_scrollchans), TYPE_BOOL},
@@ -759,6 +760,7 @@ load_default_config(void)
 	prefs.hex_gui_tab_chans = 1;
 	prefs.hex_gui_tab_dialogs = 1;
 	prefs.hex_gui_tab_icons = 1;
+	prefs.hex_gui_tab_middleclose = 1;
 	prefs.hex_gui_tab_server = 1;
 	prefs.hex_gui_tab_sort = 1;
 	prefs.hex_gui_topicbar = 1;
