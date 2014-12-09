@@ -1409,9 +1409,6 @@ key_action_tab_clean(void)
 	}
 }
 
-/* Used in the followig completers */
-#define COMP_BUF 2048
-
 /* For use in sorting the user list for completion */
 static int
 talked_recent_cmp (struct User *a, struct User *b)
@@ -1425,16 +1422,31 @@ talked_recent_cmp (struct User *a, struct User *b)
 	return 0;
 }
 
+#define COMP_BUF 2048
+
+static inline glong
+len_to_offset (const char *str, glong len)
+{
+	return g_utf8_pointer_to_offset (str, str + len);
+}
+
+static inline glong
+offset_to_len (const char *str, glong offset)
+{
+	return g_utf8_offset_to_pointer (str, offset) - str;
+}
+
 static int
 key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 							struct session *sess)
 {
 	int len = 0, elen = 0, i = 0, cursor_pos, ent_start = 0, comp = 0, found = 0,
 	    prefix_len, skip_len = 0, is_nick, is_cmd = 0;
-	char buf[COMP_BUF], ent[CHANLEN], *postfix = NULL, *result, *ch;
+	char ent[CHANLEN], *postfix = NULL, *result, *ch;
 	GList *list = NULL, *tmp_list = NULL;
 	const char *text;
 	GCompletion *gcomp = NULL;
+	GString *buf;
 
 	/* force the IM Context to reset */
 	SPELL_ENTRY_SET_EDITABLE (t, FALSE);
@@ -1447,8 +1459,6 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 	len = g_utf8_strlen (text, -1); /* must be null terminated */
 
 	cursor_pos = SPELL_ENTRY_GET_POS (t);
-
-	buf[0] = 0; /* make sure we don't get garbage in the buffer */
 
 	/* handle "nick: " or "nick " or "#channel "*/
 	ch = g_utf8_find_prev_char(text, g_utf8_offset_to_pointer(text,cursor_pos));
@@ -1609,40 +1619,42 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 				/* bash style completion */
 				if (g_list_next(list) != NULL)
 				{
+					buf = g_string_sized_new (MAX(COMP_BUF, len + NICKLEN));
 					if (strlen (result) > elen) /* the largest common prefix is larger than nick, change the data */
 					{
 						if (prefix_len)
-							g_utf8_strncpy (buf, text, prefix_len);
-						strncat (buf, result, COMP_BUF - prefix_len);
-						cursor_pos = strlen (buf);
+							g_string_append_len (buf, text, offset_to_len (text, prefix_len));
+						g_string_append (buf, result);
+						cursor_pos = buf->len;
 						g_free(result);
 						if (postfix)
 						{
-							strcat (buf, " ");
-							strncat (buf, postfix, COMP_BUF - cursor_pos -1);
+							g_string_append_c (buf, ' ');
+							g_string_append (buf, postfix);
 						}
-						SPELL_ENTRY_SET_TEXT (t, buf);
-						SPELL_ENTRY_SET_POS (t, g_utf8_pointer_to_offset(buf, buf + cursor_pos));
-						buf[0] = 0;
+						SPELL_ENTRY_SET_TEXT (t, buf->str);
+						SPELL_ENTRY_SET_POS (t, len_to_offset (buf->str, cursor_pos));
+						g_string_erase (buf, 0, -1);
 					}
 					else
 						g_free(result);
+
 					while (list)
 					{
-						len = strlen (buf);	/* current buffer */
+						len = buf->len;
 						elen = strlen (list->data);	/* next item to add */
 						if (len + elen + 2 >= COMP_BUF) /* +2 is space + null */
 						{
-							PrintText (sess, buf);
-							buf[0] = 0;
-							len = 0;
+							PrintText (sess, buf->str);
+							g_string_erase (buf, 0, -1);
 						}
-						strcpy (buf + len, (char *) list->data);
-						strcpy (buf + len + elen, " ");
+						g_string_append (buf, (char*)list->data);
+						g_string_append_c (buf, ' ');
 						list = list->next;
 					}
-					PrintText (sess, buf);
+					PrintText (sess, buf->str);
 					g_completion_free(gcomp);
+					g_string_free (buf, TRUE);
 					return 2;
 				}
 				/* Only one matching entry */
@@ -1654,17 +1666,19 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 	
 	if(result)
 	{
+		buf = g_string_sized_new (len + NICKLEN);
 		if (prefix_len)
-			g_utf8_strncpy(buf, text, prefix_len);
-		strncat (buf, result, COMP_BUF - (prefix_len + 3)); /* make sure nicksuffix and space fits */
+			g_string_append_len (buf, text, offset_to_len (text, prefix_len));
+		g_string_append (buf, result);
 		if(!prefix_len && is_nick)
-			strcat (buf, &prefs.hex_completion_suffix[0]);
-		strcat (buf, " ");
-		cursor_pos = strlen (buf);
+			g_string_append_unichar (buf, g_utf8_get_char_validated ((const char*)&prefs.hex_completion_suffix, -1));
+		g_string_append_c (buf, ' ');
+		cursor_pos = buf->len;
 		if (postfix)
-			strncat (buf, postfix, COMP_BUF - cursor_pos - 2);
-		SPELL_ENTRY_SET_TEXT (t, buf);
-		SPELL_ENTRY_SET_POS (t, g_utf8_pointer_to_offset(buf, buf + cursor_pos));
+			g_string_append (buf, postfix);
+		SPELL_ENTRY_SET_TEXT (t, buf->str);
+		SPELL_ENTRY_SET_POS (t, len_to_offset (buf->str, cursor_pos));
+		g_string_free (buf, TRUE);
 	}
 	if (gcomp)
 		g_completion_free(gcomp);
@@ -1796,7 +1810,7 @@ replace_handle (GtkWidget *t)
 				snprintf (word, sizeof (word), "%s", pop->cmd);
 			else
 				snprintf (word, sizeof (word), "%s%s", pop->cmd, postfix);
-			strcat (outbuf, word);
+			g_strlcat (outbuf, word, sizeof(outbuf));
 			SPELL_ENTRY_SET_TEXT (t, outbuf);
 			SPELL_ENTRY_SET_POS (t, -1);
 			return;
