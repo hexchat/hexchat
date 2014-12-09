@@ -403,8 +403,7 @@ server_inline (server *serv, char *line, int len)
 	/* let proto-irc.c handle it */
 	serv->p_inline (serv, line, len);
 
-	if (utf_line_allocated != NULL) /* only if a special copy was allocated */
-		g_free (utf_line_allocated);
+	g_free (utf_line_allocated);
 }
 
 /* read data from socket */

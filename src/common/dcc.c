@@ -416,14 +416,11 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 	{
 		dcc_list = g_slist_remove (dcc_list, dcc);
 		fe_dcc_remove (dcc);
-		if (dcc->proxy)
-			free (dcc->proxy);
-		if (dcc->file)
-			g_free (dcc->file);
-		if (dcc->destfile)
-			g_free (dcc->destfile);
+		g_free (dcc->proxy);
+		g_free (dcc->file);
+		g_free (dcc->destfile);
 		free (dcc->nick);
-		free (dcc);
+		g_free (dcc);
 		return;
 	}
 
@@ -561,20 +558,16 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	/* did the plugin close it? */
 	if (!g_slist_find (dcc_list, dcc))
 	{
-		if (utf)
-			g_free (utf);
-		if (conv)
-			g_free (conv);
+		g_free (utf);
+		g_free (conv);
 		return 1;
 	}
 
 	/* did the plugin eat the event? */
 	if (ret)
 	{
-		if (utf)
-			g_free (utf);
-		if (conv)
-			g_free (conv);
+		g_free (utf);
+		g_free (conv);
 		return 0;
 	}
 
@@ -591,10 +584,8 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	{
 		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE, &no_tags);
 	}
-	if (utf)
-		g_free (utf);
-	if (conv)
-		g_free (conv);
+	g_free (utf);
+	g_free (conv);
 	return 0;
 }
 
@@ -1379,14 +1370,13 @@ dcc_proxy_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	if (!dcc_did_connect (source, condition, dcc))
 		return TRUE;
 
-	dcc->proxy = malloc (sizeof (struct proxy_state));
+	dcc->proxy = g_new0 (struct proxy_state, 1);
 	if (!dcc->proxy)
 	{
 		dcc->dccstat = STAT_FAILED;
 		fe_dcc_update (dcc);
 		return TRUE;
 	}
-	memset (dcc->proxy, 0, sizeof (struct proxy_state));
 
 	switch (prefs.hex_net_proxy_type)
 	{
@@ -2091,15 +2081,8 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 	}
 
 exit:
-	if (filename_fs != NULL)
-	{
-		g_free (filename_fs);
-	}
-
-	if (new_filename_fs != NULL)
-	{
-		g_free (new_filename_fs);
-	}
+	g_free (filename_fs);
+	g_free (new_filename_fs);
 
 	if (file != NULL)
 	{
@@ -2121,25 +2104,10 @@ exit:
 		g_object_unref (new_file_info);
 	}
 
-	if (file_id != NULL)
-	{
-		g_free (file_id);
-	}
-
-	if (new_file_id != NULL)
-	{
-		g_free (new_file_id);
-	}
-
-	if (filesystem_id != NULL)
-	{
-		g_free(filesystem_id);
-	}
-
-	if (new_filesystem_id != NULL)
-	{
-		g_free(new_filesystem_id);
-	}
+	g_free (file_id);
+	g_free (new_file_id);
+	g_free(filesystem_id);
+	g_free(new_filesystem_id);
 
 	return result;
 }
@@ -2289,9 +2257,12 @@ dcc_get_nick (struct session *sess, char *nick)
 static struct DCC *
 new_dcc (void)
 {
-	struct DCC *dcc = calloc (1, sizeof (struct DCC));
+	struct DCC *dcc = g_new0 (struct DCC, 1);
 	if (!dcc)
-		return 0;
+	{
+		return NULL;
+	}
+
 	dcc->sok = -1;
 	dcc->fp = -1;
 	dcc_list = g_slist_prepend (dcc_list, dcc);

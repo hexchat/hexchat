@@ -2549,7 +2549,7 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			PrintText (sess, errorstring (errno));
 			g_free (buf);
 		}
-		free (file);
+		g_free (file);
 		return TRUE;
 	}
 
@@ -2562,7 +2562,7 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 		file = expand_homedir (word[2]);
 		error = plugin_load (sess, file, arg);
-		free (file);
+		g_free (file);
 
 		if (error)
 			PrintText (sess, error);
@@ -2674,7 +2674,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				if (*split_text)
 					offset += strlen(split_text);
 
-				g_free(split_text);
+				g_free (split_text);
 			}
 
 			sess->server->p_action (sess->server, sess->channel, act + offset);
@@ -2780,7 +2780,7 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					if (*split_text)
 						offset += strlen(split_text);
 
-					g_free(split_text);
+					g_free (split_text);
 				}
 				sess->server->p_message (sess->server, nick, msg + offset);
 				offset = 0;
@@ -2801,7 +2801,7 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					if (*split_text)
 						offset += strlen(split_text);
 
-					g_free(split_text);
+					g_free (split_text);
 				}
 				inbound_chanmsg (newsess->server, NULL, newsess->channel,
 									  newsess->server->nick, msg + offset, TRUE, FALSE,
@@ -2895,7 +2895,7 @@ cmd_notice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (*split_text)
 				offset += strlen(split_text);
 			
-			g_free(split_text);
+			g_free (split_text);
 		}
 
 		sess->server->p_notice (sess->server, word[2], text + offset);
@@ -3054,7 +3054,7 @@ cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				if (*split_text)
 					offset += strlen(split_text);
 
-				g_free(split_text);
+				g_free (split_text);
 			}
 			sess->server->p_message (sess->server, nick, msg + offset);
 			inbound_chanmsg (nick_sess->server, nick_sess, nick_sess->channel,
@@ -4565,7 +4565,7 @@ handle_say (session *sess, char *text, int check_spch)
 			if (*split_text)
 				offset += strlen(split_text);
 			
-			g_free(split_text);
+			g_free (split_text);
 		}
 
 		inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,

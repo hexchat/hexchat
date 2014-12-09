@@ -1643,8 +1643,7 @@ parse_dh (char *str, DH **dh_out, unsigned char **secret_out, int *keysize_out)
 	return 1;
 
 fail:
-	if (decoded_data)
-		g_free (decoded_data);
+	g_free (decoded_data);
 	return 0;
 }
 

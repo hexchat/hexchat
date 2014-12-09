@@ -449,10 +449,8 @@ Util_BuildEOLList(char *word[])
 		PyList_SetItem(list, i - 1, uni_part);
 	}
 
-	if (last)
-		g_free (last);
-	if (accum)
-		g_free (accum);
+	g_free (last);
+	g_free (accum);
 
 	return list;
 }
@@ -1465,8 +1463,7 @@ Plugin_RemoveHook(PyObject *plugin, Hook *hook)
 					       hook));
 		Py_DECREF(hook->callback);
 		Py_DECREF(hook->userdata);
-		if (hook->name)
-			g_free(hook->name);
+		g_free(hook->name);
 		g_free(hook);
 	}
 }
@@ -1485,8 +1482,7 @@ Plugin_RemoveAllHooks(PyObject *plugin)
 		}
 		Py_DECREF(hook->callback);
 		Py_DECREF(hook->userdata);
-		if (hook->name)
-			g_free(hook->name);
+		g_free(hook->name);
 		g_free(hook);
 		list = list->next;
 	}

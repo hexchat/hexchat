@@ -177,7 +177,7 @@ scrollback_shrink (session *sess)
 	g_free (file);
 	if (fh == -1)
 	{
-		free (buf);
+		g_free (buf);
 		return;
 	}
 
@@ -200,7 +200,7 @@ scrollback_shrink (session *sess)
 	}
 
 	close (fh);
-	free (buf);
+	g_free (buf);
 }
 
 static void
@@ -683,8 +683,7 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 			*ret = g_locale_to_utf8 (dest, len, 0, &len, 0);
 	}
 
-	if (loc)
-		g_free (loc);
+	g_free (loc);
 
 	return len;
 }
@@ -916,8 +915,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 	scrollback_save (sess, text);
 	fe_print_text (sess, text, timestamp, FALSE);
 
-	if (conv)
-		g_free (conv);
+	g_free (conv);
 }
 
 void

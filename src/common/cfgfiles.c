@@ -699,8 +699,8 @@ get_default_spell_languages (void)
 				}
 			}
 		}
-		if (last != NULL)
-			g_free(last);
+
+		g_free (last);
 
 		if (lang_list[0])
 			return g_strdup (ret);

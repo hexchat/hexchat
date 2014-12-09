@@ -241,10 +241,8 @@ key_free (gpointer data)
 
 	g_return_if_fail (kb != NULL);
 
-	if (kb->data1)
-		g_free (kb->data1);
-	if (kb->data2)
-		g_free (kb->data2);
+	g_free (kb->data1);
+	g_free (kb->data2);
 	g_free (kb);
 }
 
