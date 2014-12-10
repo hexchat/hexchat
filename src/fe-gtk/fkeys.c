@@ -1678,8 +1678,8 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		if (prefix_len)
 			g_string_append_len (buf, text, offset_to_len (text, prefix_len));
 		g_string_append (buf, result);
-		if((!prefix_len || has_nick_prefix) && is_nick)
-			g_string_append_unichar (buf, g_utf8_get_char_validated ((const char*)&prefs.hex_completion_suffix, -1));
+		if((!prefix_len || has_nick_prefix) && is_nick && prefs.hex_completion_suffix[0] != '\0')
+			g_string_append_unichar (buf, g_utf8_get_char_validated (prefs.hex_completion_suffix, -1));
 		g_string_append_c (buf, ' ');
 		cursor_pos = buf->len;
 		if (postfix)
