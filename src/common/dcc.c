@@ -2064,7 +2064,7 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 	}
 
 	new_file_info = g_file_query_info (new_file, G_FILE_ATTRIBUTE_ID_FILE "," G_FILE_ATTRIBUTE_ID_FILESYSTEM, G_FILE_QUERY_INFO_NONE, NULL, NULL);
-	if (file_info == NULL)
+	if (new_file_info == NULL)
 	{
 		goto exit;
 	}
