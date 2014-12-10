@@ -855,34 +855,36 @@ load_default_config(void)
 #else
 	if (g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD))
 	{
-		strcpy (prefs.hex_dcc_dir, g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD));
+		safe_strcpy (prefs.hex_dcc_dir, g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD), sizeof(prefs.hex_dcc_dir));
 	}
 	else
 	{
-		strcpy (prefs.hex_dcc_dir, g_build_filename (g_get_home_dir (), "Downloads", NULL));
+		char *download_dir = g_build_filename (g_get_home_dir (), "Downloads", NULL);
+		safe_strcpy (prefs.hex_dcc_dir, download_dir, sizeof(prefs.hex_dcc_dir));
+		g_free (download_dir);
 	}
 #endif
 	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
 	strcpy (prefs.hex_input_command_char, "/");
-	strcpy (prefs.hex_irc_logmask, g_build_filename ("%n", "%c.log", NULL));
-	strcpy (prefs.hex_irc_nick1, username);
-	strcpy (prefs.hex_irc_nick2, username);
-	strcat (prefs.hex_irc_nick2, "_");
-	strcpy (prefs.hex_irc_nick3, username);
-	strcat (prefs.hex_irc_nick3, "__");
+	strcpy (prefs.hex_irc_logmask, "%n"G_DIR_SEPARATOR_S"%c.log");
+	safe_strcpy (prefs.hex_irc_nick1, username, sizeof(prefs.hex_irc_nick1));
+	safe_strcpy (prefs.hex_irc_nick2, username, sizeof(prefs.hex_irc_nick2));
+	g_strlcat (prefs.hex_irc_nick2, "_", sizeof(prefs.hex_irc_nick2));
+	safe_strcpy (prefs.hex_irc_nick3, username, sizeof(prefs.hex_irc_nick3));
+	g_strlcat (prefs.hex_irc_nick3, "__", sizeof(prefs.hex_irc_nick3));
 	strcpy (prefs.hex_irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
-	strcpy (prefs.hex_irc_part_reason, _("Leaving"));
-	strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason);
-	strcpy (prefs.hex_irc_real_name, realname);
-	strcpy (prefs.hex_irc_user_name, username);
+	safe_strcpy (prefs.hex_irc_part_reason, _("Leaving"), sizeof(prefs.hex_irc_part_reason));
+	safe_strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason, sizeof(prefs.hex_irc_quit_reason));
+	safe_strcpy (prefs.hex_irc_real_name, realname, sizeof(prefs.hex_irc_real_name));
+	safe_strcpy (prefs.hex_irc_user_name, username, sizeof(prefs.hex_irc_user_name));
 	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
 
 	font = fe_get_default_font ();
 	if (font)
 	{
-		strcpy (prefs.hex_text_font, font);
-		strcpy (prefs.hex_text_font_main, font);
+		safe_strcpy (prefs.hex_text_font, font, sizeof(prefs.hex_text_font));
+		safe_strcpy (prefs.hex_text_font_main, font, sizeof(prefs.hex_text_font_main));
 	}
 	else
 	{
@@ -892,7 +894,7 @@ load_default_config(void)
 
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
 	langs = get_default_spell_languages ();
-	strcpy (prefs.hex_text_spell_langs, langs);
+	safe_strcpy (prefs.hex_text_spell_langs, langs, sizeof(prefs.hex_text_spell_langs));
 
 
 	/* private variables */
