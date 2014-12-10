@@ -119,7 +119,7 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!quiet)
 		PrintTextf (sess, "\002Network\002: %s \002Channel\002: %s\n",
 						sess->server->network ? server_get_network (sess->server, TRUE) : _("<none>"),
-						sess->channel[0] ? sess->channel : _("<none>"));
+						sess->session_name[0] ? sess->session_name : _("<none>"));
 
 	while (i < sizeof (chanopt) / sizeof (channel_options))
 	{
@@ -298,7 +298,7 @@ chanopt_load (session *sess)
 	chanopt_in_memory *co;
 	char *network;
 
-	if (sess->channel[0] == 0)
+	if (sess->session_name[0] == 0)
 		return;
 
 	network = server_get_network (sess->server, FALSE);
@@ -311,7 +311,7 @@ chanopt_load (session *sess)
 		chanopt_load_all ();
 	}
 
-	co = chanopt_find (network, sess->channel, FALSE);
+	co = chanopt_find (network, sess->session_name, FALSE);
 	if (!co)
 		return;
 
@@ -334,7 +334,7 @@ chanopt_save (session *sess)
 	chanopt_in_memory *co;
 	char *network;
 
-	if (sess->channel[0] == 0)
+	if (sess->session_name[0] == 0)
 		return;
 
 	network = server_get_network (sess->server, FALSE);
@@ -343,7 +343,7 @@ chanopt_save (session *sess)
 
 	/* 2. reconcile sess with what we loaded from disk */
 
-	co = chanopt_find (network, sess->channel, TRUE);
+	co = chanopt_find (network, sess->session_name, TRUE);
 
 	i = 0;
 	while (i < sizeof (chanopt) / sizeof (channel_options))

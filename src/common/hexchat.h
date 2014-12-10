@@ -388,6 +388,7 @@ typedef struct session
 	char channel[CHANLEN];
 	char waitchannel[CHANLEN];		  /* waiting to join channel (/join sent) */
 	char willjoinchannel[CHANLEN];	  /* will issue /join for this channel */
+	char session_name[CHANLEN];		 /* the name of the session, should not modified */
 	char channelkey[64];			  /* XXX correct max length? */
 	int limit;						  /* channel user limit */
 	int logfd;

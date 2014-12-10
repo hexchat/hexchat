@@ -480,7 +480,10 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->lastact_idx = LACT_NONE;
 
 	if (from != NULL)
-		safe_strcpy (sess->channel, from, CHANLEN);
+	{
+		safe_strcpy(sess->channel, from, CHANLEN);
+		safe_strcpy(sess->session_name, from, CHANLEN);
+	}
 
 	sess_list = g_slist_prepend (sess_list, sess);
 
