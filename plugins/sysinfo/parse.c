@@ -32,7 +32,6 @@
 
 #include "pci.h"
 #include "match.h"
-#include "hwmon.h"
 #include "xsys.h"
 #include "parse.h"
 
@@ -47,7 +46,8 @@ int xs_parse_cpu(char *model, char *vendor, double *freq, char *cache, unsigned 
 	FILE *fp = fopen("/proc/cpuinfo", "r");
 	if(fp == NULL)
 		return 1;
-	if(count != NULL) *count = 0;
+
+	*count = 0;
 	strcpy(cache,"unknown\0");
 	
 	#if defined(__i386__) || defined(__x86_64__)
@@ -433,30 +433,5 @@ int xs_parse_distro(char *name)
 	pos=strchr(buffer, '\n');
 	if(pos != NULL) *pos = '\0';
 	strcpy(name, buffer);
-	return 0;
-}
-
-int xs_parse_hwmon_chip(char *chip)
-{
-	if (!hwmon_chip_present())
-		return 1;
-#if 0
-	else
-		get_hwmon_chip_name(chip);
-#endif
-	return 0;
-}
-
-int xs_parse_hwmon_temp(char *temp, unsigned int *sensor)
-{
-	unsigned int value;
-	float celsius;
-
-	if (!hwmon_chip_present())
-		return 1;
-	else
-		get_hwmon_temp(&value, sensor);
-		celsius = (float)value;
-		snprintf(temp, bsize, "%.1fC", celsius/1000.0);
 	return 0;
 }

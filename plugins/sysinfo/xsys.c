@@ -86,6 +86,7 @@ print_summary (int announce, char* format)
 	char os_host[bsize];
 	char os_user[bsize];
 	char os_kernel[bsize];
+	char *free_space;
 	unsigned long long mem_total;
 	unsigned long long mem_free;
 	unsigned int count;
@@ -158,7 +159,9 @@ print_summary (int announce, char* format)
 		return HEXCHAT_EAT_ALL;
 	}
 
-	snprintf (buffer, bsize, "%s", pretty_freespace ("Physical", &mem_free, &mem_total));
+	free_space = pretty_freespace ("Physical", &mem_free, &mem_total);
+	snprintf (buffer, bsize, "%s", free_space);
+	free (free_space);
 	format_output ("RAM", buffer, format);	
 	strcat (sysinfo, "\017 ");
 	strncat (sysinfo, buffer, bsize - strlen (sysinfo));

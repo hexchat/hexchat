@@ -34,7 +34,5 @@ int xs_parse_video(char *vid_card);
 int xs_parse_agpbridge(char *agp_bridge);
 int xs_parse_ether(char *ethernet_card);
 int xs_parse_distro(char *name);
-int xs_parse_hwmon_chip(char *chip);
-int xs_parse_hwmon_temp(char *temp, unsigned int *sensor);
 
 #endif
