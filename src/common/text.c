@@ -1975,9 +1975,11 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 
 		 a_len_error:
 			fe_message ("String ends in $a", FE_MSG_WARN);
+			free (i);
 			return 1;
 		 a_range_error:
 			fe_message ("$a value is greater than 255", FE_MSG_WARN);
+			free (i);
 			return 1;
 		}
 		if (d == 't')
@@ -2001,6 +2003,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		{
 			snprintf (o, sizeof (o), "Error, invalid argument $%c\n", d);
 			fe_message (o, FE_MSG_WARN);
+			free (i);
 			return 1;
 		}
 		d -= '0';
@@ -2067,6 +2070,8 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		*max_arg = max;
 	if (output)
 		*output = obuf;
+	else
+		free (obuf);
 
 	return 0;
 }

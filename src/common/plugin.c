@@ -1778,6 +1778,8 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	{
 		g_free (confname);
 		g_free (confname_tmp);
+		if (fpIn)
+			fclose (fpIn);
 		return 0;
 	}
 	else if (fpIn == NULL)	/* no previous config file, no parsing */
