@@ -1168,7 +1168,9 @@ menu_is_mainmenu_root (char *path, gint16 *offset)
 	{
 		if (!strncmp (path, menus[i] + 1, menus[i][0]))
 		{
-			*offset = menus[i][0] + 1;	/* number of bytes to offset the root */
+			*offset = menus[i][0];	/* number of bytes to offset the root */
+			if (path[*offset] != '\0')
+				*offset += 1;
 			return 0;	/* is not main menu */
 		}
 	}
