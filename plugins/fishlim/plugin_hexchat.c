@@ -55,24 +55,6 @@ gchar *get_config_filename() {
     return g_build_filename(hexchat_get_info(ph, "configdir"), "addon_fishlim.conf", NULL);
 }
 
-/**
- * Appends data to a string. Returns true if there was sufficient memory.
- * Frees *s and returns false if an error occurs.
- */
-static bool append(char **s, size_t *length, const char *data) {
-    size_t datalen = strlen(data);
-    char *extended = realloc(*s, *length + datalen + 1);
-    if (!extended) {
-        free(*s);
-        return false;
-    }
-    memcpy(extended + *length, data, datalen + 1);
-    *s = extended;
-    *length += datalen;
-    return true;
-}
-
-
 /*static int handle_debug(char *word[], char *word_eol[], void *userdata) {
     hexchat_printf(ph, "debug incoming: ");
     for (size_t i = 1; word[i] != NULL && word[i][0] != '\0'; i++) {
@@ -114,12 +96,11 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     const char *peice;
     char *sender_nick;
     char *decrypted;
-    char *message;
     size_t w;
     size_t ew;
     size_t uw;
-    size_t length;
     char prefix_char = 0;
+    GString *message;
 
     if (!irc_parse_message((const char **)word, &prefix, &command, &w))
         return HEXCHAT_EAT_NONE;
@@ -149,12 +130,12 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     if (!decrypted) goto decrypt_error;
     
     // Build unecrypted message
-    message = NULL;
-    length = 0;
-    if (!append(&message, &length, "RECV")) goto decrypt_error;
+    message = g_string_sized_new (100); /* TODO: more accurate estimation of size */
+    g_string_append (message, "RECV");
     
     for (uw = 1; uw < HEXCHAT_MAX_WORDS; uw++) {
-        if (word[uw][0] != '\0' && !append(&message, &length, " ")) goto decrypt_error;
+        if (word[uw][0] != '\0')
+            g_string_append_c (message, ' ');
         
         if (uw == ew) {
             // Add the encrypted data
@@ -163,29 +144,28 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
             
             if (ew == w+1) {
                 // Prefix with colon, which gets stripped out otherwise
-                if (!append(&message, &length, ":")) goto decrypt_error;
+                g_string_append_c (message, ':');
             }
             
             if (prefix_char) {
-                char prefix_str[2] = { prefix_char, '\0' };
-                if (!append(&message, &length, prefix_str)) goto decrypt_error;
+                g_string_append_c (message, prefix_char);
             }
             
         } else {
             // Add unencrypted data (for example, a prefix from a bouncer or bot)
             peice = word[uw];
         }
-        
-        if (!append(&message, &length, peice)) goto decrypt_error;
+
+        g_string_append (message, peice);
     }
     free(decrypted);
     
     // Simulate unencrypted message
-    //hexchat_printf(ph, "simulating: %s\n", message);
-    hexchat_command(ph, message);
-    
-    free(message);
-    free(sender_nick);
+    //hexchat_printf(ph, "simulating: %s\n", message->str);
+    hexchat_command(ph, message->str);
+
+    g_string_free (message, TRUE);
+    g_free(sender_nick);
     return HEXCHAT_EAT_HEXCHAT;
   
   decrypt_error:

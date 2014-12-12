@@ -22,8 +22,7 @@
 
 */
 
-#include <stdlib.h>
-#include <string.h>
+#include <glib.h>
 #include "irc.h"
 
 /**
@@ -65,7 +64,6 @@ bool irc_parse_message(const char *words[],
  */
 char *irc_prefix_get_nick(const char *prefix) {
     const char *end;
-    char *nick;
     size_t length;
     
     if (!prefix) return NULL;
@@ -76,13 +74,7 @@ char *irc_prefix_get_nick(const char *prefix) {
     
     // Allocate string
     length = end - prefix;
-    nick = malloc(length+1);
-    if (!nick) return NULL;
-    
-    // Copy to string
-    memcpy(nick, prefix, length);
-    nick[length] = '\0';
-    return nick;
+    return g_strndup (prefix, length);
 }
 
 
