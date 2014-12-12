@@ -55,6 +55,10 @@ gchar *get_config_filename() {
     return g_build_filename(hexchat_get_info(ph, "configdir"), "addon_fishlim.conf", NULL);
 }
 
+int irc_nick_cmp(const char *a, const char *b) {
+	return hexchat_nickcmp (ph, a, b);
+}
+
 /*static int handle_debug(char *word[], char *word_eol[], void *userdata) {
     hexchat_printf(ph, "debug incoming: ");
     for (size_t i = 1; word[i] != NULL && word[i][0] != '\0'; i++) {

@@ -76,29 +76,3 @@ char *irc_prefix_get_nick(const char *prefix) {
     length = end - prefix;
     return g_strndup (prefix, length);
 }
-
-
-/**
- * Compares two nick names. Return 0 if equal. Otherwise the return value is
- * less than zero if a is less than b or greater than zero if a is greater
- * than b.
- */
-int irc_nick_cmp(const char *a, const char *b) {
-    char ac;
-    char bc;
-    char diff;
-    for (;;) {
-        ac = *(a++);
-        bc = *(b++);
-        
-        // Change into IRC uppercase (see RFC 2812 section 2.2)
-        if (ac >= 'a' && ac <= '~') ac &= ~0x20;
-        if (bc >= 'a' && bc <= '~') bc &= ~0x20;
-        
-        diff = ac - bc;
-        if (diff) return diff;
-        if (!ac) return 0;
-    }
-}
-
-
