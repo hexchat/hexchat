@@ -98,7 +98,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
 /**
  * Called when a channel message or private message is received.
  */
-static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
+static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata) {
     const char *prefix;
     const char *command;
     const char *recipient;
@@ -142,7 +142,17 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     // Build unecrypted message
     message = g_string_sized_new (100); /* TODO: more accurate estimation of size */
     g_string_append (message, "RECV");
-    
+
+    if (attrs->server_time_utc)
+    {
+        GTimeVal tv = { (glong)attrs->server_time_utc, 0 };
+        char *timestamp = g_time_val_to_iso8601 (&tv);
+
+       g_string_append (message, " @time=");
+       g_string_append (message, timestamp);
+       g_free (timestamp);
+    }
+
     for (uw = 1; uw < HEXCHAT_MAX_WORDS; uw++) {
         if (word[uw][0] != '\0')
             g_string_append_c (message, ' ');
@@ -272,11 +282,11 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
     
     /* Add handlers */
     hexchat_hook_command(ph, "", HEXCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
-    hexchat_hook_server(ph, "NOTICE", HEXCHAT_PRI_NORM, handle_incoming, NULL);
-    hexchat_hook_server(ph, "PRIVMSG", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    hexchat_hook_server_attrs(ph, "NOTICE", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    hexchat_hook_server_attrs(ph, "PRIVMSG", HEXCHAT_PRI_NORM, handle_incoming, NULL);
     //hexchat_hook_server(ph, "RAW LINE", HEXCHAT_PRI_NORM, handle_debug, NULL);
-    hexchat_hook_server(ph, "TOPIC", HEXCHAT_PRI_NORM, handle_incoming, NULL);
-    hexchat_hook_server(ph, "332", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    hexchat_hook_server_attrs(ph, "TOPIC", HEXCHAT_PRI_NORM, handle_incoming, NULL);
+    hexchat_hook_server_attrs(ph, "332", HEXCHAT_PRI_NORM, handle_incoming, NULL);
     
     hexchat_printf(ph, "%s plugin loaded\n", plugin_name);
     /* Return success */
