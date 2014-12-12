@@ -131,16 +131,11 @@ static bool delete_nick(GKeyFile *keyfile, const char *nick) {
 static bool save_keystore(GKeyFile *keyfile) {
     char *filename;
     bool ok;
-    // Serialize
-    gsize file_length;
-    gchar *file_data = g_key_file_to_data(keyfile, &file_length, NULL);
-    if (!file_data) return false;
-    
-    // Write to file
+
     filename = get_config_filename();
-    ok = g_file_set_contents(filename, file_data, file_length, NULL);
-    g_free(filename);
-    g_free(file_data);
+    ok = g_key_file_save_to_file (keyfile, filename, NULL);
+    g_free (filename);
+
     return ok;
 }
 
