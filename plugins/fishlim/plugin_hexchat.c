@@ -52,7 +52,13 @@ static hexchat_plugin *ph;
  * Returns the path to the key store file.
  */
 gchar *get_config_filename() {
-    return g_build_filename(hexchat_get_info(ph, "configdir"), "addon_fishlim.conf", NULL);
+    char *filename_fs, *filename_utf8;
+
+    filename_utf8 = g_build_filename(hexchat_get_info(ph, "configdir"), "addon_fishlim.conf", NULL);
+    filename_fs = g_filename_from_utf8 (filename_utf8, -1, NULL, NULL, NULL);
+
+    g_free (filename_utf8);
+    return filename_fs;
 }
 
 int irc_nick_cmp(const char *a, const char *b) {
