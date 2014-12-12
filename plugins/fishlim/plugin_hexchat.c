@@ -223,7 +223,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
         return HEXCHAT_EAT_HEXCHAT;
     }
     
-    nick = word_eol[2];
+    nick = g_strstrip (word_eol[2]);
     
     // Delete the given nick from the key store
     if (keystore_delete_nick(nick)) {
