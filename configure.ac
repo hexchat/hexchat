@@ -457,14 +457,8 @@ if test "$checksum" != "no"; then
 	checksum=no
 	AC_MSG_CHECKING(for plugin interface used by Checksum)
 	if test "$plugin" = yes; then
+		checksum=yes
 		AC_MSG_RESULT([yes])
-		AC_MSG_CHECKING(for OpenSSL used by Checksum)
-		if test "$openssl" = yes; then
-			checksum=yes
-			AC_MSG_RESULT([yes])
-		else
-			AC_MSG_RESULT([OpenSSL cannot be found, use the --enable-openssl option])
-		fi
 	else
 		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option])
 	fi

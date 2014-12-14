@@ -20,131 +20,38 @@
  * THE SOFTWARE.
  */
 
-#ifdef __APPLE__
-#define __AVAILABILITYMACROS__
-#define DEPRECATED_IN_MAC_OS_X_VERSION_10_7_AND_LATER
-#endif
-
-#include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <openssl/sha.h>
 #include <glib.h>
-
-#ifdef WIN32
-#ifndef snprintf
-#define snprintf _snprintf
-#endif
-#define stat _stat64
-#else
-/* for INT_MAX */
-#include <limits.h>
-#define __USE_LARGEFILE64
-#define _LARGEFILE_SOURCE
-#define _LARGEFILE64_SOURCE
-#endif
+#include <glib/gstdio.h>
+#include <gio/gio.h>
 
 #include "hexchat-plugin.h"
 
 #define BUFSIZE 32768
 #define DEFAULT_LIMIT 256									/* default size is 256 MiB */
+#define SHA256_DIGEST_LENGTH 32
+#define SHA256_BUFFER_LENGTH 65
 
 static hexchat_plugin *ph;									/* plugin handle */
 static char name[] = "Checksum";
 static char desc[] = "Calculate checksum for DCC file transfers";
 static char version[] = "3.1";
 
-/* Use of OpenSSL SHA256 interface: http://adamlamers.com/?p=5 */
 static void
-sha256_hash_string (unsigned char hash[SHA256_DIGEST_LENGTH], char outputBuffer[65])
+set_limit (char *size)
 {
-	int i;
-	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
+	int limit = atoi (size);
+
+	if (limit > 0 && limit < INT_MAX)
 	{
-		sprintf (outputBuffer + (i * 2), "%02x", hash[i]);
-	}
-	outputBuffer[64] = 0;
-}
-
-#if 0
-static void
-sha256 (char *string, char outputBuffer[65])
-{
-	int i;
-	unsigned char hash[SHA256_DIGEST_LENGTH];
-	SHA256_CTX sha256;
-
-	SHA256_Init (&sha256);
-	SHA256_Update (&sha256, string, strlen (string));
-	SHA256_Final (hash, &sha256);
-
-	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
-	{
-		sprintf (outputBuffer + (i * 2), "%02x", hash[i]);
-	}
-	outputBuffer[64] = 0;
-}
-#endif
-
-static int
-sha256_file (char *path, char outputBuffer[65])
-{
-	int bytesRead;
-	unsigned char *buffer;
-	unsigned char hash[SHA256_DIGEST_LENGTH];
-	SHA256_CTX sha256;
-
-	FILE *file = fopen (path, "rb");
-	if (!file)
-	{
-		return -534;
-	}
-
-	SHA256_Init (&sha256);
-	buffer = malloc (BUFSIZE);
-	bytesRead = 0;
-
-	if (!buffer)
-	{
-		fclose (file);
-		return ENOMEM;
-	}
-
-	while ((bytesRead = fread (buffer, 1, BUFSIZE, file)))
-	{
-		SHA256_Update (&sha256, buffer, bytesRead);
-	}
-
-	SHA256_Final (hash, &sha256);
-	sha256_hash_string (hash, outputBuffer);
-
-	fclose (file);
-	free (buffer);
-	return 0;
-}
-
-static void
-set_limit (char* size)
-{
-	int buffer = atoi (size);
-
-	if (buffer > 0 && buffer < INT_MAX)
-	{
-		if (hexchat_pluginpref_set_int (ph, "limit", buffer))
-		{
-			hexchat_printf (ph, "File size limit has successfully been set to: %d MiB\n", buffer);
-		}
+		if (hexchat_pluginpref_set_int (ph, "limit", limit))
+			hexchat_printf (ph, "Checksum: File size limit has successfully been set to: %d MiB\n", limit);
 		else
-		{
-			hexchat_printf (ph, "File access error while saving!\n");
-		}
+			hexchat_printf (ph, "Checksum: File access error while saving!\n");
 	}
 	else
 	{
-		hexchat_printf (ph, "Invalid input!\n");
+		hexchat_printf (ph, "Checksum: Invalid input!\n");
 	}
 }
 
@@ -153,89 +60,152 @@ get_limit ()
 {
 	int size = hexchat_pluginpref_get_int (ph, "limit");
 
-	if (size <= -1 || size >= INT_MAX)
-	{
+	if (size <= 0 || size >= INT_MAX)
 		return DEFAULT_LIMIT;
-	}
 	else
-	{
 		return size;
-	}
 }
 
-static void
-print_limit ()
+static gboolean
+check_limit (GFile *file)
 {
-	hexchat_printf (ph, "File size limit for checksums: %d MiB", get_limit ());
+	GFileInfo *file_info;
+	goffset file_size;
+
+	file_info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_SIZE, G_FILE_QUERY_INFO_NONE,
+									NULL, NULL);
+
+	if (!file_info)
+		return FALSE;
+
+	file_size = g_file_info_get_size (file_info);
+	g_object_unref (file_info);
+
+	if (file_size > get_limit () * 1048576ll)
+		return FALSE;
+
+	return TRUE;
+}
+
+static gboolean
+sha256_from_stream (GFileInputStream *file_stream, char out_buf[])
+{
+	GChecksum *checksum;
+	gssize bytes_read;
+	guint8 digest[SHA256_DIGEST_LENGTH];
+	gsize digest_len = sizeof(digest);
+	guchar buffer[BUFSIZE];
+	gsize i;
+
+	checksum = g_checksum_new (G_CHECKSUM_SHA256);
+
+	while ((bytes_read = g_input_stream_read (G_INPUT_STREAM (file_stream), buffer, sizeof (buffer), NULL, NULL)))
+	{
+		if (bytes_read == -1)
+		{
+			g_checksum_free (checksum);
+			return FALSE;
+		}
+
+		g_checksum_update (checksum, buffer, bytes_read);
+	}
+
+	g_checksum_get_digest (checksum, digest, &digest_len);
+	g_checksum_free (checksum);
+
+	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
+	{
+		/* out_buf will be exactly SHA256_BUFFER_LENGTH including null */
+		g_sprintf (out_buf + (i * 2), "%02x", digest[i]);
+	}
+
+	return TRUE;
+}
+
+static gboolean
+sha256_from_file (char *filename, char out_buf[])
+{
+	GFileInputStream *file_stream;
+	char *filename_fs;
+	GFile *file;
+
+	filename_fs = g_filename_from_utf8 (filename, -1, NULL, NULL, NULL);
+	if (!filename_fs)
+	{
+		hexchat_printf (ph, "Checksum: Invalid filename (%s)\n", filename);
+		return FALSE;
+	}
+
+	file = g_file_new_for_path (filename_fs);
+	g_free (filename_fs);
+	if (!file)
+	{
+		hexchat_printf (ph, "Checksum: Failed to open %s\n", filename);
+		return FALSE;
+	}
+
+	if (!check_limit (file))
+	{
+		hexchat_printf (ph, "Checksum: %s is larger than size limit. You can increase it with /CHECKSUM SET.\n", filename);
+		g_object_unref (file);
+		return FALSE;
+	}
+
+	file_stream = g_file_read (file, NULL, NULL);
+	if (!file_stream)
+	{
+		hexchat_printf (ph, "Checksum: Failed to read file %s\n", filename);
+		g_object_unref (file);
+		return FALSE;
+	}
+
+	if (!sha256_from_stream (file_stream, out_buf))
+	{
+		hexchat_printf (ph, "Checksum: Failed to generate checksum for %s\n", filename);
+		g_object_unref (file_stream);
+		g_object_unref (file);
+		return FALSE;
+	}
+
+	g_object_unref (file_stream);
+	g_object_unref (file);
+	return TRUE;
 }
 
 static int
 dccrecv_cb (char *word[], void *userdata)
 {
-	int result;
-	struct stat buffer;									/* buffer for storing file info */
-	char sum[65];											/* buffer for checksum */
-	const char *file;
-	char *cfile;
+	const char *dcc_completed_dir;
+	char *filename, checksum[SHA256_BUFFER_LENGTH];
 
-	if (hexchat_get_prefs (ph, "dcc_completed_dir", &file, NULL) == 1 && file[0] != 0)
-	{
-		cfile = g_strconcat (file, G_DIR_SEPARATOR_S, word[1], NULL);
-	}
+	/* Print in the privmsg tab of the sender */
+	hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
+
+	if (hexchat_get_prefs (ph, "dcc_completed_dir", &dcc_completed_dir, NULL) == 1 && dcc_completed_dir[0] != '\0')
+		filename = g_build_filename (dcc_completed_dir, word[1], NULL);
 	else
+		filename = g_strdup (word[2]);
+
+	if (sha256_from_file (filename, checksum))
 	{
-		cfile = g_strdup(word[2]);
+		hexchat_printf (ph, "SHA-256 checksum for %s (local): %s\n", word[1], checksum);
 	}
 
-	result = stat (cfile, &buffer);
-	if (result == 0)										/* stat returns 0 on success */
-	{
-		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
-		{
-			sha256_file (cfile, sum);						/* file is the full filename even if completed dir set */
-			/* try to print the checksum in the privmsg tab of the sender */
-			hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
-			hexchat_printf (ph, "SHA-256 checksum for %s (local):  %s\n", word[1], sum);
-		}
-		else
-		{
-			hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
-			hexchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM INC)\n", word[1]);
-		}
-	}
-	else
-	{
-		hexchat_printf (ph, "File access error!\n");
-	}
-
-	g_free (cfile);
+	g_free (filename);
 	return HEXCHAT_EAT_NONE;
 }
 
 static int
 dccoffer_cb (char *word[], void *userdata)
 {
-	int result;
-	struct stat buffer;									/* buffer for storing file info */
-	char sum[65];											/* buffer for checksum */
+	char checksum[SHA256_BUFFER_LENGTH];
 
-	result = stat (word[3], &buffer);
-	if (result == 0)										/* stat returns 0 on success */
+	/* Print in the privmsg tab of the receiver */
+	hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
+
+	if (sha256_from_file (word[3], checksum))
 	{
-		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
-		{
-			sha256_file (word[3], sum);						/* word[3] is the full filename */
-			hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], sum);
-		}
-		else
-		{
-			hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
-			hexchat_printf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): (size limit reached, no checksum calculated)", word[2], word[1]);
-		}
-	}
-	else
-	{
-		hexchat_printf (ph, "File access error!\n");
+		hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], checksum);
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -246,7 +216,7 @@ checksum (char *word[], char *word_eol[], void *userdata)
 {
 	if (!g_ascii_strcasecmp ("GET", word[2]))
 	{
-		print_limit ();
+		hexchat_printf (ph, "File size limit for checksums: %d MiB", get_limit ());
 	}
 	else if (!g_ascii_strcasecmp ("SET", word[2]))
 	{
@@ -259,7 +229,7 @@ checksum (char *word[], char *word_eol[], void *userdata)
 		hexchat_printf (ph, "  SET <filesize> - set the maximum file size (in MiB) to be hashed\n");
 	}
 
-	return HEXCHAT_EAT_NONE;
+	return HEXCHAT_EAT_ALL;
 }
 
 int
@@ -277,7 +247,7 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 		hexchat_pluginpref_set_int (ph, "limit", DEFAULT_LIMIT);
 	}
 
-	hexchat_hook_command (ph, "CHECKSUM", HEXCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|SET", 0);
+	hexchat_hook_command (ph, "CHECKSUM", HEXCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|SET", NULL);
 	hexchat_hook_print (ph, "DCC RECV Complete", HEXCHAT_PRI_NORM, dccrecv_cb, NULL);
 	hexchat_hook_print (ph, "DCC Offer", HEXCHAT_PRI_NORM, dccoffer_cb, NULL);
 
