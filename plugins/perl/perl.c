@@ -288,7 +288,19 @@ list_item_to_sv ( hexchat_list *list, const char *const *fields )
 			field_value = newSVuv (hexchat_list_int (ph, list, field_name));
 			break;
 		case 't':
-			field_value = newSVnv (hexchat_list_time (ph, list, field_name));
+			/* From perldoc for Perl's own timelocal() and timegm():
+			 * <quote>
+			 * On perl versions older than 5.12.0, the range of dates that can be actually be handled depends on the size of time_t (usually a signed integer) on the given platform.
+			 * As of version 5.12.0, perl has stopped using the underlying time library of the operating system it's running on and has its own implementation of those routines with a
+			 * safe range of at least +/ 2**52 (about 142 million years).
+			 * </quote>
+			 *
+			 * This is further confirmed from looking at the source for Time::Local - it's a Perl module and the implementations of timelocal() and timegm() use simple addition and
+			 * subtraction of numbers. Perl automatically promotes numbers from int32_t (IV) to uint32_t (UV) to 64-bit IEEE754 double (NV) as required.
+			 *
+			 * This means that using a double (NV) for our own time_t suffers from the same assumptions that Perl's own functions do.
+			 */
+			field_value = newSVnv ((const NV) hexchat_list_time (ph, list, field_name));
 			break;
 		default:
 			field_value = &PL_sv_undef;
