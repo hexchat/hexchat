@@ -1880,8 +1880,9 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 	{
 		PrintText (sess, "Cannot send directories or empty files.\n");
 
-		g_object_unref (file_info);
 		dcc_close (dcc, 0, TRUE); /* dcc_close will free dcc->file */
+
+		return;
 	}
 
 	if (passive || dcc_listen_init (dcc, sess))
