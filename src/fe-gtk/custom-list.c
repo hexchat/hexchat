@@ -134,7 +134,6 @@ custom_list_get_type (void)
 		return custom_list_type;
 
 	/* Some boilerplate type registration stuff */
-	if (1)
 	{
 		static const GTypeInfo custom_list_info = {
 			sizeof (CustomListClass),
@@ -154,7 +153,6 @@ custom_list_get_type (void)
 	}
 
 	/* Here we register our GtkTreeModel interface with the type system */
-	if (1)
 	{
 		static const GInterfaceInfo tree_model_info = {
 			(GInterfaceInitFunc) custom_list_tree_model_init,
@@ -167,7 +165,6 @@ custom_list_get_type (void)
 	}
 
 	/* Add GtkTreeSortable interface */
-	if (1)
 	{
 		static const GInterfaceInfo tree_sortable_info = {
 			(GInterfaceInitFunc) custom_list_sortable_init,

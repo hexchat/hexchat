@@ -1517,10 +1517,8 @@ server_child (server * serv)
 
 	if (!serv->dont_use_proxy) /* blocked in serverlist? */
 	{
-		if (FALSE)
-			;
 #ifdef USE_LIBPROXY
-		else if (prefs.hex_net_proxy_type == 5)
+		if (prefs.hex_net_proxy_type == 5)
 		{
 			char **proxy_list;
 			char *url, *proxy;
@@ -1554,7 +1552,7 @@ server_child (server * serv)
 			g_free (url);
 		}
 #endif
-		else if (prefs.hex_net_proxy_host[0] &&
+		if (prefs.hex_net_proxy_host[0] &&
 			   prefs.hex_net_proxy_type > 0 &&
 			   prefs.hex_net_proxy_use != 2) /* proxy is NOT dcc-only */
 		{
