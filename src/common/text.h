@@ -57,9 +57,9 @@ void text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 		time_t timestamp);
 int text_emit_by_name (char *name, session *sess, time_t timestamp,
 					   char *a, char *b, char *c, char *d);
-char *text_validate (char **text, int *len);
+char *text_validate (char **text, gssize *len);
 int get_stamp_str (char *fmt, time_t tim, char **ret);
-void format_event (session *sess, int index, char **args, char *o, int sizeofo, unsigned int stripcolor_args);
+void format_event (session *sess, int index, char **args, char *o, gsize sizeofo, unsigned int stripcolor_args);
 char *text_find_format_string (char *name);
  
 void sound_play (const char *file, gboolean quiet);

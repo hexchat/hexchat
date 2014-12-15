@@ -511,7 +511,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	char *utf;
 	char *conv;
 	int ret, i;
-	int len;
+	gssize len;
 	gsize utf_len;
 	char portbuf[32];
 	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
@@ -571,7 +571,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 		return 0;
 	}
 
-	url_check_line (line, len);
+	url_check_line (line);
 
 	if (line[0] == 1 && !g_ascii_strncasecmp (line + 1, "ACTION", 6))
 	{

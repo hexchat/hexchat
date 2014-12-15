@@ -848,7 +848,7 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 }
 
 char *
-text_validate (char **text, int *len)
+text_validate (char **text, gssize *len)
 {
 	char *utf;
 	gsize utf_len;
@@ -905,7 +905,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 	}
 	else
 	{
-		int len = -1;
+		gssize len = -1;
 		conv = text_validate ((char **)&text, &len);
 	}
 
@@ -1804,9 +1804,10 @@ load_text_events ()
 #define ARG_FLAG(argn) (1 << (argn))
 
 void
-format_event (session *sess, int index, char **args, char *o, int sizeofo, unsigned int stripcolor_args)
+format_event (session *sess, int index, char **args, char *o, gsize sizeofo, unsigned int stripcolor_args)
 {
-	int len, oi, ii, numargs;
+	int len, ii, numargs;
+	gsize oi;
 	char *i, *ar, d, a, done_all = FALSE;
 
 	i = pntevts[index];
@@ -1864,19 +1865,10 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo, unsig
 			done_all = TRUE;
 			continue;
 		case 3:
-/*			if (sess->type == SESS_DIALOG)
-			{
-				if (prefs.dialog_indent_nicks)
-					o[oi++] = '\t';
-				else
-					o[oi++] = ' ';
-			} else
-			{*/
-				if (prefs.hex_text_indent)
-					o[oi++] = '\t';
-				else
-					o[oi++] = ' ';
-			/*}*/
+			if (prefs.hex_text_indent)
+				o[oi++] = '\t';
+			else
+				o[oi++] = ' ';
 			break;
 		}
 	}

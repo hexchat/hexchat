@@ -989,7 +989,7 @@ void
 hexchat_command (hexchat_plugin *ph, const char *command)
 {
 	char *conv;
-	int len = -1;
+	gssize len = -1;
 
 	if (!is_session (ph->context))
 	{

@@ -332,7 +332,7 @@ static char *commands[] = {
 #define ARRAY_SIZE(a) (sizeof (a) / sizeof ((a)[0]))
 
 void
-url_check_line (char *buf, int len)
+url_check_line (char *buf)
 {
 	GRegex *re(void);
 	GMatchInfo *gmi;

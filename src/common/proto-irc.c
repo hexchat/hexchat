@@ -1509,7 +1509,7 @@ irc_inline (server *serv, char *buf, int len)
 		handle_message_tags(serv, tags, &tags_data);
 	}
 
-	url_check_line (buf, len);
+	url_check_line (buf);
 
 	/* split line into words and words_to_end_of_line */
 	process_data_init (pdibuf, buf, word, word_eol, FALSE, FALSE);

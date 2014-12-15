@@ -156,7 +156,7 @@ server_send_real (server *serv, char *buf, int len)
 {
 	fe_add_rawlog (serv, buf, len, TRUE);
 
-	url_check_line (buf, len);
+	url_check_line (buf);
 
 	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, serv->using_irc,
 								 buf, len);
@@ -308,7 +308,7 @@ close_socket (int sok)
 /* handle 1 line of text received from the server */
 
 static void
-server_inline (server *serv, char *line, int len)
+server_inline (server *serv, char *line, gssize len)
 {
 	char *utf_line_allocated = NULL;
 
@@ -325,8 +325,8 @@ server_inline (server *serv, char *line, int len)
 		it to be ISO-8859-1 (see text_validate). */
 
 		utf_line_allocated = text_validate (&line, &len);
-
-	} else
+	}
+	else
 	{
 		/* Since the user has an explicit charset set, either
 		via /charset command or from his non-UTF8 locale,
@@ -344,7 +344,7 @@ server_inline (server *serv, char *line, int len)
 		if (encoding != NULL)
 		{
 			char *conv_line; /* holds a copy of the original string */
-			int conv_len; /* tells g_convert how much of line to convert */
+			gsize conv_len; /* tells g_convert how much of line to convert */
 			gsize utf_len;
 			gsize read_len;
 			GError *err;
