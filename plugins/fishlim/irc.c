@@ -22,6 +22,8 @@
 
 */
 
+#include "config.h"
+
 #include <glib.h>
 #include "irc.h"
 

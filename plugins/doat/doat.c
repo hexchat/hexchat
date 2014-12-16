@@ -5,6 +5,8 @@
  * http://sam.zoy.org/wtfpl/COPYING or http://lwsitu.com/xchat/COPYING
  * for more details. */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

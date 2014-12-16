@@ -31,7 +31,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../../config.h"
+#include "config.h"
 #include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"

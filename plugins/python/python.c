@@ -51,6 +51,8 @@
  *
  */
 
+#include "config.h"
+
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <string.h>
@@ -64,9 +66,9 @@
 #include <dirent.h>
 #endif
 
-#include "../../config.h"
 #include "hexchat-plugin.h"
-#undef _POSIX_C_SOURCE	/* Avoid warning: also in /usr/include/features.h from glib.h */
+#undef _POSIX_C_SOURCE	/* Avoid warnings from /usr/include/features.h */
+#undef _XOPEN_SOURCE
 #include <Python.h>
 #include <structmember.h>
 #include <pythread.h>

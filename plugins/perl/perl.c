@@ -32,7 +32,7 @@
 #endif
 
 #undef PACKAGE
-#include "../../config.h"
+#include "config.h"
 
 #include "hexchat-plugin.h"
 

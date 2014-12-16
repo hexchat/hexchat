@@ -40,7 +40,7 @@
 #include <sys/utsname.h>
 #endif
 
-#include "../../config.h"
+#include "config.h"
 #include <fcntl.h>
 #include <errno.h>
 #include "hexchat.h"

@@ -22,6 +22,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
+#include <gio/gio.h>
 
 #include <time.h>			/* need time_t */
 

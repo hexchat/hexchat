@@ -18,6 +18,8 @@
 
 /* ipv4 and ipv6 networking functions with a common interface */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -26,7 +28,6 @@
 #ifndef WIN32
 #include <unistd.h>
 #endif
-#include "../../config.h"
 
 #define WANTSOCKET
 #define WANTARPA

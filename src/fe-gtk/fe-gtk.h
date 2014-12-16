@@ -20,7 +20,7 @@
 #ifndef HEXCHAT_FE_GTK_H
 #define HEXCHAT_FE_GTK_H
 
-#include "../../config.h"
+#include "config.h"
 
 #define DISPLAY_NAME "HexChat"
 

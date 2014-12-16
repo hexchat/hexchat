@@ -111,6 +111,7 @@ xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
 			<Optimization>MaxSpeed</Optimization>
 			<!--Optimization>MinSpace</Optimization-->
 			<!--Optimization>Full</Optimization-->
+			<AdditionalIncludeDirectories>$(SolutionDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 		</ClCompile>
 	</ItemDefinitionGroup>
 

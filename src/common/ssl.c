@@ -29,7 +29,7 @@
 #ifdef WIN32
 #include <openssl/rand.h>		  /* RAND_seed() */
 #endif
-#include "../../config.h"
+#include "config.h"
 #include <time.h>				  /* asctime() */
 #include <string.h>				  /* strncpy() */
 #include "ssl.h"				  /* struct cert_info */

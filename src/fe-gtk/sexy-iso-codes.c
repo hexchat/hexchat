@@ -19,10 +19,11 @@
 *    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include "config.h"
+
 #include "sexy-iso-codes.h"
 #include <libintl.h>
 #include <string.h>
-#include "../../config.h"
 
 #define ISO_639_DOMAIN	"iso_639"
 #define ISO_3166_DOMAIN	"iso_3166"

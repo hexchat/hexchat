@@ -33,8 +33,6 @@
 #define WANTDNS
 #include "inet.h"
 
-#include <gio/gio.h>
-
 #include "hexchat.h"
 #include "util.h"
 #include "ignore.h"

@@ -46,8 +46,6 @@
 #include <unistd.h>
 #endif
 
-#include <gio/gio.h>
-
 #include "hexchat.h"
 #include "util.h"
 #include "fe.h"
