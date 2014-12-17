@@ -849,7 +849,7 @@ key_save_kbs (void)
 									 0x180, XOF_DOMODE);
 	if (fd < 0)
 		return 1;
-	write (fd, buf, snprintf (buf, 510, "# HexChat key bindings config file\n\n"));
+	write (fd, buf, g_snprintf (buf, 510, "# HexChat key bindings config file\n\n"));
 
 	while (list)
 	{
@@ -857,17 +857,17 @@ key_save_kbs (void)
 
 		accel_text = gtk_accelerator_name (kb->keyval, kb->mod);
 
-		snprintf (buf, 510, "ACCEL=%s\n%s\n", accel_text, key_actions[kb->action].name);
+		g_snprintf (buf, 510, "ACCEL=%s\n%s\n", accel_text, key_actions[kb->action].name);
 		write (fd, buf, strlen (buf));
 		g_free (accel_text);
 
 		if (kb->data1 && kb->data1[0])
-			write (fd, buf, snprintf (buf, 510, "D1:%s\n", kb->data1));
+			write (fd, buf, g_snprintf (buf, 510, "D1:%s\n", kb->data1));
 		else
 			write (fd, "D1!\n", 4);
 
 		if (kb->data2 && kb->data2[0])
-			write (fd, buf, snprintf (buf, 510, "D2:%s\n", kb->data2));
+			write (fd, buf, g_snprintf (buf, 510, "D2:%s\n", kb->data2));
 		else
 			write (fd, "D2!\n", 4);
 
@@ -1813,9 +1813,9 @@ replace_handle (GtkWidget *t)
 			memcpy (outbuf, text, xlen);
 			outbuf[xlen] = 0;
 			if (postfix_pnt == NULL)
-				snprintf (word, sizeof (word), "%s", pop->cmd);
+				g_snprintf (word, sizeof (word), "%s", pop->cmd);
 			else
-				snprintf (word, sizeof (word), "%s%s", pop->cmd, postfix);
+				g_snprintf (word, sizeof (word), "%s%s", pop->cmd, postfix);
 			g_strlcat (outbuf, word, sizeof(outbuf));
 			SPELL_ENTRY_SET_TEXT (t, outbuf);
 			SPELL_ENTRY_SET_POS (t, -1);

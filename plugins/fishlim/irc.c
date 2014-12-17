@@ -32,26 +32,26 @@
  * at spaces. The prefix and command is extracted from the message, and
  * parameters_offset is set to the index of the first parameter.
  */
-bool irc_parse_message(const char *words[],
+gboolean irc_parse_message(const char *words[],
                        const char **prefix, const char **command,
                        size_t *parameters_offset) {
     size_t w = 1;
     if (prefix) *prefix = NULL;
     if (command) *command = NULL;
     
-    // See if the message starts with a prefix (sender user)
+    /* See if the message starts with a prefix (sender user) */
     if (words[w][0] == ':') {
         if (prefix) *prefix = &words[w][1];
         w++;
     }
     
-    // Check command
-    if (words[w][0] == '\0') return false;
+    /* Check command */
+    if (words[w][0] == '\0') return FALSE;
     if (command) *command = words[w];
     w++;
     
     *parameters_offset = w;
-    return true;
+    return TRUE;
 }
 
 
@@ -70,11 +70,11 @@ char *irc_prefix_get_nick(const char *prefix) {
     
     if (!prefix) return NULL;
     
-    // Find end of nick
+    /* Find end of nick */
     end = prefix;
     while (*end != '\0' && *end != '!' && *end != '@') end++;
     
-    // Allocate string
+    /* Allocate string */
     length = end - prefix;
     return g_strndup (prefix, length);
 }

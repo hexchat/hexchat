@@ -122,7 +122,7 @@ ignore_showlist (session *sess)
 		ig = list->data;
 		i++;
 
-		snprintf (tbuf, sizeof (tbuf), " %-25s ", ig->mask);
+		g_snprintf (tbuf, sizeof (tbuf), " %-25s ", ig->mask);
 		if (ig->type & IG_PRIV)
 			strcat (tbuf, _("YES  "));
 		else
@@ -319,7 +319,7 @@ ignore_save ()
 			ig = (struct ignore *) temp->data;
 			if (!(ig->type & IG_NOSAVE))
 			{
-				snprintf (buf, sizeof (buf), "mask = %s\ntype = %u\n\n",
+				g_snprintf (buf, sizeof (buf), "mask = %s\ntype = %u\n\n",
 							 ig->mask, ig->type);
 				write (fh, buf, strlen (buf));
 			}
@@ -372,9 +372,9 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 					for (i = 0; i < 128; i++)
 						if (ip[i] == '@')
 							break;
-					snprintf (real_ip, sizeof (real_ip), "*!*%s", &ip[i]);
+					g_snprintf (real_ip, sizeof (real_ip), "*!*%s", &ip[i]);
 
-					snprintf (buf, sizeof (buf),
+					g_snprintf (buf, sizeof (buf),
 								 _("You are being CTCP flooded from %s, ignoring %s\n"),
 								 nick, real_ip);
 					PrintText (sess, buf);
@@ -399,7 +399,7 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 				serv->msg_counter++;
 				if (serv->msg_counter == prefs.hex_flood_msg_num)	/*if we reached the maximun numbers of ctcp in the seconds limits */
 				{
-					snprintf (buf, sizeof (buf),
+					g_snprintf (buf, sizeof (buf),
 					 _("You are being MSG flooded from %s, setting gui_autoopen_dialog OFF.\n"),
 								 ip);
 					PrintText (sess, buf);

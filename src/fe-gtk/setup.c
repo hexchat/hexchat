@@ -631,7 +631,7 @@ setup_headlabel (GtkWidget *tab, int row, int col, char *text)
 	char buf[128];
 	char *sp;
 
-	snprintf (buf, sizeof (buf), "<b><span size=\"smaller\">%s</span></b>", text);
+	g_snprintf (buf, sizeof (buf), "<b><span size=\"smaller\">%s</span></b>", text);
 	sp = strchr (buf + 17, ' ');
 	if (sp)
 		*sp = '\n';
@@ -753,7 +753,7 @@ setup_create_italic_label (char *text)
 	char buf[256];
 
 	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", text);
+	g_snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", text);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 
@@ -1221,9 +1221,9 @@ setup_create_header (GtkWidget *table, int row, char *labeltext)
 	char buf[128];
 
 	if (row == 0)
-		snprintf (buf, sizeof (buf), "<b>%s</b>", _(labeltext));
+		g_snprintf (buf, sizeof (buf), "<b>%s</b>", _(labeltext));
 	else
-		snprintf (buf, sizeof (buf), "\n<b>%s</b>", _(labeltext));
+		g_snprintf (buf, sizeof (buf), "\n<b>%s</b>", _(labeltext));
 
 	label = gtk_label_new (NULL);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
@@ -1790,7 +1790,7 @@ setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 
 	/* label */
 	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<b><big>%s</big></b>", _(title));
+	g_snprintf (buf, sizeof (buf), "<b><big>%s</big></b>", _(title));
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_misc_set_padding (GTK_MISC (label), 2, 1);

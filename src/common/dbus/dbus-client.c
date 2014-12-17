@@ -93,7 +93,7 @@ hexchat_remote (void)
 	g_object_unref (dbus);
 
 	if (!hexchat_running) {
-		//dbus_g_connection_unref (connection);
+		/* dbus_g_connection_unref (connection); */
 		return;
 	}
 

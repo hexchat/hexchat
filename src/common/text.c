@@ -319,9 +319,9 @@ scrollback_load (session *sess)
 			if (buf[0] == 'T')
 			{
 				if (sizeof (time_t) == 4)
-					stamp = strtoul (buf + 2, NULL, 10);
+					stamp = g_ascii_strtoull (buf + 2, NULL, 10);
 				else
-					stamp = strtoull (buf + 2, NULL, 10); /* in case time_t is 64 bits */
+					stamp = g_ascii_strtoull (buf + 2, NULL, 10); /* in case time_t is 64 bits */
 				text = strchr (buf + 3, ' ');
 				if (text && text[1])
 				{
@@ -383,7 +383,7 @@ log_close (session *sess)
 	{
 		currenttime = time (NULL);
 		write (sess->logfd, obuf,
-			 snprintf (obuf, sizeof (obuf) - 1, _("**** ENDING LOGGING AT %s\n"),
+			 g_snprintf (obuf, sizeof (obuf) - 1, _("**** ENDING LOGGING AT %s\n"),
 						  ctime (&currenttime)));
 		close (sess->logfd);
 		sess->logfd = -1;
@@ -570,11 +570,11 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	/* create final path/filename */
 	if (logmask_is_fullpath ())
 	{
-		snprintf (fname, sizeof (fname), "%s", fnametime);
+		g_snprintf (fname, sizeof (fname), "%s", fnametime);
 	}
 	else	/* relative path */
 	{
-		snprintf (fname, sizeof (fname), "%s" G_DIR_SEPARATOR_S "logs" G_DIR_SEPARATOR_S "%s", get_xdir (), fnametime);
+		g_snprintf (fname, sizeof (fname), "%s" G_DIR_SEPARATOR_S "logs" G_DIR_SEPARATOR_S "%s", get_xdir (), fnametime);
 	}
 
 	/* create all the subdirectories */
@@ -606,7 +606,7 @@ log_open_file (char *servname, char *channame, char *netname)
 		return -1;
 	currenttime = time (NULL);
 	write (fd, buf,
-			 snprintf (buf, sizeof (buf), _("**** BEGIN LOGGING AT %s\n"),
+			 g_snprintf (buf, sizeof (buf), _("**** BEGIN LOGGING AT %s\n"),
 						  ctime (&currenttime)));
 
 	return fd;
@@ -998,7 +998,7 @@ PrintTextTimeStampf (session *sess, time_t timestamp, const char *format, ...)
    Each XP_TE_* signal is hard coded to call text_emit which calls
    display_event which decodes the data
 
-   This means that this system *should be faster* than snprintf because
+   This means that this system *should be faster* than g_snprintf because
    it always 'knows' that format of the string (basically is preparses much
    of the work)
 
@@ -1584,7 +1584,7 @@ pevent_make_pntevts ()
 		g_free (pntevts[i]);
 		if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
 		{
-			snprintf (out, sizeof (out),
+			g_snprintf (out, sizeof (out),
 						 _("Error parsing event %s.\nLoading default."), te[i].name);
 			fe_message (out, FE_MSG_WARN);
 			g_free (pntevts_text[i]);
@@ -1725,7 +1725,7 @@ pevent_check_all_loaded ()
 		if (pntevts_text[i] == NULL)
 		{
 			/*printf ("%s\n", te[i].name);
-			snprintf(out, sizeof(out), "The data for event %s failed to load. Reverting to defaults.\nThis may be because a new version of HexChat is loading an old config file.\n\nCheck all print event texts are correct", evtnames[i]);
+			g_snprintf(out, sizeof(out), "The data for event %s failed to load. Reverting to defaults.\nThis may be because a new version of HexChat is loading an old config file.\n\nCheck all print event texts are correct", evtnames[i]);
 			   gtkutil_simpledialog(out); */
 			/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
 			if (te[i].num_args & 128)
@@ -1944,7 +1944,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		}
 		if (d < '1' || d > '9')
 		{
-			snprintf (o, sizeof (o), "Error, invalid argument $%c\n", d);
+			g_snprintf (o, sizeof (o), "Error, invalid argument $%c\n", d);
 			fe_message (o, FE_MSG_WARN);
 			goto err;
 		}
@@ -2064,7 +2064,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 
 	if (prefs.hex_text_color_nicks && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
 	{
-		snprintf (tbuf, sizeof (tbuf), "\003%d%s", text_color_of (a), a);
+		g_snprintf (tbuf, sizeof (tbuf), "\003%d%s", text_color_of (a), a);
 		a = tbuf;
 		stripcolor_args &= ~ARG_FLAG(1);	/* don't strip color from this argument */
 	}
@@ -2196,9 +2196,9 @@ pevent_save (char *fn)
 
 	for (i = 0; i < NUM_XP; i++)
 	{
-		write (fd, buf, snprintf (buf, sizeof (buf),
+		write (fd, buf, g_snprintf (buf, sizeof (buf),
 										  "event_name=%s\n", te[i].name));
-		write (fd, buf, snprintf (buf, sizeof (buf),
+		write (fd, buf, g_snprintf (buf, sizeof (buf),
 										  "event_text=%s\n\n", pntevts_text[i]));
 	}
 
@@ -2373,9 +2373,9 @@ sound_save ()
 	{
 		if (sound_files[i] && sound_files[i][0])
 		{
-			write (fd, buf, snprintf (buf, sizeof (buf),
+			write (fd, buf, g_snprintf (buf, sizeof (buf),
 											  "event=%s\n", te[i].name));
-			write (fd, buf, snprintf (buf, sizeof (buf),
+			write (fd, buf, g_snprintf (buf, sizeof (buf),
 											  "sound=%s\n\n", sound_files[i]));
 		}
 	}

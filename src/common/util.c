@@ -66,10 +66,6 @@
 #endif
 #endif
 
-#ifndef HAVE_SNPRINTF
-#define snprintf g_snprintf
-#endif
-
 char *
 file_part (char *file)
 {

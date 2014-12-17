@@ -123,7 +123,7 @@ int xs_parse_cpu(char *model, char *vendor, double *freq, char *cache, unsigned 
 		while ((entry = readdir(dir)) != NULL)
 			if (strncmp(entry->d_name,"SUNW,UltraSPARC",15) == 0)
 			{
-				snprintf(buffer,bsize,"/proc/openprom/%s/ecache-size",entry->d_name);
+				g_snprintf(buffer,bsize,"/proc/openprom/%s/ecache-size",entry->d_name);
 				fp2 = fopen(buffer, "r");
 				if (fp2 == NULL) break;
 				fscanf(fp2,"%16s",cache);
@@ -172,7 +172,7 @@ int xs_parse_os(char *user, char *host, char *kernel)
 	
 	strncpy(user, usern, bsize);
 	strcpy(host, hostn);
-	snprintf(kernel, bsize, "%s %s %s", osinfo.sysname, osinfo.release, osinfo.machine);
+	g_snprintf(kernel, bsize, "%s %s %s", osinfo.sysname, osinfo.release, osinfo.machine);
 	
 	return 0;
 }
@@ -203,9 +203,9 @@ int xs_parse_sound(char *snd_card)
 			pos = strstr(buffer, ":");
 			card_id = strtoll(buffer, NULL, 0);
 			if (card_id == 0)
-				snprintf(card_buf, bsize, "%s", pos+2);
+				g_snprintf(card_buf, bsize, "%s", pos+2);
 			else
-				snprintf(card_buf, bsize, "%ld: %s", card_id, pos+2);
+				g_snprintf(card_buf, bsize, "%ld: %s", card_id, pos+2);
 			pos = strstr(card_buf, "\n");
 			*pos = '\0';
 			strcat(cards, card_buf);
@@ -269,11 +269,11 @@ int xs_parse_netdev(const char *device, unsigned long long *bytes_recv, unsigned
 	fclose(fp);
 	pos = strstr(buffer, ":");
 	pos++;
-	*bytes_recv = strtoull(pos, &pos, 0);
+	*bytes_recv = g_ascii_strtoull (pos, &pos, 0);
 
-	for(i=0;i<7;i++) strtoull(pos, &pos, 0);
+	for(i=0;i<7;i++) g_ascii_strtoull (pos, &pos, 0);
 	
-	*bytes_sent = strtoull(pos, NULL, 0);
+	*bytes_sent = g_ascii_strtoull (pos, NULL, 0);
 
 	return 0;
 }
@@ -299,15 +299,15 @@ int xs_parse_df(const char *mount_point, char *result)
 		for(;isspace(*pos);pos++);
 		if(mount_point == NULL)
 		{
-			total_k += strtoull(pos, &pos, 0);
-			strtoull(pos, &pos, 0);
-			free_k += strtoull(pos, &pos, 0);
+			total_k += g_ascii_strtoull (pos, &pos, 0);
+			g_ascii_strtoull(pos, &pos, 0);
+			free_k += g_ascii_strtoull (pos, &pos, 0);
 			continue;
 		}
-		total_k = strtoull(pos, &pos, 0);
-		strtoull(pos, &pos, 0);
-		free_k = strtoull(pos, &pos, 0);
-		strtoull(pos, &pos, 0);
+		total_k = g_ascii_strtoull (pos, &pos, 0);
+		g_ascii_strtoull(pos, &pos, 0);
+		free_k = g_ascii_strtoull (pos, &pos, 0);
+		g_ascii_strtoull (pos, &pos, 0);
 		for(;isspace(*pos);pos++);
 		for(;*pos!='/';pos++);
 		for(i=0;*(buffer+i)!='\n';i++);
@@ -327,7 +327,7 @@ int xs_parse_df(const char *mount_point, char *result)
 			g_free(tmp_buf);
 			break;
 		}
-		else snprintf(result, bsize, "Mount point %s not found!", mount_point);
+		else g_snprintf(result, bsize, "Mount point %s not found!", mount_point);
 	}
 	
 	if(mount_point != NULL && strncasecmp(mount_point, "ALL", 3)==0)
@@ -389,9 +389,9 @@ int xs_parse_distro(char *name)
 			find_match_char(buffer, "ACCEPT_KEYWORDS", keywords);
 		/* cppcheck-suppress uninitvar */
 		if (strstr(keywords, "\"") == NULL)
-			snprintf(buffer, bsize, "Gentoo Linux (stable)");
+			g_snprintf(buffer, bsize, "Gentoo Linux (stable)");
 		else
-			snprintf(buffer, bsize, "Gentoo Linux %s", keywords);
+			g_snprintf(buffer, bsize, "Gentoo Linux %s", keywords);
 	}
 	else if((fp = fopen("/etc/redhat-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
@@ -406,7 +406,7 @@ int xs_parse_distro(char *name)
 	else if((fp = fopen("/etc/turbolinux-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/arch-release", "r")) != NULL)
-		snprintf(buffer, bsize, "ArchLinux");
+		g_snprintf(buffer, bsize, "ArchLinux");
 	else if((fp = fopen("/etc/lsb-release", "r")) != NULL)
 	{
 		char id[bsize], codename[bsize], release[bsize];
@@ -419,16 +419,16 @@ int xs_parse_distro(char *name)
 			find_match_char(buffer, "DISTRIB_CODENAME", codename);
 			find_match_char(buffer, "DISTRIB_RELEASE", release);
 		}
-		snprintf(buffer, bsize, "%s \"%s\" %s", id, codename, release);
+		g_snprintf(buffer, bsize, "%s \"%s\" %s", id, codename, release);
 	}
 	else if((fp = fopen("/etc/debian_version", "r")) != NULL)
 	{
 		char release[bsize];
 		fgets(release, bsize, fp);
-		snprintf(buffer, bsize, "Debian %s", release);
+		g_snprintf(buffer, bsize, "Debian %s", release);
 	}
 	else
-		snprintf(buffer, bsize, "Unknown Distro");
+		g_snprintf(buffer, bsize, "Unknown Distro");
 	if(fp != NULL) fclose(fp);
 	
 	pos=strchr(buffer, '\n');

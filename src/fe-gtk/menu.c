@@ -393,9 +393,9 @@ toggle_cb (GtkWidget *item, char *pref_name)
 	char buf[256];
 
 	if (GTK_CHECK_MENU_ITEM (item)->active)
-		snprintf (buf, sizeof (buf), "set %s 1", pref_name);
+		g_snprintf (buf, sizeof (buf), "set %s 1", pref_name);
 	else
-		snprintf (buf, sizeof (buf), "set %s 0", pref_name);
+		g_snprintf (buf, sizeof (buf), "set %s 0", pref_name);
 
 	handle_command (current_sess, buf, FALSE);
 }
@@ -586,7 +586,7 @@ menu_nickinfo_cb (GtkWidget *menu, session *sess)
 		return;
 
 	/* issue a /WHOIS */
-	snprintf (buf, sizeof (buf), "WHOIS %s %s", str_copy, str_copy);
+	g_snprintf (buf, sizeof (buf), "WHOIS %s %s", str_copy, str_copy);
 	handle_command (sess, buf, FALSE);
 	/* and hide the output */
 	sess->server->skip_next_whois = 1;
@@ -612,30 +612,30 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 
 	/* let the translators tweak this if need be */
 	fmt = _("<tt><b>%-11s</b></tt> %s");
-	snprintf (unknown, sizeof (unknown), "<i>%s</i>", _("Unknown"));
+	g_snprintf (unknown, sizeof (unknown), "<i>%s</i>", _("Unknown"));
 
 	if (user->realname)
 	{
 		real = strip_color (user->realname, -1, STRIP_ALL|STRIP_ESCMARKUP);
-		snprintf (buf, sizeof (buf), fmt, _("Real Name:"), real);
+		g_snprintf (buf, sizeof (buf), fmt, _("Real Name:"), real);
 		g_free (real);
 	} else
 	{
-		snprintf (buf, sizeof (buf), fmt, _("Real Name:"), unknown);
+		g_snprintf (buf, sizeof (buf), fmt, _("Real Name:"), unknown);
 	}
 	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 	g_signal_connect (G_OBJECT (item), "activate",
 							G_CALLBACK (copy_to_clipboard_cb), 
 							user->realname ? user->realname : unknown);
 
-	snprintf (buf, sizeof (buf), fmt, _("User:"),
+	g_snprintf (buf, sizeof (buf), fmt, _("User:"),
 				 user->hostname ? user->hostname : unknown);
 	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 	g_signal_connect (G_OBJECT (item), "activate",
 							G_CALLBACK (copy_to_clipboard_cb), 
 							user->hostname ? user->hostname : unknown);
 	
-	snprintf (buf, sizeof (buf), fmt, _("Account:"),
+	g_snprintf (buf, sizeof (buf), fmt, _("Account:"),
 				 user->account ? user->account : unknown);
 	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 	g_signal_connect (G_OBJECT (item), "activate",
@@ -645,13 +645,13 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 	users_country = country (user->hostname);
 	if (users_country)
 	{
-		snprintf (buf, sizeof (buf), fmt, _ ("Country:"), users_country);
+		g_snprintf (buf, sizeof (buf), fmt, _ ("Country:"), users_country);
 		item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 		g_signal_connect (G_OBJECT (item), "activate",
 			G_CALLBACK (copy_to_clipboard_cb), users_country);
 	}
 
-	snprintf (buf, sizeof (buf), fmt, _("Server:"),
+	g_snprintf (buf, sizeof (buf), fmt, _("Server:"),
 				 user->servername ? user->servername : unknown);
 	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 	g_signal_connect (G_OBJECT (item), "activate",
@@ -662,12 +662,12 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 	{
 		char min[96];
 
-		snprintf (min, sizeof (min), _("%u minutes ago"),
+		g_snprintf (min, sizeof (min), _("%u minutes ago"),
 					(unsigned int) ((time (0) - user->lasttalk) / 60));
-		snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), min);
+		g_snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), min);
 	} else
 	{
-		snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), unknown);
+		g_snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), unknown);
 	}
 	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 
@@ -677,7 +677,7 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 		if (away)
 		{
 			char *msg = strip_color (away->message ? away->message : unknown, -1, STRIP_ALL|STRIP_ESCMARKUP);
-			snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), msg);
+			g_snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), msg);
 			g_free (msg);
 			item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 			g_signal_connect (G_OBJECT (item), "activate",
@@ -734,7 +734,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 	/* more than 1 nick selected? */
 	if (num_sel > 1)
 	{
-		snprintf (buf, sizeof (buf), _("%d nicks selected."), num_sel);
+		g_snprintf (buf, sizeof (buf), _("%d nicks selected."), num_sel);
 		menu_quick_item (0, buf, menu, 0, 0, 0);
 		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
 	} else
@@ -935,7 +935,7 @@ open_url_cb (GtkWidget *item, char *url)
 	char buf[512];
 
 	/* pass this to /URL so it can handle irc:// */
-	snprintf (buf, sizeof (buf), "URL %s", url);
+	g_snprintf (buf, sizeof (buf), "URL %s", url);
 	handle_command (current_sess, buf, FALSE);
 }
 
@@ -984,7 +984,7 @@ menu_chan_cycle (GtkWidget * menu, char *chan)
 
 	if (current_sess)
 	{
-		snprintf (tbuf, sizeof tbuf, "CYCLE %s", chan);
+		g_snprintf (tbuf, sizeof tbuf, "CYCLE %s", chan);
 		handle_command (current_sess, tbuf, FALSE);
 	}
 }
@@ -996,7 +996,7 @@ menu_chan_part (GtkWidget * menu, char *chan)
 
 	if (current_sess)
 	{
-		snprintf (tbuf, sizeof tbuf, "part %s", chan);
+		g_snprintf (tbuf, sizeof tbuf, "part %s", chan);
 		handle_command (current_sess, tbuf, FALSE);
 	}
 }
@@ -1008,7 +1008,7 @@ menu_chan_join (GtkWidget * menu, char *chan)
 
 	if (current_sess)
 	{
-		snprintf (tbuf, sizeof tbuf, "join %s", chan);
+		g_snprintf (tbuf, sizeof tbuf, "join %s", chan);
 		handle_command (current_sess, tbuf, FALSE);
 	}
 }

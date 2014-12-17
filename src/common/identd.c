@@ -82,7 +82,7 @@ identd (char *username)
 	EMIT_SIGNAL (XP_TE_IDENTD, current_sess, inet_ntoa (addr.sin_addr), username, NULL, NULL, 0);
 #endif
 	inet_ntop (AF_INET, &addr.sin_addr, ipbuf, sizeof (ipbuf));
-	snprintf (outbuf, sizeof (outbuf), "*\tServicing ident request from %s as %s\n", ipbuf, username);
+	g_snprintf (outbuf, sizeof (outbuf), "*\tServicing ident request from %s as %s\n", ipbuf, username);
 	PrintText (current_sess, outbuf);
 
 	recv (read_sok, buf, sizeof (buf) - 1, 0);
@@ -91,7 +91,7 @@ identd (char *username)
 	p = strchr (buf, ',');
 	if (p)
 	{
-		snprintf (outbuf, sizeof (outbuf) - 1, "%d, %d : USERID : UNIX : %s\r\n",
+		g_snprintf (outbuf, sizeof (outbuf) - 1, "%d, %d : USERID : UNIX : %s\r\n",
 					 atoi (buf), atoi (p + 1), username);
 		outbuf[sizeof (outbuf) - 1] = 0;	/* ensure null termination */
 		send (read_sok, outbuf, strlen (outbuf), 0);
@@ -155,7 +155,7 @@ identd_ipv6 (char *username)
 	identd_ipv6_is_running = FALSE;
 
 	inet_ntop (AF_INET6, &addr.sin6_addr, ipbuf, sizeof (ipbuf));
-	snprintf (outbuf, sizeof (outbuf), "*\tServicing ident request from %s as %s\n", ipbuf, username);
+	g_snprintf (outbuf, sizeof (outbuf), "*\tServicing ident request from %s as %s\n", ipbuf, username);
 	PrintText (current_sess, outbuf);
 
 	recv (read_sok, buf, sizeof (buf) - 1, 0);
@@ -164,7 +164,7 @@ identd_ipv6 (char *username)
 	p = strchr (buf, ',');
 	if (p)
 	{
-		snprintf (outbuf, sizeof (outbuf) - 1, "%d, %d : USERID : UNIX : %s\r\n", atoi (buf), atoi (p + 1), username);
+		g_snprintf (outbuf, sizeof (outbuf) - 1, "%d, %d : USERID : UNIX : %s\r\n", atoi (buf), atoi (p + 1), username);
 		outbuf[sizeof (outbuf) - 1] = 0;	/* ensure null termination */
 		send (read_sok, outbuf, strlen (outbuf), 0);
 	}

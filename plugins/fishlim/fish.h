@@ -25,7 +25,6 @@
 #ifndef FISH_H
 #define FISH_H
 
-#include <stdbool.h>
 #include <stddef.h>
 
 #include <glib.h>

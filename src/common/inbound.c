@@ -184,7 +184,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 				(!sess->topic || strcmp(sess->topic, ip)))
 			{
 				char tbuf[1024];
-				snprintf (tbuf, sizeof (tbuf), "[%s has address %s]\n", from, ip);
+				g_snprintf (tbuf, sizeof (tbuf), "[%s has address %s]\n", from, ip);
 				write (sess->logfd, tbuf, strlen (tbuf));
 			}
 			set_topic (sess, ip, ip);
@@ -914,7 +914,7 @@ inbound_ping_reply (session *sess, char *timestring, char *from,
 										  tags_data->timestamp);
 	} else
 	{
-		snprintf (outbuf, sizeof (outbuf), "%ld.%03ld", dif / 1000, dif % 1000);
+		g_snprintf (outbuf, sizeof (outbuf), "%ld.%03ld", dif / 1000, dif % 1000);
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_PINGREP, sess, from, outbuf, NULL, NULL, 0,
 									  tags_data->timestamp);
 	}

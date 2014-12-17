@@ -280,7 +280,7 @@ lag_check (void)
 			}
 			else
 			{
-				snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
+				g_snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
 				serv->p_ping (serv, "", tbuf);
 				
 				if (!serv->lag_sent)
@@ -821,7 +821,7 @@ xchat_init (void)
 	notify_load ();
 	ignore_load ();
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 		"NAME %s~%s~\n"				"CMD query %%s\n\n"\
 		"NAME %s~%s~\n"				"CMD send %%s\n\n"\
 		"NAME %s~%s~\n"				"CMD whois %%s %%s\n\n"\
@@ -877,7 +877,7 @@ xchat_init (void)
 
 	list_loadconf ("popup.conf", &popup_list, buf);
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 		"NAME %s\n"				"CMD part\n\n"
 		"NAME %s\n"				"CMD getstr # join \"%s\"\n\n"
 		"NAME %s\n"				"CMD quote LINKS\n\n"
@@ -891,7 +891,7 @@ xchat_init (void)
 				_("Hide Version"));
 	list_loadconf ("usermenu.conf", &usermenu_list, buf);
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 		"NAME %s\n"		"CMD op %%a\n\n"
 		"NAME %s\n"		"CMD deop %%a\n\n"
 		"NAME %s\n"		"CMD ban %%s\n\n"
@@ -908,7 +908,7 @@ xchat_init (void)
 				_("Dialog"));
 	list_loadconf ("buttons.conf", &button_list, buf);
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 		"NAME %s\n"				"CMD whois %%s %%s\n\n"
 		"NAME %s\n"				"CMD send %%s\n\n"
 		"NAME %s\n"				"CMD dcc chat %%s\n\n"

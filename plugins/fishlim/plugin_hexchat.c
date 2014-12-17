@@ -28,13 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-// #pragma GCC visibility push(default)
 #include "hexchat-plugin.h"
 #define HEXCHAT_MAX_WORDS 32
-// #pragma GCC visibility pop
-
-//#define EXPORT __attribute((visibility("default")))
-//#define EXPORT
 
 #include "fish.h"
 #include "keystore.h"
@@ -81,16 +76,16 @@ int irc_nick_cmp(const char *a, const char *b) {
  */
 static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     const char *own_nick;
-    // Encrypt the message if possible
+    /* Encrypt the message if possible */
     const char *channel = hexchat_get_info(ph, "channel");
     char *encrypted = fish_encrypt_for_nick(channel, word_eol[1]);
     if (!encrypted) return HEXCHAT_EAT_NONE;
     
-    // Display message
+    /* Display message */
     own_nick = hexchat_get_info(ph, "nick");
     hexchat_emit_print(ph, "Your Message", own_nick, word_eol[1], NULL);
     
-    // Send message
+    /* Send message */
     hexchat_commandf(ph, "PRIVMSG %s :+OK %s", channel, encrypted);
     
     g_free(encrypted);
@@ -117,10 +112,10 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     if (!irc_parse_message((const char **)word, &prefix, &command, &w))
         return HEXCHAT_EAT_NONE;
     
-    // Topic (command 332) has an extra parameter
+    /* Topic (command 332) has an extra parameter */
     if (!strcmp(command, "332")) w++;
     
-    // Look for encrypted data
+    /* Look for encrypted data */
     for (ew = w+1; ew < HEXCHAT_MAX_WORDS-1; ew++) {
         const char *s = (ew == w+1 ? word[ew]+1 : word[ew]);
         if (*s && (s[1] == '+' || s[1] == 'm')) { prefix_char = *(s++); }
@@ -129,19 +124,19 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     }
     return HEXCHAT_EAT_NONE;
   has_encrypted_data: ;
-    // Extract sender nick and recipient nick/channel
+    /* Extract sender nick and recipient nick/channel */
     sender_nick = irc_prefix_get_nick(prefix);
     recipient = word[w];
     
-    // Try to decrypt with these (the keys are searched for in the key store)
+    /* Try to decrypt with these (the keys are searched for in the key store) */
     encrypted = word[ew+1];
     decrypted = fish_decrypt_from_nick(recipient, encrypted);
     if (!decrypted) decrypted = fish_decrypt_from_nick(sender_nick, encrypted);
     
-    // Check for error
+    /* Check for error */
     if (!decrypted) goto decrypt_error;
     
-    // Build unecrypted message
+    /* Build unecrypted message */
     message = g_string_sized_new (100); /* TODO: more accurate estimation of size */
     g_string_append (message, "RECV");
 
@@ -160,12 +155,12 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
             g_string_append_c (message, ' ');
         
         if (uw == ew) {
-            // Add the encrypted data
+            /* Add the encrypted data */
             peice = decrypted;
-            uw++; // Skip "OK+"
+            uw++; /* Skip "OK+" */
             
             if (ew == w+1) {
-                // Prefix with colon, which gets stripped out otherwise
+                /* Prefix with colon, which gets stripped out otherwise */
                 g_string_append_c (message, ':');
             }
             
@@ -174,7 +169,7 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
             }
             
         } else {
-            // Add unencrypted data (for example, a prefix from a bouncer or bot)
+            /* Add unencrypted data (for example, a prefix from a bouncer or bot) */
             peice = word[uw];
         }
 
@@ -182,8 +177,8 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     }
     g_free(decrypted);
     
-    // Simulate unencrypted message
-    //hexchat_printf(ph, "simulating: %s\n", message->str);
+    /* Simulate unencrypted message */
+    /* hexchat_printf(ph, "simulating: %s\n", message->str); */
     hexchat_command(ph, message->str);
 
     g_string_free (message, TRUE);
@@ -203,23 +198,23 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     const char *nick;
     const char *key;
     
-    // Check syntax
+    /* Check syntax */
     if (*word[2] == '\0') {
         hexchat_printf(ph, "%s\n", usage_setkey);
         return HEXCHAT_EAT_HEXCHAT;
     }
     
     if (*word[3] == '\0') {
-        // /setkey password
+        /* /setkey password */
         nick = hexchat_get_info(ph, "channel");
         key = word_eol[2];
     } else {
-        // /setkey #channel password
+        /* /setkey #channel password */
         nick = word[2];
         key = word_eol[3];
     }
     
-    // Set password
+    /* Set password */
     if (keystore_store_key(nick, key)) {
         hexchat_printf(ph, "Stored key for %s\n", nick);
     } else {
@@ -235,7 +230,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
 static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     const char *nick;
     
-    // Check syntax
+    /* Check syntax */
     if (*word[2] == '\0' || *word[3] != '\0') {
         hexchat_printf(ph, "%s\n", usage_delkey);
         return HEXCHAT_EAT_HEXCHAT;
@@ -243,7 +238,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     
     nick = g_strstrip (word_eol[2]);
     
-    // Delete the given nick from the key store
+    /* Delete the given nick from the key store */
     if (keystore_delete_nick(nick)) {
         hexchat_printf(ph, "Deleted key for %s\n", nick);
     } else {
@@ -286,7 +281,7 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
     hexchat_hook_command(ph, "", HEXCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
     hexchat_hook_server_attrs(ph, "NOTICE", HEXCHAT_PRI_NORM, handle_incoming, NULL);
     hexchat_hook_server_attrs(ph, "PRIVMSG", HEXCHAT_PRI_NORM, handle_incoming, NULL);
-    //hexchat_hook_server(ph, "RAW LINE", HEXCHAT_PRI_NORM, handle_debug, NULL);
+    /* hexchat_hook_server(ph, "RAW LINE", HEXCHAT_PRI_NORM, handle_debug, NULL); */
     hexchat_hook_server_attrs(ph, "TOPIC", HEXCHAT_PRI_NORM, handle_incoming, NULL);
     hexchat_hook_server_attrs(ph, "332", HEXCHAT_PRI_NORM, handle_incoming, NULL);
     

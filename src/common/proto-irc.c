@@ -429,7 +429,7 @@ irc_raw (server *serv, char *raw)
 		len = strlen (raw);
 		if (len < sizeof (tbuf) - 3)
 		{
-			len = snprintf (tbuf, sizeof (tbuf), "%s\r\n", raw);
+			len = g_snprintf (tbuf, sizeof (tbuf), "%s\r\n", raw);
 			tcp_send_len (serv, tbuf, len);
 		} else
 		{
@@ -590,7 +590,7 @@ process_numeric (session * sess, int n,
 			char *tim;
 			char outbuf[64];
 
-			snprintf (outbuf, sizeof (outbuf),
+			g_snprintf (outbuf, sizeof (outbuf),
 						"%02ld:%02ld:%02ld", idle / 3600, (idle / 60) % 60,
 						idle % 60);
 			if (timestamp == 0)

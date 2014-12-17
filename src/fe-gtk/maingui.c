@@ -393,42 +393,42 @@ fe_set_title (session *sess)
 	switch (type)
 	{
 	case SESS_DIALOG:
-		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s %s @ %s",
+		g_snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s %s @ %s",
 					 _("Dialog with"), sess->channel, server_get_network (sess->server, TRUE));
 		break;
 	case SESS_SERVER:
-		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s",
+		g_snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s",
 					 sess->server->nick, server_get_network (sess->server, TRUE));
 		break;
 	case SESS_CHANNEL:
 		/* don't display keys in the titlebar */
 		if (prefs.hex_gui_win_modes)
 		{
-			snprintf (tbuf, sizeof (tbuf),
+			g_snprintf (tbuf, sizeof (tbuf),
 						 DISPLAY_NAME": %s @ %s / %s (%s)",
 						 sess->server->nick, server_get_network (sess->server, TRUE),
 						 sess->channel, sess->current_modes ? sess->current_modes : "");
 		}
 		else
 		{
-			snprintf (tbuf, sizeof (tbuf),
+			g_snprintf (tbuf, sizeof (tbuf),
 						 DISPLAY_NAME": %s @ %s / %s",
 						 sess->server->nick, server_get_network (sess->server, TRUE),
 						 sess->channel);
 		}
 		if (prefs.hex_gui_win_ucount)
 		{
-			snprintf (tbuf + strlen (tbuf), 9, " (%d)", sess->total);
+			g_snprintf (tbuf + strlen (tbuf), 9, " (%d)", sess->total);
 		}
 		break;
 	case SESS_NOTICES:
 	case SESS_SNOTICES:
-		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s (notices)",
+		g_snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s (notices)",
 					 sess->server->nick, server_get_network (sess->server, TRUE));
 		break;
 	default:
 	def:
-		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME);
+		g_snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME);
 		gtk_window_set_title (GTK_WINDOW (sess->gui->window), tbuf);
 		return;
 	}
@@ -1567,7 +1567,7 @@ mg_create_tabmenu (session *sess, GdkEventButton *event, chan *ch)
 	if (sess)
 	{
 		char *name = g_markup_escape_text (sess->channel[0] ? sess->channel : _("<none>"), -1);
-		snprintf (buf, sizeof (buf), "<span foreground=\"#3344cc\"><b>%s</b></span>", name);
+		g_snprintf (buf, sizeof (buf), "<span foreground=\"#3344cc\"><b>%s</b></span>", name);
 		g_free (name);
 
 		item = gtk_menu_item_new_with_label ("");
@@ -1940,7 +1940,7 @@ flagl_hit (GtkWidget * wid, struct session *sess)
 				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), FALSE);
 				return;
 			}
-			snprintf (modes, sizeof (modes), "+l %d", atoi (limit_str));
+			g_snprintf (modes, sizeof (modes), "+l %d", atoi (limit_str));
 			serv->p_mode (serv, sess->channel, modes);
 			serv->p_join_info (serv, sess->channel);
 		}
@@ -1956,7 +1956,7 @@ flagk_hit (GtkWidget * wid, struct session *sess)
 
 	if (serv->connected && sess->channel[0])
 	{
-		snprintf (modes, sizeof (modes), "-k %s", 
+		g_snprintf (modes, sizeof (modes), "-k %s", 
 			  gtk_entry_get_text (GTK_ENTRY (sess->gui->key_entry)));
 
 		if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (wid)))
@@ -2022,7 +2022,7 @@ mg_key_entry_cb (GtkWidget * igad, gpointer userdata)
 
 	if (serv->connected && sess->channel[0])
 	{
-		snprintf (modes, sizeof (modes), "+k %s",
+		g_snprintf (modes, sizeof (modes), "+k %s",
 				gtk_entry_get_text (GTK_ENTRY (igad)));
 		serv->p_mode (serv, sess->channel, modes);
 		serv->p_join_info (serv, sess->channel);
@@ -2045,7 +2045,7 @@ mg_limit_entry_cb (GtkWidget * igad, gpointer userdata)
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sess->gui->flag_l), FALSE);
 			return;
 		}
-		snprintf (modes, sizeof(modes), "+l %d", 
+		g_snprintf (modes, sizeof(modes), "+l %d", 
 				atoi (gtk_entry_get_text (GTK_ENTRY (igad))));
 		serv->p_mode (serv, sess->channel, modes);
 		serv->p_join_info (serv, sess->channel);
@@ -2596,7 +2596,7 @@ mg_change_nick (int cancel, char *text, gpointer userdata)
 
 	if (!cancel)
 	{
-		snprintf (buf, sizeof (buf), "nick %s", text);
+		g_snprintf (buf, sizeof (buf), "nick %s", text);
 		handle_command (current_sess, buf, FALSE);
 	}
 }

@@ -194,12 +194,12 @@ dcc_prepare_row_send (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 	per = (float) ((dcc->ack * 100.00) / dcc->size);
 	proper_unit (dcc->size, size, sizeof (size));
 	proper_unit (dcc->pos, pos, sizeof (pos));
-	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
-	snprintf (perc, sizeof (perc), "%.0f%%", per);
+	g_snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
+	g_snprintf (perc, sizeof (perc), "%.0f%%", per);
 	if (dcc->cps != 0)
 	{
 		to_go = (dcc->size - dcc->ack) / dcc->cps;
-		snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
+		g_snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
 					 to_go / 3600, (to_go / 60) % 60, to_go % 60);
 	} else
 		strcpy (eta, "--:--:--");
@@ -252,14 +252,14 @@ dcc_prepare_row_recv (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 		proper_unit (dcc->resumable, pos, sizeof (pos));
 	else
 		proper_unit (dcc->pos, pos, sizeof (pos));
-	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
+	g_snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
 	/* percentage recv'ed */
 	per = (float) ((dcc->pos * 100.00) / dcc->size);
-	snprintf (perc, sizeof (perc), "%.0f%%", per);
+	g_snprintf (perc, sizeof (perc), "%.0f%%", per);
 	if (dcc->cps != 0)
 	{
 		to_go = (dcc->size - dcc->pos) / dcc->cps;
-		snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
+		g_snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
 					 to_go / 3600, (to_go / 60) % 60, to_go % 60);
 	} else
 		strcpy (eta, "--:--:--");
@@ -525,7 +525,7 @@ resume_clicked (GtkWidget * wid, gpointer none)
 			fe_message (_("That file is not resumable."), FE_MSG_ERROR);
 			break;
 		case 1:
-			snprintf (buf, sizeof (buf),
+			g_snprintf (buf, sizeof (buf),
 						_(	"Cannot access file: %s\n"
 							"%s.\n"
 							"Resuming not possible."), dcc->destfile,	
@@ -606,7 +606,7 @@ browse_folder (char *dir)
 #else
 	char buf[512];
 
-	snprintf (buf, sizeof (buf), "file://%s", dir);
+	g_snprintf (buf, sizeof (buf), "file://%s", dir);
 	fe_open_url (buf);
 #endif
 }
@@ -639,7 +639,7 @@ dcc_details_populate (struct DCC *dcc)
 		gtk_label_set_text (GTK_LABEL (dccfwin.file_label), dcc->file);
 
 	/* address and port */
-	snprintf (buf, sizeof (buf), "%s : %d", net_ip (dcc->addr), dcc->port);
+	g_snprintf (buf, sizeof (buf), "%s : %d", net_ip (dcc->addr), dcc->port);
 	gtk_label_set_text (GTK_LABEL (dccfwin.address_label), buf);
 }
 
@@ -737,7 +737,7 @@ dcc_detail_label (char *text, GtkWidget *box, int num)
 	char buf[64];
 
 	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<b>%s</b>", text);
+	g_snprintf (buf, sizeof (buf), "<b>%s</b>", text);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 	gtk_table_attach (GTK_TABLE (box), label, 0, 1, 0 + num, 1 + num, GTK_FILL, GTK_FILL, 0, 0);

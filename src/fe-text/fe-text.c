@@ -91,7 +91,7 @@ fe_new_window (struct session *sess, int focus)
 		return;
 	done_intro = 1;
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 				"\n"
 				" \017HexChat-Text \00310"PACKAGE_VERSION"\n"
 				" \017Running on \00310%s \017glib \00310%d.%d.%d\n"

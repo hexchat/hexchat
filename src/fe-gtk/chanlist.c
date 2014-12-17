@@ -94,7 +94,7 @@ chanlist_update_caption (server *serv)
 {
 	gchar tbuf[256];
 
-	snprintf (tbuf, sizeof tbuf,
+	g_snprintf (tbuf, sizeof tbuf,
 				 _("Displaying %d/%d users on %d/%d channels."),
 				 serv->gui->chanlist_users_shown_count,
 				 serv->gui->chanlist_users_found_count,
@@ -456,7 +456,7 @@ chanlist_join (GtkWidget * wid, server *serv)
 	{
 		if (serv->connected && (strcmp (chan, "*") != 0))
 		{
-			snprintf (tbuf, sizeof (tbuf), "join %s", chan);
+			g_snprintf (tbuf, sizeof (tbuf), "join %s", chan);
 			handle_command (serv->server_session, tbuf, FALSE);
 		} else
 			gdk_beep ();
@@ -482,7 +482,7 @@ chanlist_filereq_done (server *serv, char *file)
 	if (fh == -1)
 		return;
 
-	snprintf (buf, sizeof buf, "HexChat Channel List: %s - %s\n",
+	g_snprintf (buf, sizeof buf, "HexChat Channel List: %s - %s\n",
 				 serv->servername, ctime (&t));
 	write (fh, buf, strlen (buf));
 
@@ -494,7 +494,7 @@ chanlist_filereq_done (server *serv, char *file)
 									  COL_CHANNEL, &chan,
 									  COL_USERS, &users,
 									  COL_TOPIC, &topic, -1);
-			snprintf (buf, sizeof buf, "%-16s %-5d%s\n", chan, users, topic);
+			g_snprintf (buf, sizeof buf, "%-16s %-5d%s\n", chan, users, topic);
 			g_free (chan);
 			g_free (topic);
 			write (fh, buf, strlen (buf));
@@ -717,7 +717,7 @@ chanlist_opengui (server *serv, int do_refresh)
 		return;
 	}
 
-	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Channel List (%s)"),
+	g_snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Channel List (%s)"),
 				 server_get_network (serv, TRUE));
 
 	serv->gui->chanlist_pending_rows = NULL;

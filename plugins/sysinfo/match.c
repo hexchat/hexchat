@@ -41,7 +41,7 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
 	result = g_new(char, bsize);
 	if (total_space == 0)
 	{
-		snprintf(result, bsize, "%s: none", desc);
+		g_snprintf(result, bsize, "%s: none", desc);
 		return result;
 	}
 	quantity = quantities;
@@ -52,11 +52,11 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
 		total_space = total_space / 1024;
 	}
 	if (sysinfo_get_percent () != 0)
-		snprintf(result, bsize, "%s: %.1f%s, %.1f%% free",
+		g_snprintf(result, bsize, "%s: %.1f%s, %.1f%% free",
 		desc, total_space, *quantity,
 		percentage(free_k, total_k));
 	else
-		snprintf(result, bsize, "%s: %.1f%s/%.1f%s free",
+		g_snprintf(result, bsize, "%s: %.1f%s/%.1f%s free",
 		desc, free_space, *quantity, total_space, *quantity);
         return result;
 }

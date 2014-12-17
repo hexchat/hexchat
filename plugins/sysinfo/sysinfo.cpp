@@ -155,7 +155,7 @@ getOsName (void)
 static char *
 getCpuName (void)
 {
-	// Get extended ids.
+	/* Get extended ids. */
 	unsigned int nExIds;
 	unsigned int i;
 	int CPUInfo[4] = {-1};

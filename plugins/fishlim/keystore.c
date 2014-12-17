@@ -58,7 +58,7 @@ static GKeyFile *getConfigFile() {
 static const char *get_keystore_password() {
     return (keystore_password != NULL ?
         keystore_password :
-        // Silly default value...
+        /* Silly default value... */
         "blowinikey");
 }
 
@@ -88,17 +88,17 @@ static gchar *get_nick_value(GKeyFile *keyfile, const char *nick, const char *it
  * Extracts a key from the key store file.
  */
 char *keystore_get_key(const char *nick) {
-    // Get the key
+    /* Get the key */
     GKeyFile *keyfile = getConfigFile();
     gchar *value = get_nick_value(keyfile, nick, "key");
     g_key_file_free(keyfile);
     if (!value) return NULL;
     
     if (strncmp(value, "+OK ", 4) != 0) {
-        // Key is stored in plaintext
+        /* Key is stored in plaintext */
         return value;
     } else {
-        // Key is encrypted
+        /* Key is encrypted */
         const char *encrypted = value+4;
         const char *password = get_keystore_password();
         char *decrypted = fish_decrypt(password, strlen(password), encrypted);
@@ -110,10 +110,10 @@ char *keystore_get_key(const char *nick) {
 /**
  * Deletes a nick and the associated key in the key store file.
  */
-static bool delete_nick(GKeyFile *keyfile, const char *nick) {
+static gboolean delete_nick(GKeyFile *keyfile, const char *nick) {
     gchar **group;
     gchar **groups = g_key_file_get_groups(keyfile, NULL);
-    bool ok = false;
+    gboolean ok = FALSE;
     
     for (group = groups; *group != NULL; group++) {
         if (!irc_nick_cmp(*group, nick)) {
@@ -149,9 +149,9 @@ static gboolean keyfile_save_to_file (GKeyFile *keyfile, char *filename) {
 /**
  * Writes the key store file to disk.
  */
-static bool save_keystore(GKeyFile *keyfile) {
+static gboolean save_keystore(GKeyFile *keyfile) {
     char *filename;
-    bool ok;
+    gboolean ok;
 
     filename = get_config_filename();
 #if !GLIB_CHECK_VERSION(2,40,0)
@@ -167,36 +167,36 @@ static bool save_keystore(GKeyFile *keyfile) {
 /**
  * Sets a key in the key store file.
  */
-bool keystore_store_key(const char *nick, const char *key) {
+gboolean keystore_store_key(const char *nick, const char *key) {
     const char *password;
     char *encrypted;
     char *wrapped;
-    bool ok = false;
+    gboolean ok = FALSE;
     GKeyFile *keyfile = getConfigFile();
     
-    // Remove old key
+    /* Remove old key */
     delete_nick(keyfile, nick);
     
-    // Add new key
+    /* Add new key */
     password = get_keystore_password();
     if (password) {
-        // Encrypt the password
+        /* Encrypt the password */
         encrypted = fish_encrypt(password, strlen(password), key);
         if (!encrypted) goto end;
         
-        // Prepend "+OK "
+        /* Prepend "+OK " */
         wrapped = g_strconcat("+OK ", encrypted, NULL);
         g_free(encrypted);
         
-        // Store encrypted in file
+        /* Store encrypted in file */
         g_key_file_set_string(keyfile, nick, "key", wrapped);
         g_free(wrapped);
     } else {
-        // Store unencrypted in file
+        /* Store unencrypted in file */
         g_key_file_set_string(keyfile, nick, "key", key);
     }
     
-    // Save key store file
+    /* Save key store file */
     ok = save_keystore(keyfile);
     
   end:
@@ -207,13 +207,13 @@ bool keystore_store_key(const char *nick, const char *key) {
 /**
  * Deletes a nick from the key store.
  */
-bool keystore_delete_nick(const char *nick) {
+gboolean keystore_delete_nick(const char *nick) {
     GKeyFile *keyfile = getConfigFile();
     
-    // Delete entry
-    bool ok = delete_nick(keyfile, nick);
+    /* Delete entry */
+    gboolean ok = delete_nick(keyfile, nick);
     
-    // Save
+    /* Save */
     if (ok) save_keystore(keyfile);
     
     g_key_file_free(keyfile);

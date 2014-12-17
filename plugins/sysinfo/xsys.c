@@ -100,7 +100,7 @@ print_summary (int announce, char* format)
 	int seconds;
 	sysinfo[0] = '\0';
 
-	snprintf (buffer, bsize, "%s", hexchat_get_info (ph, "version"));
+	g_snprintf (buffer, bsize, "%s", hexchat_get_info (ph, "version"));
 	format_output ("HexChat", buffer, format);
 	strcat (sysinfo, "\017 ");
 	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
@@ -112,7 +112,7 @@ print_summary (int announce, char* format)
 		return HEXCHAT_EAT_ALL;
 	}
 
-	snprintf (buffer, bsize, "%s", os_kernel);
+	g_snprintf (buffer, bsize, "%s", os_kernel);
 	format_output ("OS", buffer, format);
 	strcat (sysinfo, "\017 ");
 	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
@@ -142,11 +142,11 @@ print_summary (int announce, char* format)
 
 	if (giga)
 	{
-		snprintf (buffer, bsize, "%u x %s (%s) @ %.2fGHz", count, cpu_model, cpu_vendor, cpu_freq);
+		g_snprintf (buffer, bsize, "%u x %s (%s) @ %.2fGHz", count, cpu_model, cpu_vendor, cpu_freq);
 	}
 	else
 	{
-		snprintf (buffer, bsize, "%u x %s (%s) @ %.0fMHz", count, cpu_model, cpu_vendor, cpu_freq);
+		g_snprintf (buffer, bsize, "%u x %s (%s) @ %.0fMHz", count, cpu_model, cpu_vendor, cpu_freq);
 	}
 
 	format_output ("CPU", buffer, format);
@@ -161,7 +161,7 @@ print_summary (int announce, char* format)
 	}
 
 	free_space = pretty_freespace ("Physical", &mem_free, &mem_total);
-	snprintf (buffer, bsize, "%s", free_space);
+	g_snprintf (buffer, bsize, "%s", free_space);
 	g_free (free_space);
 	format_output ("RAM", buffer, format);	
 	strcat (sysinfo, "\017 ");
@@ -224,21 +224,21 @@ print_summary (int announce, char* format)
 			{
 				if (weeks != 0)
 				{
-					snprintf (buffer, bsize, "%dw %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
+					g_snprintf (buffer, bsize, "%dw %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
 				}
 				else
 				{
-					snprintf (buffer, bsize, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+					g_snprintf (buffer, bsize, "%dd %dh %dm %ds", days, hours, minutes, seconds);
 				}
 			}
 			else
 			{
-				snprintf (buffer, bsize, "%dh %dm %ds", hours, minutes, seconds);
+				g_snprintf (buffer, bsize, "%dh %dm %ds", hours, minutes, seconds);
 			}
 		}
 		else
 		{
-			snprintf (buffer, bsize, "%dm %ds", minutes, seconds);
+			g_snprintf (buffer, bsize, "%dm %ds", minutes, seconds);
 		}
 	}
 
@@ -272,7 +272,7 @@ print_os (int announce, char* format)
 		return HEXCHAT_EAT_ALL;
 	}
 
-	snprintf (buffer, bsize, "%s@%s, %s", user, host, kernel);
+	g_snprintf (buffer, bsize, "%s@%s, %s", user, host, kernel);
 	format_output ("OS", buffer, format);
 	
 	if (announce)
@@ -336,11 +336,11 @@ print_cpu (int announce, char* format)
 
 	if (giga)
 	{
-		snprintf (buffer, bsize, "%u x %s (%s) @ %.2fGHz w/ %s L2 Cache", count, model, vendor, freq, cache);
+		g_snprintf (buffer, bsize, "%u x %s (%s) @ %.2fGHz w/ %s L2 Cache", count, model, vendor, freq, cache);
 	}
 	else
 	{
-		snprintf (buffer, bsize, "%u x %s (%s) @ %.0fMHz w/ %s L2 Cache", count, model, vendor, freq, cache);
+		g_snprintf (buffer, bsize, "%u x %s (%s) @ %.0fMHz w/ %s L2 Cache", count, model, vendor, freq, cache);
 	}
 
 	format_output ("CPU", buffer, format);
@@ -377,7 +377,7 @@ print_ram (int announce, char* format)
 		return HEXCHAT_EAT_ALL;
 	}
 
-	snprintf (string, bsize, "%s - %s", pretty_freespace ("Physical", &mem_free, &mem_total), pretty_freespace ("Swap", &swap_free, &swap_total));
+	g_snprintf (string, bsize, "%s - %s", pretty_freespace ("Physical", &mem_free, &mem_total), pretty_freespace ("Swap", &swap_free, &swap_total));
 	format_output ("RAM", string, format);
 	
 	if (announce)
@@ -452,11 +452,11 @@ print_vga (int announce, char* format)
 
 	if (xs_parse_agpbridge (agp_bridge) != 0)
 	{
-		snprintf (buffer, bsize, "%s", vid_card);
+		g_snprintf (buffer, bsize, "%s", vid_card);
 	}
 	else
 	{
-		snprintf (buffer, bsize, "%s @ %s", vid_card, agp_bridge);
+		g_snprintf (buffer, bsize, "%s @ %s", vid_card, agp_bridge);
 	}
 
 	format_output ("VGA", buffer, format);
@@ -547,21 +547,21 @@ print_uptime (int announce, char* format)
 			{
 				if (weeks != 0)
 				{
-					snprintf (buffer, bsize, "%dw %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
+					g_snprintf (buffer, bsize, "%dw %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
 				}
 				else
 				{
-					snprintf (buffer, bsize, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+					g_snprintf (buffer, bsize, "%dd %dh %dm %ds", days, hours, minutes, seconds);
 				}
 			}
 			else
 			{
-				snprintf (buffer, bsize, "%dh %dm %ds", hours, minutes, seconds);
+				g_snprintf (buffer, bsize, "%dh %dm %ds", hours, minutes, seconds);
 			}
 		}
 		else
 		{
-			snprintf (buffer, bsize, "%dm %ds", minutes, seconds);
+			g_snprintf (buffer, bsize, "%dm %ds", minutes, seconds);
 		}
 	}
 
@@ -602,7 +602,7 @@ netdata_cb (char *word[], char *word_eol[], void *userdata)
 	bytes_recv /= 1024;
 	bytes_sent /= 1024;
 	
-	snprintf (netdata, bsize, "%s: %.1f MB Received, %.1f MB Sent", word[2], (double)bytes_recv/1024.0, (double)bytes_sent/1024.0);
+	g_snprintf (netdata, bsize, "%s: %.1f MB Received, %.1f MB Sent", word[2], (double)bytes_recv/1024.0, (double)bytes_sent/1024.0);
 	hexchat_pluginpref_get_str (ph, "format", format);
 	format_output ("Netdata", netdata, format);
 
@@ -658,24 +658,24 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 	if (bytes_recv > 1024)
 	{
 		bytes_recv /= 1024;
-		snprintf (mag_r, 5, "KB/s");
+		g_snprintf (mag_r, 5, "KB/s");
 	}
 	else
 	{
-		snprintf (mag_r, 5, "B/s");
+		g_snprintf (mag_r, 5, "B/s");
 	}
 
 	if (bytes_sent > 1024)
 	{
 		bytes_sent /= 1024;
-		snprintf (mag_s, 5, "KB/s");
+		g_snprintf (mag_s, 5, "KB/s");
 	}
 	else
 	{
-		snprintf (mag_s, 5, "B/s");
+		g_snprintf (mag_s, 5, "B/s");
 	}
 
-	snprintf (netstream, bsize, "%s: Receiving %llu %s, Sending %llu %s", word[2], bytes_recv, mag_r, bytes_sent, mag_s);
+	g_snprintf (netstream, bsize, "%s: Receiving %llu %s, Sending %llu %s", word[2], bytes_recv, mag_r, bytes_sent, mag_s);
 	hexchat_pluginpref_get_str (ph, "format", format);
 	format_output ("Netstream", netstream, format);
 

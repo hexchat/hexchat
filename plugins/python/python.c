@@ -1885,7 +1885,7 @@ Module_hexchat_pluginpref_get(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:get_pluginpref", &var))
 		return NULL;
 		
-	// This will always return numbers as integers.
+	/* This will always return numbers as integers. */
 	BEGIN_XCHAT_CALLS(NONE);
 	result = hexchat_pluginpref_get_str(prefph, var, retstr);
 	END_XCHAT_CALLS();

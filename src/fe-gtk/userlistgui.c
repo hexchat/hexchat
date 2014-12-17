@@ -42,11 +42,11 @@
 
 enum
 {
-	COL_PIX=0,		// GdkPixbuf *
-	COL_NICK=1,		// char *
-	COL_HOST=2,		// char *
-	COL_USER=3,		// struct User *
-	COL_GDKCOLOR=4	// GdkColor *
+	COL_PIX=0,		/* GdkPixbuf * */
+	COL_NICK=1,		/* char * */
+	COL_HOST=2,		/* char * */
+	COL_USER=3,		/* struct User * */
+	COL_GDKCOLOR=4	/* GdkColor * */
 };
 
 
@@ -105,7 +105,7 @@ fe_userlist_numbers (session *sess)
 	{
 		if (sess->total)
 		{
-			snprintf (tbuf, sizeof (tbuf), _("%d ops, %d total"), sess->ops, sess->total);
+			g_snprintf (tbuf, sizeof (tbuf), _("%d ops, %d total"), sess->ops, sess->total);
 			tbuf[sizeof (tbuf) - 1] = 0;
 			gtk_label_set_text (GTK_LABEL (sess->gui->namelistinfo), tbuf);
 		} else

@@ -39,17 +39,17 @@ static const char fish_base64[64] = "./0123456789abcdefghijklmnopqrstuvwxyzABCDE
 static const signed char fish_unbase64[256] = {
     IB,IB,IB,IB,IB,IB,IB,IB,  IB,IB,IB,IB,IB,IB,IB,IB,
     IB,IB,IB,IB,IB,IB,IB,IB,  IB,IB,IB,IB,IB,IB,IB,IB,
-//      !  "  #  $  %  &  '  (    )  *  +  ,  -  .  /
+/*      !  "  #  $  %  &  '  (    )  *  +  ,  -  .  / */
     IB,IB,IB,IB,IB,IB,IB,IB,  IB,IB,IB,IB,IB,IB, 0, 1,
-//   0  1  2  3  4  5  6  7    8  9  :  ;  <  =  >  ?
+/*   0  1  2  3  4  5  6  7    8  9  :  ;  <  =  >  ? */
      2, 3, 4, 5, 6, 7, 8, 9,  10,11,IB,IB,IB,IB,IB,IB,
-//   @  A  B  C  D  E  F  G    H  I  J  K  L  M  N  O
+/*   @  A  B  C  D  E  F  G    H  I  J  K  L  M  N  O */
     IB,38,39,40,41,42,43,44,  45,46,47,48,49,50,51,52,
-//   P  Q  R  S  T  U  V  W    X  Y  Z  [  \  ]  ^  _
+/*   P  Q  R  S  T  U  V  W    X  Y  Z  [  \  ]  ^  _*/
     53,54,55,56,57,58,59,60,  61,62,63,IB,IB,IB,IB,IB,
-//   `  a  b  c  d  e  f  g    h  i  j  k  l  m  n  o
+/*   `  a  b  c  d  e  f  g    h  i  j  k  l  m  n  o */
     IB,12,13,14,15,16,17,18,  19,20,21,22,23,24,25,26,
-//   p  q  r  s  t  u  v  w    x  y  z  {  |  }  ~  <del>
+/*   p  q  r  s  t  u  v  w    x  y  z  {  |  }  ~  <del> */
     27,28,29,30,31,32,33,34,  35,36,37,IB,IB,IB,IB,IB,
 };
 
@@ -75,11 +75,11 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message) {
     
     messagelen = strlen(message);
     if (messagelen == 0) return NULL;
-    encrypted = g_malloc(((messagelen - 1) / 8) * 12 + 12 + 1); // each 8-byte block becomes 12 bytes
+    encrypted = g_malloc(((messagelen - 1) / 8) * 12 + 12 + 1); /* each 8-byte block becomes 12 bytes */
     end = encrypted;
      
     while (*message) {
-        // Read 8 bytes (a Blowfish block)
+        /* Read 8 bytes (a Blowfish block) */
         BF_LONG binary[2] = { 0, 0 };
         unsigned char c;
         for (i = 0; i < 8; i++) {
@@ -89,10 +89,10 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message) {
         }
         message += 8;
         
-        // Encrypt block
+        /* Encrypt block */
         BF_encrypt(binary, &bfkey);
         
-        // Emit FiSH-BASE64
+        /* Emit FiSH-BASE64 */
         bit = 0;
         word = 1;
         for (j = 0; j < 12; j++) {
@@ -105,7 +105,7 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message) {
             }
         }
         
-        // Stop if a null terminator was found
+        /* Stop if a null terminator was found */
         if (c == '\0') break;
     }
     *end = '\0';
@@ -127,7 +127,7 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data) {
     end = decrypted;
     
     while (*data) {
-        // Convert from FiSH-BASE64
+        /* Convert from FiSH-BASE64 */
         BF_LONG binary[2] = { 0, 0 };
         bit = 0;
         word = 1;
@@ -142,10 +142,10 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data) {
             }
         }
         
-        // Decrypt block
+        /* Decrypt block */
         BF_decrypt(binary, &bfkey);
         
-        // Copy to buffer
+        /* Copy to buffer */
         GET_BYTES(end, binary[0]);
         GET_BYTES(end, binary[1]);
     }
@@ -163,11 +163,11 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
     char *key;
     char *encrypted;
 
-    // Look for key
+    /* Look for key */
     key = keystore_get_key(nick);
     if (!key) return NULL;
     
-    // Encrypt
+    /* Encrypt */
     encrypted = fish_encrypt(key, strlen(key), data);
     
     g_free(key);
@@ -181,11 +181,11 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
 char *fish_decrypt_from_nick(const char *nick, const char *data) {
     char *key;
     char *decrypted;
-    // Look for key
+    /* Look for key */
     key = keystore_get_key(nick);
     if (!key) return NULL;
     
-    // Decrypt
+    /* Decrypt */
     decrypted = fish_decrypt(key, strlen(key), data);
     
     g_free(key);

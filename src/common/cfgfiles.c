@@ -220,7 +220,7 @@ cfg_put_str (int fh, char *var, char *value)
 	char buf[512];
 	int len;
 
-	snprintf (buf, sizeof buf, "%s = %s\n", var, value);
+	g_snprintf (buf, sizeof buf, "%s = %s\n", var, value);
 	len = strlen (buf);
 	return (write (fh, buf, len) == len);
 }
@@ -231,7 +231,7 @@ cfg_put_color (int fh, int r, int g, int b, char *var)
 	char buf[400];
 	int len;
 
-	snprintf (buf, sizeof buf, "%s = %04x %04x %04x\n", var, r, g, b);
+	g_snprintf (buf, sizeof buf, "%s = %04x %04x %04x\n", var, r, g, b);
 	len = strlen (buf);
 	return (write (fh, buf, len) == len);
 }
@@ -245,7 +245,7 @@ cfg_put_int (int fh, int value, char *var)
 	if (value == -1)
 		value = 1;
 
-	snprintf (buf, sizeof buf, "%s = %d\n", var, value);
+	g_snprintf (buf, sizeof buf, "%s = %d\n", var, value);
 	len = strlen (buf);
 	return (write (fh, buf, len) == len);
 }
@@ -843,7 +843,7 @@ load_default_config(void)
 #ifdef WIN32
 	if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_Downloads, 0, NULL, &roaming_path_wide) != S_OK)
 	{
-		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
+		g_snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
 	}
 	else
 	{

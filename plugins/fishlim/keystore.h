@@ -25,14 +25,13 @@
 #ifndef KEYSTORE_H
 #define KEYSTORE_H
 
-#include <stdbool.h>
 #include <stddef.h>
 
 #include <glib.h>
 
 char *keystore_get_key(const char *nick);
-bool keystore_store_key(const char *nick, const char *key);
-bool keystore_delete_nick(const char *nick);
+gboolean keystore_store_key(const char *nick, const char *key);
+gboolean keystore_delete_nick(const char *nick);
 
 #endif
 

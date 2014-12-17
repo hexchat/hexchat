@@ -1926,7 +1926,7 @@ hexchat_pluginpref_set_int (hexchat_plugin *pl, const char *var, int value)
 {
 	char buffer[12];
 
-	snprintf (buffer, sizeof (buffer), "%d", value);
+	g_snprintf (buffer, sizeof (buffer), "%d", value);
 	return hexchat_pluginpref_set_str_real (pl, var, buffer, 1);
 }
 

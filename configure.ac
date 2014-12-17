@@ -755,8 +755,7 @@ AC_TRY_COMPILE(
 	],
 	AC_MSG_RESULT(no))
 
-dnl if we don\'t have this, use g_snprintf instead
-AC_CHECK_FUNCS(snprintf vsnprintf memrchr strtoull)
+AC_CHECK_FUNCS(memrchr)
 
 AC_CHECK_FUNC(gethostbyname, ,
 	AC_CHECK_LIB(resolv, gethostbyname, ,

@@ -190,11 +190,11 @@ notify_gui_update (void)
 			{
 				lastseenminutes = (int)(time (0) - lastseen) / 60;
 				if (lastseenminutes < 60) 
-					snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), lastseenminutes);
+					g_snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), lastseenminutes);
 				else if (lastseenminutes < 120)
-					snprintf (agobuf, sizeof (agobuf), _("An hour ago"));
+					g_snprintf (agobuf, sizeof (agobuf), _("An hour ago"));
 				else
-					snprintf (agobuf, sizeof (agobuf), _("%d hours ago"), lastseenminutes / 60);
+					g_snprintf (agobuf, sizeof (agobuf), _("%d hours ago"), lastseenminutes / 60);
 				seen = agobuf;
 			}
 			if (!valid)	/* create new tree row if required */
@@ -219,7 +219,7 @@ notify_gui_update (void)
 						name = "";
 					server = server_get_network (servnot->server, TRUE);
 
-					snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
+					g_snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
 					seen = agobuf;
 
 					if (!valid)	/* create new tree row if required */
@@ -380,7 +380,7 @@ fe_notify_ask (char *nick, char *networks)
 	gtk_table_attach_defaults (GTK_TABLE (table), wid, 1, 2, 2, 3);
 
 	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", _("Comma separated list of networks is accepted."));
+	g_snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", _("Comma separated list of networks is accepted."));
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 3, 4);
 

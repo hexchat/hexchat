@@ -1658,7 +1658,7 @@ bold_label (char *text)
 	char buf[128];
 	GtkWidget *label;
 
-	snprintf (buf, sizeof (buf), "<b>%s</b>", text);
+	g_snprintf (buf, sizeof (buf), "<b>%s</b>", text);
 	label = gtk_label_new (buf);
 	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
@@ -1700,7 +1700,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	editwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (editwindow), 4);
-	snprintf (buf, sizeof (buf), _(DISPLAY_NAME": Edit %s"), net->name);
+	g_snprintf (buf, sizeof (buf), _(DISPLAY_NAME": Edit %s"), net->name);
 	gtk_window_set_title (GTK_WINDOW (editwindow), buf);
 	gtk_window_set_default_size (GTK_WINDOW (editwindow), netedit_win_width, netedit_win_height);
 	gtk_window_set_transient_for (GTK_WINDOW (editwindow), GTK_WINDOW (parent));

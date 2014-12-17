@@ -38,14 +38,6 @@
 
 #include "history.h"
 
-#ifndef HAVE_SNPRINTF
-#define snprintf g_snprintf
-#endif
-
-#ifndef HAVE_VSNPRINTF
-#define vsnprintf _vsnprintf
-#endif
-
 #ifdef SOCKS
 #ifdef __sgi
 #include <sys/time.h>

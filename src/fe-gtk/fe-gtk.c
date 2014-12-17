@@ -265,7 +265,7 @@ create_input_style (GtkStyle *style)
 	/* fall back */
 	if (pango_font_description_get_size (style->font_desc) == 0)
 	{
-		snprintf (buf, sizeof (buf), _("Failed to open font:\n\n%s"), prefs.hex_text_font);
+		g_snprintf (buf, sizeof (buf), _("Failed to open font:\n\n%s"), prefs.hex_text_font);
 		fe_message (buf, FE_MSG_ERROR);
 		pango_font_description_free (style->font_desc);
 		style->font_desc = pango_font_description_from_string ("sans 11");
@@ -746,9 +746,9 @@ fe_set_lag (server *serv, long lag)
 	if (per > 1.0)
 		per = 1.0;
 
-	snprintf (lagtext, sizeof (lagtext) - 1, "%s%ld.%lds",
+	g_snprintf (lagtext, sizeof (lagtext) - 1, "%s%ld.%lds",
 			  serv->lag_sent ? "+" : "", lag / 1000, (lag/100) % 10);
-	snprintf (lagtip, sizeof (lagtip) - 1, "Lag: %s%ld.%ld seconds",
+	g_snprintf (lagtip, sizeof (lagtip) - 1, "Lag: %s%ld.%ld seconds",
 				 serv->lag_sent ? "+" : "", lag / 1000, (lag/100) % 10);
 
 	while (list)
@@ -797,8 +797,8 @@ fe_set_throttle (server *serv)
 		sess = list->data;
 		if (sess->server == serv)
 		{
-			snprintf (tbuf, sizeof (tbuf) - 1, _("%d bytes"), serv->sendq_len);
-			snprintf (tip, sizeof (tip) - 1, _("Network send queue: %d bytes"), serv->sendq_len);
+			g_snprintf (tbuf, sizeof (tbuf) - 1, _("%d bytes"), serv->sendq_len);
+			g_snprintf (tip, sizeof (tip) - 1, _("Network send queue: %d bytes"), serv->sendq_len);
 
 			g_free (sess->res->queue_tip);
 			sess->res->queue_tip = g_strdup (tip);

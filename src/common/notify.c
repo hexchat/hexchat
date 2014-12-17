@@ -341,9 +341,9 @@ notify_watch (server * serv, char *nick, int add)
 		addchar = '-';
 
 	if (serv->supports_monitor)
-		snprintf (tbuf, sizeof (tbuf), "MONITOR %c %s", addchar, nick);
+		g_snprintf (tbuf, sizeof (tbuf), "MONITOR %c %s", addchar, nick);
 	else if (serv->supports_watch)
-		snprintf (tbuf, sizeof (tbuf), "WATCH %c%s", addchar, nick);
+		g_snprintf (tbuf, sizeof (tbuf), "WATCH %c%s", addchar, nick);
 	else
 		return;
 
@@ -556,9 +556,9 @@ notify_showlist (struct session *sess, const message_tags_data *tags_data)
 		notify = (struct notify *) list->data;
 		servnot = notify_find_server_entry (notify, sess->server);
 		if (servnot && servnot->ison)
-			snprintf (outbuf, sizeof (outbuf), _("  %-20s online\n"), notify->name);
+			g_snprintf (outbuf, sizeof (outbuf), _("  %-20s online\n"), notify->name);
 		else
-			snprintf (outbuf, sizeof (outbuf), _("  %-20s offline\n"), notify->name);
+			g_snprintf (outbuf, sizeof (outbuf), _("  %-20s offline\n"), notify->name);
 		PrintTextTimeStamp (sess, outbuf, tags_data->timestamp);
 		list = list->next;
 	}

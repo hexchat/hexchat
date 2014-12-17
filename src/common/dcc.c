@@ -705,7 +705,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				do
 				{
 					n++;
-					snprintf (buf, sizeof (buf), "%s.%d", dcc->destfile, n);
+					g_snprintf (buf, sizeof (buf), "%s.%d", dcc->destfile, n);
 				}
 				while (g_access (buf, F_OK) == 0);
 
@@ -865,7 +865,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 		return TRUE;
 
 	dcc->dccstat = STAT_ACTIVE;
-	snprintf (host, sizeof host, "%s:%d", net_ip (dcc->addr), dcc->port);
+	g_snprintf (host, sizeof host, "%s:%d", net_ip (dcc->addr), dcc->port);
 
 	switch (dcc->type)
 	{
@@ -984,7 +984,7 @@ dcc_wingate_proxy_traverse (GIOChannel *source, GIOCondition condition, struct D
 	struct proxy_state *proxy = dcc->proxy;
 	if (proxy->phase == 0)
 	{
-		proxy->buffersize = snprintf ((char*) proxy->buffer, MAX_PROXY_BUFFER,
+		proxy->buffersize = g_snprintf ((char*) proxy->buffer, MAX_PROXY_BUFFER,
 										"%s %d\r\n", net_ip(dcc->addr),
 										dcc->port);
 		proxy->bufferused = 0;
@@ -1282,16 +1282,16 @@ dcc_http_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC 
 		char auth_data2[68];
 		int n, n2;
 
-		n = snprintf (buf, sizeof (buf), "CONNECT %s:%d HTTP/1.0\r\n",
+		n = g_snprintf (buf, sizeof (buf), "CONNECT %s:%d HTTP/1.0\r\n",
                                           net_ip(dcc->addr), dcc->port);
 		if (prefs.hex_net_proxy_auth)
 		{
-			n2 = snprintf (auth_data2, sizeof (auth_data2), "%s:%s",
+			n2 = g_snprintf (auth_data2, sizeof (auth_data2), "%s:%s",
 							prefs.hex_net_proxy_user, prefs.hex_net_proxy_pass);
 			base64_encode (auth_data, auth_data2, n2);
-			n += snprintf (buf+n, sizeof (buf)-n, "Proxy-Authorization: Basic %s\r\n", auth_data);
+			n += g_snprintf (buf+n, sizeof (buf)-n, "Proxy-Authorization: Basic %s\r\n", auth_data);
 		}
-		n += snprintf (buf+n, sizeof (buf)-n, "\r\n");
+		n += g_snprintf (buf+n, sizeof (buf)-n, "\r\n");
 		proxy->buffersize = n;
 		proxy->bufferused = 0;
 		memcpy (proxy->buffer, buf, proxy->buffersize);
@@ -1402,12 +1402,12 @@ dcc_connect (struct DCC *dcc)
 		}
 		/* possible problems with filenames containing spaces? */
 		if (dcc->type == TYPE_RECV)
-			snprintf (tbuf, sizeof (tbuf), strchr (dcc->file, ' ') ?
+			g_snprintf (tbuf, sizeof (tbuf), strchr (dcc->file, ' ') ?
 					"DCC SEND \"%s\" %u %d %" G_GUINT64_FORMAT " %d" :
 					"DCC SEND %s %u %d %" G_GUINT64_FORMAT " %d", dcc->file,
 					dcc->addr, dcc->port, dcc->size, dcc->pasvid);
 		else
-			snprintf (tbuf, sizeof (tbuf), "DCC CHAT chat %u %d %d",
+			g_snprintf (tbuf, sizeof (tbuf), "DCC CHAT chat %u %d %d",
 				dcc->addr, dcc->port, dcc->pasvid);
 		dcc->serv->p_ctcp (dcc->serv, dcc->nick, tbuf);
 	}
@@ -1605,7 +1605,7 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	dcc->lasttime = dcc->starttime = time (0);
 	dcc->fastsend = prefs.hex_dcc_fast_send;
 
-	snprintf (host, sizeof (host), "%s:%d", net_ip (dcc->addr), dcc->port);
+	g_snprintf (host, sizeof (host), "%s:%d", net_ip (dcc->addr), dcc->port);
 
 	switch (dcc->type)
 	{
@@ -1898,7 +1898,7 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 		if (passive)
 		{
 			dcc->pasvid = new_id();
-			snprintf (outbuf, sizeof (outbuf), (havespaces) ?
+			g_snprintf (outbuf, sizeof (outbuf), (havespaces) ?
 					"DCC SEND \"%s\" 199 0 %" G_GUINT64_FORMAT " %d" :
 					"DCC SEND %s 199 0 %" G_GUINT64_FORMAT " %d",
 					file_part (dcc->file),
@@ -1906,7 +1906,7 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 		}
 		else
 		{
-			snprintf (outbuf, sizeof (outbuf), (havespaces) ?
+			g_snprintf (outbuf, sizeof (outbuf), (havespaces) ?
 					"DCC SEND \"%s\" %u %d %" G_GUINT64_FORMAT :
 					"DCC SEND %s %u %d %" G_GUINT64_FORMAT,
 					file_part (dcc->file), dcc->addr,
@@ -2309,11 +2309,11 @@ dcc_chat (struct session *sess, char *nick, int passive)
 		if (passive)
 		{
 			dcc->pasvid = new_id ();
-			snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat 199 %d %d",
+			g_snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat 199 %d %d",
 						 dcc->port, dcc->pasvid);
 		} else
 		{
-			snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat %u %d",
+			g_snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat %u %d",
 						 dcc->addr, dcc->port);
 		}
 		dcc->serv->p_ctcp (dcc->serv, nick, outbuf);
@@ -2339,7 +2339,7 @@ dcc_resume (struct DCC *dcc)
 	{
 		dcc->resume_sent = 1;
 		/* filename contains spaces? Quote them! */
-		snprintf (tbuf, sizeof (tbuf) - 10, strchr (dcc->file, ' ') ?
+		g_snprintf (tbuf, sizeof (tbuf) - 10, strchr (dcc->file, ' ') ?
 					  "DCC RESUME \"%s\" %d %" G_GUINT64_FORMAT :
 					  "DCC RESUME %s %d %" G_GUINT64_FORMAT,
 					  dcc->file, dcc->port, dcc->resumable);
@@ -2416,7 +2416,7 @@ dcc_add_chat (session *sess, char *nick, int port, guint32 addr, int pasvid)
 		else
 		{
 			char buff[128];
-			snprintf (buff, sizeof (buff), "%s is offering DCC Chat. Do you want to accept?", nick);
+			g_snprintf (buff, sizeof (buff), "%s is offering DCC Chat. Do you want to accept?", nick);
 			fe_confirm (buff, dcc_confirm_chat, dcc_deny_chat, dcc);
 		}
 	}
@@ -2475,7 +2475,7 @@ dcc_add_file (session *sess, char *file, guint64 size, int port, char *nick, gui
 
 		if (prefs.hex_dcc_auto_recv == 1)
 		{
-			snprintf (tbuf, sizeof (tbuf), _("%s is offering \"%s\". Do you want to accept?"), nick, file);
+			g_snprintf (tbuf, sizeof (tbuf), _("%s is offering \"%s\". Do you want to accept?"), nick, file);
 			fe_confirm (tbuf, dcc_confirm_send, dcc_deny_send, dcc);
 		}
 		else if (prefs.hex_dcc_auto_recv == 2)
@@ -2490,7 +2490,7 @@ dcc_add_file (session *sess, char *file, guint64 size, int port, char *nick, gui
 			fe_dcc_add (dcc);
 	}
 	sprintf (tbuf, "%" G_GUINT64_FORMAT, size);
-	snprintf (tbuf + 24, 300, "%s:%d", net_ip (addr), port);
+	g_snprintf (tbuf + 24, 300, "%s:%d", net_ip (addr), port);
 	EMIT_SIGNAL (XP_TE_DCCSENDOFFER, sess->server->front_session, nick,
 					 file, tbuf, tbuf + 24, 0);
 
@@ -2582,12 +2582,12 @@ handle_dcc (struct session *sess, char *nick, char *word[], char *word_eol[],
 
 				/* Checking if dcc is passive and if filename contains spaces */
 				if (dcc->pasvid)
-					snprintf (tbuf, sizeof (tbuf), strchr (file_part (dcc->file), ' ') ?
+					g_snprintf (tbuf, sizeof (tbuf), strchr (file_part (dcc->file), ' ') ?
 							"DCC ACCEPT \"%s\" %d %" G_GUINT64_FORMAT " %d" :
 							"DCC ACCEPT %s %d %" G_GUINT64_FORMAT " %d",
 							file_part (dcc->file), port, dcc->resumable, dcc->pasvid);
 				else
-					snprintf (tbuf, sizeof (tbuf), strchr (file_part (dcc->file), ' ') ?
+					g_snprintf (tbuf, sizeof (tbuf), strchr (file_part (dcc->file), ' ') ?
 							"DCC ACCEPT \"%s\" %d %" G_GUINT64_FORMAT :
 							"DCC ACCEPT %s %d %" G_GUINT64_FORMAT,
 							file_part (dcc->file), port, dcc->resumable);

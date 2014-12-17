@@ -158,9 +158,9 @@ joind_show_dialog (server *serv)
 	gtk_widget_show (vbox2);
 	gtk_box_pack_start (GTK_BOX (hbox1), vbox2, TRUE, TRUE, 0);
 
-	snprintf (buf2, sizeof (buf2), _("Connection to %s complete."),
+	g_snprintf (buf2, sizeof (buf2), _("Connection to %s complete."),
 				 server_get_network (serv, TRUE));
-	snprintf (buf, sizeof (buf), "\n<b>%s</b>", buf2);
+	g_snprintf (buf, sizeof (buf), "\n<b>%s</b>", buf2);
 	label = gtk_label_new (buf);
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
@@ -198,7 +198,7 @@ joind_show_dialog (server *serv)
 	gtk_widget_show (entry1);
 	gtk_box_pack_start (GTK_BOX (hbox2), entry1, TRUE, TRUE, 8);
 
-	snprintf (buf, sizeof (buf), "<small>     %s</small>",
+	g_snprintf (buf, sizeof (buf), "<small>     %s</small>",
 				 _("If you know the name of the channel you want to join, enter it here."));
 	label = gtk_label_new (buf);
 	gtk_widget_show (label);
@@ -212,7 +212,7 @@ joind_show_dialog (server *serv)
 	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton3), radiobutton1_group);
 	radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton3));
 
-	snprintf (buf, sizeof (buf), "<small>     %s</small>",
+	g_snprintf (buf, sizeof (buf), "<small>     %s</small>",
 				 _("Retrieving the Channel-List may take a minute or two."));
 	label = gtk_label_new (buf);
 	gtk_widget_show (label);

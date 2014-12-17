@@ -99,8 +99,8 @@ int pci_find_by_class(u16 *class, char *vendor, char *device)
     		/* Acquire vendor & device ID if the class matches */
     		if(get_conf_word(d, PCI_CLASS_DEVICE) == *class) {
       			nomatch = 0;
-			snprintf(vendor,7,"%04x",p->vendor_id);
-			snprintf(device,7,"%04x",p->device_id);
+			g_snprintf(vendor,7,"%04x",p->vendor_id);
+			g_snprintf(device,7,"%04x",p->device_id);
       			break;
     		}
   	}
@@ -122,7 +122,7 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 	fp = fopen (buffer, "r");
 
 	if(fp == NULL) {
-		snprintf(fullname, bsize, "%s:%s", vendor, device);
+		g_snprintf(fullname, bsize, "%s:%s", vendor, device);
 		sysinfo_print_error ("pci.ids file not found! You might want to adjust your pciids setting with /SYSINFO SET pciids (you can query its current value with /SYSINFO LIST).\n");
 		return;
 	}
@@ -151,8 +151,8 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
  		}
 	}
 	if (cardfound == 1)
-		snprintf(fullname, bsize, "%s %s", vendorname, devicename);
+		g_snprintf(fullname, bsize, "%s %s", vendorname, devicename);
 	else
-		snprintf(fullname, bsize, "%s:%s", vendor, device);	
+		g_snprintf(fullname, bsize, "%s:%s", vendor, device);	
 	fclose(fp);
 }
