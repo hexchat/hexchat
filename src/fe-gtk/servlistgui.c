@@ -1282,6 +1282,10 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 static gint
 servlist_delete_cb (GtkWidget *win, GdkEventAny *event, gpointer userdata)
 {
+#ifdef USE_LIBSECRET
+	if (sess_list == NULL)
+		hexchat_is_quitting = TRUE;
+#endif
 	servlist_savegui ();
 	serverlist_win = NULL;
 	selected_net = NULL;
@@ -1295,6 +1299,10 @@ servlist_delete_cb (GtkWidget *win, GdkEventAny *event, gpointer userdata)
 static void
 servlist_close_cb (GtkWidget *button, gpointer userdata)
 {
+#ifdef USE_LIBSECRET
+	if (sess_list == NULL)
+		hexchat_is_quitting = TRUE;
+#endif
 	servlist_savegui ();
 	gtk_widget_destroy (serverlist_win);
 	serverlist_win = NULL;

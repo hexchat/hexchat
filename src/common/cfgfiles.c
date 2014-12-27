@@ -527,6 +527,10 @@ const struct prefs vars[] =
 	{"irc_who_join", P_OFFINT (hex_irc_who_join), TYPE_BOOL},
 	{"irc_whois_front", P_OFFINT (hex_irc_whois_front), TYPE_BOOL},
 
+#ifdef USE_LIBSECRET
+	{"libsecret_store", P_OFFINT (hex_libsecret_store), TYPE_BOOL},
+#endif
+
 	{"net_auto_reconnect", P_OFFINT (hex_net_auto_reconnect), TYPE_BOOL},
 #ifndef WIN32	/* FIXME fix reconnect crashes and remove this ifdef! */
 	{"net_auto_reconnectonfail", P_OFFINT (hex_net_auto_reconnectonfail), TYPE_BOOL},
@@ -781,6 +785,9 @@ load_default_config(void)
 	prefs.hex_irc_logging = 1;
 	prefs.hex_irc_who_join = 1; /* Can kick with inordinate amount of channels, required for some of our features though, TODO: add cap like away check? */
 	prefs.hex_irc_whois_front = 1;
+#ifdef USE_LIBSECRET
+	prefs.hex_libsecret_store = 1;
+#endif
 	prefs.hex_net_auto_reconnect = 1;
 	prefs.hex_net_throttle = 1;
 	prefs.hex_stamp_log = 1;

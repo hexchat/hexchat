@@ -199,6 +199,9 @@ struct hexchatprefs
 	unsigned int hex_irc_who_join;
 	unsigned int hex_irc_whois_front;
 	unsigned int hex_irc_cap_server_time;
+#ifdef USE_LIBSECRET
+	unsigned int hex_libsecret_store;
+#endif
 	unsigned int hex_net_auto_reconnect;
 	unsigned int hex_net_auto_reconnectonfail;
 	unsigned int hex_net_proxy_auth;

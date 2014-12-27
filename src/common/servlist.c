@@ -36,6 +36,10 @@
 
 #include "servlist.h"
 
+#ifdef USE_LIBSECRET
+#include <libsecret/secret.h>
+#include "secret_schema.h"
+#endif
 
 struct defaultserver
 {
@@ -1080,7 +1084,17 @@ servlist_net_remove (ircnet *net)
 		free (net->user);
 	if (net->real)
 		free (net->real);
-	free_and_clear (net->pass);
+
+#ifdef USE_LIBSECRET
+	if (prefs.hex_libsecret_store) 
+	{
+		/* To be sure that no old password is stored in the secret store we delete the password if net->pass is empty */
+		secret_password_clear (HEXCHAT_SCHEMA, NULL, NULL, NULL,
+						 "network", net->name, NULL);
+	}
+#endif
+
+	free_and_clear(net->pass);
 	if (net->favchanlist)
 		g_slist_free_full (net->favchanlist, (GDestroyNotify) servlist_favchan_free);
 	if (net->commandlist)
@@ -1222,7 +1236,8 @@ servlist_load (void)
 				net->real = strdup (buf + 2);
 				break;
 			case 'P':
-				net->pass = strdup (buf + 2);
+				if (!net->pass)
+					net->pass = strdup (buf + 2);
 				break;
 			case 'L':
 				net->logintype = atoi (buf + 2);
@@ -1276,7 +1291,22 @@ servlist_load (void)
 			}
 		}
 		if (buf[0] == 'N')
+		{
 			net = servlist_net_add (buf + 2, /* comment */ NULL, FALSE);
+
+#ifdef USE_LIBSECRET
+			if (prefs.hex_libsecret_store) 
+			{
+				gchar *password = secret_password_lookup_sync (HEXCHAT_SCHEMA, NULL, NULL,
+								 "network", net->name, NULL);
+				if (password != NULL)
+				{
+					net->pass = strdup (password);
+					secret_password_free (password);
+				}
+			}
+#endif
+		}
 	}
 	fclose (fp);
 
@@ -1322,6 +1352,24 @@ servlist_check_encoding (char *charset)
 
 	return FALSE;
 }
+
+#ifdef USE_LIBSECRET
+static void
+on_password_stored (GObject *source, GAsyncResult *result, gpointer unused)
+{
+	GError *error = NULL;
+
+	secret_password_store_finish (result, &error);
+	/* If storing the password in keyring failed try to store it again
+	 * synchronously. If it fails again it will be stored in servlist config then.
+	 */
+	if (error != NULL) {
+		prefs.hex_libsecret_store = 0;
+		servlist_save ();
+		g_error_free (error);
+	}
+}
+#endif
 
 int
 servlist_save (void)
@@ -1376,7 +1424,59 @@ servlist_save (void)
 		if (net->real)
 			fprintf (fp, "R=%s\n", net->real);
 		if (net->pass)
+		{
+#ifdef USE_LIBSECRET
+			if (prefs.hex_libsecret_store)
+			{
+				gchar *dispName;
+
+				dispName = g_strdup_printf(_("IRC (%s)"), net->name);
+
+				if (hexchat_is_quitting)
+				{
+					GError *error = NULL;
+					secret_password_store_sync (HEXCHAT_SCHEMA, SECRET_COLLECTION_DEFAULT, dispName,
+									 net->pass, NULL, &error,
+									 "network", net->name, NULL);
+					/* Store password in servlist config if storing in keyring fails */
+					if (error != NULL)
+					{
+						fprintf (fp, "P=%s\n", net->pass);
+						g_error_free (error);
+					}
+				}
+				else
+				{
+					secret_password_store (HEXCHAT_SCHEMA, SECRET_COLLECTION_DEFAULT, dispName,
+									 net->pass, NULL, on_password_stored, NULL,
+									 "network", net->name, NULL);
+				}
+				g_free (dispName);
+			}
+			else
+			{
+				fprintf (fp, "P=%s\n", net->pass);
+			}
+#else
 			fprintf (fp, "P=%s\n", net->pass);
+#endif
+		}
+#ifdef USE_LIBSECRET
+		else if (prefs.hex_libsecret_store) 
+		{
+			/* To be sure that no old password is stored in the keyring we delete the password if net->pass is empty */
+			if (hexchat_is_quitting)
+			{
+				secret_password_clear_sync (HEXCHAT_SCHEMA, NULL, NULL,
+								 "network", net->name, NULL);
+			}
+			else
+			{
+				secret_password_clear (HEXCHAT_SCHEMA, NULL, NULL, NULL,
+								 "network", net->name, NULL);
+			}
+		}
+#endif
 		if (net->logintype)
 			fprintf (fp, "L=%d\n", net->logintype);
 		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&

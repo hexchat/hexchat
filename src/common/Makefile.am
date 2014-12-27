@@ -50,6 +50,10 @@ if USE_MSPROXY
 msproxy_c = msproxy.c
 endif
 
+if USE_LIBSECRET
+secret_c = secret_schema.c
+endif
+
 if USE_DBUS
 dbusdir = dbus
 libhexchatcommon_a_LIBADD =				\
@@ -65,8 +69,8 @@ noinst_PROGRAMS = make-te
 
 libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c hexchat.c \
 	history.c ignore.c inbound.c marshal.c modes.c $(msproxy_c) network.c notify.c \
-	outbound.c plugin.c plugin-timer.c proto-irc.c server.c servlist.c \
-	$(ssl_c) text.c tree.c url.c userlist.c util.c
+	outbound.c plugin.c plugin-timer.c proto-irc.c $(secret_c) server.c \
+	servlist.c $(ssl_c) text.c tree.c url.c userlist.c util.c
 libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
 
 textenums.h: textevents.h

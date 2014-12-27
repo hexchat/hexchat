@@ -44,6 +44,7 @@ AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([HAVE_GTK_MAC],[#undef HAVE_GTK_MAC])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
+AH_VERBATIM([USE_LIBSECRET],[#undef USE_LIBSECRET])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
@@ -145,6 +146,10 @@ AC_ARG_ENABLE(dbus,
 AC_ARG_ENABLE(libnotify,
 	[AS_HELP_STRING([--disable-libnotify],[disable libnotify support])],
         libnotify=$enableval, libnotify=yes)
+
+AC_ARG_ENABLE(libsecret,
+	[AS_HELP_STRING([--disable-libsecret],[disable libsecret support])],
+        libsecret=$enableval, libsecret=yes)
 
 AC_ARG_ENABLE(libcanberra,
 	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
@@ -554,6 +559,21 @@ if test "x$libnotify" = "xyes" ; then
 fi
 
 dnl *********************************************************************
+dnl ** LIBSECRET ********************************************************
+dnl *********************************************************************
+
+if test "x$libsecret" = "xyes"; then
+	PKG_CHECK_MODULES(LIBSECRET, [libsecret-1], [], [
+		libsecret=no
+	])
+	if test "$libsecret" != "no"; then
+		COMMON_LIBS="$COMMON_LIBS $LIBSECRET_LIBS"
+		COMMON_CFLAGS="$COMMON_CFLAGS $LIBSECRET_CFLAGS"
+		AC_DEFINE(USE_LIBSECRET, [], [Define if we use libsecret for password storage])
+	fi
+fi
+
+dnl *********************************************************************
 dnl ** LIBCANBERRA ******************************************************
 dnl *********************************************************************
 
@@ -602,6 +622,7 @@ dnl *********************************************************************
 
 AM_CONDITIONAL(USE_OPENSSL, test "x$openssl" = "xyes")
 AM_CONDITIONAL(USE_LIBNOTIFY, test "x$libnotify" = "xyes")
+AM_CONDITIONAL(USE_LIBSECRET, test "x$libsecret" = "xyes")
 AM_CONDITIONAL(USE_LIBCANBERRA, test "x$libcanberra" = "xyes")
 AM_CONDITIONAL(USE_MSPROXY, test "x$ntlm" = "xyes")
 AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
@@ -866,6 +887,7 @@ echo
 echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
+echo libsecret support ..... : $libsecret
 echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
 echo IPv6 support .......... : $ipv6
