@@ -188,7 +188,7 @@ userlist_selection_list (GtkWidget *widget, int *num_ret)
 	if (num_sel < 1)
 		return NULL;
 
-	nicks = malloc (sizeof (char *) * (num_sel + 1));
+	nicks = g_new (char *, num_sel + 1);
 
 	i = 0;
 	gtk_tree_model_get_iter_first (model, &iter);
@@ -348,9 +348,9 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	nick = newuser->nick;
 	if (!prefs.hex_gui_ulist_icons)
 	{
-		nick = malloc (strlen (newuser->nick) + 2);
+		nick = g_malloc (strlen (newuser->nick) + 2);
 		nick[0] = newuser->prefix[0];
-		if (!nick[0] || nick[0] == ' ')
+		if (nick[0] == '\0' || nick[0] == ' ')
 			strcpy (nick, newuser->nick);
 		else
 			strcpy (nick + 1, newuser->nick);
@@ -367,7 +367,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 
 	if (!prefs.hex_gui_ulist_icons)
 	{
-		free (nick);
+		g_free (nick);
 	}
 
 	/* is it me? */
@@ -525,7 +525,7 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 				i--;
 				g_free (nicks[i]);
 			}
-			free (nicks);
+			g_free (nicks);
 		}
 		return TRUE;
 	}
@@ -542,13 +542,13 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 				i--;
 				g_free (nicks[i]);
 			}
-			free (nicks);
+			g_free (nicks);
 			return TRUE;
 		}
 		if (nicks)
 		{
 			g_free (nicks[0]);
-			free (nicks);
+			g_free (nicks);
 		}
 
 		sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
@@ -567,7 +567,7 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 					i--;
 					g_free (nicks[i]);
 				}
-				free (nicks);
+				g_free (nicks);
 			}
 		} else
 		{

@@ -42,7 +42,7 @@ identd (char *username)
 	sok = socket (AF_INET, SOCK_STREAM, 0);
 	if (sok == INVALID_SOCKET)
 	{
-		free (username);
+		g_free (username);
 		return 0;
 	}
 
@@ -56,14 +56,14 @@ identd (char *username)
 	if (bind (sok, (struct sockaddr *) &addr, sizeof (addr)) == SOCKET_ERROR)
 	{
 		closesocket (sok);
-		free (username);
+		g_free (username);
 		return 0;
 	}
 
 	if (listen (sok, 1) == SOCKET_ERROR)
 	{
 		closesocket (sok);
-		free (username);
+		g_free (username);
 		return 0;
 	}
 
@@ -72,7 +72,7 @@ identd (char *username)
 	closesocket (sok);
 	if (read_sok == INVALID_SOCKET)
 	{
-		free (username);
+		g_free (username);
 		return 0;
 	}
 
@@ -99,7 +99,7 @@ identd (char *username)
 
 	sleep (1);
 	closesocket (read_sok);
-	free (username);
+	g_free (username);
 
 	return 0;
 }
@@ -118,7 +118,7 @@ identd_ipv6 (char *username)
 	sok = socket (AF_INET6, SOCK_STREAM, 0);
 	if (sok == INVALID_SOCKET)
 	{
-		free (username);
+		g_free (username);
 		return 0;
 	}
 
@@ -132,14 +132,14 @@ identd_ipv6 (char *username)
 	if (bind (sok, (struct sockaddr *) &addr, sizeof (addr)) == SOCKET_ERROR)
 	{
 		closesocket (sok);
-		free (username);
+		g_free (username);
 		return 0;
 	}
 
 	if (listen (sok, 1) == SOCKET_ERROR)
 	{
 		closesocket (sok);
-		free (username);
+		g_free (username);
 		return 0;
 	}
 
@@ -148,7 +148,7 @@ identd_ipv6 (char *username)
 	closesocket (sok);
 	if (read_sok == INVALID_SOCKET)
 	{
-		free (username);
+		g_free (username);
 		return 0;
 	}
 
@@ -171,7 +171,7 @@ identd_ipv6 (char *username)
 
 	sleep (1);
 	closesocket (read_sok);
-	free (username);
+	g_free (username);
 
 	return 0;
 }
@@ -188,7 +188,7 @@ identd_start (char *username)
 	{
 		identd_ipv6_is_running = TRUE;
 		CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) identd_ipv6,
-						 strdup (username), 0, &tidv6));
+						 g_strdup (username), 0, &tidv6));
 	}
 #endif
 
@@ -196,6 +196,6 @@ identd_start (char *username)
 	{
 		identd_is_running = TRUE;
 		CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) identd,
-						 strdup (username), 0, &tid));
+						 g_strdup (username), 0, &tid));
 	}
 }

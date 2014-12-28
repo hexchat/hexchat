@@ -53,7 +53,7 @@ static int ignored_total = 0;
 struct ignore *
 ignore_exists (char *mask)
 {
-	struct ignore *ig = 0;
+	struct ignore *ig = NULL;
 	GSList *list;
 
 	list = ignore_list;
@@ -79,7 +79,7 @@ ignore_exists (char *mask)
 int
 ignore_add (char *mask, int type, gboolean overwrite)
 {
-	struct ignore *ig = 0;
+	struct ignore *ig = NULL;
 	int change_only = FALSE;
 
 	/* first check if it's already ignored */
@@ -88,12 +88,9 @@ ignore_add (char *mask, int type, gboolean overwrite)
 		change_only = TRUE;
 
 	if (!change_only)
-		ig = malloc (sizeof (struct ignore));
+		ig = g_new (struct ignore, 1);
 
-	if (!ig)
-		return 0;
-
-	ig->mask = strdup (mask);
+	ig->mask = g_strdup (mask);
 
 	if (!overwrite && change_only)
 		ig->type |= type;
@@ -192,8 +189,8 @@ ignore_del (char *mask, struct ignore *ig)
 	if (ig)
 	{
 		ignore_list = g_slist_remove (ignore_list, ig);
-		free (ig->mask);
-		free (ig);
+		g_free (ig->mask);
+		g_free (ig);
 		fe_ignore_update (1);
 		return TRUE;
 	}
@@ -265,7 +262,7 @@ ignore_read_next_entry (char *my_cfg, struct ignore *ignore)
 		my_cfg = cfg_get_str (my_cfg, "mask", tbuf, sizeof (tbuf));
 		if (!my_cfg)
 			return NULL;
-		ignore->mask = strdup (tbuf);
+		ignore->mask = g_strdup (tbuf);
 	}
 	if (my_cfg)
 	{
@@ -281,7 +278,7 @@ ignore_load ()
 	struct ignore *ignore;
 	struct stat st;
 	char *cfg, *my_cfg;
-	int fh, i;
+	int fh;
 
 	fh = hexchat_open_file ("ignore.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
@@ -289,22 +286,18 @@ ignore_load ()
 		fstat (fh, &st);
 		if (st.st_size)
 		{
-			cfg = malloc (st.st_size + 1);
-			cfg[0] = '\0';
-			i = read (fh, cfg, st.st_size);
-			if (i >= 0)
-				cfg[i] = '\0';
+			cfg = g_malloc0 (st.st_size + 1);
+			read (fh, cfg, st.st_size);
 			my_cfg = cfg;
 			while (my_cfg)
 			{
-				ignore = malloc (sizeof (struct ignore));
-				memset (ignore, 0, sizeof (struct ignore));
+				ignore = g_new0 (struct ignore, 1);
 				if ((my_cfg = ignore_read_next_entry (my_cfg, ignore)))
 					ignore_list = g_slist_prepend (ignore_list, ignore);
 				else
-					free (ignore);
+					g_free (ignore);
 			}
-			free (cfg);
+			g_free (cfg);
 		}
 		close (fh);
 	}

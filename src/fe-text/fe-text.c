@@ -78,7 +78,6 @@ fe_new_window (struct session *sess, int focus)
 {
 	char buf[512];
 
-	sess->gui = malloc (4);
 	current_sess = sess;
 
 	if (!sess->server->front_session)
@@ -140,7 +139,7 @@ timecat (char *buf, time_t stamp)
 
 /* Windows doesn't handle ANSI codes in cmd.exe, need to not display them */
 #ifndef WIN32
-/*                       0  1  2  3  4  5  6  7   8   9   10 11  12  13  14 15 */
+/*                               0  1  2  3  4  5  6  7   8   9  10  11  12  13  14 15 */
 static const short colconv[] = { 0, 7, 4, 2, 1, 3, 5, 11, 13, 12, 6, 16, 14, 15, 10, 7 };
 
 void
@@ -151,7 +150,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 	char num[8];
 	int reverse = 0, under = 0, bold = 0,
 		comma, k, i = 0, j = 0, len = strlen (text);
-	unsigned char *newtext = malloc (len + 1024);
+	unsigned char *newtext = g_malloc (len + 1024);
 
 	if (prefs.hex_stamp_text)
 	{
@@ -308,7 +307,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 
 	newtext[j] = 0;
 	write (STDOUT_FILENO, newtext, j);
-	free (newtext);
+	g_free (newtext);
 }
 #else
 /* The win32 version for cmd.exe */
@@ -319,7 +318,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 	int dotime = FALSE;
 	int comma, k, i = 0, j = 0, len = strlen (text);
 
-	unsigned char *newtext = malloc (len + 1024);
+	unsigned char *newtext = g_malloc (len + 1024);
 
 	if (prefs.hex_stamp_text)
 	{
@@ -403,7 +402,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 
 	newtext[j] = 0;
 	write (STDOUT_FILENO, newtext, j);
-	free (newtext);
+	g_free (newtext);
 }
 #endif
 
@@ -508,14 +507,14 @@ fe_args (int argc, char *argv[])
 	{
 #ifdef WIN32
 		/* see the chdir() below */
-		char *sl, *exe = strdup (argv[0]);
+		char *sl, *exe = g_strdup (argv[0]);
 		sl = strrchr (exe, '\\');
 		if (sl)
 		{
 			*sl = 0;
 			printf ("%s\\plugins\n", exe);
 		}
-		free (exe);
+		g_free (exe);
 #else
 		printf ("%s\n", HEXCHATLIBDIR);
 #endif
@@ -582,7 +581,6 @@ fe_exit (void)
 void
 fe_new_server (struct server *serv)
 {
-	serv->gui = malloc (4);
 }
 
 void

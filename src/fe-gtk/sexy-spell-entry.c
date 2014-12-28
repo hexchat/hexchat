@@ -292,7 +292,7 @@ insert_hiddenchar (SexySpellEntry *entry, guint start, guint end)
 	 * is 'hidden' */
 #if 0
 	PangoAttribute *hattr;
-	PangoRectangle *rect = g_malloc (sizeof (PangoRectangle));
+	PangoRectangle *rect = g_new (PangoRectangle, 1);
 
 	rect->x = 0;
 	rect->y = 0;

@@ -565,7 +565,7 @@ key_dialog_save (GtkWidget *wid, gpointer userdata)
 	{
 		do
 		{
-			kb = (struct key_binding *) g_malloc0 (sizeof (struct key_binding));
+			kb = g_new0 (struct key_binding, 1);
 
 			gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, ACCEL_COLUMN, &accel,
 															ACTION_COLUMN, &actiontext,
@@ -945,7 +945,7 @@ key_load_kbs (void)
 	fd = hexchat_open_file ("keybindings.conf", O_RDONLY, 0, 0);
 	if (fd < 0)
 	{
-		ibuf = strdup (default_kb_cfg);
+		ibuf = g_strdup (default_kb_cfg);
 		size = strlen (default_kb_cfg);
 	}
 	else
@@ -956,7 +956,7 @@ key_load_kbs (void)
 			return 1;
 		}
 
-		ibuf = malloc (st.st_size);
+		ibuf = g_malloc(st.st_size);
 		read (fd, ibuf, st.st_size);
 		size = st.st_size;
 		close (fd);
@@ -978,7 +978,7 @@ key_load_kbs (void)
 		switch (state)
 		{
 		case KBSTATE_MOD:
-			kb = (struct key_binding *) g_malloc0 (sizeof (struct key_binding));
+			kb = g_new0 (struct key_binding, 1);
 
 			/* New format */
 			if (strncmp (buf, "ACCEL=", 6) == 0)
@@ -1009,7 +1009,7 @@ key_load_kbs (void)
 			keyval = gdk_keyval_from_name (buf);
 			if (keyval == 0)
 			{
-				free (ibuf);
+				g_free (ibuf);
 				return 2;
 			}
 
@@ -1025,7 +1025,7 @@ key_load_kbs (void)
 
 			if (kb->action == KEY_MAX_ACTIONS + 1)
 			{
-				free (ibuf);
+				g_free (ibuf);
 				return 3;
 			}
 
@@ -1042,7 +1042,7 @@ key_load_kbs (void)
 
 			if (buf[0] != 'D')
 			{
-				free (ibuf);
+				g_free (ibuf);
 				return 4;
 			}
 
@@ -1068,12 +1068,10 @@ key_load_kbs (void)
 				len -= 3;
 				if (state == KBSTATE_DT1)
 				{
-					kb->data1 = g_malloc (len);
-					memcpy (kb->data1, &buf[3], len);
+					kb->data1 = g_strndup (&buf[3], len);
 				} else
 				{
-					kb->data2 = g_malloc (len);
-					memcpy (kb->data2, &buf[3], len);
+					kb->data2 = g_strndup (&buf[3], len);
 				}
 			} else if (buf[2] == '!')
 			{
@@ -1096,12 +1094,12 @@ key_load_kbs (void)
 			continue;
 		}
 	}
-	free (ibuf);
+	g_free (ibuf);
 	return 0;
 
 corrupt_file:
-	free (ibuf);
-	free (kb);
+	g_free (ibuf);
+	g_free (kb);
 	return 5;
 }
 

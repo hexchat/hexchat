@@ -45,7 +45,6 @@ typedef struct ircnet
 	char *real;
 	char *pass;
 	int logintype;
-	char *comment;
 	char *encoding;
 	GSList *servlist;
 	GSList *commandlist;

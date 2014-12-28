@@ -208,7 +208,7 @@ chanopt_find (char *network, char *channel, gboolean add_new)
 		return NULL;
 
 	/* allocate a new one */
-	co = g_malloc0 (sizeof (chanopt_in_memory));
+	co = g_new0 (chanopt_in_memory, 1);
 	co->channel = g_strdup (channel);
 	co->network = g_strdup (network);
 

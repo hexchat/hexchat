@@ -53,7 +53,7 @@ static gboolean match_path (const char *word, int *start, int *end);
 static int
 url_free (char *url, void *data)
 {
-	free (url);
+	g_free (url);
 	return TRUE;
 }
 
@@ -124,13 +124,7 @@ url_add (char *urltext, int len)
 		return;
 	}
 
-	data = malloc (len + 1);
-	if (!data)
-	{
-		return;
-	}
-	memcpy (data, urltext, len);
-	data[len] = 0;
+	data = g_strndup (urltext, len);
 
 	if (data[len - 1] == '.')	/* chop trailing dot */
 	{
@@ -151,7 +145,7 @@ url_add (char *urltext, int len)
 	/* the URL is saved already, only continue if we need the URL grabber too */
 	if (!prefs.hex_url_grabber)
 	{
-		free (data);
+		g_free (data);
 		return;
 	}
 
@@ -163,7 +157,7 @@ url_add (char *urltext, int len)
 
 	if (url_find (data))
 	{
-		free (data);
+		g_free (data);
 		return;
 	}
 
@@ -180,7 +174,7 @@ url_add (char *urltext, int len)
 
 			pos = tree_remove_at_pos (url_tree, 0);
 			g_tree_remove (url_btree, pos);
-			free (pos);
+			g_free (pos);
 		}
 	}
 

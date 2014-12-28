@@ -62,7 +62,7 @@ static void
 gtkutil_file_req_destroy (GtkWidget * wid, struct file_req *freq)
 {
 	freq->callback (freq->userdata, NULL);
-	free (freq);
+	g_free (freq);
 }
 
 static void
@@ -255,7 +255,7 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 
 	gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog), get_xdir (), NULL);
 
-	freq = malloc (sizeof (struct file_req));
+	freq = g_new (struct file_req, 1);
 	freq->dialog = dialog;
 	freq->flags = flags;
 	freq->callback = callback;

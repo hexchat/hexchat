@@ -130,25 +130,25 @@ dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 		dcc_send (mdc->sess, mdc->nick, file, mdc->maxcps, mdc->passive);
 	else
 	{
-		free (mdc->nick);
-		free (mdc);
+		g_free (mdc->nick);
+		g_free (mdc);
 	}
 }
 
 void
 fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
 {
-	char tbuf[128];
-	struct my_dcc_send *mdc;
-	
-	mdc = malloc (sizeof (*mdc));
+	char* tbuf = g_strdup_printf (_("Send file to %s"), nick);
+
+	struct my_dcc_send *mdc = g_new (struct my_dcc_send, 1);
 	mdc->sess = sess;
-	mdc->nick = strdup (nick);
+	mdc->nick = g_strdup (nick);
 	mdc->maxcps = maxcps;
 	mdc->passive = passive;
 
-	snprintf (tbuf, sizeof tbuf, _("Send file to %s"), nick);
 	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, prefs.hex_dcc_dir, NULL, FRF_MULTIPLE|FRF_FILTERISINITIAL);
+
+	g_free (tbuf);
 }
 
 static void

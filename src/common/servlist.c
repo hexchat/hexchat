@@ -566,9 +566,7 @@ servlist_favchan_copy (favchannel *fav)
 {
 	favchannel *newfav;
 
-	newfav = malloc (sizeof (favchannel));
-	memset (newfav, 0, sizeof (favchannel));
-
+	newfav = g_new (favchannel, 1);
 	newfav->name = g_strdup (fav->name);
 	newfav->key = g_strdup (fav->key);		/* g_strdup() can handle NULLs so no need to check it */
 
@@ -924,9 +922,8 @@ servlist_server_add (ircnet *net, char *name)
 {
 	ircserver *serv;
 
-	serv = malloc (sizeof (ircserver));
-	memset (serv, 0, sizeof (ircserver));
-	serv->hostname = strdup (name);
+	serv = g_new (ircserver, 1);
+	serv->hostname = g_strdup (name);
 
 	net->servlist = g_slist_append (net->servlist, serv);
 
@@ -938,9 +935,8 @@ servlist_command_add (ircnet *net, char *cmd)
 {
 	commandentry *entry;
 
-	entry = malloc (sizeof (commandentry));
-	memset (entry, 0, sizeof (commandentry));
-	entry->command = strdup (cmd);
+	entry = g_new (commandentry, 1);
+	entry->command = g_strdup (cmd);
 
 	net->commandlist = g_slist_append (net->commandlist, entry);
 
@@ -952,9 +948,7 @@ servlist_favchan_listadd (GSList *chanlist, char *channel, char *key)
 {
 	favchannel *chan;
 
-	chan = malloc (sizeof (favchannel));
-	memset (chan, 0, sizeof (favchannel));
-
+	chan = g_new (favchannel, 1);
 	chan->name = g_strdup (channel);
 	chan->key = g_strdup (key);
 	chanlist = g_slist_append (chanlist, chan);
@@ -990,8 +984,8 @@ servlist_favchan_add (ircnet *net, char *channel)
 void
 servlist_server_remove (ircnet *net, ircserver *serv)
 {
-	free (serv->hostname);
-	free (serv);
+	g_free (serv->hostname);
+	g_free (serv);
 	net->servlist = g_slist_remove (net->servlist, serv);
 }
 
@@ -1044,7 +1038,7 @@ free_and_clear (char *str)
 		char *orig = str;
 		while (*str)
 			*str++ = 0;
-		free (orig);
+		g_free (orig);
 	}
 }
 
@@ -1072,25 +1066,18 @@ servlist_net_remove (ircnet *net)
 	servlist_server_remove_all (net);
 	network_list = g_slist_remove (network_list, net);
 
-	if (net->nick)
-		free (net->nick);
-	if (net->nick2)
-		free (net->nick2);
-	if (net->user)
-		free (net->user);
-	if (net->real)
-		free (net->real);
+	g_free (net->nick);
+	g_free (net->nick2);
+	g_free (net->user);
+	g_free (net->real);
 	free_and_clear (net->pass);
 	if (net->favchanlist)
 		g_slist_free_full (net->favchanlist, (GDestroyNotify) servlist_favchan_free);
 	if (net->commandlist)
 		g_slist_free_full (net->commandlist, (GDestroyNotify) servlist_command_free);
-	if (net->comment)
-		free (net->comment);
-	if (net->encoding)
-		free (net->encoding);
-	free (net->name);
-	free (net);
+	g_free (net->encoding);
+	g_free (net->name);
+	g_free (net);
 
 	/* for safety */
 	list = serv_list;
@@ -1110,10 +1097,8 @@ servlist_net_add (char *name, char *comment, int prepend)
 {
 	ircnet *net;
 
-	net = malloc (sizeof (ircnet));
-	memset (net, 0, sizeof (ircnet));
-	net->name = strdup (name);
-/*	net->comment = strdup (comment);*/
+	net = g_new0 (ircnet, 1);
+	net->name = g_strdup (name);
 	net->flags = FLAG_CYCLE | FLAG_USE_GLOBAL | FLAG_USE_PROXY;
 
 	if (prepend)
@@ -1210,25 +1195,25 @@ servlist_load (void)
 			switch (buf[0])
 			{
 			case 'I':
-				net->nick = strdup (buf + 2);
+				net->nick = g_strdup (buf + 2);
 				break;
 			case 'i':
-				net->nick2 = strdup (buf + 2);
+				net->nick2 = g_strdup (buf + 2);
 				break;
 			case 'U':
-				net->user = strdup (buf + 2);
+				net->user = g_strdup (buf + 2);
 				break;
 			case 'R':
-				net->real = strdup (buf + 2);
+				net->real = g_strdup (buf + 2);
 				break;
 			case 'P':
-				net->pass = strdup (buf + 2);
+				net->pass = g_strdup (buf + 2);
 				break;
 			case 'L':
 				net->logintype = atoi (buf + 2);
 				break;
 			case 'E':
-				net->encoding = strdup (buf + 2);
+				net->encoding = g_strdup (buf + 2);
 				break;
 			case 'F':
 				net->flags = atoi (buf + 2);
@@ -1258,7 +1243,7 @@ servlist_load (void)
 			case 'A':
 				if (!net->pass)
 				{
-					net->pass = strdup (buf + 2);
+					net->pass = g_strdup (buf + 2);
 					if (!net->logintype)
 					{
 						net->logintype = LOGIN_SASL;
@@ -1267,7 +1252,7 @@ servlist_load (void)
 			case 'B':
 				if (!net->pass)
 				{
-					net->pass = strdup (buf + 2);
+					net->pass = g_strdup (buf + 2);
 					if (!net->logintype)
 					{
 						net->logintype = LOGIN_NICKSERV;

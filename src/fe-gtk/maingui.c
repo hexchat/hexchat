@@ -312,7 +312,7 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 	if (cmd[0] == 0)
 		return;
 
-	cmd = strdup (cmd);
+	cmd = g_strdup (cmd);
 
 	/* avoid recursive loop */
 	ignore = TRUE;
@@ -340,7 +340,7 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 	if (sess)
 		handle_multiline (sess, cmd, TRUE, FALSE);
 
-	free (cmd);
+	g_free (cmd);
 }
 
 static gboolean
@@ -609,14 +609,14 @@ mg_unpopulate (session *sess)
 	gui = sess->gui;
 	res = sess->res;
 
-	res->input_text = strdup (SPELL_ENTRY_GET_TEXT (gui->input_box));
-	res->topic_text = strdup (gtk_entry_get_text (GTK_ENTRY (gui->topic_entry)));
-	res->limit_text = strdup (gtk_entry_get_text (GTK_ENTRY (gui->limit_entry)));
-	res->key_text = strdup (gtk_entry_get_text (GTK_ENTRY (gui->key_entry)));
+	res->input_text = g_strdup (SPELL_ENTRY_GET_TEXT (gui->input_box));
+	res->topic_text = g_strdup (gtk_entry_get_text (GTK_ENTRY (gui->topic_entry)));
+	res->limit_text = g_strdup (gtk_entry_get_text (GTK_ENTRY (gui->limit_entry)));
+	res->key_text = g_strdup (gtk_entry_get_text (GTK_ENTRY (gui->key_entry)));
 	if (gui->laginfo)
-		res->lag_text = strdup (gtk_label_get_text (GTK_LABEL (gui->laginfo)));
+		res->lag_text = g_strdup (gtk_label_get_text (GTK_LABEL (gui->laginfo)));
 	if (gui->throttleinfo)
-		res->queue_text = strdup (gtk_label_get_text (GTK_LABEL (gui->throttleinfo)));
+		res->queue_text = g_strdup (gtk_label_get_text (GTK_LABEL (gui->throttleinfo)));
 
 	for (i = 0; i < NUM_FLAG_WIDS - 1; i++)
 		res->flag_wid_state[i] = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (gui->flag_wid[i]));
@@ -645,7 +645,7 @@ mg_restore_label (GtkWidget *label, char **text)
 	if (*text)
 	{
 		gtk_label_set_text (GTK_LABEL (label), *text);
-		free (*text);
+		g_free (*text);
 		*text = NULL;
 	} else
 	{
@@ -659,7 +659,7 @@ mg_restore_entry (GtkWidget *entry, char **text)
 	if (*text)
 	{
 		gtk_entry_set_text (GTK_ENTRY (entry), *text);
-		free (*text);
+		g_free (*text);
 		*text = NULL;
 	} else
 	{
@@ -674,7 +674,7 @@ mg_restore_speller (GtkWidget *entry, char **text)
 	if (*text)
 	{
 		SPELL_ENTRY_SET_TEXT (entry, *text);
-		free (*text);
+		g_free (*text);
 		*text = NULL;
 	} else
 	{
@@ -1331,8 +1331,7 @@ mg_close_gen (chan *ch, GtkWidget *box)
 {
 	char *title = g_object_get_data (G_OBJECT (box), "title");
 
-	if (title)
-		free (title);
+	g_free (title);
 	if (!ch)
 		ch = g_object_get_data (G_OBJECT (box), "ch");
 	if (ch)
@@ -1640,7 +1639,7 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 {
 	char *p, *data, *next, *fname;
 
-	p = data = strdup (uri);
+	p = data = g_strdup (uri);
 	while (*p)
 	{
 		next = strchr (p, '\r');
@@ -1667,7 +1666,7 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 		if (*p == '\n')
 			p++;
 	}
-	free (data);
+	g_free (data);
 
 }
 
@@ -1837,7 +1836,7 @@ mg_changui_destroy (session *sess)
 		/* it fixes: Gdk-CRITICAL **: gdk_colormap_get_screen: */
 		/*           assertion `GDK_IS_COLORMAP (cmap)' failed */
 		ret = sess->gui->window;
-		free (sess->gui);
+		g_free (sess->gui);
 		sess->gui = NULL;
 	}
 	return ret;
@@ -3332,7 +3331,7 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 	ch = chanview_add (mg_gui->chanview, name, NULL, box, TRUE, TAG_UTIL, pix_tree_util);
 	chan_set_color (ch, plain_list);
 	/* FIXME: memory leak */
-	g_object_set_data (G_OBJECT (box), "title", strdup (title));
+	g_object_set_data (G_OBJECT (box), "title", g_strdup (title));
 	g_object_set_data (G_OBJECT (box), "ch", ch);
 
 	if (prefs.hex_gui_tab_newtofront)
@@ -3395,7 +3394,7 @@ fe_clear_channel (session *sess)
 	{
 		if (sess->res->topic_text)
 		{
-			free (sess->res->topic_text);
+			g_free (sess->res->topic_text);
 			sess->res->topic_text = NULL;
 		}
 	}
@@ -3508,24 +3507,24 @@ mg_changui_new (session *sess, restore_gui *res, int tab, int focus)
 	session_gui *gui;
 	struct User *user = NULL;
 
-	if (!res)
+	if (res == NULL)
 	{
-		res = malloc (sizeof (restore_gui));
-		memset (res, 0, sizeof (restore_gui));
+		res = g_new0 (restore_gui, 1);
 	}
 
 	sess->res = res;
 
-	if (!sess->server->front_session)
+	if (sess->server->front_session == NULL)
+	{
 		sess->server->front_session = sess;
+	}
 
 	if (!is_channel (sess->server, sess->channel))
 		user = userlist_find_global (sess->server, sess->channel);
 
 	if (!tab)
 	{
-		gui = malloc (sizeof (session_gui));
-		memset (gui, 0, sizeof (session_gui));
+		gui = g_new0 (session_gui, 1);
 		gui->is_tab = FALSE;
 		sess->gui = gui;
 		mg_create_topwindow (sess);
@@ -3631,8 +3630,8 @@ mg_set_title (GtkWidget *vbox, char *title) /* for non-irc tab/window only */
 	old = g_object_get_data (G_OBJECT (vbox), "title");
 	if (old)
 	{
-		g_object_set_data (G_OBJECT (vbox), "title", strdup (title));
-		free (old);
+		g_object_set_data (G_OBJECT (vbox), "title", g_strdup (title));
+		g_free (old);
 	} else
 	{
 		gtk_window_set_title (GTK_WINDOW (vbox), title);
@@ -3650,7 +3649,7 @@ fe_server_callback (server *serv)
 	if (serv->gui->rawlog_window)
 		mg_close_gen (NULL, serv->gui->rawlog_window);
 
-	free (serv->gui);
+	g_free (serv->gui);
 }
 
 /* called when a session is being killed */
@@ -3661,34 +3660,21 @@ fe_session_callback (session *sess)
 	if (sess->res->banlist && sess->res->banlist->window)
 		mg_close_gen (NULL, sess->res->banlist->window);
 
-	if (sess->res->input_text)
-		free (sess->res->input_text);
-
-	if (sess->res->topic_text)
-		free (sess->res->topic_text);
-
-	if (sess->res->limit_text)
-		free (sess->res->limit_text);
-
-	if (sess->res->key_text)
-		free (sess->res->key_text);
-
-	if (sess->res->queue_text)
-		free (sess->res->queue_text);
-	if (sess->res->queue_tip)
-		free (sess->res->queue_tip);
-
-	if (sess->res->lag_text)
-		free (sess->res->lag_text);
-	if (sess->res->lag_tip)
-		free (sess->res->lag_tip);
+	g_free (sess->res->input_text);
+	g_free (sess->res->topic_text);
+	g_free (sess->res->limit_text);
+	g_free (sess->res->key_text);
+	g_free (sess->res->queue_text);
+	g_free (sess->res->queue_tip);
+	g_free (sess->res->lag_text);
+	g_free (sess->res->lag_tip);
 
 	if (sess->gui->bartag)
 		fe_timeout_remove (sess->gui->bartag);
 
 	if (sess->gui != &static_mg_gui)
-		free (sess->gui);
-	free (sess->res);
+		g_free (sess->gui);
+	g_free (sess->res);
 }
 
 /* ===== DRAG AND DROP STUFF ===== */

@@ -619,8 +619,6 @@ get_sys_str (int with_cpu)
 	if (buf)
 		return buf;
 
-	buf = malloc (128);
-
 	uname (&un);
 
 #if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
@@ -629,14 +627,16 @@ get_sys_str (int with_cpu)
 	{
 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
-		snprintf (buf, 128,
-					(cpus == 1) ? "%s %s [%s/%.2f%s]" : "%s %s [%s/%.2f%s/SMP]",
-					un.sysname, un.release, un.machine,
-					cpuspeed, cpuspeedstr);
+		buf = g_strdup_printf (
+			(cpus == 1) ? "%s %s [%s/%.2f%s]" : "%s %s [%s/%.2f%s/SMP]",
+			un.sysname, un.release, un.machine,
+			cpuspeed, cpuspeedstr);
 	}
 	else
+		buf = g_strdup_printf ("%s %s", un.sysname, un.release);
+#else
+	buf = g_strdup_printf ("%s %s", un.sysname, un.release);
 #endif
-		snprintf (buf, 128, "%s %s", un.sysname, un.release);
 
 	return buf;
 }
@@ -1503,7 +1503,7 @@ parse_dh (char *str, DH **dh_out, unsigned char **secret_out, int *keysize_out)
 {
 	DH *dh;
 	guchar *data, *decoded_data;
-	guchar *secret;
+	guchar *secret = NULL;
 	gsize data_len;
 	guint size;
 	guint16 size16;
@@ -1555,7 +1555,7 @@ parse_dh (char *str, DH **dh_out, unsigned char **secret_out, int *keysize_out)
 	if (!(DH_generate_key (dh)))
 		goto fail;
 
-	secret = (unsigned char*)malloc (DH_size(dh));
+	secret = g_malloc (DH_size (dh));
 	key_size = DH_compute_key (secret, pubkey, dh);
 	if (key_size == -1)
 		goto fail;
@@ -1568,7 +1568,9 @@ parse_dh (char *str, DH **dh_out, unsigned char **secret_out, int *keysize_out)
 	return 1;
 
 fail:
+	g_free (secret);
 	g_free (decoded_data);
+
 	return 0;
 }
 
@@ -1576,7 +1578,7 @@ char *
 encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 {
 	DH *dh;
-	char *response, *ret;
+	char *response, *ret = NULL;
 	unsigned char *secret;
 	unsigned char *encrypted_pass;
 	char *plain_pass;
@@ -1591,10 +1593,8 @@ encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 		return NULL;
 	BF_set_key (&key, key_size, secret);
 
-	encrypted_pass = (guchar*)malloc (pass_len);
-	memset (encrypted_pass, 0, pass_len);
-	plain_pass = (char*)malloc (pass_len);
-	memset (plain_pass, 0, pass_len);
+	encrypted_pass = g_malloc0 (pass_len);
+	plain_pass = g_malloc0 (pass_len);
 	memcpy (plain_pass, pass, strlen(pass));
 	out_ptr = (char*)encrypted_pass;
 	in_ptr = (char*)plain_pass;
@@ -1604,7 +1604,7 @@ encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 
 	/* Create response */
 	length = 2 + BN_num_bytes (dh->pub_key) + pass_len + user_len + 1;
-	response = (char*)malloc (length);
+	response = g_malloc0 (length);
 	out_ptr = response;
 
 	/* our key */
@@ -1623,11 +1623,12 @@ encode_sasl_pass_blowfish (char *user, char *pass, char *data)
 	
 	ret = g_base64_encode ((const guchar*)response, length);
 
-	DH_free (dh);
-	free (plain_pass);
-	free (encrypted_pass);
-	free (secret);
-	free (response);
+	g_free (response);
+
+	DH_free(dh);
+	g_free (plain_pass);
+	g_free (encrypted_pass);
+	g_free (secret);
 
 	return ret;
 }
@@ -1653,10 +1654,8 @@ encode_sasl_pass_aes (char *user, char *pass, char *data)
 	if (!parse_dh (data, &dh, &secret, &key_size))
 		return NULL;
 
-	encrypted_userpass = (guchar*)malloc (userpass_len);
-	memset (encrypted_userpass, 0, userpass_len);
-	plain_userpass = (guchar*)malloc (userpass_len);
-	memset (plain_userpass, 0, userpass_len);
+	encrypted_userpass = g_malloc0 (userpass_len);
+	plain_userpass = g_malloc0 (userpass_len);
 
 	/* create message */
 	/* format of: <username>\0<password>\0<padding> */
@@ -1687,7 +1686,7 @@ encode_sasl_pass_aes (char *user, char *pass, char *data)
 	/* Create response */
 	/* format of:  <size pubkey><pubkey><iv (always 16 bytes)><ciphertext> */
 	length = 2 + key_size + sizeof(iv) + userpass_len;
-	response = (char*)malloc (length);
+	response = g_malloc (length);
 	out_ptr = response;
 
 	/* our key */
@@ -1708,11 +1707,10 @@ encode_sasl_pass_aes (char *user, char *pass, char *data)
 
 end:
 	DH_free (dh);
-	free (plain_userpass);
-	free (encrypted_userpass);
-	free (secret);
-	if (response)
-		free (response);
+	g_free (plain_userpass);
+	g_free (encrypted_userpass);
+	g_free (secret);
+	g_free (response);
 
 	return ret;
 }

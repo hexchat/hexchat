@@ -81,12 +81,12 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent, ti
 				timet = time (0);
 
 			stamp_size = get_stamp_str (prefs.hex_stamp_text_format, timet, &stamp);
-			new_text = malloc (len + stamp_size + 1);
+			new_text = g_malloc (len + stamp_size + 1);
 			memcpy (new_text, stamp, stamp_size);
 			g_free (stamp);
 			memcpy (new_text + stamp_size, text, len);
 			gtk_xtext_append (xtbuf, new_text, len + stamp_size, timet);
-			free (new_text);
+			g_free (new_text);
 		} else
 			gtk_xtext_append (xtbuf, text, len, timet);
 		return;
@@ -173,13 +173,12 @@ pevent_edited (GtkCellRendererText *render, gchar *pathstr, gchar *new_text, gpo
 	}
 	if (m > (te[sig].num_args & 0x7f))
 	{
-		free (out);
-		out = malloc (4096);
-		snprintf (out, 4096,
-					_("This signal is only passed %d args, $%d is invalid"),
-					te[sig].num_args & 0x7f, m);
+		g_free (out);
+		out = g_strdup_printf (
+			_("This signal is only passed %d args, $%d is invalid"),
+			te[sig].num_args & 0x7f, m);
 		fe_message (out, FE_MSG_WARN);
-		free (out);
+		g_free (out);
 		return;
 	}
 
@@ -188,23 +187,20 @@ pevent_edited (GtkCellRendererText *render, gchar *pathstr, gchar *new_text, gpo
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter, TEXT_COLUMN, new_text, -1);
 	gtk_tree_path_free (path);
 
-	if (pntevts_text[sig])
-		free (pntevts_text[sig]);
-	if (pntevts[sig])
-		free (pntevts[sig]);
+	g_free (pntevts_text[sig]);
+	g_free (pntevts[sig]);
 
-	pntevts_text[sig] = malloc (len + 1);
-	memcpy (pntevts_text[sig], text, len + 1);
+	pntevts_text[sig] = g_strdup (text);
 	pntevts[sig] = out;
 
-	out = malloc (len + 2);
+	out = g_malloc (len + 2);
 	memcpy (out, text, len + 1);
 	out[len] = '\n';
 	out[len + 1] = 0;
 	check_special_chars (out, TRUE);
 
 	PrintTextRaw (xtext->buffer, out, 0, 0);
-	free (out);
+	g_free (out);
 
 	/* Scroll to bottom */
 	gtk_adjustment_set_value (xtext->adj, gtk_adjustment_get_upper (xtext->adj));
@@ -328,14 +324,14 @@ pevent_test_cb (GtkWidget * wid, GtkWidget * twid)
 		text = _(pntevts_text[n]);
 		len = strlen (text);
 
-		out = malloc (len + 2);
+		out = g_malloc (len + 2);
 		memcpy (out, text, len + 1);
 		out[len] = '\n';
 		out[len + 1] = 0;
 		check_special_chars (out, TRUE);
 
 		PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0, 0);
-		free (out);
+		g_free (out);
 	}
 }
 

@@ -331,7 +331,7 @@ record_chan_mode (session *sess, char sign, char mode, char *arg)
 				current = g_string_erase(current, argument_offset+1, argument_length-1);
 				current = g_string_insert(current, argument_offset+1, arg);
 
-				free(sess->current_modes);
+				g_free(sess->current_modes);
 				sess->current_modes = g_string_free(current, FALSE);
 			}
 		}
@@ -348,7 +348,7 @@ record_chan_mode (session *sess, char sign, char mode, char *arg)
 				current = g_string_append(current, arg);
 			}
 
-			free(sess->current_modes);
+			g_free(sess->current_modes);
 			sess->current_modes = g_string_free(current, FALSE);
 		}
 	}
@@ -361,7 +361,7 @@ record_chan_mode (session *sess, char sign, char mode, char *arg)
 		/* remove the mode character */
 		current = g_string_erase(current, mode_pos, 1);
 
-		free(sess->current_modes);
+		g_free(sess->current_modes);
 		sess->current_modes = g_string_free(current, FALSE);
 	}
 }
@@ -374,12 +374,13 @@ mode_cat (char *str, char *addition)
 	if (str)
 	{
 		len = strlen (str) + strlen (addition) + 2;
-		str = realloc (str, len);
+		str = g_realloc (str, len);
 		strcat (str, " ");
 		strcat (str, addition);
-	} else
+	}
+	else
 	{
-		str = strdup (addition);
+		str = g_strdup (addition);
 	}
 
 	return str;
@@ -560,12 +561,12 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 	{
 		if (*arg)
 		{
-			char *buf = malloc (strlen (chan) + strlen (arg) + 2);
-			sprintf (buf, "%s %s", chan, arg);
+			char *buf = g_strdup_printf ("%s %s", chan, arg);
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODEGEN, sess, nick, outbuf,
 										  outbuf + 2, buf, 0, tags_data->timestamp);
-			free (buf);
-		} else
+			g_free (buf);
+		}
+		else
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODEGEN, sess, nick, outbuf,
 										  outbuf + 2, chan, 0, tags_data->timestamp);
 	}
@@ -635,7 +636,7 @@ mode_print_grouped (session *sess, char *nick, mode_run *mr,
 	{
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANOP, sess, nick, mr->op, NULL, NULL, 0,
 									  tags_data->timestamp);
-		free (mr->op);
+		g_free(mr->op);
 		mr->op = NULL;
 	}
 
@@ -643,7 +644,7 @@ mode_print_grouped (session *sess, char *nick, mode_run *mr,
 	{
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANDEOP, sess, nick, mr->deop, NULL, NULL,
 									  0, tags_data->timestamp);
-		free (mr->deop);
+		g_free(mr->deop);
 		mr->deop = NULL;
 	}
 
@@ -651,7 +652,7 @@ mode_print_grouped (session *sess, char *nick, mode_run *mr,
 	{
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANVOICE, sess, nick, mr->voice, NULL, NULL,
 									  0, tags_data->timestamp);
-		free (mr->voice);
+		g_free(mr->voice);
 		mr->voice = NULL;
 	}
 
@@ -659,7 +660,7 @@ mode_print_grouped (session *sess, char *nick, mode_run *mr,
 	{
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANDEVOICE, sess, nick, mr->devoice, NULL,
 									  NULL, 0, tags_data->timestamp);
-		free (mr->devoice);
+		g_free(mr->devoice);
 		mr->devoice = NULL;
 	}
 }
@@ -717,9 +718,8 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 
 	if (numeric_324 && !using_front_tab)
 	{
-		if (sess->current_modes)
-			free (sess->current_modes);
-		sess->current_modes = strdup (word_eol[offset+1]);
+		g_free (sess->current_modes);
+		sess->current_modes = g_strdup (word_eol[offset+1]);
 	}
 
 	sign = *modes;
@@ -799,30 +799,29 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 			serv->modes_per_line = atoi (word[w] + 6);
 		} else if (strncmp (word[w], "CHANTYPES=", 10) == 0)
 		{
-			free (serv->chantypes);
-			serv->chantypes = strdup (word[w] + 10);
+			g_free (serv->chantypes);
+			serv->chantypes = g_strdup (word[w] + 10);
 		} else if (strncmp (word[w], "CHANMODES=", 10) == 0)
 		{
-			free (serv->chanmodes);
-			serv->chanmodes = strdup (word[w] + 10);
+			g_free (serv->chanmodes);
+			serv->chanmodes = g_strdup (word[w] + 10);
 		} else if (strncmp (word[w], "PREFIX=", 7) == 0)
 		{
 			pre = strchr (word[w] + 7, ')');
 			if (pre)
 			{
 				pre[0] = 0;			  /* NULL out the ')' */
-				free (serv->nick_prefixes);
-				free (serv->nick_modes);
-				serv->nick_prefixes = strdup (pre + 1);
-				serv->nick_modes = strdup (word[w] + 8);
+				g_free (serv->nick_prefixes);
+				g_free (serv->nick_modes);
+				serv->nick_prefixes = g_strdup (pre + 1);
+				serv->nick_modes = g_strdup (word[w] + 8);
 			} else
 			{
 				/* bad! some ircds don't give us the modes. */
 				/* in this case, we use it only to strip /NAMES */
 				serv->bad_prefix = TRUE;
-				if (serv->bad_nick_prefixes)
-					free (serv->bad_nick_prefixes);
-				serv->bad_nick_prefixes = strdup (word[w] + 7);
+				g_free (serv->bad_nick_prefixes);
+				serv->bad_nick_prefixes = g_strdup (word[w] + 7);
 			}
 		} else if (strncmp (word[w], "WATCH=", 6) == 0)
 		{
@@ -832,10 +831,6 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 			serv->supports_monitor = TRUE;
 		} else if (strncmp (word[w], "NETWORK=", 8) == 0)
 		{
-/*			if (serv->networkname)
-				free (serv->networkname);
-			serv->networkname = strdup (word[w] + 8);*/
-
 			if (serv->server_session->type == SESS_SERVER)
 			{
 				safe_strcpy (serv->server_session->channel, word[w] + 8, CHANLEN);

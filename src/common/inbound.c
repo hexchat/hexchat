@@ -62,7 +62,7 @@ clear_channel (session *sess)
 
 	if (sess->current_modes)
 	{
-		free (sess->current_modes);
+		g_free (sess->current_modes);
 		sess->current_modes = NULL;
 	}
 
@@ -81,9 +81,8 @@ clear_channel (session *sess)
 void
 set_topic (session *sess, char *topic, char *stripped_topic)
 {
-	if (sess->topic)
-		free (sess->topic);
-	sess->topic = strdup (stripped_topic);
+	g_free (sess->topic);
+	sess->topic = g_strdup (stripped_topic);
 	fe_set_topic (sess, topic, stripped_topic);
 }
 
@@ -968,14 +967,14 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 				/* guess where chanserv meant to post this -sigh- */
 				if (!g_ascii_strcasecmp (nick, "ChanServ") && !find_dialog (serv, nick))
 				{
-					char *dest = strdup (msg + 1);
+					char *dest = g_strdup (msg + 1);
 					char *end = strchr (dest, ']');
 					if (end)
 					{
 						*end = 0;
 						sess = find_channel (serv, dest);
 					}
-					free (dest);
+					g_free (dest);
 				}
 			}
 			if (!sess)
@@ -1454,8 +1453,7 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 
 	if (user && host)
 	{
-		uhost = g_malloc (strlen (user) + strlen (host) + 2);
-		sprintf (uhost, "%s@%s", user, host);
+		uhost = g_strdup_printf ("%s@%s", user, host);
 	}
 
 	if (chan)

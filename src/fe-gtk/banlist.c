@@ -491,7 +491,7 @@ banlist_unban_inner (gpointer none, banlist_info *banl, int mode_num)
 	if (!gtk_tree_model_get_iter_first (model, &iter))
 		return 0;
 
-	masks = g_malloc (sizeof (char *) * banl->line_ct);
+	masks = g_new (char *, banl->line_ct);
 	num_sel = 0;
 	do
 	{
@@ -577,17 +577,17 @@ static void
 banlist_add_selected_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter, gpointer data)
 {
 	GSList **lp = data;
-	GSList *list = NULL;
 	GtkTreeIter *copy;
 
-	if (!lp) return;
-	list = *lp;
-	copy = g_malloc (sizeof (GtkTreeIter));
-	g_return_if_fail (copy != NULL);
+	if (lp == NULL)
+	{
+		return;
+	}
+
+	copy = g_new (GtkTreeIter, 1);
 	*copy = *iter;
 
-	list = g_slist_append (list, copy);
-	*(GSList **)data = list;
+	*lp = g_slist_append (*lp, copy);
 }
 
 static void
@@ -786,14 +786,9 @@ banlist_opengui (struct session *sess)
 		return;
 	}
 
-	if (!sess->res->banlist)
+	if (sess->res->banlist == NULL)
 	{
-		sess->res->banlist = g_malloc0 (sizeof (banlist_info));
-		if (!sess->res->banlist)
-		{
-			fe_message (_("Banlist initialization failed."), FE_MSG_ERROR);
-			return;
-		}
+		sess->res->banlist = g_new0 (banlist_info, 1);
 	}
 	banl = sess->res->banlist;
 	if (banl->window)

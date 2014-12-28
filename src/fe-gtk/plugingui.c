@@ -142,14 +142,14 @@ plugingui_load_cb (session *sess, char *file)
 {
 	if (file)
 	{
-		char *buf = malloc (strlen (file) + 9);
+		char *buf;
 
 		if (strchr (file, ' '))
-			sprintf (buf, "LOAD \"%s\"", file);
+			buf = g_strdup_printf ("LOAD \"%s\"", file);
 		else
-			sprintf (buf, "LOAD %s", file);
+			buf = g_strdup_printf ("LOAD %s", file);
 		handle_command (sess, buf, FALSE);
-		free (buf);
+		g_free (buf);
 	}
 }
 
@@ -173,7 +173,7 @@ plugingui_loadbutton_cb (GtkWidget * wid, gpointer unused)
 static void
 plugingui_unload (GtkWidget * wid, gpointer unused)
 {
-	char *modname, *file, *buf;
+	char *modname, *file;
 	GtkTreeView *view;
 	GtkTreeIter iter;
 	
@@ -186,16 +186,17 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	{
 		if (plugin_kill (modname, FALSE) == 2)
 			fe_message (_("That plugin is refusing to unload.\n"), FE_MSG_ERROR);
-	} else
+	}
+	else
 	{
+		char *buf;
 		/* let python.so or perl.so handle it */
-		buf = malloc (strlen (file) + 10);
 		if (strchr (file, ' '))
-			sprintf (buf, "UNLOAD \"%s\"", file);
+			buf = g_strdup_printf ("UNLOAD \"%s\"", file);
 		else
-			sprintf (buf, "UNLOAD %s", file);
+			buf = g_strdup_printf ("UNLOAD %s", file);
 		handle_command (current_sess, buf, FALSE);
-		free (buf);
+		g_free (buf);
 	}
 
 	g_free (modname);
@@ -209,14 +210,14 @@ plugingui_reloadbutton_cb (GtkWidget *wid, GtkTreeView *view)
 
 	if (file)
 	{
-		char *buf = malloc (strlen (file) + 9);
+		char *buf;
 
 		if (strchr (file, ' '))
-			sprintf (buf, "RELOAD \"%s\"", file);
+			buf = g_strdup_printf ("RELOAD \"%s\"", file);
 		else
-			sprintf (buf, "RELOAD %s", file);
+			buf = g_strdup_printf ("RELOAD %s", file);
 		handle_command (current_sess, buf, FALSE);
-		free (buf);
+		g_free (buf);
 		g_free (file);
 	}
 }

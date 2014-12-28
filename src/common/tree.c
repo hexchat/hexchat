@@ -42,7 +42,7 @@ struct _tree
 tree *
 tree_new (tree_cmp_func *cmp, void *data)
 {
-	tree *t = calloc (1, sizeof (tree));
+	tree *t = g_new0 (tree, 1);
 	t->cmp = cmp;
 	t->data = data;
 	return t;
@@ -53,9 +53,8 @@ tree_destroy (tree *t)
 {
 	if (t)
 	{
-		if (t->array)
-			free (t->array);
-		free (t);
+		g_free (t->array);
+		g_free (t);
 	}
 }
 

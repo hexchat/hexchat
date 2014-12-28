@@ -309,7 +309,7 @@ dcc_lookup_proxy (char *host, struct sockaddr_in *addr)
 			memcpy (&addr->sin_addr, &cache_addr, 4);
 			return TRUE;
 		}
-		free (cache_host);
+		g_free (cache_host);
 		cache_host = NULL;
 	}
 
@@ -318,7 +318,7 @@ dcc_lookup_proxy (char *host, struct sockaddr_in *addr)
 	{
 		memcpy (&addr->sin_addr, h->h_addr, 4);
 		memcpy (&cache_addr, h->h_addr, 4);
-		cache_host = strdup (host);
+		cache_host = g_strdup (host);
 		/* cppcheck-suppress memleak */
 		return TRUE;
 	}
@@ -406,7 +406,7 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 	dcc->dccstat = dccstat;
 	if (dcc->dccchat)
 	{
-		free (dcc->dccchat);
+		g_free (dcc->dccchat);
 		dcc->dccchat = NULL;
 	}
 
@@ -417,7 +417,7 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 		g_free (dcc->proxy);
 		g_free (dcc->file);
 		g_free (dcc->destfile);
-		free (dcc->nick);
+		g_free (dcc->nick);
 		g_free (dcc);
 		return;
 	}
@@ -888,8 +888,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 		dcc_open_query (dcc->serv, dcc->nick);
 	case TYPE_CHATRECV:	/* normal chat */
 		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
-		dcc->dccchat = malloc (sizeof (struct dcc_chat));
-		dcc->dccchat->pos = 0;
+		dcc->dccchat = g_new0 (struct dcc_chat, 1);
 		EMIT_SIGNAL (XP_TE_DCCCONCHAT, dcc->serv->front_session,
 						 dcc->nick, host, NULL, NULL, 0);
 		break;
@@ -1369,12 +1368,6 @@ dcc_proxy_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		return TRUE;
 
 	dcc->proxy = g_new0 (struct proxy_state, 1);
-	if (!dcc->proxy)
-	{
-		dcc->dccstat = STAT_FAILED;
-		fe_dcc_update (dcc);
-		return TRUE;
-	}
 
 	switch (prefs.hex_net_proxy_type)
 	{
@@ -1463,9 +1456,7 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	else if (!dcc->wiotag)
 		dcc->wiotag = fe_input_add (sok, FIA_WRITE, dcc_send_data, dcc);
 
-	buf = malloc (prefs.hex_dcc_blocksize);
-	if (!buf)
-		return TRUE;
+	buf = g_malloc (prefs.hex_dcc_blocksize);
 
 	lseek (dcc->fp, dcc->pos, SEEK_SET);
 	len = read (dcc->fp, buf, prefs.hex_dcc_blocksize);
@@ -1476,7 +1467,7 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	if (sent < 0 && !(would_block ()))
 	{
 abortit:
-		free (buf);
+		g_free (buf);
 		EMIT_SIGNAL (XP_TE_DCCSENDFAIL, dcc->serv->front_session,
 						 file_part (dcc->file), dcc->nick,
 						 errorstring (sock_error ()), NULL, 0);
@@ -1500,7 +1491,7 @@ abortit:
 		}
 	}
 
-	free (buf);
+	g_free (buf);
 
 	return TRUE;
 }
@@ -1630,8 +1621,7 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	case TYPE_CHATSEND:
 		dcc_open_query (dcc->serv, dcc->nick);
 		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
-		dcc->dccchat = malloc (sizeof (struct dcc_chat));
-		dcc->dccchat->pos = 0;
+		dcc->dccchat = g_new0 (struct dcc_chat, 1);
 		EMIT_SIGNAL (XP_TE_DCCCONCHAT, dcc->serv->front_session,
 						 dcc->nick, host, NULL, NULL, 0);
 		break;
@@ -1897,7 +1887,7 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 			}
 			filename++;
 		}
-		dcc->nick = strdup (to);
+		dcc->nick = g_strdup (to);
 		if (prefs.hex_gui_autoopen_send)
 		{
 			if (fe_dcc_open_send_win (TRUE))	/* already open? add */
@@ -2005,9 +1995,8 @@ dcc_change_nick (struct server *serv, char *oldnick, char *newnick)
 		{
 			if (!serv->p_cmp (dcc->nick, oldnick))
 			{
-				if (dcc->nick)
-					free (dcc->nick);
-				dcc->nick = strdup (newnick);
+				g_free (dcc->nick);
+				dcc->nick = g_strdup (newnick);
 			}
 		}
 		list = list->next;
@@ -2257,11 +2246,6 @@ static struct DCC *
 new_dcc (void)
 {
 	struct DCC *dcc = g_new0 (struct DCC, 1);
-	if (!dcc)
-	{
-		return NULL;
-	}
-
 	dcc->sok = -1;
 	dcc->fp = -1;
 	dcc_list = g_slist_prepend (dcc_list, dcc);
@@ -2312,7 +2296,7 @@ dcc_chat (struct session *sess, char *nick, int passive)
 	dcc->serv = sess->server;
 	dcc->dccstat = STAT_QUEUED;
 	dcc->type = TYPE_CHATSEND;
-	dcc->nick = strdup (nick);
+	dcc->nick = g_strdup (nick);
 	if (passive || dcc_listen_init (dcc, sess))
 	{
 		if (prefs.hex_gui_autoopen_chat)
@@ -2412,7 +2396,7 @@ dcc_add_chat (session *sess, char *nick, int port, guint32 addr, int pasvid)
 		dcc->addr = addr;
 		dcc->port = port;
 		dcc->pasvid = pasvid;
-		dcc->nick = strdup (nick);
+		dcc->nick = g_strdup (nick);
 		dcc->starttime = time (0);
 
 		EMIT_SIGNAL (XP_TE_DCCCHATOFFER, sess->server->front_session, nick,
@@ -2484,7 +2468,7 @@ dcc_add_file (session *sess, char *file, guint64 size, int port, char *nick, gui
 		dcc->port = port;
 		dcc->pasvid = pasvid;
 		dcc->size = size;
-		dcc->nick = strdup (nick);
+		dcc->nick = g_strdup (nick);
 		dcc->maxcps = prefs.hex_dcc_max_get_cps;
 
 		update_is_resumable (dcc);

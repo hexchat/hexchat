@@ -53,9 +53,9 @@ static void
 timer_del (timer *tim)
 {
 	timer_list = g_slist_remove (timer_list, tim);
-	free (tim->command);
+	g_free (tim->command);
 	hexchat_unhook (ph, tim->hook);
-	free (tim);
+	g_free (tim);
 }
 
 static void
@@ -119,11 +119,11 @@ timer_add (int ref, int timeout, int repeat, char *command)
 		}
 	}
 
-	tim = malloc (sizeof (timer));
+	tim = g_new (timer, 1);
 	tim->ref = ref;
 	tim->repeat = repeat;
 	tim->timeout = timeout;
-	tim->command = strdup (command);
+	tim->command = g_strdup (command);
 	tim->context = hexchat_get_context (ph);
 	tim->forever = FALSE;
 

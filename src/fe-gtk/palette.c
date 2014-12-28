@@ -106,7 +106,7 @@ palette_alloc (GtkWidget * widget)
 void
 palette_load (void)
 {
-	int i, j, l, fh;
+	int i, j, fh;
 	char prefname[256];
 	struct stat st;
 	char *cfg;
@@ -116,35 +116,29 @@ palette_load (void)
 	if (fh != -1)
 	{
 		fstat (fh, &st);
-		cfg = malloc (st.st_size + 1);
-		if (cfg)
+		cfg = g_malloc0 (st.st_size + 1);
+		read (fh, cfg, st.st_size);
+
+		/* mIRC colors 0-31 are here */
+		for (i = 0; i < 32; i++)
 		{
-			cfg[0] = '\0';
-			l = read (fh, cfg, st.st_size);
-			if (l >= 0)
-				cfg[l] = '\0';
-
-			/* mIRC colors 0-31 are here */
-			for (i = 0; i < 32; i++)
-			{
-				snprintf (prefname, sizeof prefname, "color_%d", i);
-				cfg_get_color (cfg, prefname, &red, &green, &blue);
-				colors[i].red = red;
-				colors[i].green = green;
-				colors[i].blue = blue;
-			}
-
-			/* our special colors are mapped at 256+ */
-			for (i = 256, j = 32; j < MAX_COL+1; i++, j++)
-			{
-				snprintf (prefname, sizeof prefname, "color_%d", i);
-				cfg_get_color (cfg, prefname, &red, &green, &blue);
-				colors[j].red = red;
-				colors[j].green = green;
-				colors[j].blue = blue;
-			}
-			free (cfg);
+			snprintf (prefname, sizeof prefname, "color_%d", i);
+			cfg_get_color (cfg, prefname, &red, &green, &blue);
+			colors[i].red = red;
+			colors[i].green = green;
+			colors[i].blue = blue;
 		}
+
+		/* our special colors are mapped at 256+ */
+		for (i = 256, j = 32; j < MAX_COL+1; i++, j++)
+		{
+			snprintf (prefname, sizeof prefname, "color_%d", i);
+			cfg_get_color (cfg, prefname, &red, &green, &blue);
+			colors[j].red = red;
+			colors[j].green = green;
+			colors[j].blue = blue;
+		}
+		g_free (cfg);
 		close (fh);
 	}
 }

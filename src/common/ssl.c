@@ -504,9 +504,7 @@ _SSL_check_common_name (X509 *cert, const char *host)
 	if (common_name_len < 0)
 		return -1;
 
-	common_name = calloc (common_name_len + 1, 1);
-	if (common_name == NULL)
-		return -1;
+	common_name = g_malloc0 (common_name_len + 1);
 
 	X509_NAME_get_text_by_NID (name, NID_commonName, common_name, common_name_len + 1);
 
@@ -535,7 +533,7 @@ _SSL_check_common_name (X509 *cert, const char *host)
 		rv = 0;
 
 out:
-	free(common_name);
+	g_free(common_name);
 	return rv;
 }
 

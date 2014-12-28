@@ -90,7 +90,7 @@ random_line (char *file_name)
 	{
 	 nofile:
 		/* reason is not a file, an actual reason! */
-		return strdup (file_name);
+		return g_strdup (file_name);
 	}
 
 	/* count number of lines in file */
@@ -111,7 +111,7 @@ random_line (char *file_name)
 	}
 	while (lines > ran);
 	fclose (fh);
-	return strdup (buf);
+	return g_strdup (buf);
 }
 
 void
@@ -121,7 +121,7 @@ server_sendpart (server * serv, char *channel, char *reason)
 	{
 		reason = random_line (prefs.hex_irc_part_reason);
 		serv->p_part (serv, channel, reason);
-		free (reason);
+		g_free (reason);
 	} else
 	{
 		/* reason set by /quit, /close argument */
@@ -136,12 +136,12 @@ server_sendquit (session * sess)
 
 	if (!sess->quitreason)
 	{
-		colrea = strdup (prefs.hex_irc_quit_reason);
+		colrea = g_strdup (prefs.hex_irc_quit_reason);
 		check_special_chars (colrea, FALSE);
 		rea = random_line (colrea);
-		free (colrea);
+		g_free (colrea);
 		sess->server->p_quit (sess->server, rea);
-		free (rea);
+		g_free (rea);
 	} else
 	{
 		/* reason set by /quit, /close argument */
@@ -269,7 +269,7 @@ cmd_addserver (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (!network)
 		{
 			network = servlist_net_add (word[2], "", TRUE);
-			network->encoding = strdup (IRC_DEFAULT_CHARSET);
+			network->encoding = g_strdup (IRC_DEFAULT_CHARSET);
 		}
 		/* if we had the network already, check if the given server already exists */
 		else if (servlist_server_find (network, word_eol[3], NULL))
@@ -379,11 +379,10 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (sess->server->last_away_reason != reason)
 	{
-		if (sess->server->last_away_reason)
-			free (sess->server->last_away_reason);
+		g_free (sess->server->last_away_reason);
 
 		if (reason == word_eol[2])
-			sess->server->last_away_reason = strdup (reason);
+			sess->server->last_away_reason = g_strdup (reason);
 		else
 			sess->server->last_away_reason = reason;
 	}
@@ -406,8 +405,7 @@ cmd_back (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		PrintText (sess, _("Already marked back.\n"));
 	}
 
-	if (sess->server->last_away_reason)
-		free (sess->server->last_away_reason);
+	g_free (sess->server->last_away_reason);
 	sess->server->last_away_reason = NULL;
 
 	return TRUE;
@@ -1002,14 +1000,14 @@ mdehop_cb (struct User *user, multidata *data)
 static int
 cmd_mdehop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * sess->hops);
+	char **nicks = g_new0 (char *, sess->hops);
 	multidata data;
 
 	data.nicks = nicks;
 	data.i = 0;
 	tree_foreach (sess->usertree, (tree_traverse_func *)mdehop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'h', 0);
-	free (nicks);
+	g_free (nicks);
 
 	return TRUE;
 }
@@ -1028,14 +1026,14 @@ mdeop_cb (struct User *user, multidata *data)
 static int
 cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * sess->ops);
+	char **nicks = g_new0(char *, sess->ops);
 	multidata data;
 
 	data.nicks = nicks;
 	data.i = 0;
 	tree_foreach (sess->usertree, (tree_traverse_func *)mdeop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'o', 0);
-	free (nicks);
+	g_free (nicks);
 
 	return TRUE;
 }
@@ -1045,18 +1043,13 @@ GSList *menu_list = NULL;
 static void
 menu_free (menu_entry *me)
 {
-	free (me->path);
-	if (me->label)
-		free (me->label);
-	if (me->cmd)
-		free (me->cmd);
-	if (me->ucmd)
-		free (me->ucmd);
-	if (me->group)
-		free (me->group);
-	if (me->icon)
-		free (me->icon);
-	free (me);
+	g_free (me->path);
+	g_free (me->label);
+	g_free (me->cmd);
+	g_free (me->ucmd);
+	g_free (me->group);
+	g_free (me->icon);
+	g_free (me);
 }
 
 /* strings equal? but ignore underscores */
@@ -1195,7 +1188,7 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 		return;
 	}
 
-	me = malloc (sizeof (menu_entry));
+	me = g_new (menu_entry, 1);
 	me->pos = pos;
 	me->modifier = mod;
 	me->is_main = menu_is_mainmenu_root (path, &me->root_offset);
@@ -1203,31 +1196,26 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 	me->markup = markup;
 	me->enable = enable;
 	me->key = key;
-	me->path = strdup (path);
+	me->path = g_strdup (path);
 	me->label = NULL;
 	me->cmd = NULL;
 	me->ucmd = NULL;
 	me->group = NULL;
 	me->icon = NULL;
 
-	if (label)
-		me->label = strdup (label);
-	if (cmd)
-		me->cmd = strdup (cmd);
-	if (ucmd)
-		me->ucmd = strdup (ucmd);
-	if (group)
-		me->group = strdup (group);
-	if (icon)
-		me->icon = strdup (icon);
+	me->label = g_strdup (label);
+	me->cmd = g_strdup (cmd);
+	me->ucmd = g_strdup (ucmd);
+	me->group = g_strdup (group);
+	me->icon = g_strdup (icon);
 
 	menu_list = g_slist_append (menu_list, me);
 	label = fe_menu_add (me);
 	if (label)
 	{
 		/* FE has given us a stripped label */
-		free (me->label);
-		me->label = strdup (label);
+		g_free (me->label);
+		me->label = g_strdup (label);
 		g_free (label); /* this is from pango */
 	}
 }
@@ -1456,7 +1444,7 @@ exec_check_process (struct session *sess)
 	{
 		close (sess->running_exec->myfd);
 		fe_input_remove (sess->running_exec->iotag);
-		free (sess->running_exec);
+		g_free (sess->running_exec);
 		sess->running_exec = NULL;
 	}
 }
@@ -1533,11 +1521,10 @@ cmd_execw (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return FALSE;
 	}
 	len = strlen(word_eol[2]);
-	temp = malloc(len + 2);
-	sprintf(temp, "%s\n", word_eol[2]);
+	temp = g_strconcat (word_eol[2], "\n", NULL);
 	PrintText(sess, temp);
 	write(sess->running_exec->myfd, temp, len + 1);
-	free(temp);
+	g_free(temp);
 
 	return TRUE;
 }
@@ -1561,7 +1548,7 @@ exec_handle_colors (char *buf, int len)
 	if (strchr (buf, 27) == 0)
 		return;
 
-	nbuf = malloc (len + 1);
+	nbuf = g_malloc (len + 1);
 
 	while (i < len)
 	{
@@ -1655,7 +1642,7 @@ norm:			nbuf[j] = buf[i];
 
 	nbuf[j] = 0;
 	memcpy (buf, nbuf, j + 1);
-	free (nbuf);
+	g_free (nbuf);
 }
 
 #ifndef HAVE_MEMRCHR
@@ -1681,14 +1668,14 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 	len = s->buffill;
 	if (len) {
 		/* append new data to buffered incomplete line */
-		buf = malloc(len + 2050);
+		buf = g_malloc (len + 2050);
 		memcpy(buf, s->linebuf, len);
 		readpos = buf + len;
-		free(s->linebuf);
+		g_free (s->linebuf);
 		s->linebuf = NULL;
 	}
 	else
-		readpos = buf = malloc(2050);
+		readpos = buf = g_malloc (2050);
 
 	rd = read (sok, readpos, 2048);
 	if (rd < 1)
@@ -1709,12 +1696,12 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 			else
 				PrintText (s->sess, buf);
 		}
-		free(buf);
+		g_free(buf);
 		waitpid (s->childpid, NULL, 0);
 		s->sess->running_exec = NULL;
 		fe_input_remove (s->iotag);
 		close (sok);
-		free (s);
+		g_free (s);
 		return TRUE;
 	}
 	len += rd;
@@ -1727,7 +1714,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		rest = buf;
 	if (*rest) {
 		s->buffill = len - (rest - buf); /* = strlen(rest) */
-		s->linebuf = malloc(s->buffill + 1);
+		s->linebuf = g_malloc (s->buffill + 1);
 		memcpy(s->linebuf, rest, s->buffill);
 		*rest = '\0';
 		len -= s->buffill; /* possibly 0 */
@@ -1743,7 +1730,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 			PrintText (s->sess, buf);
 	}
 
-	free(buf);
+	g_free (buf);
 	return TRUE;
 }
 
@@ -1805,8 +1792,7 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			return FALSE;
 		}
 #endif
-		s = (struct nbexec *) malloc (sizeof (struct nbexec));
-		memset(s, 0, sizeof(*s));
+		s = g_new0 (struct nbexec, 1);
 		s->myfd = fds[0];
 		s->tochannel = tochannel;
 		s->sess = sess;
@@ -1853,8 +1839,9 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			PrintText (sess, "Error in fork(2)\n");
 			close(fds[0]);
 			close(fds[1]);
-			free (s);
-		} else
+			g_free (s);
+		}
+		else
 		{
 			/* Parent path */
 			close(fds[1]);
@@ -1946,8 +1933,8 @@ get_bool_cb (int val, getvalinfo *info)
 	if (is_session (info->sess))
 		handle_command (info->sess, buf, FALSE);
 
-	free (info->cmd);
-	free (info);
+	g_free (info->cmd);
+	g_free (info);
 }
 
 static int
@@ -1958,8 +1945,8 @@ cmd_getbool (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[4][0])
 		return FALSE;
 
-	info = malloc (sizeof (*info));
-	info->cmd = strdup (word[2]);
+	info = g_new (getvalinfo, 1);
+	info->cmd = g_strdup (word[2]);
 	info->sess = sess;
 
 	fe_get_bool (word[3], word_eol[4], get_bool_cb, info);
@@ -1979,8 +1966,8 @@ get_int_cb (int cancel, int val, getvalinfo *info)
 			handle_command (info->sess, buf, FALSE);
 	}
 
-	free (info->cmd);
-	free (info);
+	g_free (info->cmd);
+	g_free (info);
 }
 
 static int
@@ -1991,8 +1978,8 @@ cmd_getint (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[4][0])
 		return FALSE;
 
-	info = malloc (sizeof (*info));
-	info->cmd = strdup (word[3]);
+	info = g_new (getvalinfo, 1);
+	info->cmd = g_strdup (word[3]);
 	info->sess = sess;
 
 	fe_get_int (word[4], atoi (word[2]), get_int_cb, info);
@@ -2015,7 +2002,7 @@ get_file_cb (char *cmd, char *file)
 	else
 	{
 		handle_command (current_sess, cmd, FALSE);
-		free (cmd);
+		g_free (cmd);
 	}
 }
 
@@ -2046,7 +2033,7 @@ cmd_getfile (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		idx++;
 	}
 
-	fe_get_file (word[idx+1], word[idx+2], (void *)get_file_cb, strdup (word[idx]), flags);
+	fe_get_file (word[idx+1], word[idx+2], (void *)get_file_cb, g_strdup (word[idx]), flags);
 
 	return TRUE;
 }
@@ -2063,8 +2050,8 @@ get_str_cb (int cancel, char *val, getvalinfo *info)
 			handle_command (info->sess, buf, FALSE);
 	}
 
-	free (info->cmd);
-	free (info);
+	g_free (info->cmd);
+	g_free (info);
 }
 
 static int
@@ -2075,8 +2062,8 @@ cmd_getstr (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[4][0])
 		return FALSE;
 
-	info = malloc (sizeof (*info));
-	info->cmd = strdup (word[3]);
+	info = g_new (getvalinfo, 1);
+	info->cmd = g_strdup (word[3]);
 	info->sess = sess;
 
 	fe_get_str (word[4], word[2], get_str_cb, info);
@@ -2202,7 +2189,7 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	} else
 	{
 		struct popup *pop;
-		char *buf = malloc (4096);
+		char *buf = g_malloc (4096);
 		help_list hl;
 
 		hl.longfmt = longfmt;
@@ -2247,7 +2234,7 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		plugin_command_foreach (sess, &hl, (void *)show_help_line);
 		strcat (buf, "\n");
 		PrintText (sess, buf);
-		free (buf);
+		g_free (buf);
 
 		PrintTextf (sess, "\n%s\n\n", _("Type /HELP <command> for more information, or /HELP -l"));
 	}
@@ -2723,7 +2710,7 @@ mop_cb (struct User *user, multidata *data)
 static int
 cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * (sess->total - sess->ops));
+	char **nicks = g_new0 (char *, sess->total - sess->ops);
 	multidata data;
 
 	data.nicks = nicks;
@@ -2731,7 +2718,7 @@ cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	tree_foreach (sess->usertree, (tree_traverse_func *)mop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'o', 0);
 
-	free (nicks);
+	g_free (nicks);
 
 	return TRUE;
 }
@@ -4313,81 +4300,78 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 	if (!len)
 		return;
 
-	buf = malloc (len + 1);
+	buf = g_malloc (len + 1);
 
-	if (buf)
+	while (cmd[j])
 	{
-		while (cmd[j])
+		switch (cmd[j])
 		{
-			switch (cmd[j])
+		case '%':
+			occur++;
+			if (	do_ascii &&
+					j + 3 < len &&
+					(isdigit ((unsigned char) cmd[j + 1]) && isdigit ((unsigned char) cmd[j + 2]) &&
+					isdigit ((unsigned char) cmd[j + 3])))
 			{
-			case '%':
-				occur++;
-				if (	do_ascii &&
-						j + 3 < len &&
-						(isdigit ((unsigned char) cmd[j + 1]) && isdigit ((unsigned char) cmd[j + 2]) &&
-						isdigit ((unsigned char) cmd[j + 3])))
+				tbuf[0] = cmd[j + 1];
+				tbuf[1] = cmd[j + 2];
+				tbuf[2] = cmd[j + 3];
+				tbuf[3] = 0;
+				buf[i] = atoi (tbuf);
+				utf = g_locale_to_utf8 (buf + i, 1, 0, &utf_len, 0);
+				if (utf)
 				{
-					tbuf[0] = cmd[j + 1];
-					tbuf[1] = cmd[j + 2];
-					tbuf[2] = cmd[j + 3];
-					tbuf[3] = 0;
-					buf[i] = atoi (tbuf);
-					utf = g_locale_to_utf8 (buf + i, 1, 0, &utf_len, 0);
-					if (utf)
-					{
-						memcpy (buf + i, utf, utf_len);
-						g_free (utf);
-						i += (utf_len - 1);
-					}
-					j += 3;
-				} else
-				{
-					switch (cmd[j + 1])
-					{
-					case 'R':
-						buf[i] = '\026';
-						break;
-					case 'U':
-						buf[i] = '\037';
-						break;
-					case 'B':
-						buf[i] = '\002';
-						break;
-					case 'I':
-						buf[i] = '\035';
-						break;
-					case 'C':
-						buf[i] = '\003';
-						break;
-					case 'O':
-						buf[i] = '\017';
-						break;
-					case 'H':	/* CL: invisible text code */
-						buf[i] = HIDDEN_CHAR;
-						break;
-					case '%':
-						buf[i] = '%';
-						break;
-					default:
-						buf[i] = '%';
-						j--;
-						break;
-					}
-					j++;
-					break;
-			default:
-					buf[i] = cmd[j];
+					memcpy (buf + i, utf, utf_len);
+					g_free (utf);
+					i += (utf_len - 1);
 				}
+				j += 3;
+			} else
+			{
+				switch (cmd[j + 1])
+				{
+				case 'R':
+					buf[i] = '\026';
+					break;
+				case 'U':
+					buf[i] = '\037';
+					break;
+				case 'B':
+					buf[i] = '\002';
+					break;
+				case 'I':
+					buf[i] = '\035';
+					break;
+				case 'C':
+					buf[i] = '\003';
+					break;
+				case 'O':
+					buf[i] = '\017';
+					break;
+				case 'H':	/* CL: invisible text code */
+					buf[i] = HIDDEN_CHAR;
+					break;
+				case '%':
+					buf[i] = '%';
+					break;
+				default:
+					buf[i] = '%';
+					j--;
+					break;
+				}
+				j++;
+				break;
+		default:
+				buf[i] = cmd[j];
 			}
-			j++;
-			i++;
 		}
-		buf[i] = 0;
-		if (occur)
-			strcpy (cmd, buf);
-		free (buf);
+		j++;
+		i++;
 	}
+	buf[i] = 0;
+	if (occur)
+		strcpy (cmd, buf);
+	g_free (buf);
 }
 
 typedef struct
@@ -4487,12 +4471,10 @@ handle_say (session *sess, char *text, int check_spch)
 	struct DCC *dcc;
 	char *word[PDIWORDS+1];
 	char *word_eol[PDIWORDS+1];
-	char pdibuf_static[1024];
-	char newcmd_static[1024];
-	char *pdibuf = pdibuf_static;
-	char *newcmd = newcmd_static;
+	char *pdibuf;
+	char *newcmd;
 	int len;
-	int newcmdlen = sizeof newcmd_static;
+	int newcmdlen;
 	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	if (strcmp (sess->channel, "(lastlog)") == 0)
@@ -4502,11 +4484,9 @@ handle_say (session *sess, char *text, int check_spch)
 	}
 
 	len = strlen (text);
-	if (len >= sizeof pdibuf_static)
-		pdibuf = malloc (len + 1);
-
-	if (len + NICKLEN >= newcmdlen)
-		newcmd = malloc (newcmdlen = len + NICKLEN + 1);
+	pdibuf = g_malloc (len + 1);
+	newcmdlen = MAX(len + NICKLEN + 1, TBUFSIZE);
+	newcmd = g_malloc (newcmdlen);
 
 	if (check_spch && prefs.hex_input_perc_color)
 		check_special_chars (text, prefs.hex_input_perc_ascii);
@@ -4579,11 +4559,9 @@ handle_say (session *sess, char *text, int check_spch)
 	}
 
 xit:
-	if (pdibuf != pdibuf_static)
-		free (pdibuf);
+	g_free (pdibuf);
 
-	if (newcmd != newcmd_static)
-		free (newcmd);
+	g_free (newcmd);
 }
 
 char *
@@ -4677,8 +4655,6 @@ handle_command (session *sess, char *cmd, int check_spch)
 	char *word_eol[PDIWORDS+1];
 	static int command_level = 0;
 	struct commands *int_cmd;
-	char pdibuf_static[1024];
-	char tbuf_static[TBUFSIZE];
 	char *pdibuf;
 	char *tbuf;
 	int len;
@@ -4693,23 +4669,8 @@ handle_command (session *sess, char *cmd, int check_spch)
 	/* anything below MUST DEC command_level before returning */
 
 	len = strlen (cmd);
-	if (len >= sizeof (pdibuf_static))
-	{
-		pdibuf = malloc (len + 1);
-	}
-	else
-	{
-		pdibuf = pdibuf_static;
-	}
-
-	if ((len * 2) >= sizeof (tbuf_static))
-	{
-		tbuf = malloc ((len * 2) + 1);
-	}
-	else
-	{
-		tbuf = tbuf_static;
-	}
+	pdibuf = g_malloc (len + 1);
+	tbuf = g_malloc (MAX(TBUFSIZE, (len * 2) + 1));
 
 	/* split the text into words and word_eol */
 	process_data_init (pdibuf, cmd, word, word_eol, TRUE, TRUE);
@@ -4802,15 +4763,8 @@ handle_command (session *sess, char *cmd, int check_spch)
 xit:
 	command_level--;
 
-	if (pdibuf != pdibuf_static)
-	{
-		free (pdibuf);
-	}
-
-	if (tbuf != tbuf_static)
-	{
-		free (tbuf);
-	}
+	g_free (pdibuf);
+	g_free (tbuf);
 
 	return ret;
 }

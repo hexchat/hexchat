@@ -497,7 +497,7 @@ servlist_addnet_cb (GtkWidget *item, GtkTreeView *treeview)
 	ircnet *net;
 
 	net = servlist_net_add (_("New Network"), "", TRUE);
-	net->encoding = strdup (IRC_DEFAULT_CHARSET);
+	net->encoding = g_strdup (IRC_DEFAULT_CHARSET);
 	servlist_server_add (net, "newserver/6667");
 
 	store = (GtkListStore *)gtk_tree_view_get_model (treeview);
@@ -668,13 +668,12 @@ servlist_favor (GtkWidget *button, gpointer none)
 static void
 servlist_update_from_entry (char **str, GtkWidget *entry)
 {
-	if (*str)
-		free (*str);
+	g_free (*str);
 
 	if (gtk_entry_get_text (GTK_ENTRY (entry))[0] == 0)
 		*str = NULL;
 	else
-		*str = strdup (gtk_entry_get_text (GTK_ENTRY (entry)));
+		*str = g_strdup (gtk_entry_get_text (GTK_ENTRY (entry)));
 }
 
 static void
@@ -1203,9 +1202,9 @@ servlist_celledit_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 		}
 
 		netname = net->name;
-		net->name = strdup (arg2);
+		net->name = g_strdup (arg2);
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, net->name, -1);
-		free (netname);
+		g_free (netname);
 	}
 
 	gtk_tree_path_free (path);
@@ -1311,7 +1310,7 @@ servlist_sanitize_hostname (char *host)
 {
 	char *ret, *c, *e;
 
-	ret = strdup (host);
+	ret = g_strdup (host);
 
 	c = strchr  (ret, ':');
 	e = strrchr (ret, ':');
@@ -1371,7 +1370,7 @@ servlist_editserver_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, g
 		servname = serv->hostname;
 		serv->hostname = servlist_sanitize_hostname (newval);
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, serv->hostname, -1);
-		free (servname);
+		g_free (servname);
 	}
 }
 
@@ -1409,7 +1408,7 @@ servlist_editcommand_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, 
 		cmd = entry->command;
 		entry->command = servlist_sanitize_command (newval);
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, entry->command, -1);
-		free (cmd);
+		g_free (cmd);
 	}
 }
 
@@ -1508,9 +1507,8 @@ servlist_combo_cb (GtkEntry *entry, gpointer userdata)
 	if (!selected_net)
 		return;
 
-	if (selected_net->encoding)
-		free (selected_net->encoding);
-	selected_net->encoding = strdup (gtk_entry_get_text (entry));
+	g_free (selected_net->encoding);
+	selected_net->encoding = g_strdup (gtk_entry_get_text (entry));
 }
 
 /* Fills up the network's authentication type so that it's guaranteed to be either NULL or a valid value. */

@@ -69,18 +69,13 @@ net_store_destroy (netstore * ns)
 	if (ns->ip6_hostent)
 		freeaddrinfo (ns->ip6_hostent);
 #endif
-	free (ns);
+	g_free (ns);
 }
 
 netstore *
 net_store_new (void)
 {
-	netstore *ns;
-
-	ns = malloc (sizeof (netstore));
-	memset (ns, 0, sizeof (netstore));
-
-	return ns;
+	return g_new0 (netstore, 1);
 }
 
 #ifndef USE_IPV6
@@ -120,8 +115,8 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 	ns->addr.sin_port = htons (port);
 	ns->addr.sin_family = AF_INET;
 
-	*real_host = strdup (ns->ip4_hostent->h_name);
-	return strdup (inet_ntoa (ns->addr.sin_addr));
+	*real_host = g_strdup (ns->ip4_hostent->h_name);
+	return g_strdup (inet_ntoa (ns->addr.sin_addr));
 }
 
 int
@@ -232,11 +227,11 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 					 ipstring, sizeof (ipstring), NULL, 0, NI_NUMERICHOST);
 
 	if (ns->ip6_hostent->ai_canonname)
-		*real_host = strdup (ns->ip6_hostent->ai_canonname);
+		*real_host = g_strdup (ns->ip6_hostent->ai_canonname);
 	else
-		*real_host = strdup (hostname);
+		*real_host = g_strdup (hostname);
 
-	return strdup (ipstring);
+	return g_strdup (ipstring);
 }
 
 /* the only thing making this interface unclean, this shitty sok4, sok6 business */
@@ -310,15 +305,15 @@ net_store_fill_any (netstore *ns)
 	struct sockaddr_in *sin;
 
 	ai = ns->ip6_hostent;
-	if (!ai) {
-		ai = malloc (sizeof (struct addrinfo));
-		memset (ai, 0, sizeof (struct addrinfo));
+	if (ai == NULL)
+	{
+		ai = g_new0 (struct addrinfo, 1);
 		ns->ip6_hostent = ai;
 	}
 	sin = (struct sockaddr_in *)ai->ai_addr;
-	if (!sin) {
-		sin = malloc (sizeof (struct sockaddr_in));
-		memset (sin, 0, sizeof (struct sockaddr_in));
+	if (sin == NULL)
+	{
+		sin = g_new0 (struct sockaddr_in, 1);
 		ai->ai_addr = (struct sockaddr *)sin;
 	}
 	ai->ai_family = AF_INET;
@@ -336,15 +331,15 @@ net_store_fill_v4 (netstore *ns, guint32 addr, int port)
 	struct sockaddr_in *sin;
 
 	ai = ns->ip6_hostent;
-	if (!ai) {
-		ai = malloc (sizeof (struct addrinfo));
-		memset (ai, 0, sizeof (struct addrinfo));
+	if (ai == NULL)
+	{
+		ai = g_new0 (struct addrinfo, 1);
 		ns->ip6_hostent = ai;
 	}
 	sin = (struct sockaddr_in *)ai->ai_addr;
-	if (!sin) {
-		sin = malloc (sizeof (struct sockaddr_in));
-		memset (sin, 0, sizeof (struct sockaddr_in));
+	if (sin == NULL)
+	{
+		sin = g_new0 (struct sockaddr_in, 1);
 		ai->ai_addr = (struct sockaddr *)sin;
 	}
 	ai->ai_family = AF_INET;

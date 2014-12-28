@@ -83,7 +83,7 @@ scrollback_get_filename (session *sess)
 		buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, chan);
 	else
 		buf = NULL;
-	free (chan);
+	g_free (chan);
 
 	return buf;
 }
@@ -406,7 +406,7 @@ log_create_filename (char *channame)
 	char *tmp, *ret;
 	int mbl;
 
-	ret = tmp = strdup (channame);
+	ret = tmp = g_strdup (channame);
 	while (*tmp)
 	{
 		mbl = g_utf8_skip[((unsigned char *)tmp)[0]];
@@ -542,7 +542,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 
 	if (!netname)
 	{
-		netname = strdup ("NETWORK");
+		netname = g_strdup ("NETWORK");
 	}
 	else
 	{
@@ -552,7 +552,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	/* first, everything is in UTF-8 */
 	if (!rfc_casecmp (channame, servname))
 	{
-		channame = strdup ("server");
+		channame = g_strdup ("server");
 	}
 	else
 	{
@@ -560,8 +560,8 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	}
 
 	log_insert_vars (fname, sizeof (fname), prefs.hex_irc_logmask, channame, netname, servname);
-	free (channame);
-	free (netname);
+	g_free (channame);
+	g_free (netname);
 
 	/* insert time/date */
 	now = time (NULL);
@@ -803,8 +803,6 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 
 	/* worst case scenario: every byte turns into 3 bytes */
 	res = output = g_malloc ((len * 3) + 1);
-	if (!output)
-		return NULL;
 
 	while (len)
 	{
@@ -1565,14 +1563,13 @@ pevent_load_defaults ()
 
 	for (i = 0; i < NUM_XP; i++)
 	{
-		if (pntevts_text[i])
-			free (pntevts_text[i]);
+		g_free (pntevts_text[i]);
 
 		/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
 		if (te[i].num_args & 128)
-			pntevts_text[i] = strdup (te[i].def);
+			pntevts_text[i] = g_strdup (te[i].def);
 		else
-			pntevts_text[i] = strdup (_(te[i].def));
+			pntevts_text[i] = g_strdup (_(te[i].def));
 	}
 }
 
@@ -1584,19 +1581,18 @@ pevent_make_pntevts ()
 
 	for (i = 0; i < NUM_XP; i++)
 	{
-		if (pntevts[i] != NULL)
-			free (pntevts[i]);
+		g_free (pntevts[i]);
 		if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
 		{
 			snprintf (out, sizeof (out),
 						 _("Error parsing event %s.\nLoading default."), te[i].name);
 			fe_message (out, FE_MSG_WARN);
-			free (pntevts_text[i]);
+			g_free (pntevts_text[i]);
 			/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
 			if (te[i].num_args & 128)
-				pntevts_text[i] = strdup (te[i].def);
+				pntevts_text[i] = g_strdup (te[i].def);
 			else
-				pntevts_text[i] = strdup (_(te[i].def));
+				pntevts_text[i] = g_strdup (_(te[i].def));
 			if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
 			{
 				fprintf (stderr,
@@ -1618,22 +1614,17 @@ pevent_make_pntevts ()
 static void
 pevent_trigger_load (int *i_penum, char **i_text, char **i_snd)
 {
-	int penum = *i_penum, len;
+	int penum = *i_penum;
 	char *text = *i_text, *snd = *i_snd;
 
 	if (penum != -1 && text != NULL)
 	{
-		len = strlen (text) + 1;
-		if (pntevts_text[penum])
-			free (pntevts_text[penum]);
-		pntevts_text[penum] = malloc (len);
-		memcpy (pntevts_text[penum], text, len);
+		g_free (pntevts_text[penum]);
+		pntevts_text[penum] = g_strdup (text);
 	}
 
-	if (text)
-		free (text);
-	if (snd)
-		free (snd);
+	g_free (text);
+	g_free (snd);
 	*i_text = NULL;
 	*i_snd = NULL;
 	*i_penum = 0;
@@ -1686,7 +1677,7 @@ pevent_load (char *filename)
 		close (fd);
 		return 1;
 	}
-	ibuf = malloc (st.st_size);
+	ibuf = g_malloc (st.st_size);
 	read (fd, ibuf, st.st_size);
 	close (fd);
 
@@ -1702,8 +1693,6 @@ pevent_load (char *filename)
 			continue;
 		*ofs = 0;
 		ofs++;
-		/*if (*ofs == 0)
-			continue;*/
 
 		if (strcmp (buf, "event_name") == 0)
 		{
@@ -1713,53 +1702,16 @@ pevent_load (char *filename)
 			continue;
 		} else if (strcmp (buf, "event_text") == 0)
 		{
-			if (text)
-				free (text);
-
-#if 0
-			/* This allows updating of old strings. We don't use new defaults
-				if the user has customized the strings (.e.g a text theme).
-				Hash of the old default is enough to identify and replace it.
-				This only works in English. */
-
-			switch (g_str_hash (ofs))
-			{
-			case 0x526743a4:
-		/* %C08,02 Hostmask                  PRIV NOTI CHAN CTCP INVI UNIG %O */
-				text = strdup (te[XP_TE_IGNOREHEADER].def);
-				break;
-
-			case 0xe91bc9c2:
-		/* %C08,02                                                         %O */
-				text = strdup (te[XP_TE_IGNOREFOOTER].def);
-				break;
-
-			case 0x1fbfdf22:
-		/* -%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting. */
-				text = strdup (te[XP_TE_DCCFILEERR].def);
-				break;
-
-			default:
-				text = strdup (ofs);
-			}
-#else
-			text = strdup (ofs);
-#endif
-
+			g_free (text);
+			text = g_strdup (ofs);
 			continue;
-		}/* else if (strcmp (buf, "event_sound") == 0)
-		{
-			if (snd)
-				free (snd);
-			snd = strdup (ofs);
-			continue;
-		}*/
+		}
 
 		continue;
 	}
 
 	pevent_trigger_load (&penum, &text, &snd);
-	free (ibuf);
+	g_free (ibuf);
 	return 0;
 }
 
@@ -1777,9 +1729,9 @@ pevent_check_all_loaded ()
 			   gtkutil_simpledialog(out); */
 			/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
 			if (te[i].num_args & 128)
-				pntevts_text[i] = strdup (te[i].def);
+				pntevts_text[i] = g_strdup (te[i].def);
 			else
-				pntevts_text[i] = strdup (_(te[i].def));
+				pntevts_text[i] = g_strdup (_(te[i].def));
 		}
 	}
 }
@@ -1896,7 +1848,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 	int oi, ii, max = -1, len, x;
 
 	len = strlen (input);
-	i = malloc (len + 1);
+	i = g_malloc (len + 1);
 	memcpy (i, input, len + 1);
 	check_special_chars (i, TRUE);
 
@@ -1921,14 +1873,14 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		}
 		if (oi > 0)
 		{
-			s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
+			s = g_new (struct pevt_stage1, 1);
 			if (base == NULL)
 				base = s;
 			if (last != NULL)
 				last->next = s;
 			last = s;
 			s->next = NULL;
-			s->data = malloc (oi + sizeof (int) + 1);
+			s->data = g_malloc (oi + sizeof (int) + 1);
 			s->len = oi + sizeof (int) + 1;
 			clen += oi + sizeof (int) + 1;
 			s->data[0] = 0;
@@ -1939,11 +1891,12 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		if (ii == len)
 		{
 			fe_message ("String ends with a $", FE_MSG_WARN);
-			return 1;
+			goto err;
 		}
 		d = i[ii++];
 		if (d == 'a')
-		{								  /* Hex value */
+		{
+			/* Hex value */
 			x = 0;
 			if (ii == len)
 				goto a_len_error;
@@ -1965,26 +1918,24 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 			o[oi++] = x;
 			continue;
 
-		 a_len_error:
+		a_len_error:
 			fe_message ("String ends in $a", FE_MSG_WARN);
-			free (i);
-			return 1;
-		 a_range_error:
+			goto err;
+		a_range_error:
 			fe_message ("$a value is greater than 255", FE_MSG_WARN);
-			free (i);
-			return 1;
+			goto err;
 		}
 		if (d == 't')
 		{
 			/* Tab - if tabnicks is set then write '\t' else ' ' */
-			s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
+			s = g_new (struct pevt_stage1, 1);
 			if (base == NULL)
 				base = s;
 			if (last != NULL)
 				last->next = s;
 			last = s;
 			s->next = NULL;
-			s->data = malloc (1);
+			s->data = g_malloc (1);
 			s->len = 1;
 			clen += 1;
 			s->data[0] = 3;
@@ -1995,20 +1946,19 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		{
 			snprintf (o, sizeof (o), "Error, invalid argument $%c\n", d);
 			fe_message (o, FE_MSG_WARN);
-			free (i);
-			return 1;
+			goto err;
 		}
 		d -= '0';
 		if (max < d)
 			max = d;
-		s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
+		s = g_new (struct pevt_stage1, 1);
 		if (base == NULL)
 			base = s;
 		if (last != NULL)
 			last->next = s;
 		last = s;
 		s->next = NULL;
-		s->data = malloc (2);
+		s->data = g_malloc (2);
 		s->len = 2;
 		clen += 2;
 		s->data[0] = 1;
@@ -2016,14 +1966,14 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 	}
 	if (oi > 0)
 	{
-		s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
+		s = g_new (struct pevt_stage1, 1);
 		if (base == NULL)
 			base = s;
 		if (last != NULL)
 			last->next = s;
 		last = s;
 		s->next = NULL;
-		s->data = malloc (oi + sizeof (int) + 1);
+		s->data = g_malloc (oi + sizeof (int) + 1);
 		s->len = oi + sizeof (int) + 1;
 		clen += oi + sizeof (int) + 1;
 		s->data[0] = 0;
@@ -2031,41 +1981,55 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		memcpy (&(s->data[1 + sizeof (int)]), o, oi);
 		oi = 0;
 	}
-	s = (struct pevt_stage1 *) malloc (sizeof (struct pevt_stage1));
+	s = g_new (struct pevt_stage1, 1);
 	if (base == NULL)
 		base = s;
 	if (last != NULL)
 		last->next = s;
 	last = s;
 	s->next = NULL;
-	s->data = malloc (1);
+	s->data = g_malloc (1);
 	s->len = 1;
 	clen += 1;
 	s->data[0] = 2;
 
 	oi = 0;
 	s = base;
-	obuf = malloc (clen);
+	obuf = g_malloc (clen);
+
 	while (s)
 	{
 		next = s->next;
 		memcpy (&obuf[oi], s->data, s->len);
 		oi += s->len;
-		free (s->data);
-		free (s);
+		g_free (s->data);
+		g_free (s);
 		s = next;
 	}
 
-	free (i);
+	g_free (i);
 
 	if (max_arg)
 		*max_arg = max;
 	if (output)
 		*output = obuf;
 	else
-		free (obuf);
+		g_free (obuf);
 
 	return 0;
+
+err:
+	while (s)
+	{
+		next = s->next;
+		g_free (s->data);
+		g_free (s);
+		s = next;
+	}
+
+	g_free(i);
+
+	return 1;
 }
 
 
@@ -2356,9 +2320,8 @@ sound_load_event (char *evt, char *file)
 
 	if (file[0] && pevent_find (evt, &i) != -1)
 	{
-		if (sound_files[i])
-			free (sound_files[i]);
-		sound_files[i] = strdup (file);
+		g_free (sound_files[i]);
+		sound_files[i] = g_strdup (file);
 	}
 }
 

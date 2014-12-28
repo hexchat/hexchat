@@ -456,12 +456,7 @@ session_new (server *serv, char *from, int type, int focus)
 {
 	session *sess;
 
-	sess = malloc (sizeof (struct session));
-	if (sess == NULL)
-	{
-		return NULL;
-	}
-	memset (sess, 0, sizeof (struct session));
+	sess = g_new0 (struct session, 1);
 
 	sess->server = serv;
 	sess->logfd = -1;
@@ -543,9 +538,8 @@ exec_notify_kill (session * sess)
 		waitpid (re->childpid, NULL, WNOHANG);
 		fe_input_remove (re->iotag);
 		close (re->myfd);
-		if (re->linebuf)
-			free(re->linebuf);
-		free (re);
+		g_free(re->linebuf);
+		g_free (re);
 	}
 #endif
 }
@@ -651,10 +645,8 @@ session_free (session *killsess)
 	send_quit_or_part (killsess);
 
 	history_free (&killsess->history);
-	if (killsess->topic)
-		free (killsess->topic);
-	if (killsess->current_modes)
-		free (killsess->current_modes);
+	g_free (killsess->topic);
+	g_free (killsess->current_modes);
 
 	fe_session_callback (killsess);
 
@@ -665,7 +657,7 @@ session_free (session *killsess)
 			current_sess = sess_list->data;
 	}
 
-	free (killsess);
+	g_free (killsess);
 
 	if (!sess_list && !in_hexchat_exit)
 		hexchat_exit ();						/* sess_list is empty, quit! */
@@ -1029,11 +1021,11 @@ main (int argc, char *argv[])
 			if ((strcmp (argv[i], "-d") == 0 || strcmp (argv[i], "--cfgdir") == 0)
 				&& i + 1 < argc)
 			{
-				xdir = strdup (argv[i + 1]);
+				xdir = g_strdup (argv[i + 1]);
 			}
 			else if (strncmp (argv[i], "--cfgdir=", 9) == 0)
 			{
-				xdir = strdup (argv[i] + 9);
+				xdir = g_strdup (argv[i] + 9);
 			}
 
 			if (xdir != NULL)

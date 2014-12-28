@@ -121,13 +121,12 @@ userlist_set_account (struct session *sess, char *nick, char *account)
 	user = userlist_find (sess, nick);
 	if (user)
 	{
-		if (user->account)
-			free (user->account);
+		g_free (user->account);
 			
 		if (strcmp (account, "*") == 0)
 			user->account = NULL;
 		else
-			user->account = strdup (account);
+			user->account = g_strdup (account);
 			
 		/* gui doesnt currently reflect login status, maybe later
 		fe_userlist_rehash (sess, user); */
@@ -148,14 +147,14 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 		{
 			if (prefs.hex_gui_ulist_show_hosts)
 				do_rehash = TRUE;
-			user->hostname = strdup (hostname);
+			user->hostname = g_strdup (hostname);
 		}
 		if (!user->realname && realname && *realname)
-			user->realname = strdup (realname);
+			user->realname = g_strdup (realname);
 		if (!user->servername && servername)
-			user->servername = strdup (servername);
+			user->servername = g_strdup (servername);
 		if (!user->account && account && strcmp (account, "0") != 0)
-			user->account = strdup (account);
+			user->account = g_strdup (account);
 		if (away != 0xff)
 		{
 			if (user->away != away)
@@ -175,15 +174,11 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 static int
 free_user (struct User *user, gpointer data)
 {
-	if (user->realname)
-		free (user->realname);
-	if (user->hostname)
-		free (user->hostname);
-	if (user->servername)
-		free (user->servername);
-	if (user->account)
-		free (user->account);
-	free (user);
+	g_free (user->realname);
+	g_free (user->hostname);
+	g_free (user->servername);
+	g_free (user->account);
+	g_free (user);
 
 	return TRUE;
 }
@@ -397,8 +392,7 @@ userlist_add (struct session *sess, char *name, char *hostname,
 
 	notify_set_online (sess->server, name + prefix_chars, tags_data);
 
-	user = malloc (sizeof (struct User));
-	memset (user, 0, sizeof (struct User));
+	user = g_new0 (struct User, 1);
 
 	user->access = acc;
 
@@ -408,7 +402,7 @@ userlist_add (struct session *sess, char *name, char *hostname,
 
 	/* add it to our linked list */
 	if (hostname)
-		user->hostname = strdup (hostname);
+		user->hostname = g_strdup (hostname);
 	safe_strcpy (user->nick, name + prefix_chars, NICKLEN);
 	/* is it me? */
 	if (!sess->server->p_cmp (user->nick, sess->server->nick))
@@ -417,9 +411,9 @@ userlist_add (struct session *sess, char *name, char *hostname,
 	if (sess->server->have_extjoin)
 	{
 		if (account && *account)
-			user->account = strdup (account);
+			user->account = g_strdup (account);
 		if (realname && *realname)
-			user->realname = strdup (realname);
+			user->realname = g_strdup (realname);
 	}
 
 	row = userlist_insertname (sess, user);
@@ -427,13 +421,10 @@ userlist_add (struct session *sess, char *name, char *hostname,
 	/* duplicate? some broken servers trigger this */
 	if (row == -1)
 	{
-		if (user->hostname)
-			free (user->hostname);
-		if (user->account)
-			free (user->account);
-		if (user->realname)
-			free (user->realname);
-		free (user);
+		g_free (user->hostname);
+		g_free (user->account);
+		g_free (user->realname);
+		g_free (user);
 		return;
 	}
 

@@ -148,7 +148,7 @@ chanlist_data_free (server *serv)
 			data = rows->data;
 			g_free (data->topic);
 			g_free (data->collation_key);
-			free (data);
+			g_free (data);
 		}
 
 		g_slist_free (serv->gui->chanlist_data_stored_rows);
@@ -370,7 +370,7 @@ fe_add_chan_list (server *serv, char *chan, char *users, char *topic)
 	int len = strlen (chan) + 1;
 
 	/* we allocate the struct and channel string in one go */
-	next_row = malloc (sizeof (chanlistrow) + len);
+	next_row = g_malloc (sizeof (chanlistrow) + len);
 	memcpy (((char *)next_row) + sizeof (chanlistrow), chan, len);
 	next_row->topic = strip_color (topic, -1, STRIP_ALL);
 	next_row->collation_key = g_utf8_collate_key (chan, len-1);

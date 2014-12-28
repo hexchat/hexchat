@@ -727,7 +727,7 @@ custom_list_resort (CustomList * custom_list)
 							 custom_list);
 
 	/* let other objects know about the new order */
-	neworder = malloc (sizeof (gint) * custom_list->num_rows);
+	neworder = g_new (gint, custom_list->num_rows);
 
 	for (i = custom_list->num_rows - 1; i >= 0; i--)
 	{
@@ -744,7 +744,7 @@ custom_list_resort (CustomList * custom_list)
 	gtk_tree_model_rows_reordered (GTK_TREE_MODEL (custom_list), path, NULL,
 											 neworder);
 	gtk_tree_path_free (path);
-	free (neworder);
+	g_free (neworder);
 }
 
 void
