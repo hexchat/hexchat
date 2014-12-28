@@ -44,7 +44,6 @@ AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([HAVE_GTK_MAC],[#undef HAVE_GTK_MAC])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
-AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
 AH_VERBATIM([USE_SIGACTION],[#undef USE_SIGACTION])
@@ -87,10 +86,6 @@ dnl *********************************************************************
 AC_ARG_ENABLE(socks,
 	[AS_HELP_STRING([--enable-socks],[link with SOCKS5 library (default: no)])],
         socks=$enableval, socks=no)
-
-AC_ARG_ENABLE(ipv6,
-	[AS_HELP_STRING([--disable-ipv6],[disable IPv6])],
-        ipv6=$enableval, ipv6=yes)
 
 AC_ARG_ENABLE(openssl,
 	[AS_HELP_STRING([--enable-openssl[=PATH]],[enable use of openSSL])],
@@ -354,16 +349,13 @@ AC_CHECK_FUNC(select, ,
 						AC_MSG_WARN(i can not find select.  you might need to help me)))))))
 AC_CHECK_LIB(socket, select)
 
-if test "$ipv6" = yes; then
-	AC_CHECK_FUNCS(getaddrinfo, have_getaddrinfo=yes)
-	AC_MSG_CHECKING(whether to enable IPv6 support)
-	if test "$have_getaddrinfo" = yes; then
-		AC_MSG_RESULT(yes)
-		AC_DEFINE(USE_IPV6)
-	else
-		ipv6=no
-		AC_MSG_RESULT(no)
-	fi
+AC_CHECK_FUNCS(getaddrinfo, have_getaddrinfo=yes)
+AC_MSG_CHECKING(whether IPv6 is supported)
+if test "$have_getaddrinfo" = yes; then
+	AC_MSG_RESULT(yes)
+else
+	AC_MSG_RESULT(no)
+	AC_MSG_ERROR(ipv6 support not found!)
 fi
 
 dnl *********************************************************************
@@ -847,7 +839,6 @@ echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
 echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
-echo IPv6 support .......... : $ipv6
 echo libproxy support ...... : $libproxy
 echo
 echo Perl .................. : $perl

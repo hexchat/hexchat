@@ -112,9 +112,6 @@ fe_new_window (struct session *sess, int focus)
 #ifdef USE_OPENSSL
 	"OpenSSL "
 #endif
-#ifdef USE_IPV6
-	"IPv6"
-#endif
 	"\n\n", 0, FALSE);
 	fflush (stdout);
 }

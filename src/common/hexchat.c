@@ -760,15 +760,11 @@ xchat_init (void)
 #ifdef WIN32
 	WSADATA wsadata;
 
-#ifdef USE_IPV6
 	if (WSAStartup(0x0202, &wsadata) != 0)
 	{
 		MessageBox (NULL, "Cannot find winsock 2.2+", "Error", MB_OK);
 		exit (0);
 	}
-#else
-	WSAStartup(0x0101, &wsadata);
-#endif	/* !USE_IPV6 */
 #endif	/* !WIN32 */
 
 #ifdef USE_SIGACTION
