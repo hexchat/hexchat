@@ -21,8 +21,6 @@
  *      Inferno Nettverk A/S, Norway.  All rights reserved.
  */
 
-/*#define DEBUG_MSPROXY*/
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -61,10 +59,6 @@
 #include <openssl/ssl.h>		  /* SSL_() */
 #include <openssl/err.h>		  /* ERR_() */
 #include "ssl.h"
-#endif
-
-#ifdef USE_MSPROXY
-#include "msproxy.h"
 #endif
 
 #ifdef WIN32
@@ -906,9 +900,6 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 	char outbuf[512];
 	char host[100];
 	char ip[100];
-#ifdef USE_MSPROXY
-	char *p;
-#endif
 
 	waitline2 (source, tbuf, sizeof tbuf);
 
@@ -982,23 +973,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		break;
 	case '4':						  /* success */
 		waitline2 (source, tbuf, sizeof (tbuf));
-#ifdef USE_MSPROXY
-		serv->sok = strtol (tbuf, &p, 10);
-		if (*p++ == ' ')
-		{
-			serv->proxy_sok = strtol (p, &p, 10);
-			serv->msp_state.clientid = strtol (++p, &p, 10);
-			serv->msp_state.serverid = strtol (++p, &p, 10);
-			serv->msp_state.seq_sent = atoi (++p);
-		} else
-			serv->proxy_sok = -1;
-#ifdef DEBUG_MSPROXY
-		printf ("Parent got main socket: %d, proxy socket: %d\n", serv->sok, serv->proxy_sok);
-		printf ("Client ID 0x%08x server ID 0x%08x seq_sent %d\n", serv->msp_state.clientid, serv->msp_state.serverid, serv->msp_state.seq_sent);
-#endif
-#else
 		serv->sok = atoi (tbuf);
-#endif
 #ifdef USE_IPV6
 		/* close the one we didn't end up using */
 		if (serv->sok == serv->sok4)
@@ -1451,7 +1426,7 @@ traverse_http (int print_fd, int sok, char *serverAddr, int port)
 }
 
 static int
-traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, struct msproxy_state_t *state, netstore *ns_proxy, int csok4, int csok6, int *csok, char bound)
+traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, netstore *ns_proxy, int csok4, int csok6, int *csok, char bound)
 {
 	switch (proxy_type)
 	{
@@ -1463,10 +1438,6 @@ traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, struc
 		return traverse_socks5 (print_fd, sok, ip, port);
 	case 4:
 		return traverse_http (print_fd, sok, ip, port);
-#ifdef USE_MSPROXY
-	case 5:
-		return traverse_msproxy (sok, ip, port, state, ns_proxy, csok4, csok6, csok, bound);
-#endif
 	}
 
 	return 1;
@@ -1622,16 +1593,10 @@ server_child (server * serv)
 		/* connect succeeded */
 		if (proxy_ip)
 		{
-			switch (traverse_proxy (proxy_type, serv->childwrite, psok, proxy_ip, port, &serv->msp_state, ns_proxy, serv->sok4, serv->sok6, &sok, bound))
+			switch (traverse_proxy (proxy_type, serv->childwrite, psok, proxy_ip, port, ns_proxy, serv->sok4, serv->sok6, &sok, bound))
 			{
 			case 0:	/* success */
-#ifdef USE_MSPROXY
-				if (!serv->dont_use_proxy && (proxy_type == 5))
-					g_snprintf (buf, sizeof (buf), "4\n%d %d %d %d %d\n", sok, psok, serv->msp_state.clientid, serv->msp_state.serverid,
-						serv->msp_state.seq_sent);
-				else
-#endif
-					g_snprintf (buf, sizeof (buf), "4\n%d\n", sok);	/* success */
+				g_snprintf (buf, sizeof (buf), "4\n%d\n", sok);	/* success */
 				write (serv->childwrite, buf, strlen (buf));
 				break;
 			case 1:	/* socks traversal failed */
@@ -1761,16 +1726,8 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 
 	/* create both sockets now, drop one later */
 	net_sockets (&serv->sok4, &serv->sok6);
-#ifdef USE_MSPROXY
-	/* In case of MS Proxy we have a separate UDP control connection */
-	if (!serv->dont_use_proxy && (serv->proxy_type == 5))
-		udp_sockets (&serv->proxy_sok4, &serv->proxy_sok6);
-	else
-#endif
-	{
-		serv->proxy_sok4 = -1;
-		serv->proxy_sok6 = -1;
-	}
+	serv->proxy_sok4 = -1;
+	serv->proxy_sok6 = -1;
 
 #ifdef WIN32
 	CloseHandle (CreateThread (NULL, 0,

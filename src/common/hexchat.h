@@ -429,14 +429,6 @@ typedef struct session
 	void (*scrollback_replay_marklast) (struct session *sess);
 } session;
 
-struct msproxy_state_t
-{
-	gint32				clientid;
-	gint32				serverid;
-	unsigned char		seq_recv;		/* seq number of last packet recv.	*/
-	unsigned char		seq_sent;		/* seq number of last packet sent.	*/
-};
-
 /* SASL Mechanisms */
 #define MECH_PLAIN 0
 #define MECH_BLOWFISH 1
@@ -494,7 +486,6 @@ typedef struct server
 	int proxy_sok;				/* Additional information for MS Proxy beast */
 	int proxy_sok4;
 	int proxy_sok6;
-	struct msproxy_state_t msp_state;
 	int id;					/* unique ID number (for plugin API) */
 #ifdef USE_OPENSSL
 	SSL_CTX *ctx;

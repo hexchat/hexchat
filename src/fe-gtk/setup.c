@@ -560,9 +560,6 @@ static const char *const proxytypes[] =
 	N_("Socks4"),
 	N_("Socks5"),
 	N_("HTTP"),
-#ifdef USE_MSPROXY
-	N_("MS Proxy (ISA)"),
-#endif
 #ifdef USE_LIBPROXY
 	N_("Auto"),
 #endif
@@ -599,11 +596,7 @@ static const setting network_settings[] =
 	{ST_MENU,	N_("Use proxy for:"), P_OFFINTNL(hex_net_proxy_use), 0, proxyuse, 0},
 
 	{ST_HEADER,	N_("Proxy Authentication"), 0, 0, 0, 0},
-#ifdef USE_MSPROXY
-	{ST_TOGGLE,	N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
-#else
 	{ST_TOGGLE,	N_("Use Authentication (HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
-#endif
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(hex_net_proxy_user), 0, 0, sizeof prefs.hex_net_proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(hex_net_proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.hex_net_proxy_pass},
 

@@ -55,10 +55,6 @@
 #include <glib-object.h>			/* for g_type_init() */
 #endif
 
-#ifdef USE_MSPROXY
-#include "msproxy.h"
-#endif
-
 #ifdef USE_LIBPROXY
 #include <proxy.h>
 #endif
@@ -360,9 +356,6 @@ static int
 hexchat_misc_checks (void)		/* this gets called every 1/2 second */
 {
 	static int count = 0;
-#ifdef USE_MSPROXY
-	static int count2 = 0;
-#endif
 
 	count++;
 
@@ -377,15 +370,6 @@ hexchat_misc_checks (void)		/* this gets called every 1/2 second */
 			lag_check ();
 		count = 0;
 	}
-
-#ifdef USE_MSPROXY	
-	count2++;
-	if (count2 >= 720)			/* 720 every 6 minutes */
-	{
-		msproxy_keepalive ();
-		count2 = 0;
-	}
-#endif
 
 	return 1;
 }
