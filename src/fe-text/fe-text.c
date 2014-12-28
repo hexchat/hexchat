@@ -208,7 +208,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 						else
 							col = 30;
 						mirc = atoi (num);
-						mirc = colconv[mirc];
+						mirc = colconv[mirc % G_N_ELEMENTS(colconv)];
 						if (mirc > 9)
 						{
 							mirc += 50;
