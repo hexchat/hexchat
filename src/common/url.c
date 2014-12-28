@@ -415,7 +415,7 @@ regex_match (const GRegex *re, const char *word, int *start, int *end)
 }
 
 /*	Miscellaneous description --- */
-#define DOMAIN "[_\\pL\\pN\\pS][-_\\pL\\pN\\pS]*(\\.[-_\\pL\\pN]+)*"
+#define DOMAIN "[_\\pL\\pN\\pS][-_\\pL\\pN\\pS]*(\\.[-_\\pL\\pN\\pS]+)*"
 #define TLD "\\.[\\pL][-\\pL\\pN]*[\\pL]"
 #define IPADDR "[0-9]{1,3}(\\.[0-9]{1,3}){3}"
 #define IPV6GROUP "([0-9a-f]{0,4})"
