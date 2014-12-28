@@ -51,9 +51,6 @@
 #if defined (USING_FREEBSD) || defined (__APPLE__)
 #include <sys/sysctl.h>
 #endif
-#ifdef SOCKS
-#include <socks.h>
-#endif
 
 /* SASL mechanisms */
 #ifdef USE_OPENSSL

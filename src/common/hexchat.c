@@ -1038,10 +1038,6 @@ main (int argc, char *argv[])
 	/* we MUST do this after load_config () AND before fe_init (thus gtk_init) otherwise it will fail */
 	set_locale ();
 
-#ifdef SOCKS
-	SOCKSinit (argv[0]);
-#endif
-
 	ret = fe_args (argc, argv);
 	if (ret != -1)
 		return ret;

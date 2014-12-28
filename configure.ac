@@ -38,7 +38,6 @@ AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
 AH_VERBATIM([PREFIX],[#undef PREFIX])
 AH_VERBATIM([HEXCHATLIBDIR],[#undef HEXCHATLIBDIR])
 AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
-AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([HAVE_GTK_MAC],[#undef HAVE_GTK_MAC])
@@ -82,10 +81,6 @@ esac
 dnl *********************************************************************
 dnl ** configure switches ***********************************************
 dnl *********************************************************************
-
-AC_ARG_ENABLE(socks,
-	[AS_HELP_STRING([--enable-socks],[link with SOCKS5 library (default: no)])],
-        socks=$enableval, socks=no)
 
 AC_ARG_ENABLE(openssl,
 	[AS_HELP_STRING([--enable-openssl[=PATH]],[enable use of openSSL])],
@@ -603,23 +598,6 @@ AM_CONDITIONAL(DO_STATIC_ANALYSIS, test "x$analyze" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 AM_CONDITIONAL(HAVE_ISO_CODES, test "x$isocodes" = "xyes")
 AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
-
-dnl *********************************************************************
-dnl ** SOCKS5 ***********************************************************
-dnl *********************************************************************
-
-if test "$socks" = yes; then
-	socks=no
-	AC_CHECK_LIB(socks5, SOCKSconnect, have_socks=yes)
-	if test "$have_socks" = yes; then
-		AC_CHECK_HEADERS(socks.h, have_socks_h=yes)
-		if test "$have_socks_h" = yes; then
-			socks=yes
-			AC_DEFINE(SOCKS)
-			LIBS="$LIBS -lsocks5"
-		fi
-	fi
-fi
 
 dnl *********************************************************************
 dnl ** GCC FLAGS ********************************************************

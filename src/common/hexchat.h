@@ -38,14 +38,6 @@
 
 #include "history.h"
 
-#ifdef SOCKS
-#ifdef __sgi
-#include <sys/time.h>
-#define INCLUDE_PROTOTYPES 1
-#endif
-#include <socks.h>
-#endif
-
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */
 #endif
