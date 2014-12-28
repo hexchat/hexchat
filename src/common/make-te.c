@@ -87,9 +87,11 @@ int main(void)
 		if (i + 1 < max)
 		{
 			fprintf(stderr, "\t%s,\t\t%s,\n", defines[i], defines[i+1]);
+			free (defines[i]);
 			i++;
 		} else
 			fprintf(stderr, "\t%s,\n", defines[i]);
+		free (defines[i]);
 		i++;
 	}
 	fprintf(stderr, "\tNUM_XP\n};\n");
