@@ -162,7 +162,7 @@ print_summary (int announce, char* format)
 
 	free_space = pretty_freespace ("Physical", &mem_free, &mem_total);
 	snprintf (buffer, bsize, "%s", free_space);
-	free (free_space);
+	g_free (free_space);
 	format_output ("RAM", buffer, format);	
 	strcat (sysinfo, "\017 ");
 	strncat (sysinfo, buffer, bsize - strlen (sysinfo));

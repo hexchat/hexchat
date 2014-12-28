@@ -22,6 +22,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <glib.h>
 #include "xsys.h"
 
 float percentage(unsigned long long *free, unsigned long long *total)
@@ -37,13 +38,13 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
 	double free_space, total_space;
 	free_space = *free_k;
 	total_space = *total_k;
-        result = malloc(bsize * sizeof(char));
+	result = g_new(char, bsize);
 	if (total_space == 0)
 	{
 		snprintf(result, bsize, "%s: none", desc);
 		return result;
 	}
-        quantity = quantities;
+	quantity = quantities;
 	while (total_space > 1023 && *(quantity + 1))
 	{
 		quantity++;

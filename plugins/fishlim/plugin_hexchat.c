@@ -93,7 +93,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     // Send message
     hexchat_commandf(ph, "PRIVMSG %s :+OK %s", channel, encrypted);
     
-    free(encrypted);
+    g_free(encrypted);
     return HEXCHAT_EAT_HEXCHAT;
 }
 
@@ -180,7 +180,7 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
 
         g_string_append (message, peice);
     }
-    free(decrypted);
+    g_free(decrypted);
     
     // Simulate unencrypted message
     //hexchat_printf(ph, "simulating: %s\n", message->str);
@@ -191,8 +191,8 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     return HEXCHAT_EAT_HEXCHAT;
   
   decrypt_error:
-    free(decrypted);
-    free(sender_nick);
+    g_free(decrypted);
+    g_free(sender_nick);
     return HEXCHAT_EAT_NONE;
 }
 

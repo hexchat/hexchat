@@ -28,6 +28,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include <glib.h>
+
 bool irc_parse_message(const char *words[],
                        const char **prefix, const char **command,
                        size_t *parameters_offset);

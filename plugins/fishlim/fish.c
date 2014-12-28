@@ -75,9 +75,8 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message) {
     
     messagelen = strlen(message);
     if (messagelen == 0) return NULL;
-    encrypted = malloc(((messagelen-1)/8)*12 + 12 + 1); // each 8-byte block becomes 12 bytes
+    encrypted = g_malloc(((messagelen - 1) / 8) * 12 + 12 + 1); // each 8-byte block becomes 12 bytes
     end = encrypted;
-    if (!encrypted) return NULL;
      
     while (*message) {
         // Read 8 bytes (a Blowfish block)
@@ -124,9 +123,8 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data) {
     unsigned char d;
     BF_set_key(&bfkey, keylen, (const unsigned char*)key);
     
-    decrypted = malloc(strlen(data)+1);
+    decrypted = g_malloc(strlen(data) + 1);
     end = decrypted;
-    if (!decrypted) return NULL;
     
     while (*data) {
         // Convert from FiSH-BASE64
@@ -172,7 +170,7 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
     // Encrypt
     encrypted = fish_encrypt(key, strlen(key), data);
     
-    free(key);
+    g_free(key);
     return encrypted;
 }
 
@@ -190,7 +188,7 @@ char *fish_decrypt_from_nick(const char *nick, const char *data) {
     // Decrypt
     decrypted = fish_decrypt(key, strlen(key), data);
     
-    free(key);
+    g_free(key);
     return decrypted;
 }
 

@@ -28,6 +28,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include <glib.h>
+
 char *fish_encrypt(const char *key, size_t keylen, const char *message);
 char *fish_decrypt(const char *key, size_t keylen, const char *data);
 char *fish_encrypt_for_nick(const char *nick, const char *data);

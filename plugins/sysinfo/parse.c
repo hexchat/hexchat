@@ -29,6 +29,7 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <pci/header.h>
+#include <glib.h>
 
 #include "pci.h"
 #include "match.h"
@@ -317,13 +318,13 @@ int xs_parse_df(const char *mount_point, char *result)
 			char *tmp_buf = pretty_freespace(pos, &free_k, &total_k);
 			strcat(tmp_buf, " | ");
 			strcat(result, tmp_buf);
-			free(tmp_buf);
+			g_free(tmp_buf);
 		}
 		else if(strncmp(mount_point, pos, strlen(mount_point)) == 0)
 		{
 			char *tmp_buf = pretty_freespace(mount_point, &free_k, &total_k);
 			strncpy(result, tmp_buf, bsize);
-			free(tmp_buf);
+			g_free(tmp_buf);
 			break;
 		}
 		else snprintf(result, bsize, "Mount point %s not found!", mount_point);
@@ -336,7 +337,7 @@ int xs_parse_df(const char *mount_point, char *result)
 	{
 		char *tmp_buf = pretty_freespace("Total", &free_k, &total_k);
 		strncpy(result, tmp_buf, bsize);
-		free(tmp_buf);
+		g_free(tmp_buf);
 	}
 	pclose(pipe);
 	return 0;

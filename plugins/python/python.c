@@ -1407,11 +1407,7 @@ static Hook *
 Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
 	       PyObject *userdata, char *name, void *data)
 {
-	Hook *hook = (Hook *) g_malloc(sizeof(Hook));
-	if (hook == NULL) {
-		PyErr_NoMemory();
-		return NULL;
-	}
+	Hook *hook = g_new(Hook, 1);
 	hook->type = type;
 	hook->plugin = plugin;
 	Py_INCREF(callback);
@@ -2532,11 +2528,8 @@ IInterp_Exec(char *command)
 	}
 	d = PyModule_GetDict(m);
 	len = strlen(command);
-	buffer = (char *) g_malloc(len+2);
-	if (buffer == NULL) {
-		hexchat_print(ph, "Not enough memory for command buffer");
-		goto fail;
-	}
+
+	buffer = g_malloc(len + 2);
 	memcpy(buffer, command, len);
 	buffer[len] = '\n';
 	buffer[len+1] = 0;

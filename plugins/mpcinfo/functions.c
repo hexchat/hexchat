@@ -14,6 +14,8 @@
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <glib.h>
+
 char *split(char *text, char separator)
 {
 	int pos = -1;
@@ -67,7 +69,7 @@ int inStr(char *s1, size_t sl1, char *s2)
 
 static char *subString(char *text, int first, int length, int spcKill){
 //if (DEBUG==1) putlog("creating substring");
-	char *ret=(char*) calloc (length+1,sizeof(char)); //malloc(sizeof(char)*(length+1));
+	char *ret = g_new (char, length + 1);
 	int i;
 	ret[length]=0;
 	for (i=0;i<length;i++){
@@ -89,7 +91,7 @@ static char *substring(char *text, int first, int length){return subString(text,
 
 char *readLine(FILE *f){
      //if (DEBUG==1) putlog("reading line from file");
-     char *buffer=(char*)calloc(1024,sizeof(char)); //malloc(sizeof(char)*1024);
+     char *buffer = g_new (char, 1024);
      int pos=0;
      int cc=0;
      while((cc!=EOF)&&(pos<1024)&&(cc!=10)){

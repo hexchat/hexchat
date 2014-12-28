@@ -28,11 +28,11 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include <glib.h>
+
 char *keystore_get_key(const char *nick);
 bool keystore_store_key(const char *nick, const char *key);
 bool keystore_delete_nick(const char *nick);
-
-void keystore_secure_free(void *ptr, size_t size);
 
 #endif
 

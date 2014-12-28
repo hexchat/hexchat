@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,8 +33,9 @@
 #include <dirent.h>
 #endif
 
+#include <glib.h>
+
 #undef PACKAGE
-#include "config.h"
 
 #include "hexchat-plugin.h"
 
@@ -75,37 +78,26 @@ thread_mbox (char *str)
 static void
 perl_auto_load_from_path (const char *path)
 {
-	WIN32_FIND_DATA find_data;
-	HANDLE find_handle;
-	char *search_path;
-	int path_len = strlen (path);
-
-	/* +6 for \*.pl and \0 */
-	search_path = malloc(path_len + 6);
-	sprintf (search_path, "%s\\*.pl", path);
-
-	find_handle = FindFirstFile (search_path, &find_data);
+	char *search_path = g_build_filename (path, "*.pl", NULL);
+	WIN32_FIND_DATAA find_data;
+	HANDLE find_handle = FindFirstFileA (search_path, &find_data);
 
 	if (find_handle != INVALID_HANDLE_VALUE)
 	{
 		do
 		{
-			if (!(find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
-				||find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN))
+			if ((find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 && (find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == 0)
 			{
-				char *full_path =
-					malloc (path_len + strlen (find_data.cFileName) + 2);
-				sprintf (full_path, "%s\\%s", path, find_data.cFileName);
-
+				char *full_path = g_build_filename (path, find_data.cFileName, NULL);
 				perl_load_file (full_path);
-				free (full_path);
+				g_free (full_path);
 			}
 		}
-		while (FindNextFile (find_handle, &find_data) != 0);
+		while (FindNextFileA (find_handle, &find_data) != 0);
 		FindClose (find_handle);
 	}
 
-	free (search_path);
+	g_free (search_path);
 }
 #else
 static void
@@ -115,14 +107,16 @@ perl_auto_load_from_path (const char *path)
 	struct dirent *ent;
 
 	dir = opendir (path);
-	if (dir) {
-		while ((ent = readdir (dir))) {
+	if (dir)
+	{
+		while ((ent = readdir (dir)))
+		{
 			int len = strlen (ent->d_name);
-			if (len > 3 && strcasecmp (".pl", ent->d_name + len - 3) == 0) {
-				char *file = malloc (len + strlen (path) + 2);
-				sprintf (file, "%s/%s", path, ent->d_name);
+			if (len > 3 && strcasecmp (".pl", ent->d_name + len - 3) == 0)
+			{
+				char *file = g_build_filename (path, ent->d_name, NULL);
 				perl_load_file (file);
-				free (file);
+				g_free (file);
 			}
 		}
 		closedir (dir);
@@ -145,31 +139,10 @@ perl_auto_load (void *unused)
 
 	/* don't pollute the filesystem with script files, this only causes misuse of the folders
 	 * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
-#if 0
-	/* autoload from ~/.config/hexchat/ or %APPDATA%\HexChat\ on win32 */
-	perl_auto_load_from_path (xdir);
-#endif
-
-	sub_dir = malloc (strlen (xdir) + 8);
-	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/addons");
+	sub_dir = g_build_filename (xdir, "addons", NULL);
 	perl_auto_load_from_path (sub_dir);
-	free (sub_dir);
+	g_free (sub_dir);
 
-#if 0
-#ifdef WIN32
-	/* autoload from  C:\Program Files\HexChat\plugins\ */
-	sub_dir = malloc (1025 + 9);
-	copied = GetModuleFileName( 0, sub_dir, 1024 );
-	sub_dir[copied] = '\0';
-	slash = strrchr( sub_dir, '\\' );
-	if( slash != NULL ) {
-		*slash = '\0';
-	}
-	perl_auto_load_from_path ( strncat (sub_dir, "\\plugins", 9));
-	free (sub_dir);
-#endif
-#endif
 	return 0;
 }
 
@@ -384,7 +357,7 @@ fd_cb (int fd, int flags, void *userdata)
 				if (data->userdata) {
 					SvREFCNT_dec (data->userdata);
 				}
-				free (data);
+				g_free (data);
 			}
 		}
 
@@ -748,7 +721,7 @@ XS (XS_HexChat_send_modes)
 		if (SvROK (ST (0))) {
 			p_targets = (AV*) SvRV (ST (0));
 			target_count = av_len (p_targets) + 1;
-			targets = malloc (target_count * sizeof (char *));
+			targets = g_new (const char *, target_count);
 			for (i = 0; i < target_count; i++ ) {
 				elem = av_fetch (p_targets, i, 0);
 
@@ -759,13 +732,13 @@ XS (XS_HexChat_send_modes)
 				}
 			}
 		} else{
-			targets = malloc (sizeof (char *));
+			targets = g_new (const char *, 1);
 			targets[0] = SvPV_nolen (ST (0));
 			target_count = 1;
 		}
 		
 		if (target_count == 0) {
-			free ((char**) targets);
+			g_free ((char**) targets);
 			XSRETURN_EMPTY;
 		}
 
@@ -777,7 +750,7 @@ XS (XS_HexChat_send_modes)
 		}
 
 		hexchat_send_modes (ph, targets, target_count, modes_per_line, sign, mode);
-		free ((char**) targets);
+		g_free ((char**) targets);
 	}
 }
 static
@@ -895,11 +868,7 @@ XS (XS_HexChat_hook_server)
 		userdata = ST (3);
 		package = ST (4);
 		data = NULL;
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
@@ -944,11 +913,7 @@ XS (XS_HexChat_hook_command)
 		package = ST (5);
 		data = NULL;
 
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
@@ -984,11 +949,7 @@ XS (XS_HexChat_hook_print)
 		userdata = ST (3);
 		package = ST (4);
 
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
@@ -1022,11 +983,7 @@ XS (XS_HexChat_hook_timer)
 		userdata = ST (2);
 		package = ST (3);
 
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->ctx = hexchat_get_context (ph);
@@ -1076,11 +1033,7 @@ XS (XS_HexChat_hook_fd)
 		}
 #endif
 
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
@@ -1120,7 +1073,7 @@ XS (XS_HexChat_unhook)
 				SvREFCNT_dec (userdata->package);
 			}
 
-			free (userdata);
+			g_free (userdata);
 		}
 		XSRETURN (retCount);
 	}

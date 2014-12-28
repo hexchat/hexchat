@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <glib.h>
 #include "hexchat-plugin.h"
 
 static hexchat_plugin *ph;
@@ -33,7 +34,7 @@ parse_command( char *word[], char *word_eol[], void *userdata ) {
 				break;
 			}
 
-			channel = strdup( token );
+			channel = g_strdup( token );
 				
 			delimiter = strchr( channel, '/' );
 
@@ -42,13 +43,13 @@ parse_command( char *word[], char *word_eol[], void *userdata ) {
 				*delimiter = '\0';
 
 				if( strlen( delimiter + 1 ) > 0 ) {
-					server = strdup( delimiter + 1 );
+					server = g_strdup( delimiter + 1 );
 				}
 			}
 
 			/* /Network form */
 			if( strlen( channel ) == 0 ) {
-				free( channel );
+				g_free( channel );
 				channel = NULL;
 			}
 
@@ -60,13 +61,8 @@ parse_command( char *word[], char *word_eol[], void *userdata ) {
 				}
 			}
 
-			if( channel != NULL ) {
-				free( channel );
-			}
-
-			if( server != NULL ) {
-				free( server );
-			}
+			g_free( channel );
+			g_free( server );
 		}
 	}
 	return HEXCHAT_EAT_HEXCHAT;

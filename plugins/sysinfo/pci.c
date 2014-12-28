@@ -25,6 +25,8 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <pci/pci.h>
+#include <glib.h>
+
 #include "xsys.h"
 
 static struct pci_filter filter;       /* Device filter */
@@ -47,8 +49,7 @@ static struct device *scan_device(struct pci_dev *p)
 
   	if (!pci_filter_match(&filter, p))
     		return NULL;
-  	d = malloc(sizeof(struct device));
-  	bzero(d, sizeof(*d));
+  	d = g_new0 (struct device, 1);
   	d->dev = p;
   	if (!pci_read_block(p, 0, d->config, how_much))
     		exit(1);
