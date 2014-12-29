@@ -172,7 +172,6 @@ identd_ipv6 (char *username)
 
 	return 0;
 }
-#endif
 
 void
 identd_start (char *username)
