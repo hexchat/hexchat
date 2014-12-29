@@ -175,11 +175,11 @@ dnl *********************************************************************
 dnl ** GLIB *************************************************************
 dnl *********************************************************************
 
-AM_PATH_GLIB_2_0([2.32.0], [], [AC_MSG_ERROR([Glib not found!])], [gmodule gobject gio])
+AM_PATH_GLIB_2_0([2.36.0], [], [AC_MSG_ERROR([Glib not found!])], [gmodule gobject gio])
 COMMON_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
 COMMON_LIBS="$GLIB_LIBS"
-AC_DEFINE([GLIB_VERSION_MIN_REQUIRED], [GLIB_VERSION_2_32], [Dont warn using older APIs])
-AC_DEFINE([GLIB_VERSION_MAX_ALLOWED], [GLIB_VERSION_2_32], [Prevents using newer APIs])
+AC_DEFINE([GLIB_VERSION_MIN_REQUIRED], [GLIB_VERSION_2_36], [Dont warn using older APIs])
+AC_DEFINE([GLIB_VERSION_MAX_ALLOWED], [GLIB_VERSION_2_36], [Prevents using newer APIs])
 
 dnl *********************************************************************
 dnl ** GTK **************************************************************

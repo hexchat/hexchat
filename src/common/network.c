@@ -120,10 +120,13 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 	getnameinfo (ns->ip6_hostent->ai_addr, ns->ip6_hostent->ai_addrlen,
 					 ipstring, sizeof (ipstring), NULL, 0, NI_NUMERICHOST);
 
-	if (ns->ip6_hostent->ai_canonname)
-		*real_host = g_strdup (ns->ip6_hostent->ai_canonname);
-	else
-		*real_host = g_strdup (hostname);
+	if (real_host)
+	{
+		if (ns->ip6_hostent->ai_canonname)
+			*real_host = g_strdup (ns->ip6_hostent->ai_canonname);
+		else
+			*real_host = g_strdup (hostname);
+	}
 
 	return g_strdup (ipstring);
 }

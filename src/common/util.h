@@ -61,10 +61,7 @@ int strip_hidden_attribute (char *src, char *dst);
 char *errorstring (int err);
 int waitline (int sok, char *buf, int bufsize, int);
 #ifdef WIN32
-int waitline2 (GIOChannel *source, char *buf, int bufsize);
 int get_cpu_arch (void);
-#else
-#define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
 #endif
 unsigned long make_ping_time (void);
 void move_file (char *src_dir, char *dst_dir, char *fname, int dccpermissions);

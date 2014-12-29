@@ -487,9 +487,7 @@ typedef struct server
 #else
 	void *ssl;
 #endif
-	int childread;
-	int childwrite;
-	int childpid;
+	GCancellable *cancellable;      /* to cancel connecting thread */
 	int iotag;
 	int recondelay_tag;				/* reconnect delay timeout */
 	int joindelay_tag;				/* waiting before we send JOIN */

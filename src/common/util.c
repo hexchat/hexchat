@@ -207,34 +207,6 @@ waitline (int sok, char *buf, int bufsize, int use_recv)
 	}
 }
 
-#ifdef WIN32
-/* waitline2 using win32 file descriptor and glib instead of _read. win32 can't _read() sok! */
-int
-waitline2 (GIOChannel *source, char *buf, int bufsize)
-{
-	int i = 0;
-	gsize len;
-	GError *error = NULL;
-
-	while (1)
-	{
-		g_io_channel_set_buffered (source, FALSE);
-		g_io_channel_set_encoding (source, NULL, &error);
-
-		if (g_io_channel_read_chars (source, &buf[i], 1, &len, &error) != G_IO_STATUS_NORMAL)
-		{
-			return -1;
-		}
-		if (buf[i] == '\n' || bufsize == i + 1)
-		{
-			buf[i] = 0;
-			return i;
-		}
-		i++;
-	}
-}
-#endif
-
 /* checks for "~" in a file and expands */
 
 char *

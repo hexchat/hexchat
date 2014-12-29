@@ -65,6 +65,8 @@
 #include <proxy.h>
 #endif
 
+#define HEXCHAT_CONNECTION_ERROR g_quark_from_static_string("hexchat-connection-error")
+
 #ifdef USE_OPENSSL
 /* local variables */
 static struct session *g_sess = NULL;
@@ -81,6 +83,14 @@ static void server_connect (server *serv, char *hostname, int port, int no_login
 #ifdef USE_LIBPROXY
 extern pxProxyFactory *libproxy_factory;
 #endif
+
+enum
+{
+	RESOLVE_FAILED = 1,
+	CONNECTION_FAILED,
+	BIND_FAILED,
+	PROXY_FAILED
+};
 
 /* actually send to the socket. This might do a character translation or
    send via SSL. server/dcc both use this function. */
@@ -538,25 +548,6 @@ server_stopconnecting (server * serv)
 		serv->joindelay_tag = 0;
 	}
 
-#ifndef WIN32
-	/* kill the child process trying to connect */
-	kill (serv->childpid, SIGKILL);
-	waitpid (serv->childpid, NULL, 0);
-
-	close (serv->childwrite);
-	close (serv->childread);
-#else
-	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
-
-	{
-		/* if we close the pipe now, giowin32 will crash. */
-		int *pipefd = g_new (int, 2);
-		pipefd[0] = serv->childwrite;
-		pipefd[1] = serv->childread;
-		g_idle_add ((GSourceFunc)server_close_pipe, pipefd);
-	}
-#endif
-
 #ifdef USE_OPENSSL
 	if (serv->ssl_do_connect_tag)
 	{
@@ -564,6 +555,12 @@ server_stopconnecting (server * serv)
 		serv->ssl_do_connect_tag = 0;
 	}
 #endif
+
+	if (serv->cancellable)
+	{
+		g_object_unref (serv->cancellable);
+		serv->cancellable = NULL;
+	}
 
 	fe_progressbar_end (serv);
 
@@ -886,124 +883,6 @@ server_connect_success (server *serv)
 	server_connected (serv);
 }
 
-/* receive info from the child-process about connection progress */
-
-static gboolean
-server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
-{
-	session *sess = serv->server_session;
-	char tbuf[128];
-	char outbuf[512];
-	char host[100];
-	char ip[100];
-
-	waitline2 (source, tbuf, sizeof tbuf);
-
-	switch (tbuf[0])
-	{
-	case '0':	/* print some text */
-		waitline2 (source, tbuf, sizeof tbuf);
-		PrintText (serv->server_session, tbuf);
-		break;
-	case '1':						  /* unknown host */
-		server_stopconnecting (serv);
-		closesocket (serv->sok4);
-		if (serv->proxy_sok4 != -1)
-			closesocket (serv->proxy_sok4);
-		if (serv->sok6 != -1)
-			closesocket (serv->sok6);
-		if (serv->proxy_sok6 != -1)
-			closesocket (serv->proxy_sok6);
-		EMIT_SIGNAL (XP_TE_UKNHOST, sess, NULL, NULL, NULL, NULL, 0);
-		if (!servlist_cycle (serv))
-			if (prefs.hex_net_auto_reconnectonfail)
-				auto_reconnect (serv, FALSE, -1);
-		break;
-	case '2':						  /* connection failed */
-		waitline2 (source, tbuf, sizeof tbuf);
-		server_stopconnecting (serv);
-		closesocket (serv->sok4);
-		if (serv->proxy_sok4 != -1)
-			closesocket (serv->proxy_sok4);
-		if (serv->sok6 != -1)
-			closesocket (serv->sok6);
-		if (serv->proxy_sok6 != -1)
-			closesocket (serv->proxy_sok6);
-		EMIT_SIGNAL (XP_TE_CONNFAIL, sess, errorstring (atoi (tbuf)), NULL,
-						 NULL, NULL, 0);
-		if (!servlist_cycle (serv))
-			if (prefs.hex_net_auto_reconnectonfail)
-				auto_reconnect (serv, FALSE, -1);
-		break;
-	case '3':						  /* gethostbyname finished */
-		waitline2 (source, host, sizeof host);
-		waitline2 (source, ip, sizeof ip);
-		waitline2 (source, outbuf, sizeof outbuf);
-		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
-		break;
-	case '4':						  /* success */
-		waitline2 (source, tbuf, sizeof (tbuf));
-		serv->sok = atoi (tbuf);
-		/* close the one we didn't end up using */
-		if (serv->sok == serv->sok4)
-			closesocket (serv->sok6);
-		else
-			closesocket (serv->sok4);
-		if (serv->proxy_sok != -1)
-		{
-			if (serv->proxy_sok == serv->proxy_sok4)
-				closesocket (serv->proxy_sok6);
-			else
-				closesocket (serv->proxy_sok4);
-		}
-
-		{
-			struct sockaddr addr;
-			int addr_len = sizeof (addr);
-			guint16 port;
-
-			if (!getsockname (serv->sok, &addr, &addr_len))
-			{
-				if (addr.sa_family == AF_INET)
-					port = ntohs(((struct sockaddr_in *)&addr)->sin_port);
-				else
-					port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
-
-				g_snprintf (outbuf, sizeof (outbuf), "IDENTD %"G_GUINT16_FORMAT" ", port);
-				if (serv->network && ((ircnet *)serv->network)->user)
-					g_strlcat (outbuf, ((ircnet *)serv->network)->user, sizeof (outbuf));
-				else
-					g_strlcat (outbuf, prefs.hex_irc_user_name, sizeof (outbuf));
-
-				handle_command (serv->server_session, outbuf, FALSE);
-			}
-		}
-
-		server_connect_success (serv);
-		break;
-	case '5':						  /* prefs ip discovered */
-		waitline2 (source, tbuf, sizeof tbuf);
-		prefs.local_ip = inet_addr (tbuf);
-		break;
-	case '7':						  /* gethostbyname (prefs.hex_net_bind_host) failed */
-		sprintf (outbuf,
-					_("Cannot resolve hostname %s\nCheck your IP Settings!\n"),
-					prefs.hex_net_bind_host);
-		PrintText (sess, outbuf);
-		break;
-	case '8':
-		PrintText (sess, _("Proxy traversal failed.\n"));
-		server_disconnect (sess, FALSE, -1);
-		break;
-	case '9':
-		waitline2 (source, tbuf, sizeof tbuf);
-		EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, tbuf, NULL, NULL, NULL, 0);
-		break;
-	}
-
-	return TRUE;
-}
-
 /* kill all sockets & iotags of a server. Stop a connection attempt, or
    disconnect if already connected. */
 
@@ -1072,7 +951,6 @@ server_disconnect (session * sess, int sendquit, int err)
 {
 	server *serv = sess->server;
 	GSList *list;
-	char tbuf[64];
 	gboolean shutup = FALSE;
 
 	/* send our QUIT reason */
@@ -1090,8 +968,8 @@ server_disconnect (session * sess, int sendquit, int err)
 		notc_msg (sess);
 		return;
 	case 1:							  /* it was in the process of connecting */
-		sprintf (tbuf, "%d", sess->server->childpid);
-		EMIT_SIGNAL (XP_TE_STOPCONNECT, sess, tbuf, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_STOPCONNECT, sess, NULL, NULL, NULL, NULL, 0);
+		g_cancellable_cancel (serv->cancellable);
 		return;
 	case 3:
 		shutup = TRUE;	/* won't print "disconnected" in channels */
@@ -1124,15 +1002,6 @@ server_disconnect (session * sess, int sendquit, int err)
 	notify_cleanup ();
 }
 
-/* send a "print text" command to the parent process - MUST END IN \n! */
-
-static void
-proxy_error (int fd, char *msg)
-{
-	write (fd, "0\n", 2);
-	write (fd, msg, strlen (msg));
-}
-
 struct sock_connect
 {
 	char version;
@@ -1147,7 +1016,7 @@ struct sock_connect
  *          1 socks traversal failed */
 
 static int
-traverse_socks (int print_fd, int sok, char *serverAddr, int port)
+traverse_socks (int sok, char *serverAddr, int port, GError **error)
 {
 	struct sock_connect sc;
 	unsigned char buf[256];
@@ -1165,7 +1034,7 @@ traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 		return 0;
 
 	g_snprintf (buf, sizeof (buf), "SOCKS\tServer reported error %d,%d.\n", buf[0], buf[1]);
-	proxy_error (print_fd, buf);
+	*error = g_error_new_literal (HEXCHAT_CONNECTION_ERROR, PROXY_FAILED, buf);
 	return 1;
 }
 
@@ -1177,7 +1046,7 @@ struct sock5_connect1
 };
 
 static int
-traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
+traverse_socks5 (int sok, char *serverAddr, int port, GError **error)
 {
 	struct sock5_connect1 sc1;
 	unsigned char *sc2;
@@ -1197,7 +1066,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 
 	if (buf[0] != 5)
 	{
-		proxy_error (print_fd, "SOCKS\tServer is not socks version 5.\n");
+		*error = g_error_new_literal (HEXCHAT_CONNECTION_ERROR, PROXY_FAILED, "SOCKS\tServer is not socks version 5.\n");
 		return 1;
 	}
 
@@ -1212,7 +1081,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 		/* authentication sub-negotiation (RFC1929) */
 		if (buf[1] != 2)  /* UPA not supported by server */
 		{
-			proxy_error (print_fd, "SOCKS\tServer doesn't support UPA authentication.\n");
+			*error = g_error_new_literal (HEXCHAT_CONNECTION_ERROR, PROXY_FAILED, "SOCKS\tServer doesn't support UPA authentication.\n");
 			return 1;
 		}
 
@@ -1232,7 +1101,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 			goto read_error;
 		if ( buf[1] != 0 )
 		{
-			proxy_error (print_fd, "SOCKS\tAuthentication failed. "
+			*error = g_error_new_literal (HEXCHAT_CONNECTION_ERROR, PROXY_FAILED, "SOCKS\tAuthentication failed. "
 							 "Is username and password correct?\n");
 			return 1; /* UPA failed! */
 		}
@@ -1241,7 +1110,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	{
 		if (buf[1] != 0)
 		{
-			proxy_error (print_fd, "SOCKS\tAuthentication required but disabled in settings.\n");
+			*error = g_error_new_literal (HEXCHAT_CONNECTION_ERROR, PROXY_FAILED, "SOCKS\tAuthentication required but disabled in settings.\n");
 			return 1;
 		}
 	}
@@ -1268,7 +1137,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 			g_snprintf (buf, sizeof (buf), "SOCKS\tProxy refused to connect to host (not allowed).\n");
 		else
 			g_snprintf (buf, sizeof (buf), "SOCKS\tProxy failed to connect to host (error %d).\n", buf[1]);
-		proxy_error (print_fd, buf);
+		*error = g_error_new_literal (HEXCHAT_CONNECTION_ERROR, PROXY_FAILED, buf);
 		return 1;
 	}
 	if (buf[3] == 1)	/* IPV4 32bit address */
@@ -1291,12 +1160,12 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	return 0;	/* success */
 
 read_error:
-	proxy_error (print_fd, "SOCKS\tRead error from server.\n");
+	*error = g_error_new_literal (HEXCHAT_CONNECTION_ERROR, PROXY_FAILED, "SOCKS\tRead error from server.\n");
 	return 1;
 }
 
 static int
-traverse_wingate (int print_fd, int sok, char *serverAddr, int port)
+traverse_wingate (int sok, char *serverAddr, int port, GError **error)
 {
 	char buf[128];
 
@@ -1358,30 +1227,7 @@ base64_encode (char *to, char *from, unsigned int len)
 }
 
 static int
-http_read_line (int print_fd, int sok, char *buf, int len)
-{
-	len = waitline (sok, buf, len, TRUE);
-	if (len >= 1)
-	{
-		/* print the message out (send it to the parent process) */
-		write (print_fd, "0\n", 2);
-
-		if (buf[len-1] == '\r')
-		{
-			buf[len-1] = '\n';
-			write (print_fd, buf, len);
-		} else
-		{
-			write (print_fd, buf, len);
-			write (print_fd, "\n", 1);
-		}
-	}
-
-	return len;
-}
-
-static int
-traverse_http (int print_fd, int sok, char *serverAddr, int port)
+traverse_http (int sok, char *serverAddr, int port, GError **error)
 {
 	char buf[512];
 	char auth_data[256];
@@ -1400,16 +1246,18 @@ traverse_http (int print_fd, int sok, char *serverAddr, int port)
 	n += g_snprintf (buf+n, sizeof (buf)-n, "\r\n");
 	send (sok, buf, n, 0);
 
-	n = http_read_line (print_fd, sok, buf, sizeof (buf));
+	n = waitline (sok, buf, sizeof(buf), TRUE);
+
 	/* "HTTP/1.0 200 OK" */
-	if (n < 12)
+	if (n < 12 || (memcmp (buf, "HTTP/", 5) || memcmp (buf + 9, "200", 3)))
+	{
+		*error = g_error_new_literal (HEXCHAT_CONNECTION_ERROR, PROXY_FAILED, buf);
 		return 1;
-	if (memcmp (buf, "HTTP/", 5) || memcmp (buf + 9, "200", 3))
-		return 1;
+	}
 	while (1)
 	{
 		/* read until blank line */
-		n = http_read_line (print_fd, sok, buf, sizeof (buf));
+		n = waitline (sok, buf, sizeof(buf), TRUE);
 		if (n < 1 || (n == 1 && buf[0] == '\n'))
 			break;
 	}
@@ -1417,63 +1265,203 @@ traverse_http (int print_fd, int sok, char *serverAddr, int port)
 }
 
 static int
-traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, netstore *ns_proxy, int csok4, int csok6, int *csok, char bound)
+traverse_proxy (int proxy_type, int sok, char *ip, int port, GError **error)
 {
 	switch (proxy_type)
 	{
 	case 1:
-		return traverse_wingate (print_fd, sok, ip, port);
+		return traverse_wingate (sok, ip, port, error);
 	case 2:
-		return traverse_socks (print_fd, sok, ip, port);
+		return traverse_socks (sok, ip, port, error);
 	case 3:
-		return traverse_socks5 (print_fd, sok, ip, port);
+		return traverse_socks5 (sok, ip, port, error);
 	case 4:
-		return traverse_http (print_fd, sok, ip, port);
+		return traverse_http (sok, ip, port, error);
 	}
 
 	return 1;
 }
 
-/* this is the child process making the connection attempt */
+struct connect_data
+{
+	server *serv;
+	char *local_ip;
+	char *hostname;
+	char *proxy_hostname;
+	char *ip;
+	char *port;
+};
 
-static int
-server_child (server * serv)
+static void
+connect_data_free (struct connect_data *data)
+{
+	if (data)
+	{
+		g_free (data->local_ip);
+		g_free (data->hostname);
+		g_free (data->proxy_hostname);
+		g_free (data->ip);
+		g_free (data->port);
+		g_free (data);
+	}
+}
+
+static void
+server_connect_finish (GObject *source, GAsyncResult *res, gpointer user_data)
+{
+	GError *error = NULL;
+	server *serv;
+	session *sess;
+	struct connect_data *data;
+	gboolean retry = FALSE;
+	char buf[256];
+
+	data = (struct connect_data*)g_task_get_task_data (G_TASK(res));
+	serv = data->serv;
+
+	if (!is_server(serv))
+	{
+		g_warning ("Server destroyed before connection finished!\n");
+		return;
+	}
+
+	sess = serv->server_session;
+
+	/* These print after the fact, but should be good enough */
+	if (data->proxy_hostname)
+		EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, data->proxy_hostname, NULL, NULL, NULL, 0);
+
+	EMIT_SIGNAL (XP_TE_CONNECT, sess, data->hostname, data->ip, data->port, NULL, 0);
+
+	/* Update local ip for dcc */
+	if (data->local_ip)
+		prefs.local_ip = inet_addr (data->local_ip);
+
+	serv->sok = g_task_propagate_int (G_TASK(res), &error);
+	if (!error)
+	{
+		if (serv->sok == serv->sok4)
+			closesocket (serv->sok6);
+		else
+			closesocket (serv->sok4);
+		if (serv->proxy_sok != -1)
+		{
+			if (serv->proxy_sok == serv->proxy_sok4)
+				closesocket (serv->proxy_sok6);
+			else
+				closesocket (serv->proxy_sok4);
+		}
+		{
+			struct sockaddr addr;
+			int addr_len = sizeof (addr);
+			guint16 port;
+
+			if (!getsockname (serv->sok, &addr, &addr_len))
+			{
+				if (addr.sa_family == AF_INET)
+					port = ntohs(((struct sockaddr_in *)&addr)->sin_port);
+				else
+					port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
+
+				g_snprintf (buf, sizeof (buf), "IDENTD %"G_GUINT16_FORMAT" ", port);
+				if (serv->network && ((ircnet *)serv->network)->user)
+					g_strlcat (buf, ((ircnet *)serv->network)->user, sizeof (buf));
+				else
+					g_strlcat (buf, prefs.hex_irc_user_name, sizeof (buf));
+
+				handle_command (serv->server_session, buf, FALSE);
+			}
+		}
+		server_connect_success (serv);
+		return;
+	}
+
+	g_warning ("%s\n", error->message);
+
+	switch (error->code)
+	{
+	case RESOLVE_FAILED:
+		retry = TRUE;
+		EMIT_SIGNAL (XP_TE_UKNHOST, sess, NULL, NULL, NULL, NULL, 0);
+		goto close_connection;
+	case CONNECTION_FAILED:
+		retry = TRUE;
+		EMIT_SIGNAL (XP_TE_CONNFAIL, sess, error->message, NULL, NULL, NULL, 0);
+		goto close_connection;
+	case BIND_FAILED:
+		PrintText (sess, error->message);
+		break;
+	case PROXY_FAILED:
+		PrintTextf (sess, _("Proxy Traveral Failed: %s\n"), error->message);
+		server_disconnect (sess, FALSE, -1);
+		break;
+	case 9:
+		EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, error->message, NULL, NULL, NULL, 0);
+		break;
+	case G_IO_ERROR_CANCELLED:
+		EMIT_SIGNAL (XP_TE_STOPCONNECT, sess, NULL, NULL, NULL, NULL, 0);
+		goto close_connection;
+	default:
+		g_warning ("%d\n", error->code);
+		g_assert_not_reached ();
+	}
+
+	return;
+
+close_connection:
+	server_stopconnecting (serv);
+	closesocket (serv->sok4);
+	if (serv->proxy_sok4 != -1)
+		closesocket (serv->proxy_sok4);
+	if (serv->sok6 != -1)
+		closesocket (serv->sok6);
+	if (serv->proxy_sok6 != -1)
+		closesocket (serv->proxy_sok6);
+
+	if (retry && !servlist_cycle (serv) && prefs.hex_net_auto_reconnectonfail)
+		auto_reconnect (serv, FALSE, -1);
+}
+
+static void
+server_connect_thread (GTask *task, gpointer source, gpointer task_data, GCancellable *cancellable)
 {
 	netstore *ns_server;
-	netstore *ns_proxy = NULL;
-	netstore *ns_local;
+	struct connect_data *data = (struct connect_data*)task_data;
+	server *serv = data->serv;
 	int port = serv->port;
 	int error;
-	int sok, psok;
+	int sok = -1, psok;
 	char *hostname = serv->hostname;
-	char *real_hostname = NULL;
-	char *ip;
 	char *proxy_ip = NULL;
-	char *local_ip;
 	int connect_port;
-	char buf[512];
-	char bound = 0;
 	int proxy_type = 0;
 	char *proxy_host = NULL;
 	int proxy_port;
 
+	if (!is_server(serv))
+	{
+		g_warning ("Server destroyed before connection started!\n");
+		return;
+	}
+
 	ns_server = net_store_new ();
 
-	/* is a hostname set? - bind to it */
 	if (prefs.hex_net_bind_host[0])
 	{
-		ns_local = net_store_new ();
-		local_ip = net_resolve (ns_local, prefs.hex_net_bind_host, 0, &real_hostname);
-		if (local_ip != NULL)
+		netstore *ns_local = net_store_new ();
+
+		data->local_ip = net_resolve (ns_local, prefs.hex_net_bind_host, 0, NULL);
+		if (data->local_ip != NULL)
 		{
-			g_snprintf (buf, sizeof (buf), "5\n%s\n", local_ip);
-			write (serv->childwrite, buf, strlen (buf));
 			net_bind (ns_local, serv->sok4, serv->sok6);
-			bound = 1;
 		} else
 		{
-			write (serv->childwrite, "7\n", 2);
+			g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, BIND_FAILED,
+				"Cannot resolve hostname %s\nCheck your IP Settings!\n", prefs.hex_net_bind_host);
+			net_store_destroy (ns_local);
+			goto error_cleanup;
 		}
+
 		net_store_destroy (ns_local);
 	}
 
@@ -1523,49 +1511,49 @@ server_child (server * serv)
 			proxy_port = prefs.hex_net_proxy_port;
 		}
 	}
-
 	serv->proxy_type = proxy_type;
+	data->proxy_hostname = proxy_host;
 
-	/* first resolve where we want to connect to */
 	if (proxy_type > 0)
 	{
-		g_snprintf (buf, sizeof (buf), "9\n%s\n", proxy_host);
-		write (serv->childwrite, buf, strlen (buf));
-		ip = net_resolve (ns_server, proxy_host, proxy_port, &real_hostname);
-		g_free (proxy_host);
-		if (!ip)
+		data->ip = net_resolve (ns_server, proxy_host, proxy_port, &data->hostname);
+		if (!data->ip)
 		{
-			write (serv->childwrite, "1\n", 2);
-			goto xit;
+			g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, RESOLVE_FAILED,
+				"Unknown hostname %s\n", proxy_host);
+			goto error_cleanup;
 		}
 		connect_port = proxy_port;
 
-		/* if using socks4 or MS Proxy, attempt to resolve ip for irc server */
+		/* if using socks4, attempt to resolve ip for irc server */
 		if ((proxy_type == 2) || (proxy_type == 5))
 		{
-			ns_proxy = net_store_new ();
-			proxy_ip = net_resolve (ns_proxy, hostname, port, &real_hostname);
+			netstore *ns_proxy = net_store_new ();
+			g_free (data->hostname);
+			proxy_ip = net_resolve (ns_proxy, hostname, port, &data->hostname);
+			net_store_destroy (ns_proxy);
 			if (!proxy_ip)
 			{
-				write (serv->childwrite, "1\n", 2);
-				goto xit;
+				g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, RESOLVE_FAILED,
+					"Unknown hostname %s\n", hostname);
+				goto error_cleanup;
 			}
 		} else						  /* otherwise we can just use the hostname */
 			proxy_ip = g_strdup (hostname);
-	} else
+	}
+	else
 	{
-		ip = net_resolve (ns_server, hostname, port, &real_hostname);
-		if (!ip)
+		data->ip = net_resolve (ns_server, hostname, port, &data->hostname);
+		if (!data->ip)
 		{
-			write (serv->childwrite, "1\n", 2);
-			goto xit;
+			g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, RESOLVE_FAILED,
+				"Unknown hostname %s\n", hostname);
+			goto error_cleanup;
 		}
 		connect_port = port;
 	}
 
-	g_snprintf (buf, sizeof (buf), "3\n%s\n%s\n%d\n",
-				 real_hostname, ip, connect_port);
-	write (serv->childwrite, buf, strlen (buf));
+	data->port = g_strdup_printf ("%d", connect_port);
 
 	if (!serv->dont_use_proxy && (proxy_type == 5))
 		error = net_connect (ns_server, serv->proxy_sok4, serv->proxy_sok6, &psok);
@@ -1577,54 +1565,33 @@ server_child (server * serv)
 
 	if (error != 0)
 	{
-		g_snprintf (buf, sizeof (buf), "2\n%d\n", sock_error ());
-		write (serv->childwrite, buf, strlen (buf));
-	} else
+		g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, CONNECTION_FAILED, "%s", errorstring (sock_error()));
+		goto error_cleanup;
+	}
+	else
 	{
+		GError *err = NULL;
 		/* connect succeeded */
-		if (proxy_ip)
+		if (proxy_ip && traverse_proxy (proxy_type, psok, proxy_ip, port, &err))
 		{
-			switch (traverse_proxy (proxy_type, serv->childwrite, psok, proxy_ip, port, ns_proxy, serv->sok4, serv->sok6, &sok, bound))
-			{
-			case 0:	/* success */
-				g_snprintf (buf, sizeof (buf), "4\n%d\n", sok);	/* success */
-				write (serv->childwrite, buf, strlen (buf));
-				break;
-			case 1:	/* socks traversal failed */
-				write (serv->childwrite, "8\n", 2);
-				break;
-			}
-		} else
-		{
-			g_snprintf (buf, sizeof (buf), "4\n%d\n", sok);	/* success */
-			write (serv->childwrite, buf, strlen (buf));
+			g_task_return_error (task, err);
+			goto error_cleanup;
 		}
 	}
 
-xit:
-
-	/* this is probably not needed */
+error_cleanup:
 	net_store_destroy (ns_server);
-	if (ns_proxy)
-		net_store_destroy (ns_proxy);
-
-	/* no need to free ip/real_hostname, this process is exiting */
-#ifdef WIN32
-	/* under win32 we use a thread -> shared memory, must free! */
 	g_free (proxy_ip);
-	g_free (ip);
-	g_free (real_hostname);
-#endif
-
-	return 0;
-	/* cppcheck-suppress memleak */
+	g_task_return_int (task, sok); /* Does nothing if error'd */
+	return;
 }
 
 static void
 server_connect (server *serv, char *hostname, int port, int no_login)
 {
-	int pid, read_des[2];
 	session *sess = serv->server_session;
+	GTask *task;
+	struct connect_data *data;
 
 #ifdef USE_OPENSSL
 	if (!serv->ctx && serv->use_ssl)
@@ -1700,55 +1667,20 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	fe_set_away (serv);
 	server_flush_queue (serv);
 
-#ifdef WIN32
-	if (_pipe (read_des, 4096, _O_BINARY) < 0)
-#else
-	if (pipe (read_des) < 0)
-#endif
-		return;
-#ifdef __EMX__ /* os/2 */
-	setmode (read_des[0], O_BINARY);
-	setmode (read_des[1], O_BINARY);
-#endif
-	serv->childread = read_des[0];
-	serv->childwrite = read_des[1];
-
 	/* create both sockets now, drop one later */
 	net_sockets (&serv->sok4, &serv->sok6);
 	serv->proxy_sok4 = -1;
 	serv->proxy_sok6 = -1;
 
-#ifdef WIN32
-	CloseHandle (CreateThread (NULL, 0,
-										(LPTHREAD_START_ROUTINE)server_child,
-										serv, 0, (DWORD *)&pid));
-#else
-#ifdef LOOKUPD
-	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different
-	 * seed for each child. This method gives a bigger variation in seed values
-	 * than calling srand(time(0)) in the child itself.
-	 */
-	rand();
-#endif
-	switch (pid = fork ())
-	{
-	case -1:
-		return;
-
-	case 0:
-		/* this is the child */
-		setuid (getuid ());
-		server_child (serv);
-		_exit (0);
-	}
-#endif
-	serv->childpid = pid;
-#ifdef WIN32
-	serv->iotag = fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child,
-#else
-	serv->iotag = fe_input_add (serv->childread, FIA_READ, server_read_child,
-#endif
-										 serv);
+	/* start the connection in a thread */
+	data = g_new0 (struct connect_data, 1);
+	data->serv = serv;
+	serv->cancellable = g_cancellable_new ();
+	task = g_task_new (NULL, serv->cancellable, server_connect_finish, NULL);
+	g_task_set_task_data (task, data, (GDestroyNotify)connect_data_free);
+	g_task_set_return_on_cancel (task, TRUE);
+	g_task_run_in_thread (task, server_connect_thread);
+	g_object_unref (task);
 }
 
 void
