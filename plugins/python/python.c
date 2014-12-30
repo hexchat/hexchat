@@ -802,9 +802,7 @@ Callback_ThreadTimer(void *userdata)
 /* We keep this information global, so we can reset it when the
  * deinit function is called. */
 /* XXX This should be somehow bound to the printing context. */
-static char *xchatout_buffer = NULL;
-static int xchatout_buffer_size = 0;
-static int xchatout_buffer_pos = 0;
+static GString *xchatout_buffer = NULL;
 
 static PyObject *
 XChatOut_New()
@@ -828,73 +826,41 @@ XChatOut_dealloc(PyObject *self)
 static PyObject *
 XChatOut_write(PyObject *self, PyObject *args)
 {
-	int new_buffer_pos, data_size, print_limit, add_space;
+	gboolean add_space;
 	char *data, *pos;
-	if (!PyArg_ParseTuple(args, "s#:write", &data, &data_size))
+
+	if (!PyArg_ParseTuple(args, "s:write", &data))
 		return NULL;
-	if (!data_size) {
+	if (!data || !*data) {
 		Py_INCREF(Py_None);
 		return Py_None;
 	}
 	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT|ALLOW_THREADS);
 	if (((XChatOutObject *)self)->softspace) {
-		add_space = 1;
+		add_space = TRUE;
 		((XChatOutObject *)self)->softspace = 0;
 	} else {
-		add_space = 0;
-	}
-	if (xchatout_buffer_size-xchatout_buffer_pos < data_size+add_space) {
-		char *new_buffer;
-		/* This buffer grows whenever needed, and does not
-		 * shrink. If we ever implement unloading of the
-		 * python interface, we must find some way to free
-		 * this buffer as well. */
-		xchatout_buffer_size += data_size*2+16;
-		new_buffer = g_realloc(xchatout_buffer, xchatout_buffer_size);
-		if (new_buffer == NULL) {
-			hexchat_print(ph, "Not enough memory to print");
-			/* The system is out of resources. Let's help. */
-			g_free(xchatout_buffer);
-			xchatout_buffer = NULL;
-			xchatout_buffer_size = 0;
-			xchatout_buffer_pos = 0;
-			/* Return something valid, since we have
-			 * already warned the user, and he probably
-			 * won't be able to notice this exception. */
-			goto exit;
-		}
-		xchatout_buffer = new_buffer;
-	}
-	memcpy(xchatout_buffer+xchatout_buffer_pos, data, data_size);
-	print_limit = new_buffer_pos = xchatout_buffer_pos+data_size;
-	pos = xchatout_buffer+print_limit;
-	if (add_space && *(pos-1) != '\n') {
-		*pos = ' ';
-		*(pos+1) = 0;
-		new_buffer_pos++;
-	}
-	while (*pos != '\n' && print_limit > xchatout_buffer_pos) {
-		pos--;
-		print_limit--;
-	}
-	if (*pos == '\n') {
-		/* Crop it, inserting the string limiter there. */
-		*pos = 0;
-		hexchat_print(ph, xchatout_buffer);
-		if (print_limit < new_buffer_pos) {
-			/* There's still data to be printed. */
-			print_limit += 1; /* Include the limiter. */
-			xchatout_buffer_pos = new_buffer_pos-print_limit;
-			memmove(xchatout_buffer, xchatout_buffer+print_limit,
-				xchatout_buffer_pos);
-		} else {
-			xchatout_buffer_pos = 0;
-		}
-	} else {
-		xchatout_buffer_pos = new_buffer_pos;
+		add_space = FALSE;
 	}
 
-exit:
+	g_string_append (xchatout_buffer, data);
+
+	/* If not end of line add space to continue buffer later */
+	if (add_space && xchatout_buffer->str[xchatout_buffer->len - 1] != '\n')
+	{
+		g_string_append_c (xchatout_buffer, ' ');
+	}
+
+	/* If there is an end of line print up to that */
+	if ((pos = strrchr (xchatout_buffer->str, '\n')))
+	{
+		*pos = '\0';
+		hexchat_print (ph, xchatout_buffer->str);
+
+		/* Then remove it from buffer */
+		g_string_erase (xchatout_buffer, 0, pos - xchatout_buffer->str + 1);
+	}
+
 	END_XCHAT_CALLS();
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -2775,6 +2741,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	Py_Initialize();
 	PySys_SetArgv(1, argv);
 
+	xchatout_buffer = g_string_new (NULL);
 	xchatout = XChatOut_New();
 	if (xchatout == NULL) {
 		hexchat_print(ph, "Can't allocate xchatout object");
@@ -2845,10 +2812,8 @@ hexchat_plugin_deinit()
 	plugin_list = NULL;
 
 	/* Reset xchatout buffer. */
-	g_free(xchatout_buffer);
+	g_string_free (xchatout_buffer, TRUE);
 	xchatout_buffer = NULL;
-	xchatout_buffer_size = 0;
-	xchatout_buffer_pos = 0;
 
 	if (interp_plugin) {
 		Py_DECREF(interp_plugin);
