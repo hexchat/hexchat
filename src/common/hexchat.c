@@ -220,7 +220,7 @@ find_channel (server *serv, char *chan)
 	while (list)
 	{
 		sess = list->data;
-		if ((!serv || serv == sess->server) && sess->type == SESS_CHANNEL)
+		if ((serv == sess->server) && sess->type == SESS_CHANNEL)
 		{
 			if (!serv->p_cmp (chan, sess->channel))
 				return sess;

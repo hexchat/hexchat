@@ -1311,7 +1311,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (markup)
 	{
 		char *p;	/* to force pango closing tags through */
-		for (p = label; *p; p++)
+		for (p = label; p && *p; p++)
 			if (*p == 3)
 				*p = '/';
 	}
