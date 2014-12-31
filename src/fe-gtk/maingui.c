@@ -1096,8 +1096,11 @@ mg_tab_close (session *sess)
 	else
 	{
 		for (i = 0, list = sess_list; list; list = list->next)
-			if (((session *)list->data)->server == sess->server)
+		{
+			session *s = (session*)list->data;
+			if (s->server == sess->server && (s->type == SESS_CHANNEL || s->type == SESS_DIALOG))
 				i++;
+		}
 		dialog = gtk_message_dialog_new (GTK_WINDOW (parent_window), 0,
 						GTK_MESSAGE_WARNING, GTK_BUTTONS_OK_CANCEL,
 						_("This server still has %d channels or dialogs associated with it. "
