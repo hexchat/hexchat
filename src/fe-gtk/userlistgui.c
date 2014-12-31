@@ -332,9 +332,9 @@ fe_userlist_rehash (session *sess, struct User *user)
 }
 
 void
-fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
+fe_userlist_insert (session *sess, struct User *newuser, gboolean sel)
 {
-	GtkTreeModel *model = sess->res->user_model;
+	GtkTreeModel *model = GTK_TREE_MODEL(sess->res->user_model);
 	GdkPixbuf *pix = get_user_icon (sess->server, newuser);
 	GtkTreeIter iter;
 	char *nick;
@@ -357,7 +357,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 		pix = NULL;
 	}
 
-	gtk_list_store_insert_with_values (GTK_LIST_STORE (model), &iter, row,
+	gtk_list_store_insert_with_values (GTK_LIST_STORE (model), &iter, 0,
 									COL_PIX, pix,
 									COL_NICK, nick,
 									COL_HOST, newuser->hostname,
@@ -393,12 +393,6 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 			gtk_tree_selection_select_iter (gtk_tree_view_get_selection
 										(GTK_TREE_VIEW (sess->gui->user_tree)), &iter);
 	}
-}
-
-void
-fe_userlist_move (session *sess, struct User *user, int new_row)
-{
-	fe_userlist_insert (sess, user, new_row, fe_userlist_remove (sess, user));
 }
 
 void
@@ -459,11 +453,67 @@ userlist_dnd_leave (GtkTreeView *widget, GdkDragContext *context, guint ttime)
 	return TRUE;
 }
 
-void *
-userlist_create_model (void)
+static int
+userlist_alpha_cmp (GtkTreeModel *model, GtkTreeIter *iter_a, GtkTreeIter *iter_b, gpointer userdata)
 {
-	return gtk_list_store_new (5, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
+	struct User *user_a, *user_b;
+
+	gtk_tree_model_get (model, iter_a, COL_USER, &user_a, -1);
+	gtk_tree_model_get (model, iter_b, COL_USER, &user_b, -1);
+
+	return nick_cmp_alpha (user_a, user_b, ((session*)userdata)->server);
+}
+
+static int
+userlist_ops_cmp (GtkTreeModel *model, GtkTreeIter *iter_a, GtkTreeIter *iter_b, gpointer userdata)
+{
+	struct User *user_a, *user_b;
+
+	gtk_tree_model_get (model, iter_a, COL_USER, &user_a, -1);
+	gtk_tree_model_get (model, iter_b, COL_USER, &user_b, -1);
+
+	return nick_cmp_az_ops (((session*)userdata)->server, user_a, user_b);
+}
+
+GtkListStore *
+userlist_create_model (session *sess)
+{
+	GtkListStore *store;
+	GtkTreeIterCompareFunc cmp_func;
+	GtkSortType sort_type;
+
+	store = gtk_list_store_new (5, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
 										G_TYPE_POINTER, GDK_TYPE_COLOR);
+
+	switch (prefs.hex_gui_ulist_sort)
+	{
+	case 0:
+		cmp_func = userlist_ops_cmp;
+		sort_type = GTK_SORT_ASCENDING;
+		break;
+	case 1:
+		cmp_func = userlist_alpha_cmp;
+		sort_type = GTK_SORT_ASCENDING;
+		break;
+	case 2:
+		cmp_func = userlist_ops_cmp;
+		sort_type = GTK_SORT_DESCENDING;
+		break;
+	case 3:
+		cmp_func = userlist_alpha_cmp;
+		sort_type = GTK_SORT_DESCENDING;
+		break;
+	default:
+		/* No sorting */
+		gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE(store), NULL, NULL, NULL);
+		return store;
+	}
+
+	gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE(store), cmp_func, sess, NULL);
+	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE(store),
+						GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, sort_type);
+
+	return store;
 }
 
 static void

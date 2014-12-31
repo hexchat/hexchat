@@ -678,7 +678,7 @@ fe_progressbar_end (struct server *serv)
 {
 }
 void
-fe_userlist_insert (struct session *sess, struct User *newuser, int row, int sel)
+fe_userlist_insert (struct session *sess, struct User *newuser, gboolean sel)
 {
 }
 int
@@ -688,10 +688,6 @@ fe_userlist_remove (struct session *sess, struct User *user)
 }
 void
 fe_userlist_rehash (struct session *sess, struct User *user)
-{
-}
-void
-fe_userlist_move (struct session *sess, struct User *user, int new_row)
 {
 }
 void

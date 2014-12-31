@@ -61,5 +61,7 @@ void userlist_update_mode (session *sess, char *name, char mode, char sign);
 GSList *userlist_flat_list (session *sess);
 GList *userlist_double_list (session *sess);
 void userlist_rehash (session *sess);
+int nick_cmp_az_ops (server *serv, struct User *user1, struct User *user2);
+int nick_cmp_alpha (struct User *user1, struct User *user2, server *serv);
 
 #endif

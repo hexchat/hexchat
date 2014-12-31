@@ -37,6 +37,7 @@
 #endif
 
 #include "history.h"
+#include "tree.h"
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */
@@ -369,8 +370,7 @@ typedef struct session
 	guint8 text_strip;
 
 	struct server *server;
-	void *usertree_alpha;			/* pure alphabetical tree */
-	void *usertree;					/* ordered with Ops first */
+	tree *usertree;					/* alphabetical tree */
 	struct User *me;					/* points to myself in the usertree */
 	char channel[CHANLEN];
 	char waitchannel[CHANLEN];		  /* waiting to join channel (/join sent) */
