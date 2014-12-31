@@ -1897,7 +1897,6 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		if (d == 'a')
 		{
 			/* Hex value */
-			x = 0;
 			if (ii == len)
 				goto a_len_error;
 			d = i[ii++];
@@ -1986,7 +1985,6 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		base = s;
 	if (last != NULL)
 		last->next = s;
-	last = s;
 	s->next = NULL;
 	s->data = g_malloc (1);
 	s->len = 1;

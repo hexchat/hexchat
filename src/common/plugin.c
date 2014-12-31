@@ -1557,7 +1557,7 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		case 0x5cfee87:	/* flags */
 			/* used if text_strip is unset */                    /* 16 */
 			tmp <<= 1;
-			tmp = ((struct session *)data)->text_strip;          /* 15 */
+			tmp |= ((struct session *)data)->text_strip;          /* 15 */
 			tmp <<= 1;
 			/* used if text_scrollback is unset */               /* 14 */
 			tmp <<= 1;

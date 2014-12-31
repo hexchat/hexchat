@@ -210,7 +210,6 @@ joind_show_dialog (server *serv)
 	gtk_widget_show (radiobutton3);
 	gtk_box_pack_start (GTK_BOX (vbox2), radiobutton3, FALSE, FALSE, 0);
 	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton3), radiobutton1_group);
-	radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton3));
 
 	g_snprintf (buf, sizeof (buf), "<small>     %s</small>",
 				 _("Retrieving the Channel-List may take a minute or two."));
