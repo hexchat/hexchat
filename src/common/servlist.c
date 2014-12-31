@@ -407,7 +407,7 @@ static const struct defaultserver def[] =
 #ifdef USE_OPENSSL
 	{0,			"irc.snoonet.org/+6697"},
 #endif
-	{0,			"irc.snoonet.org/6667"},
+	{0,			"irc.snoonet.org"},
 
 	{"Snyde", 0},
 	{0,			"irc.snyde.net/6667"},
