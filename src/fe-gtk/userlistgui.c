@@ -286,7 +286,7 @@ fe_userlist_remove (session *sess, struct User *user)
 	int sel;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
-						  sess->res->user_model, user, &sel);
+						  GTK_TREE_MODEL(sess->res->user_model), user, &sel);
 	if (!iter)
 		return 0;
 
@@ -316,7 +316,7 @@ fe_userlist_rehash (session *sess, struct User *user)
 	int nick_color = 0;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
-						  sess->res->user_model, user, &sel);
+						  GTK_TREE_MODEL(sess->res->user_model), user, &sel);
 	if (!iter)
 		return;
 
@@ -718,7 +718,7 @@ void
 userlist_show (session *sess)
 {
 	gtk_tree_view_set_model (GTK_TREE_VIEW (sess->gui->user_tree),
-									 sess->res->user_model);
+									 GTK_TREE_MODEL(sess->res->user_model));
 }
 
 void
