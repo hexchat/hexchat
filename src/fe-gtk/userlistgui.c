@@ -377,14 +377,6 @@ fe_userlist_insert (session *sess, struct User *newuser, gboolean sel)
 			mg_set_access_icon (sess->gui, pix, sess->server->is_away);
 	}
 
-#if 0
-	if (prefs.hilitenotify && notify_isnotify (sess, newuser->nick))
-	{
-		gtk_clist_set_foreground ((GtkCList *) sess->gui->user_clist, row,
-										  &colors[prefs.nu_color]);
-	}
-#endif
-
 	/* is it the front-most tab? */
 	if (gtk_tree_view_get_model (GTK_TREE_VIEW (sess->gui->user_tree))
 		 == model)
