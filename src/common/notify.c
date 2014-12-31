@@ -196,7 +196,7 @@ notify_find (server *serv, char *nick)
 		list = list->next;
 	}
 
-	return 0;
+	return NULL;
 }
 
 static void

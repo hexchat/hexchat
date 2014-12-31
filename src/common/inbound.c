@@ -118,7 +118,7 @@ find_session_from_nick (char *nick, server *serv)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 static session *
@@ -555,7 +555,7 @@ find_unused_session (server *serv)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 static session *
@@ -573,7 +573,7 @@ find_session_from_waitchannel (char *chan, struct server *serv)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 void
@@ -932,7 +932,7 @@ find_session_from_type (int type, server *serv)
 			return sess;
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 void

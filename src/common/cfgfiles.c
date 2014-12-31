@@ -207,10 +207,10 @@ cfg_get_str (char *cfg, const char *var, char *dest, int dest_len)
 		while (*cfg != 0 && *cfg != '\n')
 			cfg++;
 		if (*cfg == 0)
-			return 0;
+			return NULL;
 		cfg++;
 		if (*cfg == 0)
-			return 0;
+			return NULL;
 	}
 }
 

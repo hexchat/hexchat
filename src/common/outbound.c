@@ -1654,7 +1654,7 @@ memrchr (const void *block, int c, size_t size)
 	for (p = (unsigned char *)block + size; p != block; p--)
 		if (*p == c)
 			return p;
-	return 0;
+	return NULL;
 }
 #endif
 

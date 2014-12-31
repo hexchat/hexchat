@@ -494,7 +494,7 @@ dcc_write_chat (char *nick, char *text)
 		fe_dcc_update (dcc);
 		return dcc;
 	}
-	return 0;
+	return NULL;
 }
 
 /* returns: 0 - ok
@@ -1936,7 +1936,7 @@ find_dcc_from_id (int id, int type)
 		return dcc;
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 static struct DCC *
@@ -1952,7 +1952,7 @@ find_dcc_from_port (int port, int type)
 			return dcc;
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 struct DCC *
@@ -1977,7 +1977,7 @@ find_dcc (char *nick, char *file, int type)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 /* called when we receive a NICK change from server */

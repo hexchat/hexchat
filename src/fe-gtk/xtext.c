@@ -951,7 +951,7 @@ gtk_xtext_find_char (GtkXText * xtext, int x, int y, int *off,
 	line = (y + xtext->pixel_offset) / xtext->fontsize;
 	ent = gtk_xtext_nth (xtext, line + (int)xtext->adj->value, &subline);
 	if (!ent)
-		return 0;
+		return NULL;
 
 	if (off)
 		*off = gtk_xtext_find_x (xtext, x, ent, subline, line, out_of_bounds);
@@ -1588,11 +1588,11 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 
 		/* make sure we're not before the start of the match */
 		if (len_to_offset < start)
-			return 0;
+			return NULL;
 
 		/* and not after it */
 		if (len_to_offset - start >= end - start)
-			return 0;
+			return NULL;
 	}
 
 	return word;
@@ -3646,7 +3646,7 @@ gtk_xtext_nth (GtkXText *xtext, int line, int *subline)
 					break;
 				lines -= g_slist_length (ent->sublines);
 			}
-			return 0;
+			return NULL;
 		}
 	}
 	/* -- end of optimization -- */
@@ -3661,7 +3661,7 @@ gtk_xtext_nth (GtkXText *xtext, int line, int *subline)
 		}
 		ent = ent->next;
 	}
-	return 0;
+	return NULL;
 }
 
 /* render enta (or an inclusive range enta->entb) */

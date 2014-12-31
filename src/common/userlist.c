@@ -221,7 +221,7 @@ userlist_find_global (struct server *serv, char *name)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 static void

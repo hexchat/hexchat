@@ -209,7 +209,7 @@ find_dialog (server *serv, char *nick)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 session *
@@ -227,7 +227,7 @@ find_channel (server *serv, char *chan)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 static void
