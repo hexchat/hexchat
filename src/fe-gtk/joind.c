@@ -249,7 +249,6 @@ joind_show_dialog (server *serv)
 		if (g_ascii_strcasecmp(((ircnet*)serv->network)->name, "freenode") == 0)
 		{
 			gtk_entry_set_text (GTK_ENTRY (entry1), "#hexchat");
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(radiobutton2), TRUE);
 		}
 
 	gtk_widget_grab_focus (okbutton1);
