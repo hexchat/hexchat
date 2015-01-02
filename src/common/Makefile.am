@@ -63,7 +63,6 @@ libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c hexchat.c \
 	history.c ignore.c inbound.c marshal.c modes.c network.c notify.c \
 	outbound.c plugin.c plugin-identd.c plugin-timer.c proto-irc.c server.c servlist.c \
 	$(ssl_c) text.c tree.c url.c userlist.c util.c
-libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
 
 textenums.h: textevents.h
 

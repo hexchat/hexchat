@@ -61,10 +61,6 @@
 #include "ssl.h"
 #endif
 
-#ifdef USE_LIBPROXY
-#include <proxy.h>
-#endif
-
 #define HEXCHAT_CONNECTION_ERROR g_quark_from_static_string("hexchat-connection-error")
 
 #ifdef USE_OPENSSL
@@ -79,10 +75,6 @@ static void auto_reconnect (server *serv, int send_quit, int err);
 static void server_disconnect (session * sess, int sendquit, int err);
 static int server_cleanup (server * serv);
 static void server_connect (server *serv, char *hostname, int port, int no_login);
-
-#ifdef USE_LIBPROXY
-extern pxProxyFactory *libproxy_factory;
-#endif
 
 enum
 {
@@ -158,7 +150,7 @@ server_send_real (server *serv, char *buf, int len)
 
 	url_check_line (buf);
 
-	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, serv->using_irc,
+	return tcp_send_real (serv->ssl, g_socket_get_fd (serv->sok), serv->encoding, serv->using_irc,
 								 buf, len);
 }
 
@@ -294,15 +286,15 @@ tcp_sendf (server *serv, const char *fmt, ...)
 static int
 close_socket_cb (gpointer sok)
 {
-	closesocket (GPOINTER_TO_INT (sok));
+	g_object_unref (sok);
 	return 0;
 }
 
 static void
-close_socket (int sok)
+close_socket (GSocket *sok)
 {
 	/* close the socket in 5 seconds so the QUIT message is not lost */
-	fe_timeout_add (5000, close_socket_cb, GINT_TO_POINTER (sok));
+	fe_timeout_add (5000, close_socket_cb, sok);
 }
 
 /* handle 1 line of text received from the server */
@@ -411,7 +403,7 @@ server_inline (server *serv, char *line, gssize len)
 static gboolean
 server_read (GIOChannel *source, GIOCondition condition, server *serv)
 {
-	int sok = serv->sok;
+	int sok = g_socket_get_fd (serv->sok);
 	int error, i, len;
 	char lbuf[2050];
 
@@ -489,8 +481,8 @@ server_connected (server * serv)
 	serv->ping_recv = time (0);
 	serv->lag_sent = 0;
 	serv->connected = TRUE;
-	set_nonblocking (serv->sok);
-	serv->iotag = fe_input_add (serv->sok, FIA_READ|FIA_EX, server_read, serv);
+	g_socket_set_blocking (serv->sok, FALSE);
+	serv->iotag = fe_input_add (g_socket_get_fd(serv->sok), G_IO_OUT|G_IO_ERR|G_IO_PRI, server_read, serv);
 	if (!serv->no_login)
 	{
 		EMIT_SIGNAL (XP_TE_CONNECTED, serv->server_session, NULL, NULL, NULL,
@@ -860,7 +852,7 @@ server_connect_success (server *serv)
 
 		/* it'll be a memory leak, if connection isn't terminated by
 		   server_cleanup() */
-		serv->ssl = _SSL_socket (serv->ctx, serv->sok);
+		serv->ssl = _SSL_socket (serv->ctx, g_socket_get_fd (serv->sok));
 		if ((err = _SSL_set_verify (serv->ctx, ssl_cb_verify, NULL)))
 		{
 			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, err, NULL,
@@ -870,7 +862,7 @@ server_connect_success (server *serv)
 		}
 		/* FIXME: it'll be needed by new servers */
 		/* send(serv->sok, "STLS\r\n", 6, 0); sleep(1); */
-		set_nonblocking (serv->sok);
+		g_socket_set_blocking (serv->sok, FALSE);
 		serv->ssl_do_connect_tag = fe_timeout_add (SSLDOCONNTMOUT,
 																 ssl_do_connect, serv);
 		return;
@@ -915,21 +907,16 @@ server_cleanup (server * serv)
 	if (serv->connecting)
 	{
 		server_stopconnecting (serv);
-		closesocket (serv->sok4);
-		if (serv->proxy_sok4 != -1)
-			closesocket (serv->proxy_sok4);
-		if (serv->sok6 != -1)
-			closesocket (serv->sok6);
-		if (serv->proxy_sok6 != -1)
-			closesocket (serv->proxy_sok6);
+		if (serv->sok4)
+			g_object_unref (serv->sok4);
+		if (serv->sok6)
+			g_object_unref (serv->sok6);
 		return 1;
 	}
 
 	if (serv->connected)
 	{
 		close_socket (serv->sok);
-		if (serv->proxy_sok)
-			close_socket (serv->proxy_sok);
 		serv->connected = FALSE;
 		serv->end_of_motd = FALSE;
 		return 2;
@@ -1265,8 +1252,9 @@ traverse_http (int sok, char *serverAddr, int port, GError **error)
 }
 
 static int
-traverse_proxy (int proxy_type, int sok, char *ip, int port, GError **error)
+traverse_proxy (int proxy_type, GSocket *sok_r, char *ip, int port, GError **error)
 {
+	int sok = g_socket_get_fd (sok_r);
 	switch (proxy_type)
 	{
 	case 1:
@@ -1337,40 +1325,22 @@ server_connect_finish (GObject *source, GAsyncResult *res, gpointer user_data)
 	if (data->local_ip)
 		prefs.local_ip = inet_addr (data->local_ip);
 
-	serv->sok = g_task_propagate_int (G_TASK(res), &error);
+	serv->sok = g_task_propagate_pointer (G_TASK(res), &error);
 	if (!error)
 	{
 		if (serv->sok == serv->sok4)
-			closesocket (serv->sok6);
+			g_object_unref (serv->sok6);
 		else
-			closesocket (serv->sok4);
-		if (serv->proxy_sok != -1)
+			g_object_unref (serv->sok4);
 		{
-			if (serv->proxy_sok == serv->proxy_sok4)
-				closesocket (serv->proxy_sok6);
+			guint16 port = net_get_local_port (serv->sok);
+			g_snprintf (buf, sizeof (buf), "IDENTD %"G_GUINT16_FORMAT" ", port);
+			if (serv->network && ((ircnet *)serv->network)->user)
+				g_strlcat (buf, ((ircnet *)serv->network)->user, sizeof (buf));
 			else
-				closesocket (serv->proxy_sok4);
-		}
-		{
-			struct sockaddr addr;
-			int addr_len = sizeof (addr);
-			guint16 port;
+				g_strlcat (buf, prefs.hex_irc_user_name, sizeof (buf));
 
-			if (!getsockname (serv->sok, &addr, &addr_len))
-			{
-				if (addr.sa_family == AF_INET)
-					port = ntohs(((struct sockaddr_in *)&addr)->sin_port);
-				else
-					port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
-
-				g_snprintf (buf, sizeof (buf), "IDENTD %"G_GUINT16_FORMAT" ", port);
-				if (serv->network && ((ircnet *)serv->network)->user)
-					g_strlcat (buf, ((ircnet *)serv->network)->user, sizeof (buf));
-				else
-					g_strlcat (buf, prefs.hex_irc_user_name, sizeof (buf));
-
-				handle_command (serv->server_session, buf, FALSE);
-			}
+			handle_command (serv->server_session, buf, FALSE);
 		}
 		server_connect_success (serv);
 		return;
@@ -1410,13 +1380,10 @@ server_connect_finish (GObject *source, GAsyncResult *res, gpointer user_data)
 
 close_connection:
 	server_stopconnecting (serv);
-	closesocket (serv->sok4);
-	if (serv->proxy_sok4 != -1)
-		closesocket (serv->proxy_sok4);
-	if (serv->sok6 != -1)
-		closesocket (serv->sok6);
-	if (serv->proxy_sok6 != -1)
-		closesocket (serv->proxy_sok6);
+	if (serv->sok4)
+		g_object_unref (serv->sok4);
+	if (serv->sok6)
+		g_object_unref (serv->sok6);
 
 	if (retry && !servlist_cycle (serv) && prefs.hex_net_auto_reconnectonfail)
 		auto_reconnect (serv, FALSE, -1);
@@ -1428,36 +1395,51 @@ server_connect_thread (GTask *task, gpointer source, gpointer task_data, GCancel
 	netstore *ns_server;
 	struct connect_data *data = (struct connect_data*)task_data;
 	server *serv = data->serv;
-	int port = serv->port;
-	int error;
-	int sok = -1, psok;
-	char *hostname = serv->hostname;
+	GSocket *sok = NULL, *psok;
 	char *proxy_ip = NULL;
-	int connect_port;
 	int proxy_type = 0;
-	char *proxy_host = NULL;
-	int proxy_port;
+	char *proxy_host = NULL, *hostname;
+	guint16 proxy_port, connect_port, port;
+	GError *err = NULL, *err4 = NULL, *err6 = NULL;
 
 	if (!is_server(serv))
 	{
 		g_warning ("Server destroyed before connection started!\n");
 		return;
 	}
+	port = serv->port;
+	hostname = serv->hostname;
 
 	ns_server = net_store_new ();
 
+	/* Bind local address if configured */
 	if (prefs.hex_net_bind_host[0])
 	{
 		netstore *ns_local = net_store_new ();
 
-		data->local_ip = net_resolve (ns_local, prefs.hex_net_bind_host, 0, NULL);
-		if (data->local_ip != NULL)
+		data->local_ip = net_resolve (ns_local, prefs.hex_net_bind_host, NULL, &err);
+		if (!err)
 		{
-			net_bind (ns_local, serv->sok4, serv->sok6);
-		} else
+			net_bind (ns_local, serv->sok4, serv->sok6, &err4, &err6);
+			if (err4 || err6)
+			{
+				net_store_destroy (ns_local);
+				if (err4) /* TODO: could handle this better? */
+				{
+					g_task_return_error (task, err4);
+					g_clear_error (&err6);
+					goto error_cleanup;
+				}
+				else
+				{
+					g_task_return_error (task, err4);
+					goto error_cleanup;
+				}
+			}
+		}
+		else
 		{
-			g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, BIND_FAILED,
-				"Cannot resolve hostname %s\nCheck your IP Settings!\n", prefs.hex_net_bind_host);
+			g_task_return_error (task, err);
 			net_store_destroy (ns_local);
 			goto error_cleanup;
 		}
@@ -1465,77 +1447,57 @@ server_connect_thread (GTask *task, gpointer source, gpointer task_data, GCancel
 		net_store_destroy (ns_local);
 	}
 
-	if (!serv->dont_use_proxy) /* blocked in serverlist? */
+	/* Connect to proxy if configured */
+	if (!serv->dont_use_proxy && prefs.hex_net_proxy_use != 2 && prefs.hex_net_proxy_type > 0)
 	{
-#ifdef USE_LIBPROXY
 		if (prefs.hex_net_proxy_type == 5)
 		{
-			char **proxy_list;
-			char *url, *proxy;
+			char *proxy;
 
-			url = g_strdup_printf ("irc://%s:%d", hostname, port);
-			proxy_list = px_proxy_factory_get_proxies (libproxy_factory, url);
-
-			if (proxy_list) {
-				/* can use only one */
-				proxy = proxy_list[0];
-				if (!strncmp (proxy, "direct", 6))
-					proxy_type = 0;
-				else if (!strncmp (proxy, "http", 4))
-					proxy_type = 4;
-				else if (!strncmp (proxy, "socks5", 6))
-					proxy_type = 3;
-				else if (!strncmp (proxy, "socks", 5))
-					proxy_type = 2;
+			proxy = net_resolve_proxy (hostname, port, &err);
+			if (err)
+			{
+				g_task_return_error (task, err);
+				goto error_cleanup;
 			}
 
-			if (proxy_type) {
-				char *c;
-				c = strchr (proxy, ':') + 3;
-				proxy_host = g_strdup (c);
-				c = strchr (proxy_host, ':');
-				*c = '\0';
-				proxy_port = atoi (c + 1);
+			if (proxy)
+			{
+				net_parse_proxy_uri (proxy, &proxy_host, &proxy_port, &proxy_type);
+				g_free (proxy);
 			}
-
-			g_strfreev (proxy_list);
-			g_free (url);
+			else
+				proxy_type = 0;
 		}
-#endif
-		if (prefs.hex_net_proxy_host[0] &&
-			   prefs.hex_net_proxy_type > 0 &&
-			   prefs.hex_net_proxy_use != 2) /* proxy is NOT dcc-only */
+		else if (prefs.hex_net_proxy_host[0])
 		{
 			proxy_type = prefs.hex_net_proxy_type;
 			proxy_host = g_strdup (prefs.hex_net_proxy_host);
 			proxy_port = prefs.hex_net_proxy_port;
 		}
 	}
-	serv->proxy_type = proxy_type;
 	data->proxy_hostname = proxy_host;
 
 	if (proxy_type > 0)
 	{
-		data->ip = net_resolve (ns_server, proxy_host, proxy_port, &data->hostname);
+		data->ip = net_resolve (ns_server, proxy_host, &data->hostname, &err);
 		if (!data->ip)
 		{
-			g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, RESOLVE_FAILED,
-				"Unknown hostname %s\n", proxy_host);
+			g_task_return_error (task, err);
 			goto error_cleanup;
 		}
 		connect_port = proxy_port;
 
 		/* if using socks4, attempt to resolve ip for irc server */
-		if ((proxy_type == 2) || (proxy_type == 5))
+		if (proxy_type == 2)
 		{
 			netstore *ns_proxy = net_store_new ();
 			g_free (data->hostname);
-			proxy_ip = net_resolve (ns_proxy, hostname, port, &data->hostname);
+			proxy_ip = net_resolve (ns_proxy, hostname, &data->hostname, &err);
 			net_store_destroy (ns_proxy);
-			if (!proxy_ip)
+			if (err)
 			{
-				g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, RESOLVE_FAILED,
-					"Unknown hostname %s\n", hostname);
+				g_task_return_error (task, err);
 				goto error_cleanup;
 			}
 		} else						  /* otherwise we can just use the hostname */
@@ -1543,11 +1505,10 @@ server_connect_thread (GTask *task, gpointer source, gpointer task_data, GCancel
 	}
 	else
 	{
-		data->ip = net_resolve (ns_server, hostname, port, &data->hostname);
-		if (!data->ip)
+		data->ip = net_resolve (ns_server, hostname, &data->hostname, &err);
+		if (err)
 		{
-			g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, RESOLVE_FAILED,
-				"Unknown hostname %s\n", hostname);
+			g_task_return_error (task, err);
 			goto error_cleanup;
 		}
 		connect_port = port;
@@ -1555,22 +1516,21 @@ server_connect_thread (GTask *task, gpointer source, gpointer task_data, GCancel
 
 	data->port = g_strdup_printf ("%d", connect_port);
 
-	if (!serv->dont_use_proxy && (proxy_type == 5))
-		error = net_connect (ns_server, serv->proxy_sok4, serv->proxy_sok6, &psok);
+	if (!serv->dont_use_proxy)
+		psok = net_connect (ns_server, connect_port, serv->sok4, serv->sok6, &err);
 	else
 	{
-		error = net_connect (ns_server, serv->sok4, serv->sok6, &sok);
+		sok = net_connect (ns_server, connect_port, serv->sok4, serv->sok6, &err);
 		psok = sok;
 	}
 
-	if (error != 0)
+	if (err)
 	{
-		g_task_return_new_error (task, HEXCHAT_CONNECTION_ERROR, CONNECTION_FAILED, "%s", errorstring (sock_error()));
+		g_task_return_error (task, err);
 		goto error_cleanup;
 	}
 	else
 	{
-		GError *err = NULL;
 		/* connect succeeded */
 		if (proxy_ip && traverse_proxy (proxy_type, psok, proxy_ip, port, &err))
 		{
@@ -1582,7 +1542,7 @@ server_connect_thread (GTask *task, gpointer source, gpointer task_data, GCancel
 error_cleanup:
 	net_store_destroy (ns_server);
 	g_free (proxy_ip);
-	g_task_return_int (task, sok); /* Does nothing if error'd */
+	g_task_return_pointer (task, sok, g_object_unref); /* Does nothing if error'd */
 	return;
 }
 
@@ -1667,10 +1627,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	fe_set_away (serv);
 	server_flush_queue (serv);
 
-	/* create both sockets now, drop one later */
-	net_sockets (&serv->sok4, &serv->sok6);
-	serv->proxy_sok4 = -1;
-	serv->proxy_sok6 = -1;
+	net_sockets (&serv->sok4, &serv->sok6, NULL, NULL);
 
 	/* start the connection in a thread */
 	data = g_new0 (struct connect_data, 1);
@@ -1739,7 +1696,6 @@ server_new (void)
 	server_fill_her_up (serv);
 
 	serv->id = id++;
-	serv->sok = -1;
 	strcpy (serv->nick, prefs.hex_irc_nick1);
 	server_set_defaults (serv);
 

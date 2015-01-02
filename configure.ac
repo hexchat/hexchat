@@ -38,7 +38,6 @@ AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
 AH_VERBATIM([PREFIX],[#undef PREFIX])
 AH_VERBATIM([HEXCHATLIBDIR],[#undef HEXCHATLIBDIR])
 AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
-AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([HAVE_GTK_MAC],[#undef HAVE_GTK_MAC])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
@@ -138,10 +137,6 @@ AC_ARG_ENABLE(libnotify,
 AC_ARG_ENABLE(libcanberra,
 	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
 		libcanberra=$enableval, libcanberra=yes)
-
-AC_ARG_ENABLE(libproxy,
-	[AS_HELP_STRING([--disable-libproxy],[disable libproxy support (default: auto)])],
-        libproxy=$enableval, libproxy=auto)
 
 AC_ARG_ENABLE(isocodes,
 	[AS_HELP_STRING([--disable-isocodes],[disable iso-codes with spell-check])],
@@ -398,26 +393,6 @@ if test "$retry" = "yes"; then
 		CFLAGS=$SAVED_CFLAGS
 	])
 	LIBS=$SAVED_LIBS
-fi
-
-dnl *********************************************************************
-dnl ** LIBPROXY *********************************************************
-dnl *********************************************************************
-
-if test "x$libproxy" = "xyes" -o "x$libproxy" = "xauto" ; then
-	PKG_CHECK_MODULES([LIBPROXY], [libproxy-1.0], [
-		COMMON_LIBS="$COMMON_LIBS $LIBPROXY_LIBS"
-		COMMON_CFLAGS="$COMMON_CFLAGS $LIBPROXY_CFLAGS"
-		AC_DEFINE(USE_LIBPROXY)
-		libproxy=yes
-	], [
-		if test "x$libproxy" = "xyes" ; then
-			AC_MSG_ERROR(Cannot find libproxy!)
-		fi
-		libproxy=no
-	])
-else
-	libproxy=no
 fi
 
 dnl *********************************************************************
@@ -817,7 +792,6 @@ echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
 echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
-echo libproxy support ...... : $libproxy
 echo
 echo Perl .................. : $perl
 echo Python ................ : $python

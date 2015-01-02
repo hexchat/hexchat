@@ -123,5 +123,6 @@ void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[],
 void dcc_show_list (session *sess);
 guint32 dcc_get_my_address (void);
 void dcc_get_with_destfile (struct DCC *dcc, char *utf8file);
+char *net_ip (guint32 addr);
 
 #endif

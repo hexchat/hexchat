@@ -560,9 +560,7 @@ static const char *const proxytypes[] =
 	N_("Socks4"),
 	N_("Socks5"),
 	N_("HTTP"),
-#ifdef USE_LIBPROXY
 	N_("Auto"),
-#endif
 	NULL
 };
 

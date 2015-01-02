@@ -22,21 +22,18 @@
 
 typedef struct netstore_
 {
-#ifdef NETWORK_PRIVATE
-	struct addrinfo *ip6_hostent;
-#else
-	int _dummy;	/* some compilers don't like empty structs */
-#endif
+	GList *addrs;
 } netstore;
 
 #define MAX_HOSTNAME 128
 
 netstore *net_store_new (void);
 void net_store_destroy (netstore *ns);
-int net_connect (netstore *ns, int sok4, int sok6, int *sok_return);
-char *net_resolve (netstore *ns, char *hostname, int port, char **real_host);
-void net_bind (netstore *tobindto, int sok4, int sok6);
-char *net_ip (guint32 addr);
-void net_sockets (int *sok4, int *sok6);
-
+GSocket *net_connect (netstore *ns, guint16 port, GSocket *sok4, GSocket *sok6, GError **error);
+char *net_resolve (netstore *ns, char *hostname, char **real_host, GError **error);
+char * net_resolve_proxy (const char *hostname, guint16 port, GError **error);
+gboolean net_bind (netstore *ns, GSocket *sok4, GSocket *sok6, GError **error4, GError **error6);
+void net_sockets (GSocket **sok4, GSocket **sok6, GError **error4, GError **error6);
+void net_parse_proxy_uri (const char *proxy_uri, char **host, guint16 *port, int *type);
+guint16 net_get_local_port (GSocket *sok);
 #endif

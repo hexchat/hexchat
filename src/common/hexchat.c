@@ -56,10 +56,6 @@
 #include <glib-object.h>			/* for g_type_init() */
 #endif
 
-#ifdef USE_LIBPROXY
-#include <proxy.h>
-#endif
-
 GSList *popup_list = 0;
 GSList *button_list = 0;
 GSList *dlgbutton_list = 0;
@@ -109,10 +105,6 @@ gint arg_existing = FALSE;
 struct session *current_tab;
 struct session *current_sess = 0;
 struct hexchatprefs prefs;
-
-#ifdef USE_LIBPROXY
-pxProxyFactory *libproxy_factory;
-#endif
 
 /*
  * Update the priority queue of the "interesting sessions"
@@ -1048,10 +1040,6 @@ main (int argc, char *argv[])
 	hexchat_remote ();
 #endif
 
-#ifdef USE_LIBPROXY
-	libproxy_factory = px_proxy_factory_new();
-#endif
-
 	fe_init ();
 
 	/* This is done here because cfgfiles.c is too early in
@@ -1078,10 +1066,6 @@ main (int argc, char *argv[])
 	xchat_init ();
 
 	fe_main ();
-
-#ifdef USE_LIBPROXY
-	px_proxy_factory_free(libproxy_factory);
-#endif
 
 #ifdef WIN32
 	WSACleanup ();

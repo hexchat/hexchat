@@ -20,53 +20,18 @@
 
 #include "config.h"
 
-#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 #include <glib.h>
+#include <gio/gio.h>
 
-#ifndef WIN32
-#include <unistd.h>
-#endif
-
-#define WANTSOCKET
-#define WANTARPA
-#define WANTDNS
-#include "inet.h"
-
-#define NETWORK_PRIVATE
 #include "network.h"
 
-#define RAND_INT(n) ((int)(rand() / (RAND_MAX + 1.0) * (n)))
-
-
-/* ================== COMMON ================= */
-
-static void
-net_set_socket_options (int sok)
-{
-	socklen_t sw;
-
-	sw = 1;
-	setsockopt (sok, SOL_SOCKET, SO_REUSEADDR, (char *) &sw, sizeof (sw));
-	sw = 1;
-	setsockopt (sok, SOL_SOCKET, SO_KEEPALIVE, (char *) &sw, sizeof (sw));
-}
-
-char *
-net_ip (guint32 addr)
-{
-	struct in_addr ia;
-
-	ia.s_addr = htonl (addr);
-	return inet_ntoa (ia);
-}
-
 void
-net_store_destroy (netstore * ns)
+net_store_destroy (netstore *ns)
 {
-	if (ns->ip6_hostent)
-		freeaddrinfo (ns->ip6_hostent);
+	g_return_if_fail (ns != NULL);
+
+	g_resolver_free_addresses (ns->addrs);
 	g_free (ns);
 }
 
@@ -76,118 +41,208 @@ net_store_new (void)
 	return g_new0 (netstore, 1);
 }
 
-/* =================== IPV6 ================== */
-
 char *
-net_resolve (netstore * ns, char *hostname, int port, char **real_host)
+net_resolve (netstore *ns, char *hostname, char **real_host, GError **error)
 {
-	struct addrinfo hints;
-	char ipstring[MAX_HOSTNAME];
-	char portstring[MAX_HOSTNAME];
-	int ret;
+	GResolver *res;
+	GList *addrs;
+	GInetAddress *addr;
+	char *ipstring;
 
-/*	if (ns->ip6_hostent)
-		freeaddrinfo (ns->ip6_hostent);*/
+	res = g_resolver_get_default ();
 
-	sprintf (portstring, "%d", port);
-
-	memset (&hints, 0, sizeof (struct addrinfo));
-	hints.ai_family = PF_UNSPEC; /* support ipv6 and ipv4 */
-	hints.ai_flags = AI_CANONNAME | AI_ADDRCONFIG;
-	hints.ai_socktype = SOCK_STREAM;
-
-	if (port == 0)
-		ret = getaddrinfo (hostname, NULL, &hints, &ns->ip6_hostent);
-	else
-		ret = getaddrinfo (hostname, portstring, &hints, &ns->ip6_hostent);
-	if (ret != 0)
+	// todo: lookup by irc service?
+	addrs = g_resolver_lookup_by_name (res, hostname, NULL, error);
+	if (!addrs)
+	{
+		g_object_unref (res);
 		return NULL;
+	}
 
-#ifdef LOOKUPD	/* See note about lookupd above the IPv4 version of net_resolve. */
-	struct addrinfo *tmp;
-	int count = 0;
-
-	for (tmp = ns->ip6_hostent; tmp; tmp = tmp->ai_next)
-		count ++;
-
-	count = RAND_INT(count);
-	
-	while (count--) ns->ip6_hostent = ns->ip6_hostent->ai_next;
-#endif
-
-	/* find the numeric IP number */
-	ipstring[0] = 0;
-	getnameinfo (ns->ip6_hostent->ai_addr, ns->ip6_hostent->ai_addrlen,
-					 ipstring, sizeof (ipstring), NULL, 0, NI_NUMERICHOST);
+	ns->addrs = addrs;
+	addr = G_INET_ADDRESS(addrs->data);
+	ipstring = g_inet_address_to_string (addr);
 
 	if (real_host)
 	{
-		if (ns->ip6_hostent->ai_canonname)
-			*real_host = g_strdup (ns->ip6_hostent->ai_canonname);
-		else
+		if (!(*real_host = g_resolver_lookup_by_address (res, addr, NULL, NULL)))
 			*real_host = g_strdup (hostname);
 	}
 
-	return g_strdup (ipstring);
+	g_object_unref (res);
+
+	return ipstring;
 }
 
 /* the only thing making this interface unclean, this shitty sok4, sok6 business */
 
-int
-net_connect (netstore * ns, int sok4, int sok6, int *sok_return)
+GSocket *
+net_connect (netstore *ns, guint16 port, GSocket *sok4, GSocket *sok6, GError **error)
 {
-	struct addrinfo *res, *res0;
-	int error = -1;
+	GSocket *sok;
+	GList *addrs;
+	gboolean success;
 
-	res0 = ns->ip6_hostent;
-
-	for (res = res0; res; res = res->ai_next)
+	for (addrs = ns->addrs; addrs; addrs = g_list_next (addrs))
 	{
-/*		sok = socket (res->ai_family, res->ai_socktype, res->ai_protocol);
-		if (sok < 0)
-			continue;*/
-		switch (res->ai_family)
-		{
-		case AF_INET:
-			error = connect (sok4, res->ai_addr, res->ai_addrlen);
-			*sok_return = sok4;
-			break;
-		case AF_INET6:
-			error = connect (sok6, res->ai_addr, res->ai_addrlen);
-			*sok_return = sok6;
-			break;
-		default:
-			error = 1;
-		}
+		GInetAddress *inet_addr = G_INET_ADDRESS(addrs->data);
+		GSocketAddress *sok_addr;
 
-		if (error == 0)
-			break;
+		g_clear_error (error); /* Last failed attempt set */
+
+		sok_addr = g_inet_socket_address_new (inet_addr, port);
+		if (g_socket_address_get_family (sok_addr) == G_SOCKET_FAMILY_IPV4)
+			sok = sok4;
+		else
+			sok = sok6;
+		success = g_socket_connect (sok, sok_addr, NULL, error);
+		g_object_unref (sok_addr);
+
+		if (success)
+			return sok;
+	}
+	return NULL;
+}
+
+gboolean
+net_bind (netstore *ns, GSocket *sok4, GSocket *sok6, GError **error4, GError **error6)
+{
+	GInetAddress *inet_addr = G_INET_ADDRESS(ns->addrs->data);
+	GSocketAddress *sok_addr;
+	gboolean success;
+
+	sok_addr = g_inet_socket_address_new (inet_addr, 0);
+	success = g_socket_bind (sok4, sok_addr, TRUE, error4);
+	success &= g_socket_bind (sok6, sok_addr, TRUE, error6);
+	g_object_unref (sok_addr);
+
+	return success;
+}
+
+void
+net_sockets (GSocket **sok4, GSocket **sok6, GError **error4, GError **error6)
+{
+	*sok4 = g_socket_new (G_SOCKET_FAMILY_IPV4, G_SOCKET_TYPE_STREAM, G_SOCKET_PROTOCOL_TCP, error4);
+	*sok6 = g_socket_new (G_SOCKET_FAMILY_IPV6, G_SOCKET_TYPE_STREAM, G_SOCKET_PROTOCOL_TCP, error6);
+
+	if (!*sok4 || !*sok6)
+	{
+		g_warning ("Creating sockets failed\n");
+		return;
 	}
 
-	return error;
+	g_socket_set_keepalive (*sok4, TRUE);
+	g_socket_set_keepalive (*sok6, TRUE);
+}
+
+char *
+net_resolve_proxy (const char *hostname, guint16 port, GError **error)
+{
+	GProxyResolver *res;
+	char *uri;
+	char **proxies;
+	char *proxy = NULL;
+	guint i;
+
+	res = g_proxy_resolver_get_default ();
+	if (!res)
+		return NULL;
+
+	// FIXME: ircs also
+	uri = g_strdup_printf ("irc://%s:%d", hostname, port);
+	proxies = g_proxy_resolver_lookup (res, uri, NULL, error);
+	g_free (uri);
+	if (g_strv_length (proxies) == 0)
+		return NULL;
+
+	for (i = 0; i < g_strv_length (proxies); i++)
+	{
+		int type;
+
+		net_parse_proxy_uri (proxies[i], NULL, NULL, &type);
+		
+		if (type != -1)
+		{
+			proxy = g_strdup (proxies[i]);
+			break;
+		}
+	}
+	g_strfreev (proxies);
+
+	if (!proxy) /* FIXME: error code */
+		*error = g_error_new_literal (0, 0, "No system proxy found that is supported");
+
+	return proxy;
 }
 
 void
-net_bind (netstore * tobindto, int sok4, int sok6)
+net_parse_proxy_uri (const char *proxy_uri, char **host, guint16 *port, int *type)
 {
-	bind (sok4, tobindto->ip6_hostent->ai_addr,
-			tobindto->ip6_hostent->ai_addrlen);
-	bind (sok6, tobindto->ip6_hostent->ai_addr,
-			tobindto->ip6_hostent->ai_addrlen);
+	if (type)
+	{
+		char *scheme = g_uri_parse_scheme (proxy_uri);
+
+		if (!strcmp (scheme, "direct"))
+			*type = 0;
+		else if (!strcmp (scheme, "http"))
+			*type = 4;
+		else if (!strcmp (scheme, "socks5"))
+			*type = 3;
+		else if (!strcmp (scheme, "socks"))
+			*type = 2;
+		else
+			*type = -1;
+
+		g_free (scheme);
+	}
+
+	if (host)
+	{
+		char *c1, *c2;
+
+		c1 = strchr (proxy_uri, ':') + 3;
+		if (c1)
+		{
+			c2 = strrchr (c1, ':');
+
+			if (c2)
+				*host = g_strndup (c1, c2 - c1);
+			else
+				*host = g_strdup (c1);
+		}
+		else
+			*host = NULL;
+	}
+
+	if (port)
+	{
+		char *c;
+		guint64 p;
+
+		c = strrchr (proxy_uri, ':');
+		if (c)
+		{
+			p = g_ascii_strtoull (c + 1, NULL, 0);
+			if (p <= G_MAXUINT16)
+				*port = (guint16)p;
+		}
+		else
+			*port = 0;
+	}
 }
 
-void
-net_sockets (int *sok4, int *sok6)
+guint16
+net_get_local_port (GSocket *sok)
 {
-	*sok4 = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	*sok6 = socket (AF_INET6, SOCK_STREAM, IPPROTO_TCP);
-	net_set_socket_options (*sok4);
-	net_set_socket_options (*sok6);
-}
+	GSocketAddress *addr;
+	guint16 port;
 
-void
-udp_sockets (int *sok4, int *sok6)
-{
-	*sok4 = socket (AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-	*sok6 = socket (AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+	addr = g_socket_get_local_address (sok, NULL);
+	if (!addr)
+		return 0;
+
+	port = g_inet_socket_address_get_port (G_INET_SOCKET_ADDRESS(addr));
+	g_object_unref (addr);
+
+	return port;
 }

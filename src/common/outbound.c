@@ -907,7 +907,7 @@ cmd_debug (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		v = (struct server *) list->data;
 		sprintf (tbuf, "%p %-5d %s\n",
-					v, v->sok, v->servername);
+					v, g_socket_get_fd (v->sok), v->servername);
 		PrintText (sess, tbuf);
 		list = list->next;
 	}
@@ -3205,7 +3205,7 @@ cmd_send (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (!word[2][0])
 		return FALSE;
-
+#if 0
 	addr = dcc_get_my_address ();
 	if (addr == 0)
 	{
@@ -3223,7 +3223,7 @@ cmd_send (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		g_snprintf (tbuf, 512, "DCC PSEND %s", word_eol[2]);
 	else
 		g_snprintf (tbuf, 512, "DCC SEND %s", word_eol[2]);
-
+#endif
 	handle_command (sess, tbuf, FALSE);
 
 	return TRUE;

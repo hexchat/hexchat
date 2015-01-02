@@ -83,6 +83,15 @@ static gboolean dcc_send_data (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc);
 
+char *
+net_ip (guint32 addr)
+{
+	struct in_addr ia;
+
+	ia.s_addr = htonl (addr);
+	return inet_ntoa (ia);
+}
+
 static int new_id()
 {
 	static int id = 0;
@@ -1668,6 +1677,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 	if (dcc->sok == -1)
 		return FALSE;
 
+#if 0
 	memset (&SAddr, 0, sizeof (struct sockaddr_in));
 
 	len = sizeof (SAddr);
@@ -1704,6 +1714,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 		setsockopt (dcc->sok, SOL_SOCKET, SO_REUSEADDR, (char *) &len, sizeof (len));
 
 	} else
+#endif
 	{
 		/* try random port */
 		SAddr.sin_port = 0;

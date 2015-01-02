@@ -471,14 +471,10 @@ typedef struct server
 	int (*p_raw)(struct server *, char *raw);
 	int (*p_cmp)(const char *s1, const char *s2);
 
-	int port;
-	int sok;					/* is equal to sok4 or sok6 (the one we are using) */
-	int sok4;					/* tcp4 socket */
-	int sok6;					/* tcp6 socket */
-	int proxy_type;
-	int proxy_sok;				/* Additional information for MS Proxy beast */
-	int proxy_sok4;
-	int proxy_sok6;
+	guint16 port;
+	GSocket *sok;					/* is equal to sok4 or sok6 (the one we are using) */
+	GSocket *sok4;					/* tcp4 socket */
+	GSocket *sok6;					/* tcp6 socket */
 	int id;					/* unique ID number (for plugin API) */
 #ifdef USE_OPENSSL
 	SSL_CTX *ctx;
