@@ -156,10 +156,10 @@ identd_start_server (void)
 	GError *error = NULL;
 	int enabled, port = 113;
 
-	if (hexchat_get_prefs (ph, "identd", NULL, &enabled) == 3 && enabled)
+	if (hexchat_get_prefs (ph, "identd", NULL, &enabled) == 3)
 	{
 		if (!enabled)
-			return TRUE; /*...*/
+			return TRUE; /* Count as loaded successfully but don't start service */
 	}
 	if (hexchat_get_prefs (ph, "identd_port", NULL, &port) == 2 && (port <= 0 || port > G_MAXUINT16))
 	{
