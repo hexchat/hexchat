@@ -27,6 +27,8 @@
 
 #include "hexchat-plugin.h"
 
+#define WMI_INFO_BUFFER_LENGTH 128
+
 static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "SysInfo";
 static char desc[] = "Display info about your hardware and OS";
@@ -238,7 +240,7 @@ getWmiInfo (int mode)
 	http://social.msdn.microsoft.com/forums/en-US/vcgeneral/thread/d6420012-e432-4964-8506-6f6b65e5a451
 	*/
 
-	char *buffer = (char *) malloc (128);
+	char *buffer = (char *) calloc (sizeof(char), WMI_INFO_BUFFER_LENGTH);
 	char *buffer_iter = buffer;
 	HRESULT hres;
 	HRESULT hr;
@@ -340,10 +342,9 @@ getWmiInfo (int mode)
 				hr = pclsObj->Get (L"Name", 0, &vtProp, 0, 0);
 				break;
 		}
-		buffer_iter += WideCharToMultiByte(CP_ACP, 0, vtProp.bstrVal, -1, buffer_iter, SysStringLen(vtProp.bstrVal) + 1, NULL, NULL) - 1;
+		buffer_iter += WideCharToMultiByte(CP_ACP, 0, vtProp.bstrVal, -1, buffer_iter, WMI_INFO_BUFFER_LENGTH - (buffer_iter - buffer + 2), NULL, NULL) - 1;
 		*(buffer_iter++) = ',';
 		*(buffer_iter++) = ' ';
-		*(buffer_iter) = 0;
 		VariantClear (&vtProp);
     }
 
