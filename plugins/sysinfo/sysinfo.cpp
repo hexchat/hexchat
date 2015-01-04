@@ -27,6 +27,8 @@
 
 #include "hexchat-plugin.h"
 
+#define WMI_INFO_BUFFER_LENGTH 128
+
 static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "SysInfo";
 static char desc[] = "Display info about your hardware and OS";
@@ -231,14 +233,15 @@ getMemoryInfo (void)
 static char *
 getWmiInfo (int mode)
 {
-	/* for more details about this wonderful API, see 
+	/* for more details about this wonderful API, see
 	http://msdn.microsoft.com/en-us/site/aa394138
 	http://msdn.microsoft.com/en-us/site/aa390423
 	http://msdn.microsoft.com/en-us/library/windows/desktop/aa394138%28v=vs.85%29.aspx
 	http://social.msdn.microsoft.com/forums/en-US/vcgeneral/thread/d6420012-e432-4964-8506-6f6b65e5a451
 	*/
 
-	char *buffer = (char *) malloc (128);
+	char *buffer = (char *) calloc (sizeof(char), WMI_INFO_BUFFER_LENGTH);
+	char *buffer_iter = buffer;
 	HRESULT hres;
 	HRESULT hr;
 	IWbemLocator *pLoc = NULL;
@@ -323,6 +326,7 @@ getWmiInfo (int mode)
 		hr = pEnumerator->Next (WBEM_INFINITE, 1, &pclsObj, &uReturn);
 		if (0 == uReturn)
 		{
+			*(buffer_iter - 2) = 0;
 			break;
 		}
 		VARIANT vtProp;
@@ -338,7 +342,9 @@ getWmiInfo (int mode)
 				hr = pclsObj->Get (L"Name", 0, &vtProp, 0, 0);
 				break;
 		}
-		WideCharToMultiByte (CP_ACP, 0, vtProp.bstrVal, -1, buffer, SysStringLen (vtProp.bstrVal)+1, NULL, NULL);
+		buffer_iter += WideCharToMultiByte(CP_ACP, 0, vtProp.bstrVal, -1, buffer_iter, WMI_INFO_BUFFER_LENGTH - (buffer_iter - buffer + 2), NULL, NULL) - 1;
+		*(buffer_iter++) = ',';
+		*(buffer_iter++) = ' ';
 		VariantClear (&vtProp);
     }
 
