@@ -41,7 +41,7 @@ static char *os_name = NULL;
 static char *cpu_info = NULL;
 static char *vga_name = NULL;
 
-static int printInfo (char *word[], char *word_eol[], void *user_data);
+static int command_callback (char *word[], char *word_eol[], void *user_data);
 
 typedef enum
 {
@@ -50,9 +50,14 @@ typedef enum
 	QUERY_WMI_VGA,
 } QueryWmiType;
 
-static int get_cpu_arch (void);
+void print_info (void);
+int get_cpu_arch (void);
 char *query_wmi (QueryWmiType mode);
+char *read_os_name (IWbemClassObject *object);
+char *read_cpu_info (IWbemClassObject *object);
+char *read_vga_name (IWbemClassObject *object);
 char *get_memory_info (void);
+char *bstr_to_utf8 (BSTR bstr);
 
 int hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
@@ -62,7 +67,7 @@ int hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	hexchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, printInfo, helptext, NULL);
+	hexchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, command_callback, helptext, NULL);
 	hexchat_command (ph, "MENU -ishare\\system.png ADD \"Window/Send System Info\" \"SYSINFO\"");
 
 	hexchat_printf (ph, "%s plugin loaded\n", name);
@@ -82,7 +87,14 @@ int hexchat_plugin_deinit (void)
 	return 1;
 }
 
-static int printInfo (char *word[], char *word_eol[], void *user_data)
+static int command_callback (char *word[], char *word_eol[], void *user_data)
+{
+	print_info ();
+
+	return HEXCHAT_EAT_HEXCHAT;
+}
+
+static void print_info (void)
 {
 	char *memory_info;
 	int channel_type;
@@ -96,8 +108,6 @@ static int printInfo (char *word[], char *word_eol[], void *user_data)
 
 	if (os_name == NULL)
 	{
-		hexchat_printf (ph, "%s - Querying and caching OS info...\n", name);
-
 		os_name = query_wmi (QUERY_WMI_OS);
 		if (os_name == NULL)
 		{
@@ -108,8 +118,6 @@ static int printInfo (char *word[], char *word_eol[], void *user_data)
 
 	if (cpu_info == NULL)
 	{
-		hexchat_printf (ph, "%s - Querying and caching CPU info...\n", name);
-
 		cpu_info = query_wmi (QUERY_WMI_CPU);
 		if (cpu_info == NULL)
 		{
@@ -120,8 +128,6 @@ static int printInfo (char *word[], char *word_eol[], void *user_data)
 
 	if (vga_name == NULL)
 	{
-		hexchat_printf (ph, "%s - Querying and caching VGA info...\n", name);
-
 		vga_name = query_wmi (QUERY_WMI_VGA);
 		if (vga_name == NULL)
 		{
@@ -163,8 +169,22 @@ static int printInfo (char *word[], char *word_eol[], void *user_data)
 	}
 
 	g_free (memory_info);
+}
 
-	return HEXCHAT_EAT_HEXCHAT;
+static int get_cpu_arch (void)
+{
+	SYSTEM_INFO si;
+
+	GetNativeSystemInfo (&si);
+
+	if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+	{
+		return 64;
+	}
+	else
+	{
+		return 86;
+	}
 }
 
 /* http://msdn.microsoft.com/en-us/site/aa390423 */
@@ -181,6 +201,7 @@ static char *query_wmi (QueryWmiType type)
 	IUnknown *namespaceUnknown = NULL;
 	IEnumWbemClassObject *enumerator = NULL;
 	int i;
+	gboolean atleast_one_appended = FALSE;
 
 	hr = CoInitializeEx (0, COINIT_APARTMENTTHREADED);
 	if (FAILED (hr))
@@ -224,13 +245,13 @@ static char *query_wmi (QueryWmiType type)
 	switch (type)
 	{
 	case QUERY_WMI_OS:
-		query = SysAllocString (L"SELECT * FROM Win32_OperatingSystem");
+		query = SysAllocString (L"SELECT Caption FROM Win32_OperatingSystem");
 		break;
 	case QUERY_WMI_CPU:
-		query = SysAllocString (L"SELECT * FROM Win32_Processor");
+		query = SysAllocString (L"SELECT Name, MaxClockSpeed FROM Win32_Processor");
 		break;
 	case QUERY_WMI_VGA:
-		query = SysAllocString (L"SELECT * FROM Win32_VideoController");
+		query = SysAllocString (L"SELECT Name FROM Win32_VideoController");
 		break;
 	default:
 		goto release_queryLanguageName;
@@ -248,8 +269,7 @@ static char *query_wmi (QueryWmiType type)
 	{
 		ULONG numReturned = 0;
 		IWbemClassObject *object;
-		VARIANT property;
-		char *property_utf8;
+		char *line;
 
 		hr = enumerator->lpVtbl->Next (enumerator, WBEM_INFINITE, 1, &object, &numReturned);
 		if (FAILED (hr) || numReturned == 0)
@@ -260,68 +280,45 @@ static char *query_wmi (QueryWmiType type)
 		switch (type)
 		{
 			case QUERY_WMI_OS:
-				hr = object->lpVtbl->Get (object, L"Caption", 0, &property, 0, 0);
+				line = read_os_name (object);
 				break;
 
 			case QUERY_WMI_CPU:
-				hr = object->lpVtbl->Get (object, L"Name", 0, &property, 0, 0);
+				line = read_cpu_info (object);
 				break;
 
 			case QUERY_WMI_VGA:
-				hr = object->lpVtbl->Get (object, L"Name", 0, &property, 0, 0);
+				line = read_vga_name (object);
 				break;
 
 			default:
 				break;
 		}
 
-		if (FAILED (hr))
-		{
-			break;
-		}
-
-		if (i > 0)
-		{
-			g_string_append (result, ", ");
-		}
-
-		property_utf8 = g_utf16_to_utf8 (property.bstrVal, SysStringLen (property.bstrVal), NULL, NULL, NULL);
-		g_string_append (result, property_utf8);
-
-		VariantClear (&property);
-
-		if (type == QUERY_WMI_CPU)
-		{
-			guint cpu_freq_mhz;
-
-			hr = object->lpVtbl->Get (object, L"MaxClockSpeed", 0, &property, 0, 0);
-			if (FAILED (hr))
-			{
-				break;
-			}
-
-			cpu_freq_mhz = property.uintVal;
-
-			if (cpu_freq_mhz > 1000)
-			{
-				g_string_append_printf (result, " (%.2f GHz)", property.uintVal / 1000.0f);
-			}
-			else
-			{
-				g_string_append_printf (result, " (%" G_GUINT32_FORMAT " MHz)", property.uintVal);
-			}
-		}
-
 		object->lpVtbl->Release (object);
+
+		if (line != NULL)
+		{
+			if (atleast_one_appended)
+			{
+				g_string_append (result, ", ");
+			}
+
+			g_string_append (result, line);
+
+			g_free (line);
+
+			atleast_one_appended = TRUE;
+		}
 	}
 
 	enumerator->lpVtbl->Release (enumerator);
 
 release_query:
-	SysFreeString(query);
+	SysFreeString (query);
 
 release_queryLanguageName:
-	SysFreeString(queryLanguageName);
+	SysFreeString (queryLanguageName);
 
 release_namespaceUnknown:
 	namespaceUnknown->lpVtbl->Release (namespaceUnknown);
@@ -330,7 +327,7 @@ release_namespace:
 	namespace->lpVtbl->Release (namespace);
 
 release_locator:
-	locator->lpVtbl->Release(locator);
+	locator->lpVtbl->Release (locator);
 	SysFreeString (namespaceName);
 
 couninitialize:
@@ -345,20 +342,102 @@ exit:
 	return g_string_free (result, FALSE);
 }
 
-static int get_cpu_arch (void)
+static char *read_os_name (IWbemClassObject *object)
 {
-	SYSTEM_INFO si;
+	HRESULT hr;
+	VARIANT caption_variant;
+	char *caption_utf8;
 
-	GetNativeSystemInfo (&si);
-
-	if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+	hr = object->lpVtbl->Get (object, L"Caption", 0, &caption_variant, NULL, NULL);
+	if (FAILED (hr))
 	{
-		return 64;
+		return NULL;
+	}
+
+	caption_utf8 = bstr_to_utf8 (caption_variant.bstrVal);
+
+	VariantClear (&caption_variant);
+
+	if (caption_utf8 == NULL)
+	{
+		return NULL;
+	}
+
+	return caption_utf8;
+}
+
+static char *read_cpu_info (IWbemClassObject *object)
+{
+	HRESULT hr;
+	VARIANT name_variant;
+	char *name_utf8;
+	VARIANT max_clock_speed_variant;
+	guint cpu_freq_mhz;
+	char *result;
+
+	hr = object->lpVtbl->Get (object, L"Name", 0, &name_variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		return NULL;
+	}
+
+	name_utf8 = bstr_to_utf8 (name_variant.bstrVal);
+
+	VariantClear (&name_variant);
+
+	if (name_utf8 == NULL)
+	{
+		return NULL;
+	}
+
+	hr = object->lpVtbl->Get (object, L"MaxClockSpeed", 0, &max_clock_speed_variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		g_free (name_utf8);
+
+		return NULL;
+	}
+
+	cpu_freq_mhz = max_clock_speed_variant.uintVal;
+
+	VariantClear (&max_clock_speed_variant);
+
+	if (cpu_freq_mhz > 1000)
+	{
+		result = g_strdup_printf ("%s (%.2f GHz)", name_utf8, cpu_freq_mhz / 1000.f);
 	}
 	else
 	{
-		return 86;
+		result = g_strdup_printf ("%s (%" G_GUINT32_FORMAT " MHz)", name_utf8, cpu_freq_mhz);
 	}
+
+	g_free (name_utf8);
+
+	return result;
+}
+
+static char *read_vga_name (IWbemClassObject *object)
+{
+	HRESULT hr;
+	VARIANT name_variant;
+	char *name_utf8;
+
+	hr = object->lpVtbl->Get (object, L"Name", 0, &name_variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		return NULL;
+	}
+
+	name_utf8 = bstr_to_utf8 (name_variant.bstrVal);
+
+	VariantClear (&name_variant);
+
+	if (name_utf8 == NULL)
+	{
+		return NULL;
+	}
+
+	return name_utf8;
 }
 
 static char *get_memory_info (void)
@@ -372,4 +451,9 @@ static char *get_memory_info (void)
 	}
 
 	return g_strdup_printf ("%" G_GUINT64_FORMAT " MB Total (%" G_GUINT64_FORMAT " MB Free)", meminfo.ullTotalPhys / 1024 / 1024, meminfo.ullAvailPhys / 1024 / 1024);
+}
+
+static char *bstr_to_utf8 (BSTR bstr)
+{
+	return g_utf16_to_utf8 (bstr, SysStringLen (bstr), NULL, NULL, NULL);
 }
