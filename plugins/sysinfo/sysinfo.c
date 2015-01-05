@@ -48,6 +48,7 @@ typedef enum
 	QUERY_WMI_OS,
 	QUERY_WMI_CPU,
 	QUERY_WMI_VGA,
+	QUERY_WMI_HDD,
 } QueryWmiType;
 
 void print_info (void);
@@ -56,8 +57,14 @@ char *query_wmi (QueryWmiType mode);
 char *read_os_name (IWbemClassObject *object);
 char *read_cpu_info (IWbemClassObject *object);
 char *read_vga_name (IWbemClassObject *object);
+
+guint64 hdd_capacity;
+guint64 hdd_free_space;
+char *read_hdd_info (IWbemClassObject *object);
+
 char *get_memory_info (void);
 char *bstr_to_utf8 (BSTR bstr);
+guint64 variant_to_uint64 (VARIANT *variant);
 
 int hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
@@ -97,6 +104,7 @@ static int command_callback (char *word[], char *word_eol[], void *user_data)
 static void print_info (void)
 {
 	char *memory_info;
+	char *hdd_info;
 	int channel_type;
 
 #ifdef _WIN64
@@ -150,17 +158,35 @@ static void print_info (void)
 		memory_info = g_strdup ("Unknown");
 	}
 
+	/* HDD information is always loaded dynamically since it includes the current amount of free space */
+	hdd_capacity = 0;
+	hdd_free_space = 0;
+	hdd_info = query_wmi (QUERY_WMI_HDD);
+	if (hdd_info == NULL)
+	{
+		hexchat_printf (ph, "%s - Error while getting disk info.\n", name);
+		hdd_info = g_strdup ("Unknown");
+	}
+	else
+	{
+		gfloat total_gb = hdd_capacity / 1000.f / 1000.f / 1000.f;
+		gfloat used_gb = (hdd_capacity - hdd_free_space) / 1000.f / 1000.f / 1000.f;
+		gfloat free_gb = hdd_free_space / 1000.f / 1000.f / 1000.f;
+		hdd_info = g_strdup_printf ("%.2f GB / %.2f GB (%.2f GB Free)", used_gb, total_gb, free_gb);
+	}
+
 	channel_type = hexchat_list_int (ph, NULL, "type");
 	if (channel_type == 2 /* SESS_CHANNEL */ || channel_type == 3 /* SESS_DIALOG */)
 	{
 		hexchat_commandf (
 			ph,
-			"ME ** SysInfo ** Client: HexChat %s (%s) ** OS: %s(x%d) ** CPU: %s ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
+			"ME ** SysInfo ** Client: HexChat %s (%s) ** OS: %s(x%d) ** CPU: %s ** RAM: %s ** VGA: %s ** HDD: %s ** Uptime: %.2f Hours **",
 			hexchat_get_info (ph, "version"), build_arch,
 			os_name, cpu_arch,
 			cpu_info,
 			memory_info,
 			vga_name,
+			hdd_info,
 			(float) GetTickCount64 () / 1000 / 60 / 60);
 	}
 	else
@@ -170,6 +196,7 @@ static void print_info (void)
 		hexchat_printf (ph, " * CPU:     %s\n", cpu_info);
 		hexchat_printf (ph, " * RAM:     %s\n", memory_info);
 		hexchat_printf (ph, " * VGA:     %s\n", vga_name);
+		hexchat_printf (ph, " * HDD:     %s\n", hdd_info);
 		hexchat_printf (ph, " * Uptime:  %.2f Hours\n", (float) GetTickCount64 () / 1000 / 60 / 60);
 	}
 
@@ -258,6 +285,9 @@ static char *query_wmi (QueryWmiType type)
 	case QUERY_WMI_VGA:
 		query = SysAllocString (L"SELECT Name FROM Win32_VideoController");
 		break;
+	case QUERY_WMI_HDD:
+		query = SysAllocString (L"SELECT Name, Capacity, FreeSpace FROM Win32_Volume");
+		break;
 	default:
 		goto release_queryLanguageName;
 	}
@@ -294,6 +324,10 @@ static char *query_wmi (QueryWmiType type)
 
 			case QUERY_WMI_VGA:
 				line = read_vga_name (object);
+				break;
+
+			case QUERY_WMI_HDD:
+				line = read_hdd_info (object);
 				break;
 
 			default:
@@ -445,6 +479,72 @@ static char *read_vga_name (IWbemClassObject *object)
 	return name_utf8;
 }
 
+static char *read_hdd_info (IWbemClassObject *object)
+{
+	HRESULT hr;
+	VARIANT name_variant;
+	BSTR name_bstr;
+	gsize name_len;
+	VARIANT capacity_variant;
+	guint64 capacity;
+	VARIANT free_space_variant;
+	guint64 free_space;
+
+	hr = object->lpVtbl->Get (object, L"Name", 0, &name_variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		return NULL;
+	}
+
+	name_bstr = name_variant.bstrVal;
+	name_len = SysStringLen (name_variant.bstrVal);
+
+	if (name_len >= 4 && name_bstr[0] == L'\\' && name_bstr[1] == L'\\' && name_bstr[2] == L'?' && name_bstr[3] == L'\\')
+	{
+		// This is not a named volume. Skip it.
+		VariantClear (&name_variant);
+
+		return NULL;
+	}
+
+	VariantClear (&name_variant);
+
+	hr = object->lpVtbl->Get (object, L"Capacity", 0, &capacity_variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		return NULL;
+	}
+
+	capacity = variant_to_uint64 (&capacity_variant);
+
+	VariantClear (&capacity_variant);
+
+	if (capacity == 0)
+	{
+		return NULL;
+	}
+
+	hr = object->lpVtbl->Get (object, L"FreeSpace", 0, &free_space_variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		return NULL;
+	}
+
+	free_space = variant_to_uint64 (&free_space_variant);
+
+	VariantClear (&free_space_variant);
+
+	if (free_space == 0)
+	{
+		return NULL;
+	}
+
+	hdd_capacity += capacity;
+	hdd_free_space += free_space;
+
+	return NULL;
+}
+
 static char *get_memory_info (void)
 {
 	MEMORYSTATUSEX meminfo = { 0 };
@@ -461,4 +561,19 @@ static char *get_memory_info (void)
 static char *bstr_to_utf8 (BSTR bstr)
 {
 	return g_utf16_to_utf8 (bstr, SysStringLen (bstr), NULL, NULL, NULL);
+}
+
+static guint64 variant_to_uint64 (VARIANT *variant)
+{
+	switch (V_VT (variant))
+	{
+	case VT_UI8:
+		return variant->ullVal;
+
+	case VT_BSTR:
+		return wcstoull (variant->bstrVal, NULL, 10);
+
+	default:
+		return 0;
+	}
 }
