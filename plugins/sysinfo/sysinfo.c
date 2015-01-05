@@ -99,6 +99,12 @@ static void print_info (void)
 	char *memory_info;
 	int channel_type;
 
+#ifdef _WIN64
+	const char *build_arch = "x64";
+#else
+	const char *build_arch = "x86";
+#endif
+
 	/* Load information if not already loaded */
 
 	if (cpu_arch == 0)
@@ -149,10 +155,9 @@ static void print_info (void)
 	{
 		hexchat_commandf (
 			ph,
-			"ME ** SysInfo ** Client: HexChat %s (x%d) ** OS: %s ** CPU: %s ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
-			hexchat_get_info (ph, "version"),
-			cpu_arch,
-			os_name,
+			"ME ** SysInfo ** Client: HexChat %s (%s) ** OS: %s(x%d) ** CPU: %s ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
+			hexchat_get_info (ph, "version"), build_arch,
+			os_name, cpu_arch,
 			cpu_info,
 			memory_info,
 			vga_name,
@@ -160,8 +165,8 @@ static void print_info (void)
 	}
 	else
 	{
-		hexchat_printf (ph, " * Client:  HexChat %s (x%d)\n", hexchat_get_info (ph, "version"), cpu_arch);
-		hexchat_printf (ph, " * OS:      %s\n", os_name);
+		hexchat_printf (ph, " * Client:  HexChat %s (%s)\n", hexchat_get_info (ph, "version"), build_arch);
+		hexchat_printf (ph, " * OS:      %s(x%d)\n", os_name, cpu_arch);
 		hexchat_printf (ph, " * CPU:     %s\n", cpu_info);
 		hexchat_printf (ph, " * RAM:     %s\n", memory_info);
 		hexchat_printf (ph, " * VGA:     %s\n", vga_name);
