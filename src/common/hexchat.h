@@ -78,6 +78,7 @@
 #define PDIWORDS		32
 #define USERNAMELEN 10
 #define HIDDEN_CHAR	8			/* invisible character for xtext */
+#define MAX_INT		35
 
 struct nbexec
 {
@@ -220,10 +221,6 @@ struct hexchatprefs
 	int hex_completion_sort;
 	int hex_dcc_auto_recv;
 	int hex_dcc_blocksize;
-	int hex_dcc_global_max_get_cps;
-	int hex_dcc_global_max_send_cps;
-	int hex_dcc_max_get_cps;
-	int hex_dcc_max_send_cps;
 	int hex_dcc_permissions;
 	int hex_dcc_port_first;
 	int hex_dcc_port_last;
@@ -284,7 +281,11 @@ struct hexchatprefs
 	char hex_completion_suffix[4];		/* Only ever holds a one-character string. */
 	char hex_dcc_completed_dir[PATHLEN + 1];
 	char hex_dcc_dir[PATHLEN + 1];
+	char hex_dcc_global_max_get_cps[MAX_INT];
+	char hex_dcc_global_max_send_cps[MAX_INT];
 	char hex_dcc_ip[DOMAINLEN + 1];
+	char hex_dcc_max_get_cps[MAX_INT];
+	char hex_dcc_max_send_cps[MAX_INT];
 	char hex_gui_ulist_doubleclick[256];
 	char hex_input_command_char[4];
 	char hex_irc_extra_hilight[300];

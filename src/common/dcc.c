@@ -31,6 +31,7 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
+#include <ctype.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 
@@ -96,6 +97,43 @@ static int new_id()
 	return id++;
 }
 
+int
+parse_byte_string(char *byte_string)
+{
+	char suffix;
+	int bytes;
+	int i;
+	int j;
+	int suffix_value = 1;
+	int total_speed;
+	
+	for(j = 0; j < strlen(byte_string); j++)
+	{
+		i=0;
+
+		if (isalpha(byte_string[i])) {
+			suffix = tolower(byte_string[i]);
+
+			switch (suffix) {
+			case 'k':
+				suffix_value = 1024;
+				break;
+			case 'm':
+				suffix_value = 131072;
+				break;
+			case 'g':
+				suffix_value = 1073741824;
+				break;
+			}
+		}
+		i++;
+	}
+	bytes = atoi(byte_string); 
+
+	total_speed = bytes * suffix_value;
+	return total_speed;
+}
+
 static double
 timeval_diff (GTimeVal *greater,
 				 GTimeVal *less)
@@ -141,14 +179,14 @@ dcc_calc_cps (struct DCC *dcc)
 		pos = dcc->pos - ((dcc->pos - dcc->ack) / 2);
 		glob_throttle_bit = 0x1;
 		cpssum = &dcc_sendcpssum;
-		glob_limit = prefs.hex_dcc_global_max_send_cps;
+		glob_limit = parse_byte_string(prefs.hex_dcc_global_max_send_cps);
 	}
 	else
 	{
 		pos = dcc->pos;
 		glob_throttle_bit = 0x2;
 		cpssum = &dcc_getcpssum;
-		glob_limit = prefs.hex_dcc_global_max_get_cps;
+		glob_limit = parse_byte_string(prefs.hex_dcc_global_max_get_cps);
 	}
 
 	if (!dcc->firstcpstv.tv_sec && !dcc->firstcpstv.tv_usec)
@@ -1744,7 +1782,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 
 static struct session *dccsess;
 static char *dccto;				  /* lame!! */
-static gint64 dccmaxcps;
+static char *dccmaxcps;
 static int recursive = FALSE;
 
 static void
@@ -1754,7 +1792,7 @@ dcc_send_wild (char *file)
 }
 
 void
-dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int passive)
+dcc_send (struct session *sess, char *to, char *filename, char  *maxcps, int passive)
 {
 	char outbuf[512];
 	GFileInfo *file_info;
@@ -1797,7 +1835,7 @@ dcc_send (struct session *sess, char *to, char *filename, gint64 maxcps, int pas
 	}
 
 	dcc->file = filename;
-	dcc->maxcps = maxcps;
+	dcc->maxcps = parse_byte_string(maxcps);
 
 	filename_fs = g_filename_from_utf8 (filename, -1, NULL, NULL, NULL);
 	if (filename_fs == NULL)
@@ -2469,7 +2507,7 @@ dcc_add_file (session *sess, char *file, guint64 size, int port, char *nick, gui
 		dcc->pasvid = pasvid;
 		dcc->size = size;
 		dcc->nick = g_strdup (nick);
-		dcc->maxcps = prefs.hex_dcc_max_get_cps;
+		dcc->maxcps = parse_byte_string(prefs.hex_dcc_max_get_cps);
 
 		update_is_resumable (dcc);
 
@@ -2694,3 +2732,5 @@ dcc_show_list (struct session *sess)
 	if (!i)
 		PrintText (sess, _("No active DCCs\n"));
 }
+
+

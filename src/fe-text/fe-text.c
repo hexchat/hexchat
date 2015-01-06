@@ -743,7 +743,7 @@ fe_dlgbuttons_update (struct session *sess)
 {
 }
 void
-fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
+fe_dcc_send_filereq (struct session *sess, char *nick, char *maxcps, int passive)
 {
 }
 void

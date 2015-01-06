@@ -177,7 +177,7 @@ static const setting appearance_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const char *const tabcompmenu[] = 
+static const char *const tabcompmenu[] =
 {
 	N_("A-Z"),
 	N_("Last-spoke order"),
@@ -207,7 +207,7 @@ static const setting inputbox_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const char *const lagmenutext[] = 
+static const char *const lagmenutext[] =
 {
 	N_("Off"),
 	N_("Graphical"),
@@ -216,7 +216,7 @@ static const char *const lagmenutext[] =
 	NULL
 };
 
-static const char *const ulmenutext[] = 
+static const char *const ulmenutext[] =
 {
 	N_("A-Z, Ops first"),
 	N_("A-Z"),
@@ -360,14 +360,10 @@ static const setting filexfer_settings[] =
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 
 	{ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0, 0},
-	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(hex_dcc_max_send_cps), 
-					N_("Maximum speed for one transfer"), 0, 10000000},
-	{ST_NUMBER,	N_("One download:"), P_OFFINTNL(hex_dcc_max_get_cps),
-					N_("Maximum speed for one transfer"), 0, 10000000},
-	{ST_NUMBER,	N_("All uploads combined:"), P_OFFINTNL(hex_dcc_global_max_send_cps),
-					N_("Maximum speed for all files"), 0, 10000000},
-	{ST_NUMBER,	N_("All downloads combined:"), P_OFFINTNL(hex_dcc_global_max_get_cps),
-					N_("Maximum speed for all files"), 0, 10000000},
+	{ST_ENTRY,	N_("One upload:"), P_OFFSETNL(hex_dcc_max_send_cps), 0, 0, sizeof prefs.hex_dcc_max_send_cps},
+	{ST_ENTRY,	N_("One download:"), P_OFFSETNL(hex_dcc_max_get_cps), 0, 0, sizeof prefs.hex_dcc_max_send_cps},
+	{ST_ENTRY,	N_("All uploads combined:"), P_OFFSETNL(hex_dcc_global_max_send_cps), 0, 0, sizeof prefs.hex_dcc_global_max_send_cps},
+	{ST_ENTRY,	N_("All downloads combined:"), P_OFFINTNL(hex_dcc_global_max_get_cps), 0, 0, sizeof prefs.hex_dcc_global_max_get_cps},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -488,7 +484,7 @@ static const setting general_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const char *const bantypemenu[] = 
+static const char *const bantypemenu[] =
 {
 	N_("*!*@*.host"),
 	N_("*!*@domain"),
@@ -586,7 +582,7 @@ static const setting network_settings[] =
 	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(hex_dcc_ip),
 					N_("Claim you are at this address when offering files."), 0, sizeof prefs.hex_dcc_ip},
 	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
-	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
+	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0,
 		(const char **)N_("!Leave ports at zero for full range."), 65535},
 
 	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
@@ -605,7 +601,7 @@ static const setting network_settings[] =
 
 #define setup_get_str(pr,set) (((char *)pr)+set->offset)
 #define setup_get_int(pr,set) *(((int *)pr)+set->offset)
-#define setup_get_int3(pr,off) *(((int *)pr)+off) 
+#define setup_get_int3(pr,off) *(((int *)pr)+off)
 
 #define setup_set_int(pr,set,num) *((int *)pr+set->offset)=num
 #define setup_set_str(pr,set,str) strcpy(((char *)pr)+set->offset,str)
@@ -1175,7 +1171,7 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	if (set->offset == P_OFFSETNL(hex_net_proxy_user))
 		proxy_user = wid;
 	if (set->offset == P_OFFSETNL(hex_net_proxy_pass))
-		proxy_pass = wid; 
+		proxy_pass = wid;
 
 	/* only http and Socks5 can auth */
 	if ( (set->offset == P_OFFSETNL(hex_net_proxy_pass) ||
@@ -2155,7 +2151,7 @@ setup_apply (struct hexchatprefs *pr)
 		fe_message (_("The Real name option cannot be left blank. Falling back to \"realname\"."), FE_MSG_WARN);
 		strcpy (prefs.hex_irc_real_name, "realname");
 	}
-	
+
 	setup_apply_real (new_pix, do_ulist, do_layout);
 
 	if (noapply)
