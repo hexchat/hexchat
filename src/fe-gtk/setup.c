@@ -177,7 +177,7 @@ static const setting appearance_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const char *const tabcompmenu[] =
+static const char *const tabcompmenu[] = 
 {
 	N_("A-Z"),
 	N_("Last-spoke order"),
@@ -207,7 +207,7 @@ static const setting inputbox_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const char *const lagmenutext[] =
+static const char *const lagmenutext[] = 
 {
 	N_("Off"),
 	N_("Graphical"),
@@ -216,7 +216,7 @@ static const char *const lagmenutext[] =
 	NULL
 };
 
-static const char *const ulmenutext[] =
+static const char *const ulmenutext[] = 
 {
 	N_("A-Z, Ops first"),
 	N_("A-Z"),
