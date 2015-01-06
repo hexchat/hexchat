@@ -484,7 +484,7 @@ static const setting general_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const char *const bantypemenu[] =
+static const char *const bantypemenu[] = 
 {
 	N_("*!*@*.host"),
 	N_("*!*@domain"),
@@ -601,7 +601,7 @@ static const setting network_settings[] =
 
 #define setup_get_str(pr,set) (((char *)pr)+set->offset)
 #define setup_get_int(pr,set) *(((int *)pr)+set->offset)
-#define setup_get_int3(pr,off) *(((int *)pr)+off)
+#define setup_get_int3(pr,off) *(((int *)pr)+off) 
 
 #define setup_set_int(pr,set,num) *((int *)pr+set->offset)=num
 #define setup_set_str(pr,set,str) strcpy(((char *)pr)+set->offset,str)
@@ -1171,7 +1171,7 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	if (set->offset == P_OFFSETNL(hex_net_proxy_user))
 		proxy_user = wid;
 	if (set->offset == P_OFFSETNL(hex_net_proxy_pass))
-		proxy_pass = wid;
+		proxy_pass = wid; 
 
 	/* only http and Socks5 can auth */
 	if ( (set->offset == P_OFFSETNL(hex_net_proxy_pass) ||
@@ -2151,7 +2151,7 @@ setup_apply (struct hexchatprefs *pr)
 		fe_message (_("The Real name option cannot be left blank. Falling back to \"realname\"."), FE_MSG_WARN);
 		strcpy (prefs.hex_irc_real_name, "realname");
 	}
-
+	
 	setup_apply_real (new_pix, do_ulist, do_layout);
 
 	if (noapply)
