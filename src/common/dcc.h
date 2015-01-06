@@ -105,7 +105,6 @@ struct dccstat_info
 
 extern struct dccstat_info dccstat[];
 
-int parse_int_string(char *byte_string);
 gboolean is_dcc (struct DCC *dcc);
 gboolean is_dcc_completed (struct DCC *dcc);
 void dcc_abort (session *sess, struct DCC *dcc);
