@@ -111,8 +111,8 @@ parse_byte_string(char *byte_string)
 	{
 		i=0;
 
-		if (isalpha(byte_string[i])) {
-			suffix = tolower(byte_string[i]);
+		if (g_ascii_isalpha(byte_string[i])) {
+			suffix = g_ascii_tolower(byte_string[i]);
 
 			switch (suffix) {
 			case 'k':
