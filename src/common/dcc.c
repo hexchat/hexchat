@@ -97,7 +97,7 @@ static int new_id()
 	return id++;
 }
 
-int
+static int
 parse_byte_string(char *byte_string)
 {
 	char suffix;
