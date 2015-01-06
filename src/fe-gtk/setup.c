@@ -586,7 +586,7 @@ static const setting network_settings[] =
 		(const char **)N_("!Leave ports at zero for full range."), 65535},
 
 	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
-	{ST_ENTRY,	N_("Hostname:"), P_OFFSETNL(hex_net_proxy_host), 0, 0, sizeof prefs.hex_net_proxy_host},
+	{ST_ENTRY,	N_("Hostname:"), P_OFFSETNL(hex_net_proxy_host), 0, 0, sizeof prefs.hex_net_proxy_host}, 
 	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(hex_net_proxy_port), 0, 0, 65535},
 	{ST_MENU,	N_("Type:"), P_OFFINTNL(hex_net_proxy_type), 0, proxytypes, 0},
 	{ST_MENU,	N_("Use proxy for:"), P_OFFINTNL(hex_net_proxy_use), 0, proxyuse, 0},
