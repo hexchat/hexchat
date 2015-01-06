@@ -582,7 +582,7 @@ static const setting network_settings[] =
 	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(hex_dcc_ip),
 					N_("Claim you are at this address when offering files."), 0, sizeof prefs.hex_dcc_ip},
 	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
-	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0,
+	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
 		(const char **)N_("!Leave ports at zero for full range."), 65535},
 
 	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
