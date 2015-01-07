@@ -39,7 +39,7 @@
 #endif
 
 #define DEF_FONT "Monospace 9"
-#define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,MS Gothic,Unifont"
+#define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,Meiryo,Symbola,Unifont"
 
 const char * const languages[LANGUAGES_LENGTH] = {
 	"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",      /*  0 ..  9 */
