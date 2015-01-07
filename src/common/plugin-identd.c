@@ -49,6 +49,9 @@ identd_command_cb (char *word[], char *word_eol[], void *userdata)
 {
 	g_return_val_if_fail (responses != NULL, HEXCHAT_EAT_ALL);
 
+	if (service == NULL) /* If we are not running plugins can handle it */
+		return HEXCHAT_EAT_HEXCHAT;
+
 	if (word[2] && *word[2] && word[3] && *word[3])
 	{
 		guint64 port = g_ascii_strtoull (word[2], NULL, 0);
@@ -65,7 +68,7 @@ identd_command_cb (char *word[], char *word_eol[], void *userdata)
 		hexchat_command (ph, "HELP IDENTD");
 	}
 
-	return HEXCHAT_EAT_HEXCHAT;
+	return HEXCHAT_EAT_ALL;
 }
 
 static void
@@ -150,7 +153,7 @@ identd_incoming_cb (GSocketService *service, GSocketConnection *conn,
 	return TRUE;
 }
 
-static gboolean
+static void
 identd_start_server (void)
 {
 	GError *error = NULL;
@@ -159,7 +162,7 @@ identd_start_server (void)
 	if (hexchat_get_prefs (ph, "identd", NULL, &enabled) == 3)
 	{
 		if (!enabled)
-			return TRUE; /* Count as loaded successfully but don't start service */
+			return;
 	}
 	if (hexchat_get_prefs (ph, "identd_port", NULL, &port) == 2 && (port <= 0 || port > G_MAXUINT16))
 	{
@@ -174,14 +177,13 @@ identd_start_server (void)
 		hexchat_printf (ph, _("*\tError starting identd server: %s"), error->message);
 
 		g_object_unref (service);
-		return FALSE;
+		service = NULL;
+		return;
 	}
 	/*hexchat_printf (ph, "*\tIdentd listening on port: %d", port); */
 
 	g_signal_connect (G_OBJECT (service), "incoming", G_CALLBACK(identd_incoming_cb), NULL);
 	g_socket_service_start (service);
-
-	return TRUE;
 }
 
 int
@@ -198,7 +200,9 @@ identd_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 	hexchat_hook_command (ph, "IDENTD", HEXCHAT_PRI_NORM, identd_command_cb,
 						_("IDENTD <port> <username>"), NULL);
 
-	return identd_start_server ();
+	identd_start_server ();
+
+	return 1; /* This must always succeed for /identd to work */
 }
 
 int
