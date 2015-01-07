@@ -4749,13 +4749,13 @@ handle_command (session *sess, char *cmd, int check_spch)
 	}
 	else
 	{
-		/* unknown command, just send it to the server and hope */
 		if (!sess->server->connected)
 		{
-			PrintText (sess, _("Unknown Command. Try /help\n"));
+			PrintTextf (sess, _("Unknown Command %s. Try /help\n"), word[1]);
 		}
 		else
 		{
+			/* unknown command, just send it to the server and hope */
 			sess->server->p_raw (sess->server, cmd);
 		}
 	}
