@@ -483,7 +483,7 @@ _SSL_check_subject_altname (X509 *cert, const char *host)
 
 	if (addr != NULL)
 		g_object_unref (addr);
-	sk_GENERAL_NAME_free (altname_stack);
+	sk_GENERAL_NAME_pop_free (altname_stack, GENERAL_NAME_free);
 	return rv;
 }
 
