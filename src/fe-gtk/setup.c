@@ -2132,6 +2132,13 @@ setup_apply (struct hexchatprefs *pr)
 						" menu first."),
 						FE_MSG_WARN | FE_MSG_MARKUP);
 
+	/* format cannot be blank, there is already a setting for this */
+	if (pr->hex_stamp_text_format[0] == 0)
+	{
+		pr->hex_stamp_text = 0;
+		strcpy (pr->hex_stamp_text_format, prefs.hex_stamp_text_format);
+	}
+
 	memcpy (&prefs, pr, sizeof (prefs));
 
 #ifdef WIN32
