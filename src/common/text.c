@@ -707,7 +707,9 @@ log_write (session *sess, char *text, time_t ts)
 	}
 
 	if (sess->logfd == -1)
+	{
 		log_open (sess);
+	}
 
 	/* change to a different log file? */
 	file = log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE));
@@ -715,10 +717,20 @@ log_write (session *sess, char *text, time_t ts)
 	{
 		if (g_access (file, F_OK) != 0)
 		{
-			close (sess->logfd);
+			if (sess->logfd != -1)
+			{
+				close (sess->logfd);
+			}
+
 			sess->logfd = log_open_file (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE));
 		}
+
 		g_free (file);
+	}
+
+	if (sess->logfd == -1)
+	{
+		return;
 	}
 
 	if (prefs.hex_stamp_log)
@@ -731,6 +743,7 @@ log_write (session *sess, char *text, time_t ts)
 			g_free (stamp);
 		}
 	}
+
 	temp = strip_color (text, -1, STRIP_ALL);
 	len = strlen (temp);
 	write (sess->logfd, temp, len);
