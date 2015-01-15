@@ -255,12 +255,6 @@ tcp_send_len (server *serv, char *buf, int len)
 	return 1;
 }
 
-/*int
-tcp_send (server *serv, char *buf)
-{
-	return tcp_send_len (serv, buf, strlen (buf));
-}*/
-
 void
 tcp_sendf (server *serv, const char *fmt, ...)
 {
