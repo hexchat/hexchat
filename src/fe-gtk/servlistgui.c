@@ -90,6 +90,7 @@ static GtkWidget *servlist_open_edit (GtkWidget *parent, ircnet *net);
 static const char *pages[]=
 {
 	IRC_DEFAULT_CHARSET,
+	"CP1252 (Windows-1252)",
 	"ISO-8859-15 (Western Europe)",
 	"ISO-8859-2 (Central Europe)",
 	"ISO-8859-7 (Greek)",
