@@ -505,29 +505,11 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	session *sess;
 	char *word[PDIWORDS];
 	char *po;
-	char *utf;
-	char *conv;
 	int ret, i;
-	gssize len;
-	gsize utf_len;
 	char portbuf[32];
 	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
-	len = strlen (line);
-
-	if (dcc->serv->encoding == NULL)     /* system */
-		utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
-	else
-		utf = g_convert (line, len, "UTF-8", dcc->serv->encoding, 0, &utf_len, 0);
-
-	if (utf)
-	{
-		line = utf;
-		len = utf_len;
-	}
-
-	/* we really need valid UTF-8 now */
-	conv = text_validate (&line, &len);
+	line = text_invalid_encoding_to_utf8 (line, -1, dcc->serv->encoding, NULL);
 
 	sess = find_dialog (dcc->serv, dcc->nick);
 	if (!sess)
@@ -548,16 +530,14 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	/* did the plugin close it? */
 	if (!g_slist_find (dcc_list, dcc))
 	{
-		g_free (utf);
-		g_free (conv);
+		g_free (line);
 		return 1;
 	}
 
 	/* did the plugin eat the event? */
 	if (ret)
 	{
-		g_free (utf);
-		g_free (conv);
+		g_free (line);
 		return 0;
 	}
 
@@ -574,8 +554,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	{
 		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE, &no_tags);
 	}
-	g_free (utf);
-	g_free (conv);
+	g_free (line);
 	return 0;
 }
 

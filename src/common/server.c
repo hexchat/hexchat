@@ -89,48 +89,18 @@ int
 tcp_send_real (void *ssl, int sok, char *encoding, char *buf, int len)
 {
 	int ret;
-	char *locale;
-	gsize loc_len;
 
-	if (encoding == NULL)	/* system */
-	{
-		locale = NULL;
-		if (!prefs.utf8_locale)
-		{
-			const gchar *charset;
-
-			g_get_charset (&charset);
-			locale = g_convert_with_fallback (buf, len, charset, "UTF-8", "?", 0, &loc_len, 0);
-		}
-	}
+	gsize buf_encoded_len;
+	gchar *buf_encoded = text_invalid_utf8_to_encoding (buf, len, encoding, &buf_encoded_len);
+#ifdef USE_OPENSSL
+	if (!ssl)
+		ret = send (sok, buf_encoded, buf_encoded_len, 0);
 	else
-	{
-		locale = g_convert_with_fallback (buf, len, encoding, "UTF-8", "?", 0, &loc_len, 0);
-	}
-
-	if (locale)
-	{
-		len = loc_len;
-#ifdef USE_OPENSSL
-		if (!ssl)
-			ret = send (sok, locale, len, 0);
-		else
-			ret = _SSL_send (ssl, locale, len);
+		ret = _SSL_send (ssl, buf_encoded, buf_encoded_len);
 #else
-		ret = send (sok, locale, len, 0);
+	ret = send (sok, buf_encoded, buf_encoded_len, 0);
 #endif
-		g_free (locale);
-	} else
-	{
-#ifdef USE_OPENSSL
-		if (!ssl)
-			ret = send (sok, buf, len, 0);
-		else
-			ret = _SSL_send (ssl, buf, len);
-#else
-		ret = send (sok, buf, len, 0);
-#endif
-	}
+	g_free (buf_encoded);
 
 	return ret;
 }
@@ -287,94 +257,15 @@ close_socket (int sok)
 static void
 server_inline (server *serv, char *line, gssize len)
 {
-	char *utf_line_allocated = NULL;
+	gsize len_utf8;
+	line = text_invalid_encoding_to_utf8 (line, len, serv->encoding, &len_utf8);
 
-	/* Checks whether we're set to use UTF-8 charset */
-	if ((serv->encoding == NULL && prefs.utf8_locale) /* Using system default - UTF-8 */ ||
-		g_ascii_strcasecmp (serv->encoding, "UTF8") == 0 ||
-		g_ascii_strcasecmp (serv->encoding, "UTF-8") == 0
-	)
-	{
-		utf_line_allocated = text_validate (&line, &len);
-	}
-	else
-	{
-		/* Since the user has an explicit charset set, either
-		via /charset command or from his non-UTF8 locale,
-		we don't fallback to ISO-8859-1 and instead try to remove
-		errnoeous octets till the string is convertable in the
-		said charset. */
-
-		const char *encoding = NULL;
-
-		if (serv->encoding != NULL)
-			encoding = serv->encoding;
-		else
-			g_get_charset (&encoding);
-
-		if (encoding != NULL)
-		{
-			char *conv_line; /* holds a copy of the original string */
-			gsize conv_len; /* tells g_convert how much of line to convert */
-			gsize utf_len;
-			gsize read_len;
-			GError *err;
-			gboolean retry;
-
-			conv_line = g_malloc (len + 1);
-			memcpy (conv_line, line, len);
-			conv_line[len] = 0;
-			conv_len = len;
-
-			/* if CP1255, convert it with the NUL terminator.
-				Works around SF bug #1122089 */
-			if (serv->using_cp1255)
-				conv_len++;
-
-			do
-			{
-				err = NULL;
-				retry = FALSE;
-				utf_line_allocated = g_convert_with_fallback (conv_line, conv_len, "UTF-8", encoding, "?", &read_len, &utf_len, &err);
-				if (err != NULL)
-				{
-					if (err->code == G_CONVERT_ERROR_ILLEGAL_SEQUENCE && conv_len > (read_len + 1))
-					{
-						/* Make our best bet by removing the erroneous char.
-						   This will work for casual 8-bit strings with non-standard chars. */
-						memmove (conv_line + read_len, conv_line + read_len + 1, conv_len - read_len -1);
-						conv_len--;
-						retry = TRUE;
-					}
-					g_error_free (err);
-				}
-			} while (retry);
-
-			g_free (conv_line);
-
-			/* If any conversion has occured at all. Conversion might fail
-			due to errors other than invalid sequences, e.g. unknown charset. */
-			if (utf_line_allocated != NULL)
-			{
-				line = utf_line_allocated;
-				len = utf_len;
-				if (serv->using_cp1255 && len > 0)
-					len--;
-			}
-			else
-			{
-				/* If all fails, treat as UTF-8 with fallback to ISO-8859-1. */
-				utf_line_allocated = text_validate (&line, &len);
-			}
-		}
-	}
-
-	fe_add_rawlog (serv, line, len, FALSE);
+	fe_add_rawlog (serv, line, len_utf8, FALSE);
 
 	/* let proto-irc.c handle it */
-	serv->p_inline (serv, line, len);
+	serv->p_inline (serv, line, len_utf8);
 
-	g_free (utf_line_allocated);
+	g_free (line);
 }
 
 /* read data from socket */
@@ -1749,12 +1640,7 @@ server_set_encoding (server *serv, char *new_encoding)
 {
 	char *space;
 
-	if (serv->encoding)
-	{
-		g_free (serv->encoding);
-		/* can be left as NULL to indicate system encoding */
-		serv->encoding = NULL;
-	}
+	g_free (serv->encoding);
 
 	if (new_encoding)
 	{
@@ -1771,6 +1657,10 @@ server_set_encoding (server *serv, char *new_encoding)
 			g_free (serv->encoding);
 			serv->encoding = g_strdup ("UTF-8");
 		}
+	}
+	else
+	{
+		serv->encoding = g_strdup ("UTF-8");
 	}
 }
 
@@ -1815,6 +1705,8 @@ server_set_defaults (server *serv)
 	serv->chanmodes = g_strdup ("beI,k,l");
 	serv->nick_prefixes = g_strdup ("@%+");
 	serv->nick_modes = g_strdup ("ohv");
+
+	server_set_encoding (serv, "UTF-8");
 
 	serv->nickcount = 1;
 	serv->end_of_motd = FALSE;

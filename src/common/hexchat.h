@@ -317,7 +317,6 @@ struct hexchatprefs
 	guint32 dcc_ip;
 
 	unsigned int wait_on_exit;	/* wait for logs to be flushed to disk IF we're connected */
-	unsigned int utf8_locale;
 
 	/* Tells us if we need to save, only when they've been edited.
 		This is so that we continue using internal defaults (which can

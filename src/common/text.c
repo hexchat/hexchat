@@ -658,33 +658,29 @@ log_open_or_close (session *sess)
 int
 get_stamp_str (char *fmt, time_t tim, char **ret)
 {
-	char *loc = NULL;
 	char dest[128];
-	gsize len;
+	gsize len_locale;
+	gsize len_utf8;
 
-	/* strftime wants the format string in LOCALE! */
-	if (!prefs.utf8_locale)
+	/* strftime requires the format string to be in locale encoding. */
+	fmt = g_locale_from_utf8 (fmt, -1, NULL, NULL, NULL);
+
+	len_locale = strftime_validated (dest, sizeof (dest), fmt, localtime (&tim));
+
+	g_free (fmt);
+
+	if (len_locale == 0)
 	{
-		const gchar *charset;
-
-		g_get_charset (&charset);
-		loc = g_convert_with_fallback (fmt, -1, charset, "UTF-8", "?", 0, 0, 0);
-		if (loc)
-			fmt = loc;
+		return 0;
 	}
 
-	len = strftime_validated (dest, sizeof (dest), fmt, localtime (&tim));
-	if (len)
+	*ret = g_locale_to_utf8 (dest, len_locale, NULL, &len_utf8, NULL);
+	if (*ret == NULL)
 	{
-		if (prefs.utf8_locale)
-			*ret = g_strdup (dest);
-		else
-			*ret = g_locale_to_utf8 (dest, len, 0, &len, 0);
+		return 0;
 	}
 
-	g_free (loc);
-
-	return len;
+	return len_utf8;
 }
 
 static void
@@ -753,154 +749,101 @@ log_write (session *sess, char *text, time_t ts)
 	g_free (temp);
 }
 
-/* converts a CP1252/ISO-8859-1(5) hybrid to UTF-8                           */
-/* Features: 1. It never fails, all 00-FF chars are converted to valid UTF-8 */
-/*           2. Uses CP1252 in the range 80-9f because ISO doesn't have any- */
-/*              thing useful in this range and it helps us receive from mIRC */
-/*           3. The five undefined chars in CP1252 80-9f are replaced with   */
-/*              ISO-8859-15 control codes.                                   */
-/*           4. Handles 0xa4 as a Euro symbol ala ISO-8859-15.               */
-/*           5. Uses ISO-8859-1 (which matches CP1252) for everything else.  */
-/*           6. This routine measured 3x faster than g_convert :)            */
-
-static unsigned char *
-iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
+/**
+ * Converts a given string in from_encoding to to_encoding. This is similar to g_convert_with_fallback, except that it is tolerant of sequences in
+ * the original input that are invalid even in from_encoding. g_convert_with_fallback fails for such text, whereas this function replaces such a
+ * sequence with the fallback string.
+ *
+ * If len is -1, strlen(text) is used to calculate the length. Do not pass -1 if text is supposed to contain \0 bytes, such as if from_encoding is a
+ * multi-byte encoding like UTF-16.
+ */
+static gchar *
+text_convert_invalid (const gchar* text, gssize len, const gchar *to_encoding, const gchar *from_encoding, const gchar *fallback, gsize *len_out)
 {
-	unsigned int idx;
-	unsigned char *res, *output;
-	static const unsigned short lowtable[] = /* 74 byte table for 80-a4 */
-	{
-	/* compressed utf-8 table: if the first byte's 0x20 bit is set, it
-	   indicates a 2-byte utf-8 sequence, otherwise prepend a 0xe2. */
-		0x82ac, /* 80 Euro. CP1252 from here on... */
-		0xe281, /* 81 NA */
-		0x809a, /* 82 */
-		0xe692, /* 83 */
-		0x809e, /* 84 */
-		0x80a6, /* 85 */
-		0x80a0, /* 86 */
-		0x80a1, /* 87 */
-		0xeb86, /* 88 */
-		0x80b0, /* 89 */
-		0xe5a0, /* 8a */
-		0x80b9, /* 8b */
-		0xe592, /* 8c */
-		0xe28d, /* 8d NA */
-		0xe5bd, /* 8e */
-		0xe28f, /* 8f NA */
-		0xe290, /* 90 NA */
-		0x8098, /* 91 */
-		0x8099, /* 92 */
-		0x809c, /* 93 */
-		0x809d, /* 94 */
-		0x80a2, /* 95 */
-		0x8093, /* 96 */
-		0x8094, /* 97 */
-		0xeb9c, /* 98 */
-		0x84a2, /* 99 */
-		0xe5a1, /* 9a */
-		0x80ba, /* 9b */
-		0xe593, /* 9c */
-		0xe29d, /* 9d NA */
-		0xe5be, /* 9e */
-		0xe5b8, /* 9f */
-		0xe2a0, /* a0 */
-		0xe2a1, /* a1 */
-		0xe2a2, /* a2 */
-		0xe2a3, /* a3 */
-		0x82ac  /* a4 ISO-8859-15 Euro. */
-	};
+	gchar *result_part;
+	gsize result_part_len;
+	const gchar *end;
+	gsize invalid_start_pos;
+	GString *result;
+	const gchar *current_start;
 
 	if (len == -1)
-		len = strlen (text);
-
-	/* worst case scenario: every byte turns into 3 bytes */
-	res = output = g_malloc ((len * 3) + 1);
-
-	while (len)
 	{
-		if (G_LIKELY (*text < 0x80))
-		{
-			*output = *text;	/* ascii maps directly */
-		}
-		else if (*text <= 0xa4)	/* 80-a4 use a lookup table */
-		{
-			idx = *text - 0x80;
-			if (lowtable[idx] & 0x2000)
-			{
-				*output++ = (lowtable[idx] >> 8) & 0xdf; /* 2 byte utf-8 */
-				*output = lowtable[idx] & 0xff;
-			}
-			else
-			{
-				*output++ = 0xe2;	/* 3 byte utf-8 */
-				*output++ = (lowtable[idx] >> 8) & 0xff;
-				*output = lowtable[idx] & 0xff;
-			}
-		}
-		else if (*text < 0xc0)
-		{
-			*output++ = 0xc2;
-			*output = *text;
-		}
-		else
-		{
-			*output++ = 0xc3;
-			*output = *text - 0x40;
-		}
-		output++;
-		text++;
-		len--;
+		len = strlen (text);
 	}
-	*output = 0;	/* terminate */
-	*bytes_written = output - res;
 
-	return res;
+	end = text + len;
+
+	/* Find the first position of an invalid sequence. */
+	result_part = g_convert (text, len, to_encoding, from_encoding, &invalid_start_pos, &result_part_len, NULL);
+	if (result_part != NULL)
+	{
+		/* All text converted successfully on the first try. Return it. */
+
+		if (len_out != NULL)
+		{
+			*len_out = result_part_len;
+		}
+
+		return result_part;
+	}
+
+	/* One or more invalid sequences exist that need to be replaced with the fallback. */
+
+	result = g_string_sized_new (len);
+	current_start = text;
+
+	for (;;)
+	{
+		g_assert (current_start + invalid_start_pos < end);
+
+		/* Convert everything before the position of the invalid sequence. It should be successful. */
+		result_part = g_convert (current_start, invalid_start_pos, to_encoding, from_encoding, &invalid_start_pos, &result_part_len, NULL);
+		g_assert (result_part != NULL);
+		g_string_append_len (result, result_part, result_part_len);
+		g_free (result_part);
+
+		/* Append the fallback */
+		g_string_append (result, fallback);
+
+		/* Now try converting everything after the invalid sequence. */
+		current_start += invalid_start_pos + 1;
+
+		result_part = g_convert (current_start, end - current_start, to_encoding, from_encoding, &invalid_start_pos, &result_part_len, NULL);
+		if (result_part != NULL)
+		{
+			/* The rest of the text converted successfully. Append it and return the whole converted text. */
+
+			g_string_append_len (result, result_part, result_part_len);
+			g_free (result_part);
+
+			if (len_out != NULL)
+			{
+				*len_out = result->len;
+			}
+
+			return g_string_free (result, FALSE);
+		}
+
+		/* The rest of the text didn't convert successfully. invalid_start_pos has the position of the next invalid sequence. */
+	}
 }
 
-char *
-text_validate (char **text, gssize *len)
+gchar *
+text_invalid_utf8_to_encoding (const gchar* text, gssize len, const gchar *to_encoding, gsize *len_out)
 {
-	char *utf;
-	gsize utf_len;
+	return text_convert_invalid (text, len, to_encoding, "UTF-8", "?", len_out);
+}
 
-	/* valid utf8? */
-	if (g_utf8_validate (*text, *len, 0))
-		return NULL;
-
-#ifdef WIN32
-	if (GetACP () == 1252) /* our routine is better than iconv's 1252 */
-#else
-	if (prefs.utf8_locale)
-#endif
-		/* fallback to iso-8859-1 */
-		utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
-	else
-	{
-		/* fallback to locale */
-		utf = g_locale_to_utf8 (*text, *len, 0, &utf_len, NULL);
-		if (!utf)
-			utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
-	}
-
-	if (!utf) 
-	{
-		*text = g_strdup ("%INVALID%");
-		*len = 9;
-	} else
-	{
-		*text = utf;
-		*len = utf_len;
-	}
-
-	return utf;
+gchar *
+text_invalid_encoding_to_utf8 (const gchar* text, gssize len, const gchar *from_encoding, gsize *len_out)
+{
+	return text_convert_invalid (text, len, "UTF-8", from_encoding, "\357\277\275", len_out);
 }
 
 void
 PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 {
-	char *conv;
-
 	if (!sess)
 	{
 		if (!sess_list)
@@ -909,22 +852,19 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 	}
 
 	/* make sure it's valid utf8 */
-	if (text[0] == 0)
+	if (text[0] == '\0')
 	{
-		text = "\n";
-		conv = NULL;
+		text = g_strdup ("\n");
 	}
 	else
 	{
-		gssize len = -1;
-		conv = text_validate ((char **)&text, &len);
+		text = text_invalid_encoding_to_utf8 (text, -1, "UTF-8", NULL);
 	}
 
 	log_write (sess, text, timestamp);
 	scrollback_save (sess, text);
 	fe_print_text (sess, text, timestamp, FALSE);
-
-	g_free (conv);
+	g_free (text);
 }
 
 void

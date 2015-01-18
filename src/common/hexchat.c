@@ -757,7 +757,6 @@ static void
 xchat_init (void)
 {
 	char buf[3068];
-	const char *cs = NULL;
 
 #ifdef WIN32
 	WSADATA wsadata;
@@ -794,9 +793,6 @@ xchat_init (void)
 	signal (SIGPIPE, SIG_IGN);
 #endif
 #endif
-
-	if (g_get_charset (&cs))
-		prefs.utf8_locale = TRUE;
 
 	load_text_events ();
 	sound_load ();
