@@ -1592,7 +1592,6 @@ servlist_create_charsetcombo (void)
 	int i;
 
 	cb = gtk_combo_box_text_new_with_entry ();
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (cb), "System default");
 	i = 0;
 	while (pages[i])
 	{
@@ -1600,7 +1599,7 @@ servlist_create_charsetcombo (void)
 		i++;
 	}
 
-	gtk_entry_set_text (GTK_ENTRY (gtk_bin_get_child (GTK_BIN(cb))), selected_net->encoding ? selected_net->encoding : "System default");
+	gtk_entry_set_text (GTK_ENTRY (gtk_bin_get_child (GTK_BIN(cb))), selected_net->encoding ? selected_net->encoding : pages[0]);
 	
 	g_signal_connect (G_OBJECT (gtk_bin_get_child (GTK_BIN (cb))), "changed",
 							G_CALLBACK (servlist_combo_cb), NULL);

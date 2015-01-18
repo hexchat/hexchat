@@ -1342,8 +1342,7 @@ servlist_save (void)
 			fprintf (fp, "P=%s\n", net->pass);
 		if (net->logintype)
 			fprintf (fp, "L=%d\n", net->logintype);
-		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&
-			 g_ascii_strcasecmp (net->encoding, "System default"))
+		if (net->encoding)
 		{
 			fprintf (fp, "E=%s\n", net->encoding);
 			if (!servlist_check_encoding (net->encoding))
