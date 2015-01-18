@@ -1657,6 +1657,12 @@ server_set_encoding (server *serv, char *new_encoding)
 			g_free (serv->encoding);
 			serv->encoding = g_strdup ("UTF-8");
 		}
+
+		else if (!servlist_check_encoding (serv->encoding))
+		{
+			g_free (serv->encoding);
+			serv->encoding = g_strdup ("UTF-8");
+		}
 	}
 	else
 	{
