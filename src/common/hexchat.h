@@ -533,7 +533,7 @@ typedef struct server
 	time_t ping_recv;					/* when we last got a ping reply */
 	time_t away_time;					/* when we were marked away */
 
-	char *encoding;					/* NULL for system */
+	char *encoding;
 	GSList *favlist;			/* list of channels & keys to join */
 
 	unsigned int motd_skipped:1;
