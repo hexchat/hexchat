@@ -1754,7 +1754,6 @@ server_set_encoding (server *serv, char *new_encoding)
 		g_free (serv->encoding);
 		/* can be left as NULL to indicate system encoding */
 		serv->encoding = NULL;
-		serv->using_cp1255 = FALSE;
 	}
 
 	if (new_encoding)
@@ -1766,14 +1765,9 @@ server_set_encoding (server *serv, char *new_encoding)
 		if (space)
 			space[0] = 0;
 
-		/* server_inline() uses this flag */
-		if (g_ascii_strcasecmp (serv->encoding, "CP1255") == 0 || g_ascii_strcasecmp (serv->encoding, "WINDOWS-1255") == 0)
+		/* Default legacy "IRC" encoding to utf-8. */
+		if (g_ascii_strcasecmp (serv->encoding, "IRC") == 0)
 		{
-			serv->using_cp1255 = TRUE;
-		}
-		else if (g_ascii_strcasecmp (serv->encoding, "IRC") == 0)
-		{
-			/* Default legacy "IRC" encoding to utf-8. */
 			g_free (serv->encoding);
 			serv->encoding = g_strdup ("UTF-8");
 		}

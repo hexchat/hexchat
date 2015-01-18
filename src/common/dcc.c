@@ -514,8 +514,6 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	len = strlen (line);
-	if (dcc->serv->using_cp1255)
-		len++;	/* include the NUL terminator */
 
 	if (dcc->serv->encoding == NULL)     /* system */
 		utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
@@ -527,9 +525,6 @@ dcc_chat_line (struct DCC *dcc, char *line)
 		line = utf;
 		len = utf_len;
 	}
-
-	if (dcc->serv->using_cp1255 && len > 0)
-		len--;
 
 	/* we really need valid UTF-8 now */
 	conv = text_validate (&line, &len);
