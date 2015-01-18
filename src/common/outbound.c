@@ -590,7 +590,6 @@ static int
 cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	server *serv = sess->server;
-	const char *locale = NULL;
 	int offset = 0;
 
 	if (strcmp (word[2], "-quiet") == 0)
@@ -598,9 +597,7 @@ cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (!word[2 + offset][0])
 	{
-		g_get_charset (&locale);
-		PrintTextf (sess, "Current charset: %s\n",
-						serv->encoding ? serv->encoding : locale);
+		PrintTextf (sess, "Current charset: %s\n", serv->encoding);
 		return TRUE;
 	}
 
