@@ -568,7 +568,6 @@ typedef struct server
 	unsigned int have_invite:1;	/* invite exemptions +I */
 	unsigned int have_cert:1;	/* have loaded a cert */
 	unsigned int using_cp1255:1;	/* encoding is CP1255/WINDOWS-1255? */
-	unsigned int using_irc:1;		/* encoding is "IRC" (CP1252/UTF-8 hybrid)? */
 	unsigned int use_who:1;			/* whether to use WHO command to get dcc_ip */
 	unsigned int sasl_mech;			/* mechanism for sasl auth */
 	unsigned int sent_saslauth:1;	/* have sent AUTHENICATE yet */

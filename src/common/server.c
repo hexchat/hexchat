@@ -86,7 +86,7 @@ extern pxProxyFactory *libproxy_factory;
    send via SSL. server/dcc both use this function. */
 
 int
-tcp_send_real (void *ssl, int sok, char *encoding, int using_irc, char *buf, int len)
+tcp_send_real (void *ssl, int sok, char *encoding, char *buf, int len)
 {
 	int ret;
 	char *locale;
@@ -100,18 +100,12 @@ tcp_send_real (void *ssl, int sok, char *encoding, int using_irc, char *buf, int
 			const gchar *charset;
 
 			g_get_charset (&charset);
-			locale = g_convert_with_fallback (buf, len, charset, "UTF-8",
-														 "?", 0, &loc_len, 0);
+			locale = g_convert_with_fallback (buf, len, charset, "UTF-8", "?", 0, &loc_len, 0);
 		}
-	} else
+	}
+	else
 	{
-		if (using_irc)	/* using "IRC" encoding (CP1252/UTF-8 hybrid) */
-			/* if all chars fit inside CP1252, use that. Otherwise this
-			   returns NULL and we send UTF-8. */
-			locale = g_convert (buf, len, "CP1252", "UTF-8", 0, &loc_len, 0);
-		else
-			locale = g_convert_with_fallback (buf, len, encoding, "UTF-8",
-														 "?", 0, &loc_len, 0);
+		locale = g_convert_with_fallback (buf, len, encoding, "UTF-8", "?", 0, &loc_len, 0);
 	}
 
 	if (locale)
@@ -148,8 +142,7 @@ server_send_real (server *serv, char *buf, int len)
 
 	url_check_line (buf);
 
-	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, serv->using_irc,
-								 buf, len);
+	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, buf, len);
 }
 
 /* new throttling system, uses the same method as the Undernet
@@ -297,17 +290,11 @@ server_inline (server *serv, char *line, gssize len)
 	char *utf_line_allocated = NULL;
 
 	/* Checks whether we're set to use UTF-8 charset */
-	if (serv->using_irc ||				/* 1. using CP1252/UTF-8 Hybrid */
-		(serv->encoding == NULL && prefs.utf8_locale) || /* OR 2. using system default->UTF-8 */
-	    (serv->encoding != NULL &&				/* OR 3. explicitly set to UTF-8 */
-		 (g_ascii_strcasecmp (serv->encoding, "UTF8") == 0 ||
-		  g_ascii_strcasecmp (serv->encoding, "UTF-8") == 0)))
+	if ((serv->encoding == NULL && prefs.utf8_locale) /* Using system default - UTF-8 */ ||
+		g_ascii_strcasecmp (serv->encoding, "UTF8") == 0 ||
+		g_ascii_strcasecmp (serv->encoding, "UTF-8") == 0
+	)
 	{
-		/* The user has the UTF-8 charset set, either via /charset
-		command or from his UTF-8 locale. Thus, we first try the
-		UTF-8 charset, and if we fail to convert, we assume
-		it to be ISO-8859-1 (see text_validate). */
-
 		utf_line_allocated = text_validate (&line, &len);
 	}
 	else
@@ -1768,7 +1755,6 @@ server_set_encoding (server *serv, char *new_encoding)
 		/* can be left as NULL to indicate system encoding */
 		serv->encoding = NULL;
 		serv->using_cp1255 = FALSE;
-		serv->using_irc = FALSE;
 	}
 
 	if (new_encoding)
@@ -1780,12 +1766,17 @@ server_set_encoding (server *serv, char *new_encoding)
 		if (space)
 			space[0] = 0;
 
-		/* server_inline() uses these flags */
-		if (!g_ascii_strcasecmp (serv->encoding, "CP1255") ||
-			 !g_ascii_strcasecmp (serv->encoding, "WINDOWS-1255"))
+		/* server_inline() uses this flag */
+		if (g_ascii_strcasecmp (serv->encoding, "CP1255") == 0 || g_ascii_strcasecmp (serv->encoding, "WINDOWS-1255") == 0)
+		{
 			serv->using_cp1255 = TRUE;
-		else if (!g_ascii_strcasecmp (serv->encoding, "IRC"))
-			serv->using_irc = TRUE;
+		}
+		else if (g_ascii_strcasecmp (serv->encoding, "IRC") == 0)
+		{
+			/* Default legacy "IRC" encoding to utf-8. */
+			g_free (serv->encoding);
+			serv->encoding = g_strdup ("UTF-8");
+		}
 	}
 }
 
