@@ -80,13 +80,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.kis.lt"},
 	{0,			"irc.vub.lt"},
 
-	{"AlphaChat",	0, 0, 0, LOGIN_SASL},
-	{0,			"irc.alphachat.net"},
-	{0,			"na.alphachat.net"},
-	{0,			"eu.alphachat.net"},
-	{0,			"au.alphachat.net"},
-	{0,			"za.alphachat.net"},
-
 	{"Anthrochat", 0},
 #ifdef USE_OPENSSL
 	{0,			"irc.anthrochat.net/+6697"},
@@ -107,6 +100,12 @@ static const struct defaultserver def[] =
 	{0,			"uk1.arcnet.vapor.com"},
 	{0,			"uk2.arcnet.vapor.com"},
 	{0,			"fr1.arcnet.vapor.com"},
+
+	{"AthemeNet", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.atheme.org/+6697"},
+#endif
+	{0,			"irc.atheme.org"},
 
 	{"AustNet",	0},
 	{0,			"au.austnet.org"},
@@ -437,9 +436,6 @@ static const struct defaultserver def[] =
 	{0,			"revenge.starchat.net"},
 	{0,			"tahoma.starchat.net"},
 	{0,			"neo.starchat.net"},
-
-	{"StaticBox", 0, 0, 0, LOGIN_SASL},
-	{0,			"irc.staticbox.net"},
 
 	{"Station51", 0},
 #ifdef USE_OPENSSL
