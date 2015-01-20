@@ -45,6 +45,7 @@ struct defaultserver
 	char *charset;
 	int loginmode;		/* default authentication type */
 	char *connectcmd;	/* default connect command - should only be used for rare login types, paired with LOGIN_CUSTOM */
+	gboolean ssl;
 };
 
 static const struct defaultserver def[] =
@@ -77,19 +78,13 @@ static const struct defaultserver def[] =
 	{0,			"irc.kis.lt"},
 	{0,			"irc.vub.lt"},
 
-	{"Anthrochat", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.anthrochat.net/+6697"},
-#endif
+	{"Anthrochat", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.anthrochat.net"},
 
 	{"ARCNet",	0},
 	{0,			"arcnet-irc.org"},
 
-	{"AthemeNet", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.atheme.org/+6697"},
-#endif
+	{"AthemeNet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.atheme.org"},
 
 	{"AustNet",	0},
@@ -98,16 +93,10 @@ static const struct defaultserver def[] =
 	{"AzzurraNet",	0},
 	{0,			"irc.azzurra.org"},
 
-	{"Canternet", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0, 		"irc.canternet.org/+6697"},
-#endif
+	{"Canternet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.canternet.org"},
 
-	{"Chat4all", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.chat4all.org/+7001"},
-#endif
+	{"Chat4all", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.chat4all.org"},
 
 	{"ChattingAway", 0},
@@ -148,26 +137,16 @@ static const struct defaultserver def[] =
 	{0,			"irc.lightning.net"},
 	{0,			"irc.servercentral.net"},
 
-	{"ElectroCode",		0},
-#ifdef USE_OPENSSL
-
-	{0,			"irc.electrocode.net/+6697"},
-#endif
+	{"ElectroCode", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.electrocode.net"},
 
 	{"EnterTheGame",	0},
 	{0,			"irc.enterthegame.com"},
 
-	{"EntropyNet",	0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.entropynet.net/+6697"},
-#endif
+	{"EntropyNet",	0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.entropynet.net"},
 
-	{"EsperNet", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.esper.net/+6697"},
-#endif
+	{"EsperNet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.esper.net"},
 
 	{"EUIrc",	0},
@@ -182,18 +161,12 @@ static const struct defaultserver def[] =
 	{"FEFNet", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.fef.net"},
 
-	{"freenode", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,				"chat.freenode.net/+6697"},
-#endif
+	{"freenode", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,				"chat.freenode.net"},
 	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
 
-	{"Furnet",	0},
-#ifdef USE_OPENSSL
-	{0,			"irc.furnet.org/+6697"},
-#endif
+	{"Furnet", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.furnet.org"},
 
 	{"GalaxyNet",	0},
@@ -202,10 +175,7 @@ static const struct defaultserver def[] =
 	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 	
-	{"GeeksIRC", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.geeksirc.net/+6697"},
-#endif
+	{"GeeksIRC", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.geeksirc.net"},
 
 	{"GeekShed",	0},
@@ -224,22 +194,13 @@ static const struct defaultserver def[] =
 	{"IdleMonkeys", 0},
 	{0,			"irc.idlemonkeys.net"},
 
-	{"IndirectIRC", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.indirectirc.com/+6697"},
-#endif
+	{"IndirectIRC", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.indirectirc.com"},
 	
-	{"Interlinked", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.interlinked.me/+6697"},
-#endif
+	{"Interlinked", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.interlinked.me"},
 
-	{"IRC4Fun", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,				"irc.irc4fun.net/+6697"},
-#endif
+	{"IRC4Fun", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,				"irc.irc4fun.net"},
 
 	{"IRCHighWay",	0},
@@ -295,10 +256,7 @@ static const struct defaultserver def[] =
 	{"PIRC.PL",	0},
 	{0,			"irc.pirc.pl"},
 	
-	{"PonyChat", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0, 		"irc.ponychat.net/+6697"},
-#endif
+	{"PonyChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.ponychat.net"},
 
 	{"PTNet.org",   0},
@@ -322,10 +280,7 @@ static const struct defaultserver def[] =
 	{"SeilEn.de",	0},
 	{0,			"irc.seilen.de"},
 
-	{"SeionIRC", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.seion.us/+6697"},
-#endif
+	{"SeionIRC", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.seion.us"},
 
 	{"Serenity-IRC",	0},
@@ -334,10 +289,7 @@ static const struct defaultserver def[] =
 	{"SlashNET",	0},
 	{0,			"irc.slashnet.org"},
 
-	{"Snoonet", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.snoonet.org/+6697"},
-#endif
+	{"Snoonet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.snoonet.org"},
 
 	{"Snyde", 0},
@@ -352,43 +304,25 @@ static const struct defaultserver def[] =
 	{"SorceryNet", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.sorcery.net"},
 	
-	{"SpotChat", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.spotchat.org/+6697"},
-#endif
+	{"SpotChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.spotchat.org"},
 
 	{"StarChat", 0},
 	{0,			"irc.starchat.net"},
 
-	{"Station51", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.station51.net/+6697"},
-#endif
+	{"Station51", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.station51.net"},
 
-	{"StormBit", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.stormbit.net/+6697"},
-#endif
+	{"StormBit", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.stormbit.net"},
 
-	{"SwiftIRC", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.swiftirc.net/+6697"},
-#endif
+	{"SwiftIRC", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.swiftirc.net"},
 
-	{"synIRC", 0},
-#ifdef USE_OPENSSL
-	{0, "irc.synirc.net/+6697"},
-#endif
+	{"synIRC", 0, 0, 0, 0, 0, TRUE},
 	{0, "irc.synirc.net"},
 
-	{"Techtronix",	0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.techtronix.net/+6697"},
-#endif
+	{"Techtronix",	0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.techtronix.net"},
 
 	{"TinyCrab", 0, 0, 0, LOGIN_SASL},
@@ -413,16 +347,10 @@ static const struct defaultserver def[] =
 	{"Worldnet",		0},
 	{0,			"irc.worldnet.net"},
 
-	{"Windfyre",		0},
-#ifdef USE_OPENSSL
-	{0,			"irc.windfyre.net/+6697"},
-#endif
+	{"Windfyre", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.windfyre.net"},
 
-	{"Xertion", 0, 0, 0, LOGIN_SASL},
-#ifdef USE_OPENSSL
-	{0,			"irc.xertion.org/+6697"},
-#endif
+	{"Xertion", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.xertion.org"},
 
 	{0,0}
@@ -1045,6 +973,10 @@ servlist_load_defaults (void)
 			if (def[i].connectcmd)
 			{
 				servlist_command_add (net, def[i].connectcmd);
+			}
+			if (def[i].ssl)
+			{
+				net->flags |= FLAG_USE_SSL;
 			}
 
 			if (g_str_hash (def[i].network) == def_hash)
