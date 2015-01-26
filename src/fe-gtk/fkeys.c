@@ -198,6 +198,7 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	"ACCEL=Down\nNext Command\nD1!\nD2!\n\n"\
 	"ACCEL=Up\nLast Command\nD1!\nD2!\n\n"\
 	"ACCEL=Tab\nComplete nick/command\nD1!\nD2!\n\n"\
+	"ACCEL=<Shift>ISO_Left_Tab\nComplete nick/command\nD1:Previous\nD2!\n\n"\
 	"ACCEL=space\nCheck For Replace\nD1!\nD2!\n\n"\
 	"ACCEL=Return\nCheck For Replace\nD1!\nD2!\n\n"\
 	"ACCEL=KP_Enter\nCheck For Replace\nD1!\nD2!\n\n"\
