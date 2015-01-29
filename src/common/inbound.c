@@ -182,7 +182,7 @@ inbound_privmsg (server *serv, char *from, char *to, char *ip, char *text, gbool
 
 	if (!fromme && (sess || prefs.hex_gui_autoopen_dialog))
 	{
-		/*0=ctcp  1=priv will set hex_gui_autoopen_dialog=0 here is flud detected */
+		/*0=ctcp  1=priv will set hex_gui_autoopen_dialog=0 here if flood is detected */
 		if (!sess)
 		{
 			if (flood_check (from, ip, serv, current_sess, 1))
