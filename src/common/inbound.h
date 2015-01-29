@@ -37,7 +37,7 @@ void inbound_ukick (server *serv, char *chan, char *kicker, char *reason,
 void inbound_kick (server *serv, char *chan, char *user, char *kicker,
 						 char *reason, const message_tags_data *tags_data);
 void inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip,
-							int id, const message_tags_data *tags_data);
+							gboolean id, const message_tags_data *tags_data);
 void inbound_quit (server *serv, char *nick, char *ip, char *reason,
 						 const message_tags_data *tags_data);
 void inbound_topicnew (server *serv, char *nick, char *chan, char *topic,
@@ -76,14 +76,14 @@ void inbound_login_start (session *sess, char *nick, char *servname,
 void inbound_login_end (session *sess, char *text,
 								const message_tags_data *tags_data);
 void inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
-							 char *text, char fromme, int id, 
+							 char *text, gboolean fromme, gboolean id,
 							 const message_tags_data *tags_data);
 void clear_channel (session *sess);
 void set_topic (session *sess, char *topic, char *stripped_topic);
-void inbound_privmsg (server *serv, char *from, char *to, char *ip, char *text, int id,
+void inbound_privmsg (server *serv, char *from, char *to, char *ip, char *text, gboolean id,
 							 const message_tags_data *tags_data);
 void inbound_action (session *sess, char *chan, char *from, char *ip,
-							char *text, int fromme, gboolean fake, int id,
+							char *text, gboolean fromme, gboolean fake, gboolean id,
 							const message_tags_data *tags_data);
 void inbound_newnick (server *serv, char *nick, char *newnick, int quiet,
 							 const message_tags_data *tags_data);

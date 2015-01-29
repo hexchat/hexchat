@@ -145,7 +145,7 @@ inbound_open_dialog (server *serv, char *from,
 }
 
 static void
-inbound_make_idtext (server *serv, char *idtext, int max, int id)
+inbound_make_idtext (server *serv, char *idtext, int max, gboolean id)
 {
 	idtext[0] = 0;
 	if (serv->have_idmsg || serv->have_accnotify)
@@ -163,7 +163,7 @@ inbound_make_idtext (server *serv, char *idtext, int max, int id)
 }
 
 void
-inbound_privmsg (server *serv, char *from, char *to, char *ip, char *text, int id,
+inbound_privmsg (server *serv, char *from, char *to, char *ip, char *text, gboolean id,
 					  const message_tags_data *tags_data)
 {
 	session *sess;
@@ -352,7 +352,7 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 
 void
 inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
-					 int fromme, gboolean fake, int id, const message_tags_data *tags_data)
+					 gboolean fromme, gboolean fake, gboolean id, const message_tags_data *tags_data)
 {
 	server *serv = sess->server;
 	struct User *user;
@@ -460,7 +460,7 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 
 void
 inbound_chanmsg (server *serv, session *sess, char *chan, char *from, 
-					  char *text, char fromme, int id, 
+					  char *text, gboolean fromme, gboolean id,
 					  const message_tags_data *tags_data)
 {
 	struct User *user;
@@ -990,7 +990,7 @@ find_session_from_type (int type, server *serv)
 }
 
 void
-inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
+inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, gboolean id,
 					 const message_tags_data *tags_data)
 {
 	char *po,*ptr=to;
