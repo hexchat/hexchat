@@ -86,12 +86,12 @@ extern pxProxyFactory *libproxy_factory;
    send via SSL. server/dcc both use this function. */
 
 int
-tcp_send_real (void *ssl, int sok, char *encoding, char *buf, int len)
+tcp_send_real (void *ssl, int sok, GIConv write_converter, char *buf, int len)
 {
 	int ret;
 
 	gsize buf_encoded_len;
-	gchar *buf_encoded = text_invalid_utf8_to_encoding (buf, len, encoding, &buf_encoded_len);
+	gchar *buf_encoded = text_convert_invalid (buf, len, write_converter, "?", &buf_encoded_len);
 #ifdef USE_OPENSSL
 	if (!ssl)
 		ret = send (sok, buf_encoded, buf_encoded_len, 0);
@@ -112,7 +112,7 @@ server_send_real (server *serv, char *buf, int len)
 
 	url_check_line (buf);
 
-	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, buf, len);
+	return tcp_send_real (serv->ssl, serv->sok, serv->write_converter, buf, len);
 }
 
 /* new throttling system, uses the same method as the Undernet
@@ -258,7 +258,7 @@ static void
 server_inline (server *serv, char *line, gssize len)
 {
 	gsize len_utf8;
-	line = text_invalid_encoding_to_utf8 (line, len, serv->encoding, &len_utf8);
+	line = text_convert_invalid (line, len, serv->read_converter, unicode_fallback_string, &len_utf8);
 
 	fe_add_rawlog (serv, line, len_utf8, FALSE);
 
@@ -1668,6 +1668,18 @@ server_set_encoding (server *serv, char *new_encoding)
 	{
 		serv->encoding = g_strdup ("UTF-8");
 	}
+
+	if (serv->read_converter != NULL)
+	{
+		g_iconv_close (serv->read_converter);
+	}
+	serv->read_converter = g_iconv_open ("UTF-8", serv->encoding);
+
+	if (serv->write_converter != NULL)
+	{
+		g_iconv_close (serv->write_converter);
+	}
+	serv->write_converter = g_iconv_open (serv->encoding, "UTF-8");
 }
 
 server *
@@ -1863,6 +1875,10 @@ server_free (server *serv)
 	g_free (serv->bad_nick_prefixes);
 	g_free (serv->last_away_reason);
 	g_free (serv->encoding);
+
+	g_iconv_close (serv->read_converter);
+	g_iconv_close (serv->write_converter);
+
 	if (serv->favlist)
 		g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free);
 #ifdef USE_OPENSSL

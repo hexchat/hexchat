@@ -534,6 +534,9 @@ typedef struct server
 	time_t away_time;					/* when we were marked away */
 
 	char *encoding;
+	GIConv read_converter;  /* iconv converter for converting from server encoding to UTF-8. */
+	GIConv write_converter; /* iconv converter for converting from UTF-8 to server encoding. */
+
 	GSList *favlist;			/* list of channels & keys to join */
 
 	unsigned int motd_skipped:1;

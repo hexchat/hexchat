@@ -979,7 +979,7 @@ hexchat_command (hexchat_plugin *ph, const char *command)
 	}
 
 	/* scripts/plugins continue to send non-UTF8... *sigh* */
-	command_utf8 = text_invalid_encoding_to_utf8 (command, -1, "UTF-8", NULL);
+	command_utf8 = text_fixup_invalid_utf8 (command, -1, NULL);
 	handle_command (ph->context, command_utf8, FALSE);
 	g_free (command_utf8);
 }

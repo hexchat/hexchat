@@ -51,6 +51,9 @@
 #include <canberra.h>
 #endif
 
+const gchar* unicode_fallback_string = "\357\277\275"; /* The Unicode replacement character 0xFFFD */
+const gchar* arbitrary_encoding_fallback_string = "?";
+
 struct pevt_stage1
 {
 	int len;
@@ -750,15 +753,15 @@ log_write (session *sess, char *text, time_t ts)
 }
 
 /**
- * Converts a given string in from_encoding to to_encoding. This is similar to g_convert_with_fallback, except that it is tolerant of sequences in
+ * Converts a given string using the given iconv converter. This is similar to g_convert_with_fallback, except that it is tolerant of sequences in
  * the original input that are invalid even in from_encoding. g_convert_with_fallback fails for such text, whereas this function replaces such a
  * sequence with the fallback string.
  *
  * If len is -1, strlen(text) is used to calculate the length. Do not pass -1 if text is supposed to contain \0 bytes, such as if from_encoding is a
  * multi-byte encoding like UTF-16.
  */
-static gchar *
-text_convert_invalid (const gchar* text, gssize len, const gchar *to_encoding, const gchar *from_encoding, const gchar *fallback, gsize *len_out)
+gchar *
+text_convert_invalid (const gchar* text, gssize len, GIConv converter, const gchar *fallback, gsize *len_out)
 {
 	gchar *result_part;
 	gsize result_part_len;
@@ -775,7 +778,7 @@ text_convert_invalid (const gchar* text, gssize len, const gchar *to_encoding, c
 	end = text + len;
 
 	/* Find the first position of an invalid sequence. */
-	result_part = g_convert (text, len, to_encoding, from_encoding, &invalid_start_pos, &result_part_len, NULL);
+	result_part = g_convert_with_iconv (text, len, converter, &invalid_start_pos, &result_part_len, NULL);
 	if (result_part != NULL)
 	{
 		/* All text converted successfully on the first try. Return it. */
@@ -798,7 +801,7 @@ text_convert_invalid (const gchar* text, gssize len, const gchar *to_encoding, c
 		g_assert (current_start + invalid_start_pos < end);
 
 		/* Convert everything before the position of the invalid sequence. It should be successful. */
-		result_part = g_convert (current_start, invalid_start_pos, to_encoding, from_encoding, &invalid_start_pos, &result_part_len, NULL);
+		result_part = g_convert_with_iconv (current_start, invalid_start_pos, converter, &invalid_start_pos, &result_part_len, NULL);
 		g_assert (result_part != NULL);
 		g_string_append_len (result, result_part, result_part_len);
 		g_free (result_part);
@@ -809,7 +812,7 @@ text_convert_invalid (const gchar* text, gssize len, const gchar *to_encoding, c
 		/* Now try converting everything after the invalid sequence. */
 		current_start += invalid_start_pos + 1;
 
-		result_part = g_convert (current_start, end - current_start, to_encoding, from_encoding, &invalid_start_pos, &result_part_len, NULL);
+		result_part = g_convert_with_iconv (current_start, end - current_start, converter, &invalid_start_pos, &result_part_len, NULL);
 		if (result_part != NULL)
 		{
 			/* The rest of the text converted successfully. Append it and return the whole converted text. */
@@ -829,16 +832,19 @@ text_convert_invalid (const gchar* text, gssize len, const gchar *to_encoding, c
 	}
 }
 
+/**
+ * Replaces any invalid UTF-8 in the given text with the unicode replacement character.
+ */
 gchar *
-text_invalid_utf8_to_encoding (const gchar* text, gssize len, const gchar *to_encoding, gsize *len_out)
+text_fixup_invalid_utf8 (const gchar* text, gssize len, gsize *len_out)
 {
-	return text_convert_invalid (text, len, to_encoding, "UTF-8", "?", len_out);
-}
+	static GIConv utf8_fixup_converter = NULL;
+	if (utf8_fixup_converter == NULL)
+	{
+		utf8_fixup_converter = g_iconv_open ("UTF-8", "UTF-8");
+	}
 
-gchar *
-text_invalid_encoding_to_utf8 (const gchar* text, gssize len, const gchar *from_encoding, gsize *len_out)
-{
-	return text_convert_invalid (text, len, "UTF-8", from_encoding, "\357\277\275", len_out);
+	return text_convert_invalid (text, len, utf8_fixup_converter, unicode_fallback_string, len_out);
 }
 
 void
@@ -858,7 +864,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 	}
 	else
 	{
-		text = text_invalid_encoding_to_utf8 (text, -1, "UTF-8", NULL);
+		text = text_fixup_invalid_utf8 (text, -1, NULL);
 	}
 
 	log_write (sess, text, timestamp);

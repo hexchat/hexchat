@@ -487,7 +487,7 @@ dcc_write_chat (char *nick, char *text)
 	if (dcc && dcc->dccstat == STAT_ACTIVE)
 	{
 		len = strlen (text);
-		tcp_send_real (NULL, dcc->sok, dcc->serv->encoding, text, len);
+		tcp_send_real (NULL, dcc->sok, dcc->serv->write_converter, text, len);
 		send (dcc->sok, "\n", 1, 0);
 		dcc->size += len;
 		fe_dcc_update (dcc);
@@ -509,7 +509,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	char portbuf[32];
 	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
-	line = text_invalid_encoding_to_utf8 (line, -1, dcc->serv->encoding, NULL);
+	line = text_convert_invalid (line, -1, dcc->serv->read_converter, unicode_fallback_string, NULL);
 
 	sess = find_dialog (dcc->serv, dcc->nick);
 	if (!sess)
