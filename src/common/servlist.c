@@ -1050,7 +1050,7 @@ servlist_load (void)
 				net->logintype = atoi (buf + 2);
 				break;
 			case 'E':
-				net->encoding = g_strdup (buf + 2);
+				net->encoding = servlist_check_encoding (buf + 2) ? g_strdup (buf + 2) : g_strdup ("UTF-8");
 				break;
 			case 'F':
 				net->flags = atoi (buf + 2);
