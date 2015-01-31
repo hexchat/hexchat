@@ -63,7 +63,7 @@ guint64 hdd_free_space;
 char *read_hdd_info (IWbemClassObject *object);
 
 char *get_memory_info (void);
-char *bstr_to_utf8 (BSTR bstr);
+char *bstr_to_utf8 (BSTR bstr, glong *len);
 guint64 variant_to_uint64 (VARIANT *variant);
 
 int hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
@@ -180,7 +180,7 @@ static void print_info (void)
 	{
 		hexchat_commandf (
 			ph,
-			"ME ** SysInfo ** Client: HexChat %s (%s) ** OS: %s(x%d) ** CPU: %s ** RAM: %s ** VGA: %s ** HDD: %s ** Uptime: %.2f Hours **",
+			"ME ** SysInfo ** Client: HexChat %s (%s) ** OS: %s (x%d) ** CPU: %s ** RAM: %s ** VGA: %s ** HDD: %s ** Uptime: %.2f Hours **",
 			hexchat_get_info (ph, "version"), build_arch,
 			os_name, cpu_arch,
 			cpu_info,
@@ -192,7 +192,7 @@ static void print_info (void)
 	else
 	{
 		hexchat_printf (ph, " * Client:  HexChat %s (%s)\n", hexchat_get_info (ph, "version"), build_arch);
-		hexchat_printf (ph, " * OS:      %s(x%d)\n", os_name, cpu_arch);
+		hexchat_printf (ph, " * OS:      %s (x%d)\n", os_name, cpu_arch);
 		hexchat_printf (ph, " * CPU:     %s\n", cpu_info);
 		hexchat_printf (ph, " * RAM:     %s\n", memory_info);
 		hexchat_printf (ph, " * VGA:     %s\n", vga_name);
@@ -386,6 +386,7 @@ static char *read_os_name (IWbemClassObject *object)
 	HRESULT hr;
 	VARIANT caption_variant;
 	char *caption_utf8;
+	glong caption_utf8_len;
 
 	hr = object->lpVtbl->Get (object, L"Caption", 0, &caption_variant, NULL, NULL);
 	if (FAILED (hr))
@@ -393,13 +394,19 @@ static char *read_os_name (IWbemClassObject *object)
 		return NULL;
 	}
 
-	caption_utf8 = bstr_to_utf8 (caption_variant.bstrVal);
+	caption_utf8 = bstr_to_utf8 (caption_variant.bstrVal, &caption_utf8_len);
 
-	VariantClear (&caption_variant);
+	VariantClear(&caption_variant);
 
-	if (caption_utf8 == NULL)
+	if (caption_utf8 == NULL || caption_utf8_len < 1)
 	{
 		return NULL;
+	}
+
+	if (caption_utf8[caption_utf8_len - 1] == ' ')
+	{
+		gchar *last_space_pos = g_strrstr_len (caption_utf8, caption_utf8_len, " ");
+		*last_space_pos = '\0';
 	}
 
 	return caption_utf8;
@@ -420,7 +427,7 @@ static char *read_cpu_info (IWbemClassObject *object)
 		return NULL;
 	}
 
-	name_utf8 = bstr_to_utf8 (name_variant.bstrVal);
+	name_utf8 = bstr_to_utf8 (name_variant.bstrVal, NULL);
 
 	VariantClear (&name_variant);
 
@@ -467,7 +474,7 @@ static char *read_vga_name (IWbemClassObject *object)
 		return NULL;
 	}
 
-	name_utf8 = bstr_to_utf8 (name_variant.bstrVal);
+	name_utf8 = bstr_to_utf8 (name_variant.bstrVal, NULL);
 
 	VariantClear (&name_variant);
 
@@ -558,9 +565,9 @@ static char *get_memory_info (void)
 	return g_strdup_printf ("%" G_GUINT64_FORMAT " MB Total (%" G_GUINT64_FORMAT " MB Free)", meminfo.ullTotalPhys / 1024 / 1024, meminfo.ullAvailPhys / 1024 / 1024);
 }
 
-static char *bstr_to_utf8 (BSTR bstr)
+static char *bstr_to_utf8 (BSTR bstr, glong *len)
 {
-	return g_utf16_to_utf8 (bstr, SysStringLen (bstr), NULL, NULL, NULL);
+	return g_utf16_to_utf8 (bstr, SysStringLen (bstr), NULL, len, NULL);
 }
 
 static guint64 variant_to_uint64 (VARIANT *variant)
