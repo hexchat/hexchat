@@ -1501,7 +1501,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 #ifdef USE_OPENSSL
 	if (!serv->ctx && serv->use_ssl)
 	{
-		if (!(serv->ctx = _SSL_context_init (ssl_cb_info, FALSE)))
+		if (!(serv->ctx = _SSL_context_init (ssl_cb_info)))
 		{
 			fprintf (stderr, "_SSL_context_init failed\n");
 			exit (1);

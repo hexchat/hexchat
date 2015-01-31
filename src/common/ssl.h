@@ -41,7 +41,7 @@ struct chiper_info {
     int chiper_bits;
 };
 
-SSL_CTX *_SSL_context_init (void (*info_cb_func), int server);
+SSL_CTX *_SSL_context_init (void (*info_cb_func));
 #define _SSL_context_free(a)	SSL_CTX_free(a);
 
 SSL *_SSL_socket (SSL_CTX *ctx, int sd);

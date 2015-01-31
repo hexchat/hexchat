@@ -80,7 +80,7 @@ __SSL_critical_error (char *funcname)
 /* +++++ SSL functions +++++ */
 
 SSL_CTX *
-_SSL_context_init (void (*info_cb_func), int server)
+_SSL_context_init (void (*info_cb_func))
 {
 	SSL_CTX *ctx;
 #ifdef WIN32
@@ -89,7 +89,7 @@ _SSL_context_init (void (*info_cb_func), int server)
 
 	SSLeay_add_ssl_algorithms ();
 	SSL_load_error_strings ();
-	ctx = SSL_CTX_new (server ? SSLv23_server_method() : SSLv23_client_method ());
+	ctx = SSL_CTX_new (SSLv23_client_method ());
 
 	SSL_CTX_set_session_cache_mode (ctx, SSL_SESS_CACHE_BOTH);
 	SSL_CTX_set_timeout (ctx, 300);
