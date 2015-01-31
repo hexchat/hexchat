@@ -2642,7 +2642,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (dcc_write_chat (sess->channel, tbuf))
 	{
 		/* print it to screen */
-		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE,
+		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, TRUE, FALSE,
 							 &no_tags);
 	} else
 	{
@@ -2654,7 +2654,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				sess->server->p_action (sess->server, sess->channel, split_text);
 				/* print it to screen */
 				inbound_action (sess, sess->channel, sess->server->nick, "",
-									 split_text, TRUE, FALSE,
+									 split_text, TRUE, TRUE, FALSE,
 									 &no_tags);
 
 				if (*split_text)
@@ -2666,7 +2666,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			sess->server->p_action (sess->server, sess->channel, act + offset);
 			/* print it to screen */
 			inbound_action (sess, sess->channel, sess->server->nick, "",
-								 act + offset, TRUE, FALSE, &no_tags);
+								 act + offset, TRUE, TRUE, FALSE, &no_tags);
 		} else
 		{
 			notc_msg (sess);

@@ -1256,7 +1256,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						{
 							if (ignore_check (word[1], IG_PRIV))
 								return;
-							inbound_privmsg (serv, nick, ip, text, id, tags_data);
+							inbound_privmsg (serv, nick, to, ip, text, id, tags_data);
 						}
 					}
 				}

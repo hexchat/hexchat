@@ -163,17 +163,24 @@ inbound_make_idtext (server *serv, char *idtext, int max, int id)
 }
 
 void
-inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
+inbound_privmsg (server *serv, char *from, char *to, char *ip, char *text, int id,
 					  const message_tags_data *tags_data)
 {
 	session *sess;
 	struct User *user;
 	char idtext[64];
-	gboolean nodiag = FALSE;
+	char *destsess = from;
+	gboolean nodiag = FALSE, fromme = FALSE;
+
+	if (to && !serv->p_cmp (from, serv->nick))
+	{
+		fromme = TRUE;
+		destsess = to;
+	}
 
 	sess = find_dialog (serv, from);
 
-	if (sess || prefs.hex_gui_autoopen_dialog)
+	if (!fromme && (sess || prefs.hex_gui_autoopen_dialog))
 	{
 		/*0=ctcp  1=priv will set hex_gui_autoopen_dialog=0 here is flud detected */
 		if (!sess)
@@ -196,8 +203,15 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 	sess = find_dialog (serv, destsess);
 	if (!sess)
 	{
-		sess = serv->front_session;
-		nodiag = TRUE; /* We don't want it to look like a normal message in front sess */
+		if (fromme && prefs.hex_gui_autoopen_dialog)
+		{
+			sess = inbound_open_dialog (serv, destsess, tags_data);
+		}
+		else
+		{
+			sess = serv->front_session;
+			nodiag = TRUE; /* We don't want it to look like a normal message in front sess */
+		}
 	}
 
 	user = userlist_find (sess, from);
@@ -210,7 +224,16 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 	
 	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
 
-	if (sess->type == SESS_DIALOG && !nodiag)
+	if (fromme)
+	{
+		if (sess->type == SESS_DIALOG)
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_UCHANMSG, sess, from, text, NULL, idtext, 0,
+									tags_data->timestamp);
+		else
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_MSGSEND, sess, to, text, NULL, NULL, 0,
+									tags_data->timestamp);
+	}
+	else if (sess->type == SESS_DIALOG && !nodiag)
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0,
 									  tags_data->timestamp);
 	else
@@ -329,15 +352,19 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 
 void
 inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
-					 int fromme, int id, const message_tags_data *tags_data)
+					 int fromme, gboolean fake, int id, const message_tags_data *tags_data)
 {
 	server *serv = sess->server;
 	struct User *user;
 	char nickchar[2] = "\000";
 	char idtext[64];
 	int privaction = FALSE;
+	char *destsess = from;
 
-	if (!fromme)
+	if (fromme)
+		destsess = chan;
+
+	if (!fake) /* Fake events start in the correct sess. */
 	{
 		if (is_channel (serv, chan))
 		{
@@ -352,13 +379,13 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 			/* it's a private action! */
 			privaction = TRUE;
 			/* find a dialog tab for it */
-			sess = find_dialog (serv, from);
+			sess = find_dialog (serv, destsess);
 			/* if non found, open a new one */
 			if (!sess && prefs.hex_gui_autoopen_dialog)
 			{
 				/* but only if it wouldn't flood */
-				if (flood_check (from, ip, serv, current_sess, 1))
-					sess = inbound_open_dialog (serv, from, tags_data);
+				if (flood_check (destsess, ip, serv, current_sess, 1))
+					sess = inbound_open_dialog (serv, destsess, tags_data);
 				else
 					sess = serv->server_session;
 			}
@@ -383,7 +410,7 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 		lastact_update (sess);
 	}
 
-	user = userlist_find (sess, from);
+	user = userlist_find (sess, destsess);
 	if (user)
 	{
 		nickchar[0] = user->prefix[0];
@@ -407,8 +434,19 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 	}
 
 	if (fromme)
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_UACTION, sess, from, text, nickchar, idtext,
+	{
+		if (fake || sess->type == SESS_DIALOG ||
+				!serv->p_cmp (sess->channel, destsess)) /* Show normally if in correct sess */
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_UACTION, sess, from, text, nickchar, idtext,
 									  0, tags_data->timestamp);
+		else /* There is no Action Send event, so we will just show it as CTCP.. */
+		{
+			char *new_text = g_strconcat ("ACTION ", text, NULL);
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_CTCPSEND, sess, destsess, new_text, NULL, NULL,
+									  0, tags_data->timestamp);
+			g_free (new_text);
+		}
+	}
 	else if (!privaction)
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANACTION, sess, from, text, nickchar,
 									  idtext, 0, tags_data->timestamp);
@@ -1732,6 +1770,7 @@ static const char * const supported_caps[] = {
 	/* ZNC */
 	"znc.in/server-time-iso",
 	"znc.in/server-time",
+	"znc.in/self-message",
 
 	/* Twitch */
 	"twitch.tv/membership",

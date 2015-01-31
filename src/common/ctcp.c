@@ -93,6 +93,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 	server *serv = sess->server;
 	char outbuf[1024];
 	int ctcp_offset = 2;
+	gboolean fromme = FALSE;
 
 	if (serv->have_idmsg && (word[4][1] == '+' || word[4][1] == '-') )
 			ctcp_offset = 3;
@@ -129,7 +130,10 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		if (ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 			goto generic;
 
-		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id, tags_data);
+		if (!serv->p_cmp (nick, serv->nick))
+			fromme = TRUE;
+
+		inbound_action (sess, to, nick, ip, msg + 7, fromme, FALSE, id, tags_data);
 		return;
 	}
 

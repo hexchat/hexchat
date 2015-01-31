@@ -549,10 +549,10 @@ dcc_chat_line (struct DCC *dcc, char *line)
 		if (po)
 			po[0] = 0;
 		inbound_action (sess, dcc->serv->nick, dcc->nick, "", line + 8, FALSE,
-							 FALSE, &no_tags);
+							 TRUE, FALSE, &no_tags);
 	} else
 	{
-		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE, &no_tags);
+		inbound_privmsg (dcc->serv, dcc->nick, NULL, "", line, FALSE, &no_tags);
 	}
 	g_free (line);
 	return 0;
