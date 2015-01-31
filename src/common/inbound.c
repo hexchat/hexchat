@@ -179,12 +179,12 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 		if (!sess)
 		{
 			if (flood_check (from, ip, serv, current_sess, 1))
+			{
 				/* Create a dialog session */
 				sess = inbound_open_dialog (serv, from, tags_data);
+			}
 			else
 				sess = serv->server_session;
-			if (!sess)
-				return; /* ?? */
 		}
 
 		if (ip && ip[0])
@@ -193,7 +193,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 		return;
 	}
 
-	sess = find_session_from_nick (from, serv);
+	sess = find_dialog (serv, destsess);
 	if (!sess)
 	{
 		sess = serv->front_session;
@@ -331,7 +331,6 @@ void
 inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 					 int fromme, int id, const message_tags_data *tags_data)
 {
-	session *def = sess;
 	server *serv = sess->server;
 	struct User *user;
 	char nickchar[2] = "\000";
@@ -343,6 +342,11 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 		if (is_channel (serv, chan))
 		{
 			sess = find_channel (serv, chan);
+			if (!sess)
+			{
+				g_warning ("Got channel action for %s but found no channel session\n", chan);
+				return; /* There is no sane place to put this */
+			}
 		} else
 		{
 			/* it's a private action! */
@@ -360,16 +364,10 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 			}
 			if (!sess)
 			{
-				sess = find_session_from_nick (from, serv);
-				/* still not good? */
-				if (!sess)
-					sess = serv->front_session;
+				sess = serv->front_session;
 			}
 		}
 	}
-
-	if (!sess)
-		sess = def;
 
 	if (sess != current_tab)
 	{
@@ -437,8 +435,18 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
 		if (chan)
 		{
 			sess = find_channel (serv, chan);
-			if (!sess && !is_channel (serv, chan))
-				sess = find_dialog (serv, chan);
+			if (!sess)
+			{
+				if (is_channel (serv, chan))
+				{
+					g_warning ("Got channel message to %s but found no channel session\n", chan);
+					return;
+				}
+				else
+				{
+					sess = find_dialog (serv, chan);
+				}
+			}
 		} else
 		{
 			sess = find_dialog (serv, from);
