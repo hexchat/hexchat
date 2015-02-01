@@ -63,7 +63,7 @@ guint64 hdd_free_space;
 char *read_hdd_info (IWbemClassObject *object);
 
 char *get_memory_info (void);
-char *bstr_to_utf8 (BSTR bstr, glong *len);
+char *bstr_to_utf8 (BSTR bstr);
 guint64 variant_to_uint64 (VARIANT *variant);
 
 int hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
@@ -386,7 +386,6 @@ static char *read_os_name (IWbemClassObject *object)
 	HRESULT hr;
 	VARIANT caption_variant;
 	char *caption_utf8;
-	glong caption_utf8_len;
 
 	hr = object->lpVtbl->Get (object, L"Caption", 0, &caption_variant, NULL, NULL);
 	if (FAILED (hr))
@@ -394,20 +393,16 @@ static char *read_os_name (IWbemClassObject *object)
 		return NULL;
 	}
 
-	caption_utf8 = bstr_to_utf8 (caption_variant.bstrVal, &caption_utf8_len);
+	caption_utf8 = bstr_to_utf8 (caption_variant.bstrVal);
 
 	VariantClear(&caption_variant);
 
-	if (caption_utf8 == NULL || caption_utf8_len < 1)
+	if (caption_utf8 == NULL)
 	{
 		return NULL;
 	}
 
-	if (caption_utf8[caption_utf8_len - 1] == ' ')
-	{
-		gchar *last_space_pos = g_strrstr_len (caption_utf8, caption_utf8_len, " ");
-		*last_space_pos = '\0';
-	}
+	g_strchomp (caption_utf8);
 
 	return caption_utf8;
 }
@@ -427,7 +422,7 @@ static char *read_cpu_info (IWbemClassObject *object)
 		return NULL;
 	}
 
-	name_utf8 = bstr_to_utf8 (name_variant.bstrVal, NULL);
+	name_utf8 = bstr_to_utf8 (name_variant.bstrVal);
 
 	VariantClear (&name_variant);
 
@@ -474,7 +469,7 @@ static char *read_vga_name (IWbemClassObject *object)
 		return NULL;
 	}
 
-	name_utf8 = bstr_to_utf8 (name_variant.bstrVal, NULL);
+	name_utf8 = bstr_to_utf8 (name_variant.bstrVal);
 
 	VariantClear (&name_variant);
 
@@ -565,9 +560,9 @@ static char *get_memory_info (void)
 	return g_strdup_printf ("%" G_GUINT64_FORMAT " MB Total (%" G_GUINT64_FORMAT " MB Free)", meminfo.ullTotalPhys / 1024 / 1024, meminfo.ullAvailPhys / 1024 / 1024);
 }
 
-static char *bstr_to_utf8 (BSTR bstr, glong *len)
+static char *bstr_to_utf8 (BSTR bstr)
 {
-	return g_utf16_to_utf8 (bstr, SysStringLen (bstr), NULL, len, NULL);
+	return g_utf16_to_utf8 (bstr, SysStringLen (bstr), NULL, NULL, NULL);
 }
 
 static guint64 variant_to_uint64 (VARIANT *variant)
