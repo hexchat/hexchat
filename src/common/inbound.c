@@ -81,6 +81,15 @@ clear_channel (session *sess)
 void
 set_topic (session *sess, char *topic, char *stripped_topic)
 {
+	/* The topic of dialogs are the users hostname which is logged is new */
+	if (sess->type == SESS_DIALOG && (!sess->topic || strcmp(sess->topic, stripped_topic))
+		&& sess->logfd != -1)
+	{
+		char tbuf[1024];
+		g_snprintf (tbuf, sizeof (tbuf), "[%s has address %s]\n", sess->channel, stripped_topic);
+		write (sess->logfd, tbuf, strlen (tbuf));
+	}
+
 	g_free (sess->topic);
 	sess->topic = g_strdup (stripped_topic);
 	fe_set_topic (sess, topic, stripped_topic);
@@ -179,16 +188,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 		}
 
 		if (ip && ip[0])
-		{
-			if (prefs.hex_irc_logging && sess->logfd != -1 &&
-				(!sess->topic || strcmp(sess->topic, ip)))
-			{
-				char tbuf[1024];
-				g_snprintf (tbuf, sizeof (tbuf), "[%s has address %s]\n", from, ip);
-				write (sess->logfd, tbuf, strlen (tbuf));
-			}
 			set_topic (sess, ip, ip);
-		}
 		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE, id, tags_data);
 		return;
 	}

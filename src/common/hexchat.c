@@ -41,6 +41,7 @@
 #include "chanopt.h"
 #include "ignore.h"
 #include "hexchat-plugin.h"
+#include "inbound.h"
 #include "plugin.h"
 #include "plugin-identd.h"
 #include "plugin-timer.h"
@@ -491,7 +492,6 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 		break;
 	case SESS_DIALOG:
 		sess = session_new (serv, name, type, focus);
-		log_open_or_close (sess);
 		break;
 	default:
 /*	case SESS_CHANNEL:
@@ -506,6 +506,16 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	scrollback_load (sess);
 	if (sess->scrollwritten && sess->scrollback_replay_marklast)
 		sess->scrollback_replay_marklast (sess);
+	if (type == SESS_DIALOG)
+	{
+		struct User *user;
+
+		log_open_or_close (sess);
+
+		user = userlist_find_global (serv, name);
+		if (user && user->hostname)
+			set_topic (sess, user->hostname, user->hostname);
+	}
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
