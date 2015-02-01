@@ -659,26 +659,31 @@ plugin_emit_dummy_print (session *sess, char *name)
 }
 
 int
-plugin_emit_keypress (session *sess, unsigned int state, unsigned int keyval,
-							 int len, char *string)
+plugin_emit_keypress (session *sess, unsigned int state, unsigned int keyval, gunichar key)
 {
 	char *word[PDIWORDS];
 	char keyval_str[16];
 	char state_str[16];
 	char len_str[16];
-	int i;
+	char key_str[7];
+	int i, len;
 
 	if (!hook_list)
 		return 0;
 
 	sprintf (keyval_str, "%u", keyval);
 	sprintf (state_str, "%u", state);
+	if (!key)
+		len = 0;
+	else
+		len = g_unichar_to_utf8 (key, key_str);
+	key_str[len] = '\0';
 	sprintf (len_str, "%d", len);
 
 	word[0] = "Key Press";
 	word[1] = keyval_str;
 	word[2] = state_str;
-	word[3] = string;
+	word[3] = key_str;
 	word[4] = len_str;
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";

@@ -322,7 +322,7 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 		return FALSE;
 	current_sess = sess;
 
-	if (plugin_emit_keypress (sess, evt->state, evt->keyval, evt->length, evt->string))
+	if (plugin_emit_keypress (sess, evt->state, evt->keyval, gdk_keyval_to_unicode (evt->keyval)))
 		return 1;
 
 	/* maybe the plugin closed this tab? */
