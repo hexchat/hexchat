@@ -148,6 +148,8 @@ Source: "pixman-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 
+Source: "plugins\hcnotifications-winrt.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: libs
+
 Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Flags: ignoreversion; Components: libs
 
 Source: "lib\gtk-2.0\i686-pc-vs10\engines\*"; DestDir: "{app}\lib\gtk-2.0\i686-pc-vs10\engines"; Flags: ignoreversion; Components: libs
@@ -173,7 +175,7 @@ Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: 
 Source: "thememan.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xtm
 
 [Icons]
-Name: "{group}\HexChat"; Filename: "{app}\hexchat.exe"; Tasks: not portable
+Name: "{group}\HexChat"; Filename: "{app}\hexchat.exe"; AppUserModelID: "HexChat.Desktop.Notify"; Tasks: not portable
 Name: "{group}\HexChat Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable
 Name: "{group}\HexChat ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
 Name: "{group}\HexChat ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable

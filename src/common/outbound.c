@@ -3470,12 +3470,6 @@ cmd_topic (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_tray (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	if (strcmp (word[2], "-b") == 0)
-	{
-		fe_tray_set_balloon (word[3], word[4][0] ? word[4] : NULL);
-		return TRUE;
-	}
-
 	if (strcmp (word[2], "-t") == 0)
 	{
 		fe_tray_set_tooltip (word[3][0] ? word[3] : NULL);

@@ -36,6 +36,7 @@
 #include "pixmaps.h"
 #include "menu.h"
 #include "plugin-tray.h"
+#include "notifications/notification-backend.h"
 
 #ifdef WIN32
 #include "../common/fe.h"
@@ -397,9 +398,47 @@ static const setting alert_settings[] =
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
-#if !defined (WIN32) && !defined (__APPLE__)
-	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
+
+
+	{ST_3OGGLE, N_("Show notifications on:"), 0, 0, (void *)balloonlist, 0},
+	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
+	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+#ifdef WIN32
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play the \"Instant Message Notification\" system sound upon the selected events"), (void *)beeplist, 0},
+#else
+#ifdef USE_LIBCANBERRA
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play \"message-new-instant\" from the freedesktop.org sound theme upon the selected events"), (void *)beeplist, 0},
+#else
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play a GTK beep upon the selected events"), (void *)beeplist, 0},
 #endif
+#endif
+
+	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
+	{ST_TOGGLE,	N_("Omit alerts while the window is focused"), P_OFFINTNL(hex_gui_focus_omitalerts), 0, 0, 0},
+
+	{ST_HEADER,	N_("Tray Behavior"), 0, 0, 0},
+	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 4},
+	{ST_TOGGLE,	N_("Minimize to tray"), P_OFFINTNL(hex_gui_tray_minimize), 0, 0, 0},
+	{ST_TOGGLE,	N_("Close to tray"), P_OFFINTNL(hex_gui_tray_close), 0, 0, 0},
+	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("Automatically change status when hiding to tray."), 0, 0},
+	{ST_TOGGLE,	N_("Only show notifications when hidden or iconified"), P_OFFINTNL(hex_gui_tray_quiet), 0, 0, 0},
+
+	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
+	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
+
+	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
+	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
+	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting alert_settings_nonotifications[] =
+{
+	{ST_HEADER,	N_("Alerts"),0,0,0},
+
+	{ST_ALERTHEAD},
 	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
 #ifdef HAVE_GTK_MAC
 	{ST_3OGGLE, N_("Bounce dock icon on:"), 0, 0, (void *)taskbarlist, 0},
@@ -422,17 +461,10 @@ static const setting alert_settings[] =
 	{ST_TOGGLE,	N_("Omit alerts while the window is focused"), P_OFFINTNL(hex_gui_focus_omitalerts), 0, 0, 0},
 
 	{ST_HEADER,	N_("Tray Behavior"), 0, 0, 0},
-#ifdef WIN32
-	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 3},
-#else
 	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 4},
-#endif
 	{ST_TOGGLE,	N_("Minimize to tray"), P_OFFINTNL(hex_gui_tray_minimize), 0, 0, 0},
 	{ST_TOGGLE,	N_("Close to tray"), P_OFFINTNL(hex_gui_tray_close), 0, 0, 0},
 	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("Automatically change status when hiding to tray."), 0, 0},
-#ifndef WIN32
-	{ST_TOGGLE,	N_("Only show tray balloons when hidden or iconified"), P_OFFINTNL(hex_gui_tray_quiet), 0, 0, 0},
-#endif
 
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
@@ -450,7 +482,7 @@ static const setting alert_settings_unity[] =
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
-	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
+	{ST_3OGGLE, N_("Show notifications on:"), 0, 0, (void *)balloonlist, 0},
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
 
@@ -464,6 +496,28 @@ static const setting alert_settings_unity[] =
 	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
 	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting alert_settings_unityandnonotifications[] =
+{
+	{ST_HEADER, N_("Alerts"), 0, 0, 0},
+
+	{ST_ALERTHEAD},
+	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
+
+	{ST_TOGGLE, N_("Omit alerts when marked as being away"), P_OFFINTNL (hex_away_omit_alerts), 0, 0, 0},
+	{ST_TOGGLE, N_("Omit alerts while the window is focused"), P_OFFINTNL (hex_gui_focus_omitalerts), 0, 0, 0},
+
+	{ST_HEADER, N_("Highlighted Messages"), 0, 0, 0},
+	{ST_LABEL, N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
+
+	{ST_ENTRY, N_("Extra words to highlight:"), P_OFFSETNL (hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY, N_("Nick names not to highlight:"), P_OFFSETNL (hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
+	{ST_ENTRY, N_("Nick names to always highlight:"), P_OFFSETNL (hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
+	{ST_LABEL, N_("Separate multiple words with commas.\nWildcards are accepted.")},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -1832,9 +1886,17 @@ setup_create_pages (GtkWidget *box)
 
 	setup_add_page (cata[8], book, setup_create_page (general_settings));
 
-	if (unity_mode ())
+	if (unity_mode () && !notification_backend_supported ())
+	{
+		setup_add_page (cata[9], book, setup_create_page (alert_settings_unityandnonotifications));
+	}
+	else if (unity_mode ())
 	{
 		setup_add_page (cata[9], book, setup_create_page (alert_settings_unity));
+	}
+	else if (!notification_backend_supported ())
+	{
+		setup_add_page (cata[9], book, setup_create_page (alert_settings_nonotifications));
 	}
 	else
 	{

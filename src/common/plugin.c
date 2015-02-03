@@ -355,15 +355,11 @@ plugin_kill_all (void)
 
 #ifdef USE_PLUGIN
 
-/* load a plugin from a filename. Returns: NULL-success or an error string */
-
-char *
-plugin_load (session *sess, char *filename, char *arg)
+GModule *
+module_load (char *filename)
 {
 	void *handle;
 	char *filepart;
-	hexchat_init_func *init_func;
-	hexchat_deinit_func *deinit_func;
 	char *pluginpath;
 
 	/* get the filename without path */
@@ -382,6 +378,18 @@ plugin_load (session *sess, char *filename, char *arg)
 		/* try to load with absolute path */
 		handle = g_module_open (filename, 0);
 	}
+
+	return handle;
+}
+
+/* load a plugin from a filename. Returns: NULL-success or an error string */
+
+char *
+plugin_load (session *sess, char *filename, char *arg)
+{
+	GModule *handle = module_load (filename);
+	hexchat_init_func *init_func;
+	hexchat_deinit_func *deinit_func;
 
 	if (handle == NULL)
 		return (char *)g_module_error ();

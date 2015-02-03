@@ -34,18 +34,6 @@
 #include <unistd.h>
 #endif
 
-#ifdef USE_LIBNOTIFY
-#include <libnotify/notify.h>
-#ifndef NOTIFY_CHECK_VERSION
-#define NOTIFY_CHECK_VERSION(x,y,z) 0
-#endif
-#if NOTIFY_CHECK_VERSION(0,7,0)
-#define XC_NOTIFY_NEW(a,b,c,d) notify_notification_new(a,b,c)
-#else
-#define XC_NOTIFY_NEW(a,b,c,d) notify_notification_new(a,b,c,d)
-#endif
-#endif
-
 typedef enum	/* current icon status */
 {
 	TS_NONE,
@@ -152,83 +140,6 @@ fe_tray_set_tooltip (const char *text)
 {
 	if (sticon)
 		gtk_status_icon_set_tooltip_text (sticon, text);
-}
-
-void
-fe_tray_set_balloon (const char *title, const char *text)
-{
-#ifndef WIN32
-#if 0
-	const char *argv[8];
-	const char *path;
-	char time[16];
-#endif
-	WinStatus ws;
-
-	/* no balloons if the window is focused */
-	ws = tray_get_window_status ();
-	if ((prefs.hex_away_omit_alerts && hexchat_get_info(ph, "away")) ||
-		(prefs.hex_gui_focus_omitalerts && ws == WS_FOCUSED))
-		return;
-
-	/* bit 1 of flags means "no balloons unless hidden/iconified" */
-	if (ws != WS_HIDDEN && prefs.hex_gui_tray_quiet)
-		return;
-
-	/* FIXME: this should close the current balloon */
-	if (!text)
-		return;
-
-#ifdef USE_LIBNOTIFY
-	static int notify_text_strip_flags = STRIP_ALL;
-	NotifyNotification *notification;
-	char *notify_text, *notify_title;
-
-	if (!notify_is_initted())
-	{
-		GList* server_caps;
-		notify_init(PACKAGE_NAME);
-
-		server_caps = notify_get_server_caps ();
-		if (g_list_find_custom (server_caps, "body-markup", (GCompareFunc)strcmp))
-		{
-			notify_text_strip_flags |= STRIP_ESCMARKUP;
-		}
-		g_list_free_full (server_caps, g_free);
-	}
-
-	notify_text = strip_color (text, -1, notify_text_strip_flags);
-	notify_title = strip_color (title, -1, STRIP_ALL);
-
-	notification = XC_NOTIFY_NEW (notify_title, notify_text, HEXCHATSHAREDIR "/icons/hicolor/scalable/apps/hexchat.svg", NULL);
-
-#if NOTIFY_CHECK_VERSION(0,7,0)
-	notify_notification_set_hint (notification, "desktop-entry", g_variant_new_string ("hexchat"));
-#endif
-
-	g_free ((char *)notify_title);
-	g_free ((char *)notify_text);
-
-	notify_notification_set_timeout (notification, prefs.hex_input_balloon_time*1000);
-	notify_notification_show (notification, NULL);
-
-	g_object_unref (notification);
-#endif
-#endif
-}
-
-static void
-tray_set_balloonf (const char *text, const char *format, ...)
-{
-	va_list args;
-	char *buf;
-
-	va_start (args, format);
-	buf = g_strdup_vprintf (format, args);
-	va_end (args);
-
-	fe_tray_set_balloon (buf, text);
-	g_free (buf);
 }
 
 static void
@@ -719,10 +630,6 @@ tray_hilight_cb (char *word[], void *userdata)
 								tray_hilight_count, word[1], hexchat_get_info (ph, "channel"));
 	}
 
-	if (prefs.hex_input_balloon_hilight)
-		tray_set_balloonf (word[2], _("Highlighted message from: %s (%s)"),
-								 word[1], hexchat_get_info (ph, "channel"));
-
 	return HEXCHAT_EAT_NONE;
 }
 
@@ -743,10 +650,6 @@ tray_message_cb (char *word[], void *userdata)
 		else
 			tray_set_tipf (_(DISPLAY_NAME": %u channel messages."), tray_pub_count);
 	}
-
-	if (prefs.hex_input_balloon_chans)
-		tray_set_balloonf (word[2], _("Channel message from: %s (%s)"),
-								 word[1], hexchat_get_info (ph, "channel"));
 
 	return HEXCHAT_EAT_NONE;
 }
@@ -775,10 +678,6 @@ tray_priv (char *from, char *text)
 			tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
 								tray_priv_count, from, network);
 	}
-
-	if (prefs.hex_input_balloon_priv)
-		tray_set_balloonf (text, _("Private message from: %s (%s)"),
-								 from, network);
 }
 
 static int
@@ -822,10 +721,6 @@ tray_dcc_cb (char *word[], void *userdata)
 			tray_set_tipf (_(DISPLAY_NAME": %u file offers, latest from: %s (%s)"),
 								tray_file_count, word[1], network);
 	}
-
-	if (prefs.hex_input_balloon_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
-		tray_set_balloonf ("", _("File offer from: %s (%s)"),
-								word[1], network);
 
 	return HEXCHAT_EAT_NONE;
 }
@@ -905,8 +800,6 @@ tray_plugin_deinit (hexchat_plugin *plugin_handle)
 {
 #ifdef WIN32
 	tray_cleanup ();
-#elif defined(USE_LIBNOTIFY)
-	notify_uninit ();
 #endif
 	return 1;
 }

@@ -93,6 +93,9 @@
     <ClInclude Include="setup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="notifications\notification-backend.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ascii.c">
@@ -182,9 +185,15 @@
     <ClCompile Include="resources.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="plugin-notification.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="notifications\notification-windows.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="hexchat.exe.manifest">
+    <Manifest Include="..\..\win32\hexchat.exe.manifest">
       <Filter>Resource Files</Filter>
     </Manifest>
   </ItemGroup>

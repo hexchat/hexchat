@@ -163,6 +163,7 @@ struct _hexchat_plugin
 };
 #endif
 
+GModule *module_load (char *filename);
 char *plugin_load (session *sess, char *filename, char *arg);
 int plugin_reload (session *sess, char *name, int by_filename);
 void plugin_add (session *sess, char *filename, void *handle, void *init_func, void *deinit_func, char *arg, int fake);

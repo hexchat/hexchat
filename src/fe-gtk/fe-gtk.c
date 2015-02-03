@@ -52,6 +52,7 @@
 #include "plugin-tray.h"
 #include "urlgrab.h"
 #include "setup.h"
+#include "plugin-notification.h"
 
 #ifdef USE_LIBCANBERRA
 #include <canberra.h>
@@ -380,6 +381,8 @@ static int
 fe_idle (gpointer data)
 {
 	session *sess = sess_list->data;
+
+	plugin_add (sess, NULL, NULL, notification_plugin_init, notification_plugin_deinit, NULL, FALSE);
 
 	plugin_add (sess, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
 

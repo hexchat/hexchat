@@ -902,7 +902,6 @@ void fe_tray_set_flash (const char *filename1, const char *filename2, int timeou
 void fe_tray_set_file (const char *filename){}
 void fe_tray_set_icon (feicon icon){}
 void fe_tray_set_tooltip (const char *text){}
-void fe_tray_set_balloon (const char *title, const char *text){}
 void fe_userlist_update (session *sess, struct User *user){}
 void
 fe_open_chan_list (server *serv, char *filter, int do_refresh)
