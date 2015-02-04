@@ -500,7 +500,22 @@ get_sys_str (int with_cpu)
 	static char winver[20];
 	double mhz;
 
-	if (IsWindows8Point1OrGreater ())
+	/* Broken since major bumped to 10, should start to work eventually.
+	 * No, IsWindowsVersionOrGreater (10, 0, 0) doesn't work either.
+	 * TODO: replace with IsWindows10OrGreater() once added to the SDK.
+	 */
+	if (IsWindowsVersionOrGreater (6, 4, 0))
+	{
+		if (IsWindowsServer ())
+		{
+			strcpy (winver, "Server 10");
+		}
+		else
+		{
+			strcpy (winver, "10");
+		}
+	}
+	else if (IsWindows8Point1OrGreater ())
 	{
 		if (IsWindowsServer ())
 		{
