@@ -34,6 +34,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef USE_APPINDICATOR
+#include <libappindicator/app-indicator.h>
+#endif
+
 typedef enum	/* current icon status */
 {
 	TS_NONE,
@@ -43,18 +47,19 @@ typedef enum	/* current icon status */
 	TS_CUSTOM /* plugin */
 } TrayStatus;
 
-typedef enum
-{
-	WS_FOCUSED,
-	WS_NORMAL,
-	WS_HIDDEN
-} WinStatus;
-
 #define ICON_NORMAL pix_hexchat
 #define ICON_MSG pix_tray_message
 #define ICON_HILIGHT pix_tray_highlight
 #define ICON_FILE pix_tray_fileoffer
 #define TIMEOUT 500
+
+static hexchat_plugin *ph;
+
+#ifdef USE_APPINDICATOR
+
+static AppIndicator *sticon;
+
+#else
 
 static GtkStatusIcon *sticon;
 static gint flash_tag;
@@ -63,7 +68,6 @@ static TrayStatus tray_status;
 static guint tray_menu_timer;
 static gint64 tray_menu_inactivetime;
 #endif
-static hexchat_plugin *ph;
 
 static GdkPixbuf *custom_icon1;
 static GdkPixbuf *custom_icon2;
@@ -74,12 +78,20 @@ static int tray_hilight_count = 0;
 static int tray_file_count = 0;
 static int tray_restore_timer = 0;
 
+static gboolean tray_menu_try_restore ();
+#endif
 
 void tray_apply_setup (void);
-static gboolean tray_menu_try_restore ();
 static void tray_cleanup (void);
 static void tray_init (void);
 
+#ifndef USE_APPINDICATOR
+typedef enum
+{
+	WS_FOCUSED,
+	WS_NORMAL,
+	WS_HIDDEN
+} WinStatus;
 
 static WinStatus
 tray_get_window_status (void)
@@ -310,6 +322,77 @@ fe_tray_set_file (const char *filename)
 	}
 }
 
+
+static void
+tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
+{
+	if (sticon)
+	{
+		if (!gtk_status_icon_is_embedded (sticon))
+		{
+			tray_restore_timer = g_timeout_add(500, (GSourceFunc)tray_menu_try_restore, NULL);
+		}
+		else
+		{
+			if (tray_restore_timer)
+			{
+				g_source_remove (tray_restore_timer);
+				tray_restore_timer = 0;
+			}
+		}
+	}
+}
+
+static gboolean
+tray_menu_try_restore ()
+{
+	tray_cleanup();
+	tray_init();
+	return TRUE;
+}
+
+#else /* End GtkStatusIcon */
+
+void
+fe_tray_set_tooltip (const char *text)
+{
+}
+
+void
+fe_tray_set_flash (const char *filename1, const char *filename2, int tout)
+{
+}
+
+void
+fe_tray_set_file (const char *filename)
+{
+}
+
+void
+fe_tray_set_icon (feicon icon)
+{
+}
+
+static void
+tray_set_flash (GdkPixbuf *icon)
+{
+	if (sticon)
+	{
+		app_indicator_set_status (sticon, APP_INDICATOR_STATUS_ATTENTION);
+	}
+}
+
+static void
+tray_stop_flash (void)
+{
+	if (sticon)
+	{
+		app_indicator_set_status (sticon, APP_INDICATOR_STATUS_ACTIVE);
+	}
+}
+
+#endif 
+
 gboolean
 tray_toggle_visibility (gboolean force_hide)
 {
@@ -328,7 +411,9 @@ tray_toggle_visibility (gboolean force_hide)
 	win = GTK_WINDOW (hexchat_get_info (ph, "gtkwin_ptr"));
 
 	tray_stop_flash ();
+#ifndef USE_APPINDICATOR
 	tray_reset_counts ();
+#endif
 
 	if (!win)
 		return FALSE;
@@ -364,34 +449,6 @@ static void
 tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
 {
 	tray_toggle_visibility (FALSE);
-}
-
-static void
-tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
-{
-	if (sticon)
-	{
-		if (!gtk_status_icon_is_embedded (sticon))
-		{
-			tray_restore_timer = g_timeout_add(500, (GSourceFunc)tray_menu_try_restore, NULL);
-		}
-		else
-		{
-			if (tray_restore_timer)
-			{
-				g_source_remove (tray_restore_timer);
-				tray_restore_timer = 0;
-			}
-		}
-	}
-}
-
-static gboolean
-tray_menu_try_restore ()
-{
-	tray_cleanup();
-	tray_init();
-	return TRUE;
 }
 
 static void
@@ -472,6 +529,7 @@ blink_item (unsigned int *setting, GtkWidget *menu, char *label)
 	menu_toggle_item (label, menu, tray_toggle_cb, setting, *setting);
 }
 
+#ifndef USE_APPINDICATOR
 static void
 tray_menu_destroy (GtkWidget *menu, gpointer userdata)
 {
@@ -605,6 +663,57 @@ tray_init (void)
 	g_signal_connect (G_OBJECT (sticon), "notify::embedded",
 							G_CALLBACK (tray_menu_notify_cb), NULL);
 }
+#else /* End GtkStatusIcon */
+
+static GtkMenu *
+make_menu ()
+{
+	GtkWidget *menu;
+	GtkWidget *submenu;
+	GtkWidget *item;
+	int away_status;
+
+	/* ph may have an invalid context now */
+	hexchat_set_context (ph, hexchat_find_context (ph, NULL, NULL));
+
+	menu = gtk_menu_new ();
+
+	item = tray_make_item (menu, _("_Toggle Visibility"), tray_menu_restore_cb, NULL);
+	app_indicator_set_secondary_activate_target (sticon, item);
+
+	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
+
+	submenu = mg_submenu (menu, _("_Blink on"));
+	blink_item (&prefs.hex_input_tray_chans, submenu, _("Channel Message"));
+	blink_item (&prefs.hex_input_tray_priv, submenu, _("Private Message"));
+	blink_item (&prefs.hex_input_tray_hilight, submenu, _("Highlighted Message"));
+
+	submenu = mg_submenu (menu, _("_Change status"));
+
+	away_status = tray_find_away_status ();
+	item = tray_make_item (submenu, _("_Away"), tray_foreach_server, "away");
+	if (away_status == 1)
+		gtk_widget_set_sensitive (item, FALSE);
+	item = tray_make_item (submenu, _("_Back"), tray_foreach_server, "back");
+	if (away_status == 2)
+		gtk_widget_set_sensitive (item, FALSE);
+
+	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
+	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
+	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
+	
+	return GTK_MENU (menu);
+}
+
+static void
+tray_init (void)
+{
+	sticon = app_indicator_new ("hexchat", "hexchat", APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+	app_indicator_set_status (sticon, APP_INDICATOR_STATUS_ACTIVE);
+	//app_indicator_set_attention_icon_full (sticon, "/usr/share/icons/hicolor/32x32/apps/hexchat-attention.png", "");
+	app_indicator_set_menu (sticon, make_menu ());
+}
+#endif /* End AppIndicator */
 
 static int
 tray_hilight_cb (char *word[], void *userdata)
@@ -616,6 +725,7 @@ tray_hilight_cb (char *word[], void *userdata)
 	{
 		tray_set_flash (ICON_HILIGHT);
 
+#ifndef USE_APPINDICATOR
 		/* FIXME: hides any previous private messages */
 		tray_hilight_count++;
 		if (tray_hilight_count == 1)
@@ -624,6 +734,7 @@ tray_hilight_cb (char *word[], void *userdata)
 		else
 			tray_set_tipf (_(DISPLAY_NAME": %u highlighted messages, latest from: %s (%s)"),
 								tray_hilight_count, word[1], hexchat_get_info (ph, "channel"));
+#endif
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -632,19 +743,23 @@ tray_hilight_cb (char *word[], void *userdata)
 static int
 tray_message_cb (char *word[], void *userdata)
 {
+#ifndef USE_APPINDICATOR
 	if (/*tray_status == TS_MESSAGE ||*/ tray_status == TS_HIGHLIGHT)
 		return HEXCHAT_EAT_NONE;
+#endif
 		
 	if (prefs.hex_input_tray_chans)
 	{
 		tray_set_flash (ICON_MSG);
 
+#ifndef USE_APPINDICATOR
 		tray_pub_count++;
 		if (tray_pub_count == 1)
 			tray_set_tipf (_(DISPLAY_NAME": Channel message from: %s (%s)"),
 								word[1], hexchat_get_info (ph, "channel"));
 		else
 			tray_set_tipf (_(DISPLAY_NAME": %u channel messages."), tray_pub_count);
+#endif
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -666,6 +781,7 @@ tray_priv (char *from, char *text)
 	{
 		tray_set_flash (ICON_MSG);
 
+#ifndef USE_APPINDICATOR
 		tray_priv_count++;
 		if (tray_priv_count == 1)
 			tray_set_tipf (_(DISPLAY_NAME": Private message from: %s (%s)"),
@@ -673,6 +789,7 @@ tray_priv (char *from, char *text)
 		else
 			tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
 								tray_priv_count, from, network);
+#endif
 	}
 }
 
@@ -709,6 +826,7 @@ tray_dcc_cb (char *word[], void *userdata)
 	{
 		tray_set_flash (ICON_FILE);
 
+#ifndef USE_APPINDICATOR
 		tray_file_count++;
 		if (tray_file_count == 1)
 			tray_set_tipf (_(DISPLAY_NAME": File offer from: %s (%s)"),
@@ -716,6 +834,7 @@ tray_dcc_cb (char *word[], void *userdata)
 		else
 			tray_set_tipf (_(DISPLAY_NAME": %u file offers, latest from: %s (%s)"),
 								tray_file_count, word[1], network);
+#endif
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -725,7 +844,9 @@ static int
 tray_focus_cb (char *word[], void *userdata)
 {
 	tray_stop_flash ();
+#ifndef USE_APPINDICATOR
 	tray_reset_counts ();
+#endif
 	return HEXCHAT_EAT_NONE;
 }
 
@@ -736,7 +857,7 @@ tray_cleanup (void)
 
 	if (sticon)
 	{
-		g_object_unref ((GObject *)sticon);
+		g_object_unref (sticon);
 		sticon = NULL;
 	}
 }

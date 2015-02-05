@@ -1478,7 +1478,7 @@ portable_mode (void)
 int
 unity_mode (void)
 {
-#ifdef G_OS_UNIX
+#if defined(G_OS_UNIX) && !defined(USE_APPINDICATOR)
 	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
 	if (env && (strcmp (env, "Unity") == 0
 			|| strcmp (env, "Pantheon") == 0))
