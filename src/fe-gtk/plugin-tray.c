@@ -708,7 +708,7 @@ make_menu ()
 static void
 tray_init (void)
 {
-	sticon = app_indicator_new ("hexchat", "hexchat", APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+	sticon = app_indicator_new ("hexchat", "hexchat-tray", APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 	app_indicator_set_status (sticon, APP_INDICATOR_STATUS_ACTIVE);
 	//app_indicator_set_attention_icon_full (sticon, "/usr/share/icons/hicolor/32x32/apps/hexchat-attention.png", "");
 	app_indicator_set_menu (sticon, make_menu ());
