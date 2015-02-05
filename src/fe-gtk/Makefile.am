@@ -32,7 +32,12 @@ endif
 if USE_LIBNOTIFY
 notify_c = notifications/notification-libnotify.c
 else
+if HAVE_GTK_MAC
+notify_c = notifications/notification-osx.m
+hexchat_LDFLAGS = -framework Foundation
+else
 notify_c = notifications/notification-dummy.c
+endif
 endif
 
 hexchat_SOURCES = ascii.c banlist.c chanlist.c chanview.c custom-list.c \
