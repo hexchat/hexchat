@@ -26,7 +26,6 @@
 #include "../common/util.h"
 #include "../common/outbound.h"
 #include "fe-gtk.h"
-#include "pixmaps.h"
 #include "maingui.h"
 #include "menu.h"
 
@@ -47,10 +46,10 @@ typedef enum	/* current icon status */
 	TS_CUSTOM /* plugin */
 } TrayStatus;
 
-#define ICON_NORMAL pix_hexchat
-#define ICON_MSG pix_tray_message
-#define ICON_HILIGHT pix_tray_highlight
-#define ICON_FILE pix_tray_fileoffer
+#define ICON_NORMAL "hexchat-tray"
+#define ICON_MSG "hexchat-tray-message"
+#define ICON_HILIGHT "hexchat-tray-hilight"
+#define ICON_FILE "hexchat-tray-fileoffer"
 #define TIMEOUT 500
 
 static hexchat_plugin *ph;
@@ -177,7 +176,7 @@ tray_stop_flash (void)
 
 	if (sticon)
 	{
-		gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
+		gtk_status_icon_set_from_icon_name (sticon, ICON_NORMAL);
 		nets = tray_count_networks ();
 		chans = tray_count_channels ();
 		if (nets)
@@ -212,40 +211,43 @@ tray_reset_counts (void)
 }
 
 static int
-tray_timeout_cb (GdkPixbuf *icon)
+tray_timeout_cb (const char *icon)
 {
-	if (custom_icon1)
+	/*if (custom_icon1)
 	{
 		if (gtk_status_icon_get_pixbuf (sticon) == custom_icon1)
 		{
 			if (custom_icon2)
 				gtk_status_icon_set_from_pixbuf (sticon, custom_icon2);
 			else
-				gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
+				gtk_status_icon_set_from_icon_name (sticon, ICON_NORMAL);
 		}
 		else
 		{
 			gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
 		}
 	}
-	else
+	else*/
 	{
-		if (gtk_status_icon_get_pixbuf (sticon) == ICON_NORMAL)
+		/*if (gtk_status_icon_get_pixbuf (sticon) == ICON_NORMAL)
 			gtk_status_icon_set_from_pixbuf (sticon, icon);
-		else
-			gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
+		else*/
+			gtk_status_icon_set_from_icon_name (sticon, ICON_NORMAL);
 	}
 	return 1;
 }
 
 static void
-tray_set_flash (GdkPixbuf *icon)
+tray_set_flash (char *icon)
 {
+	const char *curr_icon;
+
 	if (!sticon)
 		return;
 
 	/* already flashing the same icon */
-	if (flash_tag && gtk_status_icon_get_pixbuf (sticon) == icon)
+	curr_icon = gtk_status_icon_get_icon_name (sticon);
+	if (flash_tag && (curr_icon && !g_strcmp0 (curr_icon, icon)))
 		return;
 
 	/* no flashing if window is focused */
@@ -254,7 +256,7 @@ tray_set_flash (GdkPixbuf *icon)
 
 	tray_stop_flash ();
 
-	gtk_status_icon_set_from_pixbuf (sticon, icon);
+	gtk_status_icon_set_from_icon_name (sticon, icon);
 	if (prefs.hex_gui_tray_blink)
 		flash_tag = g_timeout_add (TIMEOUT, (GSourceFunc) tray_timeout_cb, icon);
 }
@@ -270,7 +272,7 @@ fe_tray_set_flash (const char *filename1, const char *filename2, int tout)
 
 	if (tout == -1)
 		tout = TIMEOUT;
-
+#if 0
 	custom_icon1 = gdk_pixbuf_new_from_file (filename1, NULL);
 	if (filename2)
 		custom_icon2 = gdk_pixbuf_new_from_file (filename2, NULL);
@@ -278,6 +280,7 @@ fe_tray_set_flash (const char *filename1, const char *filename2, int tout)
 	gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
 	flash_tag = g_timeout_add (tout, (GSourceFunc) tray_timeout_cb, NULL);
 	tray_status = TS_CUSTOM;
+#endif
 }
 
 void
@@ -316,9 +319,11 @@ fe_tray_set_file (const char *filename)
 
 	if (filename)
 	{
+#if 0
 		custom_icon1 = gdk_pixbuf_new_from_file (filename, NULL);
 		gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
 		tray_status = TS_CUSTOM;
+#endif
 	}
 }
 
@@ -374,7 +379,7 @@ fe_tray_set_icon (feicon icon)
 }
 
 static void
-tray_set_flash (GdkPixbuf *icon)
+tray_set_flash (const char *icon)
 {
 	if (sticon)
 	{
@@ -650,7 +655,7 @@ tray_init (void)
 	custom_icon1 = NULL;
 	custom_icon2 = NULL;
 
-	sticon = gtk_status_icon_new_from_pixbuf (ICON_NORMAL);
+	sticon = gtk_status_icon_new_from_icon_name (ICON_NORMAL);
 	if (!sticon)
 		return;
 
@@ -708,9 +713,9 @@ make_menu ()
 static void
 tray_init (void)
 {
-	sticon = app_indicator_new ("hexchat", "hexchat-tray", APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
+	sticon = app_indicator_new ("hexchat", ICON_NORMAL, APP_INDICATOR_CATEGORY_APPLICATION_STATUS);
 	app_indicator_set_status (sticon, APP_INDICATOR_STATUS_ACTIVE);
-	//app_indicator_set_attention_icon_full (sticon, "/usr/share/icons/hicolor/32x32/apps/hexchat-attention.png", "");
+	app_indicator_set_attention_icon_full (sticon, ICON_HILIGHT, "");
 	app_indicator_set_menu (sticon, make_menu ());
 }
 #endif /* End AppIndicator */
