@@ -50,10 +50,6 @@ typedef enum
 	WS_HIDDEN
 } WinStatus;
 
-typedef GdkPixbuf* TrayIcon;
-#define tray_icon_from_file(f) gdk_pixbuf_new_from_file(f,NULL)
-#define tray_icon_free(i) g_object_unref(i)
-
 #define ICON_NORMAL pix_hexchat
 #define ICON_MSG pix_tray_message
 #define ICON_HILIGHT pix_tray_highlight
@@ -69,8 +65,8 @@ static gint64 tray_menu_inactivetime;
 #endif
 static hexchat_plugin *ph;
 
-static TrayIcon custom_icon1;
-static TrayIcon custom_icon2;
+static GdkPixbuf *custom_icon1;
+static GdkPixbuf *custom_icon2;
 
 static int tray_priv_count = 0;
 static int tray_pub_count = 0;
@@ -181,13 +177,13 @@ tray_stop_flash (void)
 
 	if (custom_icon1)
 	{
-		tray_icon_free (custom_icon1);
+		g_object_unref (custom_icon1);
 		custom_icon1 = NULL;
 	}
 
 	if (custom_icon2)
 	{
-		tray_icon_free (custom_icon2);
+		g_object_unref (custom_icon2);
 		custom_icon2 = NULL;
 	}
 
@@ -204,7 +200,7 @@ tray_reset_counts (void)
 }
 
 static int
-tray_timeout_cb (TrayIcon icon)
+tray_timeout_cb (GdkPixbuf *icon)
 {
 	if (custom_icon1)
 	{
@@ -231,7 +227,7 @@ tray_timeout_cb (TrayIcon icon)
 }
 
 static void
-tray_set_flash (TrayIcon icon)
+tray_set_flash (GdkPixbuf *icon)
 {
 	if (!sticon)
 		return;
@@ -263,9 +259,9 @@ fe_tray_set_flash (const char *filename1, const char *filename2, int tout)
 	if (tout == -1)
 		tout = TIMEOUT;
 
-	custom_icon1 = tray_icon_from_file (filename1);
+	custom_icon1 = gdk_pixbuf_new_from_file (filename1, NULL);
 	if (filename2)
-		custom_icon2 = tray_icon_from_file (filename2);
+		custom_icon2 = gdk_pixbuf_new_from_file (filename2, NULL);
 
 	gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
 	flash_tag = g_timeout_add (tout, (GSourceFunc) tray_timeout_cb, NULL);
@@ -308,7 +304,7 @@ fe_tray_set_file (const char *filename)
 
 	if (filename)
 	{
-		custom_icon1 = tray_icon_from_file (filename);
+		custom_icon1 = gdk_pixbuf_new_from_file (filename, NULL);
 		gtk_status_icon_set_from_pixbuf (sticon, custom_icon1);
 		tray_status = TS_CUSTOM;
 	}
