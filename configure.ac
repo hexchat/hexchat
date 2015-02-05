@@ -18,6 +18,7 @@ AM_MAINTAINER_MODE
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CPP
+AC_PROG_OBJC
 AM_PROG_AS
 AM_PROG_AR
 AM_DISABLE_STATIC
@@ -206,8 +207,6 @@ dnl *********************************************************************
 
 _gdk_tgt=`$PKG_CONFIG --variable=target gdk-2.0`
 if test "x$_gdk_tgt" = xquartz; then
-		AC_PROG_OBJC
-
 		PKG_CHECK_MODULES(GTK_MAC, gtk-mac-integration-gtk2, [
 			GUI_LIBS="$GUI_LIBS $GTK_MAC_LIBS"
 			GUI_CFLAGS="$GUI_CFLAGS $GTK_MAC_CFLAGS"
