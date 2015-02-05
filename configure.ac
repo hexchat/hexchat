@@ -43,6 +43,7 @@ AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([HAVE_GTK_MAC],[#undef HAVE_GTK_MAC])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
+AH_VERBATIM([USE_APPINDICATOR],[#undef USE_APPINDICATOR])
 AH_VERBATIM([USE_LIBCANBERRA],[#undef USE_LIBCANBERRA])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
@@ -135,6 +136,10 @@ AC_ARG_ENABLE(dbus,
 AC_ARG_ENABLE(libnotify,
 	[AS_HELP_STRING([--disable-libnotify],[disable libnotify support])],
         libnotify=$enableval, libnotify=yes)
+
+AC_ARG_ENABLE(libappindicator,
+	[AS_HELP_STRING([--disable-libappindicator],[disable libappindicator support])],
+        appindicator=$enableval, appindicator=yes)
 
 AC_ARG_ENABLE(libcanberra,
 	[AS_HELP_STRING([--disable-libcanberra],[disable libcanberra support])],
@@ -537,6 +542,21 @@ if test "x$libnotify" = "xyes" ; then
 fi
 
 dnl *********************************************************************
+dnl ** LIBAPPINDICATOR **************************************************
+dnl *********************************************************************
+
+if test "x$appindicator" = "xyes" ; then
+	PKG_CHECK_MODULES(APPINDICATOR, appindicator-0.1, [], [
+		appindicator=no
+	])
+	if test "$appindicator" != "no" ; then
+		GUI_LIBS="$GUI_LIBS $APPINDICATOR_LIBS"
+		GUI_CFLAGS="$GUI_CFLAGS $APPINDICATOR_CFLAGS"
+		AC_DEFINE(USE_APPINDICATOR)
+	fi
+fi
+
+dnl *********************************************************************
 dnl ** LIBCANBERRA ******************************************************
 dnl *********************************************************************
 
@@ -817,6 +837,7 @@ echo
 echo OpenSSL support ....... : $openssl
 echo D-Bus support ......... : $dbus
 echo libnotify support ..... : $libnotify
+echo libappindicator support : $appindicator
 echo libcanberra support ... : $libcanberra
 echo Plugin interface ...... : $plugin
 echo libproxy support ...... : $libproxy
