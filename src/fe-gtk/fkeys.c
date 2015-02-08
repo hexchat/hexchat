@@ -666,6 +666,7 @@ key_dialog_treeview_new (GtkWidget *box)
 	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
 	gtk_tree_view_set_fixed_height_mode (GTK_TREE_VIEW (view), TRUE);
 	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view), FALSE);
+	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (view), TRUE);
 
 	g_signal_connect (G_OBJECT (view), "key-press-event",
 					G_CALLBACK (key_dialog_keypress), NULL);
