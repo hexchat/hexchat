@@ -1872,6 +1872,9 @@ gtk_xtext_unselect (GtkXText *xtext)
 {
 	xtext_buffer *buf = xtext->buffer;
 
+	if (buf->last_ent_start == NULL)
+		return;
+
 	xtext->skip_border_fills = TRUE;
 	xtext->skip_stamp = TRUE;
 
@@ -1892,6 +1895,7 @@ gtk_xtext_unselect (GtkXText *xtext)
 
 	xtext->skip_border_fills = FALSE;
 	xtext->skip_stamp = FALSE;
+	xtext->mark_stamp = FALSE;
 
 	xtext->buffer->last_ent_start = NULL;
 	xtext->buffer->last_ent_end = NULL;
@@ -1953,11 +1957,8 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		}
 
 		if (xtext->select_start_x == event->x &&
-			 xtext->select_start_y == event->y &&
-			 xtext->buffer->last_ent_start)
+			 xtext->select_start_y == event->y)
 		{
-			gtk_xtext_unselect (xtext);
-			xtext->mark_stamp = FALSE;
 			return FALSE;
 		}
 
@@ -2008,7 +2009,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 		{
 			if (len == 0)
 				return FALSE;
-			gtk_xtext_selection_clear (xtext->buffer);
+			gtk_xtext_unselect(xtext);
 			ent->mark_start = offset;
 			ent->mark_end = offset + len;
 			gtk_xtext_selection_render (xtext, ent, ent);
@@ -2023,7 +2024,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 		gtk_xtext_check_mark_stamp (xtext, mask);
 		if (gtk_xtext_get_word (xtext, x, y, &ent, 0, 0, 0))
 		{
-			gtk_xtext_selection_clear (xtext->buffer);
+			gtk_xtext_unselect (xtext);
 			ent->mark_start = 0;
 			ent->mark_end = ent->str_len;
 			gtk_xtext_selection_render (xtext, ent, ent);
@@ -2046,6 +2047,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 		}
 	}
 
+	gtk_xtext_unselect (xtext);
 	xtext->button_down = TRUE;
 	xtext->select_start_x = x;
 	xtext->select_start_y = y;
@@ -2059,10 +2061,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 static gboolean
 gtk_xtext_selection_kill (GtkXText *xtext, GdkEventSelection *event)
 {
-#ifndef WIN32
-	if (xtext->buffer->last_ent_start)
-		gtk_xtext_unselect (xtext);
-#endif
+	gtk_xtext_unselect (xtext);
 	return TRUE;
 }
 
