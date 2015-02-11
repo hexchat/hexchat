@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Configuration">
     <PlatformToolset>v120</PlatformToolset>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -23,7 +24,7 @@
     <ClInclude Include="ignore.h" />
     <ClInclude Include="inbound.h" />
     <ClInclude Include="inet.h" />
-    <ClInclude Include="marshal.h" />
+    <ClInclude Include="$(HexChatLib)marshal.h" />
     <ClInclude Include="modes.h" />
     <ClInclude Include="network.h" />
     <ClInclude Include="notify.h" />
@@ -36,8 +37,8 @@
     <ClInclude Include="servlist.h" />
     <ClInclude Include="ssl.h" />
     <ClInclude Include="text.h" />
-    <ClInclude Include="textenums.h" />
-    <ClInclude Include="textevents.h" />
+    <ClInclude Include="$(HexChatLib)textenums.h" />
+    <ClInclude Include="$(HexChatLib)textevents.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="typedef.h" />
     <ClInclude Include="url.h" />
@@ -56,7 +57,7 @@
     <ClCompile Include="plugin-identd.c" />
     <ClCompile Include="ignore.c" />
     <ClCompile Include="inbound.c" />
-    <ClCompile Include="marshal.c" />
+    <ClCompile Include="$(HexChatLib)marshal.c" />
     <ClCompile Include="modes.c" />
     <ClCompile Include="network.c" />
     <ClCompile Include="notify.c" />
@@ -76,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\win32\config.h.tt" />
-    <ClInclude Include="..\..\config.h" />
+    <ClInclude Include="$(HexChatLib)config.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{87554B59-006C-4D94-9714-897B27067BA3}</ProjectGuid>
@@ -84,83 +85,34 @@
     <RootNamespace>common</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\win32\hexchat.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\win32\hexchat.props" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(HexChatBin)</OutDir>
-    <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(HexChatBin)</OutDir>
-    <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="..\..\win32\hexchat.props" />
+  <PropertyGroup>
+    <OutDir>$(HexChatLib)</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..;$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(HexChatLib);$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_LIB;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..;$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(HexChatLib);$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
-    <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
   <ItemDefinitionGroup>
     <PreBuildEvent>
       <Command><![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
-powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\win32\config.h.tt" "$(SolutionDir)..\config.h"
-"$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --header "$(ProjectDir)marshalers.list" > "$(ProjectDir)marshal.h"
-"$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --body "$(ProjectDir)marshalers.list" > "$(ProjectDir)marshal.c"
+"$(HexChatLib)make-te.exe" < "$(ProjectDir)textevents.in" > "$(HexChatLib)textevents.h" 2> "$(HexChatLib)textenums.h"
+powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\win32\config.h.tt" "$(HexChatLib)config.h"
+"$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --header "$(ProjectDir)marshalers.list" > "$(HexChatLib)marshal.h"
+"$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --body "$(ProjectDir)marshalers.list" > "$(HexChatLib)marshal.c"
 
       ]]></Command>
     </PreBuildEvent>

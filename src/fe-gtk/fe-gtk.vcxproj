@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Configuration">
     <PlatformToolset>v120</PlatformToolset>
+    <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -19,79 +20,38 @@
     <RootNamespace>fegtk</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\win32\hexchat.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\win32\hexchat.props" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="..\..\win32\hexchat.props" />
+  <PropertyGroup>
     <TargetName>hexchat</TargetName>
-    <OutDir>$(HexChatBin)</OutDir>
-    <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <TargetName>hexchat</TargetName>
-    <OutDir>$(HexChatBin)</OutDir>
-    <IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
+    <OutDir>$(HexChatRel)</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <!-- WholeProgramOptimization must be turned off for gresource constructors to work, otherwise the .CRT$XCU section is not emitted. -->
+      <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..;..\common;$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>..\common;$(HexChatLib);$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(DepLibs);common.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(DepsRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(DepLibs);$(HexChatLib)common.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <!-- WholeProgramOptimization must be turned off for gresource constructors to work, otherwise the .CRT$XCU section is not emitted. -->
+      <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_WINDOWS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..;..\common;$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>..\common;$(HexChatLib);$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(DepLibs);common.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(DepsRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(DepLibs);$(HexChatLib)common.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
@@ -99,10 +59,10 @@
     <PreBuildEvent>
       <Command><![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
-powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\src\fe-gtk\hexchat.rc.tt" "$(SolutionDir)..\src\fe-gtk\hexchat.rc.utf8"
+powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\src\fe-gtk\hexchat.rc.tt" "$(HexChatLib)hexchat.rc.utf8"
 REM hexchat.rc needs to be in UCS-2 or Resource Compiler will complain
-powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.utf8' | Out-File '$(SolutionDir)..\src\fe-gtk\hexchat.rc'; Remove-Item '$(SolutionDir)..\src\fe-gtk\hexchat.rc.utf8'"
-"$(DepsRoot)\bin\glib-compile-resources.exe" --generate-source --sourcedir "$(DataDir)" --target "$(ProjectDir)resources.c" "$(DataDir)hexchat.gresource.xml"
+powershell "Get-Content -Encoding UTF8 '$(HexChatLib)hexchat.rc.utf8' | Out-File '$(HexChatLib)hexchat.rc'; Remove-Item '$(HexChatLib)hexchat.rc.utf8'"
+"$(DepsRoot)\bin\glib-compile-resources.exe" --generate-source --sourcedir "$(DataDir)" --target "$(HexChatLib)resources.c" "$(DataDir)hexchat.gresource.xml"
       ]]></Command>
       <Message>Build hexchat.rc and gresource file</Message>
     </PreBuildEvent>
@@ -159,7 +119,7 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
     <ClCompile Include="plugin-tray.c" />
     <ClCompile Include="plugingui.c" />
     <ClCompile Include="rawlog.c" />
-    <ClCompile Include="resources.c" />
+    <ClCompile Include="$(HexChatLib)resources.c" />
     <ClCompile Include="servlistgui.c" />
     <ClCompile Include="setup.c" />
     <ClCompile Include="sexy-iso-codes.c" />
@@ -174,7 +134,7 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
   </ItemGroup>
   <ItemGroup>
     <None Include="hexchat.rc.tt" />
-    <ResourceCompile Include="hexchat.rc" />
+    <ResourceCompile Include="$(HexChatLib)hexchat.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\icons\hexchat.ico" />
@@ -183,6 +143,4 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
     <Xml Include="..\..\data\hexchat.gresource.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
 </Project>

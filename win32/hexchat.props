@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<ImportGroup Label="PropertySheets" />
-
 	<PropertyGroup Label="UserMacros">
 
 		<!-- SPECIFY YOUR DEPENDENCY DIRECTORIES HERE -->
@@ -23,7 +21,6 @@
 		<MsgfmtPath>$(YourMsgfmtPath)</MsgfmtPath>
 		<PerlPath>$(YourPerlPath)\$(PlatformName)</PerlPath>
 		<PerlLib>perl520</PerlLib>
-		<PerlOutput>hcperl</PerlOutput>
 		<Python2Path>$(YourPython2Path)\$(PlatformName)</Python2Path>
 		<Python2Lib>python27</Python2Lib>
 		<Python2Output>hcpython2</Python2Output>
@@ -37,83 +34,48 @@
 		<HexChatBuild>$(SolutionDir)..\..\hexchat-build</HexChatBuild>
 		<HexChatBin>$(HexChatBuild)\$(PlatformName)\bin\</HexChatBin>
 		<HexChatObj>$(HexChatBuild)\$(PlatformName)\obj\</HexChatObj>
-		<HexChatRel>$(HexChatBuild)\$(PlatformName)\rel</HexChatRel>
-		<HexChatCopy>
-rmdir /q /s "$(HexChatRel)"
-mkdir "$(HexChatRel)"
-echo 2&gt; portable-mode
-move portable-mode "$(HexChatRel)"
-copy changelog.url "$(HexChatRel)"
-copy readme.url "$(HexChatRel)"
-copy "$(DepsRoot)\bin\cert.pem" "$(HexChatRel)"
-copy "$(HexChatBin)hexchat.exe" "$(HexChatRel)"
-copy "$(HexChatBin)hexchat-text.exe" "$(HexChatRel)"
-copy "$(HexChatBin)thememan.exe" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\atk-1.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\cairo.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\fontconfig.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\gdk_pixbuf-2.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\gdk-win32-2.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\gio-2.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\glib-2.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\gmodule-2.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\gobject-2.0.dll" "$(HexChatRel)
-copy "$(DepsRoot)\bin\gspawn-win$(PlatformArchitecture)-helper.exe" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\gspawn-win$(PlatformArchitecture)-helper-console.exe" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\gthread-2.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\gtk-win32-2.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\harfbuzz.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\iconv.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\libeay32.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\libenchant.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\libintl.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\libpng16.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\libxml2.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\pango-1.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\pangocairo-1.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\pangoft2-1.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\pangowin32-1.0.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\pixman-1.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\ssleay32.dll" "$(HexChatRel)"
-copy "$(DepsRoot)\bin\zlib1.dll" "$(HexChatRel)"
-xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\i686-pc-vs10\engines" "$(HexChatRel)\lib\gtk-2.0\i686-pc-vs10\engines"
-xcopy /q /s /i share "$(HexChatRel)\share"
-xcopy /q /s /i "..\..\COPYING" "$(HexChatRel)\share\doc\hexchat\"
-xcopy /q /s /i "$(DepsRoot)\share\doc" "$(HexChatRel)\share\doc"
-xcopy /q /s /i "$(DepsRoot)\share\themes\MS-Windows" "$(HexChatRel)\share\themes\MS-Windows"
-xcopy /q /s /i "$(DepsRoot)\lib\enchant\libenchant_myspell.dll" "$(HexChatRel)\lib\enchant\"
-xcopy /q /s /i "$(HexChatBin)hcchecksum.dll" "$(HexChatRel)\plugins\"
-copy "$(HexChatBin)hcdoat.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcexec.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcfishlim.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcmpcinfo.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcperl.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcpython2.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcpython3.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcnotifications-winrt.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcupd.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcwinamp.dll" "$(HexChatRel)\plugins"
-copy "$(HexChatBin)hcsysinfo.dll" "$(HexChatRel)\plugins"
-xcopy /q /s /i "$(HexChatBin)locale" "$(HexChatRel)\share\locale"
-xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
-		</HexChatCopy>
-		<IsccPath Condition="'$(Platform)'=='Win32'">"%PROGRAMFILES%\Inno Setup 5\iscc.exe"</IsccPath>
-		<IsccPath Condition="'$(Platform)'=='x64'">"%PROGRAMFILES(x86)%\Inno Setup 5\iscc.exe"</IsccPath>
+		<HexChatLib>$(HexChatBuild)\$(PlatformName)\lib\</HexChatLib>
+		<HexChatPdb>$(HexChatBuild)\$(PlatformName)\pdb\</HexChatPdb>
+		<HexChatRel>$(HexChatBuild)\$(PlatformName)\rel\</HexChatRel>
+		<IsccPath>"$(MSBuildExtensionsPath32)\..\Inno Setup 5\iscc.exe"</IsccPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<LinkIncremental>false</LinkIncremental>
+		<IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
+		<UseDebugLibraries>false</UseDebugLibraries>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<CharacterSet>MultiByte</CharacterSet>
 	</PropertyGroup>
 
 	<ItemDefinitionGroup>
 		<ClCompile>
 			<WarningLevel>Level3</WarningLevel>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
 			<DisableSpecificWarnings>4996</DisableSpecificWarnings>
-			<AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions> 
-			<WholeProgramOptimization>false</WholeProgramOptimization>
+			<AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+			<WholeProgramOptimization>true</WholeProgramOptimization>
 			<!-- UNCOMMENT ONLY ONE -->
 			<!--Optimization>Disabled</Optimization-->
 			<Optimization>MaxSpeed</Optimization>
 			<!--Optimization>MinSpace</Optimization-->
 			<!--Optimization>Full</Optimization-->
-			<AdditionalIncludeDirectories>$(SolutionDir)..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
 		</ClCompile>
+		<Lib>
+			<LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+		</Lib>
+		<Link>
+			<ImportLibrary>$(HexChatLib)$(TargetName).lib</ImportLibrary>
+			<ProgramDatabaseFile>$(HexChatPdb)$(TargetName).pdb</ProgramDatabaseFile>
+			<SubSystem>Windows</SubSystem>
+			<GenerateDebugInformation>true</GenerateDebugInformation>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<OptimizeReferences>true</OptimizeReferences>
+			<LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+		</Link>
 	</ItemDefinitionGroup>
 
 	<ItemGroup />

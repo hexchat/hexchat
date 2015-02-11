@@ -31,7 +31,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "sexy-iso-codes.h"
+
+#ifdef WIN32
+#include "marshal.h"
+#else
 #include "../common/marshal.h"
+#endif
 
 #ifdef WIN32
 #include "../common/typedef.h"
