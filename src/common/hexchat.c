@@ -996,6 +996,10 @@ main (int argc, char *argv[])
 	int i;
 	int ret;
 
+#ifdef WIN32
+	HRESULT coinit_result;
+#endif
+
 	srand ((unsigned int) time (NULL)); /* CL: do this only once! */
 
 	/* We must check for the config dir parameter, otherwise load_config() will behave incorrectly.
@@ -1058,6 +1062,14 @@ main (int argc, char *argv[])
 	libproxy_factory = px_proxy_factory_new();
 #endif
 
+#ifdef WIN32
+	coinit_result = CoInitializeEx (NULL, COINIT_APARTMENTTHREADED);
+	if (SUCCEEDED (coinit_result))
+	{
+		CoInitializeSecurity (NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
+	}
+#endif
+
 	fe_init ();
 
 	/* This is done here because cfgfiles.c is too early in
@@ -1084,6 +1096,13 @@ main (int argc, char *argv[])
 	xchat_init ();
 
 	fe_main ();
+
+#ifdef WIN32
+	if (SUCCEEDED (coinit_result))
+	{
+		CoUninitialize ();
+	}
+#endif
 
 #ifdef USE_LIBPROXY
 	px_proxy_factory_free(libproxy_factory);

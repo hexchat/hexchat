@@ -235,21 +235,10 @@ static char *query_wmi (QueryWmiType type)
 	int i;
 	gboolean atleast_one_appended = FALSE;
 
-	hr = CoInitializeEx (0, COINIT_APARTMENTTHREADED);
-	if (FAILED (hr))
-	{
-		goto exit;
-	}
-
-	/* If this is called after some other call to CoCreateInstance somewhere else in the process, this will fail with RPC_E_TOO_LATE.
-	 * However if not, it *is* required to be called, so call it here but ignore any error returned.
-	 */
-	CoInitializeSecurity (NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
-
 	hr = CoCreateInstance (&CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, &IID_IWbemLocator, (LPVOID *) &locator);
 	if (FAILED (hr))
 	{
-		goto couninitialize;
+		goto exit;
 	}
 
 	namespaceName = SysAllocString (L"root\\CIMV2");
@@ -368,9 +357,6 @@ release_namespace:
 release_locator:
 	locator->lpVtbl->Release (locator);
 	SysFreeString (namespaceName);
-
-couninitialize:
-	CoUninitialize ();
 
 exit:
 	if (result == NULL)
