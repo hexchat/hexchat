@@ -265,7 +265,6 @@ struct hexchatprefs
 	int hex_gui_win_top;
 	int hex_gui_win_width;
 	int hex_identd_port;
-	int hex_input_balloon_time;
 	int hex_irc_ban_type;
 	int hex_irc_join_delay;
 	int hex_irc_notice_pos;

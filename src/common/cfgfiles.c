@@ -482,7 +482,6 @@ const struct prefs vars[] =
 	{"input_balloon_chans", P_OFFINT (hex_input_balloon_chans), TYPE_BOOL},
 	{"input_balloon_hilight", P_OFFINT (hex_input_balloon_hilight), TYPE_BOOL},
 	{"input_balloon_priv", P_OFFINT (hex_input_balloon_priv), TYPE_BOOL},
-	{"input_balloon_time", P_OFFINT (hex_input_balloon_time), TYPE_INT},
 	{"input_beep_chans", P_OFFINT (hex_input_beep_chans), TYPE_BOOL},
 	{"input_beep_hilight", P_OFFINT (hex_input_beep_hilight), TYPE_BOOL},
 	{"input_beep_priv", P_OFFINT (hex_input_beep_priv), TYPE_BOOL},
@@ -828,7 +827,6 @@ load_default_config(void)
 	prefs.hex_gui_ulist_pos = 3;
 	prefs.hex_gui_win_height = 400;
 	prefs.hex_gui_win_width = 640;
-	prefs.hex_input_balloon_time = 20;
 	prefs.hex_irc_ban_type = 1;
 	prefs.hex_irc_join_delay = 5;
 	prefs.hex_net_reconnect_delay = 10;

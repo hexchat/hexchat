@@ -17,7 +17,7 @@
  */
 
 void
-notification_backend_show (const char *title, const char *text, int timeout)
+notification_backend_show (const char *title, const char *text)
 {
 }
 

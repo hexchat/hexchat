@@ -20,7 +20,7 @@
 #include <gtkosxapplication.h>
 
 void
-notification_backend_show (const char *title, const char *text, int timeout)
+notification_backend_show (const char *title, const char *text)
 {
 	NSString *str_title = [[NSString alloc] initWithUTF8String:title];
 	NSString *str_text = [[NSString alloc] initWithUTF8String:text];

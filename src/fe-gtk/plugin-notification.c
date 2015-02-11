@@ -60,16 +60,6 @@ should_alert (void)
 	return TRUE;
 }
 
-/* Returns timeout in ms */
-static int
-get_timeout (void)
-{
-	int timeout = 0;
-	hexchat_get_prefs (ph, "input_balloon_time", NULL, &timeout);
-
-	return timeout * 1000;
-}
-
 static gboolean
 is_ignored (char *nick)
 {
@@ -91,7 +81,7 @@ show_notification (const char *title, const char *text)
 	stripped_title = hexchat_strip (ph, title, -1, 7);
 	stripped_text = hexchat_strip (ph, text, -1, 7);
 	
-	notification_backend_show (stripped_title, stripped_text, get_timeout ());
+	notification_backend_show (stripped_title, stripped_text);
 
 	hexchat_free (ph, stripped_title);
 	hexchat_free (ph, stripped_text);

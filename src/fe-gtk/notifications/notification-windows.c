@@ -23,20 +23,20 @@
 
 #include <Windows.h>
 
-void (*winrt_notification_backend_show) (const char *title, const char *text, int timeout) = NULL;
+void (*winrt_notification_backend_show) (const char *title, const char *text) = NULL;
 int (*winrt_notification_backend_init) (void) = NULL;
 void (*winrt_notification_backend_deinit) (void) = NULL;
 int (*winrt_notification_backend_supported) (void) = NULL;
 
 void
-notification_backend_show (const char *title, const char *text, int timeout)
+notification_backend_show (const char *title, const char *text)
 {
 	if (winrt_notification_backend_show == NULL)
 	{
 		return;
 	}
 
-	winrt_notification_backend_show (title, text, timeout);
+	winrt_notification_backend_show (title, text);
 }
 
 int

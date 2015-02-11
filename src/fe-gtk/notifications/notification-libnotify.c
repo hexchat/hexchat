@@ -23,7 +23,7 @@
 static gboolean strip_markup = FALSE;
 
 void
-notification_backend_show (const char *title, const char *text, int timeout)
+notification_backend_show (const char *title, const char *text)
 {
 	NotifyNotification *notification;
 
@@ -33,7 +33,6 @@ notification_backend_show (const char *title, const char *text, int timeout)
 	notification = notify_notification_new (title, text, "hexchat");
 	notify_notification_set_hint (notification, "desktop-entry", g_variant_new_string ("hexchat"));
 
-	notify_notification_set_timeout (notification, timeout);
 	notify_notification_show (notification, NULL);
 
 	g_object_unref (notification);
