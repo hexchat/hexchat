@@ -99,7 +99,7 @@ _SSL_context_init (void (*info_cb_func))
 							  |SSL_OP_NO_TICKET
 							  |SSL_OP_CIPHER_SERVER_PREFERENCE);
 
-#if OPENSSL_VERSION_NUMBER >= 0x00908000L /* workaround for OpenSSL 0.9.8 */
+#if OPENSSL_VERSION_NUMBER >= 0x00908000L && !defined (OPENSSL_NO_COMP) /* workaround for OpenSSL 0.9.8 */
 	sk_SSL_COMP_zero(SSL_COMP_get_compression_methods());
 #endif
 
