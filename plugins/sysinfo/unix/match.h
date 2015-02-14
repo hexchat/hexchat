@@ -1,7 +1,6 @@
 /*
- * xsys.h - X-Sys general parameters header
- * Copyright (C) 2005 Gustavo Zacarias
- * Copyright (C) 2006, 2007 Tony Vroon
+ * match.h - matching header for X-Sys
+ * Copyright (C) 2005 Tony Vroon
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,15 +17,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#ifndef _MATCH_H_
+#define _MATCH_H_
 
-#ifndef _XSYS_H_
-#define _XSYS_H_
-
-#define bsize 1024
-#define delims ":="
-
-int sysinfo_get_percent ();
-void sysinfo_get_pciids (char *dest);
-void sysinfo_print_error (const char* msg);
+void find_match_char(char *buffer, char *match, char *result);
+void find_match_double(char *buffer, char *match, double *result);
+void find_match_double_hex(char *buffer, char *match, double *result);
+void find_match_ll(char *buffer, char *match, unsigned long long *result);
+void remove_leading_whitespace(char *buffer);
 
 #endif

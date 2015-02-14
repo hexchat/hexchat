@@ -23,12 +23,9 @@
 #ifndef _PARSE_H_
 #define _PARSE_H_
 
-int xs_parse_cpu(char *model, char *vendor, double *freq, char *cache, unsigned int *count);
-int xs_parse_uptime(int *weeks, int *days, int *hours, int *minutes, int *seconds);
-int xs_parse_os(char *user, char *host, char *kernel);
+int xs_parse_cpu(char *model, char *vendor, double *freq);
+guint64 xs_parse_uptime(void);
 int xs_parse_sound(char *snd_card);
-int xs_parse_netdev(const char *device, unsigned long long *bytes_recv, unsigned long long *bytes_sent);
-int xs_parse_df(const char *mount_point, char *string);
 int xs_parse_meminfo(unsigned long long *mem_tot, unsigned long long *mem_free, int swap);
 int xs_parse_video(char *vid_card);
 int xs_parse_agpbridge(char *agp_bridge);

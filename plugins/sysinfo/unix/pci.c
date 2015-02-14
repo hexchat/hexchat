@@ -23,64 +23,67 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <unistd.h>
 #include <pci/pci.h>
 #include <glib.h>
 
-#include "xsys.h"
+#include "sysinfo.h"
 
 static struct pci_filter filter;       /* Device filter */
 static struct pci_access *pacc;
 int bus, dev, func; /* Location of the card */
 
 struct device {
-  	struct device *next;
-  	struct pci_dev *dev;
-  	unsigned int config_cnt;
-  	u8 config[256];
+	struct device *next;
+	struct pci_dev *dev;
+	unsigned int config_cnt;
+	u8 config[256];
 };
 
 static struct device *first_dev;
 
 static struct device *scan_device(struct pci_dev *p)
 {
-  	int how_much = 64;
-  	struct device *d;
+	int how_much = 64;
+	struct device *d;
 
-  	if (!pci_filter_match(&filter, p))
-    		return NULL;
-  	d = g_new0 (struct device, 1);
-  	d->dev = p;
-  	if (!pci_read_block(p, 0, d->config, how_much))
-    		exit(1);
-  	if (how_much < 128 && (d->config[PCI_HEADER_TYPE] & 0x7f) == PCI_HEADER_TYPE_CARDBUS) {
-      		/* For cardbus bridges, we need to fetch 64 bytes more to get the full standard header... */
-      		if (!pci_read_block(p, 64, d->config+64, 64))
-        		exit(1);
-      		how_much = 128;
-    	}
-  	d->config_cnt = how_much;
-  	pci_setup_cache(p, d->config, d->config_cnt);
-  	pci_fill_info(p, PCI_FILL_IDENT);
-  	return d;
+	if (!pci_filter_match(&filter, p))
+		return NULL;
+	d = g_new0 (struct device, 1);
+	d->dev = p;
+	if (!pci_read_block(p, 0, d->config, how_much))
+		exit(1);
+	if (how_much < 128 && (d->config[PCI_HEADER_TYPE] & 0x7f) == PCI_HEADER_TYPE_CARDBUS)
+	{
+		/* For cardbus bridges, we need to fetch 64 bytes more to get the full standard header... */
+		if (!pci_read_block(p, 64, d->config+64, 64))
+			exit(1);
+		how_much = 128;
+	}
+	d->config_cnt = how_much;
+	pci_setup_cache(p, d->config, d->config_cnt);
+	pci_fill_info(p, PCI_FILL_IDENT);
+	return d;
 }
 
 static void scan_devices(void)
 {
-  	struct device *d;
-  	struct pci_dev *p;
+	struct device *d;
+	struct pci_dev *p;
 
-  	pci_scan_bus(pacc);
-  	for(p=pacc->devices; p; p=p->next)
-    	if ((d = scan_device(p))) {
-        	d->next = first_dev;
-        	first_dev = d;
-      	}
+	pci_scan_bus(pacc);
+	for(p=pacc->devices; p; p=p->next)
+	{
+		if ((d = scan_device(p)))
+		{
+			d->next = first_dev;
+			first_dev = d;
+		}
+	}
 }
 
 static u16 get_conf_word(struct device *d, unsigned int pos)
 {
-  	return d->config[pos] | (d->config[pos+1] << 8);
+	  return d->config[pos] | (d->config[pos+1] << 8);
 }
 
 int pci_find_by_class(u16 *class, char *vendor, char *device)
@@ -94,19 +97,21 @@ int pci_find_by_class(u16 *class, char *vendor, char *device)
 	pci_init(pacc);
 	scan_devices();
 
-	for(d=first_dev; d; d=d->next) {
-    		p = d->dev;
-    		/* Acquire vendor & device ID if the class matches */
-    		if(get_conf_word(d, PCI_CLASS_DEVICE) == *class) {
-      			nomatch = 0;
+	for(d=first_dev; d; d=d->next)
+	{
+		p = d->dev;
+		/* Acquire vendor & device ID if the class matches */
+		if(get_conf_word(d, PCI_CLASS_DEVICE) == *class)
+		{
+			nomatch = 0;
 			g_snprintf(vendor,7,"%04x",p->vendor_id);
 			g_snprintf(device,7,"%04x",p->device_id);
-      			break;
-    		}
-  	}
+			break;
+		}
+	  }
 
-  	pci_cleanup(pacc);
-  	return nomatch;
+	  pci_cleanup(pacc);
+	  return nomatch;
 }
 
 void pci_find_fullname(char *fullname, char *vendor, char *device)
@@ -117,38 +122,44 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 	char *position;
 	int cardfound = 0;
 	FILE *fp;
+	
+	if (!sysinfo_get_str_pref ("pciids", buffer))
+		strcpy (buffer, DEFAULT_PCIIDS);
 
-	sysinfo_get_pciids (buffer);
 	fp = fopen (buffer, "r");
-
-	if(fp == NULL) {
+	if(fp == NULL)
+	{
 		g_snprintf(fullname, bsize, "%s:%s", vendor, device);
-		sysinfo_print_error ("pci.ids file not found! You might want to adjust your pciids setting with /SYSINFO SET pciids (you can query its current value with /SYSINFO LIST).\n");
+		//sysinfo_print_error ("pci.ids file not found! You might want to adjust your pciids setting with /SYSINFO SET pciids (you can query its current value with /SYSINFO LIST).\n");
 		return;
 	}
 
-	while(fgets(buffer, bsize, fp) != NULL)	{
-		if (!isspace(buffer[0]) && strstr(buffer, vendor) != NULL) {
-                       	position = strstr(buffer, vendor);
-                       	position += 6;
-                       	strncpy(vendorname, position, bsize/2);
-                       	position = strstr(vendorname, "\n");
-                       	*(position) = '\0';
+	while(fgets(buffer, bsize, fp) != NULL)
+	{
+		if (!isspace(buffer[0]) && strstr(buffer, vendor) != NULL)
+		{
+			position = strstr(buffer, vendor);
+			position += 6;
+			strncpy(vendorname, position, bsize/2);
+			position = strstr(vendorname, "\n");
+			*(position) = '\0';
 			break;
-                }
+		}
 	}
-	while(fgets(buffer, bsize, fp) != NULL) {
-		if(strstr(buffer, device) != NULL) {
-                        position = strstr(buffer, device);
-                        position += 6;
-                        strncpy(devicename, position, bsize/2);
+	while(fgets(buffer, bsize, fp) != NULL)
+	{
+		if(strstr(buffer, device) != NULL)
+		{
+			position = strstr(buffer, device);
+			position += 6;
+			strncpy(devicename, position, bsize/2);
 			position = strstr(devicename, " (");
 			if (position == NULL)
-                        	position = strstr(devicename, "\n");
-                        *(position) = '\0';
+				position = strstr(devicename, "\n");
+			*(position) = '\0';
 			cardfound = 1;
 			break;
- 		}
+		 }
 	}
 	if (cardfound == 1)
 		g_snprintf(fullname, bsize, "%s %s", vendorname, devicename);

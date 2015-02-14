@@ -1,567 +1,277 @@
-/* HexChat
- * Copyright (c) 2011-2012 Berke Viktor.
+/*
+ * SysInfo - sysinfo plugin for HexChat
+ * Copyright (c) 2012 Berke Viktor.
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * xsys.c - main functions for X-Sys 2
+ * by mikeshoup
+ * Copyright (C) 2003, 2004, 2005 Michael Shoup
+ * Copyright (C) 2005, 2006, 2007 Tony Vroon
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <stdio.h>
-#include <windows.h>
-#include <wbemidl.h>
+#include "config.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <glib.h>
 
 #include "hexchat-plugin.h"
+#include "sysinfo-backend.h"
+#include "sysinfo.h"
 
-static hexchat_plugin *ph;   /* plugin handle */
+#define _(x) hexchat_gettext(ph,x)
+#define DEFAULT_ANNOUNCE TRUE
 
-static char name[] = "SysInfo";
+static hexchat_plugin *ph;
+
+static char name[] = "Sysinfo";
 static char desc[] = "Display info about your hardware and OS";
-static char version[] = "1.1";
-static char helptext[] = "USAGE: /SYSINFO - Sends info about your hardware and OS to current channel.";
+static char version[] = "1.0";
+static char sysinfo_help[] = "SysInfo Usage:\n  /SYSINFO [-e|-o] [CLIENT|OS|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME], print various details about your system or print a summary without arguments\n  /SYSINFO SET <variable>\n";
 
-/* Cache the info for subsequent invocations of /SYSINFO */
-static int cpu_arch = 0;
-static char *os_name = NULL;
-static char *cpu_info = NULL;
-static char *vga_name = NULL;
-
-static int command_callback (char *word[], char *word_eol[], void *user_data);
-
-typedef enum
+typedef struct
 {
-	QUERY_WMI_OS,
-	QUERY_WMI_CPU,
-	QUERY_WMI_VGA,
-	QUERY_WMI_HDD,
-} QueryWmiType;
+	const char *name; /* Lower case name used for prefs */
+	const char *title; /* Used for the end formatting */
+	char *(*callback) (void);
+	gboolean def; /* Hide by default? */
+} hwinfo;
 
-void print_info (void);
-int get_cpu_arch (void);
-char *query_wmi (QueryWmiType mode);
-char *read_os_name (IWbemClassObject *object);
-char *read_cpu_info (IWbemClassObject *object);
-char *read_vga_name (IWbemClassObject *object);
+static char *
+get_client (void)
+{
+	return g_strdup_printf ("HexChat %s", hexchat_get_info(ph, "version"));
+}
 
-guint64 hdd_capacity;
-guint64 hdd_free_space;
-char *read_hdd_info (IWbemClassObject *object);
+static hwinfo hwinfos[] = {
+	{"client", "Client", get_client},
+	{"os", "OS", sysinfo_backend_get_os},
+	{"cpu", "CPU", sysinfo_backend_get_cpu},
+	{"memory", "Memory", sysinfo_backend_get_memory},
+	{"storage", "Storage", sysinfo_backend_get_disk},
+	{"vga", "VGA", sysinfo_backend_get_gpu},
+	{"sound", "Sound", sysinfo_backend_get_sound, TRUE},
+	{"ethernet", "Ethernet", sysinfo_backend_get_network, TRUE},
+	{"uptime", "Uptime", sysinfo_backend_get_uptime},
+	{NULL, NULL},
+};
 
-char *get_memory_info (void);
-char *bstr_to_utf8 (BSTR bstr);
-guint64 variant_to_uint64 (VARIANT *variant);
+static gboolean sysinfo_get_bool_pref (const char *pref, gboolean def);
 
-int hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
+static gboolean
+should_show_info (hwinfo info)
+{
+	char hide_pref[32];
+
+	g_snprintf (hide_pref, sizeof(hide_pref), "hide_%s", info.name);
+	return !sysinfo_get_bool_pref (hide_pref, info.def);
+}
+
+static void
+print_summary (gboolean announce)
+{
+	char **strings = g_new0 (char*, G_N_ELEMENTS(hwinfos));
+	int i, x;
+	char *output;
+
+	for (i = 0, x = 0; hwinfos[i].name != NULL; i++)
+	{
+		if (should_show_info (hwinfos[i]))
+		{
+			char *str = hwinfos[i].callback();
+			if (str)
+			{
+				strings[x++] = g_strdup_printf ("\002%s\002: %s", hwinfos[i].title, str);
+				g_free (str);
+			}
+		}
+	}
+
+	output = g_strjoinv (" \002\342\200\242\002 ", strings);
+	hexchat_commandf (ph, "%s %s", announce ? "SAY" : "ECHO", output);
+
+	g_strfreev (strings);
+	g_free (output);
+}
+
+static void
+print_info (char *info, gboolean announce)
+{
+	int i;
+
+	for (i = 0; hwinfos[i].name != NULL; i++)
+	{
+		if (!g_ascii_strcasecmp (info, hwinfos[i].name))
+		{
+			char *str = hwinfos[i].callback();
+			if (str)
+			{
+				hexchat_commandf (ph, "%s \002%s\002: %s", announce ? "SAY" : "ECHO",
+									hwinfos[i].title, str);
+				g_free (str);
+			}
+			else
+				hexchat_print (ph, _("Sysinfo: Failed to get info. Either not supported or error."));
+			return;
+		}
+	}
+
+	hexchat_print (ph, _("Sysinfo: No info by that name\n"));
+}
+
+/*
+ * Simple wrapper for backend specific options.
+ * Ensure dest >= 512.
+ */
+int
+sysinfo_get_str_pref (const char *pref, char *dest)
+{
+	return hexchat_pluginpref_get_str (ph, pref, dest);
+}
+
+static gboolean
+sysinfo_get_bool_pref (const char *pref, gboolean def)
+{
+	int value = hexchat_pluginpref_get_int (ph, pref);
+
+	if (value != -1)
+		return value;
+
+	return def;
+}
+
+static void
+sysinfo_set_pref_real (const char *pref, char *value, gboolean def)
+{
+	if (value && value[0])
+	{
+		guint64 i = g_ascii_strtoull (value, NULL, 0);
+		hexchat_pluginpref_set_int (ph, pref, i != 0);
+		hexchat_printf (ph, _("Sysinfo: %s is set to: %d\n"), pref, i != 0);
+	}
+	else
+	{
+		hexchat_printf (ph, _("Sysinfo: %s is set to: %d\n"), pref,
+						sysinfo_get_bool_pref(pref, def));
+	}
+}
+
+static void
+sysinfo_set_pref (char *key, char *value)
+{
+	if (!key || !key[0])
+	{
+		hexchat_print (ph, _("Sysinfo: Valid settings are: announce and hide_* for each piece of information. e.g. hide_os. Without a value it will show current (or default) setting.\n"));
+		return;
+	}
+
+	if (!strcmp (key, "announce"))
+	{
+		sysinfo_set_pref_real (key, value, DEFAULT_ANNOUNCE);
+		return;
+	}
+#ifdef HAVE_LIBPCI
+	else if (!strcmp (key, "pciids"))
+	{
+		if (value && value[0])
+		{
+			hexchat_pluginpref_set_str (ph, "pciids", value);
+			hexchat_printf (ph, _("Sysinfo: pciids is set to: %s\n"), value);
+		}
+		else
+		{
+			char buf[512];
+			if (hexchat_pluginpref_get_str (ph, "pciids", buf) == 0)
+				strcpy (buf, DEFAULT_PCIIDS);
+			hexchat_printf (ph, _("Sysinfo: pciids is set to: %s\n"), buf);
+		}
+		return;
+	}
+#endif
+	else if (g_str_has_prefix (key, "hide_"))
+	{
+		int i;
+		for (i = 0; hwinfos[i].name != NULL; i++)
+		{
+			if (!strcmp (key + 5, hwinfos[i].name))
+			{
+				sysinfo_set_pref_real (key, value, hwinfos[i].def);
+				return;
+			}
+		}
+	}
+
+	hexchat_print (ph, _("Sysinfo: Invalid variable name\n"));
+}
+
+static int
+sysinfo_cb (char *word[], char *word_eol[], void *userdata)
+{
+	gboolean announce = sysinfo_get_bool_pref("announce", DEFAULT_ANNOUNCE);
+	int offset = 0, channel_type;
+	char *cmd;
+
+	/* Allow overriding global announce setting */
+	if (!strcmp ("-e", word[2]))
+	{
+		announce = FALSE;
+		offset++;
+	}
+	else if (!strcmp ("-o", word[2]))
+	{
+		announce = TRUE;
+		offset++;
+	}
+
+	/* Cannot send to server tab */
+	channel_type = hexchat_list_int (ph, NULL, "type");
+	if (channel_type != 2 /* SESS_CHANNEL */ && channel_type != 3 /* SESS_DIALOG */)
+		announce = FALSE;
+
+	cmd = word[2+offset];
+	if (!g_ascii_strcasecmp ("SET", cmd))
+		sysinfo_set_pref (word[3+offset], word_eol[4+offset]);
+	else if (!cmd || !cmd[0])
+		print_summary (announce);
+	else
+		print_info (cmd, announce);
+
+	return HEXCHAT_EAT_ALL;
+}
+
+int
+hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
-
 	*plugin_name = name;
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	hexchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, command_callback, helptext, NULL);
-	hexchat_command (ph, "MENU -ishare\\system.png ADD \"Window/Send System Info\" \"SYSINFO\"");
+	hexchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, sysinfo_cb, sysinfo_help, NULL);
 
-	hexchat_printf (ph, "%s plugin loaded\n", name);
-
+	hexchat_command (ph, "MENU ADD \"Window/Send System Info\" \"SYSINFO\"");
+	hexchat_printf (ph, _("%s plugin loaded\n"), name);
 	return 1;
 }
 
-int hexchat_plugin_deinit (void)
+int
+hexchat_plugin_deinit (void)
 {
-	g_free (os_name);
-	g_free (cpu_info);
-	g_free (vga_name);
-
 	hexchat_command (ph, "MENU DEL \"Window/Display System Info\"");
-	hexchat_printf (ph, "%s plugin unloaded\n", name);
-
+	hexchat_printf (ph, _("%s plugin unloaded\n"), name);
 	return 1;
-}
-
-static int command_callback (char *word[], char *word_eol[], void *user_data)
-{
-	print_info ();
-
-	return HEXCHAT_EAT_HEXCHAT;
-}
-
-static void print_info (void)
-{
-	char *memory_info;
-	char *hdd_info;
-	int channel_type;
-
-#ifdef _WIN64
-	const char *build_arch = "x64";
-#else
-	const char *build_arch = "x86";
-#endif
-
-	/* Load information if not already loaded */
-
-	if (cpu_arch == 0)
-	{
-		cpu_arch = get_cpu_arch ();
-	}
-
-	if (os_name == NULL)
-	{
-		os_name = query_wmi (QUERY_WMI_OS);
-		if (os_name == NULL)
-		{
-			hexchat_printf (ph, "%s - Error while getting OS info.\n", name);
-			os_name = g_strdup ("Unknown");
-		}
-	}
-
-	if (cpu_info == NULL)
-	{
-		cpu_info = query_wmi (QUERY_WMI_CPU);
-		if (cpu_info == NULL)
-		{
-			hexchat_printf (ph, "%s - Error while getting CPU info.\n", name);
-			cpu_info = g_strdup ("Unknown");
-		}
-	}
-
-	if (vga_name == NULL)
-	{
-		vga_name = query_wmi (QUERY_WMI_VGA);
-		if (vga_name == NULL)
-		{
-			hexchat_printf (ph, "%s - Error while getting VGA info.\n", name);
-			vga_name = g_strdup ("Unknown");
-		}
-	}
-
-	/* Memory information is always loaded dynamically since it includes the current amount of free memory */
-	memory_info = get_memory_info ();
-	if (memory_info == NULL)
-	{
-		hexchat_printf (ph, "%s - Error while getting memory info.\n", name);
-		memory_info = g_strdup ("Unknown");
-	}
-
-	/* HDD information is always loaded dynamically since it includes the current amount of free space */
-	hdd_capacity = 0;
-	hdd_free_space = 0;
-	hdd_info = query_wmi (QUERY_WMI_HDD);
-	if (hdd_info == NULL)
-	{
-		hexchat_printf (ph, "%s - Error while getting disk info.\n", name);
-		hdd_info = g_strdup ("Unknown");
-	}
-	else
-	{
-		gfloat total_gb = hdd_capacity / 1000.f / 1000.f / 1000.f;
-		gfloat used_gb = (hdd_capacity - hdd_free_space) / 1000.f / 1000.f / 1000.f;
-		gfloat free_gb = hdd_free_space / 1000.f / 1000.f / 1000.f;
-		hdd_info = g_strdup_printf ("%.2f GB / %.2f GB (%.2f GB Free)", used_gb, total_gb, free_gb);
-	}
-
-	channel_type = hexchat_list_int (ph, NULL, "type");
-	if (channel_type == 2 /* SESS_CHANNEL */ || channel_type == 3 /* SESS_DIALOG */)
-	{
-		hexchat_commandf (
-			ph,
-			"ME ** SysInfo ** Client: HexChat %s (%s) ** OS: %s (x%d) ** CPU: %s ** RAM: %s ** VGA: %s ** HDD: %s ** Uptime: %.2f Hours **",
-			hexchat_get_info (ph, "version"), build_arch,
-			os_name, cpu_arch,
-			cpu_info,
-			memory_info,
-			vga_name,
-			hdd_info,
-			(float) GetTickCount64 () / 1000 / 60 / 60);
-	}
-	else
-	{
-		hexchat_printf (ph, " * Client:  HexChat %s (%s)\n", hexchat_get_info (ph, "version"), build_arch);
-		hexchat_printf (ph, " * OS:      %s (x%d)\n", os_name, cpu_arch);
-		hexchat_printf (ph, " * CPU:     %s\n", cpu_info);
-		hexchat_printf (ph, " * RAM:     %s\n", memory_info);
-		hexchat_printf (ph, " * VGA:     %s\n", vga_name);
-		hexchat_printf (ph, " * HDD:     %s\n", hdd_info);
-		hexchat_printf (ph, " * Uptime:  %.2f Hours\n", (float) GetTickCount64 () / 1000 / 60 / 60);
-	}
-
-	g_free (memory_info);
-}
-
-static int get_cpu_arch (void)
-{
-	SYSTEM_INFO si;
-
-	GetNativeSystemInfo (&si);
-
-	if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
-	{
-		return 64;
-	}
-	else
-	{
-		return 86;
-	}
-}
-
-/* http://msdn.microsoft.com/en-us/site/aa390423 */
-static char *query_wmi (QueryWmiType type)
-{
-	GString *result = NULL;
-	HRESULT hr;
-
-	IWbemLocator *locator = NULL;
-	BSTR namespaceName = NULL;
-	BSTR queryLanguageName = NULL;
-	BSTR query = NULL;
-	IWbemServices *namespace = NULL;
-	IUnknown *namespaceUnknown = NULL;
-	IEnumWbemClassObject *enumerator = NULL;
-	int i;
-	gboolean atleast_one_appended = FALSE;
-
-	hr = CoCreateInstance (&CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, &IID_IWbemLocator, (LPVOID *) &locator);
-	if (FAILED (hr))
-	{
-		goto exit;
-	}
-
-	namespaceName = SysAllocString (L"root\\CIMV2");
-
-	hr = locator->lpVtbl->ConnectServer (locator, namespaceName, NULL, NULL, NULL, 0, NULL, NULL, &namespace);
-	if (FAILED (hr))
-	{
-		goto release_locator;
-	}
-
-	hr = namespace->lpVtbl->QueryInterface (namespace, &IID_IUnknown, &namespaceUnknown);
-	if (FAILED (hr))
-	{
-		goto release_namespace;
-	}
-
-	hr = CoSetProxyBlanket (namespaceUnknown, RPC_C_AUTHN_WINNT, RPC_C_AUTHZ_NONE, NULL, RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE);
-	if (FAILED (hr))
-	{
-		goto release_namespaceUnknown;
-	}
-
-	queryLanguageName = SysAllocString (L"WQL");
-
-	switch (type)
-	{
-	case QUERY_WMI_OS:
-		query = SysAllocString (L"SELECT Caption FROM Win32_OperatingSystem");
-		break;
-	case QUERY_WMI_CPU:
-		query = SysAllocString (L"SELECT Name, MaxClockSpeed FROM Win32_Processor");
-		break;
-	case QUERY_WMI_VGA:
-		query = SysAllocString (L"SELECT Name FROM Win32_VideoController");
-		break;
-	case QUERY_WMI_HDD:
-		query = SysAllocString (L"SELECT Name, Capacity, FreeSpace FROM Win32_Volume");
-		break;
-	default:
-		goto release_queryLanguageName;
-	}
-
-	hr = namespace->lpVtbl->ExecQuery (namespace, queryLanguageName, query, WBEM_FLAG_FORWARD_ONLY, NULL, &enumerator);
-	if (FAILED (hr))
-	{
-		goto release_query;
-	}
-
-	result = g_string_new ("");
-
-	for (i = 0;; i++)
-	{
-		ULONG numReturned = 0;
-		IWbemClassObject *object;
-		char *line;
-
-		hr = enumerator->lpVtbl->Next (enumerator, WBEM_INFINITE, 1, &object, &numReturned);
-		if (FAILED (hr) || numReturned == 0)
-		{
-			break;
-		}
-
-		switch (type)
-		{
-			case QUERY_WMI_OS:
-				line = read_os_name (object);
-				break;
-
-			case QUERY_WMI_CPU:
-				line = read_cpu_info (object);
-				break;
-
-			case QUERY_WMI_VGA:
-				line = read_vga_name (object);
-				break;
-
-			case QUERY_WMI_HDD:
-				line = read_hdd_info (object);
-				break;
-
-			default:
-				break;
-		}
-
-		object->lpVtbl->Release (object);
-
-		if (line != NULL)
-		{
-			if (atleast_one_appended)
-			{
-				g_string_append (result, ", ");
-			}
-
-			g_string_append (result, line);
-
-			g_free (line);
-
-			atleast_one_appended = TRUE;
-		}
-	}
-
-	enumerator->lpVtbl->Release (enumerator);
-
-release_query:
-	SysFreeString (query);
-
-release_queryLanguageName:
-	SysFreeString (queryLanguageName);
-
-release_namespaceUnknown:
-	namespaceUnknown->lpVtbl->Release (namespaceUnknown);
-
-release_namespace:
-	namespace->lpVtbl->Release (namespace);
-
-release_locator:
-	locator->lpVtbl->Release (locator);
-	SysFreeString (namespaceName);
-
-exit:
-	if (result == NULL)
-	{
-		return NULL;
-	}
-
-	return g_string_free (result, FALSE);
-}
-
-static char *read_os_name (IWbemClassObject *object)
-{
-	HRESULT hr;
-	VARIANT caption_variant;
-	char *caption_utf8;
-
-	hr = object->lpVtbl->Get (object, L"Caption", 0, &caption_variant, NULL, NULL);
-	if (FAILED (hr))
-	{
-		return NULL;
-	}
-
-	caption_utf8 = bstr_to_utf8 (caption_variant.bstrVal);
-
-	VariantClear(&caption_variant);
-
-	if (caption_utf8 == NULL)
-	{
-		return NULL;
-	}
-
-	g_strchomp (caption_utf8);
-
-	return caption_utf8;
-}
-
-static char *read_cpu_info (IWbemClassObject *object)
-{
-	HRESULT hr;
-	VARIANT name_variant;
-	char *name_utf8;
-	VARIANT max_clock_speed_variant;
-	guint cpu_freq_mhz;
-	char *result;
-
-	hr = object->lpVtbl->Get (object, L"Name", 0, &name_variant, NULL, NULL);
-	if (FAILED (hr))
-	{
-		return NULL;
-	}
-
-	name_utf8 = bstr_to_utf8 (name_variant.bstrVal);
-
-	VariantClear (&name_variant);
-
-	if (name_utf8 == NULL)
-	{
-		return NULL;
-	}
-
-	hr = object->lpVtbl->Get (object, L"MaxClockSpeed", 0, &max_clock_speed_variant, NULL, NULL);
-	if (FAILED (hr))
-	{
-		g_free (name_utf8);
-
-		return NULL;
-	}
-
-	cpu_freq_mhz = max_clock_speed_variant.uintVal;
-
-	VariantClear (&max_clock_speed_variant);
-
-	if (cpu_freq_mhz > 1000)
-	{
-		result = g_strdup_printf ("%s (%.2f GHz)", name_utf8, cpu_freq_mhz / 1000.f);
-	}
-	else
-	{
-		result = g_strdup_printf ("%s (%" G_GUINT32_FORMAT " MHz)", name_utf8, cpu_freq_mhz);
-	}
-
-	g_free (name_utf8);
-
-	return result;
-}
-
-static char *read_vga_name (IWbemClassObject *object)
-{
-	HRESULT hr;
-	VARIANT name_variant;
-	char *name_utf8;
-
-	hr = object->lpVtbl->Get (object, L"Name", 0, &name_variant, NULL, NULL);
-	if (FAILED (hr))
-	{
-		return NULL;
-	}
-
-	name_utf8 = bstr_to_utf8 (name_variant.bstrVal);
-
-	VariantClear (&name_variant);
-
-	if (name_utf8 == NULL)
-	{
-		return NULL;
-	}
-
-	return name_utf8;
-}
-
-static char *read_hdd_info (IWbemClassObject *object)
-{
-	HRESULT hr;
-	VARIANT name_variant;
-	BSTR name_bstr;
-	gsize name_len;
-	VARIANT capacity_variant;
-	guint64 capacity;
-	VARIANT free_space_variant;
-	guint64 free_space;
-
-	hr = object->lpVtbl->Get (object, L"Name", 0, &name_variant, NULL, NULL);
-	if (FAILED (hr))
-	{
-		return NULL;
-	}
-
-	name_bstr = name_variant.bstrVal;
-	name_len = SysStringLen (name_variant.bstrVal);
-
-	if (name_len >= 4 && name_bstr[0] == L'\\' && name_bstr[1] == L'\\' && name_bstr[2] == L'?' && name_bstr[3] == L'\\')
-	{
-		// This is not a named volume. Skip it.
-		VariantClear (&name_variant);
-
-		return NULL;
-	}
-
-	VariantClear (&name_variant);
-
-	hr = object->lpVtbl->Get (object, L"Capacity", 0, &capacity_variant, NULL, NULL);
-	if (FAILED (hr))
-	{
-		return NULL;
-	}
-
-	capacity = variant_to_uint64 (&capacity_variant);
-
-	VariantClear (&capacity_variant);
-
-	if (capacity == 0)
-	{
-		return NULL;
-	}
-
-	hr = object->lpVtbl->Get (object, L"FreeSpace", 0, &free_space_variant, NULL, NULL);
-	if (FAILED (hr))
-	{
-		return NULL;
-	}
-
-	free_space = variant_to_uint64 (&free_space_variant);
-
-	VariantClear (&free_space_variant);
-
-	if (free_space == 0)
-	{
-		return NULL;
-	}
-
-	hdd_capacity += capacity;
-	hdd_free_space += free_space;
-
-	return NULL;
-}
-
-static char *get_memory_info (void)
-{
-	MEMORYSTATUSEX meminfo = { 0 };
-	meminfo.dwLength = sizeof (meminfo);
-
-	if (!GlobalMemoryStatusEx (&meminfo))
-	{
-		return NULL;
-	}
-
-	return g_strdup_printf ("%" G_GUINT64_FORMAT " MB Total (%" G_GUINT64_FORMAT " MB Free)", meminfo.ullTotalPhys / 1024 / 1024, meminfo.ullAvailPhys / 1024 / 1024);
-}
-
-static char *bstr_to_utf8 (BSTR bstr)
-{
-	return g_utf16_to_utf8 (bstr, SysStringLen (bstr), NULL, NULL, NULL);
-}
-
-static guint64 variant_to_uint64 (VARIANT *variant)
-{
-	switch (V_VT (variant))
-	{
-	case VT_UI8:
-		return variant->ullVal;
-
-	case VT_BSTR:
-		return wcstoull (variant->bstrVal, NULL, 10);
-
-	default:
-		return 0;
-	}
 }

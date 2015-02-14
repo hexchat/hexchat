@@ -40,6 +40,7 @@ AH_VERBATIM([PREFIX],[#undef PREFIX])
 AH_VERBATIM([HEXCHATLIBDIR],[#undef HEXCHATLIBDIR])
 AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
+AH_VERBATIM([HAVE_LIBPCI],[#undef HAVE_LIBPCI])
 AH_VERBATIM([HAVE_ISO_CODES],[#undef HAVE_ISO_CODES])
 AH_VERBATIM([HAVE_GTK_MAC],[#undef HAVE_GTK_MAC])
 AH_VERBATIM([USE_LIBNOTIFY],[#undef USE_LIBNOTIFY])
@@ -73,9 +74,12 @@ else
 fi
 
 platform_win32=no
+platform_osx=no
 case $host_os in
 	*mingw*|*cygwin*|*msys*)
 		platform_win32=yes;;
+	darwin*)
+		platform_osx=yes;;
 	*);;
 esac
 
@@ -492,7 +496,14 @@ if test "$sysinfo" != "no"; then
 	AC_MSG_CHECKING(for plugin interface used by SysInfo)
 	if test "$plugin" = yes; then
 		AC_MSG_RESULT([yes])
-		PKG_CHECK_MODULES(LIBPCI, libpci >= 3.0.0, [sysinfo=yes], [sysinfo=no])
+		if test "$platform_osx" = yes; then
+			sysinfo=yes
+		else
+			PKG_CHECK_MODULES(LIBPCI, libpci >= 3.0.0, [
+				sysinfo=yes
+				AC_DEFINE(HAVE_LIBPCI)
+			], [sysinfo=no])
+		fi
 	else
 		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for SysInfo])
 		sysinfo=no
@@ -600,6 +611,7 @@ AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 AM_CONDITIONAL(HAVE_ISO_CODES, test "x$isocodes" = "xyes")
 AM_CONDITIONAL(HAVE_GTK_MAC, test "x$_gdk_tgt" = xquartz)
 AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
+AM_CONDITIONAL(PLATFORM_OSX, test "x$platform_osx" == "xyes")
 
 dnl *********************************************************************
 dnl ** GCC FLAGS ********************************************************
