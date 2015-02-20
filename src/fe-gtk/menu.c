@@ -1711,7 +1711,7 @@ menu_about (GtkWidget *wid, gpointer sess)
 					"You should have received a copy of the GNU General Public License\n" \
 					"along with this program. If not, see <http://www.gnu.org/licenses/>";
 
-	g_snprintf  (comment, sizeof(comment), "Compiled: "__DATE__"\n"
+	g_snprintf  (comment, sizeof(comment), ""
 #ifdef WIN32
 				"Portable Mode: %s\n"
 				"Build Type: x%d\n"

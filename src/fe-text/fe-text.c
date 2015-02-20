@@ -96,10 +96,8 @@ fe_new_window (struct session *sess, int focus)
 	g_snprintf (buf, sizeof (buf),
 				"\n"
 				" \017HexChat-Text \00310"PACKAGE_VERSION"\n"
-				" \017Running on \00310%s \017glib \00310%d.%d.%d\n"
-				" \017This binary compiled \00310"__DATE__"\017\n",
-				get_sys_str (1),
-				glib_major_version, glib_minor_version, glib_micro_version);
+				" \017Running on \00310%s\n",
+				get_sys_str (1));
 	fe_print_text (sess, buf, 0, FALSE);
 
 	fe_print_text (sess, "\n\nCompiled in Features\0032:\017 "
