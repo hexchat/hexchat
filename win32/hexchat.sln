@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "..\src\common\common.vcxproj", "{87554B59-006C-4D94-9714-897B27067BA3}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -123,6 +123,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "python3", "..\plugins\pytho
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "notifications-winrt", "..\src\fe-gtk\notifications\notifications-winrt.vcxproj", "{C53145CC-D021-40C9-B97C-0249AB9A43C9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{021EC1D0-FF67-4700-9AB2-EAABF1159C09}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libenchant_win8", "..\src\libenchant_win8\libenchant_win8.vcxproj", "{BF0EBC16-68AD-4CD1-864C-5B56836EBE2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Release|Win32 = Release|Win32
@@ -209,6 +213,10 @@ Global
 		{C53145CC-D021-40C9-B97C-0249AB9A43C9}.Release|Win32.Build.0 = Release|Win32
 		{C53145CC-D021-40C9-B97C-0249AB9A43C9}.Release|x64.ActiveCfg = Release|x64
 		{C53145CC-D021-40C9-B97C-0249AB9A43C9}.Release|x64.Build.0 = Release|x64
+		{BF0EBC16-68AD-4CD1-864C-5B56836EBE2A}.Release|Win32.ActiveCfg = Release|Win32
+		{BF0EBC16-68AD-4CD1-864C-5B56836EBE2A}.Release|Win32.Build.0 = Release|Win32
+		{BF0EBC16-68AD-4CD1-864C-5B56836EBE2A}.Release|x64.ActiveCfg = Release|x64
+		{BF0EBC16-68AD-4CD1-864C-5B56836EBE2A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -234,5 +242,6 @@ Global
 		{D90BC3E3-1341-4849-9354-5F40489D39D1} = {D237DA6B-BD5F-46C0-8BEA-50E9A1340240}
 		{C2321A03-0BA7-45B3-8740-ABD82B36B0BF} = {D237DA6B-BD5F-46C0-8BEA-50E9A1340240}
 		{C53145CC-D021-40C9-B97C-0249AB9A43C9} = {561126F4-FA18-45FC-A2BF-8F858F161D6D}
+		{BF0EBC16-68AD-4CD1-864C-5B56836EBE2A} = {021EC1D0-FF67-4700-9AB2-EAABF1159C09}
 	EndGlobalSection
 EndGlobal
