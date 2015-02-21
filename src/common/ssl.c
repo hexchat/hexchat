@@ -83,9 +83,6 @@ SSL_CTX *
 _SSL_context_init (void (*info_cb_func))
 {
 	SSL_CTX *ctx;
-#ifdef WIN32
-	int i, r;
-#endif
 
 	SSLeay_add_ssl_algorithms ();
 	SSL_load_error_strings ();
