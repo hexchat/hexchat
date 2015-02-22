@@ -230,8 +230,16 @@ end;
 
 /////////////////////////////////////////////////////////////////////
 function CheckSpellInstall(): Boolean;
+var
+	Version: TWindowsVersion;
 begin
-	Result := DirExists(ExpandConstant('{localappdata}') + '\enchant');;
+	GetWindowsVersionEx(Version);
+
+	// Windows 8 or greater has built in spell check.
+	if Version.NTPlatform and (Version.Major > 6) or ((Version.Major = 6) and (Version.Minor > 1)) then
+		Result := True
+	else
+		Result := DirExists(ExpandConstant('{localappdata}') + '\enchant\myspell');
 end;
 
 /////////////////////////////////////////////////////////////////////
