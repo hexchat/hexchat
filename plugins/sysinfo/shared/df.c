@@ -37,7 +37,7 @@ int xs_parse_df(gint64 *out_total, gint64 *out_free)
 		long long int avail, total;
 
 		/* Filesystem 1024-blocks Used Available Capacity Mounted-on */
-		if (sscanf (buffer, "%*s %lld %*lld %lld %*s %*s", &total, &avail) == 2)
+		if (sscanf (buffer, "%*s %lld %*s %lld %*s %*s", &total, &avail) == 2)
 		{
 			*out_total += total;
 			*out_free += avail;

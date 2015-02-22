@@ -116,7 +116,7 @@ gint64 xs_parse_uptime(void)
 		return 0;
 
 	if(fgets(buffer, bsize, fp) != NULL)
-		uptime = strtol(buffer, NULL, 0);
+		uptime = g_ascii_strtoll(buffer, NULL, 0);
 	
 	fclose(fp);
 	
@@ -146,13 +146,13 @@ int xs_parse_sound(char *snd_card)
 		if(isdigit(buffer[0]) || isdigit(buffer[1]))
 		{
 			char card_buf[bsize];
-			long card_id = 0;
+			gint64 card_id = 0;
 			pos = strstr(buffer, ":");
-			card_id = strtoll(buffer, NULL, 0);
+			card_id = g_ascii_strtoll(buffer, NULL, 0);
 			if (card_id == 0)
 				g_snprintf(card_buf, bsize, "%s", pos+2);
 			else
-				g_snprintf(card_buf, bsize, "%ld: %s", card_id, pos+2);
+				g_snprintf(card_buf, bsize, "%"G_GINT64_FORMAT": %s", card_id, pos+2);
 			pos = strstr(card_buf, "\n");
 			*pos = '\0';
 			strcat(cards, card_buf);
