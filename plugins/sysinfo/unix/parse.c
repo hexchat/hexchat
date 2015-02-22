@@ -107,10 +107,10 @@ int xs_parse_cpu(char *model, char *vendor, double *freq)
 	return 0;
 }
 
-guint64 xs_parse_uptime(void)
+gint64 xs_parse_uptime(void)
 {
 	char buffer[bsize];
-	guint64 uptime = 0;
+	gint64 uptime = 0;
 	FILE *fp = fopen("/proc/uptime", "r");
 	if(fp == NULL)
 		return 0;

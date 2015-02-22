@@ -24,7 +24,7 @@
 #define _PARSE_H_
 
 int xs_parse_cpu(char *model, char *vendor, double *freq);
-guint64 xs_parse_uptime(void);
+gint64 xs_parse_uptime(void);
 int xs_parse_sound(char *snd_card);
 int xs_parse_meminfo(unsigned long long *mem_tot, unsigned long long *mem_free, int swap);
 int xs_parse_video(char *vid_card);

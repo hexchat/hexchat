@@ -147,7 +147,7 @@ char *sysinfo_backend_get_sound(void)
 
 char *sysinfo_backend_get_uptime(void)
 {
-	guint64 uptime;
+	gint64 uptime;
 
 	if ((uptime = xs_parse_uptime ()) == 0)
 	{
