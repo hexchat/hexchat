@@ -23,39 +23,34 @@ char *
 sysinfo_format_uptime (gint64 uptime)
 {
 	char buffer[128];
-	int weeks;
-	int days;
-	int hours;
-	int minutes;
-	int seconds;
 
-	seconds = uptime%60;
-	minutes = (uptime/60)%60;
-	hours   = (uptime/3600)%24;
-	days    = (uptime/86400)%7;
-	weeks   = uptime/604800;
+	gint64 weeks = uptime / 604800;
+	int days     = (uptime / 86400) % 7;
+	int hours    = (uptime / 3600) % 24;
+	int minutes  = (uptime / 60) % 60;
+	int seconds  = uptime % 60;
 
-	if (minutes != 0 || hours != 0 || days != 0 || weeks != 0)
+	if (weeks != 0)
 	{
-		if (hours != 0 || days != 0 || weeks != 0)
-		{
-			if (days !=0 || weeks != 0)
-			{
-				if (weeks != 0)
-					g_snprintf (buffer, sizeof(buffer), "%dw %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
-				else
-					g_snprintf (buffer, sizeof(buffer), "%dd %dh %dm %ds", days, hours, minutes, seconds);
-			}
-			else
-			{
-				g_snprintf (buffer, sizeof(buffer), "%dh %dm %ds", hours, minutes, seconds);
-			}
-		}
-		else
-		{
-			g_snprintf (buffer, sizeof(buffer), "%dm %ds", minutes, seconds);
-		}
+		g_snprintf (buffer, sizeof(buffer), "%" G_GINT64_FORMAT "w %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
 	}
+	else if (days != 0)
+	{
+		g_snprintf (buffer, sizeof(buffer), "%dd %dh %dm %ds", days, hours, minutes, seconds);
+	}
+	else if (hours != 0)
+	{
+		g_snprintf (buffer, sizeof(buffer), "%dh %dm %ds", hours, minutes, seconds);
+	}
+	else if (minutes != 0)
+	{
+		g_snprintf (buffer, sizeof(buffer), "%dm %ds", minutes, seconds);
+	}
+	else
+	{
+		g_snprintf (buffer, sizeof(buffer), "%ds", seconds);
+	}
+
 	return g_strdup (buffer);
 }
 
