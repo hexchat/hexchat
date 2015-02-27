@@ -176,7 +176,11 @@ scrollback_shrink (session *sess)
 		p++;
 	}
 
+#ifdef WIN32
+	fh = g_open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY | _O_BINARY, 0644);
+#else
 	fh = g_open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
+#endif
 	g_free (file);
 	if (fh == -1)
 	{
@@ -300,13 +304,6 @@ scrollback_load (session *sess)
 		if (io_status == G_IO_STATUS_NORMAL)
 		{
 			char *buf_tmp;
-
-			/* If nothing but funny trailing matter e.g. 0x0d or 0x0d0a, toss it */
-			if (n_bytes >= 1 && buf[0] == 0x0d)
-			{
-				g_free (buf);
-				continue;
-			}
 
 			n_bytes--;
 			buf_tmp = buf;
@@ -599,7 +596,7 @@ log_open_file (char *servname, char *channame, char *netname)
 		return -1;
 
 #ifdef WIN32
-	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY, S_IREAD|S_IWRITE);
+	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY | _O_BINARY, S_IREAD|S_IWRITE);
 #else
 	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY, 0644);
 #endif
