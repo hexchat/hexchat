@@ -1347,7 +1347,7 @@ hexchat_fopen_file (const char *file, const char *mode, int xof_flags)
 	FILE *fh;
 
 	if (xof_flags & XOF_FULLPATH)
-		return fopen (file, mode);
+		return g_fopen (file, mode);
 
 	buf = g_build_filename (get_xdir (), file, NULL);
 	fh = g_fopen (buf, mode);
