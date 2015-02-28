@@ -176,11 +176,7 @@ scrollback_shrink (session *sess)
 		p++;
 	}
 
-#ifdef WIN32
-	fh = g_open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY | _O_BINARY, 0644);
-#else
-	fh = g_open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
-#endif
+	fh = g_open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY | OFLAGS, 0644);
 	g_free (file);
 	if (fh == -1)
 	{
@@ -236,7 +232,7 @@ scrollback_save (session *sess, char *text)
 		if ((buf = scrollback_get_filename (sess)) == NULL)
 			return;
 
-		sess->scrollfd = g_open (buf, O_CREAT | O_APPEND | O_WRONLY, 0644);
+		sess->scrollfd = g_open (buf, O_CREAT | O_APPEND | O_WRONLY | OFLAGS, 0644);
 		g_free (buf);
 		if (sess->scrollfd == -1)
 			return;
@@ -595,11 +591,7 @@ log_open_file (char *servname, char *channame, char *netname)
 	if (!file)
 		return -1;
 
-#ifdef WIN32
-	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY | _O_BINARY, S_IREAD|S_IWRITE);
-#else
-	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY, 0644);
-#endif
+	fd = g_open (file, O_CREAT | O_APPEND | O_WRONLY | OFLAGS, 0644);
 	g_free (file);
 
 	if (fd == -1)
