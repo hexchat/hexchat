@@ -190,20 +190,14 @@ dnl *********************************************************************
 dnl ** GTK **************************************************************
 dnl *********************************************************************
 
-# we might get undefined macro without this test
 if test "$gtkfe" = yes ; then
-	AM_PATH_GTK_2_0(2.24.0, havegtk=yes, havegtk=no)
-
-	if test "$havegtk" = no; then
+	PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.24.0], [
+		GUI_LIBS="$GUI_LIBS $GTK_LIBS"
+		GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_DEPRECATED"
+	], [
 		gtkfe=no
-		echo
-		echo Cannot find GTK\! Not building GTK FrontEnd.
-		echo
-	fi
+	])
 fi
-
-GUI_LIBS="$GUI_LIBS $GTK_LIBS"
-GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_DEPRECATED"
 
 dnl *********************************************************************
 dnl ** MAC_INTEGRATION **************************************************
