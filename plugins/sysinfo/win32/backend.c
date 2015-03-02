@@ -42,6 +42,7 @@ typedef enum
 	QUERY_WMI_CPU,
 	QUERY_WMI_VGA,
 	QUERY_WMI_HDD,
+	QUERY_WMI_RES,
 } QueryWmiType;
 
 void print_info (void);
@@ -49,6 +50,7 @@ int get_cpu_arch (void);
 char *query_wmi (QueryWmiType mode);
 char *read_os_name (IWbemClassObject *object);
 char *read_cpu_info (IWbemClassObject *object);
+char *read_res_info (IWbemClassObject *object);
 char *read_vga_name (IWbemClassObject *object);
 
 guint64 hdd_capacity;
@@ -115,6 +117,12 @@ sysinfo_backend_get_gpu (void)
 		vga_name = query_wmi (QUERY_WMI_VGA);
 
 	return g_strdup (vga_name);
+}
+
+char *
+sysinfo_backend_get_resolution (void)
+{
+	return query_wmi (QUERY_WMI_RES);
 }
 
 char *
@@ -203,6 +211,9 @@ static char *query_wmi (QueryWmiType type)
 	case QUERY_WMI_HDD:
 		query = SysAllocString (L"SELECT Name, Capacity, FreeSpace FROM Win32_Volume");
 		break;
+	case QUERY_WMI_RES:
+		query = SysAllocString (L"SELECT CurrentHorizontalResolution, CurrentVerticalResolution, CurrentRefreshRate FROM Win32_VideoController");
+		break;
 	default:
 		goto release_queryLanguageName;
 	}
@@ -243,6 +254,10 @@ static char *query_wmi (QueryWmiType type)
 
 			case QUERY_WMI_HDD:
 				line = read_hdd_info (object);
+				break;
+
+			case QUERY_WMI_RES:
+				line = read_res_info (object);
 				break;
 
 			default:
@@ -393,6 +408,42 @@ static char *read_vga_name (IWbemClassObject *object)
 	return name_utf8;
 }
 
+static char *read_res_info (IWbemClassObject *object)
+{
+	HRESULT hr;
+	VARIANT variant;
+	guint64 xres, yres, rate;
+
+	hr = object->lpVtbl->Get (object, L"CurrentHorizontalResolution", 0, &variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		return NULL;
+	}
+
+	xres = variant_to_uint64 (&variant);
+	VariantClear (&variant);
+
+	hr = object->lpVtbl->Get (object, L"CurrentVerticalResolution", 0, &variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		return NULL;
+	}
+
+	yres = variant_to_uint64 (&variant);
+	VariantClear (&variant);
+
+	hr = object->lpVtbl->Get (object, L"CurrentRefreshRate", 0, &variant, NULL, NULL);
+	if (FAILED (hr))
+	{
+		return NULL;
+	}
+
+	rate = variant_to_uint64 (&variant);
+	VariantClear (&variant);
+
+	return g_strdup_printf ("%"G_GUINT64_FORMAT"x%"G_GUINT64_FORMAT" (%"G_GUINT64_FORMAT"Hz)", xres, yres, rate);
+}
+
 static char *read_hdd_info (IWbemClassObject *object)
 {
 	HRESULT hr;
@@ -481,6 +532,9 @@ static guint64 variant_to_uint64 (VARIANT *variant)
 {
 	switch (V_VT (variant))
 	{
+	case VT_I4:
+		return (guint64)MAX(variant->intVal, 0);
+
 	case VT_UI8:
 		return variant->ullVal;
 

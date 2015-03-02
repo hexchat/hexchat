@@ -64,6 +64,7 @@ static hwinfo hwinfos[] = {
 	{"memory", "Memory", sysinfo_backend_get_memory},
 	{"storage", "Storage", sysinfo_backend_get_disk},
 	{"vga", "VGA", sysinfo_backend_get_gpu},
+	{"display", "Display", sysinfo_backend_get_resolution, TRUE},
 	{"sound", "Sound", sysinfo_backend_get_sound, TRUE},
 	{"ethernet", "Ethernet", sysinfo_backend_get_network, TRUE},
 	{"uptime", "Uptime", sysinfo_backend_get_uptime},

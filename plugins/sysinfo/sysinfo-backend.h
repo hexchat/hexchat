@@ -26,6 +26,7 @@ char *sysinfo_backend_get_disk(void);
 char *sysinfo_backend_get_memory(void);
 char *sysinfo_backend_get_cpu(void);
 char *sysinfo_backend_get_gpu(void);
+char *sysinfo_backend_get_resolution (void);
 char *sysinfo_backend_get_sound(void);
 char *sysinfo_backend_get_uptime(void);
 char *sysinfo_backend_get_network(void);
