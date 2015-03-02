@@ -207,10 +207,9 @@ scrollback_shrink (session *sess)
 }
 
 static void
-scrollback_save (session *sess, char *text)
+scrollback_save (session *sess, char *text, time_t stamp)
 {
 	char *buf;
-	time_t stamp;
 	int len;
 
 	if (sess->type == SESS_SERVER && prefs.hex_gui_tab_server == 1)
@@ -238,7 +237,8 @@ scrollback_save (session *sess, char *text)
 			return;
 	}
 
-	stamp = time (0);
+	if (!stamp)
+		stamp = time(0);
 	if (sizeof (stamp) == 4)	/* gcc will optimize one of these out */
 		buf = g_strdup_printf ("T %d ", (int) stamp);
 	else
@@ -831,7 +831,7 @@ PrintTextTimeStamp (session *sess, char *text, time_t timestamp)
 	}
 
 	log_write (sess, text, timestamp);
-	scrollback_save (sess, text);
+	scrollback_save (sess, text, timestamp);
 	fe_print_text (sess, text, timestamp, FALSE);
 	g_free (text);
 }
