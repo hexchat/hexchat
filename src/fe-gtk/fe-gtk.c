@@ -637,6 +637,8 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 			   gboolean no_activity)
 {
 	PrintTextRaw (sess->res->buffer, (unsigned char *)text, prefs.hex_text_indent, stamp);
+	while (gtk_events_pending ())
+	      gtk_main_iteration ();
 
 	if (!no_activity && !sess->new_data && sess != current_tab &&
 		sess->gui->is_tab && !sess->nick_said)
