@@ -257,35 +257,39 @@ lag_check (void)
 	GSList *list = serv_list;
 	unsigned long tim;
 	char tbuf[128];
-	time_t now = time (0);
-	time_t lag;
+	time_t now = time(NULL);
 
 	tim = make_ping_time ();
+	
+	time_t ping_interval = 15;
+	time_t ping_timeout = 30;
+	
+	if (prefs.hex_net_ping_timeout != 0)
+	{
+		ping_timeout = prefs.hex_net_ping_timeout;
+		ping_interval = ping_timeout/2;
+	}
 
 	while (list)
 	{
 		serv = list->data;
 		if (serv->connected && serv->end_of_motd)
 		{
-			lag = now - serv->ping_recv;
-			if (prefs.hex_net_ping_timeout != 0 && lag > prefs.hex_net_ping_timeout && lag > 0)
-			{
-				sprintf (tbuf, "%" G_GINT64_FORMAT, (gint64) lag);
-				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, NULL,
-								 NULL, NULL, 0);
-				if (prefs.hex_net_auto_reconnect)
-					serv->auto_reconnect (serv, FALSE, -1);
-			}
-			else
+			if(!serv->lag_sent && (now - serv->ping_recv) > ping_interval)
 			{
 				g_snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
 				serv->p_ping (serv, "", tbuf);
-				
-				if (!serv->lag_sent)
-				{
-					serv->lag_sent = tim;
-					fe_set_lag (serv, -1);
-				}
+				serv->lag_sent = tim;
+				fe_set_lag (serv, -1);
+			}
+			
+			if (prefs.hex_net_ping_timeout != 0 && (now - serv->socket_recv) > ping_timeout)
+			{
+				sprintf (tbuf, "%" G_GINT64_FORMAT, (gint64) now - serv->socket_recv);
+				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, NULL,
+												NULL, NULL, 0);
+				if (prefs.hex_net_auto_reconnect)
+					   serv->auto_reconnect (serv, FALSE, -1);
 			}
 		}
 		list = list->next;
@@ -366,10 +370,14 @@ hexchat_misc_checks (void)		/* this gets called every 1/2 second */
 	if (count % 2)
 		dcc_check_timeouts ();	/* every 1 second */
 
-	if (count >= 60)				/* every 30 seconds */
+	if (count % 2)				/* every 1 second*/
 	{
 		if (prefs.hex_gui_lagometer)
 			lag_check ();
+	}
+	
+	if (count > 3600)
+	{
 		count = 0;
 	}
 
