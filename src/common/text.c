@@ -2056,6 +2056,13 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 		if (prefs.hex_irc_hide_nickchange)
 			return;
 		break;
+
+	/* ===Voice change messages=== */
+	case XP_TE_CHANVOICE:
+	case XP_TE_CHANDEVOICE:
+		if (prefs.hex_irc_hide_voicechange)
+			return;
+		break;
 	}
 
 	sound_play_event (index);
