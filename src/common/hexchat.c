@@ -371,10 +371,7 @@ hexchat_misc_checks (void)		/* this gets called every 1/2 second */
 		dcc_check_timeouts ();	/* every 1 second */
 
 	if (count % 2)				/* every 1 second*/
-	{
-		if (prefs.hex_gui_lagometer)
-			lag_check ();
-	}
+		lag_check ();
 	
 	if (count > 3600)
 	{
