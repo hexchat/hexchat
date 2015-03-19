@@ -608,92 +608,29 @@ AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
 AM_CONDITIONAL(PLATFORM_OSX, test "x$platform_osx" == "xyes")
 
 dnl *********************************************************************
-dnl ** GCC FLAGS ********************************************************
+dnl ** CFLAGS ***********************************************************
 dnl *********************************************************************
 
-dnl Only use -Wall and -pipe if we have gcc
-if test "x$GCC" = "xyes"; then
-	if test -z "`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`" ; then
-		CFLAGS="$CFLAGS -Wall"
-	fi
-	dnl these flags might be unwanted
-	if test x$minimalflags != xyes; then
-		if test "$system" = "Linux" -o "$system" = "FreeBSD"; then
-			if test -z "`echo "$CFLAGS" | grep "\-pipe" 2> /dev/null`" ; then
-				CFLAGS="$CFLAGS -pipe"
-			fi
-		fi
-		if test -z "`echo "$CFLAGS" | grep "\-g " 2> /dev/null`" ; then
-			CFLAGS="$CFLAGS -g"
-		fi
-	fi
+dnl these flags might be unwanted
+if test x$minimalflags != xyes; then
+	CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [-g])
 fi
 
-dnl does this compiler support -Wno-pointer-sign ?
-AC_MSG_CHECKING([if $CC accepts -Wno-pointer-sign ])
-
-safe_CFLAGS=$CFLAGS
-CFLAGS="-Wno-pointer-sign"
-
-AC_TRY_COMPILE(, [
-return 0;
-],
-[
-no_pointer_sign=yes
-AC_MSG_RESULT([yes])
-], [
-no_pointer_sign=no
-AC_MSG_RESULT([no])
+CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [ \
+	-pipe \
+	-funsigned-char \
+	-Wall \
+	-Wextra \
+	-Wno-unused-parameter \
+	-Wno-sign-compare \
+	-Wno-pointer-sign \
+	-Wno-missing-field-initializers \
+	-Wno-unused-result \
+	-Werror=format-security \
+	-Werror=format-nonliteral \
+	-Werror=format=2 \
+	-Werror=declaration-after-statement \
 ])
-CFLAGS=$safe_CFLAGS
-
-if test x$no_pointer_sign = xyes; then
-	CFLAGS="$CFLAGS -Wno-pointer-sign"
-fi
-
-dnl does this compiler support -funsigned-char ?
-AC_MSG_CHECKING([if $CC accepts -funsigned-char ])
-
-safe_CFLAGS=$CFLAGS
-CFLAGS="-funsigned-char"
-
-AC_TRY_COMPILE(, [
-return 0;
-],
-[
-unsigned_char=yes
-AC_MSG_RESULT([yes])
-], [
-unsigned_char=no
-AC_MSG_RESULT([no])
-])
-CFLAGS=$safe_CFLAGS
-
-if test x$unsigned_char = xyes; then
-	CFLAGS="$CFLAGS -funsigned-char"
-fi
-
-dnl does this compiler support -Wno-unused-result ?
-AC_MSG_CHECKING([if $CC accepts -Wno-unused-result ])
-
-safe_CFLAGS=$CFLAGS
-CFLAGS="-Wno-unused-result"
-
-AC_TRY_COMPILE(, [
-return 0;
-],
-[
-no_unused_result=yes
-AC_MSG_RESULT([yes])
-], [
-no_unused_result=no
-AC_MSG_RESULT([no])
-])
-CFLAGS=$safe_CFLAGS
-
-if test x$no_unused_result = xyes; then
-	CFLAGS="$CFLAGS -Wno-unused-result"
-fi
 
 dnl *********************************************************************
 dnl ** FUNCTIONS/LIBS/CFLAGS ********************************************
@@ -747,7 +684,6 @@ AC_EGREP_CPP(lookupd, dnl
 
 dnl freebsd needs this
 LIBS="$LIBS $INTLLIBS"
-CFLAGS="$CFLAGS $CPPFLAGS"
 
 GUI_LIBS="$GUI_LIBS $COMMON_LIBS"
 
