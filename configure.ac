@@ -627,7 +627,6 @@ CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [ \
 	-Wno-missing-field-initializers \
 	-Wno-unused-result \
 	-Werror=format-security \
-	-Werror=format=2 \
 	-Werror=declaration-after-statement \
 ])
 
