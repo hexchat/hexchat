@@ -110,7 +110,7 @@ palette_load (void)
 	char prefname[256];
 	struct stat st;
 	char *cfg;
-	int red, green, blue;
+	guint16 red, green, blue;
 
 	fh = hexchat_open_file ("colors.conf", O_RDONLY, 0, 0);
 	if (fh != -1)

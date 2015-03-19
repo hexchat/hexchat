@@ -226,12 +226,12 @@ cfg_put_str (int fh, char *var, char *value)
 }
 
 int
-cfg_put_color (int fh, int r, int g, int b, char *var)
+cfg_put_color (int fh, guint16 r, guint16 g, guint16 b, char *var)
 {
 	char buf[400];
 	int len;
 
-	g_snprintf (buf, sizeof buf, "%s = %04x %04x %04x\n", var, r, g, b);
+	g_snprintf (buf, sizeof buf, "%s = %04"G_GUINT16_FORMAT" %04"G_GUINT16_FORMAT" %04"G_GUINT16_FORMAT"\n", var, r, g, b);
 	len = strlen (buf);
 	return (write (fh, buf, len) == len);
 }
@@ -251,14 +251,14 @@ cfg_put_int (int fh, int value, char *var)
 }
 
 int
-cfg_get_color (char *cfg, char *var, int *r, int *g, int *b)
+cfg_get_color (char *cfg, char *var, guint16 *r, guint16 *g, guint16 *b)
 {
 	char str[128];
 
 	if (!cfg_get_str (cfg, var, str, sizeof (str)))
 		return 0;
 
-	sscanf (str, "%04x %04x %04x", r, g, b);
+	sscanf (str, "%04"G_GUINT16_FORMAT" %04"G_GUINT16_FORMAT" %04"G_GUINT16_FORMAT, r, g, b);
 	return 1;
 }
 
