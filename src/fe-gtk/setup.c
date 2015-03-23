@@ -2127,11 +2127,6 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 static void
 setup_apply (struct hexchatprefs *pr)
 {
-#ifdef WIN32
-	PangoFontDescription *old_desc;
-	PangoFontDescription *new_desc;
-	char buffer[4 * FONTNAMELEN + 1];
-#endif
 	int new_pix = FALSE;
 	int noapply = FALSE;
 	int do_ulist = FALSE;
@@ -2203,21 +2198,7 @@ setup_apply (struct hexchatprefs *pr)
 
 	memcpy (&prefs, pr, sizeof (prefs));
 
-#ifdef WIN32
-	/* merge hex_font_main and hex_font_alternative into hex_font_normal */
-	old_desc = pango_font_description_from_string (prefs.hex_text_font_main);
-	sprintf (buffer, "%s,%s", pango_font_description_get_family (old_desc), prefs.hex_text_font_alternative);
-	new_desc = pango_font_description_from_string (buffer);
-	pango_font_description_set_weight (new_desc, pango_font_description_get_weight (old_desc));
-	pango_font_description_set_style (new_desc, pango_font_description_get_style (old_desc));
-	pango_font_description_set_size (new_desc, pango_font_description_get_size (old_desc));
-	sprintf (prefs.hex_text_font, "%s", pango_font_description_to_string (new_desc));
-
-	/* FIXME this is not required after pango_font_description_from_string()
-	g_free (old_desc);
-	g_free (new_desc);
-	*/
-#endif
+	fe_get_default_font (FONT_SET_ALTS);	/* This will setup alternative fonts, for WIN32 */
 
 	if (prefs.hex_irc_real_name[0] == 0)
 	{
