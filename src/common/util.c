@@ -246,10 +246,10 @@ expand_homedir (char *file)
 
 	if (file[0] == '~')
 	{
+		char *slash_pos;
+
 		if (file[1] == '\0' || file[1] == '/')
 			return g_strconcat (g_get_home_dir (), &file[1], NULL);
-
-		char *slash_pos;
 
 		user = g_strdup(file);
 

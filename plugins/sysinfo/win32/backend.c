@@ -390,7 +390,7 @@ static char *read_vga_name (IWbemClassObject *object)
 		return NULL;
 	}
 
-	return name_utf8;
+	return g_strchomp (name_utf8);
 }
 
 static char *read_hdd_info (IWbemClassObject *object)

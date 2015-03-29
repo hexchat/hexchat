@@ -27,12 +27,12 @@ static hexchat_plugin *ph;
 static GSocketService *service;
 static GHashTable *responses;
 
-struct ident_info
+typedef struct ident_info
 {
 	GSocketConnection *conn;
 	gchar *username;
 	gchar read_buf[16];
-} typedef ident_info;
+} ident_info;
 
 static int
 identd_cleanup_response_cb (gpointer userdata)
