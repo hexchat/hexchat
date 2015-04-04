@@ -1127,26 +1127,26 @@ static char * const pevt_chanrmlimit_help[] = {
 };
 
 static char * const pevt_chandeop_help[] = {
-	N_("The nick of the person of did the deop'ing"),
+	N_("The nick of the person who did the deop'ing"),
 	N_("The nick of the person who has been deop'ed"),
 };
 static char * const pevt_chandehop_help[] = {
-	N_("The nick of the person of did the dehalfop'ing"),
+	N_("The nick of the person who did the dehalfop'ing"),
 	N_("The nick of the person who has been dehalfop'ed"),
 };
 
 static char * const pevt_chandevoice_help[] = {
-	N_("The nick of the person of did the devoice'ing"),
+	N_("The nick of the person who did the devoice'ing"),
 	N_("The nick of the person who has been devoice'ed"),
 };
 
 static char * const pevt_chanunban_help[] = {
-	N_("The nick of the person of did the unban'ing"),
+	N_("The nick of the person who did the unban'ing"),
 	N_("The ban mask"),
 };
 
 static char * const pevt_chanunquiet_help[] = {
-	N_("The nick of the person of did the unquiet'ing"),
+	N_("The nick of the person who did the unquiet'ing"),
 	N_("The quiet mask"),
 };
 
