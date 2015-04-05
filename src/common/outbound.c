@@ -3853,7 +3853,7 @@ const struct commands xc_cmds[] = {
 	 N_("ALLCHANL <cmd>, sends a command to all channels on the current server")},
 	{"ALLSERV", cmd_allservers, 0, 0, 1,
 	 N_("ALLSERV <cmd>, sends a command to all servers you're in")},
-	{"AWAY", cmd_away, 1, 0, 1, N_("AWAY [<reason>], sets you away")},
+	{"AWAY", cmd_away, 1, 0, 1, N_("AWAY [<reason>], sets you away (use /BACK to unset)")},
 	{"BACK", cmd_back, 1, 0, 1, N_("BACK, sets you back (not away)")},
 	{"BAN", cmd_ban, 1, 1, 1,
 	 N_("BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)")},
