@@ -284,12 +284,19 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_send_modes = hexchat_send_modes;
 		pl->hexchat_strip = hexchat_strip;
 		pl->hexchat_free = hexchat_free;
+		pl->hexchat_free_array = hexchat_free_array;
+
 		pl->hexchat_pluginpref_set_str = hexchat_pluginpref_set_str;
-		pl->hexchat_pluginpref_get_str = hexchat_pluginpref_get_str;
+		pl->hexchat_pluginpref_get_str_ptr = hexchat_pluginpref_get_str_ptr;
 		pl->hexchat_pluginpref_set_int = hexchat_pluginpref_set_int;
 		pl->hexchat_pluginpref_get_int = hexchat_pluginpref_get_int;
 		pl->hexchat_pluginpref_delete = hexchat_pluginpref_delete;
+		pl->hexchat_pluginpref_list_keys = hexchat_pluginpref_list_keys;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+		pl->hexchat_pluginpref_get_str = hexchat_pluginpref_get_str;
 		pl->hexchat_pluginpref_list = hexchat_pluginpref_list;
+G_GNUC_END_IGNORE_DEPRECATIONS
+
 		pl->hexchat_hook_server_attrs = hexchat_hook_server_attrs;
 		pl->hexchat_hook_print_attrs = hexchat_hook_print_attrs;
 		pl->hexchat_emit_print_attrs = hexchat_emit_print_attrs;
@@ -1821,7 +1828,15 @@ pluginpref_load_file (hexchat_plugin *pl)
 				if (g_key_file_load_from_file (file, filename, G_KEY_FILE_NONE, NULL))
 					goto success;
 			}
+			else
+			{
+				/* File not found is acceptable, it will be created when
+				 * something is set */
+				goto success;
+			}
 		}
+		else if (error->code == G_KEY_FILE_ERROR_NOT_FOUND)
+			goto success;
 		g_free (filename);
 		g_error_free (error);
 		g_key_file_free (file);
@@ -1829,6 +1844,8 @@ pluginpref_load_file (hexchat_plugin *pl)
 	}
 success:
 
+	if (error)
+		g_error_free (error);
 	g_free (filename);
 	return file;
 }
