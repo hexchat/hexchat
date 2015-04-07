@@ -120,6 +120,7 @@ static GSList *hook_list = NULL;
 
 extern const struct prefs vars[];	/* cfgfiles.c */
 
+static void pluginpref_save (hexchat_plugin *pl);
 
 /* unload a plugin and remove it from our linked list */
 
@@ -159,6 +160,10 @@ plugin_free (hexchat_plugin *pl, int do_deinit, int allow_refuse)
 #endif
 
 xit:
+	if (pl->keyfile)
+	{
+		g_key_file_free (pl->keyfile);
+	}
 	if (pl->free_strings)
 	{
 		g_free (pl->name);
@@ -190,6 +195,7 @@ plugin_list_add (hexchat_context *ctx, char *filename, const char *name,
 	pl->context = ctx;
 	pl->name = (char *)name;
 	pl->desc = (char *)desc;
+	pl->keyfile = NULL;
 	pl->version = (char *)version;
 	pl->deinit_callback = deinit_func;
 	pl->fake = fake;
@@ -1743,258 +1749,235 @@ hexchat_free (hexchat_plugin *ph, void *ptr)
 	g_free (ptr);
 }
 
-static int
-hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char *value, int mode) /* mode: 0 = delete, 1 = save */
+void
+hexchat_free_array (hexchat_plugin *ph, char **strv)
 {
-	FILE *fpIn;
-	int fhOut;
-	int prevSetting;
-	char *confname;
-	char *confname_tmp;
-	char *escaped_value;
-	char *buffer;
-	char *buffer_tmp;
-	char line_buffer[512];		/* the same as in cfg_put_str */
-	char *line_bufp = line_buffer;
-	char *canon;
+	g_strfreev (strv);
+}
 
-	canon = g_strdup (pl->name);
-	canonalize_key (canon);
-	confname = g_strdup_printf ("addon_%s.conf", canon);
-	g_free (canon);
-	confname_tmp = g_strdup_printf ("%s.new", confname);
+#define DEFAULT_GROUP "DEFAULT"
+#define DEFAULT_GROUP_TEXT "[DEFAULT]\n"
+#define DEFAULT_GROUP_TEXT_LEN 10
 
-	fhOut = hexchat_open_file (confname_tmp, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
-	fpIn = hexchat_fopen_file (confname, "r", 0);
+static char *
+pluginpref_create_filename (hexchat_plugin *pl)
+{
+	char *confname, *tmp, *filename;
 
-	if (fhOut == -1)		/* unable to save, abort */
+	tmp = g_strdup (pl->name);
+	canonalize_key (tmp);
+	confname = g_strdup_printf ("%s%caddon_%s.conf", get_xdir(), G_DIR_SEPARATOR, tmp);
+	filename = g_filename_from_utf8 (confname, -1, NULL, NULL, NULL);
+	g_free (confname);
+	g_free (tmp);
+
+	return filename;
+}
+
+/* Migration simply means prepending a valid group
+ * to the old format, it is otherwise compatable */
+static gboolean
+pluginpref_migrate_file (const char *filename)
+{
+	char *contents;
+	gsize len, newlen;
+	gboolean ret;
+
+	/* Just read the entire file, ideally it is fairly small */
+	if (!g_file_get_contents (filename, &contents, &len, NULL))
+		return FALSE;
+
+	/* Avoid duplicating data and just prepend the new group */
+	newlen = len + DEFAULT_GROUP_TEXT_LEN;
+	contents = g_realloc_n (contents, newlen, sizeof(char));
+	memmove (contents + DEFAULT_GROUP_TEXT_LEN, contents, len);
+	memcpy (contents, DEFAULT_GROUP_TEXT, DEFAULT_GROUP_TEXT_LEN);
+
+	ret = g_file_set_contents (filename, contents, (gssize)MIN(newlen, G_MAXSSIZE), NULL);
+	g_free (contents);
+	return ret;
+}
+
+static GKeyFile *
+pluginpref_load_file (hexchat_plugin *pl)
+{
+	char *filename;
+	GKeyFile *file;
+	GError *error = NULL;
+
+	filename = pluginpref_create_filename (pl);
+	if (!filename)
+		return NULL;
+
+	file = g_key_file_new ();
+	if (!g_key_file_load_from_file (file, filename, G_KEY_FILE_NONE, &error))
 	{
-		g_free (confname);
-		g_free (confname_tmp);
-		if (fpIn)
-			fclose (fpIn);
-		return 0;
+		/* If it is an old format config we can migrate it */
+		if (error->code == G_KEY_FILE_ERROR_GROUP_NOT_FOUND)
+		{
+			if (pluginpref_migrate_file (filename))
+			{
+				/* Try again */
+				if (g_key_file_load_from_file (file, filename, G_KEY_FILE_NONE, NULL))
+					goto success;
+			}
+		}
+		g_free (filename);
+		g_error_free (error);
+		g_key_file_free (file);
+		return NULL;
 	}
-	else if (fpIn == NULL)	/* no previous config file, no parsing */
+success:
+
+	g_free (filename);
+	return file;
+}
+
+static void
+pluginpref_save (hexchat_plugin *pl)
+{
+	gchar *data, *filename;
+	gsize length;
+
+	filename = pluginpref_create_filename (pl);
+	if (!filename)
+		return;
+
+	if (!(data = g_key_file_to_data (pl->keyfile, &length, NULL)))
 	{
-		if (mode)
-		{
-			escaped_value = g_strescape (value, NULL);
-			buffer = g_strdup_printf ("%s = %s\n", var, escaped_value);
-			g_free (escaped_value);
-			write (fhOut, buffer, strlen (buffer));
-			g_free (buffer);
-			close (fhOut);
-
-			buffer = g_build_filename (get_xdir (), confname, NULL);
-			g_free (confname);
-			buffer_tmp = g_build_filename (get_xdir (), confname_tmp, NULL);
-			g_free (confname_tmp);
-
-#ifdef WIN32
-			g_unlink (buffer);
-#endif
-
-			if (g_rename (buffer_tmp, buffer) == 0)
-			{
-				g_free (buffer);
-				g_free (buffer_tmp);
-				return 1;
-			}
-			else
-			{
-				g_free (buffer);
-				g_free (buffer_tmp);
-				return 0;
-			}
-		}
-		else
-		{
-			/* mode = 0, we want to delete but the config file and thus the given setting does not exist, we're ready */
-			close (fhOut);
-			g_free (confname);
-			g_free (confname_tmp);
-			return 1;
-		}
+		g_free (filename);
+		return;
 	}
-	else	/* existing config file, preserve settings and find & replace current var value if any */
-	{
-		prevSetting = 0;
 
-		while (fscanf (fpIn, " %511[^\n]", line_bufp) != EOF)	/* read whole lines including whitespaces */
-		{
-			buffer_tmp = g_strdup_printf ("%s ", var);	/* add one space, this way it works against var - var2 checks too */
-
-			if (strncmp (buffer_tmp, line_buffer, strlen (var) + 1) == 0)	/* given setting already exists */
-			{
-				if (mode)									/* overwrite the existing matching setting if we are in save mode */
-				{
-					escaped_value = g_strescape (value, NULL);
-					buffer = g_strdup_printf ("%s = %s\n", var, escaped_value);
-					g_free (escaped_value);
-				}
-				else										/* erase the setting in delete mode */
-				{
-					buffer = g_strdup ("");
-				}
-
-				prevSetting = 1;
-			}
-			else
-			{
-				buffer = g_strdup_printf ("%s\n", line_buffer);	/* preserve the existing different settings */
-			}
-
-			write (fhOut, buffer, strlen (buffer));
-
-			g_free (buffer);
-			g_free (buffer_tmp);
-		}
-
-		fclose (fpIn);
-
-		if (!prevSetting && mode)	/* var doesn't exist currently, append if we're in save mode */
-		{
-			escaped_value = g_strescape (value, NULL);
-			buffer = g_strdup_printf ("%s = %s\n", var, escaped_value);
-			g_free (escaped_value);
-			write (fhOut, buffer, strlen (buffer));
-			g_free (buffer);
-		}
-
-		close (fhOut);
-
-		buffer = g_build_filename (get_xdir (), confname, NULL);
-		g_free (confname);
-		buffer_tmp = g_build_filename (get_xdir (), confname_tmp, NULL);
-		g_free (confname_tmp);
-
-#ifdef WIN32
-		g_unlink (buffer);
-#endif
-
-		if (g_rename (buffer_tmp, buffer) == 0)
-		{
-			g_free (buffer);
-			g_free (buffer_tmp);
-			return 1;
-		}
-		else
-		{
-			g_free (buffer);
-			g_free (buffer_tmp);
-			return 0;
-		}
-	}
+	g_file_set_contents (filename, data, length, NULL);
+	g_free (data);
+	g_free (filename);
 }
 
 int
 hexchat_pluginpref_set_str (hexchat_plugin *pl, const char *var, const char *value)
 {
-	return hexchat_pluginpref_set_str_real (pl, var, value, 1);
+	if (!pl->keyfile)
+	{
+		if (!(pl->keyfile = pluginpref_load_file (pl)))
+			return 0;
+	}
+
+	g_key_file_set_string (pl->keyfile, DEFAULT_GROUP, var, value);
+	pluginpref_save (pl);
+	return 1;
 }
 
-static int
-hexchat_pluginpref_get_str_real (hexchat_plugin *pl, const char *var, char *dest, int dest_len)
+char *
+hexchat_pluginpref_get_str_ptr (hexchat_plugin *pl, const char *var)
 {
-	char *confname, *canon, *cfg, *unescaped_value;
-	char buf[512];
-
-	canon = g_strdup (pl->name);
-	canonalize_key (canon);
-	confname = g_strdup_printf ("%s%caddon_%s.conf", get_xdir(), G_DIR_SEPARATOR, canon);
-	g_free (canon);
-
-	if (!g_file_get_contents (confname, &cfg, NULL, NULL))
+	if (!pl->keyfile)
 	{
-		g_free (confname);
-		return 0;
-	}
-	g_free (confname);
-
-	if (!cfg_get_str (cfg, var, buf, sizeof(buf)))
-	{
-		g_free (cfg);
-		return 0;
+		if (!(pl->keyfile = pluginpref_load_file (pl)))
+			return 0;
 	}
 
-	unescaped_value = g_strcompress (buf);
-	g_strlcpy (dest, unescaped_value, dest_len);
-
-	g_free (unescaped_value);
-	g_free (cfg);
-	return 1;
+	return g_key_file_get_string (pl->keyfile, DEFAULT_GROUP, var, NULL);
 }
 
 int
 hexchat_pluginpref_get_str (hexchat_plugin *pl, const char *var, char *dest)
 {
+	char *value;
+
+	if (!(value = hexchat_pluginpref_get_str_ptr (pl, var)))
+		return 0;
+
 	/* All users of this must ensure dest is >= 512... */
-	return hexchat_pluginpref_get_str_real (pl, var, dest, 512);
+	safe_strcpy (dest, value, 512);
+	g_free (value);
+
+	return 1;
 }
 
 int
 hexchat_pluginpref_set_int (hexchat_plugin *pl, const char *var, int value)
 {
-	char buffer[12];
+	if (!pl->keyfile)
+	{
+		if (!(pl->keyfile = pluginpref_load_file (pl)))
+			return 0;
+	}
 
-	g_snprintf (buffer, sizeof (buffer), "%d", value);
-	return hexchat_pluginpref_set_str_real (pl, var, buffer, 1);
+	g_key_file_set_integer (pl->keyfile, DEFAULT_GROUP, var, value);
+	pluginpref_save (pl);
+	return 1;
 }
 
 int
 hexchat_pluginpref_get_int (hexchat_plugin *pl, const char *var)
 {
-	char buffer[12];
+	int value;
+	GError *error = NULL;
 
-	if (hexchat_pluginpref_get_str_real (pl, var, buffer, sizeof(buffer)))
+	if (!pl->keyfile)
 	{
-		return atoi (buffer);
+		if (!(pl->keyfile = pluginpref_load_file (pl)))
+			return -1;
 	}
-	else
+
+	value = g_key_file_get_integer (pl->keyfile, DEFAULT_GROUP, var, &error);
+	if (error)
 	{
+		if (error->code ==  G_KEY_FILE_ERROR_INVALID_VALUE)
+		{
+			g_error_free (error);
+			return 0; /* This is to duplicate previous behavior of atoi() */
+		}
+		g_error_free (error);
 		return -1;
 	}
+
+	return value;
 }
 
 int
 hexchat_pluginpref_delete (hexchat_plugin *pl, const char *var)
 {
-	return hexchat_pluginpref_set_str_real (pl, var, 0, 0);
+	gboolean ret;
+
+	if (!pl->keyfile)
+	{
+		if (!(pl->keyfile = pluginpref_load_file (pl)))
+			return 0;
+	}
+
+	ret = g_key_file_remove_key (pl->keyfile, DEFAULT_GROUP, var, NULL);
+	pluginpref_save (pl);
+	return ret;
 }
+
+char **
+hexchat_pluginpref_list_keys (hexchat_plugin *pl)
+{
+	if (!pl->keyfile)
+	{
+		if (!(pl->keyfile = pluginpref_load_file (pl)))
+			return NULL;
+	}
+
+	return g_key_file_get_keys (pl->keyfile, DEFAULT_GROUP, NULL, NULL);
+}
+
 
 int
 hexchat_pluginpref_list (hexchat_plugin *pl, char* dest)
 {
-	FILE *fpIn;
-	char confname[64];
-	char buffer[512];										/* the same as in cfg_put_str */
-	char *bufp = buffer;
-	char *token;
+	char **keys, *keystr;
 
-	token = g_strdup (pl->name);
-	canonalize_key (token);
-	sprintf (confname, "addon_%s.conf", token);
-	g_free (token);
-
-	fpIn = hexchat_fopen_file (confname, "r", 0);
-
-	if (fpIn == NULL)										/* no existing config file, no parsing */
-	{
+	if (!(keys = hexchat_pluginpref_list_keys (pl)))
 		return 0;
-	}
-	else													/* existing config file, get list of settings */
-	{
-		strcpy (dest, "");									/* clean up garbage */
-		while (fscanf (fpIn, " %[^\n]", bufp) != EOF)	/* read whole lines including whitespaces */
-		{
-			token = strtok (buffer, "=");
-			g_strlcat (dest, g_strchomp (token), 4096); /* Dest must not be smaller than this */
-			g_strlcat (dest, ",", 4096);
-		}
 
-		fclose (fpIn);
-	}
+	keystr = g_strjoinv (",", keys);
+	safe_strcpy (dest, keystr, 4096);
+	g_strlcat (dest, ",", 4096); /* Must end in , for legacy reasons */
 
+	g_free (keystr);
+	g_strfreev (keys);
 	return 1;
 }

@@ -39,6 +39,16 @@
 #define HEXCHAT_EAT_PLUGIN	2	/* don't let other plugins see this event */
 #define HEXCHAT_EAT_ALL		(HEXCHAT_EAT_HEXCHAT|HEXCHAT_EAT_PLUGIN)	/* don't let anything see this event */
 
+/* Taken from glib/gmacros.h */
+#if    __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+#define HEXCHAT_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+#elif defined(_MSC_FULL_VER) && (_MSC_FULL_VER > 140050320)
+#define HEXCHAT_DEPRECATED_FOR(f) __declspec(deprecated("is deprecated. Use '" #f "' instead"))
+#else
+#define HEXCHAT_DEPRECATED_FOR(f)
+#endif
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -161,12 +171,16 @@ struct _hexchat_plugin
 	     int flags);
 	void (*hexchat_free) (hexchat_plugin *ph,
 	    void *ptr);
+	void (*hexchat_free_array) (hexchat_plugin *ph,
+	    char **arr);
 	int (*hexchat_pluginpref_set_str) (hexchat_plugin *ph,
 		const char *var,
 		const char *value);
 	int (*hexchat_pluginpref_get_str) (hexchat_plugin *ph,
 		const char *var,
 		char *dest);
+	char *(*hexchat_pluginpref_get_str_ptr) (hexchat_plugin *ph,
+		const char *var);
 	int (*hexchat_pluginpref_set_int) (hexchat_plugin *ph,
 		const char *var,
 		int value);
@@ -176,6 +190,7 @@ struct _hexchat_plugin
 		const char *var);
 	int (*hexchat_pluginpref_list) (hexchat_plugin *ph,
 		char *dest);
+	char **(*hexchat_pluginpref_list_keys) (hexchat_plugin *ph);
 	hexchat_hook *(*hexchat_hook_server_attrs) (hexchat_plugin *ph,
 		   const char *name,
 		   int pri,
@@ -380,15 +395,24 @@ void
 hexchat_free (hexchat_plugin *ph,
 	    void *ptr);
 
+void
+hexchat_free_array (hexchat_plugin *ph,
+	    char **arr);
+
 int
 hexchat_pluginpref_set_str (hexchat_plugin *ph,
 		const char *var,
 		const char *value);
 
+HEXCHAT_DEPRECATED_FOR(hexchat_pluginpref_get_str_ptr)
 int
 hexchat_pluginpref_get_str (hexchat_plugin *ph,
 		const char *var,
 		char *dest);
+
+char *
+hexchat_pluginpref_get_str_ptr (hexchat_plugin *ph,
+		const char *var);
 
 int
 hexchat_pluginpref_set_int (hexchat_plugin *ph,
@@ -402,9 +426,13 @@ int
 hexchat_pluginpref_delete (hexchat_plugin *ph,
 		const char *var);
 
+HEXCHAT_DEPRECATED_FOR(hexchat_pluginpref_list_keys)
 int
 hexchat_pluginpref_list (hexchat_plugin *ph,
 		char *dest);
+
+char **
+hexchat_pluginpref_list_keys (hexchat_plugin *ph);
 
 #if !defined(PLUGIN_C) && defined(WIN32)
 #ifndef HEXCHAT_PLUGIN_HANDLE
@@ -445,12 +473,15 @@ hexchat_pluginpref_list (hexchat_plugin *ph,
 #define hexchat_send_modes ((HEXCHAT_PLUGIN_HANDLE)->hexchat_send_modes)
 #define hexchat_strip ((HEXCHAT_PLUGIN_HANDLE)->hexchat_strip)
 #define hexchat_free ((HEXCHAT_PLUGIN_HANDLE)->hexchat_free)
+#define hexchat_free_array ((HEXCHAT_PLUGIN_HANDLE)->hexchat_free_array)
 #define hexchat_pluginpref_set_str ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_set_str)
 #define hexchat_pluginpref_get_str ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_get_str)
+#define hexchat_pluginpref_get_str_ptr ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_get_str_ptr)
 #define hexchat_pluginpref_set_int ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_set_int)
 #define hexchat_pluginpref_get_int ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_get_int)
 #define hexchat_pluginpref_delete ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_delete)
 #define hexchat_pluginpref_list ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_list)
+#define hexchat_pluginpref_list_keys ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_list_keys)
 #endif
 
 #ifdef __cplusplus

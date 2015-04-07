@@ -117,12 +117,16 @@ struct _hexchat_plugin
 	     int flags);
 	void (*hexchat_free) (hexchat_plugin *ph,
 	    void *ptr);
+	void (*hexchat_free_array) (hexchat_plugin *ph,
+	    char **arr);
 	int (*hexchat_pluginpref_set_str) (hexchat_plugin *ph,
 		const char *var,
 		const char *value);
 	int (*hexchat_pluginpref_get_str) (hexchat_plugin *ph,
 		const char *var,
 		char *dest);
+	char *(*hexchat_pluginpref_get_str_ptr) (hexchat_plugin *ph,
+		const char *var);
 	int (*hexchat_pluginpref_set_int) (hexchat_plugin *ph,
 		const char *var,
 		int value);
@@ -132,6 +136,7 @@ struct _hexchat_plugin
 		const char *var);
 	int (*hexchat_pluginpref_list) (hexchat_plugin *ph,
 		char *dest);
+	char **(*hexchat_pluginpref_list_keys) (hexchat_plugin *ph);
 	hexchat_hook *(*hexchat_hook_server_attrs) (hexchat_plugin *ph,
 		   const char *name,
 		   int pri,
@@ -156,6 +161,7 @@ struct _hexchat_plugin
 	char *name;
 	char *desc;
 	char *version;
+	GKeyFile *keyfile; /* pluginpref */
 	session *context;
 	void *deinit_callback;	/* pointer to hexchat_plugin_deinit */
 	unsigned int fake:1;		/* fake plugin. Added by hexchat_plugingui_add() */
