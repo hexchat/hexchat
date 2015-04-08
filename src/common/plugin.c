@@ -1767,13 +1767,13 @@ hexchat_free_array (hexchat_plugin *ph, char **strv)
 #define DEFAULT_GROUP_TEXT_LEN 10
 
 static char *
-pluginpref_create_filename (hexchat_plugin *pl)
+pluginpref_create_filename (hexchat_plugin *pl, const char *extension)
 {
 	char *confname, *tmp, *filename;
 
 	tmp = g_strdup (pl->name);
 	canonalize_key (tmp);
-	confname = g_strdup_printf ("%s%caddon_%s.conf", get_xdir(), G_DIR_SEPARATOR, tmp);
+	confname = g_strdup_printf ("%s%caddon_%s.%s", get_xdir(), G_DIR_SEPARATOR, tmp, extension);
 	filename = g_filename_from_utf8 (confname, -1, NULL, NULL, NULL);
 	g_free (confname);
 	g_free (tmp);
@@ -1784,14 +1784,14 @@ pluginpref_create_filename (hexchat_plugin *pl)
 /* Migration simply means prepending a valid group
  * to the old format, it is otherwise compatable */
 static gboolean
-pluginpref_migrate_file (const char *filename)
+pluginpref_migrate_file_real (const char *old_filename, const char *new_filename)
 {
 	char *contents;
 	gsize len, newlen;
 	gboolean ret;
 
 	/* Just read the entire file, ideally it is fairly small */
-	if (!g_file_get_contents (filename, &contents, &len, NULL))
+	if (!g_file_get_contents (old_filename, &contents, &len, NULL))
 		return FALSE;
 
 	/* Avoid duplicating data and just prepend the new group */
@@ -1800,9 +1800,33 @@ pluginpref_migrate_file (const char *filename)
 	memmove (contents + DEFAULT_GROUP_TEXT_LEN, contents, len);
 	memcpy (contents, DEFAULT_GROUP_TEXT, DEFAULT_GROUP_TEXT_LEN);
 
-	ret = g_file_set_contents (filename, contents, (gssize)MIN(newlen, G_MAXSSIZE), NULL);
+	ret = g_file_set_contents (new_filename, contents, (gssize)MIN(newlen, G_MAXSSIZE), NULL);
 	g_free (contents);
 	return ret;
+}
+
+static void
+pluginpref_migrate_file (hexchat_plugin *pl, char *filename)
+{
+	char *old_filename;
+
+	if (g_file_test (filename, G_FILE_TEST_EXISTS))
+		return;
+
+	old_filename = pluginpref_create_filename (pl, "conf");
+	if (g_file_test (old_filename, G_FILE_TEST_EXISTS))
+	{
+		if (pluginpref_migrate_file_real (old_filename, filename))
+		{
+			/* Migration worked, move the old one as a backup incase
+			 * keyfile is invalid and data lost but also to avoid confusion */
+			char *backup_filename = pluginpref_create_filename (pl, "bak");
+			g_rename (old_filename, backup_filename);
+			g_free (backup_filename);
+		}
+	}
+
+	g_free (old_filename);
 }
 
 static GKeyFile *
@@ -1810,45 +1834,29 @@ pluginpref_load_file (hexchat_plugin *pl)
 {
 	char *filename;
 	GKeyFile *file;
-	GError *error = NULL;
 
-	filename = pluginpref_create_filename (pl);
+	filename = pluginpref_create_filename (pl, "ini");
 	if (!filename)
 		return NULL;
 
 	file = g_key_file_new ();
-	if (!g_key_file_load_from_file (file, filename, G_KEY_FILE_NONE, &error))
-	{
-		/* If it is an old format config we can migrate it */
-		if (error->code == G_KEY_FILE_ERROR_GROUP_NOT_FOUND)
-		{
-			if (pluginpref_migrate_file (filename))
-			{
-				/* Try again */
-				if (g_key_file_load_from_file (file, filename, G_KEY_FILE_NONE, NULL))
-					goto success;
-			}
-			else
-			{
-				/* File not found is acceptable, it will be created when
-				 * something is set */
-				goto success;
-			}
-		}
-		else if (error->code == G_KEY_FILE_ERROR_NOT_FOUND)
-			goto success;
-		g_free (filename);
-		g_error_free (error);
-		g_key_file_free (file);
-		return NULL;
-	}
-success:
 
-	if (error)
-		g_error_free (error);
+	pluginpref_migrate_file (pl, filename);
+
+	/* It failing doesn't matter, a new file will just be created */
+	g_key_file_load_from_file (file, filename, G_KEY_FILE_NONE, NULL);
+
 	g_free (filename);
 	return file;
 }
+
+#define PLUGINPREF_INIT_KEYFILE(pl,ret) G_STMT_START \
+	if (!pl->keyfile) \
+	{ \
+		if (!(pl->keyfile = pluginpref_load_file (pl))) \
+			return ret; \
+	} \
+	G_STMT_END
 
 static void
 pluginpref_save (hexchat_plugin *pl)
@@ -1856,7 +1864,7 @@ pluginpref_save (hexchat_plugin *pl)
 	gchar *data, *filename;
 	gsize length;
 
-	filename = pluginpref_create_filename (pl);
+	filename = pluginpref_create_filename (pl, "ini");
 	if (!filename)
 		return;
 
@@ -1874,11 +1882,7 @@ pluginpref_save (hexchat_plugin *pl)
 int
 hexchat_pluginpref_set_str (hexchat_plugin *pl, const char *var, const char *value)
 {
-	if (!pl->keyfile)
-	{
-		if (!(pl->keyfile = pluginpref_load_file (pl)))
-			return 0;
-	}
+	PLUGINPREF_INIT_KEYFILE (pl, 0);
 
 	g_key_file_set_string (pl->keyfile, DEFAULT_GROUP, var, value);
 	pluginpref_save (pl);
@@ -1888,11 +1892,7 @@ hexchat_pluginpref_set_str (hexchat_plugin *pl, const char *var, const char *val
 char *
 hexchat_pluginpref_get_str_ptr (hexchat_plugin *pl, const char *var)
 {
-	if (!pl->keyfile)
-	{
-		if (!(pl->keyfile = pluginpref_load_file (pl)))
-			return 0;
-	}
+	PLUGINPREF_INIT_KEYFILE (pl, 0);
 
 	return g_key_file_get_string (pl->keyfile, DEFAULT_GROUP, var, NULL);
 }
@@ -1915,11 +1915,7 @@ hexchat_pluginpref_get_str (hexchat_plugin *pl, const char *var, char *dest)
 int
 hexchat_pluginpref_set_int (hexchat_plugin *pl, const char *var, int value)
 {
-	if (!pl->keyfile)
-	{
-		if (!(pl->keyfile = pluginpref_load_file (pl)))
-			return 0;
-	}
+	PLUGINPREF_INIT_KEYFILE (pl, 0);
 
 	g_key_file_set_integer (pl->keyfile, DEFAULT_GROUP, var, value);
 	pluginpref_save (pl);
@@ -1932,11 +1928,7 @@ hexchat_pluginpref_get_int (hexchat_plugin *pl, const char *var)
 	int value;
 	GError *error = NULL;
 
-	if (!pl->keyfile)
-	{
-		if (!(pl->keyfile = pluginpref_load_file (pl)))
-			return -1;
-	}
+	PLUGINPREF_INIT_KEYFILE (pl, -1);
 
 	value = g_key_file_get_integer (pl->keyfile, DEFAULT_GROUP, var, &error);
 	if (error)
@@ -1958,11 +1950,7 @@ hexchat_pluginpref_delete (hexchat_plugin *pl, const char *var)
 {
 	gboolean ret;
 
-	if (!pl->keyfile)
-	{
-		if (!(pl->keyfile = pluginpref_load_file (pl)))
-			return 0;
-	}
+	PLUGINPREF_INIT_KEYFILE (pl, 0);
 
 	ret = g_key_file_remove_key (pl->keyfile, DEFAULT_GROUP, var, NULL);
 	pluginpref_save (pl);
@@ -1972,11 +1960,7 @@ hexchat_pluginpref_delete (hexchat_plugin *pl, const char *var)
 char **
 hexchat_pluginpref_list_keys (hexchat_plugin *pl)
 {
-	if (!pl->keyfile)
-	{
-		if (!(pl->keyfile = pluginpref_load_file (pl)))
-			return NULL;
-	}
+	PLUGINPREF_INIT_KEYFILE (pl, NULL);
 
 	return g_key_file_get_keys (pl->keyfile, DEFAULT_GROUP, NULL, NULL);
 }
