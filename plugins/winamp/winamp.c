@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <glib.h>
 
 #include "hexchat-plugin.h"
 
@@ -50,11 +51,12 @@ static int
 winamp(char *word[], char *word_eol[], void *userdata)
 {
 
-char current_play[2048], *p;
+wchar_t wcurrent_play[2048];
+char *current_play, *p;
 char p_esc[2048];
 char cur_esc[2048];
 char truc[2048];
-HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
+HWND hwndWinamp = FindWindowW(L"Winamp v1.x",NULL);
 
     if (hwndWinamp)
 	{
@@ -109,7 +111,14 @@ HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
 
                 if (!word_eol[2][0])
 			    {
-					GetWindowText(hwndWinamp, current_play, sizeof(current_play));
+					int len = GetWindowTextW(hwndWinamp, wcurrent_play, sizeof(wcurrent_play));
+
+					current_play = g_utf16_to_utf8 (wcurrent_play, len, NULL, NULL, NULL);
+					if (!current_play)
+					{
+						hexchat_print (ph, "Winamp: Error getting song information.");
+						return HEXCHAT_EAT_ALL;
+					}
 
 					if (strchr(current_play, '-'))
 					{
@@ -142,7 +151,7 @@ HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
 					}
 	
 	   				hexchat_commandf(ph, truc);
-	
+					g_free (current_play);
 				}
 				else hexchat_print(ph, "Winamp: Nothing being played.");
 			}
@@ -170,7 +179,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 
 	*plugin_name = "Winamp";
 	*plugin_desc = "Winamp plugin for HexChat";
-	*plugin_version = "0.5";
+	*plugin_version = "0.6";
 
 	hexchat_hook_command (ph, "WINAMP", HEXCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
    	hexchat_command (ph, "MENU -ishare\\music.png ADD \"Window/Display Current Song (Winamp)\" \"WINAMP\"");
