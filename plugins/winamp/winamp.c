@@ -22,39 +22,9 @@
 
 static hexchat_plugin *ph;   /* plugin handle */
 
-BOOL winamp_found = FALSE;
-
-int status = 0;
-
-/* Slightly modified from X-Chat's log_escape_strcpy */
-static char *
-song_strcpy (char *dest, char *src)
-{
-	while (*src)
-	{
-		*dest = *src;
-		dest++;
-		src++;
-
-		if (*src == '%')
-		{
-			dest[0] = '%';
-			dest++;
-		}
-	}
-
-	dest[0] = 0;
-	return dest - 1;
-}
-
 static int
 winamp(char *word[], char *word_eol[], void *userdata)
 {
-	wchar_t wcurrent_play[2048];
-	char *current_play, *p;
-	char p_esc[2048];
-	char cur_esc[2048];
-	char truc[2048];
 	HWND hwndWinamp = FindWindowW(L"Winamp v1.x",NULL);
 
 	if (hwndWinamp)
@@ -98,7 +68,9 @@ winamp(char *word[], char *word_eol[], void *userdata)
 		}
 		else if (!word_eol[2][0])
 		{
-			int len = GetWindowTextW(hwndWinamp, wcurrent_play, sizeof(wcurrent_play));
+			wchar_t wcurrent_play[2048];
+			char *current_play, *p;
+			int len = GetWindowTextW(hwndWinamp, wcurrent_play, G_N_ELEMENTS(wcurrent_play));
 
 			current_play = g_utf16_to_utf8 (wcurrent_play, len, NULL, NULL, NULL);
 			if (!current_play)
@@ -109,12 +81,13 @@ winamp(char *word[], char *word_eol[], void *userdata)
 
 			if (strchr(current_play, '-'))
 			{
-
+				/* Remove any trailing text and whitespace */
 				p = current_play + strlen(current_play) - 8;
 				while (p >= current_play)
 				{
-					if (!strnicmp(p, "- Winamp", 8)) break;
-						p--;
+					if (!strnicmp(p, "- Winamp", 8))
+						break;
+					p--;
 				}
 
 				if (p >= current_play)
@@ -122,23 +95,19 @@ winamp(char *word[], char *word_eol[], void *userdata)
 
 				while (p >= current_play && *p == ' ')
 					p--;
-				*++p=0;
+				*++p = '\0';
 
-				p = strchr(current_play, '.') + 1;
-
-				song_strcpy(p_esc, p);
-				song_strcpy(cur_esc, current_play);
-
+				/* Ignore any leading track number */
+				p = strstr (current_play, ". ");
 				if (p)
-				{
-					sprintf(truc, "me is now playing:%s", p_esc);
-				}
+					p += 2;
 				else
-				{
-					sprintf(truc, "me is now playing:%s", cur_esc);
-				}
+					p = current_play;
 
-	   			hexchat_commandf(ph, truc);
+				if (*p != '\0')
+					hexchat_commandf (ph, "me is now playing: %s", p);
+				else
+					hexchat_print (ph, "Winamp: No song information found.");
 				g_free (current_play);
 			}
 			else
