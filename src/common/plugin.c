@@ -1821,7 +1821,7 @@ hexchat_pluginpref_set_str_real (hexchat_plugin *pl, const char *var, const char
 	{
 		prevSetting = 0;
 
-		while (fscanf (fpIn, " %[^\n]", line_bufp) != EOF)	/* read whole lines including whitespaces */
+		while (fscanf (fpIn, " %511[^\n]", line_bufp) != EOF)	/* read whole lines including whitespaces */
 		{
 			buffer_tmp = g_strdup_printf ("%s ", var);	/* add one space, this way it works against var - var2 checks too */
 
