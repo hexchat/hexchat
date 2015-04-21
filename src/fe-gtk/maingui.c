@@ -2006,7 +2006,6 @@ mg_create_flagbutton (char *tip, GtkWidget *box, char *face)
 	GtkWidget *wid;
 
 	wid = gtk_toggle_button_new_with_label (face);
-	gtk_widget_set_size_request (wid, 18, 0);
 	gtk_widget_set_tooltip_text (wid, tip);
 	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
 	g_signal_connect (G_OBJECT (wid), "toggled",
