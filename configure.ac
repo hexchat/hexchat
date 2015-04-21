@@ -13,6 +13,9 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.11 dist-bzip2 subdir-objects no-define foreign])
 AM_SILENT_RULES([yes])
 
+AX_IS_RELEASE([minor-version])
+AX_CHECK_ENABLE_DEBUG([yes])
+
 AC_USE_SYSTEM_EXTENSIONS
 AM_MAINTAINER_MODE([enable])
 AC_PROG_CC
@@ -151,10 +154,6 @@ AC_ARG_ENABLE(libproxy,
 AC_ARG_ENABLE(isocodes,
 	[AS_HELP_STRING([--disable-isocodes],[disable iso-codes with spell-check])],
         isocodes=$enableval, isocodes=yes)
-
-AC_ARG_ENABLE(minimal-flags,
-	[AS_HELP_STRING([--enable-minimal-flags],[only add those CFLAGS that are really needed or not intrusive (default: no)])],
-        minimalflags=$enableval, minimalflags=no)
 
 AC_ARG_ENABLE(static-analysis,
 	[AS_HELP_STRING([--enable-static-analysis],[if using clang run static analysis during build (default: no)])],
@@ -611,11 +610,6 @@ dnl *********************************************************************
 dnl ** CFLAGS ***********************************************************
 dnl *********************************************************************
 
-dnl these flags might be unwanted
-if test x$minimalflags != xyes; then
-	CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [-g])
-fi
-
 CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [ \
 	-pipe \
 	-funsigned-char \
@@ -764,6 +758,8 @@ echo Checksum .............. : $checksum
 echo Do At ................. : $doat
 echo FiSHLiM ............... : $fishlim
 echo SysInfo ............... : $sysinfo
+echo
+echo Debug mode ............ : $enable_debug
 echo
 echo The binary will be installed in $prefix/bin
 echo
