@@ -78,7 +78,7 @@ static void mg_link_irctab (session *sess, int focus);
 static session_gui static_mg_gui;
 static session_gui *mg_gui = NULL;	/* the shared irc tab */
 static int ignore_chanmode = FALSE;
-static const char chan_flags[] = { 'c', 'n', 'r', 't', 'i', 'm', 'l', 'k' };
+static const char chan_flags[] = { 'c', 'n', 't', 'i', 'm', 'l', 'k' };
 
 static chan *active_tab = NULL;	/* active tab */
 GtkWidget *parent_window = NULL;			/* the master window */
@@ -2075,7 +2075,6 @@ mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 {
 	gui->flag_c = mg_create_flagbutton (_("Filter Colors"), box, "c");
 	gui->flag_n = mg_create_flagbutton (_("No outside messages"), box, "n");
-	gui->flag_r = mg_create_flagbutton (_("Registered Only"), box, "r");
 	gui->flag_t = mg_create_flagbutton (_("Topic Protection"), box, "t");
 	gui->flag_i = mg_create_flagbutton (_("Invite Only"), box, "i");
 	gui->flag_m = mg_create_flagbutton (_("Moderated"), box, "m");

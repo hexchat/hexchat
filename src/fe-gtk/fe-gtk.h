@@ -39,14 +39,13 @@
 
 #define flag_c flag_wid[0]
 #define flag_n flag_wid[1]
-#define flag_r flag_wid[2]
-#define flag_t flag_wid[3]
-#define flag_i flag_wid[4]
-#define flag_m flag_wid[5]
-#define flag_l flag_wid[6]
-#define flag_k flag_wid[7]
-#define flag_b flag_wid[8]
-#define NUM_FLAG_WIDS 9
+#define flag_t flag_wid[2]
+#define flag_i flag_wid[3]
+#define flag_m flag_wid[4]
+#define flag_l flag_wid[5]
+#define flag_k flag_wid[6]
+#define flag_b flag_wid[7]
+#define NUM_FLAG_WIDS 8
 
 #ifdef HAVE_GTK_MAC
 extern GtkosxApplication *osx_app;

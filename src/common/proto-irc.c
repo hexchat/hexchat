@@ -666,7 +666,6 @@ process_numeric (session * sess, int n,
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODES, sess, word[4], word_eol[5],
 										  NULL, NULL, 0, tags_data->timestamp);
 		fe_update_mode_buttons (sess, 'c', '-');
-		fe_update_mode_buttons (sess, 'r', '-');
 		fe_update_mode_buttons (sess, 't', '-');
 		fe_update_mode_buttons (sess, 'n', '-');
 		fe_update_mode_buttons (sess, 'i', '-');
