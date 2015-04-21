@@ -2003,17 +2003,24 @@ mg_flagbutton_cb (GtkWidget *but, char *flag)
 static GtkWidget *
 mg_create_flagbutton (char *tip, GtkWidget *box, char *face)
 {
-	GtkWidget *wid;
+	GtkWidget *btn, *lbl;
+	char label_markup[16];
 
-	wid = gtk_toggle_button_new_with_label (face);
-	gtk_widget_set_size_request (wid, 18, 0);
-	gtk_widget_set_tooltip_text (wid, tip);
-	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
-	g_signal_connect (G_OBJECT (wid), "toggled",
+	g_snprintf (label_markup, sizeof(label_markup), "<tt>%s</tt>", face);
+	lbl = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL(lbl), label_markup);
+
+	btn = gtk_toggle_button_new ();
+	gtk_widget_set_size_request (btn, -1, 0);
+	gtk_widget_set_tooltip_text (btn, tip);
+	gtk_container_add (GTK_CONTAINER(btn), lbl);
+
+	gtk_box_pack_start (GTK_BOX (box), btn, 0, 0, 0);
+	g_signal_connect (G_OBJECT (btn), "toggled",
 							G_CALLBACK (mg_flagbutton_cb), face);
-	show_and_unfocus (wid);
+	show_and_unfocus (btn);
 
-	return wid;
+	return btn;
 }
 
 static void
