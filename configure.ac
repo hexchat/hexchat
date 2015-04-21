@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT([HexChat],[2.11.0])
 
-AC_PREREQ([2.60])
+AC_PREREQ([2.69])
 AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
 
 AC_CONFIG_HEADERS([config.h])
@@ -14,15 +14,15 @@ AM_INIT_AUTOMAKE([1.11 dist-bzip2 subdir-objects no-define foreign])
 AM_SILENT_RULES([yes])
 
 AC_USE_SYSTEM_EXTENSIONS
-AM_MAINTAINER_MODE
+AM_MAINTAINER_MODE([enable])
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CPP
 AC_PROG_OBJC
 AM_PROG_AS
 AM_PROG_AR
-AM_DISABLE_STATIC
-AC_PROG_LIBTOOL
+AC_DISABLE_STATIC([])
+LT_INIT
 AC_PATH_PROG(MDTOOL, mdtool, no)
 
 dnl -----------------------------------------------------------
@@ -244,11 +244,11 @@ if test "$perl" = yes; then
 				original_ldflags="$LDFLAGS"
 				CFLAGS="$PERL_CFLAGS"
 				LDFLAGS="$PERL_LDFLAGS"
-				AC_TRY_LINK([
+				AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 						#define PERL_NO_INLINE_FUNCTIONS
 						#include <EXTERN.h>
 						#include <perl.h>
-					], [], perl_is_usable=yes, perl_is_usable=no)
+					]], [[]])],[perl_is_usable=yes],[perl_is_usable=no])
 				CFLAGS="$original_cflags"
 				LDFLAGS="$original_ldflags"
 				if test x$perl_is_usable = xno ; then
@@ -637,16 +637,12 @@ dnl *********************************************************************
 AC_MSG_CHECKING(for modern sigaction)
 dnl libc5 on linux and FreeBSD 3.x doesn\'t have siginfo_t
 dnl and the sa_sigation field.
-AC_TRY_COMPILE(
-	[#include <signal.h>],
-	[struct sigaction act;
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <signal.h>]], [[struct sigaction act;
 	 siginfo_t *si;
-	 act.sa_sigaction = 0;],
-	[
+	 act.sa_sigaction = 0;]])],[
 		AC_MSG_RESULT(yes)
 		AC_DEFINE(USE_SIGACTION) 
-	],
-	AC_MSG_RESULT(no))
+	],[AC_MSG_RESULT(no)])
 
 AC_CHECK_FUNCS(memrchr)
 
