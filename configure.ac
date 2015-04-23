@@ -15,6 +15,7 @@ AM_SILENT_RULES([yes])
 
 AX_IS_RELEASE([minor-version])
 AX_CHECK_ENABLE_DEBUG([yes])
+AX_REQUIRE_DEFINED([PKG_PROG_PKG_CONFIG])
 
 AC_USE_SYSTEM_EXTENSIONS
 AM_MAINTAINER_MODE([enable])
@@ -27,6 +28,7 @@ AM_PROG_AR
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
 AC_PATH_PROG(MDTOOL, mdtool, no)
+PKG_PROG_PKG_CONFIG
 
 dnl -----------------------------------------------------------
 dnl Language Support
