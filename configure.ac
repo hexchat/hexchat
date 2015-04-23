@@ -217,65 +217,41 @@ dnl *********************************************************************
 dnl ** PERL *************************************************************
 dnl *********************************************************************
 
-if test "$perl" = yes; then
+AS_IF([test "$perl" = yes], [
 	AC_MSG_CHECKING(for plugin interface used by Perl)
-	if test "$plugin" = yes; then
+	AS_IF([test "$plugin" = yes], [
 		AC_MSG_RESULT([yes])
-		AC_PATH_PROG(perlpath, perl)
-		AC_MSG_CHECKING(for Perl compile flags)
-		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
-		if test "_$PERL_CFLAGS" = _ ; then
-			AC_MSG_RESULT([not found, building without perl.])
-			perl=no
-		else
-			PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts |$sedpath 's/-lgdbm //'`
-			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-ldb //'`
-			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lndbm //'`
-			if test "$system" = "Linux"; then
-				PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lnsl //'`
-				PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lposix //'`
-			fi
-			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lc //'`
-			AC_MSG_RESULT(ok)
 
-			AC_MSG_CHECKING(for perl >= 5.8.0)
-			PERL_VER=`$perlpath -e 'print $]>= 5.008?"yes":"no"'`
-			if test "$PERL_VER" = "yes"; then
-				original_cflags="$CFLAGS"
-				original_ldflags="$LDFLAGS"
-				CFLAGS="$PERL_CFLAGS"
-				LDFLAGS="$PERL_LDFLAGS"
-				AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-						#define PERL_NO_INLINE_FUNCTIONS
-						#include <EXTERN.h>
-						#include <perl.h>
-					]], [[]])],[perl_is_usable=yes],[perl_is_usable=no])
-				CFLAGS="$original_cflags"
-				LDFLAGS="$original_ldflags"
-				if test x$perl_is_usable = xno ; then
-					AC_MSG_RESULT(no)
-					perl=no
-				else
-					AC_MSG_RESULT(yes)
-					AC_MSG_CHECKING(if perl plugin will be backward compatible)
-					if test "$perl_old" = "yes"; then
-							  AC_MSG_RESULT(yes)
-							  AC_DEFINE(OLD_PERL)
-					else
-							  AC_MSG_RESULT(no)
-					fi
-				fi
-			else
-				AC_MSG_RESULT(no)
-				echo "perl version too old, building without perl."
-				perl=no
-			fi
-		fi
-	else
+		AX_PERL_EXT_FLAGS([PERL_CFLAGS], [PERL_LDFLAGS])
+		original_cflags="$CFLAGS"
+		original_ldflags="$LDFLAGS"
+		CFLAGS="$PERL_CFLAGS"
+		LDFLAGS="$PERL_LDFLAGS"
+		AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+				#define PERL_NO_INLINE_FUNCTIONS
+				#include <EXTERN.h>
+				#include <perl.h>
+			]], [[]])],[perl_is_usable=yes],[perl_is_usable=no])
+		CFLAGS="$original_cflags"
+		LDFLAGS="$original_ldflags"
+		AS_IF([test "$perl_is_usable" = "no"], [
+			AC_MSG_WARN([perl test failed to compile, disabling])
+			perl=no
+		], [
+			AC_MSG_CHECKING([if perl plugin will be backward compatible])
+			AS_IF([test "$perl_old" = "yes"], [
+				  AC_MSG_RESULT([yes])
+				  AC_DEFINE(OLD_PERL)
+			], [
+				  AC_MSG_RESULT([no])
+			])
+		])
+	], [
 		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for Perl])
 		perl=no
-	fi
-fi
+	])
+])
+
 dnl *********************************************************************
 dnl ** PYTHON ***********************************************************
 dnl *********************************************************************

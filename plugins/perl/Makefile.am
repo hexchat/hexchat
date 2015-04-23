@@ -7,7 +7,7 @@ libdir = $(hexchatlibdir)
 lib_LTLIBRARIES = perl.la
 perl_la_SOURCES = perl.c
 perl_la_LDFLAGS = $(PERL_LDFLAGS) $(PLUGIN_LDFLAGS) -module
-perl_la_LIBADD = $(PERL_LIBS) $(GLIB_LIBS)
+perl_la_LIBADD = $(GLIB_LIBS)
 perl_la_CFLAGS = $(PERL_CFLAGS) $(GLIB_CFLAGS) -I$(top_srcdir)/src/common
 
 BUILT_SOURCES = hexchat.pm.h irc.pm.h
