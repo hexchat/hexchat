@@ -5,8 +5,7 @@ before_script:
     - sudo apt-get build-dep -qq xchat
     - sudo apt-get install -qq libnotify-dev libproxy-dev libpci-dev libcanberra-dev monodevelop gnome-common
 script: 
-    - ./autogen.sh
-    - ./configure --enable-textfe --with-theme-manager --enable-static-analysis
+    - ./autogen.sh --enable-textfe --with-theme-manager --enable-static-analysis
     - make V=1 -j$(nproc)
 notifications:
     irc:
