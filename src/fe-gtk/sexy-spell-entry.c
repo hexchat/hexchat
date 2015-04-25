@@ -1047,7 +1047,7 @@ sexy_spell_entry_recheck_all(SexySpellEntry *entry)
 	{
 		/* Check for attributes */
 		text = gtk_entry_get_text (GTK_ENTRY (entry));
-		text_len = gtk_entry_get_text_length (GTK_ENTRY (entry));
+		text_len = strlen (text);
 		check_attributes (entry, text, text_len);
 	}
 
