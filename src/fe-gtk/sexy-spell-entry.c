@@ -141,6 +141,8 @@ enum
 };
 static guint signals[LAST_SIGNAL] = {0};
 
+static PangoAttrList *empty_attrs_list = NULL;
+
 static gboolean
 spell_accumulator(GSignalInvocationHint *hint, GValue *return_accu, const GValue *handler_return, gpointer data)
 {
@@ -248,6 +250,11 @@ sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 					   _hexchat_marshal_BOOLEAN__STRING,
 					   G_TYPE_BOOLEAN,
 					   1, G_TYPE_STRING);
+
+	if (empty_attrs_list == NULL)
+	{
+		empty_attrs_list = pango_attr_list_new ();
+	}
 }
 
 static void
@@ -1080,7 +1087,14 @@ sexy_spell_entry_expose(GtkWidget *widget, GdkEventExpose *event)
 
 	
 	layout = gtk_entry_get_layout(gtk_entry);
-	pango_layout_set_attributes(layout, entry->priv->attr_list);
+	if (gtk_entry->preedit_length == 0)
+	{
+		pango_layout_set_attributes(layout, entry->priv->attr_list);
+	}
+	else
+	{
+		pango_layout_set_attributes(layout, empty_attrs_list);
+	}
 
 	return GTK_WIDGET_CLASS(parent_class)->expose_event (widget, event);
 }
