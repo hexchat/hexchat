@@ -4671,7 +4671,9 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 		space = 0;
 
 	/* do we need to auto adjust the separator position? */
-	if (buf->xtext->auto_indent && ent->indent < MARGIN + space)
+	if (buf->xtext->auto_indent &&
+		 buf->indent < buf->xtext->max_auto_indent &&
+		 ent->indent < MARGIN + space)
 	{
 		tempindent = MARGIN + space + buf->xtext->space_width + left_width;
 
