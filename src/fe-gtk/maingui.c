@@ -2948,7 +2948,7 @@ mg_create_search(session *sess, GtkWidget *box)
 	gtk_box_pack_start(GTK_BOX(gui->shbox), next, FALSE, FALSE, 0);
 	g_signal_connect(G_OBJECT(next), "clicked", G_CALLBACK(mg_search_handle_next), sess);
 
-	highlight = gtk_check_button_new_with_mnemonic (_("Highlight _all"));
+	highlight = gtk_check_button_new_with_mnemonic (_("_Highlight all"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(highlight), prefs.hex_text_search_highlight_all);
 	gtk_widget_set_can_focus (highlight, FALSE);
 	g_signal_connect (G_OBJECT (highlight), "toggled", G_CALLBACK (search_set_option), &prefs.hex_text_search_highlight_all);
