@@ -1169,8 +1169,8 @@ setup_entry_cb (GtkEntry *entry, setting *set)
 {
 	int size;
 	int pos;
-	int len = gtk_entry_get_text_length (entry);
 	unsigned char *p = (unsigned char*)gtk_entry_get_text (entry);
+	int len = strlen (p);
 
 	/* need to truncate? */
 	if (len >= set->extra)
