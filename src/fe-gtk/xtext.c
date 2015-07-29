@@ -1373,7 +1373,12 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 			high_len = high_offs == high_ent->str_len? 0: -1; /* -1 for the space, 0 if at the end */
 		high_offs += high_len;
 		if (low_oob)
-			low_offs = xtext->mark_stamp? 0: xtext->buffer->last_offset_start;
+		{
+			if (low_y >= xtext->adj->value && xtext->mark_stamp) 
+				low_offs = 0;
+			else
+				low_offs = xtext->buffer->last_offset_start;
+		}
 		if (high_oob)
 			high_offs = xtext->buffer->last_offset_end;
 	}
@@ -1387,7 +1392,12 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	else
 	{
 		if (low_oob)
-			low_offs = xtext->mark_stamp? 0: xtext->buffer->last_offset_start;
+		{
+			if (low_y >= xtext->adj->value && xtext->mark_stamp)
+				low_offs = 0;
+			else
+				low_offs = xtext->buffer->last_offset_start;
+		}
 		if (high_oob)
 			high_offs = xtext->buffer->last_offset_end;
 	}
