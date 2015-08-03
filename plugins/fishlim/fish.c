@@ -156,15 +156,36 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data) {
 }
 
 /**
+* Replaces [ ] in nicks so they can be stored in ini
+*/
+char* fixNickForIni(char* nick) {
+	char* fixedNick = malloc(strlen(nick)+1);
+	int len;
+
+	len = strlen(nick);
+	strcpy(fixedNick, nick);
+	while (*fixedNick != 0)
+	{
+		if ((*fixedNick == '[') || (*fixedNick == ']')) *fixedNick = '~';
+		fixedNick++;
+	}
+	fixedNick -= len;
+
+	return fixedNick;
+}
+
+/**
  * Encrypts a message (see fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_encrypt_for_nick(const char *nick, const char *data) {
+char *fish_encrypt_for_nick(char *nick, const char *data) {
     char *key;
     char *encrypted;
+	char* fixedNick;
 
     /* Look for key */
-    key = keystore_get_key(nick);
+	fixedNick = fixNickForIni(nick);
+	key = keystore_get_key(fixedNick);
     if (!key) return NULL;
     
     /* Encrypt */
@@ -181,8 +202,11 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
 char *fish_decrypt_from_nick(const char *nick, const char *data) {
     char *key;
     char *decrypted;
+	char* fixedNick;
+	
     /* Look for key */
-    key = keystore_get_key(nick);
+	fixedNick = fixNickForIni(nick);
+	key = keystore_get_key(fixedNick);
     if (!key) return NULL;
     
     /* Decrypt */

@@ -208,6 +208,7 @@ static int handle_notice(char *word[], char *word_eol[], hexchat_event_attrs *at
 	const char* prefix;
 	const char* command;
 	char* sender_nick;
+	char* fixedNick;
 	size_t w;
 	unsigned char contactName[25] = "";
 
@@ -243,7 +244,8 @@ static int handle_notice(char *word[], char *word_eol[], hexchat_event_attrs *at
 		return HEXCHAT_EAT_NONE;
 	}
 
-	keystore_store_key(sender_nick, DH1080_computeSymetricKey(dh, dh_pubkey));
+	fixedNick = fixNickForIni(sender_nick);
+	keystore_store_key(fixedNick, DH1080_computeSymetricKey(dh, dh_pubkey));
 	hexchat_printf(ph, "Key for %s successfully set!", sender_nick);
 	return HEXCHAT_EAT_ALL;
 }
@@ -286,6 +288,7 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
  */
 static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
 	const char *nick;
+	char* fixedNick;
 	const char *key;
 
 	/* Check syntax */
@@ -305,7 +308,8 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
 		}
 
     /* Set password */
-    if (keystore_store_key(nick, key)) {
+	fixedNick = fixNickForIni(nick);
+	if (keystore_store_key(fixedNick, key)) {
         hexchat_printf(ph, "Stored key for %s\n", nick);
     } else {
         hexchat_printf(ph, "\00305Failed to store key in addon_fishlim.conf\n");
@@ -319,6 +323,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
  */
 static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     const char *nick;
+	char* fixedNick;
     
     /* Check syntax */
     if (*word[2] == '\0' || *word[3] != '\0') {
@@ -329,7 +334,8 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     nick = g_strstrip (word_eol[2]);
     
     /* Delete the given nick from the key store */
-    if (keystore_delete_nick(nick)) {
+	fixedNick = fixNickForIni(nick);
+	if (keystore_delete_nick(fixedNick)) {
         hexchat_printf(ph, "Deleted key for %s\n", nick);
     } else {
         hexchat_printf(ph, "\00305Failed to delete key in addon_fishlim.conf!\n");
