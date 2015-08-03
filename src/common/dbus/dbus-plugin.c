@@ -366,6 +366,7 @@ remote_object_connect (RemoteObject *obj,
 	static guint count = 0;
 	char *sender, *path;
 	RemoteObject *remote_object;
+	gchar count_buffer[15];
 	
 	sender = dbus_g_method_get_sender (context);
 	remote_object = g_hash_table_lookup (clients, sender);
@@ -374,7 +375,8 @@ remote_object_connect (RemoteObject *obj,
 		g_free (sender);
 		return TRUE;
 	}
-	path = g_build_filename (DBUS_OBJECT_PATH, count++, NULL);
+	g_snprintf(count_buffer, sizeof(count_buffer), "%u", count++);
+	path = g_build_filename (DBUS_OBJECT_PATH, count_buffer, NULL);
 	remote_object = g_object_new (REMOTE_TYPE_OBJECT, NULL);
 	remote_object->dbus_path = path;
 	remote_object->filename = g_path_get_basename (filename);
