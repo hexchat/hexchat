@@ -1,6 +1,7 @@
 /*
 
-  Copyright (c) 2010-2011 Samuel Lidén Borell <samuel@kodafritt.se>
+  Copyright (c) 2010-2011 Samuel Lidén Borell <samuel@kodafritt.se> | /setkey /delkey and channel msg enc/decryption
+				2015      <the.cypher@gmail.com>					| /keyx /topic+ /msg+ /notice+
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -40,9 +41,12 @@ static const char plugin_name[] = "FiSHLiM";
 static const char plugin_desc[] = "Encryption plugin for the FiSH protocol. Less is More!";
 static const char plugin_version[] = "0.1.0";
 
-static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
-static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
-static const char usage_keyx[] = "Usage: KEYX [<nick>], performs DH1080 key-exchange with <nick>";
+static const char usage_setkey[]	= "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
+static const char usage_delkey[]	= "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
+static const char usage_keyx[]		= "Usage: KEYX [<nick>], performs DH1080 key-exchange with <nick>";
+static const char usage_topic[]		= "Usage: TOPIC+ <topic>, sets a new encrypted topic for the current channel";
+static const char usage_notice[]	= "Usage: NOTICE+ <nick or #channel> <notice>";
+static const char usage_msg[]		= "Usage: MSG+ <nick or #channel> <message>";
 
 static hexchat_plugin *ph;
 
@@ -335,6 +339,105 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
 }
 
 /**
+ * Command handler for /topic+
+ */
+static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
+	char* target;
+	char* buf;
+	char* topic = word_eol[2];
+
+
+	if (topic == 0 || *topic == 0)
+	{
+		hexchat_printf(ph, usage_topic);
+		return HEXCHAT_EAT_ALL;
+	}
+
+	target = (char *)hexchat_get_info(ph, "channel");
+	if (target == 0 || (*target != '#' && *target != '&'))
+	{
+		hexchat_printf(ph, "Please change to the channel window where you want to set the topic!");
+		return HEXCHAT_EAT_ALL;
+	}
+
+	buf = fish_encrypt_for_nick(target, topic);
+	if (buf == NULL)
+	{
+		hexchat_printf(ph, "/topic+ error, no key found for %s", target);
+		return HEXCHAT_EAT_ALL;
+	}
+
+	hexchat_commandf(ph, "TOPIC %s +OK %s\n", target, buf);
+
+	return HEXCHAT_EAT_ALL;
+}
+
+/**
+ * Command handler for /notice+
+ */
+int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
+{
+	char* buf;
+	char *target = word[2];
+	char *notice = word_eol[3];
+
+
+	if (target == 0 || *target == 0 || notice == 0 || *notice == 0)
+	{
+		hexchat_printf(ph, usage_notice);
+		return HEXCHAT_EAT_ALL;
+	}
+
+	buf = fish_encrypt_for_nick(target, notice);
+	if (buf == NULL)
+	{
+		hexchat_printf(ph, "/notice+ error, no key found for %s.", target);
+		return HEXCHAT_EAT_ALL;
+	}
+
+	hexchat_commandf(ph, "quote NOTICE %s :+OK %s", target, buf);
+
+	hexchat_printf(ph, "Notice sent to %s", target);
+	return HEXCHAT_EAT_ALL;
+}
+
+/**
+ * Command handler for /msg+
+ */
+int handle_crypt_msg(char *word[], char *word_eol[], void *userdata)
+{
+	char* buf;
+	char *target = word[2];
+	char *message = word_eol[3];
+	hexchat_context *query_ctx;
+
+	if (target == 0 || *target == 0 || message == 0 || *message == 0)
+	{
+		hexchat_printf(ph, usage_msg);
+		return HEXCHAT_EAT_ALL;
+	}
+
+	buf = fish_encrypt_for_nick(target, message);
+	if (buf == NULL) {
+		hexchat_printf(ph, "/msg+ error, no key found for %s", target);
+		return HEXCHAT_EAT_ALL;
+	}
+
+	hexchat_commandf(ph, "PRIVMSG %s :+OK %s", target, buf);
+
+	query_ctx = hexchat_find_context(ph, NULL, target);
+	if (query_ctx)
+	{	// open query/channel window found, display the event there
+		hexchat_set_context(ph, query_ctx);
+
+		hexchat_printf(ph, buf, hexchat_get_info(ph, "nick"), message);
+	}
+	else hexchat_printf(ph, "Message sent to %s", target);
+
+	return HEXCHAT_EAT_ALL;
+}
+
+/**
  * Returns the plugin name version information.
  */
 void hexchat_plugin_get_info(const char **name, const char **desc,
@@ -363,6 +466,9 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
     hexchat_hook_command(ph, "SETKEY", HEXCHAT_PRI_NORM, handle_setkey, usage_setkey, NULL);
     hexchat_hook_command(ph, "DELKEY", HEXCHAT_PRI_NORM, handle_delkey, usage_delkey, NULL);
 	hexchat_hook_command(ph, "KEYX", HEXCHAT_PRI_NORM, handle_keyx, usage_keyx, NULL);
+	hexchat_hook_command(ph, "TOPIC+", HEXCHAT_PRI_NORM, handle_crypt_topic, usage_topic, NULL);
+	hexchat_hook_command(ph, "NOTICE+", HEXCHAT_PRI_NORM, handle_crypt_notice, usage_notice, NULL);
+	hexchat_hook_command(ph, "MSG+", HEXCHAT_PRI_NORM, handle_crypt_msg, usage_msg, NULL);
     
     /* Add handlers */
     hexchat_hook_command(ph, "", HEXCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
