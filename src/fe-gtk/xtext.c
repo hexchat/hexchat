@@ -949,6 +949,7 @@ gtk_xtext_find_char (GtkXText * xtext, int x, int y, int *off, int *out_of_bound
 	textentry *ent;
 	int line;
 	int subline;
+	int outofbounds;
 
 	/* Adjust y value for negative rounding, double to int */
 	if (y < 0)
@@ -960,7 +961,9 @@ gtk_xtext_find_char (GtkXText * xtext, int x, int y, int *off, int *out_of_bound
 		return NULL;
 
 	if (off)
-		*off = gtk_xtext_find_x (xtext, x, ent, subline, line, out_of_bounds);
+		*off = gtk_xtext_find_x (xtext, x, ent, subline, line, &outofbounds);
+	if (out_of_bounds)
+		*out_of_bounds = outofbounds;
 
 	return ent;
 }
@@ -1308,17 +1311,15 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	textentry *ent_start;
 	int offset_start = 0;
 	int offset_end = 0;
-	int oob_start = 0;
-	int oob_end = 0;
 	textentry *low_ent, *high_ent;
-	int low_x, low_y, low_offs, low_oob;
-	int high_x, high_y, high_offs, high_oob, high_len;
+	int low_x, low_y, low_offs;
+	int high_x, high_y, high_offs, high_len;
 
 	if (xtext->buffer->text_first == NULL)
 		return;
 
-	ent_start = gtk_xtext_find_char (xtext, xtext->select_start_x, xtext->select_start_y, &offset_start, &oob_start);
-	ent_end = gtk_xtext_find_char (xtext, xtext->select_end_x, xtext->select_end_y, &offset_end, &oob_end);
+	ent_start = gtk_xtext_find_char (xtext, xtext->select_start_x, xtext->select_start_y, &offset_start, NULL);
+	ent_end = gtk_xtext_find_char (xtext, xtext->select_end_x, xtext->select_end_y, &offset_end, NULL);
 	if (ent_start == NULL && ent_end == NULL)
 		return;
 
@@ -1330,12 +1331,10 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		low_x = xtext->select_end_x;
 		low_y = xtext->select_end_y;
 		low_offs = offset_end;
-		low_oob = oob_end;
 		high_ent = ent_start;
 		high_x = xtext->select_start_x;
 		high_y = xtext->select_start_y;
 		high_offs = offset_start;
-		high_oob = oob_start;
 	}
 	else
 	{
@@ -1344,12 +1343,10 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		low_x = xtext->select_start_x;
 		low_y = xtext->select_start_y;
 		low_offs = offset_start;
-		low_oob = oob_start;
 		high_ent = ent_end;
 		high_x = xtext->select_end_x;
 		high_y = xtext->select_end_y;
 		high_offs = offset_end;
-		high_oob = oob_end;
 	}
 	if (low_ent == NULL)
 	{
@@ -1372,14 +1369,9 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		if (gtk_xtext_get_word (xtext, high_x, high_y, NULL, &high_offs, &high_len, NULL) == NULL)
 			high_len = high_offs == high_ent->str_len? 0: -1; /* -1 for the space, 0 if at the end */
 		high_offs += high_len;
-		if (low_oob)
-		{
-			if (low_y >= xtext->adj->value && xtext->mark_stamp) 
-				low_offs = 0;
-			else
-				low_offs = xtext->buffer->last_offset_start;
-		}
-		if (high_oob)
+		if (low_y < 0)
+			low_offs = xtext->buffer->last_offset_start;
+		if (high_y > xtext->buffer->window_height)
 			high_offs = xtext->buffer->last_offset_end;
 	}
 	/* line/ent selection */
@@ -1391,14 +1383,9 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	/* character selection */
 	else
 	{
-		if (low_oob)
-		{
-			if (low_y >= xtext->adj->value && xtext->mark_stamp)
-				low_offs = 0;
-			else
-				low_offs = xtext->buffer->last_offset_start;
-		}
-		if (high_oob)
+		if (low_y < 0)
+			low_offs = xtext->buffer->last_offset_start;
+		if (high_y > xtext->buffer->window_height)
 			high_offs = xtext->buffer->last_offset_end;
 	}
 
