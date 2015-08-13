@@ -4957,6 +4957,7 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 		if (buf->window_width != w)
 		{
 			buf->window_width = w;
+			buf->window_height = h;
 			gtk_xtext_calc_lines (buf, FALSE);
 			if (buf->scrollbar_down)
 				gtk_adjustment_set_value (xtext->adj, xtext->adj->upper -
