@@ -1220,9 +1220,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 							text++;
 					}
 					len = strlen (text);
-					if (text[0] == 1 && text[len - 1] == 1)	/* ctcp */
+					if (text[0] == 1)	/* ctcp */
 					{
-						text[len - 1] = 0;
+						if (text[len - 1] == 1)
+						{
+							text[len - 1] = 0;
+						}
 						text++;
 						if (g_ascii_strncasecmp (text, "ACTION", 6) != 0)
 							flood_check (nick, ip, serv, sess, 0);
