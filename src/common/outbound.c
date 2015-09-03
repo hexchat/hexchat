@@ -2679,17 +2679,26 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_mode (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	/* +channel channels are dying, let those servers whine about modes.
-	 * return info about current channel if available and no info is given */
-	if ((*word[2] == '+') || (*word[2] == 0) || (!is_channel(sess->server, word[2]) &&
-				!(rfc_casecmp(sess->server->nick, word[2]) == 0)))
+	/* We allow omitting the target, so we have to figure it out:
+	 * - Can only use info from channels or dialogs
+	 * - Empty arg is always sess info
+	 * - Assume + is mode not channel
+	 * - We know valid channels and our nick
+	 * - We cannot easily know if other nick or valid mode (Need to store 004)
+	 */
+	if ((sess->type != SESS_CHANNEL && sess->type != SESS_DIALOG)
+	    || (!(*word[2] == '-' || *word[2] == '+' || *word[2] == '\0')
+	        && (is_channel (sess->server, word[2]) || !rfc_casecmp (sess->server->nick, word[2])))
+	   )
+	{
+		sess->server->p_mode (sess->server, word[2], word_eol[3]);
+	}
+	else
 	{
 		if(sess->channel[0] == 0)
 			return FALSE;
 		sess->server->p_mode (sess->server, sess->channel, word_eol[2]);
 	}
-	else
-		sess->server->p_mode (sess->server, word[2], word_eol[3]);
 	return TRUE;
 }
 
