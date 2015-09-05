@@ -280,9 +280,6 @@ static const struct defaultserver def[] =
 	{"SeilEn.de",	0},
 	{0,			"irc.seilen.de"},
 
-	{"SeionIRC", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.seion.us"},
-
 	{"Serenity-IRC",	0},
 	{0,			"irc.serenity-irc.net"},
 
