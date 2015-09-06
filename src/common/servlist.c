@@ -286,11 +286,11 @@ static const struct defaultserver def[] =
 	{"Serenity-IRC",	0},
 	{0,			"irc.serenity-irc.net"},
 
-	{"Shivering-Isles", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{"MadIRC", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 #ifdef USE_OPENSSL
-	{0,				"irc.shivering-isles.de/+6697"},
+	{0,				"irc.madirc.net/+6697"},
 #endif
-	{0,				"irc.shivering-isles.de"},
+	{0,				"irc.madirc.net"},
 	
 	{"SlashNET",	0},
 	{0,			"irc.slashnet.org"},
