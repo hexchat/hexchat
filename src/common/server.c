@@ -487,6 +487,10 @@ ssl_do_connect (server * serv)
 	char buf[128];
 
 	g_sess = serv->server_session;
+
+	/* Set SNI hostname before connect */
+	SSL_set_tlsext_host_name(serv->ssl, serv->hostname);
+
 	if (SSL_connect (serv->ssl) <= 0)
 	{
 		char err_buf[128];
