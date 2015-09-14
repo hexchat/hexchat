@@ -3413,8 +3413,9 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 			serv->loginmethod = net->logintype;
 		}
-		else /* Otherwise ensure no password is sent */
+		else /* Otherwise ensure no password is sent or SASL started */
 		{
+			serv->loginmethod = LOGIN_DEFAULT;
 			serv->password[0] = 0;
 		}
 	}
