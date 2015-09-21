@@ -2,6 +2,8 @@ EXTRA_DIST = INSTALL LICENSE
 
 libdir = $(hexchatlibdir)
 
+EXTRA_DIST += fish.h irc.h keystore.h plugin_hexchat.h
+
 lib_LTLIBRARIES = fishlim.la
 fishlim_la_SOURCES = fish.c irc.c keystore.c plugin_hexchat.c
 fishlim_la_LDFLAGS = $(PLUGIN_LDFLAGS) -module
