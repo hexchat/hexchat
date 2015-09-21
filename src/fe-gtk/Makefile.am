@@ -14,6 +14,7 @@ EXTRA_DIST = \
 	chanview-tree.c custom-list.h editlist.h fe-gtk.h fkeys.h gtkutil.h joind.h \
 	maingui.h menu.h notifygui.h  notifications palette.h pixmaps.h plugin-notification.h \
 	plugin-tray.h plugingui.c plugingui.h rawlog.h sexy-iso-codes.h \
+	servlistgui.h setup.h \
 	sexy-spell-entry.h textgui.h urlgrab.h userlistgui.h xtext.h \
 	../../data/hexchat.gresource.xml
 

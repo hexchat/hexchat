@@ -1,5 +1,7 @@
 libdir = $(hexchatlibdir)
 
+EXTRA_DIST = parse.h pci.h xsys.h match.h
+
 lib_LTLIBRARIES = sysinfo.la
 sysinfo_la_SOURCES = match.c parse.c pci.c xsys.c
 sysinfo_la_LDFLAGS = $(PLUGIN_LDFLAGS) -module
