@@ -263,39 +263,31 @@ AS_IF([test "x$python" != xno], [
 		AS_CASE([$python],
 			dnl set python2 default here
 			[python2], [
-				PKG_CHECK_MODULES([PY], [python-2.7],
-								  [PY_VER="`$PKG_CONFIG --modversion python-2.7`"],
-								  [true])
+				PYTHON_VERSION=2
+				AX_PYTHON_DEVEL([>= '2.7'])
 			],
 			dnl set python3 default here
 			[python3], [
-				PKG_CHECK_MODULES([PY], [python-3.4],
-								  [PY_VER="`$PKG_CONFIG --modversion python-3.4`"],
-								  [true])
-				AS_IF([test "$PY_VER" = ""], [
-					PKG_CHECK_MODULES([PY], [python-3.3],
-									  [PY_VER="`$PKG_CONFIG --modversion python-3.3`"],
-									  [true])
-				])
-			], 
+				PYTHON_VERSION=3
+				AX_PYTHON_DEVEL([>= '3.3'])
+			],
 			dnl add broken versions here
 			[python2.5|python2.6|python3.1|python3.2], [
 				AC_MSG_WARN(Unsupported Python version ${python}!)
 			],
+			dnl user supplied version
 			[python*], [
-				python="python-${python#python}" # stay posix compliant
-				PKG_CHECK_MODULES([PY], [${python}],
-								  [PY_VER="`$PKG_CONFIG --modversion ${python}`"],
-								  [AC_MSG_WARN(Cannot find "${python}.pc"!)])
+				PYTHON_VERSION="${python#python}"
+				AX_PYTHON_DEVEL()
 			],[
 				AC_MSG_WARN(Unsupported Python ${python}!)
 			]
 		)
 		AC_MSG_CHECKING(Python version)
 
-		AS_IF([test "$PY_VER"], [
-			AC_MSG_RESULT($PY_VER)
-			python="python-${PY_VER}"
+		AS_IF([test "$ac_python_version" != ""], [
+			AC_MSG_RESULT($ac_python_version)
+			python="python-${ac_python_version}"
 		], [
 			AC_MSG_RESULT(Not found)
 			python=no
@@ -656,8 +648,8 @@ AC_SUBST(COMMON_LIBS)
 AC_SUBST(COMMON_CFLAGS)
 AC_SUBST(PERL_CFLAGS)
 AC_SUBST(PERL_LDFLAGS)
-AC_SUBST(PY_CFLAGS)
-AC_SUBST(PY_LIBS)
+AC_SUBST(PYTHON_CPPFLAGS)
+AC_SUBST(PYTHON_LIBS)
 AC_SUBST(DBUS_CFLAGS)
 AC_SUBST(DBUS_LIBS)
 AC_SUBST(OPENSSL_LIBS)
