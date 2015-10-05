@@ -1462,14 +1462,24 @@ int
 portable_mode (void)
 {
 #ifdef WIN32
-	if ((_access( "portable-mode", 0 )) != -1)
+	static int is_portable = -1;
+
+	if (G_UNLIKELY(is_portable == -1))
 	{
-		return 1;
+		char *path = g_win32_get_package_installation_directory_of_module (NULL);
+		char *filename;
+
+		if (path == NULL)
+			path = g_strdup (".");
+
+		filename = g_build_filename (path, "portable-mode", NULL);
+		is_portable = g_file_test (filename, G_FILE_TEST_EXISTS);
+
+		g_free (path);
+		g_free (filename);
 	}
-	else
-	{
-		return 0;
-	}
+
+	return is_portable;
 #else
 	return 0;
 #endif
