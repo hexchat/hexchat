@@ -17,7 +17,7 @@ EXTRA_DIST = \
 	sexy-spell-entry.h textgui.h urlgrab.h userlistgui.h xtext.h \
 	../../data/hexchat.gresource.xml
 
-BUILT_SOURCES = resources.c
+BUILT_SOURCES = resources.h resources.c
 
 CLEANFILES = $(BUILT_SOURCES)
 
@@ -43,12 +43,15 @@ endif
 hexchat_SOURCES = ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	dccgui.c editlist.c fe-gtk.c fkeys.c gtkutil.c ignoregui.c joind.c menu.c \
 	maingui.c notifygui.c $(notify_c) palette.c pixmaps.c plugin-tray.c $(plugingui_c) \
-	plugin-notification.c rawlog.c resources.c servlistgui.c setup.c $(iso_codes_c) \
+	plugin-notification.c rawlog.c resources.h resources.c servlistgui.c setup.c $(iso_codes_c) \
 	sexy-spell-entry.c textgui.c urlgrab.c userlistgui.c xtext.c
 hexchat_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_builddir)/src/common
 
+resources.h: $(top_srcdir)/data/hexchat.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(top_srcdir)/data --generate-dependencies $(top_srcdir)/data/hexchat.gresource.xml)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/data --generate-header --manual-register $<
+
 resources.c: $(top_srcdir)/data/hexchat.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(top_srcdir)/data --generate-dependencies $(top_srcdir)/data/hexchat.gresource.xml)
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/data --generate-source $<
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/data --generate-source --manual-register $<
 
 if DO_STATIC_ANALYSIS
 analyze_plists = $(hexchat_SOURCES:%.c=%.plist)
