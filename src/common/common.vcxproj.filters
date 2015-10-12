@@ -9,6 +9,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\sysinfo">
+      <UniqueIdentifier>{d5a3d281-8400-4663-b60d-036ade5fbff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sysinfo\win32">
+      <UniqueIdentifier>{a6d80da7-bc0a-4f1f-a156-c8cdafb7831d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cfgfiles.h">
@@ -110,6 +116,9 @@
     <ClInclude Include="plugin-identd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sysinfo\sysinfo.h">
+      <Filter>Source Files\sysinfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cfgfiles.c">
@@ -186,6 +195,9 @@
     </ClCompile>
     <ClCompile Include="plugin-identd.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sysinfo\win32\backend.c">
+      <Filter>Source Files\sysinfo\win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

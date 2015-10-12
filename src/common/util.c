@@ -32,7 +32,7 @@
 #ifdef WIN32
 #include <sys/timeb.h>
 #include <io.h>
-#include <VersionHelpers.h>
+#include "./sysinfo/sysinfo.h"
 #else
 #include <unistd.h>
 #include <pwd.h>
@@ -458,158 +458,38 @@ get_cpu_info (double *mhz, int *cpus)
 
 #ifdef WIN32
 
-static int
-get_mhz (void)
-{
-	HKEY hKey;
-	int result, data, dataSize;
-
-	if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, "Hardware\\Description\\System\\"
-		"CentralProcessor\\0", 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
-	{
-		dataSize = sizeof (data);
-		result = RegQueryValueEx (hKey, "~MHz", 0, 0, (LPBYTE)&data, &dataSize);
-		RegCloseKey (hKey);
-		if (result == ERROR_SUCCESS)
-			return data;
-	}
-	return 0;	/* fails on Win9x */
-}
-
 int
 get_cpu_arch (void)
 {
-	SYSTEM_INFO si;
-
-	GetSystemInfo (&si);
-
-	if (si.wProcessorArchitecture == 9)
-	{
-		return 64;
-	}
-	else
-	{
-		return 86;
-	}
+	return sysinfo_get_build_arch ();
 }
 
 char *
 get_sys_str (int with_cpu)
 {
-	static char verbuf[64];
-	static char winver[20];
-	double mhz;
+	static char *without_cpu_buffer = NULL;
+	static char *with_cpu_buffer = NULL;
 
-	/* Broken since major bumped to 10, should start to work eventually.
-	 * No, IsWindowsVersionOrGreater (10, 0, 0) doesn't work either.
-	 * TODO: replace with IsWindows10OrGreater() once added to the SDK.
-	 */
-	if (IsWindowsVersionOrGreater (6, 4, 0))
+	if (with_cpu == 0)
 	{
-		if (IsWindowsServer ())
+		if (without_cpu_buffer == NULL)
 		{
-			strcpy (winver, "Server 10");
+			without_cpu_buffer = sysinfo_get_os ();
 		}
-		else
-		{
-			strcpy (winver, "10");
-		}
-	}
-	else if (IsWindows8Point1OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2012 R2");
-		}
-		else
-		{
-			strcpy (winver, "8.1");
-		}
-	}
-	else if (IsWindows8OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2012");
-		}
-		else
-		{
-			strcpy (winver, "8");
-		}
-	}
-	else if (IsWindows7SP1OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008 R2 SP1");
-		}
-		else
-		{
-			strcpy (winver, "7 SP1");
-		}
-	}
-	else if (IsWindows7OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008 R2");
-		}
-		else
-		{
-			strcpy (winver, "7");
-		}
-	}
-	else if (IsWindowsVistaSP2OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008 SP2");
-		}
-		else
-		{
-			strcpy (winver, "Vista SP2");
-		}
-	}
-	else if (IsWindowsVistaSP1OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008 SP1");
-		}
-		else
-		{
-			strcpy (winver, "Vista SP1");
-		}
-	}
-	else if (IsWindowsVistaOrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008");
-		}
-		else
-		{
-			strcpy (winver, "Vista");
-		}
-	}
-	else
-	{
-		strcpy (winver, "Unknown");
+
+		return without_cpu_buffer;
 	}
 
-	mhz = get_mhz ();
-	if (mhz && with_cpu)
+	if (with_cpu_buffer == NULL)
 	{
-		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
-		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
-		sprintf (verbuf, "Windows %s [%.2f%s]",	winver, cpuspeed, cpuspeedstr);
+		char *os = sysinfo_get_os ();
+		char *cpu = sysinfo_get_cpu ();
+		with_cpu_buffer = g_strconcat (os, " [", cpu, "]", NULL);
+		g_free (cpu);
+		g_free (os);
 	}
-	else
-	{
-		sprintf (verbuf, "Windows %s", winver);
-	}
-	
-	return verbuf;
+
+	return with_cpu_buffer;
 }
 
 #else
