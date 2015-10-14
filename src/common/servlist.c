@@ -188,6 +188,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.gimp.org"},
 	{0,			"irc.gnome.org"},
 
+	{"gorfnets",	0},
+	{0,			"gorf.chat"},
+
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
 
