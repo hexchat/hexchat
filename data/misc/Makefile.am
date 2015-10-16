@@ -26,4 +26,6 @@ uninstall-hook:
 	$(UPDATE_MIME_DATABASE);
 	$(UPDATE_DESKTOP_DATABASE);
 
+EXTRA_DIST = hexchat.appdata.xml.in hexchat.desktop.in htm.desktop.in htm-mime.xml
+
 CLEANFILES = $(appdata_DATA) $(data_desktop_DATA)

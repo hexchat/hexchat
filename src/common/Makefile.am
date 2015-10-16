@@ -20,6 +20,7 @@ EXTRA_DIST = \
 	inbound.h \
 	inet.h \
 	make-te.c \
+	marshalers.list \
 	modes.h \
 	network.h \
 	notify.h \
