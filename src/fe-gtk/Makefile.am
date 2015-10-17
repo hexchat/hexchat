@@ -46,13 +46,15 @@ hexchat_SOURCES = ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	sexy-spell-entry.c textgui.c urlgrab.c userlistgui.c xtext.c
 hexchat_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_builddir)/src/common
 
-resources.h: $(top_srcdir)/data/hexchat.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(top_srcdir)/data --generate-dependencies $(top_srcdir)/data/hexchat.gresource.xml)
+resources_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(top_srcdir)/data --generate-dependencies $(top_srcdir)/data/hexchat.gresource.xml)
+
+resources.h: $(top_srcdir)/data/hexchat.gresource.xml $(resources_files)
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/data --generate-header --manual-register $<
 
-resources.c: $(top_srcdir)/data/hexchat.gresource.xml $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(top_srcdir)/data --generate-dependencies $(top_srcdir)/data/hexchat.gresource.xml)
+resources.c: $(top_srcdir)/data/hexchat.gresource.xml $(resources_files)
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/data --generate-source --manual-register $<
 
-EXTRA_DIST += $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir)/data $(top_srcdir)/data/hexchat.gresource.xml)
+EXTRA_DIST += $(resources_files)
 
 if DO_STATIC_ANALYSIS
 analyze_plists = $(hexchat_SOURCES:%.c=%.plist)
