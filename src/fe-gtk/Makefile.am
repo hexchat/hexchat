@@ -39,10 +39,11 @@ notify_c = notifications/notification-dummy.c
 endif
 endif
 
+nodist_hexchat_SOURCES = resources.h resources.c
 hexchat_SOURCES = ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	dccgui.c editlist.c fe-gtk.c fkeys.c gtkutil.c ignoregui.c joind.c menu.c \
 	maingui.c notifygui.c $(notify_c) palette.c pixmaps.c plugin-tray.c $(plugingui_c) \
-	plugin-notification.c rawlog.c resources.h resources.c servlistgui.c setup.c $(iso_codes_c) \
+	plugin-notification.c rawlog.c servlistgui.c setup.c $(iso_codes_c) \
 	sexy-spell-entry.c textgui.c urlgrab.c userlistgui.c xtext.c
 hexchat_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_builddir)/src/common
 
