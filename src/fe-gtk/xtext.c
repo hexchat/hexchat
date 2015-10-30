@@ -4649,8 +4649,8 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 	if (right_len == -1)
 		right_len = strlen (right_text);
 
-	if (right_len >= sizeof (buf->xtext->scratch_buffer))
-		right_len = sizeof (buf->xtext->scratch_buffer) - 1;
+	if (left_len + right_len + 2 >= sizeof (buf->xtext->scratch_buffer))
+		right_len = sizeof (buf->xtext->scratch_buffer) - left_len - 2;
 
 	if (right_text[right_len-1] == '\n')
 		right_len--;
@@ -4669,6 +4669,9 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 	ent->str = str;
 	ent->str_len = left_len + 1 + right_len;
 	ent->indent = (buf->indent - left_width) - buf->xtext->space_width;
+
+	/* This is copied into the scratch buffer later, double check math */
+	g_assert (ent->str_len < sizeof (buf->xtext->scratch_buffer));
 
 	if (buf->time_stamp)
 		space = buf->xtext->stamp_width;
