@@ -337,9 +337,15 @@ static const struct defaultserver def[] =
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
 	{0,			"irc.techno-link.com"},
-	
+
 	{"ValleyNode", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.valleynode.net"},
+
+	{"Volatile", 0, 0, 0, LOGIN_CUSTOM, "MSG UserServ!bot@volatile.services login %u %p"},
+#ifdef USE_OPENSSL
+	{0,			"irc.volatile.club/+9999"},
+#endif
+	{0,			"irc.volatile.club"},
 
 	{"Worldnet",		0},
 	{0,			"irc.worldnet.net"},
