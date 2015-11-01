@@ -1362,12 +1362,16 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 	/* word selection */
 	if (xtext->word_select)
 	{
+		gchar *word;
 		/* a word selection cannot be started if the cursor is out of bounds in gtk_xtext_button_press */
-		gtk_xtext_get_word (xtext, low_x, low_y, NULL, &low_offs, NULL, NULL);
+		g_free (gtk_xtext_get_word (xtext, low_x, low_y, NULL, &low_offs, NULL, NULL));
 
 		/* in case the cursor is out of bounds we keep offset_end from gtk_xtext_find_char and fix the length */
-		if (gtk_xtext_get_word (xtext, high_x, high_y, NULL, &high_offs, &high_len, NULL) == NULL)
+		word = gtk_xtext_get_word (xtext, high_x, high_y, NULL, &high_offs, &high_len, NULL);
+		if(word == NULL)
 			high_len = high_offs == high_ent->str_len? 0: -1; /* -1 for the space, 0 if at the end */
+		else
+			g_free (word);
 		high_offs += high_len;
 		if (low_y < 0)
 			low_offs = xtext->buffer->last_offset_start;
@@ -1565,8 +1569,10 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	if (!word)
 		word = ent->str;
 
+	if(len_to_offset < 0)
+		len_to_offset = 0;
 	/* remove color characters from the length */
-	gtk_xtext_strip_color (word, len_to_offset, xtext->scratch_buffer, &len_to_offset, NULL, FALSE);
+	g_free (gtk_xtext_strip_color (word, len_to_offset, NULL, &len_to_offset, NULL, FALSE));
 
 	last = word;
 	end = ent->str + ent->str_len;
@@ -1590,7 +1596,7 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	if (ret_len)
 		*ret_len = len;		/* Length before stripping */
 
-	word = gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, slp, FALSE);
+	word = gtk_xtext_strip_color (word, len, NULL, NULL, slp, FALSE);
 
 	/* avoid turning the cursor into a hand for non-url part of the word */
 	if (xtext->urlcheck_function && xtext->urlcheck_function (GTK_WIDGET (xtext), word))
@@ -1600,11 +1606,17 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 
 		/* make sure we're not before the start of the match */
 		if (len_to_offset < start)
+		{
+			g_free (word);
 			return NULL;
+		}
 
 		/* and not after it */
 		if (len_to_offset - start >= end - start)
+		{
+			g_free (word);
 			return NULL;
+		}
 	}
 
 	return word;
@@ -1723,6 +1735,7 @@ gtk_xtext_get_word_adjust (GtkXText *xtext, int x, int y, textentry **word_ent, 
 			}
 		}
 	}
+	g_free (word);
 	g_slist_free_full (slp, g_free);
 
 	return word_type;
@@ -1976,7 +1989,7 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		if (!xtext->hilighting)
 		{
 			word = gtk_xtext_get_word (xtext, event->x, event->y, 0, 0, 0, 0);
-			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0, word ? word : NULL, event);
+			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0, word, event);
 		} else
 		{
 			xtext->hilighting = FALSE;
@@ -2000,13 +2013,8 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 	if (event->button == 3 || event->button == 2) /* right/middle click */
 	{
 		word = gtk_xtext_get_word (xtext, x, y, 0, 0, 0, 0);
-		if (word)
-		{
-			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0,
-								word, event);
-		} else
-			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0,
-								"", event);
+		g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0,
+							word, event);
 		return FALSE;
 	}
 
@@ -2016,8 +2024,10 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 	if (event->type == GDK_2BUTTON_PRESS)	/* WORD select */
 	{
 		gtk_xtext_check_mark_stamp (xtext, mask);
-		if (gtk_xtext_get_word (xtext, x, y, &ent, &offset, &len, 0))
+		word = gtk_xtext_get_word (xtext, x, y, &ent, &offset, &len, 0);
+		if (word)
 		{
+			g_free (word);
 			if (len == 0)
 				return FALSE;
 			gtk_xtext_selection_clear (xtext->buffer);
@@ -2033,8 +2043,10 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 	if (event->type == GDK_3BUTTON_PRESS)	/* LINE select */
 	{
 		gtk_xtext_check_mark_stamp (xtext, mask);
-		if (gtk_xtext_get_word (xtext, x, y, &ent, 0, 0, 0))
+		word = gtk_xtext_get_word (xtext, x, y, &ent, 0, 0, 0);
+		if (word)
 		{
+			g_free(word);
 			gtk_xtext_selection_clear (xtext->buffer);
 			ent->mark_start = 0;
 			ent->mark_end = ent->str_len;
@@ -2400,7 +2412,7 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 	int mbl;	/* multi-byte length */
 
 	if (outbuf == NULL)
-		new_str = g_malloc (len + 2);
+		new_str = g_malloc (len + 1);
 	else
 		new_str = outbuf;
 
@@ -2496,7 +2508,7 @@ gtk_xtext_text_width_ent (GtkXText *xtext, textentry *ent)
 		ent->slp = NULL;
 	}
 
-	new_buf = gtk_xtext_strip_color (ent->str, ent->str_len, xtext->scratch_buffer,
+	new_buf = gtk_xtext_strip_color (ent->str, ent->str_len, NULL,
 												NULL, &slp0, 2);
 
 	width =  backend_get_text_width_slp (xtext, new_buf, slp0);
@@ -2509,6 +2521,7 @@ gtk_xtext_text_width_ent (GtkXText *xtext, textentry *ent)
 		meta = slp->data;
 		meta->width = backend_get_text_width_emph (xtext, ent->str + meta->off, meta->len, meta->emph);
 	}
+	g_free (new_buf);
 	return width;
 }
 
@@ -2520,10 +2533,11 @@ gtk_xtext_text_width (GtkXText *xtext, unsigned char *text, int len)
 	GSList *slp;
 	int width;
 
-	new_buf = gtk_xtext_strip_color (text, len, xtext->scratch_buffer,
+	new_buf = gtk_xtext_strip_color (text, len, NULL,
 												&new_len, &slp, !xtext->ignore_hidden);
 
 	width =  backend_get_text_width_slp (xtext, new_buf, slp);
+	g_free (new_buf);
 	g_slist_free_full (slp, g_free);
 
 	return width;
@@ -4178,7 +4192,7 @@ gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent)
 		return gl;
 	}
 
-	str = gtk_xtext_strip_color (ent->str, ent->str_len, buf->xtext->scratch_buffer,
+	str = gtk_xtext_strip_color (ent->str, ent->str_len, NULL,
 										  &lstr, &slp, !buf->xtext->ignore_hidden);
 
 	/* Regular-expression matching --- */
@@ -4189,6 +4203,7 @@ gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent)
 
 		if (buf->search_re == NULL)
 		{
+			g_free (str);
 			return gl;
 		}
 		g_regex_match (buf->search_re, str, 0, &gmi);
@@ -4212,7 +4227,7 @@ gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent)
 		for (pos = hay, len = lhay; len;
 			  off += buf->search_lnee, pos = hay + off, len = lhay - off)
 		{
-			str = g_strstr_len (pos, len, buf->search_nee);
+			gchar *str = g_strstr_len (pos, len, buf->search_nee);
 			if (str == NULL)
 			{
 				break;
@@ -4226,6 +4241,7 @@ gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent)
 	}
 
 	/* Common processing --- */
+	g_free (str);
 	g_slist_free_full (slp, g_free);
 	return gl;
 }
@@ -4649,9 +4665,6 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 	if (right_len == -1)
 		right_len = strlen (right_text);
 
-	if (left_len + right_len + 2 >= sizeof (buf->xtext->scratch_buffer))
-		right_len = sizeof (buf->xtext->scratch_buffer) - left_len - 2;
-
 	if (right_text[right_len-1] == '\n')
 		right_len--;
 
@@ -4669,9 +4682,6 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 	ent->str = str;
 	ent->str_len = left_len + 1 + right_len;
 	ent->indent = (buf->indent - left_width) - buf->xtext->space_width;
-
-	/* This is copied into the scratch buffer later, double check math */
-	g_assert (ent->str_len < sizeof (buf->xtext->scratch_buffer));
 
 	if (buf->time_stamp)
 		space = buf->xtext->stamp_width;
@@ -4711,9 +4721,6 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp)
 
 	if (text[len-1] == '\n')
 		len--;
-
-	if (len >= sizeof (buf->xtext->scratch_buffer))
-		len = sizeof (buf->xtext->scratch_buffer) - 1;
 
 	ent = g_malloc (len + 1 + sizeof (textentry));
 	ent->str = (unsigned char *) ent + sizeof (textentry);

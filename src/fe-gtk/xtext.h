@@ -189,8 +189,6 @@ struct _GtkXText
 	int stamp_width;				  /* width of "[88:88:88]" */
 	int max_auto_indent;
 
-	unsigned char scratch_buffer[4096];
-
 	int (*urlcheck_function) (GtkWidget * xtext, char *word);
 
 	int jump_out_offset;	/* point at which to stop rendering */
