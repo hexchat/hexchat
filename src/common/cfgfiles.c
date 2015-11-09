@@ -585,16 +585,17 @@ const struct prefs vars[] =
 	{0, 0, 0},
 };
 
-static const char *
-convert_with_fallback (const char *str, const char *fallback)
+
+static char *
+convert_with_fallback (char *str, const char *fallback)
 {
-	const char *utf;
+	char *utf;
 
 #ifndef WIN32
 	/* On non-Windows, g_get_user_name and g_get_real_name return a string in system locale, so convert it to utf-8. */
 	utf = g_locale_to_utf8 (str, -1, NULL, NULL, 0);
 
-	g_free ((char*)str);
+	g_free (str);
 
 	/* The returned string is NULL if conversion from locale to utf-8 failed for any reason. Return the fallback. */
 	if (!utf)
@@ -711,7 +712,8 @@ get_default_spell_languages (void)
 void
 load_default_config(void)
 {
-	const char *username, *realname, *font, *langs;
+	char *username, *realname, *langs;
+	const char *font;
 	char *sp;
 #ifdef WIN32
 	wchar_t* roaming_path_wide;
@@ -904,9 +906,9 @@ load_default_config(void)
 	if (sp)
 		sp[0] = 0;	/* spaces in username would break the login */
 
-	g_free ((char *)username);
-	g_free ((char *)realname);
-	g_free ((char *)langs);
+	g_free (username);
+	g_free (realname);
+	g_free (langs);
 }
 
 int
