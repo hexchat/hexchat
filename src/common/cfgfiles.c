@@ -718,7 +718,7 @@ load_default_config(void)
 	gchar* roaming_path;
 #endif
 
-	username = g_get_user_name ();
+	username = g_strdup(g_get_user_name ());
 	if (!username)
 		username = g_strdup ("root");
 
