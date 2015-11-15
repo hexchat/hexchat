@@ -1409,10 +1409,21 @@ key_action_tab_clean(void)
 	}
 }
 
-/* For use in sorting the user list for completion */
+/* For use in sorting the user list for completion
+
+This sorts everyone by the last talked time except your own nick
+which is forced to the bottom of the list to avoid completing your
+own name, which is very unlikely.
+*/
 static int
 talked_recent_cmp (struct User *a, struct User *b)
 {
+	if (a->me)
+		return -1;
+
+	if (b->me)
+		return 1;
+
 	if (a->lasttalk < b->lasttalk)
 		return -1;
 
