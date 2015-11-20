@@ -569,9 +569,8 @@ ssl_do_connect (server * serv)
 							 NULL, 0);
 		} else
 		{
-			g_snprintf (buf, sizeof (buf), " * No Certificate");
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
+			g_snprintf (buf, sizeof (buf), "No Certificate");
+			goto conn_fail;
 		}
 
 		chiper_info = _SSL_get_cipher_info (serv->ssl);	/* static buffer */
