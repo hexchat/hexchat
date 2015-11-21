@@ -570,8 +570,6 @@ ssl_do_connect (server * serv)
 		} else
 		{
 			g_snprintf (buf, sizeof (buf), " * No Certificate");
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
 			goto conn_fail;
 		}
 
