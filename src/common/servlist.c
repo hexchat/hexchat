@@ -256,6 +256,9 @@ static const struct defaultserver def[] =
 	{"PIRC.PL",	0},
 	{0,			"irc.pirc.pl"},
 	
+	{"plutoirc.com",   0},
+	{0,			"irc.plutoirc.com"},
+	
 	{"PonyChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.ponychat.net"},
 
