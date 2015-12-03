@@ -187,6 +187,7 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	"ACCEL=<Primary>k\nInsert in Buffer\nD1:\nD2!\n\n"\
 	"ACCEL=<Primary>i\nInsert in Buffer\nD1:\nD2!\n\n"\
 	"ACCEL=<Primary>u\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"ACCEL=<Primary>r\nInsert in Buffer\nD1:\nD2!\n\n"\
 	"ACCEL=<Shift>Page_Down\nChange Selected Nick\nD1!\nD2!\n\n"\
 	"ACCEL=<Shift>Page_Up\nChange Selected Nick\nD1:Up\nD2!\n\n"\
 	"ACCEL=Page_Down\nScroll Page\nD1:Down\nD2!\n\n"\
