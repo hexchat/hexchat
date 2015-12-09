@@ -2255,6 +2255,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 				fe_open_url (word + start);
 			}
 		}
+		g_free (word);
 		return;
 	}
 
@@ -2279,23 +2280,19 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 	case WORD_HOST6:
 	case WORD_HOST:
 		word[end] = 0;
-		word += start;
-		menu_urlmenu (even, word);
+		menu_urlmenu (even, word + start);
 		break;
 	case WORD_NICK:
 		word[end] = 0;
-		word += start;
-		menu_nickmenu (sess, even, word, FALSE);
+		menu_nickmenu (sess, even, word + start, FALSE);
 		break;
 	case WORD_CHANNEL:
 		word[end] = 0;
-		word += start;
-		menu_chanmenu (sess, even, word);
+		menu_chanmenu (sess, even, word + start);
 		break;
 	case WORD_EMAIL:
 		word[end] = 0;
-		word += start;
-		tmp = g_strdup_printf ("mailto:%s", word + (ispunct (*word) ? 1 : 0));
+		tmp = g_strdup_printf ("mailto:%s", word + start + (ispunct (*word) ? 1 : 0));
 		menu_urlmenu (even, tmp);
 		g_free (tmp);
 		break;
@@ -2303,6 +2300,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 		menu_nickmenu (sess, even, sess->channel, FALSE);
 		break;
 	}
+	g_free (word);
 }
 
 void
