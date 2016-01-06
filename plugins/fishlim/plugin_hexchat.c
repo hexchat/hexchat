@@ -32,6 +32,10 @@
 #include "hexchat-plugin.h"
 #define HEXCHAT_MAX_WORDS 32
 
+#ifdef _Win32
+#define strcasecmp stricmp
+#endif
+
 #include "fish.h"
 #include "keystore.h"
 #include "irc.h"
@@ -263,7 +267,7 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
 		// no paramter given - try current window
 		target = (char *)hexchat_get_info(ph, "channel");
 		getinfoPtr = hexchat_get_info(ph, "network");
-		if (target == 0 || (getinfoPtr != 0 && stricmp(target, getinfoPtr) == 0))
+		if (target == 0 || (getinfoPtr != 0 && strcasecmp(target, getinfoPtr) == 0))
 		{
 			hexchat_printf(ph, usage_keyx);
 			return HEXCHAT_EAT_ALL;
