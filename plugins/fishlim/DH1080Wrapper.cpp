@@ -1,4 +1,4 @@
-#include "dh1080\dh1080.h"
+#include "dh1080/dh1080.h"
 #include "DH1080Wrapper.h"
 
 extern "C" {
