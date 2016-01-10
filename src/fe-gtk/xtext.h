@@ -219,7 +219,6 @@ struct _GtkXText
 	unsigned int word_select:1;
 	unsigned int line_select:1;
 	unsigned int button_down:1;
-	unsigned int hilighting:1;
 	unsigned int dont_render:1;
 	unsigned int dont_render2:1;
 	unsigned int cursor_hand:1;
