@@ -113,6 +113,7 @@ char *nocasestrstr (const char *text, const char *tofind);	/* util.c */
 int xtext_get_stamp_str (time_t, char **);
 static void gtk_xtext_render_page (GtkXText * xtext);
 static void gtk_xtext_calc_lines (xtext_buffer *buf, int);
+static gboolean gtk_xtext_is_selecting (GtkXText *xtext);
 static char *gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret);
 static textentry *gtk_xtext_nth (GtkXText *xtext, int line, int *subline);
 static void gtk_xtext_adjustment_changed (GtkAdjustment * adj,
@@ -1772,7 +1773,6 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 		xtext->select_end_x = x;
 		xtext->select_end_y = y;
 		gtk_xtext_selection_update (xtext, event, y, !redraw);
-		xtext->hilighting = TRUE;
 
 		/* user has pressed or released SHIFT, must redraw entire selection */
 		if (redraw)
@@ -1973,13 +1973,10 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 			return FALSE;
 		}
 
-		if (!xtext->hilighting)
+		if (!gtk_xtext_is_selecting (xtext))
 		{
 			word = gtk_xtext_get_word (xtext, event->x, event->y, 0, 0, 0, 0);
 			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0, word ? word : NULL, event);
-		} else
-		{
-			xtext->hilighting = FALSE;
 		}
 	}
 
@@ -2076,6 +2073,28 @@ gtk_xtext_selection_kill (GtkXText *xtext, GdkEventSelection *event)
 		gtk_xtext_unselect (xtext);
 #endif
 	return TRUE;
+}
+
+static gboolean
+gtk_xtext_is_selecting (GtkXText *xtext)
+{
+	textentry *ent;
+	xtext_buffer *buf;
+
+	buf = xtext->selection_buffer;
+	if (!buf)
+		return FALSE;
+
+	for (ent = buf->last_ent_start; ent; ent = ent->next)
+	{
+		if (ent->mark_start != -1 && ent->mark_end - ent->mark_start > 0)
+			return TRUE;
+
+		if (ent == buf->last_ent_end)
+			break;
+	}
+
+	return FALSE;
 }
 
 static char *
