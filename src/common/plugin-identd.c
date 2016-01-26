@@ -108,7 +108,10 @@ identd_read_ready (GDataInputStream *in_stream, GAsyncResult *res, ident_info *i
 		local = g_ascii_strtoull (read_buf, NULL, 0);
 		p = strchr (read_buf, ',');
 		if (!p)
+		{
+			g_free (read_buf);
 			goto cleanup;
+		}
 
 		remote = g_ascii_strtoull (p + 1, NULL, 0);
 		g_free (read_buf);

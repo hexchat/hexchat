@@ -2122,6 +2122,8 @@ update_is_resumable (struct DCC *dcc)
 		dcc->resume_error = 1;
 	}
 
+	g_free (filename_fs);
+
 	/* Now verify that this DCC is not already in progress from someone else */
 	if (dcc->resumable)
 	{
