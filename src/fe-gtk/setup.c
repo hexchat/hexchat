@@ -29,6 +29,7 @@
 #include "../common/userlist.h"
 #include "../common/util.h"
 #include "../common/hexchatc.h"
+#include "../common/outbound.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"
 #include "maingui.h"
@@ -653,6 +654,16 @@ static const setting network_settings[] =
 	{ST_TOGGLE,	N_("Use Authentication (HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(hex_net_proxy_user), 0, 0, sizeof prefs.hex_net_proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(hex_net_proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.hex_net_proxy_pass},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting identd_settings[] =
+{
+	{ST_HEADER, N_("Identd Server"), 0, 0, 0, 0},
+	{ST_TOGGLE, N_("Enabled"), P_OFFINTNL(hex_identd_server), N_("Server will respond with the networks username"), 0, 1},
+	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(hex_identd_port), N_("You must have permissions to listen on this port. "
+												   "If not 113 (0 defaults to this) then you must configure port-forwarding."), 0, 65535},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -1867,6 +1878,7 @@ static const char *const cata[] =
 	N_("Network"),
 		N_("Network setup"),
 		N_("File transfers"),
+		N_("Identd"),
 		NULL,
 	NULL
 };
@@ -1909,6 +1921,7 @@ setup_create_pages (GtkWidget *box)
 
 	setup_add_page (cata[15], book, setup_create_page (network_settings));
 	setup_add_page (cata[16], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[17], book, setup_create_page (identd_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
@@ -2070,7 +2083,7 @@ unslash (char *dir)
 }
 
 void
-setup_apply_real (int new_pix, int do_ulist, int do_layout)
+setup_apply_real (int new_pix, int do_ulist, int do_layout, int do_identd)
 {
 	GSList *list;
 	session *sess;
@@ -2122,6 +2135,9 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 
 	if (do_layout)
 		menu_change_layout ();
+
+	if (do_identd)
+		handle_command (current_sess, "IDENTD reload", FALSE);
 }
 
 static void
@@ -2136,6 +2152,7 @@ setup_apply (struct hexchatprefs *pr)
 	int noapply = FALSE;
 	int do_ulist = FALSE;
 	int do_layout = FALSE;
+	int do_identd = FALSE;
 
 	if (strcmp (pr->hex_text_background, prefs.hex_text_background) != 0)
 		new_pix = TRUE;
@@ -2184,6 +2201,9 @@ setup_apply (struct hexchatprefs *pr)
 	if (DIFF (hex_gui_tab_layout))
 		do_layout = TRUE;
 
+	if (DIFF (hex_identd_server) || DIFF (hex_identd_port))
+		do_identd = TRUE;
+
 	if (color_change || (DIFF (hex_gui_ulist_color)) || (DIFF (hex_away_size_max)) || (DIFF (hex_away_track)))
 		do_ulist = TRUE;
 
@@ -2225,7 +2245,7 @@ setup_apply (struct hexchatprefs *pr)
 		strcpy (prefs.hex_irc_real_name, "realname");
 	}
 	
-	setup_apply_real (new_pix, do_ulist, do_layout);
+	setup_apply_real (new_pix, do_ulist, do_layout, do_identd);
 
 	if (noapply)
 		fe_message (_("Some settings were changed that require a"

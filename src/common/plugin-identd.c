@@ -22,6 +22,7 @@
 #include "hexchat-plugin.h"
 
 #define _(x) hexchat_gettext(ph,x)
+static void identd_start_server (void);
 
 static hexchat_plugin *ph;
 static GSocketService *service;
@@ -48,6 +49,20 @@ static int
 identd_command_cb (char *word[], char *word_eol[], void *userdata)
 {
 	g_return_val_if_fail (responses != NULL, HEXCHAT_EAT_ALL);
+
+	if (!g_strcmp0 (word[2], "reload"))
+	{
+		if (service)
+		{
+			g_socket_service_stop (service);
+			g_clear_object (&service);
+		}
+
+		identd_start_server ();
+
+		if (service)
+			return HEXCHAT_EAT_ALL;
+	}
 
 	if (service == NULL) /* If we are not running plugins can handle it */
 		return HEXCHAT_EAT_HEXCHAT;
@@ -176,8 +191,7 @@ identd_start_server (void)
 	{
 		hexchat_printf (ph, _("*\tError starting identd server: %s"), error->message);
 
-		g_object_unref (service);
-		service = NULL;
+		g_clear_object (&service);
 		return;
 	}
 	/*hexchat_printf (ph, "*\tIdentd listening on port: %d", port); */
