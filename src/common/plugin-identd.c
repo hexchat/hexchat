@@ -32,7 +32,6 @@ typedef struct ident_info
 {
 	GSocketConnection *conn;
 	gchar *username;
-	gchar read_buf[16];
 } ident_info;
 
 static int
@@ -97,21 +96,22 @@ identd_write_ready (GOutputStream *stream, GAsyncResult *res, ident_info *info)
 }
 
 static void
-identd_read_ready (GInputStream *in_stream, GAsyncResult *res, ident_info *info)
+identd_read_ready (GDataInputStream *in_stream, GAsyncResult *res, ident_info *info)
 {
 	GSocketAddress *sok_addr;
 	GOutputStream *out_stream;
 	guint64 local, remote;
-	gchar buf[512], *p;
+	gchar *read_buf, buf[512], *p;
 
-	if (g_input_stream_read_finish (in_stream, res, NULL))
+	if ((read_buf = g_data_input_stream_read_line_finish (in_stream, res, NULL, NULL)))
 	{
-		local = g_ascii_strtoull (info->read_buf, NULL, 0);
-		p = strchr (info->read_buf, ',');
+		local = g_ascii_strtoull (read_buf, NULL, 0);
+		p = strchr (read_buf, ',');
 		if (!p)
 			goto cleanup;
 
 		remote = g_ascii_strtoull (p + 1, NULL, 0);
+		g_free (read_buf);
 
 		if (!local || !remote || local > G_MAXUINT16 || remote > G_MAXUINT16)
 			goto cleanup;
@@ -153,6 +153,7 @@ static gboolean
 identd_incoming_cb (GSocketService *service, GSocketConnection *conn,
 					GObject *source, gpointer userdata)
 {
+	GDataInputStream *data_stream;
 	GInputStream *stream;
 	ident_info *info;
 
@@ -162,8 +163,10 @@ identd_incoming_cb (GSocketService *service, GSocketConnection *conn,
 	g_object_ref (conn);
 
 	stream = g_io_stream_get_input_stream (G_IO_STREAM (conn));
-	g_input_stream_read_async (stream, info->read_buf, sizeof (info->read_buf), G_PRIORITY_DEFAULT,
-							NULL, (GAsyncReadyCallback)identd_read_ready, info);
+	data_stream = g_data_input_stream_new (stream);
+	g_data_input_stream_set_newline_type (data_stream, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
+	g_data_input_stream_read_line_async (data_stream, G_PRIORITY_DEFAULT,
+										NULL, (GAsyncReadyCallback)identd_read_ready, info);
 
 	return TRUE;
 }
