@@ -154,7 +154,7 @@ struct hexchatprefs
 	unsigned int hex_gui_win_save;
 	unsigned int hex_gui_win_swap;
 	unsigned int hex_gui_win_ucount;
-	unsigned int hex_identd;
+	unsigned int hex_identd_server;
 	unsigned int hex_input_balloon_chans;
 	unsigned int hex_input_balloon_hilight;
 	unsigned int hex_input_balloon_priv;

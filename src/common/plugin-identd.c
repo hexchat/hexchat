@@ -159,7 +159,7 @@ identd_start_server (void)
 	GError *error = NULL;
 	int enabled, port = 113;
 
-	if (hexchat_get_prefs (ph, "identd", NULL, &enabled) == 3)
+	if (hexchat_get_prefs (ph, "identd_server", NULL, &enabled) == 3)
 	{
 		if (!enabled)
 			return;
