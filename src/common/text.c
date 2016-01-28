@@ -527,9 +527,12 @@ log_create_pathname (char *servname, char *channame, char *netname)
 		channame = log_create_filename (channame);
 	}
 
+	servname = log_create_filename (servname);
+
 	log_insert_vars (fname, sizeof (fname), prefs.hex_irc_logmask, channame, netname, servname);
 	g_free (channame);
 	g_free (netname);
+	g_free (servname);
 
 	/* insert time/date */
 	now = time (NULL);
