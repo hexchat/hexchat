@@ -1280,7 +1280,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 										  word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
 										  tags_data);
 				}
-				else if (strncasecmp (word[4], "LS", 2) == 0)
+				else if (strncasecmp (word[4], "LS", 2) == 0 || strncasecmp (word[4], "NEW", 3) == 0)
 				{
 					inbound_cap_ls (serv, word[1], 
 										 word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
@@ -1293,6 +1293,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				else if (strncasecmp (word[4], "LIST", 4) == 0)	
 				{
 					inbound_cap_list (serv, word[1], 
+											word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
+											tags_data);
+				}
+				else if (strncasecmp (word[4], "DEL", 3) == 0)
+				{
+					inbound_cap_del (serv, word[1],
 											word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
 											tags_data);
 				}

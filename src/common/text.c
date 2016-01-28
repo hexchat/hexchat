@@ -976,6 +976,11 @@ static char * const pevt_capack_help[] = {
 	N_("Acknowledged Capabilities")
 };
 
+static char * const pevt_capdel_help[] = {
+	N_("Server Name"),
+	N_("Removed Capabilities")
+};
+
 static char * const pevt_caplist_help[] = {
 	N_("Server Name"),
 	N_("Server Capabilities")

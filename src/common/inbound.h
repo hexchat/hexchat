@@ -95,6 +95,8 @@ void inbound_cap_ls (server *serv, char *nick, char *extensions,
 void inbound_cap_nak (server *serv, const message_tags_data *tags_data);
 void inbound_cap_list (server *serv, char *nick, char *extensions,
 							  const message_tags_data *tags_data);
+void inbound_cap_del (server *serv, char *nick, char *extensions,
+							  const message_tags_data *tags_data);
 void inbound_sasl_authenticate (server *serv, char *data);
 int inbound_sasl_error (server *serv);
 void inbound_sasl_supportedmechs (server *serv, char *list);

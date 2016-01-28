@@ -1633,6 +1633,64 @@ inbound_identified (server *serv)	/* 'MODE +e MYSELF' on freenode */
 	}
 }
 
+static void
+inbound_toggle_caps (server *serv, const char *extensions_str, gboolean enable)
+{
+	char **extensions;
+	gsize i;
+
+	extensions = g_strsplit (extensions_str, " ", 0);
+
+	for (i = 0; extensions[i]; i++)
+	{
+		const char *extension = extensions[i];
+
+		if (!strcmp (extension, "identify-msg"))
+			serv->have_idmsg = enable;
+		else if (!strcmp (extension, "multi-prefix"))
+			serv->have_namesx = enable;
+		else if (!strcmp (extension, "account-notify"))
+			serv->have_accnotify = enable;
+		else if (!strcmp (extension, "extended-join"))
+			serv->have_extjoin = enable;
+		else if (!strcmp (extension, "userhost-in-names"))
+			serv->have_uhnames = enable;
+		else if (!strcmp (extension, "server-time")
+				|| !strcmp (extension, "znc.in/server-time")
+				|| !strcmp (extension, "znc.in/server-time-iso"))
+			serv->have_server_time = enable;
+		else if (!strcmp (extension, "away-notify"))
+			serv->have_awaynotify = enable;
+		else if (!strcmp (extension, "sasl"))
+		{
+			serv->have_sasl = enable;
+			if (enable)
+			{
+				serv->sent_saslauth = FALSE;
+
+#ifdef USE_OPENSSL
+				if (serv->loginmethod == LOGIN_SASLEXTERNAL)
+				{
+					serv->sasl_mech = MECH_EXTERNAL;
+					tcp_send_len (serv, "AUTHENTICATE EXTERNAL\r\n", 23);
+				}
+				else
+				{
+					/* default to most secure, it will fallback if not supported */
+					serv->sasl_mech = MECH_AES;
+					tcp_send_len (serv, "AUTHENTICATE DH-AES\r\n", 21);
+				}
+#else
+				serv->sasl_mech = MECH_PLAIN;
+				tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
+#endif
+			}
+		}
+	}
+
+	g_strfreev (extensions);
+}
+
 void
 inbound_cap_ack (server *serv, char *nick, char *extensions,
 					  const message_tags_data *tags_data)
@@ -1640,63 +1698,17 @@ inbound_cap_ack (server *serv, char *nick, char *extensions,
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, serv->server_session, nick, extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
 
-	if (strstr (extensions, "identify-msg") != NULL)
-	{
-		serv->have_idmsg = TRUE;
-	}
+	inbound_toggle_caps (serv, extensions, TRUE);
+}
 
-	if (strstr (extensions, "multi-prefix") != NULL)
-	{
-		serv->have_namesx = TRUE;
-	}
+void
+inbound_cap_del (server *serv, char *nick, char *extensions,
+					 const message_tags_data *tags_data)
+{
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPDEL, serv->server_session, nick, extensions,
+								  NULL, NULL, 0, tags_data->timestamp);
 
-	if (strstr (extensions, "away-notify") != NULL)
-	{
-		serv->have_awaynotify = TRUE;
-	}
-
-	if (strstr (extensions, "account-notify") != NULL)
-	{
-		serv->have_accnotify = TRUE;
-	}
-					
-	if (strstr (extensions, "extended-join") != NULL)
-	{
-		serv->have_extjoin = TRUE;
-	}
-
-	if (strstr (extensions, "userhost-in-names") != NULL)
-	{
-		serv->have_uhnames = TRUE;
-	}
-
-	if (strstr (extensions, "server-time") != NULL)
-	{
-		serv->have_server_time = TRUE;
-	}
-
-	if (strstr (extensions, "sasl") != NULL)
-	{
-		serv->have_sasl = TRUE;
-		serv->sent_saslauth = FALSE;
-
-#ifdef USE_OPENSSL
-		if (serv->loginmethod == LOGIN_SASLEXTERNAL)
-		{
-			serv->sasl_mech = MECH_EXTERNAL;
-			tcp_send_len (serv, "AUTHENTICATE EXTERNAL\r\n", 23);
-		}
-		else
-		{
-			/* default to most secure, it will fallback if not supported */
-			serv->sasl_mech = MECH_AES;
-			tcp_send_len (serv, "AUTHENTICATE DH-AES\r\n", 21);
-		}
-#else
-		serv->sasl_mech = MECH_PLAIN;
-		tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
-#endif
-	}
+	inbound_toggle_caps (serv, extensions, FALSE);
 }
 
 static const char * const supported_caps[] = {
@@ -1712,6 +1724,7 @@ static const char * const supported_caps[] = {
 	/* IRCv3.2 */
 	"server-time"
 	"userhost-in-names",
+	"cap-notify",
 
 	/* ZNC */
 	"znc.in/server-time-iso",
