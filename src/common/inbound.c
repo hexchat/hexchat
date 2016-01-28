@@ -1722,7 +1722,7 @@ static const char * const supported_caps[] = {
 	/* "sasl", Handled manually */
 
 	/* IRCv3.2 */
-	"server-time"
+	"server-time",
 	"userhost-in-names",
 	"cap-notify",
 
