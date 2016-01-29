@@ -1147,7 +1147,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		case WORDL('A', 'U', 'T', 'H'):
 			inbound_sasl_authenticate (sess->server, word_eol[3]);
 			return;
-			
+
+		case WORDL('C', 'H', 'G', 'H'):
+			inbound_user_info (sess, NULL, word[3], word[4], NULL, nick, NULL,
+							   NULL, 0xff, tags_data);
+			return;
+
 		case WORDL('I','N','V','I'):
 			if (ignore_check (word[1], IG_INVI))
 				return;
