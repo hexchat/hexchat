@@ -1732,6 +1732,7 @@ server_set_defaults (server *serv)
 
 	serv->nickcount = 1;
 	serv->end_of_motd = FALSE;
+	serv->sent_capend = FALSE;
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;
 	serv->supports_monitor = FALSE;

@@ -572,6 +572,7 @@ typedef struct server
 	unsigned int sasl_mech;			/* mechanism for sasl auth */
 	unsigned int sent_saslauth:1;	/* have sent AUTHENICATE yet */
 	unsigned int sent_capend:1;	/* have sent CAP END yet */
+	unsigned int waiting_on_cap:1;	/* waiting on another line of CAP LS */
 #ifdef USE_OPENSSL
 	unsigned int use_ssl:1;				  /* is server SSL capable? */
 	unsigned int accept_invalid_cert:1;/* ignore result of server's cert. verify */

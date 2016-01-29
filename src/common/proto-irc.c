@@ -48,7 +48,7 @@
 static void
 irc_login (server *serv, char *user, char *realname)
 {
-	tcp_sendf (serv, "CAP LS\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
+	tcp_sendf (serv, "CAP LS 302\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
 	serv->sent_capend = FALSE;	/* track if we have finished */
 
 	if (serv->password[0] && serv->loginmethod == LOGIN_PASS)

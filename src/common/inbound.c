@@ -1735,11 +1735,22 @@ void
 inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 					 const message_tags_data *tags_data)
 {
-	char buffer[256];	/* buffer for requesting capabilities and emitting the signal */
+	char buffer[500];	/* buffer for requesting capabilities and emitting the signal */
 	gboolean want_cap = FALSE; /* format the CAP REQ string based on previous capabilities being requested or not */
 	gboolean want_sasl = FALSE; /* CAP END shouldn't be sent when SASL is requested, it needs further responses */
 	char **extensions;
 	int i;
+
+	if (g_str_has_prefix (extensions_str, "* "))
+	{
+		serv->waiting_on_cap = TRUE;
+		extensions_str += 2;
+		extensions_str += extensions_str[0] == ':' ? 1 : 0;
+	}
+	else
+	{
+		serv->waiting_on_cap = FALSE;
+	}
 
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPLIST, serv->server_session, nick,
 								  extensions_str, NULL, NULL, 0, tags_data->timestamp);
@@ -1750,8 +1761,16 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 
 	for (i=0; extensions[i]; i++)
 	{
-		const char *extension = extensions[i];
+		char *extension = extensions[i];
+		char *value;
 		gsize x;
+
+		/* CAP 3.2 can provide values */
+		if ((value = strchr (extension, '=')))
+		{
+			*value = '\0';
+			value++;
+		}
 
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
 		if (!g_strcmp0 (extension, "sasl") &&
@@ -1785,7 +1804,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 									  tags_data->timestamp);
 		tcp_sendf (serv, "%s\r\n", g_strchomp (buffer));
 	}
-	if (!want_sasl)
+	if (!want_sasl && !serv->waiting_on_cap)
 	{
 		/* if we use SASL, CAP END is dealt via raw numerics */
 		serv->sent_capend = TRUE;
@@ -1796,14 +1815,22 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 void
 inbound_cap_nak (server *serv, const message_tags_data *tags_data)
 {
-	serv->sent_capend = TRUE;
-	tcp_send_len (serv, "CAP END\r\n", 9);
+	if (!serv->waiting_on_cap && !serv->sent_capend)
+	{
+		serv->sent_capend = TRUE;
+		tcp_send_len (serv, "CAP END\r\n", 9);
+	}
 }
 
 void
 inbound_cap_list (server *serv, char *nick, char *extensions,
 						const message_tags_data *tags_data)
 {
+	if (g_str_has_prefix (extensions, "* "))
+	{
+		extensions += 2;
+		extensions += extensions[0] == ':' ? 1 : 0;
+	}
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, serv->server_session, nick, extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
 }
