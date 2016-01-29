@@ -1104,6 +1104,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			}
 			return;
 
+		case WORDL('P', 'I', 'N', 'G'):
+			tcp_sendf (sess->server, "PONG %s\r\n", word_eol[3]);
+			return;
+
 		case WORDL('P','O','N','G'):
 			inbound_ping_reply (serv->server_session,
 									  (word[4][0] == ':') ? word[4] + 1 : word[4],
@@ -1137,6 +1141,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 
 		case WORDL('A','C','C','O'):
 			inbound_account (serv, nick, word[3], tags_data);
+			return;
+
+		case WORDL('A', 'U', 'T', 'H'):
+			inbound_sasl_authenticate (sess->server, word_eol[3]);
 			return;
 			
 		case WORDL('I','N','V','I'):
