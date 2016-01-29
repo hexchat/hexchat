@@ -569,7 +569,8 @@ process_numeric (session * sess, int n,
 		inbound_user_info_start (sess, word[4], tags_data);
 		if (!serv->skip_next_whois)
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS1, whois_sess, word[4], word[5],
-										  word[6], word_eol[8] + 1, 0, tags_data->timestamp);
+										  word[6], (word_eol[8][0] == ':') ? word_eol[8] + 1 : word_eol[8],
+										  0, tags_data->timestamp);
 		else
 			inbound_user_info (sess, NULL, word[5], word[6], NULL, word[4],
 									 word_eol[8][0] == ':' ? word_eol[8] + 1 : word_eol[8],
@@ -679,7 +680,7 @@ process_numeric (session * sess, int n,
 		sess = find_channel (serv, word[4]);
 		if (sess)
 		{
-			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANURL, sess, word[4], word[5] + 1,
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANURL, sess, word[4], (word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
 									NULL, NULL, 0, tags_data->timestamp); 
 		}
 		break;
