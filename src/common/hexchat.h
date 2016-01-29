@@ -422,9 +422,7 @@ typedef struct session
 
 /* SASL Mechanisms */
 #define MECH_PLAIN 0
-#define MECH_BLOWFISH 1
-#define MECH_AES 2
-#define MECH_EXTERNAL 3
+#define MECH_EXTERNAL 1
 
 typedef struct server
 {
@@ -546,7 +544,6 @@ typedef struct server
 	unsigned int skip_next_whois:1;	/* hide whois output */
 	unsigned int inside_whois:1;
 	unsigned int doing_dns:1;			/* /dns has been done */
-	unsigned int retry_sasl:1;		/* retrying another sasl mech */
 	unsigned int end_of_motd:1;		/* end of motd reached (logged in) */
 	unsigned int sent_quit:1;			/* sent a QUIT already? */
 	unsigned int use_listargs:1;		/* undernet and dalnet need /list >0,<10000 */
@@ -570,7 +567,6 @@ typedef struct server
 	unsigned int have_cert:1;	/* have loaded a cert */
 	unsigned int use_who:1;			/* whether to use WHO command to get dcc_ip */
 	unsigned int sasl_mech;			/* mechanism for sasl auth */
-	unsigned int sent_saslauth:1;	/* have sent AUTHENICATE yet */
 	unsigned int sent_capend:1;	/* have sent CAP END yet */
 	unsigned int waiting_on_cap:1;	/* waiting on another line of CAP LS */
 #ifdef USE_OPENSSL

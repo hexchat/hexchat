@@ -1727,6 +1727,7 @@ server_set_defaults (server *serv)
 	serv->chanmodes = g_strdup ("beI,k,l");
 	serv->nick_prefixes = g_strdup ("@%+");
 	serv->nick_modes = g_strdup ("ohv");
+	serv->sasl_mech = MECH_PLAIN;
 
 	server_set_encoding (serv, "UTF-8");
 

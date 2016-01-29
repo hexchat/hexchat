@@ -1633,6 +1633,12 @@ inbound_identified (server *serv)	/* 'MODE +e MYSELF' on freenode */
 	}
 }
 
+static const char *sasl_mechanisms[] =
+{
+	"PLAIN",
+	"EXTERNAL"
+};
+
 static void
 inbound_toggle_caps (server *serv, const char *extensions_str, gboolean enable)
 {
@@ -1666,24 +1672,12 @@ inbound_toggle_caps (server *serv, const char *extensions_str, gboolean enable)
 			serv->have_sasl = enable;
 			if (enable)
 			{
-				serv->sent_saslauth = FALSE;
-
 #ifdef USE_OPENSSL
 				if (serv->loginmethod == LOGIN_SASLEXTERNAL)
-				{
 					serv->sasl_mech = MECH_EXTERNAL;
-					tcp_send_len (serv, "AUTHENTICATE EXTERNAL\r\n", 23);
-				}
-				else
-				{
-					/* default to most secure, it will fallback if not supported */
-					serv->sasl_mech = MECH_AES;
-					tcp_send_len (serv, "AUTHENTICATE DH-AES\r\n", 21);
-				}
-#else
-				serv->sasl_mech = MECH_PLAIN;
-				tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 #endif
+				/* Mechanism either defaulted to PLAIN or server gave us list */
+				tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[serv->sasl_mech]);
 			}
 		}
 	}
@@ -1735,6 +1729,37 @@ static const char * const supported_caps[] = {
 	"twitch.tv/membership",
 };
 
+static int
+get_supported_mech (server *serv, const char *list)
+{
+	char **mechs = g_strsplit (list, ",", 0);
+	gsize i;
+	int ret = -1;
+
+	for (i = 0; mechs[i]; ++i)
+	{
+#ifdef USE_OPENSSL
+		if (serv->loginmethod == LOGIN_SASLEXTERNAL)
+		{
+			if (!strcmp (mechs[i], "EXTERNAL"))
+			{
+				ret = MECH_EXTERNAL;
+				break;
+			}
+		}
+		else
+#endif
+		if (!strcmp (mechs[i], "PLAIN"))
+		{
+			ret = MECH_PLAIN;
+			break;
+		}
+	}
+
+	g_strfreev (mechs);
+	return ret;
+}
+
 void
 inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 					 const message_tags_data *tags_data)
@@ -1781,6 +1806,13 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 			((serv->loginmethod == LOGIN_SASL && strlen (serv->password) != 0)
 				|| (serv->loginmethod == LOGIN_SASLEXTERNAL && serv->have_cert)))
 		{
+			if (value)
+			{
+				int sasl_mech = get_supported_mech (serv, value);
+				if (sasl_mech == -1) /* No supported mech */
+					continue;
+				serv->sasl_mech = sasl_mech;
+			}
 			want_cap = TRUE;
 			want_sasl = TRUE;
 			g_strlcat (buffer, "sasl ", sizeof(buffer));
@@ -1839,40 +1871,6 @@ inbound_cap_list (server *serv, char *nick, char *extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
 }
 
-static const char *sasl_mechanisms[] =
-{
-	"PLAIN",
-	"DH-BLOWFISH",
-	"DH-AES",
-	"EXTERNAL"
-};
-
-void
-inbound_sasl_supportedmechs (server *serv, char *list)
-{
-	int i;
-
-	if (serv->sasl_mech != MECH_EXTERNAL)
-	{
-		/* Use most secure one supported */
-		for (i = MECH_AES; i >= MECH_PLAIN; i--)
-		{
-			if (strstr (list, sasl_mechanisms[i]) != NULL)
-			{
-				serv->sasl_mech = i;
-				serv->retry_sasl = TRUE;
-				tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[i]);
-				return;
-			}
-		}
-	}
-
-	/* Abort, none supported */
-	serv->sent_saslauth = TRUE;
-	tcp_sendf (serv, "AUTHENTICATE *\r\n");
-	return;
-}
-
 void
 inbound_sasl_authenticate (server *serv, char *data)
 {
@@ -1880,12 +1878,10 @@ inbound_sasl_authenticate (server *serv, char *data)
 		char *user, *pass = NULL;
 		const char *mech = sasl_mechanisms[serv->sasl_mech];
 
-		/* Got a list of supported mechanisms from inspircd */
+		/* Got a list of supported mechanisms from outdated inspircd
+		 * just ignore it as it goes against spec */
 		if (strchr (data, ',') != NULL)
-		{
-			inbound_sasl_supportedmechs (serv, data);
 			return;
-		}
 
 		if (net->user && !(net->flags & FLAG_USE_GLOBAL))
 			user = net->user;
@@ -1898,12 +1894,6 @@ inbound_sasl_authenticate (server *serv, char *data)
 			pass = encode_sasl_pass_plain (user, serv->password);
 			break;
 #ifdef USE_OPENSSL
-		case MECH_BLOWFISH:
-			pass = encode_sasl_pass_blowfish (user, serv->password, data);
-			break;
-		case MECH_AES:
-			pass = encode_sasl_pass_aes (user, serv->password, data);
-			break;
 		case MECH_EXTERNAL:
 			pass = g_strdup ("+");
 			break;
@@ -1913,12 +1903,10 @@ inbound_sasl_authenticate (server *serv, char *data)
 		if (pass == NULL)
 		{
 			/* something went wrong abort */
-			serv->sent_saslauth = TRUE; /* prevent trying PLAIN */
 			tcp_sendf (serv, "AUTHENTICATE *\r\n");
 			return;
 		}
 
-		serv->sent_saslauth = TRUE;
 		tcp_sendf (serv, "AUTHENTICATE %s\r\n", pass);
 		g_free (pass);
 
@@ -1927,19 +1915,9 @@ inbound_sasl_authenticate (server *serv, char *data)
 								NULL,	NULL,	0,	0);
 }
 
-int
+void
 inbound_sasl_error (server *serv)
 {
-	if (serv->retry_sasl && !serv->sent_saslauth)
-		return 1;
-
-	/* If server sent 904 before we sent password,
-		* mech not support so fallback to next mech */
-	if (!serv->sent_saslauth && serv->sasl_mech != MECH_EXTERNAL && serv->sasl_mech != MECH_PLAIN)
-	{
-		serv->sasl_mech -= 1;
-		tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[serv->sasl_mech]);
-		return 1;
-	}
-	return 0;
+	/* Just abort, not much we can do */
+	tcp_sendf (serv, "AUTHENTICATE *\r\n");
 }

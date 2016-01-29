@@ -946,10 +946,9 @@ process_numeric (session * sess, int n,
 									  word_eol[6]+1, word[1], word[2], NULL, 0,
 									  tags_data->timestamp);
 		break;
-	case 903:	/* successful SASL auth */
 	case 904:	/* failed SASL auth */
-		if (inbound_sasl_error (serv))
-			break; /* might retry */
+		inbound_sasl_error (serv);
+	case 903:	/* successful SASL auth */
 	case 905:	/* failed SASL auth */
 	case 906:	/* aborted */
 	case 907:	/* attempting to re-auth after a successful auth */
@@ -963,7 +962,7 @@ process_numeric (session * sess, int n,
 		}
 		break;
 	case 908:	/* Supported SASL Mechs */
-		inbound_sasl_supportedmechs (serv, word[4]);
+		/* ignored for now, SASL 3.2 is a better solution and we only do PLAIN atm */
 		break;
 
 	default:
