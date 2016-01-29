@@ -1730,6 +1730,9 @@ static const char * const supported_caps[] = {
 	/* ZNC */
 	"znc.in/server-time-iso",
 	"znc.in/server-time",
+
+	/* Twitch */
+	"twitch.tv/membership",
 };
 
 void
