@@ -1,4 +1,4 @@
-# HexChat [![Build Status](https://travis-ci.org/hexchat/hexchat.svg?branch=master)](https://travis-ci.org/hexchat/hexchat) [![Build Status](http://http://node1.sored.pl:8090/job/hexchat/badge/icon)](http://http://node1.sored.pl:8090/job/hexchat/)
+# HexChat [![Build Status](https://travis-ci.org/hexchat/hexchat.svg?branch=master)](https://travis-ci.org/hexchat/hexchat) [![Build Status](http://node1.sored.pl:8090/job/hexchat/badge/icon)](http://node1.sored.pl:8090/job/hexchat/)
 
 HexChat is an IRC client for Windows and UNIX-like operating systems.  
 See [IRCHelp.org](http://irchelp.org) for information about IRC in general.  
