@@ -377,7 +377,8 @@ typedef struct session
 	char channelkey[64];			  /* XXX correct max length? */
 	int limit;						  /* channel user limit */
 	int logfd;
-	int scrollfd;							/* scrollback filedes */
+
+	GFile *scrollfile;							/* scrollback file */
 	int scrollwritten;					/* number of lines written */
 
 	char lastnick[NICKLEN];			  /* last nick you /msg'ed */

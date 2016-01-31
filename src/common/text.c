@@ -65,13 +65,15 @@ struct pevt_stage1
 static ca_context *ca_con;
 #endif
 
+#define SCROLLBACK_MAX 32000
+
 static void mkdir_p (char *filename);
 static char *log_create_filename (char *channame);
 
 static char *
 scrollback_get_filename (session *sess)
 {
-	char *net, *chan, *buf;
+	char *net, *chan, *buf, *ret = NULL;
 
 	net = server_get_network (sess->server, FALSE);
 	if (!net)
@@ -88,54 +90,19 @@ scrollback_get_filename (session *sess)
 		buf = NULL;
 	g_free (chan);
 
-	return buf;
+	if (buf)
+	{
+		ret = g_filename_from_utf8 (buf, -1, NULL, NULL, NULL);
+		g_free (buf);
+	}
+
+	return ret;
 }
-
-#if 0
-
-static void
-scrollback_unlock (session *sess)
-{
-	char buf[1024];
-
-	if (scrollback_get_filename (sess, buf, sizeof (buf) - 6) == NULL)
-		return;
-
-	strcat (buf, ".lock");
-	unlink (buf);
-}
-
-static gboolean
-scrollback_lock (session *sess)
-{
-	char buf[1024];
-	int fh;
-
-	if (scrollback_get_filename (sess, buf, sizeof (buf) - 6) == NULL)
-		return FALSE;
-
-	strcat (buf, ".lock");
-
-	if (access (buf, F_OK) == 0)
-		return FALSE;	/* can't get lock */
-
-	fh = open (buf, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
-	if (fh == -1)
-		return FALSE;
-
-	return TRUE;
-}
-
-#endif
 
 void
 scrollback_close (session *sess)
 {
-	if (sess->scrollfd != -1)
-	{
-		close (sess->scrollfd);
-		sess->scrollfd = -1;
-	}
+	g_clear_object (&sess->scrollfile);
 }
 
 /* shrink the file to roughly prefs.hex_text_max_lines */
@@ -143,29 +110,13 @@ scrollback_close (session *sess)
 static void
 scrollback_shrink (session *sess)
 {
-	char *file;
-	char *buf;
-	int fh;
-	int lines;
-	int line;
+	char *buf, *p;
 	gsize len;
-	char *p;
+	gint offset, lines = 0;
+	const gint max_lines = MIN(prefs.hex_text_max_lines, SCROLLBACK_MAX);
 
-	scrollback_close (sess);
-	sess->scrollwritten = 0;
-	lines = 0;
-
-	if ((file = scrollback_get_filename (sess)) == NULL)
-	{
-		g_free (file);
+	if (!g_file_load_contents (sess->scrollfile, NULL, &buf, &len, NULL, NULL))
 		return;
-	}
-
-	if (!g_file_get_contents (file, &buf, &len, NULL))
-	{
-		g_free (file);
-		return;
-	}
 
 	/* count all lines */
 	p = buf;
@@ -176,41 +127,37 @@ scrollback_shrink (session *sess)
 		p++;
 	}
 
-	fh = g_open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY | OFLAGS, 0644);
-	g_free (file);
-	if (fh == -1)
-	{
-		g_free (buf);
-		return;
-	}
+	offset = lines - max_lines;
 
-	line = 0;
+	/* now just go back to where we want to start the file */
 	p = buf;
+	lines = 0;
 	while (p != buf + len)
 	{
 		if (*p == '\n')
 		{
-			line++;
-			if (line >= lines - prefs.hex_text_max_lines &&
-				 p + 1 != buf + len)
+			lines++;
+			if (lines == offset)
 			{
 				p++;
-				write (fh, p, len - (p - buf));
 				break;
 			}
 		}
 		p++;
 	}
 
-	close (fh);
+	if (g_file_replace_contents (sess->scrollfile, p, strlen(p), NULL, FALSE,
+							G_FILE_CREATE_PRIVATE, NULL, NULL, NULL))
+		sess->scrollwritten = lines;
+
 	g_free (buf);
 }
 
 static void
 scrollback_save (session *sess, char *text, time_t stamp)
 {
+	GOutputStream *ostream;
 	char *buf;
-	int len;
 
 	if (sess->type == SESS_SERVER && prefs.hex_gui_tab_server == 1)
 		return;
@@ -226,16 +173,25 @@ scrollback_save (session *sess, char *text, time_t stamp)
 			return;
 	}
 
-	if (sess->scrollfd == -1)
+	if (!sess->scrollfile)
 	{
 		if ((buf = scrollback_get_filename (sess)) == NULL)
 			return;
 
-		sess->scrollfd = g_open (buf, O_CREAT | O_APPEND | O_WRONLY | OFLAGS, 0644);
+		sess->scrollfile = g_file_new_for_path (buf);
 		g_free (buf);
-		if (sess->scrollfd == -1)
-			return;
 	}
+	else
+	{
+		/* Users can delete the folder after it's created... */
+		GFile *parent = g_file_get_parent (sess->scrollfile);
+		g_file_make_directory_with_parents (parent, NULL, NULL);
+		g_object_unref (parent);
+	}
+
+	ostream = G_OUTPUT_STREAM(g_file_append_to (sess->scrollfile, G_FILE_CREATE_PRIVATE, NULL, NULL));
+	if (!ostream)
+		return;
 
 	if (!stamp)
 		stamp = time(0);
@@ -243,31 +199,30 @@ scrollback_save (session *sess, char *text, time_t stamp)
 		buf = g_strdup_printf ("T %d ", (int) stamp);
 	else
 		buf = g_strdup_printf ("T %" G_GINT64_FORMAT " ", (gint64)stamp);
-	write (sess->scrollfd, buf, strlen (buf));
-	g_free (buf);
 
-	len = strlen (text);
-	write (sess->scrollfd, text, len);
-	if (len && text[len - 1] != '\n')
-		write (sess->scrollfd, "\n", 1);
+	g_output_stream_write (ostream, buf, strlen (buf), NULL, NULL);
+	g_output_stream_write (ostream, text, strlen (text), NULL, NULL);
+	if (!g_str_has_suffix (text, "\n"))
+		g_output_stream_write (ostream, "\n", 1, NULL, NULL);
+
+	g_free (buf);
+	g_object_unref (ostream);
 
 	sess->scrollwritten++;
 
-	if ((sess->scrollwritten * 2 > prefs.hex_text_max_lines && prefs.hex_text_max_lines > 0) ||
-       sess->scrollwritten > 32000)
+	if ((sess->scrollwritten > prefs.hex_text_max_lines && prefs.hex_text_max_lines > 0) ||
+       sess->scrollwritten > SCROLLBACK_MAX)
 		scrollback_shrink (sess);
 }
 
 void
 scrollback_load (session *sess)
 {
-	char *buf;
-	char *text;
+	GInputStream *stream;
+	GDataInputStream *istream;
+	gchar *buf, *text;
+	gint lines = 0;
 	time_t stamp;
-	int lines;
-	GIOChannel *io;
-	GError *file_error = NULL;
-	GError *io_err = NULL;
 
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
@@ -280,32 +235,37 @@ scrollback_load (session *sess)
 			return;
 	}
 
-	if ((buf = scrollback_get_filename (sess)) == NULL)
+	if (!sess->scrollfile)
+	{
+		if ((buf = scrollback_get_filename (sess)) == NULL)
+			return;
+
+		sess->scrollfile = g_file_new_for_path (buf);
+		g_free (buf);
+	}
+
+	stream = G_INPUT_STREAM(g_file_read (sess->scrollfile, NULL, NULL));
+	if (!stream)
 		return;
 
-	io = g_io_channel_new_file (buf, "r", &file_error);
-	g_free (buf);
-	if (!io)
-		return;
-
-	lines = 0;
+	istream = g_data_input_stream_new (stream);
+	/*
+	 * This is to avoid any issues moving between windows/unix
+	 * but the docs mention an invalid \r without a following \n
+	 * can lock up the program... (Our write() always adds \n)
+	 */
+	g_data_input_stream_set_newline_type (istream, G_DATA_STREAM_NEWLINE_TYPE_ANY);
+	g_object_unref (stream);
 
 	while (1)
 	{
+		GError *err = NULL;
 		gsize n_bytes;
-		GIOStatus io_status;
 
-		io_status = g_io_channel_read_line (io, &buf, &n_bytes, NULL, &io_err);
-		
-		if (io_status == G_IO_STATUS_NORMAL)
+		buf = g_data_input_stream_read_line_utf8 (istream, &n_bytes, NULL, &err);
+
+		if (!err && buf)
 		{
-			char *buf_tmp;
-
-			n_bytes--;
-			buf_tmp = buf;
-			buf = g_strndup (buf_tmp, n_bytes);
-			g_free (buf_tmp);
-
 			/*
 			 * Some scrollback lines have three blanks after the timestamp and a newline
 			 * Some have only one blank and a newline
@@ -349,12 +309,27 @@ scrollback_load (session *sess)
 
 			g_free (buf);
 		}
+		else if (err)
+		{
+			/* If its only an encoding error it may be specific to the line */
+			if (g_error_matches (err, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE))
+			{
+				g_warning ("Invalid utf8 in scrollback file\n");
+				g_clear_error (&err);
+				continue;
+			}
 
-		else
+			/* For general errors just give up */
+			g_clear_error (&err);
 			break;
+		}
+		else /* No new line */
+		{
+			break;
+		}
 	}
 
-	g_io_channel_unref (io);
+	g_object_unref (istream);
 
 	sess->scrollwritten = lines;
 
@@ -386,14 +361,30 @@ log_close (session *sess)
 	}
 }
 
+/*
+ * filename should be in utf8 encoding and will be
+ * converted to filesystem encoding automatically.
+ */
 static void
 mkdir_p (char *filename)
 {
-	char *dirname = g_path_get_dirname (filename);
+	char *dirname, *dirname_fs;
+	GError *err = NULL;
+	
+	dirname = g_path_get_dirname (filename);
+	dirname_fs = g_filename_from_utf8 (dirname, -1, NULL, NULL, &err);
+	if (!dirname_fs)
+	{
+		g_warning ("%s", err->message);
+		g_error_free (err);
+		g_free (dirname);
+		return;
+	}
 
-	g_mkdir_with_parents (dirname, 0700);
+	g_mkdir_with_parents (dirname_fs, 0700);
 
 	g_free (dirname);
+	g_free (dirname_fs);
 }
 
 static char *

@@ -447,7 +447,6 @@ session_new (server *serv, char *from, int type, int focus)
 
 	sess->server = serv;
 	sess->logfd = -1;
-	sess->scrollfd = -1;
 	sess->type = type;
 
 	sess->alert_beep = SET_DEFAULT;
