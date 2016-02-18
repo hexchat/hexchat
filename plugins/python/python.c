@@ -1726,7 +1726,7 @@ Module_hexchat_get_info(PyObject *self, PyObject *args)
 	if (info == NULL) {
 		Py_RETURN_NONE;
 	}
-	if (strcmp (name, "gtkwin_ptr") == 0)
+	if (strcmp (name, "gtkwin_ptr") == 0 || strcmp (name, "win_ptr") == 0)
 		return PyUnicode_FromFormat("%p", info); /* format as pointer */
 	else
 		return PyUnicode_FromString(info);
