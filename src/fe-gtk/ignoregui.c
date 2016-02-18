@@ -306,7 +306,7 @@ ignore_new_entry_clicked (GtkWidget * wid, struct session *sess)
 }
 
 static void
-close_ignore_gui_callback ()
+close_ignore_gui_callback (void)
 {
 	ignore_save ();
 	ignorewin = 0;

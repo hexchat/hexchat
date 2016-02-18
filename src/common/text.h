@@ -69,7 +69,7 @@ extern const gchar* arbitrary_encoding_fallback_string;
 void sound_play (const char *file, gboolean quiet);
 void sound_play_event (int i);
 void sound_beep (session *);
-void sound_load ();
-void sound_save ();
+void sound_load (void);
+void sound_save (void);
 
 #endif

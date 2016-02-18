@@ -155,7 +155,7 @@ spell_accumulator(GSignalInvocationHint *hint, GValue *return_accu, const GValue
 }
 
 static void
-initialize_enchant ()
+initialize_enchant (void)
 {
 	GModule *enchant;
 	gpointer funcptr;

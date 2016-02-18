@@ -1478,7 +1478,7 @@ static char * const pevt_discon_help[] = {
 #include "textevents.h"
 
 static void
-pevent_load_defaults ()
+pevent_load_defaults (void)
 {
 	int i;
 
@@ -1495,7 +1495,7 @@ pevent_load_defaults ()
 }
 
 void
-pevent_make_pntevts ()
+pevent_make_pntevts (void)
 {
 	int i, m;
 	char out[1024];
@@ -1637,7 +1637,7 @@ pevent_load (char *filename)
 }
 
 static void
-pevent_check_all_loaded ()
+pevent_check_all_loaded (void)
 {
 	int i;
 

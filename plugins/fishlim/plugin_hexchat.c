@@ -48,7 +48,7 @@ static hexchat_plugin *ph;
 /**
  * Returns the path to the key store file.
  */
-gchar *get_config_filename() {
+gchar *get_config_filename(void) {
     char *filename_fs, *filename_utf8;
 
     filename_utf8 = g_build_filename(hexchat_get_info(ph, "configdir"), "addon_fishlim.conf", NULL);

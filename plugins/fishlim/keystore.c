@@ -39,7 +39,7 @@ static char *keystore_password = NULL;
 /**
  * Opens the key store file: ~/.config/hexchat/addon_fishlim.conf
  */
-static GKeyFile *getConfigFile() {
+static GKeyFile *getConfigFile(void) {
     gchar *filename = get_config_filename();
     
     GKeyFile *keyfile = g_key_file_new();
@@ -55,7 +55,7 @@ static GKeyFile *getConfigFile() {
 /**
  * Returns the key store password, or the default.
  */
-static const char *get_keystore_password() {
+static const char *get_keystore_password(void) {
     return (keystore_password != NULL ?
         keystore_password :
         /* Silly default value... */

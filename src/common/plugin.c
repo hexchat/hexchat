@@ -427,7 +427,7 @@ plugin_auto_load_cb (char *filename)
 }
 
 static char *
-plugin_get_libdir ()
+plugin_get_libdir (void)
 {
 	const char *libdir;
 

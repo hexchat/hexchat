@@ -94,8 +94,8 @@ struct gcomp_data
 	int elen;
 };
 
-static int key_load_kbs ();
-static int key_save_kbs ();
+static int key_load_kbs (void);
+static int key_save_kbs (void);
 static int key_action_handle_command (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);

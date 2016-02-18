@@ -80,7 +80,7 @@ static int tray_restore_timer = 0;
 
 
 void tray_apply_setup (void);
-static gboolean tray_menu_try_restore ();
+static gboolean tray_menu_try_restore (void);
 static void tray_cleanup (void);
 static void tray_init (void);
 
@@ -391,7 +391,7 @@ tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
 }
 
 static gboolean
-tray_menu_try_restore ()
+tray_menu_try_restore (void)
 {
 	tray_cleanup();
 	tray_init();

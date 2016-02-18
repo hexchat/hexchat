@@ -83,7 +83,7 @@ static gboolean dcc_send_data (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc);
 
-static int new_id()
+static int new_id(void)
 {
 	static int id = 0;
 	if (id == 0)

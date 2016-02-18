@@ -273,7 +273,7 @@ typedef struct {
 
 static PyObject *Util_BuildList(char *word[]);
 static PyObject *Util_BuildEOLList(char *word[]);
-static void Util_Autoload();
+static void Util_Autoload(void);
 static char *Util_Expand(char *filename);
 
 static int Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata);
@@ -283,7 +283,7 @@ static int Callback_Print(char *word[], void *userdata);
 static int Callback_Timer(void *userdata);
 static int Callback_ThreadTimer(void *userdata);
 
-static PyObject *XChatOut_New();
+static PyObject *XChatOut_New(void);
 static PyObject *XChatOut_write(PyObject *self, PyObject *args);
 static void XChatOut_dealloc(PyObject *self);
 
@@ -300,7 +300,7 @@ static PyObject *Context_FromContext(hexchat_context *context);
 static PyObject *Context_FromServerAndChannel(char *server, char *channel);
 
 static PyObject *Plugin_New(char *filename, PyObject *xcoobj);
-static PyObject *Plugin_GetCurrent();
+static PyObject *Plugin_GetCurrent(void);
 static PluginObject *Plugin_ByString(char *str);
 static Hook *Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
 			    PyObject *userdata, char *name, void *data);
@@ -336,11 +336,11 @@ static PyObject *Module_hexchat_pluginpref_list(PyObject *self, PyObject *args);
 static void IInterp_Exec(char *command);
 static int IInterp_Cmd(char *word[], char *word_eol[], void *userdata);
 
-static void Command_PyList();
+static void Command_PyList(void);
 static void Command_PyLoad(char *filename);
 static void Command_PyUnload(char *name);
 static void Command_PyReload(char *name);
-static void Command_PyAbout();
+static void Command_PyAbout(void);
 static int Command_Py(char *word[], char *word_eol[], void *userdata);
 
 /* ===================================================================== */
@@ -2518,7 +2518,7 @@ IInterp_Cmd(char *word[], char *word_eol[], void *userdata)
 /* Python command handling */
 
 static void
-Command_PyList()
+Command_PyList(void)
 {
 	GSList *list;
 	list = plugin_list;
@@ -2585,7 +2585,7 @@ Command_PyReload(char *name)
 }
 
 static void
-Command_PyAbout()
+Command_PyAbout(void)
 {
 	hexchat_print(ph, about);
 }
@@ -2777,7 +2777,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 }
 
 int
-hexchat_plugin_deinit()
+hexchat_plugin_deinit(void)
 {
 	GSList *list;
 
