@@ -581,13 +581,19 @@ CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [ \
 	-funsigned-char \
 	-Wall \
 	-Wextra \
+	-Wstrict-prototypes \
 	-Wno-unused-parameter \
 	-Wno-sign-compare \
 	-Wno-pointer-sign \
 	-Wno-missing-field-initializers \
 	-Wno-unused-result \
 	-Werror=format-security \
+	-Werror=init-self \
 	-Werror=declaration-after-statement \
+	-Werror=missing-include-dirs \
+	-Werror=date-time \
+	-Werror=implicit-function-declaration \
+	-Werror=pointer-arith \
 ])
 
 dnl *********************************************************************
