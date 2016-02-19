@@ -484,7 +484,7 @@ ssl_cb_verify (int ok, X509_STORE_CTX * ctx)
 static int
 ssl_do_connect (server * serv)
 {
-	char buf[128];
+	char buf[256]; // ERR_error_string() MUST have this size
 
 	g_sess = serv->server_session;
 
