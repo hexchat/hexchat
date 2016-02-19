@@ -570,8 +570,7 @@ ssl_do_connect (server * serv)
 		} else
 		{
 			g_snprintf (buf, sizeof (buf), " * No Certificate");
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
+			goto conn_fail;
 		}
 
 		chiper_info = _SSL_get_cipher_info (serv->ssl);	/* static buffer */
@@ -590,6 +589,7 @@ ssl_do_connect (server * serv)
 		case X509_V_OK:
 			{
 				X509 *cert = SSL_get_peer_certificate (serv->ssl);
+
 				int hostname_err;
 				if ((hostname_err = _SSL_check_hostname(cert, serv->hostname)) != 0)
 				{
@@ -1649,7 +1649,7 @@ server_set_encoding (server *serv, char *new_encoding)
 	if (new_encoding)
 	{
 		serv->encoding = g_strdup (new_encoding);
-		/* the serverlist GUI might have added a space 
+		/* the serverlist GUI might have added a space
 			and short description - remove it. */
 		space = strchr (serv->encoding, ' ');
 		if (space)
