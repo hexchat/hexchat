@@ -224,6 +224,9 @@ static const struct defaultserver def[] =
 	{"Krstarica", 0},
 	{0,			"irc.krstarica.com"},
 
+	{"LibraIRC",	0},
+	{0,			"irc.librairc.net"},
+
 #ifdef USE_OPENSSL
 	{"LinkNet",	0},
 	{0,			"irc.link-net.org/+7000"},
