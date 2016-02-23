@@ -86,7 +86,7 @@ _SSL_context_init (void (*info_cb_func))
 
 	SSLeay_add_ssl_algorithms ();
 	SSL_load_error_strings ();
-	ctx = SSL_CTX_new (SSLv23_client_method ());
+	ctx = SSL_CTX_new (TLS_client_method ());
 
 	SSL_CTX_set_session_cache_mode (ctx, SSL_SESS_CACHE_BOTH);
 	SSL_CTX_set_timeout (ctx, 300);
