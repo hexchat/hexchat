@@ -1018,6 +1018,33 @@ make_ping_time (void)
 	return (timev.tv_sec - 50000) * 1000 + timev.tv_usec/1000;
 }
 
+/*
+ * https://tools.ietf.org/html/rfc3454
+ */
+int
+rfc3454_casecmp (const char *s1, const char *s2)
+{
+	char *s1_lower, *s2_lower, *s1_normal, *s2_normal;
+	int ret;
+
+	if (strcmp (s1, s2) == 0)
+		return 0; /* Exact same already */
+
+	s1_lower = g_utf8_casefold(s1, -1);
+	s2_lower = g_utf8_casefold(s2, -1);
+	s1_normal = g_utf8_normalize(s1_lower, -1, G_NORMALIZE_NFKC);
+	s2_normal = g_utf8_normalize(s2_lower, -1, G_NORMALIZE_NFKC);
+
+	ret = strcmp (s1_normal, s2_normal);
+
+	g_free (s1_normal);
+	g_free (s2_normal);
+	g_free (s1_lower);
+	g_free (s2_lower);
+
+	return ret;
+}
+
 
 /************************************************************************
  *    This technique was borrowed in part from the source code to 

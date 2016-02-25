@@ -840,7 +840,9 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 		} else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
 		{
 			if (strcmp (word[w] + 12, "ascii") == 0)	/* bahamut */
-				serv->p_cmp = (void *)g_ascii_strcasecmp;
+				serv->p_cmp = g_ascii_strcasecmp;
+			else if (strcmp (word[w] + 12, "rfc3454") == 0)
+				serv->p_cmp = rfc3454_casecmp;
 		} else if (strncmp (word[w], "CHARSET=", 8) == 0)
 		{
 			if (g_ascii_strncasecmp (word[w] + 8, "UTF-8", 5) == 0)
