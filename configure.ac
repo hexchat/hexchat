@@ -579,6 +579,9 @@ dnl *********************************************************************
 CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [ \
 	-pipe \
 	-funsigned-char \
+	-fstack-protector-strong \
+	-fPIE \
+	-fPIC \
 	-Wall \
 	-Wextra \
 	-Wstrict-prototypes \
@@ -594,6 +597,12 @@ CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [ \
 	-Werror=date-time \
 	-Werror=implicit-function-declaration \
 	-Werror=pointer-arith \
+])
+
+AX_APPEND_LINK_FLAGS([ \
+	-pie \
+	-Wl,-z,relro \
+	-Wl,-z,now \
 ])
 
 dnl *********************************************************************
