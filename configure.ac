@@ -13,6 +13,11 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.11.1 dist-xz no-dist-gzip subdir-objects no-define foreign])
 AM_SILENT_RULES([yes])
 
+AC_DEFUN([HEX_CHECK_MACRO], [m4_ifndef([$1], [m4_fatal([macro ]$1[ is not defined. Is ]$2[ installed?])])])
+
+HEX_CHECK_MACRO([AX_IS_RELEASE], [autoconf-archive])
+HEX_CHECK_MACRO([PKG_PROG_PKG_CONFIG], [pkg-config])
+
 AX_IS_RELEASE([minor-version])
 AX_CHECK_ENABLE_DEBUG([yes])
 AX_REQUIRE_DEFINED([PKG_PROG_PKG_CONFIG])
@@ -576,7 +581,7 @@ dnl *********************************************************************
 dnl ** CFLAGS ***********************************************************
 dnl *********************************************************************
 
-CC_CHECK_FLAGS_APPEND([CFLAGS], [CFLAGS], [ \
+AX_APPEND_COMPILE_FLAGS([\
 	-pipe \
 	-funsigned-char \
 	-fstack-protector-strong \
