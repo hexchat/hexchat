@@ -40,32 +40,37 @@ int xs_parse_cpu(char *model, char *vendor, double *freq)
 #if defined(__i386__) || defined(__x86_64__) || defined(__powerpc__) || defined(__alpha__) || defined(__ia64__) || defined(__parisc__) || defined(__sparc__)
 	char buffer[bsize];
 #endif
-#if defined(__powerpc__)
-	char *pos = NULL;
-#endif
-	FILE *fp = fopen("/proc/cpuinfo", "r");
+	FILE *fp;
+
+	fp = fopen("/proc/cpuinfo", "r");
 	if(fp == NULL)
 		return 1;
-	
-	#if defined(__i386__) || defined(__x86_64__)
+
+#if defined(__i386__) || defined(__x86_64__)
+
 	while(fgets(buffer, bsize, fp) != NULL)
 	{
 		find_match_char(buffer, "model name", model);
 		find_match_char(buffer, "vendor_id", vendor);
 		find_match_double(buffer, "cpu MHz", freq);
 	}
-	#endif
-	#ifdef __powerpc__
-	while(fgets(buffer, bsize, fp) != NULL)
+
+#elif defined(__powerpc__)
 	{
-		find_match_char(buffer, "cpu", model);
-		find_match_char(buffer, "machine", vendor);
-		find_match_double(buffer, "clock", freq);
+		char *pos;
+
+		while(fgets(buffer, bsize, fp) != NULL)
+		{
+			find_match_char(buffer, "cpu", model);
+			find_match_char(buffer, "machine", vendor);
+			find_match_double(buffer, "clock", freq);
+		}
+		pos = strstr(model, ",");
+		if (pos != NULL)
+		    *pos = '\0';
 	}
-	pos = strstr(model, ",");
-	if (pos != NULL) *pos = '\0';
-	#endif
-	#ifdef __alpha__
+#elif defined( __alpha__)
+
 	while(fgets(buffer, bsize, fp) != NULL)
 	{
 		find_match_char(buffer, "cpu model", model);
@@ -73,37 +78,47 @@ int xs_parse_cpu(char *model, char *vendor, double *freq)
 		find_match_double(buffer, "cycle frequency [Hz]", freq);
 	}
 	*freq = *freq / 1000000;
-	#endif
-	#ifdef __ia64__
+
+#elif defined(__ia64__)
+
 	while(fgets(buffer, bsize, fp) != NULL)
 	{
 		find_match_char(buffer, "model", model);
 		find_match_char(buffer, "vendor", vendor);
 		find_match_double(buffer, "cpu MHz", freq);
 	}
-	#endif
-	#ifdef __parisc__
+
+#elif defined(__parisc__)
+
 	while(fgets(buffer, bsize, fp) != NULL)
 	{
 		find_match_char(buffer, "cpu  ", model);
 		find_match_char(buffer, "cpu family", vendor);
 		find_match_double(buffer, "cpu MHz", freq);
 	}
-	#endif
-	#ifdef __sparc__
-	DIR *dir;
-	struct dirent *entry;
-	FILE *fp2;
-	while(fgets(buffer, bsize, fp) != NULL)
-	{
-		find_match_char(buffer, "cpu	", model);
-		find_match_char(buffer, "type	", vendor);
-		find_match_double_hex(buffer, "Cpu0ClkTck", freq);
-	}
-	*freq = *freq / 1000000;
-	#endif
+
+#elif defined(__sparc__)
+    {
+	    DIR *dir;
+	    struct dirent *entry;
+	    FILE *fp2;
+
+	    while(fgets(buffer, bsize, fp) != NULL)
+	    {
+		    find_match_char(buffer, "cpu	", model);
+		    find_match_char(buffer, "type	", vendor);
+		    find_match_double_hex(buffer, "Cpu0ClkTck", freq);
+	    }
+	    *freq = *freq / 1000000;
+    }
+#else
+
+    fclose(fp);
+    return 1; /* Unsupported */
+
+#endif
+
 	fclose(fp);
-	
 	return 0;
 }
 
