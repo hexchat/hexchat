@@ -197,6 +197,7 @@ identd_start_server (void)
 	{
 		hexchat_printf (ph, _("*\tError starting identd server: %s"), error->message);
 
+		g_error_free (error);
 		g_clear_object (&service);
 		return;
 	}
