@@ -3439,10 +3439,9 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 	/* try to associate this connection with a listed network */
-	if (!serv->network)
-		/* search for this hostname in the entire server list */
-		serv->network = servlist_net_find_from_server (server_name);
-		/* may return NULL, but that's OK */
+	/* may return NULL, but that's OK */
+	if ((serv->network = servlist_net_find_from_server (server_name)))
+		server_set_encoding (serv, ((ircnet*)serv->network)->encoding);
 
 	return TRUE;
 }

@@ -1728,7 +1728,8 @@ server_set_defaults (server *serv)
 	serv->nick_modes = g_strdup ("ohv");
 	serv->sasl_mech = MECH_PLAIN;
 
-	server_set_encoding (serv, "UTF-8");
+	if (!serv->encoding)
+		server_set_encoding (serv, "UTF-8");
 
 	serv->nickcount = 1;
 	serv->end_of_motd = FALSE;

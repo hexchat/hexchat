@@ -714,8 +714,19 @@ servlist_net_find_from_server (char *server_name)
 		slist = net->servlist;
 		while (slist)
 		{
+			gsize hostname_len;
+			const char *hostname, *p;
+
 			serv = slist->data;
-			if (g_ascii_strcasecmp (serv->hostname, server_name) == 0)
+			hostname = serv->hostname;
+
+			/* Ignore port when comparing */
+			if ((p = strchr (hostname, '/')))
+				hostname_len = p - hostname;
+			else
+				hostname_len = strlen (hostname);
+
+			if (g_ascii_strncasecmp (hostname, server_name, hostname_len) == 0)
 				return net;
 			slist = slist->next;
 		}
