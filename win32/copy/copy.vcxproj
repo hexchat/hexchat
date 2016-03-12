@@ -56,7 +56,7 @@
     <None Include="changelog.url" />
     <None Include="readme.url" />
 
-    <Engines Include="$(DepsRoot)\lib\gtk-2.0\i686-pc-vs10\engines\**\*" />
+    <Engines Include="$(DepsRoot)\lib\gtk-2.0\i686-pc-vs14\engines\**\*" />
 
     <Share Include="share\**\*" />
 
@@ -69,7 +69,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Target Name="Build">
     <Copy SourceFiles="@(None)" DestinationFolder="$(HexChatRel)" />
-    <Copy SourceFiles="@(Engines)" DestinationFiles="@(Engines->'$(HexChatRel)\lib\gtk-2.0\i686-pc-vs10\engines\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(Engines)" DestinationFiles="@(Engines->'$(HexChatRel)\lib\gtk-2.0\i686-pc-vs14\engines\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Share)" DestinationFiles="@(Share->'$(HexChatRel)\share\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(DepsRootDocs)" DestinationFiles="@(DepsRootDocs->'$(HexChatRel)\share\doc\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="..\..\COPYING" DestinationFolder="$(HexChatRel)\share\doc\hexchat" />
