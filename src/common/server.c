@@ -313,6 +313,8 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 			}
 			return TRUE;
 		}
+		
+		serv->socket_recv = time (NULL);
 
 		i = 0;
 
