@@ -1319,7 +1319,7 @@ servlist_sanitize_hostname (char *host)
 	if (c && c == e)
 		*c = '/';
 
-	return ret;
+	return g_strstrip(ret);
 }
 
 /* remove leading slash */
