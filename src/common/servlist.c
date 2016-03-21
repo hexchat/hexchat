@@ -189,6 +189,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.gimp.org"},
 	{0,			"irc.gnome.org"},
 
+	{"GlobalGamers", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.globalgamers.net/+6660"},
+#endif
+	{0,			"irc.globalgamers.net"},
+
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
 
