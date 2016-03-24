@@ -82,6 +82,7 @@ extern GSList *network_list;
 
 #define CHALLENGEAUTH_ALGO		"HMAC-SHA-256"
 #define CHALLENGEAUTH_NICK		"Q@CServe.quakenet.org"
+#define CHALLENGEAUTH_FULLHOST		"Q!TheQBot@CServe.quakenet.org"
 
 /* DEFAULT_CHARSET is already defined in wingdi.h */
 #define IRC_DEFAULT_CHARSET		"UTF-8 (Unicode)"
