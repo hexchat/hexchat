@@ -117,7 +117,7 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.criten.net"},
 
-	{"DALnet", 0},
+	{"DALnet", 0, 0, 0, LOGIN_NICKSERV},
 	/* Self signed */
 	{0,			"us.dal.net"},
 
