@@ -533,6 +533,7 @@ struct
 	{ "spotify",   "",  URI_PATH },
 	{ "lastfm",    "/", URI_PATH },
 	{ "xfire",     "",  URI_PATH },
+	{ "ts3server", "",  URI_PATH },
 	{ NULL,        "",  0}
 };
 
