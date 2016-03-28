@@ -836,6 +836,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 			struct sockaddr addr;
 			int addr_len = sizeof (addr);
 			guint16 port;
+			ircnet *net = serv->network;
 
 			if (!getsockname (serv->sok, &addr, &addr_len))
 			{
@@ -845,8 +846,8 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 					port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
 
 				g_snprintf (outbuf, sizeof (outbuf), "IDENTD %"G_GUINT16_FORMAT" ", port);
-				if (serv->network && ((ircnet *)serv->network)->user)
-					g_strlcat (outbuf, ((ircnet *)serv->network)->user, sizeof (outbuf));
+				if (net && net->user && !(net->flags & FLAG_USE_GLOBAL))
+					g_strlcat (outbuf, net->user, sizeof (outbuf));
 				else
 					g_strlcat (outbuf, prefs.hex_irc_user_name, sizeof (outbuf));
 
