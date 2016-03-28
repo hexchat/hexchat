@@ -833,14 +833,14 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		}
 
 		{
-			struct sockaddr addr;
+			struct sockaddr_storage addr;
 			int addr_len = sizeof (addr);
 			guint16 port;
 			ircnet *net = serv->network;
 
-			if (!getsockname (serv->sok, &addr, &addr_len))
+			if (!getsockname (serv->sok, (struct sockaddr *)&addr, &addr_len))
 			{
-				if (addr.sa_family == AF_INET)
+				if (addr.ss_family == AF_INET)
 					port = ntohs(((struct sockaddr_in *)&addr)->sin_port);
 				else
 					port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
