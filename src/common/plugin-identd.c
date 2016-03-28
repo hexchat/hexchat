@@ -140,30 +140,47 @@ identd_read_ready (GDataInputStream *in_stream, GAsyncResult *res, ident_info *i
 		remote = g_ascii_strtoull (p + 1, NULL, 0);
 		g_free (read_buf);
 
+		g_snprintf (buf, sizeof (buf), "%"G_GUINT16_FORMAT", %"G_GUINT16_FORMAT" : ",
+					(guint16)MIN(local, G_MAXUINT16), (guint16)MIN(remote, G_MAXUINT16));
+
 		if (!local || !remote || local > G_MAXUINT16 || remote > G_MAXUINT16)
-			goto cleanup;
-
-		info->username = g_strdup (g_hash_table_lookup (responses, GINT_TO_POINTER (local)));
-		if (!info->username)
-			goto cleanup;
-		g_hash_table_remove (responses, GINT_TO_POINTER (local));
-
-		if ((sok_addr = g_socket_connection_get_remote_address (info->conn, NULL)))
 		{
-			GInetAddress *inet_addr;
-			gchar *addr;
+			g_strlcat (buf, "ERROR : INVALID-PORT\r\n", sizeof (buf));
+			g_info ("Identd: Recieved invalid port");
+		}
+		else
+		{
+			info->username = g_hash_table_lookup (responses, GINT_TO_POINTER (local));
+			if (!info->username)
+			{
+				g_strlcat (buf, "ERROR : NO-USER\r\n", sizeof (buf));
+				g_info ("Identd: Recieved invalid local port");
+			}
+			else
+			{
+				const gsize len = strlen (buf);
 
-			inet_addr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (sok_addr));
-			addr = g_inet_address_to_string (inet_addr);
+				g_hash_table_steal (responses, GINT_TO_POINTER (local));
 
-			hexchat_printf (ph, _("*\tServicing ident request from %s as %s"), addr, info->username);
+				g_snprintf (buf + len, sizeof (buf) - len, "USERID : UNIX : %s\r\n", info->username);
 
-			g_object_unref (sok_addr);
-			g_object_unref (inet_addr);
-			g_free (addr);
+				if ((sok_addr = g_socket_connection_get_remote_address (info->conn, NULL)))
+				{
+					GInetAddress *inet_addr;
+					gchar *addr;
+
+					inet_addr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (sok_addr));
+					addr = g_inet_address_to_string (inet_addr);
+
+					hexchat_printf (ph, _("*\tServicing ident request from %s as %s"), addr, info->username);
+
+					g_object_unref (sok_addr);
+					g_object_unref (inet_addr);
+					g_free (addr);
+				}
+			}
 		}
 
-		g_snprintf (buf, sizeof (buf), "%"G_GUINT16_FORMAT", %"G_GUINT16_FORMAT" : USERID : UNIX : %s\r\n", (guint16)local, (guint16)remote, info->username);
 		out_stream = g_io_stream_get_output_stream (G_IO_STREAM (info->conn));
 		g_output_stream_write_async (out_stream, buf, strlen (buf), G_PRIORITY_DEFAULT,
 									NULL, (GAsyncReadyCallback)identd_write_ready, info);
