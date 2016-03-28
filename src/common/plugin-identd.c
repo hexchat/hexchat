@@ -34,6 +34,32 @@ typedef struct ident_info
 	gchar *username;
 } ident_info;
 
+static void
+stream_close_ready (GObject *source, GAsyncResult *res, gpointer userdata)
+{
+	GError *err = NULL;
+
+	if (!g_io_stream_close_finish (G_IO_STREAM(source), res, &err))
+	{
+		g_warning ("%s", err->message);
+		g_error_free (err);
+	}
+
+	g_object_unref (source);
+}
+
+static void
+ident_info_free (ident_info *info)
+{
+	if (G_LIKELY(info))
+	{
+		g_io_stream_close_async (G_IO_STREAM(info->conn), G_PRIORITY_DEFAULT,
+								 NULL, stream_close_ready, NULL);
+		g_free (info->username);
+		g_free (info);
+	}
+}
+
 static int
 identd_cleanup_response_cb (gpointer userdata)
 {
@@ -90,9 +116,7 @@ identd_write_ready (GOutputStream *stream, GAsyncResult *res, ident_info *info)
 {
 	g_output_stream_write_finish (stream, res, NULL);
 
-	g_free (info->username);
-	g_object_unref (info->conn);
-	g_free (info);
+	ident_info_free (info);
 }
 
 static void
@@ -148,8 +172,7 @@ identd_read_ready (GDataInputStream *in_stream, GAsyncResult *res, ident_info *i
 	return;
 
 cleanup:
-	g_object_unref (info->conn);
-	g_free (info);
+	ident_info_free (info);
 }
 
 static gboolean
