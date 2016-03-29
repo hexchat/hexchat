@@ -76,11 +76,11 @@ chanopt_value (guint8 val)
 	switch (val)
 	{
 	case SET_OFF:
-		return "OFF";
+		return _("OFF");
 	case SET_ON:
-		return "ON";
+		return _("ON");
 	case SET_DEFAULT:
-		return "{unset}";
+		return _("{unset}");
 	default:
 		g_assert_not_reached ();
 	}
@@ -123,8 +123,10 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 	if (!quiet)
-		PrintTextf (sess, "\002Network\002: %s \002Channel\002: %s\n",
+		PrintTextf (sess, "\002%s\002: %s \002%s\002: %s\n",
+						_("Network"),
 						sess->server->network ? server_get_network (sess->server, TRUE) : _("<none>"),
+						_("Channel"),
 						sess->session_name[0] ? sess->session_name : _("<none>"));
 
 	while (i < sizeof (chanopt) / sizeof (channel_options))
