@@ -79,9 +79,22 @@ chanopt_value (guint8 val)
 		return "OFF";
 	case SET_ON:
 		return "ON";
-	default:
+	case SET_DEFAULT:
 		return "{unset}";
+	default:
+		g_assert_not_reached ();
 	}
+}
+
+static guint8
+str_to_chanopt (const char *str)
+{
+	if (!g_ascii_strcasecmp (str, "ON") || !strcmp (str, "1"))
+		return SET_ON;
+	else if (!g_ascii_strcasecmp (str, "OFF") || !strcmp (str, "0"))
+		return SET_OFF;
+	else
+		return SET_DEFAULT;
 }
 
 /* handle the /CHANOPT command */
@@ -106,14 +119,7 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (word[offset][0])
 	{
-		if (!g_ascii_strcasecmp (word[offset], "ON"))
-			newval = 1;
-		else if (!g_ascii_strcasecmp (word[offset], "OFF"))
-			newval = 0;
-		else if (word[offset][0] == 'u')
-			newval = SET_DEFAULT;
-		else
-			newval = atoi (word[offset]);
+		newval = str_to_chanopt (word[offset]);
 	}
 
 	if (!quiet)
@@ -281,7 +287,7 @@ chanopt_load_all (void)
 			else
 			{
 				if (current)
-					chanopt_add_opt (current, buf, atoi (eq + 2));
+					chanopt_add_opt (current, buf, str_to_chanopt (eq + 2));
 			}
 
 		}
