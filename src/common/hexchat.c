@@ -960,7 +960,7 @@ hexchat_exit (void)
 	notify_save ();
 	ignore_save ();
 	free_sessions ();
-	chanopt_save_all ();
+	chanopt_save_all (TRUE);
 	servlist_cleanup ();
 	fe_exit ();
 }
