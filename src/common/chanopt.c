@@ -396,7 +396,7 @@ chanopt_save_one_channel (chanopt_in_memory *co, int fh)
 }
 
 void
-chanopt_save_all (void)
+chanopt_save_all (const int flush)
 {
 	int i;
 	int num_saved;
@@ -438,15 +438,19 @@ chanopt_save_all (void)
 		}
 
 cont:
-		g_free (co->network);
-		g_free (co->channel);
-		g_free (co);
+		if (flush) {
+			g_free (co->network);
+			g_free (co->channel);
+			g_free (co);
+		}
 	}
 
 	close (fh);
 
-	g_slist_free (chanopt_list);
-	chanopt_list = NULL;
+	if (flush) {
+		g_slist_free (chanopt_list);
+		chanopt_list = NULL;
+	}
 
 	chanopt_open = FALSE;
 	chanopt_changed = FALSE;

@@ -1514,7 +1514,7 @@ mg_set_guint8 (GtkCheckMenuItem *item, guint8 *setting)
 		log_open_or_close (sess);
 
 	chanopt_save (sess);
-	chanopt_save_all ();
+	chanopt_save_all (FALSE);
 }
 
 static void
