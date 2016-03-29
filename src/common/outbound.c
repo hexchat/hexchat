@@ -581,7 +581,7 @@ cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	
 	/* chanopt.c */
 	ret = chanopt_command (sess, tbuf, word, word_eol);
-	chanopt_save_all ();
+	chanopt_save_all (FALSE);
 	
 	return ret;
 }
