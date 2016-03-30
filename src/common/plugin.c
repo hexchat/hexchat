@@ -1567,6 +1567,14 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		case 0xd1b:	/* id */
 			return ((struct session *)data)->server->id;
 		case 0x5cfee87:	/* flags */
+			/* used if alert_taskbar is unset */                 /* 20 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->alert_taskbar;      /* 19 */
+			tmp <<= 1;
+			/* used if alert_tray is unset */                    /* 18 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->alert_tray;         /* 17 */
+			tmp <<= 1;
 			/* used if text_strip is unset */                    /* 16 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->text_strip;          /* 15 */
@@ -1579,9 +1587,9 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->text_logging;       /* 11 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->alert_taskbar;      /* 10 */
+			/* unused for historical reasons */                  /* 10 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->alert_tray;         /* 9 */
+			/* used if alert_beep is unset */                    /* 9 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->alert_beep;         /* 8 */
 			tmp <<= 1;
