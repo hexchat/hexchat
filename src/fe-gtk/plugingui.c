@@ -239,7 +239,7 @@ plugingui_open (void)
 
 	plugin_window = mg_create_generic_tab ("Addons", _(DISPLAY_NAME": Plugins and Scripts"),
 														 FALSE, TRUE, plugingui_close, NULL,
-														 500, 250, &vbox, 0);
+														 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (plugin_window);
 
 	view = plugingui_treeview_new (vbox);

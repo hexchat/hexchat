@@ -349,7 +349,7 @@ ignore_gui_open ()
 	ignorewin =
 			  mg_create_generic_tab ("IgnoreList", _(DISPLAY_NAME": Ignore list"),
 											FALSE, TRUE, close_ignore_gui_callback,
-											NULL, 600, 256, &vbox, 0);
+											NULL, 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (ignorewin);
 
 	view = ignore_treeview_new (vbox);

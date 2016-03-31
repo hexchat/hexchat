@@ -809,7 +809,7 @@ banlist_opengui (struct session *sess)
 					sess->server->servername);
 
 	banl->window = mg_create_generic_tab ("BanList", tbuf, FALSE,
-					TRUE, banlist_closegui, banl, 550, 200, &vbox, sess->server);
+					TRUE, banlist_closegui, banl, 700, 300, &vbox, sess->server);
 	gtkutil_destroy_on_esc (banl->window);
 
 	gtk_container_set_border_width (GTK_CONTAINER (banl->window), 3);
