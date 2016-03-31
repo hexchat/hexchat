@@ -3,6 +3,15 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 appdatadir = $(datadir)/appdata
 @INTLTOOL_XML_RULE@
 
+if USE_DBUS
+exec_command = 'hexchat --existing %U'
+else
+exec_command = 'hexchat %U'
+endif
+
+hexchat.desktop.in: hexchat.desktop.in.in
+	$(AM_V_GEN)sed -e s!\@exec_command\@!$(exec_command)! < $< > $@
+
 data_desktopdir = $(datadir)/applications
 data_desktop_in_files = hexchat.desktop.in
 
@@ -26,6 +35,6 @@ uninstall-hook:
 	$(UPDATE_MIME_DATABASE);
 	$(UPDATE_DESKTOP_DATABASE);
 
-EXTRA_DIST = hexchat.appdata.xml.in hexchat.desktop.in htm.desktop.in htm-mime.xml
+EXTRA_DIST = hexchat.appdata.xml.in hexchat.desktop.in.in htm.desktop.in htm-mime.xml
 
-CLEANFILES = $(appdata_DATA) $(data_desktop_DATA)
+CLEANFILES = $(appdata_DATA) $(data_desktop_DATA) hexchat.desktop.in
