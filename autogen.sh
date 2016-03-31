@@ -9,10 +9,15 @@ test -z "$srcdir" && srcdir=.
 	exit 1
 }
 
-aclocal --install -I m4 || exit 1
-glib-gettextize --force --copy || exit 1
-intltoolize --force --copy --automake || exit 1
-autoreconf --force --install -Wno-portability || exit 1
+if [ "$1" = "--copy" ]; then
+	shift
+	aclocal --force --install || exit 1
+	intltoolize --force --copy --automake || exit 1
+	autoreconf --force --install --include=m4 -Wno-portability || exit 1
+else
+	intltoolize --automake || exit 1
+	autoreconf --install --symlink --include=m4 -Wno-portability || exit 1
+fi
 
 if [ "$NOCONFIGURE" = "" ]; then
         $srcdir/configure "$@" || exit 1
