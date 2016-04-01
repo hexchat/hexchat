@@ -305,6 +305,7 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	struct key_binding *kb;
 	int n;
 	GSList *list;
+	guint upper, lower;
 
 	/* where did this event come from? */
 	list = sess_list;
@@ -333,9 +334,12 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	list = keybind_list;
 	while (list)
 	{
+		upper = lower = 0;
+		gdk_keyval_convert_case(evt->keyval, &upper, &lower);
 		kb = (struct key_binding*)list->data;
 
-		if (kb->keyval == evt->keyval && kb->mod == key_modifier_get_valid (evt->state))
+		if ((kb->keyval == evt->keyval || kb->keyval == upper || kb->keyval == lower) &&
+		    kb->mod == key_modifier_get_valid (evt->state))
 		{
 			if (kb->action < 0 || kb->action > KEY_MAX_ACTIONS)
 				return 0;
