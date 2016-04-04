@@ -59,7 +59,7 @@ static hexchat_plugin *ph;
 #define luaL_setfuncs(L, r, n) luaL_register(L, NULL, r)
 #endif
 
-#define ARRAY_RESIZE(A, N) ((A) = realloc((A), (N) * sizeof(*(A))))
+#define ARRAY_RESIZE(A, N) ((A) = g_realloc((A), (N) * sizeof(*(A))))
 #define ARRAY_GROW(A, N) ((N)++, ARRAY_RESIZE(A, N))
 #define ARRAY_SHRINK(A, N) ((N)--, ARRAY_RESIZE(A, N))
 
@@ -197,21 +197,21 @@ static int api_hexchat_send_modes(lua_State *L)
 	if(strlen(mode) != 2)
 		return luaL_argerror(L, 2, "expected sign followed by a mode letter");
 	modes = luaL_optinteger(L, 3, 0);
-	targets = malloc(n * sizeof(char const *));
+	targets = g_new(char const *, n);
 
 	for(i = 0; i < n; i++)
 	{
 		lua_rawgeti(L, 1, i + 1);
 		if(lua_type(L, -1) != LUA_TSTRING)
 		{
-			free(targets);
+			g_free(targets);
 			return luaL_argerror(L, 1, "expected an array of strings");
 		}
 		targets[i] = lua_tostring(L, -1);
 		lua_pop(L, 1);
 	}
 	hexchat_send_modes(ph, targets, n, modes, mode[0], mode[1]);
-	free(targets);
+	g_free(targets);
 	return 0;
 }
 
@@ -255,7 +255,7 @@ static void free_hook(hook_info *hook)
 	luaL_unref(L, LUA_REGISTRYINDEX, hook->ref);
 	if(hook->hook)
 		hexchat_unhook(ph, hook->hook);
-	free(hook);
+	g_free(hook);
 }
 
 static int unregister_hook(hook_info *hook)
@@ -333,7 +333,7 @@ static int api_hexchat_hook_command(lua_State *L)
 	ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	help = luaL_optstring(L, 3, NULL);
 	pri = luaL_optinteger(L, 4, HEXCHAT_PRI_NORM);
-	info = malloc(sizeof(hook_info));
+	info = g_new(hook_info, 1);
 	info->state = L;
 	info->ref = ref;
 	info->hook = hexchat_hook_command(ph, command, pri, api_command_closure, help, info);
@@ -389,7 +389,7 @@ static int api_hexchat_hook_print(lua_State *L)
 	lua_pushvalue(L, 2);
 	ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	pri = luaL_optinteger(L, 3, HEXCHAT_PRI_NORM);
-	info = malloc(sizeof(hook_info));
+	info = g_new(hook_info, 1);
 	info->state = L;
 	info->ref = ref;
 	info->hook = hexchat_hook_print(ph, event, pri, api_print_closure, info);
@@ -456,7 +456,7 @@ static int api_hexchat_hook_print_attrs(lua_State *L)
 	lua_pushvalue(L, 2);
 	ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	pri = luaL_optinteger(L, 3, HEXCHAT_PRI_NORM);
-	info = malloc(sizeof(hook_info));
+	info = g_new(hook_info, 1);
 	info->state = L;
 	info->ref = ref;
 	info->hook = hexchat_hook_print_attrs(ph, event, pri, api_print_attrs_closure, info);
@@ -514,7 +514,7 @@ static int api_hexchat_hook_server(lua_State *L)
 	lua_pushvalue(L, 2);
 	ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	pri = luaL_optinteger(L, 3, HEXCHAT_PRI_NORM);
-	info = malloc(sizeof(hook_info));
+	info = g_new(hook_info, 1);
 	info->state = L;
 	info->ref = ref;
 	info->hook = hexchat_hook_server(ph, command, pri, api_server_closure, info);
@@ -578,7 +578,7 @@ static int api_hexchat_hook_server_attrs(lua_State *L)
 	lua_pushvalue(L, 2);
 	ref = luaL_ref(L, LUA_REGISTRYINDEX);
 	pri = luaL_optinteger(L, 3, HEXCHAT_PRI_NORM);
-	info = malloc(sizeof(hook_info));
+	info = g_new(hook_info, 1);
 	info->state = L;
 	info->ref = ref;
 	info->hook = hexchat_hook_server_attrs(ph, command, pri, api_server_attrs_closure, info);
@@ -622,7 +622,7 @@ static int api_hexchat_hook_timer(lua_State *L)
 
 	lua_pushvalue(L, 2);
 	ref = luaL_ref(L, LUA_REGISTRYINDEX);
-	info = malloc(sizeof(hook_info));
+	info = g_new(hook_info, 1);
 	info->state = L;
 	info->ref = ref;
 	info->hook = hexchat_hook_timer(ph, timeout, api_timer_closure, info);
@@ -642,7 +642,7 @@ static int api_hexchat_hook_unload(lua_State *L)
 
 	lua_pushvalue(L, 1);
 	ref = luaL_ref(L, LUA_REGISTRYINDEX);
-	info = malloc(sizeof(hook_info));
+	info = g_new(hook_info, 1);
 	info->state = L;
 	info->ref = ref;
 	info->hook = NULL;
@@ -1293,14 +1293,7 @@ static script_info *create_script(char const *file)
 	int base;
 	char *filename_fs;
 	lua_State *L;
-	script_info *info = malloc(sizeof(script_info));
-	info->name = info->description = info->version = NULL;
-	info->handle = NULL;
-	info->status = 0;
-	info->hooks = NULL;
-	info->num_hooks = 0;
-	info->unload_hooks = NULL;
-	info->num_unload_hooks = 0;
+	script_info *info = g_new0(script_info, 1);
 	info->filename = g_strdup(expand_path(file));
 	L = luaL_newstate();
 	info->state = L;
@@ -1308,7 +1301,7 @@ static script_info *create_script(char const *file)
 	{
 		hexchat_print(ph, "\00304Could not allocate memory for the script");
 		g_free(info->filename);
-		free(info);
+		g_free(info);
 		return NULL;
 	}
 	prepare_state(L, info);
@@ -1320,7 +1313,7 @@ static script_info *create_script(char const *file)
 		hexchat_printf(ph, "Invalid filename: %s", info->filename);
 		lua_close(L);
 		g_free(info->filename);
-		free(info);
+		g_free(info);
 		return NULL;
 	}
 	if(luaL_loadfile(L, filename_fs))
@@ -1329,7 +1322,7 @@ static script_info *create_script(char const *file)
 		hexchat_printf(ph, "Lua syntax error: %s", luaL_optstring(L, -1, ""));
 		lua_close(L);
 		g_free(info->filename);
-		free(info);
+		g_free(info);
 		return NULL;
 	}
 	g_free(filename_fs);
@@ -1352,7 +1345,7 @@ static script_info *create_script(char const *file)
 			hexchat_plugingui_remove(ph, info->handle);
 		}
 		g_free(info->filename);
-		free(info);
+		g_free(info);
 		return 0;
 	}
 	lua_pop(L, 1);
@@ -1366,7 +1359,7 @@ static script_info *create_script(char const *file)
 			free_hook(info->unload_hooks[i]);
 		lua_close(L);
 		g_free(info->filename);
-		free(info);
+		g_free(info);
 		return 0;
 	}
 	return info;
@@ -1401,7 +1394,7 @@ static void destroy_script(script_info *info)
 	g_free(info->description);
 	g_free(info->version);
 	hexchat_plugingui_remove(ph, info->handle);
-	free(info);
+	g_free(info);
 }
 
 static void load_script(char const *file)
@@ -1479,23 +1472,18 @@ script_info *interp = NULL;
 static void create_interpreter(void)
 {
 	lua_State *L;
-	interp = malloc(sizeof(script_info));
+	interp = g_new0(script_info, 1);
 	interp->name = "lua interpreter";
 	interp->description = "";
 	interp->version = "";
 	interp->handle = ph;
-	interp->status = 0;
-	interp->hooks = NULL;
-	interp->num_hooks = 0;
-	interp->unload_hooks = NULL;
-	interp->num_unload_hooks = 0;
 	interp->filename = "";
 	L = luaL_newstate();
 	interp->state = L;
 	if(!L)
 	{
 		hexchat_print(ph, "\00304Could not allocate memory for the interpreter");
-		free(interp);
+		g_free(interp);
 		interp = NULL;
 		return;
 	}
@@ -1528,7 +1516,7 @@ static void destroy_interpreter(void)
 			free_hook(hook);
 		}
 		lua_close(L);
-		free(interp);
+		g_free(interp);
 		interp = NULL;
 	}
 }
