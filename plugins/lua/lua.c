@@ -1306,6 +1306,7 @@ static script_info *create_script(char const *file)
 	info->state = L;
 	if(!L)
 	{
+		hexchat_print(ph, "\00304Could not allocate memory for the script");
 		g_free(info->filename);
 		free(info);
 		return NULL;
@@ -1493,6 +1494,7 @@ static void create_interpreter(void)
 	interp->state = L;
 	if(!L)
 	{
+		hexchat_print(ph, "\00304Could not allocate memory for the interpreter");
 		free(interp);
 		interp = NULL;
 		return;
