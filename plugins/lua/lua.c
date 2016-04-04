@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 mniip
+ * Copyright (c) 2015-2016 mniip
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -37,7 +37,7 @@
 
 static char plugin_name[] = "lua";
 static char plugin_description[] = "Lua scripting interface";
-static char plugin_version[256] = "1.2-";
+static char plugin_version[256] = "1.3-";
 
 static char console_tab[] = ">>lua<<";
 static char command_help[] =
