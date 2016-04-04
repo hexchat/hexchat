@@ -217,7 +217,7 @@ static int api_hexchat_send_modes(lua_State *L)
 
 static int api_hexchat_nickcmp(lua_State *L)
 {
-	lua_pushnumber(L, hexchat_nickcmp(ph, luaL_checkstring(L, 1), luaL_checkstring(L, 2)));
+	lua_pushinteger(L, hexchat_nickcmp(ph, luaL_checkstring(L, 1), luaL_checkstring(L, 2)));
 	return 1;
 }
 
@@ -887,7 +887,7 @@ static int api_hexchat_pluginprefs_meta_index(lua_State *L)
 	r = hexchat_pluginpref_get_int(h, key);
 	if(r != -1)
 	{
-		lua_pushnumber(L, r);
+		lua_pushinteger(L, r);
 		return 1;
 	}
 	if(hexchat_pluginpref_get_str(h, key, str))
@@ -946,7 +946,7 @@ static int api_hexchat_pluginprefs_meta_pairs_closure(lua_State *L)
 		r = hexchat_pluginpref_get_int(h, key);
 		if(r != -1)
 		{
-			lua_pushnumber(L, r);
+			lua_pushinteger(L, r);
 			return 2;
 		}
 		if(hexchat_pluginpref_get_str(h, key, str))
@@ -986,7 +986,7 @@ static int api_attrs_meta_index(lua_State *L)
 	char const *key = luaL_checkstring(L, 2);
 	if(!strcmp(key, "server_time_utc"))
 	{
-		lua_pushnumber(L, attrs->server_time_utc);
+		lua_pushinteger(L, attrs->server_time_utc);
 		return 1;
 	}
 	else
@@ -1104,15 +1104,15 @@ static int luaopen_hexchat(lua_State *L)
 	lua_newtable(L);
 	luaL_setfuncs(L, api_hexchat, 0);
 
-	lua_pushnumber(L, HEXCHAT_PRI_HIGHEST); lua_setfield(L, -2, "PRI_HIGHEST");
-	lua_pushnumber(L, HEXCHAT_PRI_HIGH); lua_setfield(L, -2, "PRI_HIGH");
-	lua_pushnumber(L, HEXCHAT_PRI_NORM); lua_setfield(L, -2, "PRI_NORM");
-	lua_pushnumber(L, HEXCHAT_PRI_LOW); lua_setfield(L, -2, "PRI_LOW");
-	lua_pushnumber(L, HEXCHAT_PRI_LOWEST); lua_setfield(L, -2, "PRI_LOWEST");
-	lua_pushnumber(L, HEXCHAT_EAT_NONE); lua_setfield(L, -2, "EAT_NONE");
-	lua_pushnumber(L, HEXCHAT_EAT_HEXCHAT); lua_setfield(L, -2, "EAT_HEXCHAT");
-	lua_pushnumber(L, HEXCHAT_EAT_PLUGIN); lua_setfield(L, -2, "EAT_PLUGIN");
-	lua_pushnumber(L, HEXCHAT_EAT_ALL); lua_setfield(L, -2, "EAT_ALL");
+	lua_pushinteger(L, HEXCHAT_PRI_HIGHEST); lua_setfield(L, -2, "PRI_HIGHEST");
+	lua_pushinteger(L, HEXCHAT_PRI_HIGH); lua_setfield(L, -2, "PRI_HIGH");
+	lua_pushinteger(L, HEXCHAT_PRI_NORM); lua_setfield(L, -2, "PRI_NORM");
+	lua_pushinteger(L, HEXCHAT_PRI_LOW); lua_setfield(L, -2, "PRI_LOW");
+	lua_pushinteger(L, HEXCHAT_PRI_LOWEST); lua_setfield(L, -2, "PRI_LOWEST");
+	lua_pushinteger(L, HEXCHAT_EAT_NONE); lua_setfield(L, -2, "EAT_NONE");
+	lua_pushinteger(L, HEXCHAT_EAT_HEXCHAT); lua_setfield(L, -2, "EAT_HEXCHAT");
+	lua_pushinteger(L, HEXCHAT_EAT_PLUGIN); lua_setfield(L, -2, "EAT_PLUGIN");
+	lua_pushinteger(L, HEXCHAT_EAT_ALL); lua_setfield(L, -2, "EAT_ALL");
 
 	lua_newtable(L);
 	lua_newtable(L);
