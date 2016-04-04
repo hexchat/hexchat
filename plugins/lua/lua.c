@@ -244,7 +244,7 @@ static void register_hook(hook_info *hook)
 
 static void free_hook(hook_info *hook)
 {
-	if (hook->state)
+	if(hook->state)
 		luaL_unref(hook->state, LUA_REGISTRYINDEX, hook->ref);
 	if(hook->hook)
 		hexchat_unhook(ph, hook->hook);
@@ -255,10 +255,10 @@ static int unregister_hook(hook_info *hook)
 {
 	script_info *info = get_info(hook->state);
 
-	if (g_ptr_array_remove_fast(info->hooks, hook))
+	if(g_ptr_array_remove_fast(info->hooks, hook))
 		return 1;
 
-	if (g_ptr_array_remove_fast(info->unload_hooks, hook))
+	if(g_ptr_array_remove_fast(info->unload_hooks, hook))
 		return 1;
 
 	return 0;
@@ -1262,36 +1262,31 @@ static void prepare_state(lua_State *L, script_info *info)
 	lua_pop(L, 1);
 }
 
-struct unload_userdata {
-	lua_State *L;
-	int base;
-};
-
-static void run_unload_hook(hook_info *hook, struct unload_userdata *ud)
+static void run_unload_hook(hook_info *hook, lua_State *L)
 {
-	lua_State *L = ud->L;
-	int base = ud->base;
+	int base = lua_gettop(L);
 
 	lua_rawgeti(L, LUA_REGISTRYINDEX, hook->ref);
 	if(lua_pcall(L, 0, 0, base))
 	{
 		char const *error = lua_tostring(L, -1);
-		lua_pop(L, 2);
 		hexchat_printf(ph, "Lua error in unload hook: %s", error ? error : "(non-string error)");
 	}
+	lua_settop(L, base);
+}
+
+static void run_unload_hooks(script_info *info, void *unused)
+{
+	lua_State *L = info->state;
+	lua_rawgeti(L, LUA_REGISTRYINDEX, info->traceback);
+	g_ptr_array_foreach(info->unload_hooks, (GFunc)run_unload_hook, L);
+	lua_pop(L, 1);
 }
 
 static void destroy_script(script_info *info)
 {
 	if (info)
 	{
-		if (info->state)
-		{
-			struct unload_userdata data = {info->state, lua_gettop(info->state)};
-			lua_rawgeti(info->state, LUA_REGISTRYINDEX, info->traceback);
-			g_ptr_array_foreach(info->unload_hooks, (GFunc)run_unload_hook, &data);
-		}
-
 		g_clear_pointer(&info->hooks, g_ptr_array_unref);
 		g_clear_pointer(&info->unload_hooks, g_ptr_array_unref);
 		g_clear_pointer(&info->state, lua_close);
@@ -1394,7 +1389,10 @@ static int unload_script(char const *filename)
 	if(script->status & STATUS_ACTIVE)
 		script->status |= STATUS_DEFERRED_UNLOAD;
 	else
+	{
+		run_unload_hooks(script, NULL);
 		g_ptr_array_remove_fast(scripts, script);
+	}
 
 	return 1;
 
@@ -1412,6 +1410,7 @@ static int reload_script(char const *filename)
 	else
 	{
 		char *filename = g_strdup(script->filename);
+		run_unload_hooks(script, NULL);
 		g_ptr_array_remove_fast(scripts, script);
 		load_script(filename);
 		g_free(filename);
@@ -1440,6 +1439,8 @@ static void create_interpreter(void)
 {
 	lua_State *L;
 	interp = g_new0(script_info, 1);
+	interp->hooks = g_ptr_array_new_with_free_func((GDestroyNotify)free_hook);
+	interp->unload_hooks = g_ptr_array_new_with_free_func((GDestroyNotify)free_hook);
 	interp->name = "lua interpreter";
 	interp->description = "";
 	interp->version = "";
@@ -1461,7 +1462,6 @@ static void destroy_interpreter(void)
 {
 	if(interp)
 	{
-		lua_rawgeti(interp->state, LUA_REGISTRYINDEX, interp->traceback);
 		g_clear_pointer(&interp->hooks, g_ptr_array_unref);
 		g_clear_pointer(&interp->unload_hooks, g_ptr_array_unref);
 		g_clear_pointer(&interp->state, lua_close);
@@ -1558,18 +1558,21 @@ static void check_deferred(script_info *info)
 	info->status &= ~STATUS_ACTIVE;
 	if(info->status & STATUS_DEFERRED_UNLOAD)
 	{
+		run_unload_hooks(info, NULL);
 		g_ptr_array_remove_fast(scripts, info);
 	}
 	else if(info->status & STATUS_DEFERRED_RELOAD)
 	{
 		if(info == interp)
 		{
+			run_unload_hooks(interp, NULL);
 			destroy_interpreter();
 			create_interpreter();
 		}
 		else
 		{
 			char *filename = g_strdup(info->filename);
+			run_unload_hooks(info, NULL);
 			g_ptr_array_remove_fast(scripts, info);
 			load_script(filename);
 			g_free(filename);
@@ -1612,13 +1615,15 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 	}
 	else if(!strcmp(word[2], "reset"))
 	{
-		if(interp->status & STATUS_ACTIVE)
-			interp->status |= STATUS_DEFERRED_RELOAD;
-		else
-		{
-			destroy_interpreter();
-			create_interpreter();
-		}
+		if(interp)
+			if(interp->status & STATUS_ACTIVE)
+				interp->status |= STATUS_DEFERRED_RELOAD;
+			else
+			{
+				run_unload_hooks(interp, NULL);
+				destroy_interpreter();
+				create_interpreter();
+			}
 	}
 	else if(!strcmp(word[2], "list"))
 	{
@@ -1680,14 +1685,17 @@ G_MODULE_EXPORT int hexchat_plugin_deinit(hexchat_plugin *plugin_handle)
 			break;
 		}
 	}
-	if(!active && interp && interp->status & STATUS_ACTIVE)
+	if(interp && interp->status & STATUS_ACTIVE)
 		active = TRUE;
 	if(active)
 	{
 		hexchat_print(ph, "\00304Cannot unload the lua plugin while there are active states");
 		return 0;
 	}
+	if(interp)
+		run_unload_hooks(interp, NULL);
 	destroy_interpreter();
+	g_ptr_array_foreach(scripts, (GFunc)run_unload_hooks, NULL);
 	g_clear_pointer(&scripts, g_ptr_array_unref);
 	g_clear_pointer(&expand_buffer, g_free);
 	return 1;
