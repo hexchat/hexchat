@@ -1435,7 +1435,7 @@ static void autoload_scripts(void)
 	g_free(path);
 }
 
-script_info *interp = NULL;
+static script_info *interp = NULL;
 static void create_interpreter(void)
 {
 	lua_State *L;
@@ -1553,7 +1553,7 @@ static int command_console_exec(char *word[], char *word_eol[], void *userdata)
 	return HEXCHAT_EAT_NONE;
 }
 
-void check_deferred(script_info *info)
+static void check_deferred(script_info *info)
 {
 	info->status &= ~STATUS_ACTIVE;
 	if(info->status & STATUS_DEFERRED_UNLOAD)
