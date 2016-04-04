@@ -59,10 +59,6 @@ static hexchat_plugin *ph;
 #define luaL_setfuncs(L, r, n) luaL_register(L, NULL, r)
 #endif
 
-#define ARRAY_RESIZE(A, N) ((A) = g_realloc((A), (N) * sizeof(*(A))))
-#define ARRAY_GROW(A, N) ((N)++, ARRAY_RESIZE(A, N))
-#define ARRAY_SHRINK(A, N) ((N)--, ARRAY_RESIZE(A, N))
-
 typedef struct
 {
 	hexchat_hook *hook;
@@ -79,12 +75,10 @@ typedef struct
 	hexchat_plugin *handle;
 	char *filename;
 	lua_State *state;
+	GPtrArray *hooks;
+	GPtrArray *unload_hooks;
 	int traceback;
 	int status;
-	hook_info **hooks;
-	size_t num_hooks;
-	hook_info **unload_hooks;
-	size_t num_unload_hooks;
 }
 script_info;
 
@@ -245,14 +239,13 @@ static int api_hexchat_strip(lua_State *L)
 static void register_hook(hook_info *hook)
 {
 	script_info *info = get_info(hook->state);
-	ARRAY_GROW(info->hooks, info->num_hooks);
-	info->hooks[info->num_hooks - 1] = hook;
+	g_ptr_array_add(info->hooks, hook);
 }
 
 static void free_hook(hook_info *hook)
 {
-	lua_State *L = hook->state;
-	luaL_unref(L, LUA_REGISTRYINDEX, hook->ref);
+	if (hook->state)
+		luaL_unref(hook->state, LUA_REGISTRYINDEX, hook->ref);
 	if(hook->hook)
 		hexchat_unhook(ph, hook->hook);
 	g_free(hook);
@@ -261,27 +254,13 @@ static void free_hook(hook_info *hook)
 static int unregister_hook(hook_info *hook)
 {
 	script_info *info = get_info(hook->state);
-	size_t i;
-	for(i = 0; i < info->num_hooks; i++)
-		if(info->hooks[i] == hook)
-		{
-			size_t j;
-			free_hook(hook);
-			for(j = i; j < info->num_hooks - 1; j++)
-				info->hooks[j] = info->hooks[j + 1];
-			ARRAY_SHRINK(info->hooks, info->num_hooks);
-			return 1;
-		}
-	for(i = 0; i < info->num_unload_hooks; i++)
-		if(info->unload_hooks[i] == hook)
-		{
-			size_t j;
-			free_hook(hook);
-			for(j = i; j < info->num_unload_hooks - 1; j++)
-				info->unload_hooks[j] = info->unload_hooks[j + 1];
-			ARRAY_SHRINK(info->unload_hooks, info->num_unload_hooks);
-			return 1;
-		}
+
+	if (g_ptr_array_remove_fast(info->hooks, hook))
+		return 1;
+
+	if (g_ptr_array_remove_fast(info->unload_hooks, hook))
+		return 1;
+
 	return 0;
 }
 
@@ -651,8 +630,8 @@ static int api_hexchat_hook_unload(lua_State *L)
 	luaL_newmetatable(L, "hook");
 	lua_setmetatable(L, -2);
 	script = get_info(info->state);
-	ARRAY_GROW(script->unload_hooks, script->num_unload_hooks);
-	script->unload_hooks[script->num_unload_hooks - 1] = info;
+
+	g_ptr_array_add(script->unload_hooks, info);
 	return 1;
 }
 
@@ -1207,8 +1186,7 @@ static void patch_clibs(lua_State *L)
 	lua_pop(L, 1);
 }
 
-script_info **scripts = NULL;
-size_t num_scripts = 0;
+static GPtrArray *scripts;
 
 static char *expand_buffer = NULL;
 static char const *expand_path(char const *path)
@@ -1220,8 +1198,7 @@ static char const *expand_path(char const *path)
 	{
 		if(!path[1] || path[1] == '/')
 		{
-			if(expand_buffer)
-				g_free(expand_buffer);
+			g_free(expand_buffer);
 			expand_buffer = g_build_filename(g_get_home_dir(), path + 1, NULL);
 			return expand_buffer;
 		}
@@ -1239,8 +1216,8 @@ static char const *expand_path(char const *path)
 				slash_pos = strchr(path, '/');
 				if(!slash_pos)
 					return pw->pw_dir;
-				if(expand_buffer)
-					g_free(expand_buffer);
+
+				g_free(expand_buffer);
 				expand_buffer = g_strconcat(pw->pw_dir, slash_pos, NULL);
 				return expand_buffer;
 			}
@@ -1253,18 +1230,15 @@ static char const *expand_path(char const *path)
 	else
 #endif
 	{
-		if(expand_buffer)
-			g_free(expand_buffer);
+		g_free(expand_buffer);
 		expand_buffer = g_build_filename(hexchat_get_info(ph, "configdir"), "addons", path, NULL);
 		return expand_buffer;
 	}
 }
 
-static int is_lua_file(char const *file)
+static inline int is_lua_file(char const *file)
 {
-	char const *ext1 = ".lua";
-	char const *ext2 = ".luac";
-	return (strlen(file) >= strlen(ext1) && !strcmp(file + strlen(file) - strlen(ext1), ext1)) || (strlen(file) >= strlen(ext2) && !strcmp(file + strlen(file) - strlen(ext2), ext2));
+	return g_str_has_suffix(file, ".lua") || g_str_has_suffix(file, ".luac");
 }
 
 static void prepare_state(lua_State *L, script_info *info)
@@ -1288,20 +1262,64 @@ static void prepare_state(lua_State *L, script_info *info)
 	lua_pop(L, 1);
 }
 
+struct unload_userdata {
+	lua_State *L;
+	int base;
+};
+
+static void run_unload_hook(hook_info *hook, struct unload_userdata *ud)
+{
+	lua_State *L = ud->L;
+	int base = ud->base;
+
+	lua_rawgeti(L, LUA_REGISTRYINDEX, hook->ref);
+	if(lua_pcall(L, 0, 0, base))
+	{
+		char const *error = lua_tostring(L, -1);
+		lua_pop(L, 2);
+		hexchat_printf(ph, "Lua error in unload hook: %s", error ? error : "(non-string error)");
+	}
+}
+
+static void destroy_script(script_info *info)
+{
+	if (info)
+	{
+		if (info->state)
+		{
+			struct unload_userdata data = {info->state, lua_gettop(info->state)};
+			lua_rawgeti(info->state, LUA_REGISTRYINDEX, info->traceback);
+			g_ptr_array_foreach(info->unload_hooks, (GFunc)run_unload_hook, &data);
+		}
+
+		g_clear_pointer(&info->hooks, g_ptr_array_unref);
+		g_clear_pointer(&info->unload_hooks, g_ptr_array_unref);
+		g_clear_pointer(&info->state, lua_close);
+		if (info->handle)
+			hexchat_plugingui_remove(ph, info->handle);
+		g_free(info->filename);
+		g_free(info->name);
+		g_free(info->description);
+		g_free(info->version);
+		g_free(info);
+	}
+}
+
 static script_info *create_script(char const *file)
 {
 	int base;
 	char *filename_fs;
 	lua_State *L;
 	script_info *info = g_new0(script_info, 1);
+	info->hooks = g_ptr_array_new_with_free_func((GDestroyNotify)free_hook);
+	info->unload_hooks = g_ptr_array_new_with_free_func((GDestroyNotify)free_hook);
 	info->filename = g_strdup(expand_path(file));
 	L = luaL_newstate();
 	info->state = L;
 	if(!L)
 	{
 		hexchat_print(ph, "\00304Could not allocate memory for the script");
-		g_free(info->filename);
-		g_free(info);
+		destroy_script(info);
 		return NULL;
 	}
 	prepare_state(L, info);
@@ -1311,18 +1329,14 @@ static script_info *create_script(char const *file)
 	if(!filename_fs)
 	{
 		hexchat_printf(ph, "Invalid filename: %s", info->filename);
-		lua_close(L);
-		g_free(info->filename);
-		g_free(info);
+		destroy_script(info);
 		return NULL;
 	}
 	if(luaL_loadfile(L, filename_fs))
 	{
 		g_free(filename_fs);
 		hexchat_printf(ph, "Lua syntax error: %s", luaL_optstring(L, -1, ""));
-		lua_close(L);
-		g_free(info->filename);
-		g_free(info);
+		destroy_script(info);
 		return NULL;
 	}
 	g_free(filename_fs);
@@ -1330,71 +1344,18 @@ static script_info *create_script(char const *file)
 	if(lua_pcall(L, 0, 0, base))
 	{
 		char const *error = lua_tostring(L, -1);
-		size_t i;
 		hexchat_printf(ph, "Lua error: %s", error ? error : "(non-string error)");
-		for(i = 0; i < info->num_hooks; i++)
-			free_hook(info->hooks[i]);
-		for(i = 0; i < info->num_unload_hooks; i++)
-			free_hook(info->unload_hooks[i]);
-		lua_close(L);
-		if(info->name)
-		{
-			g_free(info->name);
-			g_free(info->description);
-			g_free(info->version);
-			hexchat_plugingui_remove(ph, info->handle);
-		}
-		g_free(info->filename);
-		g_free(info);
-		return 0;
+		destroy_script(info);
+		return NULL;
 	}
 	lua_pop(L, 1);
 	if(!info->name)
 	{
-		size_t i;
 		hexchat_printf(ph, "Lua script didn't register with hexchat.register");
-		for(i = 0; i < info->num_hooks; i++)
-			free_hook(info->hooks[i]);
-		for(i = 0; i < info->num_unload_hooks; i++)
-			free_hook(info->unload_hooks[i]);
-		lua_close(L);
-		g_free(info->filename);
-		g_free(info);
-		return 0;
+		destroy_script(info);
+		return NULL;
 	}
 	return info;
-}
-
-static void destroy_script(script_info *info)
-{
-	lua_State *L;
-	size_t i;
-	int base;
-
-	for(i = 0; i < info->num_hooks; i++)
-		free_hook(info->hooks[i]);
-	L = info->state;
-	lua_rawgeti(L, LUA_REGISTRYINDEX, info->traceback);
-	base = lua_gettop(L);
-	for(i = 0; i < info->num_unload_hooks; i++)
-	{
-		hook_info *hook = info->unload_hooks[i];
-		lua_rawgeti(L, LUA_REGISTRYINDEX, hook->ref);
-		if(lua_pcall(L, 0, 0, base))
-		{
-			char const *error = lua_tostring(L, -1);
-			lua_pop(L, 2);
-			hexchat_printf(ph, "Lua error in unload hook: %s", error ? error : "(non-string error)");
-		}
-		free_hook(hook);
-	}
-	lua_close(L);
-	g_free(info->filename);
-	g_free(info->name);
-	g_free(info->description);
-	g_free(info->version);
-	hexchat_plugingui_remove(ph, info->handle);
-	g_free(info);
 }
 
 static void load_script(char const *file)
@@ -1402,55 +1363,61 @@ static void load_script(char const *file)
 	script_info *info = create_script(file);
 	if(info)
 	{
-		ARRAY_GROW(scripts, num_scripts);
-		scripts[num_scripts - 1] = info;
+		g_ptr_array_add(scripts, info);
 		check_deferred(info);
 	}
 }
 
+static script_info *get_script_by_file(char const *filename)
+{
+	char const *expanded = expand_path(filename);
+	guint i;
+	for(i = 0; i < scripts->len; i++)
+	{
+		script_info *script = scripts->pdata[i];
+		if(!strcmp(script->filename, expanded))
+		{
+			return script;
+		}
+	}
+
+	return NULL;
+}
+
 static int unload_script(char const *filename)
 {
-	size_t i;
-	char const *expanded = expand_path(filename);
-	for(i = 0; i < num_scripts; i++)
-		if(!strcmp(scripts[i]->filename, expanded))
-		{
-			if(scripts[i]->status & STATUS_ACTIVE)
-				scripts[i]->status |= STATUS_DEFERRED_UNLOAD;
-			else
-			{
-				size_t j;
-				destroy_script(scripts[i]);
-				for(j = i; j < num_scripts - 1; j++)
-					scripts[j] = scripts[j + 1];
-				ARRAY_SHRINK(scripts, num_scripts);
-			}
-			return 1;
-		}
-	return 0;
+	script_info *script = get_script_by_file(filename);
+
+	if (!script)
+		return 0;
+
+	if(script->status & STATUS_ACTIVE)
+		script->status |= STATUS_DEFERRED_UNLOAD;
+	else
+		g_ptr_array_remove_fast(scripts, script);
+
+	return 1;
+
 }
 
 static int reload_script(char const *filename)
 {
-	size_t i;
-	char const *expanded = expand_path(filename);
-	for(i = 0; i < num_scripts; i++)
-		if(!strcmp(scripts[i]->filename, expanded))
-		{
-			if(scripts[i]->status & STATUS_ACTIVE)
-				scripts[i]->status |= STATUS_DEFERRED_RELOAD;
-			else
-			{
-				size_t j;
-				destroy_script(scripts[i]);
-				for(j = i; j < num_scripts - 1; j++)
-					scripts[j] = scripts[j + 1];
-				ARRAY_SHRINK(scripts, num_scripts);
-				load_script(filename);
-			}
-			return 1;
-		}
-	return 0;
+	script_info *script = get_script_by_file(filename);
+
+	if (!script)
+		return 0;
+
+	if(script->status & STATUS_ACTIVE)
+		script->status |= STATUS_DEFERRED_RELOAD;
+	else
+	{
+		char *filename = g_strdup(script->filename);
+		g_ptr_array_remove_fast(scripts, script);
+		load_script(filename);
+		g_free(filename);
+	}
+
+	return 1;
 }
 
 static void autoload_scripts(void)
@@ -1494,30 +1461,11 @@ static void destroy_interpreter(void)
 {
 	if(interp)
 	{
-		lua_State *L;
-		size_t i;
-		int base;
-
-		for(i = 0; i < interp->num_hooks; i++)
-			free_hook(interp->hooks[i]);
-		L = interp->state;
-		lua_rawgeti(L, LUA_REGISTRYINDEX, interp->traceback);
-		base = lua_gettop(L);
-		for(i = 0; i < interp->num_unload_hooks; i++)
-		{
-			hook_info *hook = interp->unload_hooks[i];
-			lua_rawgeti(L, LUA_REGISTRYINDEX, hook->ref);
-			if(lua_pcall(L, 0, 0, base))
-			{
-				char const *error = lua_tostring(L, -1);
-				lua_pop(L, 2);
-				hexchat_printf(ph, "Lua error in unload hook: %s", error ? error : "(non-string error)");
-			}
-			free_hook(hook);
-		}
-		lua_close(L);
-		g_free(interp);
-		interp = NULL;
+		lua_rawgeti(interp->state, LUA_REGISTRYINDEX, interp->traceback);
+		g_clear_pointer(&interp->hooks, g_ptr_array_unref);
+		g_clear_pointer(&interp->unload_hooks, g_ptr_array_unref);
+		g_clear_pointer(&interp->state, lua_close);
+		g_clear_pointer(&interp, g_free);
 	}
 }
 
@@ -1610,16 +1558,7 @@ void check_deferred(script_info *info)
 	info->status &= ~STATUS_ACTIVE;
 	if(info->status & STATUS_DEFERRED_UNLOAD)
 	{
-		size_t i;
-		for(i = 0; i < num_scripts; i++)
-			if(scripts[i] == info)
-			{
-				size_t j;
-				destroy_script(info);
-				for(j = i; j < num_scripts - 1; j++)
-					scripts[j] = scripts[j + 1];
-				ARRAY_SHRINK(scripts, num_scripts);
-			}
+		g_ptr_array_remove_fast(scripts, info);
 	}
 	else if(info->status & STATUS_DEFERRED_RELOAD)
 	{
@@ -1630,20 +1569,10 @@ void check_deferred(script_info *info)
 		}
 		else
 		{
-			size_t i;
-			for(i = 0; i < num_scripts; i++)
-				if(scripts[i] == info)
-				{
-					size_t j;
-					char *filename = g_strdup(info->filename);
-					destroy_script(info);
-					for(j = i; j < num_scripts - 1; j++)
-						scripts[j] = scripts[j + 1];
-					ARRAY_SHRINK(scripts, num_scripts);
-					load_script(filename);
-					g_free(filename);
-					break;
-				}
+			char *filename = g_strdup(info->filename);
+			g_ptr_array_remove_fast(scripts, info);
+			load_script(filename);
+			g_free(filename);
 		}
 	}
 }
@@ -1671,18 +1600,15 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 	}
 	else if(!strcmp(word[2], "inject"))
 	{
-		char const *expanded = expand_path(word[3]);
-		size_t i;
-		int found = 0;
-		for(i = 0; i < num_scripts; i++)
-			if(!strcmp(scripts[i]->filename, expanded))
-			{
-				inject_string(scripts[i], word_eol[4]);
-				found = 1;
-				break;
-			}
-		if(!found)
+		script_info *script = get_script_by_file(word[3]);
+		if (script)
+		{
+			inject_string(script, word_eol[4]);
+		}
+		else
+		{
 			hexchat_printf(ph, "Could not find a script by the name '%s'", word[3]);
+		}
 	}
 	else if(!strcmp(word[2], "reset"))
 	{
@@ -1696,9 +1622,12 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 	}
 	else if(!strcmp(word[2], "list"))
 	{
-		size_t i;
-		for(i = 0; i < num_scripts; i++)
-			hexchat_printf(ph, "%s %s: %s (%s)", scripts[i]->name, scripts[i]->version, scripts[i]->description, scripts[i]->filename);
+		guint i;
+		for(i = 0; i < scripts->len; i++)
+		{
+			script_info *info = scripts->pdata[i];
+			hexchat_printf(ph, "%s %s: %s (%s)", info->name, info->version, info->description, info->filename);
+		}
 		if(interp)
 			hexchat_printf(ph, "%s %s", interp->name, plugin_version);
 	}
@@ -1731,6 +1660,7 @@ G_MODULE_EXPORT int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **na
 
 	hexchat_printf(ph, "%s version %s loaded.\n", plugin_name, plugin_version);
 
+	scripts = g_ptr_array_new_with_free_func((GDestroyNotify)destroy_script);
 	create_interpreter();
 
 	if(!arg)
@@ -1740,28 +1670,26 @@ G_MODULE_EXPORT int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **na
 
 G_MODULE_EXPORT int hexchat_plugin_deinit(hexchat_plugin *plugin_handle)
 {
-	size_t i;
-	int found = 0;
-	for(i = 0; i < num_scripts; i++)
-		if(scripts[i]->status & STATUS_ACTIVE)
+	guint i;
+	gboolean active = FALSE;
+	for(i = 0; i < scripts->len; i++)
+	{
+		if(((script_info*)scripts->pdata[i])->status & STATUS_ACTIVE)
 		{
-			found = 1;
+			active = TRUE;
 			break;
 		}
-	if(!found && interp && interp->status & STATUS_ACTIVE)
-		found = 1;
-	if(found)
+	}
+	if(!active && interp && interp->status & STATUS_ACTIVE)
+		active = TRUE;
+	if(active)
 	{
 		hexchat_print(ph, "\00304Cannot unload the lua plugin while there are active states");
 		return 0;
 	}
 	destroy_interpreter();
-	for(i = 0; i < num_scripts; i++)
-		destroy_script(scripts[i]);
-	num_scripts = 0;
-	ARRAY_RESIZE(scripts, num_scripts);
-	if(expand_buffer)
-		g_free(expand_buffer);
+	g_clear_pointer(&scripts, g_ptr_array_unref);
+	g_clear_pointer(&expand_buffer, g_free);
 	return 1;
 }
 
