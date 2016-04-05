@@ -35,9 +35,9 @@
 
 #include <hexchat-plugin.h>
 
-static char plugin_name[] = "lua";
+static char plugin_name[] = "Lua";
 static char plugin_description[] = "Lua scripting interface";
-static char plugin_version[256] = "1.3-";
+static char plugin_version[16] = "1.3";
 
 static char console_tab[] = ">>lua<<";
 static char command_help[] =
@@ -1628,13 +1628,19 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 	else if(!strcmp(word[2], "list"))
 	{
 		guint i;
+		hexchat_print(ph,
+		   "Name             Version  Filename             Description\n"
+		   "----             -------  --------             -----------\n");
 		for(i = 0; i < scripts->len; i++)
 		{
 			script_info *info = scripts->pdata[i];
-			hexchat_printf(ph, "%s %s: %s (%s)", info->name, info->version, info->description, info->filename);
+			char *basename = g_path_get_basename(info->filename);
+			hexchat_printf(ph, "%-16s %-8s %-20s %-10s\n", info->name, info->version,
+						   basename, info->description);
+			g_free(basename);
 		}
 		if(interp)
-			hexchat_printf(ph, "%s %s", interp->name, plugin_version);
+			hexchat_printf(ph, "%-16s %-8s", interp->name, plugin_version);
 	}
 	else if(!strcmp(word[2], "console"))
 	{
@@ -1649,7 +1655,11 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 
 G_MODULE_EXPORT int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **name, char **description, char **version, char *arg)
 {
-	strcat(plugin_version, strchr(LUA_VERSION, ' ') + 1);
+	if (g_str_has_prefix(LUA_VERSION, "Lua "))
+	{
+		strcat(plugin_version, "/");
+		g_strlcat(plugin_version, LUA_VERSION + 4, sizeof(plugin_version));
+	}
 
 	*name = plugin_name;
 	*description = plugin_description;
