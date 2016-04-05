@@ -336,8 +336,10 @@ static int api_print_closure(char *word[], void *udata)
 	lua_rawgeti(L, LUA_REGISTRYINDEX, info->ref);
 
 	for(j = 31; j >= 1; j--)
+	{
 		if(*word[j])
 			break;
+	}
 	lua_newtable(L);
 	for(i = 1; i <= j; i++)
 	{
@@ -399,8 +401,10 @@ static int api_print_attrs_closure(char *word[], hexchat_event_attrs *attrs, voi
 	base = lua_gettop(L);
 	lua_rawgeti(L, LUA_REGISTRYINDEX, info->ref);
 	for(j = 31; j >= 1; j--)
+	{
 		if(*word[j])
 			break;
+	}
 	lua_newtable(L);
 	for(i = 1; i <= j; i++)
 	{
@@ -1406,7 +1410,9 @@ static int reload_script(char const *filename)
 		return 0;
 
 	if(script->status & STATUS_ACTIVE)
+	{
 		script->status |= STATUS_DEFERRED_RELOAD;
+	}
 	else
 	{
 		char *filename = g_strdup(script->filename);
@@ -1427,8 +1433,10 @@ static void autoload_scripts(void)
 	{
 		char const *filename;
 		while((filename = g_dir_read_name(dir)))
+		{
 			if(is_lua_file(filename))
 				load_script(filename);
+		}
 		g_dir_close(dir);
 	}
 	g_free(path);
@@ -1617,7 +1625,9 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 	{
 		if(interp)
 			if(interp->status & STATUS_ACTIVE)
+			{
 				interp->status |= STATUS_DEFERRED_RELOAD;
+			}
 			else
 			{
 				run_unload_hooks(interp, NULL);
