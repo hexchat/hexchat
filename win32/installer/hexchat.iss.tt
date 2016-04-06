@@ -139,6 +139,7 @@ Source: "harfbuzz.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libffi.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libintl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libpng16.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -155,6 +156,14 @@ Source: "plugins\hcnotifications-winrt.dll"; DestDir: "{app}\plugins"; Flags: ig
 Source: "lib\enchant\*"; DestDir: "{app}\lib\enchant"; Flags: ignoreversion; Components: libs
 
 Source: "lib\gtk-2.0\i686-pc-vs14\engines\*"; DestDir: "{app}\lib\gtk-2.0\i686-pc-vs14\engines"; Flags: ignoreversion; Components: libs
+
+Source: "girepository-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
+Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
+Source: "lgi.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
+Source: "lib\girepository-1.0\*.typelib"; DestDir: "{app}\lib\girepository-1.0"; Flags: ignoreversion; Components: langs\lua
+Source: "share\lua\*.lua"; DestDir: "{app}\share\lua"; Flags: ignoreversion; Components: langs\lua
+Source: "share\lua\lgi\*.lua"; DestDir: "{app}\share\lua\lgi"; Flags: ignoreversion; Components: langs\lua
+Source: "share\lua\lgi\override\*.lua"; DestDir: "{app}\share\lua\lgi\override"; Flags: ignoreversion; Components: langs\lua
 
 Source: "plugins\hcchecksum.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\checksum
 Source: "plugins\hcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
