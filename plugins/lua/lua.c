@@ -1624,6 +1624,7 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 	else if(!strcmp(word[2], "reset"))
 	{
 		if(interp)
+		{
 			if(interp->status & STATUS_ACTIVE)
 			{
 				interp->status |= STATUS_DEFERRED_RELOAD;
@@ -1634,6 +1635,7 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 				destroy_interpreter();
 				create_interpreter();
 			}
+		}
 	}
 	else if(!strcmp(word[2], "list"))
 	{
