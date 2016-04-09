@@ -59,7 +59,7 @@
 
     <None Include="$(DepsRoot)\bin\lua51.dll" />
     <None Include="$(DepsRoot)\bin\girepository-1.0.dll" />
-    <None Include="$(DepsRoot)\bin\lgi.dll" />
+    <LuaLib Include="$(DepsRoot)\lib\lua\**\*.dll" />
     <LuaShare Include="$(DepsRoot)\share\lua\*.lua" />
     <LuaShare Include="$(DepsRoot)\share\lua\**\*.lua" />
     <LuaShare Include="$(DepsRoot)\share\lua\**\**\*.lua" />
@@ -87,6 +87,7 @@
     <Copy SourceFiles="@(Locale)" DestinationFiles="@(Locale->'$(HexChatRel)\share\locale\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(MSWindowsTheme)" DestinationFiles="@(MSWindowsTheme->'$(HexChatRel)\share\themes\MS-Windows\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(LuaShare)" DestinationFiles="@(LuaShare->'$(HexChatRel)\share\lua\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(LuaLib)" DestinationFiles="@(LuaLib->'$(HexChatRel)\lib\lua\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Typelib)" DestinationFiles="@(Typelib->'$(HexChatRel)\lib\girepository-1.0\%(Filename)%(Extension)')" />
 	
     <WriteLinesToFile File="$(HexChatRel)portable-mode" Lines="2" Overwrite="true" />
