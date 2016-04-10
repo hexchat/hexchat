@@ -20,6 +20,10 @@
 #include <glib.h>
 #include <libnotify/notify.h>
 
+#ifndef NOTIFY_CHECK_VERSION
+#define NOTIFY_CHECK_VERSION(x,y,z) 0
+#endif
+
 static gboolean strip_markup = FALSE;
 
 void
@@ -30,8 +34,16 @@ notification_backend_show (const char *title, const char *text)
 	if (strip_markup)
 		text = g_markup_escape_text (text, -1);
 
+#if NOTIFY_CHECK_VERSION(0,7,0)
 	notification = notify_notification_new (title, text, "hexchat");
+#else
+	notification = notify_notification_new (title, text, "hexchat", NULL);
+#endif
+#if NOTIFY_CHECK_VERSION(0,6,0)
 	notify_notification_set_hint (notification, "desktop-entry", g_variant_new_string ("hexchat"));
+#else
+	notify_notification_set_hint_string (notification, "desktop-entry", "hexchat");
+#endif
 
 	notify_notification_show (notification, NULL);
 
@@ -44,9 +56,6 @@ int
 notification_backend_init (void)
 {
 	GList* server_caps;
-
-	if (!NOTIFY_CHECK_VERSION (0, 7, 0))
-		return 0;
 
 	if (!notify_init (PACKAGE_NAME))
 		return 0;
