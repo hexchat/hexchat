@@ -1414,6 +1414,21 @@ str_sha256hash (char *string)
 	return g_strdup (buf);
 }
 
+static char *
+rfc_strlower (const char *str)
+{
+	size_t i, len = strlen(str);
+	char *lower = g_new(char, len + 1);
+
+	for (i = 0; i < len; ++i)
+	{
+		lower[i] = rfc_tolower(str[i]);
+	}
+	lower[i] = '\0';
+
+	return lower;
+}
+
 /**
  * \brief Generate CHALLENGEAUTH response for QuakeNet login.
  *
@@ -1430,7 +1445,7 @@ str_sha256hash (char *string)
  * <a href="http://stackoverflow.com/questions/242665/understanding-engine-initialization-in-openssl">example 2</a>.
  */
 char *
-challengeauth_response (char *username, char *password, char *challenge)
+challengeauth_response (const char *username, const char *password, const char *challenge)
 {
 	int i;
 	char *user;
@@ -1441,8 +1456,7 @@ challengeauth_response (char *username, char *password, char *challenge)
 	unsigned char *digest;
 	GString *buf = g_string_new_len (NULL, SHA256_DIGEST_LENGTH * 2);
 
-	user = g_strdup (username);
-	*user = rfc_tolower (*username);			/* convert username to lowercase as per the RFC */
+	user = rfc_strlower (username); /* convert username to lowercase as per the RFC */
 
 	pass = g_strndup (password, 10);			/* truncate to 10 characters */
 	passhash = str_sha256hash (pass);
