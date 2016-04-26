@@ -222,7 +222,7 @@ scrollback_load (session *sess)
 	GDataInputStream *istream;
 	gchar *buf, *text;
 	gint lines = 0;
-	time_t stamp;
+	time_t stamp = 0;
 
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
@@ -272,12 +272,19 @@ scrollback_load (session *sess)
 			 * Some don't even have a timestamp
 			 * Some don't have any text at all
 			 */
-			if (buf[0] == 'T')
+			if (buf[0] == 'T' && buf[1] == ' ')
 			{
 				if (sizeof (time_t) == 4)
-					stamp = g_ascii_strtoull (buf + 2, NULL, 10);
+					stamp = strtoul (buf + 2, NULL, 10);
 				else
 					stamp = g_ascii_strtoull (buf + 2, NULL, 10); /* in case time_t is 64 bits */
+
+				if (G_UNLIKELY(stamp == 0))
+				{
+					g_warning ("Invalid timestamp in scrollback file");
+					continue;
+				}
+
 				text = strchr (buf + 3, ' ');
 				if (text && text[1])
 				{
@@ -314,7 +321,7 @@ scrollback_load (session *sess)
 			/* If its only an encoding error it may be specific to the line */
 			if (g_error_matches (err, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE))
 			{
-				g_warning ("Invalid utf8 in scrollback file\n");
+				g_warning ("Invalid utf8 in scrollback file");
 				g_clear_error (&err);
 				continue;
 			}
@@ -336,8 +343,7 @@ scrollback_load (session *sess)
 	if (lines)
 	{
 		text = ctime (&stamp);
-		text[24] = 0;	/* get rid of the \n */
-		buf = g_strdup_printf ("\n*\t%s %s\n\n", _("Loaded log from"), text);
+		buf = g_strdup_printf ("\n*\t%s %s\n", _("Loaded log from"), text);
 		fe_print_text (sess, buf, 0, TRUE);
 		g_free (buf);
 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
