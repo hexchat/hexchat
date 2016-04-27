@@ -600,7 +600,7 @@ static int api_timer_closure(void *udata)
 
 static int api_hexchat_hook_timer(lua_State *L)
 {
-	int ref, timeout = luaL_checknumber(L, 1);
+	int ref, timeout = luaL_checkinteger (L, 1);
 	hook_info *info, **u;
 
 	lua_pushvalue(L, 2);
@@ -985,7 +985,7 @@ static int api_attrs_meta_newindex(lua_State *L)
 	char const *key = luaL_checkstring(L, 2);
 	if(!strcmp(key, "server_time_utc"))
 	{
-		attrs->server_time_utc = luaL_checknumber(L, 3);
+		attrs->server_time_utc = luaL_checkinteger(L, 3);
 		return 0;
 	}
 	else
