@@ -83,6 +83,7 @@ chanopt_value (guint8 val)
 		return _("{unset}");
 	default:
 		g_assert_not_reached ();
+		return NULL;
 	}
 }
 
