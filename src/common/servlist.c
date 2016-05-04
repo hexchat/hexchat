@@ -272,7 +272,8 @@ static const struct defaultserver def[] =
 	{"PonyChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.ponychat.net"},
 
-	{"PTNet.org", 0, 0, "ISO-8859-1"},
+	{"PTNet.org",	0},
+	/* Note that the network suggests ISO-8859-1 but most users ignore this */
 	{0,			"uevora.ptnet.org"},
 	{0,			"vianetworks.ptnet.org"},
 
