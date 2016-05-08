@@ -233,7 +233,7 @@ is_dcc_completed (struct DCC *dcc)
 	return FALSE;
 }
 
-/* this is called from hexchat.c:hexchat_misc_checks() every 1 second. */
+/* this is called from hexchat.c:hexchat_check_dcc() every 1 second. */
 
 void
 dcc_check_timeouts (void)
