@@ -63,6 +63,9 @@
 #define lseek _lseeki64
 #endif
 
+/* interval timer to detect timeouts */
+static int timeout_timer = 0;
+
 static char *dcctypes[] = { "SEND", "RECV", "CHAT", "CHAT" };
 
 struct dccstat_info dccstat[] = {
@@ -82,6 +85,7 @@ static void dcc_close (struct DCC *dcc, int dccstat, int destroy);
 static gboolean dcc_send_data (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc);
+static int dcc_check_timeouts (void);
 
 static int new_id(void)
 {
@@ -233,9 +237,9 @@ is_dcc_completed (struct DCC *dcc)
 	return FALSE;
 }
 
-/* this is called from hexchat.c:hexchat_check_dcc() every 1 second. */
+/* this is called by timeout_timer every 1 second. */
 
-void
+int
 dcc_check_timeouts (void)
 {
 	struct DCC *dcc;
@@ -292,6 +296,7 @@ dcc_check_timeouts (void)
 		}
 		list = next;
 	}
+	return 1;
 }
 
 static int
@@ -419,6 +424,11 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 		g_free (dcc->destfile);
 		g_free (dcc->nick);
 		g_free (dcc);
+		if (dcc_list == NULL)
+		{
+			fe_timeout_remove (timeout_timer);
+			timeout_timer = 0;
+		}
 		return;
 	}
 
@@ -2222,6 +2232,10 @@ new_dcc (void)
 	dcc->sok = -1;
 	dcc->fp = -1;
 	dcc_list = g_slist_prepend (dcc_list, dcc);
+	if (! (timeout_timer > 0))
+	{
+		timeout_timer = fe_timeout_add (1000, dcc_check_timeouts, NULL);
+	}
 	return dcc;
 }
 

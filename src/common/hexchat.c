@@ -354,13 +354,6 @@ doover:
 	return 1;
 }
 
-static int
-hexchat_check_dcc (void)	/* this gets called every 1 second */
-{
-	dcc_check_timeouts ();
-	return 1;
-}
-
 /* these are only run if the lagometer is enabled */
 static int
 hexchat_lag_check (void)   /* this gets called every 30 seconds */
@@ -406,7 +399,6 @@ irc_init (session *sess)
 					     notify_checklist, NULL);
 
 	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, NULL);
-	fe_timeout_add (1000, hexchat_check_dcc, NULL);
 	if (prefs.hex_gui_lagometer)
 	{
 		fe_timeout_add (500, hexchat_lag_check_update, NULL);
