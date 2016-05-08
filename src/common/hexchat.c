@@ -355,24 +355,24 @@ doover:
 }
 
 static int
-hexchat_misc_checks (void)		/* this gets called every 1/2 second */
+hexchat_check_dcc (void)	/* this gets called every 1 second */
 {
-	static int count = 0;
+	dcc_check_timeouts ();
+	return 1;
+}
 
-	count++;
+/* these are only run if the lagometer is enabled */
+static int
+hexchat_lag_check (void)   /* this gets called every 30 seconds */
+{
+	lag_check ();
+	return 1;
+}
 
-	lagcheck_update ();			/* every 500ms */
-
-	if (count % 2)
-		dcc_check_timeouts ();	/* every 1 second */
-
-	if (count >= 60)				/* every 30 seconds */
-	{
-		if (prefs.hex_gui_lagometer)
-			lag_check ();
-		count = 0;
-	}
-
+static int
+hexchat_lag_check_update (void)   /* this gets called every 0.5 seconds */
+{
+	lagcheck_update ();
 	return 1;
 }
 
@@ -403,10 +403,15 @@ irc_init (session *sess)
 
 	if (prefs.hex_notify_timeout)
 		notify_tag = fe_timeout_add (prefs.hex_notify_timeout * 1000,
-											  notify_checklist, 0);
+					     notify_checklist, NULL);
 
-	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, 0);
-	fe_timeout_add (500, hexchat_misc_checks, 0);
+	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, NULL);
+	fe_timeout_add (1000, hexchat_check_dcc, NULL);
+	if (prefs.hex_gui_lagometer)
+	{
+		fe_timeout_add (500, hexchat_lag_check_update, NULL);
+		fe_timeout_add (30000, hexchat_lag_check, NULL);
+	}
 
 	if (arg_url != NULL)
 	{
