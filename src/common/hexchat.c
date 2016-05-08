@@ -395,14 +395,14 @@ irc_init (session *sess)
 #endif
 
 	if (prefs.hex_notify_timeout)
-		notify_tag = fe_timeout_add (prefs.hex_notify_timeout * 1000,
-					     notify_checklist, NULL);
+		notify_tag = fe_timeout_add_seconds (prefs.hex_notify_timeout,
+						     notify_checklist, NULL);
 
-	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, NULL);
+	fe_timeout_add_seconds (prefs.hex_away_timeout, away_check, NULL);
 	if (prefs.hex_gui_lagometer)
 	{
 		fe_timeout_add (500, hexchat_lag_check_update, NULL);
-		fe_timeout_add (30000, hexchat_lag_check, NULL);
+		fe_timeout_add_seconds (30, hexchat_lag_check, NULL);
 	}
 
 	if (arg_url != NULL)
