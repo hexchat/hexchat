@@ -410,7 +410,7 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 					{
 						prefs.hex_gui_autoopen_dialog = 0;
 						/* turn it back on in 30 secs */
-						fe_timeout_add (30000, flood_autodialog_timeout, NULL);
+						fe_timeout_add_seconds (30, flood_autodialog_timeout, NULL);
 					}
 					return 0;
 				}

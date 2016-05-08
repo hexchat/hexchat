@@ -415,6 +415,12 @@ fe_timeout_add (int interval, void *callback, void *userdata)
 	return g_timeout_add (interval, (GSourceFunc) callback, userdata);
 }
 
+int
+fe_timeout_add_seconds (int interval, void *callback, void *userdata)
+{
+	return g_timeout_add_seconds (interval, (GSourceFunc) callback, userdata);
+}
+
 void
 fe_input_remove (int tag)
 {

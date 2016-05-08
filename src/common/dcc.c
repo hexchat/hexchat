@@ -2234,7 +2234,7 @@ new_dcc (void)
 	dcc_list = g_slist_prepend (dcc_list, dcc);
 	if (! (timeout_timer > 0))
 	{
-		timeout_timer = fe_timeout_add (1000, dcc_check_timeouts, NULL);
+		timeout_timer = fe_timeout_add_seconds (1, dcc_check_timeouts, NULL);
 	}
 	return dcc;
 }
