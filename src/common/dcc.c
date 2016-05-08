@@ -81,7 +81,7 @@ static int dcc_global_throttle;	/* 0x1 = sends, 0x2 = gets */
 static gint64 dcc_sendcpssum, dcc_getcpssum;
 
 static struct DCC *new_dcc (void);
-static void dcc_close (struct DCC *dcc, int dccstat, int destroy);
+static void dcc_close (struct DCC *dcc, enum dcc_state dccstat, int destroy);
 static gboolean dcc_send_data (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc);
@@ -293,6 +293,8 @@ dcc_check_timeouts (void)
 			if (prefs.hex_dcc_remove)
 				dcc_close (dcc, 0, TRUE);
 			break;
+		default:
+			break;
 		}
 		list = next;
 	}
@@ -367,7 +369,7 @@ dcc_connect_sok (struct DCC *dcc)
 }
 
 static void
-dcc_close (struct DCC *dcc, int dccstat, int destroy)
+dcc_close (struct DCC *dcc, enum dcc_state dccstat, int destroy)
 {
 	if (dcc->wiotag)
 	{
@@ -1606,6 +1608,8 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		EMIT_SIGNAL (XP_TE_DCCCONCHAT, dcc->serv->front_session,
 						 dcc->nick, host, NULL, NULL, 0);
 		break;
+	default:
+		break;
 	}
 
 	fe_dcc_update (dcc);
@@ -2183,6 +2187,8 @@ dcc_get (struct DCC *dcc)
 	case STAT_ABORTED:
 		dcc_close (dcc, 0, TRUE);
 		break;
+	default:
+		break;
 	}
 }
 
@@ -2265,6 +2271,9 @@ dcc_chat (struct session *sess, char *nick, int passive)
 		case STAT_ABORTED:
 		case STAT_FAILED:
 			dcc_close (dcc, 0, TRUE);
+			break;
+		case STAT_DONE:
+			break;
 		}
 	}
 	dcc = find_dcc (nick, "", TYPE_CHATRECV);
@@ -2278,6 +2287,9 @@ dcc_chat (struct session *sess, char *nick, int passive)
 		case STAT_FAILED:
 		case STAT_ABORTED:
 			dcc_close (dcc, 0, TRUE);
+			break;
+		default:
+			break;
 		}
 		return;
 	}

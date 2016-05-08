@@ -713,6 +713,11 @@ dcc_dclick_cb (GtkTreeView *view, GtkTreePath *path,
 	case STAT_ABORTED:
 	case STAT_DONE:
 		dcc_abort (dcc->serv->front_session, dcc);
+		break;
+	case STAT_QUEUED:
+	case STAT_ACTIVE:
+	case STAT_CONNECTING:
+		break;
 	}
 }
 
