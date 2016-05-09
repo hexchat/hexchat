@@ -50,6 +50,7 @@ extern GList *sess_list_by_lastact[];
 session * find_channel (server *serv, char *chan);
 session * find_dialog (server *serv, char *nick);
 session * new_ircwindow (server *serv, char *name, int type, int focus);
+void hexchat_reinit_timers (void);
 void lastact_update (session * sess);
 session * lastact_getfirst (int (*filter) (session *sess));
 int is_session (session * sess);

@@ -369,6 +369,37 @@ hexchat_lag_check_update (void)   /* this gets called every 0.5 seconds */
 	return 1;
 }
 
+/* call whenever timeout intervals change */
+void
+hexchat_reinit_timers (void)
+{
+	static int lag_check_update_tag = 0;
+	static int lag_check_tag = 0;
+	static int away_tag = 0;
+
+	if (prefs.hex_notify_timeout)
+	{
+		notify_tag = fe_timeout_add_seconds (prefs.hex_notify_timeout,
+						     notify_checklist, NULL);
+	} else
+	{
+		fe_timeout_remove (notify_tag);
+	}
+
+	fe_timeout_remove (away_tag);
+	away_tag = fe_timeout_add_seconds (prefs.hex_away_timeout, away_check, NULL);
+
+	if (prefs.hex_gui_lagometer)
+	{
+		lag_check_update_tag = fe_timeout_add (500, hexchat_lag_check_update, NULL);
+		lag_check_tag = fe_timeout_add_seconds (30, hexchat_lag_check, NULL);
+	} else
+	{
+		fe_timeout_remove (lag_check_update_tag);
+		fe_timeout_remove (lag_check_tag);
+	}
+}
+
 /* executed when the first irc window opens */
 
 static void
@@ -394,16 +425,7 @@ irc_init (session *sess)
 	plugin_add (sess, NULL, NULL, dbus_plugin_init, NULL, NULL, FALSE);
 #endif
 
-	if (prefs.hex_notify_timeout)
-		notify_tag = fe_timeout_add_seconds (prefs.hex_notify_timeout,
-						     notify_checklist, NULL);
-
-	fe_timeout_add_seconds (prefs.hex_away_timeout, away_check, NULL);
-	if (prefs.hex_gui_lagometer)
-	{
-		fe_timeout_add (500, hexchat_lag_check_update, NULL);
-		fe_timeout_add_seconds (30, hexchat_lag_check, NULL);
-	}
+	hexchat_reinit_timers ();
 
 	if (arg_url != NULL)
 	{
