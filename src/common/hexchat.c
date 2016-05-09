@@ -377,26 +377,50 @@ hexchat_reinit_timers (void)
 	static int lag_check_tag = 0;
 	static int away_tag = 0;
 
-	if (prefs.hex_notify_timeout)
+	/* notify timeout */
+	if (prefs.hex_notify_timeout && notify_tag == 0)
 	{
 		notify_tag = fe_timeout_add_seconds (prefs.hex_notify_timeout,
 						     notify_checklist, NULL);
-	} else
+	}
+	else if (notify_tag != 0)
 	{
 		fe_timeout_remove (notify_tag);
+		notify_tag = 0;
 	}
 
-	fe_timeout_remove (away_tag);
-	away_tag = fe_timeout_add_seconds (prefs.hex_away_timeout, away_check, NULL);
+	/* away status tracking */
+	if (prefs.hex_away_track && away_tag == 0)
+	{
+		away_tag = fe_timeout_add_seconds (prefs.hex_away_timeout, away_check, NULL);
+	}
+	else if (away_tag != 0)
+	{
+		fe_timeout_remove (away_tag);
+		away_tag = 0;
+	}
 
-	if (prefs.hex_gui_lagometer)
+	/* lag-o-meter */
+	if (prefs.hex_gui_lagometer && lag_check_update_tag == 0)
 	{
 		lag_check_update_tag = fe_timeout_add (500, hexchat_lag_check_update, NULL);
-		lag_check_tag = fe_timeout_add_seconds (30, hexchat_lag_check, NULL);
-	} else
+	}
+	else if (lag_check_update_tag != 0)
 	{
 		fe_timeout_remove (lag_check_update_tag);
+		lag_check_update_tag = 0;
+	}
+
+	/* network timeouts and lag-o-meter */
+	if ((prefs.hex_net_ping_timeout != 0 || prefs.hex_gui_lagometer)
+	    && lag_check_tag == 0)
+	{
+		lag_check_tag = fe_timeout_add_seconds (30, hexchat_lag_check, NULL);
+	}
+	else if (lag_check_tag != 0)
+	{
 		fe_timeout_remove (lag_check_tag);
+		lag_check_tag = 0;
 	}
 }
 
