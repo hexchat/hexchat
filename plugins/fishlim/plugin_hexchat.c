@@ -447,6 +447,24 @@ int handle_crypt_msg(char *word[], char *word_eol[], void *userdata)
 	return HEXCHAT_EAT_ALL;
 }
 
+int handle_crypt_me(char *word[], char *word_eol[], void *userdata)
+{	const char *own_nick;
+	/* Encrypt the message if possible */
+	const char *channel = hexchat_get_info(ph, "channel");
+	char *encrypted = fish_encrypt_for_nick(channel, word_eol[2]);
+	if (!encrypted) return HEXCHAT_EAT_NONE;
+
+	/* Display message */
+	own_nick = hexchat_get_info(ph, "nick");
+	hexchat_emit_print(ph, "Your Action", own_nick, word_eol[2], NULL);
+
+	/* Send message */
+	hexchat_commandf(ph, "PRIVMSG %s :\001ACTION +OK %s \001", channel, encrypted);
+
+	g_free(encrypted);
+	return HEXCHAT_EAT_ALL;
+}
+
 /**
  * Returns the plugin name version information.
  */
@@ -479,7 +497,8 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	hexchat_hook_command(ph, "TOPIC+", HEXCHAT_PRI_NORM, handle_crypt_topic, usage_topic, NULL);
 	hexchat_hook_command(ph, "NOTICE+", HEXCHAT_PRI_NORM, handle_crypt_notice, usage_notice, NULL);
 	hexchat_hook_command(ph, "MSG+", HEXCHAT_PRI_NORM, handle_crypt_msg, usage_msg, NULL);
-    
+    hexchat_hook_command(ph, "ME", HEXCHAT_PRI_NORM, handle_crypt_me, NULL, NULL);
+	
     /* Add handlers */
     hexchat_hook_command(ph, "", HEXCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
     hexchat_hook_server_attrs(ph, "NOTICE", HEXCHAT_PRI_NORM, handle_notice, NULL);
