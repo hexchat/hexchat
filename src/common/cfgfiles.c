@@ -1046,6 +1046,11 @@ save_config (void)
 				return 0;
 			}
 		}
+
+		if (vars[i].after_update != NULL)
+		{
+			vars[i].after_update();
+		}
 		i++;
 	}
 	while (vars[i].name);
@@ -1292,6 +1297,11 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				else
 				{
 					set_showval (sess, &vars[i], tbuf);
+				}
+
+				if (vars[i].after_update != NULL)
+				{
+					vars[i].after_update();
 				}
 				break;
 			}
