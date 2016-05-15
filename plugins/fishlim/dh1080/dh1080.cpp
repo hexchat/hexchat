@@ -185,7 +185,11 @@ void DH1080::b64enc(const unsigned char* src, unsigned char* dst, size_t len)
 	// everything that happens down here is based on static buffers
 	// that already have the correct size (*cough*)
 	// 
-	static_base64_encode(src, dst, len, 0);
+	char* base64;
+	base64 = g_base64_encode(src, len);
+
+	strcpy((char *)(dst), base64);
+	g_free(base64);
 }
 
 void DH1080::b64dec(const unsigned char* src, unsigned char* dst)
@@ -195,7 +199,12 @@ void DH1080::b64dec(const unsigned char* src, unsigned char* dst)
 	// 
 	size_t len=0;
 	int err=0;
-	static_base64_decode(src, dst, &len, 0, &err);
+	unsigned char *base64;
+
+	base64 = g_base64_decode((char*)src, &len);
+
+	strcpy((char *)(dst), (char *)base64);
+	g_free(base64);
 }
 
 void DH1080::sha256(const unsigned char* src, unsigned char* dst)
