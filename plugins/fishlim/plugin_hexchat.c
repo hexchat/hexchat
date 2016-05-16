@@ -33,9 +33,6 @@
 #define HEXCHAT_MAX_WORDS 32
 
 
-#define strcasecmp stricmp
-
-
 #include "fish.h"
 #include "keystore.h"
 #include "irc.h"
