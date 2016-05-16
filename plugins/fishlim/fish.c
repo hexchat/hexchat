@@ -162,11 +162,21 @@ char* fixNickForIni(char* nick) {
 	char* fixedNick = malloc(strlen(nick)+1);
 	int len;
 
+	if (!fixedNick) return NULL;
+
 	len = strlen(nick);
 	strcpy(fixedNick, nick);
 	while (*fixedNick != 0)
 	{
-		if ((*fixedNick == '[') || (*fixedNick == ']')) *fixedNick = '~';
+		if (*fixedNick == '[')
+		{
+			*fixedNick = '~';
+		}
+		else if (*fixedNick == ']')
+		{
+			*fixedNick = '!';
+		}
+
 		fixedNick++;
 	}
 	fixedNick -= len;
@@ -186,6 +196,7 @@ char *fish_encrypt_for_nick(char *nick, const char *data) {
     /* Look for key */
 	fixedNick = fixNickForIni(nick);
 	key = keystore_get_key(fixedNick);
+	free(fixedNick);
     if (!key) return NULL;
     
     /* Encrypt */
@@ -207,6 +218,7 @@ char *fish_decrypt_from_nick(const char *nick, const char *data) {
     /* Look for key */
 	fixedNick = fixNickForIni(nick);
 	key = keystore_get_key(fixedNick);
+	free(fixedNick);
     if (!key) return NULL;
     
     /* Decrypt */
