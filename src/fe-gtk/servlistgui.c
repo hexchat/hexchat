@@ -2198,6 +2198,10 @@ servlist_open_networks (void)
 	g_signal_connect (G_OBJECT (entry_nick2), "changed",
 					G_CALLBACK(servlist_nick_changed_cb), button_connect);
 
+	/* Run validity checks now */
+	servlist_nick_changed_cb (GTK_ENTRY(entry_nick2), button_connect);
+	servlist_username_changed_cb (GTK_ENTRY(entry_guser), button_connect);
+
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);
 	/* gtk_label_set_mnemonic_widget (GTK_LABEL (label7), entry5); */
