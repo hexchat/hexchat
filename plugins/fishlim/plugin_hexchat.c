@@ -85,7 +85,7 @@ int irc_nick_cmp(const char *a, const char *b) {
 static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     const char *own_nick;
     /* Encrypt the message if possible */
-    const char *channel = hexchat_get_info(ph, "channel");
+    char *channel = (char *)hexchat_get_info(ph, "channel");
     char *encrypted = fish_encrypt_for_nick(channel, word_eol[1]);
     if (!encrypted) return HEXCHAT_EAT_NONE;
     
@@ -106,7 +106,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
 static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata) {
     const char *prefix;
     const char *command;
-    const char *recipient;
+    char *recipient;
     const char *encrypted;
     const char *peice;
     char *sender_nick;
@@ -263,7 +263,7 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
 	{
 		// no paramter given - try current window
 		target = (char *)hexchat_get_info(ph, "channel");
-		getinfoPtr = hexchat_get_info(ph, "network");
+		getinfoPtr = (char *)hexchat_get_info(ph, "network");
 		if (target == 0 || (getinfoPtr != 0 && g_strcmp0(target, getinfoPtr) == 0))
 		{
 			hexchat_printf(ph, usage_keyx);
@@ -288,7 +288,7 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
  * Command handler for /setkey
  */
 static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
-	const char *nick;
+	char *nick;
 	char* fixedNick;
 	const char *key;
 
@@ -300,7 +300,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
 
 		if (*word[3] == '\0') {
 			/* /setkey password */
-			nick = hexchat_get_info(ph, "channel");
+			nick = (char *)hexchat_get_info(ph, "channel");
 			key = word_eol[2];
     } else {
 			/* /setkey #channel password */
@@ -323,7 +323,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
  * Command handler for /delkey
  */
 static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
-    const char *nick;
+    char *nick;
 	char* fixedNick;
     
     /* Check syntax */
@@ -447,7 +447,7 @@ int handle_crypt_msg(char *word[], char *word_eol[], void *userdata)
 int handle_crypt_me(char *word[], char *word_eol[], void *userdata)
 {	const char *own_nick;
 	/* Encrypt the message if possible */
-	const char *channel = hexchat_get_info(ph, "channel");
+	char *channel = (char *)hexchat_get_info(ph, "channel");
 	char *encrypted = fish_encrypt_for_nick(channel, word_eol[2]);
 	if (!encrypted) return HEXCHAT_EAT_NONE;
 

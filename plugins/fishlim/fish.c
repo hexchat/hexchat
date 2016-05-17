@@ -188,7 +188,7 @@ char* fixNickForIni(char* nick) {
  * Encrypts a message (see fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_encrypt_for_nick(char *nick, const char *data) {
+char *fish_encrypt_for_nick(char *nick, char *data) {
     char *key;
     char *encrypted;
 	char* fixedNick;
@@ -210,7 +210,7 @@ char *fish_encrypt_for_nick(char *nick, const char *data) {
  * Decrypts a message (see fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_decrypt_from_nick(const char *nick, const char *data) {
+char *fish_decrypt_from_nick(char *nick, const char *data) {
     char *key;
     char *decrypted;
 	char* fixedNick;
