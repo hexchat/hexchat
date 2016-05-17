@@ -248,6 +248,8 @@ static int handle_notice(char *word[], char *word_eol[], hexchat_event_attrs *at
 	fixedNick = fixNickForIni(sender_nick);
 	keystore_store_key(fixedNick, DH1080_computeSymetricKey(dh, dh_pubkey));
 	hexchat_printf(ph, "Key for %s successfully set!", sender_nick);
+
+	free(fixedNick);
 	return HEXCHAT_EAT_ALL;
 }
 
@@ -264,7 +266,7 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
 		// no paramter given - try current window
 		target = (char *)hexchat_get_info(ph, "channel");
 		getinfoPtr = (char *)hexchat_get_info(ph, "network");
-		if (target == 0 || (getinfoPtr != 0 && g_strcmp0(target, getinfoPtr) == 0))
+		if (target == NULL || (getinfoPtr != NULL && g_strcmp0(target, getinfoPtr) == 0))
 		{
 			hexchat_printf(ph, usage_keyx);
 			return HEXCHAT_EAT_ALL;
@@ -277,7 +279,7 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
 
 	DH1080_flush(dh);
 	query_ctx = hexchat_find_context(ph, NULL, target);
-	if (query_ctx != 0) hexchat_set_context(ph, query_ctx);
+	if (query_ctx != NULL) hexchat_set_context(ph, query_ctx);
 	hexchat_commandf(ph, "quote NOTICE %s :DH1080_INIT %s", target, DH1080_getNewPublicKey(dh));
 	hexchat_printf(ph, "Sent my DH1080 public key to %s, waiting for reply ...", target);
 
@@ -316,6 +318,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
         hexchat_printf(ph, "\00305Failed to store key in addon_fishlim.conf\n");
     }
     
+	free(fixedNick);
     return HEXCHAT_EAT_HEXCHAT;
 }
 
@@ -341,7 +344,8 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     } else {
         hexchat_printf(ph, "\00305Failed to delete key in addon_fishlim.conf!\n");
     }
-    
+
+	free(fixedNick);
     return HEXCHAT_EAT_HEXCHAT;
 }
 
@@ -353,7 +357,6 @@ static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
 	char* buf;
 	char* topic = word_eol[2];
 
-
 	if (topic == 0 || *topic == 0)
 	{
 		hexchat_printf(ph, usage_topic);
@@ -361,7 +364,7 @@ static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
 	}
 
 	target = (char *)hexchat_get_info(ph, "channel");
-	if (target == 0 || (*target != '#' && *target != '&'))
+	if (target == NULL || (*target != '#' && *target != '&'))
 	{
 		hexchat_printf(ph, "Please change to the channel window where you want to set the topic!");
 		return HEXCHAT_EAT_ALL;
