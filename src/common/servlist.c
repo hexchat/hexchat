@@ -117,6 +117,12 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.criten.net"},
 
+	{"Cuff-Link", 0, 0, 0, LOGIN_SASL},
+#ifdef USE_OPENSSL
+	{0,			"irc.cuff-link.me/+6697"},
+#endif
+	{0,			"irc.cuff-link.me"},
+
 	{"DALnet", 0, 0, 0, LOGIN_NICKSERV},
 	/* Self signed */
 	{0,			"us.dal.net"},
