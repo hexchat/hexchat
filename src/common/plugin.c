@@ -426,14 +426,14 @@ plugin_auto_load_cb (char *filename)
 	}
 }
 
-static char *
+static const char *
 plugin_get_libdir (void)
 {
 	const char *libdir;
 
 	libdir = g_getenv ("HEXCHAT_LIBDIR");
 	if (libdir && *libdir)
-		return (char*)libdir;
+		return libdir;
 	else
 		return HEXCHATLIBDIR;
 }
@@ -441,7 +441,7 @@ plugin_get_libdir (void)
 void
 plugin_auto_load (session *sess)
 {
-	char *lib_dir; 
+	const char *lib_dir;
 	char *sub_dir;
 	ps = sess;
 
