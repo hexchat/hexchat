@@ -162,8 +162,8 @@ process_data_init (char *buf, char *cmd, char *word[],
 
 	word[0] = "\000\000";
 	word_eol[0] = "\000\000";
-	word[1] = (char *)buf;
-	word_eol[1] = (char *)cmd;
+	word[1] = buf;
+	word_eol[1] = cmd;
 
 	while (1)
 	{
