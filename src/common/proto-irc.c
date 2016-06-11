@@ -1046,8 +1046,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				if (!serv->p_cmp (nick, serv->nick))
 					inbound_ujoin (serv, chan, nick, ip, tags_data);
 				else
-					inbound_join (serv, chan, nick, ip, account, realname,
-									  tags_data);
+					inbound_join (serv, chan, word[1], nick, ip, account, realname,
+					              tags_data);
 			}
 			return;
 
@@ -1100,7 +1100,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				if (!strcmp (nick, serv->nick))
 					inbound_upart (serv, chan, ip, reason, tags_data);
 				else
-					inbound_part (serv, chan, nick, ip, reason, tags_data);
+					inbound_part (serv, chan, word[1], nick, ip, reason, tags_data);
 			}
 			return;
 
@@ -1115,9 +1115,9 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			return;
 
 		case WORDL('Q','U','I','T'):
-			inbound_quit (serv, nick, ip,
-							  (word_eol[3][0] == ':') ? word_eol[3] + 1 : word_eol[3],
-							  tags_data);
+			inbound_quit (serv, word[1], nick, ip,
+			              (word_eol[3][0] == ':') ? word_eol[3] + 1 : word_eol[3],
+			              tags_data);
 			return;
 
 		case WORDL('A','W','A','Y'):

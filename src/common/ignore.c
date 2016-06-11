@@ -151,6 +151,10 @@ ignore_showlist (session *sess)
 			strcat (tbuf, _("YES  "));
 		else
 			strcat (tbuf, _("NO   "));
+		if (ig->type & IG_JOINS_PARTS)
+			strcat (tbuf, _("YES         "));
+		else
+			strcat (tbuf, _("NO          "));
 		strcat (tbuf, "\n");
 		PrintText (sess, tbuf);
 		/*EMIT_SIGNAL (XP_TE_IGNORELIST, sess, ig->mask, 0, 0, 0, 0); */

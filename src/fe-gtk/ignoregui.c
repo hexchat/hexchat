@@ -40,6 +40,7 @@ enum
 	CTCP_COLUMN,
 	DCC_COLUMN,
 	INVITE_COLUMN,
+	JOINS_PARTS_COLUMN,
 	UNIGNORE_COLUMN,
 	N_COLUMNS
 };
@@ -61,7 +62,7 @@ get_store (void)
 static unsigned int
 ignore_get_flags (GtkTreeModel *model, GtkTreeIter *iter)
 {
-	gboolean chan, priv, noti, ctcp, dcc, invi, unig;
+	gboolean chan, priv, noti, ctcp, dcc, invi, joins_parts, unig;
 	unsigned int flags = 0;
 
 	gtk_tree_model_get (
@@ -72,6 +73,7 @@ ignore_get_flags (GtkTreeModel *model, GtkTreeIter *iter)
 		CTCP_COLUMN, &ctcp,
 		DCC_COLUMN, &dcc,
 		INVITE_COLUMN, &invi,
+		JOINS_PARTS_COLUMN, &joins_parts,
 		UNIGNORE_COLUMN, &unig,
 		-1);
 	if (chan)
@@ -86,6 +88,8 @@ ignore_get_flags (GtkTreeModel *model, GtkTreeIter *iter)
 		flags |= IG_DCC;
 	if (invi)
 		flags |= IG_INVI;
+	if (joins_parts)
+		flags |= IG_JOINS_PARTS;
 	if (unig)
 		flags |= IG_UNIG;
 	return flags;
@@ -169,6 +173,7 @@ ignore_treeview_new (GtkWidget *box)
 	                             CTCP_COLUMN, _("CTCP"),
 	                             DCC_COLUMN, _("DCC"),
 	                             INVITE_COLUMN, _("Invite"),
+	                             JOINS_PARTS_COLUMN, _("Joins & Parts"),
 	                             UNIGNORE_COLUMN, _("Unignore"),
 	                             -1);
 
@@ -240,7 +245,7 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 	GtkListStore *store = GTK_LIST_STORE (get_store ());
 	GtkTreeIter iter;
 	GtkTreePath *path;
-	unsigned int flags = IG_CHAN | IG_PRIV | IG_NOTI | IG_CTCP | IG_DCC | IG_INVI;
+	unsigned int flags = IG_CHAN | IG_PRIV | IG_NOTI | IG_CTCP | IG_DCC | IG_INVI | IG_JOINS_PARTS;
 
 	if (cancel)
 		return;
@@ -264,6 +269,7 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 		CTCP_COLUMN, TRUE,
 		DCC_COLUMN, TRUE,
 		INVITE_COLUMN, TRUE,
+		JOINS_PARTS_COLUMN, TRUE,
 		UNIGNORE_COLUMN, FALSE,
 		-1);
 	/* make sure the new row is visible and selected */
@@ -354,7 +360,7 @@ ignore_gui_open ()
 	GtkTreeIter iter;
 	GSList *temp = ignore_list;
 	char *mask;
-	gboolean private, chan, notice, ctcp, dcc, invite, unignore;
+	gboolean private, chan, notice, ctcp, dcc, invite, joins_parts, unignore;
 
 	if (ignorewin)
 	{
@@ -413,6 +419,7 @@ ignore_gui_open ()
 		ctcp = (ignore->type & IG_CTCP);
 		dcc = (ignore->type & IG_DCC);
 		invite = (ignore->type & IG_INVI);
+		joins_parts = (ignore->type & IG_JOINS_PARTS);
 		unignore = (ignore->type & IG_UNIG);
 
 		gtk_list_store_append (store, &iter);
@@ -424,6 +431,7 @@ ignore_gui_open ()
 		                    CTCP_COLUMN, ctcp,
 		                    DCC_COLUMN, dcc,
 		                    INVITE_COLUMN, invite,
+		                    JOINS_PARTS_COLUMN, joins_parts,
 		                    UNIGNORE_COLUMN, unignore,
 		                    -1);
 		
