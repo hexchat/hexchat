@@ -44,10 +44,10 @@ struct ignore
 };
 
 struct ignore *ignore_exists (char *mask);
-int ignore_add (char *mask, int type, gboolean overwrite);
+int ignore_add (char *mask, unsigned int type, gboolean overwrite);
 void ignore_showlist (session *sess);
 int ignore_del (char *mask, struct ignore *ig);
-int ignore_check (char *mask, int type);
+int ignore_check (char *mask, unsigned int type);
 void ignore_load (void);
 void ignore_save (void);
 void ignore_gui_open (void);
