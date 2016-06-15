@@ -2212,10 +2212,17 @@ dcc_get_nick (struct session *sess, char *nick)
 		{
 			if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_RECV)
 			{
-				dcc->resumable = 0;
-				dcc->pos = 0;
-				dcc->ack = 0;
-				dcc_connect (dcc);
+				update_is_resumable (dcc);
+				if (prefs.hex_dcc_auto_resume && dcc->resumable)
+				{
+					dcc_resume (dcc);
+				}
+				else
+				{
+					dcc->pos = 0;
+					dcc->ack = 0;
+					dcc_connect (dcc);
+				}
 				return;
 			}
 		}
