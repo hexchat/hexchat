@@ -2805,9 +2805,14 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			else
 			{
 				/* mask out passwords */
-				if (g_ascii_strcasecmp (nick, "nickserv") == 0 &&
-					 g_ascii_strncasecmp (msg, "identify ", 9) == 0)
-					msg = "identify ****";
+				if (g_ascii_strcasecmp (nick, "nickserv") == 0)
+				{
+					if (g_ascii_strncasecmp (msg, "identify ", 9) == 0)
+						msg = "identify ****";
+					else if (g_ascii_strncasecmp (msg, "ghost ", 6) == 0)
+						msg = "ghost ****";
+				}
+
 				EMIT_SIGNAL (XP_TE_MSGSEND, sess, nick, msg, NULL, NULL, 0);
 			}
 
