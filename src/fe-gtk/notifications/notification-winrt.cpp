@@ -46,7 +46,7 @@ extern "C"
 		try
 		{
 			auto toastTemplate = ToastNotificationManager::GetTemplateContent (ToastTemplateType::ToastText02);
-			auto node_list = toastTemplate->GetElementsByTagName ("text");
+			auto node_list = toastTemplate->GetElementsByTagName (L"text");
 			UINT node_count = node_list->Length;
 
 			auto wtitle = widen (title);
@@ -58,9 +58,9 @@ extern "C"
 				toastTemplate->CreateTextNode (Platform::StringReference (wtext.c_str (), wtext.size ())));
 
 			// Mute sound, we already play our own
-			auto node = toastTemplate->SelectSingleNode ("/toast");
-			auto audio_elem = toastTemplate->CreateElement ("audio");
-			audio_elem->SetAttribute ("silent", "true");
+			auto node = toastTemplate->SelectSingleNode (L"/toast");
+			auto audio_elem = toastTemplate->CreateElement (L"audio");
+			audio_elem->SetAttribute (L"silent", L"true");
 			static_cast<XmlElement^>(node)->AppendChild (audio_elem);
 
 			notifier->Show (ref new ToastNotification (toastTemplate));
@@ -77,7 +77,7 @@ extern "C"
 	notification_backend_init (void)
 	{
 		if (!notifier)
-			notifier = ToastNotificationManager::CreateToastNotifier ("HexChat.Desktop.Notify");
+			notifier = ToastNotificationManager::CreateToastNotifier (L"HexChat.Desktop.Notify");
 
 		if (FAILED (Windows::Foundation::Initialize (RO_INIT_SINGLETHREADED)))
 			return 0;
