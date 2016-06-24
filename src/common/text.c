@@ -742,6 +742,8 @@ text_convert_invalid (const gchar* text, gssize len, GIConv converter, const gch
 
 	/* Find the first position of an invalid sequence. */
 	result_part = g_convert_with_iconv (text, len, converter, &invalid_start_pos, &result_part_len, NULL);
+	g_iconv (converter, NULL, NULL, NULL, NULL);
+
 	if (result_part != NULL)
 	{
 		/* All text converted successfully on the first try. Return it. */
@@ -763,8 +765,15 @@ text_convert_invalid (const gchar* text, gssize len, GIConv converter, const gch
 	{
 		g_assert (current_start + invalid_start_pos < end);
 
-		/* Convert everything before the position of the invalid sequence. It should be successful. */
+		/* Convert everything before the position of the invalid sequence. It should be successful.
+		 * But iconv may not convert everything till invalid_start_pos since the last few bytes may be part of a shift sequence.
+		 * So get the new bytes_read and use it as the actual invalid_start_pos to handle this.
+		 *
+		 * See https://github.com/hexchat/hexchat/issues/1758
+		 */
 		result_part = g_convert_with_iconv (current_start, invalid_start_pos, converter, &invalid_start_pos, &result_part_len, NULL);
+		g_iconv (converter, NULL, NULL, NULL, NULL);
+
 		g_assert (result_part != NULL);
 		g_string_append_len (result, result_part, result_part_len);
 		g_free (result_part);
@@ -776,6 +785,8 @@ text_convert_invalid (const gchar* text, gssize len, GIConv converter, const gch
 		current_start += invalid_start_pos + 1;
 
 		result_part = g_convert_with_iconv (current_start, end - current_start, converter, &invalid_start_pos, &result_part_len, NULL);
+		g_iconv (converter, NULL, NULL, NULL, NULL);
+
 		if (result_part != NULL)
 		{
 			/* The rest of the text converted successfully. Append it and return the whole converted text. */
