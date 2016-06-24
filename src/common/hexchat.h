@@ -529,6 +529,7 @@ typedef struct server
 	/*time_t connect_time;*/				/* when did it connect? */
 	unsigned long lag_sent;   /* we are still waiting for this ping response*/
 	time_t ping_recv;					/* when we last got a ping reply */
+	time_t socket_recv;					/* when we last received something from the socket */
 	time_t away_time;					/* when we were marked away */
 
 	char *encoding;
