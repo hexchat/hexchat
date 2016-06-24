@@ -91,7 +91,7 @@ tcp_send_real (void *ssl, int sok, GIConv write_converter, char *buf, int len)
 	int ret;
 
 	gsize buf_encoded_len;
-	gchar *buf_encoded = text_convert_invalid (buf, len, write_converter, "?", &buf_encoded_len);
+	gchar *buf_encoded = text_convert_invalid (buf, len, write_converter, arbitrary_encoding_fallback_string, &buf_encoded_len);
 #ifdef USE_OPENSSL
 	if (!ssl)
 		ret = send (sok, buf_encoded, buf_encoded_len, 0);
