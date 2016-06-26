@@ -373,7 +373,7 @@ dnl *********************************************************************
 
 
 AS_IF([test "$openssl" != no], [
-	PKG_CHECK_MODULES(OPENSSL, [openssl], [
+	PKG_CHECK_MODULES(OPENSSL, [openssl >= 0.9.8], [
 		AC_DEFINE(USE_OPENSSL)
 		openssl=yes
 		COMMON_LIBS="$COMMON_LIBS $OPENSSL_LIBS"

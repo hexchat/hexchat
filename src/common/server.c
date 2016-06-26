@@ -466,19 +466,22 @@ ssl_cb_verify (int ok, X509_STORE_CTX * ctx)
 	char subject[256];
 	char issuer[256];
 	char buf[512];
+	X509 *current_cert = X509_STORE_CTX_get_current_cert (ctx);
 
+	if (!current_cert)
+		return TRUE;
 
-	X509_NAME_oneline (X509_get_subject_name (ctx->current_cert), subject,
-							 sizeof (subject));
-	X509_NAME_oneline (X509_get_issuer_name (ctx->current_cert), issuer,
-							 sizeof (issuer));
+	X509_NAME_oneline (X509_get_subject_name (current_cert),
+	                   subject, sizeof (subject));
+	X509_NAME_oneline (X509_get_issuer_name (current_cert),
+	                   issuer, sizeof (issuer));
 
 	g_snprintf (buf, sizeof (buf), "* Subject: %s", subject);
 	EMIT_SIGNAL (XP_TE_SSLMESSAGE, g_sess, buf, NULL, NULL, NULL, 0);
 	g_snprintf (buf, sizeof (buf), "* Issuer: %s", issuer);
 	EMIT_SIGNAL (XP_TE_SSLMESSAGE, g_sess, buf, NULL, NULL, NULL, 0);
 
-	return (TRUE);					  /* always ok */
+	return TRUE;
 }
 
 static int
@@ -638,7 +641,8 @@ conn_fail:
 		return (0);					  /* remove it (0) */
 	} else
 	{
-		if (serv->ssl->session && serv->ssl->session->time + SSLTMOUT < time (NULL))
+		SSL_SESSION *session = SSL_get_session (serv->ssl);
+		if (session && SSL_SESSION_get_time (session) + SSLTMOUT < time (NULL))
 		{
 			g_snprintf (buf, sizeof (buf), "SSL handshake timed out");
 			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, buf, NULL,
