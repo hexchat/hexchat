@@ -1594,7 +1594,7 @@ inbound_login_end (session *sess, char *text, const message_tags_data *tags_data
 			&& ((((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
 				|| ((ircnet *)serv->network)->commandlist))
 		{
-			serv->joindelay_tag = fe_timeout_add (prefs.hex_irc_join_delay * 1000, check_autojoin_channels, serv);
+			serv->joindelay_tag = fe_timeout_add_seconds (prefs.hex_irc_join_delay, check_autojoin_channels, serv);
 		}
 		else
 		{

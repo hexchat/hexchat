@@ -1646,6 +1646,7 @@ menu_metres_off (GtkWidget *item, gpointer none)
 	{
 		prefs.hex_gui_lagometer = 0;
 		prefs.hex_gui_throttlemeter = 0;
+		hexchat_reinit_timers ();
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1657,6 +1658,7 @@ menu_metres_text (GtkWidget *item, gpointer none)
 	{
 		prefs.hex_gui_lagometer = 2;
 		prefs.hex_gui_throttlemeter = 2;
+		hexchat_reinit_timers ();
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1668,6 +1670,7 @@ menu_metres_graph (GtkWidget *item, gpointer none)
 	{
 		prefs.hex_gui_lagometer = 1;
 		prefs.hex_gui_throttlemeter = 1;
+		hexchat_reinit_timers ();
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1679,6 +1682,7 @@ menu_metres_both (GtkWidget *item, gpointer none)
 	{
 		prefs.hex_gui_lagometer = 3;
 		prefs.hex_gui_throttlemeter = 3;
+		hexchat_reinit_timers ();
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }

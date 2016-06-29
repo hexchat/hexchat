@@ -532,7 +532,7 @@ const struct prefs vars[] =
 	{"net_auto_reconnectonfail", P_OFFINT (hex_net_auto_reconnectonfail), TYPE_BOOL},
 #endif
 	{"net_bind_host", P_OFFSET (hex_net_bind_host), TYPE_STR},
-	{"net_ping_timeout", P_OFFINT (hex_net_ping_timeout), TYPE_INT},
+	{"net_ping_timeout", P_OFFINT (hex_net_ping_timeout), TYPE_INT, hexchat_reinit_timers},
 	{"net_proxy_auth", P_OFFINT (hex_net_proxy_auth), TYPE_BOOL},
 	{"net_proxy_host", P_OFFSET (hex_net_proxy_host), TYPE_STR},
 	{"net_proxy_pass", P_OFFSET (hex_net_proxy_pass), TYPE_STR},
@@ -1046,6 +1046,11 @@ save_config (void)
 				return 0;
 			}
 		}
+
+		if (vars[i].after_update != NULL)
+		{
+			vars[i].after_update();
+		}
 		i++;
 	}
 	while (vars[i].name);
@@ -1292,6 +1297,11 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				else
 				{
 					set_showval (sess, &vars[i], tbuf);
+				}
+
+				if (vars[i].after_update != NULL)
+				{
+					vars[i].after_update();
 				}
 				break;
 			}

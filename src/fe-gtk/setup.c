@@ -2132,6 +2132,7 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout, int do_identd)
 
 	mg_apply_setup ();
 	tray_apply_setup ();
+	hexchat_reinit_timers ();
 
 	if (do_layout)
 		menu_change_layout ();
