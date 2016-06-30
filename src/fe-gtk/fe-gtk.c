@@ -254,6 +254,22 @@ const char cursor_color_rc[] =
 	"}"
 	"widget \"*.hexchat-inputbox\" style : application \"xc-ib-st\"";
 
+static const char adwaita_workaround_rc[] =
+	"style \"hexchat-input-workaround\""
+	"{"
+		"engine \"pixmap\" {"
+			"image {"
+				"function = FLAT_BOX\n"
+				"state    = NORMAL\n"
+			"}"
+			"image {"
+				"function = FLAT_BOX\n"
+				"state    = ACTIVE\n"
+			"}"
+		"}"
+	"}"
+	"widget \"*.hexchat-inputbox\" style \"hexchat-input-workaround\"";
+
 GtkStyle *
 create_input_style (GtkStyle *style)
 {
@@ -274,6 +290,16 @@ create_input_style (GtkStyle *style)
 
 	if (prefs.hex_gui_input_style && !done_rc)
 	{
+		GtkSettings *settings = gtk_settings_get_default ();
+		char *theme_name;
+
+		/* gnome-themes-standard 3.20 relies on images to do theming
+		 * so we have to override that. */
+		g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
+		if (!g_strcmp0 (theme_name, "Adwaita"))
+			gtk_rc_parse_string (adwaita_workaround_rc);
+		g_free (theme_name);
+
 		done_rc = TRUE;
 		sprintf (buf, cursor_color_rc, (colors[COL_FG].red >> 8),
 			(colors[COL_FG].green >> 8), (colors[COL_FG].blue >> 8));
