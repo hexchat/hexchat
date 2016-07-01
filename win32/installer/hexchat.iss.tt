@@ -100,6 +100,7 @@ Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: "";
 Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
 Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
 Filename: "{tmp}\vcredist.exe"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing Visual C++ Redistributable"; Flags: skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\vcredist2013.exe"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing Visual C++ Redistributable"; Flags: skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\dotnet4.exe"; Parameters: "/q /norestart"; StatusMsg: "Installing .NET"; Components: xtm; Flags: skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\perl.msi"; StatusMsg: "Installing Perl"; Components: langs\perl; Flags: shellexec skipifdoesntexist; Tasks: not portable
 Filename: "{tmp}\python.msi"; StatusMsg: "Installing Python"; Components: langs\python; Flags: shellexec skipifdoesntexist; Tasks: not portable
@@ -240,6 +241,12 @@ begin
 	Result := FileExists(GetSysDir() + 'vcruntime140.dll');;
 end;
 
+function CheckVC2013Install(): Boolean;
+begin
+	Result := FileExists(GetSysDir() + 'msvcr120.dll');;
+end;
+
+
 /////////////////////////////////////////////////////////////////////
 function CheckSpellInstall(): Boolean;
 var
@@ -266,6 +273,7 @@ end;
 procedure CurPageChanged(CurPageID: Integer);
 var
 	REDIST: String;
+	REDIST_2013: String;
 	PERL: String;
 	PY2: String;
 	PY3: String;
@@ -281,11 +289,13 @@ begin
 
 #if APPARCH == "x64"
 		REDIST := 'https://dl.hexchat.net/misc/vcredist_2015_x64.exe';
+		REDIST_2013 := 'https://dl.hexchat.net/misc/vcredist_2013_x64.exe';
 		PERL := 'https://dl.hexchat.net/misc/perl/Perl%205.20.0%20x64.msi';
 		PY2 := 'https://python.org/ftp/python/2.7.10/python-2.7.10.amd64.msi';
 		PY3 := 'https://python.org/ftp/python/3.5.1/python-3.5.1-amd64.exe';
 #else
 		REDIST := 'https://dl.hexchat.net/misc/vcredist_2015_x86.exe';
+		REDIST_2013 := 'https://dl.hexchat.net/misc/vcredist_2013_x86.exe';
 		PERL := 'https://dl.hexchat.net/misc/perl/Perl%205.20.0%20x86.msi';
 		PY2 := 'https://python.org/ftp/python/2.7.10/python-2.7.10.msi';
 		PY3 := 'https://python.org/ftp/python/3.5.1/python-3.5.1.exe';
@@ -305,7 +315,12 @@ begin
 		if not WizardSilent() then
 		begin
 			if IsComponentSelected('langs\perl') and not CheckDLL('perl520.dll') then
-				idpAddFile(PERL, ExpandConstant('{tmp}\perl.msi'));
+			begin
+				if not CheckVC2013Install() then
+					idpAddFile(REDIST_2013, ExpandConstant('{tmp}\vcredist2013.exe'));
+
+				idpAddFile(PERL, ExpandConstant('{tmp}\perl.msi'))
+			end;
 
 			if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
 				idpAddFile(PY2, ExpandConstant('{tmp}\python.msi'));
