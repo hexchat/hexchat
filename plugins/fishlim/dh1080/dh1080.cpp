@@ -1,10 +1,10 @@
 
 #include "dh1080.h"
-#include "b64stuff_static.h"
 #include <openssl/ssl.h>
 #include <openssl/sha.h>
 
 #include <string.h>
+
 
 #define SIZEOFA(x) (sizeof(x)/sizeof(*x))
 #define MEMZERO(x) memset(x, 0x00, SIZEOFA(x) );
@@ -185,7 +185,11 @@ void DH1080::b64enc(const unsigned char* src, unsigned char* dst, size_t len)
 	// everything that happens down here is based on static buffers
 	// that already have the correct size (*cough*)
 	// 
-	static_base64_encode(src, dst, len, 0);
+	char* base64;
+
+	base64 = g_base64_encode(src, len);
+	strcpy((char *)(dst), base64);
+	g_free(base64);
 }
 
 void DH1080::b64dec(const unsigned char* src, unsigned char* dst)
@@ -194,8 +198,11 @@ void DH1080::b64dec(const unsigned char* src, unsigned char* dst)
 	// that already have the correct size (*cough*)
 	// 
 	size_t len=0;
-	int err=0;
-	static_base64_decode(src, dst, &len, 0, &err);
+	unsigned char *base64;
+
+	base64 = g_base64_decode((const gchar *)src, &len);
+	strcpy((char *)(dst), (char *)base64);
+	g_free(base64);
 }
 
 void DH1080::sha256(const unsigned char* src, unsigned char* dst)

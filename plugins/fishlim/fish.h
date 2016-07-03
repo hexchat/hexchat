@@ -32,8 +32,8 @@
 char* fixNickForIni(char* nick);
 char *fish_encrypt(const char *key, size_t keylen, const char *message);
 char *fish_decrypt(const char *key, size_t keylen, const char *data);
-char *fish_encrypt_for_nick(char *nick, const char *data);
-char *fish_decrypt_from_nick(const char *nick, const char *data);
+char *fish_encrypt_for_nick(char *nick, char *data);
+char *fish_decrypt_from_nick(char *nick, const char *data);
 
 #endif
 
