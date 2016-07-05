@@ -2196,6 +2196,8 @@ setup_apply (struct hexchatprefs *pr)
 		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_sort))
 		noapply = TRUE;
+	if (DIFF (hex_gui_input_style) && prefs.hex_gui_input_style == TRUE)
+		noapply = TRUE; /* Requires restart to *disable* */
 
 	if (DIFF (hex_gui_tab_dots))
 		do_layout = TRUE;
