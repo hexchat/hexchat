@@ -2147,7 +2147,8 @@ update_is_resumable (struct DCC *dcc)
 		{
 			d = list->data;
 			if (d->type == TYPE_RECV && d->dccstat != STAT_ABORTED &&
-				 d->dccstat != STAT_DONE && d->dccstat != STAT_FAILED)
+				 d->dccstat != STAT_DONE && d->dccstat != STAT_FAILED &&
+				 d->dccstat != STAT_QUEUED)
 			{
 				if (d != dcc && is_same_file (d, dcc))
 				{
@@ -2340,6 +2341,8 @@ int
 dcc_resume (struct DCC *dcc)
 {
 	char tbuf[500];
+
+	update_is_resumable (dcc);
 
 	if (dcc->dccstat == STAT_QUEUED && dcc->resumable)
 	{
