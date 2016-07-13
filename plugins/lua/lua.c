@@ -831,7 +831,7 @@ static inline int list_marshal(lua_State *L, const char *key, hexchat_list *list
 	}
 	if (list != NULL)
 	{
-	  	time_t tm = hexchat_list_time(ph, list, key);
+		time_t tm = hexchat_list_time(ph, list, key);
 		if(tm != -1)
 		{
 			lua_pushinteger(L, tm);
@@ -845,7 +845,7 @@ static inline int list_marshal(lua_State *L, const char *key, hexchat_list *list
 
 static int api_hexchat_props_meta_index(lua_State *L)
 {
-  	char const *key = luaL_checkstring(L, 2);
+	char const *key = luaL_checkstring(L, 2);
 	return list_marshal(L, key, NULL);
 }
 
@@ -1481,15 +1481,26 @@ static void inject_string(script_info *info, char const *line)
 {
 	lua_State *L = info->state;
 	int base, top;
+	char *ret_line;
+
+	if(line[0] == '=')
+		line++;
+	ret_line = g_strconcat("return ", line, NULL);
 
 	lua_rawgeti(L, LUA_REGISTRYINDEX, info->traceback);
 	base = lua_gettop(L);
-	if(luaL_loadbuffer(L, line, strlen(line), "@interpreter"))
+	if(luaL_loadbuffer(L, ret_line, strlen(ret_line), "@interpreter"))
 	{
-		hexchat_printf(ph, "Lua syntax error: %s", luaL_optstring(L, -1, ""));
-		lua_pop(L, 2);
-		return;
+		lua_pop(L, 1);
+		if(luaL_loadbuffer(L, line, strlen(line), "@interpreter"))
+		{
+			hexchat_printf(ph, "Lua syntax error: %s", luaL_optstring(L, -1, ""));
+			lua_pop(L, 2);
+			g_free(ret_line);
+			return;
+		}
 	}
+	g_free(ret_line);
 	info->status |= STATUS_ACTIVE;
 	if(lua_pcall(L, 0, LUA_MULTRET, base))
 	{
