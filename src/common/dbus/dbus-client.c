@@ -22,6 +22,7 @@
 #include "config.h"
 
 #define GLIB_DISABLE_DEPRECATION_WARNINGS
+#include <stdlib.h>
 #include <dbus/dbus-glib.h>
 #include "dbus-client.h"
 #include "hexchat.h"
