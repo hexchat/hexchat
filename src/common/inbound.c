@@ -307,7 +307,31 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 	if (alert_match_word (from, prefs.hex_irc_no_hilight))
 		return 0;
 
-	text = strip_color (text, -1, STRIP_ALL);
+	/* Handle single leading hyphen specially, for issue #1774.
+	   If the text starts with '-', we should strip the '-' before
+	   matching masks.  Why?  Because of this common circumstance:
+	   
+	   If speaker Q hasn't identified to the server, then
+	   sometimes everything Q says is prefixed with a leading '-'
+	   (whether this happens or not depends on various settings).
+	   However, if Q is speaking to HexChat user N, and Q begins
+	   each line with N's nick (as is common etiquette in some
+	   chat rooms), then when Q says something like "N: hi there",
+	   what N's HexChat client actually sees is "-N: hi there".
+	   
+	   The presence of that leading "-" in "-N" would then cause
+	   Q's speaker nick to *not* be highlighted (for N), even if
+	   N's preferences say that such highlighting should happen
+	   for any line in which someone says "N".
+	   
+	   Since https://tools.ietf.org/html/rfc2812#section-2.3.1
+	   specifies that '-' isn't allowed as the first character of
+	   a nickname, and in any case it's quite likely that someone
+	   who wants "N" matched probably also wants "-N" matched
+	   (since lone leading hyphens are rare and usually do not
+	   represent a distinct word from the same word without the
+	   hyphen), we just strip off a single leading hyphen here. */
+	text = strip_color (text[0] == '-' ? text + 1 : text, -1, STRIP_ALL);
 
 	if (alert_match_text (text, serv->nick) ||
 		 alert_match_text (text, prefs.hex_irc_extra_hilight) ||
