@@ -618,10 +618,6 @@ fe_cleanup (void)
 {
 }
 void
-fe_set_hilight (struct session *sess)
-{
-}
-void
 fe_set_tab_color (struct session *sess, int col)
 {
 }

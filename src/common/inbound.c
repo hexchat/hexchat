@@ -319,7 +319,6 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 			sess->nick_said = TRUE;
 			lastact_update (sess);
 		}
-		fe_set_hilight (sess);
 		return 1;
 	}
 
