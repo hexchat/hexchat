@@ -1332,9 +1332,6 @@ mg_chan_remove (chan *ch)
 static void
 mg_close_gen (chan *ch, GtkWidget *box)
 {
-	char *title = g_object_get_data (G_OBJECT (box), "title");
-
-	g_free (title);
 	if (!ch)
 		ch = g_object_get_data (G_OBJECT (box), "ch");
 	if (ch)
@@ -3339,8 +3336,8 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 
 	ch = chanview_add (mg_gui->chanview, name, NULL, box, TRUE, TAG_UTIL, pix_tree_util);
 	chan_set_color (ch, plain_list);
-	/* FIXME: memory leak */
-	g_object_set_data (G_OBJECT (box), "title", g_strdup (title));
+
+	g_object_set_data_full (G_OBJECT (box), "title", g_strdup (title), g_free);
 	g_object_set_data (G_OBJECT (box), "ch", ch);
 
 	if (prefs.hex_gui_tab_newtofront)
@@ -3630,8 +3627,7 @@ mg_set_title (GtkWidget *vbox, char *title) /* for non-irc tab/window only */
 	old = g_object_get_data (G_OBJECT (vbox), "title");
 	if (old)
 	{
-		g_object_set_data (G_OBJECT (vbox), "title", g_strdup (title));
-		g_free (old);
+		g_object_set_data_full (G_OBJECT (vbox), "title", g_strdup (title), g_free);
 	} else
 	{
 		gtk_window_set_title (GTK_WINDOW (vbox), title);
