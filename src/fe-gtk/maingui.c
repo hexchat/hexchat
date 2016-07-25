@@ -173,7 +173,7 @@ void
 fe_set_tab_color (struct session *sess, int col)
 {
 	struct session *server_sess = sess->server->server_session;
-	if (sess->gui->is_tab && (col == 0 || sess != current_tab))
+	if (sess->res->tab && sess->gui->is_tab && (col == 0 || sess != current_tab))
 	{
 		switch (col)
 		{
@@ -1010,12 +1010,6 @@ static void
 mg_topdestroy_cb (GtkWidget *win, session *sess)
 {
 /*	printf("enter mg_topdestroy. sess %p was destroyed\n", sess);*/
-
-	/* kill the text buffer */
-	gtk_xtext_buffer_free (sess->res->buffer);
-	/* kill the user list */
-	g_object_unref (G_OBJECT (sess->res->user_model));
-
 	session_free (sess);	/* tell hexchat.c about it */
 }
 
@@ -1025,11 +1019,6 @@ static void
 mg_ircdestroy (session *sess)
 {
 	GSList *list;
-
-	/* kill the text buffer */
-	gtk_xtext_buffer_free (sess->res->buffer);
-	/* kill the user list */
-	g_object_unref (G_OBJECT (sess->res->user_model));
 
 	session_free (sess);	/* tell hexchat.c about it */
 
@@ -1092,7 +1081,10 @@ mg_tab_close (session *sess)
 	int i;
 
 	if (chan_remove (sess->res->tab, FALSE))
+	{
+		sess->res->tab = NULL;
 		mg_ircdestroy (sess);
+	}
 	else
 	{
 		for (i = 0, list = sess_list; list; list = list->next)
@@ -3653,6 +3645,9 @@ fe_server_callback (server *serv)
 void
 fe_session_callback (session *sess)
 {
+	gtk_xtext_buffer_free (sess->res->buffer);
+	g_object_unref (G_OBJECT (sess->res->user_model));
+
 	if (sess->res->banlist && sess->res->banlist->window)
 		mg_close_gen (NULL, sess->res->banlist->window);
 
