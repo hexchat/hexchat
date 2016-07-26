@@ -1,0 +1,29 @@
+#
+# Display the number of contributors active in the past six months, per organization
+#
+# git log --no-merges --pretty='%aN <%aE>' --since '6 months ago' | sort | uniq | git -c mailmap.file=.organizationmap check-mailmap --stdin | sort | uniq -c | sort -rn | nl
+#     1	     16 FLOSS Contributor <contact@floss.cc>
+#
+# Display the number of commits in the past six months, per organization
+#
+# git log --no-merges --pretty='%aN <%aE>' --since '6 months ago' | git -c mailmap.file=.organizationmap check-mailmap --stdin | sort | uniq -c | sort -rn | nl
+#     1	    113 FLOSS Contributor <contact@floss.cc>
+#
+# This is the primary source of information for https://www.wikidata.org/wiki/Q17117379
+#
+FLOSS Contributor <contact@floss.cc> Adrien Saladin <adrien.saladin@gmail.com>
+FLOSS Contributor <contact@floss.cc> Arnavion <arnavion@gmail.com>
+FLOSS Contributor <contact@floss.cc> Ben Gamari <ben@smart-cactus.org>
+FLOSS Contributor <contact@floss.cc> Daniel Boland <email@dannyboland.com>
+FLOSS Contributor <contact@floss.cc> Eleni Maria Stea <elene.mst@gmail.com>
+FLOSS Contributor <contact@floss.cc> Erik de Castro Lopo <erikd@mega-nerd.com>
+FLOSS Contributor <contact@floss.cc> Hubert Terlecki <bialypl@gmail.com>
+FLOSS Contributor <contact@floss.cc> Insu Yun <wuninsu@gmail.com>
+FLOSS Contributor <contact@floss.cc> Jactry Zeng <jactry92@gmail.com>
+FLOSS Contributor <contact@floss.cc> LemonBoy <thatlemon@gmail.com>
+FLOSS Contributor <contact@floss.cc> Marcel Telka <marcel@telka.sk>
+FLOSS Contributor <contact@floss.cc> mniip <mniip@mniip.com>
+FLOSS Contributor <contact@floss.cc> Patrick Griffis <tingping@tingping.se>
+FLOSS Contributor <contact@floss.cc> Rastus Vernon <rastus.vernon@protonmail.ch>
+FLOSS Contributor <contact@floss.cc> Scott Scheiner <scott-scheiner@hotmail.com>
+FLOSS Contributor <contact@floss.cc> tomek <eustachy.kapusta@gmail.com>
