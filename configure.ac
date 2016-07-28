@@ -174,6 +174,9 @@ AC_ARG_WITH(theme-manager,
 	[AS_HELP_STRING([--with-theme-manager],[compile theme manager (needs monodevelop, default: off)])],
 		theme_manager=$withval, theme_manager=no)
 
+AC_ARG_ENABLE(stack-protector,
+	[AS_HELP_STRING([--disable-stack-protector],[disable building with stack-protector])],
+        stack_protector=$enableval, stack_protector=yes)
 
 
 dnl *********************************************************************
@@ -623,7 +626,6 @@ dnl *********************************************************************
 AX_APPEND_COMPILE_FLAGS([\
 	-pipe \
 	-funsigned-char \
-	-fstack-protector-strong \
 	-fPIE \
 	-fPIC \
 	-Wall \
@@ -641,6 +643,12 @@ AX_APPEND_COMPILE_FLAGS([\
 	-Werror=date-time \
 	-Werror=implicit-function-declaration \
 	-Werror=pointer-arith \
+])
+
+AS_IF([test "$stack_protector" = "yes"], [
+	AX_APPEND_COMPILE_FLAGS([ \
+		-fstack-protector-strong \
+	])
 ])
 
 AX_APPEND_LINK_FLAGS([ \
