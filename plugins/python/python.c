@@ -1849,7 +1849,7 @@ Module_hexchat_pluginpref_get(PyObject *self, PyObject *args)
 			BEGIN_XCHAT_CALLS(NONE);
 			retint = hexchat_pluginpref_get_int(prefph, var);
 			END_XCHAT_CALLS();
-			if ((retint == 0) && (strcmp(retstr, "0") != 0))
+			if ((retint == -1) && (strcmp(retstr, "-1") != 0))
 				ret = PyUnicode_FromString(retstr);
 			else
 				ret = PyLong_FromLong(retint);
