@@ -1958,7 +1958,13 @@ hexchat_pluginpref_get_int (hexchat_plugin *pl, const char *var)
 
 	if (hexchat_pluginpref_get_str_real (pl, var, buffer, sizeof(buffer)))
 	{
-		return atoi (buffer);
+		int ret = atoi (buffer);
+
+		/* 0 could be success or failure, who knows */
+		if (ret == 0 && *buffer != '0')
+			return -1;
+
+		return ret;
 	}
 	else
 	{
