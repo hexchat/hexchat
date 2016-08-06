@@ -875,7 +875,11 @@ static int api_hexchat_pluginprefs_meta_index(lua_State *L)
 	}
 	if(hexchat_pluginpref_get_str(h, key, str))
 	{
-		lua_pushstring(L, str);
+		/* Wasn't actually a failure */
+		if (!strcmp(str, "-1"))
+			lua_pushinteger(L, r);
+		else
+			lua_pushstring(L, str);
 		return 1;
 	}
 	lua_pushnil(L);
