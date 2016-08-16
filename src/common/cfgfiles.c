@@ -950,6 +950,38 @@ make_dcc_dirs (void)
 	return 0;
 }
 
+void migrate_from_xchat (void)
+{
+	char *servlist_conf, *logs_xchat;
+	char *xchat_dir = g_build_filename (g_get_home_dir (), ".xchat2", NULL);
+	if (!g_file_test (xchat_dir, G_FILE_TEST_EXISTS))
+	{
+		g_free (xchat_dir);
+		return;
+	}
+	servlist_conf = g_build_filename (xchat_dir, "servlist_.conf", NULL);
+	if (g_file_test (servlist_conf, G_FILE_TEST_EXISTS))
+	{
+		char *servlist_target = g_build_filename (get_xdir (), "servlist_.conf", NULL);
+                if (g_rename(servlist_conf, servlist_target) == -1)
+			g_error("Error while renaming %s to %s", servlist_conf, servlist_target);
+		g_free (servlist_target);
+	}
+	g_free (servlist_conf);
+
+	logs_xchat = g_build_filename (xchat_dir, "xchatlogs", NULL);
+	if (g_file_test (logs_xchat, G_FILE_TEST_EXISTS))
+	{
+		char *logs_hexchat = g_build_filename (get_xdir (), "logs", NULL);
+		if (g_rename (logs_xchat, logs_hexchat) == -1)
+			g_error("Error while renaming %s to %s", logs_xchat, logs_hexchat);
+		g_free (logs_hexchat);
+	}
+	g_free (logs_xchat);
+
+	g_free (xchat_dir);
+}
+
 int
 load_config (void)
 {
