@@ -257,7 +257,6 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("Show icons for user modes"), P_OFFINTNL(hex_gui_ulist_icons), N_("Use graphical icons instead of text symbols in the user list."), 0, 0},
 	{ST_TOGGLE, N_("Color nicknames in userlist"), P_OFFINTNL(hex_gui_ulist_color), N_("Will color nicknames the same as in chat."), 0, 0},
 	{ST_TOGGLE, N_("Show user count in channels"), P_OFFINTNL(hex_gui_ulist_count), 0, 0, 0},
-/*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(hex_gui_ulist_resizable),0,0,0},*/
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(hex_gui_ulist_sort), 0, ulmenutext, 0},
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(hex_gui_ulist_pos), 0, ulpos, 1},
 
@@ -2187,8 +2186,6 @@ setup_apply (struct hexchatprefs *pr)
 	if (DIFF (hex_gui_ulist_count))
 		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_icons))
-		noapply = TRUE;
-	if (DIFF (hex_gui_ulist_resizable))
 		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_show_hosts))
 		noapply = TRUE;

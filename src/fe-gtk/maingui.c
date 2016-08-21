@@ -805,14 +805,6 @@ mg_decide_userlist (session *sess, gboolean switch_to_current)
 	}
 }
 
-static void
-mg_userlist_toggle_cb (GtkWidget *button, gpointer userdata)
-{
-	prefs.hex_gui_ulist_hide = !prefs.hex_gui_ulist_hide;
-	mg_decide_userlist (current_sess, FALSE);
-	gtk_widget_grab_focus (current_sess->gui->input_box);
-}
-
 static int ul_tag = 0;
 
 static gboolean
@@ -2189,10 +2181,6 @@ mg_create_topicbar (session *sess, GtkWidget *box)
 	gui->dialogbutton_box = bbox = gtk_hbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), bbox, 0, 0, 0);
 	mg_create_dialogbuttons (bbox);
-
-	if (!prefs.hex_gui_ulist_resizable)
-		gtkutil_button (hbox, GTK_STOCK_GOTO_LAST, _("Show/Hide userlist"),
-							 mg_userlist_toggle_cb, 0, 0);
 }
 
 /* check if a word is clickable */
