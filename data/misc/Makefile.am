@@ -1,6 +1,12 @@
-appdata_in_files = hexchat.appdata.xml.in
-appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+
 appdatadir = $(datadir)/appdata
+appdata_in_files =
+
+if DO_GTK
+appdata_in_files += hexchat.appdata.xml.in
+endif
+
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 @INTLTOOL_XML_RULE@
 
 if USE_DBUS
@@ -13,7 +19,11 @@ hexchat.desktop.in: hexchat.desktop.in.in
 	$(AM_V_GEN)sed -e s!\@exec_command\@!$(exec_command)! < $< > $@
 
 data_desktopdir = $(datadir)/applications
-data_desktop_in_files = hexchat.desktop.in
+data_desktop_in_files =
+
+if DO_GTK
+data_desktop_in_files += hexchat.desktop.in
+endif
 
 if WITH_TM
 data_desktop_in_files += htm.desktop.in
