@@ -1,6 +1,7 @@
 /*
 
   Copyright (c) 2010-2011 Samuel Lidén Borell <samuel@kodafritt.se>
+  Copyright (c) 2015 <the.cypher@gmail.com>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -43,6 +44,9 @@ static const char plugin_version[] = "0.0.17";
 static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
 static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
 static const char usage_keyx[] = "Usage: KEYX [<nick>], performs DH1080 key-exchange with <nick>";
+static const char usage_topic[] = "Usage: TOPIC+ <topic>, sets a new encrypted topic for the current channel";
+static const char usage_notice[] = "Usage: NOTICE+ <nick or #channel> <notice>";
+static const char usage_msg[] = "Usage: MSG+ <nick or #channel> <message>";
 
 
 static hexchat_plugin *ph;
@@ -399,6 +403,102 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
 }
 
 /**
+ * Command handler for /topic+
+ */
+static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
+    const char *target;
+    const char *topic = word_eol[2];
+    char *buf;
+
+    if (!*topic) {
+        hexchat_print(ph, usage_topic);
+        return HEXCHAT_EAT_ALL;
+    }
+
+    if (hexchat_list_int(ph, NULL, "type") != 2) {
+        hexchat_printf(ph, "Please change to the channel window where you want to set the topic!");
+        return HEXCHAT_EAT_ALL;
+    }
+
+    target = hexchat_get_info(ph, "channel");
+    buf = fish_encrypt_for_nick(target, topic);
+    if (buf == NULL) {
+        hexchat_printf(ph, "/topic+ error, no key found for %s", target);
+        return HEXCHAT_EAT_ALL;
+    }
+
+    hexchat_commandf(ph, "TOPIC %s +OK %s", target, buf);
+    g_free(buf);
+    return HEXCHAT_EAT_ALL;
+    }
+
+/**
+ * Command handler for /notice+
+ */
+static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
+{
+    const char *target = word[2];
+    const char *notice = word_eol[3];
+    char *buf;
+
+    if (!*target || !*notice) {
+        hexchat_print(ph, usage_notice);
+        return HEXCHAT_EAT_ALL;
+    }
+
+    buf = fish_encrypt_for_nick(target, notice);
+    if (buf == NULL) {
+        hexchat_printf(ph, "/notice+ error, no key found for %s.", target);
+        return HEXCHAT_EAT_ALL;
+    }
+
+    hexchat_commandf(ph, "quote NOTICE %s :+OK %s", target, buf);
+    hexchat_emit_print(ph, "Notice Sent", target, notice);
+    g_free(buf);
+
+    return HEXCHAT_EAT_ALL;
+}
+
+/**
+ * Command handler for /msg+
+ */
+static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata)
+{
+    const char *target = word[2];
+    const char *message = word_eol[3];
+    hexchat_context *query_ctx;
+    char *buf;
+
+    if (!*target || !*message) {
+        hexchat_print(ph, usage_msg);
+        return HEXCHAT_EAT_ALL;
+    }
+
+    buf = fish_encrypt_for_nick(target, message);
+    if (buf == NULL) {
+        hexchat_printf(ph, "/msg+ error, no key found for %s", target);
+        return HEXCHAT_EAT_ALL;
+    }
+
+    hexchat_commandf(ph, "PRIVMSG %s :+OK %s", target, buf);
+
+    query_ctx = find_context_on_network(target);
+    if (query_ctx) {
+	    hexchat_set_context(ph, query_ctx);
+
+        /* FIXME: Mode char */
+        hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"),
+                           message, "", "");
+    }
+    else {
+        hexchat_emit_print(ph, "Message Send", target, message);
+    }
+
+    g_free(buf);
+    return HEXCHAT_EAT_ALL;
+}
+
+/**
  * Returns the plugin name version information.
  */
 void hexchat_plugin_get_info(const char **name, const char **desc,
@@ -427,6 +527,9 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
     hexchat_hook_command(ph, "SETKEY", HEXCHAT_PRI_NORM, handle_setkey, usage_setkey, NULL);
     hexchat_hook_command(ph, "DELKEY", HEXCHAT_PRI_NORM, handle_delkey, usage_delkey, NULL);
     hexchat_hook_command(ph, "KEYX", HEXCHAT_PRI_NORM, handle_keyx, usage_keyx, NULL);
+    hexchat_hook_command(ph, "TOPIC+", HEXCHAT_PRI_NORM, handle_crypt_topic, usage_topic, NULL);
+    hexchat_hook_command(ph, "NOTICE+", HEXCHAT_PRI_NORM, handle_crypt_notice, usage_notice, NULL);
+    hexchat_hook_command(ph, "MSG+", HEXCHAT_PRI_NORM, handle_crypt_msg, usage_msg, NULL);
 
     /* Add handlers */
     hexchat_hook_command(ph, "", HEXCHAT_PRI_NORM, handle_outgoing, NULL, NULL);
