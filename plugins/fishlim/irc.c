@@ -50,7 +50,9 @@ gboolean irc_parse_message(const char *words[],
     if (command) *command = words[w];
     w++;
     
-    *parameters_offset = w;
+    if (parameters_offset)
+		*parameters_offset = w;
+
     return TRUE;
 }
 
