@@ -67,7 +67,7 @@ char *sysinfo_backend_get_memory(void)
 
 	mem_fmt = sysinfo_format_memory (mem_total, mem_free);
 
-	if (swap_fmt)
+	if (swap_fmt && swap_total != 0)
 	{
 		ret = g_strdup_printf ("Physical: %s Swap: %s", mem_fmt, swap_fmt);
 		g_free (mem_fmt);
