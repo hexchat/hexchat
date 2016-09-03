@@ -60,14 +60,14 @@ char *sysinfo_backend_get_memory(void)
 	{
 		return NULL;
 	}
-	if (xs_parse_meminfo (&swap_total, &swap_free, 1) != 1)
+	if (xs_parse_meminfo (&swap_total, &swap_free, 1) != 1 && swap_total != 0)
 	{
 		swap_fmt = sysinfo_format_memory (swap_total, swap_free);
 	}
 
 	mem_fmt = sysinfo_format_memory (mem_total, mem_free);
 
-	if (swap_fmt && swap_total != 0)
+	if (swap_fmt)
 	{
 		ret = g_strdup_printf ("Physical: %s Swap: %s", mem_fmt, swap_fmt);
 		g_free (mem_fmt);
