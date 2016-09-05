@@ -1,4 +1,4 @@
-EXTRA_DIST = INSTALL LICENSE fish.h irc.h keystore.h plugin_hexchat.h dh1080.h
+EXTRA_DIST = LICENSE fish.h irc.h keystore.h plugin_hexchat.h dh1080.h
 
 libdir = $(hexchatlibdir)
 
