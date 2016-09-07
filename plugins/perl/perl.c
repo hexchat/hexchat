@@ -29,6 +29,7 @@
 #endif
 #ifdef WIN32
 #include <windows.h>
+#include <stdbool.h>
 #else
 #include <dirent.h>
 #endif
