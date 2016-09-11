@@ -79,6 +79,7 @@ scrollback_get_filename (session *sess)
 	if (!net)
 		return NULL;
 
+	net = log_create_filename (net);
 	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, "");
 	mkdir_p (buf);
 	g_free (buf);
@@ -89,6 +90,7 @@ scrollback_get_filename (session *sess)
 	else
 		buf = NULL;
 	g_free (chan);
+	g_free (net);
 
 	if (buf)
 	{
