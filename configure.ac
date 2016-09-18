@@ -302,7 +302,7 @@ dnl *********************************************************************
 dnl ** PYTHON ***********************************************************
 dnl *********************************************************************
 
-AS_IF([test "x$python" != xno], [
+AS_IF([test "x$python" != "xno"], [
 	AC_MSG_CHECKING(for plugin interface used by Python)
 	AS_IF([test "$plugin" = yes], [
 		AC_MSG_RESULT([yes])
