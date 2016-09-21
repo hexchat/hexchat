@@ -416,7 +416,8 @@ userlist_add (struct session *sess, char *name, char *hostname,
 		sess->me = user;
 
 	fe_userlist_insert (sess, user, FALSE);
-	fe_userlist_numbers (sess);
+	if(sess->end_of_names)
+		fe_userlist_numbers (sess);
 }
 
 static int
