@@ -1122,6 +1122,7 @@ inbound_nameslist_end (server *serv, char *chan,
 			{
 				sess->end_of_names = TRUE;
 				sess->ignore_names = FALSE;
+				fe_userlist_numbers (sess);
 			}
 			list = list->next;
 		}
@@ -1132,6 +1133,7 @@ inbound_nameslist_end (server *serv, char *chan,
 	{
 		sess->end_of_names = TRUE;
 		sess->ignore_names = FALSE;
+		fe_userlist_numbers (sess);
 		return TRUE;
 	}
 	return FALSE;
