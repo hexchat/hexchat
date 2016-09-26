@@ -14,4 +14,4 @@ lib_LTLIBRARIES = sysinfo.la
 sysinfo_la_SOURCES = $(sources)
 sysinfo_la_LDFLAGS = $(PLUGIN_LDFLAGS) -module
 sysinfo_la_LIBADD = $(LIBPCI_LIBS) $(GLIB_LIBS)
-AM_CPPFLAGS = $(LIBPCI_CFLAGS) $(GLIB_CFLAGS) -I$(top_srcdir)/src/common -I$(srcdir)/shared
+AM_CPPFLAGS = -I$(top_srcdir)/src/common -I$(srcdir)/shared $(LIBPCI_CFLAGS) $(GLIB_CFLAGS)

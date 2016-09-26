@@ -45,7 +45,7 @@ hexchat_SOURCES = ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	maingui.c notifygui.c $(notify_c) palette.c pixmaps.c plugin-tray.c $(plugingui_c) \
 	plugin-notification.c rawlog.c servlistgui.c setup.c $(iso_codes_c) \
 	sexy-spell-entry.c textgui.c urlgrab.c userlistgui.c xtext.c
-hexchat_CPPFLAGS = $(AM_CPPFLAGS) -I$(top_builddir)/src/common
+hexchat_CPPFLAGS = -I$(top_builddir)/src/common $(AM_CPPFLAGS)
 
 resources_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(top_srcdir)/data --generate-dependencies $(top_srcdir)/data/hexchat.gresource.xml)
 
