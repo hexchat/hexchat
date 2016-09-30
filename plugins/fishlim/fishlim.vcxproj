@@ -54,12 +54,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bool.h" />
+    <ClInclude Include="DH1080Wrapper.h" />
+    <ClInclude Include="dh1080\b64stuff_static.h" />
+    <ClInclude Include="dh1080\dh1080.h" />
     <ClInclude Include="fish.h" />
     <ClInclude Include="irc.h" />
     <ClInclude Include="keystore.h" />
     <ClInclude Include="plugin_hexchat.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DH1080Wrapper.cpp" />
+    <ClCompile Include="dh1080\b64stuff_static.cpp" />
+    <ClCompile Include="dh1080\dh1080.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="fish.c" />
     <ClCompile Include="irc.c" />
     <ClCompile Include="keystore.c" />
