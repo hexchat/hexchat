@@ -78,7 +78,7 @@ get_os (void)
 static char *
 get_os_fallback (void)
 {
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_9
+#if !defined (MAC_OS_X_VERSION_10_9) || MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_9
 	SInt32 ver_major = 0,
 	       ver_minor = 0,
 	       ver_patch = 0;
