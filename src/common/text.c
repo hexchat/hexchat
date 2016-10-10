@@ -1517,27 +1517,38 @@ void
 pevent_make_pntevts (void)
 {
 	int i, m;
-	char out[1024];
 
 	for (i = 0; i < NUM_XP; i++)
 	{
 		g_free (pntevts[i]);
 		if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
 		{
-			g_snprintf (out, sizeof (out),
-						 _("Error parsing event %s.\nLoading default."), te[i].name);
-			fe_message (out, FE_MSG_WARN);
-			g_free (pntevts_text[i]);
 			/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
-			if (te[i].num_args & 128)
-				pntevts_text[i] = g_strdup (te[i].def);
-			else
+			const gboolean translate = !(te[i].num_args & 128);
+
+			g_warning ("Error parsing event %s\nLoading default.", te[i].name);
+			g_free (pntevts_text[i]);
+
+			if (translate)
 				pntevts_text[i] = g_strdup (_(te[i].def));
-			if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
+			else
+				pntevts_text[i] = g_strdup (te[i].def);
+
+			if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0 && !translate)
 			{
-				fprintf (stderr,
-							"HexChat CRITICAL *** default event text failed to build!\n");
-				abort ();
+				g_error ("HexChat CRITICAL *** default event text failed to build!");
+			}
+			else
+			{
+				g_warning ("Error parsing translated event %s\nLoading untranslated.", te[i].name);
+				g_free (pntevts_text[i]);
+
+				pntevts_text[i] = g_strdup (te[i].def);
+
+				if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
+				{
+					g_error ("HexChat CRITICAL *** default event text failed to build!");
+				}
 			}
 		}
 	}
