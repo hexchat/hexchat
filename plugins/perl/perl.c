@@ -208,8 +208,6 @@ get_filename (char *word[], char *word_eol[])
 	int len;
 	char *file;
 
-	len = strlen (word[2]);
-
 	/* if called as /load "filename.pl" the only difference between word and
 	 * word_eol will be the two quotes
 	 */
