@@ -104,6 +104,7 @@ struct tagInfo getOggHeader(char *file){
 		if (strcmp(name,"GENRE")==0) info.genre=val;
 		if (strcmp(name,"COMMENT")==0) info.comment=val;
 		pos+=4+tagLen;
+		free(name);
 	}
 	if (info.artist==NULL) info.artist="";
 	if (info.album==NULL) info.album ="";
