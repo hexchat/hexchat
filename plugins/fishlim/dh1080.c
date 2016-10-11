@@ -39,7 +39,7 @@
 #define DH1080_PRIME_BYTES 135
 #define SHA256_DIGEST_LENGTH 32
 #define B64ABC "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-#define MEMZERO(x) memset(x, 0x00, (sizeof(x)/sizeof(*x)) )
+#define MEMZERO(x) memset(x, 0x00, sizeof(x))
 
 /* All clients must use the same prime number to be able to keyx */
 static const guchar prime1080[DH1080_PRIME_BYTES] =
