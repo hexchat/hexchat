@@ -294,14 +294,20 @@ SSL *
 _SSL_socket (SSL_CTX *ctx, int sd)
 {
 	SSL *ssl;
-
+	const SSL_METHOD *method;
 
 	if (!(ssl = SSL_new (ctx)))
 		/* FATAL */
 		__SSL_critical_error ("SSL_new");
 
 	SSL_set_fd (ssl, sd);
-	if (SSL_CTX_get_ssl_method (ctx) == SSLv23_client_method())
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+	method = ctx->method;
+#else
+	method = SSL_CTX_get_ssl_method (ctx);
+#endif
+	if (method == SSLv23_client_method())
 		SSL_set_connect_state (ssl);
 	else
 	        SSL_set_accept_state(ssl);
