@@ -64,12 +64,23 @@ dh1080_init (void)
 	if ((g_dh = DH_new()))
 	{
 		int codes;
+		BIGNUM *p, *g;
 
-		g_dh->p = BN_bin2bn (prime1080, DH1080_PRIME_BYTES, NULL);
-		g_dh->g = BN_new ();
+		p = BN_bin2bn (prime1080, DH1080_PRIME_BYTES, NULL);
+		g = BN_new ();
 
-		g_assert (g_dh->p != NULL && g_dh->g != NULL);
-		BN_set_word(g_dh->g, 2);
+		if (p == NULL || g == NULL)
+			return 1;
+
+		BN_set_word (g, 2);
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+		g_dh->p = p;
+		g_dh->g = g;
+#else
+		if (!DH_set0_pqg (g_dh, p, NULL, g))
+			return 1;
+#endif
 
 		if (DH_check (g_dh, &codes))
 			return codes == 0;
@@ -136,6 +147,7 @@ dh1080_generate_key (char **priv_key, char **pub_key)
 	guchar buf[DH1080_PRIME_BYTES];
 	int len;
 	DH *dh;
+	const BIGNUM *dh_priv_key, *dh_pub_key;
 
   	g_assert (priv_key != NULL);
 	g_assert (pub_key != NULL);
@@ -150,12 +162,19 @@ dh1080_generate_key (char **priv_key, char **pub_key)
 		return 0;
 	}
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+	dh_pub_key = dh->pub_key;
+	dh_priv_key = dh->priv_key;
+#else
+	DH_get0_key (dh, &dh_pub_key, &dh_priv_key);
+#endif
+
 	MEMZERO (buf);
-	len = BN_bn2bin (dh->priv_key, buf);
+	len = BN_bn2bin (dh_priv_key, buf);
 	*priv_key = dh1080_encode_b64 (buf, len);
 
 	MEMZERO (buf);
-	len = BN_bn2bin(dh->pub_key, buf);
+	len = BN_bn2bin (dh_pub_key, buf);
 	*pub_key = dh1080_encode_b64 (buf, len);
 
 	OPENSSL_cleanse (buf, sizeof (buf));
@@ -190,9 +209,15 @@ dh1080_compute_key (const char *priv_key, const char *pub_key, char **secret_key
 		char *priv_key_data;
 		gsize priv_key_len;
 		int shared_len;
+		BIGNUM *priv_key_num;
 
 	  	priv_key_data = dh1080_decode_b64 (priv_key, &priv_key_len);
-		dh->priv_key = BN_bin2bn(priv_key_data, priv_key_len, NULL);
+		priv_key_num = BN_bin2bn(priv_key_data, priv_key_len, NULL);
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+		dh->priv_key = priv_key_num;
+#else
+		DH_set0_key (dh, NULL, priv_key_num);
+#endif
 
 		shared_len = DH_compute_key (shared_key, pk, dh);
 		SHA256(shared_key, shared_len, sha256);

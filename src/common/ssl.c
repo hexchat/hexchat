@@ -176,7 +176,11 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 		return 1;
 
 	alg = OBJ_obj2nid (algor->algorithm);
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 	sign_alg = OBJ_obj2nid (peer_cert->sig_alg->algorithm);
+#else
+	sign_alg = X509_get_signature_nid (peer_cert);
+#endif
 	ASN1_TIME_snprintf (notBefore, sizeof (notBefore),
 							  X509_get_notBefore (peer_cert));
 	ASN1_TIME_snprintf (notAfter, sizeof (notAfter),
