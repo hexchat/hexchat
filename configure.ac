@@ -134,10 +134,6 @@ AC_ARG_ENABLE(checksum,
 	[AS_HELP_STRING([--disable-checksum],[disable the Checksum plugin])],
         checksum=$enableval, checksum=yes)
 
-AC_ARG_ENABLE(doat,
-	[AS_HELP_STRING([--disable-doat],[disable the Do At plugin])],
-        doat=$enableval, doat=yes)
-
 AC_ARG_ENABLE(fishlim,
 	[AS_HELP_STRING([--disable-fishlim],[disable the FiSHLiM plugin])],
         fishlim=$enableval, fishlim=yes)
@@ -458,21 +454,6 @@ AS_IF([test "$checksum" != "no"], [
 ])
 
 dnl *********************************************************************
-dnl ** DO AT ************************************************************
-dnl *********************************************************************
-
-AS_IF([test "$doat" != "no"], [
-	AC_MSG_CHECKING(for plugin interface used by Do At)
-	doat=no
-	AS_IF([test "$plugin" = yes], [
-		doat=yes
-		AC_MSG_RESULT([yes])
-	], [
-		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for Do At])
-	])
-])
-
-dnl *********************************************************************
 dnl ** FiSHLiM **********************************************************
 dnl *********************************************************************
 
@@ -609,7 +590,6 @@ AM_CONDITIONAL(DO_LUA, test "x$lua" = "xyes")
 AM_CONDITIONAL(DO_PYTHON, test "x$python" != "xno")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
-AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(DO_STATIC_ANALYSIS, test "x$analyze" = "xyes")
@@ -767,7 +747,6 @@ plugins/lua/Makefile
 plugins/python/Makefile
 plugins/perl/Makefile
 plugins/checksum/Makefile
-plugins/doat/Makefile
 plugins/fishlim/Makefile
 plugins/sysinfo/Makefile
 po/Makefile.in
@@ -794,7 +773,6 @@ echo Perl .................. : $perl
 echo Python ................ : $python
 echo
 echo Checksum .............. : $checksum
-echo Do At ................. : $doat
 echo FiSHLiM ............... : $fishlim
 echo SysInfo ............... : $sysinfo
 echo

@@ -10,10 +10,6 @@ if DO_PERL
 perldir = perl
 endif
 
-if DO_DOAT
-doatdir = doat
-endif
-
 if DO_FISHLIM
 fishlimdir = fishlim
 endif
@@ -26,4 +22,4 @@ if DO_SYSINFO
 sysinfodir = sysinfo
 endif
 
-SUBDIRS = $(lua) $(pythondir) $(perldir) $(checksumdir) $(doatdir) $(fishlimdir) $(sysinfodir)
+SUBDIRS = $(lua) $(pythondir) $(perldir) $(checksumdir) $(fishlimdir) $(sysinfodir)

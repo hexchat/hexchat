@@ -452,7 +452,6 @@ plugin_auto_load (session *sess)
 	/* a long list of bundled plugins that should be loaded automatically,
 	 * user plugins should go to <config>, leave Program Files alone! */
 	for_files (lib_dir, "hcchecksum.dll", plugin_auto_load_cb);
-	for_files (lib_dir, "hcdoat.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcexec.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcfishlim.dll", plugin_auto_load_cb);
 	for_files(lib_dir, "hclua.dll", plugin_auto_load_cb);
@@ -871,6 +870,67 @@ plugin_show_help (session *sess, char *cmd)
 	return 0;
 }
 
+session *
+plugin_find_context (const char *servname, const char *channel, server *current_server)
+{
+	GSList *slist, *clist, *sessions = NULL;
+	server *serv;
+	session *sess;
+	char *netname;
+
+	if (servname == NULL && channel == NULL)
+		return current_sess;
+
+	slist = serv_list;
+	while (slist)
+	{
+		serv = slist->data;
+		netname = server_get_network (serv, TRUE);
+
+		if (servname == NULL ||
+			 rfc_casecmp (servname, serv->servername) == 0 ||
+			 g_ascii_strcasecmp (servname, serv->hostname) == 0 ||
+			 g_ascii_strcasecmp (servname, netname) == 0)
+		{
+			if (channel == NULL)
+				return serv->front_session;
+
+			clist = sess_list;
+			while (clist)
+			{
+				sess = clist->data;
+				if (sess->server == serv)
+				{
+					if (rfc_casecmp (channel, sess->channel) == 0)
+					{
+						if (sess->server == current_server)
+						{
+							g_slist_free (sessions);
+							return sess;
+						} else
+						{
+							sessions = g_slist_prepend (sessions, sess);
+						}
+					}
+				}
+				clist = clist->next;
+			}
+		}
+		slist = slist->next;
+	}
+
+	if (sessions)
+	{
+		sessions = g_slist_reverse (sessions);
+		sess = sessions->data;
+		g_slist_free (sessions);
+		return sess;
+	}
+
+	return NULL;
+}
+
+
 /* ========================================================= */
 /* ===== these are the functions plugins actually call ===== */
 /* ========================================================= */
@@ -1038,61 +1098,7 @@ hexchat_set_context (hexchat_plugin *ph, hexchat_context *context)
 hexchat_context *
 hexchat_find_context (hexchat_plugin *ph, const char *servname, const char *channel)
 {
-	GSList *slist, *clist, *sessions = NULL;
-	server *serv;
-	session *sess;
-	char *netname;
-
-	if (servname == NULL && channel == NULL)
-		return current_sess;
-
-	slist = serv_list;
-	while (slist)
-	{
-		serv = slist->data;
-		netname = server_get_network (serv, TRUE);
-
-		if (servname == NULL ||
-			 rfc_casecmp (servname, serv->servername) == 0 ||
-			 g_ascii_strcasecmp (servname, serv->hostname) == 0 ||
-			 g_ascii_strcasecmp (servname, netname) == 0)
-		{
-			if (channel == NULL)
-				return serv->front_session;
-
-			clist = sess_list;
-			while (clist)
-			{
-				sess = clist->data;
-				if (sess->server == serv)
-				{
-					if (rfc_casecmp (channel, sess->channel) == 0)
-					{
-						if (sess->server == ph->context->server)
-						{
-							g_slist_free (sessions);
-							return sess;
-						} else
-						{
-							sessions = g_slist_prepend (sessions, sess);
-						}
-					}
-				}
-				clist = clist->next;
-			}
-		}
-		slist = slist->next;
-	}
-
-	if (sessions)
-	{
-		sessions = g_slist_reverse (sessions);
-		sess = sessions->data;
-		g_slist_free (sessions);
-		return sess;
-	}
-
-	return NULL;
+	return plugin_find_context (servname, channel, ph->context->server);
 }
 
 const char *

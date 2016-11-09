@@ -1448,6 +1448,41 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_doat (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	GStrv channels;
+	guint i;
+
+	if (!word[2] || !*word[2] || !word[3] || !*word[3])
+		return FALSE;
+
+	channels = g_strsplit (word[2], ",", -1);
+	for (i = 0; channels[i] && *channels[i]; ++i)
+	{
+		char *chan = channels[i];
+		char *serv;
+		session *ctx;
+
+		/* Split channel and network, either may be empty */
+		if ((serv = strchr (chan, '/')))
+		{
+			*serv = '\0';
+			serv++;
+			if (!strlen (serv))
+				serv = NULL;
+		}
+		if (!strlen (chan))
+			chan = NULL;
+
+		if ((ctx = plugin_find_context (serv, chan, sess->server)))
+			handle_command (ctx, word_eol[3], FALSE);
+	}
+	g_strfreev (channels);
+
+	return TRUE;
+}
+
+static int
 cmd_echo (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	PrintText (sess, word_eol[2]);
@@ -3931,6 +3966,7 @@ const struct commands xc_cmds[] = {
 	 N_("DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)")},
 	{"DISCON", cmd_discon, 0, 0, 1, N_("DISCON, Disconnects from server")},
 	{"DNS", cmd_dns, 0, 0, 1, N_("DNS <nick|host|ip>, Resolves an IP or hostname")},
+	{"DOAT", cmd_doat, 0, 0, 1, N_("DOAT <channel,list,/network> <command>")},
 	{"ECHO", cmd_echo, 0, 0, 1, N_("ECHO <text>, Prints text locally")},
 #ifndef WIN32
 	{"EXEC", cmd_exec, 0, 0, 1,
