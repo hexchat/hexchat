@@ -540,17 +540,10 @@ mg_focus (session *sess)
 		sess->server->server_session = sess;
 	}
 
-	if (sess->new_data || sess->nick_said || sess->msg_said)
-	{
-		sess->nick_said = FALSE;
-		sess->msg_said = FALSE;
-		sess->new_data = FALSE;
-		lastact_update (sess);
-		/* when called via mg_changui_new, is_tab might be true, but
-			sess->res->tab is still NULL. */
-		if (sess->res->tab)
-			fe_set_tab_color (sess, 0);
-	}
+	/* when called via mg_changui_new, is_tab might be true, but
+		sess->res->tab is still NULL. */
+	if (sess->res->tab)
+		fe_set_tab_color (sess, 0);
 }
 
 static int
