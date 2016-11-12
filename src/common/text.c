@@ -2009,6 +2009,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	char *word[PDIWORDS];
 	int i;
 	tab_state_flags current_state = sess->tab_state;
+	tab_state_flags plugin_state = sess->last_tab_state;
 	unsigned int stripcolor_args = (chanopt_is_set (prefs.hex_text_stripcolor_msg, sess->text_strip) ? 0xFFFFFFFF : 0);
 	char tbuf[NICKLEN + 4];
 
@@ -2029,10 +2030,15 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 
 	/* We want to ignore the tab state if the plugin emits new events
 	 * and restore it if it doesn't eat the current one */
-	sess->tab_state = sess->last_tab_state;
+	sess->tab_state = plugin_state;
 	if (plugin_emit_print (sess, word, timestamp))
 		return;
-	sess->tab_state = current_state;
+
+	/* The plugin may have changed the state which we should respect.
+	 * If the state is NEW_DATA we don't actually know if that was on
+	 * purpose though as print() sets it, so for now we ignore that. FIXME */
+	if (sess->tab_state == plugin_state || sess->tab_state == TAB_STATE_NEW_DATA)
+		sess->tab_state = current_state;
 
 	/* If a plugin's callback executes "/close", 'sess' may be invalid */
 	if (!is_session (sess))
