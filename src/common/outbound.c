@@ -631,7 +631,7 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		while (list)
 		{
 			sess = list->data;
-			if (!sess->nick_said)
+			if (!(sess->tab_state & TAB_STATE_NEW_HILIGHT))
 				fe_text_clear (list->data, 0);
 			list = list->next;
 		}

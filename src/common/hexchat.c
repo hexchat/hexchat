@@ -126,11 +126,11 @@ lastact_update(session *sess)
 	int newidx = LACT_NONE;
 	int dia = (sess->type == SESS_DIALOG);
 
-	if (sess->nick_said)
+	if (sess->tab_state & TAB_STATE_NEW_HILIGHT)
 		newidx = dia? LACT_QUERY_HI: LACT_CHAN_HI;
-	else if (sess->msg_said)
+	else if (sess->tab_state & TAB_STATE_NEW_MSG)
 		newidx = dia? LACT_QUERY: LACT_CHAN;
-	else if (sess->new_data)
+	else if (sess->tab_state & TAB_STATE_NEW_DATA)
 		newidx = dia? LACT_QUERY: LACT_CHAN_DATA;
 
 	/* If already first at the right position, just return */

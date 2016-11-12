@@ -664,14 +664,10 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 		return;
 
 	if (sess == current_tab)
-	{
-		sess->nick_said = FALSE;
-		sess->msg_said = FALSE;
-		sess->new_data = FALSE;
-	}
-	else if (sess->nick_said)
+		fe_set_tab_color (sess, 0);
+	else if (sess->tab_state & TAB_STATE_NEW_HILIGHT)
 		fe_set_tab_color (sess, 3);
-	else if (sess->msg_said)
+	else if (sess->tab_state & TAB_STATE_NEW_MSG)
 		fe_set_tab_color (sess, 2);
 	else
 		fe_set_tab_color (sess, 1);

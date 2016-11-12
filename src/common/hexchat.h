@@ -352,6 +352,13 @@ typedef enum gtk_xtext_search_flags_e {
 	regexp = 16
 } gtk_xtext_search_flags;
 
+typedef enum {
+	TAB_STATE_NONE = 0,
+	TAB_STATE_NEW_DATA = (1 << 0),
+	TAB_STATE_NEW_MSG = (1 << 1),
+	TAB_STATE_NEW_HILIGHT = (1 << 2),
+} tab_state_flags;
+
 typedef struct session
 {
 	/* Per-Channel Alerts */
@@ -406,16 +413,14 @@ typedef struct session
 	int lastact_idx;		/* the sess_list_by_lastact[] index of the list we're in.
 							 * For valid values, see defines of LACT_*. */
 
-	int new_data:1;			/* new data avail? (purple tab) */
-	int nick_said:1;		/* your nick mentioned? (blue tab) */
-	int msg_said:1;			/* new msg available? (red tab) */
-
 	int ignore_date:1;
 	int ignore_mode:1;
 	int ignore_names:1;
 	int end_of_names:1;
 	int doing_who:1;		/* /who sent on this channel */
 	int done_away_check:1;	/* done checking for away status changes */
+	tab_state_flags tab_state;
+	tab_state_flags last_tab_state; /* before event is handled */
 	gtk_xtext_search_flags lastlog_flags;
 	void (*scrollback_replay_marklast) (struct session *sess);
 } session;

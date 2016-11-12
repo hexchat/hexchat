@@ -178,62 +178,50 @@ fe_set_tab_color (struct session *sess, int col)
 		switch (col)
 		{
 		case 0:	/* no particular color (theme default) */
-			sess->new_data = FALSE;
-			sess->msg_said = FALSE;
-			sess->nick_said = FALSE;
+			sess->tab_state = TAB_STATE_NONE;
 			chan_set_color (sess->res->tab, plain_list);
 			break;
 		case 1:	/* new data has been displayed (dark red) */
-			sess->new_data = TRUE;
-			sess->msg_said = FALSE;
-			sess->nick_said = FALSE;
+			sess->tab_state = TAB_STATE_NEW_DATA;
 			chan_set_color (sess->res->tab, newdata_list);
 
 			if (chan_is_collapsed (sess->res->tab)
-				&& !(server_sess->msg_said || server_sess->nick_said)
+				&& !((server_sess->tab_state & TAB_STATE_NEW_MSG)
+					 || (server_sess->tab_state & TAB_STATE_NEW_HILIGHT))
 				&& !(server_sess == current_tab))
 			{
-				server_sess->new_data = TRUE;
-				server_sess->msg_said = FALSE;
-				server_sess->nick_said = FALSE;
+				server_sess->tab_state = TAB_STATE_NEW_DATA;
 				chan_set_color (chan_get_parent (sess->res->tab), newdata_list);
 			}
-				
+
 			break;
 		case 2:	/* new message arrived in channel (light red) */
-			sess->new_data = FALSE;
-			sess->msg_said = TRUE;
-			sess->nick_said = FALSE;
+			sess->tab_state = TAB_STATE_NEW_MSG;
 			chan_set_color (sess->res->tab, newmsg_list);
-			
-			if (chan_is_collapsed (sess->res->tab) 
-				&& !server_sess->nick_said
+
+			if (chan_is_collapsed (sess->res->tab)
+				&& !(server_sess->tab_state & TAB_STATE_NEW_HILIGHT)
 				&& !(server_sess == current_tab))
 			{
-				server_sess->new_data = FALSE;
-				server_sess->msg_said = TRUE;
-				server_sess->nick_said = FALSE;
+				server_sess->tab_state = TAB_STATE_NEW_MSG;
 				chan_set_color (chan_get_parent (sess->res->tab), newmsg_list);
 			}
-			
+
 			break;
 		case 3:	/* your nick has been seen (blue) */
-			sess->new_data = FALSE;
-			sess->msg_said = FALSE;
-			sess->nick_said = TRUE;
+			sess->tab_state = TAB_STATE_NEW_HILIGHT;
 			chan_set_color (sess->res->tab, nickseen_list);
 
 			if (chan_is_collapsed (sess->res->tab) && !(server_sess == current_tab))
 			{
-				server_sess->new_data = FALSE;
-				server_sess->msg_said = FALSE;
-				server_sess->nick_said = TRUE;
+				server_sess->tab_state = TAB_STATE_NEW_MSG;
 				chan_set_color (chan_get_parent (sess->res->tab), nickseen_list);
 			}
-				
+
 			break;
 		}
 		lastact_update (sess);
+		sess->last_tab_state = sess->tab_state; /* For plugins handling future prints */
 	}
 }
 

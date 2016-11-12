@@ -2008,6 +2008,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 {
 	char *word[PDIWORDS];
 	int i;
+	tab_state_flags current_state = sess->tab_state;
 	unsigned int stripcolor_args = (chanopt_is_set (prefs.hex_text_stripcolor_msg, sess->text_strip) ? 0xFFFFFFFF : 0);
 	char tbuf[NICKLEN + 4];
 
@@ -2026,14 +2027,12 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 
+	/* We want to ignore the tab state if the plugin emits new events
+	 * and restore it if it doesn't eat the current one */
+	sess->tab_state = sess->last_tab_state;
 	if (plugin_emit_print (sess, word, timestamp))
-	{
-		/* Reset the state that never printed */
-		sess->nick_said = FALSE;
-		sess->msg_said = FALSE;
-		sess->new_data = FALSE;
 		return;
-	}
+	sess->tab_state = current_state;
 
 	/* If a plugin's callback executes "/close", 'sess' may be invalid */
 	if (!is_session (sess))
