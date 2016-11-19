@@ -515,7 +515,8 @@ mg_focus (session *sess)
 	/* dirty trick to avoid auto-selection */
 	SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, FALSE);
 	gtk_widget_grab_focus (sess->gui->input_box);
-	SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, TRUE);
+	if (!sess->text_lurk)
+		SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, TRUE);
 
 	sess->server->front_session = sess;
 
@@ -1474,6 +1475,8 @@ mg_set_guint8 (GtkCheckMenuItem *item, guint8 *setting)
 	/* has the logging setting changed? */
 	if (logging != sess->text_logging)
 		log_open_or_close (sess);
+
+	SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, !sess->text_lurk);
 
 	chanopt_save (sess);
 	chanopt_save_all (FALSE);
