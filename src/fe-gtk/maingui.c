@@ -1500,6 +1500,7 @@ mg_create_perchannelmenu (session *sess, GtkWidget *menu)
 
 	mg_perchan_menu_item (_("_Log to Disk"), submenu, &sess->text_logging, prefs.hex_irc_logging);
 	mg_perchan_menu_item (_("_Reload Scrollback"), submenu, &sess->text_scrollback, prefs.hex_text_replay);
+	mg_perchan_menu_item (_("_Lurk mode"), submenu, &sess->text_lurk, prefs.hex_irc_lurk);
 	if (sess->type == SESS_CHANNEL)
 	{
 		mg_perchan_menu_item (_("Strip _Colors"), submenu, &sess->text_strip, prefs.hex_text_stripcolor_msg);
