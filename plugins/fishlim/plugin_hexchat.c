@@ -260,7 +260,7 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
         char *pub_key;
 
         if (cbc) {
-            hexchat_print(ph, "Recieved key exchange for CBC mode which is not supported.");
+            hexchat_print(ph, "Received key exchange for CBC mode which is not supported.");
             goto cleanup;
         }
 
@@ -280,12 +280,12 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
         g_free(sender_lower);
 
         if (cbc) {
-            hexchat_print(ph, "Recieved key exchange for CBC mode which is not supported.");
+            hexchat_print(ph, "Received key exchange for CBC mode which is not supported.");
             goto cleanup;
         }
 
         if (!priv_key) {
-            hexchat_printf(ph, "Recieved a key exchange response for unknown user: %s", sender);
+            hexchat_printf(ph, "Received a key exchange response for unknown user: %s", sender);
             goto cleanup;
         }
     } else {

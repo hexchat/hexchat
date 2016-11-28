@@ -146,7 +146,7 @@ identd_read_ready (GDataInputStream *in_stream, GAsyncResult *res, ident_info *i
 		if (!local || !remote || local > G_MAXUINT16 || remote > G_MAXUINT16)
 		{
 			g_strlcat (buf, "ERROR : INVALID-PORT\r\n", sizeof (buf));
-			g_debug ("Identd: Recieved invalid port");
+			g_debug ("Identd: Received invalid port");
 		}
 		else
 		{
@@ -154,7 +154,7 @@ identd_read_ready (GDataInputStream *in_stream, GAsyncResult *res, ident_info *i
 			if (!info->username)
 			{
 				g_strlcat (buf, "ERROR : NO-USER\r\n", sizeof (buf));
-				g_debug ("Identd: Recieved invalid local port");
+				g_debug ("Identd: Received invalid local port");
 			}
 			else
 			{
