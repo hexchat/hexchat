@@ -383,7 +383,7 @@ hexchat_reinit_timers (void)
 		notify_tag = fe_timeout_add_seconds (prefs.hex_notify_timeout,
 						     notify_checklist, NULL);
 	}
-	else if (notify_tag != 0)
+	else if (!prefs.hex_notify_timeout && notify_tag != 0)
 	{
 		fe_timeout_remove (notify_tag);
 		notify_tag = 0;
@@ -394,7 +394,7 @@ hexchat_reinit_timers (void)
 	{
 		away_tag = fe_timeout_add_seconds (prefs.hex_away_timeout, away_check, NULL);
 	}
-	else if (away_tag != 0)
+	else if (!prefs.hex_away_track && away_tag != 0)
 	{
 		fe_timeout_remove (away_tag);
 		away_tag = 0;
@@ -405,7 +405,7 @@ hexchat_reinit_timers (void)
 	{
 		lag_check_update_tag = fe_timeout_add (500, hexchat_lag_check_update, NULL);
 	}
-	else if (lag_check_update_tag != 0)
+	else if (!prefs.hex_gui_lagometer && lag_check_update_tag != 0)
 	{
 		fe_timeout_remove (lag_check_update_tag);
 		lag_check_update_tag = 0;
@@ -417,7 +417,8 @@ hexchat_reinit_timers (void)
 	{
 		lag_check_tag = fe_timeout_add_seconds (30, hexchat_lag_check, NULL);
 	}
-	else if (lag_check_tag != 0)
+	else if ((!prefs.hex_net_ping_timeout && !prefs.hex_gui_lagometer)
+					 && lag_check_tag != 0)
 	{
 		fe_timeout_remove (lag_check_tag);
 		lag_check_tag = 0;
