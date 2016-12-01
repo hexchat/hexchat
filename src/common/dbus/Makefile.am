@@ -13,7 +13,12 @@ EXTRA_DIST =				\
 BUILT_SOURCES =				\
 	remote-object-glue.h
 
-CLEANFILES = $(BUILT_SOURCES)
+# Dbus service file
+servicedir = $(DBUS_SERVICES_DIR)
+service_in_files = org.hexchat.service.service.in
+service_DATA = $(service_in_files:.service.in=.service)
+
+CLEANFILES = $(BUILT_SOURCES) $(service_DATA)
 
 AM_CPPFLAGS = -I$(top_srcdir)/src/common $(COMMON_CFLAGS) $(DBUS_CFLAGS)
 
@@ -23,11 +28,6 @@ example_LDADD = $(DBUS_LIBS) $(GLIB_LIBS)
 
 remote-object-glue.h: remote-object.xml
 	$(AM_V_GEN) $(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<
-
-# Dbus service file
-servicedir = $(DBUS_SERVICES_DIR)
-service_in_files = org.hexchat.service.service.in
-service_DATA = $(service_in_files:.service.in=.service)
 
 # Rule to make the service file with bindir expanded
 $(service_DATA): $(service_in_files) Makefile
