@@ -7,7 +7,7 @@
 ########################################################################
 
 export ARCH=$(arch)
-VER1=$(git describe --tags --always --abbrev=7)
+VER1=$(git describe --tags --always --abbrev=7 | sed -e 's|v||g')
 
 APP=HexChat
 LOWERAPP=${APP,,}
