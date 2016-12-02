@@ -38,7 +38,7 @@ get_icon
 ########################################################################
 
 cp usr/share/icons/hicolor/scalable/apps/hexchat.svg .
-rm -rf squashfs-root/usr/lib/hexchat/plugins/{python,perl}.so
+rm -f usr/lib/hexchat/plugins/{python,perl}.so
 
 ########################################################################
 # Copy in the dependencies that cannot be assumed to be available
