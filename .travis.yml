@@ -4,8 +4,12 @@ language: c
 cache: apt
 compiler: clang
 script:
-    - ./autogen.sh --enable-textfe --with-theme-manager --enable-static-analysis
+    - ./autogen.sh --enable-textfe --with-theme-manager --enable-static-analysis --prefix=/app
     - make V=1 -j$(nproc)
+    - sudo make install
+    - find /app || true
+after_success:
+    - bash -e linux/appimage.sh
 notifications:
     irc:
         channels: "chat.freenode.net#hexchat-devel"
