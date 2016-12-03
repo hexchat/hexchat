@@ -194,6 +194,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.globalgamers.net/+6660"},
 #endif
 	{0,			"irc.globalgamers.net"},
+	
+	{"hackint", 0},
+	{0, "irc.hackint.org"},
 
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
