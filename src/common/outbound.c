@@ -1717,6 +1717,24 @@ memrchr (const void *block, int c, size_t size)
 }
 #endif
 
+static void
+exec_print_line (session *sess, char *data, gssize len, gboolean tochannel)
+{
+	exec_handle_colors (data, len);
+	char *valid = text_fixup_invalid_utf8 (data, len, NULL);
+	if (tochannel)
+	{
+		/* must turn off auto-completion temporarily */
+		const unsigned int old = prefs.hex_completion_auto;
+		prefs.hex_completion_auto = 0;
+		handle_multiline (sess, valid, FALSE, TRUE);
+		prefs.hex_completion_auto = old;
+	}
+	else
+		PrintText (sess, valid);
+	g_free (valid);
+}
+
 static gboolean
 exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 {
@@ -1743,17 +1761,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		kill(s->childpid, SIGKILL);
 		if (len) {
 			buf[len] = '\0';
-			exec_handle_colors(buf, len);
-			if (s->tochannel)
-			{
-				/* must turn off auto-completion temporarily */
-				unsigned int old = prefs.hex_completion_auto;
-				prefs.hex_completion_auto = 0;
-				handle_multiline (s->sess, buf, FALSE, TRUE);
-				prefs.hex_completion_auto = old;
-			}
-			else
-				PrintText (s->sess, buf);
+			exec_print_line(s->sess, buf, len, s->tochannel);
 		}
 		g_free(buf);
 		waitpid (s->childpid, NULL, 0);
@@ -1782,11 +1790,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		s->buffill = 0;
 
 	if (len) {
-		exec_handle_colors (buf, len);
-		if (s->tochannel)
-			handle_multiline (s->sess, buf, FALSE, TRUE);
-		else
-			PrintText (s->sess, buf);
+		exec_print_line(s->sess, buf, len, s->tochannel);
 	}
 
 	g_free (buf);
