@@ -1720,8 +1720,9 @@ memrchr (const void *block, int c, size_t size)
 static void
 exec_print_line (session *sess, char *data, gssize len, gboolean tochannel)
 {
+	char *valid;
 	exec_handle_colors (data, len);
-	char *valid = text_fixup_invalid_utf8 (data, len, NULL);
+	valid = text_fixup_invalid_utf8 (data, len, NULL);
 	if (tochannel)
 	{
 		/* must turn off auto-completion temporarily */
