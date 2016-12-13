@@ -21,6 +21,7 @@
  */
 
 #include <stdio.h>
+#include <wchar.h>
 #include <windows.h>
 #include <wbemidl.h>
 
@@ -41,17 +42,17 @@ typedef enum
 	QUERY_WMI_HDD,
 } QueryWmiType;
 
-char *query_wmi (QueryWmiType mode);
-char *read_os_name (IWbemClassObject *object);
-char *read_cpu_info (IWbemClassObject *object);
-char *read_vga_name (IWbemClassObject *object);
+static char *query_wmi (QueryWmiType mode);
+static char *read_os_name (IWbemClassObject *object);
+static char *read_cpu_info (IWbemClassObject *object);
+static char *read_vga_name (IWbemClassObject *object);
 
-guint64 hdd_capacity;
-guint64 hdd_free_space;
-char *read_hdd_info (IWbemClassObject *object);
+static guint64 hdd_capacity;
+static guint64 hdd_free_space;
+static char *read_hdd_info (IWbemClassObject *object);
 
-char *bstr_to_utf8 (BSTR bstr);
-guint64 variant_to_uint64 (VARIANT *variant);
+static char *bstr_to_utf8 (BSTR bstr);
+static guint64 variant_to_uint64 (VARIANT *variant);
 
 char *
 sysinfo_get_cpu (void)

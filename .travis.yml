@@ -1,11 +1,16 @@
 sudo: required
-dist: trusty
-language: c
-cache: apt
-compiler: clang
+services: docker
+before_install:
+    - docker pull ubuntu:16.04
+    - docker run --privileged --cidfile=/tmp/cid ubuntu:16.04 /bin/sh -c 'apt-get update && apt-get install -y meson/xenial-backports libcanberra-dev libdbus-glib-1-dev libglib2.0-dev libgtk2.0-dev libluajit-5.1-dev libnotify-dev libpci-dev libperl-dev libproxy-dev libssl-dev python3-dev mono-devel desktop-file-utils'
+    - docker commit `cat /tmp/cid` hexchat/ubuntu-ci
+    - rm -f /tmp/cid
+install:
+    - docker run -d --privileged --cidfile=/tmp/cid --volume=${PWD}:/opt/hexchat hexchat/ubuntu-ci /bin/systemd --system
 script:
-    - ./autogen.sh --enable-textfe --with-theme-manager --enable-static-analysis
-    - make V=1 -j$(nproc)
+    - docker exec `cat /tmp/cid` /bin/sh -c 'meson /opt/hexchat /opt/hexchat-build -Dwith-text=true -Dwith-theme-manager=true && ninja -C /opt/hexchat-build install'
+after_script:
+    - docker kill `cat /tmp/cid`
 notifications:
     irc:
         channels: "chat.freenode.net#hexchat-devel"
@@ -13,24 +18,3 @@ notifications:
         on_success: change
 matrix:
      fast_finish: true
-addons:
-    apt:
-        packages:
-            - automake
-            - autoconf-archive
-            - imagemagick
-            - intltool
-            - libcanberra-dev
-            - libdbus-glib-1-dev
-            - libglib2.0-dev
-            - libgtk2.0-dev
-            - libluajit-5.1-dev
-            - libnotify-dev
-            - libpci-dev
-            - libperl-dev
-            - libproxy-dev
-            - libssl-dev
-            - libtool
-            - monodevelop
-            - mono-devel
-            - python-dev

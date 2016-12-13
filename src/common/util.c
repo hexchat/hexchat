@@ -48,7 +48,7 @@
 #include <ctype.h>
 #include "util.h"
 
-#if defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (__FreeBSD__) || defined (__APPLE__)
 #include <sys/sysctl.h>
 #endif
 
@@ -360,13 +360,13 @@ strip_hidden_attribute (char *src, char *dst)
 	return len;
 }
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 
 static void
 get_cpu_info (double *mhz, int *cpus)
 {
 
-#if defined(USING_LINUX) || defined (__CYGWIN__)
+#if defined(__linux__) || defined (__CYGWIN__)
 
 	char buf[256];
 	int fh;
@@ -404,7 +404,7 @@ get_cpu_info (double *mhz, int *cpus)
 		*cpus = 1;
 
 #endif
-#ifdef USING_FREEBSD
+#ifdef __FreeBSD__
 
 	int mib[2], ncpu;
 	u_long freq;
@@ -495,7 +495,7 @@ get_sys_str (int with_cpu)
 char *
 get_sys_str (int with_cpu)
 {
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 	double mhz;
 #endif
 	int cpus = 1;
@@ -507,7 +507,7 @@ get_sys_str (int with_cpu)
 
 	uname (&un);
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 	get_cpu_info (&mhz, &cpus);
 	if (mhz && with_cpu)
 	{

@@ -291,8 +291,8 @@ cfg_get_int (char *cfg, char *var)
 char *xdir = NULL;	/* utf-8 encoding */
 
 #ifdef WIN32
-#include <Windows.h>
-#include <ShlObj.h>
+#include <windows.h>
+#include <shlobj.h>
 #endif
 
 char *
@@ -552,7 +552,7 @@ const struct prefs vars[] =
 	{"stamp_text", P_OFFINT (hex_stamp_text), TYPE_BOOL},
 	{"stamp_text_format", P_OFFSET (hex_stamp_text_format), TYPE_STR},
 
-	{"text_autocopy_color", P_OFFINT (hex_text_autocopy_color), TYPE_BOOL},	
+	{"text_autocopy_color", P_OFFINT (hex_text_autocopy_color), TYPE_BOOL},
 	{"text_autocopy_stamp", P_OFFINT (hex_text_autocopy_stamp), TYPE_BOOL},
 	{"text_autocopy_text", P_OFFINT (hex_text_autocopy_text), TYPE_BOOL},
 	{"text_background", P_OFFSET (hex_text_background), TYPE_STR},
@@ -635,7 +635,7 @@ get_default_language (void)
 	if (!locale)
 		locale = g_getenv ("LANG") ? g_getenv ("LANG") : "en";
 
-	/* we might end up with something like "en_US.UTF-8".  We will try to 
+	/* we might end up with something like "en_US.UTF-8".  We will try to
 	 * search for "en_US"; if it fails we search for "en".
 	 */
 	lang = g_strdup (locale);
@@ -735,7 +735,7 @@ load_default_config(void)
 	memset (&prefs, 0, sizeof (struct hexchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
-	
+
 	/* BOOLEANS */
 	prefs.hex_away_show_once = 1;
 	prefs.hex_away_track = 1;
@@ -918,7 +918,7 @@ make_config_dirs (void)
 
 	if (g_mkdir_with_parents (get_xdir (), 0700) != 0)
 		return -1;
-	
+
 	buf = g_build_filename (get_xdir (), "addons", NULL);
 	if (g_mkdir (buf, 0700) != 0)
 	{
@@ -926,7 +926,7 @@ make_config_dirs (void)
 		return -1;
 	}
 	g_free (buf);
-	
+
 	buf = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
 	if (g_mkdir (buf, 0700) != 0)
 	{
@@ -983,7 +983,7 @@ load_config (void)
 		i++;
 	}
 	while (vars[i].name);
-	
+
 	g_free (cfg);
 
 	if (prefs.hex_gui_win_height < 138)
@@ -1009,7 +1009,7 @@ save_config (void)
 
 	config = default_file ();
 	new_config = g_strconcat (config, ".new", NULL);
-	
+
 	fh = g_open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
 	if (fh == -1)
 	{
@@ -1023,7 +1023,7 @@ save_config (void)
 		g_free (new_config);
 		return 0;
 	}
-		
+
 	i = 0;
 	do
 	{

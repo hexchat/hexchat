@@ -69,6 +69,8 @@
 #include "hexchat-plugin.h"
 #undef _POSIX_C_SOURCE	/* Avoid warnings from /usr/include/features.h */
 #undef _XOPEN_SOURCE
+#undef HAVE_MEMRCHR /* Avoid redefinition in Python.h */
+#undef HAVE_STRINGS_H
 #include <Python.h>
 #include <structmember.h>
 #include <pythread.h>
