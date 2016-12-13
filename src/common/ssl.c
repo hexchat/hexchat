@@ -176,7 +176,7 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 		return 1;
 
 	alg = OBJ_obj2nid (algor->algorithm);
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#ifndef HAVE_X509_GET_SIGNATURE_NID
 	sign_alg = OBJ_obj2nid (peer_cert->sig_alg->algorithm);
 #else
 	sign_alg = X509_get_signature_nid (peer_cert);
@@ -306,7 +306,7 @@ _SSL_socket (SSL_CTX *ctx, int sd)
 
 	SSL_set_fd (ssl, sd);
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#ifndef HAVE_SSL_CTX_GET_SSL_METHOD
 	method = ctx->method;
 #else
 	method = SSL_CTX_get_ssl_method (ctx);
