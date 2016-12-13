@@ -74,7 +74,7 @@ dh1080_init (void)
 
 		BN_set_word (g, 2);
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#ifndef HAVE_DH_SET0_PQG
 		g_dh->p = p;
 		g_dh->g = g;
 #else
@@ -162,7 +162,7 @@ dh1080_generate_key (char **priv_key, char **pub_key)
 		return 0;
 	}
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#ifndef HAVE_DH_GET0_KEY
 	dh_pub_key = dh->pub_key;
 	dh_priv_key = dh->priv_key;
 #else
@@ -213,7 +213,7 @@ dh1080_compute_key (const char *priv_key, const char *pub_key, char **secret_key
 
 	  	priv_key_data = dh1080_decode_b64 (priv_key, &priv_key_len);
 		priv_key_num = BN_bin2bn(priv_key_data, priv_key_len, NULL);
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#ifndef HAVE_DH_SET0_KEY
 		dh->priv_key = priv_key_num;
 #else
 		DH_set0_key (dh, NULL, priv_key_num);
