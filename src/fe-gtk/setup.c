@@ -1857,7 +1857,7 @@ setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 	gtk_container_add (GTK_CONTAINER (vvbox), tab);
 
 	sw = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new (NULL, NULL));
-	gtk_scrolled_window_set_shadow_type (sw, GTK_SHADOW_NONE);
+	gtk_scrolled_window_set_shadow_type (sw, GTK_SHADOW_IN);
 	gtk_scrolled_window_set_policy (sw, GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_add_with_viewport (sw, vvbox);
 
