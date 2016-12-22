@@ -1840,7 +1840,8 @@ setup_create_sound_page (void)
 static void
 setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 {
-	GtkWidget *label, *vvbox;
+	GtkWidget *label, *vvbox, *viewport;
+	GtkScrolledWindow *sw;
 	char buf[128];
 
 	vvbox = gtk_vbox_new (FALSE, 0);
@@ -1855,7 +1856,15 @@ setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 
 	gtk_container_add (GTK_CONTAINER (vvbox), tab);
 
-	gtk_notebook_append_page (GTK_NOTEBOOK (book), vvbox, NULL);
+	sw = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new (NULL, NULL));
+	gtk_scrolled_window_set_shadow_type (sw, GTK_SHADOW_NONE);
+	gtk_scrolled_window_set_policy (sw, GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_add_with_viewport (sw, vvbox);
+
+	viewport = gtk_bin_get_child (GTK_BIN(sw));
+	gtk_viewport_set_shadow_type (GTK_VIEWPORT(viewport), GTK_SHADOW_NONE);
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (book), GTK_WIDGET(sw), NULL);
 }
 
 static const char *const cata[] =
@@ -2279,7 +2288,7 @@ setup_window_open (void)
 {
 	GtkWidget *wid, *win, *vbox, *hbox, *hbbox;
 
-	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 0, 2);
+	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 600, 2);
 
 	vbox = gtk_vbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
