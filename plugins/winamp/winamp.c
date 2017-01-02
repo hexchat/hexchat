@@ -21,6 +21,7 @@
 #define PAUSED 3
 
 static hexchat_plugin *ph;   /* plugin handle */
+static int show_plugin_messages = 0;
 
 static int
 winamp(char *word[], char *word_eol[], void *userdata)
@@ -140,7 +141,12 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	hexchat_hook_command (ph, "WINAMP", HEXCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
    	hexchat_command (ph, "MENU -ishare\\music.png ADD \"Window/Display Current Song (Winamp)\" \"WINAMP\"");
 
-	hexchat_print (ph, "Winamp plugin loaded\n");
+	hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+	if (show_plugin_messages)
+	{
+		hexchat_print (ph, "Winamp plugin loaded\n");
+	}
 
 	return 1;	   /* return 1 for success */
 }
@@ -149,6 +155,10 @@ int
 hexchat_plugin_deinit(void)
 {
 	hexchat_command (ph, "MENU DEL \"Window/Display Current Song (Winamp)\"");
-	hexchat_print (ph, "Winamp plugin unloaded\n");
+	if (show_plugin_messages)
+	{
+		hexchat_print (ph, "Winamp plugin unloaded\n");
+	}
+
 	return 1;
 }

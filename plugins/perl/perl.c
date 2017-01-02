@@ -1593,6 +1593,7 @@ hexchat_plugin_get_info (char **name, char **desc, char **version,
 /* Reinit safeguard */
 
 static int initialized = 0;
+static int show_plugin_messages = 0;
 
 int
 hexchat_plugin_init (hexchat_plugin * plugin_handle, char **plugin_name,
@@ -1628,7 +1629,12 @@ hexchat_plugin_init (hexchat_plugin * plugin_handle, char **plugin_name,
 	/*perl_init (); */
 	hexchat_hook_timer (ph, 0, perl_auto_load, NULL );
 
-	hexchat_print (ph, "Perl interface loaded\n");
+	hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+	if (show_plugin_messages)
+	{
+		hexchat_print (ph, "Perl interface loaded\n");
+	}
 
 	return 1;
 }
@@ -1639,7 +1645,11 @@ hexchat_plugin_deinit (hexchat_plugin * plugin_handle)
 	perl_end ();
 
 	initialized = 0;
-	hexchat_print (plugin_handle, "Perl interface unloaded\n");
+
+	if (show_plugin_messages)
+	{
+		hexchat_print (plugin_handle, "Perl interface unloaded\n");
+	}
 
 	return 1;
 }

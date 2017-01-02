@@ -31,6 +31,7 @@ static char name[] = "Update Checker";
 static char desc[] = "Check for HexChat updates automatically";
 static char version[] = "5.0";
 static const char upd_help[] = "Update Checker Usage:\n  /UPDCHK, check for HexChat updates\n";
+static int show_plugin_messages = 0;
 
 static int
 check_cmd (char *word[], char *word_eol[], void *userdata)
@@ -54,7 +55,13 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 
 	hexchat_hook_command (ph, "UPDCHK", HEXCHAT_PRI_NORM, check_cmd, upd_help, NULL);
 	hexchat_command (ph, "MENU -ishare\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
-	hexchat_printf (ph, "%s plugin loaded\n", name);
+
+	hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+	if (show_plugin_messages)
+	{
+		hexchat_printf (ph, "%s plugin loaded\n", name);
+	}
 
 	return 1;
 }
@@ -64,7 +71,11 @@ hexchat_plugin_deinit (void)
 {
 	win_sparkle_cleanup ();
 
-	hexchat_command (ph, "MENU DEL \"Help/Check for updates\"");
-	hexchat_printf (ph, "%s plugin unloaded\n", name);
+	hexchat_command (ph, "MENU DEL \"Help/Check for updates\"");    
+	if (show_plugin_messages)
+	{
+		hexchat_printf (ph, "%s plugin unloaded\n", name);
+	}
+
 	return 1;
 }

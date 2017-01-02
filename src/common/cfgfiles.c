@@ -426,6 +426,7 @@ const struct prefs vars[] =
 	{"gui_quit_dialog", P_OFFINT (hex_gui_quit_dialog), TYPE_BOOL},
 	{"gui_search_pos", P_OFFINT (hex_gui_search_pos), TYPE_INT},
 	/* {"gui_single", P_OFFINT (hex_gui_single), TYPE_BOOL}, */
+	{"gui_show_plugin_messages", P_OFFINT (hex_gui_show_plugin_messages), TYPE_BOOL},
 	{"gui_slist_fav", P_OFFINT (hex_gui_slist_fav), TYPE_BOOL},
 	{"gui_slist_select", P_OFFINT (hex_gui_slist_select), TYPE_INT},
 	{"gui_slist_skip", P_OFFINT (hex_gui_slist_skip), TYPE_BOOL},

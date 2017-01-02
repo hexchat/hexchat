@@ -40,6 +40,7 @@
 static const char plugin_name[] = "FiSHLiM";
 static const char plugin_desc[] = "Encryption plugin for the FiSH protocol. Less is More!";
 static const char plugin_version[] = "0.1.0";
+static int show_plugin_messages = 0;
 
 static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
 static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
@@ -562,7 +563,13 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
 
     pending_exchanges = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
-    hexchat_printf(ph, "%s plugin loaded\n", plugin_name);
+    hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+    if (show_plugin_messages)
+    {
+        hexchat_printf(ph, "%s plugin loaded\n", plugin_name);
+    }
+
     /* Return success */
     return 1;
 }
@@ -571,7 +578,11 @@ int hexchat_plugin_deinit(void) {
     g_clear_pointer(&pending_exchanges, g_hash_table_destroy);
     dh1080_deinit();
 
-    hexchat_printf(ph, "%s plugin unloaded\n", plugin_name);
+    if (show_plugin_messages)
+    {
+        hexchat_printf(ph, "%s plugin unloaded\n", plugin_name);
+    }
+
     return 1;
 }
 

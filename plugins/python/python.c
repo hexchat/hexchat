@@ -2671,6 +2671,7 @@ Command_Unload(char *word[], char *word_eol[], void *userdata)
 
 static int initialized = 0;
 static int reinit_tried = 0;
+static int show_plugin_messages = 0;
 
 void
 hexchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
@@ -2770,7 +2771,12 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	thread_timer = hexchat_hook_timer(ph, 300, Callback_ThreadTimer, NULL);
 #endif
 
-	hexchat_print(ph, "Python interface loaded\n");
+	hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+	if (show_plugin_messages)
+	{
+		hexchat_print(ph, "Python interface loaded\n");
+	}
 
 	Util_Autoload();
 	return 1;
@@ -2824,7 +2830,11 @@ hexchat_plugin_deinit(void)
 	PyThread_free_lock(xchat_lock);
 #endif
 
-	hexchat_print(ph, "Python interface unloaded\n");
+	if (show_plugin_messages)
+	{
+		hexchat_print(ph, "Python interface unloaded\n");
+	}
+
 	initialized = 0;
 
 	return 1;
