@@ -26,6 +26,7 @@
  * to base64 for final use with blowfish.
  */
 
+#include "config.h"
 #include "dh1080.h"
 
 #include <openssl/bn.h>
