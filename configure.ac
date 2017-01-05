@@ -374,8 +374,6 @@ AS_IF([test "$openssl" != no], [
 		openssl=yes
 		COMMON_LIBS="$COMMON_LIBS $OPENSSL_LIBS"
 		COMMON_CFLAGS="$COMMON_CFLAGS $OPENSSL_CFLAGS"
-		dnl Test for various functions that are not available in LibreSSL
-		AC_CHECK_FUNCS([SSL_CTX_get_ssl_method X509_get_signature_nid DH_set0_pqg DH_get0_key DH_set0_key])
 	], [
 		unset openssl_path ac_cv_lib_ssl_SSL_new ac_cv_header_openssl_ssl_h
 		AS_IF([test "$openssl" != yes], [
@@ -405,6 +403,14 @@ AS_IF([test "$openssl" != no], [
 			CFLAGS=$SAVED_CFLAGS
 		])
 		LIBS=$SAVED_LIBS
+	])
+
+	AS_IF([test "$openssl" = yes], [
+		dnl Test for various functions that are not available in LibreSSL
+		SAVED_LIBS="$LIBS"
+		LIBS="$OPENSSL_LIBS"
+		AC_CHECK_FUNCS([SSL_CTX_get_ssl_method X509_get_signature_nid DH_set0_pqg DH_get0_key DH_set0_key])
+		LIBS="$SAVED_LIBS"
 	])
 ])
 
