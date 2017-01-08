@@ -256,8 +256,7 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.oceanius.com"},
 
-	{"OFTC",	0},
-	/* Uncommon CA? */
+	{"OFTC", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.oftc.net"},
 
 	{"OtherNet",	0},
