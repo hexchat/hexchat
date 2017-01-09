@@ -42,11 +42,11 @@
 
 enum
 {
-	COL_PIX=0,		// GdkPixbuf *
-	COL_NICK=1,		// char *
-	COL_HOST=2,		// char *
-	COL_USER=3,		// struct User *
-	COL_GDKCOLOR=4	// GdkColor *
+	COL_PIX=0,		/* GdkPixbuf * */
+	COL_NICK=1,		/* char * */
+	COL_HOST=2,		/* char * */
+	COL_USER=3,		/* struct User * */
+	COL_GDKCOLOR=4	/* GdkColor * */
 };
 
 
@@ -105,7 +105,7 @@ fe_userlist_numbers (session *sess)
 	{
 		if (sess->total)
 		{
-			snprintf (tbuf, sizeof (tbuf), _("%d ops, %d total"), sess->ops, sess->total);
+			g_snprintf (tbuf, sizeof (tbuf), _("%d ops, %d total"), sess->ops, sess->total);
 			tbuf[sizeof (tbuf) - 1] = 0;
 			gtk_label_set_text (GTK_LABEL (sess->gui->namelistinfo), tbuf);
 		} else
@@ -188,7 +188,7 @@ userlist_selection_list (GtkWidget *widget, int *num_ret)
 	if (num_sel < 1)
 		return NULL;
 
-	nicks = malloc (sizeof (char *) * (num_sel + 1));
+	nicks = g_new (char *, num_sel + 1);
 
 	i = 0;
 	gtk_tree_model_get_iter_first (model, &iter);
@@ -274,7 +274,7 @@ userlist_set_value (GtkWidget *treeview, gfloat val)
 gfloat
 userlist_get_value (GtkWidget *treeview)
 {
-	return gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (treeview))->value;
+	return gtk_adjustment_get_value (gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (treeview)));
 }
 
 int
@@ -286,7 +286,7 @@ fe_userlist_remove (session *sess, struct User *user)
 	int sel;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
-						  sess->res->user_model, user, &sel);
+						  GTK_TREE_MODEL(sess->res->user_model), user, &sel);
 	if (!iter)
 		return 0;
 
@@ -316,7 +316,7 @@ fe_userlist_rehash (session *sess, struct User *user)
 	int nick_color = 0;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
-						  sess->res->user_model, user, &sel);
+						  GTK_TREE_MODEL(sess->res->user_model), user, &sel);
 	if (!iter)
 		return;
 
@@ -332,9 +332,9 @@ fe_userlist_rehash (session *sess, struct User *user)
 }
 
 void
-fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
+fe_userlist_insert (session *sess, struct User *newuser, gboolean sel)
 {
-	GtkTreeModel *model = sess->res->user_model;
+	GtkTreeModel *model = GTK_TREE_MODEL(sess->res->user_model);
 	GdkPixbuf *pix = get_user_icon (sess->server, newuser);
 	GtkTreeIter iter;
 	char *nick;
@@ -348,16 +348,16 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	nick = newuser->nick;
 	if (!prefs.hex_gui_ulist_icons)
 	{
-		nick = malloc (strlen (newuser->nick) + 2);
+		nick = g_malloc (strlen (newuser->nick) + 2);
 		nick[0] = newuser->prefix[0];
-		if (!nick[0] || nick[0] == ' ')
+		if (nick[0] == '\0' || nick[0] == ' ')
 			strcpy (nick, newuser->nick);
 		else
 			strcpy (nick + 1, newuser->nick);
 		pix = NULL;
 	}
 
-	gtk_list_store_insert_with_values (GTK_LIST_STORE (model), &iter, row,
+	gtk_list_store_insert_with_values (GTK_LIST_STORE (model), &iter, 0,
 									COL_PIX, pix,
 									COL_NICK, nick,
 									COL_HOST, newuser->hostname,
@@ -367,7 +367,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 
 	if (!prefs.hex_gui_ulist_icons)
 	{
-		free (nick);
+		g_free (nick);
 	}
 
 	/* is it me? */
@@ -377,14 +377,6 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 			mg_set_access_icon (sess->gui, pix, sess->server->is_away);
 	}
 
-#if 0
-	if (prefs.hilitenotify && notify_isnotify (sess, newuser->nick))
-	{
-		gtk_clist_set_foreground ((GtkCList *) sess->gui->user_clist, row,
-										  &colors[prefs.nu_color]);
-	}
-#endif
-
 	/* is it the front-most tab? */
 	if (gtk_tree_view_get_model (GTK_TREE_VIEW (sess->gui->user_tree))
 		 == model)
@@ -393,12 +385,6 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 			gtk_tree_selection_select_iter (gtk_tree_view_get_selection
 										(GTK_TREE_VIEW (sess->gui->user_tree)), &iter);
 	}
-}
-
-void
-fe_userlist_move (session *sess, struct User *user, int new_row)
-{
-	fe_userlist_insert (sess, user, new_row, fe_userlist_remove (sess, user));
 }
 
 void
@@ -413,6 +399,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 						 guint info, guint ttime, gpointer userdata)
 {
 	struct User *user;
+	gchar *data;
 	GtkTreePath *path;
 	GtkTreeModel *model;
 	GtkTreeIter iter;
@@ -425,7 +412,10 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 		return;
 	gtk_tree_model_get (model, &iter, COL_USER, &user, -1);
 
-	mg_dnd_drop_file (current_sess, user->nick, selection_data->data);
+	data = (char *)gtk_selection_data_get_data (selection_data);
+
+	if (data)
+		mg_dnd_drop_file (current_sess, user->nick, data);
 }
 
 static gboolean
@@ -455,11 +445,67 @@ userlist_dnd_leave (GtkTreeView *widget, GdkDragContext *context, guint ttime)
 	return TRUE;
 }
 
-void *
-userlist_create_model (void)
+static int
+userlist_alpha_cmp (GtkTreeModel *model, GtkTreeIter *iter_a, GtkTreeIter *iter_b, gpointer userdata)
 {
-	return gtk_list_store_new (5, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
+	struct User *user_a, *user_b;
+
+	gtk_tree_model_get (model, iter_a, COL_USER, &user_a, -1);
+	gtk_tree_model_get (model, iter_b, COL_USER, &user_b, -1);
+
+	return nick_cmp_alpha (user_a, user_b, ((session*)userdata)->server);
+}
+
+static int
+userlist_ops_cmp (GtkTreeModel *model, GtkTreeIter *iter_a, GtkTreeIter *iter_b, gpointer userdata)
+{
+	struct User *user_a, *user_b;
+
+	gtk_tree_model_get (model, iter_a, COL_USER, &user_a, -1);
+	gtk_tree_model_get (model, iter_b, COL_USER, &user_b, -1);
+
+	return nick_cmp_az_ops (((session*)userdata)->server, user_a, user_b);
+}
+
+GtkListStore *
+userlist_create_model (session *sess)
+{
+	GtkListStore *store;
+	GtkTreeIterCompareFunc cmp_func;
+	GtkSortType sort_type;
+
+	store = gtk_list_store_new (5, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
 										G_TYPE_POINTER, GDK_TYPE_COLOR);
+
+	switch (prefs.hex_gui_ulist_sort)
+	{
+	case 0:
+		cmp_func = userlist_ops_cmp;
+		sort_type = GTK_SORT_ASCENDING;
+		break;
+	case 1:
+		cmp_func = userlist_alpha_cmp;
+		sort_type = GTK_SORT_ASCENDING;
+		break;
+	case 2:
+		cmp_func = userlist_ops_cmp;
+		sort_type = GTK_SORT_DESCENDING;
+		break;
+	case 3:
+		cmp_func = userlist_alpha_cmp;
+		sort_type = GTK_SORT_DESCENDING;
+		break;
+	default:
+		/* No sorting */
+		gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE(store), NULL, NULL, NULL);
+		return store;
+	}
+
+	gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE(store), cmp_func, sess, NULL);
+	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE(store),
+						GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, sort_type);
+
+	return store;
 }
 
 static void
@@ -521,7 +567,7 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 				i--;
 				g_free (nicks[i]);
 			}
-			free (nicks);
+			g_free (nicks);
 		}
 		return TRUE;
 	}
@@ -538,13 +584,13 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 				i--;
 				g_free (nicks[i]);
 			}
-			free (nicks);
+			g_free (nicks);
 			return TRUE;
 		}
 		if (nicks)
 		{
 			g_free (nicks[0]);
-			free (nicks);
+			g_free (nicks);
 		}
 
 		sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
@@ -563,7 +609,7 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 					i--;
 					g_free (nicks[i]);
 				}
-				free (nicks);
+				g_free (nicks);
 			}
 		} else
 		{
@@ -579,7 +625,7 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 static gboolean
 userlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
 {
-	if (evt->keyval >= GDK_asterisk && evt->keyval <= GDK_z)
+	if (evt->keyval >= GDK_KEY_asterisk && evt->keyval <= GDK_KEY_z)
 	{
 		/* dirty trick to avoid auto-selection */
 		SPELL_ENTRY_SET_EDITABLE (current_sess->gui->input_box, FALSE);
@@ -643,7 +689,6 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (userlist_key_cb), 0);
 
 	/* tree/chanview DND */
-#ifndef WIN32	/* leaks GDI pool memory, don't enable */
 	g_signal_connect (G_OBJECT (treeview), "drag_begin",
 							G_CALLBACK (mg_drag_begin_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "drag_drop",
@@ -652,7 +697,6 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (mg_drag_motion_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "drag_end",
 							G_CALLBACK (mg_drag_end_cb), NULL);
-#endif
 
 	userlist_add_columns (GTK_TREE_VIEW (treeview));
 
@@ -666,7 +710,7 @@ void
 userlist_show (session *sess)
 {
 	gtk_tree_view_set_model (GTK_TREE_VIEW (sess->gui->user_tree),
-									 sess->res->user_model);
+									 GTK_TREE_MODEL(sess->res->user_model));
 }
 
 void

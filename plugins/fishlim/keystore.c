@@ -22,12 +22,13 @@
 
 */
 
+#include "config.h"
+
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
 #include "irc.h"
 #include "fish.h"
-#include "misc.h"
 #include "keystore.h"
 #include "plugin_hexchat.h"
 
@@ -38,7 +39,7 @@ static char *keystore_password = NULL;
 /**
  * Opens the key store file: ~/.config/hexchat/addon_fishlim.conf
  */
-static GKeyFile *getConfigFile() {
+static GKeyFile *getConfigFile(void) {
     gchar *filename = get_config_filename();
     
     GKeyFile *keyfile = g_key_file_new();
@@ -54,13 +55,29 @@ static GKeyFile *getConfigFile() {
 /**
  * Returns the key store password, or the default.
  */
-static const char *get_keystore_password() {
+static const char *get_keystore_password(void) {
     return (keystore_password != NULL ?
         keystore_password :
-        // Silly default value...
+        /* Silly default value... */
         "blowinikey");
 }
 
+
+static char *escape_nickname(const char *nick) {
+    char *escaped = g_strdup(nick);
+    char *p = escaped;
+
+    while (*p) {
+        if (*p == '[')
+            *p = '~';
+        else if (*p == ']')
+            *p = '!';
+
+        ++p;
+    }
+
+    return escaped;
+}
 
 /**
  * Gets a value for a nick/channel from addon_fishlim.conf. Unlike
@@ -87,17 +104,21 @@ static gchar *get_nick_value(GKeyFile *keyfile, const char *nick, const char *it
  * Extracts a key from the key store file.
  */
 char *keystore_get_key(const char *nick) {
-    // Get the key
+    /* Get the key */
     GKeyFile *keyfile = getConfigFile();
-    gchar *value = get_nick_value(keyfile, nick, "key");
+    char *escaped_nick = escape_nickname(nick);
+    gchar *value = get_nick_value(keyfile, escaped_nick, "key");
     g_key_file_free(keyfile);
-    if (!value) return NULL;
+    g_free(escaped_nick);
+
+    if (!value)
+        return NULL;
     
     if (strncmp(value, "+OK ", 4) != 0) {
-        // Key is stored in plaintext
-        return import_glib_string(value);
+        /* Key is stored in plaintext */
+        return value;
     } else {
-        // Key is encrypted
+        /* Key is encrypted */
         const char *encrypted = value+4;
         const char *password = get_keystore_password();
         char *decrypted = fish_decrypt(password, strlen(password), encrypted);
@@ -109,10 +130,10 @@ char *keystore_get_key(const char *nick) {
 /**
  * Deletes a nick and the associated key in the key store file.
  */
-static bool delete_nick(GKeyFile *keyfile, const char *nick) {
+static gboolean delete_nick(GKeyFile *keyfile, const char *nick) {
     gchar **group;
     gchar **groups = g_key_file_get_groups(keyfile, NULL);
-    bool ok = false;
+    gboolean ok = FALSE;
     
     for (group = groups; *group != NULL; group++) {
         if (!irc_nick_cmp(*group, nick)) {
@@ -125,85 +146,100 @@ static bool delete_nick(GKeyFile *keyfile, const char *nick) {
     return ok;
 }
 
+#if !GLIB_CHECK_VERSION(2,40,0)
 /**
  * Writes the key store file to disk.
  */
-static bool save_keystore(GKeyFile *keyfile) {
-    char *filename;
-    bool ok;
-    // Serialize
+static gboolean keyfile_save_to_file (GKeyFile *keyfile, char *filename) {
+    gboolean ok;
+
+    /* Serialize */
     gsize file_length;
     gchar *file_data = g_key_file_to_data(keyfile, &file_length, NULL);
-    if (!file_data) return false;
-    
-    // Write to file
-    filename = get_config_filename();
-    ok = g_file_set_contents(filename, file_data, file_length, NULL);
-    g_free(filename);
+    if (!file_data)
+        return FALSE;
+
+    /* Write to file */
+    ok = g_file_set_contents (filename, file_data, file_length, NULL);
     g_free(file_data);
+    return ok;
+}
+#endif
+
+/**
+ * Writes the key store file to disk.
+ */
+static gboolean save_keystore(GKeyFile *keyfile) {
+    char *filename;
+    gboolean ok;
+
+    filename = get_config_filename();
+#if !GLIB_CHECK_VERSION(2,40,0)
+    ok = keyfile_save_to_file (keyfile, filename);
+#else
+    ok = g_key_file_save_to_file (keyfile, filename, NULL);
+#endif
+    g_free (filename);
+
     return ok;
 }
 
 /**
  * Sets a key in the key store file.
  */
-bool keystore_store_key(const char *nick, const char *key) {
+gboolean keystore_store_key(const char *nick, const char *key) {
     const char *password;
     char *encrypted;
     char *wrapped;
-    bool ok = false;
+    gboolean ok = FALSE;
     GKeyFile *keyfile = getConfigFile();
+    char *escaped_nick = escape_nickname(nick);
+
+    /* Remove old key */
+    delete_nick(keyfile, escaped_nick);
     
-    // Remove old key
-    delete_nick(keyfile, nick);
-    
-    // Add new key
+    /* Add new key */
     password = get_keystore_password();
     if (password) {
-        // Encrypt the password
+        /* Encrypt the password */
         encrypted = fish_encrypt(password, strlen(password), key);
         if (!encrypted) goto end;
         
-        // Prepend "+OK "
+        /* Prepend "+OK " */
         wrapped = g_strconcat("+OK ", encrypted, NULL);
         g_free(encrypted);
         
-        // Store encrypted in file
-        g_key_file_set_string(keyfile, nick, "key", wrapped);
-        free(wrapped);
+        /* Store encrypted in file */
+        g_key_file_set_string(keyfile, escaped_nick, "key", wrapped);
+        g_free(wrapped);
     } else {
-        // Store unencrypted in file
-        g_key_file_set_string(keyfile, nick, "key", key);
+        /* Store unencrypted in file */
+        g_key_file_set_string(keyfile, escaped_nick, "key", key);
     }
     
-    // Save key store file
+    /* Save key store file */
     ok = save_keystore(keyfile);
     
   end:
     g_key_file_free(keyfile);
+    g_free(escaped_nick);
     return ok;
 }
 
 /**
  * Deletes a nick from the key store.
  */
-bool keystore_delete_nick(const char *nick) {
+gboolean keystore_delete_nick(const char *nick) {
     GKeyFile *keyfile = getConfigFile();
+    char *escaped_nick = escape_nickname(nick);
     
-    // Delete entry
-    bool ok = delete_nick(keyfile, nick);
+    /* Delete entry */
+    gboolean ok = delete_nick(keyfile, escaped_nick);
     
-    // Save
+    /* Save */
     if (ok) save_keystore(keyfile);
     
     g_key_file_free(keyfile);
+    g_free(escaped_nick);
     return ok;
 }
-
-
-void keystore_secure_free(void *ptr, size_t size) {
-    secure_erase(ptr, size);
-    free(ptr);
-}
-
-

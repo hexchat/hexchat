@@ -48,12 +48,20 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
 	   HWND hwnd = FindWindow("MediaPlayerClassicW",NULL);
        if (hwnd==0) {hexchat_print(ph, randomLine(notRunTheme));return HEXCHAT_EAT_ALL;}
        
-       tTitle=(char*)malloc(sizeof(char)*1024);
+       tTitle = g_new(char, 1024);
        GetWindowText(hwnd, tTitle, 1024);
-       zero=strstr(tTitle," - Media Player Classic");
-       if (zero!=NULL) zero[0]=0;
-       else hexchat_print(ph,"pattern not found");
-       
+       zero = strstr (tTitle, " - Media Player Classic");
+	   if (zero != NULL)
+	   {
+		   zero[0] = 0;
+	   }
+	   else
+	   {
+		   g_free(tTitle);
+		   hexchat_print(ph, "pattern not found");
+		   return HEXCHAT_EAT_ALL;
+	   }
+
        if ((tTitle[1]==':')&&(tTitle[2]=='\\')){
           //hexchat_print(ph,"seams to be full path");
           if (endsWith(tTitle,".mp3")==1){
@@ -82,7 +90,8 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
                 //mp3Line=intReplace(mp3Line,"%perc",perc);
                 //mp3Line=replace(mp3Line,"%plTitle",title);
                 mp3Line=replace(mp3Line,"%file",tTitle);
-                hexchat_command(ph, mp3Line);
+				g_free(tTitle);
+				hexchat_command(ph, mp3Line);
                 return HEXCHAT_EAT_ALL;
              }
           }
@@ -111,14 +120,16 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
                 //oggLine=intReplace(oggLine,"%perc",perc);
                 //oggLine=replace(oggLine,"%plTitle",title);
                 oggLine=replace(oggLine,"%file",tTitle);
-                hexchat_command(ph, oggLine);
+				g_free(tTitle);
+				hexchat_command(ph, oggLine);
                 return HEXCHAT_EAT_ALL;
              }
           }
        }
        line=randomLine(titleTheme);
        line=replace(line,"%title", tTitle);
-       hexchat_command(ph,line); 
+	   g_free(tTitle);
+	   hexchat_command(ph, line);
        return HEXCHAT_EAT_ALL;
 }
 

@@ -24,10 +24,10 @@
 #include "../common/cfgfiles.h"
 #include "../common/hexchat.h"
 #include "../common/fe.h"
+#include "resources.h"
 
+#include <gio/gio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-
-#include "../pixmaps/inline_pngs.h"
 
 GdkPixbuf *pix_ulist_voice;
 GdkPixbuf *pix_ulist_halfop;
@@ -84,33 +84,24 @@ pixmap_load_from_file (char *filename)
 	return pix;
 }
 
-#if 0
-#define LOADPIX(vv,pp,ff) \
-	vv = gdk_pixbuf_new_from_file (HEXCHATSHAREDIR"/hexchat/"ff, 0); \
-	if (!vv) \
-		vv = gdk_pixbuf_new_from_inline (-1, pp, FALSE, 0);
-
-#define LOADPIX_DISKONLY(vv,ff) \
-	vv = gdk_pixbuf_new_from_file (HEXCHATSHAREDIR"/hexchat/"ff, 0);
-
-#define EXT ".png"
-#endif
-
 /* load custom icons from <config>/icons, don't mess in system folders */
 static GdkPixbuf *
-load_pixmap (const char *filename, const char *name, int has_inline)
+load_pixmap (const char *filename)
 {
-	gchar *path;
 	GdkPixbuf *pixbuf;
 
-	path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S "%s.png", get_xdir (), filename);
+	gchar *path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S "%s.png", get_xdir (), filename);
 	pixbuf = gdk_pixbuf_new_from_file (path, 0);
 	g_free (path);
 
-	if (has_inline && !pixbuf && name)
+	if (!pixbuf)
 	{
-		pixbuf = gdk_pixbuf_new_from_inline (-1, name, FALSE, 0);
+		path = g_strdup_printf ("/icons/%s.png", filename);
+		pixbuf = gdk_pixbuf_new_from_resource (path, NULL);
+		g_free (path);
 	}
+
+	g_warn_if_fail (pixbuf != NULL);
 
 	return pixbuf;
 }
@@ -118,34 +109,27 @@ load_pixmap (const char *filename, const char *name, int has_inline)
 void
 pixmaps_init (void)
 {
-	/* userlist icons, with inlined defaults */
-	pix_ulist_voice = load_pixmap ("ulist_voice", png_ulist_voice, 1);
-	pix_ulist_halfop = load_pixmap ("ulist_halfop", png_ulist_halfop, 1);
-	pix_ulist_op = load_pixmap ("ulist_op", png_ulist_op, 1);
-	pix_ulist_owner = load_pixmap ("ulist_owner", png_ulist_owner, 1);
-	pix_ulist_founder = load_pixmap ("ulist_founder", png_ulist_founder, 1);
-	pix_ulist_netop = load_pixmap ("ulist_netop", png_ulist_netop, 1);
+	hexchat_register_resource();
 
-	/* tray icons, with inlined defaults */
-	pix_tray_fileoffer = load_pixmap ("tray_fileoffer", png_tray_fileoffer, 1);
-	pix_tray_highlight = load_pixmap ("tray_highlight", png_tray_highlight, 1);
-	pix_tray_message = load_pixmap ("tray_message", png_tray_message, 1);
+	pix_ulist_voice = load_pixmap ("ulist_voice");
+	pix_ulist_halfop = load_pixmap ("ulist_halfop");
+	pix_ulist_op = load_pixmap ("ulist_op");
+	pix_ulist_owner = load_pixmap ("ulist_owner");
+	pix_ulist_founder = load_pixmap ("ulist_founder");
+	pix_ulist_netop = load_pixmap ("ulist_netop");
 
-#if 0
-	/* treeview icons, no defaults, load from disk only */
-	pix_tree_channel = load_pixmap ("tree_channel", NULL, 0);
-	pix_tree_dialog = load_pixmap ("tree_dialog", NULL, 0);
-	pix_tree_server = load_pixmap ("tree_server", NULL, 0);
-	pix_tree_util = load_pixmap ("tree_util", NULL, 0);
-#endif
-	/* provide inline defaults for these coz they are nice! */
-	pix_tree_channel = load_pixmap ("tree_channel", png_tree_channel, 1);
-	pix_tree_dialog = load_pixmap ("tree_dialog", png_tree_dialog, 1);
-	pix_tree_server = load_pixmap ("tree_server", png_tree_server, 1);
-	pix_tree_util = load_pixmap ("tree_util", png_tree_util, 1);
+	pix_tray_fileoffer = load_pixmap ("tray_fileoffer");
+	pix_tray_highlight = load_pixmap ("tray_highlight");
+	pix_tray_message = load_pixmap ("tray_message");
+
+	pix_tree_channel = load_pixmap ("tree_channel");
+	pix_tree_dialog = load_pixmap ("tree_dialog");
+	pix_tree_server = load_pixmap ("tree_server");
+	pix_tree_util = load_pixmap ("tree_util");
 
 	/* non-replaceable book pixmap */
-	pix_book = gdk_pixbuf_new_from_inline (-1, png_book, FALSE, 0);
+	pix_book = gdk_pixbuf_new_from_resource ("/icons/book.png", NULL);
+
 	/* used in About window, tray icon and WindowManager icon. */
-	pix_hexchat = load_pixmap ("hexchat", png_hexchat, 1);
+	pix_hexchat = load_pixmap ("hexchat");
 }

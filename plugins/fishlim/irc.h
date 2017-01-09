@@ -25,18 +25,13 @@
 #ifndef IRC_H
 #define IRC_H
 
-#ifdef _MSC_VER
-#include "bool.h"
-#else
-#include <stdbool.h>
-#endif
 #include <stddef.h>
+#include <glib.h>
 
-bool irc_parse_message(const char *words[],
+gboolean irc_parse_message(const char *words[],
                        const char **prefix, const char **command,
                        size_t *parameters_offset);
 char *irc_prefix_get_nick(const char *prefix);
-int irc_nick_cmp(const char *a, const char *b);
 
 #endif
 

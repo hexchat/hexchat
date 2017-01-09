@@ -32,6 +32,7 @@ extern GdkColor colors[];
 #define COL_NEW_MSG 39
 #define COL_AWAY 40
 #define COL_SPELL 41
+#define MAX_COL 41
 
 void palette_alloc (GtkWidget * widget);
 void palette_load (void);

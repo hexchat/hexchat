@@ -78,6 +78,7 @@ struct dccwindow
 	GtkWidget *accept_button;
 	GtkWidget *resume_button;
 	GtkWidget *open_button;
+	GtkWidget *clear_button; /* clears aborted and completed requests */	
 
 	GtkWidget *file_label;
 	GtkWidget *address_label;
@@ -87,7 +88,7 @@ struct my_dcc_send
 {
 	struct session *sess;
 	char *nick;
-	int maxcps;
+	gint64 maxcps;
 	int passive;
 };
 
@@ -102,26 +103,24 @@ static short view_mode;	/* 1=download 2=upload 3=both */
 #define VIEW_UPLOAD 2
 #define VIEW_BOTH 3
 
-#define KILOBYTE 1024
-#define MEGABYTE (KILOBYTE * 1024)
-#define GIGABYTE (MEGABYTE * 1024)
-
 
 static void
-proper_unit (DCC_SIZE size, char *buf, int buf_len)
+proper_unit (guint64 size, char *buf, size_t buf_len)
 {
-	if (size <= KILOBYTE)
-	{
-		snprintf (buf, buf_len, "%"DCC_SFMT"B", size);
-	}
-	else if (size > KILOBYTE && size <= MEGABYTE)
-	{
-		snprintf (buf, buf_len, "%"DCC_SFMT"kB", size / KILOBYTE);
-	}
-	else
-	{
-		snprintf (buf, buf_len, "%.2fMB", (float)size / MEGABYTE);
-	}
+	gchar *formatted_str;
+	GFormatSizeFlags format_flags = G_FORMAT_SIZE_DEFAULT;
+
+#ifndef __APPLE__ /* OS X uses SI */
+#ifndef WIN32 /* Windows uses IEC size (with SI format) */
+	if (prefs.hex_gui_filesize_iec) /* Linux can't decide... */
+#endif
+		format_flags = G_FORMAT_SIZE_IEC_UNITS;
+#endif
+
+	formatted_str = g_format_size_full (size, format_flags);
+	g_strlcpy (buf, formatted_str, buf_len);
+
+	g_free (formatted_str);
 }
 
 static void
@@ -131,45 +130,45 @@ dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 		dcc_send (mdc->sess, mdc->nick, file, mdc->maxcps, mdc->passive);
 	else
 	{
-		free (mdc->nick);
-		free (mdc);
+		g_free (mdc->nick);
+		g_free (mdc);
 	}
 }
 
 void
 fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
 {
-	char tbuf[128];
-	struct my_dcc_send *mdc;
-	
-	mdc = malloc (sizeof (*mdc));
+	char* tbuf = g_strdup_printf (_("Send file to %s"), nick);
+
+	struct my_dcc_send *mdc = g_new (struct my_dcc_send, 1);
 	mdc->sess = sess;
-	mdc->nick = strdup (nick);
+	mdc->nick = g_strdup (nick);
 	mdc->maxcps = maxcps;
 	mdc->passive = passive;
 
-	snprintf (tbuf, sizeof tbuf, _("Send file to %s"), nick);
 	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, prefs.hex_dcc_dir, NULL, FRF_MULTIPLE|FRF_FILTERISINITIAL);
+
+	g_free (tbuf);
 }
 
 static void
 dcc_prepare_row_chat (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 							 gboolean update_only)
 {
-	static char pos[16], siz[16];
+	static char pos[16], size[16];
 	char *date;
 
 	date = ctime (&dcc->starttime);
 	date[strlen (date) - 1] = 0;	/* remove the \n */
 
 	proper_unit (dcc->pos, pos, sizeof (pos));
-	proper_unit (dcc->size, siz, sizeof (siz));
+	proper_unit (dcc->size, size, sizeof (size));
 
 	gtk_list_store_set (store, iter,
 							  CCOL_STATUS, _(dccstat[dcc->dccstat].name),
 							  CCOL_NICK, dcc->nick,
 							  CCOL_RECV, pos,
-							  CCOL_SENT, siz,
+							  CCOL_SENT, size,
 							  CCOL_START, date,
 							  CCOL_DCC, dcc,
 							  CCOL_COLOR,
@@ -195,13 +194,12 @@ dcc_prepare_row_send (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 	per = (float) ((dcc->ack * 100.00) / dcc->size);
 	proper_unit (dcc->size, size, sizeof (size));
 	proper_unit (dcc->pos, pos, sizeof (pos));
-	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
-/*	proper_unit (dcc->ack, ack, sizeof (ack));*/
-	snprintf (perc, sizeof (perc), "%.0f%%", per);
+	g_snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
+	g_snprintf (perc, sizeof (perc), "%.0f%%", per);
 	if (dcc->cps != 0)
 	{
 		to_go = (dcc->size - dcc->ack) / dcc->cps;
-		snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
+		g_snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
 					 to_go / 3600, (to_go / 60) % 60, to_go % 60);
 	} else
 		strcpy (eta, "--:--:--");
@@ -254,14 +252,14 @@ dcc_prepare_row_recv (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 		proper_unit (dcc->resumable, pos, sizeof (pos));
 	else
 		proper_unit (dcc->pos, pos, sizeof (pos));
-	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
+	g_snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
 	/* percentage recv'ed */
 	per = (float) ((dcc->pos * 100.00) / dcc->size);
-	snprintf (perc, sizeof (perc), "%.0f%%", per);
+	g_snprintf (perc, sizeof (perc), "%.0f%%", per);
 	if (dcc->cps != 0)
 	{
 		to_go = (dcc->size - dcc->pos) / dcc->cps;
-		snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
+		g_snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
 					 to_go / 3600, (to_go / 60) % 60, to_go % 60);
 	} else
 		strcpy (eta, "--:--:--");
@@ -380,6 +378,50 @@ dcc_append (struct DCC *dcc, GtkListStore *store, gboolean prepend)
 		dcc_prepare_row_send (dcc, store, &iter, FALSE);
 }
 
+/* Returns aborted and completed transfers. */
+static GSList *
+dcc_get_completed (void)
+{
+	struct DCC *dcc;
+	GtkTreeIter iter;
+	GtkTreeModel *model;	
+	GSList *completed = NULL;
+
+	model = GTK_TREE_MODEL (dccfwin.store);
+	if (gtk_tree_model_get_iter_first (model, &iter))
+	{
+		do
+		{
+			gtk_tree_model_get (model, &iter, COL_DCC, &dcc, -1);
+			if (is_dcc_completed (dcc))
+				completed = g_slist_prepend (completed, dcc);
+				
+		} while (gtk_tree_model_iter_next (model, &iter));
+	}
+
+	return completed;
+}
+
+static gboolean
+dcc_completed_transfer_exists (void)
+{
+	gboolean exist;
+	GSList *comp_list;
+	
+	comp_list = dcc_get_completed (); 
+	exist = comp_list != NULL;
+	
+	g_slist_free (comp_list);	
+	return exist;
+}
+
+static void
+update_clear_button_sensitivity (void)
+{
+	gboolean sensitive = dcc_completed_transfer_exists ();
+	gtk_widget_set_sensitive (dccfwin.clear_button, sensitive);
+}
+
 static void
 dcc_fill_window (int flags)
 {
@@ -426,6 +468,8 @@ dcc_fill_window (int flags)
 		gtk_tree_model_get_iter_first (GTK_TREE_MODEL (dccfwin.store), &iter);
 		gtk_tree_selection_select_iter (dccfwin.sel, &iter);
 	}
+	
+	update_clear_button_sensitivity ();
 }
 
 /* return list of selected DCCs */
@@ -481,7 +525,7 @@ resume_clicked (GtkWidget * wid, gpointer none)
 			fe_message (_("That file is not resumable."), FE_MSG_ERROR);
 			break;
 		case 1:
-			snprintf (buf, sizeof (buf),
+			g_snprintf (buf, sizeof (buf),
 						_(	"Cannot access file: %s\n"
 							"%s.\n"
 							"Resuming not possible."), dcc->destfile,	
@@ -511,6 +555,9 @@ abort_clicked (GtkWidget * wid, gpointer none)
 		dcc_abort (dcc->serv->front_session, dcc);
 	}
 	g_slist_free (start);
+	
+	/* Enable the clear button if it wasn't already enabled */
+	update_clear_button_sensitivity ();
 }
 
 static void
@@ -530,6 +577,27 @@ accept_clicked (GtkWidget * wid, gpointer none)
 }
 
 static void
+clear_completed (GtkWidget * wid, gpointer none)
+{
+	struct DCC *dcc;
+	GSList *completed;
+
+	/* Make a new list of only the completed items and abort each item.
+	 * A new list is made because calling dcc_abort removes items from the original list,
+	 * making it impossible to iterate over that list directly.
+	*/
+	for (completed = dcc_get_completed (); completed; completed = completed->next)
+	{
+		dcc = completed->data;
+		dcc_abort (dcc->serv->front_session, dcc);
+	}
+
+	/* The data was freed by dcc_close */
+	g_slist_free (completed);
+	update_clear_button_sensitivity ();
+}
+
+static void
 browse_folder (char *dir)
 {
 #ifdef WIN32
@@ -538,7 +606,7 @@ browse_folder (char *dir)
 #else
 	char buf[512];
 
-	snprintf (buf, sizeof (buf), "file://%s", dir);
+	g_snprintf (buf, sizeof (buf), "file://%s", dir);
 	fe_open_url (buf);
 #endif
 }
@@ -571,7 +639,7 @@ dcc_details_populate (struct DCC *dcc)
 		gtk_label_set_text (GTK_LABEL (dccfwin.file_label), dcc->file);
 
 	/* address and port */
-	snprintf (buf, sizeof (buf), "%s : %d", net_ip (dcc->addr), dcc->port);
+	g_snprintf (buf, sizeof (buf), "%s : %d", net_ip (dcc->addr), dcc->port);
 	gtk_label_set_text (GTK_LABEL (dccfwin.address_label), buf);
 }
 
@@ -645,6 +713,11 @@ dcc_dclick_cb (GtkTreeView *view, GtkTreePath *path,
 	case STAT_ABORTED:
 	case STAT_DONE:
 		dcc_abort (dcc->serv->front_session, dcc);
+		break;
+	case STAT_QUEUED:
+	case STAT_ACTIVE:
+	case STAT_CONNECTING:
+		break;
 	}
 }
 
@@ -669,7 +742,7 @@ dcc_detail_label (char *text, GtkWidget *box, int num)
 	char buf[64];
 
 	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<b>%s</b>", text);
+	g_snprintf (buf, sizeof (buf), "<b>%s</b>", text);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 	gtk_table_attach (GTK_TABLE (box), label, 0, 1, 0 + num, 1 + num, GTK_FILL, GTK_FILL, 0, 0);
@@ -698,7 +771,7 @@ dcc_exp_cb (GtkWidget *exp, GtkWidget *box)
 static void
 dcc_toggle (GtkWidget *item, gpointer data)
 {
-	if (GTK_TOGGLE_BUTTON (item)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (item)))
 	{
 		view_mode = GPOINTER_TO_INT (data);
 		dcc_fill_window (GPOINTER_TO_INT (data));
@@ -812,6 +885,7 @@ fe_dcc_open_recv_win (int passive)
 	dccfwin.abort_button = gtkutil_button (bbox, GTK_STOCK_CANCEL, 0, abort_clicked, 0, _("Abort"));
 	dccfwin.accept_button = gtkutil_button (bbox, GTK_STOCK_APPLY, 0, accept_clicked, 0, _("Accept"));
 	dccfwin.resume_button = gtkutil_button (bbox, GTK_STOCK_REFRESH, 0, resume_clicked, 0, _("Resume"));
+	dccfwin.clear_button = gtkutil_button (bbox, GTK_STOCK_CLEAR, 0, clear_completed, 0, _("Clear"));
 	dccfwin.open_button = gtkutil_button (bbox, 0, 0, browse_dcc_folder, 0, _("Open Folder..."));
 	gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
 	gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
@@ -1055,6 +1129,9 @@ fe_dcc_update (struct DCC *dcc)
 	default:
 		dcc_update_chat (dcc);
 	}
+
+	if (dccfwin.window)
+		update_clear_button_sensitivity();
 }
 
 void

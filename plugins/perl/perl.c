@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -27,16 +29,15 @@
 #endif
 #ifdef WIN32
 #include <windows.h>
+#include <stdbool.h>
 #else
 #include <dirent.h>
 #endif
 
+#include <glib.h>
+
 #undef PACKAGE
-#ifdef WIN32
-#include "../../config-win32.h"		  /* for #define OLD_PERL */
-#else
-#include "../../config.h"
-#endif
+
 #include "hexchat-plugin.h"
 
 static hexchat_plugin *ph;		  /* plugin handle */
@@ -78,37 +79,26 @@ thread_mbox (char *str)
 static void
 perl_auto_load_from_path (const char *path)
 {
-	WIN32_FIND_DATA find_data;
-	HANDLE find_handle;
-	char *search_path;
-	int path_len = strlen (path);
-
-	/* +6 for \*.pl and \0 */
-	search_path = malloc(path_len + 6);
-	sprintf (search_path, "%s\\*.pl", path);
-
-	find_handle = FindFirstFile (search_path, &find_data);
+	char *search_path = g_build_filename (path, "*.pl", NULL);
+	WIN32_FIND_DATAA find_data;
+	HANDLE find_handle = FindFirstFileA (search_path, &find_data);
 
 	if (find_handle != INVALID_HANDLE_VALUE)
 	{
 		do
 		{
-			if (!(find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
-				||find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN))
+			if ((find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 && (find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == 0)
 			{
-				char *full_path =
-					malloc (path_len + strlen (find_data.cFileName) + 2);
-				sprintf (full_path, "%s\\%s", path, find_data.cFileName);
-
+				char *full_path = g_build_filename (path, find_data.cFileName, NULL);
 				perl_load_file (full_path);
-				free (full_path);
+				g_free (full_path);
 			}
 		}
-		while (FindNextFile (find_handle, &find_data) != 0);
+		while (FindNextFileA (find_handle, &find_data) != 0);
 		FindClose (find_handle);
 	}
 
-	free (search_path);
+	g_free (search_path);
 }
 #else
 static void
@@ -118,14 +108,16 @@ perl_auto_load_from_path (const char *path)
 	struct dirent *ent;
 
 	dir = opendir (path);
-	if (dir) {
-		while ((ent = readdir (dir))) {
+	if (dir)
+	{
+		while ((ent = readdir (dir)))
+		{
 			int len = strlen (ent->d_name);
-			if (len > 3 && strcasecmp (".pl", ent->d_name + len - 3) == 0) {
-				char *file = malloc (len + strlen (path) + 2);
-				sprintf (file, "%s/%s", path, ent->d_name);
+			if (len > 3 && strcasecmp (".pl", ent->d_name + len - 3) == 0)
+			{
+				char *file = g_build_filename (path, ent->d_name, NULL);
 				perl_load_file (file);
-				free (file);
+				g_free (file);
 			}
 		}
 		closedir (dir);
@@ -148,31 +140,10 @@ perl_auto_load (void *unused)
 
 	/* don't pollute the filesystem with script files, this only causes misuse of the folders
 	 * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
-#if 0
-	/* autoload from ~/.config/hexchat/ or %APPDATA%\HexChat\ on win32 */
-	perl_auto_load_from_path (xdir);
-#endif
-
-	sub_dir = malloc (strlen (xdir) + 8);
-	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/addons");
+	sub_dir = g_build_filename (xdir, "addons", NULL);
 	perl_auto_load_from_path (sub_dir);
-	free (sub_dir);
+	g_free (sub_dir);
 
-#if 0
-#ifdef WIN32
-	/* autoload from  C:\Program Files\HexChat\plugins\ */
-	sub_dir = malloc (1025 + 9);
-	copied = GetModuleFileName( 0, sub_dir, 1024 );
-	sub_dir[copied] = '\0';
-	slash = strrchr( sub_dir, '\\' );
-	if( slash != NULL ) {
-		*slash = '\0';
-	}
-	perl_auto_load_from_path ( strncat (sub_dir, "\\plugins", 9));
-	free (sub_dir);
-#endif
-#endif
 	return 0;
 }
 
@@ -237,8 +208,6 @@ get_filename (char *word[], char *word_eol[])
 	int len;
 	char *file;
 
-	len = strlen (word[2]);
-
 	/* if called as /load "filename.pl" the only difference between word and
 	 * word_eol will be the two quotes
 	 */
@@ -291,7 +260,19 @@ list_item_to_sv ( hexchat_list *list, const char *const *fields )
 			field_value = newSVuv (hexchat_list_int (ph, list, field_name));
 			break;
 		case 't':
-			field_value = newSVnv (hexchat_list_time (ph, list, field_name));
+			/* From perldoc for Perl's own timelocal() and timegm():
+			 * <quote>
+			 * On perl versions older than 5.12.0, the range of dates that can be actually be handled depends on the size of time_t (usually a signed integer) on the given platform.
+			 * As of version 5.12.0, perl has stopped using the underlying time library of the operating system it's running on and has its own implementation of those routines with a
+			 * safe range of at least +/ 2**52 (about 142 million years).
+			 * </quote>
+			 *
+			 * This is further confirmed from looking at the source for Time::Local - it's a Perl module and the implementations of timelocal() and timegm() use simple addition and
+			 * subtraction of numbers. Perl automatically promotes numbers from int32_t (IV) to uint32_t (UV) to 64-bit IEEE754 double (NV) as required.
+			 *
+			 * This means that using a double (NV) for our own time_t suffers from the same assumptions that Perl's own functions do.
+			 */
+			field_value = newSVnv ((const NV) hexchat_list_time (ph, list, field_name));
 			break;
 		default:
 			field_value = &PL_sv_undef;
@@ -323,11 +304,11 @@ array2av (char *array[])
 	return av;
 }
 
-/* sets $Xchat::Embed::current_package */
+/* sets $HexChat::Embed::current_package */
 static void
 set_current_package (SV *package)
 {
-	SV *current_package = get_sv ("Xchat::Embed::current_package", 1);
+	SV *current_package = get_sv ("HexChat::Embed::current_package", 1);
 	SvSetSV_nosteal (current_package, package);
 }
 
@@ -367,7 +348,7 @@ fd_cb (int fd, int flags, void *userdata)
 				XPUSHs (sv_2mortal (newSViv (PTR2IV (data->hook))));
 				PUTBACK;
 
-				call_pv ("Xchat::unhook", G_EVAL);
+				call_pv ("HexChat::unhook", G_EVAL);
 				SPAGAIN;
 
 				SvREFCNT_dec (data->callback);
@@ -375,7 +356,7 @@ fd_cb (int fd, int flags, void *userdata)
 				if (data->userdata) {
 					SvREFCNT_dec (data->userdata);
 				}
-				free (data);
+				g_free (data);
 			}
 		}
 
@@ -408,7 +389,7 @@ timer_cb (void *userdata)
 	}
 
 	set_current_package (data->package);
-	count = call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
 	set_current_package (&PL_sv_undef);
 	SPAGAIN;
 
@@ -429,7 +410,7 @@ timer_cb (void *userdata)
 				XPUSHs (sv_mortalcopy (data->package));
 				PUTBACK;
 
-				call_pv ("Xchat::unhook", G_EVAL);
+				call_pv ("HexChat::unhook", G_EVAL);
 				SPAGAIN;
 			}
 		}
@@ -458,7 +439,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 		return HEXCHAT_EAT_NONE;
 
 	/*               hexchat_printf (ph, */
-	/*                               "Recieved %d words in server callback", av_len (wd)); */
+	/*                               "Received %d words in server callback", av_len (wd)); */
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) array2av (word)));
 	XPUSHs (newRV_noinc ((SV *) array2av (word_eol)));
@@ -467,7 +448,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 
 	data->depth++;
 	set_current_package (data->package);
-	count = call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
 	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
@@ -506,7 +487,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	if (data->depth)
 		return HEXCHAT_EAT_NONE;
 
-	/*               hexchat_printf (ph, "Recieved %d words in command callback", */
+	/*               hexchat_printf (ph, "Received %d words in command callback", */
 	/*                               av_len (wd)); */
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) array2av (word)));
@@ -516,7 +497,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 
 	data->depth++;
 	set_current_package (data->package);
-	count = call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
 	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
@@ -584,7 +565,7 @@ print_cb (char *word[], void *userdata)
 		}
 	}
 
-	/*hexchat_printf (ph, "Recieved %d words in print callback", av_len (wd)+1); */
+	/*hexchat_printf (ph, "Received %d words in print callback", av_len (wd)+1); */
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) wd));
 	XPUSHs (data->userdata);
@@ -592,7 +573,7 @@ print_cb (char *word[], void *userdata)
 
 	data->depth++;
 	set_current_package (data->package);
-	count = call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL | G_KEEPERR);
 	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
@@ -619,19 +600,19 @@ print_cb (char *word[], void *userdata)
 
 /* custom IRC perl functions for scripting */
 
-/* Xchat::Internal::register (scriptname, version, desc, shutdowncallback, filename)
+/* HexChat::Internal::register (scriptname, version, desc, shutdowncallback, filename)
  *
  */
 
 static
-XS (XS_Xchat_register)
+XS (XS_HexChat_register)
 {
 	char *name, *version, *desc, *filename;
 	void *gui_entry;
 	dXSARGS;
 	if (items != 4) {
 		hexchat_printf (ph,
-						  "Usage: Xchat::Internal::register(scriptname, version, desc, filename)");
+						  "Usage: HexChat::Internal::register(scriptname, version, desc, filename)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		version = SvPV_nolen (ST (1));
@@ -647,16 +628,16 @@ XS (XS_Xchat_register)
 }
 
 
-/* Xchat::print(output) */
+/* HexChat::print(output) */
 static
-XS (XS_Xchat_print)
+XS (XS_HexChat_print)
 {
 
 	char *text = NULL;
 
 	dXSARGS;
 	if (items != 1) {
-		hexchat_print (ph, "Usage: Xchat::Internal::print(text)");
+		hexchat_print (ph, "Usage: HexChat::Internal::print(text)");
 	} else {
 		text = SvPV_nolen (ST (0));
 		hexchat_print (ph, text);
@@ -665,7 +646,7 @@ XS (XS_Xchat_print)
 }
 
 static
-XS (XS_Xchat_emit_print)
+XS (XS_HexChat_emit_print)
 {
 	char *event_name;
 	int RETVAL;
@@ -673,7 +654,7 @@ XS (XS_Xchat_emit_print)
 
 	dXSARGS;
 	if (items < 1) {
-		hexchat_print (ph, "Usage: Xchat::emit_print(event_name, ...)");
+		hexchat_print (ph, "Usage: HexChat::emit_print(event_name, ...)");
 	} else {
 		event_name = (char *) SvPV_nolen (ST (0));
 		RETVAL = 0;
@@ -719,7 +700,7 @@ XS (XS_Xchat_emit_print)
 }
 
 static
-XS (XS_Xchat_send_modes)
+XS (XS_HexChat_send_modes)
 {
 	AV *p_targets = NULL;
 	int modes_per_line = 0;
@@ -733,13 +714,13 @@ XS (XS_Xchat_send_modes)
 	dXSARGS;
 	if (items < 3 || items > 4) {
 		hexchat_print (ph,
-			"Usage: Xchat::send_modes( targets, sign, mode, modes_per_line)"
+			"Usage: HexChat::send_modes( targets, sign, mode, modes_per_line)"
 		);
 	} else {
 		if (SvROK (ST (0))) {
 			p_targets = (AV*) SvRV (ST (0));
 			target_count = av_len (p_targets) + 1;
-			targets = malloc (target_count * sizeof (char *));
+			targets = g_new (const char *, target_count);
 			for (i = 0; i < target_count; i++ ) {
 				elem = av_fetch (p_targets, i, 0);
 
@@ -750,12 +731,13 @@ XS (XS_Xchat_send_modes)
 				}
 			}
 		} else{
-			targets = malloc (sizeof (char *));
+			targets = g_new (const char *, 1);
 			targets[0] = SvPV_nolen (ST (0));
 			target_count = 1;
 		}
 		
 		if (target_count == 0) {
+			g_free ((char**) targets);
 			XSRETURN_EMPTY;
 		}
 
@@ -767,16 +749,16 @@ XS (XS_Xchat_send_modes)
 		}
 
 		hexchat_send_modes (ph, targets, target_count, modes_per_line, sign, mode);
-		free (targets);
+		g_free ((char**) targets);
 	}
 }
 static
-XS (XS_Xchat_get_info)
+XS (XS_HexChat_get_info)
 {
 	SV *temp = NULL;
 	dXSARGS;
 	if (items != 1) {
-		hexchat_print (ph, "Usage: Xchat::get_info(id)");
+		hexchat_print (ph, "Usage: HexChat::get_info(id)");
 	} else {
 		SV *id = ST (0);
 		const char *RETVAL;
@@ -810,13 +792,13 @@ XS (XS_Xchat_get_info)
 }
 
 static
-XS (XS_Xchat_context_info)
+XS (XS_HexChat_context_info)
 {
 	const char *const *fields;
 	dXSARGS;
 
 	if (items > 0 ) {
-		hexchat_print (ph, "Usage: Xchat::Internal::context_info()");
+		hexchat_print (ph, "Usage: HexChat::Internal::context_info()");
 	}
 	fields = hexchat_list_fields (ph, "channels" );
 	XPUSHs (list_item_to_sv (NULL, fields));
@@ -824,14 +806,14 @@ XS (XS_Xchat_context_info)
 }
 
 static
-XS (XS_Xchat_get_prefs)
+XS (XS_HexChat_get_prefs)
 {
 	const char *str;
 	int integer;
 	SV *temp = NULL;
 	dXSARGS;
 	if (items != 1) {
-		hexchat_print (ph, "Usage: Xchat::get_prefs(name)");
+		hexchat_print (ph, "Usage: HexChat::get_prefs(name)");
 	} else {
 
 
@@ -860,9 +842,9 @@ XS (XS_Xchat_get_prefs)
 	}
 }
 
-/* Xchat::Internal::hook_server(name, priority, callback, userdata) */
+/* HexChat::Internal::hook_server(name, priority, callback, userdata) */
 static
-XS (XS_Xchat_hook_server)
+XS (XS_HexChat_hook_server)
 {
 
 	char *name;
@@ -877,7 +859,7 @@ XS (XS_Xchat_hook_server)
 
 	if (items != 5) {
 		hexchat_print (ph,
-						 "Usage: Xchat::Internal::hook_server(name, priority, callback, userdata, package)");
+						 "Usage: HexChat::Internal::hook_server(name, priority, callback, userdata, package)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int) SvIV (ST (1));
@@ -885,11 +867,7 @@ XS (XS_Xchat_hook_server)
 		userdata = ST (3);
 		package = ST (4);
 		data = NULL;
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
@@ -901,9 +879,9 @@ XS (XS_Xchat_hook_server)
 	}
 }
 
-/* Xchat::Internal::hook_command(name, priority, callback, help_text, userdata) */
+/* HexChat::Internal::hook_command(name, priority, callback, help_text, userdata) */
 static
-XS (XS_Xchat_hook_command)
+XS (XS_HexChat_hook_command)
 {
 	char *name;
 	int pri;
@@ -918,7 +896,7 @@ XS (XS_Xchat_hook_command)
 
 	if (items != 6) {
 		hexchat_print (ph,
-						 "Usage: Xchat::Internal::hook_command(name, priority, callback, help_text, userdata, package)");
+						 "Usage: HexChat::Internal::hook_command(name, priority, callback, help_text, userdata, package)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int) SvIV (ST (1));
@@ -934,11 +912,7 @@ XS (XS_Xchat_hook_command)
 		package = ST (5);
 		data = NULL;
 
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
@@ -950,9 +924,9 @@ XS (XS_Xchat_hook_command)
 
 }
 
-/* Xchat::Internal::hook_print(name, priority, callback, [userdata]) */
+/* HexChat::Internal::hook_print(name, priority, callback, [userdata]) */
 static
-XS (XS_Xchat_hook_print)
+XS (XS_HexChat_hook_print)
 {
 
 	char *name;
@@ -965,7 +939,7 @@ XS (XS_Xchat_hook_print)
 	dXSARGS;
 	if (items != 5) {
 		hexchat_print (ph,
-						 "Usage: Xchat::Internal::hook_print(name, priority, callback, userdata, package)");
+						 "Usage: HexChat::Internal::hook_print(name, priority, callback, userdata, package)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int) SvIV (ST (1));
@@ -974,11 +948,7 @@ XS (XS_Xchat_hook_print)
 		userdata = ST (3);
 		package = ST (4);
 
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
@@ -989,9 +959,9 @@ XS (XS_Xchat_hook_print)
 	}
 }
 
-/* Xchat::Internal::hook_timer(timeout, callback, userdata) */
+/* HexChat::Internal::hook_timer(timeout, callback, userdata) */
 static
-XS (XS_Xchat_hook_timer)
+XS (XS_HexChat_hook_timer)
 {
 	int timeout;
 	SV *callback;
@@ -1004,7 +974,7 @@ XS (XS_Xchat_hook_timer)
 
 	if (items != 4) {
 		hexchat_print (ph,
-						 "Usage: Xchat::Internal::hook_timer(timeout, callback, userdata, package)");
+						 "Usage: HexChat::Internal::hook_timer(timeout, callback, userdata, package)");
 	} else {
 		timeout = (int) SvIV (ST (0));
 		callback = ST (1);
@@ -1012,11 +982,7 @@ XS (XS_Xchat_hook_timer)
 		userdata = ST (2);
 		package = ST (3);
 
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->ctx = hexchat_get_context (ph);
@@ -1028,9 +994,9 @@ XS (XS_Xchat_hook_timer)
 	}
 }
 
-/* Xchat::Internal::hook_fd(fd, callback, flags, userdata) */
+/* HexChat::Internal::hook_fd(fd, callback, flags, userdata) */
 static
-XS (XS_Xchat_hook_fd)
+XS (XS_HexChat_hook_fd)
 {
 	int fd;
 	SV *callback;
@@ -1044,7 +1010,7 @@ XS (XS_Xchat_hook_fd)
 
 	if (items != 5) {
 		hexchat_print (ph,
-						 "Usage: Xchat::Internal::hook_fd(fd, callback, flags, userdata)");
+						 "Usage: HexChat::Internal::hook_fd(fd, callback, flags, userdata)");
 	} else {
 		fd = (int) SvIV (ST (0));
 		callback = ST (1);
@@ -1066,11 +1032,7 @@ XS (XS_Xchat_hook_fd)
 		}
 #endif
 
-		data = malloc (sizeof (HookData));
-		if (data == NULL) {
-			XSRETURN_UNDEF;
-		}
-
+		data = g_new (HookData, 1);
 		data->callback = newSVsv (callback);
 		data->userdata = newSVsv (userdata);
 		data->depth = 0;
@@ -1083,14 +1045,14 @@ XS (XS_Xchat_hook_fd)
 }
 
 static
-XS (XS_Xchat_unhook)
+XS (XS_HexChat_unhook)
 {
 	hexchat_hook *hook;
 	HookData *userdata;
 	int retCount = 0;
 	dXSARGS;
 	if (items != 1) {
-		hexchat_print (ph, "Usage: Xchat::unhook(hook)");
+		hexchat_print (ph, "Usage: HexChat::unhook(hook)");
 	} else {
 		hook = INT2PTR (hexchat_hook *, SvUV (ST (0)));
 		userdata = (HookData *) hexchat_unhook (ph, hook);
@@ -1110,22 +1072,22 @@ XS (XS_Xchat_unhook)
 				SvREFCNT_dec (userdata->package);
 			}
 
-			free (userdata);
+			g_free (userdata);
 		}
 		XSRETURN (retCount);
 	}
 	XSRETURN_EMPTY;
 }
 
-/* Xchat::Internal::command(command) */
+/* HexChat::Internal::command(command) */
 static
-XS (XS_Xchat_command)
+XS (XS_HexChat_command)
 {
 	char *cmd = NULL;
 
 	dXSARGS;
 	if (items != 1) {
-		hexchat_print (ph, "Usage: Xchat::Internal::command(command)");
+		hexchat_print (ph, "Usage: HexChat::Internal::command(command)");
 	} else {
 		cmd = SvPV_nolen (ST (0));
 		hexchat_command (ph, cmd);
@@ -1135,7 +1097,7 @@ XS (XS_Xchat_command)
 }
 
 static
-XS (XS_Xchat_find_context)
+XS (XS_HexChat_find_context)
 {
 	char *server = NULL;
 	char *chan = NULL;
@@ -1143,7 +1105,7 @@ XS (XS_Xchat_find_context)
 
 	dXSARGS;
 	if (items > 2)
-		hexchat_print (ph, "Usage: Xchat::find_context ([channel, [server]])");
+		hexchat_print (ph, "Usage: HexChat::find_context ([channel, [server]])");
 	{
 
 		switch (items) {
@@ -1191,23 +1153,23 @@ XS (XS_Xchat_find_context)
 }
 
 static
-XS (XS_Xchat_get_context)
+XS (XS_HexChat_get_context)
 {
 	dXSARGS;
 	if (items != 0) {
-		hexchat_print (ph, "Usage: Xchat::get_context()");
+		hexchat_print (ph, "Usage: HexChat::get_context()");
 	} else {
 		XSRETURN_IV (PTR2IV (hexchat_get_context (ph)));
 	}
 }
 
 static
-XS (XS_Xchat_set_context)
+XS (XS_HexChat_set_context)
 {
 	hexchat_context *ctx;
 	dXSARGS;
 	if (items != 1) {
-		hexchat_print (ph, "Usage: Xchat::set_context(ctx)");
+		hexchat_print (ph, "Usage: HexChat::set_context(ctx)");
 	} else {
 		ctx = INT2PTR (hexchat_context *, SvUV (ST (0)));
 		XSRETURN_IV ((IV) hexchat_set_context (ph, ctx));
@@ -1215,11 +1177,11 @@ XS (XS_Xchat_set_context)
 }
 
 static
-XS (XS_Xchat_nickcmp)
+XS (XS_HexChat_nickcmp)
 {
 	dXSARGS;
 	if (items != 2) {
-		hexchat_print (ph, "Usage: Xchat::nickcmp(s1, s2)");
+		hexchat_print (ph, "Usage: HexChat::nickcmp(s1, s2)");
 	} else {
 		XSRETURN_IV ((IV) hexchat_nickcmp (ph, SvPV_nolen (ST (0)),
 													SvPV_nolen (ST (1))));
@@ -1227,7 +1189,7 @@ XS (XS_Xchat_nickcmp)
 }
 
 static
-XS (XS_Xchat_get_list)
+XS (XS_HexChat_get_list)
 {
 	SV *name;
 	hexchat_list *list;
@@ -1236,7 +1198,7 @@ XS (XS_Xchat_get_list)
 	dXSARGS;
 
 	if (items != 1) {
-		hexchat_print (ph, "Usage: Xchat::get_list(name)");
+		hexchat_print (ph, "Usage: HexChat::get_list(name)");
 	} else {
 		SP -= items;				  /*remove the argument list from the stack */
 
@@ -1268,17 +1230,83 @@ XS (XS_Xchat_get_list)
 }
 
 static
-XS (XS_Xchat_Embed_plugingui_remove)
+XS (XS_HexChat_Embed_plugingui_remove)
 {
 	void *gui_entry;
 	dXSARGS;
 	if (items != 1) {
-		hexchat_print (ph, "Usage: Xchat::Embed::plugingui_remove(handle)");
+		hexchat_print (ph, "Usage: HexChat::Embed::plugingui_remove(handle)");
 	} else {
 		gui_entry = INT2PTR (void *, SvUV (ST (0)));
 		hexchat_plugingui_remove (ph, gui_entry);
 	}
 	XSRETURN_EMPTY;
+}
+
+static
+XS (XS_HexChat_plugin_pref_set)
+{
+	dMARK;
+	dAX;
+
+	XSRETURN_IV ((IV) hexchat_pluginpref_set_str (ph, SvPV_nolen (ST (0)),
+													SvPV_nolen (ST (1))));
+}
+
+static
+XS (XS_HexChat_plugin_pref_get)
+{
+	int result;
+	char value[512];
+
+	dMARK;
+	dAX;
+
+	result = hexchat_pluginpref_get_str (ph, SvPV_nolen (ST (0)), value);
+
+	if (result)
+		XSRETURN_PV (value);
+
+	XSRETURN_UNDEF;
+}
+
+static
+XS (XS_HexChat_plugin_pref_delete)
+{
+	dMARK;
+	dAX;
+	
+	XSRETURN_IV ((IV) hexchat_pluginpref_delete (ph, SvPV_nolen (ST (0))));
+}
+
+static
+XS (XS_HexChat_plugin_pref_list)
+{
+	char list[4096];
+	char value[512];
+	char *token;
+
+	dSP;
+	dMARK;
+	dAX;
+
+	if (!hexchat_pluginpref_list (ph, list))
+		XSRETURN_EMPTY;
+
+	PUSHMARK (SP);
+
+	token = strtok (list, ",");
+	while (token != NULL)
+	{
+		hexchat_pluginpref_get_str (ph, token, value);
+
+		XPUSHs (sv_2mortal (newSVpv (token, 0)));
+		XPUSHs (sv_2mortal (newSVpv (value, 0)));
+
+		token = strtok (NULL, ",");
+	}
+
+	PUTBACK;
 }
 
 /* xs_init is the second argument perl_parse. As the name hints, it
@@ -1292,31 +1320,36 @@ xs_init (pTHX)
 	   scripts by the 'use perlmod;' construction */
 	newXS ("DynaLoader::boot_DynaLoader", boot_DynaLoader, __FILE__);
 	/* load up all the custom IRC perl functions */
-	newXS ("Xchat::Internal::register", XS_Xchat_register, __FILE__);
-	newXS ("Xchat::Internal::hook_server", XS_Xchat_hook_server, __FILE__);
-	newXS ("Xchat::Internal::hook_command", XS_Xchat_hook_command, __FILE__);
-	newXS ("Xchat::Internal::hook_print", XS_Xchat_hook_print, __FILE__);
-	newXS ("Xchat::Internal::hook_timer", XS_Xchat_hook_timer, __FILE__);
-	newXS ("Xchat::Internal::hook_fd", XS_Xchat_hook_fd, __FILE__);
-	newXS ("Xchat::Internal::unhook", XS_Xchat_unhook, __FILE__);
-	newXS ("Xchat::Internal::print", XS_Xchat_print, __FILE__);
-	newXS ("Xchat::Internal::command", XS_Xchat_command, __FILE__);
-	newXS ("Xchat::Internal::set_context", XS_Xchat_set_context, __FILE__);
-	newXS ("Xchat::Internal::get_info", XS_Xchat_get_info, __FILE__);
-	newXS ("Xchat::Internal::context_info", XS_Xchat_context_info, __FILE__);
-	newXS ("Xchat::Internal::get_list", XS_Xchat_get_list, __FILE__);
-	
-	newXS ("Xchat::find_context", XS_Xchat_find_context, __FILE__);
-	newXS ("Xchat::get_context", XS_Xchat_get_context, __FILE__);
-	newXS ("Xchat::get_prefs", XS_Xchat_get_prefs, __FILE__);
-	newXS ("Xchat::emit_print", XS_Xchat_emit_print, __FILE__);
-	newXS ("Xchat::send_modes", XS_Xchat_send_modes, __FILE__);
-	newXS ("Xchat::nickcmp", XS_Xchat_nickcmp, __FILE__);
+	newXS ("HexChat::Internal::register", XS_HexChat_register, __FILE__);
+	newXS ("HexChat::Internal::hook_server", XS_HexChat_hook_server, __FILE__);
+	newXS ("HexChat::Internal::hook_command", XS_HexChat_hook_command, __FILE__);
+	newXS ("HexChat::Internal::hook_print", XS_HexChat_hook_print, __FILE__);
+	newXS ("HexChat::Internal::hook_timer", XS_HexChat_hook_timer, __FILE__);
+	newXS ("HexChat::Internal::hook_fd", XS_HexChat_hook_fd, __FILE__);
+	newXS ("HexChat::Internal::unhook", XS_HexChat_unhook, __FILE__);
+	newXS ("HexChat::Internal::print", XS_HexChat_print, __FILE__);
+	newXS ("HexChat::Internal::command", XS_HexChat_command, __FILE__);
+	newXS ("HexChat::Internal::set_context", XS_HexChat_set_context, __FILE__);
+	newXS ("HexChat::Internal::get_info", XS_HexChat_get_info, __FILE__);
+	newXS ("HexChat::Internal::context_info", XS_HexChat_context_info, __FILE__);
+	newXS ("HexChat::Internal::get_list", XS_HexChat_get_list, __FILE__);
 
-	newXS ("Xchat::Embed::plugingui_remove", XS_Xchat_Embed_plugingui_remove,
+	newXS ("HexChat::Internal::plugin_pref_set", XS_HexChat_plugin_pref_set, __FILE__);
+	newXS ("HexChat::Internal::plugin_pref_get", XS_HexChat_plugin_pref_get, __FILE__);
+	newXS ("HexChat::Internal::plugin_pref_delete", XS_HexChat_plugin_pref_delete, __FILE__);
+	newXS ("HexChat::Internal::plugin_pref_list", XS_HexChat_plugin_pref_list, __FILE__);
+	
+	newXS ("HexChat::find_context", XS_HexChat_find_context, __FILE__);
+	newXS ("HexChat::get_context", XS_HexChat_get_context, __FILE__);
+	newXS ("HexChat::get_prefs", XS_HexChat_get_prefs, __FILE__);
+	newXS ("HexChat::emit_print", XS_HexChat_emit_print, __FILE__);
+	newXS ("HexChat::send_modes", XS_HexChat_send_modes, __FILE__);
+	newXS ("HexChat::nickcmp", XS_HexChat_nickcmp, __FILE__);
+
+	newXS ("HexChat::Embed::plugingui_remove", XS_HexChat_Embed_plugingui_remove,
 			 __FILE__);
 
-	stash = get_hv ("Xchat::", TRUE);
+	stash = get_hv ("HexChat::", TRUE);
 	if (stash == NULL) {
 		exit (1);
 	}
@@ -1328,7 +1361,8 @@ xs_init (pTHX)
 	newCONSTSUB (stash, "PRI_LOWEST", newSViv (HEXCHAT_PRI_LOWEST));
 
 	newCONSTSUB (stash, "EAT_NONE", newSViv (HEXCHAT_EAT_NONE));
-	newCONSTSUB (stash, "EAT_XCHAT", newSViv (HEXCHAT_EAT_HEXCHAT));
+	newCONSTSUB (stash, "EAT_HEXCHAT", newSViv (HEXCHAT_EAT_HEXCHAT));
+	newCONSTSUB (stash, "EAT_XCHAT", newSViv (HEXCHAT_EAT_HEXCHAT)); /* for compatibility */
 	newCONSTSUB (stash, "EAT_PLUGIN", newSViv (HEXCHAT_EAT_PLUGIN));
 	newCONSTSUB (stash, "EAT_ALL", newSViv (HEXCHAT_EAT_ALL));
 	newCONSTSUB (stash, "FD_READ", newSViv (HEXCHAT_FD_READ));
@@ -1338,7 +1372,7 @@ xs_init (pTHX)
 	newCONSTSUB (stash, "KEEP", newSViv (1));
 	newCONSTSUB (stash, "REMOVE", newSViv (0));
 
-	version = get_sv( "Xchat::VERSION", 1 );
+	version = get_sv( "HexChat::VERSION", 1 );
 	sv_setpv( version, PACKAGE_VERSION );
 }
 
@@ -1352,7 +1386,7 @@ perl_init (void)
 	static const char xchat_definitions[] = {
 		/* Redefine the $SIG{__WARN__} handler to have HexChat
 		   printing warnings in the main window. (TheHobbit) */
-#include "xchat.pm.h"
+#include "hexchat.pm.h"
 	};
 #ifdef OLD_PERL
 	static const char irc_definitions[] = {
@@ -1410,9 +1444,9 @@ perl_load_file (char *filename)
 				/* http://forum.xchat.org/viewtopic.php?t=3277 */
 				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
 #ifdef _WIN64
-								 "64-bit Strawberry Perl is required.");
+								 "64-bit HexChat Perl is required.");
 #else
-								 "32-bit Strawberry Perl is required.");
+								 "32-bit HexChat Perl is required.");
 #endif
 			else {
 				/* a lot of people install this old version */
@@ -1424,14 +1458,14 @@ perl_load_file (char *filename)
 									 "You must have a Visual C++ build of Perl "
 									 PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run Perl scripts. A reboot may be required.\n\n"
-									 "http://hexchat.org/downloads.html\n\n"
+									 "http://hexchat.github.io/downloads.html\n\n"
 									 "I have found Perl 5.6, but that is too old.");
 				} else {
 					thread_mbox ("Cannot open " PERL_DLL "!\n\n"
 									 "You must have a Visual C++ build of Perl "
 									 PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run Perl scripts. A reboot may be required.\n\n"
-									 "http://hexchat.org/downloads.html\n\n"
+									 "http://hexchat.github.io/downloads.html\n\n"
 									 "Make sure Perl's bin directory is in your PATH.");
 				}
 			}
@@ -1448,7 +1482,7 @@ perl_load_file (char *filename)
 		perl_init ();
 	}
 
-	return execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::load", 0)),
+	return execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::load", 0)),
 								filename);
 
 }
@@ -1458,7 +1492,7 @@ perl_end (void)
 {
 
 	if (my_perl != NULL) {
-		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload_all", 0)), "");
+		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::unload_all", 0)), "");
 		PL_perl_destruct_level = 1;
 		perl_destruct (my_perl);
 		perl_free (my_perl);
@@ -1472,7 +1506,7 @@ static int
 perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
 {
 	if (my_perl != NULL) {
-		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload_all", 0)), "");
+		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::unload_all", 0)), "");
 		return HEXCHAT_EAT_HEXCHAT;
 	}
 
@@ -1483,7 +1517,7 @@ static int
 perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 {
 	if (my_perl != NULL) {
-		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload_all", 0)), "");
+		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::reload_all", 0)), "");
 
 		return HEXCHAT_EAT_HEXCHAT;
 	} else {
@@ -1512,7 +1546,7 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 	char *file = get_filename (word, word_eol);
 	
 	if (my_perl != NULL && file != NULL) {
-		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload", 0)), file);
+		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::unload", 0)), file);
 		return HEXCHAT_EAT_HEXCHAT;
 	}
 
@@ -1520,15 +1554,27 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_reload (char *word[], char *word_eol[], void *userdata)
+perl_command_reload (char *word[], char *word_eol[], void *eat)
 {
 	char *file = get_filename (word, word_eol);
 	
 	if (my_perl != NULL && file != NULL) {
-		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload", 0)), file);
+		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::reload", 0)), file);
 		return HEXCHAT_EAT_HEXCHAT;
 	}
 	
+	if (eat)
+		return HEXCHAT_EAT_HEXCHAT;
+	else
+		return HEXCHAT_EAT_NONE;
+}
+
+static int
+perl_command_eval (char *word[], char *word_eol[], void *userdata)
+{
+	if (my_perl != NULL)
+		execute_perl (sv_2mortal (newSVpv ("HexChat::Embed::evaluate", 0)), word_eol[2]);
+
 	return HEXCHAT_EAT_HEXCHAT;
 }
 
@@ -1569,12 +1615,15 @@ hexchat_plugin_init (hexchat_plugin * plugin_handle, char **plugin_name,
 							  0);
 	hexchat_hook_command (ph, "reload", HEXCHAT_PRI_NORM, perl_command_reload, 0,
 							  0);
-	hexchat_hook_command (ph, "pl_reload", HEXCHAT_PRI_NORM, perl_command_reload, 0,
-							  0);
+	hexchat_hook_command (ph, "pl_reload", HEXCHAT_PRI_NORM, perl_command_reload,
+							  "Reloads a Perl script. Syntax: /pl_reload <filename.pl>", (int*)1);
 	hexchat_hook_command (ph, "unloadall", HEXCHAT_PRI_NORM,
-							  perl_command_unloadall, 0, 0);
+							  perl_command_unloadall, "Unloads all loaded Perl scripts.", 0);
 	hexchat_hook_command (ph, "reloadall", HEXCHAT_PRI_NORM,
-							  perl_command_reloadall, 0, 0);
+							  perl_command_reloadall, "Realoads all loaded Perl scripts.", 0);
+
+	hexchat_hook_command (ph, "pl", HEXCHAT_PRI_NORM,
+							  perl_command_eval, "Evaluates Perl code. Syntax: /pl <perl code>", 0);
 
 	/*perl_init (); */
 	hexchat_hook_timer (ph, 0, perl_auto_load, NULL );

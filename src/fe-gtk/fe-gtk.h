@@ -20,50 +20,36 @@
 #ifndef HEXCHAT_FE_GTK_H
 #define HEXCHAT_FE_GTK_H
 
-#ifdef WIN32
-#include "../../config-win32.h"
-#else
-#include "../../config.h"
-#endif
+#include "config.h"
 
 #define DISPLAY_NAME "HexChat"
 
 #ifndef WIN32
 #include <sys/types.h>
-#include <regex.h>
 #endif
 
-#if defined(ENABLE_NLS) && !defined(_)
-#  include <libintl.h>
-#  define _(x) gettext(x)
-#  ifdef gettext_noop
-#    define N_(String) gettext_noop (String)
-#  else
-#    define N_(String) (String)
-#  endif
-#endif
-#if !defined(ENABLE_NLS) && defined(_)
-#  undef _
-#  define N_(String) (String)
-#  define _(x) (x)
-#endif
-
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
+
+#ifdef HAVE_GTK_MAC
+#include <gtkosxapplication.h>
+#endif
+
 #include "banlist.h"
 
-#undef gtk_signal_connect
-#define gtk_signal_connect g_signal_connect
-
-#define flag_t flag_wid[0]
+#define flag_c flag_wid[0]
 #define flag_n flag_wid[1]
-#define flag_s flag_wid[2]
+#define flag_t flag_wid[2]
 #define flag_i flag_wid[3]
-#define flag_p flag_wid[4]
-#define flag_m flag_wid[5]
-#define flag_l flag_wid[6]
-#define flag_k flag_wid[7]
-#define flag_b flag_wid[8]
-#define NUM_FLAG_WIDS 9
+#define flag_m flag_wid[4]
+#define flag_l flag_wid[5]
+#define flag_k flag_wid[6]
+#define flag_b flag_wid[7]
+#define NUM_FLAG_WIDS 8
+
+#ifdef HAVE_GTK_MAC
+extern GtkosxApplication *osx_app;
+#endif
 
 struct server_gui
 {
@@ -96,10 +82,8 @@ struct server_gui
 	gboolean chanlist_match_wants_channel;	/* match in channel name */
 	gboolean chanlist_match_wants_topic;	/* match in topic */
 
-#ifndef WIN32
-	regex_t chanlist_match_regex;	/* compiled regular expression here */
+	GRegex *chanlist_match_regex;	/* compiled regular expression here */
 	unsigned int have_regex;
-#endif
 
 	guint chanlist_users_found_count;	/* users total for all channels */
 	guint chanlist_users_shown_count;	/* users total for displayed channels */
@@ -107,9 +91,9 @@ struct server_gui
 	guint chanlist_channels_shown_count;	/* total number of displayed 
 														   channels */
 
-	int chanlist_maxusers;
-	int chanlist_minusers;
-	int chanlist_minusers_downloaded;	/* used by LIST IRC command */
+	guint32 chanlist_maxusers;
+	guint32 chanlist_minusers;
+	guint32 chanlist_minusers_downloaded;	/* used by LIST IRC command */
 	int chanlist_search_type;		/* 0=simple 1=pattern/wildcard 2=regexp */
 	gboolean chanlist_caption_is_stale;
 };
@@ -123,7 +107,7 @@ typedef struct restore_gui
 	void *tab;			/* (chan *) */
 
 	/* information stored when this tab isn't front-most */
-	void *user_model;	/* for filling the GtkTreeView */
+	GtkListStore *user_model;	/* for filling the GtkTreeView */
 	void *buffer;		/* xtext_Buffer */
 	char *input_text;	/* input text buffer (while not-front tab) */
 	char *topic_text;	/* topic GtkEntry buffer */
@@ -176,7 +160,10 @@ typedef struct session_gui
 		*limit_entry,		  /* +l */
 		*key_entry;		  /* +k */
 
-#define MENU_ID_NUM 12
+		GtkWidget *shbox, *shentry;	/* search bar hbox */
+		gulong search_changed_signal; /* hook for search change event so blanking the box doesn't suck */
+
+#define MENU_ID_NUM 14
 	GtkWidget *menu_item[MENU_ID_NUM+1]; /* some items we may change state of */
 
 	void *chanview;	/* chanview.h */
@@ -194,21 +181,11 @@ typedef struct session_gui
 extern GdkPixmap *channelwin_pix;
 extern GdkPixmap *dialogwin_pix;
 
-
-#ifdef USE_GTKSPELL
-char *SPELL_ENTRY_GET_TEXT (GtkWidget *entry);
-#define SPELL_ENTRY_SET_TEXT(e,txt) gtk_text_buffer_set_text (gtk_text_view_get_buffer(GTK_TEXT_VIEW(e)),txt,-1);
-#define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_text_view_set_editable(GTK_TEXT_VIEW(e), v)
-int SPELL_ENTRY_GET_POS (GtkWidget *entry);
-void SPELL_ENTRY_SET_POS (GtkWidget *entry, int pos);
-void SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos);
-#else
-#define SPELL_ENTRY_GET_TEXT(e) (GTK_ENTRY(e)->text)
+#define SPELL_ENTRY_GET_TEXT(e) ((char *)(gtk_entry_get_text (GTK_ENTRY(e))))
 #define SPELL_ENTRY_SET_TEXT(e,txt) gtk_entry_set_text(GTK_ENTRY(e),txt)
 #define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_editable_set_editable(GTK_EDITABLE(e),v)
 #define SPELL_ENTRY_GET_POS(e) gtk_editable_get_position(GTK_EDITABLE(e))
 #define SPELL_ENTRY_SET_POS(e,p) gtk_editable_set_position(GTK_EDITABLE(e),p);
 #define SPELL_ENTRY_INSERT(e,t,l,p) gtk_editable_insert_text(GTK_EDITABLE(e),t,l,p)
-#endif
 
 #endif

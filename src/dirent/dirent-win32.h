@@ -198,13 +198,13 @@
  * only defined for compatibility.  These macros should always return false
  * on Windows.
  */
-#define	S_ISFIFO(mode) (((mode) & S_IFMT) == S_IFIFO)
-#define	S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
-#define	S_ISREG(mode)  (((mode) & S_IFMT) == S_IFREG)
-#define	S_ISLNK(mode)  (((mode) & S_IFMT) == S_IFLNK)
-#define	S_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
-#define	S_ISCHR(mode)  (((mode) & S_IFMT) == S_IFCHR)
-#define	S_ISBLK(mode)  (((mode) & S_IFMT) == S_IFBLK)
+#define S_ISFIFO(mode) (((mode) & S_IFMT) == S_IFIFO)
+#define S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
+#define S_ISREG(mode)  (((mode) & S_IFMT) == S_IFREG)
+#define S_ISLNK(mode)  (((mode) & S_IFMT) == S_IFLNK)
+#define S_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
+#define S_ISCHR(mode)  (((mode) & S_IFMT) == S_IFCHR)
+#define S_ISBLK(mode)  (((mode) & S_IFMT) == S_IFBLK)
 
 /* Return the exact length of d_namlen without zero terminator */
 #define _D_EXACT_NAMLEN(p) ((p)->d_namlen)
@@ -305,6 +305,7 @@ _wopendir(
 {
     _WDIR *dirp = NULL;
     int error;
+    DWORD n;
 
     /* Must have directory name */
     if (dirname == NULL  ||  dirname[0] == '\0') {
@@ -313,73 +314,58 @@ _wopendir(
     }
 
     /* Allocate new _WDIR structure */
-    dirp = (_WDIR*) malloc (sizeof (struct _WDIR));
-    if (dirp != NULL) {
-        DWORD n;
+    dirp = (_WDIR*) g_new (struct _WDIR, 1);
+    /* Reset _WDIR structure */
+    dirp->handle = INVALID_HANDLE_VALUE;
+    dirp->patt = NULL;
+    dirp->cached = 0;
 
-        /* Reset _WDIR structure */
-        dirp->handle = INVALID_HANDLE_VALUE;
-        dirp->patt = NULL;
-        dirp->cached = 0;
+    /* Compute the length of full path plus zero terminator */
+    n = GetFullPathNameW (dirname, 0, NULL, NULL);
 
-        /* Compute the length of full path plus zero terminator */
-        n = GetFullPathNameW (dirname, 0, NULL, NULL);
+    /* Allocate room for absolute directory name and search pattern */
+    dirp->patt = g_malloc (sizeof (wchar_t) * n + 16);
+    /*
+    * Convert relative directory name to an absolute one.  This
+    * allows rewinddir() to function correctly even when current
+    * working directory is changed between opendir() and rewinddir().
+    */
+    n = GetFullPathNameW (dirname, n, dirp->patt, NULL);
+    if (n > 0) {
+        wchar_t *p;
 
-        /* Allocate room for absolute directory name and search pattern */
-        dirp->patt = (wchar_t*) malloc (sizeof (wchar_t) * n + 16);
-        if (dirp->patt) {
+        /* Append search pattern \* to the directory name */
+        p = dirp->patt + n;
+        if (dirp->patt < p) {
+            switch (p[-1]) {
+            case '\\':
+            case '/':
+            case ':':
+                /* Directory ends in path separator, e.g. c:\temp\ */
+                /*NOP*/;
+                break;
 
-            /*
-             * Convert relative directory name to an absolute one.  This
-             * allows rewinddir() to function correctly even when current
-             * working directory is changed between opendir() and rewinddir().
-             */
-            n = GetFullPathNameW (dirname, n, dirp->patt, NULL);
-            if (n > 0) {
-                wchar_t *p;
-
-                /* Append search pattern \* to the directory name */
-                p = dirp->patt + n;
-                if (dirp->patt < p) {
-                    switch (p[-1]) {
-                    case '\\':
-                    case '/':
-                    case ':':
-                        /* Directory ends in path separator, e.g. c:\temp\ */
-                        /*NOP*/;
-                        break;
-
-                    default:
-                        /* Directory name doesn't end in path separator */
-                        *p++ = '\\';
-                    }
-                }
-                *p++ = '*';
-                *p = '\0';
-
-                /* Open directory stream and retrieve the first entry */
-                if (dirent_first (dirp)) {
-                    /* Directory stream opened successfully */
-                    error = 0;
-                } else {
-                    /* Cannot retrieve first entry */
-                    error = 1;
-                    dirent_set_errno (ENOENT);
-                }
-
-            } else {
-                /* Cannot retrieve full path name */
-                dirent_set_errno (ENOENT);
-                error = 1;
+            default:
+                /* Directory name doesn't end in path separator */
+                *p++ = '\\';
             }
+        }
+        *p++ = '*';
+        *p = '\0';
 
+        /* Open directory stream and retrieve the first entry */
+        if (dirent_first (dirp)) {
+            /* Directory stream opened successfully */
+            error = 0;
         } else {
-            /* Cannot allocate memory for search pattern */
+            /* Cannot retrieve first entry */
             error = 1;
+            dirent_set_errno (ENOENT);
         }
 
     } else {
-        /* Cannot allocate _WDIR structure */
+        /* Cannot retrieve full path name */
+        dirent_set_errno (ENOENT);
         error = 1;
     }
 
@@ -472,13 +458,11 @@ _wclosedir(
         }
 
         /* Release search pattern */
-        if (dirp->patt) {
-            free (dirp->patt);
-            dirp->patt = NULL;
-        }
+        g_free (dirp->patt);
+        dirp->patt = NULL;
 
         /* Release directory structure */
-        free (dirp);
+        g_free (dirp);
         ok = /*success*/0;
 
     } else {
@@ -579,6 +563,8 @@ opendir(
 {
     struct DIR *dirp;
     int error;
+    wchar_t wname[PATH_MAX + 1];
+    size_t n;
 
     /* Must have directory name */
     if (dirname == NULL  ||  dirname[0] == '\0') {
@@ -587,44 +573,36 @@ opendir(
     }
 
     /* Allocate memory for DIR structure */
-    dirp = (DIR*) malloc (sizeof (struct DIR));
-    if (dirp) {
-        wchar_t wname[PATH_MAX + 1];
-        size_t n;
+    dirp = (DIR*) g_new (struct DIR, 1);
 
-        /* Convert directory name to wide-character string */
-        error = dirent_mbstowcs_s(
-            &n, wname, PATH_MAX + 1, dirname, PATH_MAX);
-        if (!error) {
+    /* Convert directory name to wide-character string */
+    error = dirent_mbstowcs_s(
+        &n, wname, PATH_MAX + 1, dirname, PATH_MAX);
+    if (!error) {
 
-            /* Open directory stream using wide-character name */
-            dirp->wdirp = _wopendir (wname);
-            if (dirp->wdirp) {
-                /* Directory stream opened */
-                error = 0;
-            } else {
-                /* Failed to open directory stream */
-                error = 1;
-            }
-
+        /* Open directory stream using wide-character name */
+        dirp->wdirp = _wopendir (wname);
+        if (dirp->wdirp) {
+            /* Directory stream opened */
+            error = 0;
         } else {
-            /* 
-             * Cannot convert file name to wide-character string.  This
-             * occurs if the string contains invalid multi-byte sequences or
-             * the output buffer is too small to contain the resulting
-             * string.
-             */
+            /* Failed to open directory stream */
             error = 1;
         }
 
     } else {
-        /* Cannot allocate DIR structure */
+        /* 
+            * Cannot convert file name to wide-character string.  This
+            * occurs if the string contains invalid multi-byte sequences or
+            * the output buffer is too small to contain the resulting
+            * string.
+            */
         error = 1;
     }
 
     /* Clean up in case of error */
-    if (error  &&  dirp) {
-        free (dirp);
+    if (error != 0) {
+        g_free (dirp);
         dirp = NULL;
     }
 
@@ -733,14 +711,14 @@ closedir(
     DIR *dirp) 
 {
     int ok;
-    if (dirp) {
+    if (dirp != NULL) {
 
         /* Close wide-character directory stream */
         ok = _wclosedir (dirp->wdirp);
         dirp->wdirp = NULL;
 
         /* Release multi-byte character version */
-        free (dirp);
+        g_free (dirp);
 
     } else {
 

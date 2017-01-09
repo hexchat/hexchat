@@ -42,7 +42,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-int main()
+int main(void)
 {
 	char name[512];
 	char num[512];
@@ -87,9 +87,11 @@ int main()
 		if (i + 1 < max)
 		{
 			fprintf(stderr, "\t%s,\t\t%s,\n", defines[i], defines[i+1]);
+			free (defines[i]);
 			i++;
 		} else
 			fprintf(stderr, "\t%s,\n", defines[i]);
+		free (defines[i]);
 		i++;
 	}
 	fprintf(stderr, "\tNUM_XP\n};\n");

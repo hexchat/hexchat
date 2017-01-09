@@ -41,7 +41,9 @@
 #include "chanopt.h"
 #include "ignore.h"
 #include "hexchat-plugin.h"
+#include "inbound.h"
 #include "plugin.h"
+#include "plugin-identd.h"
 #include "plugin-timer.h"
 #include "notify.h"
 #include "server.h"
@@ -53,15 +55,6 @@
 
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
 #include <glib-object.h>			/* for g_type_init() */
-#endif
-
-#ifdef USE_OPENSSL
-#include <openssl/ssl.h>			/* SSL_() */
-#include "ssl.h"
-#endif
-
-#ifdef USE_MSPROXY
-#include "msproxy.h"
 #endif
 
 #ifdef USE_LIBPROXY
@@ -105,6 +98,7 @@ int hexchat_is_quitting = FALSE;
 int arg_dont_autoconnect = FALSE;
 int arg_skip_plugins = FALSE;
 char *arg_url = NULL;
+char **arg_urls = NULL;
 char *arg_command = NULL;
 gint arg_existing = FALSE;
 
@@ -116,10 +110,6 @@ gint arg_existing = FALSE;
 struct session *current_tab;
 struct session *current_sess = 0;
 struct hexchatprefs prefs;
-
-#ifdef USE_OPENSSL
-SSL_CTX *ctx = NULL;
-#endif
 
 #ifdef USE_LIBPROXY
 pxProxyFactory *libproxy_factory;
@@ -136,11 +126,11 @@ lastact_update(session *sess)
 	int newidx = LACT_NONE;
 	int dia = (sess->type == SESS_DIALOG);
 
-	if (sess->nick_said)
+	if (sess->tab_state & TAB_STATE_NEW_HILIGHT)
 		newidx = dia? LACT_QUERY_HI: LACT_CHAN_HI;
-	else if (sess->msg_said)
+	else if (sess->tab_state & TAB_STATE_NEW_MSG)
 		newidx = dia? LACT_QUERY: LACT_CHAN;
-	else if (sess->new_data)
+	else if (sess->tab_state & TAB_STATE_NEW_DATA)
 		newidx = dia? LACT_QUERY: LACT_CHAN_DATA;
 
 	/* If already first at the right position, just return */
@@ -220,7 +210,7 @@ find_dialog (server *serv, char *nick)
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 session *
@@ -231,14 +221,14 @@ find_channel (server *serv, char *chan)
 	while (list)
 	{
 		sess = list->data;
-		if ((!serv || serv == sess->server) && sess->type != SESS_DIALOG)
+		if ((serv == sess->server) && sess->type == SESS_CHANNEL)
 		{
 			if (!serv->p_cmp (chan, sess->channel))
 				return sess;
 		}
 		list = list->next;
 	}
-	return 0;
+	return NULL;
 }
 
 static void
@@ -268,7 +258,7 @@ lag_check (void)
 	unsigned long tim;
 	char tbuf[128];
 	time_t now = time (0);
-	int lag;
+	time_t lag;
 
 	tim = make_ping_time ();
 
@@ -278,19 +268,24 @@ lag_check (void)
 		if (serv->connected && serv->end_of_motd)
 		{
 			lag = now - serv->ping_recv;
-			if (prefs.hex_net_ping_timeout && lag > prefs.hex_net_ping_timeout && lag > 0)
+			if (prefs.hex_net_ping_timeout != 0 && lag > prefs.hex_net_ping_timeout && lag > 0)
 			{
-				sprintf (tbuf, "%d", lag);
+				sprintf (tbuf, "%" G_GINT64_FORMAT, (gint64) lag);
 				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, NULL,
 								 NULL, NULL, 0);
 				if (prefs.hex_net_auto_reconnect)
 					serv->auto_reconnect (serv, FALSE, -1);
-			} else if (!serv->lag_sent)
+			}
+			else
 			{
-				snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
+				g_snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
 				serv->p_ping (serv, "", tbuf);
-				serv->lag_sent = tim;
-				fe_set_lag (serv, -1);
+				
+				if (!serv->lag_sent)
+				{
+					serv->lag_sent = tim;
+					fe_set_lag (serv, -1);
+				}
 			}
 		}
 		list = list->next;
@@ -359,38 +354,75 @@ doover:
 	return 1;
 }
 
+/* these are only run if the lagometer is enabled */
 static int
-hexchat_misc_checks (void)		/* this gets called every 1/2 second */
+hexchat_lag_check (void)   /* this gets called every 30 seconds */
 {
-	static int count = 0;
-#ifdef USE_MSPROXY
-	static int count2 = 0;
-#endif
-
-	count++;
-
-	lagcheck_update ();			/* every 500ms */
-
-	if (count % 2)
-		dcc_check_timeouts ();	/* every 1 second */
-
-	if (count >= 60)				/* every 30 seconds */
-	{
-		if (prefs.hex_gui_lagometer)
-			lag_check ();
-		count = 0;
-	}
-
-#ifdef USE_MSPROXY	
-	count2++;
-	if (count2 >= 720)			/* 720 every 6 minutes */
-	{
-		msproxy_keepalive ();
-		count2 = 0;
-	}
-#endif
-
+	lag_check ();
 	return 1;
+}
+
+static int
+hexchat_lag_check_update (void)   /* this gets called every 0.5 seconds */
+{
+	lagcheck_update ();
+	return 1;
+}
+
+/* call whenever timeout intervals change */
+void
+hexchat_reinit_timers (void)
+{
+	static int lag_check_update_tag = 0;
+	static int lag_check_tag = 0;
+	static int away_tag = 0;
+
+	/* notify timeout */
+	if (prefs.hex_notify_timeout && notify_tag == 0)
+	{
+		notify_tag = fe_timeout_add_seconds (prefs.hex_notify_timeout,
+						     notify_checklist, NULL);
+	}
+	else if (!prefs.hex_notify_timeout && notify_tag != 0)
+	{
+		fe_timeout_remove (notify_tag);
+		notify_tag = 0;
+	}
+
+	/* away status tracking */
+	if (prefs.hex_away_track && away_tag == 0)
+	{
+		away_tag = fe_timeout_add_seconds (prefs.hex_away_timeout, away_check, NULL);
+	}
+	else if (!prefs.hex_away_track && away_tag != 0)
+	{
+		fe_timeout_remove (away_tag);
+		away_tag = 0;
+	}
+
+	/* lag-o-meter */
+	if (prefs.hex_gui_lagometer && lag_check_update_tag == 0)
+	{
+		lag_check_update_tag = fe_timeout_add (500, hexchat_lag_check_update, NULL);
+	}
+	else if (!prefs.hex_gui_lagometer && lag_check_update_tag != 0)
+	{
+		fe_timeout_remove (lag_check_update_tag);
+		lag_check_update_tag = 0;
+	}
+
+	/* network timeouts and lag-o-meter */
+	if ((prefs.hex_net_ping_timeout != 0 || prefs.hex_gui_lagometer)
+	    && lag_check_tag == 0)
+	{
+		lag_check_tag = fe_timeout_add_seconds (30, hexchat_lag_check, NULL);
+	}
+	else if ((!prefs.hex_net_ping_timeout && !prefs.hex_gui_lagometer)
+					 && lag_check_tag != 0)
+	{
+		fe_timeout_remove (lag_check_tag);
+		lag_check_tag = 0;
+	}
 }
 
 /* executed when the first irc window opens */
@@ -407,6 +439,7 @@ irc_init (session *sess)
 	done_init = TRUE;
 
 	plugin_add (sess, NULL, NULL, timer_plugin_init, NULL, NULL, FALSE);
+	plugin_add (sess, NULL, NULL, identd_plugin_init, identd_plugin_deinit, NULL, FALSE);
 
 #ifdef USE_PLUGIN
 	if (!arg_skip_plugins)
@@ -417,12 +450,7 @@ irc_init (session *sess)
 	plugin_add (sess, NULL, NULL, dbus_plugin_init, NULL, NULL, FALSE);
 #endif
 
-	if (prefs.hex_notify_timeout)
-		notify_tag = fe_timeout_add (prefs.hex_notify_timeout * 1000,
-											  notify_checklist, 0);
-
-	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, 0);
-	fe_timeout_add (500, hexchat_misc_checks, 0);
+	hexchat_reinit_timers ();
 
 	if (arg_url != NULL)
 	{
@@ -431,9 +459,22 @@ irc_init (session *sess)
 		handle_command (sess, buf, FALSE);
 		g_free (buf);
 	}
+	
+	if (arg_urls != NULL)
+	{
+		guint i;
+		for (i = 0; i < g_strv_length (arg_urls); i++)
+		{
+			buf = g_strdup_printf ("%s %s", i==0? "server" : "newserver", arg_urls[i]);
+			handle_command (sess, buf, FALSE);
+			g_free (buf);
+		}
+		g_strfreev (arg_urls);
+	}
 
 	if (arg_command != NULL)
 	{
+		handle_command (sess, arg_command, FALSE);
 		g_free (arg_command);
 	}
 
@@ -446,16 +487,10 @@ session_new (server *serv, char *from, int type, int focus)
 {
 	session *sess;
 
-	sess = malloc (sizeof (struct session));
-	if (sess == NULL)
-	{
-		return NULL;
-	}
-	memset (sess, 0, sizeof (struct session));
+	sess = g_new0 (struct session, 1);
 
 	sess->server = serv;
 	sess->logfd = -1;
-	sess->scrollfd = -1;
 	sess->type = type;
 
 	sess->alert_beep = SET_DEFAULT;
@@ -470,7 +505,10 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->lastact_idx = LACT_NONE;
 
 	if (from != NULL)
-		safe_strcpy (sess->channel, from, CHANLEN);
+	{
+		safe_strcpy(sess->channel, from, CHANLEN);
+		safe_strcpy(sess->session_name, from, CHANLEN);
+	}
 
 	sess_list = g_slist_prepend (sess_list, sess);
 
@@ -497,7 +535,6 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 		break;
 	case SESS_DIALOG:
 		sess = session_new (serv, name, type, focus);
-		log_open_or_close (sess);
 		break;
 	default:
 /*	case SESS_CHANNEL:
@@ -510,6 +547,18 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	irc_init (sess);
 	chanopt_load (sess);
 	scrollback_load (sess);
+	if (sess->scrollwritten && sess->scrollback_replay_marklast)
+		sess->scrollback_replay_marklast (sess);
+	if (type == SESS_DIALOG)
+	{
+		struct User *user;
+
+		log_open_or_close (sess);
+
+		user = userlist_find_global (serv, name);
+		if (user && user->hostname)
+			set_topic (sess, user->hostname, user->hostname);
+	}
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
@@ -528,9 +577,8 @@ exec_notify_kill (session * sess)
 		waitpid (re->childpid, NULL, WNOHANG);
 		fe_input_remove (re->iotag);
 		close (re->myfd);
-		if (re->linebuf)
-			free(re->linebuf);
-		free (re);
+		g_free(re->linebuf);
+		g_free (re);
 	}
 #endif
 }
@@ -636,10 +684,8 @@ session_free (session *killsess)
 	send_quit_or_part (killsess);
 
 	history_free (&killsess->history);
-	if (killsess->topic)
-		free (killsess->topic);
-	if (killsess->current_modes)
-		free (killsess->current_modes);
+	g_free (killsess->topic);
+	g_free (killsess->current_modes);
 
 	fe_session_callback (killsess);
 
@@ -650,7 +696,7 @@ session_free (session *killsess)
 			current_sess = sess_list->data;
 	}
 
-	free (killsess);
+	g_free (killsess);
 
 	if (!sess_list && !in_hexchat_exit)
 		hexchat_exit ();						/* sess_list is empty, quit! */
@@ -722,7 +768,7 @@ static char defaultconf_commands[] =
 	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n";
 
 static char defaultconf_urlhandlers[] =
-		"NAME Open Link in Private Firefox Window\n"		"CMD !firefox -private %s\n\n";
+		"NAME Open Link in a new Firefox Window\n"		"CMD !firefox -new-window %s\n\n";
 
 #ifdef USE_SIGACTION
 /* Close and open log files on SIGUSR1. Usefull for log rotating */
@@ -764,20 +810,15 @@ static void
 xchat_init (void)
 {
 	char buf[3068];
-	const char *cs = NULL;
 
 #ifdef WIN32
 	WSADATA wsadata;
 
-#ifdef USE_IPV6
 	if (WSAStartup(0x0202, &wsadata) != 0)
 	{
 		MessageBox (NULL, "Cannot find winsock 2.2+", "Error", MB_OK);
 		exit (0);
 	}
-#else
-	WSAStartup(0x0101, &wsadata);
-#endif	/* !USE_IPV6 */
 #endif	/* !WIN32 */
 
 #ifdef USE_SIGACTION
@@ -806,15 +847,12 @@ xchat_init (void)
 #endif
 #endif
 
-	if (g_get_charset (&cs))
-		prefs.utf8_locale = TRUE;
-
 	load_text_events ();
 	sound_load ();
 	notify_load ();
 	ignore_load ();
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 		"NAME %s~%s~\n"				"CMD query %%s\n\n"\
 		"NAME %s~%s~\n"				"CMD send %%s\n\n"\
 		"NAME %s~%s~\n"				"CMD whois %%s %%s\n\n"\
@@ -870,7 +908,7 @@ xchat_init (void)
 
 	list_loadconf ("popup.conf", &popup_list, buf);
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 		"NAME %s\n"				"CMD part\n\n"
 		"NAME %s\n"				"CMD getstr # join \"%s\"\n\n"
 		"NAME %s\n"				"CMD quote LINKS\n\n"
@@ -884,7 +922,7 @@ xchat_init (void)
 				_("Hide Version"));
 	list_loadconf ("usermenu.conf", &usermenu_list, buf);
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 		"NAME %s\n"		"CMD op %%a\n\n"
 		"NAME %s\n"		"CMD deop %%a\n\n"
 		"NAME %s\n"		"CMD ban %%s\n\n"
@@ -901,7 +939,7 @@ xchat_init (void)
 				_("Dialog"));
 	list_loadconf ("buttons.conf", &button_list, buf);
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 		"NAME %s\n"				"CMD whois %%s %%s\n\n"
 		"NAME %s\n"				"CMD send %%s\n\n"
 		"NAME %s\n"				"CMD dcc chat %%s\n\n"
@@ -924,17 +962,17 @@ xchat_init (void)
 	servlist_init ();							/* load server list */
 
 	/* if we got a URL, don't open the server list GUI */
-	if (!prefs.hex_gui_slist_skip && !arg_url)
+	if (!prefs.hex_gui_slist_skip && !arg_url && !arg_urls)
 		fe_serverlist_open (NULL);
 
-	/* turned OFF via -a arg */
-	if (!arg_dont_autoconnect)
+	/* turned OFF via -a arg or by passing urls */
+	if (!arg_dont_autoconnect && !arg_urls)
 	{
 		/* do any auto connects */
 		if (!servlist_have_auto ())	/* if no new windows open .. */
 		{
 			/* and no serverlist gui ... */
-			if (prefs.hex_gui_slist_skip || arg_url)
+			if (prefs.hex_gui_slist_skip || arg_url || arg_urls)
 				/* we'll have to open one. */
 				new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 		} else
@@ -943,7 +981,7 @@ xchat_init (void)
 		}
 	} else
 	{
-		if (prefs.hex_gui_slist_skip || arg_url)
+		if (prefs.hex_gui_slist_skip || arg_url || arg_urls)
 			new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	}
 }
@@ -966,52 +1004,17 @@ hexchat_exit (void)
 	notify_save ();
 	ignore_save ();
 	free_sessions ();
-	chanopt_save_all ();
+	chanopt_save_all (TRUE);
 	servlist_cleanup ();
 	fe_exit ();
 }
 
-#ifndef WIN32
-
-static int
-child_handler (gpointer userdata)
-{
-	int pid = GPOINTER_TO_INT (userdata);
-
-	if (waitpid (pid, 0, WNOHANG) == pid)
-		return 0;					  /* remove timeout handler */
-	return 1;						  /* keep the timeout handler */
-}
-
-#endif
-
 void
 hexchat_exec (const char *cmd)
 {
-#ifdef WIN32
 	util_exec (cmd);
-#else
-	int pid = util_exec (cmd);
-	if (pid != -1)
-	/* zombie avoiding system. Don't ask! it has to be like this to work
-      with zvt (which overrides the default handler) */
-		fe_timeout_add (1000, child_handler, GINT_TO_POINTER (pid));
-#endif
 }
 
-void
-hexchat_execv (char * const argv[])
-{
-#ifdef WIN32
-	util_execv (argv);
-#else
-	int pid = util_execv (argv);
-	if (pid != -1)
-	/* zombie avoiding system. Don't ask! it has to be like this to work
-      with zvt (which overrides the default handler) */
-		fe_timeout_add (1000, child_handler, GINT_TO_POINTER (pid));
-#endif
-}
 
 static void
 set_locale (void)
@@ -1036,29 +1039,37 @@ main (int argc, char *argv[])
 	int i;
 	int ret;
 
-	srand (time (0));	/* CL: do this only once! */
+#ifdef WIN32
+	HRESULT coinit_result;
+#endif
+
+	srand ((unsigned int) time (NULL)); /* CL: do this only once! */
 
 	/* We must check for the config dir parameter, otherwise load_config() will behave incorrectly.
 	 * load_config() must come before fe_args() because fe_args() calls gtk_init() which needs to
 	 * know the language which is set in the config. The code below is copy-pasted from fe_args()
 	 * for the most part. */
-	if (argc >= 3)
+	if (argc >= 2)
 	{
-		for (i = 1; i < argc - 1; i++)
+		for (i = 1; i < argc; i++)
 		{
-			if (strcmp (argv[i], "-d") == 0)
+			if ((strcmp (argv[i], "-d") == 0 || strcmp (argv[i], "--cfgdir") == 0)
+				&& i + 1 < argc)
 			{
-				if (xdir)
-				{
-					g_free (xdir);
-				}
+				xdir = g_strdup (argv[i + 1]);
+			}
+			else if (strncmp (argv[i], "--cfgdir=", 9) == 0)
+			{
+				xdir = g_strdup (argv[i] + 9);
+			}
 
-				xdir = strdup (argv[i + 1]);
-
+			if (xdir != NULL)
+			{
 				if (xdir[strlen (xdir) - 1] == G_DIR_SEPARATOR)
 				{
 					xdir[strlen (xdir) - 1] = 0;
 				}
+				break;
 			}
 		}
 	}
@@ -1075,16 +1086,12 @@ main (int argc, char *argv[])
 	{
 		/* this is probably the first run */
 		load_default_config ();
-		make_config_dirs (); /* FIXME: if this fail display an error (?) */
+		make_config_dirs ();
 		make_dcc_dirs ();
 	}
 
 	/* we MUST do this after load_config () AND before fe_init (thus gtk_init) otherwise it will fail */
 	set_locale ();
-
-#ifdef SOCKS
-	SOCKSinit (argv[0]);
-#endif
 
 	ret = fe_args (argc, argv);
 	if (ret != -1)
@@ -1098,7 +1105,27 @@ main (int argc, char *argv[])
 	libproxy_factory = px_proxy_factory_new();
 #endif
 
+#ifdef WIN32
+	coinit_result = CoInitializeEx (NULL, COINIT_APARTMENTTHREADED);
+	if (SUCCEEDED (coinit_result))
+	{
+		CoInitializeSecurity (NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
+	}
+#endif
+
 	fe_init ();
+
+	/* This is done here because cfgfiles.c is too early in
+	* the startup process to use gtk functions. */
+	if (g_access (get_xdir (), W_OK) != 0)
+	{
+		char buf[2048];
+
+		g_snprintf (buf, sizeof(buf),
+			_("You do not have write access to %s. Nothing from this session can be saved."),
+			get_xdir ());
+		fe_message (buf, FE_MSG_ERROR);
+	}
 
 #ifndef WIN32
 #ifndef __EMX__
@@ -1113,17 +1140,15 @@ main (int argc, char *argv[])
 
 	fe_main ();
 
+#ifdef WIN32
+	if (SUCCEEDED (coinit_result))
+	{
+		CoUninitialize ();
+	}
+#endif
+
 #ifdef USE_LIBPROXY
 	px_proxy_factory_free(libproxy_factory);
-#endif
-
-#ifdef USE_OPENSSL
-	if (ctx)
-		_SSL_context_free (ctx);
-#endif
-
-#ifdef USE_DEBUG
-	hexchat_mem_list ();
 #endif
 
 #ifdef WIN32

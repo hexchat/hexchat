@@ -34,6 +34,10 @@
 #endif
 #ifdef WANTDNS
 #include <netdb.h>
+/* OpenBSD's netdb.h does not define AI_ADDRCONFIG */
+#ifndef AI_ADDRCONFIG
+#define AI_ADDRCONFIG 0
+#endif
 #endif
 #define closesocket close
 #define set_blocking(sok) fcntl(sok, F_SETFL, 0)
@@ -43,13 +47,9 @@
 
 #else
 
-#include "../../config-win32.h"
-#ifdef USE_IPV6
+#include "config.h"
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#else
-#include <winsock2.h>
-#endif
 
 #define set_blocking(sok)	{ \
 									unsigned long zero = 0; \

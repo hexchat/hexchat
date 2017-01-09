@@ -39,6 +39,9 @@ void menu_bar_toggle (void);
 void menu_add_plugin_items (GtkWidget *menu, char *root, char *target);
 void menu_change_layout (void);
 
+void menu_set_away (session_gui *gui, int away);
+void menu_set_fullscreen (session_gui *gui, int fullscreen);
+
 /* for menu_quick functions */
 #define XCMENU_DOLIST 1
 #define XCMENU_SHADED 1
@@ -58,8 +61,10 @@ void menu_change_layout (void);
 #define MENU_ID_RECONNECT 10
 #define MENU_ID_JOIN 11
 #define MENU_ID_USERMENU 12
+#define MENU_ID_FULLSCREEN 13
+#define MENU_ID_HEXCHAT 14
 
-#if (MENU_ID_NUM < MENU_ID_USERMENU)
+#if (MENU_ID_NUM < MENU_ID_HEXCHAT)
 #error MENU_ID_NUM is set wrong
 #endif
 

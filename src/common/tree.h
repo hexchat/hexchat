@@ -20,6 +20,8 @@
 #ifndef HEXCHAT_TREE_H
 #define HEXCHAT_TREE_H
 
+#include <glib.h>
+
 typedef struct _tree tree;
 
 typedef int (tree_cmp_func) (const void *keya, const void *keyb, void *data);

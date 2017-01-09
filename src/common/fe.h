@@ -50,6 +50,7 @@ void fe_main (void);
 void fe_cleanup (void);
 void fe_exit (void);
 int fe_timeout_add (int interval, void *callback, void *userdata);
+int fe_timeout_add_seconds (int interval, void *callback, void *userdata);
 void fe_timeout_remove (int tag);
 void fe_new_window (struct session *sess, int focus);
 void fe_new_server (struct server *serv);
@@ -68,7 +69,6 @@ int fe_input_add (int sok, int flags, void *func, void *data);
 void fe_input_remove (int tag);
 void fe_idle_add (void *func, void *data);
 void fe_set_topic (struct session *sess, char *topic, char *stripped_topic);
-void fe_set_hilight (struct session *sess);
 void fe_set_tab_color (struct session *sess, int col);
 void fe_flash_window (struct session *sess);
 void fe_update_mode_buttons (struct session *sess, char mode, char sign);
@@ -86,12 +86,12 @@ void fe_text_clear (struct session *sess, int lines);
 void fe_close_window (struct session *sess);
 void fe_progressbar_start (struct session *sess);
 void fe_progressbar_end (struct server *serv);
-void fe_print_text (struct session *sess, char *text, time_t stamp);
-void fe_userlist_insert (struct session *sess, struct User *newuser, int row, int sel);
+void fe_print_text (struct session *sess, char *text, time_t stamp,
+					gboolean no_activity);
+void fe_userlist_insert (struct session *sess, struct User *newuser, gboolean sel);
 int fe_userlist_remove (struct session *sess, struct User *user);
 void fe_userlist_rehash (struct session *sess, struct User *user);
 void fe_userlist_update (struct session *sess, struct User *user);
-void fe_userlist_move (struct session *sess, struct User *user, int new_row);
 void fe_userlist_numbers (struct session *sess);
 void fe_userlist_clear (struct session *sess);
 void fe_userlist_set_selected (struct session *sess);
@@ -117,19 +117,21 @@ void fe_set_nick (struct server *serv, char *newnick);
 void fe_ignore_update (int level);
 void fe_beep (session *sess);
 void fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gtk_xtext_search_flags flags);
-void fe_set_lag (server *serv, int lag);
+void fe_set_lag (server *serv, long lag);
 void fe_set_throttle (server *serv);
 void fe_set_away (server *serv);
 void fe_serverlist_open (session *sess);
+void fe_get_bool (char *title, char *prompt, void *callback, void *userdata);
 void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);
 #define FRF_WRITE 1				/* save file */
 #define FRF_MULTIPLE 2			/* multi-select */
-#define FRF_ADDFOLDER 4			/* add ~/.config/hexchat to favourites */
+#define FRF_RECENTLYUSED 4		/* let gtk decide start dir instead of our config */
 #define FRF_CHOOSEFOLDER 8		/* choosing a folder only */
 #define FRF_FILTERISINITIAL 16	/* filter is initial directory */
 #define FRF_NOASKOVERWRITE 32	/* don't ask to overwrite existing files */
 #define FRF_EXTENSIONS 64		/* specify file extensions to be displayed */
+#define FRF_MIMETYPES 128		/* specify file mimetypes to be displayed */
 void fe_get_file (const char *title, char *initial,
 				 void (*callback) (void *userdata, char *file), void *userdata,
 				 int flags);
@@ -176,6 +178,7 @@ typedef enum
 } feicon;
 void fe_tray_set_icon (feicon icon);
 void fe_tray_set_tooltip (const char *text);
-void fe_tray_set_balloon (const char *title, const char *text);
+void fe_open_chan_list (server *serv, char *filter, int do_refresh);
+const char *fe_get_default_font (void);
 
 #endif

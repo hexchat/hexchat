@@ -75,16 +75,14 @@ chanlist_match (server *serv, const char *str)
 	switch (serv->gui->chanlist_search_type)
 	{
 	case 1:
-		return match (GTK_ENTRY (serv->gui->chanlist_wild)->text, str);
-#ifndef WIN32
+		return match (gtk_entry_get_text (GTK_ENTRY (serv->gui->chanlist_wild)), str);
 	case 2:
 		if (!serv->gui->have_regex)
 			return 0;
-		/* regex returns 0 if it's a match: */
-		return !regexec (&serv->gui->chanlist_match_regex, str, 1, NULL, REG_NOTBOL);
-#endif
+
+		return g_regex_match (serv->gui->chanlist_match_regex, str, 0, NULL);
 	default:	/* case 0: */
-		return nocasestrstr (str, GTK_ENTRY (serv->gui->chanlist_wild)->text) ? 1 : 0;
+		return nocasestrstr (str, gtk_entry_get_text (GTK_ENTRY (serv->gui->chanlist_wild))) ? 1 : 0;
 	}
 }
 
@@ -96,7 +94,7 @@ chanlist_update_caption (server *serv)
 {
 	gchar tbuf[256];
 
-	snprintf (tbuf, sizeof tbuf,
+	g_snprintf (tbuf, sizeof tbuf,
 				 _("Displaying %d/%d users on %d/%d channels."),
 				 serv->gui->chanlist_users_shown_count,
 				 serv->gui->chanlist_users_found_count,
@@ -150,7 +148,7 @@ chanlist_data_free (server *serv)
 			data = rows->data;
 			g_free (data->topic);
 			g_free (data->collation_key);
-			free (data);
+			g_free (data);
 		}
 
 		g_slist_free (serv->gui->chanlist_data_stored_rows);
@@ -227,7 +225,7 @@ chanlist_place_row_in_gui (server *serv, chanlistrow *next_row, gboolean force)
 		return;
 	}
 
-	if (GTK_ENTRY (serv->gui->chanlist_wild)->text[0])
+	if (gtk_entry_get_text (GTK_ENTRY (serv->gui->chanlist_wild))[0])
 	{
 		/* Check what the user wants to match. If both buttons or _neither_
 		 * button is checked, look for match in both by default. 
@@ -372,7 +370,7 @@ fe_add_chan_list (server *serv, char *chan, char *users, char *topic)
 	int len = strlen (chan) + 1;
 
 	/* we allocate the struct and channel string in one go */
-	next_row = malloc (sizeof (chanlistrow) + len);
+	next_row = g_malloc (sizeof (chanlistrow) + len);
 	memcpy (((char *)next_row) + sizeof (chanlistrow), chan, len);
 	next_row->topic = strip_color (topic, -1, STRIP_ALL);
 	next_row->collation_key = g_utf8_collate_key (chan, len-1);
@@ -406,30 +404,32 @@ chanlist_search_pressed (GtkButton * button, server *serv)
 static void
 chanlist_find_cb (GtkWidget * wid, server *serv)
 {
-#ifndef WIN32
+	const char *pattern = gtk_entry_get_text (GTK_ENTRY (wid));
+
 	/* recompile the regular expression. */
 	if (serv->gui->have_regex)
 	{
 		serv->gui->have_regex = 0;
-		regfree (&serv->gui->chanlist_match_regex);
+		g_regex_unref (serv->gui->chanlist_match_regex);
 	}
 
-	if (regcomp (&serv->gui->chanlist_match_regex, GTK_ENTRY (wid)->text,
-					 REG_ICASE | REG_EXTENDED | REG_NOSUB) == 0)
+	serv->gui->chanlist_match_regex = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_EXTENDED,
+												G_REGEX_MATCH_NOTBOL, NULL);
+
+	if (serv->gui->chanlist_match_regex)
 		serv->gui->have_regex = 1;
-#endif
 }
 
 static void
 chanlist_match_channel_button_toggled (GtkWidget * wid, server *serv)
 {
-	serv->gui->chanlist_match_wants_channel = GTK_TOGGLE_BUTTON (wid)->active;
+	serv->gui->chanlist_match_wants_channel = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (wid));
 }
 
 static void
 chanlist_match_topic_button_toggled (GtkWidget * wid, server *serv)
 {
-	serv->gui->chanlist_match_wants_topic = GTK_TOGGLE_BUTTON (wid)->active;
+	serv->gui->chanlist_match_wants_topic = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (wid));
 }
 
 static char *
@@ -456,7 +456,7 @@ chanlist_join (GtkWidget * wid, server *serv)
 	{
 		if (serv->connected && (strcmp (chan, "*") != 0))
 		{
-			snprintf (tbuf, sizeof (tbuf), "join %s", chan);
+			g_snprintf (tbuf, sizeof (tbuf), "join %s", chan);
 			handle_command (serv->server_session, tbuf, FALSE);
 		} else
 			gdk_beep ();
@@ -482,7 +482,7 @@ chanlist_filereq_done (server *serv, char *file)
 	if (fh == -1)
 		return;
 
-	snprintf (buf, sizeof buf, "HexChat Channel List: %s - %s\n",
+	g_snprintf (buf, sizeof buf, "HexChat Channel List: %s - %s\n",
 				 serv->servername, ctime (&t));
 	write (fh, buf, strlen (buf));
 
@@ -494,7 +494,7 @@ chanlist_filereq_done (server *serv, char *file)
 									  COL_CHANNEL, &chan,
 									  COL_USERS, &users,
 									  COL_TOPIC, &topic, -1);
-			snprintf (buf, sizeof buf, "%-16s %-5d%s\n", chan, users, topic);
+			g_snprintf (buf, sizeof buf, "%-16s %-5d%s\n", chan, users, topic);
 			g_free (chan);
 			g_free (topic);
 			write (fh, buf, strlen (buf));
@@ -519,7 +519,7 @@ chanlist_save (GtkWidget * wid, server *serv)
 static gboolean
 chanlist_flash (server *serv)
 {
-	if (serv->gui->chanlist_refresh->state != GTK_STATE_ACTIVE)
+	if (gtk_widget_get_state (serv->gui->chanlist_refresh) != GTK_STATE_ACTIVE)
 		gtk_widget_set_state (serv->gui->chanlist_refresh, GTK_STATE_ACTIVE);
 	else
 		gtk_widget_set_state (serv->gui->chanlist_refresh, GTK_STATE_PRELIGHT);
@@ -615,7 +615,7 @@ chanlist_button_cb (GtkTreeView *tree, GdkEventButton *event, server *serv)
 
 	menu = gtk_menu_new ();
 	if (event->window)
-		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
+		gtk_menu_set_screen (GTK_MENU (menu), gdk_window_get_screen (event->window));
 	g_object_ref (menu);
 	g_object_ref_sink (menu);
 	g_object_unref (menu);
@@ -655,13 +655,11 @@ chanlist_destroy_widget (GtkWidget *wid, server *serv)
 		serv->gui->chanlist_tag = 0;
 	}
 
-#ifndef WIN32
 	if (serv->gui->have_regex)
 	{
-		regfree (&serv->gui->chanlist_match_regex);
+		g_regex_unref (serv->gui->chanlist_match_regex);
 		serv->gui->have_regex = 0;
 	}
-#endif
 }
 
 static void
@@ -688,10 +686,15 @@ chanlist_add_column (GtkWidget *tree, int textcol, int size, char *title, gboole
 	col = gtk_tree_view_get_column (GTK_TREE_VIEW (tree), textcol);
 	gtk_tree_view_column_set_sort_column_id (col, textcol);
 	gtk_tree_view_column_set_resizable (col, TRUE);
-	if (textcol != COL_TOPIC)
+	if (textcol == COL_CHANNEL)
 	{
 		gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_FIXED);
 		gtk_tree_view_column_set_fixed_width (col, size);
+	}
+	else if (textcol == COL_USERS)
+	{
+		gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+		gtk_tree_view_column_set_resizable (col, FALSE);
 	}
 }
 
@@ -714,7 +717,7 @@ chanlist_opengui (server *serv, int do_refresh)
 		return;
 	}
 
-	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Channel List (%s)"),
+	g_snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Channel List (%s)"),
 				 server_get_network (serv, TRUE));
 
 	serv->gui->chanlist_pending_rows = NULL;
@@ -747,6 +750,7 @@ chanlist_opengui (server *serv, int do_refresh)
 	serv->gui->chanlist_window =
 		mg_create_generic_tab ("ChanList", tbuf, FALSE, TRUE, chanlist_closegui,
 								serv, 640, 480, &vbox, serv);
+	gtkutil_destroy_on_esc (serv->gui->chanlist_window);
 
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 	gtk_box_set_spacing (GTK_BOX (vbox), 12);
@@ -761,7 +765,7 @@ chanlist_opengui (server *serv, int do_refresh)
 
 	store = (GtkListStore *) custom_list_new();
 	view = gtkutil_treeview_new (vbox, GTK_TREE_MODEL (store), NULL, -1);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (view->parent),
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (gtk_widget_get_parent (view)),
 													 GTK_SHADOW_IN);
 	serv->gui->chanlist_list = view;
 
@@ -869,16 +873,15 @@ chanlist_opengui (server *serv, int do_refresh)
 
 	wid = gtk_check_button_new_with_label (_("Channel name"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
-	gtk_signal_connect (GTK_OBJECT (wid), "toggled",
-							  GTK_SIGNAL_FUNC
-							  (chanlist_match_channel_button_toggled), serv);
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							  G_CALLBACK(chanlist_match_channel_button_toggled), serv);
 	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
 	gtk_widget_show (wid);
 
 	wid = gtk_check_button_new_with_label (_("Topic"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
-	gtk_signal_connect (GTK_OBJECT (wid), "toggled",
-							  GTK_SIGNAL_FUNC (chanlist_match_topic_button_toggled),
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							  G_CALLBACK (chanlist_match_topic_button_toggled),
 							  serv);
 	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
 	gtk_widget_show (wid);
@@ -894,12 +897,10 @@ chanlist_opengui (server *serv, int do_refresh)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_combo_box_new_text ();
-	gtk_combo_box_append_text (GTK_COMBO_BOX (wid), _("Simple Search"));
-	gtk_combo_box_append_text (GTK_COMBO_BOX (wid), _("Pattern Match (Wildcards)"));
-#ifndef WIN32
-	gtk_combo_box_append_text (GTK_COMBO_BOX (wid), _("Regular Expression"));
-#endif
+	wid = gtk_combo_box_text_new ();
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (wid), _("Simple Search"));
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (wid), _("Pattern Match (Wildcards)"));
+	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (wid), _("Regular Expression"));
 	gtk_combo_box_set_active (GTK_COMBO_BOX (wid), serv->gui->chanlist_search_type);
 	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 1, 2,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
@@ -915,11 +916,12 @@ chanlist_opengui (server *serv, int do_refresh)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_entry_new_with_max_length (255);
-	gtk_signal_connect (GTK_OBJECT (wid), "changed",
-							  GTK_SIGNAL_FUNC (chanlist_find_cb), serv);
-	gtk_signal_connect (GTK_OBJECT (wid), "activate",
-							  GTK_SIGNAL_FUNC (chanlist_search_pressed),
+	wid = gtk_entry_new ();
+	gtk_entry_set_max_length (GTK_ENTRY(wid), 255);
+	g_signal_connect (G_OBJECT (wid), "changed",
+							  G_CALLBACK (chanlist_find_cb), serv);
+	g_signal_connect (G_OBJECT (wid), "activate",
+							  G_CALLBACK (chanlist_search_pressed),
 							  (gpointer) serv);
 	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 0, 1,
 							GTK_EXPAND | GTK_FILL, 0, 0, 0);

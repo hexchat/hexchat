@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = po intl src plugins man share
+ACLOCAL_AMFLAGS = -I m4
 
-EXTRA_DIST = autogen.sh
+SUBDIRS = po src plugins data
 
+EXTRA_DIST = autogen.sh Doxyfile readme.md

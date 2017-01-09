@@ -37,11 +37,11 @@ struct cert_info {
 
 struct chiper_info {
     char version[16];
-    char chiper[24];
+    char chiper[48];
     int chiper_bits;
 };
 
-SSL_CTX *_SSL_context_init (void (*info_cb_func), int server);
+SSL_CTX *_SSL_context_init (void (*info_cb_func));
 #define _SSL_context_free(a)	SSL_CTX_free(a);
 
 SSL *_SSL_socket (SSL_CTX *ctx, int sd);
@@ -52,7 +52,7 @@ char *_SSL_set_verify (SSL_CTX *ctx, void *(verify_callback), char *cacert);
     int SSL_get_fd(SSL *);
 */
 void _SSL_close (SSL * ssl);
-
+int _SSL_check_hostname(X509 *cert, const char *host);
 int _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl);
 struct chiper_info *_SSL_get_cipher_info (SSL * ssl);
 

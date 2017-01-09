@@ -42,6 +42,7 @@ enum
 	VERSION_COLUMN,
 	FILE_COLUMN,
 	DESC_COLUMN,
+	FILEPATH_COLUMN,
 	N_COLUMNS
 };
 
@@ -57,19 +58,45 @@ plugingui_treeview_new (GtkWidget *box)
 	int col_id;
 
 	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING,
-	                            G_TYPE_STRING, G_TYPE_STRING);
+	                            G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 	g_return_val_if_fail (store != NULL, NULL);
 	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
 	                             NAME_COLUMN, _("Name"),
 	                             VERSION_COLUMN, _("Version"),
 	                             FILE_COLUMN, _("File"),
-	                             DESC_COLUMN, _("Description"), -1);
+	                             DESC_COLUMN, _("Description"),
+	                             FILEPATH_COLUMN, NULL, -1);
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
 	     col_id++)
 			gtk_tree_view_column_set_alignment (col, 0.5);
 
 	return view;
+}
+
+static char *
+plugingui_getfilename (GtkTreeView *view)
+{
+	GtkTreeModel *model;
+	GtkTreeSelection *sel;
+	GtkTreeIter iter;
+	GValue file;
+	char *str;
+
+	memset (&file, 0, sizeof (file));
+
+	sel = gtk_tree_view_get_selection (view);
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	{
+		gtk_tree_model_get_value (model, &iter, FILEPATH_COLUMN, &file);
+
+		str = g_value_dup_string (&file);
+		g_value_unset (&file);
+
+		return str;
+	}
+
+	return NULL;
 }
 
 static void
@@ -106,7 +133,8 @@ fe_pluginlist_update (void)
 			gtk_list_store_set (store, &iter, NAME_COLUMN, pl->name,
 			                    VERSION_COLUMN, pl->version,
 			                    FILE_COLUMN, file_part (pl->filename),
-			                    DESC_COLUMN, pl->desc, -1);
+			                    DESC_COLUMN, pl->desc,
+			                    FILEPATH_COLUMN, pl->filename, -1);
 		}
 		list = list->next;
 	}
@@ -117,30 +145,24 @@ plugingui_load_cb (session *sess, char *file)
 {
 	if (file)
 	{
-		char *buf = malloc (strlen (file) + 9);
+		char *buf;
 
 		if (strchr (file, ' '))
-			sprintf (buf, "LOAD \"%s\"", file);
+			buf = g_strdup_printf ("LOAD \"%s\"", file);
 		else
-			sprintf (buf, "LOAD %s", file);
+			buf = g_strdup_printf ("LOAD %s", file);
 		handle_command (sess, buf, FALSE);
-		free (buf);
+		g_free (buf);
 	}
 }
 
 void
 plugingui_load (void)
 {
-	char *sub_dir;
-
-	sub_dir = g_build_filename (get_xdir(), "addons", NULL);
+	char *sub_dir = g_build_filename (get_xdir(), "addons", NULL);
 
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
-#ifdef WIN32
-							sub_dir, "*.dll;*.lua;*.pl;*.py;*.tcl;*.js", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
-#else
-							sub_dir, "*.so;*.lua;*.pl;*.py;*.tcl;*.js", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
-#endif
+							sub_dir, "*."G_MODULE_SUFFIX";*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 
 	g_free (sub_dir);
 }
@@ -154,43 +176,53 @@ plugingui_loadbutton_cb (GtkWidget * wid, gpointer unused)
 static void
 plugingui_unload (GtkWidget * wid, gpointer unused)
 {
-	int len;
-	char *modname, *file, *buf;
+	char *modname, *file;
 	GtkTreeView *view;
 	GtkTreeIter iter;
 	
 	view = g_object_get_data (G_OBJECT (plugin_window), "view");
 	if (!gtkutil_treeview_get_selected (view, &iter, NAME_COLUMN, &modname,
-	                                    FILE_COLUMN, &file, -1))
+	                                    FILEPATH_COLUMN, &file, -1))
 		return;
 
-	len = strlen (file);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (file + len - 4, ".dll") == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (file + len - 3, ".sl") == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (file + len - 3, ".so") == 0)
-#endif
-#endif
+	if (g_str_has_suffix (file, "."G_MODULE_SUFFIX))
 	{
 		if (plugin_kill (modname, FALSE) == 2)
 			fe_message (_("That plugin is refusing to unload.\n"), FE_MSG_ERROR);
-	} else
+	}
+	else
 	{
+		char *buf;
 		/* let python.so or perl.so handle it */
-		buf = malloc (strlen (file) + 10);
 		if (strchr (file, ' '))
-			sprintf (buf, "UNLOAD \"%s\"", file);
+			buf = g_strdup_printf ("UNLOAD \"%s\"", file);
 		else
-			sprintf (buf, "UNLOAD %s", file);
+			buf = g_strdup_printf ("UNLOAD %s", file);
 		handle_command (current_sess, buf, FALSE);
-		free (buf);
+		g_free (buf);
 	}
 
 	g_free (modname);
 	g_free (file);
+}
+
+static void
+plugingui_reloadbutton_cb (GtkWidget *wid, GtkTreeView *view)
+{
+	char *file = plugingui_getfilename(view);
+
+	if (file)
+	{
+		char *buf;
+
+		if (strchr (file, ' '))
+			buf = g_strdup_printf ("RELOAD \"%s\"", file);
+		else
+			buf = g_strdup_printf ("RELOAD %s", file);
+		handle_command (current_sess, buf, FALSE);
+		g_free (buf);
+		g_free (file);
+	}
 }
 
 void
@@ -207,7 +239,7 @@ plugingui_open (void)
 
 	plugin_window = mg_create_generic_tab ("Addons", _(DISPLAY_NAME": Plugins and Scripts"),
 														 FALSE, TRUE, plugingui_close, NULL,
-														 500, 250, &vbox, 0);
+														 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (plugin_window);
 
 	view = plugingui_treeview_new (vbox);
@@ -223,7 +255,10 @@ plugingui_open (void)
 	                plugingui_loadbutton_cb, NULL, _("_Load..."));
 
 	gtkutil_button (hbox, GTK_STOCK_DELETE, NULL,
-	                plugingui_unload, NULL, _("_UnLoad"));
+	                plugingui_unload, NULL, _("_Unload"));
+
+	gtkutil_button (hbox, GTK_STOCK_REFRESH, NULL,
+	                plugingui_reloadbutton_cb, view, _("_Reload"));
 
 	fe_pluginlist_update ();
 

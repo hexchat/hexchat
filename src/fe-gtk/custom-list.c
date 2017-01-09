@@ -87,7 +87,7 @@ static void custom_list_sortable_set_sort_func (GtkTreeSortable * sortable,
 																gint sort_col_id,
 																GtkTreeIterCompareFunc
 																sort_func, gpointer user_data,
-																GtkDestroyNotify
+																GDestroyNotify
 																destroy_func);
 
 static void custom_list_sortable_set_default_sort_func (GtkTreeSortable *
@@ -95,7 +95,7 @@ static void custom_list_sortable_set_default_sort_func (GtkTreeSortable *
 																		  GtkTreeIterCompareFunc
 																		  sort_func,
 																		  gpointer user_data,
-																		  GtkDestroyNotify
+																		  GDestroyNotify
 																		  destroy_func);
 
 static gboolean custom_list_sortable_has_default_sort_func (GtkTreeSortable *
@@ -134,7 +134,6 @@ custom_list_get_type (void)
 		return custom_list_type;
 
 	/* Some boilerplate type registration stuff */
-	if (1)
 	{
 		static const GTypeInfo custom_list_info = {
 			sizeof (CustomListClass),
@@ -154,7 +153,6 @@ custom_list_get_type (void)
 	}
 
 	/* Here we register our GtkTreeModel interface with the type system */
-	if (1)
 	{
 		static const GInterfaceInfo tree_model_info = {
 			(GInterfaceInitFunc) custom_list_tree_model_init,
@@ -167,7 +165,6 @@ custom_list_get_type (void)
 	}
 
 	/* Add GtkTreeSortable interface */
-	if (1)
 	{
 		static const GInterfaceInfo tree_sortable_info = {
 			(GInterfaceInitFunc) custom_list_sortable_init,
@@ -336,7 +333,7 @@ custom_list_get_iter (GtkTreeModel * tree_model,
 	gint n;
 
 	n = gtk_tree_path_get_indices (path)[0];
-	if (n >= custom_list->num_rows || n < 0)
+	if (n < 0 || (guint) n >= custom_list->num_rows)
 		return FALSE;
 
 	record = custom_list->rows[n];
@@ -533,7 +530,7 @@ custom_list_iter_nth_child (GtkTreeModel * tree_model,
 		return FALSE;
 
 	/* special case: if parent == NULL, set iter to n-th top-level row */
-	if (n >= custom_list->num_rows)
+	if (n < 0 || (guint) n >= custom_list->num_rows)
 		return FALSE;
 
 	iter->user_data = custom_list->rows[n];
@@ -601,7 +598,7 @@ custom_list_sortable_set_sort_func (GtkTreeSortable * sortable,
 												gint sort_col_id,
 												GtkTreeIterCompareFunc sort_func,
 												gpointer user_data,
-												GtkDestroyNotify destroy_func)
+												GDestroyNotify destroy_func)
 {
 }
 
@@ -609,7 +606,7 @@ static void
 custom_list_sortable_set_default_sort_func (GtkTreeSortable * sortable,
 														  GtkTreeIterCompareFunc sort_func,
 														  gpointer user_data,
-														  GtkDestroyNotify destroy_func)
+														  GDestroyNotify destroy_func)
 {
 }
 
@@ -730,7 +727,7 @@ custom_list_resort (CustomList * custom_list)
 							 custom_list);
 
 	/* let other objects know about the new order */
-	neworder = malloc (sizeof (gint) * custom_list->num_rows);
+	neworder = g_new (gint, custom_list->num_rows);
 
 	for (i = custom_list->num_rows - 1; i >= 0; i--)
 	{
@@ -747,7 +744,7 @@ custom_list_resort (CustomList * custom_list)
 	gtk_tree_model_rows_reordered (GTK_TREE_MODEL (custom_list), path, NULL,
 											 neworder);
 	gtk_tree_path_free (path);
-	free (neworder);
+	g_free (neworder);
 }
 
 void

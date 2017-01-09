@@ -34,6 +34,7 @@
 #include "../common/hexchat.h"
 #include "../common/hexchatc.h"
 #include "../common/server.h"
+#include "../common/servlist.h"
 #include "../common/fe.h"
 #include "fe-gtk.h"
 #include "chanlist.h"
@@ -42,7 +43,7 @@
 static void
 joind_radio2_cb (GtkWidget *radio, server *serv)
 {
-	if (GTK_TOGGLE_BUTTON (radio)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (radio)))
 	{
 		gtk_widget_grab_focus (serv->gui->joind_entry);
 		gtk_editable_set_position (GTK_EDITABLE (serv->gui->joind_entry), 999);
@@ -78,14 +79,14 @@ joind_ok_cb (GtkWidget *ok, server *serv)
 	}
 
 	/* do nothing */
-	if (GTK_TOGGLE_BUTTON (serv->gui->joind_radio1)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (serv->gui->joind_radio1)))
 		goto xit;
 
 	/* join specific channel */
-	if (GTK_TOGGLE_BUTTON (serv->gui->joind_radio2)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (serv->gui->joind_radio2)))
 	{
-		char *text = GTK_ENTRY (serv->gui->joind_entry)->text;
-		if (strlen (text) < 2)
+		char *text = (char *)gtk_entry_get_text (GTK_ENTRY (serv->gui->joind_entry));
+		if (strlen (text) < 1)
 		{
 			fe_message (_("Channel name too short, try again."), FE_MSG_ERROR);
 			return;
@@ -99,7 +100,7 @@ joind_ok_cb (GtkWidget *ok, server *serv)
 
 xit:
 	prefs.hex_gui_join_dialog = 0;
-	if (GTK_TOGGLE_BUTTON (serv->gui->joind_check)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (serv->gui->joind_check)))
 		prefs.hex_gui_join_dialog = 1;
 
 	gtk_widget_destroy (serv->gui->joind_win);
@@ -131,9 +132,12 @@ joind_show_dialog (server *serv)
 	serv->gui->joind_win = dialog1 = gtk_dialog_new ();
 	gtk_window_set_title (GTK_WINDOW (dialog1), _(DISPLAY_NAME": Connection Complete"));
 	gtk_window_set_type_hint (GTK_WINDOW (dialog1), GDK_WINDOW_TYPE_HINT_DIALOG);
-	gtk_window_set_position (GTK_WINDOW (dialog1), GTK_WIN_POS_MOUSE);
+	gtk_window_set_position (GTK_WINDOW (dialog1), GTK_WIN_POS_CENTER_ON_PARENT);
+	gtk_window_set_transient_for (GTK_WINDOW(dialog1), GTK_WINDOW(serv->front_session->gui->window));
+	gtk_window_set_modal (GTK_WINDOW (dialog1), TRUE);
+	gtk_window_set_resizable (GTK_WINDOW (dialog1), FALSE);
 
-	dialog_vbox1 = GTK_DIALOG (dialog1)->vbox;
+	dialog_vbox1 = gtk_dialog_get_content_area (GTK_DIALOG (dialog1));
 	gtk_widget_show (dialog_vbox1);
 
 	vbox1 = gtk_vbox_new (FALSE, 0);
@@ -147,16 +151,16 @@ joind_show_dialog (server *serv)
 	image1 = gtk_image_new_from_stock (GTK_STOCK_NETWORK, GTK_ICON_SIZE_LARGE_TOOLBAR);
 	gtk_widget_show (image1);
 	gtk_box_pack_start (GTK_BOX (hbox1), image1, FALSE, TRUE, 24);
-	gtk_misc_set_alignment (GTK_MISC (image1), 0.5, 0.06);
+	gtk_misc_set_alignment (GTK_MISC (image1), 0.5f, 0.06f);
 
 	vbox2 = gtk_vbox_new (FALSE, 10);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox2), 6);
 	gtk_widget_show (vbox2);
 	gtk_box_pack_start (GTK_BOX (hbox1), vbox2, TRUE, TRUE, 0);
 
-	snprintf (buf2, sizeof (buf2), _("Connection to %s complete."),
+	g_snprintf (buf2, sizeof (buf2), _("Connection to %s complete."),
 				 server_get_network (serv, TRUE));
-	snprintf (buf, sizeof (buf), "\n<b>%s</b>", buf2);
+	g_snprintf (buf, sizeof (buf), "\n<b>%s</b>", buf2);
 	label = gtk_label_new (buf);
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
@@ -166,7 +170,7 @@ joind_show_dialog (server *serv)
 	label = gtk_label_new (_("In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
-	GTK_LABEL (label)->wrap = TRUE;
+	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
 	label = gtk_label_new (_("What would you like to do next?"));
@@ -194,7 +198,7 @@ joind_show_dialog (server *serv)
 	gtk_widget_show (entry1);
 	gtk_box_pack_start (GTK_BOX (hbox2), entry1, TRUE, TRUE, 8);
 
-	snprintf (buf, sizeof (buf), "<small>     %s</small>",
+	g_snprintf (buf, sizeof (buf), "<small>     %s</small>",
 				 _("If you know the name of the channel you want to join, enter it here."));
 	label = gtk_label_new (buf);
 	gtk_widget_show (label);
@@ -206,9 +210,8 @@ joind_show_dialog (server *serv)
 	gtk_widget_show (radiobutton3);
 	gtk_box_pack_start (GTK_BOX (vbox2), radiobutton3, FALSE, FALSE, 0);
 	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton3), radiobutton1_group);
-	radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton3));
 
-	snprintf (buf, sizeof (buf), "<small>     %s</small>",
+	g_snprintf (buf, sizeof (buf), "<small>     %s</small>",
 				 _("Retrieving the Channel-List may take a minute or two."));
 	label = gtk_label_new (buf);
 	gtk_widget_show (label);
@@ -222,14 +225,14 @@ joind_show_dialog (server *serv)
 	gtk_widget_show (checkbutton1);
 	gtk_box_pack_start (GTK_BOX (vbox1), checkbutton1, FALSE, FALSE, 0);
 
-	dialog_action_area1 = GTK_DIALOG (dialog1)->action_area;
+	dialog_action_area1 = gtk_dialog_get_action_area (GTK_DIALOG (dialog1));
 	gtk_widget_show (dialog_action_area1);
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1), GTK_BUTTONBOX_END);
 
 	okbutton1 = gtk_button_new_from_stock ("gtk-ok");
 	gtk_widget_show (okbutton1);
-	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog1)->action_area), okbutton1, FALSE, TRUE, 0);
-	GTK_WIDGET_SET_FLAGS (okbutton1, GTK_CAN_DEFAULT);
+	gtk_box_pack_end (GTK_BOX (gtk_dialog_get_action_area (GTK_DIALOG (dialog1))), okbutton1, FALSE, TRUE, 0);
+	gtk_widget_set_can_default (okbutton1, TRUE);
 
 	g_signal_connect (G_OBJECT (dialog1), "destroy",
 							G_CALLBACK (joind_destroy_cb), serv);
@@ -241,6 +244,12 @@ joind_show_dialog (server *serv)
 							G_CALLBACK (joind_radio2_cb), serv);
 	g_signal_connect (G_OBJECT (okbutton1), "clicked",
 							G_CALLBACK (joind_ok_cb), serv);
+							
+	if (serv->network)
+		if (g_ascii_strcasecmp(((ircnet*)serv->network)->name, "freenode") == 0)
+		{
+			gtk_entry_set_text (GTK_ENTRY (entry1), "#hexchat");
+		}
 
 	gtk_widget_grab_focus (okbutton1);
 	gtk_widget_show_all (dialog1);

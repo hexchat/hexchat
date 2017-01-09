@@ -27,6 +27,9 @@
 #include "fe-gtk.h"
 
 #include <gdk/gdkkeysyms.h>
+#if defined (WIN32) || defined (__APPLE__)
+#include <pango/pangocairo.h>
+#endif
 
 #include "../common/hexchat.h"
 #include "../common/fe.h"
@@ -39,10 +42,6 @@
 
 #ifdef WIN32
 #include <io.h>
-#if 0	/* native file dialogs */
-#include "../common/fe.h"
-#include "../common/thread.h"
-#endif
 #else
 #include <unistd.h>
 #endif
@@ -51,76 +50,85 @@
 
 extern void path_part (char *file, char *path, int pathlen);
 
-
 struct file_req
 {
 	GtkWidget *dialog;
 	void *userdata;
 	filereqcallback callback;
 	int flags;		/* FRF_* flags */
-
-#if 0	/* native file dialogs */
-#ifdef WIN32
-	int multiple;
-	thread *th;
-	char *title;	/* native locale */
-	char *filter;
-#endif
-#endif
 };
-
-static char last_dir[256] = "";
-
 
 static void
 gtkutil_file_req_destroy (GtkWidget * wid, struct file_req *freq)
 {
 	freq->callback (freq->userdata, NULL);
-	free (freq);
+	g_free (freq);
 }
 
 static void
-gtkutil_check_file (char *file, struct file_req *freq)
+gtkutil_check_file (char *filename, struct file_req *freq)
 {
-	struct stat st;
 	int axs = FALSE;
 
-	path_part (file, last_dir, sizeof (last_dir));
+	GFile *file = g_file_new_for_path (filename);
 
-	/* check if the file is readable or writable */
 	if (freq->flags & FRF_WRITE)
 	{
-		if (access (last_dir, W_OK) == 0)
-			axs = TRUE;
-	} else
-	{
-		if (stat (file, &st) != -1)
+		GFile *parent = g_file_get_parent (file);
+
+		GFileInfo *fi = g_file_query_info (parent, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+		if (fi != NULL)
 		{
-			if (!S_ISDIR (st.st_mode) || (freq->flags & FRF_CHOOSEFOLDER))
+			if (g_file_info_get_attribute_boolean (fi, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE))
+			{
 				axs = TRUE;
+			}
+
+			g_object_unref (fi);
+		}
+
+		g_object_unref (parent);
+	}
+	else
+	{
+		GFileInfo *fi = g_file_query_info (file, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+
+		if (fi != NULL)
+		{
+			if (g_file_info_get_file_type (fi) != G_FILE_TYPE_DIRECTORY || (freq->flags & FRF_CHOOSEFOLDER))
+			{
+				axs = TRUE;
+			}
+
+			g_object_unref (fi);
 		}
 	}
 
+	g_object_unref (file);
+
 	if (axs)
 	{
-		char *utf8_file;
-		/* convert to UTF8. It might be converted back to locale by
-			server.c's g_convert */
-		utf8_file = hexchat_filename_to_utf8 (file, -1, NULL, NULL, NULL);
-		if (utf8_file)
+		char *filename_utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
+		if (filename_utf8 != NULL)
 		{
-			freq->callback (freq->userdata, utf8_file);
-			g_free (utf8_file);
-		} else
+			freq->callback (freq->userdata, filename_utf8);
+			g_free (filename_utf8);
+		}
+		else
 		{
 			fe_message ("Filename encoding is corrupt.", FE_MSG_ERROR);
 		}
-	} else
+	}
+	else
 	{
 		if (freq->flags & FRF_WRITE)
+		{
 			fe_message (_("Cannot write to that file."), FE_MSG_ERROR);
+		}
 		else
+		{
 			fe_message (_("Cannot read that file."), FE_MSG_ERROR);
+		}
 	}
 }
 
@@ -141,12 +149,21 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 		}
 		if (files)
 			g_slist_free (files);
-	} else
+	}
+	else
 	{
 		if (freq->flags & FRF_CHOOSEFOLDER)
-			gtkutil_check_file (gtk_file_chooser_get_current_folder (fs), freq);
+		{
+			gchar *filename = gtk_file_chooser_get_current_folder (fs);
+			gtkutil_check_file (filename, freq);
+			g_free (filename);
+		}
 		else
+		{
+			gchar *filename = gtk_file_chooser_get_filename (fs);
 			gtkutil_check_file (gtk_file_chooser_get_filename (fs), freq);
+			g_free (filename);
+		}
 	}
 
 	/* this should call the "destroy" cb, where we free(freq) */
@@ -179,60 +196,6 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	char *token;
 	char *tokenbuffer;
 
-#if 0	/* native file dialogs */
-#ifdef WIN32
-	if (!(flags & FRF_WRITE))
-	{
-		freq = malloc (sizeof (struct file_req));
-		freq->th = thread_new ();
-		freq->flags = 0;
-		freq->multiple = (flags & FRF_MULTIPLE);
-		freq->callback = callback;
-		freq->userdata = userdata;
-		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
-		if (!filter)
-		{
-			freq->filter =	"All files\0*.*\0"
-							"Executables\0*.exe\0"
-							"ZIP files\0*.zip\0\0";
-		}
-		else
-		{
-			freq->filter = filter;
-		}
-
-		thread_start (freq->th, win32_thread, freq);
-		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
-
-		return;
-
-	}
-	
-	else {
-		freq = malloc (sizeof (struct file_req));
-		freq->th = thread_new ();
-		freq->flags = 0;
-		freq->multiple = (flags & FRF_MULTIPLE);
-		freq->callback = callback;
-		freq->userdata = userdata;
-		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
-		if (!filter)
-		{
-			freq->filter = "All files\0*.*\0\0";
-		}
-		else
-		{
-			freq->filter = filter;
-		}
-
-		thread_start (freq->th, win32_thread2, freq);
-		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
-
-	return;
-	}
-#endif
-#endif
-
 	if (flags & FRF_WRITE)
 	{
 		dialog = gtk_file_chooser_dialog_new (title, NULL,
@@ -240,13 +203,6 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 												GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 												GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 												NULL);
-		if (filter && filter[0])	/* filter becomes initial name when saving */
-		{
-			char temp[1024];
-			path_part (filter, temp, sizeof (temp));
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), temp);
-			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), file_part (filter));
-		}
 
 		if (!(flags & FRF_NOASKOVERWRITE))
 			gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
@@ -257,41 +213,28 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 												GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 												GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 												NULL);
+
+	if (filter && filter[0] && (flags & FRF_FILTERISINITIAL))
+	{
+		if (flags & FRF_WRITE)
+		{
+			char temp[1024];
+			path_part (filter, temp, sizeof (temp));
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), temp);
+			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), file_part (filter));
+		}
+		else
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
+	}
+	else if (!(flags & FRF_RECENTLYUSED))
+		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), get_xdir ());
+
 	if (flags & FRF_MULTIPLE)
 		gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (dialog), TRUE);
-	if (last_dir[0])
-		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), last_dir);
-	if (flags & FRF_ADDFOLDER)
-		gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
-														  get_xdir (), NULL);
 	if (flags & FRF_CHOOSEFOLDER)
-	{
 		gtk_file_chooser_set_action (GTK_FILE_CHOOSER (dialog), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
-		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
-	}
-	else
-	{
-		if (filter && (flags & FRF_FILTERISINITIAL))
-		{
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
-		}
-		/* With DCC, we can't rely on filter as initial folder since filter already contains
-		 * the filename upon DCC RECV. Thus we have no better option than to check for the message
-		 * which will be the title of the window. For DCC it always contains the "offering" word.
-		 * This method is really ugly but it works so we'll stick with it for now.
-		 */
-		else if (strstr (title, "offering") != NULL)
-		{
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), prefs.hex_dcc_dir);
-		}
-		/* by default, open the config folder */
-		else
-		{
-			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), get_xdir ());
-		}
-	}
 
-	if (flags & FRF_EXTENSIONS && extensions != NULL)
+	if ((flags & FRF_EXTENSIONS || flags & FRF_MIMETYPES) && extensions != NULL)
 	{
 		filefilter = gtk_file_filter_new ();
 		tokenbuffer = g_strdup (extensions);
@@ -299,7 +242,10 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 
 		while (token != NULL)
 		{
-			gtk_file_filter_add_pattern (filefilter, token);
+			if (flags & FRF_EXTENSIONS)
+				gtk_file_filter_add_pattern (filefilter, token);
+			else
+				gtk_file_filter_add_mime_type (filefilter, token);
 			token = strtok (NULL, ";");
 		}
 
@@ -307,7 +253,9 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 		gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filefilter);
 	}
 
-	freq = malloc (sizeof (struct file_req));
+	gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog), get_xdir (), NULL);
+
+	freq = g_new (struct file_req, 1);
 	freq->dialog = dialog;
 	freq->flags = flags;
 	freq->callback = callback;
@@ -336,7 +284,7 @@ gtkutil_esc_destroy (GtkWidget * win, GdkEventKey * key, gpointer userdata)
 	else
 		wid = win;
 
-	if (key->keyval == GDK_Escape)
+	if (key->keyval == GDK_KEY_Escape)
 		gtk_widget_destroy (wid);
 			
 	return FALSE;
@@ -391,12 +339,15 @@ fe_get_str (char *msg, char *def, void *callback, void *userdata)
 	GtkWidget *entry;
 	GtkWidget *hbox;
 	GtkWidget *label;
+	extern GtkWidget *parent_window;
 
 	dialog = gtk_dialog_new_with_buttons (msg, NULL, 0,
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 										NULL);
-	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
+
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
 
 	if (userdata == (void *)1)	/* nick box is usually on the very bottom, make it centered */
 	{
@@ -424,7 +375,7 @@ fe_get_str (char *msg, char *def, void *callback, void *userdata)
 	g_signal_connect (G_OBJECT (dialog), "response",
 						   G_CALLBACK (gtkutil_get_str_response), entry);
 
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox);
 
 	gtk_widget_show_all (dialog);
 }
@@ -453,6 +404,28 @@ gtkutil_get_number_response (GtkDialog *dialog, gint arg1, gpointer spin)
 	}
 }
 
+static void
+gtkutil_get_bool_response (GtkDialog *dialog, gint arg1, gpointer spin)
+{
+	void (*callback) (int value, void *user_data);
+	void *user_data;
+
+	callback = g_object_get_data (G_OBJECT (dialog), "cb");
+	user_data = g_object_get_data (G_OBJECT (dialog), "ud");
+
+	switch (arg1)
+	{
+	case GTK_RESPONSE_REJECT:
+		callback (0, user_data);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+		break;
+	case GTK_RESPONSE_ACCEPT:
+		callback (1, user_data);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
+		break;
+	}
+}
+
 void
 fe_get_int (char *msg, int def, void *callback, void *userdata)
 {
@@ -461,13 +434,16 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 	GtkWidget *hbox;
 	GtkWidget *label;
 	GtkAdjustment *adj;
+	extern GtkWidget *parent_window;
 
 	dialog = gtk_dialog_new_with_buttons (msg, NULL, 0,
 										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 										NULL);
-	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+
 	hbox = gtk_hbox_new (TRUE, 0);
 
 	g_object_set_data (G_OBJECT (dialog), "cb", callback);
@@ -475,9 +451,9 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 
 	spin = gtk_spin_button_new (NULL, 1, 0);
 	adj = gtk_spin_button_get_adjustment ((GtkSpinButton*)spin);
-	adj->lower = 0;
-	adj->upper = 1024;
-	adj->step_increment = 1;
+	gtk_adjustment_set_lower (adj, 0);
+	gtk_adjustment_set_upper (adj, 1024);
+	gtk_adjustment_set_step_increment (adj, 1);
 	gtk_adjustment_changed (adj);
 	gtk_spin_button_set_value ((GtkSpinButton*)spin, def);
 	gtk_box_pack_end (GTK_BOX (hbox), spin, 0, 0, 0);
@@ -488,7 +464,36 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 	g_signal_connect (G_OBJECT (dialog), "response",
 						   G_CALLBACK (gtkutil_get_number_response), spin);
 
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), hbox);
+
+	gtk_widget_show_all (dialog);
+}
+
+void
+fe_get_bool (char *title, char *prompt, void *callback, void *userdata)
+{
+	GtkWidget *dialog;
+	GtkWidget *prompt_label;
+	extern GtkWidget *parent_window;
+
+	dialog = gtk_dialog_new_with_buttons (title, NULL, 0,
+		GTK_STOCK_NO, GTK_RESPONSE_REJECT,
+		GTK_STOCK_YES, GTK_RESPONSE_ACCEPT,
+		NULL);
+	gtk_box_set_homogeneous (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), TRUE);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+
+
+	g_object_set_data (G_OBJECT (dialog), "cb", callback);
+	g_object_set_data (G_OBJECT (dialog), "ud", userdata);
+
+	prompt_label = gtk_label_new (prompt);
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+		G_CALLBACK (gtkutil_get_bool_response), NULL);
+
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), prompt_label);
 
 	gtk_widget_show_all (dialog);
 }
@@ -516,10 +521,6 @@ gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 		gtk_widget_show (bbox);
 
 		img = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
-		if (strcmp (stock, GTK_STOCK_GOTO_LAST) == 0)
-		{
-			gtk_widget_set_usize (img, 10, 6);
-		}
 		gtk_container_add (GTK_CONTAINER (bbox), img);
 		gtk_widget_show (img);
 		gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
@@ -529,7 +530,7 @@ gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 							G_CALLBACK (callback), userdata);
 	gtk_widget_show (wid);
 	if (tip)
-		add_tip (wid, tip);
+		gtk_widget_set_tooltip_text (wid, tip);
 
 	return wid;
 }
@@ -546,7 +547,8 @@ GtkWidget *
 gtkutil_entry_new (int max, GtkWidget * box, void *callback,
 						 gpointer userdata)
 {
-	GtkWidget *entry = gtk_entry_new_with_max_length (max);
+	GtkWidget *entry = gtk_entry_new ();
+	gtk_entry_set_max_length (GTK_ENTRY (entry), max);
 	gtk_container_add (GTK_CONTAINER (box), entry);
 	if (callback)
 		g_signal_connect (G_OBJECT (entry), "changed",
@@ -555,89 +557,10 @@ gtkutil_entry_new (int max, GtkWidget * box, void *callback,
 	return entry;
 }
 
-GtkWidget *
-gtkutil_clist_new (int columns, char *titles[],
-						 GtkWidget * box, int policy,
-						 void *select_callback, gpointer select_userdata,
-						 void *unselect_callback,
-						 gpointer unselect_userdata, int selection_mode)
-{
-	GtkWidget *clist, *win;
-
-	win = gtk_scrolled_window_new (0, 0);
-	gtk_container_add (GTK_CONTAINER (box), win);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (win),
-											  GTK_POLICY_AUTOMATIC, policy);
-	gtk_widget_show (win);
-
-	if (titles)
-		clist = gtk_clist_new_with_titles (columns, titles);
-	else
-		clist = gtk_clist_new (columns);
-
-	gtk_clist_set_selection_mode (GTK_CLIST (clist), selection_mode);
-	gtk_clist_column_titles_passive (GTK_CLIST (clist));
-	gtk_container_add (GTK_CONTAINER (win), clist);
-	if (select_callback)
-	{
-		g_signal_connect (G_OBJECT (clist), "select_row",
-								G_CALLBACK (select_callback), select_userdata);
-	}
-	if (unselect_callback)
-	{
-		g_signal_connect (G_OBJECT (clist), "unselect_row",
-								G_CALLBACK (unselect_callback), unselect_userdata);
-	}
-	gtk_widget_show (clist);
-
-	return clist;
-}
-
-int
-gtkutil_clist_selection (GtkWidget * clist)
-{
-	if (GTK_CLIST (clist)->selection)
-		return GPOINTER_TO_INT(GTK_CLIST (clist)->selection->data);
-	return -1;
-}
-
-static int
-int_compare (const int * elem1, const int * elem2)
-{
-	return (*elem1) - (*elem2);
-}
-
-int
-gtkutil_clist_multiple_selection (GtkWidget * clist, int ** rows, const int max_rows)
-{
-	int i = 0;
-	GList *tmp_clist;
-	*rows = malloc (sizeof (int) * max_rows );
-	memset( *rows, -1, max_rows * sizeof(int) );
-
-	for( tmp_clist = GTK_CLIST(clist)->selection;
-			tmp_clist && i < max_rows; tmp_clist = tmp_clist->next, i++)
-	{
-		(*rows)[i] = GPOINTER_TO_INT( tmp_clist->data );
-	}
-	qsort(*rows, i, sizeof(int), (void *)int_compare);
-	return i;
-
-}
-
-void
-add_tip (GtkWidget * wid, char *text)
-{
-	static GtkTooltips *tip = NULL;
-	if (!tip)
-		tip = gtk_tooltips_new ();
-	gtk_tooltips_set_tip (tip, wid, text, 0);
-}
-
 void
 show_and_unfocus (GtkWidget * wid)
 {
-	GTK_WIDGET_UNSET_FLAGS (wid, GTK_CAN_FOCUS);
+	gtk_widget_set_can_focus (wid, FALSE);
 	gtk_widget_show (wid);
 }
 
@@ -673,6 +596,7 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 	{
 		gtk_window_set_type_hint (GTK_WINDOW (win), GDK_WINDOW_TYPE_HINT_DIALOG);
 		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (parent_window));
+		gtk_window_set_destroy_with_parent (GTK_WINDOW (win), TRUE);
 	}
 
 	return win;
@@ -687,7 +611,7 @@ gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
 	GtkClipboard *clip, *clip2;
 
 	win = gtk_widget_get_toplevel (GTK_WIDGET (widget));
-	if (GTK_WIDGET_TOPLEVEL (win))
+	if (gtk_widget_is_toplevel (win))
 	{
 		int len = strlen (str);
 
@@ -761,6 +685,8 @@ gtkutil_treeview_new (GtkWidget *box, GtkTreeModel *model,
 			                                                attr, col_id, NULL);
 		}
 		gtk_tree_view_append_column (GTK_TREE_VIEW (view), col);
+		if (title == NULL)
+			gtk_tree_view_column_set_visible (col, FALSE);
 	}
 
 	va_end (args);
@@ -809,3 +735,33 @@ gtkutil_treeview_get_selected (GtkTreeView *view, GtkTreeIter *iter_ret, ...)
 	return has_selected;
 }
 
+#if defined (WIN32) || defined (__APPLE__)
+gboolean
+gtkutil_find_font (const char *fontname)
+{
+	int i;
+	int n_families;
+	const char *family_name;
+	PangoFontMap *fontmap;
+	PangoFontFamily *family;
+	PangoFontFamily **families;
+
+	fontmap = pango_cairo_font_map_get_default ();
+	pango_font_map_list_families (fontmap, &families, &n_families);
+
+	for (i = 0; i < n_families; i++)
+	{
+		family = families[i];
+		family_name = pango_font_family_get_name (family);
+
+		if (!g_ascii_strcasecmp (family_name, fontname))
+		{
+			g_free (families);
+			return TRUE;
+		}
+	}
+
+	g_free (families);
+	return FALSE;
+}
+#endif

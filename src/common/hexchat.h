@@ -17,48 +17,27 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#ifdef WIN32
-#include "../../config-win32.h"
-#else
-#include "../../config.h"
-#endif
+#include "config.h"
 
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <glib/gi18n.h>
+#include <gio/gio.h>
 
 #include <time.h>			/* need time_t */
 
 #ifndef HEXCHAT_H
 #define HEXCHAT_H
 
+#ifdef USE_OPENSSL
+#ifdef __APPLE__
+#define __AVAILABILITYMACROS__
+#define DEPRECATED_IN_MAC_OS_X_VERSION_10_7_AND_LATER
+#endif
+#endif
+
 #include "history.h"
-
-#ifndef HAVE_SNPRINTF
-#define snprintf g_snprintf
-#endif
-
-#ifndef HAVE_VSNPRINTF
-#define vsnprintf _vsnprintf
-#endif
-
-#ifdef USE_DEBUG
-#define malloc(n) hexchat_malloc(n, __FILE__, __LINE__)
-#define realloc(n, m) hexchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) hexchat_dfree(n, __FILE__, __LINE__)
-#define strdup(n) hexchat_strdup(n, __FILE__, __LINE__)
-void *hexchat_malloc (int size, char *file, int line);
-void *hexchat_strdup (char *str, char *file, int line);
-void hexchat_dfree (void *buf, char *file, int line);
-void *hexchat_realloc (char *old, int len, char *file, int line);
-#endif
-
-#ifdef SOCKS
-#ifdef __sgi
-#include <sys/time.h>
-#define INCLUDE_PROTOTYPES 1
-#endif
-#include <socks.h>
-#endif
+#include "tree.h"
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */
@@ -73,9 +52,7 @@ void *hexchat_realloc (char *old, int len, char *file, int line);
 #endif
 
 /* force a 32bit CMP.L */
-#define CMPL(a, c0, c1, c2, c3) (a == (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24)))
 #define WORDL(c0, c1, c2, c3) (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24))
-#define WORDW(c0, c1) (guint16)(c0 | (c1 << 8))
 
 #ifdef WIN32						/* for win32 */
 #define OFLAGS O_BINARY
@@ -101,20 +78,6 @@ void *hexchat_realloc (char *old, int len, char *file, int line);
 #define PDIWORDS		32
 #define USERNAMELEN 10
 #define HIDDEN_CHAR	8			/* invisible character for xtext */
-
-#if defined(ENABLE_NLS) && !defined(_)
-#  include <libintl.h>
-#  define _(x) gettext(x)
-#  ifdef gettext_noop
-#    define N_(String) gettext_noop (String)
-#  else
-#    define N_(String) (String)
-#  endif
-#endif
-#if !defined(_)
-#  define N_(String) (String)
-#  define _(x) (x)
-#endif
 
 struct nbexec
 {
@@ -149,8 +112,10 @@ struct hexchatprefs
 	unsigned int hex_gui_autoopen_recv;
 	unsigned int hex_gui_autoopen_send;
 	unsigned int hex_gui_compact;
+	unsigned int hex_gui_filesize_iec;
 	unsigned int hex_gui_focus_omitalerts;
 	unsigned int hex_gui_hide_menu;
+	unsigned int hex_gui_input_attr;
 	unsigned int hex_gui_input_icon;
 	unsigned int hex_gui_input_nick;
 	unsigned int hex_gui_input_spell;
@@ -165,6 +130,7 @@ struct hexchatprefs
 	unsigned int hex_gui_tab_dialogs;
 	unsigned int hex_gui_tab_dots;
 	unsigned int hex_gui_tab_icons;
+	unsigned int hex_gui_tab_scrollchans;
 	unsigned int hex_gui_tab_server;
 	unsigned int hex_gui_tab_sort;
 	unsigned int hex_gui_tab_utils;
@@ -180,7 +146,6 @@ struct hexchatprefs
 	unsigned int hex_gui_ulist_count;
 	unsigned int hex_gui_ulist_hide;
 	unsigned int hex_gui_ulist_icons;
-	unsigned int hex_gui_ulist_resizable;
 	unsigned int hex_gui_ulist_show_hosts;
 	unsigned int hex_gui_ulist_style;
 	unsigned int hex_gui_usermenu;
@@ -188,7 +153,7 @@ struct hexchatprefs
 	unsigned int hex_gui_win_save;
 	unsigned int hex_gui_win_swap;
 	unsigned int hex_gui_win_ucount;
-	unsigned int hex_identd;
+	unsigned int hex_identd_server;
 	unsigned int hex_input_balloon_chans;
 	unsigned int hex_input_balloon_hilight;
 	unsigned int hex_input_balloon_priv;
@@ -206,6 +171,8 @@ struct hexchatprefs
 	unsigned int hex_input_tray_priv;
 	unsigned int hex_irc_auto_rejoin;
 	unsigned int hex_irc_conf_mode;
+	unsigned int hex_irc_hidehost;
+	unsigned int hex_irc_hide_nickchange;
 	unsigned int hex_irc_hide_version;
 	unsigned int hex_irc_invisible;
 	unsigned int hex_irc_logging;
@@ -215,6 +182,7 @@ struct hexchatprefs
 	unsigned int hex_irc_wallops;
 	unsigned int hex_irc_who_join;
 	unsigned int hex_irc_whois_front;
+	unsigned int hex_irc_cap_server_time;
 	unsigned int hex_net_auto_reconnect;
 	unsigned int hex_net_auto_reconnectonfail;
 	unsigned int hex_net_proxy_auth;
@@ -230,7 +198,6 @@ struct hexchatprefs
 	unsigned int hex_text_indent;
 	unsigned int hex_text_replay;
 	unsigned int hex_text_search_case_match;
-	unsigned int hex_text_search_backward;
 	unsigned int hex_text_search_highlight_all;
 	unsigned int hex_text_search_follow;
 	unsigned int hex_text_search_regexp;
@@ -277,22 +244,26 @@ struct hexchatprefs
 	int hex_gui_pane_left_size;
 	int hex_gui_pane_right_size;
 	int hex_gui_pane_right_size_min;
+	int hex_gui_search_pos;
 	int hex_gui_slist_select;
 	int hex_gui_tab_layout;
+	int hex_gui_tab_middleclose;
 	int hex_gui_tab_newtofront;
 	int hex_gui_tab_pos;
 	int hex_gui_tab_small;
 	int hex_gui_tab_trunc;
+	int hex_gui_transparency;
 	int hex_gui_throttlemeter;
 	int hex_gui_ulist_pos;
 	int hex_gui_ulist_sort;
 	int hex_gui_url_mod;
 	int hex_gui_win_height;
+	int hex_gui_win_fullscreen;
 	int hex_gui_win_left;
 	int hex_gui_win_state;
 	int hex_gui_win_top;
 	int hex_gui_win_width;
-	int hex_input_balloon_time;
+	int hex_identd_port;
 	int hex_irc_ban_type;
 	int hex_irc_join_delay;
 	int hex_irc_notice_pos;
@@ -304,9 +275,6 @@ struct hexchatprefs
 	int hex_notify_timeout;
 	int hex_text_max_indent;
 	int hex_text_max_lines;
-	int hex_text_tint_blue;
-	int hex_text_tint_green;
-	int hex_text_tint_red;
 	int hex_url_grabber_limit;
 
 	/* STRINGS */
@@ -315,7 +283,6 @@ struct hexchatprefs
 	char hex_dcc_completed_dir[PATHLEN + 1];
 	char hex_dcc_dir[PATHLEN + 1];
 	char hex_dcc_ip[DOMAINLEN + 1];
-	char hex_dnsprogram[72];
 	char hex_gui_ulist_doubleclick[256];
 	char hex_input_command_char[4];
 	char hex_irc_extra_hilight[300];
@@ -348,7 +315,6 @@ struct hexchatprefs
 	guint32 dcc_ip;
 
 	unsigned int wait_on_exit;	/* wait for logs to be flushed to disk IF we're connected */
-	unsigned int utf8_locale;
 
 	/* Tells us if we need to save, only when they've been edited.
 		This is so that we continue using internal defaults (which can
@@ -386,6 +352,13 @@ typedef enum gtk_xtext_search_flags_e {
 	regexp = 16
 } gtk_xtext_search_flags;
 
+typedef enum {
+	TAB_STATE_NONE = 0,
+	TAB_STATE_NEW_DATA = (1 << 0),
+	TAB_STATE_NEW_MSG = (1 << 1),
+	TAB_STATE_NEW_HILIGHT = (1 << 2),
+} tab_state_flags;
+
 typedef struct session
 {
 	/* Per-Channel Alerts */
@@ -401,16 +374,17 @@ typedef struct session
 	guint8 text_strip;
 
 	struct server *server;
-	void *usertree_alpha;			/* pure alphabetical tree */
-	void *usertree;					/* ordered with Ops first */
+	tree *usertree;					/* alphabetical tree */
 	struct User *me;					/* points to myself in the usertree */
 	char channel[CHANLEN];
 	char waitchannel[CHANLEN];		  /* waiting to join channel (/join sent) */
 	char willjoinchannel[CHANLEN];	  /* will issue /join for this channel */
+	char session_name[CHANLEN];		 /* the name of the session, should not modified */
 	char channelkey[64];			  /* XXX correct max length? */
 	int limit;						  /* channel user limit */
 	int logfd;
-	int scrollfd;							/* scrollback filedes */
+
+	GFile *scrollfile;							/* scrollback file */
 	int scrollwritten;					/* number of lines written */
 
 	char lastnick[NICKLEN];			  /* last nick you /msg'ed */
@@ -439,26 +413,21 @@ typedef struct session
 	int lastact_idx;		/* the sess_list_by_lastact[] index of the list we're in.
 							 * For valid values, see defines of LACT_*. */
 
-	int new_data:1;			/* new data avail? (purple tab) */
-	int nick_said:1;		/* your nick mentioned? (blue tab) */
-	int msg_said:1;			/* new msg available? (red tab) */
-
 	int ignore_date:1;
 	int ignore_mode:1;
 	int ignore_names:1;
 	int end_of_names:1;
 	int doing_who:1;		/* /who sent on this channel */
 	int done_away_check:1;	/* done checking for away status changes */
+	tab_state_flags tab_state;
+	tab_state_flags last_tab_state; /* before event is handled */
 	gtk_xtext_search_flags lastlog_flags;
+	void (*scrollback_replay_marklast) (struct session *sess);
 } session;
 
-struct msproxy_state_t
-{
-	gint32				clientid;
-	gint32				serverid;
-	unsigned char		seq_recv;		/* seq number of last packet recv.	*/
-	unsigned char		seq_sent;		/* seq number of last packet sent.	*/
-};
+/* SASL Mechanisms */
+#define MECH_PLAIN 0
+#define MECH_EXTERNAL 1
 
 typedef struct server
 {
@@ -511,9 +480,9 @@ typedef struct server
 	int proxy_sok;				/* Additional information for MS Proxy beast */
 	int proxy_sok4;
 	int proxy_sok6;
-	struct msproxy_state_t msp_state;
 	int id;					/* unique ID number (for plugin API) */
 #ifdef USE_OPENSSL
+	SSL_CTX *ctx;
 	SSL *ssl;
 	int ssl_do_connect_tag;
 #else
@@ -562,11 +531,14 @@ typedef struct server
 	time_t msg_last_time;
 
 	/*time_t connect_time;*/				/* when did it connect? */
-	time_t lag_sent;
+	unsigned long lag_sent;   /* we are still waiting for this ping response*/
 	time_t ping_recv;					/* when we last got a ping reply */
 	time_t away_time;					/* when we were marked away */
 
-	char *encoding;					/* NULL for system */
+	char *encoding;
+	GIConv read_converter;  /* iconv converter for converting from server encoding to UTF-8. */
+	GIConv write_converter; /* iconv converter for converting from UTF-8 to server encoding. */
+
 	GSList *favlist;			/* list of channels & keys to join */
 
 	unsigned int motd_skipped:1;
@@ -593,12 +565,15 @@ typedef struct server
 	unsigned int have_idmsg:1;		/* freenode's IDENTIFY-MSG */
 	unsigned int have_accnotify:1; /* cap account-notify */
 	unsigned int have_extjoin:1;	/* cap extended-join */
+	unsigned int have_server_time:1;	/* cap server-time */
 	unsigned int have_sasl:1;		/* SASL capability */
 	unsigned int have_except:1;	/* ban exemptions +e */
 	unsigned int have_invite:1;	/* invite exemptions +I */
-	unsigned int using_cp1255:1;	/* encoding is CP1255/WINDOWS-1255? */
-	unsigned int using_irc:1;		/* encoding is "IRC" (CP1252/UTF-8 hybrid)? */
+	unsigned int have_cert:1;	/* have loaded a cert */
 	unsigned int use_who:1;			/* whether to use WHO command to get dcc_ip */
+	unsigned int sasl_mech;			/* mechanism for sasl auth */
+	unsigned int sent_capend:1;	/* have sent CAP END yet */
+	unsigned int waiting_on_cap:1;	/* waiting on another line of CAP LS */
 #ifdef USE_OPENSSL
 	unsigned int use_ssl:1;				  /* is server SSL capable? */
 	unsigned int accept_invalid_cert:1;/* ignore result of server's cert. verify */
@@ -636,8 +611,5 @@ struct popup
 
 /* CL: get a random int in the range [0..n-1]. DON'T use rand() % n, it gives terrible results. */
 #define RAND_INT(n) ((int)(rand() / (RAND_MAX + 1.0) * (n)))
-
-#define hexchat_filename_from_utf8 g_filename_from_utf8
-#define hexchat_filename_to_utf8 g_filename_to_utf8
 
 #endif
