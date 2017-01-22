@@ -631,19 +631,19 @@ AX_APPEND_COMPILE_FLAGS([\
 	-Werror=date-time \
 	-Werror=implicit-function-declaration \
 	-Werror=pointer-arith \
-])
+], hexchat_def_CFLAGS)
 
 AS_IF([test "$stack_protector" = "yes"], [
 	AX_APPEND_COMPILE_FLAGS([ \
 		-fstack-protector-strong \
-	])
+	], [hexchat_def_CFLAGS])
 ])
 
 AX_APPEND_LINK_FLAGS([ \
 	-pie \
 	-Wl,-z,relro \
 	-Wl,-z,now \
-])
+], [hexchat_def_LDFLAGS])
 
 dnl *********************************************************************
 dnl ** FUNCTIONS/LIBS/CFLAGS ********************************************
@@ -697,6 +697,8 @@ LIBS="$LIBS $INTLLIBS"
 GUI_LIBS="$GUI_LIBS $COMMON_LIBS"
 
 dnl make these visible to all Makefiles
+AC_SUBST(hexchat_def_CFLAGS)
+AC_SUBST(hexchat_def_LDFLAGS)
 AC_SUBST(GUI_LIBS)
 AC_SUBST(GUI_CFLAGS)
 AC_SUBST(COMMON_LIBS)

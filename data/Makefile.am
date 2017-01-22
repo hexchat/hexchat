@@ -1,3 +1,6 @@
+AM_CFLAGS = @hexchat_def_CFLAGS@
+AM_LDFLAGS = @hexchat_def_LDFLAGS@
+
 SUBDIRS =
 
 if DO_PLUGIN

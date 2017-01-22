@@ -1,3 +1,6 @@
+AM_CFLAGS = @hexchat_def_CFLAGS@
+AM_LDFLAGS = @hexchat_def_LDFLAGS@
+
 libdir = $(hexchatlibdir)
 
 sources = sysinfo.c format.c shared/df.c
@@ -12,6 +15,6 @@ EXTRA_DIST = osx unix win32 shared format.h sysinfo.h sysinfo-backend.h
 
 lib_LTLIBRARIES = sysinfo.la
 sysinfo_la_SOURCES = $(sources)
-sysinfo_la_LDFLAGS = $(PLUGIN_LDFLAGS) -module
+sysinfo_la_LDFLAGS = $(PLUGIN_LDFLAGS) -module @hexchat_def_LDFLAGS@
 sysinfo_la_LIBADD = $(LIBPCI_LIBS) $(GLIB_LIBS)
 AM_CPPFLAGS = -I$(top_srcdir)/src/common -I$(srcdir)/shared $(LIBPCI_CFLAGS) $(GLIB_CFLAGS)

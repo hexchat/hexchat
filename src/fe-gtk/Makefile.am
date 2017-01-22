@@ -1,3 +1,5 @@
+AM_CFLAGS = @hexchat_def_CFLAGS@
+AM_LDFLAGS = @hexchat_def_LDFLAGS@
 
 include $(top_srcdir)/m4/clang-analyze.am
 
@@ -33,7 +35,7 @@ notify_c = notifications/notification-libnotify.c
 else
 if HAVE_GTK_MAC
 notify_c = notifications/notification-osx.m
-hexchat_LDFLAGS = -framework Foundation
+hexchat_LDFLAGS = -framework Foundation @hexchat_def_LDFLAGS@
 else
 notify_c = notifications/notification-dummy.c
 endif
