@@ -776,6 +776,13 @@ static int api_hexchat_iterate(lua_State *L)
 		return luaL_argerror(L, 1, "invalid list name");
 }
 
+static int api_hexchat_send_raw(lua_State *L)
+{
+	//hexchat_print(ph, lua_tostring(L, -1));
+	hexchat_send_raw(ph, lua_tostring(L, -1));
+	return 0;
+}
+
 static int api_hexchat_prefs_meta_index(lua_State *L)
 {
 	char const *key = luaL_checkstring(L, 2);
@@ -1045,6 +1052,7 @@ static luaL_Reg api_hexchat[] = {
 	{"set_context", api_hexchat_set_context},
 	{"attrs", api_hexchat_attrs},
 	{"iterate", api_hexchat_iterate},
+	{"send_raw", api_hexchat_send_raw },
 	{NULL, NULL}
 };
 
@@ -1137,6 +1145,7 @@ static int luaopen_hexchat(lua_State *L)
 	wrap_context(L, "nickcmp", api_hexchat_nickcmp);
 	wrap_context(L, "get_info", api_hexchat_get_info);
 	wrap_context(L, "iterate", api_hexchat_iterate);
+	wrap_context(L, "send_raw", api_hexchat_send_raw);
 	lua_setfield(L, -2, "__index");
 	lua_pushcfunction(L, api_hexchat_context_meta_eq);
 	lua_setfield(L, -2, "__eq");
