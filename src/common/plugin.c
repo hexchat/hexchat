@@ -289,7 +289,6 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->hexchat_emit_print_attrs = hexchat_emit_print_attrs;
 		pl->hexchat_event_attrs_create = hexchat_event_attrs_create;
 		pl->hexchat_event_attrs_free = hexchat_event_attrs_free;
-		pl->hexchat_send_raw = hexchat_send_raw;
 
 		/* run hexchat_plugin_init, if it returns 0, close the plugin */
 		if (((hexchat_init_func *)init_func) (pl, &pl->name, &pl->desc, &pl->version, arg) == 0)
@@ -2021,20 +2020,4 @@ hexchat_pluginpref_list (hexchat_plugin *pl, char* dest)
 	}
 
 	return 1;
-}
-
-/* Send directly to the server
- * Useful for bypassing all checks before sending that hexchat_command does
- * Using this method also allows sending to the server during the connecting process
- */
-void
-hexchat_send_raw(hexchat_plugin *ph, const char * const text)
-{
-	if (!is_session(ph->context))
-	{
-		DEBUG(PrintTextf(0, "%s\thexchat_send_raw called without a valid context.\n", ph->name));
-		return;
-	}
-
-	((session *)ph->context)->server->p_raw(ph->context->server, text);
 }

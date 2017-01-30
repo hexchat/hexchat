@@ -193,7 +193,6 @@ struct _hexchat_plugin
 	hexchat_event_attrs *(*hexchat_event_attrs_create) (hexchat_plugin *ph);
 	void (*hexchat_event_attrs_free) (hexchat_plugin *ph,
 									  hexchat_event_attrs *attrs);
-	void(*hexchat_send_raw) (hexchat_plugin *ph, const char * const text);
 };
 #endif
 
@@ -407,9 +406,6 @@ int
 hexchat_pluginpref_list (hexchat_plugin *ph,
 		char *dest);
 
-void
-hexchat_send_raw(hexchat_plugin *ph, const char * const text);
-
 #if !defined(PLUGIN_C) && defined(WIN32)
 #ifndef HEXCHAT_PLUGIN_HANDLE
 #define HEXCHAT_PLUGIN_HANDLE (ph)
@@ -455,7 +451,6 @@ hexchat_send_raw(hexchat_plugin *ph, const char * const text);
 #define hexchat_pluginpref_get_int ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_get_int)
 #define hexchat_pluginpref_delete ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_delete)
 #define hexchat_pluginpref_list ((HEXCHAT_PLUGIN_HANDLE)->hexchat_pluginpref_list)
-#define hexchat_send_raw ((HEXCHAT_PLUGIN_HANDLE)->hexchat_send_raw)
 #endif
 
 #ifdef __cplusplus
