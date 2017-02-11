@@ -4962,6 +4962,14 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 	dontscroll (buf);	/* force scrolling off */
 	xtext->adj->value = buf->old_value;
 	xtext->adj->upper = buf->num_lines;
+
+	/* if the scrollbar was down, keep it down */
+	if (xtext->buffer->scrollbar_down && xtext->adj->value <
+		xtext->adj->upper - xtext->adj->page_size)
+	{
+		xtext->adj->value = xtext->adj->upper - xtext->adj->page_size;
+	}
+
 	if (xtext->adj->upper == 0)
 		xtext->adj->upper = 1;
 	/* sanity check */
