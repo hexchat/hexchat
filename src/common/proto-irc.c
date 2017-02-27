@@ -664,7 +664,7 @@ process_numeric (session * sess, int n,
 		if (sess->ignore_mode)
 			sess->ignore_mode = FALSE;
 		else
-			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODES, sess, word[4], word_eol[5],
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODES, sess, word[4], (word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
 										  NULL, NULL, 0, tags_data->timestamp);
 		fe_update_mode_buttons (sess, 'c', '-');
 		fe_update_mode_buttons (sess, 't', '-');
@@ -692,7 +692,7 @@ process_numeric (session * sess, int n,
 			if (sess->ignore_date)
 				sess->ignore_date = FALSE;
 			else
-				channel_date (sess, word[4], word[5], tags_data);
+				channel_date (sess, word[4], (word[5][0] == ':') ? word[5] + 1 : word[5], tags_data);
 		}
 		break;
 
