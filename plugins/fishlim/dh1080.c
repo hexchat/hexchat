@@ -189,6 +189,7 @@ dh1080_compute_key (const char *priv_key, const char *pub_key, char **secret_key
 	char *pub_key_data;
 	gsize pub_key_len;
 	BIGNUM *pk;
+	BIGNUM *temp_pub_key = BN_new();
 	DH *dh;
 
   	g_assert (secret_key != NULL);
@@ -217,7 +218,7 @@ dh1080_compute_key (const char *priv_key, const char *pub_key, char **secret_key
 #ifndef HAVE_DH_SET0_KEY
 		dh->priv_key = priv_key_num;
 #else
-		DH_set0_key (dh, NULL, priv_key_num);
+		DH_set0_key (dh, temp_pub_key, priv_key_num);
 #endif
 
 		shared_len = DH_compute_key (shared_key, pk, dh);
