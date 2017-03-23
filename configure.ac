@@ -605,7 +605,7 @@ AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 AM_CONDITIONAL(HAVE_ISO_CODES, test "x$isocodes" = "xyes")
 AM_CONDITIONAL(HAVE_GTK_MAC, test "x$_gdk_tgt" = xquartz)
 AM_CONDITIONAL(WITH_TM, test "x$theme_manager" != "xno")
-AM_CONDITIONAL(PLATFORM_OSX, test "x$platform_osx" == "xyes")
+AM_CONDITIONAL(PLATFORM_OSX, test "x$platform_osx" = "xyes")
 
 dnl *********************************************************************
 dnl ** CFLAGS ***********************************************************
