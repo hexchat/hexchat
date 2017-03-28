@@ -4001,6 +4001,8 @@ const struct commands xc_cmds[] = {
 	{"GUI", cmd_gui, 0, 0, 1, "GUI [APPLY|ATTACH|DETACH|SHOW|HIDE|FOCUS|FLASH|ICONIFY|COLOR <n>]\n"
 									  "       GUI [MSGBOX <text>|MENU TOGGLE]"},
 	{"HELP", cmd_help, 0, 0, 1, 0},
+	{"HALFOP", cmd_hop, 1, 1, 1,
+	 N_("HALFOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},
 	{"HOP", cmd_hop, 1, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},
 	{"ID", cmd_id, 1, 0, 1, N_("ID <password>, identifies yourself to nickserv")},
