@@ -104,4 +104,11 @@ void do_dns (session *sess, char *nick, char *host,
 gboolean alert_match_word (char *word, char *masks);
 gboolean alert_match_text (char *text, char *masks);
 
+/* Temporary for debugging issue 371 */
+typedef struct issue371_s {
+	time_t stamp;
+	char *text;
+	char *from;
+}	issue371_t;
+extern GList *is_hilight_debug_list;
 #endif

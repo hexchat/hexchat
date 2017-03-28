@@ -48,6 +48,7 @@
 #include "hexchatc.h"
 #include "chanopt.h"
 
+GList *is_hilight_debug_list;
 
 void
 clear_channel (session *sess)
@@ -301,6 +302,39 @@ alert_match_text (char *text, char *masks)
 	}
 }
 
+/* Temporary code for debugging hexchat issue 371 */
+unsigned int count371lim = 100;
+
+static void
+is_hilight_debug (char *text, char *from)
+{
+	issue371_t *entry371;
+	static unsigned int count371;
+
+	while (count371 > count371lim)	/* Use gdb to set count371lim to change nbr of entries kept */
+	{
+		GList *tmp = is_hilight_debug_list;
+		issue371_t *data;
+
+		is_hilight_debug_list = g_list_remove_link (
+			is_hilight_debug_list, tmp);
+		data = tmp->data;
+		free (data->text);
+		free (data->from);
+
+		g_list_free_1 (tmp);
+		count371--;
+	}
+
+	if ((entry371 = malloc (sizeof *entry371)) == NULL)
+		return;
+	entry371->stamp = time(0);
+	entry371->text = strdup (text);
+	entry371->from = strdup (from);
+	is_hilight_debug_list = g_list_append (is_hilight_debug_list, entry371);
+	count371++;
+}
+
 static int
 is_hilight (char *from, char *text, session *sess, server *serv)
 {
@@ -313,6 +347,7 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 		 alert_match_text (text, prefs.hex_irc_extra_hilight) ||
 		 alert_match_word (from, prefs.hex_irc_nick_hilight))
 	{
+		is_hilight_debug (text, from);	/* Temporary for issue 371 */
 		g_free (text);
 		if (sess != current_tab)
 		{

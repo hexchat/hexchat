@@ -880,12 +880,53 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
+static void
+cmd_debug_hilight (struct session *sess, char *word[])
+{
+	PrintText (sess, "Debugging the hilight problem (issue 371) ---\n");
+
+	GList *tmp;
+
+	tmp = is_hilight_debug_list;
+	if (!tmp)
+	{
+		PrintText (sess, "\tNo is_hilight() debug information has been accumulated yet.\n");
+		return;
+	}
+
+	PrintText (sess, "\t(Each of the two strings is preceded and followed by the eyecatcher \"---\")\n");
+	while (tmp)
+	{
+		issue371_t *data = tmp->data;
+		char stamp[100];
+		char *s;
+		int l;
+
+		l = 100 + strlen (data->text) + strlen (data->from);
+		s = malloc (l);
+		strftime (stamp, sizeof stamp, "%D %H:%M:%S", localtime (&data->stamp));
+		snprintf (s, l, "\t%s\ttext:---%s---\tfrom:---%s---\n",
+			stamp, data->text, data->from);
+		PrintText (sess, s);
+		free (s);
+
+		tmp = tmp->next;
+	}
+	PrintText (sess, "End of list\n");
+}
+
 static int
 cmd_debug (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	struct session *s;
 	struct server *v;
 	GSList *list = sess_list;
+
+	if (word[2] && strcmp (word[2], "hilight") == 0)
+	{
+		cmd_debug_hilight(sess, word);
+		return TRUE;
+	}
 
 	PrintText (sess, "Session   T Channel    WaitChan  WillChan  Server\n");
 	while (list)
