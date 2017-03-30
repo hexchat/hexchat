@@ -568,7 +568,7 @@ Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void
 	PyObject *retobj;
 	PyObject *word_list, *word_eol_list;
 	PyObject *attributes;
-	int ret = 0;
+	int ret = HEXCHAT_EAT_NONE;
 	PyObject *plugin;
 
 	plugin = hook->plugin;
@@ -577,13 +577,13 @@ Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 	word_eol_list = Util_BuildList(word_eol);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	attributes = Attribute_New(attrs);
@@ -619,7 +619,7 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;
 	PyObject *word_list, *word_eol_list;
-	int ret = 0;
+	int ret = HEXCHAT_EAT_NONE;
 	PyObject *plugin;
 
 	plugin = hook->plugin;
@@ -628,13 +628,13 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 	word_eol_list = Util_BuildList(word_eol);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
@@ -665,7 +665,7 @@ Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
 	PyObject *word_list;
 	PyObject *word_eol_list;
 	PyObject *attributes;
-	int ret = 0;
+	int ret = HEXCHAT_EAT_NONE;
 	PyObject *plugin;
 
 	plugin = hook->plugin;
@@ -674,13 +674,13 @@ Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 	word_eol_list = Util_BuildEOLList(word);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	attributes = Attribute_New(attrs);
@@ -714,7 +714,7 @@ Callback_Print(char *word[], void *userdata)
 	PyObject *retobj;
 	PyObject *word_list;
 	PyObject *word_eol_list;
-	int ret = 0;
+	int ret = HEXCHAT_EAT_NONE;
 	PyObject *plugin;
 
 	plugin = hook->plugin;
@@ -723,13 +723,13 @@ Callback_Print(char *word[], void *userdata)
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 	word_eol_list = Util_BuildEOLList(word);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
@@ -2508,9 +2508,9 @@ IInterp_Cmd(char *word[], char *word_eol[], void *userdata)
 	if (channel && channel[0] == '>' && strcmp(channel, ">>python<<") == 0) {
 		hexchat_printf(ph, ">>> %s\n", word_eol[1]);
 		IInterp_Exec(word_eol[1]);
-		return 1;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
-	return 0;
+	return HEXCHAT_EAT_NONE;
 }
 
 
