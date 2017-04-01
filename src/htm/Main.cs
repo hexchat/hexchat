@@ -42,13 +42,27 @@ namespace thememan
 
         OpenFileDialog importDialog;
 
+        static bool IsPortable(out string directory)
+        {
+            System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
+            directory = asm != null ? asm.Location : string.Empty;
+            if (string.IsNullOrEmpty(directory))
+            {
+                directory = string.Empty;
+                return File.Exists("portable-mode");
+            }
+            directory = Path.GetDirectoryName(directory);
+            return File.Exists(Path.Combine(directory, "portable-mode"));
+        }
+
         public HTM ()
         {
             InitializeComponent ();
+            string portableDir;
 
-            if (RunningOnWindows() && File.Exists("portable-mode"))
+            if (RunningOnWindows() && IsPortable(out portableDir))
             {
-                hexchatdir = ("config\\");
+                hexchatdir = Path.Combine(portableDir, "config\\");
 
                 if (!Directory.Exists(hexchatdir))
                 {
