@@ -61,6 +61,7 @@
 
 #ifdef WIN32
 #include <direct.h>
+#include <Windows.h>
 #else
 #include <unistd.h>
 #include <dirent.h>
@@ -2684,6 +2685,34 @@ hexchat_plugin_get_info(char **name, char **desc, char **version, void **reserve
       *reserved = NULL;
 }
 
+#ifdef _WIN32
+
+int init_python_path()
+{
+	HMODULE python_mod;
+	GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+		(const char*)(&Py_SetProgramName), &python_mod);
+
+#ifdef IS_PY3K
+	static wchar_t python_path[512], *ptr;
+	GetModuleFileNameW(python_mod, python_path, sizeof(python_path) / sizeof(python_path[0]));
+	ptr = wcsrchr(python_path, '\\');
+
+#else
+	static char python_path[512], *ptr;
+	GetModuleFileNameA(python_mod, python_path, sizeof(python_path) / sizeof(python_path[0]));
+	ptr = strrchr(python_path, '\\');
+#endif
+	if (ptr)
+	{
+		*ptr = '\0';
+		Py_SetPythonHome(python_path);
+		return 1;
+	}
+	return 0;
+}
+#endif
+
 int
 hexchat_plugin_init(hexchat_plugin *plugin_handle,
 		  char **plugin_name,
@@ -2728,6 +2757,15 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	PyImport_AppendInittab("hexchat", inithexchat);
 	PyImport_AppendInittab("xchat", initxchat);
 #endif
+
+#ifdef _WIN32
+	if (!init_python_path())
+	{
+		hexchat_print(ph, "Can't initialize python path");
+		return 0;
+	}
+#endif
+
 	Py_Initialize();
 	PySys_SetArgv(1, argv);
 
@@ -2772,7 +2810,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 	thread_timer = hexchat_hook_timer(ph, 300, Callback_ThreadTimer, NULL);
 #endif
 
-	hexchat_print(ph, "Python interface loaded\n");
+	hexchat_printf(ph, "Python %d interface loaded\n", PY_MAJOR_VERSION);
 
 	Util_Autoload();
 	return 1;
