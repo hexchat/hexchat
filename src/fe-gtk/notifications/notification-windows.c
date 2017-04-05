@@ -24,7 +24,7 @@
 #include <Windows.h>
 
 void (*winrt_notification_backend_show) (const char *title, const char *text) = NULL;
-int (*winrt_notification_backend_init) (void) = NULL;
+int (*winrt_notification_backend_init) (const char **error) = NULL;
 void (*winrt_notification_backend_deinit) (void) = NULL;
 int (*winrt_notification_backend_supported) (void) = NULL;
 
@@ -40,7 +40,7 @@ notification_backend_show (const char *title, const char *text)
 }
 
 int
-notification_backend_init (void)
+notification_backend_init (const char **error)
 {
 	UINT original_error_mode;
 	GModule *module;
@@ -53,6 +53,7 @@ notification_backend_init (void)
 
 	if (module == NULL)
 	{
+		*error = "hcnotifications-winrt not found.";
 		return 0;
 	}
 
@@ -61,7 +62,7 @@ notification_backend_init (void)
 	g_module_symbol (module, "notification_backend_deinit", (gpointer *) &winrt_notification_backend_deinit);
 	g_module_symbol (module, "notification_backend_supported", (gpointer *) &winrt_notification_backend_supported);
 
-	return winrt_notification_backend_init ();
+	return winrt_notification_backend_init (error);
 }
 
 void
