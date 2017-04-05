@@ -176,8 +176,13 @@ tray_cmd_cb (char *word[], char *word_eol[], gpointer userdata)
 int
 notification_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
-	if (!notification_backend_init ())
+	const char* error = NULL;
+	if (!notification_backend_init (&error))
+	{
+		if (error)
+			hexchat_printf(plugin_handle, "Failed loading notification plugin: %s\n", error);
 		return 0;
+	}
 
 	ph = plugin_handle;
 	*plugin_name = "";
