@@ -248,6 +248,13 @@ static const struct defaultserver def[] =
 	{"Moznet", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.mozilla.org"},
 	
+	{"NetFuze",	0},
+#ifdef USE_OPENSSL
+	{0,			"irc.netfuze.net/+6697"},
+#endif
+	{0,			"irc.netfuze.net"},
+	
+	
 	{"ObsidianIRC",  0},
 	/* Self signed */
 	{0,      "irc.obsidianirc.net"}, 
