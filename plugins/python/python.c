@@ -2548,7 +2548,11 @@ Command_PyList(void)
 static void
 Command_PyLoad(char *filename)
 {
-	PyObject *plugin;
+	PluginObject *plugin = Plugin_ByString(name);
+	if (plugin) {
+		Command_PyReload(char *name);
+		return;
+	}
 	RELEASE_XCHAT_LOCK();
 	plugin = Plugin_New(filename, xchatout);
 	ACQUIRE_XCHAT_LOCK();
