@@ -173,6 +173,7 @@ struct hexchatprefs
 	unsigned int hex_irc_conf_mode;
 	unsigned int hex_irc_hidehost;
 	unsigned int hex_irc_hide_nickchange;
+	unsigned int hex_irc_hide_voicechange;
 	unsigned int hex_irc_hide_version;
 	unsigned int hex_irc_invisible;
 	unsigned int hex_irc_logging;
