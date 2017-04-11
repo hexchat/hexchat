@@ -13,7 +13,7 @@ For more information on HexChat please read our [documentation](https://hexchat.
 
 <sub>
 X-Chat ("xchat") Copyright (c) 1998-2010 By Peter Zelezny.  
-HexChat ("hexchat") Copyright (c) 2009-2014 By Berke Viktor.
+HexChat ("hexchat") Copyright (c) 2009-2015 By Berke Viktor.
 </sub>
 
 <sub>
