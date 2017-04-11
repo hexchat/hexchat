@@ -100,7 +100,10 @@ static const struct defaultserver def[] =
 
 	{"Chat4all", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.chat4all.org"},
-
+	
+	{"ChatHispano", 0, 0, 0, 0, 0, TRUE},
+	{0,			"ssl.chathispano.com/+6697"},
+	
 	{"ChatJunkies",	0},
 	{0,			"irc.chatjunkies.org"},
 
