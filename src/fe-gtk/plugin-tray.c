@@ -59,9 +59,11 @@ typedef GdkPixbuf* TrayIcon;
 #define ICON_HILIGHT pix_tray_highlight
 #define ICON_FILE pix_tray_fileoffer
 #define TIMEOUT 500
+#define FLASH_COUNT 252
 
 static GtkStatusIcon *sticon;
 static gint flash_tag;
+static gint flash_count;
 static TrayStatus tray_status;
 #ifdef WIN32
 static guint tray_menu_timer;
@@ -192,6 +194,7 @@ tray_stop_flash (void)
 	}
 
 	tray_status = TS_NONE;
+	flash_count = 0;
 }
 
 static void
@@ -227,6 +230,11 @@ tray_timeout_cb (TrayIcon icon)
 		else
 			gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
 	}
+
+	flash_count++;
+	if (flash_count == FLASH_COUNT)
+		return 0;
+
 	return 1;
 }
 
