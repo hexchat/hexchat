@@ -358,6 +358,19 @@ static const struct defaultserver def[] =
 	{"Xertion", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.xertion.org"},
 
+	{"Xertion",		0},
+	{0,			"irc.xertion.org"},
+
+#ifdef USE_OPENSSL
+	{0,			"irc.xertion.org/+6697"},
+#endif
+#ifdef USE_IPV6
+#ifdef USE_OPENSSL
+	{0,			"irc6.xertion.org/+6697"},
+#endif
+	{0,			"irc6.xertion.org"},
+#endif
+
 	{0,0}
 };
 
