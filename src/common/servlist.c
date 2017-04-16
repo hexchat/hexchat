@@ -127,9 +127,6 @@ static const struct defaultserver def[] =
 	{"Dark-Tou-Net",	0},
 	{0,			"irc.d-t-net.de"},
 
-	{"DeltaAnime", 0},
-	{0,			"irc.deltaanime.net"},
-
 	{"EFnet",	0},
 	{0,			"irc.choopa.net"},
 	{0,			"irc.paraphysics.net"},
