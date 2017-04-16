@@ -70,7 +70,7 @@ void key_action_tab_clean (void);
  */
 
 /* Remember that the *number* of actions is this *plus* 1 --AGL */
-#define KEY_MAX_ACTIONS 14
+#define KEY_MAX_ACTIONS 15
 
 struct key_binding
 {
@@ -132,6 +132,9 @@ static int key_action_move_tab_family_right (GtkWidget * wid, GdkEventKey * evt,
 static int key_action_put_history (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
+static int key_action_clear_input (GtkWidget * wid, GdkEventKey * evt,
+												  char *d1, char *d2,
+												  struct session *sess);
 
 static GSList *keybind_list = NULL;
 
@@ -167,6 +170,8 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	 N_("This command moves the current tab family to the right")},
 	{key_action_put_history, "Push input line into history",
 	 N_("Push input line into history but doesn't send to server")},
+	{key_action_clear_input, "Clear input box",
+	 N_("Clear all text from the input box")},
 };
 
 #define default_kb_cfg \
@@ -1765,6 +1770,13 @@ key_action_put_history (GtkWidget * wid, GdkEventKey * ent, char *d1,
 	return 2;						  /* -''- */
 }
 
+static int
+key_action_clear_input (GtkWidget * wid, GdkEventKey * ent, char *d1,
+									char *d2, struct session *sess)
+{
+	SPELL_ENTRY_SET_TEXT (wid, "");
+	return 2;						  /* -''- */
+}
 
 /* -------- */
 
