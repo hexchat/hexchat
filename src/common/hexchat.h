@@ -300,8 +300,8 @@ struct hexchatprefs
 	char hex_irc_user_name[127];
 	char hex_net_bind_host[127];
 	char hex_net_proxy_host[64];
-	char hex_net_proxy_pass[32];
-	char hex_net_proxy_user[32];
+	char hex_net_proxy_pass[256];
+	char hex_net_proxy_user[256];
 	char hex_stamp_log_format[64];
 	char hex_stamp_text_format[64];
 	char hex_text_background[PATHLEN + 1];
