@@ -72,7 +72,7 @@ our %EXPORT_TAGS = (
 		qw(print prnt printf prntf command commandf emit_print), # output
 		qw(find_context get_context set_context), # context
 		qw(get_info get_prefs get_list context_info user_info), # input
-		qw(plugin_pref_set plugin_pref_get plugin_pref_delete plugin_pref_list), #settings
+		qw(plugin_pref_set plugin_pref_get plugin_pref_delete plugin_pref_del plugin_pref_list), #settings
 	],
 );
 
@@ -446,6 +446,10 @@ sub plugin_pref_delete {
 	my $setting = shift // return 0;
 
 	return HexChat::Internal::plugin_pref_delete($setting);
+}
+
+sub plugin_pref_del {
+	goto &HexChat::plugin_pref_delete;
 }
 
 sub plugin_pref_list {
