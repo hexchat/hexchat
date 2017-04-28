@@ -256,19 +256,7 @@ int xs_parse_distro(char *name)
 	FILE *fp = NULL;
 	char buffer[bsize], *pos = NULL;
 
-	if((fp = fopen("/etc/portage/make.conf", "r")) != NULL ||
-			(fp = fopen("/etc/make.conf", "r")) != NULL)
-	{
-		char keywords[bsize];
-		while(fgets(buffer, bsize, fp) != NULL)
-			find_match_char(buffer, "ACCEPT_KEYWORDS", keywords);
-		/* cppcheck-suppress uninitvar */
-		if (strstr(keywords, "\"") == NULL)
-			g_snprintf(buffer, bsize, "Gentoo Linux (stable)");
-		else
-			g_snprintf(buffer, bsize, "Gentoo Linux %s", keywords);
-	}
-	else if((fp = fopen("/etc/redhat-release", "r")) != NULL)
+	if((fp = fopen("/etc/redhat-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/mageia-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
@@ -301,6 +289,18 @@ int xs_parse_distro(char *name)
 		char release[bsize];
 		fgets(release, bsize, fp);
 		g_snprintf(buffer, bsize, "Debian %s", release);
+	}
+	else if((fp = fopen("/etc/portage/make.conf", "r")) != NULL ||
+			(fp = fopen("/etc/make.conf", "r")) != NULL)
+	{
+		char keywords[bsize];
+		while(fgets(buffer, bsize, fp) != NULL)
+			find_match_char(buffer, "ACCEPT_KEYWORDS", keywords);
+		/* cppcheck-suppress uninitvar */
+		if (strstr(keywords, "\"") == NULL)
+			g_snprintf(buffer, bsize, "Gentoo Linux (stable)");
+		else
+			g_snprintf(buffer, bsize, "Gentoo Linux %s", keywords);
 	}
 	else
 		g_snprintf(buffer, bsize, "Unknown Distro");
