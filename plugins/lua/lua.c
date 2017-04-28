@@ -1361,16 +1361,6 @@ static script_info *create_script(char const *file)
 	return info;
 }
 
-static void load_script(char const *file)
-{
-	script_info *info = create_script(file);
-	if(info)
-	{
-		g_ptr_array_add(scripts, info);
-		check_deferred(info);
-	}
-}
-
 static script_info *get_script_by_file(char const *filename)
 {
 	char const *expanded = expand_path(filename);
@@ -1385,6 +1375,26 @@ static script_info *get_script_by_file(char const *filename)
 	}
 
 	return NULL;
+}
+
+static int load_script(char const *file)
+{
+	script_info *info = get_script_by_file(file);
+
+	if (info != NULL)
+	{
+		hexchat_print(ph, "Lua script is already loaded");
+		return 0;
+	}
+
+	info = create_script(file);
+	if (info)
+	{
+		g_ptr_array_add(scripts, info);
+		check_deferred(info);
+	}
+
+	return 1;
 }
 
 static int unload_script(char const *filename)
@@ -1685,8 +1695,17 @@ static int command_lua(char *word[], char *word_eol[], void *userdata)
 	return HEXCHAT_EAT_ALL;
 }
 
+/* Reinitialization safegaurd */
+static int initialized = 0;
+
 G_MODULE_EXPORT int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **name, char **description, char **version, char *arg)
 {
+	if(initialized != 0)
+	{
+		hexchat_print(plugin_handle, "Lua interface already loaded\n");
+		return 0;
+	}
+
 	if (g_str_has_prefix(LUA_VERSION, "Lua "))
 	{
 		strcat(plugin_version, "/");
@@ -1698,6 +1717,7 @@ G_MODULE_EXPORT int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **na
 	*version = plugin_version;
 
 	ph = plugin_handle;
+	initialized = 1;
 
 	hexchat_hook_command(ph, "", HEXCHAT_PRI_NORM, command_console_exec, NULL, NULL);
 	hexchat_hook_command(ph, "LOAD", HEXCHAT_PRI_NORM, command_load, NULL, NULL);

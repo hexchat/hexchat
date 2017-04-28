@@ -22,7 +22,7 @@ notification_backend_show (const char *title, const char *text)
 }
 
 int
-notification_backend_init (void)
+notification_backend_init (const char **error)
 {
 	return 0;
 }
