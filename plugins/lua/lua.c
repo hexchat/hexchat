@@ -1361,16 +1361,6 @@ static script_info *create_script(char const *file)
 	return info;
 }
 
-static void load_script(char const *file)
-{
-	script_info *info = create_script(file);
-	if(info)
-	{
-		g_ptr_array_add(scripts, info);
-		check_deferred(info);
-	}
-}
-
 static script_info *get_script_by_file(char const *filename)
 {
 	char const *expanded = expand_path(filename);
@@ -1385,6 +1375,24 @@ static script_info *get_script_by_file(char const *filename)
 	}
 
 	return NULL;
+}
+
+static int load_script(char const *file)
+{
+	if( get_script_by_file( file ) )
+	{
+		hexchat_print( ph, "Lua script is already loaded" );
+		return 0;
+	}
+
+	script_info *info = create_script(file);
+	if (info)
+	{
+		g_ptr_array_add(scripts, info);
+		check_deferred(info);
+	}
+
+	return 1;
 }
 
 static int unload_script(char const *filename)
