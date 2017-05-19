@@ -138,7 +138,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
 static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata) {
     const char *prefix;
     const char *command;
-    const char *recipient;
+    const char *channel = hexchat_get_info(ph, "channel");
     const char *encrypted;
     const char *peice;
     char *sender_nick;
@@ -166,11 +166,10 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
   has_encrypted_data: ;
     /* Extract sender nick and recipient nick/channel */
     sender_nick = irc_prefix_get_nick(prefix);
-    recipient = word[w];
     
     /* Try to decrypt with these (the keys are searched for in the key store) */
     encrypted = word[ew+1];
-    decrypted = fish_decrypt_from_nick(recipient, encrypted);
+    decrypted = fish_decrypt_from_nick(channel, encrypted);
     if (!decrypted) decrypted = fish_decrypt_from_nick(sender_nick, encrypted);
     
     /* Check for error */
