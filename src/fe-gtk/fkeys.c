@@ -1311,10 +1311,8 @@ static int
 key_action_set_buffer (GtkWidget * wid, GdkEventKey * evt, char *d1, char *d2,
 							  struct session *sess)
 {
-	if (!d1)
-		return 1;
-	if (d1[0] == 0)
-		return 1;
+	if (!d1 || d1[0] == 0)
+		d1 = "";
 
 	SPELL_ENTRY_SET_TEXT (wid, d1);
 	SPELL_ENTRY_SET_POS (wid, -1);
