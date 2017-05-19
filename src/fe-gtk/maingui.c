@@ -515,7 +515,8 @@ mg_focus (session *sess)
 	/* dirty trick to avoid auto-selection */
 	SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, FALSE);
 	gtk_widget_grab_focus (sess->gui->input_box);
-	SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, TRUE);
+	if (!sess->text_lurk)
+		SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, TRUE);
 
 	sess->server->front_session = sess;
 
@@ -781,7 +782,7 @@ mg_decide_userlist (session *sess, gboolean switch_to_current)
 		else
 			mg_userlist_showhide (sess, FALSE);	/* hide */
 		break;
-	default:		
+	default:
 		mg_userlist_showhide (sess, TRUE);	/* show */
 	}
 }
@@ -1078,7 +1079,7 @@ mg_tab_close (session *sess)
 		}
 		else
 		{
-			gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER_ON_PARENT);		
+			gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER_ON_PARENT);
 		}
 		gtk_widget_show (dialog);
 	}
@@ -1475,6 +1476,8 @@ mg_set_guint8 (GtkCheckMenuItem *item, guint8 *setting)
 	if (logging != sess->text_logging)
 		log_open_or_close (sess);
 
+	SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, !sess->text_lurk);
+
 	chanopt_save (sess);
 	chanopt_save_all (FALSE);
 }
@@ -1500,6 +1503,7 @@ mg_create_perchannelmenu (session *sess, GtkWidget *menu)
 
 	mg_perchan_menu_item (_("_Log to Disk"), submenu, &sess->text_logging, prefs.hex_irc_logging);
 	mg_perchan_menu_item (_("_Reload Scrollback"), submenu, &sess->text_scrollback, prefs.hex_text_replay);
+	mg_perchan_menu_item (_("_Lurk mode"), submenu, &sess->text_lurk, prefs.hex_irc_lurk);
 	if (sess->type == SESS_CHANNEL)
 	{
 		mg_perchan_menu_item (_("Strip _Colors"), submenu, &sess->text_strip, prefs.hex_text_stripcolor_msg);
@@ -1921,7 +1925,7 @@ flagk_hit (GtkWidget * wid, struct session *sess)
 
 	if (serv->connected && sess->channel[0])
 	{
-		g_snprintf (modes, sizeof (modes), "-k %s", 
+		g_snprintf (modes, sizeof (modes), "-k %s",
 			  gtk_entry_get_text (GTK_ENTRY (sess->gui->key_entry)));
 
 		if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (wid)))
@@ -2017,7 +2021,7 @@ mg_limit_entry_cb (GtkWidget * igad, gpointer userdata)
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sess->gui->flag_l), FALSE);
 			return;
 		}
-		g_snprintf (modes, sizeof(modes), "+l %d", 
+		g_snprintf (modes, sizeof(modes), "+l %d",
 				atoi (gtk_entry_get_text (GTK_ENTRY (igad))));
 		serv->p_mode (serv, sess->channel, modes);
 		serv->p_join_info (serv, sess->channel);
@@ -2860,7 +2864,7 @@ search_handle_esc (GtkWidget *win, GdkEventKey *key, session *sess)
 {
 	if (key->keyval == GDK_KEY_Escape)
 		mg_search_toggle(sess);
-			
+
 	return FALSE;
 }
 

@@ -176,6 +176,7 @@ struct hexchatprefs
 	unsigned int hex_irc_hide_version;
 	unsigned int hex_irc_invisible;
 	unsigned int hex_irc_logging;
+	unsigned int hex_irc_lurk;
 	unsigned int hex_irc_raw_modes;
 	unsigned int hex_irc_servernotice;
 	unsigned int hex_irc_skip_motd;
@@ -372,6 +373,7 @@ typedef struct session
 	guint8 text_logging;
 	guint8 text_scrollback;
 	guint8 text_strip;
+	guint8 text_lurk;
 
 	struct server *server;
 	tree *usertree;					/* alphabetical tree */
