@@ -376,12 +376,12 @@ const struct prefs vars[] =
 #ifndef WIN32
 	{"dcc_fast_send", P_OFFINT (hex_dcc_fast_send), TYPE_BOOL},
 #endif
-	{"dcc_global_max_get_cps", P_OFFINT (hex_dcc_global_max_get_cps), TYPE_INT},
-	{"dcc_global_max_send_cps", P_OFFINT (hex_dcc_global_max_send_cps), TYPE_INT},
+	{"dcc_global_max_get_cps", P_OFFSET (hex_dcc_global_max_get_cps), TYPE_STR},
+	{"dcc_global_max_send_cps", P_OFFSET (hex_dcc_global_max_send_cps), TYPE_STR},
 	{"dcc_ip", P_OFFSET (hex_dcc_ip), TYPE_STR},
 	{"dcc_ip_from_server", P_OFFINT (hex_dcc_ip_from_server), TYPE_BOOL},
-	{"dcc_max_get_cps", P_OFFINT (hex_dcc_max_get_cps), TYPE_INT},
-	{"dcc_max_send_cps", P_OFFINT (hex_dcc_max_send_cps), TYPE_INT},
+	{"dcc_max_get_cps", P_OFFSET (hex_dcc_max_get_cps), TYPE_STR},
+	{"dcc_max_send_cps", P_OFFSET (hex_dcc_max_send_cps), TYPE_STR},
 	{"dcc_permissions", P_OFFINT (hex_dcc_permissions), TYPE_INT},
 	{"dcc_port_first", P_OFFINT (hex_dcc_port_first), TYPE_INT},
 	{"dcc_port_last", P_OFFINT (hex_dcc_port_last), TYPE_INT},

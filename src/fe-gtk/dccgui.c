@@ -88,7 +88,7 @@ struct my_dcc_send
 {
 	struct session *sess;
 	char *nick;
-	gint64 maxcps;
+	char *maxcps;
 	int passive;
 };
 
@@ -136,7 +136,7 @@ dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 }
 
 void
-fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
+fe_dcc_send_filereq (struct session *sess, char *nick,  char *maxcps, int passive)
 {
 	char* tbuf = g_strdup_printf (_("Send file to %s"), nick);
 

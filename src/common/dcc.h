@@ -117,7 +117,7 @@ int dcc_resume (struct DCC *dcc);
 void dcc_change_nick (server *serv, char *oldnick, char *newnick);
 void dcc_notify_kill (struct server *serv);
 struct DCC *dcc_write_chat (char *nick, char *text);
-void dcc_send (struct session *sess, char *to, char *file, gint64 maxcps, int passive);
+void dcc_send (struct session *sess, char *to, char *file, char *maxcps, int passive);
 struct DCC *find_dcc (char *nick, char *file, int type);
 void dcc_get_nick (struct session *sess, char *nick);
 void dcc_chat (session *sess, char *nick, int passive);

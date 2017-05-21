@@ -55,6 +55,7 @@
 #include "tree.h"
 #include "outbound.h"
 #include "chanopt.h"
+#include "dcc.h"
 
 #define TBUFSIZE 4096
 
@@ -835,8 +836,8 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		}
 		if ((!g_ascii_strcasecmp (type, "SEND")) || (!g_ascii_strcasecmp (type, "PSEND")))
 		{
-			int i = 3, maxcps;
-			char *nick, *file;
+			int i = 3;
+			char *nick, *file, *maxcps;
 			int passive = (!g_ascii_strcasecmp(type, "PSEND")) ? 1 : 0;
 
 			nick = word[i];
@@ -846,7 +847,7 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			maxcps = prefs.hex_dcc_max_send_cps;
 			if (!g_ascii_strncasecmp(nick, "-maxcps=", 8))
 			{
-				maxcps = atoi(nick + 8);
+				maxcps = nick + 8;
 				i++;
 				nick = word[i];
 				if (!*nick)
