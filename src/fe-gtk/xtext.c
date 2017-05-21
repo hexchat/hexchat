@@ -4698,24 +4698,40 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 		space = 0;
 
 	/* do we need to auto adjust the separator position? */
-	if (buf->xtext->auto_indent &&
-		 buf->indent < buf->xtext->max_auto_indent &&
-		 ent->indent < MARGIN + space)
-	{
-		tempindent = MARGIN + space + buf->xtext->space_width + left_width;
+	if (buf->xtext->auto_indent) {
+		int max_auto_indent = buf->xtext->max_auto_indent;
+		GdkScreen *screen = gdk_window_get_screen (buf->xtext->draw_buf);
+		double gdk_reso = gdk_screen_get_resolution (screen);
 
-		if (tempindent > buf->indent)
-			buf->indent = tempindent;
+		/* Adjust the max auto indent to account for the display DPI.
+		 *
+		 * For legacy reasons, we won't adjust if the DPI is less than 120, since
+		 * this is basically just for HiDPI displays.
+		 *
+		 * 96 has been chosen as the "normal" DPI value for adjustment purposes
+		 * completely arbitrarily.
+		 */
+		if (gdk_reso >= 120.0)
+			max_auto_indent = (int) (max_auto_indent * (gdk_reso / 96.0));
 
-		if (buf->indent > buf->xtext->max_auto_indent)
-			buf->indent = buf->xtext->max_auto_indent;
+		if (buf->indent < max_auto_indent &&
+			 ent->indent < MARGIN + space)
+		{
+			tempindent = MARGIN + space + buf->xtext->space_width + left_width;
 
-		gtk_xtext_fix_indent (buf);
-		gtk_xtext_recalc_widths (buf, FALSE);
+			if (tempindent > buf->indent)
+				buf->indent = tempindent;
 
-		ent->indent = (buf->indent - left_width) - buf->xtext->space_width;
-		buf->xtext->force_render = TRUE;
-	}
+			if (buf->indent > max_auto_indent)
+				buf->indent = max_auto_indent;
+
+			gtk_xtext_fix_indent (buf);
+			gtk_xtext_recalc_widths (buf, FALSE);
+
+			ent->indent = (buf->indent - left_width) - buf->xtext->space_width;
+			buf->xtext->force_render = TRUE;
+		}
+  }
 
 	gtk_xtext_append_entry (buf, ent, stamp);
 }
