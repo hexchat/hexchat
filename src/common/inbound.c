@@ -263,6 +263,7 @@ alert_match_text (char *text, char *masks)
 
 	while (1)
 	{
+
 		if (*p >= '0' && *p <= '9')
 		{
 			p++;
@@ -275,6 +276,13 @@ alert_match_text (char *text, char *masks)
 		case '-': case '[': case ']': case '\\':
 		case '`': case '^': case '{': case '}':
 		case '_': case '|':
+			p++;
+			continue;
+		}
+
+		/* allow highlight on word which contains @ */
+		if (*p == '@')
+		{
 			p++;
 			continue;
 		}
