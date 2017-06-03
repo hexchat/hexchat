@@ -93,6 +93,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 	server *serv = sess->server;
 	char outbuf[1024];
 	int ctcp_offset = 2;
+	int slash_chars;
 
 	if (serv->have_idmsg && (word[4][1] == '+' || word[4][1] == '-') )
 			ctcp_offset = 3;
@@ -172,11 +173,11 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 			}
 
 			/* don't let IRCers specify path */
+			slash_chars = strchr (word[5], '/') == NULL;
 #ifdef WIN32
-			if (strchr (word[5], '/') == NULL && strchr (word[5], '\\') == NULL)
-#else
-			if (strchr (word[5], '/') == NULL)
+			slash_chars = slash_chars && strchr (word[5], '\\') == NULL;	
 #endif
+			if (slash_chars)
 				sound_play (word[5], TRUE);
 			return;
 		}
