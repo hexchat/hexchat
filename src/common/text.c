@@ -2194,6 +2194,9 @@ sound_play (const char *file, gboolean quiet)
 	char *cmd;
 #endif
 
+	if (!prefs.hex_sounds)
+		return;
+
 	/* the pevents GUI editor triggers this after removing a soundfile */
 	if (!file[0])
 	{

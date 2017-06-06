@@ -189,6 +189,7 @@ struct hexchatprefs
 	unsigned int hex_net_throttle;
 	unsigned int hex_notify_whois_online;
 	unsigned int hex_perl_warnings;
+	unsigned int hex_sounds;
 	unsigned int hex_stamp_log;
 	unsigned int hex_stamp_text;
 	unsigned int hex_text_autocopy_color;
