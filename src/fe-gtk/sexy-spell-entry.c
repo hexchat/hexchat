@@ -1135,7 +1135,7 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 	log_attrs = pango_layout_get_log_attrs_readonly (layout, &n_attrs);
 
 	/* Find how many words we have */
-	for (i = 0, n_strings = 0; i < n_attrs; i++)
+	for (i = 0, n_strings = 0; i < n_attrs - 1; i++)
 	{
 		a = log_attrs[i];
 		if (a.is_word_start && a.is_word_boundary)
@@ -1147,7 +1147,7 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 	*ends   = g_new0(gint, n_strings);
 
 	/* Copy out strings */
-	for (i = 0, j = 0; i < n_attrs; i++)
+	for (i = 0, j = 0; i < n_attrs - 1; i++)
 	{
 		a = log_attrs[i];
 		if (a.is_word_start && a.is_word_boundary)
@@ -1156,7 +1156,7 @@ entry_strsplit_utf8(GtkEntry *entry, gchar ***set, gint **starts, gint **ends)
 			gchar *start;
 
 			/* Find the end of this string */
-			for (cend = i; cend < n_attrs; cend++)
+			for (cend = i; cend < n_attrs - 1; cend++)
 			{
 				a = log_attrs[cend];
 				if (a.is_word_end && a.is_word_boundary)
