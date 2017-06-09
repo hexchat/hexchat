@@ -581,12 +581,6 @@ static const setting advanced_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const setting sound_settings[] =
-{
-	{ST_TOGGLE,	N_("Enable sounds"), P_OFFINTNL(hex_sounds), 0, 0, 0},
-	{ST_END, 0, 0, 0, 0, 0}
-};
-
 static const setting logging_settings[] =
 {
 	{ST_HEADER,	N_("Logging"),0,0,0},
@@ -1758,10 +1752,9 @@ setup_snd_changed_cb (GtkEntry *ent, GtkTreeView *tree)
 }
 
 static GtkWidget *
-setup_create_sound_page (const setting *set)
+setup_create_sound_page (void)
 {
 	GtkWidget *vbox1;
-	GtkWidget *page;
 	GtkWidget *vbox2;
 	GtkWidget *scrolledwindow1;
 	GtkWidget *sound_tree;
@@ -1774,9 +1767,6 @@ setup_create_sound_page (const setting *set)
 	vbox1 = gtk_vbox_new (FALSE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox1), 6);
 	gtk_widget_show (vbox1);
-
-	page = setup_create_page (set);
-	gtk_box_pack_start (GTK_BOX (vbox1), page, FALSE, FALSE, 0);
 
 	vbox2 = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox2);
@@ -1933,7 +1923,7 @@ setup_create_pages (GtkWidget *box)
 		setup_add_page (cata[9], book, setup_create_page (alert_settings));
 	}
 
-	setup_add_page (cata[10], book, setup_create_sound_page (sound_settings));
+	setup_add_page (cata[10], book, setup_create_sound_page ());
 	setup_add_page (cata[11], book, setup_create_page (logging_settings));
 	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
 

@@ -547,8 +547,6 @@ const struct prefs vars[] =
 
 	{"perl_warnings", P_OFFINT (hex_perl_warnings), TYPE_BOOL},
 
-	{"sounds", P_OFFINT (hex_sounds), TYPE_BOOL},
-
 	{"stamp_log", P_OFFINT (hex_stamp_log), TYPE_BOOL},
 	{"stamp_log_format", P_OFFSET (hex_stamp_log_format), TYPE_STR},
 	{"stamp_text", P_OFFINT (hex_stamp_text), TYPE_BOOL},
