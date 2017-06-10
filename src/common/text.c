@@ -2098,7 +2098,8 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 		break;
 	}
 
-	sound_play_event (index);
+	if (!prefs.hex_away_omit_alerts || !sess->server->is_away)
+		sound_play_event (index);
 	display_event (sess, index, word, stripcolor_args, timestamp);
 }
 
@@ -2193,9 +2194,6 @@ sound_play (const char *file, gboolean quiet)
 #ifndef WIN32
 	char *cmd;
 #endif
-
-	if (prefs.hex_away_omit_alerts)
-		return;
 
 	/* the pevents GUI editor triggers this after removing a soundfile */
 	if (!file[0])
