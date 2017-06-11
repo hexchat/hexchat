@@ -1,3 +1,6 @@
+AM_CFLAGS = @hexchat_def_CFLAGS@
+AM_LDFLAGS = @hexchat_def_LDFLAGS@
+
 noinst_LIBRARIES = libhexchatdbus.a
 libhexchatdbus_a_SOURCES =			\
 	dbus-plugin.c				\

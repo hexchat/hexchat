@@ -1,4 +1,6 @@
 ## Process this file with automake to produce Makefile.in
+AM_CFLAGS = @hexchat_def_CFLAGS@
+AM_LDFLAGS = @hexchat_def_LDFLAGS@
 
 include $(top_srcdir)/m4/clang-analyze.am
 
@@ -64,7 +66,7 @@ libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c hexchat.c \
 	history.c ignore.c inbound.c marshal.c modes.c network.c notify.c \
 	outbound.c plugin.c plugin-identd.c plugin-timer.c proto-irc.c server.c servlist.c \
 	$(ssl_c) text.c tree.c url.c userlist.c util.c
-libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
+libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS) $(hexchat_def_CFLAGS)
 
 textenums.h: textevents.h
 

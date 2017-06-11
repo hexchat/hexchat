@@ -1,3 +1,6 @@
+AM_CFLAGS = @hexchat_def_CFLAGS@
+AM_LDFLAGS = @hexchat_def_LDFLAGS@
+
 icon_DATA = hexchat.png
 icondir = $(datadir)/icons/hicolor/48x48/apps
 

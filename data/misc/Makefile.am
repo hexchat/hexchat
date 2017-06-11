@@ -1,3 +1,5 @@
+AM_CFLAGS = @hexchat_def_CFLAGS@
+AM_LDFLAGS = @hexchat_def_LDFLAGS@
 
 appdatadir = $(datadir)/appdata
 appdata_in_files =
