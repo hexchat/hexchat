@@ -38,7 +38,7 @@ if ret.returncode() != 0
 endif
 perl_ldflags = []
 foreach flag : ret.stdout().strip().split(' ')
-  if flag.startswith('-L') or flag.startswith('-l')
+  if flag.startswith('-L') or flag.startswith('-l') or flag.startswith('-Wl')
     perl_ldflags += flag
   endif
 endforeach
