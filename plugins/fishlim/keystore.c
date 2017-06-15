@@ -177,7 +177,9 @@ static gboolean save_keystore(GKeyFile *keyfile) {
 #if !GLIB_CHECK_VERSION(2,40,0)
     ok = keyfile_save_to_file (keyfile, filename);
 #else
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS /* Hide false positive */
     ok = g_key_file_save_to_file (keyfile, filename, NULL);
+G_GNUC_END_IGNORE_DEPRECATIONS
 #endif
     g_free (filename);
 
