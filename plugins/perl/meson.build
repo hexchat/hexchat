@@ -37,8 +37,17 @@ if ret.returncode() != 0
   error('perl: Failed to get ldflags')
 endif
 perl_ldflags = []
+perl_rpath = ''
 foreach flag : ret.stdout().strip().split(' ')
-  if flag.startswith('-L') or flag.startswith('-l') or flag.startswith('-Wl')
+  if flag.startswith('-L') or flag.startswith('-l')
+    perl_ldflags += flag
+  endif
+  if flag.startswith('-Wl,-rpath,')
+    # Install rpath
+    split = flag.split(',')
+    perl_rpath = split[split.length() - 1]
+
+    # For in tree
     perl_ldflags += flag
   endif
 endforeach
@@ -69,5 +78,6 @@ shared_module('perl',
   link_args: perl_ldflags,
   install: true,
   install_dir: plugindir,
+  install_rpath: perl_rpath,
   name_prefix: '',
 )
