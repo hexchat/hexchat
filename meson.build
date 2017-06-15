@@ -64,6 +64,12 @@ if libssl_dep.found()
   config_h.set('HAVE_DH_SET0_KEY',
     cc.has_function('DH_set0_key', dependencies: libssl_dep)
   )
+  config_h.set('HAVE_ERR_REMOVE_THREAD_STATE',
+    cc.has_function('ERR_remove_thread_state', dependencies: libssl_dep)
+  )
+  config_h.set('HAVE_ASN1_STRING_GET0_DATA',
+    cc.has_function('ASN1_STRING_get0_data', dependencies: libssl_dep)
+  )
 endif
 
 configure_file(output: 'config.h', configuration: config_h)
