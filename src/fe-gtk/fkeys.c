@@ -94,8 +94,8 @@ struct gcomp_data
 	int elen;
 };
 
-static int key_load_kbs ();
-static int key_save_kbs ();
+static int key_load_kbs (void);
+static int key_save_kbs (void);
 static int key_action_handle_command (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
@@ -182,11 +182,12 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	"ACCEL=<Alt>2\nChange Page\nD1:2\nD2!\n\n"\
 	"ACCEL=<Alt>1\nChange Page\nD1:1\nD2!\n\n"\
 	"ACCEL=<Alt>grave\nChange Page\nD1:auto\nD2!\n\n"\
-	"ACCEL=<Primary>o\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"ACCEL=<Primary>b\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"ACCEL=<Primary>k\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"ACCEL=<Primary>i\nInsert in Buffer\nD1:\nD2!\n\n"\
-	"ACCEL=<Primary>u\nInsert in Buffer\nD1:\nD2!\n\n"\
+	"ACCEL=<Primary>o\nInsert in Buffer\nD1:\017\nD2!\n\n"\
+	"ACCEL=<Primary>b\nInsert in Buffer\nD1:\002\nD2!\n\n"\
+	"ACCEL=<Primary>k\nInsert in Buffer\nD1:\003\nD2!\n\n"\
+	"ACCEL=<Primary>i\nInsert in Buffer\nD1:\035\nD2!\n\n"\
+	"ACCEL=<Primary>u\nInsert in Buffer\nD1:\037\nD2!\n\n"\
+	"ACCEL=<Primary>r\nInsert in Buffer\nD1:\026\nD2!\n\n"\
 	"ACCEL=<Shift>Page_Down\nChange Selected Nick\nD1!\nD2!\n\n"\
 	"ACCEL=<Shift>Page_Up\nChange Selected Nick\nD1:Up\nD2!\n\n"\
 	"ACCEL=Page_Down\nScroll Page\nD1:Down\nD2!\n\n"\
@@ -1409,10 +1410,21 @@ key_action_tab_clean(void)
 	}
 }
 
-/* For use in sorting the user list for completion */
+/* For use in sorting the user list for completion
+
+This sorts everyone by the last talked time except your own nick
+which is forced to the bottom of the list to avoid completing your
+own name, which is very unlikely.
+*/
 static int
 talked_recent_cmp (struct User *a, struct User *b)
 {
+	if (a->me)
+		return -1;
+
+	if (b->me)
+		return 1;
+
 	if (a->lasttalk < b->lasttalk)
 		return -1;
 

@@ -39,7 +39,7 @@ static char *keystore_password = NULL;
 /**
  * Opens the key store file: ~/.config/hexchat/addon_fishlim.conf
  */
-static GKeyFile *getConfigFile() {
+static GKeyFile *getConfigFile(void) {
     gchar *filename = get_config_filename();
     
     GKeyFile *keyfile = g_key_file_new();
@@ -55,13 +55,29 @@ static GKeyFile *getConfigFile() {
 /**
  * Returns the key store password, or the default.
  */
-static const char *get_keystore_password() {
+static const char *get_keystore_password(void) {
     return (keystore_password != NULL ?
         keystore_password :
         /* Silly default value... */
         "blowinikey");
 }
 
+
+static char *escape_nickname(const char *nick) {
+    char *escaped = g_strdup(nick);
+    char *p = escaped;
+
+    while (*p) {
+        if (*p == '[')
+            *p = '~';
+        else if (*p == ']')
+            *p = '!';
+
+        ++p;
+    }
+
+    return escaped;
+}
 
 /**
  * Gets a value for a nick/channel from addon_fishlim.conf. Unlike
@@ -90,9 +106,13 @@ static gchar *get_nick_value(GKeyFile *keyfile, const char *nick, const char *it
 char *keystore_get_key(const char *nick) {
     /* Get the key */
     GKeyFile *keyfile = getConfigFile();
-    gchar *value = get_nick_value(keyfile, nick, "key");
+    char *escaped_nick = escape_nickname(nick);
+    gchar *value = get_nick_value(keyfile, escaped_nick, "key");
     g_key_file_free(keyfile);
-    if (!value) return NULL;
+    g_free(escaped_nick);
+
+    if (!value)
+        return NULL;
     
     if (strncmp(value, "+OK ", 4) != 0) {
         /* Key is stored in plaintext */
@@ -157,7 +177,9 @@ static gboolean save_keystore(GKeyFile *keyfile) {
 #if !GLIB_CHECK_VERSION(2,40,0)
     ok = keyfile_save_to_file (keyfile, filename);
 #else
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS /* Hide false positive */
     ok = g_key_file_save_to_file (keyfile, filename, NULL);
+G_GNUC_END_IGNORE_DEPRECATIONS
 #endif
     g_free (filename);
 
@@ -173,9 +195,10 @@ gboolean keystore_store_key(const char *nick, const char *key) {
     char *wrapped;
     gboolean ok = FALSE;
     GKeyFile *keyfile = getConfigFile();
-    
+    char *escaped_nick = escape_nickname(nick);
+
     /* Remove old key */
-    delete_nick(keyfile, nick);
+    delete_nick(keyfile, escaped_nick);
     
     /* Add new key */
     password = get_keystore_password();
@@ -189,11 +212,11 @@ gboolean keystore_store_key(const char *nick, const char *key) {
         g_free(encrypted);
         
         /* Store encrypted in file */
-        g_key_file_set_string(keyfile, nick, "key", wrapped);
+        g_key_file_set_string(keyfile, escaped_nick, "key", wrapped);
         g_free(wrapped);
     } else {
         /* Store unencrypted in file */
-        g_key_file_set_string(keyfile, nick, "key", key);
+        g_key_file_set_string(keyfile, escaped_nick, "key", key);
     }
     
     /* Save key store file */
@@ -201,6 +224,7 @@ gboolean keystore_store_key(const char *nick, const char *key) {
     
   end:
     g_key_file_free(keyfile);
+    g_free(escaped_nick);
     return ok;
 }
 
@@ -209,13 +233,15 @@ gboolean keystore_store_key(const char *nick, const char *key) {
  */
 gboolean keystore_delete_nick(const char *nick) {
     GKeyFile *keyfile = getConfigFile();
+    char *escaped_nick = escape_nickname(nick);
     
     /* Delete entry */
-    gboolean ok = delete_nick(keyfile, nick);
+    gboolean ok = delete_nick(keyfile, escaped_nick);
     
     /* Save */
     if (ok) save_keystore(keyfile);
     
     g_key_file_free(keyfile);
+    g_free(escaped_nick);
     return ok;
 }

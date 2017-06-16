@@ -21,7 +21,7 @@
 
 int notification_backend_supported (void);
 void notification_backend_show (const char *title, const char *text);
-int notification_backend_init (void);
+int notification_backend_init (const char **error);
 void notification_backend_deinit (void);
 
 #endif

@@ -48,7 +48,7 @@
 static void
 irc_login (server *serv, char *user, char *realname)
 {
-	tcp_sendf (serv, "CAP LS\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
+	tcp_sendf (serv, "CAP LS 302\r\n");		/* start with CAP LS as Charybdis sasl.txt suggests */
 	serv->sent_capend = FALSE;	/* track if we have finished */
 
 	if (serv->password[0] && serv->loginmethod == LOGIN_PASS)
@@ -569,7 +569,8 @@ process_numeric (session * sess, int n,
 		inbound_user_info_start (sess, word[4], tags_data);
 		if (!serv->skip_next_whois)
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS1, whois_sess, word[4], word[5],
-										  word[6], word_eol[8] + 1, 0, tags_data->timestamp);
+										  word[6], (word_eol[8][0] == ':') ? word_eol[8] + 1 : word_eol[8],
+										  0, tags_data->timestamp);
 		else
 			inbound_user_info (sess, NULL, word[5], word[6], NULL, word[4],
 									 word_eol[8][0] == ':' ? word_eol[8] + 1 : word_eol[8],
@@ -663,7 +664,7 @@ process_numeric (session * sess, int n,
 		if (sess->ignore_mode)
 			sess->ignore_mode = FALSE;
 		else
-			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODES, sess, word[4], word_eol[5],
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANMODES, sess, word[4], (word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
 										  NULL, NULL, 0, tags_data->timestamp);
 		fe_update_mode_buttons (sess, 'c', '-');
 		fe_update_mode_buttons (sess, 't', '-');
@@ -679,7 +680,7 @@ process_numeric (session * sess, int n,
 		sess = find_channel (serv, word[4]);
 		if (sess)
 		{
-			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANURL, sess, word[4], word[5] + 1,
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANURL, sess, word[4], (word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
 									NULL, NULL, 0, tags_data->timestamp); 
 		}
 		break;
@@ -691,7 +692,7 @@ process_numeric (session * sess, int n,
 			if (sess->ignore_date)
 				sess->ignore_date = FALSE;
 			else
-				channel_date (sess, word[4], word[5], tags_data);
+				channel_date (sess, word[4], (word[5][0] == ':') ? word[5] + 1 : word[5], tags_data);
 		}
 		break;
 
@@ -945,10 +946,9 @@ process_numeric (session * sess, int n,
 									  word_eol[6]+1, word[1], word[2], NULL, 0,
 									  tags_data->timestamp);
 		break;
-	case 903:	/* successful SASL auth */
 	case 904:	/* failed SASL auth */
-		if (inbound_sasl_error (serv))
-			break; /* might retry */
+		inbound_sasl_error (serv);
+	case 903:	/* successful SASL auth */
 	case 905:	/* failed SASL auth */
 	case 906:	/* aborted */
 	case 907:	/* attempting to re-auth after a successful auth */
@@ -962,7 +962,7 @@ process_numeric (session * sess, int n,
 		}
 		break;
 	case 908:	/* Supported SASL Mechs */
-		inbound_sasl_supportedmechs (serv, word[4]);
+		/* ignored for now, SASL 3.2 is a better solution and we only do PLAIN atm */
 		break;
 
 	default:
@@ -1104,6 +1104,10 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			}
 			return;
 
+		case WORDL('P', 'I', 'N', 'G'):
+			tcp_sendf (sess->server, "PONG %s\r\n", word_eol[3]);
+			return;
+
 		case WORDL('P','O','N','G'):
 			inbound_ping_reply (serv->server_session,
 									  (word[4][0] == ':') ? word[4] + 1 : word[4],
@@ -1138,7 +1142,16 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		case WORDL('A','C','C','O'):
 			inbound_account (serv, nick, word[3], tags_data);
 			return;
-			
+
+		case WORDL('A', 'U', 'T', 'H'):
+			inbound_sasl_authenticate (sess->server, word_eol[3]);
+			return;
+
+		case WORDL('C', 'H', 'G', 'H'):
+			inbound_user_info (sess, NULL, word[3], word[4], NULL, nick, NULL,
+							   NULL, 0xff, tags_data);
+			return;
+
 		case WORDL('I','N','V','I'):
 			if (ignore_check (word[1], IG_INVI))
 				return;
@@ -1165,13 +1178,19 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 
 #ifdef USE_OPENSSL
-				if (!strncmp (text, "CHALLENGE ", 10))		/* QuakeNet CHALLENGE upon our request */
+				/* QuakeNet CHALLENGE upon our request */
+				if (serv->loginmethod == LOGIN_CHALLENGEAUTH && !serv->p_cmp (word[1], CHALLENGEAUTH_FULLHOST)
+				    && !strncmp (text, "CHALLENGE ", 10) && *serv->password)
 				{
-					char *response = challengeauth_response (((ircnet *)serv->network)->user ? ((ircnet *)serv->network)->user : prefs.hex_irc_user_name, serv->password, word[5]);
+					char *response;
+					ircnet *net = serv->network;
+					char *user = net && net->user ? net->user : prefs.hex_irc_user_name;
+
+					response = challengeauth_response (user, serv->password, word[5]);
 
 					tcp_sendf (serv, "PRIVMSG %s :CHALLENGEAUTH %s %s %s\r\n",
 						CHALLENGEAUTH_NICK,
-						((ircnet *)serv->network)->user ? ((ircnet *)serv->network)->user : prefs.hex_irc_user_name,
+						user,
 						response,
 						CHALLENGEAUTH_ALGO);
 
@@ -1283,7 +1302,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 										  word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
 										  tags_data);
 				}
-				else if (strncasecmp (word[4], "LS", 2) == 0)
+				else if (strncasecmp (word[4], "LS", 2) == 0 || strncasecmp (word[4], "NEW", 3) == 0)
 				{
 					inbound_cap_ls (serv, word[1], 
 										 word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
@@ -1296,6 +1315,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				else if (strncasecmp (word[4], "LIST", 4) == 0)	
 				{
 					inbound_cap_list (serv, word[1], 
+											word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
+											tags_data);
+				}
+				else if (strncasecmp (word[4], "DEL", 3) == 0)
+				{
+					inbound_cap_del (serv, word[1],
 											word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5],
 											tags_data);
 				}

@@ -126,11 +126,11 @@ lastact_update(session *sess)
 	int newidx = LACT_NONE;
 	int dia = (sess->type == SESS_DIALOG);
 
-	if (sess->nick_said)
+	if (sess->tab_state & TAB_STATE_NEW_HILIGHT)
 		newidx = dia? LACT_QUERY_HI: LACT_CHAN_HI;
-	else if (sess->msg_said)
+	else if (sess->tab_state & TAB_STATE_NEW_MSG)
 		newidx = dia? LACT_QUERY: LACT_CHAN;
-	else if (sess->new_data)
+	else if (sess->tab_state & TAB_STATE_NEW_DATA)
 		newidx = dia? LACT_QUERY: LACT_CHAN_DATA;
 
 	/* If already first at the right position, just return */
@@ -354,26 +354,75 @@ doover:
 	return 1;
 }
 
+/* these are only run if the lagometer is enabled */
 static int
-hexchat_misc_checks (void)		/* this gets called every 1/2 second */
+hexchat_lag_check (void)   /* this gets called every 30 seconds */
 {
-	static int count = 0;
+	lag_check ();
+	return 1;
+}
 
-	count++;
+static int
+hexchat_lag_check_update (void)   /* this gets called every 0.5 seconds */
+{
+	lagcheck_update ();
+	return 1;
+}
 
-	lagcheck_update ();			/* every 500ms */
+/* call whenever timeout intervals change */
+void
+hexchat_reinit_timers (void)
+{
+	static int lag_check_update_tag = 0;
+	static int lag_check_tag = 0;
+	static int away_tag = 0;
 
-	if (count % 2)
-		dcc_check_timeouts ();	/* every 1 second */
-
-	if (count >= 60)				/* every 30 seconds */
+	/* notify timeout */
+	if (prefs.hex_notify_timeout && notify_tag == 0)
 	{
-		if (prefs.hex_gui_lagometer)
-			lag_check ();
-		count = 0;
+		notify_tag = fe_timeout_add_seconds (prefs.hex_notify_timeout,
+						     notify_checklist, NULL);
+	}
+	else if (!prefs.hex_notify_timeout && notify_tag != 0)
+	{
+		fe_timeout_remove (notify_tag);
+		notify_tag = 0;
 	}
 
-	return 1;
+	/* away status tracking */
+	if (prefs.hex_away_track && away_tag == 0)
+	{
+		away_tag = fe_timeout_add_seconds (prefs.hex_away_timeout, away_check, NULL);
+	}
+	else if (!prefs.hex_away_track && away_tag != 0)
+	{
+		fe_timeout_remove (away_tag);
+		away_tag = 0;
+	}
+
+	/* lag-o-meter */
+	if (prefs.hex_gui_lagometer && lag_check_update_tag == 0)
+	{
+		lag_check_update_tag = fe_timeout_add (500, hexchat_lag_check_update, NULL);
+	}
+	else if (!prefs.hex_gui_lagometer && lag_check_update_tag != 0)
+	{
+		fe_timeout_remove (lag_check_update_tag);
+		lag_check_update_tag = 0;
+	}
+
+	/* network timeouts and lag-o-meter */
+	if ((prefs.hex_net_ping_timeout != 0 || prefs.hex_gui_lagometer)
+	    && lag_check_tag == 0)
+	{
+		lag_check_tag = fe_timeout_add_seconds (30, hexchat_lag_check, NULL);
+	}
+	else if ((!prefs.hex_net_ping_timeout && !prefs.hex_gui_lagometer)
+					 && lag_check_tag != 0)
+	{
+		fe_timeout_remove (lag_check_tag);
+		lag_check_tag = 0;
+	}
 }
 
 /* executed when the first irc window opens */
@@ -401,12 +450,7 @@ irc_init (session *sess)
 	plugin_add (sess, NULL, NULL, dbus_plugin_init, NULL, NULL, FALSE);
 #endif
 
-	if (prefs.hex_notify_timeout)
-		notify_tag = fe_timeout_add (prefs.hex_notify_timeout * 1000,
-											  notify_checklist, 0);
-
-	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, 0);
-	fe_timeout_add (500, hexchat_misc_checks, 0);
+	hexchat_reinit_timers ();
 
 	if (arg_url != NULL)
 	{
@@ -447,7 +491,6 @@ session_new (server *serv, char *from, int type, int focus)
 
 	sess->server = serv;
 	sess->logfd = -1;
-	sess->scrollfd = -1;
 	sess->type = type;
 
 	sess->alert_beep = SET_DEFAULT;
@@ -961,7 +1004,7 @@ hexchat_exit (void)
 	notify_save ();
 	ignore_save ();
 	free_sessions ();
-	chanopt_save_all ();
+	chanopt_save_all (TRUE);
 	servlist_cleanup ();
 	fe_exit ();
 }

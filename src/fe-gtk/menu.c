@@ -375,7 +375,7 @@ menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags
 }
 
 static GtkWidget *
-menu_quick_endsub ()
+menu_quick_endsub (void)
 {
 	/* Just delete the first element in the linked list pointed to by first */
 	if (submenu_list)
@@ -1259,7 +1259,7 @@ menu_quit (GtkWidget * wid, gpointer none)
 }
 
 static void
-menu_search ()
+menu_search (void)
 {
 	mg_search_toggle (current_sess);
 }
@@ -1646,6 +1646,7 @@ menu_metres_off (GtkWidget *item, gpointer none)
 	{
 		prefs.hex_gui_lagometer = 0;
 		prefs.hex_gui_throttlemeter = 0;
+		hexchat_reinit_timers ();
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1657,6 +1658,7 @@ menu_metres_text (GtkWidget *item, gpointer none)
 	{
 		prefs.hex_gui_lagometer = 2;
 		prefs.hex_gui_throttlemeter = 2;
+		hexchat_reinit_timers ();
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1668,6 +1670,7 @@ menu_metres_graph (GtkWidget *item, gpointer none)
 	{
 		prefs.hex_gui_lagometer = 1;
 		prefs.hex_gui_throttlemeter = 1;
+		hexchat_reinit_timers ();
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1679,6 +1682,7 @@ menu_metres_both (GtkWidget *item, gpointer none)
 	{
 		prefs.hex_gui_lagometer = 3;
 		prefs.hex_gui_throttlemeter = 3;
+		hexchat_reinit_timers ();
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1757,7 +1761,7 @@ static struct mymenu mymenu[] = {
 #define DETACH_OFFSET (12)
 	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1},	/* 12 */
 #define CLOSE_OFFSET (13)
-	{0, menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 0, 1, GDK_KEY_w},
+	{0, menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("_Quit"), menu_quit, GTK_STOCK_QUIT, M_MENUSTOCK, 0, 0, 1, GDK_KEY_q},	/* 15 */
 

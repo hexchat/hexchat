@@ -50,6 +50,7 @@ void fe_main (void);
 void fe_cleanup (void);
 void fe_exit (void);
 int fe_timeout_add (int interval, void *callback, void *userdata);
+int fe_timeout_add_seconds (int interval, void *callback, void *userdata);
 void fe_timeout_remove (int tag);
 void fe_new_window (struct session *sess, int focus);
 void fe_new_server (struct server *serv);
@@ -68,7 +69,6 @@ int fe_input_add (int sok, int flags, void *func, void *data);
 void fe_input_remove (int tag);
 void fe_idle_add (void *func, void *data);
 void fe_set_topic (struct session *sess, char *topic, char *stripped_topic);
-void fe_set_hilight (struct session *sess);
 void fe_set_tab_color (struct session *sess, int col);
 void fe_flash_window (struct session *sess);
 void fe_update_mode_buttons (struct session *sess, char mode, char sign);
@@ -179,6 +179,6 @@ typedef enum
 void fe_tray_set_icon (feicon icon);
 void fe_tray_set_tooltip (const char *text);
 void fe_open_chan_list (server *serv, char *filter, int do_refresh);
-const char *fe_get_default_font ();
+const char *fe_get_default_font (void);
 
 #endif

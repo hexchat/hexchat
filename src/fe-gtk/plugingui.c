@@ -42,6 +42,7 @@ enum
 	VERSION_COLUMN,
 	FILE_COLUMN,
 	DESC_COLUMN,
+	FILEPATH_COLUMN,
 	N_COLUMNS
 };
 
@@ -57,13 +58,14 @@ plugingui_treeview_new (GtkWidget *box)
 	int col_id;
 
 	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING,
-	                            G_TYPE_STRING, G_TYPE_STRING);
+	                            G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 	g_return_val_if_fail (store != NULL, NULL);
 	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
 	                             NAME_COLUMN, _("Name"),
 	                             VERSION_COLUMN, _("Version"),
 	                             FILE_COLUMN, _("File"),
-	                             DESC_COLUMN, _("Description"), -1);
+	                             DESC_COLUMN, _("Description"),
+	                             FILEPATH_COLUMN, NULL, -1);
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
 	     col_id++)
@@ -86,7 +88,7 @@ plugingui_getfilename (GtkTreeView *view)
 	sel = gtk_tree_view_get_selection (view);
 	if (gtk_tree_selection_get_selected (sel, &model, &iter))
 	{
-		gtk_tree_model_get_value (model, &iter, FILE_COLUMN, &file);
+		gtk_tree_model_get_value (model, &iter, FILEPATH_COLUMN, &file);
 
 		str = g_value_dup_string (&file);
 		g_value_unset (&file);
@@ -131,7 +133,8 @@ fe_pluginlist_update (void)
 			gtk_list_store_set (store, &iter, NAME_COLUMN, pl->name,
 			                    VERSION_COLUMN, pl->version,
 			                    FILE_COLUMN, file_part (pl->filename),
-			                    DESC_COLUMN, pl->desc, -1);
+			                    DESC_COLUMN, pl->desc,
+			                    FILEPATH_COLUMN, pl->filename, -1);
 		}
 		list = list->next;
 	}
@@ -179,7 +182,7 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	
 	view = g_object_get_data (G_OBJECT (plugin_window), "view");
 	if (!gtkutil_treeview_get_selected (view, &iter, NAME_COLUMN, &modname,
-	                                    FILE_COLUMN, &file, -1))
+	                                    FILEPATH_COLUMN, &file, -1))
 		return;
 
 	if (g_str_has_suffix (file, "."G_MODULE_SUFFIX))
@@ -236,7 +239,7 @@ plugingui_open (void)
 
 	plugin_window = mg_create_generic_tab ("Addons", _(DISPLAY_NAME": Plugins and Scripts"),
 														 FALSE, TRUE, plugingui_close, NULL,
-														 500, 250, &vbox, 0);
+														 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (plugin_window);
 
 	view = plugingui_treeview_new (vbox);

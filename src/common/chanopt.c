@@ -76,12 +76,26 @@ chanopt_value (guint8 val)
 	switch (val)
 	{
 	case SET_OFF:
-		return "OFF";
+		return _("OFF");
 	case SET_ON:
-		return "ON";
+		return _("ON");
+	case SET_DEFAULT:
+		return _("{unset}");
 	default:
-		return "{unset}";
+		g_assert_not_reached ();
+		return NULL;
 	}
+}
+
+static guint8
+str_to_chanopt (const char *str)
+{
+	if (!g_ascii_strcasecmp (str, "ON") || !strcmp (str, "1"))
+		return SET_ON;
+	else if (!g_ascii_strcasecmp (str, "OFF") || !strcmp (str, "0"))
+		return SET_OFF;
+	else
+		return SET_DEFAULT;
 }
 
 /* handle the /CHANOPT command */
@@ -106,19 +120,14 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (word[offset][0])
 	{
-		if (!g_ascii_strcasecmp (word[offset], "ON"))
-			newval = 1;
-		else if (!g_ascii_strcasecmp (word[offset], "OFF"))
-			newval = 0;
-		else if (word[offset][0] == 'u')
-			newval = SET_DEFAULT;
-		else
-			newval = atoi (word[offset]);
+		newval = str_to_chanopt (word[offset]);
 	}
 
 	if (!quiet)
-		PrintTextf (sess, "\002Network\002: %s \002Channel\002: %s\n",
+		PrintTextf (sess, "\002%s\002: %s \002%s\002: %s\n",
+						_("Network"),
 						sess->server->network ? server_get_network (sess->server, TRUE) : _("<none>"),
+						_("Channel"),
 						sess->session_name[0] ? sess->session_name : _("<none>"));
 
 	while (i < sizeof (chanopt) / sizeof (channel_options))
@@ -281,7 +290,7 @@ chanopt_load_all (void)
 			else
 			{
 				if (current)
-					chanopt_add_opt (current, buf, atoi (eq + 2));
+					chanopt_add_opt (current, buf, str_to_chanopt (eq + 2));
 			}
 
 		}
@@ -388,7 +397,7 @@ chanopt_save_one_channel (chanopt_in_memory *co, int fh)
 }
 
 void
-chanopt_save_all (void)
+chanopt_save_all (gboolean flush)
 {
 	int i;
 	int num_saved;
@@ -430,15 +439,21 @@ chanopt_save_all (void)
 		}
 
 cont:
-		g_free (co->network);
-		g_free (co->channel);
-		g_free (co);
+		if (flush)
+		{
+			g_free (co->network);
+			g_free (co->channel);
+			g_free (co);
+		}
 	}
 
 	close (fh);
 
-	g_slist_free (chanopt_list);
-	chanopt_list = NULL;
+	if (flush)
+	{
+		g_slist_free (chanopt_list);
+		chanopt_list = NULL;
+	}
 
 	chanopt_open = FALSE;
 	chanopt_changed = FALSE;

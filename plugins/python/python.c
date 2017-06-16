@@ -69,6 +69,8 @@
 #include "hexchat-plugin.h"
 #undef _POSIX_C_SOURCE	/* Avoid warnings from /usr/include/features.h */
 #undef _XOPEN_SOURCE
+#undef HAVE_MEMRCHR /* Avoid redefinition in Python.h */
+#undef HAVE_STRINGS_H
 #include <Python.h>
 #include <structmember.h>
 #include <pythread.h>
@@ -273,7 +275,7 @@ typedef struct {
 
 static PyObject *Util_BuildList(char *word[]);
 static PyObject *Util_BuildEOLList(char *word[]);
-static void Util_Autoload();
+static void Util_Autoload(void);
 static char *Util_Expand(char *filename);
 
 static int Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void *userdata);
@@ -283,7 +285,7 @@ static int Callback_Print(char *word[], void *userdata);
 static int Callback_Timer(void *userdata);
 static int Callback_ThreadTimer(void *userdata);
 
-static PyObject *XChatOut_New();
+static PyObject *XChatOut_New(void);
 static PyObject *XChatOut_write(PyObject *self, PyObject *args);
 static void XChatOut_dealloc(PyObject *self);
 
@@ -300,7 +302,7 @@ static PyObject *Context_FromContext(hexchat_context *context);
 static PyObject *Context_FromServerAndChannel(char *server, char *channel);
 
 static PyObject *Plugin_New(char *filename, PyObject *xcoobj);
-static PyObject *Plugin_GetCurrent();
+static PyObject *Plugin_GetCurrent(void);
 static PluginObject *Plugin_ByString(char *str);
 static Hook *Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
 			    PyObject *userdata, char *name, void *data);
@@ -336,11 +338,11 @@ static PyObject *Module_hexchat_pluginpref_list(PyObject *self, PyObject *args);
 static void IInterp_Exec(char *command);
 static int IInterp_Cmd(char *word[], char *word_eol[], void *userdata);
 
-static void Command_PyList();
+static void Command_PyList(void);
 static void Command_PyLoad(char *filename);
 static void Command_PyUnload(char *name);
 static void Command_PyReload(char *name);
-static void Command_PyAbout();
+static void Command_PyAbout(void);
 static int Command_Py(char *word[], char *word_eol[], void *userdata);
 
 /* ===================================================================== */
@@ -568,7 +570,7 @@ Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void
 	PyObject *retobj;
 	PyObject *word_list, *word_eol_list;
 	PyObject *attributes;
-	int ret = 0;
+	int ret = HEXCHAT_EAT_NONE;
 	PyObject *plugin;
 
 	plugin = hook->plugin;
@@ -577,13 +579,13 @@ Callback_Server(char *word[], char *word_eol[], hexchat_event_attrs *attrs, void
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 	word_eol_list = Util_BuildList(word_eol);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	attributes = Attribute_New(attrs);
@@ -619,7 +621,7 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;
 	PyObject *word_list, *word_eol_list;
-	int ret = 0;
+	int ret = HEXCHAT_EAT_NONE;
 	PyObject *plugin;
 
 	plugin = hook->plugin;
@@ -628,13 +630,13 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 	word_eol_list = Util_BuildList(word_eol);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
@@ -665,7 +667,7 @@ Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
 	PyObject *word_list;
 	PyObject *word_eol_list;
 	PyObject *attributes;
-	int ret = 0;
+	int ret = HEXCHAT_EAT_NONE;
 	PyObject *plugin;
 
 	plugin = hook->plugin;
@@ -674,13 +676,13 @@ Callback_Print_Attrs(char *word[], hexchat_event_attrs *attrs, void *userdata)
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 	word_eol_list = Util_BuildEOLList(word);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	attributes = Attribute_New(attrs);
@@ -714,7 +716,7 @@ Callback_Print(char *word[], void *userdata)
 	PyObject *retobj;
 	PyObject *word_list;
 	PyObject *word_eol_list;
-	int ret = 0;
+	int ret = HEXCHAT_EAT_NONE;
 	PyObject *plugin;
 
 	plugin = hook->plugin;
@@ -723,13 +725,13 @@ Callback_Print(char *word[], void *userdata)
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 	word_eol_list = Util_BuildEOLList(word);
 	if (word_eol_list == NULL) {
 		Py_DECREF(word_list);
 		END_PLUGIN(plugin);
-		return 0;
+		return HEXCHAT_EAT_NONE;
 	}
 
 	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
@@ -1726,7 +1728,7 @@ Module_hexchat_get_info(PyObject *self, PyObject *args)
 	if (info == NULL) {
 		Py_RETURN_NONE;
 	}
-	if (strcmp (name, "gtkwin_ptr") == 0)
+	if (strcmp (name, "gtkwin_ptr") == 0 || strcmp (name, "win_ptr") == 0)
 		return PyUnicode_FromFormat("%p", info); /* format as pointer */
 	else
 		return PyUnicode_FromString(info);
@@ -1849,7 +1851,7 @@ Module_hexchat_pluginpref_get(PyObject *self, PyObject *args)
 			BEGIN_XCHAT_CALLS(NONE);
 			retint = hexchat_pluginpref_get_int(prefph, var);
 			END_XCHAT_CALLS();
-			if ((retint == 0) && (strcmp(retstr, "0") != 0))
+			if ((retint == -1) && (strcmp(retstr, "-1") != 0))
 				ret = PyUnicode_FromString(retstr);
 			else
 				ret = PyLong_FromLong(retint);
@@ -2508,9 +2510,9 @@ IInterp_Cmd(char *word[], char *word_eol[], void *userdata)
 	if (channel && channel[0] == '>' && strcmp(channel, ">>python<<") == 0) {
 		hexchat_printf(ph, ">>> %s\n", word_eol[1]);
 		IInterp_Exec(word_eol[1]);
-		return 1;
+		return HEXCHAT_EAT_HEXCHAT;
 	}
-	return 0;
+	return HEXCHAT_EAT_NONE;
 }
 
 
@@ -2518,7 +2520,7 @@ IInterp_Cmd(char *word[], char *word_eol[], void *userdata)
 /* Python command handling */
 
 static void
-Command_PyList()
+Command_PyList(void)
 {
 	GSList *list;
 	list = plugin_list;
@@ -2585,7 +2587,7 @@ Command_PyReload(char *name)
 }
 
 static void
-Command_PyAbout()
+Command_PyAbout(void)
 {
 	hexchat_print(ph, about);
 }
@@ -2777,7 +2779,7 @@ hexchat_plugin_init(hexchat_plugin *plugin_handle,
 }
 
 int
-hexchat_plugin_deinit()
+hexchat_plugin_deinit(void)
 {
 	GSList *list;
 

@@ -24,6 +24,7 @@
 #include "../common/cfgfiles.h"
 #include "../common/hexchat.h"
 #include "../common/fe.h"
+#include "resources.h"
 
 #include <gio/gio.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -108,6 +109,8 @@ load_pixmap (const char *filename)
 void
 pixmaps_init (void)
 {
+	hexchat_register_resource();
+
 	pix_ulist_voice = load_pixmap ("ulist_voice");
 	pix_ulist_halfop = load_pixmap ("ulist_halfop");
 	pix_ulist_op = load_pixmap ("ulist_op");

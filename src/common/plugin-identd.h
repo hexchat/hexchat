@@ -23,6 +23,6 @@
 int identd_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 				char **plugin_desc, char **plugin_version, char *arg);
 
-int identd_plugin_deinit ();
+int identd_plugin_deinit (void);
 
 #endif

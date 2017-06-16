@@ -415,6 +415,12 @@ fe_timeout_add (int interval, void *callback, void *userdata)
 	return g_timeout_add (interval, (GSourceFunc) callback, userdata);
 }
 
+int
+fe_timeout_add_seconds (int interval, void *callback, void *userdata)
+{
+	return g_timeout_add_seconds (interval, (GSourceFunc) callback, userdata);
+}
+
 void
 fe_input_remove (int tag)
 {
@@ -496,7 +502,7 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_version)
 	{
-		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
+		printf (PACKAGE_NAME" "PACKAGE_VERSION"\n");
 		return 0;
 	}
 
@@ -609,10 +615,6 @@ fe_set_topic (struct session *sess, char *topic, char *stripped_topic)
 }
 void
 fe_cleanup (void)
-{
-}
-void
-fe_set_hilight (struct session *sess)
 {
 }
 void

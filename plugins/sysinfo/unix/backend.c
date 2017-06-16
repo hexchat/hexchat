@@ -60,7 +60,7 @@ char *sysinfo_backend_get_memory(void)
 	{
 		return NULL;
 	}
-	if (xs_parse_meminfo (&swap_total, &swap_free, 1) != 1)
+	if (xs_parse_meminfo (&swap_total, &swap_free, 1) != 1 && swap_total != 0)
 	{
 		swap_fmt = sysinfo_format_memory (swap_total, swap_free);
 	}

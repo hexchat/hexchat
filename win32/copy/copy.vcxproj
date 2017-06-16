@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Configuration">
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
@@ -41,6 +41,7 @@
     <None Include="$(DepsRoot)\bin\iconv.dll" />
     <None Include="$(DepsRoot)\bin\libeay32.dll" />
     <None Include="$(DepsRoot)\bin\libenchant.dll" />
+    <None Include="$(DepsRoot)\bin\libffi.dll" />
     <None Include="$(DepsRoot)\bin\libintl.dll" />
     <None Include="$(DepsRoot)\bin\libpng16.dll" />
     <None Include="$(DepsRoot)\bin\libxml2.dll" />
@@ -56,7 +57,15 @@
     <None Include="changelog.url" />
     <None Include="readme.url" />
 
-    <Engines Include="$(DepsRoot)\lib\gtk-2.0\i686-pc-vs10\engines\**\*" />
+    <None Include="$(DepsRoot)\bin\lua51.dll" />
+    <None Include="$(DepsRoot)\bin\girepository-1.0.dll" />
+    <LuaLib Include="$(DepsRoot)\lib\lua\**\*.dll" />
+    <LuaShare Include="$(DepsRoot)\share\lua\*.lua" />
+    <LuaShare Include="$(DepsRoot)\share\lua\**\*.lua" />
+    <LuaShare Include="$(DepsRoot)\share\lua\**\**\*.lua" />
+    <Typelib Include="$(DepsRoot)\lib\girepository-1.0\*.typelib" />
+
+    <Engines Include="$(DepsRoot)\lib\gtk-2.0\i686-pc-vs14\engines\**\*" />
 
     <Share Include="share\**\*" />
 
@@ -69,7 +78,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Target Name="Build">
     <Copy SourceFiles="@(None)" DestinationFolder="$(HexChatRel)" />
-    <Copy SourceFiles="@(Engines)" DestinationFiles="@(Engines->'$(HexChatRel)\lib\gtk-2.0\i686-pc-vs10\engines\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(Engines)" DestinationFiles="@(Engines->'$(HexChatRel)\lib\gtk-2.0\i686-pc-vs14\engines\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Share)" DestinationFiles="@(Share->'$(HexChatRel)\share\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(DepsRootDocs)" DestinationFiles="@(DepsRootDocs->'$(HexChatRel)\share\doc\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="..\..\COPYING" DestinationFolder="$(HexChatRel)\share\doc\hexchat" />
@@ -77,7 +86,10 @@
     <Copy SourceFiles="$(DepsRoot)\lib\enchant\libenchant_myspell.dll" DestinationFolder="$(HexChatRel)\lib\enchant" />
     <Copy SourceFiles="@(Locale)" DestinationFiles="@(Locale->'$(HexChatRel)\share\locale\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(MSWindowsTheme)" DestinationFiles="@(MSWindowsTheme->'$(HexChatRel)\share\themes\MS-Windows\%(RecursiveDir)%(Filename)%(Extension)')" />
-
+    <Copy SourceFiles="@(LuaShare)" DestinationFiles="@(LuaShare->'$(HexChatRel)\share\lua\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(LuaLib)" DestinationFiles="@(LuaLib->'$(HexChatRel)\lib\lua\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(Typelib)" DestinationFiles="@(Typelib->'$(HexChatRel)\lib\girepository-1.0\%(Filename)%(Extension)')" />
+	
     <WriteLinesToFile File="$(HexChatRel)portable-mode" Lines="2" Overwrite="true" />
   </Target>
 </Project>

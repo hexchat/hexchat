@@ -32,7 +32,7 @@
 #ifdef WIN32
 #include <sys/timeb.h>
 #include <io.h>
-#include <VersionHelpers.h>
+#include "./sysinfo/sysinfo.h"
 #else
 #include <unistd.h>
 #include <pwd.h>
@@ -48,7 +48,7 @@
 #include <ctype.h>
 #include "util.h"
 
-#if defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (__FreeBSD__) || defined (__APPLE__)
 #include <sys/sysctl.h>
 #endif
 
@@ -56,8 +56,6 @@
 #ifdef USE_OPENSSL
 #include <openssl/bn.h>
 #include <openssl/rand.h>
-#include <openssl/blowfish.h>
-#include <openssl/aes.h>
 #ifndef WIN32
 #include <netinet/in.h>
 #endif
@@ -362,13 +360,13 @@ strip_hidden_attribute (char *src, char *dst)
 	return len;
 }
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 
 static void
 get_cpu_info (double *mhz, int *cpus)
 {
 
-#if defined(USING_LINUX) || defined (__CYGWIN__)
+#if defined(__linux__) || defined (__CYGWIN__)
 
 	char buf[256];
 	int fh;
@@ -406,7 +404,7 @@ get_cpu_info (double *mhz, int *cpus)
 		*cpus = 1;
 
 #endif
-#ifdef USING_FREEBSD
+#ifdef __FreeBSD__
 
 	int mib[2], ncpu;
 	u_long freq;
@@ -458,158 +456,38 @@ get_cpu_info (double *mhz, int *cpus)
 
 #ifdef WIN32
 
-static int
-get_mhz (void)
-{
-	HKEY hKey;
-	int result, data, dataSize;
-
-	if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, "Hardware\\Description\\System\\"
-		"CentralProcessor\\0", 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
-	{
-		dataSize = sizeof (data);
-		result = RegQueryValueEx (hKey, "~MHz", 0, 0, (LPBYTE)&data, &dataSize);
-		RegCloseKey (hKey);
-		if (result == ERROR_SUCCESS)
-			return data;
-	}
-	return 0;	/* fails on Win9x */
-}
-
 int
 get_cpu_arch (void)
 {
-	SYSTEM_INFO si;
-
-	GetSystemInfo (&si);
-
-	if (si.wProcessorArchitecture == 9)
-	{
-		return 64;
-	}
-	else
-	{
-		return 86;
-	}
+	return sysinfo_get_build_arch ();
 }
 
 char *
 get_sys_str (int with_cpu)
 {
-	static char verbuf[64];
-	static char winver[20];
-	double mhz;
+	static char *without_cpu_buffer = NULL;
+	static char *with_cpu_buffer = NULL;
 
-	/* Broken since major bumped to 10, should start to work eventually.
-	 * No, IsWindowsVersionOrGreater (10, 0, 0) doesn't work either.
-	 * TODO: replace with IsWindows10OrGreater() once added to the SDK.
-	 */
-	if (IsWindowsVersionOrGreater (6, 4, 0))
+	if (with_cpu == 0)
 	{
-		if (IsWindowsServer ())
+		if (without_cpu_buffer == NULL)
 		{
-			strcpy (winver, "Server 10");
+			without_cpu_buffer = sysinfo_get_os ();
 		}
-		else
-		{
-			strcpy (winver, "10");
-		}
-	}
-	else if (IsWindows8Point1OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2012 R2");
-		}
-		else
-		{
-			strcpy (winver, "8.1");
-		}
-	}
-	else if (IsWindows8OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2012");
-		}
-		else
-		{
-			strcpy (winver, "8");
-		}
-	}
-	else if (IsWindows7SP1OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008 R2 SP1");
-		}
-		else
-		{
-			strcpy (winver, "7 SP1");
-		}
-	}
-	else if (IsWindows7OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008 R2");
-		}
-		else
-		{
-			strcpy (winver, "7");
-		}
-	}
-	else if (IsWindowsVistaSP2OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008 SP2");
-		}
-		else
-		{
-			strcpy (winver, "Vista SP2");
-		}
-	}
-	else if (IsWindowsVistaSP1OrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008 SP1");
-		}
-		else
-		{
-			strcpy (winver, "Vista SP1");
-		}
-	}
-	else if (IsWindowsVistaOrGreater ())
-	{
-		if (IsWindowsServer ())
-		{
-			strcpy (winver, "Server 2008");
-		}
-		else
-		{
-			strcpy (winver, "Vista");
-		}
-	}
-	else
-	{
-		strcpy (winver, "Unknown");
+
+		return without_cpu_buffer;
 	}
 
-	mhz = get_mhz ();
-	if (mhz && with_cpu)
+	if (with_cpu_buffer == NULL)
 	{
-		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
-		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
-		sprintf (verbuf, "Windows %s [%.2f%s]",	winver, cpuspeed, cpuspeedstr);
+		char *os = sysinfo_get_os ();
+		char *cpu = sysinfo_get_cpu ();
+		with_cpu_buffer = g_strconcat (os, " [", cpu, "]", NULL);
+		g_free (cpu);
+		g_free (os);
 	}
-	else
-	{
-		sprintf (verbuf, "Windows %s", winver);
-	}
-	
-	return verbuf;
+
+	return with_cpu_buffer;
 }
 
 #else
@@ -617,7 +495,7 @@ get_sys_str (int with_cpu)
 char *
 get_sys_str (int with_cpu)
 {
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 	double mhz;
 #endif
 	int cpus = 1;
@@ -629,7 +507,7 @@ get_sys_str (int with_cpu)
 
 	uname (&un);
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__) || defined (__CYGWIN__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 	get_cpu_info (&mhz, &cpus);
 	if (mhz && with_cpu)
 	{
@@ -756,7 +634,7 @@ break_while:
 }
 
 void
-for_files (char *dirname, char *mask, void callback (char *file))
+for_files (const char *dirname, const char *mask, void callback (char *file))
 {
 	GDir *dir;
 	const gchar *entry_name;
@@ -1462,14 +1340,24 @@ int
 portable_mode (void)
 {
 #ifdef WIN32
-	if ((_access( "portable-mode", 0 )) != -1)
+	static int is_portable = -1;
+
+	if (G_UNLIKELY(is_portable == -1))
 	{
-		return 1;
+		char *path = g_win32_get_package_installation_directory_of_module (NULL);
+		char *filename;
+
+		if (path == NULL)
+			path = g_strdup (".");
+
+		filename = g_build_filename (path, "portable-mode", NULL);
+		is_portable = g_file_test (filename, G_FILE_TEST_EXISTS);
+
+		g_free (path);
+		g_free (filename);
 	}
-	else
-	{
-		return 0;
-	}
+
+	return is_portable;
 #else
 	return 0;
 #endif
@@ -1504,227 +1392,6 @@ encode_sasl_pass_plain (char *user, char *pass)
 }
 
 #ifdef USE_OPENSSL
-/* Adapted from ZNC's SASL module */
-
-static int
-parse_dh (char *str, DH **dh_out, unsigned char **secret_out, int *keysize_out)
-{
-	DH *dh;
-	guchar *data, *decoded_data;
-	guchar *secret = NULL;
-	gsize data_len;
-	guint size;
-	guint16 size16;
-	BIGNUM *pubkey;
-	gint key_size;
-
-	dh = DH_new();
-	data = decoded_data = g_base64_decode (str, &data_len);
-	if (data_len < 2)
-		goto fail;
-
-	/* prime number */
-	memcpy (&size16, data, sizeof(size16));
-	size = ntohs (size16);
-	data += 2;
-	data_len -= 2;
-
-	if (size > data_len)
-		goto fail;
-
-	dh->p = BN_bin2bn (data, size, NULL);
-	data += size;
-
-	/* Generator */
-	if (data_len < 2)
-		goto fail;
-
-	memcpy (&size16, data, sizeof(size16));
-	size = ntohs (size16);
-	data += 2;
-	data_len -= 2;
-	
-	if (size > data_len)
-		goto fail;
-
-	dh->g = BN_bin2bn (data, size, NULL);
-	data += size;
-
-	/* pub key */
-	if (data_len < 2)
-		goto fail;
-
-	memcpy (&size16, data, sizeof(size16));
-	size = ntohs(size16);
-	data += 2;
-	data_len -= 2;
-
-	pubkey = BN_bin2bn (data, size, NULL);
-	if (!(DH_generate_key (dh)))
-		goto fail;
-
-	secret = g_malloc (DH_size (dh));
-	key_size = DH_compute_key (secret, pubkey, dh);
-	if (key_size == -1)
-		goto fail;
-
-	g_free (decoded_data);
-
-	*dh_out = dh;
-	*secret_out = secret;
-	*keysize_out = key_size;
-	return 1;
-
-fail:
-	g_free (secret);
-	g_free (decoded_data);
-
-	return 0;
-}
-
-char *
-encode_sasl_pass_blowfish (char *user, char *pass, char *data)
-{
-	DH *dh;
-	char *response, *ret = NULL;
-	unsigned char *secret;
-	unsigned char *encrypted_pass;
-	char *plain_pass;
-	BF_KEY key;
-	int key_size, length;
-	int pass_len = strlen (pass) + (8 - (strlen (pass) % 8));
-	int user_len = strlen (user);
-	guint16 size16;
-	char *in_ptr, *out_ptr;
-
-	if (!parse_dh (data, &dh, &secret, &key_size))
-		return NULL;
-	BF_set_key (&key, key_size, secret);
-
-	encrypted_pass = g_malloc0 (pass_len);
-	plain_pass = g_malloc0 (pass_len);
-	memcpy (plain_pass, pass, strlen(pass));
-	out_ptr = (char*)encrypted_pass;
-	in_ptr = (char*)plain_pass;
-
-	for (length = pass_len; length; length -= 8, in_ptr += 8, out_ptr += 8)
-		BF_ecb_encrypt ((unsigned char*)in_ptr, (unsigned char*)out_ptr, &key, BF_ENCRYPT);
-
-	/* Create response */
-	length = 2 + BN_num_bytes (dh->pub_key) + pass_len + user_len + 1;
-	response = g_malloc0 (length);
-	out_ptr = response;
-
-	/* our key */
-	size16 = htons ((guint16)BN_num_bytes (dh->pub_key));
-	memcpy (out_ptr, &size16, sizeof(size16));
-	out_ptr += 2;
-	BN_bn2bin (dh->pub_key, (guchar*)out_ptr);
-	out_ptr += BN_num_bytes (dh->pub_key);
-
-	/* username */
-	memcpy (out_ptr, user, user_len + 1);
-	out_ptr += user_len + 1;
-
-	/* pass */
-	memcpy (out_ptr, encrypted_pass, pass_len);
-	
-	ret = g_base64_encode ((const guchar*)response, length);
-
-	g_free (response);
-
-	DH_free(dh);
-	g_free (plain_pass);
-	g_free (encrypted_pass);
-	g_free (secret);
-
-	return ret;
-}
-
-char *
-encode_sasl_pass_aes (char *user, char *pass, char *data)
-{
-	DH *dh;
-	AES_KEY key;
-	char *response = NULL;
-	char *out_ptr, *ret = NULL;
-	unsigned char *secret, *ptr;
-	unsigned char *encrypted_userpass, *plain_userpass;
-	int key_size, length;
-	guint16 size16;
-	unsigned char iv[16], iv_copy[16];
-	int user_len = strlen (user) + 1;
-	int pass_len = strlen (pass) + 1;
-	int len = user_len + pass_len;
-	int padlen = 16 - (len % 16);
-	int userpass_len = len + padlen;
-
-	if (!parse_dh (data, &dh, &secret, &key_size))
-		return NULL;
-
-	encrypted_userpass = g_malloc0 (userpass_len);
-	plain_userpass = g_malloc0 (userpass_len);
-
-	/* create message */
-	/* format of: <username>\0<password>\0<padding> */
-	ptr = plain_userpass;
-	memcpy (ptr, user, user_len);
-	ptr += user_len;
-	memcpy (ptr, pass, pass_len);
-	ptr += pass_len;
-	if (padlen)
-	{
-		/* Padding */
-		unsigned char randbytes[16];
-		if (!RAND_bytes (randbytes, padlen))
-			goto end;
-
-		memcpy (ptr, randbytes, padlen);
-	}
-
-	if (!RAND_bytes (iv, sizeof (iv)))
-		goto end;
-
-	memcpy (iv_copy, iv, sizeof(iv));
-
-	/* Encrypt */
-	AES_set_encrypt_key (secret, key_size * 8, &key);
-	AES_cbc_encrypt(plain_userpass, encrypted_userpass, userpass_len, &key, iv_copy, AES_ENCRYPT);
-
-	/* Create response */
-	/* format of:  <size pubkey><pubkey><iv (always 16 bytes)><ciphertext> */
-	length = 2 + key_size + sizeof(iv) + userpass_len;
-	response = g_malloc (length);
-	out_ptr = response;
-
-	/* our key */
-	size16 = htons ((guint16)key_size);
-	memcpy (out_ptr, &size16, sizeof(size16));
-	out_ptr += 2;
-	BN_bn2bin (dh->pub_key, (guchar*)out_ptr);
-	out_ptr += key_size;
-
-	/* iv */
-	memcpy (out_ptr, iv, sizeof(iv));
-	out_ptr += sizeof(iv);
-
-	/* userpass */
-	memcpy (out_ptr, encrypted_userpass, userpass_len);
-	
-	ret = g_base64_encode ((const guchar*)response, length);
-
-end:
-	DH_free (dh);
-	g_free (plain_userpass);
-	g_free (encrypted_userpass);
-	g_free (secret);
-	g_free (response);
-
-	return ret;
-}
-#endif
-
-#ifdef USE_OPENSSL
 static char *
 str_sha256hash (char *string)
 {
@@ -1747,6 +1414,21 @@ str_sha256hash (char *string)
 	return g_strdup (buf);
 }
 
+static char *
+rfc_strlower (const char *str)
+{
+	size_t i, len = strlen(str);
+	char *lower = g_new(char, len + 1);
+
+	for (i = 0; i < len; ++i)
+	{
+		lower[i] = rfc_tolower(str[i]);
+	}
+	lower[i] = '\0';
+
+	return lower;
+}
+
 /**
  * \brief Generate CHALLENGEAUTH response for QuakeNet login.
  *
@@ -1763,7 +1445,7 @@ str_sha256hash (char *string)
  * <a href="http://stackoverflow.com/questions/242665/understanding-engine-initialization-in-openssl">example 2</a>.
  */
 char *
-challengeauth_response (char *username, char *password, char *challenge)
+challengeauth_response (const char *username, const char *password, const char *challenge)
 {
 	int i;
 	char *user;
@@ -1774,8 +1456,7 @@ challengeauth_response (char *username, char *password, char *challenge)
 	unsigned char *digest;
 	GString *buf = g_string_new_len (NULL, SHA256_DIGEST_LENGTH * 2);
 
-	user = g_strdup (username);
-	*user = rfc_tolower (*username);			/* convert username to lowercase as per the RFC */
+	user = rfc_strlower (username); /* convert username to lowercase as per the RFC */
 
 	pass = g_strndup (password, 10);			/* truncate to 10 characters */
 	passhash = str_sha256hash (pass);

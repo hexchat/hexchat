@@ -63,6 +63,9 @@
 #define lseek _lseeki64
 #endif
 
+/* interval timer to detect timeouts */
+static int timeout_timer = 0;
+
 static char *dcctypes[] = { "SEND", "RECV", "CHAT", "CHAT" };
 
 struct dccstat_info dccstat[] = {
@@ -78,12 +81,13 @@ static int dcc_global_throttle;	/* 0x1 = sends, 0x2 = gets */
 static gint64 dcc_sendcpssum, dcc_getcpssum;
 
 static struct DCC *new_dcc (void);
-static void dcc_close (struct DCC *dcc, int dccstat, int destroy);
+static void dcc_close (struct DCC *dcc, enum dcc_state dccstat, int destroy);
 static gboolean dcc_send_data (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read (GIOChannel *, GIOCondition, struct DCC *);
 static gboolean dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc);
+static int dcc_check_timeouts (void);
 
-static int new_id()
+static int new_id(void)
 {
 	static int id = 0;
 	if (id == 0)
@@ -233,9 +237,9 @@ is_dcc_completed (struct DCC *dcc)
 	return FALSE;
 }
 
-/* this is called from hexchat.c:hexchat_misc_checks() every 1 second. */
+/* this is called by timeout_timer every 1 second. */
 
-void
+int
 dcc_check_timeouts (void)
 {
 	struct DCC *dcc;
@@ -289,9 +293,12 @@ dcc_check_timeouts (void)
 			if (prefs.hex_dcc_remove)
 				dcc_close (dcc, 0, TRUE);
 			break;
+		default:
+			break;
 		}
 		list = next;
 	}
+	return 1;
 }
 
 static int
@@ -362,7 +369,7 @@ dcc_connect_sok (struct DCC *dcc)
 }
 
 static void
-dcc_close (struct DCC *dcc, int dccstat, int destroy)
+dcc_close (struct DCC *dcc, enum dcc_state dccstat, int destroy)
 {
 	if (dcc->wiotag)
 	{
@@ -419,6 +426,11 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 		g_free (dcc->destfile);
 		g_free (dcc->nick);
 		g_free (dcc);
+		if (dcc_list == NULL && timeout_timer != 0)
+		{
+			fe_timeout_remove (timeout_timer);
+			timeout_timer = 0;
+		}
 		return;
 	}
 
@@ -1596,6 +1608,8 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		EMIT_SIGNAL (XP_TE_DCCCONCHAT, dcc->serv->front_session,
 						 dcc->nick, host, NULL, NULL, 0);
 		break;
+	default:
+		break;
 	}
 
 	fe_dcc_update (dcc);
@@ -2122,6 +2136,8 @@ update_is_resumable (struct DCC *dcc)
 		dcc->resume_error = 1;
 	}
 
+	g_free (filename_fs);
+
 	/* Now verify that this DCC is not already in progress from someone else */
 	if (dcc->resumable)
 	{
@@ -2131,7 +2147,8 @@ update_is_resumable (struct DCC *dcc)
 		{
 			d = list->data;
 			if (d->type == TYPE_RECV && d->dccstat != STAT_ABORTED &&
-				 d->dccstat != STAT_DONE && d->dccstat != STAT_FAILED)
+				 d->dccstat != STAT_DONE && d->dccstat != STAT_FAILED &&
+				 d->dccstat != STAT_QUEUED)
 			{
 				if (d != dcc && is_same_file (d, dcc))
 				{
@@ -2171,6 +2188,8 @@ dcc_get (struct DCC *dcc)
 	case STAT_ABORTED:
 		dcc_close (dcc, 0, TRUE);
 		break;
+	default:
+		break;
 	}
 }
 
@@ -2200,10 +2219,17 @@ dcc_get_nick (struct session *sess, char *nick)
 		{
 			if (dcc->dccstat == STAT_QUEUED && dcc->type == TYPE_RECV)
 			{
-				dcc->resumable = 0;
-				dcc->pos = 0;
-				dcc->ack = 0;
-				dcc_connect (dcc);
+				update_is_resumable (dcc);
+				if (prefs.hex_dcc_auto_resume && dcc->resumable)
+				{
+					dcc_resume (dcc);
+				}
+				else
+				{
+					dcc->pos = 0;
+					dcc->ack = 0;
+					dcc_connect (dcc);
+				}
 				return;
 			}
 		}
@@ -2220,6 +2246,10 @@ new_dcc (void)
 	dcc->sok = -1;
 	dcc->fp = -1;
 	dcc_list = g_slist_prepend (dcc_list, dcc);
+	if (timeout_timer == 0)
+	{
+		timeout_timer = fe_timeout_add_seconds (1, dcc_check_timeouts, NULL);
+	}
 	return dcc;
 }
 
@@ -2242,6 +2272,9 @@ dcc_chat (struct session *sess, char *nick, int passive)
 		case STAT_ABORTED:
 		case STAT_FAILED:
 			dcc_close (dcc, 0, TRUE);
+			break;
+		case STAT_DONE:
+			break;
 		}
 	}
 	dcc = find_dcc (nick, "", TYPE_CHATRECV);
@@ -2255,6 +2288,9 @@ dcc_chat (struct session *sess, char *nick, int passive)
 		case STAT_FAILED:
 		case STAT_ABORTED:
 			dcc_close (dcc, 0, TRUE);
+			break;
+		default:
+			break;
 		}
 		return;
 	}
@@ -2305,6 +2341,8 @@ int
 dcc_resume (struct DCC *dcc)
 {
 	char tbuf[500];
+
+	update_is_resumable (dcc);
 
 	if (dcc->dccstat == STAT_QUEUED && dcc->resumable)
 	{

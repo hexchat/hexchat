@@ -1319,7 +1319,7 @@ servlist_sanitize_hostname (char *host)
 	if (c && c == e)
 		*c = '/';
 
-	return ret;
+	return g_strstrip(ret);
 }
 
 /* remove leading slash */
@@ -1570,7 +1570,15 @@ servlist_nick_changed_cb (GtkEntry *entry, gpointer userdata)
 	const gchar *nick1 = gtk_entry_get_text (GTK_ENTRY (entry_nick1));
 	const gchar *nick2 = gtk_entry_get_text (GTK_ENTRY (entry_nick2));
 
-	if (!rfc_casecmp (nick1, nick2))
+	if (!nick1[0] || !nick2[0])
+	{
+		entry = GTK_ENTRY(!nick1[0] ? entry_nick1 : entry_nick2);
+		gtk_entry_set_icon_from_stock (entry, GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
+		gtk_entry_set_icon_tooltip_text (entry, GTK_ENTRY_ICON_SECONDARY,
+		                                 _("You cannot have an empty nick name."));
+		gtk_widget_set_sensitive (connect_btn, FALSE);
+	}
+	else if (!rfc_casecmp (nick1, nick2))
 	{
 		gtk_entry_set_icon_from_stock (entry, GTK_ENTRY_ICON_SECONDARY, GTK_STOCK_DIALOG_ERROR);
 		gtk_entry_set_icon_tooltip_text (entry, GTK_ENTRY_ICON_SECONDARY,
@@ -2197,6 +2205,10 @@ servlist_open_networks (void)
 					G_CALLBACK(servlist_nick_changed_cb), button_connect);
 	g_signal_connect (G_OBJECT (entry_nick2), "changed",
 					G_CALLBACK(servlist_nick_changed_cb), button_connect);
+
+	/* Run validity checks now */
+	servlist_nick_changed_cb (GTK_ENTRY(entry_nick2), button_connect);
+	servlist_username_changed_cb (GTK_ENTRY(entry_guser), button_connect);
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Configuration">
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
@@ -36,6 +36,7 @@
     <ClInclude Include="server.h" />
     <ClInclude Include="servlist.h" />
     <ClInclude Include="ssl.h" />
+    <ClInclude Include="sysinfo\sysinfo.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="$(HexChatLib)textenums.h" />
     <ClInclude Include="$(HexChatLib)textevents.h" />
@@ -68,6 +69,7 @@
     <ClCompile Include="server.c" />
     <ClCompile Include="servlist.c" />
     <ClCompile Include="ssl.c" />
+    <ClCompile Include="sysinfo\win32\backend.c" />
     <ClCompile Include="text.c" />
     <ClCompile Include="tree.c" />
     <ClCompile Include="url.c" />

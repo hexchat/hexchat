@@ -58,7 +58,7 @@ set_limit (char *size)
 }
 
 static int
-get_limit ()
+get_limit (void)
 {
 	int size = hexchat_pluginpref_get_int (ph, "limit");
 

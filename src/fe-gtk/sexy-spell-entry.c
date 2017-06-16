@@ -155,7 +155,7 @@ spell_accumulator(GSignalInvocationHint *hint, GValue *return_accu, const GValue
 }
 
 static void
-initialize_enchant ()
+initialize_enchant (void)
 {
 	GModule *enchant;
 	gpointer funcptr;
@@ -1410,7 +1410,7 @@ sexy_spell_entry_activate_language(SexySpellEntry *entry, const gchar *lang, GEr
 
 	g_return_val_if_fail(entry != NULL, FALSE);
 	g_return_val_if_fail(SEXY_IS_SPELL_ENTRY(entry), FALSE);
-	g_return_val_if_fail(lang != NULL && lang != '\0', FALSE);
+	g_return_val_if_fail(lang != NULL && *lang != '\0', FALSE);
 
 	if (!have_enchant)
 		return FALSE;

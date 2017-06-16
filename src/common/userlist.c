@@ -123,10 +123,11 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 	user = userlist_find (sess, nick);
 	if (user)
 	{
-		if (!user->hostname && hostname)
+		if (hostname && (!user->hostname || strcmp(user->hostname, hostname)))
 		{
 			if (prefs.hex_gui_ulist_show_hosts)
 				do_rehash = TRUE;
+			g_free (user->hostname);
 			user->hostname = g_strdup (hostname);
 		}
 		if (!user->realname && realname && *realname)
@@ -415,7 +416,8 @@ userlist_add (struct session *sess, char *name, char *hostname,
 		sess->me = user;
 
 	fe_userlist_insert (sess, user, FALSE);
-	fe_userlist_numbers (sess);
+	if(sess->end_of_names)
+		fe_userlist_numbers (sess);
 }
 
 static int

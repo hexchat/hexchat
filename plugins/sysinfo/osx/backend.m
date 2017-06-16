@@ -78,10 +78,22 @@ get_os (void)
 static char *
 get_os_fallback (void)
 {
+#if !defined (MAC_OS_X_VERSION_10_9) || MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_9
+	SInt32 ver_major = 0,
+	       ver_minor = 0,
+	       ver_patch = 0;
+
+	Gestalt (gestaltSystemVersionMajor, &ver_major);
+	Gestalt (gestaltSystemVersionMinor, &ver_minor);
+	Gestalt (gestaltSystemVersionBugFix, &ver_patch);
+
+	return g_strdup_printf ("OS X %d.%d.%d", ver_major, ver_minor, ver_patch);
+#else
 	NSProcessInfo *info = [NSProcessInfo processInfo];
 	NSOperatingSystemVersion version = [info operatingSystemVersion];
 
 	return g_strdup_printf ("OS X %ld.%ld.%ld", version.majorVersion, version.minorVersion, version.patchVersion);
+#endif
 }
 char *
 sysinfo_backend_get_os(void)

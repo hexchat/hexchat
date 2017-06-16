@@ -51,6 +51,7 @@ struct defaultserver
 static const struct defaultserver def[] =
 {
 	{"2600net",	0},
+	/* Invalid hostname in cert */
 	{0,			"irc.2600.net"},
 
 	{"2ch", 0, 0, "iso-2022-jp", 0, 0},
@@ -59,9 +60,10 @@ static const struct defaultserver def[] =
 	{0,			"irc.juggler.jp"},
 
 	{"AccessIRC",	0},
+	/* Self signed */
 	{0,			"irc.accessirc.net"},
 
-	{"AfterNET",	0},
+	{"AfterNET", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.afternet.org"},
 
 	{"Aitvaras",	0},
@@ -84,14 +86,14 @@ static const struct defaultserver def[] =
 	{"ARCNet",	0},
 	{0,			"arcnet-irc.org"},
 
-	{"AthemeNet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.atheme.org"},
-
 	{"AustNet",	0},
 	{0,			"irc.austnet.org"},
 
 	{"AzzurraNet",	0},
 	{0,			"irc.azzurra.org"},
+
+	{"BetaChat", 0, 0, 0, LOGIN_SASL},
+	{0,			"irc.betachat.net"},
 
 	{"Canternet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.canternet.org"},
@@ -99,45 +101,43 @@ static const struct defaultserver def[] =
 	{"Chat4all", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.chat4all.org"},
 
-	{"ChattingAway", 0},
-	{0,			"irc.chattingaway.com"},
-
 	{"ChatJunkies",	0},
 	{0,			"irc.chatjunkies.org"},
 
 	{"ChatNet",	0},
 	{0,			"irc.chatnet.org"},
 
-	{"ChatSpike", 0},
+	{"ChatSpike", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.chatspike.net"},
 
+	{"ChattingAway", 0},
+	{0,			"irc.chattingaway.com"},
+
 	{"Criten", 0},
+	/* Self signed */
 	{0,			"irc.criten.net"},
 
-	{"DALnet", 0},
-	{0,			"irc.dal.net"},
+	{"DALnet", 0, 0, 0, LOGIN_NICKSERV},
+	/* Self signed */
+	{0,			"us.dal.net"},
+
+	{"DarkMyst", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.darkmyst.org"},
 
 	{"Dark-Tou-Net",	0},
 	{0,			"irc.d-t-net.de"},
-
-	{"DarkMyst", 0, 0, 0, LOGIN_SASL},
-	{0,			"irc.darkmyst.org"},
-
-	{"DeepIRC", 0},
-	{0,			"irc.deepirc.net"},
 
 	{"DeltaAnime", 0},
 	{0,			"irc.deltaanime.net"},
 
 	{"EFnet",	0},
-	{0,			"irc.blackened.com"},
-	{0,			"irc.Prison.NET"},
-	{0,			"irc.Qeast.net"},
-	{0,			"irc.efnet.pl"},
-	{0,			"irc.lightning.net"},
-	{0,			"irc.servercentral.net"},
+	{0,			"irc.choopa.net"},
+	{0,			"irc.paraphysics.net"},
+	{0,			"efnet.port80.se"},
+	{0,			"irc.underworld.no"},
+	{0,			"irc.inet.tele.dk"},
 
-	{"ElectroCode", 0, 0, 0, 0, 0, TRUE},
+	{"ElectroCode", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.electrocode.net"},
 
 	{"EnterTheGame",	0},
@@ -153,13 +153,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.euirc.net"},
 
 	{"EuropNet", 0},
+	/* Self signed */
 	{0,			"irc.europnet.org"},
 
 	{"FDFNet",	0},
+	/* Self signed */
 	{0,			"irc.fdfnet.net"},
-
-	{"FEFNet", 0, 0, 0, LOGIN_SASL},
-	{0,			"irc.fef.net"},
 
 	{"freenode", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,				"chat.freenode.net"},
@@ -175,18 +174,26 @@ static const struct defaultserver def[] =
 	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 	
-	{"GeeksIRC", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{"GeeksIRC", 0, 0, 0, LOGIN_SASL},
+	/* Self signed */
 	{0,			"irc.geeksirc.net"},
 
-	{"GeekShed",	0},
+	{"GeekShed", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.geekshed.net"},
 
-	{"German-Elite",	0},
+	{"German-Elite", 0, 0, "CP1252"},
 	{0,			"irc.german-elite.net"},
 
 	{"GIMPNet",		0},
+	/* Invalid hostname in cert */
 	{0,			"irc.gimp.org"},
 	{0,			"irc.gnome.org"},
+
+	{"GlobalGamers", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.globalgamers.net/+6660"},
+#endif
+	{0,			"irc.globalgamers.net"},
 
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
@@ -194,7 +201,8 @@ static const struct defaultserver def[] =
 	{"IdleMonkeys", 0},
 	{0,			"irc.idlemonkeys.net"},
 
-	{"IndirectIRC", 0, 0, 0, 0, 0, TRUE},
+	{"IndirectIRC", 0, 0, 0, LOGIN_SASL},
+	/* Self signed */
 	{0,			"irc.indirectirc.com"},
 	
 	{"Interlinked", 0, 0, 0, LOGIN_SASL, 0, TRUE},
@@ -203,14 +211,8 @@ static const struct defaultserver def[] =
 	{"IRC4Fun", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,				"irc.irc4fun.net"},
 
-	{"IRCHighWay",	0},
-#ifdef USE_OPENSSL
-	{0,				"irc.irchighway.net/+9999"},
-#endif
+	{"IRCHighWay", 0, 0, 0, 0, 0, TRUE},
 	{0,				"irc.irchighway.net"},
-
-	{"IrcLink",	0},
-	{0,			"irc.irclink.net"},
 
 	{"IRCNet",		0},
 	{0,				"open.ircnet.net"},
@@ -218,33 +220,43 @@ static const struct defaultserver def[] =
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
 
-	{"iZ-smart.net",	0},
+	{"iZ-smart.net", 0, 0, "CP1252"},
 	{0,			"irc.iz-smart.net"},
+
+	{"KBFail", 0},
+	/* SSL is self-signed */
+	{0,			"irc.kbfail.net"},
 
 	{"Krstarica", 0},
 	{0,			"irc.krstarica.com"},
+
+	{"LibraIRC", 0},
+	/* Self signed */
+	{0,			"irc.librairc.net"},
 
 #ifdef USE_OPENSSL
 	{"LinkNet",	0},
 	{0,			"irc.link-net.org/+7000"},
 #endif
 
-	{"MindForge",	0},
+	{"MindForge", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.mindforge.org"},
 
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
 
-	{"Moznet",		0},
+	{"Moznet", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.mozilla.org"},
 	
 	{"ObsidianIRC",  0},
+	/* Self signed */
 	{0,      "irc.obsidianirc.net"}, 
 
 	{"Oceanius", 0, 0, 0, LOGIN_SASL},
+	/* Self signed */
 	{0,			"irc.oceanius.com"},
 
-	{"OFTC",	0},
+	{"OFTC", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.oftc.net"},
 
 	{"OtherNet",	0},
@@ -253,22 +265,25 @@ static const struct defaultserver def[] =
 	{"OzNet",	0},
 	{0,			"irc.oz.org"},
 
-	{"PIRC.PL",	0},
+	{"PIRC.PL",	0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.pirc.pl"},
 	
 	{"PonyChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.ponychat.net"},
 
-	{"PTNet.org",   0},
-	{0,			"irc.ptnet.org"},
+	{"PTNet.org",	0},
+	/* Note that the network suggests ISO-8859-1 but most users ignore this */
+	{0,			"uevora.ptnet.org"},
+	{0,			"vianetworks.ptnet.org"},
 
 	{"QuakeNet", 0, 0, 0, LOGIN_CHALLENGEAUTH},
 	{0,			"irc.quakenet.org"},
 
-	{"Rizon", 0},
+	{"Rizon", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.rizon.net"},
 
 	{"RusNet", 0, 0, "KOI8-R (Cyrillic)"},
+	/* Self signed */
 	{0,			"irc.tomsk.net"},
 	{0,			"irc.run.net"},
 	{0,			"irc.ru"},
@@ -277,31 +292,28 @@ static const struct defaultserver def[] =
 	{"SceneNet",	0},
 	{0,			"irc.scene.org"},
 
-	{"SeilEn.de",	0},
+	{"SeilEn.de", 0, 0, "CP1252"},
 	{0,			"irc.seilen.de"},
-
-	{"SeionIRC", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.seion.us"},
 
 	{"Serenity-IRC",	0},
 	{0,			"irc.serenity-irc.net"},
 
 	{"SlashNET",	0},
+	/* Self signed */
 	{0,			"irc.slashnet.org"},
 
 	{"Snoonet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.snoonet.org"},
 
-	{"Snyde", 0},
-	{0,			"irc.snyde.net"},
-
-	{"Sohbet.Net", 0},
+	{"Sohbet.Net", 0, 0, "CP1254"},
 	{0,			"irc.sohbet.net"},
 
 	{"SolidIRC", 0},
+	/* Self signed */
 	{0,			"irc.solidirc.com"},
 
 	{"SorceryNet", 0, 0, 0, LOGIN_SASL},
+	/* Self signed */
 	{0,			"irc.sorcery.net"},
 	
 	{"SpotChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
@@ -310,45 +322,38 @@ static const struct defaultserver def[] =
 	{"StarChat", 0},
 	{0,			"irc.starchat.net"},
 
-	{"Station51", 0, 0, 0, 0, 0, TRUE},
+	{"Station51", 0},
+	/* Self signed */
 	{0,			"irc.station51.net"},
 
 	{"StormBit", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.stormbit.net"},
 
-	{"SwiftIRC", 0, 0, 0, 0, 0, TRUE},
+	{"SwiftIRC", 0},
+	/* Expired cert */
 	{0,			"irc.swiftirc.net"},
 
-	{"synIRC", 0, 0, 0, 0, 0, TRUE},
+	{"synIRC", 0},
+	/* Self signed */
 	{0, "irc.synirc.net"},
 
 	{"Techtronix",	0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.techtronix.net"},
 
-	{"TinyCrab", 0, 0, 0, LOGIN_SASL},
-	{0,			"irc.tinycrab.net"},
-
-	{"TURLINet",			0},
-	{0,			"irc.turli.net"},
+	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
+	/* Other servers use CP1251 and invalid certs */
 	{0,			"irc.servx.ru"},
-	{0,			"irc.gavnos.ru"},
 
 	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM, "MSG x@channels.undernet.org login %u %p"},
 	{0,			"us.undernet.org"},
 
-	{"UniBG", 0, 0, 0, LOGIN_CUSTOM, "MSG NS IDENTIFY %p"},
+	{"UniBG", 0, 0, "CP1251", LOGIN_CUSTOM, "MSG NS IDENTIFY %p"},
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
 	{0,			"irc.techno-link.com"},
-	
-	{"ValleyNode", 0, 0, 0, LOGIN_SASL},
-	{0,			"irc.valleynode.net"},
 
 	{"Worldnet",		0},
 	{0,			"irc.worldnet.net"},
-
-	{"Windfyre", 0, 0, 0, 0, 0, TRUE},
-	{0,			"irc.windfyre.net"},
 
 	{"Xertion", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.xertion.org"},
@@ -357,42 +362,6 @@ static const struct defaultserver def[] =
 };
 
 GSList *network_list = 0;
-
-#if !GLIB_CHECK_VERSION(2,34,0)
-#define g_slist_copy_deep servlist_slist_copy_deep
-/* FIXME copy-paste from gslist.c, should be dumped sometime */
-static GSList*
-servlist_slist_copy_deep (GSList *list, GCopyFunc func, gpointer user_data)
-{
-  GSList *new_list = NULL;
-
-  if (list)
-    {
-      GSList *last;
-
-      new_list = g_slice_new (GSList);
-      if (func)
-        new_list->data = func (list->data, user_data);
-      else
-        new_list->data = list->data;
-      last = new_list;
-      list = list->next;
-      while (list)
-        {
-          last->next = g_slice_new (GSList);
-          last = last->next;
-          if (func)
-            last->data = func (list->data, user_data);
-          else
-            last->data = list->data;
-          list = list->next;
-        }
-      last->next = NULL;
-    }
-
-  return new_list;
-}
-#endif
 
 favchannel *
 servlist_favchan_copy (favchannel *fav)
@@ -715,8 +684,19 @@ servlist_net_find_from_server (char *server_name)
 		slist = net->servlist;
 		while (slist)
 		{
+			gsize hostname_len;
+			const char *hostname, *p;
+
 			serv = slist->data;
-			if (g_ascii_strcasecmp (serv->hostname, server_name) == 0)
+			hostname = serv->hostname;
+
+			/* Ignore port when comparing */
+			if ((p = strchr (hostname, '/')))
+				hostname_len = p - hostname;
+			else
+				hostname_len = strlen (hostname);
+
+			if (g_ascii_strncasecmp (hostname, server_name, hostname_len) == 0)
 				return net;
 			slist = slist->next;
 		}

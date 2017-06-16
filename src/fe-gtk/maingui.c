@@ -173,67 +173,55 @@ void
 fe_set_tab_color (struct session *sess, int col)
 {
 	struct session *server_sess = sess->server->server_session;
-	if (sess->gui->is_tab && (col == 0 || sess != current_tab))
+	if (sess->res->tab && sess->gui->is_tab && (col == 0 || sess != current_tab))
 	{
 		switch (col)
 		{
 		case 0:	/* no particular color (theme default) */
-			sess->new_data = FALSE;
-			sess->msg_said = FALSE;
-			sess->nick_said = FALSE;
+			sess->tab_state = TAB_STATE_NONE;
 			chan_set_color (sess->res->tab, plain_list);
 			break;
 		case 1:	/* new data has been displayed (dark red) */
-			sess->new_data = TRUE;
-			sess->msg_said = FALSE;
-			sess->nick_said = FALSE;
+			sess->tab_state = TAB_STATE_NEW_DATA;
 			chan_set_color (sess->res->tab, newdata_list);
 
 			if (chan_is_collapsed (sess->res->tab)
-				&& !(server_sess->msg_said || server_sess->nick_said)
+				&& !((server_sess->tab_state & TAB_STATE_NEW_MSG)
+					 || (server_sess->tab_state & TAB_STATE_NEW_HILIGHT))
 				&& !(server_sess == current_tab))
 			{
-				server_sess->new_data = TRUE;
-				server_sess->msg_said = FALSE;
-				server_sess->nick_said = FALSE;
+				server_sess->tab_state = TAB_STATE_NEW_DATA;
 				chan_set_color (chan_get_parent (sess->res->tab), newdata_list);
 			}
-				
+
 			break;
 		case 2:	/* new message arrived in channel (light red) */
-			sess->new_data = FALSE;
-			sess->msg_said = TRUE;
-			sess->nick_said = FALSE;
+			sess->tab_state = TAB_STATE_NEW_MSG;
 			chan_set_color (sess->res->tab, newmsg_list);
-			
-			if (chan_is_collapsed (sess->res->tab) 
-				&& !server_sess->nick_said
+
+			if (chan_is_collapsed (sess->res->tab)
+				&& !(server_sess->tab_state & TAB_STATE_NEW_HILIGHT)
 				&& !(server_sess == current_tab))
 			{
-				server_sess->new_data = FALSE;
-				server_sess->msg_said = TRUE;
-				server_sess->nick_said = FALSE;
+				server_sess->tab_state = TAB_STATE_NEW_MSG;
 				chan_set_color (chan_get_parent (sess->res->tab), newmsg_list);
 			}
-			
+
 			break;
 		case 3:	/* your nick has been seen (blue) */
-			sess->new_data = FALSE;
-			sess->msg_said = FALSE;
-			sess->nick_said = TRUE;
+			sess->tab_state = TAB_STATE_NEW_HILIGHT;
 			chan_set_color (sess->res->tab, nickseen_list);
 
 			if (chan_is_collapsed (sess->res->tab) && !(server_sess == current_tab))
 			{
-				server_sess->new_data = FALSE;
-				server_sess->msg_said = FALSE;
-				server_sess->nick_said = TRUE;
+				server_sess->tab_state = TAB_STATE_NEW_MSG;
 				chan_set_color (chan_get_parent (sess->res->tab), nickseen_list);
 			}
-				
+
 			break;
 		}
 		lastact_update (sess);
+		sess->last_tab_state = sess->tab_state; /* For plugins handling future prints */
 	}
 }
 
@@ -540,17 +528,10 @@ mg_focus (session *sess)
 		sess->server->server_session = sess;
 	}
 
-	if (sess->new_data || sess->nick_said || sess->msg_said)
-	{
-		sess->nick_said = FALSE;
-		sess->msg_said = FALSE;
-		sess->new_data = FALSE;
-		lastact_update (sess);
-		/* when called via mg_changui_new, is_tab might be true, but
-			sess->res->tab is still NULL. */
-		if (sess->res->tab)
-			fe_set_tab_color (sess, 0);
-	}
+	/* when called via mg_changui_new, is_tab might be true, but
+		sess->res->tab is still NULL. */
+	if (sess->res->tab)
+		fe_set_tab_color (sess, 0);
 }
 
 static int
@@ -805,14 +786,6 @@ mg_decide_userlist (session *sess, gboolean switch_to_current)
 	}
 }
 
-static void
-mg_userlist_toggle_cb (GtkWidget *button, gpointer userdata)
-{
-	prefs.hex_gui_ulist_hide = !prefs.hex_gui_ulist_hide;
-	mg_decide_userlist (current_sess, FALSE);
-	gtk_widget_grab_focus (current_sess->gui->input_box);
-}
-
 static int ul_tag = 0;
 
 static gboolean
@@ -1010,12 +983,6 @@ static void
 mg_topdestroy_cb (GtkWidget *win, session *sess)
 {
 /*	printf("enter mg_topdestroy. sess %p was destroyed\n", sess);*/
-
-	/* kill the text buffer */
-	gtk_xtext_buffer_free (sess->res->buffer);
-	/* kill the user list */
-	g_object_unref (G_OBJECT (sess->res->user_model));
-
 	session_free (sess);	/* tell hexchat.c about it */
 }
 
@@ -1025,11 +992,6 @@ static void
 mg_ircdestroy (session *sess)
 {
 	GSList *list;
-
-	/* kill the text buffer */
-	gtk_xtext_buffer_free (sess->res->buffer);
-	/* kill the user list */
-	g_object_unref (G_OBJECT (sess->res->user_model));
 
 	session_free (sess);	/* tell hexchat.c about it */
 
@@ -1092,7 +1054,10 @@ mg_tab_close (session *sess)
 	int i;
 
 	if (chan_remove (sess->res->tab, FALSE))
+	{
+		sess->res->tab = NULL;
 		mg_ircdestroy (sess);
+	}
 	else
 	{
 		for (i = 0, list = sess_list; list; list = list->next)
@@ -1332,9 +1297,6 @@ mg_chan_remove (chan *ch)
 static void
 mg_close_gen (chan *ch, GtkWidget *box)
 {
-	char *title = g_object_get_data (G_OBJECT (box), "title");
-
-	g_free (title);
 	if (!ch)
 		ch = g_object_get_data (G_OBJECT (box), "ch");
 	if (ch)
@@ -1514,7 +1476,7 @@ mg_set_guint8 (GtkCheckMenuItem *item, guint8 *setting)
 		log_open_or_close (sess);
 
 	chanopt_save (sess);
-	chanopt_save_all ();
+	chanopt_save_all (FALSE);
 }
 
 static void
@@ -2200,10 +2162,6 @@ mg_create_topicbar (session *sess, GtkWidget *box)
 	gui->dialogbutton_box = bbox = gtk_hbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), bbox, 0, 0, 0);
 	mg_create_dialogbuttons (bbox);
-
-	if (!prefs.hex_gui_ulist_resizable)
-		gtkutil_button (hbox, GTK_STOCK_GOTO_LAST, _("Show/Hide userlist"),
-							 mg_userlist_toggle_cb, 0, 0);
 }
 
 /* check if a word is clickable */
@@ -3339,8 +3297,8 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 
 	ch = chanview_add (mg_gui->chanview, name, NULL, box, TRUE, TAG_UTIL, pix_tree_util);
 	chan_set_color (ch, plain_list);
-	/* FIXME: memory leak */
-	g_object_set_data (G_OBJECT (box), "title", g_strdup (title));
+
+	g_object_set_data_full (G_OBJECT (box), "title", g_strdup (title), g_free);
 	g_object_set_data (G_OBJECT (box), "ch", ch);
 
 	if (prefs.hex_gui_tab_newtofront)
@@ -3630,8 +3588,7 @@ mg_set_title (GtkWidget *vbox, char *title) /* for non-irc tab/window only */
 	old = g_object_get_data (G_OBJECT (vbox), "title");
 	if (old)
 	{
-		g_object_set_data (G_OBJECT (vbox), "title", g_strdup (title));
-		g_free (old);
+		g_object_set_data_full (G_OBJECT (vbox), "title", g_strdup (title), g_free);
 	} else
 	{
 		gtk_window_set_title (GTK_WINDOW (vbox), title);
@@ -3657,6 +3614,9 @@ fe_server_callback (server *serv)
 void
 fe_session_callback (session *sess)
 {
+	gtk_xtext_buffer_free (sess->res->buffer);
+	g_object_unref (G_OBJECT (sess->res->user_model));
+
 	if (sess->res->banlist && sess->res->banlist->window)
 		mg_close_gen (NULL, sess->res->banlist->window);
 

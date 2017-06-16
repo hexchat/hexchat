@@ -1,8 +1,0 @@
-analysis_verbose = $(analysis_verbose_$(V))
-analysis_verbose_ = $(analysis_verbose_$(AM_DEFAULT_VERBOSITY))
-analysis_verbose_0 = @echo "  CCSA    " $@; $(COMPILE) --analyze $< -o $@;
-analysis_verbose_1 = $(COMPILE) --analyze $< -o $@;
-
-%.plist: %.c
-	$(analysis_verbose)
-

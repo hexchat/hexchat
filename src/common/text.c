@@ -65,18 +65,21 @@ struct pevt_stage1
 static ca_context *ca_con;
 #endif
 
+#define SCROLLBACK_MAX 32000
+
 static void mkdir_p (char *filename);
 static char *log_create_filename (char *channame);
 
 static char *
 scrollback_get_filename (session *sess)
 {
-	char *net, *chan, *buf;
+	char *net, *chan, *buf, *ret = NULL;
 
 	net = server_get_network (sess->server, FALSE);
 	if (!net)
 		return NULL;
 
+	net = log_create_filename (net);
 	buf = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "scrollback" G_DIR_SEPARATOR_S "%s" G_DIR_SEPARATOR_S "%s.txt", get_xdir (), net, "");
 	mkdir_p (buf);
 	g_free (buf);
@@ -87,55 +90,21 @@ scrollback_get_filename (session *sess)
 	else
 		buf = NULL;
 	g_free (chan);
+	g_free (net);
 
-	return buf;
+	if (buf)
+	{
+		ret = g_filename_from_utf8 (buf, -1, NULL, NULL, NULL);
+		g_free (buf);
+	}
+
+	return ret;
 }
-
-#if 0
-
-static void
-scrollback_unlock (session *sess)
-{
-	char buf[1024];
-
-	if (scrollback_get_filename (sess, buf, sizeof (buf) - 6) == NULL)
-		return;
-
-	strcat (buf, ".lock");
-	unlink (buf);
-}
-
-static gboolean
-scrollback_lock (session *sess)
-{
-	char buf[1024];
-	int fh;
-
-	if (scrollback_get_filename (sess, buf, sizeof (buf) - 6) == NULL)
-		return FALSE;
-
-	strcat (buf, ".lock");
-
-	if (access (buf, F_OK) == 0)
-		return FALSE;	/* can't get lock */
-
-	fh = open (buf, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
-	if (fh == -1)
-		return FALSE;
-
-	return TRUE;
-}
-
-#endif
 
 void
 scrollback_close (session *sess)
 {
-	if (sess->scrollfd != -1)
-	{
-		close (sess->scrollfd);
-		sess->scrollfd = -1;
-	}
+	g_clear_object (&sess->scrollfile);
 }
 
 /* shrink the file to roughly prefs.hex_text_max_lines */
@@ -143,29 +112,13 @@ scrollback_close (session *sess)
 static void
 scrollback_shrink (session *sess)
 {
-	char *file;
-	char *buf;
-	int fh;
-	int lines;
-	int line;
+	char *buf, *p;
 	gsize len;
-	char *p;
+	gint offset, lines = 0;
+	const gint max_lines = MIN(prefs.hex_text_max_lines, SCROLLBACK_MAX);
 
-	scrollback_close (sess);
-	sess->scrollwritten = 0;
-	lines = 0;
-
-	if ((file = scrollback_get_filename (sess)) == NULL)
-	{
-		g_free (file);
+	if (!g_file_load_contents (sess->scrollfile, NULL, &buf, &len, NULL, NULL))
 		return;
-	}
-
-	if (!g_file_get_contents (file, &buf, &len, NULL))
-	{
-		g_free (file);
-		return;
-	}
 
 	/* count all lines */
 	p = buf;
@@ -176,41 +129,37 @@ scrollback_shrink (session *sess)
 		p++;
 	}
 
-	fh = g_open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY | OFLAGS, 0644);
-	g_free (file);
-	if (fh == -1)
-	{
-		g_free (buf);
-		return;
-	}
+	offset = lines - max_lines;
 
-	line = 0;
+	/* now just go back to where we want to start the file */
 	p = buf;
+	lines = 0;
 	while (p != buf + len)
 	{
 		if (*p == '\n')
 		{
-			line++;
-			if (line >= lines - prefs.hex_text_max_lines &&
-				 p + 1 != buf + len)
+			lines++;
+			if (lines == offset)
 			{
 				p++;
-				write (fh, p, len - (p - buf));
 				break;
 			}
 		}
 		p++;
 	}
 
-	close (fh);
+	if (g_file_replace_contents (sess->scrollfile, p, strlen(p), NULL, FALSE,
+							G_FILE_CREATE_PRIVATE, NULL, NULL, NULL))
+		sess->scrollwritten = lines;
+
 	g_free (buf);
 }
 
 static void
 scrollback_save (session *sess, char *text, time_t stamp)
 {
+	GOutputStream *ostream;
 	char *buf;
-	int len;
 
 	if (sess->type == SESS_SERVER && prefs.hex_gui_tab_server == 1)
 		return;
@@ -226,16 +175,25 @@ scrollback_save (session *sess, char *text, time_t stamp)
 			return;
 	}
 
-	if (sess->scrollfd == -1)
+	if (!sess->scrollfile)
 	{
 		if ((buf = scrollback_get_filename (sess)) == NULL)
 			return;
 
-		sess->scrollfd = g_open (buf, O_CREAT | O_APPEND | O_WRONLY | OFLAGS, 0644);
+		sess->scrollfile = g_file_new_for_path (buf);
 		g_free (buf);
-		if (sess->scrollfd == -1)
-			return;
 	}
+	else
+	{
+		/* Users can delete the folder after it's created... */
+		GFile *parent = g_file_get_parent (sess->scrollfile);
+		g_file_make_directory_with_parents (parent, NULL, NULL);
+		g_object_unref (parent);
+	}
+
+	ostream = G_OUTPUT_STREAM(g_file_append_to (sess->scrollfile, G_FILE_CREATE_PRIVATE, NULL, NULL));
+	if (!ostream)
+		return;
 
 	if (!stamp)
 		stamp = time(0);
@@ -243,31 +201,30 @@ scrollback_save (session *sess, char *text, time_t stamp)
 		buf = g_strdup_printf ("T %d ", (int) stamp);
 	else
 		buf = g_strdup_printf ("T %" G_GINT64_FORMAT " ", (gint64)stamp);
-	write (sess->scrollfd, buf, strlen (buf));
-	g_free (buf);
 
-	len = strlen (text);
-	write (sess->scrollfd, text, len);
-	if (len && text[len - 1] != '\n')
-		write (sess->scrollfd, "\n", 1);
+	g_output_stream_write (ostream, buf, strlen (buf), NULL, NULL);
+	g_output_stream_write (ostream, text, strlen (text), NULL, NULL);
+	if (!g_str_has_suffix (text, "\n"))
+		g_output_stream_write (ostream, "\n", 1, NULL, NULL);
+
+	g_free (buf);
+	g_object_unref (ostream);
 
 	sess->scrollwritten++;
 
-	if ((sess->scrollwritten * 2 > prefs.hex_text_max_lines && prefs.hex_text_max_lines > 0) ||
-       sess->scrollwritten > 32000)
+	if ((sess->scrollwritten > prefs.hex_text_max_lines && prefs.hex_text_max_lines > 0) ||
+       sess->scrollwritten > SCROLLBACK_MAX)
 		scrollback_shrink (sess);
 }
 
 void
 scrollback_load (session *sess)
 {
-	char *buf;
-	char *text;
-	time_t stamp;
-	int lines;
-	GIOChannel *io;
-	GError *file_error = NULL;
-	GError *io_err = NULL;
+	GInputStream *stream;
+	GDataInputStream *istream;
+	gchar *buf, *text;
+	gint lines = 0;
+	time_t stamp = 0;
 
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
@@ -280,44 +237,56 @@ scrollback_load (session *sess)
 			return;
 	}
 
-	if ((buf = scrollback_get_filename (sess)) == NULL)
+	if (!sess->scrollfile)
+	{
+		if ((buf = scrollback_get_filename (sess)) == NULL)
+			return;
+
+		sess->scrollfile = g_file_new_for_path (buf);
+		g_free (buf);
+	}
+
+	stream = G_INPUT_STREAM(g_file_read (sess->scrollfile, NULL, NULL));
+	if (!stream)
 		return;
 
-	io = g_io_channel_new_file (buf, "r", &file_error);
-	g_free (buf);
-	if (!io)
-		return;
-
-	lines = 0;
+	istream = g_data_input_stream_new (stream);
+	/*
+	 * This is to avoid any issues moving between windows/unix
+	 * but the docs mention an invalid \r without a following \n
+	 * can lock up the program... (Our write() always adds \n)
+	 */
+	g_data_input_stream_set_newline_type (istream, G_DATA_STREAM_NEWLINE_TYPE_ANY);
+	g_object_unref (stream);
 
 	while (1)
 	{
+		GError *err = NULL;
 		gsize n_bytes;
-		GIOStatus io_status;
 
-		io_status = g_io_channel_read_line (io, &buf, &n_bytes, NULL, &io_err);
-		
-		if (io_status == G_IO_STATUS_NORMAL)
+		buf = g_data_input_stream_read_line_utf8 (istream, &n_bytes, NULL, &err);
+
+		if (!err && buf)
 		{
-			char *buf_tmp;
-
-			n_bytes--;
-			buf_tmp = buf;
-			buf = g_strndup (buf_tmp, n_bytes);
-			g_free (buf_tmp);
-
 			/*
 			 * Some scrollback lines have three blanks after the timestamp and a newline
 			 * Some have only one blank and a newline
 			 * Some don't even have a timestamp
 			 * Some don't have any text at all
 			 */
-			if (buf[0] == 'T')
+			if (buf[0] == 'T' && buf[1] == ' ')
 			{
 				if (sizeof (time_t) == 4)
-					stamp = g_ascii_strtoull (buf + 2, NULL, 10);
+					stamp = strtoul (buf + 2, NULL, 10);
 				else
 					stamp = g_ascii_strtoull (buf + 2, NULL, 10); /* in case time_t is 64 bits */
+
+				if (G_UNLIKELY(stamp == 0))
+				{
+					g_warning ("Invalid timestamp in scrollback file");
+					continue;
+				}
+
 				text = strchr (buf + 3, ' ');
 				if (text && text[1])
 				{
@@ -349,20 +318,34 @@ scrollback_load (session *sess)
 
 			g_free (buf);
 		}
+		else if (err)
+		{
+			/* If its only an encoding error it may be specific to the line */
+			if (g_error_matches (err, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE))
+			{
+				g_warning ("Invalid utf8 in scrollback file");
+				g_clear_error (&err);
+				continue;
+			}
 
-		else
+			/* For general errors just give up */
+			g_clear_error (&err);
 			break;
+		}
+		else /* No new line */
+		{
+			break;
+		}
 	}
 
-	g_io_channel_unref (io);
+	g_object_unref (istream);
 
 	sess->scrollwritten = lines;
 
 	if (lines)
 	{
 		text = ctime (&stamp);
-		text[24] = 0;	/* get rid of the \n */
-		buf = g_strdup_printf ("\n*\t%s %s\n\n", _("Loaded log from"), text);
+		buf = g_strdup_printf ("\n*\t%s %s\n", _("Loaded log from"), text);
 		fe_print_text (sess, buf, 0, TRUE);
 		g_free (buf);
 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
@@ -386,14 +369,30 @@ log_close (session *sess)
 	}
 }
 
+/*
+ * filename should be in utf8 encoding and will be
+ * converted to filesystem encoding automatically.
+ */
 static void
 mkdir_p (char *filename)
 {
-	char *dirname = g_path_get_dirname (filename);
+	char *dirname, *dirname_fs;
+	GError *err = NULL;
+	
+	dirname = g_path_get_dirname (filename);
+	dirname_fs = g_filename_from_utf8 (dirname, -1, NULL, NULL, &err);
+	if (!dirname_fs)
+	{
+		g_warning ("%s", err->message);
+		g_error_free (err);
+		g_free (dirname);
+		return;
+	}
 
-	g_mkdir_with_parents (dirname, 0700);
+	g_mkdir_with_parents (dirname_fs, 0700);
 
 	g_free (dirname);
+	g_free (dirname_fs);
 }
 
 static char *
@@ -527,9 +526,12 @@ log_create_pathname (char *servname, char *channame, char *netname)
 		channame = log_create_filename (channame);
 	}
 
+	servname = log_create_filename (servname);
+
 	log_insert_vars (fname, sizeof (fname), prefs.hex_irc_logmask, channame, netname, servname);
 	g_free (channame);
 	g_free (netname);
+	g_free (servname);
 
 	/* insert time/date */
 	now = time (NULL);
@@ -742,6 +744,8 @@ text_convert_invalid (const gchar* text, gssize len, GIConv converter, const gch
 
 	/* Find the first position of an invalid sequence. */
 	result_part = g_convert_with_iconv (text, len, converter, &invalid_start_pos, &result_part_len, NULL);
+	g_iconv (converter, NULL, NULL, NULL, NULL);
+
 	if (result_part != NULL)
 	{
 		/* All text converted successfully on the first try. Return it. */
@@ -763,8 +767,15 @@ text_convert_invalid (const gchar* text, gssize len, GIConv converter, const gch
 	{
 		g_assert (current_start + invalid_start_pos < end);
 
-		/* Convert everything before the position of the invalid sequence. It should be successful. */
+		/* Convert everything before the position of the invalid sequence. It should be successful.
+		 * But iconv may not convert everything till invalid_start_pos since the last few bytes may be part of a shift sequence.
+		 * So get the new bytes_read and use it as the actual invalid_start_pos to handle this.
+		 *
+		 * See https://github.com/hexchat/hexchat/issues/1758
+		 */
 		result_part = g_convert_with_iconv (current_start, invalid_start_pos, converter, &invalid_start_pos, &result_part_len, NULL);
+		g_iconv (converter, NULL, NULL, NULL, NULL);
+
 		g_assert (result_part != NULL);
 		g_string_append_len (result, result_part, result_part_len);
 		g_free (result_part);
@@ -776,6 +787,8 @@ text_convert_invalid (const gchar* text, gssize len, GIConv converter, const gch
 		current_start += invalid_start_pos + 1;
 
 		result_part = g_convert_with_iconv (current_start, end - current_start, converter, &invalid_start_pos, &result_part_len, NULL);
+		g_iconv (converter, NULL, NULL, NULL, NULL);
+
 		if (result_part != NULL)
 		{
 			/* The rest of the text converted successfully. Append it and return the whole converted text. */
@@ -974,6 +987,11 @@ static char * const pevt_privmsg_help[] = {
 static char * const pevt_capack_help[] = {
 	N_("Server Name"),
 	N_("Acknowledged Capabilities")
+};
+
+static char * const pevt_capdel_help[] = {
+	N_("Server Name"),
+	N_("Removed Capabilities")
 };
 
 static char * const pevt_caplist_help[] = {
@@ -1479,7 +1497,7 @@ static char * const pevt_discon_help[] = {
 #include "textevents.h"
 
 static void
-pevent_load_defaults ()
+pevent_load_defaults (void)
 {
 	int i;
 
@@ -1496,30 +1514,41 @@ pevent_load_defaults ()
 }
 
 void
-pevent_make_pntevts ()
+pevent_make_pntevts (void)
 {
 	int i, m;
-	char out[1024];
 
 	for (i = 0; i < NUM_XP; i++)
 	{
 		g_free (pntevts[i]);
 		if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
 		{
-			g_snprintf (out, sizeof (out),
-						 _("Error parsing event %s.\nLoading default."), te[i].name);
-			fe_message (out, FE_MSG_WARN);
-			g_free (pntevts_text[i]);
 			/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
-			if (te[i].num_args & 128)
-				pntevts_text[i] = g_strdup (te[i].def);
-			else
+			const gboolean translate = !(te[i].num_args & 128);
+
+			g_warning ("Error parsing event %s\nLoading default.", te[i].name);
+			g_free (pntevts_text[i]);
+
+			if (translate)
 				pntevts_text[i] = g_strdup (_(te[i].def));
-			if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
+			else
+				pntevts_text[i] = g_strdup (te[i].def);
+
+			if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0 && !translate)
 			{
-				fprintf (stderr,
-							"HexChat CRITICAL *** default event text failed to build!\n");
-				abort ();
+				g_error ("HexChat CRITICAL *** default event text failed to build!");
+			}
+			else
+			{
+				g_warning ("Error parsing translated event %s\nLoading untranslated.", te[i].name);
+				g_free (pntevts_text[i]);
+
+				pntevts_text[i] = g_strdup (te[i].def);
+
+				if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
+				{
+					g_error ("HexChat CRITICAL *** default event text failed to build!");
+				}
 			}
 		}
 	}
@@ -1638,7 +1667,7 @@ pevent_load (char *filename)
 }
 
 static void
-pevent_check_all_loaded ()
+pevent_check_all_loaded (void)
 {
 	int i;
 
@@ -1979,6 +2008,8 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 {
 	char *word[PDIWORDS];
 	int i;
+	tab_state_flags current_state = sess->tab_state;
+	tab_state_flags plugin_state = sess->last_tab_state;
 	unsigned int stripcolor_args = (chanopt_is_set (prefs.hex_text_stripcolor_msg, sess->text_strip) ? 0xFFFFFFFF : 0);
 	char tbuf[NICKLEN + 4];
 
@@ -1997,8 +2028,17 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 
+	/* We want to ignore the tab state if the plugin emits new events
+	 * and restore it if it doesn't eat the current one */
+	sess->tab_state = plugin_state;
 	if (plugin_emit_print (sess, word, timestamp))
 		return;
+
+	/* The plugin may have changed the state which we should respect.
+	 * If the state is NEW_DATA we don't actually know if that was on
+	 * purpose though as print() sets it, so for now we ignore that. FIXME */
+	if (sess->tab_state == plugin_state || sess->tab_state == TAB_STATE_NEW_DATA)
+		sess->tab_state = current_state;
 
 	/* If a plugin's callback executes "/close", 'sess' may be invalid */
 	if (!is_session (sess))
@@ -2058,7 +2098,8 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d,
 		break;
 	}
 
-	sound_play_event (index);
+	if (!prefs.hex_away_omit_alerts || !sess->server->is_away)
+		sound_play_event (index);
 	display_event (sess, index, word, stripcolor_args, timestamp);
 }
 

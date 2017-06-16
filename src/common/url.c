@@ -533,6 +533,7 @@ struct
 	{ "spotify",   "",  URI_PATH },
 	{ "lastfm",    "/", URI_PATH },
 	{ "xfire",     "",  URI_PATH },
+	{ "ts3server", "",  URI_PATH },
 	{ NULL,        "",  0}
 };
 
@@ -600,7 +601,7 @@ re_url (void)
 }
 
 /*	EMAIL description --- */
-#define EMAIL "[a-z][._%+-a-z0-9]+@" "(" HOST_URL ")"
+#define EMAIL "[a-z0-9][._%+-a-z0-9]+@" "(" HOST_URL ")"
 
 static const GRegex *
 re_email (void)

@@ -162,8 +162,8 @@ process_data_init (char *buf, char *cmd, char *word[],
 
 	word[0] = "\000\000";
 	word_eol[0] = "\000\000";
-	word[1] = (char *)buf;
-	word_eol[1] = (char *)cmd;
+	word[1] = buf;
+	word_eol[1] = cmd;
 
 	while (1)
 	{
@@ -581,7 +581,7 @@ cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	
 	/* chanopt.c */
 	ret = chanopt_command (sess, tbuf, word, word_eol);
-	chanopt_save_all ();
+	chanopt_save_all (FALSE);
 	
 	return ret;
 }
@@ -631,7 +631,7 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		while (list)
 		{
 			sess = list->data;
-			if (!sess->nick_said)
+			if (!(sess->tab_state & TAB_STATE_NEW_HILIGHT))
 				fe_text_clear (list->data, 0);
 			list = list->next;
 		}
@@ -1338,6 +1338,33 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+mhop_cb (struct User *user, multidata *data)
+{
+	if (!user->hop)
+	{
+		data->nicks[data->i] = user->nick;
+		data->i++;
+	}
+	return TRUE;
+}
+
+static int
+cmd_mhop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	char **nicks = g_new0 (char *, sess->total - sess->hops);
+	multidata data;
+
+	data.nicks = nicks;
+	data.i = 0;
+	tree_foreach (sess->usertree, (tree_traverse_func *)mhop_cb, &data);
+	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'h', 0);
+
+	g_free (nicks);
+
+	return TRUE;
+}
+
+static int
 mkick_cb (struct User *user, multidata *data)
 {
 	if (!user->op && !user->me)
@@ -1418,6 +1445,41 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 	return FALSE;
+}
+
+static int
+cmd_doat (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	GStrv channels;
+	guint i;
+
+	if (!word[2] || !*word[2] || !word[3] || !*word[3])
+		return FALSE;
+
+	channels = g_strsplit (word[2], ",", -1);
+	for (i = 0; channels[i] && *channels[i]; ++i)
+	{
+		char *chan = channels[i];
+		char *serv;
+		session *ctx;
+
+		/* Split channel and network, either may be empty */
+		if ((serv = strchr (chan, '/')))
+		{
+			*serv = '\0';
+			serv++;
+			if (!strlen (serv))
+				serv = NULL;
+		}
+		if (!strlen (chan))
+			chan = NULL;
+
+		if ((ctx = plugin_find_context (serv, chan, sess->server)))
+			handle_command (ctx, word_eol[3], FALSE);
+	}
+	g_strfreev (channels);
+
+	return TRUE;
 }
 
 static int
@@ -1655,6 +1717,25 @@ memrchr (const void *block, int c, size_t size)
 }
 #endif
 
+static void
+exec_print_line (session *sess, char *data, gssize len, gboolean tochannel)
+{
+	char *valid;
+	exec_handle_colors (data, len);
+	valid = text_fixup_invalid_utf8 (data, len, NULL);
+	if (tochannel)
+	{
+		/* must turn off auto-completion temporarily */
+		const unsigned int old = prefs.hex_completion_auto;
+		prefs.hex_completion_auto = 0;
+		handle_multiline (sess, valid, FALSE, TRUE);
+		prefs.hex_completion_auto = old;
+	}
+	else
+		PrintText (sess, valid);
+	g_free (valid);
+}
+
 static gboolean
 exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 {
@@ -1681,17 +1762,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		kill(s->childpid, SIGKILL);
 		if (len) {
 			buf[len] = '\0';
-			exec_handle_colors(buf, len);
-			if (s->tochannel)
-			{
-				/* must turn off auto-completion temporarily */
-				unsigned int old = prefs.hex_completion_auto;
-				prefs.hex_completion_auto = 0;
-				handle_multiline (s->sess, buf, FALSE, TRUE);
-				prefs.hex_completion_auto = old;
-			}
-			else
-				PrintText (s->sess, buf);
+			exec_print_line(s->sess, buf, len, s->tochannel);
 		}
 		g_free(buf);
 		waitpid (s->childpid, NULL, 0);
@@ -1720,11 +1791,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		s->buffill = 0;
 
 	if (len) {
-		exec_handle_colors (buf, len);
-		if (s->tochannel)
-			handle_multiline (s->sess, buf, FALSE, TRUE);
-		else
-			PrintText (s->sess, buf);
+		exec_print_line(s->sess, buf, len, s->tochannel);
 	}
 
 	g_free (buf);
@@ -2679,17 +2746,26 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_mode (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	/* +channel channels are dying, let those servers whine about modes.
-	 * return info about current channel if available and no info is given */
-	if ((*word[2] == '+') || (*word[2] == 0) || (!is_channel(sess->server, word[2]) &&
-				!(rfc_casecmp(sess->server->nick, word[2]) == 0)))
+	/* We allow omitting the target, so we have to figure it out:
+	 * - Can only use info from channels or dialogs
+	 * - Empty arg is always sess info
+	 * - Assume + is mode not channel
+	 * - We know valid channels and our nick
+	 * - We cannot easily know if other nick or valid mode (Need to store 004)
+	 */
+	if ((sess->type != SESS_CHANNEL && sess->type != SESS_DIALOG)
+	    || (!(*word[2] == '-' || *word[2] == '+' || *word[2] == '\0')
+	        && (is_channel (sess->server, word[2]) || !rfc_casecmp (sess->server->nick, word[2])))
+	   )
+	{
+		sess->server->p_mode (sess->server, word[2], word_eol[3]);
+	}
+	else
 	{
 		if(sess->channel[0] == 0)
 			return FALSE;
 		sess->server->p_mode (sess->server, sess->channel, word_eol[2]);
 	}
-	else
-		sess->server->p_mode (sess->server, word[2], word_eol[3]);
 	return TRUE;
 }
 
@@ -2796,9 +2872,14 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			else
 			{
 				/* mask out passwords */
-				if (g_ascii_strcasecmp (nick, "nickserv") == 0 &&
-					 g_ascii_strncasecmp (msg, "identify ", 9) == 0)
-					msg = "identify ****";
+				if (g_ascii_strcasecmp (nick, "nickserv") == 0)
+				{
+					if (g_ascii_strncasecmp (msg, "identify ", 9) == 0)
+						msg = "identify ****";
+					else if (g_ascii_strncasecmp (msg, "ghost ", 6) == 0)
+						msg = "ghost ****";
+				}
+
 				EMIT_SIGNAL (XP_TE_MSGSEND, sess, nick, msg, NULL, NULL, 0);
 			}
 
@@ -3404,8 +3485,9 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 			serv->loginmethod = net->logintype;
 		}
-		else /* Otherwise ensure no password is sent */
+		else /* Otherwise ensure no password is sent or SASL started */
 		{
+			serv->loginmethod = LOGIN_DEFAULT;
 			serv->password[0] = 0;
 		}
 	}
@@ -3429,10 +3511,9 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 	/* try to associate this connection with a listed network */
-	if (!serv->network)
-		/* search for this hostname in the entire server list */
-		serv->network = servlist_net_find_from_server (server_name);
-		/* may return NULL, but that's OK */
+	/* may return NULL, but that's OK */
+	if ((serv->network = servlist_net_find_from_server (server_name)))
+		server_set_encoding (serv, ((ircnet*)serv->network)->encoding);
 
 	return TRUE;
 }
@@ -3860,7 +3941,7 @@ const struct commands xc_cmds[] = {
 	{"CHANOPT", cmd_chanopt, 0, 0, 1, N_("CHANOPT [-quiet] <variable> [<value>]")},
 	{"CHARSET", cmd_charset, 0, 0, 1, N_("CHARSET [<encoding>], get or set the encoding used for the current connection")},
 	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY|[-]<amount>], Clears the current text window or command history")},
-	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE [-m], Closes the current window/tab or all queries")},
+	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE [-m], Closes the current tab, closing the window if this is the only open tab, or with the \"-m\" flag, closes all queries.")},
 
 	{"COUNTRY", cmd_country, 0, 0, 1,
 	 N_("COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia")},
@@ -3890,6 +3971,7 @@ const struct commands xc_cmds[] = {
 	 N_("DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)")},
 	{"DISCON", cmd_discon, 0, 0, 1, N_("DISCON, Disconnects from server")},
 	{"DNS", cmd_dns, 0, 0, 1, N_("DNS <nick|host|ip>, Resolves an IP or hostname")},
+	{"DOAT", cmd_doat, 0, 0, 1, N_("DOAT <channel,list,/network> <command>")},
 	{"ECHO", cmd_echo, 0, 0, 1, N_("ECHO <text>, Prints text locally")},
 #ifndef WIN32
 	{"EXEC", cmd_exec, 0, 0, 1,
@@ -3956,6 +4038,8 @@ const struct commands xc_cmds[] = {
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
 	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-i<ICONFILE>] [-k<mod>,<key>] [-m] [-pX] [-r<X,group>] [-tX] {ADD|DEL} <path> [command] [unselect command]\n"
 										 "       See http://hexchat.readthedocs.org/en/latest/plugins.html#controlling-the-gui for more details."},
+	{"MHOP", cmd_mhop, 1, 1, 1,
+	 N_("MHOP, Mass hop's all users in the current channel (needs chanop)")},
 	{"MKICK", cmd_mkick, 1, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"MODE", cmd_mode, 1, 0, 1, 0},

@@ -426,14 +426,14 @@ plugin_auto_load_cb (char *filename)
 	}
 }
 
-static char *
-plugin_get_libdir ()
+static const char *
+plugin_get_libdir (void)
 {
 	const char *libdir;
 
 	libdir = g_getenv ("HEXCHAT_LIBDIR");
 	if (libdir && *libdir)
-		return (char*)libdir;
+		return libdir;
 	else
 		return HEXCHATLIBDIR;
 }
@@ -441,7 +441,7 @@ plugin_get_libdir ()
 void
 plugin_auto_load (session *sess)
 {
-	char *lib_dir; 
+	const char *lib_dir;
 	char *sub_dir;
 	ps = sess;
 
@@ -452,9 +452,9 @@ plugin_auto_load (session *sess)
 	/* a long list of bundled plugins that should be loaded automatically,
 	 * user plugins should go to <config>, leave Program Files alone! */
 	for_files (lib_dir, "hcchecksum.dll", plugin_auto_load_cb);
-	for_files (lib_dir, "hcdoat.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcexec.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcfishlim.dll", plugin_auto_load_cb);
+	for_files(lib_dir, "hclua.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcmpcinfo.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcperl.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcpython2.dll", plugin_auto_load_cb);
@@ -870,6 +870,67 @@ plugin_show_help (session *sess, char *cmd)
 	return 0;
 }
 
+session *
+plugin_find_context (const char *servname, const char *channel, server *current_server)
+{
+	GSList *slist, *clist, *sessions = NULL;
+	server *serv;
+	session *sess;
+	char *netname;
+
+	if (servname == NULL && channel == NULL)
+		return current_sess;
+
+	slist = serv_list;
+	while (slist)
+	{
+		serv = slist->data;
+		netname = server_get_network (serv, TRUE);
+
+		if (servname == NULL ||
+			 rfc_casecmp (servname, serv->servername) == 0 ||
+			 g_ascii_strcasecmp (servname, serv->hostname) == 0 ||
+			 g_ascii_strcasecmp (servname, netname) == 0)
+		{
+			if (channel == NULL)
+				return serv->front_session;
+
+			clist = sess_list;
+			while (clist)
+			{
+				sess = clist->data;
+				if (sess->server == serv)
+				{
+					if (rfc_casecmp (channel, sess->channel) == 0)
+					{
+						if (sess->server == current_server)
+						{
+							g_slist_free (sessions);
+							return sess;
+						} else
+						{
+							sessions = g_slist_prepend (sessions, sess);
+						}
+					}
+				}
+				clist = clist->next;
+			}
+		}
+		slist = slist->next;
+	}
+
+	if (sessions)
+	{
+		sessions = g_slist_reverse (sessions);
+		sess = sessions->data;
+		g_slist_free (sessions);
+		return sess;
+	}
+
+	return NULL;
+}
+
+
 /* ========================================================= */
 /* ===== these are the functions plugins actually call ===== */
 /* ========================================================= */
@@ -1037,61 +1098,7 @@ hexchat_set_context (hexchat_plugin *ph, hexchat_context *context)
 hexchat_context *
 hexchat_find_context (hexchat_plugin *ph, const char *servname, const char *channel)
 {
-	GSList *slist, *clist, *sessions = NULL;
-	server *serv;
-	session *sess;
-	char *netname;
-
-	if (servname == NULL && channel == NULL)
-		return current_sess;
-
-	slist = serv_list;
-	while (slist)
-	{
-		serv = slist->data;
-		netname = server_get_network (serv, TRUE);
-
-		if (servname == NULL ||
-			 rfc_casecmp (servname, serv->servername) == 0 ||
-			 g_ascii_strcasecmp (servname, serv->hostname) == 0 ||
-			 g_ascii_strcasecmp (servname, netname) == 0)
-		{
-			if (channel == NULL)
-				return serv->front_session;
-
-			clist = sess_list;
-			while (clist)
-			{
-				sess = clist->data;
-				if (sess->server == serv)
-				{
-					if (rfc_casecmp (channel, sess->channel) == 0)
-					{
-						if (sess->server == ph->context->server)
-						{
-							g_slist_free (sessions);
-							return sess;
-						} else
-						{
-							sessions = g_slist_prepend (sessions, sess);
-						}
-					}
-				}
-				clist = clist->next;
-			}
-		}
-		slist = slist->next;
-	}
-
-	if (sessions)
-	{
-		sessions = g_slist_reverse (sessions);
-		sess = sessions->data;
-		g_slist_free (sessions);
-		return sess;
-	}
-
-	return NULL;
+	return plugin_find_context (servname, channel, ph->context->server);
 }
 
 const char *
@@ -1339,7 +1346,7 @@ hexchat_list_fields (hexchat_plugin *ph, const char *name)
 	};
 	static const char * const channels_fields[] =
 	{
-		"schannel",	"schannelkey", "schantypes", "pcontext", "iflags", "iid", "ilag", "imaxmodes",
+		"schannel", "schannelkey", "schanmodes", "schantypes", "pcontext", "iflags", "iid", "ilag", "imaxmodes",
 		"snetwork", "snickmodes", "snickprefixes", "iqueue", "sserver", "itype", "iusers",
 		NULL
 	};
@@ -1436,6 +1443,8 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			return ((session *)data)->channel;
 		case 0x8cea5e7c: /* channelkey */
 			return ((session *)data)->channelkey;
+		case 0x5716ab1e: /* chanmodes */
+			return ((session*)data)->server->chanmodes;
 		case 0x577e0867: /* chantypes */
 			return ((session *)data)->server->chantypes;
 		case 0x38b735af: /* context */
@@ -1567,6 +1576,14 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		case 0xd1b:	/* id */
 			return ((struct session *)data)->server->id;
 		case 0x5cfee87:	/* flags */
+			/* used if alert_taskbar is unset */                 /* 20 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->alert_taskbar;      /* 19 */
+			tmp <<= 1;
+			/* used if alert_tray is unset */                    /* 18 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->alert_tray;         /* 17 */
+			tmp <<= 1;
 			/* used if text_strip is unset */                    /* 16 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->text_strip;          /* 15 */
@@ -1579,9 +1596,9 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->text_logging;       /* 11 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->alert_taskbar;      /* 10 */
+			/* unused for historical reasons */                  /* 10 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->alert_tray;         /* 9 */
+			/* used if alert_beep is unset */                    /* 9 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->alert_beep;         /* 8 */
 			tmp <<= 1;
@@ -1949,7 +1966,13 @@ hexchat_pluginpref_get_int (hexchat_plugin *pl, const char *var)
 
 	if (hexchat_pluginpref_get_str_real (pl, var, buffer, sizeof(buffer)))
 	{
-		return atoi (buffer);
+		int ret = atoi (buffer);
+
+		/* 0 could be success or failure, who knows */
+		if (ret == 0 && *buffer != '0')
+			return -1;
+
+		return ret;
 	}
 	else
 	{

@@ -91,7 +91,7 @@ tcp_send_real (void *ssl, int sok, GIConv write_converter, char *buf, int len)
 	int ret;
 
 	gsize buf_encoded_len;
-	gchar *buf_encoded = text_convert_invalid (buf, len, write_converter, "?", &buf_encoded_len);
+	gchar *buf_encoded = text_convert_invalid (buf, len, write_converter, arbitrary_encoding_fallback_string, &buf_encoded_len);
 #ifdef USE_OPENSSL
 	if (!ssl)
 		ret = send (sok, buf_encoded, buf_encoded_len, 0);
@@ -249,7 +249,7 @@ static void
 close_socket (int sok)
 {
 	/* close the socket in 5 seconds so the QUIT message is not lost */
-	fe_timeout_add (5000, close_socket_cb, GINT_TO_POINTER (sok));
+	fe_timeout_add_seconds (5, close_socket_cb, GINT_TO_POINTER (sok));
 }
 
 /* handle 1 line of text received from the server */
@@ -466,27 +466,34 @@ ssl_cb_verify (int ok, X509_STORE_CTX * ctx)
 	char subject[256];
 	char issuer[256];
 	char buf[512];
+	X509 *current_cert = X509_STORE_CTX_get_current_cert (ctx);
 
+	if (!current_cert)
+		return TRUE;
 
-	X509_NAME_oneline (X509_get_subject_name (ctx->current_cert), subject,
-							 sizeof (subject));
-	X509_NAME_oneline (X509_get_issuer_name (ctx->current_cert), issuer,
-							 sizeof (issuer));
+	X509_NAME_oneline (X509_get_subject_name (current_cert),
+	                   subject, sizeof (subject));
+	X509_NAME_oneline (X509_get_issuer_name (current_cert),
+	                   issuer, sizeof (issuer));
 
 	g_snprintf (buf, sizeof (buf), "* Subject: %s", subject);
 	EMIT_SIGNAL (XP_TE_SSLMESSAGE, g_sess, buf, NULL, NULL, NULL, 0);
 	g_snprintf (buf, sizeof (buf), "* Issuer: %s", issuer);
 	EMIT_SIGNAL (XP_TE_SSLMESSAGE, g_sess, buf, NULL, NULL, NULL, 0);
 
-	return (TRUE);					  /* always ok */
+	return TRUE;
 }
 
 static int
 ssl_do_connect (server * serv)
 {
-	char buf[128];
+	char buf[256]; // ERR_error_string() MUST have this size
 
 	g_sess = serv->server_session;
+
+	/* Set SNI hostname before connect */
+	SSL_set_tlsext_host_name(serv->ssl, serv->hostname);
+
 	if (SSL_connect (serv->ssl) <= 0)
 	{
 		char err_buf[128];
@@ -565,9 +572,8 @@ ssl_do_connect (server * serv)
 							 NULL, 0);
 		} else
 		{
-			g_snprintf (buf, sizeof (buf), " * No Certificate");
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
+			g_snprintf (buf, sizeof (buf), "No Certificate");
+			goto conn_fail;
 		}
 
 		chiper_info = _SSL_get_cipher_info (serv->ssl);	/* static buffer */
@@ -635,7 +641,8 @@ conn_fail:
 		return (0);					  /* remove it (0) */
 	} else
 	{
-		if (serv->ssl->session && serv->ssl->session->time + SSLTMOUT < time (NULL))
+		SSL_SESSION *session = SSL_get_session (serv->ssl);
+		if (session && SSL_SESSION_get_time (session) + SSLTMOUT < time (NULL))
 		{
 			g_snprintf (buf, sizeof (buf), "SSL handshake timed out");
 			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, buf, NULL,
@@ -830,20 +837,21 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		}
 
 		{
-			struct sockaddr addr;
+			struct sockaddr_storage addr;
 			int addr_len = sizeof (addr);
 			guint16 port;
+			ircnet *net = serv->network;
 
-			if (!getsockname (serv->sok, &addr, &addr_len))
+			if (!getsockname (serv->sok, (struct sockaddr *)&addr, &addr_len))
 			{
-				if (addr.sa_family == AF_INET)
+				if (addr.ss_family == AF_INET)
 					port = ntohs(((struct sockaddr_in *)&addr)->sin_port);
 				else
 					port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
 
 				g_snprintf (outbuf, sizeof (outbuf), "IDENTD %"G_GUINT16_FORMAT" ", port);
-				if (serv->network && ((ircnet *)serv->network)->user)
-					g_strlcat (outbuf, ((ircnet *)serv->network)->user, sizeof (outbuf));
+				if (net && net->user && !(net->flags & FLAG_USE_GLOBAL))
+					g_strlcat (outbuf, net->user, sizeof (outbuf));
 				else
 					g_strlcat (outbuf, prefs.hex_irc_user_name, sizeof (outbuf));
 
@@ -1723,11 +1731,14 @@ server_set_defaults (server *serv)
 	serv->chanmodes = g_strdup ("beI,k,l");
 	serv->nick_prefixes = g_strdup ("@%+");
 	serv->nick_modes = g_strdup ("ohv");
+	serv->sasl_mech = MECH_PLAIN;
 
-	server_set_encoding (serv, "UTF-8");
+	if (!serv->encoding)
+		server_set_encoding (serv, "UTF-8");
 
 	serv->nickcount = 1;
 	serv->end_of_motd = FALSE;
+	serv->sent_capend = FALSE;
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;
 	serv->supports_monitor = FALSE;

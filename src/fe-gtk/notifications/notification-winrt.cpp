@@ -22,6 +22,7 @@
 
 #include <string>
 #include <codecvt>
+#include <strsafe.h>
 
 #include <roapi.h>
 #include <windows.ui.notifications.h>
@@ -38,6 +39,14 @@ widen(const std::string & to_widen)
 	return converter.from_bytes(to_widen);
 }
 
+static std::string
+narrow(const std::wstring & to_narrow)
+{
+	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+	return converter.to_bytes(to_narrow);
+}
+
+
 extern "C"
 {
 	__declspec (dllexport) void
@@ -46,7 +55,7 @@ extern "C"
 		try
 		{
 			auto toastTemplate = ToastNotificationManager::GetTemplateContent (ToastTemplateType::ToastText02);
-			auto node_list = toastTemplate->GetElementsByTagName ("text");
+			auto node_list = toastTemplate->GetElementsByTagName (L"text");
 			UINT node_count = node_list->Length;
 
 			auto wtitle = widen (title);
@@ -58,9 +67,9 @@ extern "C"
 				toastTemplate->CreateTextNode (Platform::StringReference (wtext.c_str (), wtext.size ())));
 
 			// Mute sound, we already play our own
-			auto node = toastTemplate->SelectSingleNode ("/toast");
-			auto audio_elem = toastTemplate->CreateElement ("audio");
-			audio_elem->SetAttribute ("silent", "true");
+			auto node = toastTemplate->SelectSingleNode (L"/toast");
+			auto audio_elem = toastTemplate->CreateElement (L"audio");
+			audio_elem->SetAttribute (L"silent", L"true");
 			static_cast<XmlElement^>(node)->AppendChild (audio_elem);
 
 			notifier->Show (ref new ToastNotification (toastTemplate));
@@ -74,13 +83,34 @@ extern "C"
 	}
 
 	__declspec (dllexport) int
-	notification_backend_init (void)
+	notification_backend_init (const char **error)
 	{
-		if (!notifier)
-			notifier = ToastNotificationManager::CreateToastNotifier ("HexChat.Desktop.Notify");
+		try
+		{
+			if (!notifier)
+				notifier = ToastNotificationManager::CreateToastNotifier (L"HexChat.Desktop.Notify");
+		}
+		catch (Platform::Exception ^ ex)
+		{
+			static char exc_message[1024];
+			std::string tmp = narrow(std::wstring(ex->Message->Data()));
+			if (SUCCEEDED(StringCchPrintfA(exc_message, _countof(exc_message), "Error (0x%x): %s", ex->HResult, tmp.c_str())))
+				*error = exc_message;
+			else
+				*error = "Exception + error converting exception message.";
+			return 0;
+		}
+		catch (...)
+		{
+			*error = "Generic c++ exception.";
+			return 0;
+		}
 
 		if (FAILED (Windows::Foundation::Initialize (RO_INIT_SINGLETHREADED)))
+		{
+			*error = "Error initializing Windows::Foundation.";
 			return 0;
+		}
 
 		return 1;
 	}

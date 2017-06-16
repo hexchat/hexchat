@@ -146,7 +146,6 @@ struct hexchatprefs
 	unsigned int hex_gui_ulist_count;
 	unsigned int hex_gui_ulist_hide;
 	unsigned int hex_gui_ulist_icons;
-	unsigned int hex_gui_ulist_resizable;
 	unsigned int hex_gui_ulist_show_hosts;
 	unsigned int hex_gui_ulist_style;
 	unsigned int hex_gui_usermenu;
@@ -154,7 +153,7 @@ struct hexchatprefs
 	unsigned int hex_gui_win_save;
 	unsigned int hex_gui_win_swap;
 	unsigned int hex_gui_win_ucount;
-	unsigned int hex_identd;
+	unsigned int hex_identd_server;
 	unsigned int hex_input_balloon_chans;
 	unsigned int hex_input_balloon_hilight;
 	unsigned int hex_input_balloon_priv;
@@ -353,6 +352,13 @@ typedef enum gtk_xtext_search_flags_e {
 	regexp = 16
 } gtk_xtext_search_flags;
 
+typedef enum {
+	TAB_STATE_NONE = 0,
+	TAB_STATE_NEW_DATA = (1 << 0),
+	TAB_STATE_NEW_MSG = (1 << 1),
+	TAB_STATE_NEW_HILIGHT = (1 << 2),
+} tab_state_flags;
+
 typedef struct session
 {
 	/* Per-Channel Alerts */
@@ -377,7 +383,8 @@ typedef struct session
 	char channelkey[64];			  /* XXX correct max length? */
 	int limit;						  /* channel user limit */
 	int logfd;
-	int scrollfd;							/* scrollback filedes */
+
+	GFile *scrollfile;							/* scrollback file */
 	int scrollwritten;					/* number of lines written */
 
 	char lastnick[NICKLEN];			  /* last nick you /msg'ed */
@@ -406,25 +413,21 @@ typedef struct session
 	int lastact_idx;		/* the sess_list_by_lastact[] index of the list we're in.
 							 * For valid values, see defines of LACT_*. */
 
-	int new_data:1;			/* new data avail? (purple tab) */
-	int nick_said:1;		/* your nick mentioned? (blue tab) */
-	int msg_said:1;			/* new msg available? (red tab) */
-
 	int ignore_date:1;
 	int ignore_mode:1;
 	int ignore_names:1;
 	int end_of_names:1;
 	int doing_who:1;		/* /who sent on this channel */
 	int done_away_check:1;	/* done checking for away status changes */
+	tab_state_flags tab_state;
+	tab_state_flags last_tab_state; /* before event is handled */
 	gtk_xtext_search_flags lastlog_flags;
 	void (*scrollback_replay_marklast) (struct session *sess);
 } session;
 
 /* SASL Mechanisms */
 #define MECH_PLAIN 0
-#define MECH_BLOWFISH 1
-#define MECH_AES 2
-#define MECH_EXTERNAL 3
+#define MECH_EXTERNAL 1
 
 typedef struct server
 {
@@ -546,7 +549,6 @@ typedef struct server
 	unsigned int skip_next_whois:1;	/* hide whois output */
 	unsigned int inside_whois:1;
 	unsigned int doing_dns:1;			/* /dns has been done */
-	unsigned int retry_sasl:1;		/* retrying another sasl mech */
 	unsigned int end_of_motd:1;		/* end of motd reached (logged in) */
 	unsigned int sent_quit:1;			/* sent a QUIT already? */
 	unsigned int use_listargs:1;		/* undernet and dalnet need /list >0,<10000 */
@@ -570,8 +572,8 @@ typedef struct server
 	unsigned int have_cert:1;	/* have loaded a cert */
 	unsigned int use_who:1;			/* whether to use WHO command to get dcc_ip */
 	unsigned int sasl_mech;			/* mechanism for sasl auth */
-	unsigned int sent_saslauth:1;	/* have sent AUTHENICATE yet */
 	unsigned int sent_capend:1;	/* have sent CAP END yet */
+	unsigned int waiting_on_cap:1;	/* waiting on another line of CAP LS */
 #ifdef USE_OPENSSL
 	unsigned int use_ssl:1;				  /* is server SSL capable? */
 	unsigned int accept_invalid_cert:1;/* ignore result of server's cert. verify */

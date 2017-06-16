@@ -254,6 +254,22 @@ const char cursor_color_rc[] =
 	"}"
 	"widget \"*.hexchat-inputbox\" style : application \"xc-ib-st\"";
 
+static const char adwaita_workaround_rc[] =
+	"style \"hexchat-input-workaround\""
+	"{"
+		"engine \"pixmap\" {"
+			"image {"
+				"function = FLAT_BOX\n"
+				"state    = NORMAL\n"
+			"}"
+			"image {"
+				"function = FLAT_BOX\n"
+				"state    = ACTIVE\n"
+			"}"
+		"}"
+	"}"
+	"widget \"*.hexchat-inputbox\" style \"hexchat-input-workaround\"";
+
 GtkStyle *
 create_input_style (GtkStyle *style)
 {
@@ -274,6 +290,16 @@ create_input_style (GtkStyle *style)
 
 	if (prefs.hex_gui_input_style && !done_rc)
 	{
+		GtkSettings *settings = gtk_settings_get_default ();
+		char *theme_name;
+
+		/* gnome-themes-standard 3.20 relies on images to do theming
+		 * so we have to override that. */
+		g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
+		if (g_str_has_prefix (theme_name, "Adwaita"))
+			gtk_rc_parse_string (adwaita_workaround_rc);
+		g_free (theme_name);
+
 		done_rc = TRUE;
 		sprintf (buf, cursor_color_rc, (colors[COL_FG].red >> 8),
 			(colors[COL_FG].green >> 8), (colors[COL_FG].blue >> 8));
@@ -343,6 +369,12 @@ int
 fe_timeout_add (int interval, void *callback, void *userdata)
 {
 	return g_timeout_add (interval, (GSourceFunc) callback, userdata);
+}
+
+int
+fe_timeout_add_seconds (int interval, void *callback, void *userdata)
+{
+	return g_timeout_add_seconds (interval, (GSourceFunc) callback, userdata);
 }
 
 void
@@ -525,16 +557,6 @@ fe_set_topic (session *sess, char *topic, char *stripped_topic)
 	}
 }
 
-void
-fe_set_hilight (struct session *sess)
-{
-	if (sess->gui->is_tab)
-		fe_set_tab_color (sess, 3);	/* set tab to blue */
-
-	if (prefs.hex_input_flash_hilight && (!prefs.hex_away_omit_alerts || !sess->server->is_away))
-		fe_flash_window (sess); /* taskbar flash */
-}
-
 static void
 fe_update_mode_entry (session *sess, GtkWidget *entry, char **text, char *new_text)
 {
@@ -638,16 +660,17 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 {
 	PrintTextRaw (sess->res->buffer, (unsigned char *)text, prefs.hex_text_indent, stamp);
 
-	if (!no_activity && !sess->new_data && sess != current_tab &&
-		sess->gui->is_tab && !sess->nick_said)
-	{
-		sess->new_data = TRUE;
-		lastact_update (sess);
-		if (sess->msg_said)
-			fe_set_tab_color (sess, 2);
-		else
-			fe_set_tab_color (sess, 1);
-	}
+	if (no_activity || !sess->gui->is_tab)
+		return;
+
+	if (sess == current_tab)
+		fe_set_tab_color (sess, 0);
+	else if (sess->tab_state & TAB_STATE_NEW_HILIGHT)
+		fe_set_tab_color (sess, 3);
+	else if (sess->tab_state & TAB_STATE_NEW_MSG)
+		fe_set_tab_color (sess, 2);
+	else
+		fe_set_tab_color (sess, 1);
 }
 
 void
@@ -852,7 +875,7 @@ fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 		mg_detach (sess, arg);	/* arg: 0=toggle 1=detach 2=attach */
 		break;
 	case FE_GUI_APPLY:
-		setup_apply_real (TRUE, TRUE, TRUE);
+		setup_apply_real (TRUE, TRUE, TRUE, FALSE);
 	}
 }
 

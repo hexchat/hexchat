@@ -29,6 +29,7 @@
 #include "../common/userlist.h"
 #include "../common/util.h"
 #include "../common/hexchatc.h"
+#include "../common/outbound.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"
 #include "maingui.h"
@@ -256,7 +257,6 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("Show icons for user modes"), P_OFFINTNL(hex_gui_ulist_icons), N_("Use graphical icons instead of text symbols in the user list."), 0, 0},
 	{ST_TOGGLE, N_("Color nicknames in userlist"), P_OFFINTNL(hex_gui_ulist_color), N_("Will color nicknames the same as in chat."), 0, 0},
 	{ST_TOGGLE, N_("Show user count in channels"), P_OFFINTNL(hex_gui_ulist_count), 0, 0, 0},
-/*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(hex_gui_ulist_resizable),0,0,0},*/
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(hex_gui_ulist_sort), 0, ulmenutext, 0},
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(hex_gui_ulist_pos), 0, ulpos, 1},
 
@@ -653,6 +653,16 @@ static const setting network_settings[] =
 	{ST_TOGGLE,	N_("Use Authentication (HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(hex_net_proxy_user), 0, 0, sizeof prefs.hex_net_proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(hex_net_proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.hex_net_proxy_pass},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting identd_settings[] =
+{
+	{ST_HEADER, N_("Identd Server"), 0, 0, 0, 0},
+	{ST_TOGGLE, N_("Enabled"), P_OFFINTNL(hex_identd_server), N_("Server will respond with the networks username"), 0, 1},
+	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(hex_identd_port), N_("You must have permissions to listen on this port. "
+												   "If not 113 (0 defaults to this) then you must configure port-forwarding."), 0, 65535},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -1830,7 +1840,8 @@ setup_create_sound_page (void)
 static void
 setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 {
-	GtkWidget *label, *vvbox;
+	GtkWidget *label, *vvbox, *viewport;
+	GtkScrolledWindow *sw;
 	char buf[128];
 
 	vvbox = gtk_vbox_new (FALSE, 0);
@@ -1845,7 +1856,15 @@ setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 
 	gtk_container_add (GTK_CONTAINER (vvbox), tab);
 
-	gtk_notebook_append_page (GTK_NOTEBOOK (book), vvbox, NULL);
+	sw = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new (NULL, NULL));
+	gtk_scrolled_window_set_shadow_type (sw, GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (sw, GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_add_with_viewport (sw, vvbox);
+
+	viewport = gtk_bin_get_child (GTK_BIN(sw));
+	gtk_viewport_set_shadow_type (GTK_VIEWPORT(viewport), GTK_SHADOW_NONE);
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (book), GTK_WIDGET(sw), NULL);
 }
 
 static const char *const cata[] =
@@ -1867,6 +1886,7 @@ static const char *const cata[] =
 	N_("Network"),
 		N_("Network setup"),
 		N_("File transfers"),
+		N_("Identd"),
 		NULL,
 	NULL
 };
@@ -1909,6 +1929,7 @@ setup_create_pages (GtkWidget *box)
 
 	setup_add_page (cata[15], book, setup_create_page (network_settings));
 	setup_add_page (cata[16], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[17], book, setup_create_page (identd_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
@@ -2070,7 +2091,7 @@ unslash (char *dir)
 }
 
 void
-setup_apply_real (int new_pix, int do_ulist, int do_layout)
+setup_apply_real (int new_pix, int do_ulist, int do_layout, int do_identd)
 {
 	GSList *list;
 	session *sess;
@@ -2119,9 +2140,13 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 
 	mg_apply_setup ();
 	tray_apply_setup ();
+	hexchat_reinit_timers ();
 
 	if (do_layout)
 		menu_change_layout ();
+
+	if (do_identd)
+		handle_command (current_sess, "IDENTD reload", FALSE);
 }
 
 static void
@@ -2136,6 +2161,7 @@ setup_apply (struct hexchatprefs *pr)
 	int noapply = FALSE;
 	int do_ulist = FALSE;
 	int do_layout = FALSE;
+	int do_identd = FALSE;
 
 	if (strcmp (pr->hex_text_background, prefs.hex_text_background) != 0)
 		new_pix = TRUE;
@@ -2170,19 +2196,22 @@ setup_apply (struct hexchatprefs *pr)
 		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_icons))
 		noapply = TRUE;
-	if (DIFF (hex_gui_ulist_resizable))
-		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_show_hosts))
 		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_style))
 		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_sort))
 		noapply = TRUE;
+	if (DIFF (hex_gui_input_style) && prefs.hex_gui_input_style == TRUE)
+		noapply = TRUE; /* Requires restart to *disable* */
 
 	if (DIFF (hex_gui_tab_dots))
 		do_layout = TRUE;
 	if (DIFF (hex_gui_tab_layout))
 		do_layout = TRUE;
+
+	if (DIFF (hex_identd_server) || DIFF (hex_identd_port))
+		do_identd = TRUE;
 
 	if (color_change || (DIFF (hex_gui_ulist_color)) || (DIFF (hex_away_size_max)) || (DIFF (hex_away_track)))
 		do_ulist = TRUE;
@@ -2225,7 +2254,7 @@ setup_apply (struct hexchatprefs *pr)
 		strcpy (prefs.hex_irc_real_name, "realname");
 	}
 	
-	setup_apply_real (new_pix, do_ulist, do_layout);
+	setup_apply_real (new_pix, do_ulist, do_layout, do_identd);
 
 	if (noapply)
 		fe_message (_("Some settings were changed that require a"
@@ -2259,7 +2288,7 @@ setup_window_open (void)
 {
 	GtkWidget *wid, *win, *vbox, *hbox, *hbbox;
 
-	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 0, 2);
+	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 600, 2);
 
 	vbox = gtk_vbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);

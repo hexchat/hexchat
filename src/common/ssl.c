@@ -152,9 +152,9 @@ int
 _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 {
 	X509 *peer_cert;
+	X509_PUBKEY *key;
+	X509_ALGOR *algor = NULL;
 	EVP_PKEY *peer_pkey;
-	/* EVP_PKEY *ca_pkey; */
-	/* EVP_PKEY *tmp_pkey; */
 	char notBefore[64];
 	char notAfter[64];
 	int alg;
@@ -171,8 +171,16 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 	broke_oneline (cert_info->subject, cert_info->subject_word);
 	broke_oneline (cert_info->issuer, cert_info->issuer_word);
 
-	alg = OBJ_obj2nid (peer_cert->cert_info->key->algor->algorithm);
+	key = X509_get_X509_PUBKEY(peer_cert);
+	if (!X509_PUBKEY_get0_param(NULL, NULL, 0, &algor, key))
+		return 1;
+
+	alg = OBJ_obj2nid (algor->algorithm);
+#ifndef HAVE_X509_GET_SIGNATURE_NID
 	sign_alg = OBJ_obj2nid (peer_cert->sig_alg->algorithm);
+#else
+	sign_alg = X509_get_signature_nid (peer_cert);
+#endif
 	ASN1_TIME_snprintf (notBefore, sizeof (notBefore),
 							  X509_get_notBefore (peer_cert));
 	ASN1_TIME_snprintf (notAfter, sizeof (notAfter),
@@ -290,14 +298,20 @@ SSL *
 _SSL_socket (SSL_CTX *ctx, int sd)
 {
 	SSL *ssl;
-
+	const SSL_METHOD *method;
 
 	if (!(ssl = SSL_new (ctx)))
 		/* FATAL */
 		__SSL_critical_error ("SSL_new");
 
 	SSL_set_fd (ssl, sd);
-	if (ctx->method == SSLv23_client_method())
+
+#ifndef HAVE_SSL_CTX_GET_SSL_METHOD
+	method = ctx->method;
+#else
+	method = SSL_CTX_get_ssl_method (ctx);
+#endif
+	if (method == SSLv23_client_method())
 		SSL_set_connect_state (ssl);
 	else
 	        SSL_set_accept_state(ssl);
@@ -335,7 +349,14 @@ _SSL_close (SSL * ssl)
 {
 	SSL_set_shutdown (ssl, SSL_SENT_SHUTDOWN | SSL_RECEIVED_SHUTDOWN);
 	SSL_free (ssl);
-	ERR_remove_state (0);		  /* free state buffer */
+#ifdef HAVE_ERR_REMOVE_THREAD_STATE
+#if OPENSSL_VERSION_NUMBER >= 0x10000000L && OPENSSL_VERSION_NUMBER < 0x10100000L
+	/* OpenSSL handles this itself in 1.1+ and this is a no-op */
+	ERR_remove_thread_state (NULL);
+#endif
+#else
+	ERR_remove_state (0);
+#endif
 }
 
 /* Hostname validation code based on OpenBSD's libtls. */
@@ -424,13 +445,17 @@ _SSL_check_subject_altname (X509 *cert, const char *host)
 
 		if (type == GEN_DNS)
 		{
-			unsigned char *data;
+			const unsigned char *data;
 			int format;
 
 			format = ASN1_STRING_type (altname->d.dNSName);
 			if (format == V_ASN1_IA5STRING)
 			{
+#ifdef HAVE_ASN1_STRING_GET0_DATA
+				data = ASN1_STRING_get0_data (altname->d.dNSName);
+#else
 				data = ASN1_STRING_data (altname->d.dNSName);
+#endif
 
 				if (ASN1_STRING_length (altname->d.dNSName) != (int)strlen(data))
 				{
@@ -451,12 +476,16 @@ _SSL_check_subject_altname (X509 *cert, const char *host)
 		}
 		else if (type == GEN_IPADD)
 		{
-			unsigned char *data;
+			const unsigned char *data;
 			const guint8 *addr_bytes;
 			int datalen, addr_len;
 
 			datalen = ASN1_STRING_length (altname->d.iPAddress);
+#ifdef HAVE_ASN1_STRING_GET0_DATA
+			data = ASN1_STRING_get0_data (altname->d.iPAddress);
+#else
 			data = ASN1_STRING_data (altname->d.iPAddress);
+#endif
 
 			addr_bytes = g_inet_address_to_bytes (addr);
 			addr_len = (int)g_inet_address_get_native_size (addr);

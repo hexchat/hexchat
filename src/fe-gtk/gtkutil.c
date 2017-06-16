@@ -685,6 +685,8 @@ gtkutil_treeview_new (GtkWidget *box, GtkTreeModel *model,
 			                                                attr, col_id, NULL);
 		}
 		gtk_tree_view_append_column (GTK_TREE_VIEW (view), col);
+		if (title == NULL)
+			gtk_tree_view_column_set_visible (col, FALSE);
 	}
 
 	va_end (args);

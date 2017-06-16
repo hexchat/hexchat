@@ -122,7 +122,6 @@ struct tagInfo readID3V1(char *file){
 	char *tag;
 	char *id;
 	char *tmp;
-	tag = (char*) malloc(sizeof(char)*129);
 	ret.artist=NULL;
 	f=fopen(file,"rb");
 	if (f==NULL){
@@ -133,18 +132,21 @@ struct tagInfo readID3V1(char *file){
 	//int offset=getSize(file)-128;
 	res=fseek(f,-128,SEEK_END);
 	if (res!=0) {printf("seek failed\n");fclose(f);return ret;}
+	tag = (char*) malloc(sizeof(char)*129);
 	//long int pos=ftell(f);
 	//printf("position= %li\n",pos);
 	for (i=0;i<128;i++) {
 		c=fgetc(f);
-		if (c==EOF) {hexchat_printf(ph,"read ID3V1 failed\n");fclose(f);return ret;}
+		if (c==EOF) {hexchat_printf(ph,"read ID3V1 failed\n");fclose(f);free(tag);return ret;}
 		tag[i]=(char)c;
 	}
 	fclose(f);
 	//printf("tag readed: \n");
 	id=substring(tag,0,3);
 	//printf("header: %s\n",id);
-	if (strcmp(id,"TAG")!=0){hexchat_printf(ph,"no id3 v1 found\n");return ret;}
+	res=strcmp(id,"TAG");
+	free(id);
+	if (res!=0){hexchat_printf(ph,"no id3 v1 found\n");free(tag);return ret;}
 	ret.title=subString(tag,3,30,1);
 	ret.artist=subString(tag,33,30,1);
 	ret.album=subString(tag,63,30,1);
@@ -164,6 +166,8 @@ struct tagInfo readID3V1(char *file){
 	//hexchat_printf(ph, "tmp: \"%s\" -> %i",tmp,tmp[0]);
 	//hexchat_printf(ph,"genre \"%s\"",ret.genre);
 	//if (DEBUG==1) putlog("id3v1 extracted");
+	free(tmp);
+	free(tag);
 	return ret;
 }
 

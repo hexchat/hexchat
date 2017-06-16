@@ -22,6 +22,7 @@
 #include "hexchat-plugin.h"
 
 #define _(x) hexchat_gettext(ph,x)
+static void identd_start_server (void);
 
 static hexchat_plugin *ph;
 static GSocketService *service;
@@ -31,8 +32,33 @@ typedef struct ident_info
 {
 	GSocketConnection *conn;
 	gchar *username;
-	gchar read_buf[16];
 } ident_info;
+
+static void
+stream_close_ready (GObject *source, GAsyncResult *res, gpointer userdata)
+{
+	GError *err = NULL;
+
+	if (!g_io_stream_close_finish (G_IO_STREAM(source), res, &err))
+	{
+		g_warning ("%s", err->message);
+		g_error_free (err);
+	}
+
+	g_object_unref (source);
+}
+
+static void
+ident_info_free (ident_info *info)
+{
+	if (G_LIKELY(info))
+	{
+		g_io_stream_close_async (G_IO_STREAM(info->conn), G_PRIORITY_DEFAULT,
+								 NULL, stream_close_ready, NULL);
+		g_free (info->username);
+		g_free (info);
+	}
+}
 
 static int
 identd_cleanup_response_cb (gpointer userdata)
@@ -48,6 +74,20 @@ static int
 identd_command_cb (char *word[], char *word_eol[], void *userdata)
 {
 	g_return_val_if_fail (responses != NULL, HEXCHAT_EAT_ALL);
+
+	if (!g_strcmp0 (word[2], "reload"))
+	{
+		if (service)
+		{
+			g_socket_service_stop (service);
+			g_clear_object (&service);
+		}
+
+		identd_start_server ();
+
+		if (service)
+			return HEXCHAT_EAT_ALL;
+	}
 
 	if (service == NULL) /* If we are not running plugins can handle it */
 		return HEXCHAT_EAT_HEXCHAT;
@@ -76,52 +116,71 @@ identd_write_ready (GOutputStream *stream, GAsyncResult *res, ident_info *info)
 {
 	g_output_stream_write_finish (stream, res, NULL);
 
-	g_free (info->username);
-	g_object_unref (info->conn);
-	g_free (info);
+	ident_info_free (info);
 }
 
 static void
-identd_read_ready (GInputStream *in_stream, GAsyncResult *res, ident_info *info)
+identd_read_ready (GDataInputStream *in_stream, GAsyncResult *res, ident_info *info)
 {
 	GSocketAddress *sok_addr;
 	GOutputStream *out_stream;
 	guint64 local, remote;
-	gchar buf[512], *p;
+	gchar *read_buf, buf[512], *p;
 
-	if (g_input_stream_read_finish (in_stream, res, NULL))
+	if ((read_buf = g_data_input_stream_read_line_finish (in_stream, res, NULL, NULL)))
 	{
-		local = g_ascii_strtoull (info->read_buf, NULL, 0);
-		p = strchr (info->read_buf, ',');
+		local = g_ascii_strtoull (read_buf, NULL, 0);
+		p = strchr (read_buf, ',');
 		if (!p)
-			goto cleanup;
-
-		remote = g_ascii_strtoull (p + 1, NULL, 0);
-
-		if (!local || !remote || local > G_MAXUINT16 || remote > G_MAXUINT16)
-			goto cleanup;
-
-		info->username = g_strdup (g_hash_table_lookup (responses, GINT_TO_POINTER (local)));
-		if (!info->username)
-			goto cleanup;
-		g_hash_table_remove (responses, GINT_TO_POINTER (local));
-
-		if ((sok_addr = g_socket_connection_get_remote_address (info->conn, NULL)))
 		{
-			GInetAddress *inet_addr;
-			gchar *addr;
-
-			inet_addr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (sok_addr));
-			addr = g_inet_address_to_string (inet_addr);
-
-			hexchat_printf (ph, _("*\tServicing ident request from %s as %s"), addr, info->username);
-
-			g_object_unref (sok_addr);
-			g_object_unref (inet_addr);
-			g_free (addr);
+			g_free (read_buf);
+			goto cleanup;
 		}
 
-		g_snprintf (buf, sizeof (buf), "%"G_GUINT16_FORMAT", %"G_GUINT16_FORMAT" : USERID : UNIX : %s\r\n", (guint16)local, (guint16)remote, info->username);
+		remote = g_ascii_strtoull (p + 1, NULL, 0);
+		g_free (read_buf);
+
+		g_snprintf (buf, sizeof (buf), "%"G_GUINT16_FORMAT", %"G_GUINT16_FORMAT" : ",
+					(guint16)MIN(local, G_MAXUINT16), (guint16)MIN(remote, G_MAXUINT16));
+
+		if (!local || !remote || local > G_MAXUINT16 || remote > G_MAXUINT16)
+		{
+			g_strlcat (buf, "ERROR : INVALID-PORT\r\n", sizeof (buf));
+			g_debug ("Identd: Received invalid port");
+		}
+		else
+		{
+			info->username = g_hash_table_lookup (responses, GINT_TO_POINTER (local));
+			if (!info->username)
+			{
+				g_strlcat (buf, "ERROR : NO-USER\r\n", sizeof (buf));
+				g_debug ("Identd: Received invalid local port");
+			}
+			else
+			{
+				const gsize len = strlen (buf);
+
+				g_hash_table_steal (responses, GINT_TO_POINTER (local));
+
+				g_snprintf (buf + len, sizeof (buf) - len, "USERID : UNIX : %s\r\n", info->username);
+
+				if ((sok_addr = g_socket_connection_get_remote_address (info->conn, NULL)))
+				{
+					GInetAddress *inet_addr;
+					gchar *addr;
+
+					inet_addr = g_inet_socket_address_get_address (G_INET_SOCKET_ADDRESS (sok_addr));
+					addr = g_inet_address_to_string (inet_addr);
+
+					hexchat_printf (ph, _("*\tServicing ident request from %s as %s"), addr, info->username);
+
+					g_object_unref (sok_addr);
+					g_object_unref (inet_addr);
+					g_free (addr);
+				}
+			}
+		}
+
 		out_stream = g_io_stream_get_output_stream (G_IO_STREAM (info->conn));
 		g_output_stream_write_async (out_stream, buf, strlen (buf), G_PRIORITY_DEFAULT,
 									NULL, (GAsyncReadyCallback)identd_write_ready, info);
@@ -130,14 +189,14 @@ identd_read_ready (GInputStream *in_stream, GAsyncResult *res, ident_info *info)
 	return;
 
 cleanup:
-	g_object_unref (info->conn);
-	g_free (info);
+	ident_info_free (info);
 }
 
 static gboolean
 identd_incoming_cb (GSocketService *service, GSocketConnection *conn,
 					GObject *source, gpointer userdata)
 {
+	GDataInputStream *data_stream;
 	GInputStream *stream;
 	ident_info *info;
 
@@ -147,8 +206,10 @@ identd_incoming_cb (GSocketService *service, GSocketConnection *conn,
 	g_object_ref (conn);
 
 	stream = g_io_stream_get_input_stream (G_IO_STREAM (conn));
-	g_input_stream_read_async (stream, info->read_buf, sizeof (info->read_buf), G_PRIORITY_DEFAULT,
-							NULL, (GAsyncReadyCallback)identd_read_ready, info);
+	data_stream = g_data_input_stream_new (stream);
+	g_data_input_stream_set_newline_type (data_stream, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
+	g_data_input_stream_read_line_async (data_stream, G_PRIORITY_DEFAULT,
+										NULL, (GAsyncReadyCallback)identd_read_ready, info);
 
 	return TRUE;
 }
@@ -159,7 +220,7 @@ identd_start_server (void)
 	GError *error = NULL;
 	int enabled, port = 113;
 
-	if (hexchat_get_prefs (ph, "identd", NULL, &enabled) == 3)
+	if (hexchat_get_prefs (ph, "identd_server", NULL, &enabled) == 3)
 	{
 		if (!enabled)
 			return;
@@ -176,8 +237,8 @@ identd_start_server (void)
 	{
 		hexchat_printf (ph, _("*\tError starting identd server: %s"), error->message);
 
-		g_object_unref (service);
-		service = NULL;
+		g_error_free (error);
+		g_clear_object (&service);
 		return;
 	}
 	/*hexchat_printf (ph, "*\tIdentd listening on port: %d", port); */

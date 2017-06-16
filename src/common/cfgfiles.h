@@ -71,6 +71,11 @@ struct prefs
 	unsigned short offset;
 	unsigned short len;
 	unsigned short type;
+	/*
+	 * an optional function which will be called after the preference value has
+	 * been updated.
+	 */
+	void (*after_update)(void);
 };
 
 #define TYPE_STR 0

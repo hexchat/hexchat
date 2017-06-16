@@ -48,7 +48,7 @@ struct tagInfo getOggHeader(char *file){
 	char *sub;
 	char *name;
 	char *val;
-	char *HEADLOC1, *HEADLOC3, *HEADLOC5;
+	char HEADLOC1[]="_vorbis", HEADLOC3[]="_vorbis", HEADLOC5[]="_vorbis";
 	FILE *f;
 	struct tagInfo info;
 
@@ -62,11 +62,8 @@ struct tagInfo getOggHeader(char *file){
 
 	for (i=0;i<4095;i++) {c=fgetc(f);header[i]=(char)c;}
 	fclose(f);
-	HEADLOC1="_vorbis";
 	HEADLOC1[0]=1;
-	HEADLOC3="_vorbis";
 	HEADLOC3[0]=3;
-	HEADLOC5="_vorbis";
 	HEADLOC5[0]=5;
 	h1pos=inStr(header,4096,HEADLOC1);
 	h3pos=inStr(header,4096,HEADLOC3);
@@ -104,6 +101,7 @@ struct tagInfo getOggHeader(char *file){
 		if (strcmp(name,"GENRE")==0) info.genre=val;
 		if (strcmp(name,"COMMENT")==0) info.comment=val;
 		pos+=4+tagLen;
+		free(name);
 	}
 	if (info.artist==NULL) info.artist="";
 	if (info.album==NULL) info.album ="";

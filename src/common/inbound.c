@@ -316,10 +316,9 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 		g_free (text);
 		if (sess != current_tab)
 		{
-			sess->nick_said = TRUE;
+			sess->tab_state |= TAB_STATE_NEW_HILIGHT;
 			lastact_update (sess);
 		}
-		fe_set_hilight (sess);
 		return 1;
 	}
 
@@ -374,14 +373,9 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text,
 	if (sess != current_tab)
 	{
 		if (fromme)
-		{
-			sess->msg_said = FALSE;
-			sess->new_data = TRUE;
-		} else
-		{
-			sess->msg_said = TRUE;
-			sess->new_data = FALSE;
-		}
+			sess->tab_state |= TAB_STATE_NEW_DATA;
+		else
+			sess->tab_state |= TAB_STATE_NEW_MSG;
 		lastact_update (sess);
 	}
 
@@ -449,8 +443,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from,
 
 	if (sess != current_tab)
 	{
-		sess->msg_said = TRUE;
-		sess->new_data = FALSE;
+		sess->tab_state |= TAB_STATE_NEW_MSG;
 		lastact_update (sess);
 	}
 
@@ -1123,6 +1116,7 @@ inbound_nameslist_end (server *serv, char *chan,
 			{
 				sess->end_of_names = TRUE;
 				sess->ignore_names = FALSE;
+				fe_userlist_numbers (sess);
 			}
 			list = list->next;
 		}
@@ -1133,6 +1127,7 @@ inbound_nameslist_end (server *serv, char *chan,
 	{
 		sess->end_of_names = TRUE;
 		sess->ignore_names = FALSE;
+		fe_userlist_numbers (sess);
 		return TRUE;
 	}
 	return FALSE;
@@ -1594,7 +1589,7 @@ inbound_login_end (session *sess, char *text, const message_tags_data *tags_data
 			&& ((((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
 				|| ((ircnet *)serv->network)->commandlist))
 		{
-			serv->joindelay_tag = fe_timeout_add (prefs.hex_irc_join_delay * 1000, check_autojoin_channels, serv);
+			serv->joindelay_tag = fe_timeout_add_seconds (prefs.hex_irc_join_delay, check_autojoin_channels, serv);
 		}
 		else
 		{
@@ -1633,6 +1628,58 @@ inbound_identified (server *serv)	/* 'MODE +e MYSELF' on freenode */
 	}
 }
 
+static const char *sasl_mechanisms[] =
+{
+	"PLAIN",
+	"EXTERNAL"
+};
+
+static void
+inbound_toggle_caps (server *serv, const char *extensions_str, gboolean enable)
+{
+	char **extensions;
+	gsize i;
+
+	extensions = g_strsplit (extensions_str, " ", 0);
+
+	for (i = 0; extensions[i]; i++)
+	{
+		const char *extension = extensions[i];
+
+		if (!strcmp (extension, "identify-msg"))
+			serv->have_idmsg = enable;
+		else if (!strcmp (extension, "multi-prefix"))
+			serv->have_namesx = enable;
+		else if (!strcmp (extension, "account-notify"))
+			serv->have_accnotify = enable;
+		else if (!strcmp (extension, "extended-join"))
+			serv->have_extjoin = enable;
+		else if (!strcmp (extension, "userhost-in-names"))
+			serv->have_uhnames = enable;
+		else if (!strcmp (extension, "server-time")
+				|| !strcmp (extension, "znc.in/server-time")
+				|| !strcmp (extension, "znc.in/server-time-iso"))
+			serv->have_server_time = enable;
+		else if (!strcmp (extension, "away-notify"))
+			serv->have_awaynotify = enable;
+		else if (!strcmp (extension, "sasl"))
+		{
+			serv->have_sasl = enable;
+			if (enable)
+			{
+#ifdef USE_OPENSSL
+				if (serv->loginmethod == LOGIN_SASLEXTERNAL)
+					serv->sasl_mech = MECH_EXTERNAL;
+#endif
+				/* Mechanism either defaulted to PLAIN or server gave us list */
+				tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[serv->sasl_mech]);
+			}
+		}
+	}
+
+	g_strfreev (extensions);
+}
+
 void
 inbound_cap_ack (server *serv, char *nick, char *extensions,
 					  const message_tags_data *tags_data)
@@ -1640,79 +1687,97 @@ inbound_cap_ack (server *serv, char *nick, char *extensions,
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, serv->server_session, nick, extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
 
-	if (strstr (extensions, "identify-msg") != NULL)
-	{
-		serv->have_idmsg = TRUE;
-	}
+	inbound_toggle_caps (serv, extensions, TRUE);
+}
 
-	if (strstr (extensions, "multi-prefix") != NULL)
-	{
-		serv->have_namesx = TRUE;
-	}
+void
+inbound_cap_del (server *serv, char *nick, char *extensions,
+					 const message_tags_data *tags_data)
+{
+	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPDEL, serv->server_session, nick, extensions,
+								  NULL, NULL, 0, tags_data->timestamp);
 
-	if (strstr (extensions, "away-notify") != NULL)
-	{
-		serv->have_awaynotify = TRUE;
-	}
+	inbound_toggle_caps (serv, extensions, FALSE);
+}
 
-	if (strstr (extensions, "account-notify") != NULL)
-	{
-		serv->have_accnotify = TRUE;
-	}
-					
-	if (strstr (extensions, "extended-join") != NULL)
-	{
-		serv->have_extjoin = TRUE;
-	}
+static const char * const supported_caps[] = {
+	"identify-msg",
 
-	if (strstr (extensions, "userhost-in-names") != NULL)
-	{
-		serv->have_uhnames = TRUE;
-	}
+	/* IRCv3.1 */
+	"multi-prefix",
+	"away-notify",
+	"account-notify",
+	"extended-join",
+	/* "sasl", Handled manually */
 
-	if (strstr (extensions, "server-time") != NULL)
-	{
-		serv->have_server_time = TRUE;
-	}
+	/* IRCv3.2 */
+	"server-time",
+	"userhost-in-names",
+	"cap-notify",
+	"chghost",
 
-	if (strstr (extensions, "sasl") != NULL)
-	{
-		serv->have_sasl = TRUE;
-		serv->sent_saslauth = FALSE;
+	/* ZNC */
+	"znc.in/server-time-iso",
+	"znc.in/server-time",
 
+	/* Twitch */
+	"twitch.tv/membership",
+};
+
+static int
+get_supported_mech (server *serv, const char *list)
+{
+	char **mechs = g_strsplit (list, ",", 0);
+	gsize i;
+	int ret = -1;
+
+	for (i = 0; mechs[i]; ++i)
+	{
 #ifdef USE_OPENSSL
 		if (serv->loginmethod == LOGIN_SASLEXTERNAL)
 		{
-			serv->sasl_mech = MECH_EXTERNAL;
-			tcp_send_len (serv, "AUTHENTICATE EXTERNAL\r\n", 23);
+			if (!strcmp (mechs[i], "EXTERNAL"))
+			{
+				ret = MECH_EXTERNAL;
+				break;
+			}
 		}
 		else
-		{
-			/* default to most secure, it will fallback if not supported */
-			serv->sasl_mech = MECH_AES;
-			tcp_send_len (serv, "AUTHENTICATE DH-AES\r\n", 21);
-		}
-#else
-		serv->sasl_mech = MECH_PLAIN;
-		tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 #endif
+		if (!strcmp (mechs[i], "PLAIN"))
+		{
+			ret = MECH_PLAIN;
+			break;
+		}
 	}
+
+	g_strfreev (mechs);
+	return ret;
 }
 
 void
 inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 					 const message_tags_data *tags_data)
 {
-	char buffer[256];	/* buffer for requesting capabilities and emitting the signal */
-	guint32 want_cap; /* format the CAP REQ string based on previous capabilities being requested or not */
-	guint32 want_sasl; /* CAP END shouldn't be sent when SASL is requested, it needs further responses */
+	char buffer[500];	/* buffer for requesting capabilities and emitting the signal */
+	gboolean want_cap = FALSE; /* format the CAP REQ string based on previous capabilities being requested or not */
+	gboolean want_sasl = FALSE; /* CAP END shouldn't be sent when SASL is requested, it needs further responses */
 	char **extensions;
 	int i;
 
+	if (g_str_has_prefix (extensions_str, "* "))
+	{
+		serv->waiting_on_cap = TRUE;
+		extensions_str += 2;
+		extensions_str += extensions_str[0] == ':' ? 1 : 0;
+	}
+	else
+	{
+		serv->waiting_on_cap = FALSE;
+	}
+
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPLIST, serv->server_session, nick,
 								  extensions_str, NULL, NULL, 0, tags_data->timestamp);
-	want_cap = 0;
-	want_sasl = 0;
 
 	extensions = g_strsplit (extensions_str, " ", 0);
 
@@ -1720,67 +1785,43 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 
 	for (i=0; extensions[i]; i++)
 	{
-		const char *extension = extensions[i];
+		char *extension = extensions[i];
+		char *value;
+		gsize x;
 
-		if (!strcmp (extension, "identify-msg"))
+		/* CAP 3.2 can provide values */
+		if ((value = strchr (extension, '=')))
 		{
-			strcat (buffer, "identify-msg ");
-			want_cap = 1;
-		}
-		if (!strcmp (extension, "multi-prefix"))
-		{
-			strcat (buffer, "multi-prefix ");
-			want_cap = 1;
-		}
-		if (!strcmp (extension, "away-notify"))
-		{
-			strcat (buffer, "away-notify ");
-			want_cap = 1;
-		}
-		if (!strcmp (extension, "account-notify"))
-		{
-			strcat (buffer, "account-notify ");
-			want_cap = 1;
-		}
-		if (!strcmp (extension, "extended-join"))
-		{
-			strcat (buffer, "extended-join ");
-			want_cap = 1;
-		}
-		if (!strcmp (extension, "userhost-in-names"))
-		{
-			strcat (buffer, "userhost-in-names ");
-			want_cap = 1;
+			*value = '\0';
+			value++;
 		}
 
-		/* bouncers can prefix a name space to the extension so we should use.
-		 * znc <= 1.0 uses "znc.in/server-time" and newer use "znc.in/server-time-iso".
-		 */
-		if (!strcmp (extension, "znc.in/server-time-iso"))
-		{
-			strcat (buffer, "znc.in/server-time-iso ");
-			want_cap = 1;
-		}
-		if (!strcmp (extension, "znc.in/server-time"))
-		{
-			strcat (buffer, "znc.in/server-time ");
-			want_cap = 1;
-		}
-		if (prefs.hex_irc_cap_server_time
-			 && !strcmp (extension, "server-time"))
-		{
-			strcat (buffer, "server-time ");
-			want_cap = 1;
-		}
-		
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
-		if (!strcmp (extension, "sasl")
-			&& ((serv->loginmethod == LOGIN_SASL && strlen (serv->password) != 0)
-			|| (serv->loginmethod == LOGIN_SASLEXTERNAL && serv->have_cert)))
+		if (!g_strcmp0 (extension, "sasl") &&
+			((serv->loginmethod == LOGIN_SASL && strlen (serv->password) != 0)
+				|| (serv->loginmethod == LOGIN_SASLEXTERNAL && serv->have_cert)))
 		{
-			strcat (buffer, "sasl ");
-			want_cap = 1;
-			want_sasl = 1;
+			if (value)
+			{
+				int sasl_mech = get_supported_mech (serv, value);
+				if (sasl_mech == -1) /* No supported mech */
+					continue;
+				serv->sasl_mech = sasl_mech;
+			}
+			want_cap = TRUE;
+			want_sasl = TRUE;
+			g_strlcat (buffer, "sasl ", sizeof(buffer));
+			continue;
+		}
+
+		for (x = 0; x < G_N_ELEMENTS(supported_caps); ++x)
+		{
+			if (!g_strcmp0 (extension, supported_caps[x]))
+			{
+				g_strlcat (buffer, extension, sizeof(buffer));
+				g_strlcat (buffer, " ", sizeof(buffer));
+				want_cap = TRUE;
+			}
 		}
 	}
 
@@ -1794,7 +1835,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 									  tags_data->timestamp);
 		tcp_sendf (serv, "%s\r\n", g_strchomp (buffer));
 	}
-	if (!want_sasl)
+	if (!want_sasl && !serv->waiting_on_cap)
 	{
 		/* if we use SASL, CAP END is dealt via raw numerics */
 		serv->sent_capend = TRUE;
@@ -1805,50 +1846,24 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 void
 inbound_cap_nak (server *serv, const message_tags_data *tags_data)
 {
-	serv->sent_capend = TRUE;
-	tcp_send_len (serv, "CAP END\r\n", 9);
+	if (!serv->waiting_on_cap && !serv->sent_capend)
+	{
+		serv->sent_capend = TRUE;
+		tcp_send_len (serv, "CAP END\r\n", 9);
+	}
 }
 
 void
 inbound_cap_list (server *serv, char *nick, char *extensions,
 						const message_tags_data *tags_data)
 {
+	if (g_str_has_prefix (extensions, "* "))
+	{
+		extensions += 2;
+		extensions += extensions[0] == ':' ? 1 : 0;
+	}
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CAPACK, serv->server_session, nick, extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
-}
-
-static const char *sasl_mechanisms[] =
-{
-	"PLAIN",
-	"DH-BLOWFISH",
-	"DH-AES",
-	"EXTERNAL"
-};
-
-void
-inbound_sasl_supportedmechs (server *serv, char *list)
-{
-	int i;
-
-	if (serv->sasl_mech != MECH_EXTERNAL)
-	{
-		/* Use most secure one supported */
-		for (i = MECH_AES; i >= MECH_PLAIN; i--)
-		{
-			if (strstr (list, sasl_mechanisms[i]) != NULL)
-			{
-				serv->sasl_mech = i;
-				serv->retry_sasl = TRUE;
-				tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[i]);
-				return;
-			}
-		}
-	}
-
-	/* Abort, none supported */
-	serv->sent_saslauth = TRUE;
-	tcp_sendf (serv, "AUTHENTICATE *\r\n");
-	return;
 }
 
 void
@@ -1858,12 +1873,10 @@ inbound_sasl_authenticate (server *serv, char *data)
 		char *user, *pass = NULL;
 		const char *mech = sasl_mechanisms[serv->sasl_mech];
 
-		/* Got a list of supported mechanisms from inspircd */
+		/* Got a list of supported mechanisms from outdated inspircd
+		 * just ignore it as it goes against spec */
 		if (strchr (data, ',') != NULL)
-		{
-			inbound_sasl_supportedmechs (serv, data);
 			return;
-		}
 
 		if (net->user && !(net->flags & FLAG_USE_GLOBAL))
 			user = net->user;
@@ -1876,12 +1889,6 @@ inbound_sasl_authenticate (server *serv, char *data)
 			pass = encode_sasl_pass_plain (user, serv->password);
 			break;
 #ifdef USE_OPENSSL
-		case MECH_BLOWFISH:
-			pass = encode_sasl_pass_blowfish (user, serv->password, data);
-			break;
-		case MECH_AES:
-			pass = encode_sasl_pass_aes (user, serv->password, data);
-			break;
 		case MECH_EXTERNAL:
 			pass = g_strdup ("+");
 			break;
@@ -1891,12 +1898,10 @@ inbound_sasl_authenticate (server *serv, char *data)
 		if (pass == NULL)
 		{
 			/* something went wrong abort */
-			serv->sent_saslauth = TRUE; /* prevent trying PLAIN */
 			tcp_sendf (serv, "AUTHENTICATE *\r\n");
 			return;
 		}
 
-		serv->sent_saslauth = TRUE;
 		tcp_sendf (serv, "AUTHENTICATE %s\r\n", pass);
 		g_free (pass);
 
@@ -1905,19 +1910,9 @@ inbound_sasl_authenticate (server *serv, char *data)
 								NULL,	NULL,	0,	0);
 }
 
-int
+void
 inbound_sasl_error (server *serv)
 {
-	if (serv->retry_sasl && !serv->sent_saslauth)
-		return 1;
-
-	/* If server sent 904 before we sent password,
-		* mech not support so fallback to next mech */
-	if (!serv->sent_saslauth && serv->sasl_mech != MECH_EXTERNAL && serv->sasl_mech != MECH_PLAIN)
-	{
-		serv->sasl_mech -= 1;
-		tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[serv->sasl_mech]);
-		return 1;
-	}
-	return 0;
+	/* Just abort, not much we can do */
+	tcp_sendf (serv, "AUTHENTICATE *\r\n");
 }

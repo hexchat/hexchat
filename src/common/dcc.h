@@ -25,17 +25,21 @@
 #ifndef HEXCHAT_DCC_H
 #define HEXCHAT_DCC_H
 
-#define STAT_QUEUED 0
-#define STAT_ACTIVE 1
-#define STAT_FAILED 2
-#define STAT_DONE 3
-#define STAT_CONNECTING 4
-#define STAT_ABORTED 5
+enum dcc_state {
+	STAT_QUEUED = 0,
+	STAT_ACTIVE,
+	STAT_FAILED,
+	STAT_DONE,
+	STAT_CONNECTING,
+	STAT_ABORTED
+};
 
-#define TYPE_SEND 0
-#define TYPE_RECV 1
-#define TYPE_CHATRECV 2
-#define TYPE_CHATSEND 3
+enum dcc_type {
+	TYPE_SEND = 0,
+	TYPE_RECV,
+	TYPE_CHATRECV,
+	TYPE_CHATSEND
+};
 
 #define CPS_AVG_WINDOW 10
 
@@ -72,8 +76,8 @@ struct DCC
 	char *file;					/* utf8 */
 	char *destfile;			/* utf8 */
 	char *nick;
-	unsigned char type;		  /* 0 = SEND  1 = RECV  2 = CHAT */
-	unsigned char dccstat;	  /* 0 = QUEUED  1 = ACTIVE  2 = FAILED  3 = DONE */
+	enum dcc_type type;
+	enum dcc_state dccstat;
 	unsigned int resume_sent:1;	/* resume request sent */
 	unsigned int fastsend:1;
 	unsigned int ackoffset:1;	/* is receiver sending acks as an offset from */
@@ -110,7 +114,6 @@ gboolean is_dcc_completed (struct DCC *dcc);
 void dcc_abort (session *sess, struct DCC *dcc);
 void dcc_get (struct DCC *dcc);
 int dcc_resume (struct DCC *dcc);
-void dcc_check_timeouts (void);
 void dcc_change_nick (server *serv, char *oldnick, char *newnick);
 void dcc_notify_kill (struct server *serv);
 struct DCC *dcc_write_chat (char *nick, char *text);
