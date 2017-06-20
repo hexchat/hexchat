@@ -9,6 +9,7 @@ sysinfo_deps = [
 ]
 
 sysinfo_includes = []
+sysinfo_cargs = []
 
 system = host_machine.system()
 if system == 'linux' or system == 'darwin'
@@ -18,7 +19,8 @@ if system == 'linux' or system == 'darwin'
   ]
 
   if system == 'linux'
-    sysinfo_deps += dependency('libpci')
+    libpci = dependency('libpci')
+    sysinfo_deps += libpci
     sysinfo_includes += 'unix'
     sysinfo_sources += [
       'unix/backend.c',
@@ -26,6 +28,10 @@ if system == 'linux' or system == 'darwin'
       'unix/parse.c',
       'unix/pci.c',
     ]
+
+    picidsdir = libpci.get_pkgconfig_variable('idsdir')
+    pciids = join_paths(picidsdir, 'pci.ids')
+    sysinfo_cargs += '-DPCIIDS_FILE="@0@"'.format(pciids)
   elif system == 'darwin'
     add_languages('objc')
     sysinfo_sources += 'osx/backend.m'
@@ -40,6 +46,7 @@ endif
 shared_module('sysinfo', sysinfo_sources,
   dependencies: sysinfo_deps,
   include_directories: include_directories(sysinfo_includes),
+  c_args: sysinfo_cargs,
   install: true,
   install_dir: plugindir,
   name_prefix: '',
