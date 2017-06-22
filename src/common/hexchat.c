@@ -966,7 +966,7 @@ xchat_init (void)
 		fe_serverlist_open (NULL);
 
 	/* turned OFF via -a arg or by passing urls */
-	if (!arg_dont_autoconnect && !arg_urls)
+	if (!arg_dont_autoconnect && !arg_urls && !arg_url)
 	{
 		/* do any auto connects */
 		if (!servlist_have_auto ())	/* if no new windows open .. */
