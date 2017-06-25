@@ -36,6 +36,7 @@ GdkPixbuf *pix_ulist_owner;
 GdkPixbuf *pix_ulist_founder;
 GdkPixbuf *pix_ulist_netop;
 
+GdkPixbuf *pix_tray_none;
 GdkPixbuf *pix_tray_fileoffer;
 GdkPixbuf *pix_tray_highlight;
 GdkPixbuf *pix_tray_message;
@@ -118,6 +119,7 @@ pixmaps_init (void)
 	pix_ulist_founder = load_pixmap ("ulist_founder");
 	pix_ulist_netop = load_pixmap ("ulist_netop");
 
+	pix_tray_none = load_pixmap ("tray_none");
 	pix_tray_fileoffer = load_pixmap ("tray_fileoffer");
 	pix_tray_highlight = load_pixmap ("tray_highlight");
 	pix_tray_message = load_pixmap ("tray_message");
