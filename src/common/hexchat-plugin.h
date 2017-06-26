@@ -406,7 +406,7 @@ int
 hexchat_pluginpref_list (hexchat_plugin *ph,
 		char *dest);
 
-#if !defined(PLUGIN_C) && defined(WIN32)
+#if !defined(PLUGIN_C) && (defined(WIN32) || defined(__CYGWIN__))
 #ifndef HEXCHAT_PLUGIN_HANDLE
 #define HEXCHAT_PLUGIN_HANDLE (ph)
 #endif
