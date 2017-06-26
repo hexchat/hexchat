@@ -29,7 +29,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <sys/timeb.h>
 #include <io.h>
 #include "./sysinfo/sysinfo.h"
@@ -56,7 +56,7 @@
 #ifdef USE_OPENSSL
 #include <openssl/bn.h>
 #include <openssl/rand.h>
-#ifndef WIN32
+#ifndef G_OS_WIN32
 #include <netinet/in.h>
 #endif
 #endif
@@ -74,7 +74,7 @@ file_part (char *file)
 			case 0:
 				return (filepart);
 			case '/':
-#ifdef WIN32
+#ifdef G_OS_WIN32
 			case '\\':
 #endif
 				filepart = file + 1;
@@ -117,7 +117,7 @@ errorstring (int err)
 		return "";
 	case 0:
 		return _("Remote host closed socket");
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	}
 #else
 	case WSAECONNREFUSED:
@@ -205,7 +205,7 @@ waitline (int sok, char *buf, int bufsize, int use_recv)
 	}
 }
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 /* waitline2 using win32 file descriptor and glib instead of _read. win32 can't _read() sok! */
 int
 waitline2 (GIOChannel *source, char *buf, int bufsize)
@@ -238,7 +238,7 @@ waitline2 (GIOChannel *source, char *buf, int bufsize)
 char *
 expand_homedir (char *file)
 {
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	char *user;
 	struct passwd *pw;
 
@@ -454,7 +454,7 @@ get_cpu_info (double *mhz, int *cpus)
 }
 #endif
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 
 int
 get_cpu_arch (void)
@@ -1008,7 +1008,7 @@ util_exec (const char *cmd)
 unsigned long
 make_ping_time (void)
 {
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	struct timeval timev;
 	gettimeofday (&timev, 0);
 #else
@@ -1339,7 +1339,7 @@ canonalize_key (char *key)
 int
 portable_mode (void)
 {
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	static int is_portable = -1;
 
 	if (G_UNLIKELY(is_portable == -1))
@@ -1496,7 +1496,7 @@ challengeauth_response (const char *username, const char *password, const char *
 size_t
 strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time)
 {
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	return strftime (dest, destsize, format, time);
 #else
 	char safe_format[64];

@@ -40,7 +40,7 @@
 #include "gtkutil.h"
 #include "pixmaps.h"
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <io.h>
 #else
 #include <unistd.h>
@@ -567,7 +567,7 @@ show_and_unfocus (GtkWidget * wid)
 void
 gtkutil_set_icon (GtkWidget *win)
 {
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	/* FIXME: Magically breaks icon rendering in most
 	 * (sub)windows, but OFC only on Windows. GTK <3
 	 */
@@ -584,7 +584,7 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 
 	win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtkutil_set_icon (win);
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	gtk_window_set_wmclass (GTK_WINDOW (win), "HexChat", "hexchat");
 #endif
 	gtk_window_set_title (GTK_WINDOW (win), title);

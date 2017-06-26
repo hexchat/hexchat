@@ -2377,7 +2377,7 @@ mg_create_meters (session_gui *gui, GtkWidget *parent_box)
 	if (prefs.hex_gui_lagometer & 1)
 	{
 		gui->lagometer = wid = gtk_progress_bar_new ();
-#ifdef WIN32
+#ifdef G_OS_WIN32
 		gtk_widget_set_size_request (wid, 1, 10);
 #else
 		gtk_widget_set_size_request (wid, 1, 8);
@@ -2396,7 +2396,7 @@ mg_create_meters (session_gui *gui, GtkWidget *parent_box)
 	if (prefs.hex_gui_throttlemeter & 1)
 	{
 		gui->throttlemeter = wid = gtk_progress_bar_new ();
-#ifdef WIN32
+#ifdef G_OS_WIN32
 		gtk_widget_set_size_request (wid, 1, 10);
 #else
 		gtk_widget_set_size_request (wid, 1, 8);

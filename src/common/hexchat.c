@@ -26,7 +26,7 @@
 #define WANTSOCKET
 #include "inet.h"
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <windows.h>
 #else
 #include <sys/wait.h>
@@ -567,7 +567,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 static void
 exec_notify_kill (session * sess)
 {
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	struct nbexec *re;
 	if (sess->running_exec != NULL)
 	{
@@ -811,7 +811,7 @@ xchat_init (void)
 {
 	char buf[3068];
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	WSADATA wsadata;
 
 	if (WSAStartup(0x0202, &wsadata) != 0)
@@ -841,7 +841,7 @@ xchat_init (void)
 	sigemptyset (&act.sa_mask);
 	sigaction (SIGUSR2, &act, NULL);
 #else
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	/* good enough for these old systems */
 	signal (SIGPIPE, SIG_IGN);
 #endif
@@ -1019,7 +1019,7 @@ hexchat_exec (const char *cmd)
 static void
 set_locale (void)
 {
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of hex_gui_lang and trailing \0 */
 
 	strcpy (hexchat_lang, "LC_ALL=");
@@ -1039,7 +1039,7 @@ main (int argc, char *argv[])
 	int i;
 	int ret;
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	HRESULT coinit_result;
 #endif
 
@@ -1105,7 +1105,7 @@ main (int argc, char *argv[])
 	libproxy_factory = px_proxy_factory_new();
 #endif
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	coinit_result = CoInitializeEx (NULL, COINIT_APARTMENTTHREADED);
 	if (SUCCEEDED (coinit_result))
 	{
@@ -1127,7 +1127,7 @@ main (int argc, char *argv[])
 		fe_message (buf, FE_MSG_ERROR);
 	}
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 #ifndef __EMX__
 	/* OS/2 uses UID 0 all the time */
 	if (getuid () == 0)
@@ -1140,7 +1140,7 @@ main (int argc, char *argv[])
 
 	fe_main ();
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	if (SUCCEEDED (coinit_result))
 	{
 		CoUninitialize ();
@@ -1151,7 +1151,7 @@ main (int argc, char *argv[])
 	px_proxy_factory_free(libproxy_factory);
 #endif
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	WSACleanup ();
 #endif
 

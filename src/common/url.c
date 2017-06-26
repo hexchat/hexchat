@@ -662,7 +662,7 @@ re_channel (void)
 }
 
 /*	PATH description --- */
-#ifdef WIN32
+#ifdef G_OS_WIN32
 /* Windows path can be .\ ..\ or C: D: etc */
 #define FS_PATH "^(\\.{1,2}\\\\|[a-z]:).*"
 #else

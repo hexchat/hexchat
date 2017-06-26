@@ -111,7 +111,7 @@ proper_unit (guint64 size, char *buf, size_t buf_len)
 	GFormatSizeFlags format_flags = G_FORMAT_SIZE_DEFAULT;
 
 #ifndef __APPLE__ /* OS X uses SI */
-#ifndef WIN32 /* Windows uses IEC size (with SI format) */
+#ifndef G_OS_WIN32 /* Windows uses IEC size (with SI format) */
 	if (prefs.hex_gui_filesize_iec) /* Linux can't decide... */
 #endif
 		format_flags = G_FORMAT_SIZE_IEC_UNITS;
@@ -600,7 +600,7 @@ clear_completed (GtkWidget * wid, gpointer none)
 static void
 browse_folder (char *dir)
 {
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	/* no need for file:// in ShellExecute() */
 	fe_open_url (dir);
 #else

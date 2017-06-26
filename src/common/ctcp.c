@@ -20,7 +20,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 #include <unistd.h>
 #endif
 
@@ -138,7 +138,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 
 	if (!g_ascii_strcasecmp (msg, "VERSION") && !prefs.hex_irc_hide_version)
 	{
-#ifdef WIN32
+#ifdef G_OS_WIN32
 		g_snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" [x%d] / %s",
 					 get_cpu_arch (), get_sys_str (1));
 #else
@@ -172,7 +172,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 			}
 
 			/* don't let IRCers specify path */
-#ifdef WIN32
+#ifdef G_OS_WIN32
 			if (strchr (word[5], '/') == NULL && strchr (word[5], '\\') == NULL)
 #else
 			if (strchr (word[5], '/') == NULL)

@@ -25,7 +25,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <io.h>
 #else
 #include <unistd.h>
@@ -43,7 +43,7 @@
 #include "hexchatc.h"
 #include "text.h"
 #include "typedef.h"
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <windows.h>
 #endif
 
@@ -407,7 +407,7 @@ log_create_filename (char *channame)
 		mbl = g_utf8_skip[((unsigned char *)tmp)[0]];
 		if (mbl == 1)
 		{
-#ifndef WIN32
+#ifndef G_OS_WIN32
 			*tmp = rfc_tolower (*tmp);
 			if (*tmp == '/')
 #else
@@ -2191,7 +2191,7 @@ sound_play (const char *file, gboolean quiet)
 {
 	char *buf;
 	char *wavfile;
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	char *cmd;
 #endif
 
@@ -2213,7 +2213,7 @@ sound_play (const char *file, gboolean quiet)
 
 	if (g_access (wavfile, R_OK) == 0)
 	{
-#ifdef WIN32
+#ifdef G_OS_WIN32
 		gunichar2 *wavfile_utf16 = g_utf8_to_utf16 (wavfile, -1, NULL, NULL, NULL);
 
 		if (wavfile_utf16 != NULL)

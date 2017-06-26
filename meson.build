@@ -75,11 +75,6 @@ endif
 configure_file(output: 'config.h', configuration: config_h)
 config_h_include = include_directories('.')
 
-if host_machine.system() == 'windows'
-  add_project_arguments('-DWIN32', language: 'c')
-endif
-
-
 global_cflags = []
 test_cflags = [
   '-pipe',

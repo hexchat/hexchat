@@ -24,7 +24,7 @@
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <io.h>
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
@@ -135,7 +135,7 @@ timecat (char *buf, time_t stamp)
 }
 
 /* Windows doesn't handle ANSI codes in cmd.exe, need to not display them */
-#ifndef WIN32
+#ifndef G_OS_WIN32
 /*                               0  1  2  3  4  5  6  7   8   9  10  11  12  13  14 15 */
 static const short colconv[] = { 0, 7, 4, 2, 1, 3, 5, 11, 13, 12, 6, 16, 14, 15, 10, 7 };
 
@@ -508,7 +508,7 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_autoload)
 	{
-#ifdef WIN32
+#ifdef G_OS_WIN32
 		/* see the chdir() below */
 		char *sl, *exe = g_strdup (argv[0]);
 		sl = strrchr (exe, '\\');

@@ -39,7 +39,7 @@
 #define WANTDNS
 #include "inet.h"
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <windows.h>
 #include <io.h>
 #else
@@ -59,7 +59,7 @@
 #include "hexchatc.h"
 
 /* Setting _FILE_OFFSET_BITS to 64 doesn't change lseek to use off64_t on Windows, so override lseek to the version that does */
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #define lseek _lseeki64
 #endif
 
@@ -790,7 +790,7 @@ dcc_did_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
 	int er;
 	
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	if (condition & G_IO_ERR)
 	{
 		int len;
@@ -2452,7 +2452,7 @@ dcc_add_file (session *sess, char *file, guint64 size, int port, char *nick, gui
 			strcat (dcc->destfile, G_DIR_SEPARATOR_S);
 		if (prefs.hex_dcc_save_nick)
 		{
-#ifdef WIN32
+#ifdef G_OS_WIN32
 			char *t = strlen (dcc->destfile) + dcc->destfile;
 			strcpy (t, nick);
 			while (*t)

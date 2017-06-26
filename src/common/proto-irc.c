@@ -24,7 +24,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 #include <unistd.h>
 #endif
 

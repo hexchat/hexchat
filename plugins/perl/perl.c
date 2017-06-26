@@ -27,7 +27,7 @@
 #ifdef ENABLE_NLS
 #include <locale.h>
 #endif
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <windows.h>
 #include <stdbool.h>
 #else
@@ -44,7 +44,7 @@ static hexchat_plugin *ph;		  /* plugin handle */
 
 static int perl_load_file (char *script_name);
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 /* STRINGIFY is from perl's CORE/config.h */
 #ifndef PERL_REQUIRED_VERSION
 	#define PERL_REQUIRED_VERSION STRINGIFY(PERL_REVISION) "." STRINGIFY(PERL_VERSION)
@@ -75,7 +75,7 @@ thread_mbox (char *str)
 
 /* leave this before XSUB.h, to avoid readdir() being redefined */
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 static void
 perl_auto_load_from_path (const char *path)
 {
@@ -130,7 +130,7 @@ perl_auto_load (void *unused)
 {
 	const char *xdir;
 	char *sub_dir;
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	int copied = 0;
 	char *slash = NULL;
 #endif
@@ -1019,7 +1019,7 @@ XS (XS_HexChat_hook_fd)
 		package = ST (4);
 		data = NULL;
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 		if ((flags & HEXCHAT_FD_NOTSOCKET) == 0) {
 			/* this _get_osfhandle if from win32iop.h in the perl distribution,
 			 *  not the one provided by Windows
@@ -1434,7 +1434,7 @@ perl_init (void)
 static int
 perl_load_file (char *filename)
 {
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	static HMODULE lib = NULL;
 
 	if (!lib) {

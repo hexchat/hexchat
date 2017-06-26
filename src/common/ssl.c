@@ -26,7 +26,7 @@
 #include <openssl/ssl.h>		  /* SSL_() */
 #include <openssl/err.h>		  /* ERR_() */
 #include <openssl/x509v3.h>
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <openssl/rand.h>		  /* RAND_seed() */
 #endif
 #include "config.h"

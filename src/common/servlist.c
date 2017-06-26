@@ -22,7 +22,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 #include <unistd.h>
 #endif
 
@@ -1131,7 +1131,7 @@ servlist_save (void)
 	GSList *netlist;
 	GSList *cmdlist;
 	GSList *favlist;
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	int first = FALSE;
 
 	buf = g_build_filename (get_xdir (), "servlist.conf", NULL);
@@ -1142,13 +1142,13 @@ servlist_save (void)
 	fp = hexchat_fopen_file ("servlist.conf", "w", 0);
 	if (!fp)
 	{
-#ifndef WIN32
+#ifndef G_OS_WIN32
 		g_free (buf);
 #endif
 		return FALSE;
 	}
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	if (first)
 		g_chmod (buf, 0600);
 

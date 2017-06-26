@@ -31,7 +31,7 @@
 #define WANTARPA
 #include "inet.h"
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <winbase.h>
 #include <io.h>
 #else
@@ -382,7 +382,7 @@ server_connected (server * serv)
 	fe_server_event (serv, FE_SE_CONNECT, 0);
 }
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 
 static gboolean
 server_close_pipe (int *pipefd)	/* see comments below */
@@ -410,7 +410,7 @@ server_stopconnecting (server * serv)
 		serv->joindelay_tag = 0;
 	}
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	/* kill the child process trying to connect */
 	kill (serv->childpid, SIGKILL);
 	waitpid (serv->childpid, NULL, 0);
@@ -703,7 +703,7 @@ auto_reconnect (server *serv, int send_quit, int err)
 	if (del < 1000)
 		del = 500;				  /* so it doesn't block the gui */
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 	if (err == -1 || err == 0 || err == ECONNRESET || err == ETIMEDOUT)
 #else
 	if (err == -1 || err == 0 || err == WSAECONNRESET || err == WSAETIMEDOUT)
@@ -1489,7 +1489,7 @@ xit:
 		net_store_destroy (ns_proxy);
 
 	/* no need to free ip/real_hostname, this process is exiting */
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	/* under win32 we use a thread -> shared memory, must free! */
 	g_free (proxy_ip);
 	g_free (ip);
@@ -1580,7 +1580,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	fe_set_away (serv);
 	server_flush_queue (serv);
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	if (_pipe (read_des, 4096, _O_BINARY) < 0)
 #else
 	if (pipe (read_des) < 0)
@@ -1598,7 +1598,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	serv->proxy_sok4 = -1;
 	serv->proxy_sok6 = -1;
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	CloseHandle (CreateThread (NULL, 0,
 										(LPTHREAD_START_ROUTINE)server_child,
 										serv, 0, (DWORD *)&pid));
@@ -1623,7 +1623,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 #endif
 	serv->childpid = pid;
-#ifdef WIN32
+#ifdef G_OS_WIN32
 	serv->iotag = fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child,
 #else
 	serv->iotag = fe_input_add (serv->childread, FIA_READ, server_read_child,
