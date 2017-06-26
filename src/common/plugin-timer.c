@@ -24,10 +24,6 @@
 #include <glib.h>
 #include "hexchat-plugin.h"
 
-#ifdef G_OS_WIN32
-#define g_ascii_strcasecmp stricmp
-#endif
-
 #define _(x) hexchat_gettext(ph,x)
 
 static hexchat_plugin *ph;	/* plugin handle */

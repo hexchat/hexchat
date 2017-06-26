@@ -16,6 +16,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include "config.h"
+#include <glib.h>
+
 #define WANTSOCKET
 #include "inet.h"				/* make it first to avoid macro redefinitions */
 
@@ -40,7 +43,6 @@
 #include <sys/utsname.h>
 #endif
 
-#include "config.h"
 #include <fcntl.h>
 #include <errno.h>
 #include "hexchat.h"
