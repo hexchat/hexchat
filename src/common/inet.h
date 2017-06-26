@@ -22,7 +22,7 @@
 #ifndef HEXCHAT_INET_H
 #define HEXCHAT_INET_H
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 
 #ifdef WANTSOCKET
 #include <sys/types.h>

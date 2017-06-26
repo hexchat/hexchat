@@ -23,6 +23,9 @@
  * Jim Seymour (jseymour@LinxNet.com)
  */
 
+#include "config.h"
+#include <glib.h>
+
 /* Required to make lseek use off64_t, but doesn't work on Windows */
 #define _FILE_OFFSET_BITS 64
 

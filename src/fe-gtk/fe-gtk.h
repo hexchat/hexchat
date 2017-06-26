@@ -24,7 +24,7 @@
 
 #define DISPLAY_NAME "HexChat"
 
-#ifndef WIN32
+#ifndef G_OS_WIN32
 #include <sys/types.h>
 #endif
 
