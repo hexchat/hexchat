@@ -1,6 +1,6 @@
 project('hexchat', 'c',
   version: '2.12.4',
-  meson_version: '>= 0.37.0',
+  meson_version: '>= 0.38.0',
   default_options: [
     'c_std=gnu89',
     'buildtype=debugoptimized',
@@ -98,29 +98,36 @@ test_cflags = [
   '-Werror=missing-include-dirs',
   '-Werror=date-time',
 ]
-if host_machine.system() != 'windows' and get_option('buildtype') != 'plain'
-  test_cflags += '-fstack-protector-strong'
-endif
 foreach cflag : test_cflags
   if cc.has_multi_arguments(cflag)
     global_cflags += cflag
   endif
 endforeach
+if get_option('buildtype') != 'plain'
+  if cc.has_argument('-fstack-protector-strong') and cc.links('''
+     int main (void) {
+       char buffer[16];
+       strcpy(buffer, "foo");
+       return 0;
+     }
+     ''', args: '-fstack-protector-all')
+    global_cflags += '-fstack-protector-strong'
+  endif
+endif
 add_project_arguments(global_cflags, language: 'c')
 
-if host_machine.system() != 'windows'
-  global_ldflags = []
-  test_ldflags = [
-    '-Wl,-z,relro',
-    '-Wl,-z,now',
-  ]
-  foreach ldflag : test_ldflags
-    if cc.has_argument(ldflag)
-      global_ldflags += ldflag
-    endif
-  endforeach
-  add_project_link_arguments(global_ldflags, language: 'c')
-endif
+
+global_ldflags = []
+test_ldflags = [
+  '-Wl,-z,relro',
+  '-Wl,-z,now',
+]
+foreach ldflag : test_ldflags
+  if cc.has_argument(ldflag) and cc.links('int main (void) { return 0; }', args: ldflag)
+    global_ldflags += ldflag
+  endif
+endforeach
+add_project_link_arguments(global_ldflags, language: 'c')
 
 subdir('src')
 if get_option('with-plugin')

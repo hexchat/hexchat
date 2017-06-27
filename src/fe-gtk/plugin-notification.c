@@ -177,17 +177,18 @@ int
 notification_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 	const char* error = NULL;
+
+	ph = plugin_handle;
+	*plugin_name = "";
+	*plugin_desc = "";
+	*plugin_version = "";
+
 	if (!notification_backend_init (&error))
 	{
 		if (error)
 			hexchat_printf(plugin_handle, "Failed loading notification plugin: %s\n", error);
 		return 0;
 	}
-
-	ph = plugin_handle;
-	*plugin_name = "";
-	*plugin_desc = "";
-	*plugin_version = "";
 
 	hexchat_hook_print (ph, "Channel Msg Hilight", HEXCHAT_PRI_LOWEST, incoming_hilight_cb, NULL);
 	hexchat_hook_print (ph, "Channel Action Hilight", HEXCHAT_PRI_LOWEST, incoming_hilight_cb, NULL);
