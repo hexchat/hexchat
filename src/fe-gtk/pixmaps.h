@@ -27,7 +27,7 @@ extern GdkPixbuf *pix_ulist_owner;
 extern GdkPixbuf *pix_ulist_founder;
 extern GdkPixbuf *pix_ulist_netop;
 
-extern GdkPixbuf *pix_tray_none;
+extern GdkPixbuf *pix_tray_normal;
 extern GdkPixbuf *pix_tray_fileoffer;
 extern GdkPixbuf *pix_tray_highlight;
 extern GdkPixbuf *pix_tray_message;
