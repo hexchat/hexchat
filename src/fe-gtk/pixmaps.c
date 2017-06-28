@@ -36,7 +36,7 @@ GdkPixbuf *pix_ulist_owner;
 GdkPixbuf *pix_ulist_founder;
 GdkPixbuf *pix_ulist_netop;
 
-GdkPixbuf *pix_tray_none;
+GdkPixbuf *pix_tray_normal;
 GdkPixbuf *pix_tray_fileoffer;
 GdkPixbuf *pix_tray_highlight;
 GdkPixbuf *pix_tray_message;
