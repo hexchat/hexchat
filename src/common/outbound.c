@@ -1464,7 +1464,7 @@ cmd_doat (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		session *ctx;
 
 		/* Split channel and network, either may be empty */
-		if ((serv = strchr (chan, '/')))
+		if ((serv = strrchr (chan, '/')))
 		{
 			*serv = '\0';
 			serv++;
