@@ -25,6 +25,7 @@
 #include <fcntl.h>
 
 #include "fe-gtk.h"
+#include "plugin-tray.h"
 
 #include <gdk/gdkkeysyms.h>
 #if defined (WIN32) || defined (__APPLE__)
@@ -598,6 +599,10 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (parent_window));
 		gtk_window_set_destroy_with_parent (GTK_WINDOW (win), TRUE);
 	}
+	if (flags & START_ICONIFIED)
+		gtk_window_iconify (GTK_WINDOW (win));
+	else if (flags & START_ON_TRAY)
+		tray_toggle_visibility_win (win, TRUE);
 
 	return win;
 }

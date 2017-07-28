@@ -3097,11 +3097,11 @@ mg_create_topwindow (session *sess)
 
 	if (sess->type == SESS_DIALOG)
 		win = gtkutil_window_new ("HexChat", NULL,
-										  prefs.hex_gui_dialog_width, prefs.hex_gui_dialog_height, 0);
+										  prefs.hex_gui_dialog_width, prefs.hex_gui_dialog_height, sess->start_state);
 	else
 		win = gtkutil_window_new ("HexChat", NULL,
 										  prefs.hex_gui_win_width,
-										  prefs.hex_gui_win_height, 0);
+										  prefs.hex_gui_win_height, sess->start_state);
 	sess->gui->window = win;
 	gtk_container_set_border_width (GTK_CONTAINER (win), GUI_BORDER);
 	gtk_window_set_opacity (GTK_WINDOW (win), (prefs.hex_gui_transparency / 255.));
@@ -3168,7 +3168,8 @@ mg_create_topwindow (session *sess)
 
 	mg_place_userlist_and_chanview (sess->gui);
 
-	gtk_widget_show (win);
+	if(sess->start_state!=START_ON_TRAY)
+		gtk_widget_show (win);
 }
 
 static gboolean
@@ -3201,7 +3202,7 @@ mg_create_tabwindow (session *sess)
 	GtkWidget *table;
 
 	win = gtkutil_window_new ("HexChat", NULL, prefs.hex_gui_win_width,
-									  prefs.hex_gui_win_height, 0);
+									  prefs.hex_gui_win_height, sess->start_state);
 	sess->gui->window = win;
 	gtk_window_move (GTK_WINDOW (win), prefs.hex_gui_win_left,
 						  prefs.hex_gui_win_top);
@@ -3262,7 +3263,8 @@ mg_create_tabwindow (session *sess)
 
 	mg_place_userlist_and_chanview (sess->gui);
 
-	gtk_widget_show (win);
+	if(sess->start_state!=START_ON_TRAY)
+		gtk_widget_show (win);
 }
 
 void

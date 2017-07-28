@@ -264,7 +264,8 @@ cv_tree_focus (chan *ch)
 			dest_y = cell_rect.y - ((vis_rect.height - cell_rect.height) * 0.5);
 			if (dest_y < 0)
 				dest_y = 0;
-			gtk_tree_view_scroll_to_point (tree, -1, dest_y);
+			if (gtk_widget_get_realized( GTK_WIDGET (tree) )) //When Hexchat is started with the flag --minimize=2, Fixes Gtk-CRITICAL **: IA__gtk_tree_view_scroll_to_point: assertion 'gtk_widget_get_realized (GTK_WIDGET (tree_view))' failed
+				gtk_tree_view_scroll_to_point (tree, -1, dest_y);
 		}
 		/* theft done, now make it focused like */
 		gtk_tree_view_set_cursor (tree, path, NULL, FALSE);
