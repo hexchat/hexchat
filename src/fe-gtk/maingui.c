@@ -3168,7 +3168,7 @@ mg_create_topwindow (session *sess)
 
 	mg_place_userlist_and_chanview (sess->gui);
 
-	if(sess->start_state!=START_ON_TRAY)
+	if (sess->start_state != START_ON_TRAY)
 		gtk_widget_show (win);
 }
 
@@ -3263,7 +3263,7 @@ mg_create_tabwindow (session *sess)
 
 	mg_place_userlist_and_chanview (sess->gui);
 
-	if(sess->start_state!=START_ON_TRAY)
+	if (sess->start_state != START_ON_TRAY)
 		gtk_widget_show (win);
 }
 

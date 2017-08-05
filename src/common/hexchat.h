@@ -359,11 +359,11 @@ typedef enum {
 	TAB_STATE_NEW_HILIGHT = (1 << 2),
 } tab_state_flags;
 
-typedef enum { //Works with gtkutil_window_new()
+typedef enum { /* Used in gtkutil_window_new() */
 	START_WINDOWED = 0,
 	START_ICONIFIED = 4,
 	START_ON_TRAY = 8,
-} start_type;
+} start_type_flags;
 
 typedef struct session
 {
@@ -425,7 +425,7 @@ typedef struct session
 	int end_of_names:1;
 	int doing_who:1;		/* /who sent on this channel */
 	int done_away_check:1;	/* done checking for away status changes */
-	start_type start_state;
+	start_type_flags start_state;
 	tab_state_flags tab_state;
 	tab_state_flags last_tab_state; /* before event is handled */
 	gtk_xtext_search_flags lastlog_flags;

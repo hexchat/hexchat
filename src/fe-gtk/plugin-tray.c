@@ -368,7 +368,7 @@ tray_toggle_visibility (gboolean force_hide)
 	win = GTK_WINDOW (hexchat_get_info (ph, "gtkwin_ptr"));
 	if (!win)
 		return FALSE;
-	return tray_toggle_visibility_win(win, force_hide);
+	return tray_toggle_visibility_win (win, force_hide);
 }
 
 static void
