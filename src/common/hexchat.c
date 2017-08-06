@@ -883,9 +883,9 @@ xchat_init (void)
 		"NAME ENDSUB\n"				"CMD \n\n",
 
 		_("_Open Dialog Window"), "gtk-go-up",
-		_("_Send a File…"), "gtk-floppy",
+		_("_Send a Fileâ€¦"), "gtk-floppy",
 		_("_User Info (WhoIs)"), "gtk-info",
-		_("_Add to Friends List…"), "gtk-add",
+		_("_Add to Friends Listâ€¦"), "gtk-add",
 		_("_Ignore"), "gtk-stop",
 		_("O_perator Actions"),
 
