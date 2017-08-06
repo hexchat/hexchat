@@ -1392,7 +1392,7 @@ menu_join (GtkWidget * wid, gpointer none)
 
 	dialog = gtk_dialog_new_with_buttons (_("Join Channel"),
 									GTK_WINDOW (parent_window), 0,
-									_("Retrieve channel list..."), GTK_RESPONSE_HELP,
+									_("Retrieve channel list"), GTK_RESPONSE_HELP,
 									GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 									GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 									NULL);
@@ -1745,14 +1745,14 @@ menu_about (GtkWidget *wid, gpointer sess)
 
 static struct mymenu mymenu[] = {
 	{N_("He_xChat"), 0, 0, M_NEWMENU, MENU_ID_HEXCHAT, 0, 1},
-	{N_("Network Li_st..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_KEY_s},
+	{N_("Network Li_st"), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_KEY_s},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
 	{N_("_New"), 0, GTK_STOCK_NEW, M_MENUSUB, 0, 0, 1},
-		{N_("Server Tab..."), menu_newserver_tab, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_t},
-		{N_("Channel Tab..."), menu_newchannel_tab, 0, M_MENUITEM, 0, 0, 1},
-		{N_("Server Window..."), menu_newserver_window, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_n},
-		{N_("Channel Window..."), menu_newchannel_window, 0, M_MENUITEM, 0, 0, 1},
+		{N_("Server Tab"), menu_newserver_tab, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_t},
+		{N_("Channel Tab"), menu_newchannel_tab, 0, M_MENUITEM, 0, 0, 1},
+		{N_("Server Window"), menu_newserver_window, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_n},
+		{N_("Channel Window"), menu_newchannel_window, 0, M_MENUITEM, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
@@ -1792,7 +1792,7 @@ static struct mymenu mymenu[] = {
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
 	{N_("_Reconnect"), menu_reconnect, GTK_STOCK_CONNECT, M_MENUSTOCK, MENU_ID_RECONNECT, 0, 1},
 	{N_("_Join a Channel..."), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
-	{N_("_List of Channels..."), menu_chanlist, GTK_STOCK_INDEX, M_MENUITEM, 0, 0, 1},
+	{N_("_List of Channels"), menu_chanlist, GTK_STOCK_INDEX, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 #define AWAY_OFFSET (41)
 	{N_("Marked _Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_KEY_a},
@@ -1802,26 +1802,26 @@ static struct mymenu mymenu[] = {
 	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Preferences"), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-	{N_("Auto Replace..."), menu_rpopup, 0, M_MENUITEM, 0, 0, 1},
-	{N_("CTCP Replies..."), menu_ctcpguiopen, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Dialog Buttons..."), menu_dlgbuttons, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Keyboard Shortcuts..."), menu_keypopup, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Text Events..."), menu_evtpopup, 0, M_MENUITEM, 0, 0, 1},
-	{N_("URL Handlers..."), menu_urlhandlers, 0, M_MENUITEM, 0, 0, 1},
-	{N_("User Commands..."), menu_usercommands, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Userlist Buttons..."), menu_ulbuttons, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},	/* 52 */
+	{N_("Auto Replace"), menu_rpopup, 0, M_MENUITEM, 0, 0, 1},
+	{N_("CTCP Replies"), menu_ctcpguiopen, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Dialog Buttons"), menu_dlgbuttons, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Keyboard Shortcuts"), menu_keypopup, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Text Events"), menu_evtpopup, 0, M_MENUITEM, 0, 0, 1},
+	{N_("URL Handlers"), menu_urlhandlers, 0, M_MENUITEM, 0, 0, 1},
+	{N_("User Commands"), menu_usercommands, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Userlist Buttons"), menu_ulbuttons, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Userlist Popup"), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},	/* 52 */
 
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
-	{N_("_Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Character Chart..."), ascii_open, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Direct Chat..."), menu_dcc_chat_win, 0, M_MENUITEM, 0, 0, 1},
-	{N_("File _Transfers..."), menu_dcc_win, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Friends List..."), notify_opengui, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Ignore List..."), ignore_gui_open, 0, M_MENUITEM, 0, 0, 1},
-	{N_("_Plugins and Scripts..."), menu_pluginlist, 0, M_MENUITEM, 0, 0, 1},
-	{N_("_Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 61 */
-	{N_("_URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
+	{N_("_Ban List"), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Character Chart"), ascii_open, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Direct Chat"), menu_dcc_chat_win, 0, M_MENUITEM, 0, 0, 1},
+	{N_("File _Transfers"), menu_dcc_win, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Friends List"), notify_opengui, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Ignore List"), ignore_gui_open, 0, M_MENUITEM, 0, 0, 1},
+	{N_("_Plugins and Scripts"), menu_pluginlist, 0, M_MENUITEM, 0, 0, 1},
+	{N_("_Raw Log"), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 61 */
+	{N_("_URL Grabber"), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_m},
 	{N_("Move to Marker Line"), menu_movetomarker, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_M},
