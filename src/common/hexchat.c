@@ -1,4 +1,4 @@
-/* X-Chat
+﻿/* X-Chat
  * Copyright (C) 1998 Peter Zelezny.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -883,9 +883,9 @@ xchat_init (void)
 		"NAME ENDSUB\n"				"CMD \n\n",
 
 		_("_Open Dialog Window"), "gtk-go-up",
-		_("_Send a File" ELLIPSIS), "gtk-floppy",
+		_("_Send a File…"), "gtk-floppy",
 		_("_User Info (WhoIs)"), "gtk-info",
-		_("_Add to Friends List" ELLIPSIS), "gtk-add",
+		_("_Add to Friends List…"), "gtk-add",
 		_("_Ignore"), "gtk-stop",
 		_("O_perator Actions"),
 
