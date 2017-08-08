@@ -602,7 +602,7 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 	if (flags & START_ICONIFIED)
 		gtk_window_iconify (GTK_WINDOW (win));
 	else if (flags & START_ON_TRAY)
-		tray_toggle_visibility_win (win, TRUE);
+		tray_toggle_visibility_win (GTK_WINDOW (win), TRUE);
 
 	return win;
 }
