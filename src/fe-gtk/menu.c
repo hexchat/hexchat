@@ -1805,7 +1805,7 @@ static struct mymenu mymenu[] = {
 	/* Windows-1252 test characters (ellipsis, three Norwegian letters, Euro sign */
 	{N_("Auto Replace … æ ø å €"), menu_rpopup, 0, M_MENUITEM, 0, 0, 1},
 	/* Ellipsis in UTF-8 */
-	{N_("CTCP Replies\xe2\x80\a6"), menu_ctcpguiopen, 0, M_MENUITEM, 0, 0, 1},
+	{N_("CTCP Replies\342\200\246"), menu_ctcpguiopen, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Dialog Buttons"), menu_dlgbuttons, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Keyboard Shortcuts"), menu_keypopup, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Text Events"), menu_evtpopup, 0, M_MENUITEM, 0, 0, 1},
