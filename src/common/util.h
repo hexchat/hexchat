@@ -35,6 +35,8 @@
 
 #define rfc_tolower(c) (rfc_tolowertab[(unsigned char)(c)])
 
+#define ELLIPSIS "\xe2\x80\xa6"
+
 extern const unsigned char rfc_tolowertab[];
 
 char *expand_homedir (char *file);

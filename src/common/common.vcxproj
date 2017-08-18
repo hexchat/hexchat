@@ -118,11 +118,5 @@ powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..
 
       ]]></Command>
     </PreBuildEvent>
-    <ClCompile>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/utf-8 %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <ClCompile>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/utf-8 %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
   </ItemDefinitionGroup>
 </Project>
