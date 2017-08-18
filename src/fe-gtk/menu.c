@@ -1,4 +1,4 @@
-﻿/* X-Chat
+/* X-Chat
  * Copyright (C) 1998-2007 Peter Zelezny.
  *
  * This program is free software; you can redistribute it and/or modify
