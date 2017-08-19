@@ -935,7 +935,7 @@ xchat_init (void)
 				_("Kick"),
 				_("bye"),
 				_("Enter reason to kick %s:"),
-				_("Sendfile"),
+				_("Send File"),
 				_("Dialog"));
 	list_loadconf ("buttons.conf", &button_list, buf);
 
