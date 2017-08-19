@@ -167,7 +167,7 @@ joind_show_dialog (server *serv)
 	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
-	label = gtk_label_new (_("In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."));
+	label = gtk_label_new (_("In the server list window, no channel (chat room) has been entered to be automatically joined for this network."));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -206,13 +206,13 @@ joind_show_dialog (server *serv)
 	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
 	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
-	radiobutton3 = gtk_radio_button_new_with_mnemonic (NULL, _("O_pen the Channel-List window."));
+	radiobutton3 = gtk_radio_button_new_with_mnemonic (NULL, _("O_pen the channel list."));
 	gtk_widget_show (radiobutton3);
 	gtk_box_pack_start (GTK_BOX (vbox2), radiobutton3, FALSE, FALSE, 0);
 	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton3), radiobutton1_group);
 
 	g_snprintf (buf, sizeof (buf), "<small>     %s</small>",
-				 _("Retrieving the Channel-List may take a minute or two."));
+				 _("Retrieving the channel list may take a minute or two."));
 	label = gtk_label_new (buf);
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
