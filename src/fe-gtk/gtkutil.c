@@ -579,7 +579,7 @@ gtkutil_set_icon (GtkWidget *win)
 extern GtkWidget *parent_window;	/* maingui.c */
 
 GtkWidget *
-gtkutil_window_new (char *title, char *role, int width, int height, int flags)
+gtkutil_window_new (char *title, char *role, int width, int height, int flags, int iconify_flag)
 {
 	GtkWidget *win;
 
@@ -599,9 +599,9 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (parent_window));
 		gtk_window_set_destroy_with_parent (GTK_WINDOW (win), TRUE);
 	}
-	if (flags & START_ICONIFIED)
+	if (iconify_flag & START_ICONIFIED)
 		gtk_window_iconify (GTK_WINDOW (win));
-	else if (flags & START_ON_TRAY)
+	else if (iconify_flag & START_ON_TRAY)
 		tray_toggle_visibility_win (GTK_WINDOW (win), TRUE);
 
 	return win;

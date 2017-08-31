@@ -361,8 +361,8 @@ typedef enum {
 
 typedef enum { /* Used in gtkutil_window_new() */
 	START_WINDOWED = 0,
-	START_ICONIFIED = 4,
-	START_ON_TRAY = 8,
+	START_ICONIFIED = 1,
+	START_ON_TRAY = 2,
 } start_type_flags;
 
 typedef struct session

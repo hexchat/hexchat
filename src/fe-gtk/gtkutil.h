@@ -35,7 +35,7 @@ GtkWidget *gtkutil_entry_new (int max, GtkWidget * box, void *callback,
 										gpointer userdata);
 void show_and_unfocus (GtkWidget * wid);
 void gtkutil_set_icon (GtkWidget *win);
-GtkWidget *gtkutil_window_new (char *title, char *role, int width, int height, int flags);
+GtkWidget *gtkutil_window_new (char *title, char *role, int width, int height, int flags, int iconify_flag);
 void gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
                                 const gchar *str);
 GtkWidget *gtkutil_treeview_new (GtkWidget *box, GtkTreeModel *model,

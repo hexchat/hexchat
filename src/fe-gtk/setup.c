@@ -2288,7 +2288,7 @@ setup_window_open (void)
 {
 	GtkWidget *wid, *win, *vbox, *hbox, *hbbox;
 
-	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 600, 2);
+	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 600, 2, 0);
 
 	vbox = gtk_vbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
