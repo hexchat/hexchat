@@ -144,7 +144,7 @@ static const char *login_types[]=
 #ifdef USE_OPENSSL
 	"SASL EXTERNAL (cert)",
 #endif
-	"Server Password (/PASS password)",
+	"Server password (/PASS password)",
 	"NickServ (/MSG NickServ + password)",
 	"NickServ (/NICKSERV + password)",
 #ifdef USE_OPENSSL
@@ -2164,7 +2164,7 @@ servlist_open_networks (void)
 
 	button_sort = gtk_button_new_with_mnemonic (_("_Sort"));
 	gtk_widget_set_tooltip_text (button_sort, _("Sorts the network list in alphabetical order. "
-				"Use SHIFT-UP and SHIFT-DOWN keys to move a row."));
+				"Use Shift+Up and Shift+Down keys to move a row."));
 	g_signal_connect (G_OBJECT (button_sort), "clicked",
 							G_CALLBACK (servlist_sort), 0);
 	gtk_widget_show (button_sort);

@@ -161,11 +161,11 @@ static const setting appearance_settings[] =
 	{ST_EFILE, N_ ("Background image:"), P_OFFSETNL (hex_text_background), 0, 0, sizeof prefs.hex_text_background},
 
 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
-	{ST_HSCALE, N_("Window Opacity:"), P_OFFINTNL(hex_gui_transparency),0,0,0},
+	{ST_HSCALE, N_("Window opacity:"), P_OFFINTNL(hex_gui_transparency),0,0,0},
 
-	{ST_HEADER,	N_("Time Stamps"),0,0,0},
-	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(hex_stamp_text),0,0,1},
-	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(hex_stamp_text_format),
+	{ST_HEADER,	N_("Timestamps"),0,0,0},
+	{ST_TOGGLE, N_("Enable timestamps"), P_OFFINTNL(hex_stamp_text),0,0,1},
+	{ST_ENTRY,  N_("Timestamp format:"), P_OFFSETNL(hex_stamp_text_format),
 #ifdef WIN32
 					N_("See the strftime MSDN article for details."),0,sizeof prefs.hex_stamp_text_format},
 #else
@@ -189,7 +189,7 @@ static const char *const tabcompmenu[] =
 static const setting inputbox_settings[] =
 {
 	{ST_HEADER, N_("Input Box"),0,0,0},
-	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
+	{ST_TOGGLE, N_("Use the text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
 	{ST_TOGGLE, N_("Render colors and attributes"), P_OFFINTNL (hex_gui_input_attr),0,0,0},
 	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,1},
 	{ST_TOGGLE, N_("Show user mode icon in nick box"), P_OFFINTNL(hex_gui_input_icon),0,0,0},
@@ -220,9 +220,9 @@ static const char *const lagmenutext[] =
 
 static const char *const ulmenutext[] = 
 {
-	N_("A-Z, Ops first"),
+	N_("A-Z, ops first"),
 	N_("A-Z"),
-	N_("Z-A, Ops last"),
+	N_("Z-A, ops last"),
 	N_("Z-A"),
 	N_("Unsorted"),
 	NULL
@@ -230,10 +230,10 @@ static const char *const ulmenutext[] =
 
 static const char *const cspos[] =
 {
-	N_("Left (Upper)"),
-	N_("Left (Lower)"),
-	N_("Right (Upper)"),
-	N_("Right (Lower)"),
+	N_("Left (upper)"),
+	N_("Left (lower)"),
+	N_("Right (upper)"),
+	N_("Right (lower)"),
 	N_("Top"),
 	N_("Bottom"),
 	N_("Hidden"),
@@ -242,10 +242,10 @@ static const char *const cspos[] =
 
 static const char *const ulpos[] =
 {
-	N_("Left (Upper)"),
-	N_("Left (Lower)"),
-	N_("Right (Upper)"),
-	N_("Right (Lower)"),
+	N_("Left (upper)"),
+	N_("Left (lower)"),
+	N_("Right (upper)"),
+	N_("Right (lower)"),
 	NULL
 };
 
@@ -261,7 +261,7 @@ static const setting userlist_settings[] =
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(hex_gui_ulist_pos), 0, ulpos, 1},
 
 	{ST_HEADER,	N_("Away Tracking"),0,0,0},
-	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(hex_away_track),0,0,1},
+	{ST_TOGGLE,	N_("Track the away status of users and mark them in a different color"), P_OFFINTNL(hex_away_track),0,0,1},
 	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(hex_away_size_max),0,0,10000},
 
 	{ST_HEADER,	N_("Action Upon Double Click"),0,0,0},
@@ -360,7 +360,7 @@ static const setting filexfer_settings[] =
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 
-	{ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0, 0},
+	{ST_HEADER, N_("Maximum File Transfer Speeds (Bytes per Second)"), 0, 0, 0},
 	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(hex_dcc_max_send_cps), 
 					N_("Maximum speed for one transfer"), 0, 10000000},
 	{ST_NUMBER,	N_("One download:"), P_OFFINTNL(hex_dcc_max_get_cps),
@@ -556,14 +556,14 @@ static const setting advanced_settings[] =
 	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
 	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(hex_text_autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
-						"Otherwise, CONTROL-SHIFT-C will copy the "
+						"Otherwise, Ctrl+Shift+C will copy the "
 						"selected text to the clipboard."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(hex_text_autocopy_stamp),
-					N_("Automatically include time stamps in copied lines of text. Otherwise, "
-						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include timestamps"), P_OFFINTNL(hex_text_autocopy_stamp),
+					N_("Automatically include timestamps in copied lines of text. Otherwise, "
+						"include timestamps if the Shift key is held down while selecting."), 0, 0},
 	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(hex_text_autocopy_color),
 					N_("Automatically include color information in copied lines of text.  "
-						"Otherwise, include color information if the CONTROL key is held down "
+						"Otherwise, include color information if the Ctrl key is held down "
 						"while selecting."), 0, 0},
 
 	{ST_HEADER,	N_("Miscellaneous"), 0, 0, 0},
@@ -590,7 +590,7 @@ static const setting logging_settings[] =
 	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(hex_irc_logmask), 0, 0, sizeof prefs.hex_irc_logmask},
 	{ST_LABEL,	N_("%s=Server %c=Channel %n=Network.")},
 
-	{ST_HEADER,	N_("Time Stamps"),0,0,0},
+	{ST_HEADER,	N_("Timestamps"),0,0,0},
 	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(hex_stamp_log), 0, 0, 1},
 	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(hex_stamp_log_format), 0, 0, sizeof prefs.hex_stamp_log_format},
 #ifdef WIN32
@@ -622,9 +622,9 @@ static const char *const proxytypes[] =
 
 static const char *const proxyuse[] =
 {
-	N_("All Connections"),
-	N_("IRC Server Only"),
-	N_("DCC Get Only"),
+	N_("All connections"),
+	N_("IRC server only"),
+	N_("DCC only"),
 	NULL
 };
 
@@ -639,8 +639,8 @@ static const setting network_settings[] =
 					N_("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
 	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(hex_dcc_ip),
 					N_("Claim you are at this address when offering files."), 0, sizeof prefs.hex_dcc_ip},
-	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
-	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
+	{ST_NUMBER,	N_("First DCC listen port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
+	{ST_NUMBER,	N_("Last DCC listen port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
 		(const char **)N_("!Leave ports at zero for full range."), 65535},
 
 	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
@@ -650,7 +650,7 @@ static const setting network_settings[] =
 	{ST_MENU,	N_("Use proxy for:"), P_OFFINTNL(hex_net_proxy_use), 0, proxyuse, 0},
 
 	{ST_HEADER,	N_("Proxy Authentication"), 0, 0, 0, 0},
-	{ST_TOGGLE,	N_("Use Authentication (HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
+	{ST_TOGGLE,	N_("Use authentication (HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(hex_net_proxy_user), 0, 0, sizeof prefs.hex_net_proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(hex_net_proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.hex_net_proxy_pass},
 
