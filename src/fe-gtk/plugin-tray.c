@@ -29,6 +29,7 @@
 #include "pixmaps.h"
 #include "maingui.h"
 #include "menu.h"
+#include "gtkutil.h"
 
 #ifndef WIN32
 #include <unistd.h>
@@ -759,7 +760,8 @@ tray_apply_setup (void)
 	}
 	else
 	{
-		if (prefs.hex_gui_tray && !unity_mode ())
+		GtkWindow *window = GTK_WINDOW(hexchat_get_info (ph, "gtkwin_ptr"));
+		if (prefs.hex_gui_tray && gtkutil_tray_icon_supported (window))
 			tray_init ();
 	}
 }
@@ -793,7 +795,8 @@ tray_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 
 	hexchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
 
-	if (prefs.hex_gui_tray && !unity_mode ())
+	GtkWindow *window = GTK_WINDOW(hexchat_get_info (ph, "gtkwin_ptr"));
+	if (prefs.hex_gui_tray && gtkutil_tray_icon_supported (window))
 		tray_init ();
 
 	return 1;       /* return 1 for success */

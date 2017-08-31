@@ -1895,6 +1895,7 @@ static GtkWidget *
 setup_create_pages (GtkWidget *box)
 {
 	GtkWidget *book;
+	GtkWindow *win = GTK_WINDOW(gtk_widget_get_toplevel (box));
 
 	book = gtk_notebook_new ();
 
@@ -1906,11 +1907,11 @@ setup_create_pages (GtkWidget *box)
 
 	setup_add_page (cata[8], book, setup_create_page (general_settings));
 
-	if (unity_mode () && !notification_backend_supported ())
+	if (!gtkutil_tray_icon_supported (win) && !notification_backend_supported ())
 	{
 		setup_add_page (cata[9], book, setup_create_page (alert_settings_unityandnonotifications));
 	}
-	else if (unity_mode ())
+	else if (!gtkutil_tray_icon_supported (win))
 	{
 		setup_add_page (cata[9], book, setup_create_page (alert_settings_unity));
 	}

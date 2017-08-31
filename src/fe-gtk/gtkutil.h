@@ -43,6 +43,7 @@ GtkWidget *gtkutil_treeview_new (GtkWidget *box, GtkTreeModel *model,
 gboolean gtkutil_treemodel_string_to_iter (GtkTreeModel *model, gchar *pathstr, GtkTreeIter *iter_ret);
 gboolean gtkutil_treeview_get_selected_iter (GtkTreeView *view, GtkTreeIter *iter_ret);
 gboolean gtkutil_treeview_get_selected (GtkTreeView *view, GtkTreeIter *iter_ret, ...);
+gboolean gtkutil_tray_icon_supported (GtkWindow *window);
 
 #if defined (WIN32) || defined (__APPLE__)
 gboolean gtkutil_find_font (const char *fontname);

@@ -1363,18 +1363,6 @@ portable_mode (void)
 #endif
 }
 
-int
-unity_mode (void)
-{
-#ifdef G_OS_UNIX
-	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
-	if (env && (strcmp (env, "Unity") == 0
-			|| strcmp (env, "Pantheon") == 0))
-		return 1;
-#endif
-	return 0;
-}
-
 char *
 encode_sasl_pass_plain (char *user, char *pass)
 {
