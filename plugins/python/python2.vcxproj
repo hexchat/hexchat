@@ -37,6 +37,9 @@
       <AdditionalDependencies>"$(Python2Lib).lib";$(DepLibs);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(Python2Path)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(Python3Path)\python.exe" generate_plugin.py ..\..\src\common\hexchat-plugin.h python.py "$(IntDir)python.c"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -48,12 +51,15 @@
       <AdditionalDependencies>"$(Python2Lib).lib";$(DepLibs);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(Python2Path)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(Python3Path)\python.exe" generate_plugin.py ..\..\src\common\hexchat-plugin.h python.py "$(IntDir)python.c"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="python.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="python.c" />
+    <ClCompile Include="$(IntDir)python.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

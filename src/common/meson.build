@@ -93,10 +93,6 @@ endif
 
 if get_option('with-plugin')
   common_deps += libgmodule_dep
-  common_cflags += '-DHEXCHATLIBDIR="@0@"'.format(join_paths(get_option('prefix'),
-                                                  get_option('libdir'),
-                                                  'hexchat/plugins'))
-
   install_headers('hexchat-plugin.h')
 endif
 
