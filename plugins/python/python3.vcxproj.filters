@@ -9,13 +9,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="python.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="$(IntDir)python.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="python.def">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="_hexchat.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="generate_plugin.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="hexchat.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="python.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="xchat.py">
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
 </Project>

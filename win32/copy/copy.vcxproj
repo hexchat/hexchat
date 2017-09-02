@@ -62,6 +62,8 @@
     <LuaShare Include="$(DepsRoot)\share\lua\**\*.lua" />
     <LuaShare Include="$(DepsRoot)\share\lua\**\**\*.lua" />
     <Typelib Include="$(DepsRoot)\lib\girepository-1.0\*.typelib" />
+    <None Include="$(Python3Path)\Lib\site-packages\_cffi_backend.*.pyd" />
+    <None Include="$(Python2Path)\Lib\site-packages\_cffi_backend.pyd" />
 
     <Engines Include="$(DepsRoot)\lib\gtk-2.0\i686-pc-vs14\engines\**\*" />
 
@@ -89,6 +91,9 @@
     <Copy SourceFiles="@(LuaShare)" DestinationFiles="@(LuaShare->'$(HexChatRel)\share\lua\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(LuaLib)" DestinationFiles="@(LuaLib->'$(HexChatRel)\lib\lua\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(Typelib)" DestinationFiles="@(Typelib->'$(HexChatRel)\lib\girepository-1.0\%(Filename)%(Extension)')" />
+    <Copy SourceFiles="..\..\plugins\python\xchat.py" DestinationFolder="$(HexChatRel)\python" />
+    <Copy SourceFiles="..\..\plugins\python\hexchat.py" DestinationFolder="$(HexChatRel)\python" />
+    <Copy SourceFiles="..\..\plugins\python\_hexchat.py" DestinationFolder="$(HexChatRel)\python" />
 
     <WriteLinesToFile File="$(HexChatRel)portable-mode" Lines="2" Overwrite="true" />
 
