@@ -77,7 +77,7 @@ ignore_exists (char *mask)
  */
 
 int
-ignore_add (char *mask, int type, gboolean overwrite)
+ignore_add (char *mask, unsigned int type, gboolean overwrite)
 {
 	struct ignore *ig = NULL;
 	int change_only = FALSE;
@@ -151,6 +151,10 @@ ignore_showlist (session *sess)
 			strcat (tbuf, _("YES  "));
 		else
 			strcat (tbuf, _("NO   "));
+		if (ig->type & IG_JOINS_PARTS)
+			strcat (tbuf, _("YES         "));
+		else
+			strcat (tbuf, _("NO          "));
 		strcat (tbuf, "\n");
 		PrintText (sess, tbuf);
 		/*EMIT_SIGNAL (XP_TE_IGNORELIST, sess, ig->mask, 0, 0, 0, 0); */
@@ -200,7 +204,7 @@ ignore_del (char *mask, struct ignore *ig)
 /* check if a msg should be ignored by browsing our ignore list */
 
 int
-ignore_check (char *host, int type)
+ignore_check (char *host, unsigned int type)
 {
 	struct ignore *ig;
 	GSList *list = ignore_list;

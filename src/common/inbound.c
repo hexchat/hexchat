@@ -763,14 +763,15 @@ inbound_topicnew (server *serv, char *nick, char *chan, char *topic,
 }
 
 void
-inbound_join (server *serv, char *chan, char *user, char *ip, char *account,
+inbound_join (server *serv, char *chan, char *host, char *user, char *ip, char *account,
 				  char *realname, const message_tags_data *tags_data)
 {
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_JOIN, sess, user, chan, ip, account, 0,
-									  tags_data->timestamp);
+		if (!ignore_check(host, IG_JOINS_PARTS))
+			EMIT_SIGNAL_TIMESTAMP (XP_TE_JOIN, sess, user, chan, ip, account, 0,
+			                       tags_data->timestamp);
 		userlist_add (sess, user, ip, account, realname, tags_data);
 	}
 }
@@ -789,18 +790,19 @@ inbound_kick (server *serv, char *chan, char *user, char *kicker, char *reason,
 }
 
 void
-inbound_part (server *serv, char *chan, char *user, char *ip, char *reason,
+inbound_part (server *serv, char *chan, char *host, char *user, char *ip, char *reason,
 				  const message_tags_data *tags_data)
 {
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		if (*reason)
-			EMIT_SIGNAL_TIMESTAMP (XP_TE_PARTREASON, sess, user, ip, chan, reason,
-										  0, tags_data->timestamp);
-		else
-			EMIT_SIGNAL_TIMESTAMP (XP_TE_PART, sess, user, ip, chan, NULL, 0,
-										  tags_data->timestamp);
+		if (!ignore_check(host, IG_JOINS_PARTS))
+			if (*reason)
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_PARTREASON, sess, user, ip, chan, reason,
+				                       0, tags_data->timestamp);
+			else
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_PART, sess, user, ip, chan, NULL, 0,
+				                       tags_data->timestamp);
 		userlist_remove (sess, user);
 	}
 }
@@ -821,7 +823,7 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp,
 }
 
 void
-inbound_quit (server *serv, char *nick, char *ip, char *reason,
+inbound_quit (server *serv, char *host, char *nick, char *ip, char *reason,
 				  const message_tags_data *tags_data)
 {
 	GSList *list = sess_list;
@@ -838,8 +840,9 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason,
  				was_on_front_session = TRUE;
 			if ((user = userlist_find (sess, nick)))
 			{
-				EMIT_SIGNAL_TIMESTAMP (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0,
-											  tags_data->timestamp);
+				if (!ignore_check(host, IG_JOINS_PARTS))
+					EMIT_SIGNAL_TIMESTAMP (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0,
+					                       tags_data->timestamp);
 				userlist_remove_user (sess, user);
 			} else if (sess->type == SESS_DIALOG && !serv->p_cmp (sess->channel, nick))
 			{
