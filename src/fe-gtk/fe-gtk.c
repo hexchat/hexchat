@@ -407,25 +407,6 @@ log_handler (const gchar   *log_domain,
 
 #endif
 
-/* install tray stuff */
-
-static int
-fe_idle (gpointer data)
-{
-	session *sess = sess_list->data;
-
-	plugin_add (sess, NULL, NULL, notification_plugin_init, notification_plugin_deinit, NULL, FALSE);
-
-	plugin_add (sess, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
-
-	if (arg_minimize == 1)
-		gtk_window_iconify (GTK_WINDOW (sess->gui->window));
-	else if (arg_minimize == 2)
-		tray_toggle_visibility (FALSE);
-
-	return 0;
-}
-
 void
 fe_new_window (session *sess, int focus)
 {
@@ -441,8 +422,6 @@ fe_new_window (session *sess, int focus)
 			tab = TRUE;
 	}
 
-	mg_changui_new (sess, NULL, tab, focus);
-
 #ifdef WIN32
 	g_log_set_handler ("GLib", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);
 	g_log_set_handler ("GLib-GObject", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);
@@ -451,7 +430,17 @@ fe_new_window (session *sess, int focus)
 #endif
 
 	if (!sess_list->next)
-		g_idle_add (fe_idle, NULL);
+	{
+		plugin_add (sess, NULL, NULL, notification_plugin_init, notification_plugin_deinit, NULL, FALSE);
+		plugin_add (sess, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
+		sess->start_state = START_WINDOWED;
+		if (arg_minimize == 1)
+			sess->start_state = START_ICONIFIED;
+		else if (arg_minimize == 2)
+			sess->start_state = START_ON_TRAY;
+	}
+
+	mg_changui_new (sess, NULL, tab, focus);
 
 	sess->scrollback_replay_marklast = gtk_xtext_set_marker_last;
 }

@@ -316,21 +316,18 @@ fe_tray_set_file (const char *filename)
 }
 
 gboolean
-tray_toggle_visibility (gboolean force_hide)
+tray_toggle_visibility_win (GtkWindow *win, gboolean force_hide)
 {
 	static int x, y;
 	static GdkScreen *screen;
 	static int maximized;
 	static int fullscreen;
-	GtkWindow *win;
 
 	if (!sticon)
 		return FALSE;
 
 	/* ph may have an invalid context now */
 	hexchat_set_context (ph, hexchat_find_context (ph, NULL, NULL));
-
-	win = GTK_WINDOW (hexchat_get_info (ph, "gtkwin_ptr"));
 
 	tray_stop_flash ();
 	tray_reset_counts ();
@@ -363,6 +360,16 @@ tray_toggle_visibility (gboolean force_hide)
 	}
 
 	return TRUE;
+}
+
+gboolean
+tray_toggle_visibility (gboolean force_hide)
+{
+	GtkWindow *win;
+	win = GTK_WINDOW (hexchat_get_info (ph, "gtkwin_ptr"));
+	if (!win)
+		return FALSE;
+	return tray_toggle_visibility_win (win, force_hide);
 }
 
 static void
