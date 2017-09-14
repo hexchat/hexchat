@@ -5,20 +5,20 @@
 # Translators:
 # Benjamin Sonntag <benjamin@alternc.org>, 2007
 # Benjamin Sonntag <benjamin@sonntag.fr>, 2007,2012
-# Calinou, 2014
-# Calinou, 2014
+# Hugo Locurcio, 2014
+# Hugo Locurcio, 2014
 # Misdre <misdre@hexchat.misdre.info>, 2013
 # Misdre <misdre@hexchat.misdre.info>, 2013
-# Towinet, 2014
-# Calinou, 2013
-# Yannick Le Guen <leguen.yannick@gmail.com>, 2014,2016
+# Towinet, 2014,2016-2017
+# Hugo Locurcio, 2013
+# Yannick Le Guen <leguen.yannick@gmail.com>, 2014,2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2016-10-08 15:09-0400\n"
-"PO-Revision-Date: 2016-10-08 19:09+0000\n"
-"Last-Translator: TingPing <tingping@tingping.se>\n"
+"PO-Revision-Date: 2017-08-03 18:35+0000\n"
+"Last-Translator: Yannick Le Guen <leguen.yannick@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/hexchat/hexchat/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +41,7 @@ msgstr "HexChat prend en charge des fonctionnalités telles que : DCC, SASL, ser
 
 #: ../data/misc/hexchat.appdata.xml.in.h:3
 msgid "Main Chat Window"
-msgstr ""
+msgstr "Fenêtre principale de bavardage"
 
 #: ../data/misc/hexchat.desktop.in.h:1
 msgid "HexChat"
@@ -344,7 +344,7 @@ msgstr "Résolu en :"
 #: ../src/common/inbound.c:1332
 #, c-format
 msgid "Looking up %s..."
-msgstr ""
+msgstr "Recherche de %s..."
 
 #: ../src/common/notify.c:559
 #, c-format
@@ -445,7 +445,7 @@ msgstr "ALLSERV <cmd>, envoyer une commande à tous les serveurs auxquels vous �
 
 #: ../src/common/outbound.c:3870
 msgid "AWAY [<reason>], sets you away (use /BACK to unset)"
-msgstr ""
+msgstr "AWAY [<raison>], indique que vous êtes absent (utilisez /BACK pour le démettre)"
 
 #: ../src/common/outbound.c:3871
 msgid "BACK, sets you back (not away)"
@@ -478,7 +478,7 @@ msgstr "CLEAR [ALL|HISTORY|[-]<nombre>], vider la fenêtre de texte actuelle ou 
 msgid ""
 "CLOSE [-m], Closes the current tab, closing the window if this is the only "
 "open tab, or with the \"-m\" flag, closes all queries."
-msgstr ""
+msgstr "CLOSE [-m], ferme l'onglet actuel, en fermant la fenêtre s'il s'agit du seul onglet ouvert, ou si utilisé avec le paramètre « -m », ferme toutes les requêtes."
 
 #: ../src/common/outbound.c:3880
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
@@ -901,20 +901,20 @@ msgstr "*\tErreur au lancement du serveur identd : %s"
 
 #: ../src/common/plugin-identd.c:262
 msgid "IDENTD <port> <username>"
-msgstr ""
+msgstr "IDENTD <port> <username>"
 
 #: ../src/common/plugin-timer.c:75
 #, c-format
 msgid "Timer %d deleted.\n"
-msgstr ""
+msgstr "Minuteur %d effacé.\n\n"
 
 #: ../src/common/plugin-timer.c:81
 msgid "No such ref number found.\n"
-msgstr ""
+msgstr "Aucun numéro de réf correspondant n'a été trouvé.\n"
 
 #: ../src/common/plugin-timer.c:145
 msgid "No timers installed.\n"
-msgstr ""
+msgstr "Aucun minuteur installé.\n"
 
 #. 00000 00000000 0000000 abc
 #: ../src/common/plugin-timer.c:150
@@ -971,7 +971,7 @@ msgstr "%C29*%O$tAutorisations bien reçues : %C29$2%O"
 
 #: ../src/common/textevents.h:21
 msgid "%C29*%O$tCapabilities removed: %C29$2%O"
-msgstr ""
+msgstr "%C29*%O$tAutorisations retirées : %C29$2%O"
 
 #: ../src/common/textevents.h:24
 msgid "%C23*%O$tCapabilities supported: %C29$2%O"
@@ -983,7 +983,7 @@ msgstr "%C23*%O$tAutorisations demandées :%C29$1%O"
 
 #: ../src/common/textevents.h:30
 msgid "%C24*%O$t%C28$1%O is now known as %C18$2%O"
-msgstr "%C24*%O$t%C28$1%O est maintenant connu sous le nom %C18$2%O"
+msgstr "%C24*%O$t%C28$1%O est maintenant connu sous le nom de %C18$2%O"
 
 #: ../src/common/textevents.h:39
 msgid "%C22*%O$t%C26$1%O sets ban on %C18$2%O"
@@ -1572,7 +1572,7 @@ msgstr "Autorisations reçues"
 
 #: ../src/common/text.c:994
 msgid "Removed Capabilities"
-msgstr ""
+msgstr "Autorisations retirées"
 
 #: ../src/common/text.c:999
 msgid "Server Capabilities"
@@ -4673,7 +4673,7 @@ msgstr "Le nom d'utilisateur ne peut être vide."
 
 #: ../src/fe-gtk/servlistgui.c:1578
 msgid "You cannot have an empty nick name."
-msgstr ""
+msgstr "Vous ne pouvez pas avoir un pseudonyme vide."
 
 #: ../src/fe-gtk/servlistgui.c:1585
 msgid "You must have two unique nick names."
@@ -5957,13 +5957,13 @@ msgstr "Activé"
 
 #: ../src/fe-gtk/setup.c:663
 msgid "Server will respond with the networks username"
-msgstr ""
+msgstr "Le serveur répondra par le nom d'utilisateur de réseaux"
 
 #: ../src/fe-gtk/setup.c:664
 msgid ""
 "You must have permissions to listen on this port. If not 113 (0 defaults to "
 "this) then you must configure port-forwarding."
-msgstr ""
+msgstr "Vous devez avoir les permissions pour écouter sur ce port. Si sa valeur n'est pas 113 (0 renvoie à cette valeur par défaut), vous devez alors configurer la redirection de port."
 
 #: ../src/fe-gtk/setup.c:1110
 msgid "Select an Image File"
@@ -6239,7 +6239,7 @@ msgstr "Ouvrir une URL irc://serveur:port/canal"
 
 #: ../plugins/sysinfo/sysinfo.c:128
 msgid "Sysinfo: Failed to get info. Either not supported or error."
-msgstr ""
+msgstr "Sysinfo : erreur lors de l'obtention des infos. Défaut de prise en charge ou erreur."
 
 #: ../plugins/sysinfo/sysinfo.c:133
 msgid "Sysinfo: No info by that name\n"
@@ -6255,7 +6255,7 @@ msgid ""
 "Sysinfo: Valid settings are: announce and hide_* for each piece of "
 "information. e.g. hide_os. Without a value it will show current (or default)"
 " setting.\n"
-msgstr ""
+msgstr "Sysinfo : des réglages valables sont : announce (annoncer) et hide_* (cacher) pour chaque morceau d'information. Par exemple hide_os. S'il n'y a pas de valeur définie, il montrera le réglage actuel (ou par défaut).\n"
 
 #: ../plugins/sysinfo/sysinfo.c:193 ../plugins/sysinfo/sysinfo.c:200
 #, c-format

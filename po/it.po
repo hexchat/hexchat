@@ -3,17 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Claudio Arseni <claudio.arseni@gmail.com>, 2013-2014,2016
+# Claudio Arseni <claudio.arseni@gmail.com>, 2013-2014,2016-2017
 # Eros Palberti - Fabio Viola : How-Tux Team <admin@how-tux.com>, 2006
+# Marina Latini <deneb.alphacygni@gmail.com>, 2016
 # Random_R, 2013
-# Random_R, 2013,2016
+# Random_R, 2013,2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2016-10-08 15:09-0400\n"
-"PO-Revision-Date: 2016-10-08 19:09+0000\n"
-"Last-Translator: TingPing <tingping@tingping.se>\n"
+"PO-Revision-Date: 2017-08-03 18:35+0000\n"
+"Last-Translator: Claudio Arseni <claudio.arseni@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/hexchat/hexchat/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,7 +37,7 @@ msgstr "HexChat supporta caratteristiche come: DCC, SASL, proxy, controllo ortog
 
 #: ../data/misc/hexchat.appdata.xml.in.h:3
 msgid "Main Chat Window"
-msgstr ""
+msgstr "Finestra di chat principale"
 
 #: ../data/misc/hexchat.desktop.in.h:1
 msgid "HexChat"
@@ -66,7 +67,7 @@ msgstr "Gestore temi di HexChat"
 #. STRINGS
 #: ../src/common/cfgfiles.c:839
 msgid "I'm busy"
-msgstr "Sono occupato"
+msgstr "Non disponibile"
 
 #: ../src/common/cfgfiles.c:876
 msgid "Leaving"
@@ -82,7 +83,7 @@ msgstr "ON"
 
 #: ../src/common/chanopt.c:83
 msgid "{unset}"
-msgstr ""
+msgstr "{unset}"
 
 #: ../src/common/chanopt.c:128 ../src/common/text.c:1314
 #: ../src/fe-gtk/notifygui.c:125 ../src/fe-gtk/setup.c:1877
@@ -267,7 +268,7 @@ msgstr "Dialogo"
 
 #: ../src/common/hexchat.c:947
 msgid "WhoIs"
-msgstr "WhoIs"
+msgstr "WHOIS"
 
 #: ../src/common/hexchat.c:948
 msgid "Send"
@@ -392,7 +393,7 @@ msgstr "Comandi definiti dall'utente:"
 
 #: ../src/common/outbound.c:2225
 msgid "Plugin defined commands:"
-msgstr "Plugin definiti dall'utente:"
+msgstr "Comandi definiti dal plugin:"
 
 #: ../src/common/outbound.c:2236
 msgid "Type /HELP <command> for more information, or /HELP -l"
@@ -401,7 +402,7 @@ msgstr "Digitare /HELP <comando> per ulteriori informazioni, oppure /HELP -l"
 #: ../src/common/outbound.c:2320
 #, c-format
 msgid "Unknown arg '%s' ignored."
-msgstr "Argomento sconosciuto «%s» ignorato."
+msgstr "Argomento «%s» sconosciuto ignorato."
 
 #: ../src/common/outbound.c:3078 ../src/common/outbound.c:3108
 msgid "Quiet is not supported by this server."
@@ -473,7 +474,7 @@ msgstr "CLEAR [ALL|HISTORY|[-]<quantità>], pulisce la finestra di testo corrent
 msgid ""
 "CLOSE [-m], Closes the current tab, closing the window if this is the only "
 "open tab, or with the \"-m\" flag, closes all queries."
-msgstr "CLOSE [-m], chiude la scheda corrente, chiudendo la finestra se questa è l'unica scheda aperta , o con l'opzione \"-m\", per chiudere tutte le query."
+msgstr "CLOSE [-m], chiude la scheda corrente, chiudendo la finestra se questa è l'unica scheda aperta , o con l'opzione «-m», per chiudere tutte le query."
 
 #: ../src/common/outbound.c:3880
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
@@ -887,21 +888,21 @@ msgstr "Nessun simbolo hexchat_plugin_init; è veramente un plugin di HexChat?"
 #: ../src/common/plugin-identd.c:175
 #, c-format
 msgid "*\tServicing ident request from %s as %s"
-msgstr ""
+msgstr "*\tRichiesta di identificazione al servizio da %s come %s"
 
 #: ../src/common/plugin-identd.c:238
 #, c-format
 msgid "*\tError starting identd server: %s"
-msgstr "*\tErrore di avvio server identd: %s"
+msgstr "*\tErrore nell'avvio del server identd: %s"
 
 #: ../src/common/plugin-identd.c:262
 msgid "IDENTD <port> <username>"
-msgstr "IDENTD <porta> <nomeutente>"
+msgstr "IDENTD <porta> <nome_utente>"
 
 #: ../src/common/plugin-timer.c:75
 #, c-format
 msgid "Timer %d deleted.\n"
-msgstr "Cronometro %d eliminato.\n"
+msgstr "Timer %d eliminato.\n"
 
 #: ../src/common/plugin-timer.c:81
 msgid "No such ref number found.\n"
@@ -909,7 +910,7 @@ msgstr ""
 
 #: ../src/common/plugin-timer.c:145
 msgid "No timers installed.\n"
-msgstr "Nessun cronometro installato.\n"
+msgstr "Nessun timer installato.\n"
 
 #. 00000 00000000 0000000 abc
 #: ../src/common/plugin-timer.c:150
@@ -966,7 +967,7 @@ msgstr "%C29*%O$tFunzionalità accettate: %C29$2%O"
 
 #: ../src/common/textevents.h:21
 msgid "%C29*%O$tCapabilities removed: %C29$2%O"
-msgstr ""
+msgstr "%C29*%O$tFunzionalità rimosse: %C29$2%O"
 
 #: ../src/common/textevents.h:24
 msgid "%C23*%O$tCapabilities supported: %C29$2%O"
@@ -4290,7 +4291,7 @@ msgstr "_Riconnetti"
 
 #: ../src/fe-gtk/menu.c:1794
 msgid "_Join a Channel..."
-msgstr "E_tra in un canale..."
+msgstr "E_ntra in un canale..."
 
 #: ../src/fe-gtk/menu.c:1795
 msgid "_List of Channels..."
@@ -4668,7 +4669,7 @@ msgstr "Il nome utente non può essere vuoto."
 
 #: ../src/fe-gtk/servlistgui.c:1578
 msgid "You cannot have an empty nick name."
-msgstr ""
+msgstr "Non è possibile avere un soprannome vuoto."
 
 #: ../src/fe-gtk/servlistgui.c:1585
 msgid "You must have two unique nick names."
@@ -5366,7 +5367,7 @@ msgstr "Usare la rotellina del mouse per combiare scheda"
 
 #: ../src/fe-gtk/setup.c:318
 msgid "Middle click to close tab"
-msgstr "Clic centrale per chiudere scheda"
+msgstr "Clic centrale per chiudere la scheda"
 
 #: ../src/fe-gtk/setup.c:319
 msgid "Smaller text"
@@ -5574,7 +5575,7 @@ msgstr "Cambia automaticamente lo stato quando si minimizza la finestra nel vass
 
 #: ../src/fe-gtk/setup.c:424
 msgid "Only show notifications when hidden or iconified"
-msgstr "Mostrare notifiche solo quando nascosto o ridotto a icona"
+msgstr "Mostrare le notifiche solo quando nascosto o ridotto a icona"
 
 #: ../src/fe-gtk/setup.c:426 ../src/fe-gtk/setup.c:469
 #: ../src/fe-gtk/setup.c:492 ../src/fe-gtk/setup.c:514
@@ -5944,7 +5945,7 @@ msgstr "Nome utente:"
 
 #: ../src/fe-gtk/setup.c:662
 msgid "Identd Server"
-msgstr "Server Identd"
+msgstr "Server identd"
 
 #: ../src/fe-gtk/setup.c:663
 msgid "Enabled"
@@ -5952,13 +5953,13 @@ msgstr "Attivo"
 
 #: ../src/fe-gtk/setup.c:663
 msgid "Server will respond with the networks username"
-msgstr "Il server risponderà con i nomi utente della rete"
+msgstr "Il server risponderà con il nome utente delle reti"
 
 #: ../src/fe-gtk/setup.c:664
 msgid ""
 "You must have permissions to listen on this port. If not 113 (0 defaults to "
 "this) then you must configure port-forwarding."
-msgstr "Devi avere i permessi per ascoltare su questa porta. Se non 113 (0 equivale a questa) allora devi configurare il port-forwarding."
+msgstr "Sono necessari i permessi per ascoltare su questa porta. Se non è la 113 (0 equivale a questa) allora è necessario configurare il port forwarding."
 
 #: ../src/fe-gtk/setup.c:1110
 msgid "Select an Image File"
@@ -6234,37 +6235,37 @@ msgstr "Apri un URL irc://server:porta/canale"
 
 #: ../plugins/sysinfo/sysinfo.c:128
 msgid "Sysinfo: Failed to get info. Either not supported or error."
-msgstr "Sysinfo: Impossibile ottenere informazioni. Non supportato o errore."
+msgstr "Sysinfo: impossibile ottenere informazioni. Non supportato o errore."
 
 #: ../plugins/sysinfo/sysinfo.c:133
 msgid "Sysinfo: No info by that name\n"
-msgstr ""
+msgstr "Sysinfo: nessuna informazione per quel nome\n"
 
 #: ../plugins/sysinfo/sysinfo.c:164 ../plugins/sysinfo/sysinfo.c:168
 #, c-format
 msgid "Sysinfo: %s is set to: %d\n"
-msgstr ""
+msgstr "Sysinfo: %s è impostato a: %d\n"
 
 #: ../plugins/sysinfo/sysinfo.c:178
 msgid ""
 "Sysinfo: Valid settings are: announce and hide_* for each piece of "
 "information. e.g. hide_os. Without a value it will show current (or default)"
 " setting.\n"
-msgstr ""
+msgstr "Sysinfo: le impostazioni valide sono: announce e hide_* per ogni parte delle informazioni. Per esempio hide_os. Senza un valore verrà mostrato il contenuto attuale (o predefinito).\n"
 
 #: ../plugins/sysinfo/sysinfo.c:193 ../plugins/sysinfo/sysinfo.c:200
 #, c-format
 msgid "Sysinfo: pciids is set to: %s\n"
-msgstr ""
+msgstr "Sysinfo: pciids è impostato a: %s\n"
 
 #: ../plugins/sysinfo/sysinfo.c:218
 msgid "Sysinfo: Invalid variable name\n"
-msgstr ""
+msgstr "Sysinfo: nome variabile non valido\n"
 
 #: ../plugins/sysinfo/sysinfo.c:267
 #, c-format
 msgid "%s plugin loaded\n"
-msgstr "Plugin %s caricato\n"
+msgstr "Plugin %s attivato\n"
 
 #: ../plugins/sysinfo/sysinfo.c:275
 #, c-format

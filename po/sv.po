@@ -3,9 +3,10 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Åke Engelbrektson, 2016
 # Anders Jonsson <transifex@norsjovallen.se>, 2016
 # Chessax Nemeth <chessax@hotmail.com>, 2015
-# Jakob <jakob@knugen.nu>, 2014
+# Jakob <jakob@knugen.nu>, 2014,2016
 # Jakob <jakob@knugen.nu>, 2012
 # Jan Lindblom <janlindblom@fastmail.fm>, 2016
 # obskyr <lpsamuelm@gmail.com>, 2014
@@ -15,8 +16,8 @@ msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2016-10-08 15:09-0400\n"
-"PO-Revision-Date: 2016-10-08 19:09+0000\n"
-"Last-Translator: TingPing <tingping@tingping.se>\n"
+"PO-Revision-Date: 2017-08-03 18:35+0000\n"
+"Last-Translator: Åke Engelbrektson\n"
 "Language-Team: Swedish (http://www.transifex.com/hexchat/hexchat/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgid ""
 "HexChat is an easy to use yet extensible IRC Client. It allows you to "
 "securely join multiple networks and talk to users privately or in channels "
 "using a customizable interface. You can even transfer files."
-msgstr "HexChat är en lättanvänd men även utbyggbar IRC klient. Den låter dig säkert ansluta till flera nätverk och prata med användare privat eller i kanaler med ett anpassningsbart utseende. Du kan till och med överföra filer."
+msgstr "HexChat är en lättanvänd men även utbyggbar IRC-klient. Den låter dig ansluta säkert till flera nätverk och prata med användare privat eller i kanaler med ett anpassningsbart utseende. Du kan till och med överföra filer."
 
 #: ../data/misc/hexchat.appdata.xml.in.h:2
 msgid ""
@@ -39,7 +40,7 @@ msgstr "HexChat stödjer funktioner som: DCC, SASL, proxytjänster, stavningskon
 
 #: ../data/misc/hexchat.appdata.xml.in.h:3
 msgid "Main Chat Window"
-msgstr ""
+msgstr "Primärt chattfönster"
 
 #: ../data/misc/hexchat.desktop.in.h:1
 msgid "HexChat"
@@ -365,7 +366,7 @@ msgstr "Inte ansluten. Prova /server <värd> [<port>]\n"
 #: ../src/common/outbound.c:277
 #, c-format
 msgid "Server %s already exists on network %s.\n"
-msgstr "Servern %s existerar redan på nätverket %s.\n"
+msgstr "Servern %s finns redan på nätverket %s.\n"
 
 #: ../src/common/outbound.c:283
 #, c-format
@@ -395,7 +396,7 @@ msgstr "Användardefinierade kommandon:"
 
 #: ../src/common/outbound.c:2225
 msgid "Plugin defined commands:"
-msgstr "Användardefinierade insticksmoduler:"
+msgstr "Insticksdefinierade kommandon:"
 
 #: ../src/common/outbound.c:2236
 msgid "Type /HELP <command> for more information, or /HELP -l"
@@ -404,11 +405,11 @@ msgstr "Skriv /HELP <kommando> för ytterligare information, eller /HELP -l"
 #: ../src/common/outbound.c:2320
 #, c-format
 msgid "Unknown arg '%s' ignored."
-msgstr "Ignorerade okända kommandot \"%s\"."
+msgstr "Okänt argument \"%s\" ignorerades."
 
 #: ../src/common/outbound.c:3078 ../src/common/outbound.c:3108
 msgid "Quiet is not supported by this server."
-msgstr "Den här servern stödjer inte tyst-läge."
+msgstr "Den här servern stödjer inte tyst läge."
 
 #. error
 #: ../src/common/outbound.c:3555 ../src/common/outbound.c:3580
@@ -1824,7 +1825,7 @@ msgstr "Inaktivitetstid"
 
 #: ../src/common/text.c:1223
 msgid "Signon time"
-msgstr "Påloggningstid"
+msgstr "Inloggningstid"
 
 #: ../src/common/text.c:1228
 msgid "Away reason"
@@ -1846,7 +1847,7 @@ msgstr "Verklig användare@värd"
 
 #: ../src/common/text.c:1250
 msgid "Real IP"
-msgstr "Verklig IP"
+msgstr "Verkligt IP"
 
 #: ../src/common/text.c:1255 ../src/common/text.c:1282
 #: ../src/common/text.c:1288 ../src/common/text.c:1318
@@ -3540,7 +3541,7 @@ msgid ""
 "When run all \\n characters in Data 1 are used to deliminate separate "
 "commands so it is possible to run more than one command. If you want a \\ "
 "in the actual text run then enter \\\\"
-msgstr "Kör Kommando åtgärden kör datan i Data 1 som om den hade skrivits in i inmatningsfältet där du angav tangentsekvensen. Därför kan det innehålla text (som kommer att skickas till kanalen/personen), kommandon eller användarkommandon. Vid körning används alla \\n-tecken i Data 1 för att avgränsa separata kommandon så det är möjligt att köra mer än ett kommando. Om du vill ha ett faktiskt \\ i texten som körs så ange \\\\"
+msgstr "Körkommandot kör datan i Data 1 som om den hade skrivits in i inmatningsfältet där du angav tangentsekvensen. Därför kan det innehålla text (som kommer att skickas till kanalen/personen), kommandon eller användarkommandon. Vid körning används alla \\n-tecken i Data 1 för att avgränsa separata kommandon så det är möjligt att köra mer än ett kommando. Om du vill ha ett faktiskt \\ i texten som körs så ange \\\\"
 
 #: ../src/fe-gtk/fkeys.c:143
 msgid ""
@@ -3550,7 +3551,7 @@ msgid ""
 "switch to the page with the most recent and important activity (queries "
 "first, then channels with hilight, channels with dialogue, channels with "
 "other data)"
-msgstr "Byt Sida kommandot byter mellan olika sidor i anteckningsboken. Sätt Data 1 till sidan du will byta till. Om data 2 är satt till någonting så kommer bytet vara relativt till nuvarande position. Sätt Data 1 till auto för att byta till sidan med nyast och viktigast aktivitet (query först, sedan kanaler med färgmarkeringar, kanaler med dialog, kanaler med annan data)"
+msgstr "Byt sida-kommandot byter mellan olika sidor i anteckningsboken. Sätt Data 1 till sidan du will byta till. Om data 2 är satt till någonting så kommer bytet vara relativt till nuvarande position. Sätt Data 1 till auto för att byta till sidan med nyast och viktigast aktivitet (query först, sedan kanaler med färgmarkeringar, kanaler med dialog, kanaler med annan data)"
 
 #: ../src/fe-gtk/fkeys.c:145
 msgid ""
@@ -3562,7 +3563,7 @@ msgstr "Kommandot Infoga i buffert kommer att infoga innehållet i Data 1 i f�
 msgid ""
 "The Scroll Page command scrolls the text widget up or down one page or one"
 " line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
-msgstr "Rulla Sida kommandot rullar textmanicken upp eller ned en sida eller en rad. Sätt data 1 till antingen Top, Bottom, Up, Down, +1 eller -1."
+msgstr "Rulla sida-kommandot rullar textmanicken upp eller ned en sida eller en rad. Sätt data 1 till antingen Top, Bottom, Up, Down, +1 eller -1."
 
 #: ../src/fe-gtk/fkeys.c:149
 msgid ""
@@ -4671,7 +4672,7 @@ msgstr "Användarnamn kan inte lämnas blankt."
 
 #: ../src/fe-gtk/servlistgui.c:1578
 msgid "You cannot have an empty nick name."
-msgstr ""
+msgstr "Du kan inte ha ett tomt användarnamn."
 
 #: ../src/fe-gtk/servlistgui.c:1585
 msgid "You must have two unique nick names."
@@ -6127,7 +6128,7 @@ msgstr "Du kan inte placera trädet på övre eller undre delen!\nÄndra till <b
 
 #: ../src/fe-gtk/setup.c:2244
 msgid "The Real name option cannot be left blank. Falling back to \"realname\"."
-msgstr "Alternativet Verkliga namn kan inte lämnas blankt. Faller tillbaka till \"realname\"."
+msgstr "Alternativet Verkligt namn kan inte lämnas blankt. Faller tillbaka till \"realname\"."
 
 #: ../src/fe-gtk/setup.c:2251
 msgid "Some settings were changed that require a restart to take full effect."
@@ -6267,7 +6268,7 @@ msgstr "Sysinfo: Ogiltigt variabelnamn\n"
 #: ../plugins/sysinfo/sysinfo.c:267
 #, c-format
 msgid "%s plugin loaded\n"
-msgstr "Insticksmodul %s laddad\n"
+msgstr "Insticksmodul %s inläst\n"
 
 #: ../plugins/sysinfo/sysinfo.c:275
 #, c-format
