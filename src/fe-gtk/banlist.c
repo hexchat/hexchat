@@ -436,8 +436,8 @@ banlist_do_refresh (banlist_info *banl)
 	{
 		GtkListStore *store;
 
-		g_snprintf (tbuf, sizeof tbuf, "Ban List (%s, %s) - ",
-						sess->channel, sess->server->servername);
+		g_snprintf (tbuf, sizeof tbuf, "Ban List (%s, %s) - %s",
+						sess->channel, sess->server->servername, _(DISPLAY_NAME));
 		mg_set_title (banl->window, tbuf);
 
 		store = get_store (sess);
@@ -805,8 +805,8 @@ banlist_opengui (struct session *sess)
 	/* Force on the checkmark in the "Bans" box */
 	banl->checked = 1<<MODE_BAN;
 
-	g_snprintf (tbuf, sizeof tbuf, _("Ban List (%s) - "DISPLAY_NAME),
-					sess->server->servername);
+	g_snprintf (tbuf, sizeof tbuf, _("Ban List (%s) - %s"),
+					sess->server->servername, _(DISPLAY_NAME));
 
 	banl->window = mg_create_generic_tab ("BanList", tbuf, FALSE,
 					TRUE, banlist_closegui, banl, 700, 300, &vbox, sess->server);

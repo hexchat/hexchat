@@ -382,28 +382,31 @@ fe_set_title (session *sess)
 	switch (type)
 	{
 	case SESS_DIALOG:
-		g_snprintf (tbuf, sizeof (tbuf), "%s %s @ %s - "DISPLAY_NAME,
-					 _("Dialog with"), sess->channel, server_get_network (sess->server, TRUE));
+		g_snprintf (tbuf, sizeof (tbuf), "%s %s @ %s - %s",
+					 _("Dialog with"), sess->channel, server_get_network (sess->server, TRUE),
+					 _(DISPLAY_NAME));
 		break;
 	case SESS_SERVER:
-		g_snprintf (tbuf, sizeof (tbuf), "%s @ %s - "DISPLAY_NAME,
-					 sess->server->nick, server_get_network (sess->server, TRUE));
+		g_snprintf (tbuf, sizeof (tbuf), "%s @ %s - %s",
+					 sess->server->nick, server_get_network (sess->server, TRUE),
+					 _(DISPLAY_NAME));
 		break;
 	case SESS_CHANNEL:
 		/* don't display keys in the titlebar */
 		if (prefs.hex_gui_win_modes)
 		{
 			g_snprintf (tbuf, sizeof (tbuf),
-						 "%s @ %s / %s (%s) - "DISPLAY_NAME,
+						 "%s @ %s / %s (%s) - %s",
 						 sess->server->nick, server_get_network (sess->server, TRUE),
-						 sess->channel, sess->current_modes ? sess->current_modes : "");
+						 sess->channel, sess->current_modes ? sess->current_modes : "",
+						 _(DISPLAY_NAME));
 		}
 		else
 		{
 			g_snprintf (tbuf, sizeof (tbuf),
-						 "%s @ %s / %s - "DISPLAY_NAME,
+						 "%s @ %s / %s - %s",
 						 sess->server->nick, server_get_network (sess->server, TRUE),
-						 sess->channel);
+						 sess->channel, _(DISPLAY_NAME));
 		}
 		if (prefs.hex_gui_win_ucount)
 		{
@@ -412,12 +415,13 @@ fe_set_title (session *sess)
 		break;
 	case SESS_NOTICES:
 	case SESS_SNOTICES:
-		g_snprintf (tbuf, sizeof (tbuf), "%s @ %s (notices) - "DISPLAY_NAME,
-					 sess->server->nick, server_get_network (sess->server, TRUE));
+		g_snprintf (tbuf, sizeof (tbuf), "%s @ %s (notices) - %s",
+					 sess->server->nick, server_get_network (sess->server, TRUE),
+					 _(DISPLAY_NAME));
 		break;
 	default:
 	def:
-		g_snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME);
+		g_snprintf (tbuf, sizeof (tbuf), _(DISPLAY_NAME));
 		gtk_window_set_title (GTK_WINDOW (sess->gui->window), tbuf);
 		return;
 	}

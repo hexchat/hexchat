@@ -130,7 +130,8 @@ joind_show_dialog (server *serv)
 	char buf2[256];
 
 	serv->gui->joind_win = dialog1 = gtk_dialog_new ();
-	gtk_window_set_title (GTK_WINDOW (dialog1), _("Connection Complete - "DISPLAY_NAME));
+	g_snprintf(buf, sizeof(buf), _("Connection Complete - %s"), _(DISPLAY_NAME));
+	gtk_window_set_title (GTK_WINDOW (dialog1), buf);
 	gtk_window_set_type_hint (GTK_WINDOW (dialog1), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_window_set_position (GTK_WINDOW (dialog1), GTK_WIN_POS_CENTER_ON_PARENT);
 	gtk_window_set_transient_for (GTK_WINDOW(dialog1), GTK_WINDOW(serv->front_session->gui->window));

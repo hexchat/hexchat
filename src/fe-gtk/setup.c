@@ -2288,8 +2288,10 @@ static GtkWidget *
 setup_window_open (void)
 {
 	GtkWidget *wid, *win, *vbox, *hbox, *hbbox;
+	char buf[128];
 
-	win = gtkutil_window_new (_("Preferences - "DISPLAY_NAME), "prefs", 0, 600, 2);
+	g_snprintf(buf, sizeof(buf), _("Preferences - %s"), _(DISPLAY_NAME));
+	win = gtkutil_window_new (buf, "prefs", 0, 600, 2);
 
 	vbox = gtk_vbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);

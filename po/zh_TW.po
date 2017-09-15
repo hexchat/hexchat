@@ -3246,8 +3246,8 @@ msgstr "在聊天室分頁中您只能開啟封禁清單視窗。"
 
 #: ../src/fe-gtk/banlist.c:808
 #, c-format
-msgid "Ban List (%s) - "
-msgstr "封禁清單 (%s) - "
+msgid "Ban List (%s) - %s"
+msgstr "封禁清單 (%s) - %s"
 
 #: ../src/fe-gtk/banlist.c:843 ../src/fe-gtk/notifygui.c:427
 msgid "Remove"
@@ -3285,8 +3285,8 @@ msgstr ""
 
 #: ../src/fe-gtk/chanlist.c:720
 #, c-format
-msgid "Channel List (%s) - "
-msgstr "聊天室清單 (%s) - "
+msgid "Channel List (%s) - %s"
+msgstr "聊天室清單 (%s) - %s"
 
 #: ../src/fe-gtk/chanlist.c:794
 msgid "_Search"
@@ -3377,7 +3377,7 @@ msgid "Cannot resume the same file from two people."
 msgstr "不能從兩人那裡續傳同一檔案"
 
 #: ../src/fe-gtk/dccgui.c:802
-msgid "Uploads and Downloads - "
+msgid "Uploads and Downloads - %s"
 msgstr ""
 
 #: ../src/fe-gtk/dccgui.c:819 ../src/fe-gtk/dccgui.c:1060
@@ -3435,8 +3435,8 @@ msgid "Open Folder..."
 msgstr "開啟文件夾..."
 
 #: ../src/fe-gtk/dccgui.c:1049
-msgid "DCC Chat List - "
-msgstr "DCC 交談清單 - "
+msgid "DCC Chat List - %s"
+msgstr "DCC 交談清單 - %s"
 
 #: ../src/fe-gtk/dccgui.c:1062
 msgid "Recv"
@@ -3632,8 +3632,8 @@ msgid "Select a row to get help information on its Action."
 msgstr ""
 
 #: ../src/fe-gtk/fkeys.c:811
-msgid "Keyboard Shortcuts - "
-msgstr "鍵盤快捷鍵 - "
+msgid "Keyboard Shortcuts - %s"
+msgstr "鍵盤快捷鍵 - %s"
 
 #: ../src/fe-gtk/gtkutil.c:126
 msgid "Cannot write to that file."
@@ -3677,8 +3677,8 @@ msgid "Enter mask to ignore:"
 msgstr "輸入要忽略的遮罩:"
 
 #: ../src/fe-gtk/ignoregui.c:350
-msgid "Ignore list - "
-msgstr "忽略清單 - "
+msgid "Ignore list - %s"
+msgstr "忽略清單 - %s"
 
 #: ../src/fe-gtk/ignoregui.c:358
 msgid "Ignore Stats:"
@@ -3713,8 +3713,8 @@ msgid "Channel name too short, try again."
 msgstr "聊天室名稱太短，再試一次。"
 
 #: ../src/fe-gtk/joind.c:133
-msgid "Connection Complete - "
-msgstr "連線完成 - "
+msgid "Connection Complete - %s"
+msgstr "連線完成 - %s"
 
 #: ../src/fe-gtk/joind.c:161
 #, c-format
@@ -4040,8 +4040,8 @@ msgid "_Auto-Connect"
 msgstr ""
 
 #: ../src/fe-gtk/menu.c:1137
-msgid "User menu - "
-msgstr "使用者選單 - "
+msgid "User menu - %s"
+msgstr "使用者選單 - %s"
 
 #. sep
 #: ../src/fe-gtk/menu.c:1146
@@ -4161,36 +4161,36 @@ msgid ""
 msgstr ""
 
 #: ../src/fe-gtk/menu.c:1527
-msgid "User Defined Commands - "
-msgstr "使用者自訂命令 - "
+msgid "User Defined Commands - %s"
+msgstr "使用者自訂命令 - %s"
 
 #: ../src/fe-gtk/menu.c:1534
-msgid "Userlist Popup menu - "
-msgstr "使用者清單彈出選單 - "
+msgid "Userlist Popup menu - %s"
+msgstr "使用者清單彈出選單 - %s"
 
 #: ../src/fe-gtk/menu.c:1541
 msgid "Replace with"
 msgstr "以...替換"
 
 #: ../src/fe-gtk/menu.c:1541
-msgid "Replace - "
-msgstr "替換 - "
+msgid "Replace - %s"
+msgstr "替換 - %s"
 
 #: ../src/fe-gtk/menu.c:1548
-msgid "URL Handlers - "
-msgstr "URL 處理程式 - "
+msgid "URL Handlers - %s"
+msgstr "URL 處理程式 - %s"
 
 #: ../src/fe-gtk/menu.c:1567
-msgid "Userlist buttons - "
-msgstr "使用者清單按鈕 - "
+msgid "Userlist buttons - %s"
+msgstr "使用者清單按鈕 - %s"
 
 #: ../src/fe-gtk/menu.c:1574
-msgid "Dialog buttons - "
-msgstr "對話框按鈕 - "
+msgid "Dialog buttons - %s"
+msgstr "對話框按鈕 - %s"
 
 #: ../src/fe-gtk/menu.c:1581
-msgid "CTCP Replies - "
-msgstr "CTCP 回應 - "
+msgid "CTCP Replies - %s"
+msgstr "CTCP 回應 - %s"
 
 #: ../src/fe-gtk/menu.c:1747
 msgid "He_xChat"
@@ -4497,7 +4497,7 @@ msgid "Comma separated list of networks is accepted."
 msgstr ""
 
 #: ../src/fe-gtk/notifygui.c:409
-msgid "Friends List - "
+msgid "Friends List - %s"
 msgstr "好友清單"
 
 #: ../src/fe-gtk/notifygui.c:431
@@ -4536,7 +4536,7 @@ msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:176
 #, c-format
-msgid "Connected to %u networks and %u channels - "
+msgid "Connected to %u networks and %u channels - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:545
@@ -4578,42 +4578,42 @@ msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:630
 #, c-format
-msgid "Highlighted message from: %s (%s) - "
+msgid "Highlighted message from: %s (%s) - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:633
 #, c-format
-msgid "%u highlighted messages, latest from: %s (%s) - "
+msgid "%u highlighted messages, latest from: %s (%s) - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:652
 #, c-format
-msgid "Channel message from: %s (%s) - "
+msgid "Channel message from: %s (%s) - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:655
 #, c-format
-msgid "%u channel messages. - "
+msgid "%u channel messages. - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:679
 #, c-format
-msgid "Private message from: %s (%s) - "
+msgid "Private message from: %s (%s) - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:682
 #, c-format
-msgid "%u private messages, latest from: %s (%s) - "
+msgid "%u private messages, latest from: %s (%s) - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:722
 #, c-format
-msgid "File offer from: %s (%s) - "
+msgid "File offer from: %s (%s) - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugin-tray.c:725
 #, c-format
-msgid "%u file offers, latest from: %s (%s) - "
+msgid "%u file offers, latest from: %s (%s) - %s"
 msgstr ""
 
 #: ../src/fe-gtk/plugingui.c:65
@@ -4629,8 +4629,8 @@ msgid "Select a Plugin or Script to load"
 msgstr "選擇要載入的外掛程式或命令稿"
 
 #: ../src/fe-gtk/plugingui.c:240
-msgid "Plugins and Scripts - "
-msgstr "外掛程式和命令稿 - "
+msgid "Plugins and Scripts - %s"
+msgstr "外掛程式和命令稿 - %s"
 
 #: ../src/fe-gtk/plugingui.c:255
 msgid "_Load..."
@@ -4651,7 +4651,7 @@ msgstr "另存為..."
 
 #: ../src/fe-gtk/rawlog.c:112
 #, c-format
-msgid "Raw Log (%s) - "
+msgid "Raw Log (%s) - %s"
 msgstr ""
 
 #: ../src/fe-gtk/rawlog.c:133
@@ -4687,8 +4687,8 @@ msgstr ""
 
 #: ../src/fe-gtk/servlistgui.c:1710
 #, c-format
-msgid "Edit %s - "
-msgstr "編輯 %s - "
+msgid "Edit %s - %s"
+msgstr "編輯 %s - %s"
 
 #: ../src/fe-gtk/servlistgui.c:1731
 msgid "Servers"
@@ -4779,8 +4779,8 @@ msgid "Character set:"
 msgstr "字元設定:"
 
 #: ../src/fe-gtk/servlistgui.c:1976
-msgid "Network List - "
-msgstr "網路清單 - "
+msgid "Network List - %s"
+msgstr "網路清單 - %s"
 
 #: ../src/fe-gtk/servlistgui.c:1987
 msgid "User Information"
@@ -6144,8 +6144,8 @@ msgid ""
 msgstr "*警告*\n自動接收 DCC 到您的主目錄中是危險之舉，\n且有被盜用的可能性。例如:\n某人可能會給您發送一份 .bash_profile 檔案"
 
 #: ../src/fe-gtk/setup.c:2282
-msgid "Preferences - "
-msgstr "偏好設定 - "
+msgid "Preferences - %s"
+msgstr "偏好設定 - %s"
 
 #: ../src/fe-gtk/sexy-spell-entry.c:554
 msgid "<i>(no suggestions)</i>"
@@ -6209,8 +6209,8 @@ msgid "OK"
 msgstr ""
 
 #: ../src/fe-gtk/urlgrab.c:198
-msgid "URL Grabber - "
-msgstr "URL 擷取程式 - "
+msgid "URL Grabber - %s"
+msgstr "URL 擷取程式 - %s"
 
 #: ../src/fe-gtk/urlgrab.c:212
 msgid "Clear list"
