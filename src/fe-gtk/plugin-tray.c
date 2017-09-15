@@ -174,10 +174,10 @@ tray_stop_flash (void)
 		nets = tray_count_networks ();
 		chans = tray_count_channels ();
 		if (nets)
-			tray_set_tipf (_("Connected to %u networks and %u channels - "DISPLAY_NAME),
-								nets, chans);
+			tray_set_tipf (_("Connected to %u networks and %u channels - %s"),
+								nets, chans, _(DISPLAY_NAME));
 		else
-			tray_set_tipf ("%s - "DISPLAY_NAME, _("Not connected."));
+			tray_set_tipf ("%s - %s", _("Not connected."), _(DISPLAY_NAME));
 	}
 
 	if (custom_icon1)
@@ -628,11 +628,12 @@ tray_hilight_cb (char *word[], void *userdata)
 		/* FIXME: hides any previous private messages */
 		tray_hilight_count++;
 		if (tray_hilight_count == 1)
-			tray_set_tipf (_("Highlighted message from: %s (%s) - "DISPLAY_NAME),
-								word[1], hexchat_get_info (ph, "channel"));
+			tray_set_tipf (_("Highlighted message from: %s (%s) - %s"),
+								word[1], hexchat_get_info (ph, "channel"), _(DISPLAY_NAME));
 		else
-			tray_set_tipf (_("%u highlighted messages, latest from: %s (%s) - "DISPLAY_NAME),
-								tray_hilight_count, word[1], hexchat_get_info (ph, "channel"));
+			tray_set_tipf (_("%u highlighted messages, latest from: %s (%s) - %s"),
+								tray_hilight_count, word[1], hexchat_get_info (ph, "channel"),
+								_(DISPLAY_NAME));
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -650,10 +651,10 @@ tray_message_cb (char *word[], void *userdata)
 
 		tray_pub_count++;
 		if (tray_pub_count == 1)
-			tray_set_tipf (_("Channel message from: %s (%s) - "DISPLAY_NAME),
-								word[1], hexchat_get_info (ph, "channel"));
+			tray_set_tipf (_("Channel message from: %s (%s) - %s"),
+								word[1], hexchat_get_info (ph, "channel"), _(DISPLAY_NAME));
 		else
-			tray_set_tipf (_("%u channel messages. - "DISPLAY_NAME), tray_pub_count);
+			tray_set_tipf (_("%u channel messages. - %s"), tray_pub_count, _(DISPLAY_NAME));
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -677,11 +678,11 @@ tray_priv (char *from, char *text)
 
 		tray_priv_count++;
 		if (tray_priv_count == 1)
-			tray_set_tipf (_("Private message from: %s (%s) - "DISPLAY_NAME),
-								from, network);
+			tray_set_tipf (_("Private message from: %s (%s) - %s"), from,
+								network, _(DISPLAY_NAME));
 		else
-			tray_set_tipf (_("%u private messages, latest from: %s (%s) - "DISPLAY_NAME),
-								tray_priv_count, from, network);
+			tray_set_tipf (_("%u private messages, latest from: %s (%s) - %s"),
+								tray_priv_count, from, network, _(DISPLAY_NAME));
 	}
 }
 
@@ -720,11 +721,11 @@ tray_dcc_cb (char *word[], void *userdata)
 
 		tray_file_count++;
 		if (tray_file_count == 1)
-			tray_set_tipf (_("File offer from: %s (%s) - "DISPLAY_NAME),
-								word[1], network);
+			tray_set_tipf (_("File offer from: %s (%s) - %s"), word[1], network,
+								_(DISPLAY_NAME));
 		else
-			tray_set_tipf (_("%u file offers, latest from: %s (%s) - "DISPLAY_NAME),
-								tray_file_count, word[1], network);
+			tray_set_tipf (_("%u file offers, latest from: %s (%s) - %s"),
+								tray_file_count, word[1], network, _(DISPLAY_NAME));
 	}
 
 	return HEXCHAT_EAT_NONE;

@@ -339,6 +339,7 @@ ignore_gui_open ()
 	GSList *temp = ignore_list;
 	char *mask;
 	gboolean private, chan, notice, ctcp, dcc, invite, unignore;
+	char buf[128];
 
 	if (ignorewin)
 	{
@@ -346,9 +347,10 @@ ignore_gui_open ()
 		return;
 	}
 
+	g_snprintf(buf, sizeof(buf), _("Ignore list - %s"), _(DISPLAY_NAME));
 	ignorewin =
-			  mg_create_generic_tab ("IgnoreList", _("Ignore list - "DISPLAY_NAME),
-											FALSE, TRUE, close_ignore_gui_callback,
+			  mg_create_generic_tab ("IgnoreList", buf, FALSE, TRUE,
+											close_ignore_gui_callback,
 											NULL, 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (ignorewin);
 

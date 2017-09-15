@@ -801,6 +801,7 @@ key_dialog_show ()
 	GtkWidget *vbox, *box;
 	GtkWidget *view, *xtext;
 	GtkListStore *store;
+	char buf[128];
 
 	if (key_dialog)
 	{
@@ -808,8 +809,9 @@ key_dialog_show ()
 		return;
 	}
 
-	key_dialog = mg_create_generic_tab ("editkeys", _("Keyboard Shortcuts - "DISPLAY_NAME),
-									TRUE, FALSE, key_dialog_close, NULL, 600, 360, &vbox, 0);
+	g_snprintf(buf, sizeof(buf), _("Keyboard Shortcuts - %s"), _(DISPLAY_NAME));
+	key_dialog = mg_create_generic_tab ("editkeys", buf, TRUE, FALSE, key_dialog_close,
+									NULL, 600, 360, &vbox, 0);
 
 	view = key_dialog_treeview_new (vbox);
 	xtext = gtk_xtext_new (colors, 0);

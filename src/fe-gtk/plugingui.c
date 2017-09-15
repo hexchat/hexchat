@@ -230,6 +230,7 @@ plugingui_open (void)
 {
 	GtkWidget *view;
 	GtkWidget *vbox, *hbox;
+	char buf[128];
 
 	if (plugin_window)
 	{
@@ -237,8 +238,8 @@ plugingui_open (void)
 		return;
 	}
 
-	plugin_window = mg_create_generic_tab ("Addons", _("Plugins and Scripts - "DISPLAY_NAME),
-														 FALSE, TRUE, plugingui_close, NULL,
+	g_snprintf(buf, sizeof(buf), _("Plugins and Scripts - %s"), _(DISPLAY_NAME));
+	plugin_window = mg_create_generic_tab ("Addons", buf, FALSE, TRUE, plugingui_close, NULL,
 														 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (plugin_window);
 

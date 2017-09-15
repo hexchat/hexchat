@@ -1134,8 +1134,9 @@ menu_settings (GtkWidget * wid, gpointer none)
 static void
 menu_usermenu (void)
 {
-	editlist_gui_open (NULL, NULL, usermenu_list, _("User menu - "DISPLAY_NAME),
-							 "usermenu", "usermenu.conf", 0);
+	char buf[128];
+	g_snprintf(buf, sizeof(buf), _("User menu - %s"), _(DISPLAY_NAME));
+	editlist_gui_open (NULL, NULL, usermenu_list, buf, "usermenu", "usermenu.conf", 0);
 }
 
 static void
@@ -1524,29 +1525,34 @@ menu_noplugin_info (void)
 static void
 menu_usercommands (void)
 {
-	editlist_gui_open (NULL, NULL, command_list, _("User Defined Commands - "DISPLAY_NAME),
-							 "commands", "commands.conf", usercommands_help);
+	char buf[128];
+	g_snprintf(buf, sizeof(buf), _("User Defined Commands - %s"), _(DISPLAY_NAME));
+	editlist_gui_open (NULL, NULL, command_list, buf, "commands", "commands.conf",
+							usercommands_help);
 }
 
 static void
 menu_ulpopup (void)
 {
-	editlist_gui_open (NULL, NULL, popup_list, _("Userlist Popup menu - "DISPLAY_NAME), "popup",
-							 "popup.conf", ulbutton_help);
+	char buf[128];
+	g_snprintf(buf, sizeof(buf), _("Userlist Popup menu -  %s"), _(DISPLAY_NAME));
+	editlist_gui_open (NULL, NULL, popup_list, buf, "popup", "popup.conf", ulbutton_help);
 }
 
 static void
 menu_rpopup (void)
 {
-	editlist_gui_open (_("Text"), _("Replace with"), replace_list, _("Replace - "DISPLAY_NAME), "replace",
-							 "replace.conf", 0);
+	char buf[128];
+	g_snprintf(buf, sizeof(buf), _("Replace - %s"), _(DISPLAY_NAME));
+	editlist_gui_open (_("Text"), _("Replace with"), replace_list, buf, "replace", "replace.conf", 0);
 }
 
 static void
 menu_urlhandlers (void)
 {
-	editlist_gui_open (NULL, NULL, urlhandler_list, _("URL Handlers - "DISPLAY_NAME), "urlhandlers",
-							 "urlhandlers.conf", url_help);
+	char buf[128];
+	g_snprintf(buf, sizeof(buf), _("URL Handlers - %s"), _(DISPLAY_NAME));
+	editlist_gui_open (NULL, NULL, urlhandler_list, buf, "urlhandlers", "urlhandlers.conf", url_help);
 }
 
 static void
@@ -1564,22 +1570,26 @@ menu_keypopup (void)
 static void
 menu_ulbuttons (void)
 {
-	editlist_gui_open (NULL, NULL, button_list, _("Userlist buttons - "DISPLAY_NAME), "buttons",
-							 "buttons.conf", ulbutton_help);
+	char buf[128];
+	g_snprintf(buf, sizeof(buf), _("Userlist buttons - %s"), _(DISPLAY_NAME));
+	editlist_gui_open (NULL, NULL, button_list, buf, "buttons", "buttons.conf", ulbutton_help);
 }
 
 static void
 menu_dlgbuttons (void)
 {
-	editlist_gui_open (NULL, NULL, dlgbutton_list, _("Dialog buttons - "DISPLAY_NAME), "dlgbuttons",
-							 "dlgbuttons.conf", dlgbutton_help);
+	char buf[128];
+	g_snprintf(buf, sizeof(buf), _("Dialog buttons - %s"), _(DISPLAY_NAME));
+	editlist_gui_open (NULL, NULL, dlgbutton_list, buf, "dlgbuttons", "dlgbuttons.conf",
+							 dlgbutton_help);
 }
 
 static void
 menu_ctcpguiopen (void)
 {
-	editlist_gui_open (NULL, NULL, ctcp_list, _("CTCP Replies - "DISPLAY_NAME), "ctcpreply",
-							 "ctcpreply.conf", ctcp_help);
+	char buf[128];
+	g_snprintf(buf, sizeof(buf), _("CTCP Replies - %s"), _(DISPLAY_NAME));
+	editlist_gui_open (NULL, NULL, ctcp_list, buf, "ctcpreply", "ctcpreply.conf", ctcp_help);
 }
 
 static void
@@ -1727,7 +1737,7 @@ menu_about (GtkWidget *wid, gpointer sess)
 #endif
 				get_sys_str (0));
 
-	gtk_about_dialog_set_program_name (dialog, DISPLAY_NAME);
+	gtk_about_dialog_set_program_name (dialog, _(DISPLAY_NAME));
 	gtk_about_dialog_set_version (dialog, PACKAGE_VERSION);
 	gtk_about_dialog_set_license (dialog, license); /* gtk3 can use GTK_LICENSE_GPL_2_0 */
 	gtk_about_dialog_set_website (dialog, "http://hexchat.github.io");
