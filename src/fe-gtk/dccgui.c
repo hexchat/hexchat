@@ -799,7 +799,7 @@ fe_dcc_open_recv_win (int passive)
 			mg_bring_tofront (dccfwin.window);
 		return TRUE;
 	}
-	dccfwin.window = mg_create_generic_tab ("Transfers", _(DISPLAY_NAME": Uploads and Downloads"),
+	dccfwin.window = mg_create_generic_tab ("Transfers", _("Uploads and Downloads - "DISPLAY_NAME),
 														 FALSE, TRUE, close_dcc_file_window, NULL,
 														 win_width, win_height, &vbox, 0);
 	gtkutil_destroy_on_esc (dccfwin.window);
@@ -1046,7 +1046,7 @@ fe_dcc_open_chat_win (int passive)
 	}
 
 	dcccwin.window =
-			  mg_create_generic_tab ("DCCChat", _(DISPLAY_NAME": DCC Chat List"),
+			  mg_create_generic_tab ("DCCChat", _("DCC Chat List - "DISPLAY_NAME),
 						FALSE, TRUE, dcc_chat_close_cb, NULL, 550, 180, &vbox, 0);
 	gtkutil_destroy_on_esc (dcccwin.window);
 	gtk_container_set_border_width (GTK_CONTAINER (dcccwin.window), 3);

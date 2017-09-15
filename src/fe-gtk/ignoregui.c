@@ -347,7 +347,7 @@ ignore_gui_open ()
 	}
 
 	ignorewin =
-			  mg_create_generic_tab ("IgnoreList", _(DISPLAY_NAME": Ignore list"),
+			  mg_create_generic_tab ("IgnoreList", _("Ignore list - "DISPLAY_NAME),
 											FALSE, TRUE, close_ignore_gui_callback,
 											NULL, 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (ignorewin);

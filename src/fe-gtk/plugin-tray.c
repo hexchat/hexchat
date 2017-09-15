@@ -174,10 +174,10 @@ tray_stop_flash (void)
 		nets = tray_count_networks ();
 		chans = tray_count_channels ();
 		if (nets)
-			tray_set_tipf (_(DISPLAY_NAME": Connected to %u networks and %u channels"),
+			tray_set_tipf (_("Connected to %u networks and %u channels - "DISPLAY_NAME),
 								nets, chans);
 		else
-			tray_set_tipf (DISPLAY_NAME": %s", _("Not connected."));
+			tray_set_tipf ("%s - "DISPLAY_NAME, _("Not connected."));
 	}
 
 	if (custom_icon1)
@@ -628,10 +628,10 @@ tray_hilight_cb (char *word[], void *userdata)
 		/* FIXME: hides any previous private messages */
 		tray_hilight_count++;
 		if (tray_hilight_count == 1)
-			tray_set_tipf (_(DISPLAY_NAME": Highlighted message from: %s (%s)"),
+			tray_set_tipf (_("Highlighted message from: %s (%s) - "DISPLAY_NAME),
 								word[1], hexchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_(DISPLAY_NAME": %u highlighted messages, latest from: %s (%s)"),
+			tray_set_tipf (_("%u highlighted messages, latest from: %s (%s) - "DISPLAY_NAME),
 								tray_hilight_count, word[1], hexchat_get_info (ph, "channel"));
 	}
 
@@ -650,10 +650,10 @@ tray_message_cb (char *word[], void *userdata)
 
 		tray_pub_count++;
 		if (tray_pub_count == 1)
-			tray_set_tipf (_(DISPLAY_NAME": Channel message from: %s (%s)"),
+			tray_set_tipf (_("Channel message from: %s (%s) - "DISPLAY_NAME),
 								word[1], hexchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_(DISPLAY_NAME": %u channel messages."), tray_pub_count);
+			tray_set_tipf (_("%u channel messages. - "DISPLAY_NAME), tray_pub_count);
 	}
 
 	return HEXCHAT_EAT_NONE;
@@ -677,10 +677,10 @@ tray_priv (char *from, char *text)
 
 		tray_priv_count++;
 		if (tray_priv_count == 1)
-			tray_set_tipf (_(DISPLAY_NAME": Private message from: %s (%s)"),
+			tray_set_tipf (_("Private message from: %s (%s) - "DISPLAY_NAME),
 								from, network);
 		else
-			tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
+			tray_set_tipf (_("%u private messages, latest from: %s (%s) - "DISPLAY_NAME),
 								tray_priv_count, from, network);
 	}
 }
@@ -720,10 +720,10 @@ tray_dcc_cb (char *word[], void *userdata)
 
 		tray_file_count++;
 		if (tray_file_count == 1)
-			tray_set_tipf (_(DISPLAY_NAME": File offer from: %s (%s)"),
+			tray_set_tipf (_("File offer from: %s (%s) - "DISPLAY_NAME),
 								word[1], network);
 		else
-			tray_set_tipf (_(DISPLAY_NAME": %u file offers, latest from: %s (%s)"),
+			tray_set_tipf (_("%u file offers, latest from: %s (%s) - "DISPLAY_NAME),
 								tray_file_count, word[1], network);
 	}
 
