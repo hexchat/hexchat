@@ -195,7 +195,7 @@ url_opengui ()
 	}
 
 	urlgrabberwindow =
-		mg_create_generic_tab ("UrlGrabber", _(DISPLAY_NAME": URL Grabber"), FALSE,
+		mg_create_generic_tab ("UrlGrabber", _("URL Grabber - "DISPLAY_NAME), FALSE,
 							 TRUE, url_closegui, NULL, 400, 256, &vbox, 0);
 	gtkutil_destroy_on_esc (urlgrabberwindow);
 	view = url_treeview_new (vbox);

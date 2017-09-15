@@ -406,7 +406,7 @@ notify_opengui (void)
 	}
 
 	notify_window =
-		mg_create_generic_tab ("Notify", _(DISPLAY_NAME": Friends List"), FALSE, TRUE,
+		mg_create_generic_tab ("Notify", _("Friends List - "DISPLAY_NAME), FALSE, TRUE,
 		                       notify_closegui, NULL, 400, 250, &vbox, 0);
 	gtkutil_destroy_on_esc (notify_window);
 

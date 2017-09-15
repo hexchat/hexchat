@@ -808,7 +808,7 @@ key_dialog_show ()
 		return;
 	}
 
-	key_dialog = mg_create_generic_tab ("editkeys", _(DISPLAY_NAME": Keyboard Shortcuts"),
+	key_dialog = mg_create_generic_tab ("editkeys", _("Keyboard Shortcuts - "DISPLAY_NAME),
 									TRUE, FALSE, key_dialog_close, NULL, 600, 360, &vbox, 0);
 
 	view = key_dialog_treeview_new (vbox);

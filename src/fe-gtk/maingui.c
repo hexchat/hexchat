@@ -382,11 +382,11 @@ fe_set_title (session *sess)
 	switch (type)
 	{
 	case SESS_DIALOG:
-		g_snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s %s @ %s",
+		g_snprintf (tbuf, sizeof (tbuf), "%s %s @ %s - "DISPLAY_NAME,
 					 _("Dialog with"), sess->channel, server_get_network (sess->server, TRUE));
 		break;
 	case SESS_SERVER:
-		g_snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s",
+		g_snprintf (tbuf, sizeof (tbuf), "%s @ %s - "DISPLAY_NAME,
 					 sess->server->nick, server_get_network (sess->server, TRUE));
 		break;
 	case SESS_CHANNEL:
@@ -394,14 +394,14 @@ fe_set_title (session *sess)
 		if (prefs.hex_gui_win_modes)
 		{
 			g_snprintf (tbuf, sizeof (tbuf),
-						 DISPLAY_NAME": %s @ %s / %s (%s)",
+						 "%s @ %s / %s (%s) - "DISPLAY_NAME,
 						 sess->server->nick, server_get_network (sess->server, TRUE),
 						 sess->channel, sess->current_modes ? sess->current_modes : "");
 		}
 		else
 		{
 			g_snprintf (tbuf, sizeof (tbuf),
-						 DISPLAY_NAME": %s @ %s / %s",
+						 "%s @ %s / %s - "DISPLAY_NAME,
 						 sess->server->nick, server_get_network (sess->server, TRUE),
 						 sess->channel);
 		}
@@ -412,7 +412,7 @@ fe_set_title (session *sess)
 		break;
 	case SESS_NOTICES:
 	case SESS_SNOTICES:
-		g_snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s (notices)",
+		g_snprintf (tbuf, sizeof (tbuf), "%s @ %s (notices) - "DISPLAY_NAME,
 					 sess->server->nick, server_get_network (sess->server, TRUE));
 		break;
 	default:

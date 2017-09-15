@@ -237,7 +237,7 @@ plugingui_open (void)
 		return;
 	}
 
-	plugin_window = mg_create_generic_tab ("Addons", _(DISPLAY_NAME": Plugins and Scripts"),
+	plugin_window = mg_create_generic_tab ("Addons", _("Plugins and Scripts - "DISPLAY_NAME),
 														 FALSE, TRUE, plugingui_close, NULL,
 														 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (plugin_window);
