@@ -360,7 +360,7 @@ static const setting filexfer_settings[] =
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 
-	{ST_HEADER, N_("Maximum File Transfer Speeds (Bytes per Second)"), 0, 0, 0},
+	{ST_HEADER, N_("Maximum File Transfer Speeds (Byte per Second)"), 0, 0, 0},
 	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(hex_dcc_max_send_cps), 
 					N_("Maximum speed for one transfer"), 0, 10000000},
 	{ST_NUMBER,	N_("One download:"), P_OFFINTNL(hex_dcc_max_get_cps),
@@ -611,8 +611,8 @@ static const char *const proxytypes[] =
 {
 	N_("(Disabled)"),
 	N_("Wingate"),
-	N_("Socks4"),
-	N_("Socks5"),
+	N_("SOCKS4"),
+	N_("SOCKS5"),
 	N_("HTTP"),
 #ifdef USE_LIBPROXY
 	N_("Auto"),
@@ -928,7 +928,7 @@ setup_menu_cb (GtkWidget *cbox, const setting *set)
 
 	if (set->list == proxytypes)
 	{
-		/* only HTTP and Socks5 can use a username/pass */
+		/* only HTTP and SOCKS5 can use a username/pass */
 		gtk_widget_set_sensitive (proxy_user, (n == 3 || n == 4 || n == 5));
 		gtk_widget_set_sensitive (proxy_pass, (n == 3 || n == 4 || n == 5));
 	}
