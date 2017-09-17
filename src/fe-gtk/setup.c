@@ -650,7 +650,7 @@ static const setting network_settings[] =
 	{ST_MENU,	N_("Use proxy for:"), P_OFFINTNL(hex_net_proxy_use), 0, proxyuse, 0},
 
 	{ST_HEADER,	N_("Proxy Authentication"), 0, 0, 0, 0},
-	{ST_TOGGLE,	N_("Use authentication (HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
+	{ST_TOGGLE,	N_("Use authentication (HTTP or SOCKS5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(hex_net_proxy_user), 0, 0, sizeof prefs.hex_net_proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(hex_net_proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.hex_net_proxy_pass},
 
