@@ -1018,53 +1018,44 @@ make_ping_time (void)
 	return (timev.tv_sec - 50000) * 1000 + timev.tv_usec/1000;
 }
 
-
-/************************************************************************
- *    This technique was borrowed in part from the source code to 
- *    ircd-hybrid-5.3 to implement case-insensitive string matches which
- *    are fully compliant with Section 2.2 of RFC 1459, the copyright
- *    of that code being (C) 1990 Jarkko Oikarinen and under the GPL.
- *    
- *    A special thanks goes to Mr. Okarinen for being the one person who
- *    seems to have ever noticed this section in the original RFC and
- *    written code for it.  Shame on all the rest of you (myself included).
- *    
- *        --+ Dagmar d'Surreal
- */
-
 int
 rfc_casecmp (const char *s1, const char *s2)
 {
-	register unsigned char *str1 = (unsigned char *) s1;
-	register unsigned char *str2 = (unsigned char *) s2;
-	register int res;
+	int c1, c2;
 
-	while ((res = rfc_tolower (*str1) - rfc_tolower (*str2)) == 0)
+	while (*s1 && *s2)
 	{
-		if (*str1 == '\0')
-			return 0;
-		str1++;
-		str2++;
+		c1 = (int)rfc_tolower (*s1);
+		c2 = (int)rfc_tolower (*s2);
+		if (c1 != c2)
+			return (c1 - c2);
+		s1++;
+		s2++;
 	}
-	return (res);
+	return (((int)*s1) - ((int)*s2));
 }
 
 int
-rfc_ncasecmp (char *str1, char *str2, int n)
+rfc_ncasecmp (char *s1, char *s2, int n)
 {
-	register unsigned char *s1 = (unsigned char *) str1;
-	register unsigned char *s2 = (unsigned char *) str2;
-	register int res;
+	int c1, c2;
 
-	while ((res = rfc_tolower (*s1) - rfc_tolower (*s2)) == 0)
+	while (*s1 && *s2)
 	{
+		if (n == 0)
+			return 0;
+
+		c1 = (int)rfc_tolower (*s1);
+		c2 = (int)rfc_tolower (*s2);
+		if (c1 != c2)
+			return (c1 - c2);
+		n--;
 		s1++;
 		s2++;
-		n--;
-		if (n == 0 || (*s1 == '\0' && *s2 == '\0'))
-			return 0;
 	}
-	return (res);
+	c1 = (int)rfc_tolower (*s1);
+	c2 = (int)rfc_tolower (*s2);
+	return (c1 - c2);
 }
 
 const unsigned char rfc_tolowertab[] =
