@@ -237,7 +237,7 @@ alert_match_word (char *word, char *masks)
 		{
 			endchar = *p;
 			*p = 0;
-			res = match (masks, word);
+			res = match (g_strchug (masks), word);
 			*p = endchar;
 
 			if (res)
