@@ -42,6 +42,7 @@ static char name[] = "Sysinfo";
 static char desc[] = "Display info about your hardware and OS";
 static char version[] = "1.0";
 static char sysinfo_help[] = "SysInfo Usage:\n  /SYSINFO [-e|-o] [CLIENT|OS|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME], print various details about your system or print a summary without arguments\n  /SYSINFO SET <variable>\n";
+static int show_plugin_messages = 0;
 
 typedef struct
 {
@@ -236,7 +237,14 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	hexchat_hook_command (ph, "SYSINFO", HEXCHAT_PRI_NORM, sysinfo_cb, sysinfo_help, NULL);
 
 	hexchat_command (ph, "MENU ADD \"Window/Send System Info\" \"SYSINFO\"");
-	hexchat_printf (ph, _("%s plugin loaded\n"), name);
+
+	hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+	if (show_plugin_messages)
+	{
+		hexchat_printf (ph, _("%s plugin loaded\n"), name);
+	}
+
 	return 1;
 }
 
@@ -244,6 +252,11 @@ int
 hexchat_plugin_deinit (void)
 {
 	hexchat_command (ph, "MENU DEL \"Window/Display System Info\"");
-	hexchat_printf (ph, _("%s plugin unloaded\n"), name);
+
+	if (show_plugin_messages)
+	{
+		hexchat_printf (ph, _("%s plugin unloaded\n"), name);
+	}
+
 	return 1;
 }

@@ -38,6 +38,7 @@ static hexchat_plugin *ph;									/* plugin handle */
 static char name[] = "Checksum";
 static char desc[] = "Calculate checksum for DCC file transfers";
 static char version[] = "3.1";
+static int show_plugin_messages = 0;
 
 static void
 set_limit (char *size)
@@ -253,13 +254,23 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	hexchat_hook_print (ph, "DCC RECV Complete", HEXCHAT_PRI_NORM, dccrecv_cb, NULL);
 	hexchat_hook_print (ph, "DCC Offer", HEXCHAT_PRI_NORM, dccoffer_cb, NULL);
 
-	hexchat_printf (ph, "%s plugin loaded\n", name);
+	hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+	if (show_plugin_messages)
+	{
+		hexchat_printf (ph, "%s plugin loaded\n", name);
+	}
+
 	return 1;
 }
 
 int
 hexchat_plugin_deinit (void)
 {
-	hexchat_printf (ph, "%s plugin unloaded\n", name);
+	if (show_plugin_messages)
+	{
+		hexchat_printf (ph, "%s plugin unloaded\n", name);
+	}
+
 	return 1;
 }

@@ -29,6 +29,7 @@ static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "Exec";
 static char desc[] = "Execute commands inside HexChat";
 static char version[] = "1.2";
+static int show_plugin_messages = 0;
 
 static int
 run_command (char *word[], char *word_eol[], void *userdata)
@@ -147,7 +148,13 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	*plugin_version = version;
 
 	hexchat_hook_command (ph, "EXEC", HEXCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside HexChat", 0);
-	hexchat_printf (ph, "%s plugin loaded\n", name);
+
+	hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+	if (show_plugin_messages)
+	{
+		hexchat_printf (ph, "%s plugin loaded\n", name);
+	}
 
 	return 1;       /* return 1 for success */
 }
@@ -155,6 +162,10 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 int
 hexchat_plugin_deinit (void)
 {
-	hexchat_printf (ph, "%s plugin unloaded\n", name);
+	if (show_plugin_messages)
+	{
+		hexchat_printf (ph, "%s plugin unloaded\n", name);
+	}
+
 	return 1;
 }

@@ -581,6 +581,12 @@ static const setting advanced_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const setting developer_settings[] =
+{
+	{ST_TOGGLE,	N_("Display plugin/extension load/unload messages"), P_OFFINTNL(hex_gui_show_plugin_messages), N_("Display plugin/extension load/unload messages."), 0, 0},
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
 static const setting logging_settings[] =
 {
 	{ST_HEADER,	N_("Logging"),0,0,0},
@@ -1882,6 +1888,7 @@ static const char *const cata[] =
 		N_("Sounds"),
 		N_("Logging"),
 		N_("Advanced"),
+		N_("Developer"),
 		NULL,
 	N_("Network"),
 		N_("Network setup"),
@@ -1927,10 +1934,11 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[10], book, setup_create_sound_page ());
 	setup_add_page (cata[11], book, setup_create_page (logging_settings));
 	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
+	setup_add_page (cata[13], book, setup_create_page (developer_settings));
 
-	setup_add_page (cata[15], book, setup_create_page (network_settings));
-	setup_add_page (cata[16], book, setup_create_page (filexfer_settings));
-	setup_add_page (cata[17], book, setup_create_page (identd_settings));
+	setup_add_page (cata[16], book, setup_create_page (network_settings));
+	setup_add_page (cata[17], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[18], book, setup_create_page (identd_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);

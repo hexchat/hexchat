@@ -16,6 +16,7 @@
 
 //static int DEBUG=0;
 static char *VERSION="0.0.6";
+static int show_plugin_messages = 0;
 
 #include <windows.h>
 #include <stdlib.h>
@@ -146,7 +147,13 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle, char **plugin_name, char 
 
 	themeInit();
 	loadThemes();
-	hexchat_printf(ph, "%s plugin loaded\n", *plugin_name);
+
+	hexchat_get_prefs (ph, "gui_show_plugin_messages", NULL, &show_plugin_messages);
+
+	if (show_plugin_messages)
+	{
+		hexchat_printf(ph, "%s plugin loaded\n", *plugin_name);
+	}
 
 	return 1;
 }
@@ -155,6 +162,10 @@ int
 hexchat_plugin_deinit (void)
 {
 	hexchat_command (ph, "MENU DEL \"Window/Display Current Song (MPC)\"");
-	hexchat_print (ph, "mpcInfo plugin unloaded\n");
+	if (show_plugin_messages)
+	{
+		hexchat_print (ph, "mpcInfo plugin unloaded\n");
+	}
+
 	return 1;
 }
