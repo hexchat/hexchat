@@ -814,6 +814,21 @@ text_convert_invalid (const gchar* text, gssize len, GIConv converter, const gch
 gchar *
 text_fixup_invalid_utf8 (const gchar* text, gssize len, gsize *len_out)
 {
+#if GLIB_CHECK_VERSION (2, 52, 0)
+	gchar *result = g_utf8_make_valid (text, len);
+	if (len_out) {
+		/* If g_utf8_make_valid had to make a change, then we can use strlen
+		 * because result is definitely terminated. But if the text was already
+		 * valid, then result may not be terminated.
+		 */
+		if (g_utf8_validate (text, len, NULL)) {
+			*len_out = len;
+		} else {
+			*len_out = strlen (result);
+		}
+	}
+	return result;
+#else
 	static GIConv utf8_fixup_converter = NULL;
 	if (utf8_fixup_converter == NULL)
 	{
@@ -821,6 +836,7 @@ text_fixup_invalid_utf8 (const gchar* text, gssize len, gsize *len_out)
 	}
 
 	return text_convert_invalid (text, len, utf8_fixup_converter, unicode_fallback_string, len_out);
+#endif
 }
 
 void
