@@ -816,7 +816,8 @@ text_fixup_invalid_utf8 (const gchar* text, gssize len, gsize *len_out)
 {
 #if GLIB_CHECK_VERSION (2, 52, 0)
 	gchar *result = g_utf8_make_valid (text, len);
-	if (len_out) {
+	if (len_out)
+	{
 		*len_out = strlen (result);
 	}
 	return result;

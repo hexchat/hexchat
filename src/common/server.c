@@ -258,11 +258,10 @@ static void
 server_inline (server *serv, char *line, gssize len)
 {
 	gsize len_utf8;
-	if (!strcmp (serv->encoding, "UTF-8")) {
+	if (!strcmp (serv->encoding, "UTF-8"))
 		line = text_fixup_invalid_utf8 (line, len, &len_utf8);
-	} else {
+	else
 		line = text_convert_invalid (line, len, serv->read_converter, unicode_fallback_string, &len_utf8);
-	}
 
 	fe_add_rawlog (serv, line, len_utf8, FALSE);
 
