@@ -310,8 +310,8 @@ chanlist_do_refresh (server *serv)
 	else
 	{
 		/* download all, filter minusers locally only */
-		serv->p_list_channels (serv, "", 1);
-		serv->gui->chanlist_minusers_downloaded = 1;
+		serv->p_list_channels (serv, "", 0);
+		serv->gui->chanlist_minusers_downloaded = 0;
 	}
 
 /*	gtk_spin_button_set_range ((GtkSpinButton *)serv->gui->chanlist_min_spin,
@@ -727,7 +727,7 @@ chanlist_opengui (server *serv, int do_refresh)
 
 	if (!serv->gui->chanlist_minusers)
 	{
-		if (prefs.hex_gui_chanlist_minusers < 1 || prefs.hex_gui_chanlist_minusers > 999999)
+		if (prefs.hex_gui_chanlist_minusers < 0 || prefs.hex_gui_chanlist_minusers > 999999)
 		{
 			prefs.hex_gui_chanlist_minusers = 5;
 			save_config();
@@ -832,7 +832,7 @@ chanlist_opengui (server *serv, int do_refresh)
 	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_spin_button_new_with_range (1, 999999, 1);
+	wid = gtk_spin_button_new_with_range (0, 999999, 1);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
 										serv->gui->chanlist_minusers);
 	g_signal_connect (G_OBJECT (wid), "value_changed",
