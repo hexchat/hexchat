@@ -815,7 +815,9 @@ gchar *
 text_fixup_invalid_utf8 (const gchar* text, gssize len, gsize *len_out)
 {
 #if GLIB_CHECK_VERSION (2, 52, 0)
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	gchar *result = g_utf8_make_valid (text, len);
+G_GNUC_END_IGNORE_DEPRECATIONS
 	if (len_out)
 	{
 		*len_out = strlen (result);
