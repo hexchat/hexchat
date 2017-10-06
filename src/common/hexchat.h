@@ -170,6 +170,7 @@ struct hexchatprefs
 	unsigned int hex_input_tray_hilight;
 	unsigned int hex_input_tray_priv;
 	unsigned int hex_irc_auto_rejoin;
+	unsigned int hex_irc_reconnect_rejoin;
 	unsigned int hex_irc_conf_mode;
 	unsigned int hex_irc_hidehost;
 	unsigned int hex_irc_hide_nickchange;
