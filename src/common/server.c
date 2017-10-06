@@ -681,22 +681,25 @@ static void
 auto_reconnect (server *serv, int send_quit, int err)
 {
 	session *s;
-	GSList *list;
 	int del;
 
 	if (serv->server_session == NULL)
 		return;
 
-	list = sess_list;
-	while (list)				  /* make sure auto rejoin can work */
+	if (prefs.hex_irc_reconnect_rejoin)
 	{
-		s = list->data;
-		if (s->type == SESS_CHANNEL && s->channel[0])
+		GSList *list;
+		list = sess_list;
+		while (list)				  /* make sure auto rejoin can work */
 		{
-			strcpy (s->waitchannel, s->channel);
-			strcpy (s->willjoinchannel, s->channel);
+			s = list->data;
+			if (s->type == SESS_CHANNEL && s->channel[0])
+			{
+				strcpy (s->waitchannel, s->channel);
+				strcpy (s->willjoinchannel, s->channel);
+			}
+			list = list->next;
 		}
-		list = list->next;
 	}
 
 	if (serv->connected)
