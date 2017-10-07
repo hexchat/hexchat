@@ -932,7 +932,7 @@ void
 inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 					 const message_tags_data *tags_data)
 {
-	char *po,*ptr=to;
+	char *ptr = to;
 	session *sess = 0;
 	int server_notice = FALSE;
 
@@ -1005,18 +1005,21 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 		}
 	}
 
-	if (msg[0] == 1)
+	if (msg[0] == '\001')
 	{
+		size_t len;
+
 		msg++;
 		if (!strncmp (msg, "PING", 4))
 		{
 			inbound_ping_reply (sess, msg + 5, nick, tags_data);
 			return;
 		}
+
+		len = strlen(msg);
+		if (msg[len - 1] == '\001')
+			msg[len - 1] = '\000';
 	}
-	po = strchr (msg, '\001');
-	if (po)
-		po[0] = 0;
 
 	if (server_notice)
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVNOTICE, sess, msg, nick, NULL, NULL, 0,
