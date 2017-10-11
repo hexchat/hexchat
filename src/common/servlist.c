@@ -95,8 +95,7 @@ static const struct defaultserver def[] =
 	{"BetaChat", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.betachat.net"},
 	{"BuddyIM", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.buddy.im/6667"},
-	{0,			"irc.buddy.im/+6697"},
+	{0,			"irc.buddy.im"},
 	{"Canternet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.canternet.org"},
 
@@ -140,8 +139,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.inet.tele.dk"},
 
 	{"ElectroCode", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.electrocode.net/6667"},
-	{0,			"irc.electrocode.net/+6697"},
+	{0,			"irc.electrocode.net"},
 
 	{"EnterTheGame",	0},
 	{0,			"irc.enterthegame.com"},
