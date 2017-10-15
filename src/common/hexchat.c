@@ -577,7 +577,7 @@ exec_notify_kill (session * sess)
 		waitpid (re->childpid, NULL, WNOHANG);
 		fe_input_remove (re->iotag);
 		close (re->myfd);
-		g_free(re->linebuf);
+		g_free (re->linebuf);
 		g_free (re);
 	}
 #endif
@@ -1102,7 +1102,7 @@ main (int argc, char *argv[])
 #endif
 
 #ifdef USE_LIBPROXY
-	libproxy_factory = px_proxy_factory_new();
+	libproxy_factory = px_proxy_factory_new ();
 #endif
 
 #ifdef WIN32
@@ -1148,7 +1148,7 @@ main (int argc, char *argv[])
 #endif
 
 #ifdef USE_LIBPROXY
-	px_proxy_factory_free(libproxy_factory);
+	px_proxy_factory_free (libproxy_factory);
 #endif
 
 #ifdef WIN32
