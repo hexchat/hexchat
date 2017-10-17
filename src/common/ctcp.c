@@ -148,6 +148,9 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		serv->p_nctcp (serv, nick, outbuf);
 	}
 
+	if (word[4][1] == '\0')
+		return;
+
 	if (!ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 	{
 		if (!g_ascii_strncasecmp (msg, "SOUND", 5))
