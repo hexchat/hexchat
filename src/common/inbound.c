@@ -1558,6 +1558,7 @@ inbound_login_end (session *sess, char *text, const message_tags_data *tags_data
 	GSList *cmdlist;
 	commandentry *cmd;
 	server *serv = sess->server;
+	ircnet *net = serv->network;
 
 	if (!serv->end_of_motd)
 	{
@@ -1568,29 +1569,32 @@ inbound_login_end (session *sess, char *text, const message_tags_data *tags_data
 		}
 		set_default_modes (serv);
 
-		if (serv->network)
+		if (net)
 		{
 			/* there may be more than 1, separated by \n */
 
-			cmdlist = ((ircnet *)serv->network)->commandlist;
+			cmdlist = net->commandlist;
 			while (cmdlist)
 			{
 				cmd = cmdlist->data;
 				inbound_exec_eom_cmd (cmd->command, sess);
 				cmdlist = cmdlist->next;
 			}
+		}
+		/* The previously ran commands can alter the state of the server */
+		if (serv->network != net)
+			return;
 
-			/* send nickserv password */
-			if (((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
-			{
-				serv->p_ns_identify (serv, ((ircnet *)serv->network)->pass);
-			}
+		/* send nickserv password */
+		if (net && net->pass && inbound_nickserv_login (serv))
+		{
+			serv->p_ns_identify (serv, net->pass);
 		}
 
 		/* wait for join if command or nickserv set */
-		if (serv->network && prefs.hex_irc_join_delay
-			&& ((((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
-				|| ((ircnet *)serv->network)->commandlist))
+		if (net && prefs.hex_irc_join_delay
+			&& ((net->pass && inbound_nickserv_login (serv))
+				|| net->commandlist))
 		{
 			serv->joindelay_tag = fe_timeout_add_seconds (prefs.hex_irc_join_delay, check_autojoin_channels, serv);
 		}
