@@ -70,7 +70,7 @@ void key_action_tab_clean (void);
  */
 
 /* Remember that the *number* of actions is this *plus* 1 --AGL */
-#define KEY_MAX_ACTIONS 15
+#define KEY_MAX_ACTIONS 16
 
 struct key_binding
 {
@@ -132,6 +132,9 @@ static int key_action_move_tab_family_right (GtkWidget * wid, GdkEventKey * evt,
 static int key_action_put_history (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
+static int key_action_close_tab (GtkWidget * wid, GdkEventKey * evt,
+												  char *d1, char *d2,
+												  struct session *sess);
 static int key_action_undo_tab_close (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
@@ -170,6 +173,8 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	 N_("This command moves the current tab family to the right")},
 	{key_action_put_history, "Push input line into history",
 	 N_("Push input line into history but doesn't send to server")},
+	{key_action_close_tab, "Close tab",
+	 N_("Close tab")},
 	{key_action_undo_tab_close, "Undo tab close",
 	 N_("Undo tab close")},
 };
@@ -214,6 +219,7 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	"ACCEL=<Primary><Shift>Page_Up\nMove tab family left\nD1!\nD2!\n\n"\
 	"ACCEL=<Primary><Shift>Page_Down\nMove tab family right\nD1!\nD2!\n\n"\
 	"ACCEL=F9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"\
+	"ACCEL=<Primary>w\nClose tab\nD1:!\nD2!\n\n"\
 	"ACCEL=<Primary><Shift>t\nUndo tab close\nD1:!\nD2!\n\n"\
 
 void
@@ -1775,6 +1781,14 @@ key_action_put_history (GtkWidget * wid, GdkEventKey * ent, char *d1,
 	history_add (&sess->history, SPELL_ENTRY_GET_TEXT (wid));
 	SPELL_ENTRY_SET_TEXT (wid, "");
 	return 2;						  /* -''- */
+}
+
+static int
+key_action_close_tab (GtkWidget * wid, GdkEventKey * ent, char *d1,
+									char *d2, struct session *sess)
+{
+	mg_close_sess (sess);
+	return 2;
 }
 
 static int
