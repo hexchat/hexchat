@@ -70,7 +70,7 @@ void key_action_tab_clean (void);
  */
 
 /* Remember that the *number* of actions is this *plus* 1 --AGL */
-#define KEY_MAX_ACTIONS 16
+#define KEY_MAX_ACTIONS 17
 
 struct key_binding
 {
@@ -138,6 +138,9 @@ static int key_action_close_tab (GtkWidget * wid, GdkEventKey * evt,
 static int key_action_undo_tab_close (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
+static int key_action_clear_text (GtkWidget * wid, GdkEventKey * evt,
+												  char *d1, char *d2,
+												  struct session *sess);
 
 static GSList *keybind_list = NULL;
 
@@ -177,6 +180,8 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	 N_("Close tab")},
 	{key_action_undo_tab_close, "Undo tab close",
 	 N_("Undo tab close")},
+	{key_action_clear_text, "Clear text",
+	 N_("Clear text")},
 };
 
 #define default_kb_cfg \
@@ -221,6 +226,7 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	"ACCEL=F9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"\
 	"ACCEL=<Primary>w\nClose tab\nD1:!\nD2!\n\n"\
 	"ACCEL=<Primary><Shift>t\nUndo tab close\nD1:!\nD2!\n\n"\
+	"ACCEL=<Primary>l\nClear text\nD1:!\nD2!\n\n"\
 
 void
 key_init ()
@@ -1799,6 +1805,13 @@ key_action_undo_tab_close (GtkWidget * wid, GdkEventKey * ent, char *d1,
 	return 2;
 }
 
+static int
+key_action_clear_text (GtkWidget * wid, GdkEventKey * ent, char *d1,
+									char *d2, struct session *sess)
+{
+	fe_text_clear (sess, 0);
+	return 2;
+}
 
 /* -------- */
 
