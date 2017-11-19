@@ -19,14 +19,17 @@ if system == 'linux' or system == 'darwin'
   ]
 
   if system == 'linux'
-    libpci = dependency('libpci')
-    sysinfo_deps += libpci
+    libpci = dependency('libpci', required: false)
+    if libpci.found()
+      sysinfo_deps += libpci
+      sysinfo_cargs += '-DHAVE_LIBPCI'
+      sysinfo_sources += 'unix/pci.c'
+    endif
     sysinfo_includes += 'unix'
     sysinfo_sources += [
       'unix/backend.c',
       'unix/match.c',
       'unix/parse.c',
-      'unix/pci.c',
     ]
 
     picidsdir = libpci.get_pkgconfig_variable('idsdir')

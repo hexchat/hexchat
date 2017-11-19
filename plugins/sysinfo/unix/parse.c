@@ -132,21 +132,24 @@ gint64 xs_parse_uptime(void)
 
 	if(fgets(buffer, bsize, fp) != NULL)
 		uptime = g_ascii_strtoll(buffer, NULL, 0);
-	
+
 	fclose(fp);
-	
+
 	return uptime;
 }
 
 int xs_parse_sound(char *snd_card)
 {
+#ifndef HAVE_LIBPCI
+	return 1;
+#else
 	char buffer[bsize], cards[bsize] = "\0", vendor[7] = "\0", device[7] = "\0", *pos;
 	u16 class = PCI_CLASS_MULTIMEDIA_AUDIO;
 
 	FILE *fp = NULL;
 	if((fp = fopen("/proc/asound/cards", "r"))== NULL)
 	{
-		if (pci_find_by_class(&class, vendor, device) == 0) 
+		if (pci_find_by_class(&class, vendor, device) == 0)
 		{
 			pci_find_fullname(snd_card, vendor, device);
 			return 0;
@@ -154,8 +157,8 @@ int xs_parse_sound(char *snd_card)
 		else
 			return 1;
 	}
-	
-	
+
+
 	while(fgets(buffer, bsize, fp) != NULL)
 	{
 		if(isdigit(buffer[0]) || isdigit(buffer[1]))
@@ -175,13 +178,17 @@ int xs_parse_sound(char *snd_card)
 	}
 
 	strcpy(snd_card, cards);
-	
+
 	fclose(fp);
 	return 0;
+#endif
 }
 
 int xs_parse_video(char *vid_card)
 {
+#ifndef HAVE_LIBPCI
+	return 1;
+#else
 	char vendor[7] = "\0", device[7] = "\0";
 	u16 class = PCI_CLASS_DISPLAY_VGA;
 	if (pci_find_by_class(&class, vendor, device))
@@ -189,10 +196,14 @@ int xs_parse_video(char *vid_card)
 	else
 		pci_find_fullname(vid_card, vendor, device);
 	return 0;
+#endif
 }
 
 int xs_parse_ether(char *ethernet_card)
 {
+#ifndef HAVE_LIBPCI
+	return 1;
+#else
 	char vendor[7] = "\0", device[7] = "\0";
 	u16 class = PCI_CLASS_NETWORK_ETHERNET;
 	if (pci_find_by_class(&class, vendor, device))
@@ -200,10 +211,14 @@ int xs_parse_ether(char *ethernet_card)
 	else
 		pci_find_fullname(ethernet_card, vendor, device);
 	return 0;
+#endif
 }
 
 int xs_parse_agpbridge(char *agp_bridge)
 {
+#ifndef HAVE_LIBPCI
+	return 1;
+#else
 	char vendor[7] = "\0", device[7] = "\0";
 	u16 class = PCI_CLASS_BRIDGE_HOST;
 	if (pci_find_by_class(&class, vendor, device))
@@ -211,6 +226,7 @@ int xs_parse_agpbridge(char *agp_bridge)
 	else
 		pci_find_fullname(agp_bridge, vendor, device);
 	return 0;
+#endif
 }
 
 int xs_parse_meminfo(unsigned long long *mem_tot, unsigned long long *mem_free, int swap)
@@ -306,7 +322,7 @@ int xs_parse_distro(char *name)
 		g_snprintf(buffer, bsize, "Unknown Distro");
 	if(fp != NULL)
 		fclose(fp);
-	
+
 	pos=strchr(buffer, '\n');
 	if(pos != NULL)
 		*pos = '\0';
