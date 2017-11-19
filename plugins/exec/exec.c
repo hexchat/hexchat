@@ -28,7 +28,7 @@
 static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "Exec";
 static char desc[] = "Execute commands inside HexChat";
-static char version[] = "1.1";
+static char version[] = "1.2";
 
 static int
 run_command (char *word[], char *word_eol[], void *userdata)
@@ -40,6 +40,10 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	DWORD dwAvail = 0;
 	time_t start;
 	double timeElapsed;
+
+	char *token;
+	char *context = NULL;
+	int announce = 0;
 
 	HANDLE readPipe;
 	HANDLE writePipe;
@@ -59,9 +63,8 @@ run_command (char *word[], char *word_eol[], void *userdata)
 
 		if (!stricmp("-O", word[2]))
 		{
-			/*strcat (commandLine, word_eol[3]);*/
-			hexchat_printf (ph, "Printing Exec output to others is not supported yet.\n");
-			return HEXCHAT_EAT_HEXCHAT;
+			strcat (commandLine, word_eol[3]);
+			announce = 1;
 		}
 		else
 		{
@@ -90,7 +93,19 @@ run_command (char *word[], char *word_eol[], void *userdata)
 				{
 					/* avoid garbage */
 					buffer[dwRead] = '\0';
-					hexchat_printf (ph, "%s", buffer);
+
+					if (announce)
+					{
+						/* Say each line seperately, TODO: improve... */
+						token = strtok_s (buffer, "\n", &context);
+						while (token != NULL)
+						{
+							hexchat_commandf (ph, "SAY %s", token);
+							token = strtok_s (NULL, "\n", &context);
+						}
+					}
+					else
+						hexchat_printf (ph, "%s", buffer);
 				}
 			}
 			else
@@ -100,19 +115,24 @@ run_command (char *word[], char *word_eol[], void *userdata)
 			}
 			timeElapsed = difftime (time (0), start);
 		}
+
+		/* display a newline to separate things */
+		if (!announce)
+			hexchat_printf (ph, "\n");
+
+		if (timeElapsed >= 10)
+		{
+			hexchat_printf (ph, "Command took too much time to run, execution aborted.\n");
+		}
+
+		CloseHandle (readPipe);
+		CloseHandle (pInfo.hProcess);
+		CloseHandle (pInfo.hThread);
 	}
-
-	/* display a newline to separate things */
-	hexchat_printf (ph, "\n");
-
-	if (timeElapsed >= 10)
+	else
 	{
-		hexchat_printf (ph, "Command took too much time to run, execution aborted.\n");
+		hexchat_command (ph, "help exec");
 	}
-
-	CloseHandle (readPipe);
-	CloseHandle (pInfo.hProcess);
-	CloseHandle (pInfo.hThread);
 
 	return HEXCHAT_EAT_HEXCHAT;
 }

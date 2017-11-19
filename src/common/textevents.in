@@ -28,6 +28,12 @@ pevt_capack_help
 %C29*%O$tCapabilities acknowledged: %C29$2%O
 2
 
+Capability Deleted
+XP_TE_CAPDEL
+pevt_capdel_help
+%C29*%O$tCapabilities removed: %C29$2%O
+2
+
 Capability List
 XP_TE_CAPLIST
 pevt_caplist_help
@@ -200,6 +206,12 @@ Channel UnQuiet
 XP_TE_CHANUNQUIET
 pevt_chanunquiet_help
 %C22*%O$t%C26$1%O removes quiet on %C18$2%O
+2
+
+Channel Url
+XP_TE_CHANURL
+pevt_chanurl_help
+%C22*%O$tChannel %C22$1%O url: %C24$2
 2
 
 Channel Voice
@@ -487,8 +499,8 @@ pevt_invited_help
 Join
 XP_TE_JOIN
 pevt_join_help
-%C23*$t$1 ($3) has joined
-3
+%C23*$t$1 ($3%C23) has joined
+4
 
 Keyword
 XP_TE_KEYWORD
@@ -619,13 +631,13 @@ n0
 Part
 XP_TE_PART
 pevt_part_help
-%C24*$t$1 ($2) has left
+%C24*$t$1 ($2%C24) has left
 3
 
 Part with Reason
 XP_TE_PARTREASON
 pevt_partreason_help
-%C24*$t$1 ($2) has left ($4)
+%C24*$t$1 ($2%C24) has left ($4)
 4
 
 Ping Reply
@@ -697,8 +709,8 @@ pevt_resolvinguser_help
 SASL Authenticating
 XP_TE_SASLAUTH
 pevt_saslauth_help
-%C23*%O$tAuthenticating via SASL as %C18$1%O
-1
+%C23*%O$tAuthenticating via SASL as %C18$1%O (%C24$2%O)
+2
 
 SASL Response
 XP_TE_SASLRESPONSE

@@ -32,20 +32,28 @@
 
 void *url_tree = NULL;
 GTree *url_btree = NULL;
-static int do_an_re (const char *word, int *start, int *end, int *type);
-static GRegex *re_url (void);
-static GRegex *re_host (void);
-static GRegex *re_host6 (void);
-static GRegex *re_email (void);
-static GRegex *re_nick (void);
-static GRegex *re_channel (void);
-static GRegex *re_path (void);
-
+static gboolean regex_match (const GRegex *re, const char *word,
+							 int *start, int *end);
+static const GRegex *re_url (void);
+static const GRegex *re_url_no_scheme (void);
+static const GRegex *re_host (void);
+static const GRegex *re_host6 (void);
+static const GRegex *re_email (void);
+static const GRegex *re_nick (void);
+static const GRegex *re_channel (void);
+static const GRegex *re_path (void);
+static gboolean match_nick (const char *word, int *start, int *end);
+static gboolean match_channel (const char *word, int *start, int *end);
+static gboolean match_email (const char *word, int *start, int *end);
+static gboolean match_url (const char *word, int *start, int *end);
+static gboolean match_host (const char *word, int *start, int *end);
+static gboolean match_host6 (const char *word, int *start, int *end);
+static gboolean match_path (const char *word, int *start, int *end);
 
 static int
 url_free (char *url, void *data)
 {
-	free (url);
+	g_free (url);
 	return TRUE;
 }
 
@@ -116,13 +124,7 @@ url_add (char *urltext, int len)
 		return;
 	}
 
-	data = malloc (len + 1);
-	if (!data)
-	{
-		return;
-	}
-	memcpy (data, urltext, len);
-	data[len] = 0;
+	data = g_strndup (urltext, len);
 
 	if (data[len - 1] == '.')	/* chop trailing dot */
 	{
@@ -143,7 +145,7 @@ url_add (char *urltext, int len)
 	/* the URL is saved already, only continue if we need the URL grabber too */
 	if (!prefs.hex_url_grabber)
 	{
-		free (data);
+		g_free (data);
 		return;
 	}
 
@@ -155,7 +157,7 @@ url_add (char *urltext, int len)
 
 	if (url_find (data))
 	{
-		free (data);
+		g_free (data);
 		return;
 	}
 
@@ -172,7 +174,7 @@ url_add (char *urltext, int len)
 
 			pos = tree_remove_at_pos (url_tree, 0);
 			g_tree_remove (url_btree, pos);
-			free (pos);
+			g_free (pos);
 		}
 	}
 
@@ -189,50 +191,126 @@ static int laststart = 0;
 static int lastend = 0;
 static int lasttype = 0;
 
-static int
-strchrs (char c, char *s)
-{
-	while (*s)
-		if (c == *s++)
-			return TRUE;
-	return FALSE;
-}
+#define NICKPRE "~+!@%&"
+#define CHANPRE "#&!+"
 
-#define NICKPRE "~+!@%%&"
 int
 url_check_word (const char *word)
 {
-	laststart = lastend = lasttype = 0;
-	if (do_an_re (word, &laststart, &lastend, &lasttype))
-	{
-		switch (lasttype)
-		{
-			char *str;
+	struct {
+		gboolean (*match) (const char *word, int *start, int *end);
+		int type;
+	} m[] = {
+	   { match_url,     WORD_URL },
+	   { match_email,   WORD_EMAIL },
+	   { match_channel, WORD_CHANNEL },
+	   { match_host6,   WORD_HOST6 },
+	   { match_host,    WORD_HOST },
+	   { match_path,    WORD_PATH },
+	   { match_nick,    WORD_NICK },
+	   { NULL,          0}
+	};
+	int i;
 
-			case WORD_NICK:
-				if (strchrs (word[laststart], NICKPRE))
-					laststart++;
-				str = g_strndup (&word[laststart], lastend - laststart);
-				if (!userlist_find (current_sess, str))
-					lasttype = 0;
-				g_free (str);
-				return lasttype;
-			case WORD_EMAIL:
-				if (!isalnum (word[laststart]))
-					laststart++;
-				/* Fall through */
-			case WORD_URL:
-			case WORD_HOST:
-			case WORD_HOST6:
-			case WORD_CHANNEL:
-			case WORD_PATH:
-				return lasttype;
-			default:
-				return 0;	/* Should not occur */
+	laststart = lastend = lasttype = 0;
+
+	for (i = 0; m[i].match; i++)
+		if (m[i].match (word, &laststart, &lastend))
+		{
+			lasttype = m[i].type;
+			return lasttype;
 		}
+
+	return 0;
+}
+
+static gboolean
+match_nick (const char *word, int *start, int *end)
+{
+	const server *serv = current_sess->server;
+	const char *nick_prefixes = serv ? serv->nick_prefixes : NICKPRE;
+	char *str;
+
+	if (!regex_match (re_nick (), word, start, end))
+		return FALSE;
+
+	/* ignore matches with prefixes that the server doesn't use */
+	if (strchr (NICKPRE, word[*start])
+		&& !strchr (nick_prefixes, word[*start]))
+		return FALSE;
+	
+	/* nick prefix is not part of the matched word */
+	if (strchr (nick_prefixes, word[*start]))
+		(*start)++;
+
+	str = g_strndup (&word[*start], *end - *start);
+
+	if (!userlist_find (current_sess, str))
+	{
+		g_free (str);
+		return FALSE;
 	}
-	else
-		return 0;
+
+	g_free (str);
+
+	return TRUE;
+}
+
+static gboolean
+match_channel (const char *word, int *start, int *end)
+{
+	const server *serv = current_sess->server;
+	const char *chan_prefixes = serv ? serv->chantypes : CHANPRE;
+	const char *nick_prefixes = serv ? serv->nick_prefixes : NICKPRE;
+
+	if (!regex_match (re_channel (), word, start, end))
+		return FALSE;
+
+	/* Check for +#channel (for example whois output) */
+	if (strchr (nick_prefixes, word[*start]) != NULL
+		 && strchr (chan_prefixes, word[*start + 1]) != NULL)
+	{
+		(*start)++;
+		return TRUE;
+	}
+	/* Or just #channel */
+	else if (strchr (chan_prefixes, word[*start]) != NULL)
+		return TRUE;
+	
+	return FALSE;
+}
+
+static gboolean
+match_email (const char *word, int *start, int *end)
+{
+	return regex_match (re_email (), word, start, end);
+}
+
+static gboolean
+match_url (const char *word, int *start, int *end)
+{
+	if (regex_match (re_url (), word, start, end))
+		return TRUE;
+
+	return regex_match (re_url_no_scheme (), word, start, end);
+}
+
+static gboolean
+match_host (const char *word, int *start, int *end)
+{
+	return regex_match (re_host (), word, start, end);
+}
+
+static gboolean
+match_host6 (const char *word, int *start, int *end)
+{
+	return regex_match (re_host6 (), word, start, end);
+}
+
+static gboolean
+match_path (const char *word, int *start, int *end)
+{
+	return regex_match (re_path (), word, start, end);
 }
 
 /* List of IRC commands for which contents (and thus possible URLs)
@@ -248,7 +326,7 @@ static char *commands[] = {
 #define ARRAY_SIZE(a) (sizeof (a) / sizeof ((a)[0]))
 
 void
-url_check_line (char *buf, int len)
+url_check_line (char *buf)
 {
 	GRegex *re(void);
 	GMatchInfo *gmi;
@@ -292,8 +370,7 @@ url_check_line (char *buf, int len)
 		g_match_info_fetch_pos(gmi, 0, &start, &end);
 		while (end > start && (po[end - 1] == '\r' || po[end - 1] == '\n'))
 			end--;
-		if (g_strstr_len (po + start, end - start, "://"))
-			url_add(po + start, end - start);
+		url_add(po + start, end - start);
 		g_match_info_next(gmi, NULL);
 	}
 	g_match_info_free(gmi);
@@ -307,51 +384,33 @@ url_last (int *lstart, int *lend)
 	return lasttype;
 }
 
-static int
-do_an_re(const char *word, int *start, int *end, int *type)
+static gboolean
+regex_match (const GRegex *re, const char *word, int *start, int *end)
 {
-	typedef struct func_s {
-		GRegex *(*fn)(void);
-		int type;
-	} func_t;
-	func_t funcs[] =
-	{
-		{ re_url, WORD_URL },
-		{ re_email, WORD_EMAIL },
-		{ re_channel, WORD_CHANNEL },
-		{ re_host6, WORD_HOST6 },
-		{ re_host, WORD_HOST },
-		{ re_path, WORD_PATH },
-		{ re_nick, WORD_NICK }
-	};
-
 	GMatchInfo *gmi;
-	int k;
 
-	for (k = 0; k < sizeof funcs / sizeof (func_t); k++)
+	g_regex_match (re, word, 0, &gmi);
+	
+	if (!g_match_info_matches (gmi))
 	{
-		g_regex_match (funcs[k].fn(), word, 0, &gmi);
-		if (!g_match_info_matches (gmi))
-		{
-			g_match_info_free (gmi);
-			continue;
-		}
-		while (g_match_info_matches (gmi))
-		{
-			g_match_info_fetch_pos (gmi, 0, start, end);
-			g_match_info_next (gmi, NULL);
-		}
 		g_match_info_free (gmi);
-		*type = funcs[k].type;
-		return TRUE;
+		return FALSE;
 	}
-
-	return FALSE;
+	
+	while (g_match_info_matches (gmi))
+	{
+		g_match_info_fetch_pos (gmi, 0, start, end);
+		g_match_info_next (gmi, NULL);
+	}
+	
+	g_match_info_free (gmi);
+	
+	return TRUE;
 }
 
 /*	Miscellaneous description --- */
-#define DOMAIN "[a-z0-9][-a-z0-9]*(\\.[-a-z0-9]+)*\\."
-#define TLD "[a-z][-a-z0-9]*[a-z]"
+#define DOMAIN "[_\\pL\\pN\\pS][-_\\pL\\pN\\pS]*(\\.[-_\\pL\\pN\\pS]+)*"
+#define TLD "\\.[\\pL][-\\pL\\pN]*[\\pL]"
 #define IPADDR "[0-9]{1,3}(\\.[0-9]{1,3}){3}"
 #define IPV6GROUP "([0-9a-f]{0,4})"
 #define IPV6ADDR "((" IPV6GROUP "(:" IPV6GROUP "){7})"	\
@@ -359,54 +418,43 @@ do_an_re(const char *word, int *start, int *end, int *type)
 #define HOST "(" DOMAIN TLD "|" IPADDR "|" IPV6ADDR ")"
 /* In urls the IPv6 must be enclosed in square brackets */
 #define HOST_URL "(" DOMAIN TLD "|" IPADDR "|" "\\[" IPV6ADDR "\\]" ")"
+#define HOST_URL_OPT_TLD "(" DOMAIN "|" HOST_URL ")"
 #define PORT "(:[1-9][0-9]{0,4})"
 #define OPT_PORT "(" PORT ")?"
 
-GRegex *
-make_re (char *grist)
+static GRegex *
+make_re (const char *grist)
 {
 	GRegex *ret;
 	GError *err = NULL;
 
 	ret = g_regex_new (grist, G_REGEX_CASELESS | G_REGEX_OPTIMIZE, 0, &err);
-	g_free (grist);
+
 	return ret;
 }
 
 /*	HOST description --- */
 /* (see miscellaneous above) */
-static GRegex *
+static const GRegex *
 re_host (void)
 {
 	static GRegex *host_ret;
-	char *grist;
 
 	if (host_ret) return host_ret;
 
-	grist = g_strdup_printf (
-		"("
-			"(" HOST_URL PORT ")|(" HOST ")"
-		")"
-	);
-	host_ret = make_re (grist);
+	host_ret = make_re ("(" "(" HOST_URL PORT ")|(" HOST ")" ")");
+	
 	return host_ret;
 }
 
-static GRegex *
+static const GRegex *
 re_host6 (void)
 {
 	static GRegex *host6_ret;
-	char *grist;
 
 	if (host6_ret) return host6_ret;
 
-	grist = g_strdup_printf (
-		"("
-			"(" IPV6ADDR ")|(" "\\[" IPV6ADDR "\\]" PORT ")"
-		")"
-	);
-
-	host6_ret = make_re (grist);
+	host6_ret = make_re ("(" "(" IPV6ADDR ")|(" "\\[" IPV6ADDR "\\]" PORT ")" ")");
 
 	return host6_ret;
 }
@@ -485,10 +533,23 @@ struct
 	{ "spotify",   "",  URI_PATH },
 	{ "lastfm",    "/", URI_PATH },
 	{ "xfire",     "",  URI_PATH },
+	{ "ts3server", "",  URI_PATH },
 	{ NULL,        "",  0}
 };
 
-static GRegex *
+static const GRegex *
+re_url_no_scheme (void)
+{
+	static GRegex *url_ret = NULL;
+
+	if (url_ret) return url_ret;
+
+	url_ret = make_re ("(" HOST_URL OPT_PORT "/" "(" PATH ")?" ")");
+
+	return url_ret;
+}
+
+static const GRegex *
 re_url (void)
 {
 	static GRegex *url_ret = NULL;
@@ -500,12 +561,12 @@ re_url (void)
 
 	grist_gstr = g_string_new (NULL);
 
-	/* Add regex "host/path", representing a "schemeless" url */
-	g_string_append (grist_gstr, "(" HOST_URL OPT_PORT "/" "(" PATH ")?" ")");
-
 	for (i = 0; uri[i].scheme; i++)
 	{
-		g_string_append (grist_gstr, "|(");
+		if (i)
+			g_string_append (grist_gstr, "|");
+
+		g_string_append (grist_gstr, "(");
 		g_string_append_printf (grist_gstr, "%s:", uri[i].scheme);
 
 		if (uri[i].flags & URI_AUTHORITY)
@@ -517,48 +578,40 @@ re_url (void)
 			g_string_append (grist_gstr, USERINFO "?");
 
 		if (uri[i].flags & URI_AUTHORITY)
-			g_string_append (grist_gstr, HOST_URL OPT_PORT);
+			g_string_append (grist_gstr, HOST_URL_OPT_TLD OPT_PORT);
 		
 		if (uri[i].flags & URI_PATH)
 		{
-			char *sep_escaped;
-			
-			sep_escaped = g_regex_escape_string (uri[i].path_sep, 
-							     strlen(uri[i].path_sep));
+			char *sep_escaped = g_regex_escape_string (uri[i].path_sep, strlen(uri[i].path_sep));
 
-			g_string_append_printf(grist_gstr, "(" "%s" PATH ")?",
-					       sep_escaped);
+			g_string_append_printf (grist_gstr, "(" "%s" PATH ")?", sep_escaped);
 
-			g_free(sep_escaped);
+			g_free (sep_escaped);
 		}
 
-		g_string_append(grist_gstr, ")");
+		g_string_append (grist_gstr, ")");
 	}
 
 	grist = g_string_free (grist_gstr, FALSE);
 
 	url_ret = make_re (grist);
+	g_free (grist);
 
 	return url_ret;
 }
 
 /*	EMAIL description --- */
-#define EMAIL "[a-z][-_a-z0-9]+@" "(" HOST_URL ")"
+#define EMAIL "[a-z0-9][._%+-a-z0-9]+@" "(" HOST_URL ")"
 
-static GRegex *
+static const GRegex *
 re_email (void)
 {
 	static GRegex *email_ret;
-	char *grist;
 
 	if (email_ret) return email_ret;
 
-	grist = g_strdup_printf (
-		"("
-			EMAIL
-		")"
-	);
-	email_ret = make_re (grist);
+	email_ret = make_re ("(" EMAIL ")");
+
 	return email_ret;
 }
 
@@ -576,45 +629,35 @@ re_email (void)
 /* Rationale is that do_an_re() above will anyway look up what */
 /* we find, and that WORD_NICK is the last item in the array */
 /* that do_an_re() runs through. */
-#define NICK0 "[" NICKPRE "]?[" NICKLET NICKDIG NICKSPE "]"
+#define NICK0 "^[" NICKPRE "]?[" NICKLET NICKDIG NICKSPE "]"
 #endif
 #define NICK1 "[" NICKHYP NICKLET NICKDIG NICKSPE "]*"
 #define NICK	NICK0 NICK1
 
-static GRegex *
+static const GRegex *
 re_nick (void)
 {
 	static GRegex *nick_ret;
-	char *grist;
 
 	if (nick_ret) return nick_ret;
 
-	grist = g_strdup_printf (
-		"("
-			NICK
-		")"
-	);
-	nick_ret = make_re (grist);
+	nick_ret = make_re ("(" NICK ")");
+
 	return nick_ret;
 }
 
 /*	CHANNEL description --- */
-#define CHANNEL "#[^ \t\a,:]+"
+#define CHANNEL "[" CHANPRE "][^ \t\a,]+(?:,[" CHANPRE "][^ \t\a,]+)*"
 
-static GRegex *
+static const GRegex *
 re_channel (void)
 {
 	static GRegex *channel_ret;
-	char *grist;
 
 	if (channel_ret) return channel_ret;
 
-	grist = g_strdup_printf (
-		"("
-			CHANNEL
-		")"
-	);
-	channel_ret = make_re (grist);
+	channel_ret = make_re ("(" CHANNEL ")");
+
 	return channel_ret;
 }
 
@@ -627,19 +670,14 @@ re_channel (void)
 #define FS_PATH "^(/|\\./|\\.\\./).*"
 #endif
 
-static GRegex *
+static const GRegex *
 re_path (void)
 {
 	static GRegex *path_ret;
-	char *grist;
 
 	if (path_ret) return path_ret;
 
-	grist = g_strdup_printf (
-		"("
-			FS_PATH
-		")"
-	);
-	path_ret = make_re (grist);
+	path_ret = make_re ("(" FS_PATH ")");
+
 	return path_ret;
 }

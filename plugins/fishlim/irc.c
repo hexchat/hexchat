@@ -22,8 +22,9 @@
 
 */
 
-#include <stdlib.h>
-#include <string.h>
+#include "config.h"
+
+#include <glib.h>
 #include "irc.h"
 
 /**
@@ -31,26 +32,28 @@
  * at spaces. The prefix and command is extracted from the message, and
  * parameters_offset is set to the index of the first parameter.
  */
-bool irc_parse_message(const char *words[],
+gboolean irc_parse_message(const char *words[],
                        const char **prefix, const char **command,
                        size_t *parameters_offset) {
     size_t w = 1;
     if (prefix) *prefix = NULL;
     if (command) *command = NULL;
     
-    // See if the message starts with a prefix (sender user)
+    /* See if the message starts with a prefix (sender user) */
     if (words[w][0] == ':') {
         if (prefix) *prefix = &words[w][1];
         w++;
     }
     
-    // Check command
-    if (words[w][0] == '\0') return false;
+    /* Check command */
+    if (words[w][0] == '\0') return FALSE;
     if (command) *command = words[w];
     w++;
     
-    *parameters_offset = w;
-    return true;
+    if (parameters_offset)
+		*parameters_offset = w;
+
+    return TRUE;
 }
 
 
@@ -65,48 +68,15 @@ bool irc_parse_message(const char *words[],
  */
 char *irc_prefix_get_nick(const char *prefix) {
     const char *end;
-    char *nick;
     size_t length;
     
     if (!prefix) return NULL;
     
-    // Find end of nick
+    /* Find end of nick */
     end = prefix;
     while (*end != '\0' && *end != '!' && *end != '@') end++;
     
-    // Allocate string
+    /* Allocate string */
     length = end - prefix;
-    nick = malloc(length+1);
-    if (!nick) return NULL;
-    
-    // Copy to string
-    memcpy(nick, prefix, length);
-    nick[length] = '\0';
-    return nick;
+    return g_strndup (prefix, length);
 }
-
-
-/**
- * Compares two nick names. Return 0 if equal. Otherwise the return value is
- * less than zero if a is less than b or greater than zero if a is greater
- * than b.
- */
-int irc_nick_cmp(const char *a, const char *b) {
-    char ac;
-    char bc;
-    char diff;
-    for (;;) {
-        ac = *(a++);
-        bc = *(b++);
-        
-        // Change into IRC uppercase (see RFC 2812 section 2.2)
-        if (ac >= 'a' && ac <= '~') ac &= ~0x20;
-        if (bc >= 'a' && bc <= '~') bc &= ~0x20;
-        
-        diff = ac - bc;
-        if (diff) return diff;
-        if (!ac) return 0;
-    }
-}
-
-

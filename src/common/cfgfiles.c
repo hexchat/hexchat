@@ -39,15 +39,15 @@
 #endif
 
 #define DEF_FONT "Monospace 9"
-#define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,MS Gothic,Unifont"
+#define DEF_FONT_ALTER "Arial Unicode MS,Segoe UI Emoji,Lucida Sans Unicode,Meiryo,Symbola,Unifont"
 
-const char const *languages[LANGUAGES_LENGTH] = {
-	"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",   /*  0 ..  9 */
-	"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl", /* 10 .. 19 */
-	"de", "el", "gu", "hi", "hu", "id", "it", "ja", "kn", "rw",       /* 20 .. 29 */
-	"ko", "lv", "lt", "mk", "ml", "ms", "nb", "no", "pl", "pt",       /* 30 .. 39 */
-	"pt_BR", "pa", "ru", "sr", "sk", "sl", "es", "sv", "th", "uk",    /* 40 .. 49 */
-	"vi", "wa"                                                        /* 50 .. */
+const char * const languages[LANGUAGES_LENGTH] = {
+	"af", "sq", "am", "ast", "az", "eu", "be", "bg", "ca", "zh_CN",      /*  0 ..  9 */
+	"zh_TW", "cs", "da", "nl", "en_GB", "en", "et", "fi", "fr", "gl",    /* 10 .. 19 */
+	"de", "el", "gu", "hi", "hu", "id", "it", "ja_JP", "kn", "rw",       /* 20 .. 29 */
+	"ko", "lv", "lt", "mk", "ml", "ms", "nb", "no", "pl", "pt",          /* 30 .. 39 */
+	"pt_BR", "pa", "ru", "sr", "sk", "sl", "es", "sv", "th", "tr",       /* 40 .. 49 */
+	"uk", "vi", "wa"                                                     /* 50 .. */
 };
 
 void
@@ -57,15 +57,11 @@ list_addentry (GSList ** list, char *cmd, char *name)
 	size_t name_len;
 	size_t cmd_len = 1;
 
-	/* remove <2.8.0 stuff */
-	if (!strcmp (cmd, "away") && !strcmp (name, "BACK"))
-		return;
-
 	if (cmd)
 		cmd_len = strlen (cmd) + 1;
 	name_len = strlen (name) + 1;
 
-	pop = malloc (sizeof (struct popup) + cmd_len + name_len);
+	pop = g_malloc (sizeof (struct popup) + cmd_len + name_len);
 	pop->name = (char *) pop + sizeof (struct popup);
 	pop->cmd = pop->name + name_len;
 
@@ -137,13 +133,13 @@ list_loadconf (char *file, GSList ** list, char *defaultconf)
 		abort ();
 	}
 
-	ibuf = malloc (st.st_size);
+	ibuf = g_malloc (st.st_size);
 	read (fd, ibuf, st.st_size);
 	close (fd);
 
 	list_load_from_data (list, ibuf, st.st_size);
 
-	free (ibuf);
+	g_free (ibuf);
 }
 
 void
@@ -153,7 +149,7 @@ list_free (GSList ** list)
 	while (*list)
 	{
 		data = (void *) (*list)->data;
-		free (data);
+		g_free (data);
 		*list = g_slist_remove (*list, data);
 	}
 }
@@ -170,7 +166,7 @@ list_delentry (GSList ** list, char *name)
 		if (!g_ascii_strcasecmp (name, pop->name))
 		{
 			*list = g_slist_remove (*list, pop);
-			free (pop);
+			g_free (pop);
 			return 1;
 		}
 		alist = alist->next;
@@ -211,10 +207,10 @@ cfg_get_str (char *cfg, const char *var, char *dest, int dest_len)
 		while (*cfg != 0 && *cfg != '\n')
 			cfg++;
 		if (*cfg == 0)
-			return 0;
+			return NULL;
 		cfg++;
 		if (*cfg == 0)
-			return 0;
+			return NULL;
 	}
 }
 
@@ -224,18 +220,18 @@ cfg_put_str (int fh, char *var, char *value)
 	char buf[512];
 	int len;
 
-	snprintf (buf, sizeof buf, "%s = %s\n", var, value);
+	g_snprintf (buf, sizeof buf, "%s = %s\n", var, value);
 	len = strlen (buf);
 	return (write (fh, buf, len) == len);
 }
 
 int
-cfg_put_color (int fh, int r, int g, int b, char *var)
+cfg_put_color (int fh, guint16 r, guint16 g, guint16 b, char *var)
 {
 	char buf[400];
 	int len;
 
-	snprintf (buf, sizeof buf, "%s = %04x %04x %04x\n", var, r, g, b);
+	g_snprintf (buf, sizeof buf, "%s = %04hx %04hx %04hx\n", var, r, g, b);
 	len = strlen (buf);
 	return (write (fh, buf, len) == len);
 }
@@ -249,20 +245,20 @@ cfg_put_int (int fh, int value, char *var)
 	if (value == -1)
 		value = 1;
 
-	snprintf (buf, sizeof buf, "%s = %d\n", var, value);
+	g_snprintf (buf, sizeof buf, "%s = %d\n", var, value);
 	len = strlen (buf);
 	return (write (fh, buf, len) == len);
 }
 
 int
-cfg_get_color (char *cfg, char *var, int *r, int *g, int *b)
+cfg_get_color (char *cfg, char *var, guint16 *r, guint16 *g, guint16 *b)
 {
 	char str[128];
 
 	if (!cfg_get_str (cfg, var, str, sizeof (str)))
 		return 0;
 
-	sscanf (str, "%04x %04x %04x", r, g, b);
+	sscanf (str, "%04hx %04hx %04hx", r, g, b);
 	return 1;
 }
 
@@ -295,31 +291,8 @@ cfg_get_int (char *cfg, char *var)
 char *xdir = NULL;	/* utf-8 encoding */
 
 #ifdef WIN32
-
 #include <windows.h>
-
-static gboolean
-get_reg_str (const char *sub, const char *name, char *out, DWORD len)
-{
-	HKEY hKey;
-	DWORD t;
-
-	if (RegOpenKeyEx (HKEY_CURRENT_USER, sub, 0, KEY_READ, &hKey) ==
-			ERROR_SUCCESS)
-	{
-		if (RegQueryValueEx (hKey, name, NULL, &t, out, &len) != ERROR_SUCCESS ||
-			 t != REG_SZ)
-		{
-			RegCloseKey (hKey);
-			return FALSE;
-		}
-		out[len-1] = 0;
-		RegCloseKey (hKey);
-		return TRUE;
-	}
-
-	return FALSE;
-}
+#include <shlobj.h>
 #endif
 
 char *
@@ -327,19 +300,32 @@ get_xdir (void)
 {
 	if (!xdir)
 	{
-#ifdef WIN32
-		char out[256];
+#ifndef WIN32
+		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
+#else
+		wchar_t* roaming_path_wide;
+		gchar* roaming_path;
 
-		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+		if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_RoamingAppData, 0, NULL, &roaming_path_wide) != S_OK)
 		{
-			xdir = g_strdup (".\\config");
+			char *path = g_win32_get_package_installation_directory_of_module (NULL);
+			if (path)
+			{
+				xdir = g_build_filename (path, "config", NULL);
+				g_free (path);
+			}
+			else
+				xdir = g_strdup (".\\config");
 		}
 		else
 		{
-			xdir = g_build_filename (out, "HexChat", NULL);
+			roaming_path = g_utf16_to_utf8 (roaming_path_wide, -1, NULL, NULL, NULL);
+			CoTaskMemFree (roaming_path_wide);
+
+			xdir = g_build_filename (roaming_path, "HexChat", NULL);
+
+			g_free (roaming_path);
 		}
-#else
-		xdir = g_build_filename (g_get_user_config_dir (), HEXCHAT_DIR, NULL);
 #endif
 	}
 
@@ -405,8 +391,6 @@ const struct prefs vars[] =
 	{"dcc_stall_timeout", P_OFFINT (hex_dcc_stall_timeout), TYPE_INT},
 	{"dcc_timeout", P_OFFINT (hex_dcc_timeout), TYPE_INT},
 
-	{"dnsprogram", P_OFFSET (hex_dnsprogram), TYPE_STR},
-
 	{"flood_ctcp_num", P_OFFINT (hex_flood_ctcp_num), TYPE_INT},
 	{"flood_ctcp_time", P_OFFINT (hex_flood_ctcp_time), TYPE_INT},
 	{"flood_msg_num", P_OFFINT (hex_flood_msg_num), TYPE_INT},
@@ -423,8 +407,10 @@ const struct prefs vars[] =
 	{"gui_dialog_left", P_OFFINT (hex_gui_dialog_left), TYPE_INT},
 	{"gui_dialog_top", P_OFFINT (hex_gui_dialog_top), TYPE_INT},
 	{"gui_dialog_width", P_OFFINT (hex_gui_dialog_width), TYPE_INT},
+	{"gui_filesize_iec", P_OFFINT (hex_gui_filesize_iec), TYPE_BOOL},
 	{"gui_focus_omitalerts", P_OFFINT (hex_gui_focus_omitalerts), TYPE_BOOL},
 	{"gui_hide_menu", P_OFFINT (hex_gui_hide_menu), TYPE_BOOL},
+	{"gui_input_attr", P_OFFINT (hex_gui_input_attr), TYPE_BOOL},
 	{"gui_input_icon", P_OFFINT (hex_gui_input_icon), TYPE_BOOL},
 	{"gui_input_nick", P_OFFINT (hex_gui_input_nick), TYPE_BOOL},
 	{"gui_input_spell", P_OFFINT (hex_gui_input_spell), TYPE_BOOL},
@@ -438,6 +424,7 @@ const struct prefs vars[] =
 	{"gui_pane_right_size", P_OFFINT (hex_gui_pane_right_size), TYPE_INT},
 	{"gui_pane_right_size_min", P_OFFINT (hex_gui_pane_right_size_min), TYPE_INT},
 	{"gui_quit_dialog", P_OFFINT (hex_gui_quit_dialog), TYPE_BOOL},
+	{"gui_search_pos", P_OFFINT (hex_gui_search_pos), TYPE_INT},
 	/* {"gui_single", P_OFFINT (hex_gui_single), TYPE_BOOL}, */
 	{"gui_slist_fav", P_OFFINT (hex_gui_slist_fav), TYPE_BOOL},
 	{"gui_slist_select", P_OFFINT (hex_gui_slist_select), TYPE_INT},
@@ -447,8 +434,10 @@ const struct prefs vars[] =
 	{"gui_tab_dots", P_OFFINT (hex_gui_tab_dots), TYPE_BOOL},
 	{"gui_tab_icons", P_OFFINT (hex_gui_tab_icons), TYPE_BOOL},
 	{"gui_tab_layout", P_OFFINT (hex_gui_tab_layout), TYPE_INT},
+	{"gui_tab_middleclose", P_OFFINT (hex_gui_tab_middleclose), TYPE_BOOL},
 	{"gui_tab_newtofront", P_OFFINT (hex_gui_tab_newtofront), TYPE_INT},
 	{"gui_tab_pos", P_OFFINT (hex_gui_tab_pos), TYPE_INT},
+	{"gui_tab_scrollchans", P_OFFINT (hex_gui_tab_scrollchans), TYPE_BOOL},
 	{"gui_tab_server", P_OFFINT (hex_gui_tab_server), TYPE_BOOL},
 	{"gui_tab_small", P_OFFINT (hex_gui_tab_small), TYPE_INT},
 	{"gui_tab_sort", P_OFFINT (hex_gui_tab_sort), TYPE_BOOL},
@@ -456,6 +445,7 @@ const struct prefs vars[] =
 	{"gui_tab_utils", P_OFFINT (hex_gui_tab_utils), TYPE_BOOL},
 	{"gui_throttlemeter", P_OFFINT (hex_gui_throttlemeter), TYPE_INT},
 	{"gui_topicbar", P_OFFINT (hex_gui_topicbar), TYPE_BOOL},
+	{"gui_transparency", P_OFFINT (hex_gui_transparency), TYPE_INT},
 	{"gui_tray", P_OFFINT (hex_gui_tray), TYPE_BOOL},
 	{"gui_tray_away", P_OFFINT (hex_gui_tray_away), TYPE_BOOL},
 	{"gui_tray_blink", P_OFFINT (hex_gui_tray_blink), TYPE_BOOL},
@@ -469,13 +459,13 @@ const struct prefs vars[] =
 	{"gui_ulist_hide", P_OFFINT (hex_gui_ulist_hide), TYPE_BOOL},
 	{"gui_ulist_icons", P_OFFINT (hex_gui_ulist_icons), TYPE_BOOL},
 	{"gui_ulist_pos", P_OFFINT (hex_gui_ulist_pos), TYPE_INT},
-	{"gui_ulist_resizable", P_OFFINT (hex_gui_ulist_resizable), TYPE_BOOL},
 	{"gui_ulist_show_hosts", P_OFFINT(hex_gui_ulist_show_hosts), TYPE_BOOL},
 	{"gui_ulist_sort", P_OFFINT (hex_gui_ulist_sort), TYPE_INT},
 	{"gui_ulist_style", P_OFFINT (hex_gui_ulist_style), TYPE_BOOL},
 	{"gui_url_mod", P_OFFINT (hex_gui_url_mod), TYPE_INT},
 	{"gui_usermenu", P_OFFINT (hex_gui_usermenu), TYPE_BOOL},
 	{"gui_win_height", P_OFFINT (hex_gui_win_height), TYPE_INT},
+	{"gui_win_fullscreen", P_OFFINT (hex_gui_win_fullscreen), TYPE_INT},
 	{"gui_win_left", P_OFFINT (hex_gui_win_left), TYPE_INT},
 	{"gui_win_modes", P_OFFINT (hex_gui_win_modes), TYPE_BOOL},
 	{"gui_win_save", P_OFFINT (hex_gui_win_save), TYPE_BOOL},
@@ -485,12 +475,12 @@ const struct prefs vars[] =
 	{"gui_win_ucount", P_OFFINT (hex_gui_win_ucount), TYPE_BOOL},
 	{"gui_win_width", P_OFFINT (hex_gui_win_width), TYPE_INT},
 
-	{"identd", P_OFFINT (hex_identd), TYPE_BOOL},
+	{"identd_server", P_OFFINT (hex_identd_server), TYPE_BOOL},
+	{"identd_port", P_OFFINT (hex_identd_port), TYPE_INT},
 
 	{"input_balloon_chans", P_OFFINT (hex_input_balloon_chans), TYPE_BOOL},
 	{"input_balloon_hilight", P_OFFINT (hex_input_balloon_hilight), TYPE_BOOL},
 	{"input_balloon_priv", P_OFFINT (hex_input_balloon_priv), TYPE_BOOL},
-	{"input_balloon_time", P_OFFINT (hex_input_balloon_time), TYPE_INT},
 	{"input_beep_chans", P_OFFINT (hex_input_beep_chans), TYPE_BOOL},
 	{"input_beep_hilight", P_OFFINT (hex_input_beep_hilight), TYPE_BOOL},
 	{"input_beep_priv", P_OFFINT (hex_input_beep_priv), TYPE_BOOL},
@@ -506,10 +496,14 @@ const struct prefs vars[] =
 	{"input_tray_priv", P_OFFINT (hex_input_tray_priv), TYPE_BOOL},
 
 	{"irc_auto_rejoin", P_OFFINT (hex_irc_auto_rejoin), TYPE_BOOL},
+	{"irc_reconnect_rejoin", P_OFFINT (hex_irc_reconnect_rejoin), TYPE_BOOL},
 	{"irc_ban_type", P_OFFINT (hex_irc_ban_type), TYPE_INT},
+	{"irc_cap_server_time", P_OFFINT (hex_irc_cap_server_time), TYPE_BOOL},
 	{"irc_conf_mode", P_OFFINT (hex_irc_conf_mode), TYPE_BOOL},
 	{"irc_extra_hilight", P_OFFSET (hex_irc_extra_hilight), TYPE_STR},
+	{"irc_hide_nickchange", P_OFFINT (hex_irc_hide_nickchange), TYPE_BOOL},
 	{"irc_hide_version", P_OFFINT (hex_irc_hide_version), TYPE_BOOL},
+	{"irc_hidehost", P_OFFINT (hex_irc_hidehost), TYPE_BOOL},
 	{"irc_id_ntext", P_OFFSET (hex_irc_id_ntext), TYPE_STR},
 	{"irc_id_ytext", P_OFFSET (hex_irc_id_ytext), TYPE_STR},
 	{"irc_invisible", P_OFFINT (hex_irc_invisible), TYPE_BOOL},
@@ -538,7 +532,7 @@ const struct prefs vars[] =
 	{"net_auto_reconnectonfail", P_OFFINT (hex_net_auto_reconnectonfail), TYPE_BOOL},
 #endif
 	{"net_bind_host", P_OFFSET (hex_net_bind_host), TYPE_STR},
-	{"net_ping_timeout", P_OFFINT (hex_net_ping_timeout), TYPE_INT},
+	{"net_ping_timeout", P_OFFINT (hex_net_ping_timeout), TYPE_INT, hexchat_reinit_timers},
 	{"net_proxy_auth", P_OFFINT (hex_net_proxy_auth), TYPE_BOOL},
 	{"net_proxy_host", P_OFFSET (hex_net_proxy_host), TYPE_STR},
 	{"net_proxy_pass", P_OFFSET (hex_net_proxy_pass), TYPE_STR},
@@ -559,7 +553,7 @@ const struct prefs vars[] =
 	{"stamp_text", P_OFFINT (hex_stamp_text), TYPE_BOOL},
 	{"stamp_text_format", P_OFFSET (hex_stamp_text_format), TYPE_STR},
 
-	{"text_autocopy_color", P_OFFINT (hex_text_autocopy_color), TYPE_BOOL},	
+	{"text_autocopy_color", P_OFFINT (hex_text_autocopy_color), TYPE_BOOL},
 	{"text_autocopy_stamp", P_OFFINT (hex_text_autocopy_stamp), TYPE_BOOL},
 	{"text_autocopy_text", P_OFFINT (hex_text_autocopy_text), TYPE_BOOL},
 	{"text_background", P_OFFSET (hex_text_background), TYPE_STR},
@@ -572,7 +566,6 @@ const struct prefs vars[] =
 	{"text_max_lines", P_OFFINT (hex_text_max_lines), TYPE_INT},
 	{"text_replay", P_OFFINT (hex_text_replay), TYPE_BOOL},
 	{"text_search_case_match", P_OFFINT (hex_text_search_case_match), TYPE_BOOL},
-	{"text_search_backward", P_OFFINT (hex_text_search_backward), TYPE_BOOL},
 	{"text_search_highlight_all", P_OFFINT (hex_text_search_highlight_all), TYPE_BOOL},
 	{"text_search_follow", P_OFFINT (hex_text_search_follow), TYPE_BOOL},
 	{"text_search_regexp", P_OFFINT (hex_text_search_regexp), TYPE_BOOL},
@@ -583,9 +576,6 @@ const struct prefs vars[] =
 	{"text_stripcolor_replay", P_OFFINT (hex_text_stripcolor_replay), TYPE_BOOL},
 	{"text_stripcolor_topic", P_OFFINT (hex_text_stripcolor_topic), TYPE_BOOL},
 	{"text_thin_sep", P_OFFINT (hex_text_thin_sep), TYPE_BOOL},
-	{"text_tint_blue", P_OFFINT (hex_text_tint_blue), TYPE_INT},
-	{"text_tint_green", P_OFFINT (hex_text_tint_green), TYPE_INT},
-	{"text_tint_red", P_OFFINT (hex_text_tint_red), TYPE_INT},
 	{"text_transparent", P_OFFINT (hex_text_transparent), TYPE_BOOL},
 	{"text_wordwrap", P_OFFINT (hex_text_wordwrap), TYPE_BOOL},
 
@@ -595,27 +585,31 @@ const struct prefs vars[] =
 	{0, 0, 0},
 };
 
+
 static char *
-convert_with_fallback (const char *str, const char *fallback)
+convert_with_fallback (char *str, const char *fallback)
 {
 	char *utf;
 
-	utf = g_locale_to_utf8 (str, -1, 0, 0, 0);
+#ifndef WIN32
+	/* On non-Windows, g_get_user_name and g_get_real_name return a string in system locale, so convert it to utf-8. */
+	utf = g_locale_to_utf8 (str, -1, NULL, NULL, 0);
+
+	g_free (str);
+
+	/* The returned string is NULL if conversion from locale to utf-8 failed for any reason. Return the fallback. */
 	if (!utf)
-	{
-		/* this can happen if CHARSET envvar is set wrong */
-		/* maybe it's already utf8 (breakage!) */
-		if (!g_utf8_validate (str, -1, NULL))
-			utf = g_strdup (fallback);
-		else
-			utf = g_strdup (str);
-	}
+		utf = g_strdup (fallback);
+#else
+	/* On Windows, they return a string in utf-8, so don't do anything to it. The fallback isn't needed. */
+	utf = str;
+#endif
 
 	return utf;
 }
 
 static int
-find_language_number (const char const *lang)
+find_language_number (const char * const lang)
 {
 	int i;
 
@@ -642,7 +636,7 @@ get_default_language (void)
 	if (!locale)
 		locale = g_getenv ("LANG") ? g_getenv ("LANG") : "en";
 
-	/* we might end up with something like "en_US.UTF-8".  We will try to 
+	/* we might end up with something like "en_US.UTF-8".  We will try to
 	 * search for "en_US"; if it fails we search for "en".
 	 */
 	lang = g_strdup (locale);
@@ -654,7 +648,7 @@ get_default_language (void)
 
 	if (lang_no >= 0)
 	{
-		free (lang);
+		g_free (lang);
 		return lang_no;
 	}
 
@@ -663,29 +657,78 @@ get_default_language (void)
 
 	lang_no = find_language_number (lang);
 
-	free (lang);
+	g_free (lang);
 
 	return lang_no >= 0 ? lang_no : find_language_number ("en");
+}
+
+static char *
+get_default_spell_languages (void)
+{
+	const gchar* const *langs = g_get_language_names ();
+	char *last = NULL;
+	char *p;
+	char lang_list[64];
+	char *ret = lang_list;
+	int i;
+
+	if (langs != NULL)
+	{
+		memset (lang_list, 0, sizeof(lang_list));
+
+		for (i = 0; langs[i]; i++)
+		{
+			if (g_ascii_strncasecmp (langs[i], "C", 1) != 0 && strlen (langs[i]) >= 2)
+			{
+				/* Avoid duplicates */
+				if (!last || !g_str_has_prefix (langs[i], last))
+				{
+					if (last != NULL)
+					{
+						g_free(last);
+						g_strlcat (lang_list, ",", sizeof(lang_list));
+					}
+
+					/* ignore .utf8 */
+					if ((p = strchr (langs[i], '.')))
+						*p='\0';
+
+					last = g_strndup (langs[i], 2);
+
+					g_strlcat (lang_list, langs[i], sizeof(lang_list));
+				}
+			}
+		}
+
+		g_free (last);
+
+		if (lang_list[0])
+			return g_strdup (ret);
+	}
+
+	return g_strdup ("en");
 }
 
 void
 load_default_config(void)
 {
-	const char *username, *realname;
+	char *username, *realname, *langs;
+	const char *font;
 	char *sp;
 #ifdef WIN32
-	char out[256];
+	wchar_t* roaming_path_wide;
+	gchar* roaming_path;
 #endif
 
-	username = g_get_user_name ();
+	username = g_strdup(g_get_user_name ());
 	if (!username)
-		username = "root";
+		username = g_strdup ("root");
 
 	/* We hid Real name from the Network List, so don't use the user's name unnoticeably */
 	/* realname = g_get_real_name ();
 	if ((realname && realname[0] == 0) || !realname)
 		realname = username; */
-	realname = "realname";
+	realname = g_strdup ("realname");
 
 	username = convert_with_fallback (username, "username");
 	realname = convert_with_fallback (realname, "realname");
@@ -693,7 +736,7 @@ load_default_config(void)
 	memset (&prefs, 0, sizeof (struct hexchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
-	
+
 	/* BOOLEANS */
 	prefs.hex_away_show_once = 1;
 	prefs.hex_away_track = 1;
@@ -705,6 +748,10 @@ load_default_config(void)
 	prefs.hex_gui_autoopen_dialog = 1;
 	prefs.hex_gui_autoopen_recv = 1;
 	prefs.hex_gui_autoopen_send = 1;
+#ifdef HAVE_GTK_MAC
+	prefs.hex_gui_hide_menu = 1;
+#endif
+	prefs.hex_gui_input_attr = 1;
 	prefs.hex_gui_input_icon = 1;
 	prefs.hex_gui_input_nick = 1;
 	prefs.hex_gui_input_spell = 1;
@@ -714,23 +761,26 @@ load_default_config(void)
 	/* prefs.hex_gui_slist_skip = 1; */
 	prefs.hex_gui_tab_chans = 1;
 	prefs.hex_gui_tab_dialogs = 1;
-	prefs.hex_gui_tab_dots = 1;
 	prefs.hex_gui_tab_icons = 1;
+	prefs.hex_gui_tab_middleclose = 1;
 	prefs.hex_gui_tab_server = 1;
 	prefs.hex_gui_tab_sort = 1;
 	prefs.hex_gui_topicbar = 1;
+	prefs.hex_gui_transparency = 255;
 	prefs.hex_gui_tray = 1;
 	prefs.hex_gui_tray_blink = 1;
 	prefs.hex_gui_ulist_count = 1;
 	prefs.hex_gui_ulist_icons = 1;
-	prefs.hex_gui_ulist_resizable = 1;
 	prefs.hex_gui_ulist_style = 1;
 	prefs.hex_gui_win_save = 1;
-	prefs.hex_identd = 1;
+	prefs.hex_input_filter_beep = 1;
 	prefs.hex_input_flash_hilight = 1;
 	prefs.hex_input_flash_priv = 1;
 	prefs.hex_input_tray_hilight = 1;
 	prefs.hex_input_tray_priv = 1;
+	prefs.hex_irc_reconnect_rejoin = 1;
+	prefs.hex_irc_cap_server_time = 1;
+	prefs.hex_irc_logging = 1;
 	prefs.hex_irc_who_join = 1; /* Can kick with inordinate amount of channels, required for some of our features though, TODO: add cap like away check? */
 	prefs.hex_irc_whois_front = 1;
 	prefs.hex_net_auto_reconnect = 1;
@@ -753,6 +803,7 @@ load_default_config(void)
 	prefs.hex_away_size_max = 300;
 	prefs.hex_away_timeout = 60;
 	prefs.hex_completion_amount = 5;
+	prefs.hex_completion_sort = 1;
 	prefs.hex_dcc_auto_recv = 1;			/* browse mode */
 	prefs.hex_dcc_blocksize = 1024;
 	prefs.hex_dcc_permissions = 0600;
@@ -779,73 +830,76 @@ load_default_config(void)
 	prefs.hex_gui_ulist_pos = 3;
 	prefs.hex_gui_win_height = 400;
 	prefs.hex_gui_win_width = 640;
-	prefs.hex_input_balloon_time = 20;
 	prefs.hex_irc_ban_type = 1;
 	prefs.hex_irc_join_delay = 5;
+	prefs.hex_net_ping_timeout = 60;
 	prefs.hex_net_reconnect_delay = 10;
 	prefs.hex_notify_timeout = 15;
 	prefs.hex_text_max_indent = 256;
-	prefs.hex_text_max_lines = 500;
-	prefs.hex_text_tint_blue = 195;
-	prefs.hex_text_tint_green = 195;
-	prefs.hex_text_tint_red = 195;
+	prefs.hex_text_max_lines = 5000;
 	prefs.hex_url_grabber_limit = 100; 		/* 0 means unlimited */
 
 	/* STRINGS */
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.hex_completion_suffix, ",");
 #ifdef WIN32
-	if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
+	if (portable_mode () || SHGetKnownFolderPath (&FOLDERID_Downloads, 0, NULL, &roaming_path_wide) != S_OK)
 	{
-		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
+		g_snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir ());
 	}
 	else
 	{
-		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
+		roaming_path = g_utf16_to_utf8 (roaming_path_wide, -1, NULL, NULL, NULL);
+		CoTaskMemFree (roaming_path_wide);
+
+		g_strlcpy (prefs.hex_dcc_dir, roaming_path, sizeof (prefs.hex_dcc_dir));
+
+		g_free (roaming_path);
 	}
 #else
 	if (g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD))
 	{
-		strcpy (prefs.hex_dcc_dir, g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD));
+		safe_strcpy (prefs.hex_dcc_dir, g_get_user_special_dir (G_USER_DIRECTORY_DOWNLOAD), sizeof(prefs.hex_dcc_dir));
 	}
 	else
 	{
-		strcpy (prefs.hex_dcc_dir, g_build_filename (g_get_home_dir (), "Downloads", NULL));
+		char *download_dir = g_build_filename (g_get_home_dir (), "Downloads", NULL);
+		safe_strcpy (prefs.hex_dcc_dir, download_dir, sizeof(prefs.hex_dcc_dir));
+		g_free (download_dir);
 	}
 #endif
-	strcpy (prefs.hex_dnsprogram, "host");
 	strcpy (prefs.hex_gui_ulist_doubleclick, "QUERY %s");
 	strcpy (prefs.hex_input_command_char, "/");
-	strcpy (prefs.hex_irc_logmask, g_build_filename ("%n", "%c.log", NULL));
-	strcpy (prefs.hex_irc_nick1, username);
-	strcpy (prefs.hex_irc_nick2, username);
-	strcat (prefs.hex_irc_nick2, "_");
-	strcpy (prefs.hex_irc_nick3, username);
-	strcat (prefs.hex_irc_nick3, "__");
+	strcpy (prefs.hex_irc_logmask, "%n"G_DIR_SEPARATOR_S"%c.log");
+	safe_strcpy (prefs.hex_irc_nick1, username, sizeof(prefs.hex_irc_nick1));
+	safe_strcpy (prefs.hex_irc_nick2, username, sizeof(prefs.hex_irc_nick2));
+	g_strlcat (prefs.hex_irc_nick2, "_", sizeof(prefs.hex_irc_nick2));
+	safe_strcpy (prefs.hex_irc_nick3, username, sizeof(prefs.hex_irc_nick3));
+	g_strlcat (prefs.hex_irc_nick3, "__", sizeof(prefs.hex_irc_nick3));
 	strcpy (prefs.hex_irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
-	strcpy (prefs.hex_irc_part_reason, _("Leaving"));
-	strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason);
-	strcpy (prefs.hex_irc_real_name, realname);
-	strcpy (prefs.hex_irc_user_name, username);
+	safe_strcpy (prefs.hex_irc_part_reason, _("Leaving"), sizeof(prefs.hex_irc_part_reason));
+	safe_strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason, sizeof(prefs.hex_irc_quit_reason));
+	safe_strcpy (prefs.hex_irc_real_name, realname, sizeof(prefs.hex_irc_real_name));
+	safe_strcpy (prefs.hex_irc_user_name, username, sizeof(prefs.hex_irc_user_name));
 	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
-#ifdef WIN32
-	if (find_font ("Consolas"))
+
+	font = fe_get_default_font ();
+	if (font)
 	{
-		strcpy (prefs.hex_text_font, "Consolas 10");
-		strcpy (prefs.hex_text_font_main, "Consolas 10");
+		safe_strcpy (prefs.hex_text_font, font, sizeof(prefs.hex_text_font));
+		safe_strcpy (prefs.hex_text_font_main, font, sizeof(prefs.hex_text_font_main));
 	}
 	else
 	{
 		strcpy (prefs.hex_text_font, DEF_FONT);
 		strcpy (prefs.hex_text_font_main, DEF_FONT);
 	}
-#else
-	strcpy (prefs.hex_text_font, DEF_FONT);
-	strcpy (prefs.hex_text_font_main, DEF_FONT);
-#endif
+
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
-	strcpy (prefs.hex_text_spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
+	langs = get_default_spell_languages ();
+	safe_strcpy (prefs.hex_text_spell_langs, langs, sizeof(prefs.hex_text_spell_langs));
+
 
 	/* private variables */
 	prefs.local_ip = 0xffffffff;
@@ -854,8 +908,9 @@ load_default_config(void)
 	if (sp)
 		sp[0] = 0;	/* spaces in username would break the login */
 
-	g_free ((char *)username);
-	g_free ((char *)realname);
+	g_free (username);
+	g_free (realname);
+	g_free (langs);
 }
 
 int
@@ -863,9 +918,9 @@ make_config_dirs (void)
 {
 	char *buf;
 
-	if (g_mkdir (get_xdir (), 0700) != 0)
+	if (g_mkdir_with_parents (get_xdir (), 0700) != 0)
 		return -1;
-	
+
 	buf = g_build_filename (get_xdir (), "addons", NULL);
 	if (g_mkdir (buf, 0700) != 0)
 	{
@@ -873,7 +928,7 @@ make_config_dirs (void)
 		return -1;
 	}
 	g_free (buf);
-	
+
 	buf = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
 	if (g_mkdir (buf, 0700) != 0)
 	{
@@ -930,7 +985,7 @@ load_config (void)
 		i++;
 	}
 	while (vars[i].name);
-	
+
 	g_free (cfg);
 
 	if (prefs.hex_gui_win_height < 138)
@@ -956,7 +1011,7 @@ save_config (void)
 
 	config = default_file ();
 	new_config = g_strconcat (config, ".new", NULL);
-	
+
 	fh = g_open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
 	if (fh == -1)
 	{
@@ -966,10 +1021,11 @@ save_config (void)
 
 	if (!cfg_put_str (fh, "version", PACKAGE_VERSION))
 	{
+		close (fh);
 		g_free (new_config);
 		return 0;
 	}
-		
+
 	i = 0;
 	do
 	{
@@ -978,6 +1034,7 @@ save_config (void)
 		case TYPE_STR:
 			if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
 			{
+				close (fh);
 				g_free (new_config);
 				return 0;
 			}
@@ -986,9 +1043,15 @@ save_config (void)
 		case TYPE_BOOL:
 			if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
 			{
+				close (fh);
 				g_free (new_config);
 				return 0;
 			}
+		}
+
+		if (vars[i].after_update != NULL)
+		{
+			vars[i].after_update();
 		}
 		i++;
 	}
@@ -1022,12 +1085,10 @@ set_showval (session *sess, const struct prefs *var, char *tbuf)
 
 	len = strlen (var->name);
 	memcpy (tbuf, var->name, len);
-	dots = 29 - len;
-
-	if (dots < 0)
-	{
+	if (len > 29)
 		dots = 0;
-	}
+	else
+		dots = 29 - len;
 
 	tbuf[len++] = '\003';
 	tbuf[len++] = '2';
@@ -1172,7 +1233,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				if (erase || *val)
 				{
 					/* save the previous value until we print it out */
-					prev_string = (char*) malloc (vars[i].len + 1);
+					prev_string = g_malloc (vars[i].len + 1);
 					strncpy (prev_string, (char *) &prefs + vars[i].offset, vars[i].len);
 
 					/* update the variable */
@@ -1184,7 +1245,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 						PrintTextf (sess, "%s set to: %s (was: %s)\n", var, (char *) &prefs + vars[i].offset, prev_string);
 					}
 
-					free (prev_string);
+					g_free (prev_string);
 				}
 				else
 				{
@@ -1239,6 +1300,11 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				{
 					set_showval (sess, &vars[i], tbuf);
 				}
+
+				if (vars[i].after_update != NULL)
+				{
+					vars[i].after_update();
+				}
 				break;
 			}
 		}
@@ -1259,7 +1325,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 int
-hexchat_open_file (char *file, int flags, int mode, int xof_flags)
+hexchat_open_file (const char *file, int flags, int mode, int xof_flags)
 {
 	char *buf;
 	int fd;
@@ -1295,7 +1361,7 @@ hexchat_fopen_file (const char *file, const char *mode, int xof_flags)
 	FILE *fh;
 
 	if (xof_flags & XOF_FULLPATH)
-		return fopen (file, mode);
+		return g_fopen (file, mode);
 
 	buf = g_build_filename (get_xdir (), file, NULL);
 	fh = g_fopen (buf, mode);

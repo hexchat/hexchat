@@ -1,0 +1,14 @@
+#define LOCALEDIR ".\\share\\locale"
+#define ENABLE_NLS
+#define USE_PLUGIN
+#define USE_OPENSSL
+#define HAVE_ISO_CODES
+#define ISO_CODES_PREFIX ".\\"
+#define ISO_CODES_LOCALEDIR LOCALEDIR
+#define PACKAGE_NAME "hexchat"
+#define PACKAGE_VERSION "<#= [string]::Join('.', $versionParts) #>"
+#define HEXCHATLIBDIR ".\\plugins"
+#define HEXCHATSHAREDIR "."
+#define OLD_PERL
+#define GETTEXT_PACKAGE "hexchat"
+#define PACKAGE_TARNAME "hexchat-<#= [string]::Join('.', $versionParts) #>"

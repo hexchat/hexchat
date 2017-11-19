@@ -29,6 +29,7 @@
 #include "../common/userlist.h"
 #include "../common/util.h"
 #include "../common/hexchatc.h"
+#include "../common/outbound.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"
 #include "maingui.h"
@@ -36,16 +37,12 @@
 #include "pixmaps.h"
 #include "menu.h"
 #include "plugin-tray.h"
+#include "notifications/notification-backend.h"
 
 #ifdef WIN32
 #include "../common/fe.h"
 #endif
-#ifdef USE_GTKSPELL
-#include <gtkspell/gtkspell.h>
-#endif
-#ifdef USE_LIBSEXY
 #include "sexy-spell-entry.h"
-#endif
 
 GtkStyle *create_input_style (GtkStyle *);
 
@@ -139,6 +136,7 @@ static const char *const langsmenu[] =
 	N_("Spanish"),
 	N_("Swedish"),
 	N_("Thai"),
+	N_("Turkish"),
 	N_("Ukrainian"),
 	N_("Vietnamese"),
 	N_("Walloon"),
@@ -159,23 +157,15 @@ static const setting appearance_settings[] =
 	{ST_HEADER,	N_("Text Box"),0,0,0},
 	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(hex_text_color_nicks), N_("Give each person on IRC a different color"),0,0},
 	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(hex_text_indent), N_("Make nick names right-justified"),0,0},
-#if defined(USE_XLIB) || defined(WIN32)
-	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(hex_text_transparent),0,0,0},
-	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(hex_text_show_marker), N_("Insert a red line after the last read text."),0,0},
-	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(hex_text_background), 0, 0, sizeof prefs.hex_text_background},
+	{ST_TOGGLE, N_ ("Show marker line"), P_OFFINTNL (hex_text_show_marker), N_ ("Insert a red line after the last read text."), 0, 0},
+	{ST_EFILE, N_ ("Background image:"), P_OFFSETNL (hex_text_background), 0, 0, sizeof prefs.hex_text_background},
 
 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
-	{ST_HSCALE, N_("Red:"), P_OFFINTNL(hex_text_tint_red),0,0,0},
-	{ST_HSCALE, N_("Green:"), P_OFFINTNL(hex_text_tint_green),0,0,0},
-	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(hex_text_tint_blue),0,0,0},
-#else
-	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(hex_text_show_marker), N_("Insert a red line after the last read text."),0,0},
-	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(hex_text_background), 0, 0, sizeof prefs.hex_text_background},
-#endif
+	{ST_HSCALE, N_("Window opacity:"), P_OFFINTNL(hex_gui_transparency),0,0,0},
 
-	{ST_HEADER,	N_("Time Stamps"),0,0,0},
-	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(hex_stamp_text),0,0,1},
-	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(hex_stamp_text_format),
+	{ST_HEADER,	N_("Timestamps"),0,0,0},
+	{ST_TOGGLE, N_("Enable timestamps"), P_OFFINTNL(hex_stamp_text),0,0,1},
+	{ST_ENTRY,  N_("Timestamp format:"), P_OFFSETNL(hex_stamp_text_format),
 #ifdef WIN32
 					N_("See the strftime MSDN article for details."),0,sizeof prefs.hex_stamp_text_format},
 #else
@@ -199,33 +189,22 @@ static const char *const tabcompmenu[] =
 static const setting inputbox_settings[] =
 {
 	{ST_HEADER, N_("Input Box"),0,0,0},
-	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
+	{ST_TOGGLE, N_("Use the text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
+	{ST_TOGGLE, N_("Render colors and attributes"), P_OFFINTNL (hex_gui_input_attr),0,0,0},
 	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,1},
 	{ST_TOGGLE, N_("Show user mode icon in nick box"), P_OFFINTNL(hex_gui_input_icon),0,0,0},
-#ifdef HAVE_ISO_CODES /* Defined with static spelling */
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,1},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(hex_text_spell_langs),0,0,sizeof prefs.hex_text_spell_langs},
 #ifdef WIN32
-	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
+	{ST_LABEL,	N_("Use language codes (as in \"%LOCALAPPDATA%\\enchant\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
 #else
 	{ST_LABEL,	N_("Use language codes. Separate multiple entries with commas.")},
-#endif
-#else
-#if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
-	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,0},
-#endif
 #endif
 
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
 	{ST_ENTRY,	N_("Nick completion suffix:"), P_OFFSETNL(hex_completion_suffix),0,0,sizeof prefs.hex_completion_suffix},
 	{ST_MENU,	N_("Nick completion sorted:"), P_OFFINTNL(hex_completion_sort), 0, tabcompmenu, 0},
 	{ST_NUMBER,	N_("Nick completion amount:"), P_OFFINTNL(hex_completion_amount), N_("Threshold of nicks to start listing instead of completing"), (const char **)N_("nicks."), 1000},
-
-#if 0	/* obsolete */
-	{ST_HEADER, N_("Input Box Codes"),0,0,0},
-	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINTNL(hex_input_perc_ascii),0,0,0},
-	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINTNL(hex_input_perc_color),0,0,0},
-#endif
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -241,9 +220,9 @@ static const char *const lagmenutext[] =
 
 static const char *const ulmenutext[] = 
 {
-	N_("A-Z, Ops first"),
+	N_("A-Z, ops first"),
 	N_("A-Z"),
-	N_("Z-A, Ops last"),
+	N_("Z-A, ops last"),
 	N_("Z-A"),
 	N_("Unsorted"),
 	NULL
@@ -251,10 +230,10 @@ static const char *const ulmenutext[] =
 
 static const char *const cspos[] =
 {
-	N_("Left (Upper)"),
-	N_("Left (Lower)"),
-	N_("Right (Upper)"),
-	N_("Right (Lower)"),
+	N_("Left (upper)"),
+	N_("Left (lower)"),
+	N_("Right (upper)"),
+	N_("Right (lower)"),
 	N_("Top"),
 	N_("Bottom"),
 	N_("Hidden"),
@@ -263,10 +242,10 @@ static const char *const cspos[] =
 
 static const char *const ulpos[] =
 {
-	N_("Left (Upper)"),
-	N_("Left (Lower)"),
-	N_("Right (Upper)"),
-	N_("Right (Lower)"),
+	N_("Left (upper)"),
+	N_("Left (lower)"),
+	N_("Right (upper)"),
+	N_("Right (lower)"),
 	NULL
 };
 
@@ -278,12 +257,11 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("Show icons for user modes"), P_OFFINTNL(hex_gui_ulist_icons), N_("Use graphical icons instead of text symbols in the user list."), 0, 0},
 	{ST_TOGGLE, N_("Color nicknames in userlist"), P_OFFINTNL(hex_gui_ulist_color), N_("Will color nicknames the same as in chat."), 0, 0},
 	{ST_TOGGLE, N_("Show user count in channels"), P_OFFINTNL(hex_gui_ulist_count), 0, 0, 0},
-/*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(hex_gui_ulist_resizable),0,0,0},*/
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(hex_gui_ulist_sort), 0, ulmenutext, 0},
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(hex_gui_ulist_pos), 0, ulpos, 1},
 
 	{ST_HEADER,	N_("Away Tracking"),0,0,0},
-	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(hex_away_track),0,0,1},
+	{ST_TOGGLE,	N_("Track the away status of users and mark them in a different color"), P_OFFINTNL(hex_away_track),0,0,1},
 	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(hex_away_size_max),0,0,10000},
 
 	{ST_HEADER,	N_("Action Upon Double Click"),0,0,0},
@@ -336,6 +314,8 @@ static const setting tabs_settings[] =
 	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(hex_gui_tab_sort), 0, 0, 0},
 	{ST_TOGGLE, N_("Show icons in the channel tree"), P_OFFINTNL(hex_gui_tab_icons), 0, 0, 0},
 	{ST_TOGGLE, N_("Show dotted lines in the channel tree"), P_OFFINTNL(hex_gui_tab_dots), 0, 0, 0},
+	{ST_TOGGLE, N_("Scroll mouse-wheel to change tabs"), P_OFFINTNL (hex_gui_tab_scrollchans), 0, 0, 0},
+	{ST_TOGGLE, N_("Middle click to close tab"), P_OFFINTNL(hex_gui_tab_middleclose), 0, 0, 0},
 	{ST_TOGGLE, N_("Smaller text"), P_OFFINTNL(hex_gui_tab_small), 0, 0, 0},
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(hex_gui_tab_newtofront), 0, focusnewtabsmenu, 0},
 	{ST_MENU,	N_("Placement of notices:"), P_OFFINTNL(hex_irc_notice_pos), 0, noticeposmenu, 0},
@@ -380,15 +360,15 @@ static const setting filexfer_settings[] =
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 
-	{ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0, 0},
+	{ST_HEADER, N_("Maximum File Transfer Speeds (Byte per Second)"), 0, 0, 0},
 	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(hex_dcc_max_send_cps), 
-					N_("Maximum speed for one transfer"), 0, 1000000},
+					N_("Maximum speed for one transfer"), 0, 10000000},
 	{ST_NUMBER,	N_("One download:"), P_OFFINTNL(hex_dcc_max_get_cps),
-					N_("Maximum speed for one transfer"), 0, 1000000},
+					N_("Maximum speed for one transfer"), 0, 10000000},
 	{ST_NUMBER,	N_("All uploads combined:"), P_OFFINTNL(hex_dcc_global_max_send_cps),
-					N_("Maximum speed for all files"), 0, 1000000},
+					N_("Maximum speed for all files"), 0, 10000000},
 	{ST_NUMBER,	N_("All downloads combined:"), P_OFFINTNL(hex_dcc_global_max_get_cps),
-					N_("Maximum speed for all files"), 0, 1000000},
+					N_("Maximum speed for all files"), 0, 10000000},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -418,32 +398,73 @@ static const setting alert_settings[] =
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
-#ifndef WIN32
-	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
-#endif
+
+
+	{ST_3OGGLE, N_("Show notifications on:"), 0, 0, (void *)balloonlist, 0},
 	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 #ifdef WIN32
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play the \"Instant Message Notification\" system sound upon the selected events"), (void *)beeplist, 0},
 #else
+#ifdef USE_LIBCANBERRA
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play \"message-new-instant\" from the freedesktop.org sound theme upon the selected events"), (void *)beeplist, 0},
+#else
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play a GTK beep upon the selected events"), (void *)beeplist, 0},
+#endif
 #endif
 
 	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
 	{ST_TOGGLE,	N_("Omit alerts while the window is focused"), P_OFFINTNL(hex_gui_focus_omitalerts), 0, 0, 0},
 
 	{ST_HEADER,	N_("Tray Behavior"), 0, 0, 0},
-#ifdef WIN32
-	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 3},
-#else
 	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 4},
-#endif
 	{ST_TOGGLE,	N_("Minimize to tray"), P_OFFINTNL(hex_gui_tray_minimize), 0, 0, 0},
 	{ST_TOGGLE,	N_("Close to tray"), P_OFFINTNL(hex_gui_tray_close), 0, 0, 0},
 	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("Automatically change status when hiding to tray."), 0, 0},
-#ifndef WIN32
-	{ST_TOGGLE,	N_("Only show tray balloons when hidden or iconified"), P_OFFINTNL(hex_gui_tray_quiet), 0, 0, 0},
+	{ST_TOGGLE,	N_("Only show notifications when hidden or iconified"), P_OFFINTNL(hex_gui_tray_quiet), 0, 0, 0},
+
+	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
+	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
+
+	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
+	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
+	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting alert_settings_nonotifications[] =
+{
+	{ST_HEADER,	N_("Alerts"),0,0,0},
+
+	{ST_ALERTHEAD},
+	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
+#ifdef HAVE_GTK_MAC
+	{ST_3OGGLE, N_("Bounce dock icon on:"), 0, 0, (void *)taskbarlist, 0},
+#else
+#ifndef __APPLE__
+	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 #endif
+#endif
+#ifdef WIN32
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play the \"Instant Message Notification\" system sound upon the selected events"), (void *)beeplist, 0},
+#else
+#ifdef USE_LIBCANBERRA
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play \"message-new-instant\" from the freedesktop.org sound theme upon the selected events"), (void *)beeplist, 0},
+#else
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, N_("Play a GTK beep upon the selected events"), (void *)beeplist, 0},
+#endif
+#endif
+
+	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
+	{ST_TOGGLE,	N_("Omit alerts while the window is focused"), P_OFFINTNL(hex_gui_focus_omitalerts), 0, 0, 0},
+
+	{ST_HEADER,	N_("Tray Behavior"), 0, 0, 0},
+	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 4},
+	{ST_TOGGLE,	N_("Minimize to tray"), P_OFFINTNL(hex_gui_tray_minimize), 0, 0, 0},
+	{ST_TOGGLE,	N_("Close to tray"), P_OFFINTNL(hex_gui_tray_close), 0, 0, 0},
+	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("Automatically change status when hiding to tray."), 0, 0},
 
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
@@ -461,7 +482,7 @@ static const setting alert_settings_unity[] =
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
-	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
+	{ST_3OGGLE, N_("Show notifications on:"), 0, 0, (void *)balloonlist, 0},
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
 
@@ -475,6 +496,28 @@ static const setting alert_settings_unity[] =
 	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
 	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting alert_settings_unityandnonotifications[] =
+{
+	{ST_HEADER, N_("Alerts"), 0, 0, 0},
+
+	{ST_ALERTHEAD},
+	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
+
+	{ST_TOGGLE, N_("Omit alerts when marked as being away"), P_OFFINTNL (hex_away_omit_alerts), 0, 0, 0},
+	{ST_TOGGLE, N_("Omit alerts while the window is focused"), P_OFFINTNL (hex_gui_focus_omitalerts), 0, 0, 0},
+
+	{ST_HEADER, N_("Highlighted Messages"), 0, 0, 0},
+	{ST_LABEL, N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
+
+	{ST_ENTRY, N_("Extra words to highlight:"), P_OFFSETNL (hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY, N_("Nick names not to highlight:"), P_OFFSETNL (hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
+	{ST_ENTRY, N_("Nick names to always highlight:"), P_OFFSETNL (hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
+	{ST_LABEL, N_("Separate multiple words with commas.\nWildcards are accepted.")},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -494,6 +537,7 @@ static const setting general_settings[] =
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("WHOIS on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list."), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default."), 0, 0},
+	{ST_TOGGLE,	N_("Hide nick change messages"), P_OFFINTNL(hex_irc_hide_nickchange), 0, 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -512,22 +556,23 @@ static const setting advanced_settings[] =
 	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
 	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(hex_text_autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
-						"Otherwise, CONTROL-SHIFT-C will copy the "
+						"Otherwise, Ctrl+Shift+C will copy the "
 						"selected text to the clipboard."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(hex_text_autocopy_stamp),
-					N_("Automatically include time stamps in copied lines of text. Otherwise, "
-						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include timestamps"), P_OFFINTNL(hex_text_autocopy_stamp),
+					N_("Automatically include timestamps in copied lines of text. Otherwise, "
+						"include timestamps if the Shift key is held down while selecting."), 0, 0},
 	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(hex_text_autocopy_color),
 					N_("Automatically include color information in copied lines of text.  "
-						"Otherwise, include color information if the CONTROL key is held down "
+						"Otherwise, include color information if the Ctrl key is held down "
 						"while selecting."), 0, 0},
 
-	{ST_HEADER,	N_("Miscellaneous"),0,0,0},
+	{ST_HEADER,	N_("Miscellaneous"), 0, 0, 0},
 	{ST_ENTRY,  N_("Real name:"), P_OFFSETNL(hex_irc_real_name), 0, 0, sizeof prefs.hex_irc_real_name},
 #ifdef WIN32
-	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
+	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), N_("Separate multiple entries with commas without spaces before or after."), 0, sizeof prefs.hex_text_font_alternative},
 #endif
 	{ST_TOGGLE,	N_("Display lists in compact mode"), P_OFFINTNL(hex_gui_compact), N_("Use less spacing between user list/channel tree rows."), 0, 0},
+	{ST_TOGGLE,	N_("Use server time if supported"), P_OFFINTNL(hex_irc_cap_server_time), N_("Display timestamps obtained from server if it supports the time-server extension."), 0, 0},
 	{ST_TOGGLE,	N_("Automatically reconnect to servers on disconnect"), P_OFFINTNL(hex_net_auto_reconnect), 0, 0, 1},
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
 	{ST_NUMBER,	N_("Auto join delay:"), P_OFFINTNL(hex_irc_join_delay), 0, 0, 9999},
@@ -541,11 +586,11 @@ static const setting logging_settings[] =
 	{ST_HEADER,	N_("Logging"),0,0,0},
 	{ST_TOGGLE,	N_("Display scrollback from previous session"), P_OFFINTNL(hex_text_replay), 0, 0, 0},
 	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(hex_text_max_lines),0,0,100000},
-	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(hex_irc_logging), 0, 0, 1},
+	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(hex_irc_logging), 0, 0, 0},
 	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(hex_irc_logmask), 0, 0, sizeof prefs.hex_irc_logmask},
 	{ST_LABEL,	N_("%s=Server %c=Channel %n=Network.")},
 
-	{ST_HEADER,	N_("Time Stamps"),0,0,0},
+	{ST_HEADER,	N_("Timestamps"),0,0,0},
 	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(hex_stamp_log), 0, 0, 1},
 	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(hex_stamp_log_format), 0, 0, sizeof prefs.hex_stamp_log_format},
 #ifdef WIN32
@@ -566,12 +611,9 @@ static const char *const proxytypes[] =
 {
 	N_("(Disabled)"),
 	N_("Wingate"),
-	N_("Socks4"),
-	N_("Socks5"),
+	N_("SOCKS4"),
+	N_("SOCKS5"),
 	N_("HTTP"),
-#ifdef USE_MSPROXY
-	N_("MS Proxy (ISA)"),
-#endif
 #ifdef USE_LIBPROXY
 	N_("Auto"),
 #endif
@@ -580,9 +622,9 @@ static const char *const proxytypes[] =
 
 static const char *const proxyuse[] =
 {
-	N_("All Connections"),
-	N_("IRC Server Only"),
-	N_("DCC Get Only"),
+	N_("All connections"),
+	N_("IRC server only"),
+	N_("DCC only"),
 	NULL
 };
 
@@ -597,8 +639,8 @@ static const setting network_settings[] =
 					N_("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
 	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(hex_dcc_ip),
 					N_("Claim you are at this address when offering files."), 0, sizeof prefs.hex_dcc_ip},
-	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
-	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
+	{ST_NUMBER,	N_("First DCC listen port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
+	{ST_NUMBER,	N_("Last DCC listen port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
 		(const char **)N_("!Leave ports at zero for full range."), 65535},
 
 	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
@@ -608,13 +650,19 @@ static const setting network_settings[] =
 	{ST_MENU,	N_("Use proxy for:"), P_OFFINTNL(hex_net_proxy_use), 0, proxyuse, 0},
 
 	{ST_HEADER,	N_("Proxy Authentication"), 0, 0, 0, 0},
-#ifdef USE_MSPROXY
-	{ST_TOGGLE,	N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
-#else
-	{ST_TOGGLE,	N_("Use Authentication (HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
-#endif
+	{ST_TOGGLE,	N_("Use authentication (HTTP or SOCKS5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(hex_net_proxy_user), 0, 0, sizeof prefs.hex_net_proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(hex_net_proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.hex_net_proxy_pass},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting identd_settings[] =
+{
+	{ST_HEADER, N_("Identd Server"), 0, 0, 0, 0},
+	{ST_TOGGLE, N_("Enabled"), P_OFFINTNL(hex_identd_server), N_("Server will respond with the networks username"), 0, 1},
+	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(hex_identd_port), N_("You must have permissions to listen on this port. "
+												   "If not 113 (0 defaults to this) then you must configure port-forwarding."), 0, 65535},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -630,7 +678,7 @@ static const setting network_settings[] =
 static void
 setup_3oggle_cb (GtkToggleButton *but, unsigned int *setting)
 {
-	*setting = but->active;
+	*setting = gtk_toggle_button_get_active (but);
 }
 
 static void
@@ -640,7 +688,7 @@ setup_headlabel (GtkWidget *tab, int row, int col, char *text)
 	char buf[128];
 	char *sp;
 
-	snprintf (buf, sizeof (buf), "<b><span size=\"smaller\">%s</span></b>", text);
+	g_snprintf (buf, sizeof (buf), "<b><span size=\"smaller\">%s</span></b>", text);
 	sp = strchr (buf + 17, ' ');
 	if (sp)
 		*sp = '\n';
@@ -671,7 +719,7 @@ setup_create_3oggle (GtkWidget *tab, int row, const setting *set)
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	if (set->tooltip)
 	{
-		add_tip (label, _(set->tooltip));
+		gtk_widget_set_tooltip_text (label, _(set->tooltip));
 	}
 	gtk_table_attach (GTK_TABLE (tab), label, 2, 3, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
@@ -703,15 +751,15 @@ setup_toggle_cb (GtkToggleButton *but, const setting *set)
 {
 	GtkWidget *label, *disable_wid;
 
-	setup_set_int (&setup_prefs, set, but->active ? 1 : 0);
+	setup_set_int (&setup_prefs, set, gtk_toggle_button_get_active (but));
 
 	/* does this toggle also enable/disable another widget? */
 	disable_wid = g_object_get_data (G_OBJECT (but), "nxt");
 	if (disable_wid)
 	{
-		gtk_widget_set_sensitive (disable_wid, but->active);
+		gtk_widget_set_sensitive (disable_wid, gtk_toggle_button_get_active (but));
 		label = g_object_get_data (G_OBJECT (disable_wid), "lbl");
-		gtk_widget_set_sensitive (label, but->active);
+		gtk_widget_set_sensitive (label, gtk_toggle_button_get_active (but));
 	}
 }
 
@@ -732,7 +780,7 @@ setup_create_toggleR (GtkWidget *tab, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (setup_toggle_cb), (gpointer)set);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_table_attach (GTK_TABLE (tab), wid, 4, 5, row, row + 1,
 							GTK_EXPAND | GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 }
@@ -748,29 +796,12 @@ setup_create_toggleL (GtkWidget *tab, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (setup_toggle_cb), (gpointer)set);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_table_attach (GTK_TABLE (tab), wid, 2, row==6 ? 6 : 4, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	return wid;
 }
-
-#if 0
-static void
-setup_create_toggle (GtkWidget *box, int row, const setting *set)
-{
-	GtkWidget *wid;
-
-	wid = gtk_check_button_new_with_label (_(set->label));
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
-											setup_get_int (&setup_prefs, set));
-	g_signal_connect (G_OBJECT (wid), "toggled",
-							G_CALLBACK (setup_toggle_cb), (gpointer)set);
-	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
-	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
-}
-#endif
 
 static GtkWidget *
 setup_create_italic_label (char *text)
@@ -779,7 +810,7 @@ setup_create_italic_label (char *text)
 	char buf[256];
 
 	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", text);
+	g_snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", text);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 
@@ -813,7 +844,7 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 	wid = gtk_spin_button_new_with_range (0, set->extra, 1);
 	g_object_set_data (G_OBJECT (wid), "lbl", label);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
 										setup_get_int (&setup_prefs, set));
 	g_signal_connect (G_OBJECT (wid), "value_changed",
@@ -834,12 +865,13 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 }
 
 static gint
-setup_apply_tint (int *tag)
+setup_apply_trans (int *tag)
 {
-	prefs.hex_text_tint_red = setup_prefs.hex_text_tint_red;
-	prefs.hex_text_tint_green = setup_prefs.hex_text_tint_green;
-	prefs.hex_text_tint_blue = setup_prefs.hex_text_tint_blue;
-	mg_update_xtext (current_sess->gui->xtext);
+	prefs.hex_gui_transparency = setup_prefs.hex_gui_transparency;
+	gtk_window_set_opacity (GTK_WINDOW (current_sess->gui->window),
+							(prefs.hex_gui_transparency / 255.));
+
+	/* mg_update_xtext (current_sess->gui->xtext); */
 	*tag = 0;
 	return 0;
 }
@@ -853,7 +885,7 @@ setup_hscale_cb (GtkHScale *wid, const setting *set)
 
 	if (tag == 0)
 	{
-		tag = g_idle_add ((GSourceFunc) setup_apply_tint, &tag);
+		tag = g_idle_add ((GSourceFunc) setup_apply_trans, &tag);
 	}
 }
 
@@ -874,6 +906,12 @@ setup_create_hscale (GtkWidget *table, int row, const setting *set)
 							G_CALLBACK (setup_hscale_cb), (gpointer)set);
 	gtk_table_attach (GTK_TABLE (table), wid, 3, 6, row, row + 1,
 							GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+
+#ifndef WIN32 /* Windows always supports this */
+	/* Only used for transparency currently */
+	if (!gtk_widget_is_composited (current_sess->gui->window))
+		gtk_widget_set_sensitive (wid, FALSE);
+#endif
 }
 
 
@@ -890,7 +928,7 @@ setup_menu_cb (GtkWidget *cbox, const setting *set)
 
 	if (set->list == proxytypes)
 	{
-		/* only HTTP and Socks5 can use a username/pass */
+		/* only HTTP and SOCKS5 can use a username/pass */
 		gtk_widget_set_sensitive (proxy_user, (n == 3 || n == 4 || n == 5));
 		gtk_widget_set_sensitive (proxy_pass, (n == 3 || n == 4 || n == 5));
 	}
@@ -899,7 +937,7 @@ setup_menu_cb (GtkWidget *cbox, const setting *set)
 static void
 setup_radio_cb (GtkWidget *item, const setting *set)
 {
-	if (GTK_TOGGLE_BUTTON (item)->active)
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (item)))
 	{
 		int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
 		/* set the prefs.<field> */
@@ -932,7 +970,7 @@ setup_create_radio (GtkWidget *table, int row, const setting *set)
 		{
 			wid = gtk_radio_button_new_with_mnemonic (group, _(text[i]));
 			/*if (set->tooltip)
-				add_tip (wid, _(set->tooltip));*/
+				gtk_widget_set_tooltip_text (wid, _(set->tooltip));*/
 			group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
 			gtk_container_add (GTK_CONTAINER (hbox), wid);
 			if (i == setup_get_int (&setup_prefs, set))
@@ -1029,10 +1067,10 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
-	cbox = gtk_combo_box_new_text ();
+	cbox = gtk_combo_box_text_new ();
 
 	for (i = 0; text[i]; i++)
-		gtk_combo_box_append_text (GTK_COMBO_BOX (cbox), _(text[i]));
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (cbox), _(text[i]));
 
 	gtk_combo_box_set_active (GTK_COMBO_BOX (cbox),
 									  setup_get_int (&setup_prefs, set) - set->extra);
@@ -1058,7 +1096,19 @@ setup_filereq_cb (GtkWidget *entry, char *file)
 static void
 setup_browsefile_cb (GtkWidget *button, GtkWidget *entry)
 {
-	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb, entry, NULL, NULL, 0);
+	/* used for background image only */
+	char *filter;
+	int filter_type;
+
+#ifdef WIN32
+	filter = "*png;*.tiff;*.gif;*.jpeg;*.jpg";
+	filter_type = FRF_EXTENSIONS;
+#else
+	filter = "image/*";
+	filter_type = FRF_MIMETYPES;
+#endif
+	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb,
+					entry, NULL, filter, filter_type|FRF_RECENTLYUSED);
 }
 
 static void
@@ -1093,7 +1143,7 @@ setup_fontsel_cancel (GtkWidget *button, GtkFontSelectionDialog *dialog)
 static void
 setup_browsefolder_cb (GtkWidget *button, GtkEntry *entry)
 {
-	gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry, entry->text, NULL, FRF_CHOOSEFOLDER);
+	gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry, (char*)gtk_entry_get_text (entry), NULL, FRF_CHOOSEFOLDER);
 }
 
 static void
@@ -1101,22 +1151,24 @@ setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 {
 	GtkFontSelection *sel;
 	GtkFontSelectionDialog *dialog;
+	GtkWidget *ok_button;
 
 	dialog = (GtkFontSelectionDialog *) gtk_font_selection_dialog_new (_("Select font"));
 	font_dialog = (GtkWidget *)dialog;	/* global var */
 
-	sel = (GtkFontSelection *) dialog->fontsel;
+	sel = (GtkFontSelection *) gtk_font_selection_dialog_get_font_selection (dialog);
 
-	if (GTK_ENTRY (entry)->text[0])
-		gtk_font_selection_set_font_name (sel, GTK_ENTRY (entry)->text);
+	if (gtk_entry_get_text (GTK_ENTRY (entry))[0])
+		gtk_font_selection_set_font_name (sel, gtk_entry_get_text (GTK_ENTRY (entry)));
 
-	g_object_set_data (G_OBJECT (dialog->ok_button), "e", entry);
+	ok_button = gtk_font_selection_dialog_get_ok_button (dialog);
+	g_object_set_data (G_OBJECT (ok_button), "e", entry);
 
 	g_signal_connect (G_OBJECT (dialog), "destroy",
 							G_CALLBACK (setup_fontsel_destroy), dialog);
-	g_signal_connect (G_OBJECT (dialog->ok_button), "clicked",
+	g_signal_connect (G_OBJECT (ok_button), "clicked",
 							G_CALLBACK (setup_fontsel_cb), dialog);
-	g_signal_connect (G_OBJECT (dialog->cancel_button), "clicked",
+	g_signal_connect (G_OBJECT (gtk_font_selection_dialog_get_cancel_button (dialog)), "clicked",
 							G_CALLBACK (setup_fontsel_cancel), dialog);
 
 	gtk_widget_show (GTK_WIDGET (dialog));
@@ -1127,8 +1179,8 @@ setup_entry_cb (GtkEntry *entry, setting *set)
 {
 	int size;
 	int pos;
-	int len = strlen (entry->text);
-	unsigned char *p = entry->text;
+	unsigned char *p = (unsigned char*)gtk_entry_get_text (entry);
+	int len = strlen (p);
 
 	/* need to truncate? */
 	if (len >= set->extra)
@@ -1150,7 +1202,7 @@ setup_entry_cb (GtkEntry *entry, setting *set)
 	}
 	else
 	{
-		setup_set_str (&setup_prefs, set, entry->text);
+		setup_set_str (&setup_prefs, set, gtk_entry_get_text (entry));
 	}
 }
 
@@ -1178,7 +1230,7 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	if (set->list)
 		gtk_entry_set_visibility (GTK_ENTRY (wid), FALSE);
 	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
+		gtk_widget_set_tooltip_text (wid, _(set->tooltip));
 	gtk_entry_set_max_length (GTK_ENTRY (wid), set->extra - 1);
 	gtk_entry_set_text (GTK_ENTRY (wid), setup_get_str (&setup_prefs, set));
 	g_signal_connect (G_OBJECT (wid), "changed",
@@ -1226,9 +1278,9 @@ setup_create_header (GtkWidget *table, int row, char *labeltext)
 	char buf[128];
 
 	if (row == 0)
-		snprintf (buf, sizeof (buf), "<b>%s</b>", _(labeltext));
+		g_snprintf (buf, sizeof (buf), "<b>%s</b>", _(labeltext));
 	else
-		snprintf (buf, sizeof (buf), "\n<b>%s</b>", _(labeltext));
+		g_snprintf (buf, sizeof (buf), "\n<b>%s</b>", _(labeltext));
 
 	label = gtk_label_new (NULL);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
@@ -1237,22 +1289,24 @@ setup_create_header (GtkWidget *table, int row, char *labeltext)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 5);
 }
 
-static GtkWidget *
-setup_create_frame (GtkWidget **left, GtkWidget *box)
+static void
+setup_create_button (GtkWidget *table, int row, char *label, GCallback callback)
 {
-	GtkWidget *tab, *hbox, *inbox = box;
+	GtkWidget *but = gtk_button_new_with_label (label);
+	gtk_table_attach (GTK_TABLE (table), but, 2, 3, row, row + 1,
+					GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 5);
+	g_signal_connect (G_OBJECT (but), "clicked", callback, NULL);
+}
+
+static GtkWidget *
+setup_create_frame (void)
+{
+	GtkWidget *tab;
 
 	tab = gtk_table_new (3, 2, FALSE);
 	gtk_container_set_border_width (GTK_CONTAINER (tab), 6);
 	gtk_table_set_row_spacings (GTK_TABLE (tab), 2);
 	gtk_table_set_col_spacings (GTK_TABLE (tab), 3);
-	gtk_container_add (GTK_CONTAINER (inbox), tab);
-
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (inbox), hbox);
-
-	*left = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), *left, 0, 0, 0);
 
 	return tab;
 }
@@ -1267,13 +1321,11 @@ static GtkWidget *
 setup_create_page (const setting *set)
 {
 	int i, row, do_disable;
-	GtkWidget *tab, *box, *left;
+	GtkWidget *tab;
 	GtkWidget *wid = NULL, *parentwid = NULL;
 
-	box = gtk_vbox_new (FALSE, 1);
-	gtk_container_set_border_width (GTK_CONTAINER (box), 6);
-
-	tab = setup_create_frame (&left, box);
+	tab = setup_create_frame ();
+	gtk_container_set_border_width (GTK_CONTAINER (tab), 6);
 
 	i = row = do_disable = 0;
 	while (set[i].type != ST_END)
@@ -1338,25 +1390,12 @@ setup_create_page (const setting *set)
 		row++;
 	}
 
-#if 0
-	if (set == general_settings)
-	{
-		setup_create_id_menu (tab, _("Mark identified users with:"),	
-									 row, setup_prefs.hex_irc_id_ytext);
-		setup_create_id_menu (tab, _("Mark not-identified users with:"),	
-									 row + 1, setup_prefs.hex_irc_id_ntext);
-	}
-#endif
-
 	if (set == logging_settings)
 	{
-		GtkWidget *but = gtk_button_new_with_label (_("Open Data Folder"));
-		gtk_box_pack_start (GTK_BOX (left), but, 0, 0, 0);
-		g_signal_connect (G_OBJECT (but), "clicked",
-								G_CALLBACK (open_data_cb), 0);
+		setup_create_button (tab, row, _("Open Data Folder"), G_CALLBACK(open_data_cb));
 	}
 
-	return box;
+	return tab;
 }
 
 static void
@@ -1380,7 +1419,7 @@ setup_color_ok_cb (GtkWidget *button, GtkWidget *dialog)
 
 	color_change = TRUE;
 
-	gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (cdialog->colorsel), col);
+	gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (gtk_color_selection_dialog_get_color_selection (cdialog)), col);
 
 	gdk_colormap_alloc_color (gtk_widget_get_colormap (button), col, TRUE, TRUE);
 
@@ -1398,7 +1437,7 @@ setup_color_ok_cb (GtkWidget *button, GtkWidget *dialog)
 static void
 setup_color_cb (GtkWidget *button, gpointer userdata)
 {
-	GtkWidget *dialog;
+	GtkWidget *dialog, *cancel_button, *ok_button, *help_button;
 	GtkColorSelectionDialog *cdialog;
 	GdkColor *color;
 
@@ -1407,16 +1446,24 @@ setup_color_cb (GtkWidget *button, gpointer userdata)
 	dialog = gtk_color_selection_dialog_new (_("Select color"));
 	cdialog = GTK_COLOR_SELECTION_DIALOG (dialog);
 
-	gtk_widget_hide (cdialog->help_button);
-	g_signal_connect (G_OBJECT (cdialog->ok_button), "clicked",
+	g_object_get (G_OBJECT(cdialog), "cancel-button", &cancel_button,
+									"ok-button", &ok_button,
+									"help-button", &help_button, NULL);
+
+	gtk_widget_hide (help_button);
+	g_signal_connect (G_OBJECT (ok_button), "clicked",
 							G_CALLBACK (setup_color_ok_cb), dialog);
-	g_signal_connect (G_OBJECT (cdialog->cancel_button), "clicked",
+	g_signal_connect (G_OBJECT (cancel_button), "clicked",
 							G_CALLBACK (gtkutil_destroy), dialog);
-	g_object_set_data (G_OBJECT (cdialog->ok_button), "c", color);
-	g_object_set_data (G_OBJECT (cdialog->ok_button), "b", button);
-	gtk_widget_set_sensitive (cdialog->help_button, FALSE);
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (cdialog->colorsel), color);
+	g_object_set_data (G_OBJECT (ok_button), "c", color);
+	g_object_set_data (G_OBJECT (ok_button), "b", button);
+	gtk_widget_set_sensitive (help_button, FALSE);
+	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (gtk_color_selection_dialog_get_color_selection (cdialog)), color);
 	gtk_widget_show (dialog);
+
+	g_object_unref (cancel_button);
+	g_object_unref (ok_button);
+	g_object_unref (help_button);
 }
 
 static void
@@ -1432,7 +1479,7 @@ setup_create_color_button (GtkWidget *table, int num, int row, int col)
 						/* 12345678901 23456789 01  23456789 */
 		sprintf (buf, "<span size=\"x-small\">%d</span>", num);
 	but = gtk_button_new_with_label (" ");
-	gtk_label_set_markup (GTK_LABEL (GTK_BIN (but)->child), buf);
+	gtk_label_set_markup (GTK_LABEL (gtk_bin_get_child (GTK_BIN (but))), buf);
 	/* win32 build uses this to turn off themeing */
 	g_object_set_data (G_OBJECT (but), "hexchat-color", (gpointer)1);
 	gtk_table_attach (GTK_TABLE (table), but, col, col+1, row, row+1,
@@ -1517,9 +1564,7 @@ setup_create_color_page (void)
 	setup_create_other_color (_("New message:"), COL_NEW_MSG, 10, tab);
 	setup_create_other_colorR (_("Away user:"), COL_AWAY, 10, tab);
 	setup_create_other_color (_("Highlight:"), COL_HILIGHT, 11, tab);
-#ifdef HAVE_ISO_CODES /* Defined with static spelling */
 	setup_create_other_colorR (_("Spell checker:"), COL_SPELL, 11, tab);
-#endif
 
 	setup_create_header (tab, 15, N_("Color Stripping"));
 
@@ -1658,14 +1703,25 @@ static void
 setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 {
 	char *sounds_dir = g_build_filename (get_xdir (), HEXCHAT_SOUND_DIR, NULL);
-	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry, sounds_dir, NULL, FRF_FILTERISINITIAL);
+	char *filter = NULL;
+	int filter_type;
+#ifdef WIN32 /* win32 only supports wav, others could support anything */
+	filter = "*.wav";
+	filter_type = FRF_EXTENSIONS;
+#else
+	filter = "audio/*";
+	filter_type = FRF_MIMETYPES;
+#endif
+
+	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry,
+						sounds_dir, filter, FRF_FILTERISINITIAL|filter_type);
 	g_free (sounds_dir);
 }
 
 static void
 setup_snd_play_cb (GtkWidget *button, GtkEntry *entry)
 {
-	sound_play (entry->text, FALSE);
+	sound_play (gtk_entry_get_text (entry), FALSE);
 }
 
 static void
@@ -1685,9 +1741,8 @@ setup_snd_changed_cb (GtkEntry *ent, GtkTreeView *tree)
 		return;
 
 	/* get the new sound file */
-	if (sound_files[n])
-		free (sound_files[n]);
-	sound_files[n] = strdup (GTK_ENTRY (ent)->text);
+	g_free (sound_files[n]);
+	sound_files[n] = g_strdup (gtk_entry_get_text (GTK_ENTRY (ent)));
 
 	/* update the TreeView list */
 	store = (GtkListStore *)gtk_tree_view_get_model (tree);
@@ -1785,32 +1840,31 @@ setup_create_sound_page (void)
 static void
 setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 {
-	GtkWidget *oframe, *frame, *label, *vvbox;
+	GtkWidget *label, *vvbox, *viewport;
+	GtkScrolledWindow *sw;
 	char buf[128];
 
-	/* frame for whole page */
-	oframe = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (oframe), GTK_SHADOW_IN);
-
 	vvbox = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (oframe), vvbox);
-
-	/* border for the label */
-	frame = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-	gtk_box_pack_start (GTK_BOX (vvbox), frame, FALSE, TRUE, 0);
 
 	/* label */
 	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<b><big>%s</big></b>", _(title));
+	g_snprintf (buf, sizeof (buf), "<b><big>%s</big></b>", _(title));
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_misc_set_padding (GTK_MISC (label), 2, 1);
-	gtk_container_add (GTK_CONTAINER (frame), label);
+	gtk_box_pack_start (GTK_BOX (vvbox), label, FALSE, FALSE, 2);
 
 	gtk_container_add (GTK_CONTAINER (vvbox), tab);
 
-	gtk_notebook_append_page (GTK_NOTEBOOK (book), oframe, NULL);
+	sw = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new (NULL, NULL));
+	gtk_scrolled_window_set_shadow_type (sw, GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (sw, GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_add_with_viewport (sw, vvbox);
+
+	viewport = gtk_bin_get_child (GTK_BIN(sw));
+	gtk_viewport_set_shadow_type (GTK_VIEWPORT(viewport), GTK_SHADOW_NONE);
+
+	gtk_notebook_append_page (GTK_NOTEBOOK (book), GTK_WIDGET(sw), NULL);
 }
 
 static const char *const cata[] =
@@ -1832,6 +1886,7 @@ static const char *const cata[] =
 	N_("Network"),
 		N_("Network setup"),
 		N_("File transfers"),
+		N_("Identd"),
 		NULL,
 	NULL
 };
@@ -1840,6 +1895,7 @@ static GtkWidget *
 setup_create_pages (GtkWidget *box)
 {
 	GtkWidget *book;
+	GtkWindow *win = GTK_WINDOW(gtk_widget_get_toplevel (box));
 
 	book = gtk_notebook_new ();
 
@@ -1851,9 +1907,17 @@ setup_create_pages (GtkWidget *box)
 
 	setup_add_page (cata[8], book, setup_create_page (general_settings));
 
-	if (unity_mode ())
+	if (!gtkutil_tray_icon_supported (win) && !notification_backend_supported ())
+	{
+		setup_add_page (cata[9], book, setup_create_page (alert_settings_unityandnonotifications));
+	}
+	else if (!gtkutil_tray_icon_supported (win))
 	{
 		setup_add_page (cata[9], book, setup_create_page (alert_settings_unity));
+	}
+	else if (!notification_backend_supported ())
+	{
+		setup_add_page (cata[9], book, setup_create_page (alert_settings_nonotifications));
 	}
 	else
 	{
@@ -1864,8 +1928,9 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[11], book, setup_create_page (logging_settings));
 	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
 
-	setup_add_page (cata[14], book, setup_create_page (network_settings));
-	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[15], book, setup_create_page (network_settings));
+	setup_add_page (cata[16], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[17], book, setup_create_page (identd_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
@@ -1977,10 +2042,6 @@ setup_apply_entry_style (GtkWidget *entry)
 static void
 setup_apply_to_sess (session_gui *gui)
 {
-#ifdef USE_GTKSPELL
-	GtkSpell *spell;
-#endif
-
 	mg_update_xtext (gui->xtext);
 
 	if (prefs.hex_gui_ulist_style)
@@ -2007,27 +2068,12 @@ setup_apply_to_sess (session_gui *gui)
 	else
 		gtk_widget_hide (gui->button_box);
 
-#ifdef USE_GTKSPELL
-	spell = gtkspell_get_from_text_view (GTK_TEXT_VIEW (gui->input_box));
-	if (prefs.hex_gui_input_spell)
-	{
-		if (!spell)
-			gtkspell_new_attach (GTK_TEXT_VIEW (gui->input_box), NULL, NULL);
-	}
-	else
-	{
-		if (spell)
-			gtkspell_detach (spell);
-	}
-#endif
-
-#ifdef USE_LIBSEXY
 	/* update active languages */
 	sexy_spell_entry_deactivate_language((SexySpellEntry *)gui->input_box,NULL);
 	sexy_spell_entry_activate_default_languages((SexySpellEntry *)gui->input_box);
 
 	sexy_spell_entry_set_checked ((SexySpellEntry *)gui->input_box, prefs.hex_gui_input_spell);
-#endif
+	sexy_spell_entry_set_parse_attributes ((SexySpellEntry *)gui->input_box, prefs.hex_gui_input_attr);
 }
 
 static void
@@ -2046,7 +2092,7 @@ unslash (char *dir)
 }
 
 void
-setup_apply_real (int new_pix, int do_ulist, int do_layout)
+setup_apply_real (int new_pix, int do_ulist, int do_layout, int do_identd)
 {
 	GSList *list;
 	session *sess;
@@ -2095,9 +2141,13 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 
 	mg_apply_setup ();
 	tray_apply_setup ();
+	hexchat_reinit_timers ();
 
 	if (do_layout)
 		menu_change_layout ();
+
+	if (do_identd)
+		handle_command (current_sess, "IDENTD reload", FALSE);
 }
 
 static void
@@ -2107,12 +2157,12 @@ setup_apply (struct hexchatprefs *pr)
 	PangoFontDescription *old_desc;
 	PangoFontDescription *new_desc;
 	char buffer[4 * FONTNAMELEN + 1];
-	time_t rawtime;
 #endif
 	int new_pix = FALSE;
 	int noapply = FALSE;
 	int do_ulist = FALSE;
 	int do_layout = FALSE;
+	int do_identd = FALSE;
 
 	if (strcmp (pr->hex_text_background, prefs.hex_text_background) != 0)
 		new_pix = TRUE;
@@ -2147,17 +2197,22 @@ setup_apply (struct hexchatprefs *pr)
 		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_icons))
 		noapply = TRUE;
-	if (DIFF (hex_gui_ulist_resizable))
-		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_show_hosts))
 		noapply = TRUE;
 	if (DIFF (hex_gui_ulist_style))
 		noapply = TRUE;
+	if (DIFF (hex_gui_ulist_sort))
+		noapply = TRUE;
+	if (DIFF (hex_gui_input_style) && prefs.hex_gui_input_style == TRUE)
+		noapply = TRUE; /* Requires restart to *disable* */
 
 	if (DIFF (hex_gui_tab_dots))
 		do_layout = TRUE;
 	if (DIFF (hex_gui_tab_layout))
 		do_layout = TRUE;
+
+	if (DIFF (hex_identd_server) || DIFF (hex_identd_port))
+		do_identd = TRUE;
 
 	if (color_change || (DIFF (hex_gui_ulist_color)) || (DIFF (hex_away_size_max)) || (DIFF (hex_away_track)))
 		do_ulist = TRUE;
@@ -2168,6 +2223,13 @@ setup_apply (struct hexchatprefs *pr)
 						"Please change to the <b>Tabs</b> layout in the <b>View</b>"
 						" menu first."),
 						FE_MSG_WARN | FE_MSG_MARKUP);
+
+	/* format cannot be blank, there is already a setting for this */
+	if (pr->hex_stamp_text_format[0] == 0)
+	{
+		pr->hex_stamp_text = 0;
+		strcpy (pr->hex_stamp_text_format, prefs.hex_stamp_text_format);
+	}
 
 	memcpy (&prefs, pr, sizeof (prefs));
 
@@ -2185,14 +2247,6 @@ setup_apply (struct hexchatprefs *pr)
 	g_free (old_desc);
 	g_free (new_desc);
 	*/
-
-	/* workaround for strftime differences between POSIX and MSVC */
-	time (&rawtime);
-
-	if (!strftime (buffer, sizeof (buffer), prefs.hex_stamp_text_format, localtime (&rawtime)) || !strftime (buffer, sizeof (buffer), prefs.hex_stamp_log_format, localtime (&rawtime)))
-	{
-		fe_message (_("Invalid time stamp format! See the strftime MSDN article for details."), FE_MSG_ERROR);
-	}
 #endif
 
 	if (prefs.hex_irc_real_name[0] == 0)
@@ -2201,14 +2255,14 @@ setup_apply (struct hexchatprefs *pr)
 		strcpy (prefs.hex_irc_real_name, "realname");
 	}
 	
-	setup_apply_real (new_pix, do_ulist, do_layout);
+	setup_apply_real (new_pix, do_ulist, do_layout, do_identd);
 
 	if (noapply)
 		fe_message (_("Some settings were changed that require a"
 						" restart to take full effect."), FE_MSG_WARN);
 
 #ifndef WIN32
-	if (prefs.hex_dcc_auto_recv)
+	if (prefs.hex_dcc_auto_recv == 2) /* Auto */
 	{
 		if (!strcmp ((char *)g_get_home_dir (), prefs.hex_dcc_dir))
 		{
@@ -2220,15 +2274,6 @@ setup_apply (struct hexchatprefs *pr)
 	}
 #endif
 }
-
-#if 0
-static void
-setup_apply_cb (GtkWidget *but, GtkWidget *win)
-{
-	/* setup_prefs -> hexchat */
-	setup_apply (&setup_prefs);
-}
-#endif
 
 static void
 setup_ok_cb (GtkWidget *but, GtkWidget *win)
@@ -2243,8 +2288,10 @@ static GtkWidget *
 setup_window_open (void)
 {
 	GtkWidget *wid, *win, *vbox, *hbox, *hbbox;
+	char buf[128];
 
-	win = gtkutil_window_new (_(DISPLAY_NAME": Preferences"), "prefs", 0, 0, 3);
+	g_snprintf(buf, sizeof(buf), _("Preferences - %s"), _(DISPLAY_NAME));
+	win = gtkutil_window_new (buf, "prefs", 0, 600, 2);
 
 	vbox = gtk_vbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
@@ -2255,22 +2302,11 @@ setup_window_open (void)
 
 	setup_create_tree (hbox, setup_create_pages (hbox));
 
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-
 	/* prepare the button box */
 	hbbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbbox), GTK_BUTTONBOX_END);
 	gtk_box_set_spacing (GTK_BOX (hbbox), 4);
-	gtk_box_pack_end (GTK_BOX (hbox), hbbox, FALSE, FALSE, 0);
-
-	/* standard buttons */
-	/* GNOME doesn't like apply */
-#if 0
-	wid = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-	g_signal_connect (G_OBJECT (wid), "clicked",
-							G_CALLBACK (setup_apply_cb), win);
-	gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);
-#endif
+	gtk_box_pack_end (GTK_BOX (vbox), hbbox, FALSE, FALSE, 0);
 
 	cancel_button = wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	g_signal_connect (G_OBJECT (wid), "clicked",
@@ -2281,9 +2317,6 @@ setup_window_open (void)
 	g_signal_connect (G_OBJECT (wid), "clicked",
 							G_CALLBACK (setup_ok_cb), win);
 	gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);
-
-	wid = gtk_hseparator_new ();
-	gtk_box_pack_end (GTK_BOX (vbox), wid, FALSE, FALSE, 0);
 
 	gtk_widget_show_all (win);
 

@@ -49,6 +49,10 @@ typedef struct _hexchat_hook hexchat_hook;
 #ifndef PLUGIN_C
 typedef struct _hexchat_context hexchat_context;
 #endif
+typedef struct
+{
+	time_t server_time_utc; /* 0 if not used */
+} hexchat_event_attrs;
 
 #ifndef PLUGIN_C
 struct _hexchat_plugin
@@ -84,11 +88,19 @@ struct _hexchat_plugin
 	void (*hexchat_print) (hexchat_plugin *ph,
 	     const char *text);
 	void (*hexchat_printf) (hexchat_plugin *ph,
-	      const char *format, ...);
+	      const char *format, ...)
+#ifdef __GNUC__
+	__attribute__((format(printf, 2, 3)))
+#endif
+	;
 	void (*hexchat_command) (hexchat_plugin *ph,
 	       const char *command);
 	void (*hexchat_commandf) (hexchat_plugin *ph,
-		const char *format, ...);
+		const char *format, ...)
+#ifdef __GNUC__
+	__attribute__((format(printf, 2, 3)))
+#endif
+	;
 	int (*hexchat_nickcmp) (hexchat_plugin *ph,
 	       const char *s1,
 	       const char *s2);
@@ -164,6 +176,23 @@ struct _hexchat_plugin
 		const char *var);
 	int (*hexchat_pluginpref_list) (hexchat_plugin *ph,
 		char *dest);
+	hexchat_hook *(*hexchat_hook_server_attrs) (hexchat_plugin *ph,
+		   const char *name,
+		   int pri,
+		   int (*callback) (char *word[], char *word_eol[],
+							hexchat_event_attrs *attrs, void *user_data),
+		   void *userdata);
+	hexchat_hook *(*hexchat_hook_print_attrs) (hexchat_plugin *ph,
+		  const char *name,
+		  int pri,
+		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
+						   void *user_data),
+		  void *userdata);
+	int (*hexchat_emit_print_attrs) (hexchat_plugin *ph, hexchat_event_attrs *attrs,
+									 const char *event_name, ...);
+	hexchat_event_attrs *(*hexchat_event_attrs_create) (hexchat_plugin *ph);
+	void (*hexchat_event_attrs_free) (hexchat_plugin *ph,
+									  hexchat_event_attrs *attrs);
 };
 #endif
 
@@ -176,6 +205,10 @@ hexchat_hook_command (hexchat_plugin *ph,
 		    const char *help_text,
 		    void *userdata);
 
+hexchat_event_attrs *hexchat_event_attrs_create (hexchat_plugin *ph);
+
+void hexchat_event_attrs_free (hexchat_plugin *ph, hexchat_event_attrs *attrs);
+
 hexchat_hook *
 hexchat_hook_server (hexchat_plugin *ph,
 		   const char *name,
@@ -184,10 +217,26 @@ hexchat_hook_server (hexchat_plugin *ph,
 		   void *userdata);
 
 hexchat_hook *
+hexchat_hook_server_attrs (hexchat_plugin *ph,
+		   const char *name,
+		   int pri,
+		   int (*callback) (char *word[], char *word_eol[],
+							hexchat_event_attrs *attrs, void *user_data),
+		   void *userdata);
+
+hexchat_hook *
 hexchat_hook_print (hexchat_plugin *ph,
 		  const char *name,
 		  int pri,
 		  int (*callback) (char *word[], void *user_data),
+		  void *userdata);
+
+hexchat_hook *
+hexchat_hook_print_attrs (hexchat_plugin *ph,
+		  const char *name,
+		  int pri,
+		  int (*callback) (char *word[], hexchat_event_attrs *attrs,
+						   void *user_data),
 		  void *userdata);
 
 hexchat_hook *
@@ -213,7 +262,11 @@ hexchat_print (hexchat_plugin *ph,
 
 void
 hexchat_printf (hexchat_plugin *ph,
-	      const char *format, ...);
+	      const char *format, ...)
+#ifdef __GNUC__
+	__attribute__((format(printf, 2, 3)))
+#endif
+;
 
 void
 hexchat_command (hexchat_plugin *ph,
@@ -221,7 +274,11 @@ hexchat_command (hexchat_plugin *ph,
 
 void
 hexchat_commandf (hexchat_plugin *ph,
-		const char *format, ...);
+		const char *format, ...)
+#ifdef __GNUC__
+	__attribute__((format(printf, 2, 3)))
+#endif
+;
 
 int
 hexchat_nickcmp (hexchat_plugin *ph,
@@ -297,6 +354,10 @@ int
 hexchat_emit_print (hexchat_plugin *ph,
 		  const char *event_name, ...);
 
+int 
+hexchat_emit_print_attrs (hexchat_plugin *ph, hexchat_event_attrs *attrs,
+						  const char *event_name, ...);
+
 char *
 hexchat_gettext (hexchat_plugin *ph,
 	       const char *msgid);
@@ -345,13 +406,17 @@ int
 hexchat_pluginpref_list (hexchat_plugin *ph,
 		char *dest);
 
-#if !defined(PLUGIN_C) && defined(WIN32)
+#if !defined(PLUGIN_C) && (defined(WIN32) || defined(__CYGWIN__))
 #ifndef HEXCHAT_PLUGIN_HANDLE
 #define HEXCHAT_PLUGIN_HANDLE (ph)
 #endif
 #define hexchat_hook_command ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_command)
+#define hexchat_event_attrs_create ((HEXCHAT_PLUGIN_HANDLE)->hexchat_event_attrs_create)
+#define hexchat_event_attrs_free ((HEXCHAT_PLUGIN_HANDLE)->hexchat_event_attrs_free)
 #define hexchat_hook_server ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_server)
+#define hexchat_hook_server_attrs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_server_attrs)
 #define hexchat_hook_print ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_print)
+#define hexchat_hook_print_attrs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_print_attrs)
 #define hexchat_hook_timer ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_timer)
 #define hexchat_hook_fd ((HEXCHAT_PLUGIN_HANDLE)->hexchat_hook_fd)
 #define hexchat_unhook ((HEXCHAT_PLUGIN_HANDLE)->hexchat_unhook)
@@ -374,6 +439,7 @@ hexchat_pluginpref_list (hexchat_plugin *ph,
 #define hexchat_plugingui_add ((HEXCHAT_PLUGIN_HANDLE)->hexchat_plugingui_add)
 #define hexchat_plugingui_remove ((HEXCHAT_PLUGIN_HANDLE)->hexchat_plugingui_remove)
 #define hexchat_emit_print ((HEXCHAT_PLUGIN_HANDLE)->hexchat_emit_print)
+#define hexchat_emit_print_attrs ((HEXCHAT_PLUGIN_HANDLE)->hexchat_emit_print_attrs)
 #define hexchat_list_time ((HEXCHAT_PLUGIN_HANDLE)->hexchat_list_time)
 #define hexchat_gettext ((HEXCHAT_PLUGIN_HANDLE)->hexchat_gettext)
 #define hexchat_send_modes ((HEXCHAT_PLUGIN_HANDLE)->hexchat_send_modes)

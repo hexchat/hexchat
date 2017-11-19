@@ -103,7 +103,7 @@ mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
 		/* delete old mask, and add new one with original flags */
 		ignore_del (old, NULL);
 		flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
-		ignore_add (new, flags);
+		ignore_add (new, flags, TRUE);
 
 		/* update tree */
 		gtk_list_store_set (store, &iter, MASK_COLUMN, new, -1);
@@ -131,7 +131,7 @@ option_toggled (GtkCellRendererToggle *render, gchar *path, gpointer data)
 	/* update ignore list */
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 0, &mask, -1);
 	flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
-	if (ignore_add (mask, flags) != 2)
+	if (ignore_add (mask, flags, TRUE) != 2)
 		g_warning ("ignore treeview is out of sync!\n");
 	
 	g_free (mask);
@@ -172,7 +172,7 @@ ignore_treeview_new (GtkWidget *box)
 	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
 	     col_id++)
 	{
-		GList *list = gtk_tree_view_column_get_cell_renderers (col);
+		GList *list = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (col));
 		GList *tmp;
 
 		for (tmp = list; tmp; tmp = tmp->next)
@@ -244,7 +244,7 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 		return;
 	}
 
-	ignore_add (mask, flags);
+	ignore_add (mask, flags, TRUE);
 
 	gtk_list_store_append (store, &iter);
 	/* ignore everything by default */
@@ -306,7 +306,7 @@ ignore_new_entry_clicked (GtkWidget * wid, struct session *sess)
 }
 
 static void
-close_ignore_gui_callback ()
+close_ignore_gui_callback (void)
 {
 	ignore_save ();
 	ignorewin = 0;
@@ -339,6 +339,7 @@ ignore_gui_open ()
 	GSList *temp = ignore_list;
 	char *mask;
 	gboolean private, chan, notice, ctcp, dcc, invite, unignore;
+	char buf[128];
 
 	if (ignorewin)
 	{
@@ -346,10 +347,11 @@ ignore_gui_open ()
 		return;
 	}
 
+	g_snprintf(buf, sizeof(buf), _("Ignore list - %s"), _(DISPLAY_NAME));
 	ignorewin =
-			  mg_create_generic_tab ("IgnoreList", _(DISPLAY_NAME": Ignore list"),
-											FALSE, TRUE, close_ignore_gui_callback,
-											NULL, 600, 256, &vbox, 0);
+			  mg_create_generic_tab ("IgnoreList", buf, FALSE, TRUE,
+											close_ignore_gui_callback,
+											NULL, 700, 300, &vbox, 0);
 	gtkutil_destroy_on_esc (ignorewin);
 
 	view = ignore_treeview_new (vbox);

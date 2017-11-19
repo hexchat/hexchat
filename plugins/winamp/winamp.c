@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <glib.h>
 
 #include "hexchat-plugin.h"
 
@@ -21,163 +22,127 @@
 
 static hexchat_plugin *ph;   /* plugin handle */
 
-BOOL winamp_found = FALSE;
-
-int status = 0;
-
-/* Slightly modified from X-Chat's log_escape_strcpy */
-static char *
-song_strcpy (char *dest, char *src)
-{
-	while (*src)
-	{
-		*dest = *src;
-		dest++;
-		src++;
-
-		if (*src == '%')
-		{
-			dest[0] = '%';
-			dest++;
-		}
-	}
-
-	dest[0] = 0;
-	return dest - 1;
-}
-
 static int
 winamp(char *word[], char *word_eol[], void *userdata)
 {
+	HWND hwndWinamp = FindWindowW(L"Winamp v1.x",NULL);
 
-char current_play[2048], *p;
-char p_esc[2048];
-char cur_esc[2048];
-char truc[2048];
-HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
-
-    if (hwndWinamp)
+	if (hwndWinamp)
 	{
-	    {
-	        if (!stricmp("PAUSE", word[2]))
+		if (!stricmp("PAUSE", word[2]))
+		{
+			if (SendMessage(hwndWinamp,WM_USER, 0, 104))
 			{
-			   if (SendMessage(hwndWinamp,WM_USER, 0, 104))
-				{
-			   	   SendMessage(hwndWinamp, WM_COMMAND, 40046, 0);
+				SendMessage(hwndWinamp, WM_COMMAND, 40046, 0);
 			
-			       if (SendMessage(hwndWinamp, WM_USER, 0, 104) == PLAYING)
-			   	       hexchat_printf(ph, "Winamp: playing");
-			       else
-                       hexchat_printf(ph, "Winamp: paused");
-				}
-            }
-			else
-		        if (!stricmp("STOP", word[2]))
-			    {
-			       SendMessage(hwndWinamp, WM_COMMAND, 40047, 0);
-			       hexchat_printf(ph, "Winamp: stopped");
-			    }
-			else
-			    if (!stricmp("PLAY", word[2]))
-			    {
-			         SendMessage(hwndWinamp, WM_COMMAND, 40045, 0);
-			         hexchat_printf(ph, "Winamp: playing");
-			    }
-        	else
-
-			    if (!stricmp("NEXT", word[2]))
-			    {
-			         SendMessage(hwndWinamp, WM_COMMAND, 40048, 0);
-			         hexchat_printf(ph, "Winamp: next playlist entry");
-			    }
-			else
-
-                if (!stricmp("PREV", word[2]))
-			    {
-			         SendMessage(hwndWinamp, WM_COMMAND, 40044, 0);
-			         hexchat_printf(ph, "Winamp: previous playlist entry");
-			    }
-		    else
-
-                if (!stricmp("START", word[2]))
-			    {
-			         SendMessage(hwndWinamp, WM_COMMAND, 40154, 0);
-			         hexchat_printf(ph, "Winamp: playlist start");
-			    }
-
-		    else
-
-                if (!word_eol[2][0])
-			    {
-					GetWindowText(hwndWinamp, current_play, sizeof(current_play));
-
-					if (strchr(current_play, '-'))
-					{
-	
-					p = current_play + strlen(current_play) - 8;
-					while (p >= current_play)
-					{
-						if (!strnicmp(p, "- Winamp", 8)) break;
-							p--;
-					}
-
-					if (p >= current_play) p--;
-	
-					while (p >= current_play && *p == ' ') p--;
-						*++p=0;
-	
-	
-					p = strchr(current_play, '.') + 1;
-
- 					song_strcpy(p_esc, p);
- 					song_strcpy(cur_esc, current_play);
-	
-					if (p)
-					{
-						sprintf(truc, "me is now playing:%s", p_esc);
-					}
-					else
-					{
-						sprintf(truc, "me is now playing:%s", cur_esc);
-					}
-	
-	   				hexchat_commandf(ph, truc);
-	
-				}
-				else hexchat_print(ph, "Winamp: Nothing being played.");
+				if (SendMessage(hwndWinamp, WM_USER, 0, 104) == PLAYING)
+					hexchat_printf(ph, "Winamp: playing");
+				else
+					hexchat_printf(ph, "Winamp: paused");
 			}
-		    else
-                hexchat_printf(ph, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START]\n");
-         }
+		}
+		else if (!stricmp("STOP", word[2]))
+		{
+			SendMessage(hwndWinamp, WM_COMMAND, 40047, 0);
+			hexchat_printf(ph, "Winamp: stopped");
+		}
+		else if (!stricmp("PLAY", word[2]))
+		{
+			SendMessage(hwndWinamp, WM_COMMAND, 40045, 0);
+			hexchat_printf(ph, "Winamp: playing");
+		}
+		else if (!stricmp("NEXT", word[2]))
+		{
+			SendMessage(hwndWinamp, WM_COMMAND, 40048, 0);
+			hexchat_printf(ph, "Winamp: next playlist entry");
+		}
+		else if (!stricmp("PREV", word[2]))
+		{
+			SendMessage(hwndWinamp, WM_COMMAND, 40044, 0);
+			hexchat_printf(ph, "Winamp: previous playlist entry");
+		}
+		else if (!stricmp("START", word[2]))
+		{
+			SendMessage(hwndWinamp, WM_COMMAND, 40154, 0);
+			hexchat_printf(ph, "Winamp: playlist start");
+		}
+		else if (!word_eol[2][0])
+		{
+			wchar_t wcurrent_play[2048];
+			char *current_play, *p;
+			int len = GetWindowTextW(hwndWinamp, wcurrent_play, G_N_ELEMENTS(wcurrent_play));
 
+			current_play = g_utf16_to_utf8 (wcurrent_play, len, NULL, NULL, NULL);
+			if (!current_play)
+			{
+				hexchat_print (ph, "Winamp: Error getting song information.");
+				return HEXCHAT_EAT_ALL;
+			}
+
+			if (strchr(current_play, '-'))
+			{
+				/* Remove any trailing text and whitespace */
+				p = current_play + strlen(current_play) - 8;
+				while (p >= current_play)
+				{
+					if (!strnicmp(p, "- Winamp", 8))
+						break;
+					p--;
+				}
+
+				if (p >= current_play)
+					p--;
+
+				while (p >= current_play && *p == ' ')
+					p--;
+				*++p = '\0';
+
+				/* Ignore any leading track number */
+				p = strstr (current_play, ". ");
+				if (p)
+					p += 2;
+				else
+					p = current_play;
+
+				if (*p != '\0')
+					hexchat_commandf (ph, "me is now playing: %s", p);
+				else
+					hexchat_print (ph, "Winamp: No song information found.");
+				g_free (current_play);
+			}
+			else
+				hexchat_print(ph, "Winamp: Nothing being played.");
+		}
+		else
+			hexchat_printf(ph, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START]\n");
 	}
 	else
 	{
-       hexchat_print(ph, "Winamp not found.\n");
+		hexchat_print(ph, "Winamp not found.\n");
 	}
 	return HEXCHAT_EAT_ALL;
 }
 
 int
 hexchat_plugin_init(hexchat_plugin *plugin_handle,
-                      char **plugin_name,
-                      char **plugin_desc,
-                      char **plugin_version,
-                      char *arg)
+					  char **plugin_name,
+					  char **plugin_desc,
+					  char **plugin_version,
+					  char *arg)
 {
 	/* we need to save this for use with any hexchat_* functions */
 	ph = plugin_handle;
 
 	*plugin_name = "Winamp";
 	*plugin_desc = "Winamp plugin for HexChat";
-	*plugin_version = "0.5";
+	*plugin_version = "0.6";
 
 	hexchat_hook_command (ph, "WINAMP", HEXCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
    	hexchat_command (ph, "MENU -ishare\\music.png ADD \"Window/Display Current Song (Winamp)\" \"WINAMP\"");
 
 	hexchat_print (ph, "Winamp plugin loaded\n");
 
-	return 1;       /* return 1 for success */
+	return 1;	   /* return 1 for success */
 }
 
 int

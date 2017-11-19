@@ -25,11 +25,6 @@ typedef struct
 	GtkWidget *scrollw;	/* scrolledWindow */
 } treeview;
 
-#include "../common/hexchat.h"
-#include "../common/hexchatc.h"
-#include "fe-gtk.h"
-#include "maingui.h"
-
 #include <gdk/gdk.h>
 
 static void 	/* row-activated, when a row is double clicked */
@@ -62,22 +57,12 @@ static gboolean
 cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 {
 	chan *ch;
-	GtkTreeSelection *sel;
 	GtkTreePath *path;
 	GtkTreeIter iter;
 	int ret = FALSE;
 
-	if (event->button != 3 && event->state == 0)
-		return FALSE;
-
-	sel = gtk_tree_view_get_selection (tree);
 	if (gtk_tree_view_get_path_at_pos (tree, event->x, event->y, &path, 0, 0, 0))
 	{
-		if (event->button == 2)
-		{
-			gtk_tree_selection_unselect_all (sel);
-			gtk_tree_selection_select_path (sel, path);
-		}
 		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (cv->store), &iter, path))
 		{
 			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
@@ -86,6 +71,22 @@ cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 		gtk_tree_path_free (path);
 	}
 	return ret;
+}
+
+static gboolean
+cv_tree_scroll_event_cb (GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
+{
+	if (prefs.hex_gui_tab_scrollchans)
+	{
+		if (event->direction == GDK_SCROLL_DOWN)
+			mg_switch_page (1, 1);
+		else if (event->direction == GDK_SCROLL_UP)
+			mg_switch_page (1, -1);
+
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 static void
@@ -118,7 +119,7 @@ cv_tree_init (chanview *cv)
 	if (cv->style)
 		gtk_widget_set_style (view, cv->style);
 	/*gtk_widget_modify_base (view, GTK_STATE_NORMAL, &colors[COL_BG]);*/
-	GTK_WIDGET_UNSET_FLAGS (view, GTK_CAN_FOCUS);
+	gtk_widget_set_can_focus (view, FALSE);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
 
 	if (prefs.hex_gui_tab_dots)
@@ -163,12 +164,13 @@ cv_tree_init (chanview *cv)
 							G_CALLBACK (cv_tree_click_cb), cv);
 	g_signal_connect (G_OBJECT (view), "row-activated",
 							G_CALLBACK (cv_tree_activated_cb), NULL);
+	g_signal_connect (G_OBJECT (view), "scroll_event",
+							G_CALLBACK (cv_tree_scroll_event_cb), NULL);
 
 	gtk_drag_dest_set (view, GTK_DEST_DEFAULT_ALL, dnd_dest_target, 1,
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
 	gtk_drag_source_set (view, GDK_BUTTON1_MASK, dnd_src_target, 1, GDK_ACTION_COPY);
 
-#ifndef WIN32
 	g_signal_connect (G_OBJECT (view), "drag_begin",
 							G_CALLBACK (mg_drag_begin_cb), NULL);
 	g_signal_connect (G_OBJECT (view), "drag_drop",
@@ -177,7 +179,6 @@ cv_tree_init (chanview *cv)
 							G_CALLBACK (mg_drag_motion_cb), NULL);
 	g_signal_connect (G_OBJECT (view), "drag_end",
 							G_CALLBACK (mg_drag_end_cb), NULL);
-#endif
 
 	((treeview *)cv)->tree = GTK_TREE_VIEW (view);
 	((treeview *)cv)->scrollw = win;
@@ -254,7 +255,7 @@ cv_tree_focus (chan *ch)
 		gtk_tree_view_get_visible_rect (tree, &vis_rect);
 
 		/* The cordinates aren't offset correctly */
-		gtk_tree_view_widget_to_tree_coords( tree, cell_rect.x, cell_rect.y, NULL, &cell_rect.y );
+		gtk_tree_view_convert_widget_to_bin_window_coords ( tree, cell_rect.x, cell_rect.y, NULL, &cell_rect.y );
 
 		/* only need to scroll if out of bounds */
 		if (cell_rect.y < vis_rect.y ||

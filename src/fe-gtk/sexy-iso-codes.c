@@ -1,307 +1,226 @@
-/*
- *  Copyright (C) 2005 Nathan Fredrickson
- *  Borrowed from Galeon, renamed, and simplified to only use iso-codes with no
- *  fallback method.
- *
- *  Copyright (C) 2004 Christian Persch
- *  Copyright (C) 2004 Crispin Flowerday
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
- */
+/* gtkspell - a spell-checking addon for GTK's TextView widget
+* Copyright (c) 2013 Sandro Mani
+*
+* Based on gtkhtml-editor-spell-language.c code which is
+* Copyright (C) 2008 Novell, Inc.
+*
+*    This program is free software; you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation; either version 2 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License along
+*    with this program; if not, write to the Free Software Foundation, Inc.,
+*    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 
-#ifdef WIN32
-#include "../../config-win32.h"
-#else
-#include "../../config.h"
-#endif
+#include "config.h"
 
 #include "sexy-iso-codes.h"
-
-#include <glib/gi18n.h>
-
+#include <libintl.h>
 #include <string.h>
-
-#include <libxml/xmlreader.h>
-
-static GHashTable *iso_639_table = NULL;
-static GHashTable *iso_3166_table = NULL;
 
 #define ISO_639_DOMAIN	"iso_639"
 #define ISO_3166_DOMAIN	"iso_3166"
 
-#ifdef HAVE_ISO_CODES
-
-#define ISOCODESLOCALEDIR "/share/locale"
+static GHashTable *iso_639_table = NULL;
+static GHashTable *iso_3166_table = NULL;
 
 static void
-read_iso_639_entry (xmlTextReaderPtr reader,
-		    GHashTable *table)
+iso_639_start_element (GMarkupParseContext *context,
+const gchar *element_name,
+const gchar **attribute_names,
+const gchar **attribute_values,
+gpointer data,
+GError **error)
 {
-	xmlChar *code, *name;
+	GHashTable *hash_table = data;
+	const gchar *name = NULL;
+	const gchar *code = NULL;
+	int i;
 
-	code = xmlTextReaderGetAttribute (reader, (const xmlChar *) "iso_639_1_code");
-	name = xmlTextReaderGetAttribute (reader, (const xmlChar *) "name");
+	if (strcmp (element_name, "iso_639_entry") != 0)
+		return;
 
-	/* Get iso-639-2 code */
-	if (code == NULL || code[0] == '\0')
+	for (i = 0; attribute_names[i] != NULL; i++)
 	{
-		xmlFree (code);
-		/* FIXME: use the 2T or 2B code? */
-		code = xmlTextReaderGetAttribute (reader, (const xmlChar *) "iso_639_2T_code");
+		if (strcmp (attribute_names[i], "name") == 0)
+			name = attribute_values[i];
+		else if (strcmp (attribute_names[i], "iso_639_1_code") == 0)
+			code = attribute_values[i];
 	}
 
-	if (code != NULL && code[0] != '\0' && name != NULL && name[0] != '\0')
-	{
-		g_hash_table_insert (table, code, name);
-	}
-	else
-	{
-		xmlFree (code);
-		xmlFree (name);
-	}
+	if (code != NULL && *code != '\0' && name != NULL && *name != '\0')
+		g_hash_table_insert (hash_table, g_strdup (code),
+		g_strdup (dgettext (ISO_639_DOMAIN, name)));
 }
 
 static void
-read_iso_3166_entry (xmlTextReaderPtr reader,
-		     GHashTable *table)
+iso_3166_start_element (GMarkupParseContext *context,
+const gchar *element_name,
+const gchar **attribute_names,
+const gchar **attribute_values,
+gpointer data,
+GError **error)
 {
-	xmlChar *code, *name;
+	GHashTable *hash_table = data;
+	const gchar *name = NULL;
+	const gchar *code = NULL;
+	int i;
 
-	code = xmlTextReaderGetAttribute (reader, (const xmlChar *) "alpha_2_code");
-	name = xmlTextReaderGetAttribute (reader, (const xmlChar *) "name");
+	if (strcmp (element_name, "iso_3166_entry") != 0)
+		return;
 
-	if (code != NULL && code[0] != '\0' && name != NULL && name[0] != '\0')
+	for (i = 0; attribute_names[i] != NULL; i++)
 	{
-		char *lcode;
-
-		lcode = g_ascii_strdown ((char *) code, -1);
-		xmlFree (code);
-
-		g_hash_table_insert (table, lcode, name);
-	}
-	else
-	{
-		xmlFree (code);
-		xmlFree (name);
+		if (strcmp (attribute_names[i], "name") == 0)
+			name = attribute_values[i];
+		else if (strcmp (attribute_names[i], "alpha_2_code") == 0)
+			code = attribute_values[i];
 	}
 
+	if (code != NULL && *code != '\0' && name != NULL && *name != '\0')
+		g_hash_table_insert (hash_table, g_strdup (code),
+		g_strdup (dgettext (ISO_3166_DOMAIN, name)));
 }
 
-typedef enum
+static void
+iso_codes_parse (const GMarkupParser *parser,
+const gchar *basename,
+GHashTable *hash_table)
 {
-	STATE_START,
-	STATE_STOP,
-	STATE_ENTRIES,
-} ParserState;
+	GMappedFile *mapped_file;
+	gchar *filename;
+	GError *error = NULL;
 
-static gboolean
-load_iso_entries (int iso,
-		  GFunc read_entry_func,
-		  gpointer user_data)
-{
-	xmlTextReaderPtr reader;
-	ParserState state = STATE_START;
-	xmlChar iso_entries[32], iso_entry[32];
-	char *filename;
-	int ret = -1;
-
-#ifdef WIN32
-	filename = g_strdup_printf (".\\share\\xml\\iso-codes\\iso_%d.xml", iso);
-#else
-	filename = g_strdup_printf ("/usr/share/xml/iso-codes/iso_%d.xml", iso);
-#endif
-	reader = xmlNewTextReaderFilename (filename);
-	if (reader == NULL) goto out;
-
-	xmlStrPrintf (iso_entries, sizeof (iso_entries),
-				  (xmlChar *)"iso_%d_entries", iso);
-	xmlStrPrintf (iso_entry, sizeof (iso_entry),
-				  (xmlChar *)"iso_%d_entry", iso);
-
-	ret = xmlTextReaderRead (reader);
-
-	while (ret == 1)
-	{
-		const xmlChar *tag;
-		xmlReaderTypes type;
-
-		tag = xmlTextReaderConstName (reader);
-		type = xmlTextReaderNodeType (reader);
-
-		if (state == STATE_ENTRIES &&
-		    type == XML_READER_TYPE_ELEMENT &&
-		    xmlStrEqual (tag, iso_entry))
-		{
-			read_entry_func (reader, user_data);
-		}
-		else if (state == STATE_START &&
-			 type == XML_READER_TYPE_ELEMENT &&
-			 xmlStrEqual (tag, iso_entries))
-		{
-			state = STATE_ENTRIES;
-		}
-		else if (state == STATE_ENTRIES &&
-			 type == XML_READER_TYPE_END_ELEMENT &&
-			 xmlStrEqual (tag, iso_entries))
-		{
-			state = STATE_STOP;
-		}
-		else if (type == XML_READER_TYPE_SIGNIFICANT_WHITESPACE ||
-			 type == XML_READER_TYPE_WHITESPACE ||
-			 type == XML_READER_TYPE_TEXT ||
-			 type == XML_READER_TYPE_COMMENT)
-		{
-			/* eat it */
-		}
-		else
-		{
-			/* ignore it */
-		}
-
-		ret = xmlTextReaderRead (reader);
-	}
-
-	xmlFreeTextReader (reader);
-
-out:
-	if (ret < 0 || state != STATE_STOP)
-	{
-		/* This is not critical, we will fallback to our own code */
-		g_free (filename);
-		return FALSE;
-	}
-
+	filename = g_build_filename (ISO_CODES_PREFIX, "share", "xml", "iso-codes",
+		basename, NULL);
+	mapped_file = g_mapped_file_new (filename, FALSE, &error);
 	g_free (filename);
 
-	return TRUE;
+	if (mapped_file != NULL)
+	{
+		GMarkupParseContext *context;
+		const gchar *contents;
+		gsize length;
+
+		context = g_markup_parse_context_new (parser, 0, hash_table, NULL);
+		contents = g_mapped_file_get_contents (mapped_file);
+		length = g_mapped_file_get_length (mapped_file);
+		g_markup_parse_context_parse (context, contents, length, &error);
+		g_markup_parse_context_free (context);
+		g_mapped_file_unref (mapped_file);
+	}
+
+	if (error != NULL)
+	{
+		g_warning ("%s: %s", basename, error->message);
+		g_error_free (error);
+	}
 }
 
-#endif /* HAVE_ISO_CODES */
-
-
-static void
-ensure_iso_codes_initialised (void)
+/**
+* codetable_init:
+*
+* Initializes the code table.
+*/
+void
+codetable_init (void)
 {
-	static gboolean initialised = FALSE;
+	GMarkupParser iso_639_parser = {
+		iso_639_start_element, NULL, NULL, NULL, NULL
+	};
 
-	if (initialised == TRUE)
-	{
-		return;
-	}
-	initialised = TRUE;
+	GMarkupParser iso_3166_parser = {
+		iso_3166_start_element, NULL, NULL, NULL, NULL
+	};
 
-#if defined (ENABLE_NLS) && defined (HAVE_ISO_CODES)
-	bindtextdomain (ISO_639_DOMAIN, ISOCODESLOCALEDIR);
+	g_return_if_fail (iso_639_table == NULL);
+	g_return_if_fail (iso_3166_table == NULL);
+
+#ifdef ENABLE_NLS
+	bindtextdomain (ISO_639_DOMAIN, ISO_CODES_LOCALEDIR);
 	bind_textdomain_codeset (ISO_639_DOMAIN, "UTF-8");
 
-	bindtextdomain(ISO_3166_DOMAIN, ISOCODESLOCALEDIR);
+	bindtextdomain (ISO_3166_DOMAIN, ISO_CODES_LOCALEDIR);
 	bind_textdomain_codeset (ISO_3166_DOMAIN, "UTF-8");
 #endif
 
 	iso_639_table = g_hash_table_new_full (g_str_hash, g_str_equal,
-					       (GDestroyNotify) xmlFree,
-					       (GDestroyNotify) xmlFree);
-
+		(GDestroyNotify)g_free, (GDestroyNotify)g_free);
 	iso_3166_table = g_hash_table_new_full (g_str_hash, g_str_equal,
-						(GDestroyNotify) g_free,
-						(GDestroyNotify) xmlFree);
-	
-#ifdef HAVE_ISO_CODES
-	load_iso_entries (639, (GFunc) read_iso_639_entry, iso_639_table);
-	load_iso_entries (3166, (GFunc) read_iso_3166_entry, iso_3166_table);
-#endif
-}
+		(GDestroyNotify)g_free, (GDestroyNotify)g_free);
 
-
-static char *
-get_iso_name_for_lang_code (const char *code)
-{
-	char **str;
-	char *name = NULL;
-	const char *langname, *localename;
-	int len;
-
-	str = g_strsplit (code, "_", -1);
-
-	/* count the entries */
-	for (len = 0; str[len]; len++ ) /* empty */;
-
-	g_return_val_if_fail (len != 0, NULL);
-
-	langname = (const char *) g_hash_table_lookup (iso_639_table, str[0]);
-
-	if (len == 1 && langname != NULL)
-	{
-		name = g_strdup (dgettext (ISO_639_DOMAIN, langname));
-	}
-	else if (len == 2 && langname != NULL)
-	{
-		localename = (const char *) g_hash_table_lookup (iso_3166_table, str[1]);
-
-		if (localename != NULL)
-		{
-			/* translators: the first %s is the language name, and the
-			 * second %s is the locale name. Example:
-			 * "French (France)
-			 *
-			 * Also: The text before the "|" is context to help you decide on
-                         * the correct translation. You MUST OMIT it in the translated string.
-			 */
-			name = g_strdup_printf (Q_("language|%s (%s)"),
-						dgettext (ISO_639_DOMAIN, langname),
-						dgettext (ISO_3166_DOMAIN, localename));
-		}
-		else
-		{
-			name = g_strdup_printf (Q_("language|%s (%s)"),
-						dgettext (ISO_639_DOMAIN, langname), str[1]);
-		}
-	}
-
-	g_strfreev (str);
-
-	return name;
+	iso_codes_parse (&iso_639_parser, "iso_639.xml", iso_639_table);
+	iso_codes_parse (&iso_3166_parser, "iso_3166.xml", iso_3166_table);
 }
 
 /**
- * gtkspell_iso_codes_lookup_name_for_code:
- * @code: A language code, e.g. en_CA
- *
- * Looks up a name to display to the user for a language code,
- * this might use the iso-codes package if support was compiled
- * in, and it is available
- *
- * Returns: the UTF-8 string to display to the user, or NULL if 
- * a name for the code could not be found
- */
-char *
-gtkspell_iso_codes_lookup_name_for_code (const char *code)
+* codetable_free:
+*
+* Frees the code table.
+*/
+void
+codetable_free (void)
 {
-	char * lcode;
-	char * ret;
+	g_return_if_fail (iso_639_table != NULL);
+	g_return_if_fail (iso_3166_table != NULL);
 
-	g_return_val_if_fail (code != NULL, NULL);
+	g_hash_table_unref (iso_639_table);
+	g_hash_table_unref (iso_3166_table);
 
-	ensure_iso_codes_initialised ();
-
-	lcode = g_ascii_strdown (code, -1);
-
-	ret = get_iso_name_for_lang_code (lcode);
-
-	g_free (lcode);
-
-	return ret;
+	iso_639_table = NULL;
+	iso_3166_table = NULL;
 }
 
+/**
+* codetable_lookup:
+* @language_code: A language code (i.e. "en_US")
+* @language_name: (out) (transfer none): Pointer to the name of the language.
+* This pointer is owned by the code table and must not be freed.
+* @country_name: (out) (transfer none): Pointer to the name of the country.
+* This pointer is owned by the code table and must not be freed.
+*
+* Looks up the language and country name for the specified language code.
+* If no matching entries are found, language_name and country_name will
+* simply contain the parts of the language code (i.e. "en" and "US").
+*/
+void
+codetable_lookup (const gchar *language_code, const gchar **language_name, const gchar** country_name)
+{
+	gchar **parts;
+
+	g_return_if_fail (iso_639_table != NULL);
+	g_return_if_fail (iso_3166_table != NULL);
+
+	/* Split language code into parts. */
+	parts = g_strsplit (language_code, "_", 2);
+
+	g_return_if_fail (*parts != NULL);
+
+	*language_name = g_hash_table_lookup (iso_639_table, parts[0]);
+	if (*language_name == NULL)
+	{
+		g_hash_table_insert (iso_639_table, g_strdup (parts[0]),
+			g_strdup (parts[0]));
+		*language_name = g_hash_table_lookup (iso_639_table, parts[0]);
+	}
+
+	if (g_strv_length (parts) == 2)
+	{
+		*country_name = g_hash_table_lookup (iso_3166_table, parts[1]);
+		if (*country_name == NULL)
+		{
+			g_hash_table_insert (iso_3166_table, g_strdup (parts[1]),
+				g_strdup (parts[1]));
+			*country_name = g_hash_table_lookup (iso_3166_table, parts[1]);
+		}
+	}
+
+	g_strfreev (parts);
+}

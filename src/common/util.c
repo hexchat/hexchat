@@ -25,25 +25,22 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
 #ifdef WIN32
 #include <sys/timeb.h>
-#include <process.h>
 #include <io.h>
-#include <pango/pangocairo.h>		/* for find_font() */
-#include "../dirent/dirent-win32.h"
-#include "../../config-win32.h"
+#include "./sysinfo/sysinfo.h"
 #else
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
-#include <dirent.h>
-#include "../../config.h"
 #endif
 
+#include "config.h"
 #include <fcntl.h>
 #include <errno.h>
 #include "hexchat.h"
@@ -51,197 +48,18 @@
 #include <ctype.h>
 #include "util.h"
 
-#if defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (__FreeBSD__) || defined (__APPLE__)
 #include <sys/sysctl.h>
 #endif
-#ifdef SOCKS
-#include <socks.h>
+
+/* SASL mechanisms */
+#ifdef USE_OPENSSL
+#include <openssl/bn.h>
+#include <openssl/rand.h>
+#ifndef WIN32
+#include <netinet/in.h>
 #endif
-
-#ifndef HAVE_SNPRINTF
-#define snprintf g_snprintf
 #endif
-
-#ifdef USE_DEBUG
-
-#undef free
-#undef malloc
-#undef realloc
-#undef strdup
-
-int current_mem_usage;
-
-struct mem_block
-{
-	char *file;
-	void *buf;
-	int size;
-	int line;
-	int total;
-	struct mem_block *next;
-};
-
-struct mem_block *mroot = NULL;
-
-void *
-hexchat_malloc (int size, char *file, int line)
-{
-	void *ret;
-	struct mem_block *new;
-
-	current_mem_usage += size;
-	ret = malloc (size);
-	if (!ret)
-	{
-		printf ("Out of memory! (%d)\n", current_mem_usage);
-		exit (255);
-	}
-
-	new = malloc (sizeof (struct mem_block));
-	new->buf = ret;
-	new->size = size;
-	new->next = mroot;
-	new->line = line;
-	new->file = strdup (file);
-	mroot = new;
-
-	printf ("%s:%d Malloc'ed %d bytes, now \033[35m%d\033[m\n", file, line,
-				size, current_mem_usage);
-
-	return ret;
-}
-
-void *
-hexchat_realloc (char *old, int len, char *file, int line)
-{
-	char *ret;
-
-	ret = hexchat_malloc (len, file, line);
-	if (ret)
-	{
-		strcpy (ret, old);
-		hexchat_dfree (old, file, line);
-	}
-	return ret;
-}
-
-void *
-hexchat_strdup (char *str, char *file, int line)
-{
-	void *ret;
-	struct mem_block *new;
-	int size;
-
-	size = strlen (str) + 1;
-	current_mem_usage += size;
-	ret = malloc (size);
-	if (!ret)
-	{
-		printf ("Out of memory! (%d)\n", current_mem_usage);
-		exit (255);
-	}
-	strcpy (ret, str);
-
-	new = malloc (sizeof (struct mem_block));
-	new->buf = ret;
-	new->size = size;
-	new->next = mroot;
-	new->line = line;
-	new->file = strdup (file);
-	mroot = new;
-
-	printf ("%s:%d strdup (\"%-.40s\") size: %d, total: \033[35m%d\033[m\n",
-				file, line, str, size, current_mem_usage);
-
-	return ret;
-}
-
-void
-hexchat_mem_list (void)
-{
-	struct mem_block *cur, *p;
-	GSList *totals = 0;
-	GSList *list;
-
-	cur = mroot;
-	while (cur)
-	{
-		list = totals;
-		while (list)
-		{
-			p = list->data;
-			if (p->line == cur->line &&
-					strcmp (p->file, cur->file) == 0)
-			{
-				p->total += p->size;
-				break;
-			}
-			list = list->next;
-		}
-		if (!list)
-		{
-			cur->total = cur->size;
-			totals = g_slist_prepend (totals, cur);
-		}
-		cur = cur->next;
-	}
-
-	fprintf (stderr, "file              line   size    num  total\n");  
-	list = totals;
-	while (list)
-	{
-		cur = list->data;
-		fprintf (stderr, "%-15.15s %6d %6d %6d %6d\n", cur->file, cur->line,
-					cur->size, cur->total/cur->size, cur->total);
-		list = list->next;
-	}
-}
-
-void
-hexchat_dfree (void *buf, char *file, int line)
-{
-	struct mem_block *cur, *last;
-
-	if (buf == NULL)
-	{
-		printf ("%s:%d \033[33mTried to free NULL\033[m\n", file, line);
-		return;
-	}
-
-	last = NULL;
-	cur = mroot;
-	while (cur)
-	{
-		if (buf == cur->buf)
-			break;
-		last = cur;
-		cur = cur->next;
-	}
-	if (cur == NULL)
-	{
-		printf ("%s:%d \033[31mTried to free unknown block %lx!\033[m\n",
-				  file, line, (unsigned long) buf);
-		/*      abort(); */
-		free (buf);
-		return;
-	}
-	current_mem_usage -= cur->size;
-	printf ("%s:%d Free'ed %d bytes, usage now \033[35m%d\033[m\n",
-				file, line, cur->size, current_mem_usage);
-	if (last)
-		last->next = cur->next;
-	else
-		mroot = cur->next;
-	free (cur->file);
-	free (cur);
-}
-
-#define malloc(n) hexchat_malloc(n, __FILE__, __LINE__)
-#define realloc(n, m) hexchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) hexchat_dfree(n, __FILE__, __LINE__)
-#define strdup(n) hexchat_strdup(n, __FILE__, __LINE__)
-
-#endif /* MEMORY_DEBUG */
 
 char *
 file_part (char *file)
@@ -421,33 +239,33 @@ char *
 expand_homedir (char *file)
 {
 #ifndef WIN32
-	char *ret, *user;
+	char *user;
 	struct passwd *pw;
 
-	if (*file == '~')
+	if (file[0] == '~')
 	{
-		if (file[1] != '\0' && file[1] != '/')
-		{
-			user = strdup(file);
-			if (strchr(user,'/') != NULL)
-				*(strchr(user,'/')) = '\0';
-			if ((pw = getpwnam(user + 1)) == NULL)
-			{
-				free(user);
-				return strdup(file);
-			}
-			free(user);
-			user = strchr(file, '/') != NULL ? strchr(file,'/') : file;
-			ret = malloc(strlen(user) + strlen(pw->pw_dir) + 1);
-			strcpy(ret, pw->pw_dir);
-			strcat(ret, user);
-		}
+		char *slash_pos;
+
+		if (file[1] == '\0' || file[1] == '/')
+			return g_strconcat (g_get_home_dir (), &file[1], NULL);
+
+		user = g_strdup(file);
+
+		slash_pos = strchr(user, '/');
+		if (slash_pos != NULL)
+			*slash_pos = '\0';
+
+		pw = getpwnam(user + 1);
+		g_free(user);
+
+		if (pw == NULL)
+			return g_strdup(file);
+
+		slash_pos = strchr(file, '/');
+		if (slash_pos == NULL)
+			return g_strdup (pw->pw_dir);
 		else
-		{
-			ret = malloc (strlen (file) + strlen (g_get_home_dir ()) + 1);
-			sprintf (ret, "%s%s", g_get_home_dir (), file + 1);
-		}
-		return ret;
+			return g_strconcat (pw->pw_dir, slash_pos, NULL);
 	}
 #endif
 	return g_strdup (file);
@@ -542,13 +360,13 @@ strip_hidden_attribute (char *src, char *dst)
 	return len;
 }
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 
 static void
 get_cpu_info (double *mhz, int *cpus)
 {
 
-#ifdef USING_LINUX
+#if defined(__linux__) || defined (__CYGWIN__)
 
 	char buf[256];
 	int fh;
@@ -586,7 +404,7 @@ get_cpu_info (double *mhz, int *cpus)
 		*cpus = 1;
 
 #endif
-#ifdef USING_FREEBSD
+#ifdef __FreeBSD__
 
 	int mib[2], ncpu;
 	u_long freq;
@@ -638,129 +456,38 @@ get_cpu_info (double *mhz, int *cpus)
 
 #ifdef WIN32
 
-static int
-get_mhz (void)
-{
-	HKEY hKey;
-	int result, data, dataSize;
-
-	if (RegOpenKeyEx (HKEY_LOCAL_MACHINE, "Hardware\\Description\\System\\"
-		"CentralProcessor\\0", 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
-	{
-		dataSize = sizeof (data);
-		result = RegQueryValueEx (hKey, "~MHz", 0, 0, (LPBYTE)&data, &dataSize);
-		RegCloseKey (hKey);
-		if (result == ERROR_SUCCESS)
-			return data;
-	}
-	return 0;	/* fails on Win9x */
-}
-
 int
 get_cpu_arch (void)
 {
-	SYSTEM_INFO si;
-
-	GetSystemInfo (&si);
-
-	if (si.wProcessorArchitecture == 9)
-	{
-		return 64;
-	}
-	else
-	{
-		return 86;
-	}
+	return sysinfo_get_build_arch ();
 }
 
 char *
 get_sys_str (int with_cpu)
 {
-	static char verbuf[64];
-	static char winver[20];
-	OSVERSIONINFOEX osvi;
-	double mhz;
+	static char *without_cpu_buffer = NULL;
+	static char *with_cpu_buffer = NULL;
 
-	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
-	GetVersionEx ((OSVERSIONINFO*) &osvi);
-
-	switch (osvi.dwMajorVersion)
+	if (with_cpu == 0)
 	{
-		case 5:
-			switch (osvi.dwMinorVersion)
-			{
-				case 1:
-					strcpy (winver, "XP");
-					break;
-				case 2:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "XP x64 Edition");
-					}
-					else
-					{
-						if (GetSystemMetrics(SM_SERVERR2) == 0)
-						{
-							strcpy (winver, "Server 2003");
-						}
-						else
-						{
-							strcpy (winver, "Server 2003 R2");
-						}
-					}
-					break;
-			}
-			break;
-		case 6:
-			switch (osvi.dwMinorVersion)
-			{
-				case 0:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "Vista");
-					}
-					else
-					{
-						strcpy (winver, "Server 2008");
-					}
-					break;
-				case 1:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "7");
-					}
-					else
-					{
-						strcpy (winver, "Server 2008 R2");
-					}
-					break;
-				case 2:
-					if (osvi.wProductType == VER_NT_WORKSTATION)
-					{
-						strcpy (winver, "8");
-					}
-					else
-					{
-						strcpy (winver, "Server 2012");
-					}
-					break;
-			}
-			break;
+		if (without_cpu_buffer == NULL)
+		{
+			without_cpu_buffer = sysinfo_get_os ();
+		}
+
+		return without_cpu_buffer;
 	}
 
-	mhz = get_mhz ();
-	if (mhz && with_cpu)
+	if (with_cpu_buffer == NULL)
 	{
-		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
-		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
-		sprintf (verbuf, "Windows %s [%.2f%s]",	winver, cpuspeed, cpuspeedstr);
+		char *os = sysinfo_get_os ();
+		char *cpu = sysinfo_get_cpu ();
+		with_cpu_buffer = g_strconcat (os, " [", cpu, "]", NULL);
+		g_free (cpu);
+		g_free (os);
 	}
-	else
-	{
-		sprintf (verbuf, "Windows %s", winver);
-	}
-	
-	return verbuf;
+
+	return with_cpu_buffer;
 }
 
 #else
@@ -768,7 +495,7 @@ get_sys_str (int with_cpu)
 char *
 get_sys_str (int with_cpu)
 {
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 	double mhz;
 #endif
 	int cpus = 1;
@@ -778,24 +505,24 @@ get_sys_str (int with_cpu)
 	if (buf)
 		return buf;
 
-	buf = malloc (128);
-
 	uname (&un);
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
+#if defined (__linux__) || defined (__FreeBSD__) || defined (__APPLE__) || defined (__CYGWIN__)
 	get_cpu_info (&mhz, &cpus);
 	if (mhz && with_cpu)
 	{
 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
-		snprintf (buf, 128,
-					(cpus == 1) ? "%s %s [%s/%.2f%s]" : "%s %s [%s/%.2f%s/SMP]",
-					un.sysname, un.release, un.machine,
-					cpuspeed, cpuspeedstr);
+		buf = g_strdup_printf (
+			(cpus == 1) ? "%s %s [%s/%.2f%s]" : "%s %s [%s/%.2f%s/SMP]",
+			un.sysname, un.release, un.machine,
+			cpuspeed, cpuspeedstr);
 	}
 	else
+		buf = g_strdup_printf ("%s %s", un.sysname, un.release);
+#else
+	buf = g_strdup_printf ("%s %s", un.sysname, un.release);
 #endif
-		snprintf (buf, 128, "%s %s", un.sysname, un.release);
 
 	return buf;
 }
@@ -907,29 +634,28 @@ break_while:
 }
 
 void
-for_files (char *dirname, char *mask, void callback (char *file))
+for_files (const char *dirname, const char *mask, void callback (char *file))
 {
-	DIR *dir;
-	struct dirent *ent;
+	GDir *dir;
+	const gchar *entry_name;
 	char *buf;
 
-	dir = opendir (dirname);
+	dir = g_dir_open (dirname, 0, NULL);
 	if (dir)
 	{
-		while ((ent = readdir (dir)))
+		while ((entry_name = g_dir_read_name (dir)))
 		{
-			if (strcmp (ent->d_name, ".") && strcmp (ent->d_name, ".."))
+			if (strcmp (entry_name, ".") && strcmp (entry_name, ".."))
 			{
-				if (match (mask, ent->d_name))
+				if (match (mask, entry_name))
 				{
-					buf = malloc (strlen (dirname) + strlen (ent->d_name) + 2);
-					sprintf (buf, "%s" G_DIR_SEPARATOR_S "%s", dirname, ent->d_name);
+					buf = g_build_filename (dirname, entry_name, NULL);
 					callback (buf);
-					free (buf);
+					g_free (buf);
 				}
 			}
 		}
-		closedir (dir);
+		g_dir_close (dir);
 	}
 }
 
@@ -1242,7 +968,7 @@ country (char *hostname)
 	domain_t *dom;
 
 	if (!hostname || !*hostname || isdigit ((unsigned char) hostname[strlen (hostname) - 1]))
-		return _("Unknown");
+		return NULL;
 	if ((p = strrchr (hostname, '.')))
 		p++;
 	else
@@ -1252,7 +978,7 @@ country (char *hostname)
 						sizeof (domain_t), country_compare);
 
 	if (!dom)
-		return _("Unknown");
+		return NULL;
 
 	return _(dom->country);
 }
@@ -1273,168 +999,10 @@ country_search (char *pattern, void *ud, void (*print)(void *, char *, ...))
 	}
 }
 
-/* I think gnome1.0.x isn't necessarily linked against popt, ah well! */
-/* !!! For now use this inlined function, or it would break fe-text building */
-/* .... will find a better solution later. */
-/*#ifndef USE_GNOME*/
-
-/* this is taken from gnome-libs 1.2.4 */
-#define POPT_ARGV_ARRAY_GROW_DELTA 5
-
-int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr) {
-    char * buf, * bufStart, * dst;
-    const char * src;
-    char quote = '\0';
-    int argvAlloced = POPT_ARGV_ARRAY_GROW_DELTA;
-    char ** argv = malloc(sizeof(*argv) * argvAlloced);
-    const char ** argv2;
-    int argc = 0;
-    int i, buflen;
-
-    buflen = strlen(s) + 1;
-/*    bufStart = buf = alloca(buflen);*/
-	 bufStart = buf = malloc (buflen);
-    memset(buf, '\0', buflen);
-
-    src = s;
-    argv[argc] = buf;
-
-    while (*src) {
-	if (quote == *src) {
-	    quote = '\0';
-	} else if (quote) {
-	    if (*src == '\\') {
-		src++;
-		if (!*src) {
-		    free(argv);
-			 free(bufStart);
-		    return 1;
-		}
-		if (*src != quote) *buf++ = '\\';
-	    }
-	    *buf++ = *src;
-	/*} else if (isspace((unsigned char) *src)) {*/
-	} else if (*src == ' ') {
-	    if (*argv[argc]) {
-		buf++, argc++;
-		if (argc == argvAlloced) {
-		    char **temp;
-		    argvAlloced += POPT_ARGV_ARRAY_GROW_DELTA;
-		    temp = realloc(argv, sizeof(*argv) * argvAlloced);
-		    if (temp)
-			argv = temp;
-		    else
-		    {
-			free(argv);
-			free(bufStart);
-			return 1;
-		    }
-		}
-		argv[argc] = buf;
-	    }
-	} else switch (*src) {
-	  case '"':
-	  case '\'':
-	    quote = *src;
-	    break;
-	  case '\\':
-	    src++;
-	    if (!*src) {
-		free(argv);
-		free(bufStart);
-		return 1;
-	    }
-	    /* fallthrough */
-	  default:
-	    *buf++ = *src;
-	}
-
-	src++;
-    }
-
-    if (strlen(argv[argc])) {
-	argc++, buf++;
-    }
-
-    dst = malloc((argc + 1) * sizeof(*argv) + (buf - bufStart));
-    argv2 = (void *) dst;
-    dst += (argc + 1) * sizeof(*argv);
-    memcpy((void *)argv2, argv, argc * sizeof(*argv));
-    argv2[argc] = NULL;
-    memcpy(dst, bufStart, buf - bufStart);
-
-    for (i = 0; i < argc; i++) {
-	argv2[i] = dst + (argv[i] - bufStart);
-    }
-
-    free(argv);
-
-    *argvPtr = (char **)argv2;	/* XXX don't change the API */
-    *argcPtr = argc;
-
-	 free (bufStart);
-
-    return 0;
-}
-
-int
+void
 util_exec (const char *cmd)
 {
-	char **argv;
-	int argc;
-#ifndef WIN32
-	int pid;
-	int fd;
-#endif
-
-	if (my_poptParseArgvString (cmd, &argc, &argv) != 0)
-		return -1;
-
-#ifndef WIN32
-	pid = fork ();
-	if (pid == -1)
-		return -1;
-	if (pid == 0)
-	{
-		/* Now close all open file descriptors except stdin, stdout and stderr */
-		for (fd = 3; fd < 1024; fd++) close(fd);
-		execvp (argv[0], argv);
-		_exit (0);
-	} else
-	{
-		free (argv);
-		return pid;
-	}
-#else
-	spawnvp (_P_DETACH, argv[0], argv);
-	free (argv);
-	return 0;
-#endif
-}
-
-int
-util_execv (char * const argv[])
-{
-#ifndef WIN32
-	int pid, fd;
-
-	pid = fork ();
-	if (pid == -1)
-		return -1;
-	if (pid == 0)
-	{
-		/* Now close all open file descriptors except stdin, stdout and stderr */
-		for (fd = 3; fd < 1024; fd++) close(fd);
-		execv (argv[0], argv);
-		_exit (0);
-	} else
-	{
-		return pid;
-	}
-#else
-	spawnv (_P_DETACH, argv[0], argv);
-	return 0;
-#endif
+	g_spawn_command_line_async (cmd, NULL);
 }
 
 unsigned long
@@ -1447,56 +1015,44 @@ make_ping_time (void)
 	GTimeVal timev;
 	g_get_current_time (&timev);
 #endif
-	return (timev.tv_sec - 50000) * 1000000 + timev.tv_usec;
+	return (timev.tv_sec - 50000) * 1000 + timev.tv_usec/1000;
 }
-
-
-/************************************************************************
- *    This technique was borrowed in part from the source code to 
- *    ircd-hybrid-5.3 to implement case-insensitive string matches which
- *    are fully compliant with Section 2.2 of RFC 1459, the copyright
- *    of that code being (C) 1990 Jarkko Oikarinen and under the GPL.
- *    
- *    A special thanks goes to Mr. Okarinen for being the one person who
- *    seems to have ever noticed this section in the original RFC and
- *    written code for it.  Shame on all the rest of you (myself included).
- *    
- *        --+ Dagmar d'Surreal
- */
 
 int
 rfc_casecmp (const char *s1, const char *s2)
 {
-	register unsigned char *str1 = (unsigned char *) s1;
-	register unsigned char *str2 = (unsigned char *) s2;
-	register int res;
+	int c1, c2;
 
-	while ((res = rfc_tolower (*str1) - rfc_tolower (*str2)) == 0)
+	while (*s1 && *s2)
 	{
-		if (*str1 == '\0')
-			return 0;
-		str1++;
-		str2++;
+		c1 = (int)rfc_tolower (*s1);
+		c2 = (int)rfc_tolower (*s2);
+		if (c1 != c2)
+			return (c1 - c2);
+		s1++;
+		s2++;
 	}
-	return (res);
+	return (((int)*s1) - ((int)*s2));
 }
 
 int
-rfc_ncasecmp (char *str1, char *str2, int n)
+rfc_ncasecmp (char *s1, char *s2, int n)
 {
-	register unsigned char *s1 = (unsigned char *) str1;
-	register unsigned char *s2 = (unsigned char *) str2;
-	register int res;
+	int c1, c2;
 
-	while ((res = rfc_tolower (*s1) - rfc_tolower (*s2)) == 0)
+	while (*s1 && *s2 && n > 0)
 	{
+		c1 = (int)rfc_tolower (*s1);
+		c2 = (int)rfc_tolower (*s2);
+		if (c1 != c2)
+			return (c1 - c2);
+		n--;
 		s1++;
 		s2++;
-		n--;
-		if (n == 0 || (*s1 == '\0' && *s2 == '\0'))
-			return 0;
 	}
-	return (res);
+	c1 = (int)rfc_tolower (*s1);
+	c2 = (int)rfc_tolower (*s2);
+	return (n == 0) ? 0 : (c1 - c2);
 }
 
 const unsigned char rfc_tolowertab[] =
@@ -1533,80 +1089,6 @@ const unsigned char rfc_tolowertab[] =
 	0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9,
 	0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
 };
-
-/*static unsigned char touppertab[] =
-	{ 0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xa,
-	0xb, 0xc, 0xd, 0xe, 0xf, 0x10, 0x11, 0x12, 0x13, 0x14,
-	0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d,
-	0x1e, 0x1f,
-	' ', '!', '"', '#', '$', '%', '&', 0x27, '(', ')',
-	'*', '+', ',', '-', '.', '/',
-	'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-	':', ';', '<', '=', '>', '?',
-	'@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-	'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-	'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^',
-	0x5f,
-	'`', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-	'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-	'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^',
-	0x7f,
-	0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89,
-	0x8a, 0x8b, 0x8c, 0x8d, 0x8e, 0x8f,
-	0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99,
-	0x9a, 0x9b, 0x9c, 0x9d, 0x9e, 0x9f,
-	0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7, 0xa8, 0xa9,
-	0xaa, 0xab, 0xac, 0xad, 0xae, 0xaf,
-	0xb0, 0xb1, 0xb2, 0xb3, 0xb4, 0xb5, 0xb6, 0xb7, 0xb8, 0xb9,
-	0xba, 0xbb, 0xbc, 0xbd, 0xbe, 0xbf,
-	0xc0, 0xc1, 0xc2, 0xc3, 0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9,
-	0xca, 0xcb, 0xcc, 0xcd, 0xce, 0xcf,
-	0xd0, 0xd1, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9,
-	0xda, 0xdb, 0xdc, 0xdd, 0xde, 0xdf,
-	0xe0, 0xe1, 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9,
-	0xea, 0xeb, 0xec, 0xed, 0xee, 0xef,
-	0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9,
-	0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
-};*/
-
-/*static int
-rename_utf8 (char *oldname, char *newname)
-{
-	int sav, res;
-	char *fso, *fsn;
-
-	fso = hexchat_filename_from_utf8 (oldname, -1, 0, 0, 0);
-	if (!fso)
-		return FALSE;
-	fsn = hexchat_filename_from_utf8 (newname, -1, 0, 0, 0);
-	if (!fsn)
-	{
-		g_free (fso);
-		return FALSE;
-	}
-
-	res = rename (fso, fsn);
-	sav = errno;
-	g_free (fso);
-	g_free (fsn);
-	errno = sav;
-	return res;
-}
-
-static int
-unlink_utf8 (char *fname)
-{
-	int res;
-	char *fs;
-
-	fs = hexchat_filename_from_utf8 (fname, -1, 0, 0, 0);
-	if (!fs)
-		return FALSE;
-
-	res = unlink (fs);
-	g_free (fs);
-	return res;
-}*/
 
 static gboolean
 file_exists (char *fname)
@@ -1843,93 +1325,34 @@ canonalize_key (char *key)
 }
 
 int
-portable_mode ()
+portable_mode (void)
 {
 #ifdef WIN32
-	if ((_access( "portable-mode", 0 )) != -1)
+	static int is_portable = -1;
+
+	if (G_UNLIKELY(is_portable == -1))
 	{
-		return 1;
+		char *path = g_win32_get_package_installation_directory_of_module (NULL);
+		char *filename;
+
+		if (path == NULL)
+			path = g_strdup (".");
+
+		filename = g_build_filename (path, "portable-mode", NULL);
+		is_portable = g_file_test (filename, G_FILE_TEST_EXISTS);
+
+		g_free (path);
+		g_free (filename);
 	}
-	else
-	{
-		return 0;
-	}
+
+	return is_portable;
 #else
 	return 0;
 #endif
-}
-
-int
-unity_mode ()
-{
-#ifdef G_OS_UNIX
-	const char *env = g_getenv("XDG_CURRENT_DESKTOP");
-	if (env && strcmp (env, "Unity") == 0)
-		return 1;
-#endif
-	return 0;
-}
-
-/* Routine for listing subfolders of a given folder. ALWAYS free correctly after use, e.g.
-void display_list (GSList *list)
-{
-	GSList *iterator = NULL;
-	for (iterator = list; iterator; iterator = iterator->next)
-	{
-		printf ("%s\t", (char *) iterator->data);
-	}
-}
-
-int main (int argc, char *argv[])
-{
-	GSList *list;
-	list = get_subdirs ("foo");
-	display_list (list);
-#if GLIB_CHECK_VERSION(2,28,0)
-	g_slist_free_full (list, (GDestroyNotify) g_free);
-#else
-	g_slist_foreach (list, (GFunc) g_free, NULL);
-	g_slist_free (list);
-#endif
-	return 0;
-}
-*/
-GSList *
-get_subdirs (const char *path)
-{
-	DIR *dir;
-	struct dirent *entry;
-	GSList *dirlist = NULL;
-
-	if (!path)
-	{
-		path = ".";
-	}
-
-	dir = opendir (path);
-
-	if (!dir)
-	{
-		return NULL;
-	}
-
-	entry = readdir (dir);
-
-	while (entry != NULL)
-	{
-		if (entry->d_type == DT_DIR && strcmp (entry->d_name, ".") != 0 && strcmp (entry->d_name, "..") != 0)
-		{
-			dirlist = g_slist_append (dirlist, g_strdup (entry->d_name));
-		}
-
-		entry = readdir (dir);
-	}
-
-	return dirlist;
 }
 
 char *
-encode_sasl_pass (char *user, char *pass)
+encode_sasl_pass_plain (char *user, char *pass)
 {
 	int authlen;
 	char *buffer;
@@ -1944,37 +1367,7 @@ encode_sasl_pass (char *user, char *pass)
 	return encoded;
 }
 
-#ifdef WIN32
-int
-find_font (const char *fontname)
-{
-	int i;
-	int n_families;
-	const char *family_name;
-	PangoFontMap *fontmap;
-	PangoFontFamily *family;
-	PangoFontFamily **families;
-
-	fontmap = pango_cairo_font_map_get_default ();
-	pango_font_map_list_families (fontmap, &families, &n_families);
-
-	for (i = 0; i < n_families; i++)
-	{
-		family = families[i];
-		family_name = pango_font_family_get_name (family);
-
-		if (!g_ascii_strcasecmp (family_name, fontname))
-		{
-			g_free (families);
-			return 1;
-		}
-	}
-
-	g_free (families);
-	return 0;
-}
-#endif
-
+#ifdef USE_OPENSSL
 static char *
 str_sha256hash (char *string)
 {
@@ -1997,6 +1390,21 @@ str_sha256hash (char *string)
 	return g_strdup (buf);
 }
 
+static char *
+rfc_strlower (const char *str)
+{
+	size_t i, len = strlen(str);
+	char *lower = g_new(char, len + 1);
+
+	for (i = 0; i < len; ++i)
+	{
+		lower[i] = rfc_tolower(str[i]);
+	}
+	lower[i] = '\0';
+
+	return lower;
+}
+
 /**
  * \brief Generate CHALLENGEAUTH response for QuakeNet login.
  *
@@ -2013,7 +1421,7 @@ str_sha256hash (char *string)
  * <a href="http://stackoverflow.com/questions/242665/understanding-engine-initialization-in-openssl">example 2</a>.
  */
 char *
-challengeauth_response (char *username, char *password, char *challenge)
+challengeauth_response (const char *username, const char *password, const char *challenge)
 {
 	int i;
 	char *user;
@@ -2024,8 +1432,7 @@ challengeauth_response (char *username, char *password, char *challenge)
 	unsigned char *digest;
 	GString *buf = g_string_new_len (NULL, SHA256_DIGEST_LENGTH * 2);
 
-	user = g_strdup (username);
-	*user = rfc_tolower (*username);			/* convert username to lowercase as per the RFC */
+	user = rfc_strlower (username); /* convert username to lowercase as per the RFC */
 
 	pass = g_strndup (password, 10);			/* truncate to 10 characters */
 	passhash = str_sha256hash (pass);
@@ -2046,7 +1453,99 @@ challengeauth_response (char *username, char *password, char *challenge)
 		g_string_append_printf (buf, "%02x", (unsigned int) digest[i]);
 	}
 
-	digest = (unsigned char *) g_string_free (buf, FALSE);
+	return g_string_free (buf, FALSE);
+}
+#endif
 
-	return (char *) digest;
+/**
+ * \brief Wrapper around strftime for Windows
+ *
+ * Prevents crashing when using an invalid format by escaping them.
+ *
+ * Behaves the same as strftime with the addition that
+ * it returns 0 if the escaped format string is too large.
+ *
+ * Based upon work from znc-msvc project.
+ *
+ * This assumes format is a locale-encoded string. For utf-8 strings, use strftime_utf8
+ */
+size_t
+strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time)
+{
+#ifndef WIN32
+	return strftime (dest, destsize, format, time);
+#else
+	char safe_format[64];
+	const char *p = format;
+	int i = 0;
+
+	if (strlen (format) >= sizeof(safe_format))
+		return 0;
+
+	memset (safe_format, 0, sizeof(safe_format));
+
+	while (*p)
+	{
+		if (*p == '%')
+		{
+			int has_hash = (*(p + 1) == '#');
+			char c = *(p + (has_hash ? 2 : 1));
+
+			if (i >= sizeof (safe_format))
+				return 0;
+
+			switch (c)
+			{
+			case 'a': case 'A': case 'b': case 'B': case 'c': case 'd': case 'H': case 'I': case 'j': case 'm': case 'M':
+			case 'p': case 'S': case 'U': case 'w': case 'W': case 'x': case 'X': case 'y': case 'Y': case 'z': case 'Z':
+			case '%':
+				/* formatting code is fine */
+				break;
+			default:
+				/* replace bad formatting code with itself, escaped, e.g. "%V" --> "%%V" */
+				g_strlcat (safe_format, "%%", sizeof(safe_format));
+				i += 2;
+				p++;
+				break;
+			}
+
+			/* the current loop run will append % (and maybe #) and the next one will do the actual char. */
+			if (has_hash)
+			{
+				safe_format[i] = *p;
+				p++;
+				i++;
+			}
+			if (c == '%')
+			{
+				safe_format[i] = *p;
+				p++;
+				i++;
+			}
+		}
+
+		if (*p)
+		{
+			safe_format[i] = *p;
+			p++;
+			i++;
+		}
+	}
+
+	return strftime (dest, destsize, safe_format, time);
+#endif
+}
+
+/**
+ * \brief Similar to strftime except it works with utf-8 formats, since strftime treats the format as locale-encoded.
+ */
+gsize
+strftime_utf8 (char *dest, gsize destsize, const char *format, time_t time)
+{
+	gsize result;
+	GDate* date = g_date_new ();
+	g_date_set_time_t (date, time);
+	result = g_date_strftime (dest, destsize, format, date);
+	g_date_free (date);
+	return result;
 }

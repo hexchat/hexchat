@@ -35,14 +35,15 @@
 
 #define rfc_tolower(c) (rfc_tolowertab[(unsigned char)(c)])
 
+#define ELLIPSIS "\xe2\x80\xa6"
+
 extern const unsigned char rfc_tolowertab[];
 
-int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr);
 char *expand_homedir (char *file);
 void path_part (char *file, char *path, int pathlen);
 int match (const char *mask, const char *string);
 char *file_part (char *file);
-void for_files (char *dirname, char *mask, void callback (char *file));
+void for_files (const char *dirname, const char *mask, void callback (char *file));
 int rfc_casecmp (const char *, const char *);
 int rfc_ncasecmp (char *, char *, int);
 int buf_get_line (char *, char **, int *, int len);
@@ -50,8 +51,7 @@ char *nocasestrstr (const char *text, const char *tofind);
 char *country (char *);
 void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
 char *get_sys_str (int with_cpu);
-int util_exec (const char *cmd);
-int util_execv (char * const argv[]);
+void util_exec (const char *cmd);
 #define STRIP_COLOR 1
 #define STRIP_ATTRIB 2
 #define STRIP_HIDDEN 4
@@ -65,7 +65,6 @@ int waitline (int sok, char *buf, int bufsize, int);
 #ifdef WIN32
 int waitline2 (GIOChannel *source, char *buf, int bufsize);
 int get_cpu_arch (void);
-int find_font (const char *fontname);
 #else
 #define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
 #endif
@@ -76,10 +75,9 @@ guint32 str_hash (const char *key);
 guint32 str_ihash (const unsigned char *key);
 void safe_strcpy (char *dest, const char *src, int bytes_left);
 void canonalize_key (char *key);
-int portable_mode ();
-int unity_mode ();
-GSList *get_subdirs (const char *path);
-char *encode_sasl_pass (char *user, char *pass);
-char *challengeauth_response (char *username, char *password, char *challenge);
-
+int portable_mode (void);
+char *encode_sasl_pass_plain (char *user, char *pass);
+char *challengeauth_response (const char *username, const char *password, const char *challenge);
+size_t strftime_validated (char *dest, size_t destsize, const char *format, const struct tm *time);
+gsize strftime_utf8 (char *dest, gsize destsize, const char *format, time_t time);
 #endif

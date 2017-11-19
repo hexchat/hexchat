@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
@@ -25,6 +27,8 @@
 #ifdef WIN32
 #define g_ascii_strcasecmp stricmp
 #endif
+
+#define _(x) hexchat_gettext(ph,x)
 
 static hexchat_plugin *ph;	/* plugin handle */
 static GSList *timer_list = NULL;
@@ -41,7 +45,7 @@ typedef struct
 	char *command;
 	int ref;
 	int repeat;
-	float timeout;
+	int timeout;
 	unsigned int forever:1;
 } timer;
 
@@ -49,9 +53,9 @@ static void
 timer_del (timer *tim)
 {
 	timer_list = g_slist_remove (timer_list, tim);
-	free (tim->command);
+	g_free (tim->command);
 	hexchat_unhook (ph, tim->hook);
-	free (tim);
+	g_free (tim);
 }
 
 static void
@@ -68,13 +72,13 @@ timer_del_ref (int ref, int quiet)
 		{
 			timer_del (tim);
 			if (!quiet)
-				hexchat_printf (ph, "Timer %d deleted.\n", ref);
+				hexchat_printf (ph, _("Timer %d deleted.\n"), ref);
 			return;
 		}
 		list = list->next;
 	}
 	if (!quiet)
-		hexchat_print (ph, "No such ref number found.\n");
+		hexchat_print (ph, _("No such ref number found.\n"));
 }
 
 static int
@@ -97,7 +101,7 @@ timeout_cb (timer *tim)
 }
 
 static void
-timer_add (int ref, float timeout, int repeat, char *command)
+timer_add (int ref, int timeout, int repeat, char *command)
 {
 	timer *tim;
 	GSList *list;
@@ -115,18 +119,18 @@ timer_add (int ref, float timeout, int repeat, char *command)
 		}
 	}
 
-	tim = malloc (sizeof (timer));
+	tim = g_new (timer, 1);
 	tim->ref = ref;
 	tim->repeat = repeat;
 	tim->timeout = timeout;
-	tim->command = strdup (command);
+	tim->command = g_strdup (command);
 	tim->context = hexchat_get_context (ph);
 	tim->forever = FALSE;
 
 	if (repeat == 0)
 		tim->forever = TRUE;
 
-	tim->hook = hexchat_hook_timer (ph, timeout * 1000.0, (void *)timeout_cb, tim);
+	tim->hook = hexchat_hook_timer (ph, timeout, (void *)timeout_cb, tim);
 	timer_list = g_slist_append (timer_list, tim);
 }
 
@@ -138,17 +142,17 @@ timer_showlist (void)
 
 	if (timer_list == NULL)
 	{
-		hexchat_print (ph, "No timers installed.\n");
-		hexchat_print (ph, HELP);
+		hexchat_print (ph, _("No timers installed.\n"));
+		hexchat_print (ph, _(HELP));
 		return;
 	}
 							 /*  00000 00000000 0000000 abc */
-	hexchat_print (ph, "\026 Ref#  Seconds  Repeat  Command \026\n");
+	hexchat_print (ph, _("\026 Ref#  Seconds  Repeat  Command \026\n"));
 	list = timer_list;
 	while (list)
 	{
 		tim = list->data;
-		hexchat_printf (ph, "%5d %8.1f %7d  %s\n", tim->ref, tim->timeout,
+		hexchat_printf (ph, _("%5d %8.1f %7d  %s\n"), tim->ref, tim->timeout / 1000.0f,
 						  tim->repeat, tim->command);
 		list = list->next;
 	}
@@ -158,7 +162,7 @@ static int
 timer_cb (char *word[], char *word_eol[], void *userdata)
 {
 	int repeat = 1;
-	float timeout;
+	double timeout;
 	int offset = 0;
 	int ref = 0;
 	int quiet = FALSE;
@@ -197,10 +201,10 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	timeout = atof (word[2 + offset]);
 	command = word_eol[3 + offset];
 
-	if (timeout < 0.1 || !command[0])
+	if (timeout < 0.1 || timeout * 1000 > INT_MAX || !command[0])
 		hexchat_print (ph, HELP);
 	else
-		timer_add (ref, timeout, repeat, command);
+		timer_add (ref, (int) timeout * 1000, repeat, command);
 
 	return HEXCHAT_EAT_HEXCHAT;
 }
@@ -221,7 +225,7 @@ hexchat_plugin_init
 	*plugin_desc = "IrcII style /TIMER command";
 	*plugin_version = "";
 
-	hexchat_hook_command (ph, "TIMER", HEXCHAT_PRI_NORM, timer_cb, HELP, 0);
+	hexchat_hook_command (ph, "TIMER", HEXCHAT_PRI_NORM, timer_cb, _(HELP), 0);
 
 	return 1;       /* return 1 for success */
 }

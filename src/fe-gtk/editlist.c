@@ -23,6 +23,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <gdk/gdkkeysyms.h>
+
 #ifdef WIN32
 #include <io.h>
 #else
@@ -40,158 +42,64 @@
 #include "maingui.h"
 #include "editlist.h"
 
-
-static GtkWidget *editlist_gui_entry_name;
-static GtkWidget *editlist_gui_entry_cmd;
-static GtkWidget *editlist_gui_window;
-static GtkWidget *editlist_gui_list;
-static GSList *editlist_list;
-static char *editlist_file;
-static char *editlist_help;
-
-
-
-static void
-editlist_gui_load (GtkWidget * listgad)
+enum
 {
-	gchar *nnew[2];
-	GSList *list = editlist_list;
-	struct popup *pop;
+	NAME_COLUMN,
+	CMD_COLUMN,
+	N_COLUMNS
+};
 
-	while (list)
-	{
-		pop = (struct popup *) list->data;
-		nnew[0] = pop->name;
-		nnew[1] = pop->cmd;
-		gtk_clist_append (GTK_CLIST (listgad), nnew);
-		list = list->next;
-	}
+static GtkWidget *editlist_win = NULL;
+static GSList *editlist_list = NULL;
+
+static GtkTreeModel *
+get_store (void)
+{
+	return gtk_tree_view_get_model (g_object_get_data (G_OBJECT (editlist_win), "view"));
 }
 
 static void
-editlist_gui_row_unselected (GtkWidget * clist, gint row, gint column,
-									  GdkEventButton * even, gpointer none)
+editlist_save (GtkWidget *igad, gchar *file)
 {
-	gtk_entry_set_text (GTK_ENTRY (editlist_gui_entry_name), "");
-	gtk_entry_set_text (GTK_ENTRY (editlist_gui_entry_cmd), "");
-}
-
-static void
-editlist_gui_row_selected (GtkWidget * clist, gint row, gint column,
-									GdkEventButton * even, gpointer none)
-{
-	char *name, *cmd;
-
-	row = gtkutil_clist_selection (editlist_gui_list);
-	if (row != -1)
-	{
-		gtk_clist_get_text (GTK_CLIST (clist), row, 0, &name);
-		gtk_clist_get_text (GTK_CLIST (clist), row, 1, &cmd);
-
-		name = strdup (name);
-		cmd = strdup (cmd);
-
-		gtk_entry_set_text (GTK_ENTRY (editlist_gui_entry_name), name);
-		gtk_entry_set_text (GTK_ENTRY (editlist_gui_entry_cmd), cmd);
-
-		free (name);
-		free (cmd);
-	} else
-	{
-		editlist_gui_row_unselected (0, 0, 0, 0, 0);
-	}
-}
-
-static void
-editlist_gui_handle_cmd (GtkWidget * igad)
-{
-	int row;
-	const char *reply;
-
-	row = gtkutil_clist_selection (editlist_gui_list);
-	if (row != -1)
-	{
-		reply = gtk_entry_get_text (GTK_ENTRY (igad));
-		gtk_clist_set_text (GTK_CLIST (editlist_gui_list), row, 1, reply);
-	}
-}
-
-static void
-editlist_gui_handle_name (GtkWidget * igad)
-{
-	int row;
-	const char *ctcp;
-
-	row = gtkutil_clist_selection (editlist_gui_list);
-	if (row != -1)
-	{
-		ctcp = gtk_entry_get_text (GTK_ENTRY (igad));
-		gtk_clist_set_text (GTK_CLIST (editlist_gui_list), row, 0, ctcp);
-	}
-}
-
-static void
-editlist_gui_addnew (GtkWidget * igad)
-{
-	int i;
-	gchar *nnew[2];
-
-	nnew[0] = _("*NEW*");
-	nnew[1] = _("EDIT ME");
-
-	i = gtk_clist_append (GTK_CLIST (editlist_gui_list), nnew);
-	gtk_clist_select_row (GTK_CLIST (editlist_gui_list), i, 0);
-	gtk_clist_moveto (GTK_CLIST (editlist_gui_list), i, 0, 0.5, 0);
-}
-
-static void
-editlist_gui_delete (GtkWidget * igad)
-{
-	int row;
-
-	row = gtkutil_clist_selection (editlist_gui_list);
-	if (row != -1)
-	{
-		gtk_clist_unselect_all (GTK_CLIST (editlist_gui_list));
-		gtk_clist_remove (GTK_CLIST (editlist_gui_list), row);
-	}
-}
-
-static void
-editlist_gui_save (GtkWidget * igad)
-{
-	int fh, i = 0;
+	GtkTreeModel *store = get_store ();
+	GtkTreeIter iter;
 	char buf[512];
-	char *a, *b;
+	char *name, *cmd;
+	int fh;
 
-	fh = hexchat_open_file (editlist_file, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fh = hexchat_open_file (file, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
-		while (1)
+		if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter))
 		{
-			if (!gtk_clist_get_text (GTK_CLIST (editlist_gui_list), i, 0, &a))
-				break;
-			gtk_clist_get_text (GTK_CLIST (editlist_gui_list), i, 1, &b);
-			snprintf (buf, sizeof (buf), "NAME %s\nCMD %s\n\n", a, b);
-			write (fh, buf, strlen (buf));
-			i++;
+			do
+			{
+				name = NULL;
+				cmd = NULL;
+				gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, NAME_COLUMN, &name, CMD_COLUMN, &cmd, -1);
+				g_snprintf (buf, sizeof (buf), "NAME %s\nCMD %s\n\n", name, cmd);
+				write (fh, buf, strlen (buf));
+				g_free (name);
+				g_free (cmd);
+			} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
 		}
+
 		close (fh);
-		gtk_widget_destroy (editlist_gui_window);
+		gtk_widget_destroy (editlist_win);
 		if (editlist_list == replace_list)
 		{
 			list_free (&replace_list);
-			list_loadconf (editlist_file, &replace_list, 0);
+			list_loadconf (file, &replace_list, 0);
 		} else if (editlist_list == popup_list)
 		{
 			list_free (&popup_list);
-			list_loadconf (editlist_file, &popup_list, 0);
+			list_loadconf (file, &popup_list, 0);
 		} else if (editlist_list == button_list)
 		{
 			GSList *list = sess_list;
 			struct session *sess;
 			list_free (&button_list);
-			list_loadconf (editlist_file, &button_list, 0);
+			list_loadconf (file, &button_list, 0);
 			while (list)
 			{
 				sess = (struct session *) list->data;
@@ -203,7 +111,7 @@ editlist_gui_save (GtkWidget * igad)
 			GSList *list = sess_list;
 			struct session *sess;
 			list_free (&dlgbutton_list);
-			list_loadconf (editlist_file, &dlgbutton_list, 0);
+			list_loadconf (file, &dlgbutton_list, 0);
 			while (list)
 			{
 				sess = (struct session *) list->data;
@@ -213,197 +121,250 @@ editlist_gui_save (GtkWidget * igad)
 		} else if (editlist_list == ctcp_list)
 		{
 			list_free (&ctcp_list);
-			list_loadconf (editlist_file, &ctcp_list, 0);
+			list_loadconf (file, &ctcp_list, 0);
 		} else if (editlist_list == command_list)
 		{
 			list_free (&command_list);
-			list_loadconf (editlist_file, &command_list, 0);
+			list_loadconf (file, &command_list, 0);
 		} else if (editlist_list == usermenu_list)
 		{
 			list_free (&usermenu_list);
-			list_loadconf (editlist_file, &usermenu_list, 0);
+			list_loadconf (file, &usermenu_list, 0);
 			usermenu_update ();
 		} else
 		{
 			list_free (&urlhandler_list);
-			list_loadconf (editlist_file, &urlhandler_list, 0);
+			list_loadconf (file, &urlhandler_list, 0);
 		}
 	}
 }
 
 static void
-editlist_gui_help (GtkWidget * igad)
+editlist_load (GtkListStore *store, GSList *list)
 {
-/*	if (editlist_help)*/
-		fe_message (editlist_help, FE_MSG_INFO);
-}
+	struct popup *pop;
+	gchar *name, *cmd;
+	GtkTreeIter iter;
 
-static void
-editlist_gui_sort (GtkWidget * igad)
-{
-	int row;
-
-	row = gtkutil_clist_selection (editlist_gui_list);
-	if (row != -1)
-		gtk_clist_unselect_row (GTK_CLIST (editlist_gui_list), row, 0);
-	gtk_clist_sort (GTK_CLIST (editlist_gui_list));
-}
-
-static void
-editlist_gui_movedown (GtkWidget * igad)
-{
-	int row;
-	char *temp;
-
-	row = gtkutil_clist_selection (editlist_gui_list);
-	if (row != -1)
+	while (list)
 	{
-		if (!gtk_clist_get_text (GTK_CLIST (editlist_gui_list), row + 1, 0, &temp))
-			return;
-		gtk_clist_freeze (GTK_CLIST (editlist_gui_list));
-		gtk_clist_swap_rows (GTK_CLIST (editlist_gui_list), row, row + 1);
-		gtk_clist_thaw (GTK_CLIST (editlist_gui_list));
-		row++;
-		if (!gtk_clist_row_is_visible (GTK_CLIST (editlist_gui_list), row) !=
-			 GTK_VISIBILITY_FULL)
-			gtk_clist_moveto (GTK_CLIST (editlist_gui_list), row, 0, 0.9, 0);
+		pop = (struct popup *) list->data;
+		name = pop->name;
+		cmd = pop->cmd;
+
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter,
+						NAME_COLUMN, name,
+						CMD_COLUMN, cmd, -1);
+
+		list = list->next;
 	}
 }
 
 static void
-editlist_gui_moveup (GtkWidget * igad)
+editlist_delete (GtkWidget *wid, gpointer userdata)
 {
-	int row;
+	GtkTreeView *view = g_object_get_data (G_OBJECT (editlist_win), "view");
+	GtkListStore *store = GTK_LIST_STORE (gtk_tree_view_get_model (view));
+	GtkTreeIter iter;
+	GtkTreePath *path;
 
-	row = gtkutil_clist_selection (editlist_gui_list);
-	if (row != -1 && row > 0)
+	if (gtkutil_treeview_get_selected (view, &iter, -1))
 	{
-		gtk_clist_freeze (GTK_CLIST (editlist_gui_list));
-		gtk_clist_swap_rows (GTK_CLIST (editlist_gui_list), row - 1, row);
-		gtk_clist_thaw (GTK_CLIST (editlist_gui_list));
-		row--;
-		if (gtk_clist_row_is_visible (GTK_CLIST (editlist_gui_list), row) !=
-			 GTK_VISIBILITY_FULL)
-			gtk_clist_moveto (GTK_CLIST (editlist_gui_list), row, 0, 0.1, 0);
+		/* delete this row, select next one */
+		if (gtk_list_store_remove (store, &iter))
+		{
+			path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
+			gtk_tree_view_scroll_to_cell (view, path, NULL, TRUE, 1.0, 0.0);
+			gtk_tree_view_set_cursor (view, path, NULL, FALSE);
+			gtk_tree_path_free (path);
+		}
 	}
 }
 
 static void
-editlist_gui_close (void)
+editlist_add (GtkWidget *wid, gpointer userdata)
 {
-	editlist_gui_window = 0;
+	GtkTreeView *view = g_object_get_data (G_OBJECT (editlist_win), "view");
+	GtkTreeViewColumn *col;
+	GtkListStore *store = GTK_LIST_STORE (get_store ());
+	GtkTreeIter iter;
+	GtkTreePath *path;
+
+	gtk_list_store_append (store, &iter);
+
+	/* make sure the new row is visible and selected */
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
+	col = gtk_tree_view_get_column (view, NAME_COLUMN);
+	gtk_tree_view_scroll_to_cell (view, path, NULL, FALSE, 0.0, 0.0);
+	gtk_tree_view_set_cursor (view, path, col, TRUE);
+	gtk_tree_path_free (path);
 }
+
+static void
+editlist_close (GtkWidget *wid, gpointer userdata)
+{
+	gtk_widget_destroy (editlist_win);
+	editlist_win = NULL;
+}
+
+static void
+editlist_edited (GtkCellRendererText *render, gchar *pathstr, gchar *new_text, gpointer data)
+{
+	GtkTreeModel *model = get_store ();
+	GtkTreePath *path = gtk_tree_path_new_from_string (pathstr);
+	GtkTreeIter iter;
+	gint column = GPOINTER_TO_INT (data);
+
+	gtk_tree_model_get_iter (model, &iter, path);
+	gtk_list_store_set (GTK_LIST_STORE (model), &iter, column, new_text, -1);
+
+	gtk_tree_path_free (path);
+}
+
+static gboolean
+editlist_keypress (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
+{
+	GtkTreeView *view = g_object_get_data (G_OBJECT (editlist_win), "view");
+	GtkTreeModel *store;
+	GtkTreeIter iter1, iter2;
+	GtkTreeSelection *sel;
+	GtkTreePath *path;
+	gboolean handled = FALSE;
+	int delta;
+
+	if (evt->state & GDK_SHIFT_MASK)
+	{
+		if (evt->keyval == GDK_KEY_Up)
+		{
+			handled = TRUE;
+			delta = -1;
+		}
+		else if (evt->keyval == GDK_KEY_Down)
+		{
+			handled = TRUE;
+			delta = 1;
+		}
+	}
+
+	if (handled)
+	{
+		sel = gtk_tree_view_get_selection (view);
+		gtk_tree_selection_get_selected (sel, &store, &iter1);
+		path = gtk_tree_model_get_path (store, &iter1);
+		if (delta == 1)
+			gtk_tree_path_next (path);
+		else
+			gtk_tree_path_prev (path);
+		gtk_tree_model_get_iter (store, &iter2, path);
+		gtk_tree_path_free (path);
+		gtk_list_store_swap (GTK_LIST_STORE (store), &iter1, &iter2);
+	}
+
+	return handled;
+}
+
+static GtkWidget *
+editlist_treeview_new (GtkWidget *box, char *title1, char *title2)
+{
+	GtkWidget *scroll;
+	GtkListStore *store;
+	GtkTreeViewColumn *col;
+	GtkWidget *view;
+	GtkCellRenderer *render;
+
+	scroll = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll), GTK_SHADOW_IN);
+
+	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
+	g_return_val_if_fail (store != NULL, NULL);
+
+	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
+	gtk_tree_view_set_fixed_height_mode (GTK_TREE_VIEW (view), TRUE);
+	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view), FALSE);
+	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (view), TRUE);
+	
+	g_signal_connect (G_OBJECT (view), "key_press_event",
+						G_CALLBACK (editlist_keypress), NULL);
+
+	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
+
+	render = gtk_cell_renderer_text_new ();
+	g_object_set (render, "editable", TRUE, NULL);
+	g_signal_connect (G_OBJECT (render), "edited",
+					G_CALLBACK (editlist_edited), GINT_TO_POINTER(NAME_COLUMN));
+	gtk_tree_view_insert_column_with_attributes (
+					GTK_TREE_VIEW (view), NAME_COLUMN,
+					title1, render,
+					"text", NAME_COLUMN,
+					NULL);
+
+	render = gtk_cell_renderer_text_new ();
+	g_object_set (render, "editable", TRUE, NULL);
+	g_signal_connect (G_OBJECT (render), "edited",
+					G_CALLBACK (editlist_edited), GINT_TO_POINTER(CMD_COLUMN));
+	gtk_tree_view_insert_column_with_attributes (
+					GTK_TREE_VIEW (view), CMD_COLUMN,
+					title2, render,
+					"text", CMD_COLUMN,
+					NULL);
+
+	col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), NAME_COLUMN);
+	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_resizable (col, TRUE);
+	gtk_tree_view_column_set_min_width (col, 100);
+
+	gtk_container_add (GTK_CONTAINER (scroll), view);
+	gtk_container_add (GTK_CONTAINER (box), scroll);
+	gtk_widget_show_all (box);
+
+	return view;
+}
+
 
 void
-editlist_gui_open (char *title1, char *title2, GSList * list, char *title, char *wmclass,
-						 char *file, char *help)
+editlist_gui_open (char *title1, char *title2, GSList *list, char *title, char *wmclass,
+					char *file, char *help)
 {
-	gchar *titles[2];
-	GtkWidget *vbox, *hbox, *button;
+	GtkWidget *vbox, *box;
+	GtkWidget *view;
+	GtkListStore *store;
 
-	if (title1)
+	if (editlist_win)
 	{
-		titles[0] = title1;
-		titles[1] = title2;
-	} else
-	{
-		titles[0] = _("Name");
-		titles[1] = _("Command");
-	}
-
-	if (editlist_gui_window)
-	{
-		mg_bring_tofront (editlist_gui_window);
+		mg_bring_tofront (editlist_win);
 		return;
 	}
 
+	editlist_win = mg_create_generic_tab (wmclass, title, TRUE, FALSE,
+												editlist_close, NULL, 450, 250, &vbox, 0);
+
 	editlist_list = list;
-	editlist_file = file;
-	editlist_help = help;
 
-	editlist_gui_window =
-			  mg_create_generic_tab (wmclass, title, TRUE, FALSE,
-											 editlist_gui_close, NULL, 450, 250, &vbox, 0);
+	view = editlist_treeview_new (vbox, title1, title2);
+	g_object_set_data (G_OBJECT (editlist_win), "view", view);
 
-	editlist_gui_list = gtkutil_clist_new (2, titles, vbox, GTK_POLICY_ALWAYS,
-														editlist_gui_row_selected, 0,
-														editlist_gui_row_unselected, 0,
-														GTK_SELECTION_BROWSE);
-	gtk_clist_set_column_width (GTK_CLIST (editlist_gui_list), 0, 90);
+	if (help)
+		gtk_widget_set_tooltip_text (view, help);
 
-	hbox = gtk_hbox_new (0, 2);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
-	gtk_widget_show (hbox);
+	box = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (box), GTK_BUTTONBOX_SPREAD);
+	gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 2);
+	gtk_container_set_border_width (GTK_CONTAINER (box), 5);
+	gtk_widget_show (box);
 
-	button = gtkutil_button (hbox, GTK_STOCK_GO_UP, 0, editlist_gui_moveup,
-									 0, _("Move Up"));
-	gtk_widget_set_usize (button, 100, 0);
+	gtkutil_button (box, GTK_STOCK_NEW, 0, editlist_add,
+					NULL, _("Add"));
+	gtkutil_button (box, GTK_STOCK_DELETE, 0, editlist_delete,
+					NULL, _("Delete"));
+	gtkutil_button (box, GTK_STOCK_CANCEL, 0, editlist_close,
+					NULL, _("Cancel"));
+	gtkutil_button (box, GTK_STOCK_SAVE, 0, editlist_save,
+					file, _("Save"));
 
-	button = gtkutil_button (hbox, GTK_STOCK_GO_DOWN, 0, editlist_gui_movedown,
-									 0, _("Move Dn"));
-	gtk_widget_set_usize (button, 100, 0);
+	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
+	editlist_load (store, list);
 
-	button = gtk_vseparator_new ();
-	gtk_container_add (GTK_CONTAINER (hbox), button);
-	gtk_widget_show (button);
-
-	button = gtkutil_button (hbox, GTK_STOCK_CANCEL, 0, gtkutil_destroy,
-									 editlist_gui_window, _("Cancel"));
-	gtk_widget_set_usize (button, 100, 0);
-
-	button = gtkutil_button (hbox, GTK_STOCK_SAVE, 0, editlist_gui_save,
-									 0, _("Save"));
-	gtk_widget_set_usize (button, 100, 0);
-
-	hbox = gtk_hbox_new (0, 2);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
-	gtk_widget_show (hbox);
-
-	button = gtkutil_button (hbox, GTK_STOCK_ADD, 0, editlist_gui_addnew,
-									 0, _("Add New"));
-	gtk_widget_set_usize (button, 100, 0);
-
-	button = gtkutil_button (hbox, GTK_STOCK_REMOVE, 0, editlist_gui_delete,
-									 0, _("Delete"));
-	gtk_widget_set_usize (button, 100, 0);
-
-	button = gtk_vseparator_new ();
-	gtk_container_add (GTK_CONTAINER (hbox), button);
-	gtk_widget_show (button);
-
-	button = gtkutil_button (hbox, GTK_STOCK_SORT_ASCENDING, 0, editlist_gui_sort,
-									 0, _("Sort"));
-	gtk_widget_set_usize (button, 100, 0);
-
-	button = gtkutil_button (hbox, GTK_STOCK_HELP, 0, editlist_gui_help,
-									 0, _("Help"));
-	gtk_widget_set_usize (button, 100, 0);
-
-	if (!help)
-		gtk_widget_set_sensitive (GTK_WIDGET (button), FALSE);
-
-	hbox = gtk_hbox_new (0, 2);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
-	gtk_widget_show (hbox);
-
-	editlist_gui_entry_name = gtk_entry_new_with_max_length (82);
-	gtk_widget_set_usize (editlist_gui_entry_name, 96, 0);
-	gtk_signal_connect (GTK_OBJECT (editlist_gui_entry_name), "changed",
-							  GTK_SIGNAL_FUNC (editlist_gui_handle_name), 0);
-	gtk_box_pack_start (GTK_BOX (hbox), editlist_gui_entry_name, 0, 0, 0);
-	gtk_widget_show (editlist_gui_entry_name);
-
-	editlist_gui_entry_cmd = gtk_entry_new_with_max_length (255);
-	gtk_signal_connect (GTK_OBJECT (editlist_gui_entry_cmd), "changed",
-							  GTK_SIGNAL_FUNC (editlist_gui_handle_cmd), 0);
-	gtk_container_add (GTK_CONTAINER (hbox), editlist_gui_entry_cmd);
-	gtk_widget_show (editlist_gui_entry_cmd);
-
-	hbox = gtk_hbox_new (0, 2);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
-	gtk_widget_show (hbox);
-
-	editlist_gui_load (editlist_gui_list);
-
-	gtk_widget_show (editlist_gui_window);
+	gtk_widget_show (editlist_win);
 }

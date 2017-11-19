@@ -53,7 +53,7 @@ static int ignored_total = 0;
 struct ignore *
 ignore_exists (char *mask)
 {
-	struct ignore *ig = 0;
+	struct ignore *ig = NULL;
 	GSList *list;
 
 	list = ignore_list;
@@ -77,9 +77,9 @@ ignore_exists (char *mask)
  */
 
 int
-ignore_add (char *mask, int type)
+ignore_add (char *mask, int type, gboolean overwrite)
 {
-	struct ignore *ig = 0;
+	struct ignore *ig = NULL;
 	int change_only = FALSE;
 
 	/* first check if it's already ignored */
@@ -88,13 +88,14 @@ ignore_add (char *mask, int type)
 		change_only = TRUE;
 
 	if (!change_only)
-		ig = malloc (sizeof (struct ignore));
+		ig = g_new (struct ignore, 1);
 
-	if (!ig)
-		return 0;
+	ig->mask = g_strdup (mask);
 
-	ig->mask = strdup (mask);
-	ig->type = type;
+	if (!overwrite && change_only)
+		ig->type |= type;
+	else
+		ig->type = type;
 
 	if (!change_only)
 		ignore_list = g_slist_prepend (ignore_list, ig);
@@ -121,7 +122,7 @@ ignore_showlist (session *sess)
 		ig = list->data;
 		i++;
 
-		snprintf (tbuf, sizeof (tbuf), " %-25s ", ig->mask);
+		g_snprintf (tbuf, sizeof (tbuf), " %-25s ", ig->mask);
 		if (ig->type & IG_PRIV)
 			strcat (tbuf, _("YES  "));
 		else
@@ -188,8 +189,8 @@ ignore_del (char *mask, struct ignore *ig)
 	if (ig)
 	{
 		ignore_list = g_slist_remove (ignore_list, ig);
-		free (ig->mask);
-		free (ig);
+		g_free (ig->mask);
+		g_free (ig);
 		fe_ignore_update (1);
 		return TRUE;
 	}
@@ -261,7 +262,7 @@ ignore_read_next_entry (char *my_cfg, struct ignore *ignore)
 		my_cfg = cfg_get_str (my_cfg, "mask", tbuf, sizeof (tbuf));
 		if (!my_cfg)
 			return NULL;
-		ignore->mask = strdup (tbuf);
+		ignore->mask = g_strdup (tbuf);
 	}
 	if (my_cfg)
 	{
@@ -277,7 +278,7 @@ ignore_load ()
 	struct ignore *ignore;
 	struct stat st;
 	char *cfg, *my_cfg;
-	int fh, i;
+	int fh;
 
 	fh = hexchat_open_file ("ignore.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
@@ -285,22 +286,18 @@ ignore_load ()
 		fstat (fh, &st);
 		if (st.st_size)
 		{
-			cfg = malloc (st.st_size + 1);
-			cfg[0] = '\0';
-			i = read (fh, cfg, st.st_size);
-			if (i >= 0)
-				cfg[i] = '\0';
+			cfg = g_malloc0 (st.st_size + 1);
+			read (fh, cfg, st.st_size);
 			my_cfg = cfg;
 			while (my_cfg)
 			{
-				ignore = malloc (sizeof (struct ignore));
-				memset (ignore, 0, sizeof (struct ignore));
+				ignore = g_new0 (struct ignore, 1);
 				if ((my_cfg = ignore_read_next_entry (my_cfg, ignore)))
 					ignore_list = g_slist_prepend (ignore_list, ignore);
 				else
-					free (ignore);
+					g_free (ignore);
 			}
-			free (cfg);
+			g_free (cfg);
 		}
 		close (fh);
 	}
@@ -322,7 +319,7 @@ ignore_save ()
 			ig = (struct ignore *) temp->data;
 			if (!(ig->type & IG_NOSAVE))
 			{
-				snprintf (buf, sizeof (buf), "mask = %s\ntype = %d\n\n",
+				g_snprintf (buf, sizeof (buf), "mask = %s\ntype = %u\n\n",
 							 ig->mask, ig->type);
 				write (fh, buf, strlen (buf));
 			}
@@ -375,17 +372,15 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 					for (i = 0; i < 128; i++)
 						if (ip[i] == '@')
 							break;
-					snprintf (real_ip, sizeof (real_ip), "*!*%s", &ip[i]);
-					/*ignore_add (char *mask, int priv, int noti, int chan,
-					   int ctcp, int invi, int unignore, int no_save) */
+					g_snprintf (real_ip, sizeof (real_ip), "*!*%s", &ip[i]);
 
-					snprintf (buf, sizeof (buf),
+					g_snprintf (buf, sizeof (buf),
 								 _("You are being CTCP flooded from %s, ignoring %s\n"),
 								 nick, real_ip);
 					PrintText (sess, buf);
 
-					/*FIXME: only ignore ctcp or all?, its ignoring ctcps for now */
-					ignore_add (real_ip, IG_CTCP);
+					/* ignore CTCP */
+					ignore_add (real_ip, IG_CTCP, FALSE);
 					return 0;
 				}
 			}
@@ -404,21 +399,18 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 				serv->msg_counter++;
 				if (serv->msg_counter == prefs.hex_flood_msg_num)	/*if we reached the maximun numbers of ctcp in the seconds limits */
 				{
-					snprintf (buf, sizeof (buf),
+					g_snprintf (buf, sizeof (buf),
 					 _("You are being MSG flooded from %s, setting gui_autoopen_dialog OFF.\n"),
 								 ip);
 					PrintText (sess, buf);
 					serv->msg_last_time = current_time;	/*we got the flood, restore all the vars for next one */
 					serv->msg_counter = 0;
-					/*ignore_add (char *mask, int priv, int noti, int chan,
-					   int ctcp, int invi, int unignore, int no_save) */
 
 					if (prefs.hex_gui_autoopen_dialog)
 					{
-						/*FIXME: only ignore ctcp or all?, its ignoring ctcps for now */
 						prefs.hex_gui_autoopen_dialog = 0;
 						/* turn it back on in 30 secs */
-						fe_timeout_add (30000, flood_autodialog_timeout, NULL);
+						fe_timeout_add_seconds (30, flood_autodialog_timeout, NULL);
 					}
 					return 0;
 				}

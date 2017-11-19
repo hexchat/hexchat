@@ -56,9 +56,6 @@
 #include "outbound.h"
 #include "chanopt.h"
 
-#ifdef USE_DEBUG
-extern int current_mem_usage;
-#endif
 #define TBUFSIZE 4096
 
 static void help (session *sess, char *tbuf, char *helpcmd, int quiet);
@@ -93,7 +90,7 @@ random_line (char *file_name)
 	{
 	 nofile:
 		/* reason is not a file, an actual reason! */
-		return strdup (file_name);
+		return g_strdup (file_name);
 	}
 
 	/* count number of lines in file */
@@ -114,8 +111,7 @@ random_line (char *file_name)
 	}
 	while (lines > ran);
 	fclose (fh);
-	buf[strlen (buf) - 1] = 0;	  /* remove the trailing '\n' */
-	return strdup (buf);
+	return g_strdup (buf);
 }
 
 void
@@ -125,7 +121,7 @@ server_sendpart (server * serv, char *channel, char *reason)
 	{
 		reason = random_line (prefs.hex_irc_part_reason);
 		serv->p_part (serv, channel, reason);
-		free (reason);
+		g_free (reason);
 	} else
 	{
 		/* reason set by /quit, /close argument */
@@ -140,12 +136,12 @@ server_sendquit (session * sess)
 
 	if (!sess->quitreason)
 	{
-		colrea = strdup (prefs.hex_irc_quit_reason);
+		colrea = g_strdup (prefs.hex_irc_quit_reason);
 		check_special_chars (colrea, FALSE);
 		rea = random_line (colrea);
-		free (colrea);
+		g_free (colrea);
 		sess->server->p_quit (sess->server, rea);
-		free (rea);
+		g_free (rea);
 	} else
 	{
 		/* reason set by /quit, /close argument */
@@ -166,8 +162,8 @@ process_data_init (char *buf, char *cmd, char *word[],
 
 	word[0] = "\000\000";
 	word_eol[0] = "\000\000";
-	word[1] = (char *)buf;
-	word_eol[1] = (char *)cmd;
+	word[1] = buf;
+	word_eol[1] = cmd;
 
 	while (1)
 	{
@@ -273,7 +269,7 @@ cmd_addserver (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (!network)
 		{
 			network = servlist_net_add (word[2], "", TRUE);
-			network->encoding = strdup (IRC_DEFAULT_CHARSET);
+			network->encoding = g_strdup (IRC_DEFAULT_CHARSET);
 		}
 		/* if we had the network already, check if the given server already exists */
 		else if (servlist_server_find (network, word_eol[3], NULL))
@@ -383,11 +379,10 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (sess->server->last_away_reason != reason)
 	{
-		if (sess->server->last_away_reason)
-			free (sess->server->last_away_reason);
+		g_free (sess->server->last_away_reason);
 
 		if (reason == word_eol[2])
-			sess->server->last_away_reason = strdup (reason);
+			sess->server->last_away_reason = g_strdup (reason);
 		else
 			sess->server->last_away_reason = reason;
 	}
@@ -410,8 +405,7 @@ cmd_back (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		PrintText (sess, _("Already marked back.\n"));
 	}
 
-	if (sess->server->last_away_reason)
-		free (sess->server->last_away_reason);
+	g_free (sess->server->last_away_reason);
 	sess->server->last_away_reason = NULL;
 
 	return TRUE;
@@ -487,19 +481,19 @@ create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 			switch (type)
 			{
 			case 0:
-				snprintf (buf, sizeof (buf), "%s%s *!*@%s.*", mode, p2, domain);
+				g_snprintf (buf, sizeof (buf), "%s %s *!*@%s.*", mode, p2, domain);
 				break;
 
 			case 1:
-				snprintf (buf, sizeof (buf), "%s%s *!*@%s", mode, p2, fullhost);
+				g_snprintf (buf, sizeof (buf), "%s %s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				snprintf (buf, sizeof (buf), "%s%s *!%s@%s.*", mode, p2, username, domain);
+				g_snprintf (buf, sizeof (buf), "%s %s *!%s@%s.*", mode, p2, username, domain);
 				break;
 
 			case 3:
-				snprintf (buf, sizeof (buf), "%s%s *!%s@%s", mode, p2, username, fullhost);
+				g_snprintf (buf, sizeof (buf), "%s %s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		} else
@@ -507,26 +501,26 @@ create_mask (session * sess, char *mask, char *mode, char *typestr, int deop)
 			switch (type)
 			{
 			case 0:
-				snprintf (buf, sizeof (buf), "%s%s *!*@*%s", mode, p2, domain);
+				g_snprintf (buf, sizeof (buf), "%s %s *!*@*%s", mode, p2, domain);
 				break;
 
 			case 1:
-				snprintf (buf, sizeof (buf), "%s%s *!*@%s", mode, p2, fullhost);
+				g_snprintf (buf, sizeof (buf), "%s %s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				snprintf (buf, sizeof (buf), "%s%s *!%s@*%s", mode, p2, username, domain);
+				g_snprintf (buf, sizeof (buf), "%s %s *!%s@*%s", mode, p2, username, domain);
 				break;
 
 			case 3:
-				snprintf (buf, sizeof (buf), "%s%s *!%s@%s", mode, p2, username, fullhost);
+				g_snprintf (buf, sizeof (buf), "%s %s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		}
 
 	} else
 	{
-		snprintf (buf, sizeof (buf), "%s %s", mode, mask);
+		g_snprintf (buf, sizeof (buf), "%s %s", mode, mask);
 	}
 	
 	return g_strdup (buf);
@@ -587,7 +581,7 @@ cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	
 	/* chanopt.c */
 	ret = chanopt_command (sess, tbuf, word, word_eol);
-	chanopt_save_all ();
+	chanopt_save_all (FALSE);
 	
 	return ret;
 }
@@ -596,7 +590,6 @@ static int
 cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	server *serv = sess->server;
-	const char *locale = NULL;
 	int offset = 0;
 
 	if (strcmp (word[2], "-quiet") == 0)
@@ -604,9 +597,7 @@ cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (!word[2 + offset][0])
 	{
-		g_get_charset (&locale);
-		PrintTextf (sess, "Current charset: %s\n",
-						serv->encoding ? serv->encoding : locale);
+		PrintTextf (sess, "Current charset: %s\n", serv->encoding);
 		return TRUE;
 	}
 
@@ -640,7 +631,7 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		while (list)
 		{
 			sess = list->data;
-			if (!sess->nick_said)
+			if (!(sess->tab_state & TAB_STATE_NEW_HILIGHT))
 				fe_text_clear (list->data, 0);
 			list = list->next;
 		}
@@ -742,15 +733,25 @@ cmd_country (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_cycle (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char *key = sess->channelkey;
+	char *key = NULL;
 	char *chan = word[2];
+	session *chan_sess;
+
 	if (!*chan)
 		chan = sess->channel;
-	if (*chan && sess->type == SESS_CHANNEL)
+
+	if (chan)
 	{
-		sess->server->p_cycle (sess->server, chan, key);
-		return TRUE;
+		chan_sess = find_channel (sess->server, chan);
+
+		if (chan_sess && chan_sess->type == SESS_CHANNEL)
+		{
+			key = chan_sess->channelkey;
+			sess->server->p_cycle (sess->server, chan, key);
+			return TRUE;
+		}
 	}
+
 	return FALSE;
 }
 
@@ -913,10 +914,6 @@ cmd_debug (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				"current_tab: %p\n\n",
 				sess->server->front_session, current_tab);
 	PrintText (sess, tbuf);
-#ifdef USE_DEBUG
-	sprintf (tbuf, "current mem: %d\n\n", current_mem_usage);
-	PrintText (sess, tbuf);
-#endif  /* !MEMORY_DEBUG */
 
 	return TRUE;
 }
@@ -1000,14 +997,14 @@ mdehop_cb (struct User *user, multidata *data)
 static int
 cmd_mdehop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * sess->hops);
+	char **nicks = g_new0 (char *, sess->hops);
 	multidata data;
 
 	data.nicks = nicks;
 	data.i = 0;
 	tree_foreach (sess->usertree, (tree_traverse_func *)mdehop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'h', 0);
-	free (nicks);
+	g_free (nicks);
 
 	return TRUE;
 }
@@ -1026,14 +1023,14 @@ mdeop_cb (struct User *user, multidata *data)
 static int
 cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * sess->ops);
+	char **nicks = g_new0(char *, sess->ops);
 	multidata data;
 
 	data.nicks = nicks;
 	data.i = 0;
 	tree_foreach (sess->usertree, (tree_traverse_func *)mdeop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'o', 0);
-	free (nicks);
+	g_free (nicks);
 
 	return TRUE;
 }
@@ -1043,18 +1040,13 @@ GSList *menu_list = NULL;
 static void
 menu_free (menu_entry *me)
 {
-	free (me->path);
-	if (me->label)
-		free (me->label);
-	if (me->cmd)
-		free (me->cmd);
-	if (me->ucmd)
-		free (me->ucmd);
-	if (me->group)
-		free (me->group);
-	if (me->icon)
-		free (me->icon);
-	free (me);
+	g_free (me->path);
+	g_free (me->label);
+	g_free (me->cmd);
+	g_free (me->ucmd);
+	g_free (me->group);
+	g_free (me->icon);
+	g_free (me);
 }
 
 /* strings equal? but ignore underscores */
@@ -1113,9 +1105,9 @@ menu_del_children (char *path, char *label)
 	if (!label)
 		label = "";
 	if (path[0])
-		snprintf (buf, sizeof (buf), "%s/%s", path, label);
+		g_snprintf (buf, sizeof (buf), "%s/%s", path, label);
 	else
-		snprintf (buf, sizeof (buf), "%s", label);
+		g_snprintf (buf, sizeof (buf), "%s", label);
 
 	list = menu_list;
 	while (list)
@@ -1166,7 +1158,9 @@ menu_is_mainmenu_root (char *path, gint16 *offset)
 	{
 		if (!strncmp (path, menus[i] + 1, menus[i][0]))
 		{
-			*offset = menus[i][0] + 1;	/* number of bytes to offset the root */
+			*offset = menus[i][0];	/* number of bytes to offset the root */
+			if (path[*offset] != '\0')
+				*offset += 1;
 			return 0;	/* is not main menu */
 		}
 	}
@@ -1191,7 +1185,7 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 		return;
 	}
 
-	me = malloc (sizeof (menu_entry));
+	me = g_new (menu_entry, 1);
 	me->pos = pos;
 	me->modifier = mod;
 	me->is_main = menu_is_mainmenu_root (path, &me->root_offset);
@@ -1199,31 +1193,26 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 	me->markup = markup;
 	me->enable = enable;
 	me->key = key;
-	me->path = strdup (path);
+	me->path = g_strdup (path);
 	me->label = NULL;
 	me->cmd = NULL;
 	me->ucmd = NULL;
 	me->group = NULL;
 	me->icon = NULL;
 
-	if (label)
-		me->label = strdup (label);
-	if (cmd)
-		me->cmd = strdup (cmd);
-	if (ucmd)
-		me->ucmd = strdup (ucmd);
-	if (group)
-		me->group = strdup (group);
-	if (icon)
-		me->icon = strdup (icon);
+	me->label = g_strdup (label);
+	me->cmd = g_strdup (cmd);
+	me->ucmd = g_strdup (ucmd);
+	me->group = g_strdup (group);
+	me->icon = g_strdup (icon);
 
 	menu_list = g_slist_append (menu_list, me);
 	label = fe_menu_add (me);
 	if (label)
 	{
 		/* FE has given us a stripped label */
-		free (me->label);
-		me->label = strdup (label);
+		g_free (me->label);
+		me->label = g_strdup (label);
 		g_free (label); /* this is from pango */
 	}
 }
@@ -1319,7 +1308,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (markup)
 	{
 		char *p;	/* to force pango closing tags through */
-		for (p = label; *p; p++)
+		for (p = label; p && *p; p++)
 			if (*p == 3)
 				*p = '/';
 	}
@@ -1346,6 +1335,33 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 	return FALSE;
+}
+
+static int
+mhop_cb (struct User *user, multidata *data)
+{
+	if (!user->hop)
+	{
+		data->nicks[data->i] = user->nick;
+		data->i++;
+	}
+	return TRUE;
+}
+
+static int
+cmd_mhop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	char **nicks = g_new0 (char *, sess->total - sess->hops);
+	multidata data;
+
+	data.nicks = nicks;
+	data.i = 0;
+	tree_foreach (sess->usertree, (tree_traverse_func *)mhop_cb, &data);
+	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'h', 0);
+
+	g_free (nicks);
+
+	return TRUE;
 }
 
 static int
@@ -1405,21 +1421,18 @@ cmd_discon (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-#ifdef WIN32
-	PrintText (sess, "DNS is not implemented in Windows.\n");
-	return TRUE;
-#else
 	char *nick = word[2];
 	struct User *user;
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	if (*nick)
 	{
-		if (strchr (nick, '.') == NULL)
+		user = userlist_find (sess, nick);
+		if (user)
 		{
-			user = userlist_find (sess, nick);
-			if (user && user->hostname)
+			if (user->hostname)
 			{
-				do_dns (sess, user->nick, user->hostname);
+				do_dns (sess, user->nick, user->hostname, &no_tags);
 			} else
 			{
 				sess->server->p_get_ip (sess->server, nick);
@@ -1427,13 +1440,46 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 		} else
 		{
-			snprintf (tbuf, TBUFSIZE, "exec -d %s %s", prefs.hex_dnsprogram, nick);
-			handle_command (sess, tbuf, FALSE);
+			do_dns (sess, NULL, nick, &no_tags);
 		}
 		return TRUE;
 	}
 	return FALSE;
-#endif
+}
+
+static int
+cmd_doat (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	GStrv channels;
+	guint i;
+
+	if (!word[2] || !*word[2] || !word[3] || !*word[3])
+		return FALSE;
+
+	channels = g_strsplit (word[2], ",", -1);
+	for (i = 0; channels[i] && *channels[i]; ++i)
+	{
+		char *chan = channels[i];
+		char *serv;
+		session *ctx;
+
+		/* Split channel and network, either may be empty */
+		if ((serv = strrchr (chan, '/')))
+		{
+			*serv = '\0';
+			serv++;
+			if (!strlen (serv))
+				serv = NULL;
+		}
+		if (!strlen (chan))
+			chan = NULL;
+
+		if ((ctx = plugin_find_context (serv, chan, sess->server)))
+			handle_command (ctx, word_eol[3], FALSE);
+	}
+	g_strfreev (channels);
+
+	return TRUE;
 }
 
 static int
@@ -1457,7 +1503,7 @@ exec_check_process (struct session *sess)
 	{
 		close (sess->running_exec->myfd);
 		fe_input_remove (sess->running_exec->iotag);
-		free (sess->running_exec);
+		g_free (sess->running_exec);
 		sess->running_exec = NULL;
 	}
 }
@@ -1534,11 +1580,10 @@ cmd_execw (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return FALSE;
 	}
 	len = strlen(word_eol[2]);
-	temp = malloc(len + 2);
-	sprintf(temp, "%s\n", word_eol[2]);
+	temp = g_strconcat (word_eol[2], "\n", NULL);
 	PrintText(sess, temp);
 	write(sess->running_exec->myfd, temp, len + 1);
-	free(temp);
+	g_free(temp);
 
 	return TRUE;
 }
@@ -1562,7 +1607,7 @@ exec_handle_colors (char *buf, int len)
 	if (strchr (buf, 27) == 0)
 		return;
 
-	nbuf = malloc (len + 1);
+	nbuf = g_malloc (len + 1);
 
 	while (i < len)
 	{
@@ -1656,7 +1701,7 @@ norm:			nbuf[j] = buf[i];
 
 	nbuf[j] = 0;
 	memcpy (buf, nbuf, j + 1);
-	free (nbuf);
+	g_free (nbuf);
 }
 
 #ifndef HAVE_MEMRCHR
@@ -1668,9 +1713,28 @@ memrchr (const void *block, int c, size_t size)
 	for (p = (unsigned char *)block + size; p != block; p--)
 		if (*p == c)
 			return p;
-	return 0;
+	return NULL;
 }
 #endif
+
+static void
+exec_print_line (session *sess, char *data, gssize len, gboolean tochannel)
+{
+	char *valid;
+	exec_handle_colors (data, len);
+	valid = text_fixup_invalid_utf8 (data, len, NULL);
+	if (tochannel)
+	{
+		/* must turn off auto-completion temporarily */
+		const unsigned int old = prefs.hex_completion_auto;
+		prefs.hex_completion_auto = 0;
+		handle_multiline (sess, valid, FALSE, TRUE);
+		prefs.hex_completion_auto = old;
+	}
+	else
+		PrintText (sess, valid);
+	g_free (valid);
+}
 
 static gboolean
 exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
@@ -1682,14 +1746,14 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 	len = s->buffill;
 	if (len) {
 		/* append new data to buffered incomplete line */
-		buf = malloc(len + 2050);
+		buf = g_malloc (len + 2050);
 		memcpy(buf, s->linebuf, len);
 		readpos = buf + len;
-		free(s->linebuf);
+		g_free (s->linebuf);
 		s->linebuf = NULL;
 	}
 	else
-		readpos = buf = malloc(2050);
+		readpos = buf = g_malloc (2050);
 
 	rd = read (sok, readpos, 2048);
 	if (rd < 1)
@@ -1698,24 +1762,14 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		kill(s->childpid, SIGKILL);
 		if (len) {
 			buf[len] = '\0';
-			exec_handle_colors(buf, len);
-			if (s->tochannel)
-			{
-				/* must turn off auto-completion temporarily */
-				unsigned int old = prefs.hex_completion_auto;
-				prefs.hex_completion_auto = 0;
-				handle_multiline (s->sess, buf, FALSE, TRUE);
-				prefs.hex_completion_auto = old;
-			}
-			else
-				PrintText (s->sess, buf);
+			exec_print_line(s->sess, buf, len, s->tochannel);
 		}
-		free(buf);
+		g_free(buf);
 		waitpid (s->childpid, NULL, 0);
 		s->sess->running_exec = NULL;
 		fe_input_remove (s->iotag);
 		close (sok);
-		free (s);
+		g_free (s);
 		return TRUE;
 	}
 	len += rd;
@@ -1728,7 +1782,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		rest = buf;
 	if (*rest) {
 		s->buffill = len - (rest - buf); /* = strlen(rest) */
-		s->linebuf = malloc(s->buffill + 1);
+		s->linebuf = g_malloc (s->buffill + 1);
 		memcpy(s->linebuf, rest, s->buffill);
 		*rest = '\0';
 		len -= s->buffill; /* possibly 0 */
@@ -1737,14 +1791,10 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		s->buffill = 0;
 
 	if (len) {
-		exec_handle_colors (buf, len);
-		if (s->tochannel)
-			handle_multiline (s->sess, buf, FALSE, TRUE);
-		else
-			PrintText (s->sess, buf);
+		exec_print_line(s->sess, buf, len, s->tochannel);
 	}
 
-	free(buf);
+	g_free (buf);
 	return TRUE;
 }
 
@@ -1806,8 +1856,7 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			return FALSE;
 		}
 #endif
-		s = (struct nbexec *) malloc (sizeof (struct nbexec));
-		memset(s, 0, sizeof(*s));
+		s = g_new0 (struct nbexec, 1);
 		s->myfd = fds[0];
 		s->tochannel = tochannel;
 		s->sess = sess;
@@ -1837,8 +1886,10 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				char **argv;
 				int argc;
 
-				my_poptParseArgvString (cmd, &argc, &argv);
+				g_shell_parse_argv (cmd, &argc, &argv, NULL);
 				execvp (argv[0], argv);
+
+				g_strfreev (argv);
 			}
 			/* not reached unless error */
 			/*printf("exec error\n");*/
@@ -1852,8 +1903,9 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			PrintText (sess, "Error in fork(2)\n");
 			close(fds[0]);
 			close(fds[1]);
-			free (s);
-		} else
+			g_free (s);
+		}
+		else
 		{
 			/* Parent path */
 			close(fds[1]);
@@ -1937,19 +1989,49 @@ typedef struct
 } getvalinfo;
 
 static void
+get_bool_cb (int val, getvalinfo *info)
+{
+	char buf[512];
+
+	g_snprintf (buf, sizeof (buf), "%s %d", info->cmd, val);
+	if (is_session (info->sess))
+		handle_command (info->sess, buf, FALSE);
+
+	g_free (info->cmd);
+	g_free (info);
+}
+
+static int
+cmd_getbool (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	getvalinfo *info;
+
+	if (!word[4][0])
+		return FALSE;
+
+	info = g_new (getvalinfo, 1);
+	info->cmd = g_strdup (word[2]);
+	info->sess = sess;
+
+	fe_get_bool (word[3], word_eol[4], get_bool_cb, info);
+
+	return TRUE;
+}
+
+static void
 get_int_cb (int cancel, int val, getvalinfo *info)
 {
 	char buf[512];
 
 	if (!cancel)
 	{
-		snprintf (buf, sizeof (buf), "%s %d", info->cmd, val);
+		g_snprintf (buf, sizeof (buf), "%s %d", info->cmd, val);
 		if (is_session (info->sess))
 			handle_command (info->sess, buf, FALSE);
 	}
 
-	free (info->cmd);
-	free (info);
+	g_free (info->cmd);
+	g_free (info);
 }
 
 static int
@@ -1960,8 +2042,8 @@ cmd_getint (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[4][0])
 		return FALSE;
 
-	info = malloc (sizeof (*info));
-	info->cmd = strdup (word[3]);
+	info = g_new (getvalinfo, 1);
+	info->cmd = g_strdup (word[3]);
 	info->sess = sess;
 
 	fe_get_int (word[4], atoi (word[2]), get_int_cb, info);
@@ -1978,13 +2060,13 @@ get_file_cb (char *cmd, char *file)
       no args */
 	if (file)
 	{
-		snprintf (buf, sizeof (buf), "%s %s", cmd, file);
+		g_snprintf (buf, sizeof (buf), "%s %s", cmd, file);
 		handle_command (current_sess, buf, FALSE);
 	}
 	else
 	{
 		handle_command (current_sess, cmd, FALSE);
-		free (cmd);
+		g_free (cmd);
 	}
 }
 
@@ -2015,7 +2097,7 @@ cmd_getfile (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		idx++;
 	}
 
-	fe_get_file (word[idx+1], word[idx+2], (void *)get_file_cb, strdup (word[idx]), flags);
+	fe_get_file (word[idx+1], word[idx+2], (void *)get_file_cb, g_strdup (word[idx]), flags);
 
 	return TRUE;
 }
@@ -2027,13 +2109,13 @@ get_str_cb (int cancel, char *val, getvalinfo *info)
 
 	if (!cancel)
 	{
-		snprintf (buf, sizeof (buf), "%s %s", info->cmd, val);
+		g_snprintf (buf, sizeof (buf), "%s %s", info->cmd, val);
 		if (is_session (info->sess))
 			handle_command (info->sess, buf, FALSE);
 	}
 
-	free (info->cmd);
-	free (info);
+	g_free (info->cmd);
+	g_free (info);
 }
 
 static int
@@ -2044,8 +2126,8 @@ cmd_getstr (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[4][0])
 		return FALSE;
 
-	info = malloc (sizeof (*info));
-	info->cmd = strdup (word[3]);
+	info = g_new (getvalinfo, 1);
+	info->cmd = g_strdup (word[3]);
 	info->sess = sess;
 
 	fe_get_str (word[4], word[2], get_str_cb, info);
@@ -2171,7 +2253,7 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	} else
 	{
 		struct popup *pop;
-		char *buf = malloc (4096);
+		char *buf = g_malloc (4096);
 		help_list hl;
 
 		hl.longfmt = longfmt;
@@ -2216,7 +2298,7 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		plugin_command_foreach (sess, &hl, (void *)show_help_line);
 		strcat (buf, "\n");
 		PrintText (sess, buf);
-		free (buf);
+		g_free (buf);
 
 		PrintTextf (sess, "\n%s\n\n", _("Type /HELP <command> for more information, or /HELP -l"));
 	}
@@ -2264,10 +2346,10 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			    strchr (mask, '*') == NULL)
 			{
 				mask = tbuf;
-				snprintf (tbuf, TBUFSIZE, "%s!*@*", word[2]);
+				g_snprintf (tbuf, TBUFSIZE, "%s!*@*", word[2]);
 			}
 
-			i = ignore_add (mask, type);
+			i = ignore_add (mask, type, TRUE);
 			if (quiet)
 				return TRUE;
 			switch (i)
@@ -2452,7 +2534,7 @@ cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		}
 		j++;
 	}
-	if (*word_eol[j])
+	if (word_eol[j] != NULL && *word_eol[j])
 	{
 		lastlog (sess, word_eol[j], flags);
 		return TRUE;
@@ -2466,7 +2548,7 @@ cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_list (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	sess->server->p_list_channels (sess->server, word_eol[2], 1);
+	fe_open_chan_list (sess->server, word_eol[2], TRUE);
 
 	return TRUE;
 }
@@ -2502,8 +2584,10 @@ load_perform_file (session *sess, char *file)
 static int
 cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char *error, *arg, *file, *buf;
-	int len;
+	char *file, *buf;
+#ifdef USE_PLUGIN
+	char *error, *arg;
+#endif
 
 	if (!word[2][0])
 		return FALSE;
@@ -2518,21 +2602,12 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			PrintText (sess, errorstring (errno));
 			g_free (buf);
 		}
-		free (file);
+		g_free (file);
 		return TRUE;
 	}
 
 #ifdef USE_PLUGIN
-	len = strlen (word[2]);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (".dll", word[2] + len - 4) == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (".sl", word[2] + len - 3) == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (".so", word[2] + len - 3) == 0)
-#endif
-#endif
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
 	{
 		arg = NULL;
 		if (word_eol[3][0])
@@ -2540,17 +2615,17 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 		file = expand_homedir (word[2]);
 		error = plugin_load (sess, file, arg);
-		free (file);
+		g_free (file);
 
 		if (error)
 			PrintText (sess, error);
 
 		return TRUE;
 	}
-#endif
 
 	sprintf (tbuf, "Unknown file type %s. Maybe you need to install the Perl or Python plugin?\n", word[2]);
 	PrintText (sess, tbuf);
+#endif
 
 	return FALSE;
 }
@@ -2558,7 +2633,8 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 char *
 split_up_text(struct session *sess, char *text, int cmd_length, char *split_text)
 {
-	unsigned int max;
+	unsigned int max, space_offset;
+	char *space;
 
 	/* maximum allowed text */
 	/* :nickname!username@host.com cmd_length */
@@ -2591,6 +2667,17 @@ split_up_text(struct session *sess, char *text, int cmd_length, char *split_text
 		}
 		max = i;
 
+		/* Try splitting at last space */
+		space = g_utf8_strrchr (text, max, ' ');
+		if (space)
+		{
+			space_offset = g_utf8_pointer_to_offset (text, space);
+
+			/* Only split if last word is of sane length */
+			if (max != space_offset && max - space_offset < 20)
+				max = space_offset + 1;
+		}
+
 		split_text = g_strdup_printf ("%.*s", max, text);
 
 		return split_text;
@@ -2606,6 +2693,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *split_text = NULL;
 	int cmd_length = 22; /* " PRIVMSG ", " ", :, \001ACTION, " ", \001, \r, \n */
 	int offset = 0;
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	if (!(*act))
 		return FALSE;
@@ -2616,12 +2704,13 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 
-	snprintf (tbuf, TBUFSIZE, "\001ACTION %s\001\r", act);
+	g_snprintf (tbuf, TBUFSIZE, "\001ACTION %s\001\r", act);
 	/* first try through DCC CHAT */
 	if (dcc_write_chat (sess->channel, tbuf))
 	{
 		/* print it to screen */
-		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE);
+		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE,
+							 &no_tags);
 	} else
 	{
 		/* DCC CHAT failed, try through server */
@@ -2631,17 +2720,20 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			{
 				sess->server->p_action (sess->server, sess->channel, split_text);
 				/* print it to screen */
-				inbound_action (sess, sess->channel, sess->server->nick, "", split_text, TRUE, FALSE);
+				inbound_action (sess, sess->channel, sess->server->nick, "",
+									 split_text, TRUE, FALSE,
+									 &no_tags);
 
 				if (*split_text)
 					offset += strlen(split_text);
 
-				g_free(split_text);
+				g_free (split_text);
 			}
 
 			sess->server->p_action (sess->server, sess->channel, act + offset);
 			/* print it to screen */
-			inbound_action (sess, sess->channel, sess->server->nick, "", act + offset, TRUE, FALSE);
+			inbound_action (sess, sess->channel, sess->server->nick, "",
+								 act + offset, TRUE, FALSE, &no_tags);
 		} else
 		{
 			notc_msg (sess);
@@ -2654,17 +2746,26 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_mode (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	/* +channel channels are dying, let those servers whine about modes.
-	 * return info about current channel if available and no info is given */
-	if ((*word[2] == '+') || (*word[2] == 0) || (!is_channel(sess->server, word[2]) &&
-				!(rfc_casecmp(sess->server->nick, word[2]) == 0)))
+	/* We allow omitting the target, so we have to figure it out:
+	 * - Can only use info from channels or dialogs
+	 * - Empty arg is always sess info
+	 * - Assume + is mode not channel
+	 * - We know valid channels and our nick
+	 * - We cannot easily know if other nick or valid mode (Need to store 004)
+	 */
+	if ((sess->type != SESS_CHANNEL && sess->type != SESS_DIALOG)
+	    || (!(*word[2] == '-' || *word[2] == '+' || *word[2] == '\0')
+	        && (is_channel (sess->server, word[2]) || !rfc_casecmp (sess->server->nick, word[2])))
+	   )
+	{
+		sess->server->p_mode (sess->server, word[2], word_eol[3]);
+	}
+	else
 	{
 		if(sess->channel[0] == 0)
 			return FALSE;
 		sess->server->p_mode (sess->server, sess->channel, word_eol[2]);
 	}
-	else
-		sess->server->p_mode (sess->server, word[2], word_eol[3]);
 	return TRUE;
 }
 
@@ -2682,7 +2783,7 @@ mop_cb (struct User *user, multidata *data)
 static int
 cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	char **nicks = malloc (sizeof (char *) * (sess->total - sess->ops));
+	char **nicks = g_new0 (char *, sess->total - sess->ops);
 	multidata data;
 
 	data.nicks = nicks;
@@ -2690,7 +2791,7 @@ cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	tree_foreach (sess->usertree, (tree_traverse_func *)mop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'o', 0);
 
-	free (nicks);
+	g_free (nicks);
 
 	return TRUE;
 }
@@ -2701,7 +2802,6 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *nick = word[2];
 	char *msg = word_eol[3];
 	struct session *newsess;
-
 	char *split_text = NULL;
 	int cmd_length = 13; /* " PRIVMSG ", " ", :, \r, \n */
 	int offset = 0;
@@ -2742,7 +2842,7 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					if (*split_text)
 						offset += strlen(split_text);
 
-					g_free(split_text);
+					g_free (split_text);
 				}
 				sess->server->p_message (sess->server, nick, msg + offset);
 				offset = 0;
@@ -2752,25 +2852,34 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				newsess = find_channel (sess->server, nick);
 			if (newsess)
 			{
+				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+
 				while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
 				{
 					inbound_chanmsg (newsess->server, NULL, newsess->channel,
-										  newsess->server->nick, split_text, TRUE, FALSE);
+										  newsess->server->nick, split_text, TRUE, FALSE,
+										  &no_tags);
 
 					if (*split_text)
 						offset += strlen(split_text);
 
-					g_free(split_text);
+					g_free (split_text);
 				}
 				inbound_chanmsg (newsess->server, NULL, newsess->channel,
-									  newsess->server->nick, msg + offset, TRUE, FALSE);
+									  newsess->server->nick, msg + offset, TRUE, FALSE,
+									  &no_tags);
 			}
 			else
 			{
 				/* mask out passwords */
-				if (g_ascii_strcasecmp (nick, "nickserv") == 0 &&
-					 g_ascii_strncasecmp (msg, "identify ", 9) == 0)
-					msg = "identify ****";
+				if (g_ascii_strcasecmp (nick, "nickserv") == 0)
+				{
+					if (g_ascii_strncasecmp (msg, "identify ", 9) == 0)
+						msg = "identify ****";
+					else if (g_ascii_strncasecmp (msg, "ghost ", 6) == 0)
+						msg = "ghost ****";
+				}
+
 				EMIT_SIGNAL (XP_TE_MSGSEND, sess, nick, msg, NULL, NULL, 0);
 			}
 
@@ -2811,7 +2920,7 @@ cmd_newserver (struct session *sess, char *tbuf, char *word[],
 		return TRUE;
 	}
 	
-	sess = new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+	sess = new_ircwindow (NULL, NULL, SESS_SERVER, 1);
 	cmd_server (sess, tbuf, word, word_eol);
 	return TRUE;
 }
@@ -2825,7 +2934,11 @@ cmd_nick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (sess->server->connected)
 			sess->server->p_change_nick (sess->server, nick);
 		else
-			inbound_newnick (sess->server, sess->server->nick, nick, TRUE);
+		{
+			message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+			inbound_newnick (sess->server, sess->server->nick, nick, TRUE,
+								  &no_tags);
+		}
 		return TRUE;
 	}
 	return FALSE;
@@ -2849,7 +2962,7 @@ cmd_notice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (*split_text)
 				offset += strlen(split_text);
 			
-			g_free(split_text);
+			g_free (split_text);
 		}
 
 		sess->server->p_notice (sess->server, word[2], text + offset);
@@ -2894,7 +3007,10 @@ cmd_notify (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 		}
 	} else
-		notify_showlist (sess);
+	{
+		message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+		notify_showlist (sess, &no_tags);
+	}
 	return TRUE;
 }
 
@@ -2942,39 +3058,77 @@ cmd_ping (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	tim = make_ping_time ();
 
-	snprintf (timestring, sizeof (timestring), "%lu", tim);
+	g_snprintf (timestring, sizeof (timestring), "%lu", tim);
 	sess->server->p_ping (sess->server, to, timestring);
 
 	return TRUE;
 }
 
-void
+session *
 open_query (server *serv, char *nick, gboolean focus_existing)
 {
 	session *sess;
 
 	sess = find_dialog (serv, nick);
 	if (!sess)
-		new_ircwindow (serv, nick, SESS_DIALOG, focus_existing);
+		sess = new_ircwindow (serv, nick, SESS_DIALOG, focus_existing);
 	else if (focus_existing)
 		fe_ctrl_gui (sess, 2, 0);	/* bring-to-front */
+
+	return sess;
 }
 
 static int
 cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *nick = word[2];
+	char *msg = word_eol[3];
+	char *split_text = NULL;
 	gboolean focus = TRUE;
+	int cmd_length = 13; /* " PRIVMSG ", " ", :, \r, \n */
+	int offset = 0;
 
 	if (strcmp (word[2], "-nofocus") == 0)
 	{
 		nick = word[3];
+		msg = word_eol[4];
 		focus = FALSE;
 	}
 
 	if (*nick && !is_channel (sess->server, nick))
 	{
-		open_query (sess->server, nick, focus);
+		struct session *nick_sess;
+
+		nick_sess = open_query (sess->server, nick, focus);
+
+		if (*msg)
+		{
+			message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+
+			if (!sess->server->connected)
+			{
+				notc_msg (sess);
+				return TRUE;
+			}
+
+			while ((split_text = split_up_text (sess, msg + offset, cmd_length, split_text)))
+			{
+				sess->server->p_message (sess->server, nick, split_text);
+				inbound_chanmsg (nick_sess->server, nick_sess, nick_sess->channel,
+								 nick_sess->server->nick, split_text, TRUE, FALSE,
+								 &no_tags);
+
+				if (*split_text)
+					offset += strlen(split_text);
+
+				g_free (split_text);
+			}
+			sess->server->p_message (sess->server, nick, msg + offset);
+			inbound_chanmsg (nick_sess->server, nick_sess, nick_sess->channel,
+							 nick_sess->server->nick, msg + offset, TRUE, FALSE,
+							 &no_tags);
+		}
+
 		return TRUE;
 	}
 	return FALSE;
@@ -3144,9 +3298,9 @@ cmd_send (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if ((addr & 0xffff0000) == 0xc0a80000 ||	/* 192.168.x.x */
 		 (addr & 0xff000000) == 0x0a000000)		/* 10.x.x.x */
 		/* we got a private net address, let's PSEND or it'll fail */
-		snprintf (tbuf, 512, "DCC PSEND %s", word_eol[2]);
+		g_snprintf (tbuf, 512, "DCC PSEND %s", word_eol[2]);
 	else
-		snprintf (tbuf, 512, "DCC SEND %s", word_eol[2]);
+		g_snprintf (tbuf, 512, "DCC SEND %s", word_eol[2]);
 
 	handle_command (sess, tbuf, FALSE);
 
@@ -3237,7 +3391,7 @@ urlserv:
 			co++;
 			if (*co == '#')
 				*channel = co+1;
-			else
+			else if (*co != '\0')
 				*channel = co;
 				
 			/* check for key - mirc style */
@@ -3267,6 +3421,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int use_ssl = FALSE;
 	int is_url = TRUE;
 	server *serv = sess->server;
+	ircnet *net = NULL;
 
 #ifdef USE_OPENSSL
 	/* BitchX uses -ssl, mIRC uses -e, let's support both */
@@ -3323,7 +3478,18 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 	else
 	{
-		serv->password[0] = 0;
+		/* If part of a known network, login like normal */
+		net = servlist_net_find_from_server (server_name);
+		if (net && net->pass && *net->pass)
+		{
+			safe_strcpy (serv->password, net->pass, sizeof (serv->password));
+			serv->loginmethod = net->logintype;
+		}
+		else /* Otherwise ensure no password is sent or SASL started */
+		{
+			serv->loginmethod = LOGIN_DEFAULT;
+			serv->password[0] = 0;
+		}
 	}
 
 #ifdef USE_OPENSSL
@@ -3345,10 +3511,9 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 	/* try to associate this connection with a listed network */
-	if (!serv->network)
-		/* search for this hostname in the entire server list */
-		serv->network = servlist_net_find_from_server (server_name);
-		/* may return NULL, but that's OK */
+	/* may return NULL, but that's OK */
+	if ((serv->network = servlist_net_find_from_server (server_name)))
+		server_set_encoding (serv, ((ircnet*)serv->network)->encoding);
 
 	return TRUE;
 }
@@ -3386,12 +3551,6 @@ cmd_topic (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_tray (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	if (strcmp (word[2], "-b") == 0)
-	{
-		fe_tray_set_balloon (word[3], word[4][0] ? word[4] : NULL);
-		return TRUE;
-	}
-
 	if (strcmp (word[2], "-t") == 0)
 	{
 		fe_tray_set_tooltip (word[3][0] ? word[3] : NULL);
@@ -3435,7 +3594,7 @@ cmd_unignore (struct session *sess, char *tbuf, char *word[],
 		if (strchr (mask, '?') == NULL && strchr (mask, '*') == NULL)
 		{
 			mask = tbuf;
-			snprintf (tbuf, TBUFSIZE, "%s!*@*", word[2]);
+			g_snprintf (tbuf, TBUFSIZE, "%s!*@*", word[2]);
 		}
 		
 		if (ignore_del (mask, NULL))
@@ -3452,18 +3611,9 @@ static int
 cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 #ifdef USE_PLUGIN
-	int len, by_file = FALSE;
+	gboolean by_file = FALSE;
 
-	len = strlen (word[2]);
-#ifdef WIN32
-	if (len > 4 && g_ascii_strcasecmp (word[2] + len - 4, ".dll") == 0)
-#else
-#if defined(__hpux)
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".sl") == 0)
-#else
-	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".so") == 0)
-#endif
-#endif
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
 		by_file = TRUE;
 
 	switch (plugin_kill (word[2], by_file))
@@ -3476,6 +3626,30 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	case 2:
 			PrintText (sess, _("That plugin is refusing to unload.\n"));
 			break;
+	}
+#endif
+
+	return FALSE;
+}
+
+static int
+cmd_reload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+#ifdef USE_PLUGIN
+	gboolean by_file = FALSE;
+
+	if (g_str_has_suffix (word[2], "."G_MODULE_SUFFIX))
+		by_file = TRUE;
+
+	switch (plugin_reload (sess, word[2], by_file))
+	{
+	case 0: /* error */
+			PrintText (sess, _("No such plugin found.\n"));
+			break;
+	case 1: /* success */
+			return TRUE;
+	case 2: /* fake plugin, we know it exists but scripts should handle it. */
+			return TRUE;
 	}
 #endif
 
@@ -3600,8 +3774,8 @@ userlist_cb (struct User *user, session *sess)
 	else
 		lt = time (0) - user->lasttalk;
 	PrintTextf (sess,
-				"\00306%s\t\00314[\00310%-38s\00314] \017ov\0033=\017%d%d away=%u lt\0033=\017%d\n",
-				user->nick, user->hostname, user->op, user->voice, user->away, lt);
+				"\00306%s\t\00314[\00310%-38s\00314] \017ov\0033=\017%d%d away=%u lt\0033=\017%ld\n",
+				user->nick, user->hostname, user->op, user->voice, user->away, (long)lt);
 
 	return TRUE;
 }
@@ -3699,8 +3873,11 @@ cmd_wallchan (struct session *sess, char *tbuf, char *word[],
 			sess = list->data;
 			if (sess->type == SESS_CHANNEL)
 			{
+				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
+
 				inbound_chanmsg (sess->server, NULL, sess->channel,
-									  sess->server->nick, word_eol[2], TRUE, FALSE);
+									  sess->server->nick, word_eol[2], TRUE, FALSE, 
+									  &no_tags);
 				sess->server->p_message (sess->server, sess->channel, word_eol[2]);
 			}
 			list = list->next;
@@ -3757,14 +3934,14 @@ const struct commands xc_cmds[] = {
 	 N_("ALLCHANL <cmd>, sends a command to all channels on the current server")},
 	{"ALLSERV", cmd_allservers, 0, 0, 1,
 	 N_("ALLSERV <cmd>, sends a command to all servers you're in")},
-	{"AWAY", cmd_away, 1, 0, 1, N_("AWAY [<reason>], sets you away")},
+	{"AWAY", cmd_away, 1, 0, 1, N_("AWAY [<reason>], sets you away (use /BACK to unset)")},
 	{"BACK", cmd_back, 1, 0, 1, N_("BACK, sets you back (not away)")},
 	{"BAN", cmd_ban, 1, 1, 1,
 	 N_("BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)")},
 	{"CHANOPT", cmd_chanopt, 0, 0, 1, N_("CHANOPT [-quiet] <variable> [<value>]")},
 	{"CHARSET", cmd_charset, 0, 0, 1, N_("CHARSET [<encoding>], get or set the encoding used for the current connection")},
-	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY], Clears the current text window or command history")},
-	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE, Closes the current window/tab")},
+	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY|[-]<amount>], Clears the current text window or command history")},
+	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE [-m], Closes the current tab, closing the window if this is the only open tab, or with the \"-m\" flag, closes all queries.")},
 
 	{"COUNTRY", cmd_country, 0, 0, 1,
 	 N_("COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia")},
@@ -3793,7 +3970,8 @@ const struct commands xc_cmds[] = {
 	{"DEVOICE", cmd_devoice, 1, 1, 1,
 	 N_("DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)")},
 	{"DISCON", cmd_discon, 0, 0, 1, N_("DISCON, Disconnects from server")},
-	{"DNS", cmd_dns, 0, 0, 1, N_("DNS <nick|host|ip>, Finds a users IP number")},
+	{"DNS", cmd_dns, 0, 0, 1, N_("DNS <nick|host|ip>, Resolves an IP or hostname")},
+	{"DOAT", cmd_doat, 0, 0, 1, N_("DOAT <channel,list,/network> <command>")},
 	{"ECHO", cmd_echo, 0, 0, 1, N_("ECHO <text>, Prints text locally")},
 #ifndef WIN32
 	{"EXEC", cmd_exec, 0, 0, 1,
@@ -3815,6 +3993,7 @@ const struct commands xc_cmds[] = {
 	 N_("FLUSHQ, flushes the current server's send queue")},
 	{"GATE", cmd_gate, 0, 0, 1,
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
+	{"GETBOOL", cmd_getbool, 0, 0, 1, "GETBOOL <command> <title> <text>"},
 	{"GETFILE", cmd_getfile, 0, 0, 1, "GETFILE [-folder] [-multi] [-save] <command> <title> [<initial>]"},
 	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
@@ -3836,9 +4015,9 @@ const struct commands xc_cmds[] = {
 	 N_("INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)")},
 	{"JOIN", cmd_join, 1, 0, 0, N_("JOIN <channel>, joins the channel")},
 	{"KICK", cmd_kick, 1, 1, 1,
-	 N_("KICK <nick>, kicks the nick from the current channel (needs chanop)")},
+	 N_("KICK <nick> [reason], kicks the nick from the current channel (needs chanop)")},
 	{"KICKBAN", cmd_kickban, 1, 1, 1,
-	 N_("KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)")},
+	 N_("KICKBAN <nick> [reason], bans then kicks the nick from the current channel (needs chanop)")},
 	{"KILLALL", cmd_killall, 0, 0, 1, "KILLALL, immediately exit"},
 	{"LAGCHECK", cmd_lagcheck, 0, 0, 1,
 	 N_("LAGCHECK, forces a new lag check")},
@@ -3858,16 +4037,18 @@ const struct commands xc_cmds[] = {
 	{"ME", cmd_me, 0, 0, 1,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
 	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-i<ICONFILE>] [-k<mod>,<key>] [-m] [-pX] [-r<X,group>] [-tX] {ADD|DEL} <path> [command] [unselect command]\n"
-										 "       See http://docs.hexchat.org/en/latest/plugins.html#controlling-the-gui for more details."},
+										 "       See http://hexchat.readthedocs.org/en/latest/plugins.html#controlling-the-gui for more details."},
+	{"MHOP", cmd_mhop, 1, 1, 1,
+	 N_("MHOP, Mass hop's all users in the current channel (needs chanop)")},
 	{"MKICK", cmd_mkick, 1, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"MODE", cmd_mode, 1, 0, 1, 0},
 	{"MOP", cmd_mop, 1, 1, 1,
 	 N_("MOP, Mass op's all users in the current channel (needs chanop)")},
-	{"MSG", cmd_msg, 0, 0, 1, N_("MSG <nick> <message>, sends a private message")},
+	{"MSG", cmd_msg, 0, 0, 1, N_("MSG <nick> <message>, sends a private message, message \".\" to send to last nick or prefix with \"=\" for dcc chat")},
 
 	{"NAMES", cmd_names, 1, 0, 1,
-	 N_("NAMES, Lists the nicks on the current channel")},
+	 N_("NAMES [channel], Lists the nicks on the channel")},
 	{"NCTCP", cmd_nctcp, 1, 0, 1,
 	 N_("NCTCP <nick> <message>, Sends a CTCP notice")},
 	{"NEWSERVER", cmd_newserver, 0, 0, 1, N_("NEWSERVER [-noconnect] <hostname> [<port>]")},
@@ -3884,7 +4065,7 @@ const struct commands xc_cmds[] = {
 	{"PING", cmd_ping, 1, 0, 1,
 	 N_("PING <nick | channel>, CTCP pings nick or channel")},
 	{"QUERY", cmd_query, 0, 0, 1,
-	 N_("QUERY [-nofocus] <nick>, opens up a new privmsg window to someone")},
+	 N_("QUERY [-nofocus] <nick> [message], opens up a new privmsg window to someone and optionally sends a message")},
 	{"QUIET", cmd_quiet, 1, 1, 1,
 	 N_("QUIET <mask> [<quiettype>], quiet everyone matching the mask in the current channel if supported by the server.")},
 	{"QUIT", cmd_quit, 0, 0, 1,
@@ -3899,7 +4080,7 @@ const struct commands xc_cmds[] = {
 	 N_("RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")},
 #endif
 	{"RECV", cmd_recv, 1, 0, 1, N_("RECV <text>, send raw data to HexChat, as if it was received from the IRC server")},
-
+	{"RELOAD", cmd_reload, 0, 0, 1, N_("RELOAD <name>, reloads a plugin or script")},
 	{"SAY", cmd_say, 0, 0, 1,
 	 N_("SAY <text>, sends the text to the object in the current window")},
 	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},
@@ -3965,6 +4146,31 @@ find_internal_command (char *name)
 				sizeof (xc_cmds[0])) - 1, sizeof (xc_cmds[0]), command_compare);
 }
 
+static gboolean
+usercommand_show_help (session *sess, char *name)
+{
+	struct popup *pop;
+	gboolean found = FALSE;
+	char buf[1024];
+	GSList *list;
+
+	list = command_list;
+	while (list)
+	{
+		pop = (struct popup *) list->data;
+		if (!g_ascii_strcasecmp (pop->name, name))
+		{
+			g_snprintf (buf, sizeof(buf), _("User Command for: %s\n"), pop->cmd);
+			PrintText (sess, buf);
+
+			found = TRUE;
+		}
+		list = list->next;
+	}
+
+	return found;
+}
+
 static void
 help (session *sess, char *tbuf, char *helpcmd, int quiet)
 {
@@ -3973,13 +4179,15 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
 	if (plugin_show_help (sess, helpcmd))
 		return;
 
-	cmd = find_internal_command (helpcmd);
+	if (usercommand_show_help (sess, helpcmd))
+		return;
 
+	cmd = find_internal_command (helpcmd);
 	if (cmd)
 	{
 		if (cmd->help)
 		{
-			snprintf (tbuf, TBUFSIZE, _("Usage: %s\n"), _(cmd->help));
+			g_snprintf (tbuf, TBUFSIZE, _("Usage: %s\n"), _(cmd->help));
 			PrintText (sess, tbuf);
 		} else
 		{
@@ -4001,7 +4209,7 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
  * - this beast is used for UserCommands, UserlistButtons and CTCP replies   */
 
 int
-auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
+auto_insert (char *dest, gsize destlen, unsigned char *src, char *word[],
 				 char *word_eol[], char *a, char *c, char *d, char *e, char *h,
 				 char *n, char *s, char *u)
 {
@@ -4073,7 +4281,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 				switch (src[0])
 				{
 				case '%':
-					if ((dest - orig) + 2 >= destlen)
+					if ((dest - orig) + 2u >= destlen)
 						return 2;
 					dest[0] = '%';
 					dest[1] = 0;
@@ -4108,7 +4316,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 				case 'y':
 					now = time (0);
 					tm_ptr = localtime (&now);
-					snprintf (buf, sizeof (buf), "%4d%02d%02d", 1900 +
+					g_snprintf (buf, sizeof (buf), "%4d%02d%02d", 1900 +
 								 tm_ptr->tm_year, 1 + tm_ptr->tm_mon, tm_ptr->tm_mday);
 					utf = buf;
 					break;
@@ -4167,78 +4375,78 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 	if (!len)
 		return;
 
-	buf = malloc (len + 1);
+	buf = g_malloc (len + 1);
 
-	if (buf)
+	while (cmd[j])
 	{
-		while (cmd[j])
+		switch (cmd[j])
 		{
-			switch (cmd[j])
+		case '%':
+			occur++;
+			if (	do_ascii &&
+					j + 3 < len &&
+					(isdigit ((unsigned char) cmd[j + 1]) && isdigit ((unsigned char) cmd[j + 2]) &&
+					isdigit ((unsigned char) cmd[j + 3])))
 			{
-			case '%':
-				occur++;
-				if (	do_ascii &&
-						j + 3 < len &&
-						(isdigit ((unsigned char) cmd[j + 1]) && isdigit ((unsigned char) cmd[j + 2]) &&
-						isdigit ((unsigned char) cmd[j + 3])))
+				tbuf[0] = cmd[j + 1];
+				tbuf[1] = cmd[j + 2];
+				tbuf[2] = cmd[j + 3];
+				tbuf[3] = 0;
+				buf[i] = atoi (tbuf);
+				utf = g_locale_to_utf8 (buf + i, 1, 0, &utf_len, 0);
+				if (utf)
 				{
-					tbuf[0] = cmd[j + 1];
-					tbuf[1] = cmd[j + 2];
-					tbuf[2] = cmd[j + 3];
-					tbuf[3] = 0;
-					buf[i] = atoi (tbuf);
-					utf = g_locale_to_utf8 (buf + i, 1, 0, &utf_len, 0);
-					if (utf)
-					{
-						memcpy (buf + i, utf, utf_len);
-						g_free (utf);
-						i += (utf_len - 1);
-					}
-					j += 3;
-				} else
-				{
-					switch (cmd[j + 1])
-					{
-					case 'R':
-						buf[i] = '\026';
-						break;
-					case 'U':
-						buf[i] = '\037';
-						break;
-					case 'B':
-						buf[i] = '\002';
-						break;
-					case 'C':
-						buf[i] = '\003';
-						break;
-					case 'O':
-						buf[i] = '\017';
-						break;
-					case 'H':	/* CL: invisible text code */
-						buf[i] = HIDDEN_CHAR;
-						break;
-					case '%':
-						buf[i] = '%';
-						break;
-					default:
-						buf[i] = '%';
-						j--;
-						break;
-					}
-					j++;
-					break;
-			default:
-					buf[i] = cmd[j];
+					memcpy (buf + i, utf, utf_len);
+					g_free (utf);
+					i += (utf_len - 1);
 				}
+				j += 3;
+			} else
+			{
+				switch (cmd[j + 1])
+				{
+				case 'R':
+					buf[i] = '\026';
+					break;
+				case 'U':
+					buf[i] = '\037';
+					break;
+				case 'B':
+					buf[i] = '\002';
+					break;
+				case 'I':
+					buf[i] = '\035';
+					break;
+				case 'C':
+					buf[i] = '\003';
+					break;
+				case 'O':
+					buf[i] = '\017';
+					break;
+				case 'H':	/* CL: invisible text code */
+					buf[i] = HIDDEN_CHAR;
+					break;
+				case '%':
+					buf[i] = '%';
+					break;
+				default:
+					buf[i] = '%';
+					j--;
+					break;
+				}
+				j++;
+				break;
+		default:
+				buf[i] = cmd[j];
 			}
-			j++;
-			i++;
 		}
-		buf[i] = 0;
-		if (occur)
-			strcpy (cmd, buf);
-		free (buf);
+		j++;
+		i++;
 	}
+	buf[i] = 0;
+	if (occur)
+		strcpy (cmd, buf);
+	g_free (buf);
 }
 
 typedef struct
@@ -4261,7 +4469,7 @@ nick_comp_cb (struct User *user, nickdata *data)
 		lenu = strlen (user->nick);
 		if (lenu == data->len)
 		{
-			snprintf (data->tbuf, TBUFSIZE, "%s%s", user->nick, data->space);
+			g_snprintf (data->tbuf, TBUFSIZE, "%s%s", user->nick, data->space);
 			data->len = -1;
 			return FALSE;
 		} else if (lenu < data->bestlen)
@@ -4305,7 +4513,7 @@ perform_nick_completion (struct session *sess, char *cmd, char *tbuf)
 
 				if (data.best)
 				{
-					snprintf (tbuf, TBUFSIZE, "%s%s", data.best->nick, space - 1);
+					g_snprintf (tbuf, TBUFSIZE, "%s%s", data.best->nick, space - 1);
 					return;
 				}
 			}
@@ -4338,12 +4546,11 @@ handle_say (session *sess, char *text, int check_spch)
 	struct DCC *dcc;
 	char *word[PDIWORDS+1];
 	char *word_eol[PDIWORDS+1];
-	char pdibuf_static[1024];
-	char newcmd_static[1024];
-	char *pdibuf = pdibuf_static;
-	char *newcmd = newcmd_static;
+	char *pdibuf;
+	char *newcmd;
 	int len;
-	int newcmdlen = sizeof newcmd_static;
+	int newcmdlen;
+	message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
 
 	if (strcmp (sess->channel, "(lastlog)") == 0)
 	{
@@ -4352,11 +4559,9 @@ handle_say (session *sess, char *text, int check_spch)
 	}
 
 	len = strlen (text);
-	if (len >= sizeof pdibuf_static)
-		pdibuf = malloc (len + 1);
-
-	if (len + NICKLEN >= newcmdlen)
-		newcmd = malloc (newcmdlen = len + NICKLEN + 1);
+	pdibuf = g_malloc (len + 1);
+	newcmdlen = MAX(len + NICKLEN + 1, TBUFSIZE);
+	newcmd = g_malloc (newcmdlen);
 
 	if (check_spch && prefs.hex_input_perc_color)
 		check_special_chars (text, prefs.hex_input_perc_ascii);
@@ -4396,7 +4601,7 @@ handle_say (session *sess, char *text, int check_spch)
 		if (dcc)
 		{
 			inbound_chanmsg (sess->server, NULL, sess->channel,
-								  sess->server->nick, text, TRUE, FALSE);
+								  sess->server->nick, text, TRUE, FALSE, &no_tags);
 			set_topic (sess, net_ip (dcc->addr), net_ip (dcc->addr));
 			goto xit;
 		}
@@ -4411,17 +4616,17 @@ handle_say (session *sess, char *text, int check_spch)
 		while ((split_text = split_up_text (sess, text + offset, cmd_length, split_text)))
 		{
 			inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
-								  split_text, TRUE, FALSE);
+								  split_text, TRUE, FALSE, &no_tags);
 			sess->server->p_message (sess->server, sess->channel, split_text);
 			
 			if (*split_text)
 				offset += strlen(split_text);
 			
-			g_free(split_text);
+			g_free (split_text);
 		}
 
 		inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
-							  text + offset, TRUE, FALSE);
+							  text + offset, TRUE, FALSE, &no_tags);
 		sess->server->p_message (sess->server, sess->channel, text + offset);
 	} else
 	{
@@ -4429,11 +4634,9 @@ handle_say (session *sess, char *text, int check_spch)
 	}
 
 xit:
-	if (pdibuf != pdibuf_static)
-		free (pdibuf);
+	g_free (pdibuf);
 
-	if (newcmd != newcmd_static)
-		free (newcmd);
+	g_free (newcmd);
 }
 
 char *
@@ -4527,11 +4730,8 @@ handle_command (session *sess, char *cmd, int check_spch)
 	char *word_eol[PDIWORDS+1];
 	static int command_level = 0;
 	struct commands *int_cmd;
-	char pdibuf_static[1024];
-	char tbuf_static[TBUFSIZE];
 	char *pdibuf;
 	char *tbuf;
-	char *cmd_vars;
 	int len;
 	int ret = TRUE;
 
@@ -4543,29 +4743,12 @@ handle_command (session *sess, char *cmd, int check_spch)
 	command_level++;
 	/* anything below MUST DEC command_level before returning */
 
-	cmd_vars = command_insert_vars (sess, cmd);
-
-	len = strlen (cmd_vars);
-	if (len >= sizeof (pdibuf_static))
-	{
-		pdibuf = malloc (len + 1);
-	}
-	else
-	{
-		pdibuf = pdibuf_static;
-	}
-
-	if ((len * 2) >= sizeof (tbuf_static))
-	{
-		tbuf = malloc ((len * 2) + 1);
-	}
-	else
-	{
-		tbuf = tbuf_static;
-	}
+	len = strlen (cmd);
+	pdibuf = g_malloc (len + 1);
+	tbuf = g_malloc (MAX(TBUFSIZE, (len * 2) + 1));
 
 	/* split the text into words and word_eol */
-	process_data_init (pdibuf, cmd_vars, word, word_eol, TRUE, TRUE);
+	process_data_init (pdibuf, cmd, word, word_eol, TRUE, TRUE);
 
 	/* ensure an empty string at index 32 for cmd_deop etc */
 	/* (internal use only, plugins can still only read 1-31). */
@@ -4576,12 +4759,12 @@ handle_command (session *sess, char *cmd, int check_spch)
 	/* redo it without quotes processing, for some commands like /JOIN */
 	if (int_cmd && !int_cmd->handle_quotes)
 	{
-		process_data_init (pdibuf, cmd_vars, word, word_eol, FALSE, FALSE);
+		process_data_init (pdibuf, cmd, word, word_eol, FALSE, FALSE);
 	}
 
 	if (check_spch && prefs.hex_input_perc_color)
 	{
-		check_special_chars (cmd_vars, prefs.hex_input_perc_ascii);
+		check_special_chars (cmd, prefs.hex_input_perc_ascii);
 	}
 
 	if (plugin_emit_command (sess, word[1], word, word_eol))
@@ -4641,31 +4824,22 @@ handle_command (session *sess, char *cmd, int check_spch)
 	}
 	else
 	{
-		/* unknown command, just send it to the server and hope */
 		if (!sess->server->connected)
 		{
-			PrintText (sess, _("Unknown Command. Try /help\n"));
+			PrintTextf (sess, _("Unknown Command %s. Try /help\n"), word[1]);
 		}
 		else
 		{
-			sess->server->p_raw (sess->server, cmd_vars);
+			/* unknown command, just send it to the server and hope */
+			sess->server->p_raw (sess->server, cmd);
 		}
 	}
 
 xit:
 	command_level--;
 
-	if (pdibuf != pdibuf_static)
-	{
-		free (pdibuf);
-	}
-
-	if (tbuf != tbuf_static)
-	{
-		free (tbuf);
-	}
-
-	g_free (cmd_vars);
+	g_free (pdibuf);
+	g_free (tbuf);
 
 	return ret;
 }

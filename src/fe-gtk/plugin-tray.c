@@ -29,21 +29,10 @@
 #include "pixmaps.h"
 #include "maingui.h"
 #include "menu.h"
+#include "gtkutil.h"
 
 #ifndef WIN32
 #include <unistd.h>
-#endif
-
-#ifdef USE_LIBNOTIFY
-#include <libnotify/notify.h>
-#ifndef NOTIFY_CHECK_VERSION
-#define NOTIFY_CHECK_VERSION(x,y,z) 0
-#endif
-#if NOTIFY_CHECK_VERSION(0,7,0)
-#define XC_NOTIFY_NEW(a,b,c,d) notify_notification_new(a,b,c)
-#else
-#define XC_NOTIFY_NEW(a,b,c,d) notify_notification_new(a,b,c,d)
-#endif
 #endif
 
 typedef enum	/* current icon status */
@@ -66,7 +55,7 @@ typedef GdkPixbuf* TrayIcon;
 #define tray_icon_from_file(f) gdk_pixbuf_new_from_file(f,NULL)
 #define tray_icon_free(i) g_object_unref(i)
 
-#define ICON_NORMAL pix_hexchat
+#define ICON_NORMAL pix_tray_normal
 #define ICON_MSG pix_tray_message
 #define ICON_HILIGHT pix_tray_highlight
 #define ICON_FILE pix_tray_fileoffer
@@ -92,7 +81,7 @@ static int tray_restore_timer = 0;
 
 
 void tray_apply_setup (void);
-static gboolean tray_menu_try_restore ();
+static gboolean tray_menu_try_restore (void);
 static void tray_cleanup (void);
 static void tray_init (void);
 
@@ -151,73 +140,7 @@ void
 fe_tray_set_tooltip (const char *text)
 {
 	if (sticon)
-		gtk_status_icon_set_tooltip (sticon, text);
-}
-
-void
-fe_tray_set_balloon (const char *title, const char *text)
-{
-#ifndef WIN32
-#if 0
-	const char *argv[8];
-	const char *path;
-	char time[16];
-#endif
-	WinStatus ws;
-
-	/* no balloons if the window is focused */
-	ws = tray_get_window_status ();
-	if ((prefs.hex_away_omit_alerts && hexchat_get_info(ph, "away")) ||
-		(prefs.hex_gui_focus_omitalerts && ws == WS_FOCUSED))
-		return;
-
-	/* bit 1 of flags means "no balloons unless hidden/iconified" */
-	if (ws != WS_HIDDEN && prefs.hex_gui_tray_quiet)
-		return;
-
-	/* FIXME: this should close the current balloon */
-	if (!text)
-		return;
-
-#ifdef USE_LIBNOTIFY
-	NotifyNotification *notification;
-	char *notify_text, *notify_title;
-
-	if (!notify_is_initted())
-		notify_init(PACKAGE_NAME);
-
-	notify_text = strip_color (text, -1, STRIP_ALL|STRIP_ESCMARKUP);
-	notify_title = strip_color (title, -1, STRIP_ALL);
-
-	notification = XC_NOTIFY_NEW (notify_title, notify_text, HEXCHATSHAREDIR "/icons/hicolor/scalable/apps/hexchat.svg", NULL);
-
-#if NOTIFY_CHECK_VERSION(0,7,0)
-	notify_notification_set_hint (notification, "desktop-entry", g_variant_new_string ("hexchat"));
-#endif
-
-	g_free ((char *)notify_title);
-	g_free ((char *)notify_text);
-
-	notify_notification_set_timeout (notification, prefs.hex_input_balloon_time*1000);
-	notify_notification_show (notification, NULL);
-
-	g_object_unref (notification);
-#endif
-#endif
-}
-
-static void
-tray_set_balloonf (const char *text, const char *format, ...)
-{
-	va_list args;
-	char *buf;
-
-	va_start (args, format);
-	buf = g_strdup_vprintf (format, args);
-	va_end (args);
-
-	fe_tray_set_balloon (buf, text);
-	g_free (buf);
+		gtk_status_icon_set_tooltip_text (sticon, text);
 }
 
 static void
@@ -251,10 +174,10 @@ tray_stop_flash (void)
 		nets = tray_count_networks ();
 		chans = tray_count_channels ();
 		if (nets)
-			tray_set_tipf (_(DISPLAY_NAME": Connected to %u networks and %u channels"),
-								nets, chans);
+			tray_set_tipf (_("Connected to %u networks and %u channels - %s"),
+								nets, chans, _(DISPLAY_NAME));
 		else
-			tray_set_tipf (DISPLAY_NAME": %s", _("Not connected."));
+			tray_set_tipf ("%s - %s", _("Not connected."), _(DISPLAY_NAME));
 	}
 
 	if (custom_icon1)
@@ -398,6 +321,7 @@ tray_toggle_visibility (gboolean force_hide)
 	static int x, y;
 	static GdkScreen *screen;
 	static int maximized;
+	static int fullscreen;
 	GtkWindow *win;
 
 	if (!sticon)
@@ -421,6 +345,7 @@ tray_toggle_visibility (gboolean force_hide)
 		gtk_window_get_position (win, &x, &y);
 		screen = gtk_window_get_screen (win);
 		maximized = prefs.hex_gui_win_state;
+		fullscreen = prefs.hex_gui_win_fullscreen;
 		gtk_widget_hide (GTK_WIDGET (win));
 	}
 	else
@@ -431,6 +356,8 @@ tray_toggle_visibility (gboolean force_hide)
 		gtk_window_move (win, x, y);
 		if (maximized)
 			gtk_window_maximize (win);
+		if (fullscreen)
+			gtk_window_fullscreen (win);
 		gtk_widget_show (GTK_WIDGET (win));
 		gtk_window_present (win);
 	}
@@ -465,7 +392,7 @@ tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
 }
 
 static gboolean
-tray_menu_try_restore ()
+tray_menu_try_restore (void)
 {
 	tray_cleanup();
 	tray_init();
@@ -541,7 +468,7 @@ tray_make_item (GtkWidget *menu, char *label, void *callback, void *userdata)
 static void
 tray_toggle_cb (GtkCheckMenuItem *item, unsigned int *setting)
 {
-	*setting = item->active;
+	*setting = gtk_check_menu_item_get_active (item);
 }
 
 static void
@@ -561,26 +488,32 @@ tray_menu_destroy (GtkWidget *menu, gpointer userdata)
 }
 
 #ifdef WIN32
-static void
+static gboolean
 tray_menu_enter_cb (GtkWidget *menu)
 {
 	tray_menu_inactivetime = 0;
+	return FALSE;
 }
 
-static void
+static gboolean
 tray_menu_left_cb (GtkWidget *menu)
 {
 	tray_menu_inactivetime = g_get_real_time ();
+	return FALSE;
 }
 
-static void
+static gboolean
 tray_check_hide (GtkWidget *menu)
 {
 	if (tray_menu_inactivetime && g_get_real_time () - tray_menu_inactivetime  >= 2000000)
 	{
 		tray_menu_destroy (menu, NULL);
+		return G_SOURCE_REMOVE;
 	}
+
+	return G_SOURCE_CONTINUE;
 }
+#endif
 
 static void
 tray_menu_settings (GtkWidget * wid, gpointer none)
@@ -588,7 +521,6 @@ tray_menu_settings (GtkWidget * wid, gpointer none)
 	extern void setup_open (void);
 	setup_open ();
 }
-#endif
 
 static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
@@ -637,10 +569,9 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		gtk_widget_set_sensitive (item, FALSE);
 
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
-#ifdef WIN32
+
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 	mg_create_icon_item (_("_Preferences"), GTK_STOCK_PREFERENCES, menu, tray_menu_settings, NULL);
-#endif
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 
@@ -655,7 +586,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	g_signal_connect (G_OBJECT (menu), "enter-notify-event",
 							G_CALLBACK (tray_menu_enter_cb), NULL);
 
-	tray_menu_timer = g_timeout_add(500, (GSourceFunc) tray_check_hide, menu);
+	tray_menu_timer = g_timeout_add (500, tray_check_hide, menu);
 #endif
 
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL,
@@ -697,16 +628,13 @@ tray_hilight_cb (char *word[], void *userdata)
 		/* FIXME: hides any previous private messages */
 		tray_hilight_count++;
 		if (tray_hilight_count == 1)
-			tray_set_tipf (_(DISPLAY_NAME": Highlighted message from: %s (%s)"),
-								word[1], hexchat_get_info (ph, "channel"));
+			tray_set_tipf (_("Highlighted message from: %s (%s) - %s"),
+								word[1], hexchat_get_info (ph, "channel"), _(DISPLAY_NAME));
 		else
-			tray_set_tipf (_(DISPLAY_NAME": %u highlighted messages, latest from: %s (%s)"),
-								tray_hilight_count, word[1], hexchat_get_info (ph, "channel"));
+			tray_set_tipf (_("%u highlighted messages, latest from: %s (%s) - %s"),
+								tray_hilight_count, word[1], hexchat_get_info (ph, "channel"),
+								_(DISPLAY_NAME));
 	}
-
-	if (prefs.hex_input_balloon_hilight)
-		tray_set_balloonf (word[2], _("Highlighted message from: %s (%s)"),
-								 word[1], hexchat_get_info (ph, "channel"));
 
 	return HEXCHAT_EAT_NONE;
 }
@@ -723,15 +651,11 @@ tray_message_cb (char *word[], void *userdata)
 
 		tray_pub_count++;
 		if (tray_pub_count == 1)
-			tray_set_tipf (_(DISPLAY_NAME": Channel message from: %s (%s)"),
-								word[1], hexchat_get_info (ph, "channel"));
+			tray_set_tipf (_("Channel message from: %s (%s) - %s"),
+								word[1], hexchat_get_info (ph, "channel"), _(DISPLAY_NAME));
 		else
-			tray_set_tipf (_(DISPLAY_NAME": %u channel messages."), tray_pub_count);
+			tray_set_tipf (_("%u channel messages. - %s"), tray_pub_count, _(DISPLAY_NAME));
 	}
-
-	if (prefs.hex_input_balloon_chans)
-		tray_set_balloonf (word[2], _("Channel message from: %s (%s)"),
-								 word[1], hexchat_get_info (ph, "channel"));
 
 	return HEXCHAT_EAT_NONE;
 }
@@ -744,33 +668,28 @@ tray_priv (char *from, char *text)
 	if (alert_match_word (from, prefs.hex_irc_no_hilight))
 		return;
 
-	tray_set_flash (ICON_MSG);
-
 	network = hexchat_get_info (ph, "network");
 	if (!network)
 		network = hexchat_get_info (ph, "server");
 
-	tray_priv_count++;
-	if (tray_priv_count == 1)
-		tray_set_tipf (_(DISPLAY_NAME": Private message from: %s (%s)"),
-							from, network);
-	else
-		tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
-							tray_priv_count, from, network);
+	if (prefs.hex_input_tray_priv)
+	{
+		tray_set_flash (ICON_MSG);
 
-	if (prefs.hex_input_balloon_priv)
-		tray_set_balloonf (text, _("Private message from: %s (%s)"),
-								 from, network);
+		tray_priv_count++;
+		if (tray_priv_count == 1)
+			tray_set_tipf (_("Private message from: %s (%s) - %s"), from,
+								network, _(DISPLAY_NAME));
+		else
+			tray_set_tipf (_("%u private messages, latest from: %s (%s) - %s"),
+								tray_priv_count, from, network, _(DISPLAY_NAME));
+	}
 }
 
 static int
 tray_priv_cb (char *word[], void *userdata)
 {
-	/*if (tray_status == TS_HIGHLIGHT)
-		return HEXCHAT_EAT_NONE;*/
-
-	if (prefs.hex_input_tray_priv)
-		tray_priv (word[1], word[2]);
+	tray_priv (word[1], word[2]);
 
 	return HEXCHAT_EAT_NONE;
 }
@@ -778,10 +697,7 @@ tray_priv_cb (char *word[], void *userdata)
 static int
 tray_invited_cb (char *word[], void *userdata)
 {
-	/*if (tray_status == TS_HIGHLIGHT)
-		return HEXCHAT_EAT_NONE;*/
-
-	if (prefs.hex_input_tray_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
+	if (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1)
 		tray_priv (word[2], "Invited");
 
 	return HEXCHAT_EAT_NONE;
@@ -805,16 +721,12 @@ tray_dcc_cb (char *word[], void *userdata)
 
 		tray_file_count++;
 		if (tray_file_count == 1)
-			tray_set_tipf (_(DISPLAY_NAME": File offer from: %s (%s)"),
-								word[1], network);
+			tray_set_tipf (_("File offer from: %s (%s) - %s"), word[1], network,
+								_(DISPLAY_NAME));
 		else
-			tray_set_tipf (_(DISPLAY_NAME": %u file offers, latest from: %s (%s)"),
-								tray_file_count, word[1], network);
+			tray_set_tipf (_("%u file offers, latest from: %s (%s) - %s"),
+								tray_file_count, word[1], network, _(DISPLAY_NAME));
 	}
-
-	if (prefs.hex_input_balloon_priv && (!prefs.hex_away_omit_alerts || tray_find_away_status () != 1))
-		tray_set_balloonf ("", _("File offer from: %s (%s)"),
-								word[1], network);
 
 	return HEXCHAT_EAT_NONE;
 }
@@ -849,7 +761,8 @@ tray_apply_setup (void)
 	}
 	else
 	{
-		if (prefs.hex_gui_tray && !unity_mode ())
+		GtkWindow *window = GTK_WINDOW(hexchat_get_info (ph, "gtkwin_ptr"));
+		if (prefs.hex_gui_tray && gtkutil_tray_icon_supported (window))
 			tray_init ();
 	}
 }
@@ -874,6 +787,8 @@ tray_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 
 	hexchat_hook_print (ph, "Private Message", -1, tray_priv_cb, NULL);
 	hexchat_hook_print (ph, "Private Message to Dialog", -1, tray_priv_cb, NULL);
+	hexchat_hook_print (ph, "Private Action", -1, tray_priv_cb, NULL);
+	hexchat_hook_print (ph, "Private Action to Dialog", -1, tray_priv_cb, NULL);
 	hexchat_hook_print (ph, "Notice", -1, tray_priv_cb, NULL);
 	hexchat_hook_print (ph, "Invited", -1, tray_invited_cb, NULL);
 
@@ -881,7 +796,8 @@ tray_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 
 	hexchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
 
-	if (prefs.hex_gui_tray && !unity_mode ())
+	GtkWindow *window = GTK_WINDOW(hexchat_get_info (ph, "gtkwin_ptr"));
+	if (prefs.hex_gui_tray && gtkutil_tray_icon_supported (window))
 		tray_init ();
 
 	return 1;       /* return 1 for success */
@@ -892,8 +808,6 @@ tray_plugin_deinit (hexchat_plugin *plugin_handle)
 {
 #ifdef WIN32
 	tray_cleanup ();
-#elif defined(USE_LIBNOTIFY)
-	notify_uninit ();
 #endif
 	return 1;
 }

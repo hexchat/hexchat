@@ -17,8 +17,25 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include <time.h>
+#include "hexchat.h"
+
 #ifndef HEXCHAT_PROTO_H
 #define HEXCHAT_PROTO_H
+
+#define MESSAGE_TAGS_DATA_INIT			\
+	{									\
+		(time_t)0, /* timestamp */		\
+	}
+
+/* Message tag information that might be passed along with a server message
+ *
+ * See http://ircv3.atheme.org/specification/capability-negotiation-3.1
+ */
+typedef struct 
+{
+	time_t timestamp;
+} message_tags_data;
 
 void proto_fill_her_up (server *serv);
 

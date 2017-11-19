@@ -16,6 +16,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+#include "config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,7 +80,6 @@ fe_new_window (struct session *sess, int focus)
 {
 	char buf[512];
 
-	sess->gui = malloc (4);
 	current_sess = sess;
 
 	if (!sess->server->front_session)
@@ -92,14 +93,12 @@ fe_new_window (struct session *sess, int focus)
 		return;
 	done_intro = 1;
 
-	snprintf (buf, sizeof (buf),
+	g_snprintf (buf, sizeof (buf),
 				"\n"
 				" \017HexChat-Text \00310"PACKAGE_VERSION"\n"
-				" \017Running on \00310%s \017glib \00310%d.%d.%d\n"
-				" \017This binary compiled \00310"__DATE__"\017\n",
-				get_sys_str (1),
-				glib_major_version, glib_minor_version, glib_micro_version);
-	fe_print_text (sess, buf, 0);
+				" \017Running on \00310%s\n",
+				get_sys_str (1));
+	fe_print_text (sess, buf, 0, FALSE);
 
 	fe_print_text (sess, "\n\nCompiled in Features\0032:\017 "
 #ifdef USE_PLUGIN
@@ -111,17 +110,14 @@ fe_new_window (struct session *sess, int focus)
 #ifdef USE_OPENSSL
 	"OpenSSL "
 #endif
-#ifdef USE_IPV6
-	"IPv6"
-#endif
-	"\n\n", 0);
+	"\n\n", 0, FALSE);
 	fflush (stdout);
 }
 
 static int
 get_stamp_str (time_t tim, char *dest, int size)
 {
-	return strftime (dest, size, prefs.hex_stamp_text_format, localtime (&tim));
+	return strftime_validated (dest, size, prefs.hex_stamp_text_format, localtime (&tim));
 }
 
 static int
@@ -140,17 +136,18 @@ timecat (char *buf, time_t stamp)
 
 /* Windows doesn't handle ANSI codes in cmd.exe, need to not display them */
 #ifndef WIN32
-/*                       0  1  2  3  4  5  6  7   8   9   10 11  12  13  14 15 */
+/*                               0  1  2  3  4  5  6  7   8   9  10  11  12  13  14 15 */
 static const short colconv[] = { 0, 7, 4, 2, 1, 3, 5, 11, 13, 12, 6, 16, 14, 15, 10, 7 };
 
 void
-fe_print_text (struct session *sess, char *text, time_t stamp)
+fe_print_text (struct session *sess, char *text, time_t stamp,
+			   gboolean no_activity)
 {
 	int dotime = FALSE;
 	char num[8];
 	int reverse = 0, under = 0, bold = 0,
 		comma, k, i = 0, j = 0, len = strlen (text);
-	unsigned char *newtext = malloc (len + 1024);
+	unsigned char *newtext = g_malloc (len + 1024);
 
 	if (prefs.hex_stamp_text)
 	{
@@ -206,7 +203,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 						else
 							col = 30;
 						mirc = atoi (num);
-						mirc = colconv[mirc];
+						mirc = colconv[mirc % G_N_ELEMENTS(colconv)];
 						if (mirc > 9)
 						{
 							mirc += 50;
@@ -307,17 +304,18 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 
 	newtext[j] = 0;
 	write (STDOUT_FILENO, newtext, j);
-	free (newtext);
+	g_free (newtext);
 }
 #else
 /* The win32 version for cmd.exe */
 void
-fe_print_text (struct session *sess, char *text, time_t stamp)
+fe_print_text (struct session *sess, char *text, time_t stamp,
+			   gboolean no_activity)
 {
 	int dotime = FALSE;
 	int comma, k, i = 0, j = 0, len = strlen (text);
 
-	unsigned char *newtext = malloc (len + 1024);
+	unsigned char *newtext = g_malloc (len + 1024);
 
 	if (prefs.hex_stamp_text)
 	{
@@ -401,7 +399,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 
 	newtext[j] = 0;
 	write (STDOUT_FILENO, newtext, j);
-	free (newtext);
+	g_free (newtext);
 }
 #endif
 
@@ -415,6 +413,12 @@ int
 fe_timeout_add (int interval, void *callback, void *userdata)
 {
 	return g_timeout_add (interval, (GSourceFunc) callback, userdata);
+}
+
+int
+fe_timeout_add_seconds (int interval, void *callback, void *userdata)
+{
+	return g_timeout_add_seconds (interval, (GSourceFunc) callback, userdata);
 }
 
 void
@@ -465,8 +469,9 @@ static const GOptionEntry gopt_entries[] =
  {"no-plugins",	'n', 0, G_OPTION_ARG_NONE,	&arg_skip_plugins, N_("Don't auto load any plugins"), NULL},
  {"plugindir",	'p', 0, G_OPTION_ARG_NONE,	&arg_show_autoload, N_("Show plugin/script auto-load directory"), NULL},
  {"configdir",	'u', 0, G_OPTION_ARG_NONE,	&arg_show_config, N_("Show user config directory"), NULL},
- {"url",	 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
+ {"url",	 0,  G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
  {"version",	'v', 0, G_OPTION_ARG_NONE,	&arg_show_version, N_("Show version information"), NULL},
+ {G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &arg_urls, N_("Open an irc://server:port/channel?key URL"), "URL"},
  {NULL}
 };
 
@@ -497,7 +502,7 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_version)
 	{
-		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
+		printf (PACKAGE_NAME" "PACKAGE_VERSION"\n");
 		return 0;
 	}
 
@@ -505,14 +510,14 @@ fe_args (int argc, char *argv[])
 	{
 #ifdef WIN32
 		/* see the chdir() below */
-		char *sl, *exe = strdup (argv[0]);
+		char *sl, *exe = g_strdup (argv[0]);
 		sl = strrchr (exe, '\\');
 		if (sl)
 		{
 			*sl = 0;
 			printf ("%s\\plugins\n", exe);
 		}
-		free (exe);
+		g_free (exe);
 #else
 		printf ("%s\n", HEXCHATLIBDIR);
 #endif
@@ -527,8 +532,7 @@ fe_args (int argc, char *argv[])
 
 	if (arg_cfgdir)	/* we want filesystem encoding */
 	{
-		if (xdir)
-			g_free (xdir);
+		g_free (xdir);
 		xdir = strdup (arg_cfgdir);
 		if (xdir[strlen (xdir) - 1] == '/')
 			xdir[strlen (xdir) - 1] = 0;
@@ -580,7 +584,6 @@ fe_exit (void)
 void
 fe_new_server (struct server *serv)
 {
-	serv->gui = malloc (4);
 }
 
 void
@@ -612,10 +615,6 @@ fe_set_topic (struct session *sess, char *topic, char *stripped_topic)
 }
 void
 fe_cleanup (void)
-{
-}
-void
-fe_set_hilight (struct session *sess)
 {
 }
 void
@@ -679,7 +678,7 @@ fe_progressbar_end (struct server *serv)
 {
 }
 void
-fe_userlist_insert (struct session *sess, struct User *newuser, int row, int sel)
+fe_userlist_insert (struct session *sess, struct User *newuser, gboolean sel)
 {
 }
 int
@@ -689,10 +688,6 @@ fe_userlist_remove (struct session *sess, struct User *user)
 }
 void
 fe_userlist_rehash (struct session *sess, struct User *user)
-{
-}
-void
-fe_userlist_move (struct session *sess, struct User *user, int new_row)
 {
 }
 void
@@ -799,7 +794,7 @@ fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gtk_xtext_search_f
 {
 }
 void
-fe_set_lag (server * serv, int lag)
+fe_set_lag (server * serv, long lag)
 {
 }
 void
@@ -812,6 +807,10 @@ fe_set_away (server *serv)
 }
 void
 fe_serverlist_open (session *sess)
+{
+}
+void
+fe_get_bool (char *title, char *prompt, void *callback, void *userdata)
 {
 }
 void
@@ -903,5 +902,14 @@ void fe_tray_set_flash (const char *filename1, const char *filename2, int timeou
 void fe_tray_set_file (const char *filename){}
 void fe_tray_set_icon (feicon icon){}
 void fe_tray_set_tooltip (const char *text){}
-void fe_tray_set_balloon (const char *title, const char *text){}
 void fe_userlist_update (session *sess, struct User *user){}
+void
+fe_open_chan_list (server *serv, char *filter, int do_refresh)
+{
+	serv->p_list_channels (serv, filter, 1);
+}
+const char *
+fe_get_default_font (void)
+{
+	return NULL;
+}
