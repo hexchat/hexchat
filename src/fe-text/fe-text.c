@@ -78,8 +78,6 @@ static int done_intro = 0;
 void
 fe_new_window (struct session *sess, int focus)
 {
-	char buf[512];
-
 	current_sess = sess;
 
 	if (!sess->server->front_session)
@@ -93,13 +91,7 @@ fe_new_window (struct session *sess, int focus)
 		return;
 	done_intro = 1;
 
-	g_snprintf (buf, sizeof (buf),
-				"\n"
-				" \017HexChat-Text \00310"PACKAGE_VERSION"\n"
-				" \017Running on \00310%s\n",
-				get_sys_str (1));
-	fe_print_text (sess, buf, 0, FALSE);
-
+	fe_print_text (sess, "\n \017HexChat-Text \00310"PACKAGE_VERSION"\n", 0, FALSE);
 	fe_print_text (sess, "\n\nCompiled in Features\0032:\017 "
 #ifdef USE_PLUGIN
 	"Plugin "

@@ -758,7 +758,6 @@ static char defaultconf_commands[] =
 	"NAME SPING\n"			"CMD ping\n\n"\
 	"NAME SQUERY\n"		"CMD quote SQUERY %2 :&3\n\n"\
 	"NAME SSLSERVER\n"	"CMD server -ssl &2\n\n"\
-	"NAME SV\n"				"CMD echo HexChat %v %m\n\n"\
 	"NAME UMODE\n"			"CMD mode %n &2\n\n"\
 	"NAME UPTIME\n"		"CMD quote STATS u\n\n"\
 	"NAME VER\n"			"CMD ctcp %2 VERSION\n\n"\

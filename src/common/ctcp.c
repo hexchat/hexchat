@@ -139,11 +139,10 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 	if (!g_ascii_strcasecmp (msg, "VERSION") && !prefs.hex_irc_hide_version)
 	{
 #ifdef WIN32
-		g_snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" [x%d] / %s",
-					 get_cpu_arch (), get_sys_str (1));
+		g_snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" [x%d]",
+					 get_cpu_arch ());
 #else
-		g_snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" / %s",
-					 get_sys_str (1));
+		g_snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION);
 #endif
 		serv->p_nctcp (serv, nick, outbuf);
 	}

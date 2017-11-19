@@ -4298,7 +4298,7 @@ auto_insert (char *dest, gsize destlen, unsigned char *src, char *word[],
 				case 'h':
 					utf = h; break;
 				case 'm':
-					utf = get_sys_str (1); break;
+					utf = ""; break; /* Used to be machine info */
 				case 'n':
 					utf = n; break;
 				case 's':

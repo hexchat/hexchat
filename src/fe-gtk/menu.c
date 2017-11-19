@@ -1470,7 +1470,6 @@ menu_noplugin_info (void)
 #define usercommands_help  _("User Commands - Special codes:\n\n"\
                            "%c  =  current channel\n"\
 									"%e  =  current network name\n"\
-									"%m  =  machine info\n"\
                            "%n  =  your nick\n"\
 									"%t  =  time/date\n"\
                            "%v  =  HexChat version\n"\
@@ -1488,7 +1487,6 @@ menu_noplugin_info (void)
 							"%c  =  current channel\n"\
 							"%e  =  current network name\n"\
 							"%h  =  selected nick's hostname\n"\
-							"%m  =  machine info\n"\
 							"%n  =  your nick\n"\
 							"%s  =  selected nick\n"\
 							"%t  =  time/date\n"\
@@ -1499,7 +1497,6 @@ menu_noplugin_info (void)
 							"%c  =  current channel\n"\
 							"%e  =  current network name\n"\
 							"%h  =  selected nick's hostname\n"\
-							"%m  =  machine info\n"\
 							"%n  =  your nick\n"\
 							"%s  =  selected nick\n"\
 							"%t  =  time/date\n"\
@@ -1508,7 +1505,6 @@ menu_noplugin_info (void)
 #define ctcp_help          _("CTCP Replies - Special codes:\n\n"\
                            "%d  =  data (the whole ctcp)\n"\
 									"%e  =  current network name\n"\
-									"%m  =  machine info\n"\
                            "%s  =  nick who sent the ctcp\n"\
                            "%t  =  time/date\n"\
                            "%2  =  word 2\n"\
@@ -1714,7 +1710,6 @@ static void
 menu_about (GtkWidget *wid, gpointer sess)
 {
 	GtkAboutDialog *dialog = GTK_ABOUT_DIALOG(gtk_about_dialog_new());
-	char comment[512];
 	char *license = "This program is free software; you can redistribute it and/or modify\n" \
 					"it under the terms of the GNU General Public License as published by\n" \
 					"the Free Software Foundation; version 2.\n\n" \
@@ -1725,17 +1720,15 @@ menu_about (GtkWidget *wid, gpointer sess)
 					"You should have received a copy of the GNU General Public License\n" \
 					"along with this program. If not, see <http://www.gnu.org/licenses/>";
 
-	g_snprintf  (comment, sizeof(comment), ""
 #ifdef WIN32
-				"Portable Mode: %s\n"
-				"Build Type: x%d\n"
+	{
+		char comment[512];
+		g_snprintf  (comment, sizeof(comment), "Portable Mode: %s\nBuild Type: x%d\n"
+					(portable_mode () ? "Yes" : "No"),
+					get_cpu_arch ());
+		gtk_about_dialog_set_comments (dialog, comment);
+	}
 #endif
-				"OS: %s",
-#ifdef WIN32
-				(portable_mode () ? "Yes" : "No"),
-				get_cpu_arch (),
-#endif
-				get_sys_str (0));
 
 	gtk_about_dialog_set_program_name (dialog, _(DISPLAY_NAME));
 	gtk_about_dialog_set_version (dialog, PACKAGE_VERSION);
@@ -1744,7 +1737,6 @@ menu_about (GtkWidget *wid, gpointer sess)
 	gtk_about_dialog_set_website_label (dialog, "Website");
 	gtk_about_dialog_set_logo (dialog, pix_hexchat);
 	gtk_about_dialog_set_copyright (dialog, "\302\251 1998-2010 Peter \305\275elezn\303\275\n\302\251 2009-2014 Berke Viktor");
-	gtk_about_dialog_set_comments (dialog, comment);
 
 	gtk_window_set_transient_for (GTK_WINDOW(dialog), GTK_WINDOW(parent_window));
 	g_signal_connect (G_OBJECT(dialog), "response", G_CALLBACK(about_dialog_close), NULL);
