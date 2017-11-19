@@ -23,14 +23,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <pci/header.h>
+#ifdef HAVE_LIBPCI
+	#include <pci/header.h>
+	#include "pci.h"
+#endif
 #include <glib.h>
 
 #ifdef __sparc__
 #include <dirent.h>
 #endif
 
-#include "pci.h"
 #include "match.h"
 #include "parse.h"
 #include "sysinfo.h"
