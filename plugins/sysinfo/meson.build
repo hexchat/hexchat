@@ -19,8 +19,8 @@ if system == 'linux' or system == 'darwin'
   ]
 
   if system == 'linux'
-    libpci = dependency('libpci', required: false)
-    if libpci.found() and cc.has_header('pci/pci.h')
+    libpci = dependency('libpci', required: false, method: 'pkg-config')
+    if libpci.found()
       sysinfo_deps += libpci
       sysinfo_cargs += '-DHAVE_LIBPCI'
       sysinfo_sources += 'unix/pci.c'
