@@ -91,7 +91,6 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 	char *po;
 	session *chansess;
 	server *serv = sess->server;
-	char outbuf[1024];
 	int ctcp_offset = 2;
 
 	if (serv->have_idmsg && (word[4][1] == '+' || word[4][1] == '-') )
@@ -138,13 +137,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 
 	if (!g_ascii_strcasecmp (msg, "VERSION") && !prefs.hex_irc_hide_version)
 	{
-#ifdef WIN32
-		g_snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" [x%d]",
-					 get_cpu_arch ());
-#else
-		g_snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION);
-#endif
-		serv->p_nctcp (serv, nick, outbuf);
+		serv->p_nctcp (serv, nick, "VERSION HexChat "PACKAGE_VERSION);
 	}
 
 	if (word[4][1] == '\0')
