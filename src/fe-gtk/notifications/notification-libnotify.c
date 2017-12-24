@@ -40,9 +40,9 @@ notification_backend_show (const char *title, const char *text)
 	notification = notify_notification_new (title, text, "hexchat", NULL);
 #endif
 #if NOTIFY_CHECK_VERSION(0,6,0)
-	notify_notification_set_hint (notification, "desktop-entry", g_variant_new_string ("hexchat"));
+	notify_notification_set_hint (notification, "desktop-entry", g_variant_new_string ("io.github.Hexchat"));
 #else
-	notify_notification_set_hint_string (notification, "desktop-entry", "hexchat");
+	notify_notification_set_hint_string (notification, "desktop-entry", "io.github.Hexchat");
 #endif
 
 	notify_notification_show (notification, NULL);
