@@ -25,14 +25,14 @@ if get_option('with-gtk')
   endif
 
   desktop_file = configure_file(
-    input: 'hexchat.desktop.in.in',
-    output: 'hexchat.desktop.in',
+    input: 'io.github.Hexchat.desktop.in.in',
+    output: 'io.github.Hexchat.desktop.in',
     configuration: desktop_conf
   )
 
   hexchat_desktop = i18n.merge_file(
     input: desktop_file,
-    output: 'hexchat.desktop',
+    output: 'io.github.Hexchat.desktop',
     po_dir: '../../po',
     type: 'desktop',
     install: true,
@@ -40,7 +40,7 @@ if get_option('with-gtk')
   )
 
   if desktop_utils.found()
-    test('Validate hexchat.desktop', desktop_utils,
+    test('Validate io.github.Hexchat.desktop', desktop_utils,
       args: [hexchat_desktop]
     )
   endif
