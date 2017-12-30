@@ -196,6 +196,18 @@ static const struct defaultserver def[] =
 #endif
 	{0,			"irc.globalgamers.net"},
 
+#ifdef USE_OPENSSL
+    {"HackInt", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	/* Self	signed exclusively signed by the Hackint IRC Network Intermediate CA G1 */
+	/* network supports client certFP */
+    {0,                     "irc.hackint.org/+6697"},
+    {0,                     "irc.hackint.dn42/+6697},
+	{0,                     "irc.hackint.hack/+6697"},
+    {0,                     "5ogdsfyoqk47ompu.onion/+6697"},
+    {0,                     "nakufgztylanf4mw.onion/+6697"},
+    {0,                     "dtlbunzs5b7s5sl775quwezleyeplxzicdoh3cnhm7feolxmkfd42nqd.onion/+6697"},
+    {0,                     "ncwkrwxpq2ikcngxq3dy2xctuheniggtqeibvgofixpzvrwpa77tozqd.onion/+6697"},
+
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
 
@@ -248,6 +260,13 @@ static const struct defaultserver def[] =
 
 	{"Moznet", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.mozilla.org"},
+	
+#ifdef USE_OPENSSL
+    {"Nixbits", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	/* network supports client certFP */
+    {0,                     "irc.nixbits.net.net/+6697"},
+    {0,                     "hub.nixbits.net/+6697"},
+    {0,                     "uuwlyffs4yepwt62.onion/+6697"},
 	
 	{"ObsidianIRC",  0},
 	/* Self signed */
@@ -352,6 +371,14 @@ static const struct defaultserver def[] =
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
 	{0,			"irc.techno-link.com"},
+	 
+#ifdef USE_OPENSSL
+    {"WirelessPT", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	/* network supports client certFP */
+    {0,                     "irc.wirelesspt.net/+6697"},
+    {0,                     "irc.ipv6.wirelesspt.net/+6697"},
+    {0,                     "hub.wirelesspt.net/+6697"},
+    {0,                     "l6xsibhkdrsdwm53.onion/+6697"},
 
 	{"Worldnet",		0},
 	{0,			"irc.worldnet.net"},
