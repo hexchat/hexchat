@@ -4677,9 +4677,11 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 	ent = g_malloc (left_len + right_len + 2 + sizeof (textentry));
 	str = (unsigned char *) ent + sizeof (textentry);
 
-	memcpy (str, left_text, left_len);
+	if (left_len)
+		memcpy (str, left_text, left_len);
 	str[left_len] = ' ';
-	memcpy (str + left_len + 1, right_text, right_len);
+	if (right_len)
+		memcpy (str + left_len + 1, right_text, right_len);
 	str[left_len + 1 + right_len] = 0;
 
 	left_width = gtk_xtext_text_width (buf->xtext, left_text, left_len);
