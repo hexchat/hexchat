@@ -4718,10 +4718,8 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp)
 
 	ent = g_malloc (len + 1 + sizeof (textentry));
 	ent->str = (unsigned char *) ent + sizeof (textentry);
-	ent->str_len = len;
-	if (len)
-		memcpy (ent->str, text, len);
-	ent->str[len] = 0;
+	safe_strcpy (ent->str, text, len);
+	ent->str_len = strlen (ent->str); /* Possibly truncated */
 	ent->indent = 0;
 	ent->left_len = -1;
 
