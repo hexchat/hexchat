@@ -167,6 +167,7 @@ initialize_enchant (void)
 #ifdef G_OS_UNIX
         "libenchant.so.1",
         "libenchant.so.2",
+        "libenchant-2.so.2",
 #endif
 #ifdef __APPLE__
         "libenchant.dylib",
