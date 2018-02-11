@@ -4729,6 +4729,7 @@ void
 gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp)
 {
 	textentry *ent;
+	gboolean truncate = FALSE;
 
 	if (len == -1)
 		len = strlen (text);
@@ -4737,12 +4738,27 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp)
 		len--;
 
 	if (len >= sizeof (buf->xtext->scratch_buffer))
+	{
 		len = sizeof (buf->xtext->scratch_buffer) - 1;
+		truncate = TRUE;
+	}
 
 	ent = g_malloc (len + 1 + sizeof (textentry));
 	ent->str = (unsigned char *) ent + sizeof (textentry);
-	safe_strcpy (ent->str, text, len);
-	ent->str_len = strlen (ent->str); /* Possibly truncated */
+	ent->str_len = len;
+	if (len)
+	{
+		if (!truncate)
+		{
+			memcpy (ent->str, text, len);
+			ent->str[len] = '\0';
+		}
+		else
+		{
+			safe_strcpy (ent->str, text, sizeof (buf->xtext->scratch_buffer));
+			ent->str_len = strlen (ent->str);
+		}
+	}
 	ent->indent = 0;
 	ent->left_len = -1;
 
