@@ -25,6 +25,9 @@ option('with-libcanberra', type: 'boolean',
 option('with-theme-manager', type: 'boolean', value: false,
   description: 'Utility to help manage themes, requires mono/.net'
 )
+option('dbus-service-use-appid', type: 'boolean', value: false,
+  description: 'Rename dbus service to match app-id, required for Flatpak'
+)
 
 # Plugins
 option('with-checksum', type: 'boolean',
