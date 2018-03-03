@@ -1152,8 +1152,8 @@ move_file (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
 		/* link failed because either the two paths aren't on the */
 		/* same filesystem or the filesystem doesn't support hard */
 		/* links, so we have to do a copy. */
-	        GFile* src_file = g_file_new_for_path(src);
-		GFile* dst_file = g_file_new_for_path(dst);
+		GFile *src_file = g_file_new_for_path(src);
+		GFile *dst_file = g_file_new_for_path(dst);
 		g_file_copy_async(src_file, dst_file, G_FILE_COPY_NONE,
 		                  G_PRIORITY_DEFAULT, NULL, NULL, NULL,
 		                  &move_file_callback, NULL);
