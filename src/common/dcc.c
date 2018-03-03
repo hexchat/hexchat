@@ -577,59 +577,56 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	char portbuf[32];
 	char lbuf[2050];
 
-	while (1)
+	if (dcc->throttled)
 	{
-		if (dcc->throttled)
+		fe_input_remove (dcc->iotag);
+		dcc->iotag = 0;
+		return FALSE;
+	}
+
+	if (!dcc->iotag)
+		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
+
+	len = recv (dcc->sok, lbuf, sizeof (lbuf) - 2, 0);
+	if (len < 1)
+	{
+		if (len < 0)
 		{
-			fe_input_remove (dcc->iotag);
-			dcc->iotag = 0;
-			return FALSE;
+			if (would_block ())
+				return TRUE;
 		}
-
-		if (!dcc->iotag)
-			dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
-
-		len = recv (dcc->sok, lbuf, sizeof (lbuf) - 2, 0);
-		if (len < 1)
+		sprintf (portbuf, "%d", dcc->port);
+		EMIT_SIGNAL (XP_TE_DCCCHATF, dcc->serv->front_session, dcc->nick,
+						 net_ip (dcc->addr), portbuf,
+						 errorstring ((len < 0) ? sock_error () : 0), 0);
+		dcc_close (dcc, STAT_FAILED, FALSE);
+		return TRUE;
+	}
+	i = 0;
+	lbuf[len] = 0;
+	while (i < len)
+	{
+		switch (lbuf[i])
 		{
-			if (len < 0)
-			{
-				if (would_block ())
-					return TRUE;
-			}
-			sprintf (portbuf, "%d", dcc->port);
-			EMIT_SIGNAL (XP_TE_DCCCHATF, dcc->serv->front_session, dcc->nick,
-							 net_ip (dcc->addr), portbuf,
-							 errorstring ((len < 0) ? sock_error () : 0), 0);
-			dcc_close (dcc, STAT_FAILED, FALSE);
-			return TRUE;
-		}
-		i = 0;
-		lbuf[len] = 0;
-		while (i < len)
-		{
-			switch (lbuf[i])
-			{
-			case '\r':
-				break;
-			case '\n':
-				dcc->dccchat->linebuf[dcc->dccchat->pos] = 0;
-				dead = dcc_chat_line (dcc, dcc->dccchat->linebuf);
+		case '\r':
+			break;
+		case '\n':
+			dcc->dccchat->linebuf[dcc->dccchat->pos] = 0;
+			dead = dcc_chat_line (dcc, dcc->dccchat->linebuf);
 
-				if (dead || !dcc->dccchat) /* the dcc has been closed, don't use (DCC *)! */
-					return TRUE;
+			if (dead || !dcc->dccchat) /* the dcc has been closed, don't use (DCC *)! */
+				return TRUE;
 
-				dcc->pos += dcc->dccchat->pos;
-				dcc->dccchat->pos = 0;
-				fe_dcc_update (dcc);
-				break;
-			default:
-				dcc->dccchat->linebuf[dcc->dccchat->pos] = lbuf[i];
-				if (dcc->dccchat->pos < (sizeof (dcc->dccchat->linebuf) - 1))
-					dcc->dccchat->pos++;
-			}
-			i++;
+			dcc->pos += dcc->dccchat->pos;
+			dcc->dccchat->pos = 0;
+			fe_dcc_update (dcc);
+			break;
+		default:
+			dcc->dccchat->linebuf[dcc->dccchat->pos] = lbuf[i];
+			if (dcc->dccchat->pos < (sizeof (dcc->dccchat->linebuf) - 1))
+				dcc->dccchat->pos++;
 		}
+		i++;
 	}
 }
 
