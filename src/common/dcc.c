@@ -628,6 +628,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		}
 		i++;
 	}
+        return TRUE;
 }
 
 static void
@@ -770,6 +771,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 						 dcc->file, dcc->destfile, dcc->nick, buf, 0);
 		return TRUE;
 	}
+        return TRUE;
 }
 
 static void
