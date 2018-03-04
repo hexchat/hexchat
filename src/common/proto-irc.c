@@ -1241,15 +1241,36 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 					len = strlen (text);
 					if (text[0] == 1 && text[len - 1] == 1)	/* ctcp */
 					{
+						char *new_pdibuf = NULL;
 						text[len - 1] = 0;
 						text++;
 						if (g_ascii_strncasecmp (text, "ACTION", 6) != 0)
 							flood_check (nick, ip, serv, sess, 0);
 						if (g_ascii_strncasecmp (text, "DCC ", 4) == 0)
-							/* redo this with handle_quotes TRUE */
-							process_data_init (word[1], word_eol[1], word, word_eol, TRUE, FALSE);
+						{
+							int i;
+							char *new_word[PDIWORDS+1] = { NULL };
+							char *new_word_eol[PDIWORDS+1] = { NULL };
+
+							new_pdibuf = g_malloc (strlen (word_eol[6]) + 1);
+
+							/* This is a bit ugly but we handle the contents of the DCC message containing
+							 * "quoted paths for files" here which means reparsing the message with handle_quotes.
+							 * We avoid reparsing the entire message to avoid corrupting the non DCC parts.
+							 * Greater than PDIWORD length DCC messages will be truncated. */
+							process_data_init (new_pdibuf, word_eol[6], new_word, new_word_eol, TRUE, FALSE);
+							for (i = 6; i < PDIWORDS; ++i)
+							{
+								word[i] = new_word[i - 5];
+								word_eol[i] = new_word_eol[i - 5];
+							}
+						}
+
 						ctcp_handle (sess, to, nick, ip, text, word, word_eol, id,
 										 tags_data);
+
+						/* Note word will be invalid beyond this scope */
+						g_free (new_pdibuf);
 					} else
 					{
 						if (is_channel (serv, to))
