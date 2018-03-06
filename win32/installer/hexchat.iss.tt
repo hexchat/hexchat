@@ -116,11 +116,12 @@ Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createal
 Source: "share\doc\*"; DestDir: "{app}\share\doc"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "share\themes\MS-Windows\*"; DestDir: "{app}\share\themes\MS-Windows"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
+Source: "etc\fonts\*"; DestDir: "{app}\etc\fonts"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 
-Source: "atk-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "atk-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "cairo.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "fontconfig.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "gdk_pixbuf-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gdk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gio-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "glib-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -135,19 +136,17 @@ Source: "gspawn-win32-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversio
 #endif
 Source: "gthread-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gtk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "harfbuzz.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libffi.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libintl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "ffi-7.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "intl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libpng16.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pango-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pangocairo-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pangoft2-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pangowin32-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pixman-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pango-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangocairo-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangoft2-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangowin32-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 
@@ -157,7 +156,7 @@ Source: "lib\enchant\*"; DestDir: "{app}\lib\enchant"; Flags: ignoreversion; Com
 
 Source: "lib\gtk-2.0\i686-pc-vs14\engines\*"; DestDir: "{app}\lib\gtk-2.0\i686-pc-vs14\engines"; Flags: ignoreversion; Components: libs
 
-Source: "girepository-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
+Source: "girepository-1.0-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
 Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
 Source: "lib\lua\lgi\*.dll"; DestDir: "{app}\lib\lua\lgi"; Flags: ignoreversion; Components: langs\lua
 Source: "lib\girepository-1.0\*.typelib"; DestDir: "{app}\lib\girepository-1.0"; Flags: ignoreversion; Components: langs\lua

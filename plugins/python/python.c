@@ -1532,7 +1532,7 @@ Plugin_New(char *filename, PyObject *xcoobj)
 	if (filename) {
 #ifdef WIN32
 		char *file;
-		if (!g_file_get_contents_utf8(filename, &file, NULL, NULL)) {
+		if (!g_file_get_contents(filename, &file, NULL, NULL)) {
 			hexchat_printf(ph, "Can't open file %s: %s\n",
 				     filename, strerror(errno));
 			goto error;
