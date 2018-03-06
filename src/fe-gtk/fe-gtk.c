@@ -142,7 +142,7 @@ fe_args (int argc, char *argv[])
 		{
 			if (strstr (error->message, "--help-all") != NULL)
 			{
-				buffer = g_strdup_printf (g_option_context_get_help (context, FALSE, NULL));
+				buffer = g_option_context_get_help (context, FALSE, NULL);
 				gtk_init (&argc, &argv);
 				create_msg_dialog ("Long Help", buffer);
 				g_free (buffer);
@@ -150,7 +150,7 @@ fe_args (int argc, char *argv[])
 			}
 			else if (strstr (error->message, "--help") != NULL || strstr (error->message, "-?") != NULL)
 			{
-				buffer = g_strdup_printf (g_option_context_get_help (context, TRUE, NULL));
+				buffer = g_option_context_get_help (context, TRUE, NULL);
 				gtk_init (&argc, &argv);
 				create_msg_dialog ("Help", buffer);
 				g_free (buffer);

@@ -51,6 +51,15 @@ if get_option('with-libnotify')
   hexchat_gtk_sources += 'notifications/notification-libnotify.c'
   hexchat_gtk_deps += dependency('libnotify')
 elif false # TODO HAVE_GTK_MAC
+elif host_machine.system() == 'windows'
+  hexchat_gtk_sources += 'notifications/notification-windows.c'
+
+  # TODO: mingw doesn't have these headers or libs
+  # add_languages('cpp')
+  # shared_module('hcnotifications-winrt',
+  #  sources: 'notifications/notification-winrt.cpp'
+  #)
+
 else
   hexchat_gtk_sources += 'notifications/notification-dummy.c'
 endif
@@ -80,5 +89,6 @@ executable('hexchat',
   dependencies: hexchat_gtk_deps,
   c_args: hexchat_gtk_cflags,
   link_args: hexchat_gtk_ldflags,
-  install: true
+  install: true,
+  gui_app: true,
 )

@@ -174,7 +174,7 @@ static char *query_wmi (QueryWmiType type)
 		goto release_locator;
 	}
 
-	hr = namespace->lpVtbl->QueryInterface (namespace, &IID_IUnknown, &namespaceUnknown);
+	hr = namespace->lpVtbl->QueryInterface (namespace, &IID_IUnknown, (void**)&namespaceUnknown);
 	if (FAILED (hr))
 	{
 		goto release_namespace;

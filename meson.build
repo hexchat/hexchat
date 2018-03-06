@@ -15,6 +15,7 @@ cc = meson.get_compiler('c')
 
 libgio_dep = dependency('gio-2.0', version: '>= 2.34.0')
 libgmodule_dep = dependency('gmodule-2.0')
+global_deps = []
 if cc.get_id() == 'msvc'
   libssl_dep = cc.find_library('libeay32')
 else
@@ -76,13 +77,18 @@ configure_file(output: 'config.h', configuration: config_h)
 config_h_include = include_directories('.')
 
 if host_machine.system() == 'windows'
-  add_project_arguments('-DWIN32', language: 'c')
+  add_project_arguments(
+    '-DWIN32',
+    '-DNTDDI_VERSION=NTDDI_WIN7',
+    '-D_WIN32_WINNT=_WIN32_WINNT_WIN7',
+     language: 'c')
 endif
 
 
 global_cflags = []
 test_cflags = [
   '-pipe',
+  '-fPIE',
   '-funsigned-char',
   '-Wno-conversion',
   '-Wno-pointer-sign',
@@ -112,6 +118,10 @@ if get_option('buildtype') != 'plain'
      }
      ''', args: '-fstack-protector-all')
     global_cflags += '-fstack-protector-strong'
+
+    if host_machine.system() == 'windows'
+      global_deps += cc.find_library('ssp')
+    endif
   endif
 endif
 add_project_arguments(global_cflags, language: 'c')
@@ -121,6 +131,10 @@ global_ldflags = []
 test_ldflags = [
   '-Wl,-z,relro',
   '-Wl,-z,now',
+  '-Wl,-pie',
+  # mingw
+  '-Wl,--dynamicbase',
+  '-Wl,--nxcompat',
 ]
 foreach ldflag : test_ldflags
   if cc.has_argument(ldflag) and cc.links('int main (void) { return 0; }', args: ldflag)

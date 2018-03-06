@@ -465,6 +465,7 @@ tray_make_item (GtkWidget *menu, char *label, void *callback, void *userdata)
 	return item;
 }
 
+#ifndef WIN32
 static void
 tray_toggle_cb (GtkCheckMenuItem *item, unsigned int *setting)
 {
@@ -476,6 +477,7 @@ blink_item (unsigned int *setting, GtkWidget *menu, char *label)
 {
 	menu_toggle_item (label, menu, tray_toggle_cb, setting, *setting);
 }
+#endif
 
 static void
 tray_menu_destroy (GtkWidget *menu, gpointer userdata)
@@ -586,7 +588,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	g_signal_connect (G_OBJECT (menu), "enter-notify-event",
 							G_CALLBACK (tray_menu_enter_cb), NULL);
 
-	tray_menu_timer = g_timeout_add (500, tray_check_hide, menu);
+	tray_menu_timer = g_timeout_add (500, (GSourceFunc)tray_check_hide, menu);
 #endif
 
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL,

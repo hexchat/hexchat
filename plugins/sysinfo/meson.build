@@ -5,7 +5,8 @@ sysinfo_sources = [
 
 sysinfo_deps = [
   libgio_dep,
-  hexchat_plugin_dep
+  hexchat_plugin_dep,
+  common_sysinfo_deps,
 ]
 
 sysinfo_includes = []
@@ -41,7 +42,10 @@ if system == 'linux' or system == 'darwin'
   endif
 
 elif system == 'windows'
-  sysinfo_sources += 'win32/backend.c'
+  sysinfo_sources += [
+    'win32/backend.c',
+    '../../src/common/sysinfo/win32/backend.c'
+  ]
 else
   error('sysinfo: Unknown system?')
 endif

@@ -1471,7 +1471,13 @@ handle_message_tag_time (const char *time, message_tags_data *tags_data)
 		long long int t;
 
 		/* we ignore the milisecond part */
-		if (sscanf (time, "%lld", &t) != 1)
+		if (
+#if defined(__MINGW64__) || defined(__MINGW32__)
+		__mingw_sscanf
+#else
+		sscanf
+#endif
+		(time, "%lld", &t) != 1)
 			return;
 
 		tags_data->timestamp = (time_t) t;

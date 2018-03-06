@@ -59,8 +59,8 @@
 #include "hexchatc.h"
 
 /* Setting _FILE_OFFSET_BITS to 64 doesn't change lseek to use off64_t on Windows, so override lseek to the version that does */
-#ifdef WIN32
-#define lseek _lseeki64
+#if defined(WIN32) && (!defined(__MINGW32__) && !defined(__MINGW64__))
+	#define lseek _lseeki64
 #endif
 
 /* interval timer to detect timeouts */

@@ -200,13 +200,15 @@ plugin_list_add (hexchat_context *ctx, char *filename, const char *name,
 	return pl;
 }
 
+#ifndef WIN32
 static void *
 hexchat_dummy (hexchat_plugin *ph)
 {
 	return NULL;
 }
 
-#ifdef WIN32
+#else
+
 static int
 hexchat_read_fd (hexchat_plugin *ph, GIOChannel *source, char *buf, int *len)
 {
