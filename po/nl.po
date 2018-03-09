@@ -1,26 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-#
+# This file is distributed under the same license as the hexchat package.
+# 
 # Translators:
 # Arjan Scherpenise <acscherp@wins.uva.nl>, 2000
 # Bart Coppens <coppensbart@pi.be>, 2002
 # ooze <evankorlaar@gmail.com>, 2012
 # Luk Claes <luk.claes@ugent.be>, 2005
+# ooze <evankorlaar@gmail.com>, 2012
 # Taco Witte <T.C.Witte@phys.uu.nl>, 2003
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-15 19:25-0400\n"
-"PO-Revision-Date: 2017-08-03 18:35+0000\n"
+"PO-Revision-Date: 2017-09-19 14:16+0000\n"
 "Last-Translator: TingPing <tingping@tingping.se>\n"
-"Language-Team: Dutch (http://www.transifex.com/hexchat/hexchat/language/"
-"nl/)\n"
-"Language: nl\n"
+"Language-Team: Dutch (http://www.transifex.com/hexchat/hexchat/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/misc/hexchat.appdata.xml.in:4 data/misc/hexchat.appdata.xml.in:5
@@ -261,9 +261,8 @@ msgid "Enter reason to kick %s:"
 msgstr "Geef reden voor wegschoppen %s:"
 
 #: src/common/hexchat.c:938
-#, fuzzy
 msgid "Send File"
-msgstr "Bestand verzenden"
+msgstr ""
 
 #: src/common/hexchat.c:939
 msgid "Dialog"
@@ -300,9 +299,7 @@ msgstr ""
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
-msgstr ""
-"* IRC uitvoeren als root is dom! U moet een\n"
-"  gebruikersaccount aanmaken en daarmee inloggen.\n"
+msgstr "* IRC uitvoeren als root is dom! U moet een\n  gebruikersaccount aanmaken en daarmee inloggen.\n"
 
 #: src/common/ignore.c:127 src/common/ignore.c:131 src/common/ignore.c:135
 #: src/common/ignore.c:139 src/common/ignore.c:143 src/common/ignore.c:147
@@ -454,10 +451,7 @@ msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
-msgstr ""
-"BAN <masker> [<verbansoort>], verbant iedereen die voldoet aan het masker "
-"uit het huidige kanaal. Als ze al in het huidige kanaal zitten worden ze "
-"niet weggeschopt (kanaal-operator vereist)"
+msgstr "BAN <masker> [<verbansoort>], verbant iedereen die voldoet aan het masker uit het huidige kanaal. Als ze al in het huidige kanaal zitten worden ze niet weggeschopt (kanaal-operator vereist)"
 
 #: src/common/outbound.c:3941
 msgid "CHANOPT [-quiet] <variable> [<value>]"
@@ -465,7 +459,8 @@ msgstr ""
 
 #: src/common/outbound.c:3942
 msgid ""
-"CHARSET [<encoding>], get or set the encoding used for the current connection"
+"CHARSET [<encoding>], get or set the encoding used for the current "
+"connection"
 msgstr ""
 
 #: src/common/outbound.c:3943
@@ -482,21 +477,18 @@ msgstr ""
 
 #: src/common/outbound.c:3947
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
-msgstr ""
-"COUNTRY [-s] <code|wildcard>, zoek een landcode, bijvoorbeeld be = België en "
-"nl = Nederland"
+msgstr "COUNTRY [-s] <code|wildcard>, zoek een landcode, bijvoorbeeld be = België en nl = Nederland"
 
 #: src/common/outbound.c:3949
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
-msgstr ""
-"CTCP <persoon> <bericht>, een CTCP bericht naar de persoon sturen. Veel "
-"voorkomende berichten zijn VERSION en USERINFO"
+msgstr "CTCP <persoon> <bericht>, een CTCP bericht naar de persoon sturen. Veel voorkomende berichten zijn VERSION en USERINFO"
 
 #: src/common/outbound.c:3951
 msgid ""
-"CYCLE [<channel>], parts the current or given channel and immediately rejoins"
+"CYCLE [<channel>], parts the current or given channel and immediately "
+"rejoins"
 msgstr ""
 
 #: src/common/outbound.c:3953
@@ -510,26 +502,13 @@ msgid ""
 "DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
 "DCC CLOSE <type> <nick> <file>         example:\n"
 "         /dcc close send johnsmith file.tar.gz"
-msgstr ""
-"\n"
-"DCC GET <persoon>         - een aangeboden bestand accepteren\n"
-"DCC SEND [-maxcps=#] <persoon> [bestand] - een bestand naar iemand sturen\n"
-"DCC PSEND [-maxcps=#] <persoon> [bestand] - een bestand sturen gebruik "
-"makend van de passieve modus\n"
-"DCC LIST           - DCC lijst weergeven\n"
-"DCC CHAT <persoon>        - iemand DCC CHAT aanbieden\n"
-"DCC PCHAT <persoon>       - DCC CHAT aanbieden gebruikmakend van de passieve "
-"modus\n"
-"DCC CLOSE <soort> <persoon> <bestand>     voorbeeld:\n"
-"      /dcc close send janjanssen bestand.tar.gz"
+msgstr "\nDCC GET <persoon>         - een aangeboden bestand accepteren\nDCC SEND [-maxcps=#] <persoon> [bestand] - een bestand naar iemand sturen\nDCC PSEND [-maxcps=#] <persoon> [bestand] - een bestand sturen gebruik makend van de passieve modus\nDCC LIST           - DCC lijst weergeven\nDCC CHAT <persoon>        - iemand DCC CHAT aanbieden\nDCC PCHAT <persoon>       - DCC CHAT aanbieden gebruikmakend van de passieve modus\nDCC CLOSE <soort> <persoon> <bestand>     voorbeeld:\n      /dcc close send janjanssen bestand.tar.gz"
 
 #: src/common/outbound.c:3965
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
-msgstr ""
-"DEHOP <persoon>, de kanaal-halfoperator status van de persoon in het huidige "
-"kanaal verwijderen (kanaal-operator vereist)"
+msgstr "DEHOP <persoon>, de kanaal-halfoperator status van de persoon in het huidige kanaal verwijderen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:3967
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
@@ -539,17 +518,13 @@ msgstr "DELBUTTON <naam>, een knop van de gebruikerslijst wissen"
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEOP <persoon>, kanaal-operatorstatus van de persoon in het huidige kanaal "
-"verwijderen (kanaal-operator vereist)"
+msgstr "DEOP <persoon>, kanaal-operatorstatus van de persoon in het huidige kanaal verwijderen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:3971
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEVOICE <persoon>, de stemstatus van de persoon in het huidige kanaal "
-"verwijderen (kanaal-operator vereist)"
+msgstr "DEVOICE <persoon>, de stemstatus van de persoon in het huidige kanaal verwijderen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:3972
 msgid "DISCON, Disconnects from server"
@@ -571,10 +546,7 @@ msgstr "ECHO <tekst>, lokaal een tekst afdrukken"
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <opdracht>, een opdracht uitvoeren. Als de -o vlag meegegeven is, "
-"wordt de uitvoer naar het huidige kanaal gestuurd, anders naar het huidige "
-"tekstvenster"
+msgstr "EXEC [-o] <opdracht>, een opdracht uitvoeren. Als de -o vlag meegegeven is, wordt de uitvoer naar het huidige kanaal gestuurd, anders naar het huidige tekstvenster"
 
 #: src/common/outbound.c:3980
 msgid "EXECCONT, sends the process SIGCONT"
@@ -584,9 +556,7 @@ msgstr "EXECCONT, het proces SIGCONT sturen"
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9], een lopende exec in de huidige sessie stoppen. Als -9 is "
-"meegegeven wordt het proces geSIGKILLd"
+msgstr "EXECKILL [-9], een lopende exec in de huidige sessie stoppen. Als -9 is meegegeven wordt het proces geSIGKILLd"
 
 #: src/common/outbound.c:3985
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -606,9 +576,7 @@ msgstr "FLUSHQ, de verzendrij van de huidige server doerspoelen"
 
 #: src/common/outbound.c:3995
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr ""
-"GATE <host> [<poort>], verbinding maken door een proxy, de poort is "
-"standaard 23"
+msgstr "GATE <host> [<poort>], verbinding maken door een proxy, de poort is standaard 23"
 
 #: src/common/outbound.c:4000
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
@@ -616,9 +584,7 @@ msgstr ""
 
 #: src/common/outbound.c:4005
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr ""
-"HOP <persoon>, geeft kanaal-halfoperator status aan de persoon (kanaal-"
-"operator vereist)"
+msgstr "HOP <persoon>, geeft kanaal-halfoperator status aan de persoon (kanaal-operator vereist)"
 
 #: src/common/outbound.c:4006
 msgid "ID <password>, identifies yourself to nickserv"
@@ -631,20 +597,13 @@ msgid ""
 "    types - types of data to ignore, one or all of:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
-msgstr ""
-"IGNORE <masker> <soorten..> <opties..>\n"
-"    masker - host masker om te negeren, bijv.: *!*@*.aol.com\n"
-"    soorten - soorten gegevens om te negeren, een of meer van:\n"
-"            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
-"    opties - NOSAVE, QUIET"
+msgstr "IGNORE <masker> <soorten..> <opties..>\n    masker - host masker om te negeren, bijv.: *!*@*.aol.com\n    soorten - soorten gegevens om te negeren, een of meer van:\n            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n    opties - NOSAVE, QUIET"
 
 #: src/common/outbound.c:4015
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
-msgstr ""
-"INVITE <persoon> [<kanaal>], iemand uitnodigen een kanaal te openen, "
-"standaard het huidige kanaal (kanaal-operator vereist)"
+msgstr "INVITE <persoon> [<kanaal>], iemand uitnodigen een kanaal te openen, standaard het huidige kanaal (kanaal-operator vereist)"
 
 #: src/common/outbound.c:4016
 msgid "JOIN <channel>, joins the channel"
@@ -671,8 +630,7 @@ msgid ""
 "    Use -h to highlight the found string(s)\n"
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
-"    Use -- (double hyphen) to end options when searching for, say, the "
-"string '-r'"
+"    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
 msgstr ""
 
 #: src/common/outbound.c:4031
@@ -682,48 +640,35 @@ msgstr "LOAD [-e] <bestand>, laadt een plugin of script"
 #: src/common/outbound.c:4034
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr ""
-"MDEHOP, massaal van alle kanaal-halfops op-status verwijderen in huidige "
-"kanaal (kanaal-operator vereist)"
+msgstr "MDEHOP, massaal van alle kanaal-halfops op-status verwijderen in huidige kanaal (kanaal-operator vereist)"
 
 #: src/common/outbound.c:4036
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr ""
-"MDEOP, massaal van alle kanaal-ops op-status verwijderen in huidige kanaal "
-"(kanaal-operator vereist)"
+msgstr "MDEOP, massaal van alle kanaal-ops op-status verwijderen in huidige kanaal (kanaal-operator vereist)"
 
 #: src/common/outbound.c:4038
 msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <actie>, stuurt de actie naar het huidige kanaal (acties worden "
-"geschreven in de 3e persoon, bijv: /me springt)"
+"ME <action>, sends the action to the current channel (actions are written in"
+" the 3rd person, like /me jumps)"
+msgstr "ME <actie>, stuurt de actie naar het huidige kanaal (acties worden geschreven in de 3e persoon, bijv: /me springt)"
 
 #: src/common/outbound.c:4042
-#, fuzzy
 msgid "MHOP, Mass hop's all users in the current channel (needs chanop)"
 msgstr ""
-"MOP, massaal alle gebruikers in huidige kanaal op-status geven (kanaal-"
-"operator vereist)"
 
 #: src/common/outbound.c:4044
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr ""
-"MKICK, massaal iedereen behalve jezelf uit huidige kanaal schoppen (kanaal-"
-"operator vereist)"
+msgstr "MKICK, massaal iedereen behalve jezelf uit huidige kanaal schoppen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:4047
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr ""
-"MOP, massaal alle gebruikers in huidige kanaal op-status geven (kanaal-"
-"operator vereist)"
+msgstr "MOP, massaal alle gebruikers in huidige kanaal op-status geven (kanaal-operator vereist)"
 
 #: src/common/outbound.c:4048
 msgid ""
-"MSG <nick> <message>, sends a private message, message \".\" to send to last "
-"nick or prefix with \"=\" for dcc chat"
+"MSG <nick> <message>, sends a private message, message \".\" to send to last"
+" nick or prefix with \"=\" for dcc chat"
 msgstr ""
 
 #: src/common/outbound.c:4051
@@ -754,15 +699,12 @@ msgstr ""
 
 #: src/common/outbound.c:4062
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr ""
-"OP <persoon>, de kanaal-operator status aan de persoon geven (kanaal-"
-"operator vereist)"
+msgstr "OP <persoon>, de kanaal-operator status aan de persoon geven (kanaal-operator vereist)"
 
 #: src/common/outbound.c:4064
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
-"PART [<kanaal>] [<reden>], het kanaal verlaten, standaard het huidige kanaal."
+msgstr "PART [<kanaal>] [<reden>], het kanaal verlaten, standaard het huidige kanaal."
 
 #: src/common/outbound.c:4066
 msgid "PING <nick | channel>, CTCP pings nick or channel"
@@ -790,23 +732,17 @@ msgstr "QUOTE <tekst>, tekst in ruw formaat naar de server sturen"
 
 #: src/common/outbound.c:4077
 msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
+"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as "
+"/RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<host>] [<poort>] [<wachtwoord>], kan net als /RECONNECT "
-"gebruikt worden om opnieuw te verbinden met de huidige server, of met /"
-"RECONNECT ALL om met alle open servers een nieuwe verbinding te maken"
+msgstr "RECONNECT [-ssl] [<host>] [<poort>] [<wachtwoord>], kan net als /RECONNECT gebruikt worden om opnieuw te verbinden met de huidige server, of met /RECONNECT ALL om met alle open servers een nieuwe verbinding te maken"
 
 #: src/common/outbound.c:4080
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
-msgstr ""
-"RECONNECT [<host>] [<poort>] [<wachtwoord>], kan net als /RECONNECT gebruikt "
-"worden om opnieuw te verbinden met de huidige server, of met /RECONNECT ALL "
-"om met alle open servers een nieuwe verbinding te maken"
+msgstr "RECONNECT [<host>] [<poort>] [<wachtwoord>], kan net als /RECONNECT gebruikt worden om opnieuw te verbinden met de huidige server, of met /RECONNECT ALL om met alle open servers een nieuwe verbinding te maken"
 
 #: src/common/outbound.c:4082
 msgid ""
@@ -828,14 +764,11 @@ msgstr "SEND <bijnaam> [<bestand>]"
 
 #: src/common/outbound.c:4089
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN [-ssl] <host> <poort> <kanaal>, verbinding maken en een kanaal "
-"openen"
+msgstr "SERVCHAN [-ssl] <host> <poort> <kanaal>, verbinding maken en een kanaal openen"
 
 #: src/common/outbound.c:4092
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN  <host> <poort> <kanaal>, verbinding maken en een kanaal openen"
+msgstr "SERVCHAN  <host> <poort> <kanaal>, verbinding maken en een kanaal openen"
 
 #: src/common/outbound.c:4096
 msgid ""
@@ -847,9 +780,7 @@ msgstr ""
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
-msgstr ""
-"SERVER <host> [<poort>] [<paswoord>], verbinding maken met een server, de "
-"standaard poort is 6667 voor gewone verbindingen"
+msgstr "SERVER <host> [<poort>] [<paswoord>], verbinding maken met een server, de standaard poort is 6667 voor gewone verbindingen"
 
 #: src/common/outbound.c:4101
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
@@ -869,10 +800,9 @@ msgstr ""
 
 #: src/common/outbound.c:4107
 msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr ""
-"TOPIC [<topic>], het onderwerp opeven als topic gespecifiëerd is, anders het "
-"huidige onderwerp laten zien"
+"TOPIC [<topic>], sets the topic if one is given, else shows the current "
+"topic"
+msgstr "TOPIC [<topic>], het onderwerp opeven als topic gespecifiëerd is, anders het huidige onderwerp laten zien"
 
 #: src/common/outbound.c:4109
 msgid ""
@@ -898,8 +828,8 @@ msgstr "UNLOAD <naam>, een plugin of script laden"
 
 #: src/common/outbound.c:4120
 msgid ""
-"UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the "
-"server."
+"UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the"
+" server."
 msgstr ""
 
 #: src/common/outbound.c:4121
@@ -908,15 +838,13 @@ msgstr "URL <url> opent een URL in uw browser"
 
 #: src/common/outbound.c:4123
 msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
-msgstr ""
-"USELECT [-a] [-s] <bijnaam1> <bijnaam2> enz, laat bijnamen oplichten in "
-"gebruikerslijst van het kanaal"
+"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel "
+"userlist"
+msgstr "USELECT [-a] [-s] <bijnaam1> <bijnaam2> enz, laat bijnamen oplichten in gebruikerslijst van het kanaal"
 
 #: src/common/outbound.c:4126
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr ""
-"VOICE <persoon>, geef de stemstatus aan iemand (kanaal operator vereist)"
+msgstr "VOICE <persoon>, geef de stemstatus aan iemand (kanaal operator vereist)"
 
 #: src/common/outbound.c:4128
 msgid "WALLCHAN <message>, writes the message to all channels"
@@ -925,9 +853,7 @@ msgstr "WALLCHAN <bericht>, het bericht naar alle kanalen sturen"
 #: src/common/outbound.c:4130
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr ""
-"WALLCHOP <bericht>, een bericht naar alle kanaaloperatoren op het huidige "
-"kanaal"
+msgstr "WALLCHOP <bericht>, een bericht naar alle kanaaloperatoren op het huidige kanaal"
 
 #: src/common/outbound.c:4163
 #, c-format
@@ -943,9 +869,7 @@ msgstr "Gebruik: %s\n"
 msgid ""
 "\n"
 "No help available on that command.\n"
-msgstr ""
-"\n"
-"Geen help beschikbaar over die opdracht.\n"
+msgstr "\nGeen help beschikbaar over die opdracht.\n"
 
 #: src/common/outbound.c:4201
 msgid "No such command.\n"
@@ -1014,9 +938,7 @@ msgstr "Weet u zeker dat deze server en poort SSL ondersteunen?\n"
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
-msgstr ""
-"Kan hostnaam %s niet oplossen\n"
-"Controleer uw IP instellingen!\n"
+msgstr "Kan hostnaam %s niet oplossen\nControleer uw IP instellingen!\n"
 
 #: src/common/server.c:875
 msgid "Proxy traversal failed.\n"
@@ -1032,9 +954,7 @@ msgstr "Overschakelen naar volgende server in %s...\n"
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
 "network %s."
-msgstr ""
-"Waarschuwing: tekenset \"%s\" is onbekend. Er zal geen conversie worden "
-"toegepast voor netwerk %s."
+msgstr "Waarschuwing: tekenset \"%s\" is onbekend. Er zal geen conversie worden toegepast voor netwerk %s."
 
 #: src/common/textevents.h:7
 msgid "%C18*%O$t%C18$1%O added to notify list."
@@ -1193,7 +1113,8 @@ msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
 msgstr ""
 
 #: src/common/textevents.h:145
-msgid "%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:148
@@ -1227,8 +1148,8 @@ msgstr ""
 
 #: src/common/textevents.h:169
 msgid ""
-"%C20*%O$tReceived a malformed DCC request from %C18$1%O.%010%C23*%O"
-"$tContents of packet: %C23$2%O"
+"%C20*%O$tReceived a malformed DCC request from "
+"%C18$1%O.%010%C23*%O$tContents of packet: %C23$2%O"
 msgstr ""
 
 #: src/common/textevents.h:172
@@ -1249,7 +1170,8 @@ msgid ""
 msgstr ""
 
 #: src/common/textevents.h:184
-msgid "%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:187
@@ -1262,7 +1184,8 @@ msgstr ""
 
 #: src/common/textevents.h:193
 msgid ""
-"%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' instead."
+"%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' "
+"instead."
 msgstr ""
 
 #: src/common/textevents.h:196
@@ -1279,7 +1202,8 @@ msgid ""
 msgstr ""
 
 #: src/common/textevents.h:205
-msgid "%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:208
@@ -1558,9 +1482,7 @@ msgstr "**** LOGGEN GESTART OP %s\n"
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
-msgstr ""
-"* Kan log bestand(en) niet schrijven. Controleer de\n"
-"permissies op %s."
+msgstr "* Kan log bestand(en) niet schrijven. Controleer de\npermissies op %s."
 
 #: src/common/text.c:949
 msgid "Left message"
@@ -2057,9 +1979,7 @@ msgstr "Bantijd"
 msgid ""
 "Cannot read sound file:\n"
 "%s"
-msgstr ""
-"Kan geluidsbestand niet lezen:\n"
-"%s"
+msgstr "Kan geluidsbestand niet lezen:\n%s"
 
 #: src/common/util.c:119
 msgid "Remote host closed socket"
@@ -3297,9 +3217,7 @@ msgstr "Datum"
 
 #: src/fe-gtk/banlist.c:785
 msgid "You can only open the Ban List window while in a channel tab."
-msgstr ""
-"U kunt het Ban List venster enkel openen wanneer u zich in een kanaaltab "
-"bevindt."
+msgstr "U kunt het Ban List venster enkel openen wanneer u zich in een kanaaltab bevindt."
 
 #: src/fe-gtk/banlist.c:808
 #, c-format
@@ -3420,18 +3338,13 @@ msgid ""
 "Cannot access file: %s\n"
 "%s.\n"
 "Resuming not possible."
-msgstr ""
-"Kan geen toegang krijgen tot bestand: %s\n"
-"%s.\n"
-"Pauzeren is niet mogelijk."
+msgstr "Kan geen toegang krijgen tot bestand: %s\n%s.\nPauzeren is niet mogelijk."
 
 #: src/fe-gtk/dccgui.c:536
 msgid ""
 "File in download directory is larger than file offered. Resuming not "
 "possible."
-msgstr ""
-"Bestand in downloadmap is groter dan aangeboden bestand. Pauzeren is niet "
-"mogelijk."
+msgstr "Bestand in downloadmap is groter dan aangeboden bestand. Pauzeren is niet mogelijk."
 
 #: src/fe-gtk/dccgui.c:540
 msgid "Cannot resume the same file from two people."
@@ -3577,10 +3490,7 @@ msgid ""
 "Failed to open font:\n"
 "\n"
 "%s"
-msgstr ""
-"Openen lettertype mislukt:\n"
-"\n"
-"%s"
+msgstr "Openen lettertype mislukt:\n\n%s"
 
 #: src/fe-gtk/fe-gtk.c:715
 msgid "Search buffer is empty.\n"
@@ -3598,18 +3508,18 @@ msgstr "Netwerk zendwachtrij: %d bytes"
 
 #: src/fe-gtk/fkeys.c:141
 msgid ""
-"The Run Command action runs the data in Data 1 as if it had been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate separate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
+"The Run Command action runs the data in Data 1 as if it had been typed "
+"into the entry box where you pressed the key sequence. Thus it can contain "
+"text (which will be sent to the channel/person), commands or user commands. "
+"When run all \\n characters in Data 1 are used to deliminate separate "
+"commands so it is possible to run more than one command. If you want a \\ "
+"in the actual text run then enter \\\\"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:143
 msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
+"The Change Page command switches between pages in the notebook. Set Data 1"
+" to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position. Set Data 1 to auto to "
 "switch to the page with the most recent and important activity (queries "
 "first, then channels with hilight, channels with dialogue, channels with "
@@ -3620,65 +3530,50 @@ msgstr ""
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"De Invoegen in buffer opdracht zal de inhoud van Data 1 invoegen in de "
-"ingang waar de toetsencombinatie was ingedrukt op de huidige aanwijzerpositie"
+msgstr "De Invoegen in buffer opdracht zal de inhoud van Data 1 invoegen in de ingang waar de toetsencombinatie was ingedrukt op de huidige aanwijzerpositie"
 
 #: src/fe-gtk/fkeys.c:147
 msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
+"The Scroll Page command scrolls the text widget up or down one page or one"
+" line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:149
 msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
-msgstr ""
-"De Buffer instellen opdracht stelt de ingang waar de toetsencombinatie is "
-"ingedrukt in op de inhoud van Data 1"
+"The Set Buffer command sets the entry where the key sequence was entered "
+"to the contents of Data 1"
+msgstr "De Buffer instellen opdracht stelt de ingang waar de toetsencombinatie is ingedrukt in op de inhoud van Data 1"
 
 #: src/fe-gtk/fkeys.c:151
 msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"De Laatste opdracht opdracht stelt de ingang in op de laatst ingevoerde "
-"opdracht - hetzelfde als pijltje omhoog in een shell"
+"The Last Command command sets the entry to contain the last command "
+"entered - the same as pressing up in a shell"
+msgstr "De Laatste opdracht opdracht stelt de ingang in op de laatst ingevoerde opdracht - hetzelfde als pijltje omhoog in een shell"
 
 #: src/fe-gtk/fkeys.c:153
 msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"De Volgende opdracht opdracht stelt de ingang in op de volgend ingevoerde "
-"opdracht - hetzelfde als pijltje omlaag in een shell"
+"The Next Command command sets the entry to contain the next command "
+"entered - the same as pressing down in a shell"
+msgstr "De Volgende opdracht opdracht stelt de ingang in op de volgend ingevoerde opdracht - hetzelfde als pijltje omlaag in een shell"
 
 #: src/fe-gtk/fkeys.c:155
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"Deze opdracht wijzigt de tekst in de ingang zodat een incomplete bijnaam of "
-"opdracht wordt voltooid. Als Data 1 is ingesteld, dan selecteert tweemaal "
-"tab indrukken de laatste bijnaam, niet de volgende"
+"or command. If Data 1 is set then double-tabbing in a string will select the"
+" last nick, not the next"
+msgstr "Deze opdracht wijzigt de tekst in de ingang zodat een incomplete bijnaam of opdracht wordt voltooid. Als Data 1 is ingesteld, dan selecteert tweemaal tab indrukken de laatste bijnaam, niet de volgende"
 
 #: src/fe-gtk/fkeys.c:157
 msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"Deze opdracht schuift omhoog en omlaag in de lijst met bijnamen. Als Data 1 "
-"ergens op is ingesteld, wordt er omhoog geschoven, anders omlaag."
+"This command scrolls up and down through the list of nicks. If Data 1 is set"
+" to anything it will scroll up, else it scrolls down"
+msgstr "Deze opdracht schuift omhoog en omlaag in de lijst met bijnamen. Als Data 1 ergens op is ingesteld, wordt er omhoog geschoven, anders omlaag."
 
 #: src/fe-gtk/fkeys.c:159
 msgid ""
 "This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
-msgstr ""
-"Deze opdracht vergelijkt het laatst ingevoerde woord ingevoerd in de ingang, "
-"met de vervangingslijst, en vervangt als er een overeenkomst is"
+msgstr "Deze opdracht vergelijkt het laatst ingevoerde woord ingevoerd in de ingang, met de vervangingslijst, en vervangt als er een overeenkomst is"
 
 #: src/fe-gtk/fkeys.c:161
 msgid "This command moves the front tab left by one"
@@ -3702,9 +3597,7 @@ msgstr "Invoerregel naar geschiedenis duwen maar niet naar server verzenden"
 
 #: src/fe-gtk/fkeys.c:218
 msgid "There was an error loading key bindings configuration"
-msgstr ""
-"Er is een fout opgetreden bij het laden van de configuratie van de "
-"toetsenbordkoppelingen"
+msgstr "Er is een fout opgetreden bij het laden van de configuratie van de toetsenbordkoppelingen"
 
 #: src/fe-gtk/fkeys.c:540
 msgid "Select a row to get help information on its Action."
@@ -3804,13 +3697,10 @@ msgid "Connection to %s complete."
 msgstr "Verbinding naar %s vervolledigd."
 
 #: src/fe-gtk/joind.c:171
-#, fuzzy
 msgid ""
 "In the server list window, no channel (chat room) has been entered to be "
 "automatically joined for this network."
 msgstr ""
-"Er is voor dit netwerk geen kanaal (chat room) om automatisch te vervoegen, "
-"opgegeven in het Server-List venster."
 
 #: src/fe-gtk/joind.c:177
 msgid "What would you like to do next?"
@@ -3826,18 +3716,15 @@ msgstr "Kanaal vervoegen (_J):"
 
 #: src/fe-gtk/joind.c:203
 msgid "If you know the name of the channel you want to join, enter it here."
-msgstr ""
-"Als u de naam van het kanaal dat u wilt vervoegen kent, geef het dan hier op."
+msgstr "Als u de naam van het kanaal dat u wilt vervoegen kent, geef het dan hier op."
 
 #: src/fe-gtk/joind.c:210
-#, fuzzy
 msgid "O_pen the channel list."
-msgstr "O_pen het Channel-List venster."
+msgstr ""
 
 #: src/fe-gtk/joind.c:216
-#, fuzzy
 msgid "Retrieving the channel list may take a minute or two."
-msgstr "De Channel-List opvragen, kan één of twee minuten duren."
+msgstr ""
 
 #: src/fe-gtk/joind.c:223
 msgid "_Always show this dialog after connecting."
@@ -3861,9 +3748,7 @@ msgstr "Er is geen onderwerp ingesteld"
 msgid ""
 "This server still has %d channels or dialogs associated with it. Close them "
 "all?"
-msgstr ""
-"Er zijn nog steeds %d kanalen of dialogen met deze server geassocieerd. Wilt "
-"u ze allemaal sluiten?"
+msgstr "Er zijn nog steeds %d kanalen of dialogen met deze server geassocieerd. Wilt u ze allemaal sluiten?"
 
 #: src/fe-gtk/maingui.c:1177
 msgid "Quit HexChat?"
@@ -4135,9 +4020,8 @@ msgstr "Gebruikersmenu - %s"
 
 #. sep
 #: src/fe-gtk/menu.c:1147
-#, fuzzy
 msgid "Edit This Menu"
-msgstr "Dit menu bewerken..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1293
 msgid "Marker line disabled."
@@ -4164,9 +4048,8 @@ msgid "Marker line state unknown."
 msgstr ""
 
 #: src/fe-gtk/menu.c:1396
-#, fuzzy
 msgid "Retrieve channel list"
-msgstr "Haal kanaallijst af..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1462
 msgid " has been build without plugin support."
@@ -4258,9 +4141,9 @@ msgid "User Defined Commands - %s"
 msgstr "Door gebruiker gedefinieerde opdrachten - %s"
 
 #: src/fe-gtk/menu.c:1538
-#, fuzzy, c-format
+#, c-format
 msgid "Userlist Popup menu -  %s"
-msgstr "XChat Gebruikerslijst Popup menu"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1546
 #, c-format
@@ -4296,38 +4179,32 @@ msgid "He_xChat"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1758
-#, fuzzy
 msgid "Network Li_st"
-msgstr "Netwerklij_st..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1761
 msgid "_New"
 msgstr "_Nieuw"
 
 #: src/fe-gtk/menu.c:1762
-#, fuzzy
 msgid "Server Tab"
-msgstr "Server tabblad..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1763
-#, fuzzy
 msgid "Channel Tab"
-msgstr "Kanaal tabblad..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1764
-#, fuzzy
 msgid "Server Window"
-msgstr "Server venster..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1765
-#, fuzzy
 msgid "Channel Window"
-msgstr "Kanaal venster..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1769
-#, fuzzy
 msgid "_Load Plugin or Script"
-msgstr "Plugin of script _laden..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1776 src/fe-gtk/plugin-tray.c:576
 msgid "_Quit"
@@ -4351,9 +4228,8 @@ msgid "_User List"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1783
-#, fuzzy
 msgid "U_ser List Buttons"
-msgstr "Gebruikerslijst Knoppen..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1784
 msgid "M_ode Buttons"
@@ -4400,14 +4276,12 @@ msgid "_Reconnect"
 msgstr "Opnieuw ve_rbinden"
 
 #: src/fe-gtk/menu.c:1804
-#, fuzzy
 msgid "_Join a Channel"
-msgstr "Kanaal binnengaan"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1805
-#, fuzzy
 msgid "Channel _List"
-msgstr "Kanaal"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1808
 msgid "Marked _Away"
@@ -4427,49 +4301,40 @@ msgid "_Preferences"
 msgstr "Voorkeuren (_P)"
 
 #: src/fe-gtk/menu.c:1815
-#, fuzzy
 msgid "Auto Replace"
-msgstr "Auto vervangen..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1816
-#, fuzzy
 msgid "CTCP Replies"
-msgstr "CTCP Antwoorden..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1817
-#, fuzzy
 msgid "Dialog Buttons"
-msgstr "Dialoogknoppen..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1818
-#, fuzzy
 msgid "Keyboard Shortcuts"
-msgstr "Sneltoetsen..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1819
-#, fuzzy
 msgid "Text Events"
-msgstr "Tekst gebeurtenissen..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1820
-#, fuzzy
 msgid "URL Handlers"
-msgstr "URL Programma's..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1821
-#, fuzzy
 msgid "User Commands"
-msgstr "Gebruikerscommando's..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1822
-#, fuzzy
 msgid "User List Buttons"
-msgstr "Gebruikerslijst Knoppen..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1823
-#, fuzzy
 msgid "User List Popup"
-msgstr "Gebruikerslijst Popup menu..."
+msgstr ""
 
 #. 52
 #: src/fe-gtk/menu.c:1825
@@ -4477,34 +4342,28 @@ msgid "_Window"
 msgstr "Venster (_W)"
 
 #: src/fe-gtk/menu.c:1826
-#, fuzzy
 msgid "_Ban List"
-msgstr "Banlijst"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1828
-#, fuzzy
 msgid "Direct Chat"
-msgstr "Direct chat..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1829
-#, fuzzy
 msgid "File _Transfers"
-msgstr "Bestandsoverdrachten"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1830
-#, fuzzy
 msgid "Friends List"
-msgstr "Vrienden Lijst..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1831
-#, fuzzy
 msgid "Ignore List"
-msgstr "Negeerlijst..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1832
-#, fuzzy
 msgid "_Plugins and Scripts"
-msgstr "Plugins en scripts - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1833
 msgid "_Raw Log"
@@ -4512,9 +4371,8 @@ msgstr ""
 
 #. 61
 #: src/fe-gtk/menu.c:1834
-#, fuzzy
 msgid "_URL Grabber"
-msgstr "URL grijper..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1836
 msgid "Reset Marker Line"
@@ -4533,18 +4391,16 @@ msgid "C_lear Text"
 msgstr "Tekst wissen (_l)"
 
 #: src/fe-gtk/menu.c:1840
-#, fuzzy
 msgid "Save Text"
-msgstr "Tekst opslaan..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1842
 msgid "Search"
 msgstr "Zoeken"
 
 #: src/fe-gtk/menu.c:1843
-#, fuzzy
 msgid "Search Text"
-msgstr "Volgende zoeken"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1844
 msgid "Search Next"
@@ -5217,19 +5073,16 @@ msgid "Window opacity:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:166 src/fe-gtk/setup.c:593
-#, fuzzy
 msgid "Timestamps"
-msgstr "Tijdsstempels"
+msgstr ""
 
 #: src/fe-gtk/setup.c:167
-#, fuzzy
 msgid "Enable timestamps"
-msgstr "Tijdsstempels aan zetten"
+msgstr ""
 
 #: src/fe-gtk/setup.c:168
-#, fuzzy
 msgid "Timestamp format:"
-msgstr "Tijdstampformaat:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:170 src/fe-gtk/setup.c:597
 msgid "See the strftime MSDN article for details."
@@ -5264,9 +5117,8 @@ msgid "Input Box"
 msgstr ""
 
 #: src/fe-gtk/setup.c:192
-#, fuzzy
 msgid "Use the text box font and colors"
-msgstr "Tekstvak lettertype en kleuren gebruiken"
+msgstr ""
 
 #: src/fe-gtk/setup.c:193
 msgid "Render colors and attributes"
@@ -5327,14 +5179,12 @@ msgid "Graphical"
 msgstr "Grafisch"
 
 #: src/fe-gtk/setup.c:223
-#, fuzzy
 msgid "A-Z, ops first"
-msgstr "A-Z, Ops eerst"
+msgstr ""
 
 #: src/fe-gtk/setup.c:225
-#, fuzzy
 msgid "Z-A, ops last"
-msgstr "Z-A, Ops als laatste"
+msgstr ""
 
 #: src/fe-gtk/setup.c:226
 msgid "Z-A"
@@ -5390,9 +5240,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:257
 msgid "Use graphical icons instead of text symbols in the user list."
-msgstr ""
-"Gebruik grafische pictogrammen in plaats van tekstsymbolen in de "
-"gebruikerslijst."
+msgstr "Gebruik grafische pictogrammen in plaats van tekstsymbolen in de gebruikerslijst."
 
 #: src/fe-gtk/setup.c:258
 msgid "Color nicknames in userlist"
@@ -5419,10 +5267,8 @@ msgid "Away Tracking"
 msgstr ""
 
 #: src/fe-gtk/setup.c:264
-#, fuzzy
 msgid "Track the away status of users and mark them in a different color"
 msgstr ""
-"Houdt de Away-status van gebruikers bij en markeer ze in een andere kleur"
 
 #: src/fe-gtk/setup.c:265
 msgid "On channels smaller than:"
@@ -5612,9 +5458,8 @@ msgid "Chat window"
 msgstr "Chatvenster"
 
 #: src/fe-gtk/setup.c:363
-#, fuzzy
 msgid "Maximum File Transfer Speeds (Bytes per Second)"
-msgstr "Maximale bestandsoverdrachtssnelheid (bytes/s)"
+msgstr ""
 
 #: src/fe-gtk/setup.c:364
 msgid "One upload:"
@@ -5844,24 +5689,19 @@ msgid "Automatically copy selected text"
 msgstr "Automatisch geselecteerde tekst kopiëren"
 
 #: src/fe-gtk/setup.c:558
-#, fuzzy
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, Ctrl+Shift+C will copy the selected text to the clipboard."
 msgstr ""
-"Geselecteerde tekst kopiëren naar Klembord wanneer linker muisknop wordt "
-"losgelaten. Anders, zal het CTRL-SHIFT-C de geselecteerde tekst naar het "
-"Klembord kopiëren."
 
 #: src/fe-gtk/setup.c:561
-#, fuzzy
 msgid "Automatically include timestamps"
-msgstr "Automatisch geselecteerde tekst kopiëren"
+msgstr ""
 
 #: src/fe-gtk/setup.c:562
 msgid ""
-"Automatically include timestamps in copied lines of text. Otherwise, include "
-"timestamps if the Shift key is held down while selecting."
+"Automatically include timestamps in copied lines of text. Otherwise, include"
+" timestamps if the Shift key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:564
@@ -5870,8 +5710,8 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:565
 msgid ""
-"Automatically include color information in copied lines of text.  Otherwise, "
-"include color information if the Ctrl key is held down while selecting."
+"Automatically include color information in copied lines of text.  Otherwise,"
+" include color information if the Ctrl key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:570
@@ -5922,7 +5762,8 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:579
 msgid ""
-"Attempt to use this banmask when banning or quieting. (requires irc_who_join)"
+"Attempt to use this banmask when banning or quieting. (requires "
+"irc_who_join)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:586 src/fe-gtk/setup.c:1883
@@ -5999,19 +5840,16 @@ msgid "Auto"
 msgstr ""
 
 #: src/fe-gtk/setup.c:625
-#, fuzzy
 msgid "All connections"
-msgstr "Alle verbindingen"
+msgstr ""
 
 #: src/fe-gtk/setup.c:626
-#, fuzzy
 msgid "IRC server only"
-msgstr "Enkel IRC Server"
+msgstr ""
 
 #: src/fe-gtk/setup.c:627
-#, fuzzy
 msgid "DCC only"
-msgstr "DCC Get Only"
+msgstr ""
 
 #: src/fe-gtk/setup.c:633
 msgid "Your Address"
@@ -6035,11 +5873,9 @@ msgstr "Mijn adres van de IRC server halen"
 
 #: src/fe-gtk/setup.c:639
 msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"De IRC-server om uw echte adres vragen. Gebruik dit als u een 192.168.*.* "
-"adres heeft!"
+"Asks the IRC server for your real address. Use this if you have a "
+"192.168.*.* address!"
+msgstr "De IRC-server om uw echte adres vragen. Gebruik dit als u een 192.168.*.* adres heeft!"
 
 #: src/fe-gtk/setup.c:640
 msgid "DCC IP address:"
@@ -6050,14 +5886,12 @@ msgid "Claim you are at this address when offering files."
 msgstr "Doe alsof u op dit adres bent bij het aanbieden van bestanden."
 
 #: src/fe-gtk/setup.c:642
-#, fuzzy
 msgid "First DCC listen port:"
-msgstr "Eerste DCC verstuurpoort:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:643
-#, fuzzy
 msgid "Last DCC listen port:"
-msgstr "Laatste DCC verstuurpoort:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:644
 msgid "!Leave ports at zero for full range."
@@ -6088,9 +5922,8 @@ msgid "Proxy Authentication"
 msgstr "Proxy-authenticatie"
 
 #: src/fe-gtk/setup.c:653
-#, fuzzy
 msgid "Use authentication (HTTP or Socks5 only)"
-msgstr "Gebruik authenticatie (enkel HTTP of Socks5)"
+msgstr ""
 
 #: src/fe-gtk/setup.c:654
 msgid "Username:"
@@ -6277,15 +6110,12 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:2254
-msgid ""
-"The Real name option cannot be left blank. Falling back to \"realname\"."
+msgid "The Real name option cannot be left blank. Falling back to \"realname\"."
 msgstr ""
 
 #: src/fe-gtk/setup.c:2261
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr ""
-"Sommige instellingen die zijn veranderd worden pas actief na het opnieuw "
-"starten."
+msgstr "Sommige instellingen die zijn veranderd worden pas actief na het opnieuw starten."
 
 #: src/fe-gtk/setup.c:2269
 msgid ""
@@ -6293,13 +6123,7 @@ msgid ""
 "Auto accepting DCC to your home directory\n"
 "can be dangerous and is exploitable. Eg:\n"
 "Someone could send you a .bash_profile"
-msgstr ""
-"*WAARSCHUWING*\n"
-"Auto accepteren van DCC naar uw persoonlijke\n"
-"map is gevaarlijk en er kan misbruik van worden\n"
-"gemaakt.\n"
-"Iemand kan u bijvoorbeeld een .bash_profile\n"
-"bestand opsturen."
+msgstr "*WAARSCHUWING*\nAuto accepteren van DCC naar uw persoonlijke\nmap is gevaarlijk en er kan misbruik van worden\ngemaakt.\nIemand kan u bijvoorbeeld een .bash_profile\nbestand opsturen."
 
 #: src/fe-gtk/setup.c:2293
 #, c-format
@@ -6413,8 +6237,8 @@ msgstr ""
 #: plugins/sysinfo/sysinfo.c:168
 msgid ""
 "Sysinfo: Valid settings are: announce and hide_* for each piece of "
-"information. e.g. hide_os. Without a value it will show current (or default) "
-"setting.\n"
+"information. e.g. hide_os. Without a value it will show current (or default)"
+" setting.\n"
 msgstr ""
 
 #: plugins/sysinfo/sysinfo.c:190
@@ -6430,16 +6254,3 @@ msgstr ""
 #, c-format
 msgid "%s plugin unloaded\n"
 msgstr ""
-
-#~ msgid ""
-#~ "Error parsing event %s.\n"
-#~ "Loading default."
-#~ msgstr ""
-#~ "Fout bij inlezen gebeurtenis %s.\n"
-#~ "Standaard wordt geladen."
-
-#~ msgid "Character Chart..."
-#~ msgstr "Speciale tekens..."
-
-#~ msgid "Search Text..."
-#~ msgstr "Tekst zoeken..."

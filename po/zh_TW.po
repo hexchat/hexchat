@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-#
+# This file is distributed under the same license as the hexchat package.
+# 
 # Translators:
 # Anthony Fok <foka@debian.org>, 2001
 # Dalin <ayi880@hotmail.com>, 2003
@@ -17,14 +17,13 @@ msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-15 19:25-0400\n"
-"PO-Revision-Date: 2017-08-03 18:35+0000\n"
+"PO-Revision-Date: 2017-09-19 14:16+0000\n"
 "Last-Translator: TingPing <tingping@tingping.se>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/hexchat/hexchat/"
-"language/zh_TW/)\n"
-"Language: zh_TW\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/hexchat/hexchat/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/misc/hexchat.appdata.xml.in:4 data/misc/hexchat.appdata.xml.in:5
@@ -233,7 +232,7 @@ msgstr "加入聊天室..."
 
 #: src/common/hexchat.c:919 src/fe-gtk/menu.c:1411
 msgid "Enter Channel to Join:"
-msgstr "輸入要加入的聊天室:"
+msgstr "輸入要加入的聊天室："
 
 #: src/common/hexchat.c:920
 msgid "Server Links"
@@ -262,12 +261,11 @@ msgstr "道別"
 #: src/common/hexchat.c:937
 #, c-format
 msgid "Enter reason to kick %s:"
-msgstr "輸入踢出 %s 的原因:"
+msgstr "輸入踢出 %s 的原因："
 
 #: src/common/hexchat.c:938
-#, fuzzy
 msgid "Send File"
-msgstr "_傳送檔案"
+msgstr ""
 
 #: src/common/hexchat.c:939
 msgid "Dialog"
@@ -304,9 +302,7 @@ msgstr ""
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
-msgstr ""
-"* 最好不要以 root 身分執行 IRC！您應該\n"
-"  建立一般使用者帳號來登入。\n"
+msgstr "* 最好不要以 root 身分執行 IRC！您應該\n  建立一般使用者帳號來登入。\n"
 
 #: src/common/ignore.c:127 src/common/ignore.c:131 src/common/ignore.c:135
 #: src/common/ignore.c:139 src/common/ignore.c:143 src/common/ignore.c:147
@@ -391,15 +387,15 @@ msgstr "使用 /bin/sh 才能執行本程式！\n"
 
 #: src/common/outbound.c:2262
 msgid "Commands Available:"
-msgstr "可用命令:"
+msgstr "可用命令："
 
 #: src/common/outbound.c:2276
 msgid "User defined commands:"
-msgstr "使用者自訂命令:"
+msgstr "使用者自訂命令："
 
 #: src/common/outbound.c:2292
 msgid "Plugin defined commands:"
-msgstr "使用者自訂命令:"
+msgstr "使用者自訂命令："
 
 #: src/common/outbound.c:2303
 msgid "Type /HELP <command> for more information, or /HELP -l"
@@ -458,9 +454,7 @@ msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
-msgstr ""
-"BAN <mask> [<bantype>]，禁止所有符合 mask 的使用者進入目前的聊天室。如果他們"
-"已在該聊天室，這個命令不會把他們踢出去(需要有 chanop 身分)"
+msgstr "BAN <mask> [<bantype>]，禁止所有符合 mask 的使用者進入目前的聊天室。如果他們已在該聊天室，這個命令不會把他們踢出去(需要有 chanop 身分)"
 
 #: src/common/outbound.c:3941
 msgid "CHANOPT [-quiet] <variable> [<value>]"
@@ -468,7 +462,8 @@ msgstr ""
 
 #: src/common/outbound.c:3942
 msgid ""
-"CHARSET [<encoding>], get or set the encoding used for the current connection"
+"CHARSET [<encoding>], get or set the encoding used for the current "
+"connection"
 msgstr ""
 
 #: src/common/outbound.c:3943
@@ -485,19 +480,18 @@ msgstr ""
 
 #: src/common/outbound.c:3947
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
-msgstr "COUNTRY [-s] <code|wildcard>，查看國家代碼對應的國家名，比如:tw = 臺灣"
+msgstr "COUNTRY [-s] <code|wildcard>，查看國家代碼對應的國家名，比如：tw = 臺灣"
 
 #: src/common/outbound.c:3949
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
-msgstr ""
-"CTCP <nick> <message>，給暱稱為 <nick> 者發送 CTCP 訊息，常用訊息是 VERSION "
-"和 USERINFO"
+msgstr "CTCP <nick> <message>，給暱稱為 <nick> 者發送 CTCP 訊息，常用訊息是 VERSION 和 USERINFO"
 
 #: src/common/outbound.c:3951
 msgid ""
-"CYCLE [<channel>], parts the current or given channel and immediately rejoins"
+"CYCLE [<channel>], parts the current or given channel and immediately "
+"rejoins"
 msgstr ""
 
 #: src/common/outbound.c:3953
@@ -511,24 +505,13 @@ msgid ""
 "DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
 "DCC CLOSE <type> <nick> <file>         example:\n"
 "         /dcc close send johnsmith file.tar.gz"
-msgstr ""
-"\n"
-"DCC GET <nick>                     - 接收暱稱為 <nick> 者發送給您的檔案\n"
-"DCC SEND [-maxcps=#] <nick> [file] - 發送檔案給某人\n"
-"DCC PSEND [-maxcps=#] <nick> [file] - 使用被動模式發送檔案給某人\n"
-"DCC LIST                           - 顯示 DCC 清單\n"
-"DCC CHAT <nick>                    - 與某人密談\n"
-"DCC PCHAT <nick>                    - 使用被動模式與某人密談\n"
-"DCC CLOSE <type> <nick> <file>         例如:\n"
-"         /dcc close send johnsmith file.tar.gz"
+msgstr "\nDCC GET <nick>                     - 接收暱稱為 <nick> 者發送給您的檔案\nDCC SEND [-maxcps=#] <nick> [file] - 發送檔案給某人\nDCC PSEND [-maxcps=#] <nick> [file] - 使用被動模式發送檔案給某人\nDCC LIST                           - 顯示 DCC 清單\nDCC CHAT <nick>                    - 與某人密談\nDCC PCHAT <nick>                    - 使用被動模式與某人密談\nDCC CLOSE <type> <nick> <file>         例如：\n         /dcc close send johnsmith file.tar.gz"
 
 #: src/common/outbound.c:3965
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
-msgstr ""
-"DEHOP <nick>，取消目前聊天室內暱稱為 <nick> 者的 chanhalf-op 身分(需要有 "
-"chanop 身分)"
+msgstr "DEHOP <nick>，取消目前聊天室內暱稱為 <nick> 者的 chanhalf-op 身分(需要有 chanop 身分)"
 
 #: src/common/outbound.c:3967
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
@@ -538,15 +521,13 @@ msgstr "DELBUTTON <name>，刪除使用者清單下的一個按鈕"
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEOP <nick>，取消暱稱為 <nick> 者在本聊天室的 chanop 身分(需要有 chanop 身分)"
+msgstr "DEOP <nick>，取消暱稱為 <nick> 者在本聊天室的 chanop 身分(需要有 chanop 身分)"
 
 #: src/common/outbound.c:3971
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEVOICE <nick>，取消暱稱為 <nick> 者在本聊天室的發言權(需要有 chanop 身分)"
+msgstr "DEVOICE <nick>，取消暱稱為 <nick> 者在本聊天室的發言權(需要有 chanop 身分)"
 
 #: src/common/outbound.c:3972
 msgid "DISCON, Disconnects from server"
@@ -568,9 +549,7 @@ msgstr "ECHO <text>，只在本地顯示文字"
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <command>，執行命令。如果使用了 -o 選項則輸出到目前聊天室，否則輸出"
-"到目前文字框"
+msgstr "EXEC [-o] <command>，執行命令。如果使用了 -o 選項則輸出到目前聊天室，否則輸出到目前文字框"
 
 #: src/common/outbound.c:3980
 msgid "EXECCONT, sends the process SIGCONT"
@@ -580,9 +559,7 @@ msgstr "EXECCONT，向行程發送 SIGCONT 信號"
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9]，砍掉目前會話中的某執行行程。如果使用 -9 選項，則用 SIGKILL 砍"
-"掉該行程"
+msgstr "EXECKILL [-9]，砍掉目前會話中的某執行行程。如果使用 -9 選項，則用 SIGKILL 砍掉該行程"
 
 #: src/common/outbound.c:3985
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -623,20 +600,13 @@ msgid ""
 "    types - types of data to ignore, one or all of:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
-msgstr ""
-"IGNORE <mask> <types..> <options..>\n"
-"    mask - 欲忽略的主機遮罩，比如 *!*@*.aol.com\n"
-"    types - 欲忽略資料的類型，以下選項之一或全部:\n"
-"            PRIV，CHAN，NOTI，CTCP，INVI，ALL\n"
-"    options - NOSAVE, QUIET"
+msgstr "IGNORE <mask> <types..> <options..>\n    mask - 欲忽略的主機遮罩，比如 *!*@*.aol.com\n    types - 欲忽略資料的類型，以下選項之一或全部：\n            PRIV，CHAN，NOTI，CTCP，INVI，ALL\n    options - NOSAVE, QUIET"
 
 #: src/common/outbound.c:4015
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
-msgstr ""
-"INVITE <nick> [<channel>]，邀請暱稱為 <nick> 者加入聊天室，預設為目前聊天室"
-"(需要有 chanop 身分)"
+msgstr "INVITE <nick> [<channel>]，邀請暱稱為 <nick> 者加入聊天室，預設為目前聊天室(需要有 chanop 身分)"
 
 #: src/common/outbound.c:4016
 msgid "JOIN <channel>, joins the channel"
@@ -663,8 +633,7 @@ msgid ""
 "    Use -h to highlight the found string(s)\n"
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
-"    Use -- (double hyphen) to end options when searching for, say, the "
-"string '-r'"
+"    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
 msgstr ""
 
 #: src/common/outbound.c:4031
@@ -682,16 +651,13 @@ msgstr "MDEOP，取消目前聊天室中所有 chanop 的權限 (需要有 chano
 
 #: src/common/outbound.c:4038
 msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <action>，向目前聊天室中發送一個動作 (動作使用第三人稱陳述，例如 /me "
-"jumps)"
+"ME <action>, sends the action to the current channel (actions are written in"
+" the 3rd person, like /me jumps)"
+msgstr "ME <action>，向目前聊天室中發送一個動作 (動作使用第三人稱陳述，例如 /me jumps)"
 
 #: src/common/outbound.c:4042
-#, fuzzy
 msgid "MHOP, Mass hop's all users in the current channel (needs chanop)"
-msgstr "MOP，給本聊天室中所有使用者 chanop 身分(需要有 chanop 身分)"
+msgstr ""
 
 #: src/common/outbound.c:4044
 msgid ""
@@ -704,8 +670,8 @@ msgstr "MOP，給本聊天室中所有使用者 chanop 身分(需要有 chanop �
 
 #: src/common/outbound.c:4048
 msgid ""
-"MSG <nick> <message>, sends a private message, message \".\" to send to last "
-"nick or prefix with \"=\" for dcc chat"
+"MSG <nick> <message>, sends a private message, message \".\" to send to last"
+" nick or prefix with \"=\" for dcc chat"
 msgstr ""
 
 #: src/common/outbound.c:4051
@@ -769,21 +735,17 @@ msgstr "QUOTE <text>，向伺服器發送原始格式的文字"
 
 #: src/common/outbound.c:4077
 msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
+"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as "
+"/RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>]，可用 /RECONNECT 重新連接目前"
-"伺服器或用 /RECONNECT ALL 重新連接所有伺服器"
+msgstr "RECONNECT [-ssl] [<host>] [<port>] [<password>]，可用 /RECONNECT 重新連接目前伺服器或用 /RECONNECT ALL 重新連接所有伺服器"
 
 #: src/common/outbound.c:4080
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
-msgstr ""
-"RECONNECT [<host>] [<port>] [<password>]，可用 /RECONNECT 重新連接目前伺服器"
-"或用 /RECONNECT ALL 重新連接所有伺服器"
+msgstr "RECONNECT [<host>] [<port>] [<password>]，可用 /RECONNECT 重新連接目前伺服器或用 /RECONNECT ALL 重新連接所有伺服器"
 
 #: src/common/outbound.c:4082
 msgid ""
@@ -841,7 +803,8 @@ msgstr ""
 
 #: src/common/outbound.c:4107
 msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+"TOPIC [<topic>], sets the topic if one is given, else shows the current "
+"topic"
 msgstr "TOPIC [<topic>]，設定話題為指定話題，如果未指定則顯示目前話題"
 
 #: src/common/outbound.c:4109
@@ -868,8 +831,8 @@ msgstr "UNLOAD <name>，卸載外掛程式或命令稿"
 
 #: src/common/outbound.c:4120
 msgid ""
-"UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the "
-"server."
+"UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the"
+" server."
 msgstr ""
 
 #: src/common/outbound.c:4121
@@ -878,9 +841,9 @@ msgstr "URL <url>，在您的瀏覽器中開啟 <url>"
 
 #: src/common/outbound.c:4123
 msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
-msgstr ""
-"USELECT [-a] [-s] <nick1> <nick2>...，在聊天室使用者清單中以高亮度標示暱稱"
+"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel "
+"userlist"
+msgstr "USELECT [-a] [-s] <nick1> <nick2>...，在聊天室使用者清單中以高亮度標示暱稱"
 
 #: src/common/outbound.c:4126
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
@@ -903,15 +866,13 @@ msgstr ""
 #: src/common/outbound.c:4190
 #, c-format
 msgid "Usage: %s\n"
-msgstr "用法:%s\n"
+msgstr "用法：%s\n"
 
 #: src/common/outbound.c:4195
 msgid ""
 "\n"
 "No help available on that command.\n"
-msgstr ""
-"\n"
-"沒有關於該命令的求助資訊。\n"
+msgstr "\n沒有關於該命令的求助資訊。\n"
 
 #: src/common/outbound.c:4201
 msgid "No such command.\n"
@@ -980,9 +941,7 @@ msgstr "您確信此伺服器和輸出入埠支援‧SSL ？\n"
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
-msgstr ""
-"無法解析主機名 %s\n"
-"請檢查您的 IP 設定！\n"
+msgstr "無法解析主機名 %s\n請檢查您的 IP 設定！\n"
 
 #: src/common/server.c:875
 msgid "Proxy traversal failed.\n"
@@ -998,7 +957,7 @@ msgstr "輪跳至 %s 的下一個伺服器中...\n"
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
 "network %s."
-msgstr "警告:未知的字元設定「%s」。對網路 %s 將不應用字元轉換。"
+msgstr "警告：未知的字元設定「%s」。對網路 %s 將不應用字元轉換。"
 
 #: src/common/textevents.h:7
 msgid "%C18*%O$t%C18$1%O added to notify list."
@@ -1157,7 +1116,8 @@ msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
 msgstr ""
 
 #: src/common/textevents.h:145
-msgid "%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:148
@@ -1191,8 +1151,8 @@ msgstr ""
 
 #: src/common/textevents.h:169
 msgid ""
-"%C20*%O$tReceived a malformed DCC request from %C18$1%O.%010%C23*%O"
-"$tContents of packet: %C23$2%O"
+"%C20*%O$tReceived a malformed DCC request from "
+"%C18$1%O.%010%C23*%O$tContents of packet: %C23$2%O"
 msgstr ""
 
 #: src/common/textevents.h:172
@@ -1213,7 +1173,8 @@ msgid ""
 msgstr ""
 
 #: src/common/textevents.h:184
-msgid "%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:187
@@ -1226,7 +1187,8 @@ msgstr ""
 
 #: src/common/textevents.h:193
 msgid ""
-"%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' instead."
+"%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' "
+"instead."
 msgstr ""
 
 #: src/common/textevents.h:196
@@ -1243,7 +1205,8 @@ msgid ""
 msgstr ""
 
 #: src/common/textevents.h:205
-msgid "%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:208
@@ -2019,9 +1982,7 @@ msgstr "封禁時間"
 msgid ""
 "Cannot read sound file:\n"
 "%s"
-msgstr ""
-"無法讀取聲音檔案:\n"
-"%s"
+msgstr "無法讀取聲音檔案：\n%s"
 
 #: src/common/util.c:119
 msgid "Remote host closed socket"
@@ -3264,7 +3225,7 @@ msgstr "在聊天室分頁中您只能開啟封禁清單視窗。"
 #: src/fe-gtk/banlist.c:808
 #, c-format
 msgid "Ban List (%s) - %s"
-msgstr "封禁清單 (%s) - %s"
+msgstr ""
 
 #: src/fe-gtk/banlist.c:843 src/fe-gtk/notifygui.c:429
 msgid "Remove"
@@ -3302,7 +3263,7 @@ msgstr ""
 #: src/fe-gtk/chanlist.c:720
 #, c-format
 msgid "Channel List (%s) - %s"
-msgstr "聊天室清單 (%s) - %s"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:794
 msgid "_Search"
@@ -3362,7 +3323,7 @@ msgstr ""
 #. =============================================================
 #: src/fe-gtk/chanlist.c:913 src/fe-gtk/maingui.c:2888
 msgid "Find:"
-msgstr "尋找:"
+msgstr "尋找："
 
 #: src/fe-gtk/dccgui.c:141
 #, c-format
@@ -3380,10 +3341,7 @@ msgid ""
 "Cannot access file: %s\n"
 "%s.\n"
 "Resuming not possible."
-msgstr ""
-"不能存取檔案:%s\n"
-"%s。\n"
-"無法續傳。"
+msgstr "不能存取檔案：%s\n%s。\n無法續傳。"
 
 #: src/fe-gtk/dccgui.c:536
 msgid ""
@@ -3430,7 +3388,7 @@ msgstr "詳細資訊"
 
 #: src/fe-gtk/dccgui.c:879
 msgid "File:"
-msgstr "檔案:"
+msgstr "檔案："
 
 #: src/fe-gtk/dccgui.c:880
 msgid "Address:"
@@ -3455,7 +3413,7 @@ msgstr "開啟文件夾..."
 #: src/fe-gtk/dccgui.c:1050
 #, c-format
 msgid "DCC Chat List - %s"
-msgstr "DCC 交談清單 - %s"
+msgstr ""
 
 #: src/fe-gtk/dccgui.c:1065
 msgid "Recv"
@@ -3511,7 +3469,7 @@ msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:87 src/fe-gtk/setup.c:268
 msgid "Execute command:"
-msgstr "執行命令:"
+msgstr "執行命令："
 
 #: src/fe-gtk/fe-gtk.c:89
 msgid "Open URL or execute command in an existing HexChat"
@@ -3535,10 +3493,7 @@ msgid ""
 "Failed to open font:\n"
 "\n"
 "%s"
-msgstr ""
-"開啟字型失敗:\n"
-"\n"
-"%s"
+msgstr "開啟字型失敗：\n\n%s"
 
 #: src/fe-gtk/fe-gtk.c:715
 msgid "Search buffer is empty.\n"
@@ -3556,18 +3511,18 @@ msgstr "網路傳送佇列: %d 位元組"
 
 #: src/fe-gtk/fkeys.c:141
 msgid ""
-"The Run Command action runs the data in Data 1 as if it had been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate separate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
+"The Run Command action runs the data in Data 1 as if it had been typed "
+"into the entry box where you pressed the key sequence. Thus it can contain "
+"text (which will be sent to the channel/person), commands or user commands. "
+"When run all \\n characters in Data 1 are used to deliminate separate "
+"commands so it is possible to run more than one command. If you want a \\ "
+"in the actual text run then enter \\\\"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:143
 msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
+"The Change Page command switches between pages in the notebook. Set Data 1"
+" to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position. Set Data 1 to auto to "
 "switch to the page with the most recent and important activity (queries "
 "first, then channels with hilight, channels with dialogue, channels with "
@@ -3578,51 +3533,44 @@ msgstr ""
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"「Insert in Buffer」命令在目前游標處把資料 1 中的內容插入到接受按鍵序列的輸入"
-"格中"
+msgstr "「Insert in Buffer」命令在目前游標處把資料 1 中的內容插入到接受按鍵序列的輸入格中"
 
 #: src/fe-gtk/fkeys.c:147
 msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
+"The Scroll Page command scrolls the text widget up or down one page or one"
+" line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:149
 msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
+"The Set Buffer command sets the entry where the key sequence was entered "
+"to the contents of Data 1"
 msgstr "「Set Buffer」命令把接受按鍵序列後的輸入格設定成資料 1 中的內容"
 
 #: src/fe-gtk/fkeys.c:151
 msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"「Last Command」命令把輸入格設為前一個命令 - 和在終端中按向上箭頭效果相同"
+"The Last Command command sets the entry to contain the last command "
+"entered - the same as pressing up in a shell"
+msgstr "「Last Command」命令把輸入格設為前一個命令 - 和在終端中按向上箭頭效果相同"
 
 #: src/fe-gtk/fkeys.c:153
 msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"「Next Command」命令把輸入格設為下一個命令 - 和在終端中按向下箭頭效果相同"
+"The Next Command command sets the entry to contain the next command "
+"entered - the same as pressing down in a shell"
+msgstr "「Next Command」命令把輸入格設為下一個命令 - 和在終端中按向下箭頭效果相同"
 
 #: src/fe-gtk/fkeys.c:155
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"該命令改變輸入格中文字，來完成未輸入完畢的使用者暱稱或命令。如果資料 1 被設"
-"定，那麼，雙擊 tab 鍵會選擇最後一個暱稱，而非下一個"
+"or command. If Data 1 is set then double-tabbing in a string will select the"
+" last nick, not the next"
+msgstr "該命令改變輸入格中文字，來完成未輸入完畢的使用者暱稱或命令。如果資料 1 被設定，那麼，雙擊 tab 鍵會選擇最後一個暱稱，而非下一個"
 
 #: src/fe-gtk/fkeys.c:157
 msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"該命令在暱稱清單中上下移動。如果資料 1 被設定成任意值，它會上移，否則下移"
+"This command scrolls up and down through the list of nicks. If Data 1 is set"
+" to anything it will scroll up, else it scrolls down"
+msgstr "該命令在暱稱清單中上下移動。如果資料 1 被設定成任意值，它會上移，否則下移"
 
 #: src/fe-gtk/fkeys.c:159
 msgid ""
@@ -3661,7 +3609,7 @@ msgstr ""
 #: src/fe-gtk/fkeys.c:812
 #, c-format
 msgid "Keyboard Shortcuts - %s"
-msgstr "鍵盤快捷鍵 - %s"
+msgstr ""
 
 #: src/fe-gtk/gtkutil.c:130
 msgid "Cannot write to that file."
@@ -3702,36 +3650,36 @@ msgstr ""
 
 #: src/fe-gtk/ignoregui.c:303
 msgid "Enter mask to ignore:"
-msgstr "輸入要忽略的遮罩:"
+msgstr "輸入要忽略的遮罩："
 
 #: src/fe-gtk/ignoregui.c:350
 #, c-format
 msgid "Ignore list - %s"
-msgstr "忽略清單 - %s"
+msgstr ""
 
 #: src/fe-gtk/ignoregui.c:360
 msgid "Ignore Stats:"
-msgstr "忽略統計:"
+msgstr "忽略統計："
 
 #: src/fe-gtk/ignoregui.c:368
 msgid "Channel:"
-msgstr "聊天室:"
+msgstr "聊天室："
 
 #: src/fe-gtk/ignoregui.c:369
 msgid "Private:"
-msgstr "私人:"
+msgstr "私人："
 
 #: src/fe-gtk/ignoregui.c:370
 msgid "Notice:"
-msgstr "通知:"
+msgstr "通知："
 
 #: src/fe-gtk/ignoregui.c:371
 msgid "CTCP:"
-msgstr "CTCP:"
+msgstr "CTCP："
 
 #: src/fe-gtk/ignoregui.c:372
 msgid "Invite:"
-msgstr "邀請:"
+msgstr "邀請："
 
 #: src/fe-gtk/ignoregui.c:383 src/fe-gtk/notifygui.c:425
 msgid "Add..."
@@ -3744,7 +3692,7 @@ msgstr "聊天室名稱太短，再試一次。"
 #: src/fe-gtk/joind.c:133
 #, c-format
 msgid "Connection Complete - %s"
-msgstr "連線完成 - %s"
+msgstr ""
 
 #: src/fe-gtk/joind.c:162
 #, c-format
@@ -3752,11 +3700,10 @@ msgid "Connection to %s complete."
 msgstr "完成到 %s 的連線。"
 
 #: src/fe-gtk/joind.c:171
-#, fuzzy
 msgid ""
 "In the server list window, no channel (chat room) has been entered to be "
 "automatically joined for this network."
-msgstr "在伺服器清單視窗之中，並沒有輸入會自動加入此網路的聊天室。"
+msgstr ""
 
 #: src/fe-gtk/joind.c:177
 msgid "What would you like to do next?"
@@ -3775,14 +3722,12 @@ msgid "If you know the name of the channel you want to join, enter it here."
 msgstr "如果您知道想要加入的聊天室名稱，在這裡輸入它。"
 
 #: src/fe-gtk/joind.c:210
-#, fuzzy
 msgid "O_pen the channel list."
-msgstr "開啟聊天室清單視窗。(_P)"
+msgstr ""
 
 #: src/fe-gtk/joind.c:216
-#, fuzzy
 msgid "Retrieving the channel list may take a minute or two."
-msgstr "取回聊天室清單也許會花費一到二分鐘。"
+msgstr ""
 
 #: src/fe-gtk/joind.c:223
 msgid "_Always show this dialog after connecting."
@@ -3795,7 +3740,7 @@ msgstr "交談與"
 #: src/fe-gtk/maingui.c:682
 #, c-format
 msgid "Topic for %s is: %s"
-msgstr "%s 的話題是:%s"
+msgstr "%s 的話題是：%s"
 
 #: src/fe-gtk/maingui.c:687
 msgid "No topic is set"
@@ -3943,7 +3888,7 @@ msgstr "使用者限額"
 
 #: src/fe-gtk/maingui.c:2579
 msgid "Enter new nickname:"
-msgstr "輸入新暱稱:"
+msgstr "輸入新暱稱："
 
 #: src/fe-gtk/maingui.c:2802
 msgid "No results found."
@@ -3997,11 +3942,11 @@ msgstr "未知"
 
 #: src/fe-gtk/menu.c:620 src/fe-gtk/menu.c:624
 msgid "Real Name:"
-msgstr "真實名稱:"
+msgstr "真實名稱："
 
 #: src/fe-gtk/menu.c:631
 msgid "User:"
-msgstr "使用者:"
+msgstr "使用者："
 
 #: src/fe-gtk/menu.c:638
 msgid "Account:"
@@ -4009,11 +3954,11 @@ msgstr ""
 
 #: src/fe-gtk/menu.c:648
 msgid "Country:"
-msgstr "國家:"
+msgstr "國家："
 
 #: src/fe-gtk/menu.c:654
 msgid "Server:"
-msgstr "伺服器:"
+msgstr "伺服器："
 
 #: src/fe-gtk/menu.c:665
 #, c-format
@@ -4022,11 +3967,11 @@ msgstr "%u 分鐘之前"
 
 #: src/fe-gtk/menu.c:667 src/fe-gtk/menu.c:670
 msgid "Last Msg:"
-msgstr "最後訊息:"
+msgstr "最後訊息："
 
 #: src/fe-gtk/menu.c:680
 msgid "Away Msg:"
-msgstr "離開訊息:"
+msgstr "離開訊息："
 
 #: src/fe-gtk/menu.c:737
 #, c-format
@@ -4074,13 +4019,12 @@ msgstr ""
 #: src/fe-gtk/menu.c:1138
 #, c-format
 msgid "User menu - %s"
-msgstr "使用者選單 - %s"
+msgstr ""
 
 #. sep
 #: src/fe-gtk/menu.c:1147
-#, fuzzy
 msgid "Edit This Menu"
-msgstr "編輯此選單..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1293
 msgid "Marker line disabled."
@@ -4107,9 +4051,8 @@ msgid "Marker line state unknown."
 msgstr ""
 
 #: src/fe-gtk/menu.c:1396
-#, fuzzy
 msgid "Retrieve channel list"
-msgstr "取回聊天室清單..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1462
 msgid " has been build without plugin support."
@@ -4198,17 +4141,17 @@ msgstr ""
 #: src/fe-gtk/menu.c:1529
 #, c-format
 msgid "User Defined Commands - %s"
-msgstr "使用者自訂命令 - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1538
-#, fuzzy, c-format
+#, c-format
 msgid "Userlist Popup menu -  %s"
-msgstr "使用者清單彈出選單 - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1546
 #, c-format
 msgid "Replace - %s"
-msgstr "替換 - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1547
 msgid "Replace with"
@@ -4217,60 +4160,54 @@ msgstr "以...替換"
 #: src/fe-gtk/menu.c:1554
 #, c-format
 msgid "URL Handlers - %s"
-msgstr "URL 處理程式 - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1574
 #, c-format
 msgid "Userlist buttons - %s"
-msgstr "使用者清單按鈕 - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1582
 #, c-format
 msgid "Dialog buttons - %s"
-msgstr "對話框按鈕 - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1591
 #, c-format
 msgid "CTCP Replies - %s"
-msgstr "CTCP 回應 - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1757
 msgid "He_xChat"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1758
-#, fuzzy
 msgid "Network Li_st"
-msgstr "網路列表(_S)..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1761
 msgid "_New"
 msgstr "新增(_N)"
 
 #: src/fe-gtk/menu.c:1762
-#, fuzzy
 msgid "Server Tab"
-msgstr "伺服器分頁..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1763
-#, fuzzy
 msgid "Channel Tab"
-msgstr "聊天室分頁..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1764
-#, fuzzy
 msgid "Server Window"
-msgstr "伺服器視窗..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1765
-#, fuzzy
 msgid "Channel Window"
-msgstr "聊天室視窗..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1769
-#, fuzzy
 msgid "_Load Plugin or Script"
-msgstr "載入外掛程式或命令稿(_L)..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1776 src/fe-gtk/plugin-tray.c:576
 msgid "_Quit"
@@ -4294,9 +4231,8 @@ msgid "_User List"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1783
-#, fuzzy
 msgid "U_ser List Buttons"
-msgstr "使用者清單按鈕..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1784
 msgid "M_ode Buttons"
@@ -4343,14 +4279,12 @@ msgid "_Reconnect"
 msgstr "重新連接(_R)"
 
 #: src/fe-gtk/menu.c:1804
-#, fuzzy
 msgid "_Join a Channel"
-msgstr "加入聊天室"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1805
-#, fuzzy
 msgid "Channel _List"
-msgstr "聊天室"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1808
 msgid "Marked _Away"
@@ -4370,49 +4304,40 @@ msgid "_Preferences"
 msgstr "偏好設定(_P)..."
 
 #: src/fe-gtk/menu.c:1815
-#, fuzzy
 msgid "Auto Replace"
-msgstr "自動替換..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1816
-#, fuzzy
 msgid "CTCP Replies"
-msgstr "CTCP 回應..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1817
-#, fuzzy
 msgid "Dialog Buttons"
-msgstr "對話框按鈕..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1818
-#, fuzzy
 msgid "Keyboard Shortcuts"
-msgstr "鍵盤快捷鍵..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1819
-#, fuzzy
 msgid "Text Events"
-msgstr "文字事件..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1820
-#, fuzzy
 msgid "URL Handlers"
-msgstr "URL 處理程式..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1821
-#, fuzzy
 msgid "User Commands"
-msgstr "使用者命令..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1822
-#, fuzzy
 msgid "User List Buttons"
-msgstr "使用者清單按鈕..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1823
-#, fuzzy
 msgid "User List Popup"
-msgstr "使用者清單彈出選單..."
+msgstr ""
 
 #. 52
 #: src/fe-gtk/menu.c:1825
@@ -4420,34 +4345,28 @@ msgid "_Window"
 msgstr "視窗(_W)"
 
 #: src/fe-gtk/menu.c:1826
-#, fuzzy
 msgid "_Ban List"
-msgstr "封禁清單"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1828
-#, fuzzy
 msgid "Direct Chat"
-msgstr "直接聊天..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1829
-#, fuzzy
 msgid "File _Transfers"
-msgstr "檔案傳輸"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1830
-#, fuzzy
 msgid "Friends List"
-msgstr "朋友名單..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1831
-#, fuzzy
 msgid "Ignore List"
-msgstr "忽略清單..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1832
-#, fuzzy
 msgid "_Plugins and Scripts"
-msgstr "外掛程式和命令稿 - %s"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1833
 msgid "_Raw Log"
@@ -4455,9 +4374,8 @@ msgstr ""
 
 #. 61
 #: src/fe-gtk/menu.c:1834
-#, fuzzy
 msgid "_URL Grabber"
-msgstr "URL 抓取程式..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1836
 msgid "Reset Marker Line"
@@ -4476,18 +4394,16 @@ msgid "C_lear Text"
 msgstr "清空文字(_L)"
 
 #: src/fe-gtk/menu.c:1840
-#, fuzzy
 msgid "Save Text"
-msgstr "儲存文字..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1842
 msgid "Search"
 msgstr "搜尋"
 
 #: src/fe-gtk/menu.c:1843
-#, fuzzy
 msgid "Search Text"
-msgstr "搜索文字..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1844
 msgid "Search Next"
@@ -4550,7 +4466,7 @@ msgstr "上線"
 
 #: src/fe-gtk/notifygui.c:343
 msgid "Enter nickname to add:"
-msgstr "輸入要新增的暱稱:"
+msgstr "輸入要新增的暱稱："
 
 #: src/fe-gtk/notifygui.c:372
 msgid "Notify on these networks:"
@@ -4561,9 +4477,9 @@ msgid "Comma separated list of networks is accepted."
 msgstr ""
 
 #: src/fe-gtk/notifygui.c:409
-#, fuzzy, c-format
+#, c-format
 msgid "Friends List - %s"
-msgstr "好友清單"
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:433
 msgid "Open Dialog"
@@ -4696,7 +4612,7 @@ msgstr "選擇要載入的外掛程式或命令稿"
 #: src/fe-gtk/plugingui.c:241
 #, c-format
 msgid "Plugins and Scripts - %s"
-msgstr "外掛程式和命令稿 - %s"
+msgstr ""
 
 #: src/fe-gtk/plugingui.c:256
 msgid "_Load..."
@@ -4754,7 +4670,7 @@ msgstr ""
 #: src/fe-gtk/servlistgui.c:1710
 #, c-format
 msgid "Edit %s - %s"
-msgstr "編輯 %s - %s"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1731
 msgid "Servers"
@@ -4814,19 +4730,19 @@ msgstr "使用廣域使用者資訊"
 
 #: src/fe-gtk/servlistgui.c:1880 src/fe-gtk/servlistgui.c:1999
 msgid "_Nick name:"
-msgstr "暱稱(_N):"
+msgstr "暱稱(_N)："
 
 #: src/fe-gtk/servlistgui.c:1881 src/fe-gtk/servlistgui.c:2006
 msgid "Second choice:"
-msgstr "第二選擇:"
+msgstr "第二選擇："
 
 #: src/fe-gtk/servlistgui.c:1882
 msgid "Rea_l name:"
-msgstr "真實名稱(_L):"
+msgstr "真實名稱(_L)："
 
 #: src/fe-gtk/servlistgui.c:1883 src/fe-gtk/servlistgui.c:2020
 msgid "_User name:"
-msgstr "使用者名(_U):"
+msgstr "使用者名(_U)："
 
 #: src/fe-gtk/servlistgui.c:1885
 msgid "Login method:"
@@ -4834,7 +4750,7 @@ msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1891 src/fe-gtk/setup.c:655
 msgid "Password:"
-msgstr "密碼:"
+msgstr "密碼："
 
 #: src/fe-gtk/servlistgui.c:1891
 msgid "Password used for login. If in doubt, leave blank."
@@ -4842,12 +4758,12 @@ msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1896
 msgid "Character set:"
-msgstr "字元設定:"
+msgstr "字元設定："
 
 #: src/fe-gtk/servlistgui.c:1977
 #, c-format
 msgid "Network List - %s"
-msgstr "網路清單 - %s"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1989
 msgid "User Information"
@@ -4855,7 +4771,7 @@ msgstr "使用者資訊"
 
 #: src/fe-gtk/servlistgui.c:2013
 msgid "Third choice:"
-msgstr "第三選擇:"
+msgstr "第三選擇："
 
 #: src/fe-gtk/servlistgui.c:2073
 msgid "Networks"
@@ -5117,7 +5033,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:154
 msgid "Font:"
-msgstr "字型:"
+msgstr "字型："
 
 #: src/fe-gtk/setup.c:157
 msgid "Text Box"
@@ -5149,7 +5065,7 @@ msgstr "在最後讀取的文字後添加一條紅線。"
 
 #: src/fe-gtk/setup.c:161
 msgid "Background image:"
-msgstr "背景圖像:"
+msgstr "背景圖像："
 
 #: src/fe-gtk/setup.c:163
 msgid "Transparency Settings"
@@ -5160,19 +5076,16 @@ msgid "Window opacity:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:166 src/fe-gtk/setup.c:593
-#, fuzzy
 msgid "Timestamps"
-msgstr "時間戳記"
+msgstr ""
 
 #: src/fe-gtk/setup.c:167
-#, fuzzy
 msgid "Enable timestamps"
-msgstr "打開時間戳記"
+msgstr ""
 
 #: src/fe-gtk/setup.c:168
-#, fuzzy
 msgid "Timestamp format:"
-msgstr "時間戳記格式:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:170 src/fe-gtk/setup.c:597
 msgid "See the strftime MSDN article for details."
@@ -5207,9 +5120,8 @@ msgid "Input Box"
 msgstr ""
 
 #: src/fe-gtk/setup.c:192
-#, fuzzy
 msgid "Use the text box font and colors"
-msgstr "使用文字框字型及顏色"
+msgstr ""
 
 #: src/fe-gtk/setup.c:193
 msgid "Render colors and attributes"
@@ -5247,7 +5159,7 @@ msgstr "暱稱自動補齊"
 
 #: src/fe-gtk/setup.c:205
 msgid "Nick completion suffix:"
-msgstr "暱稱自動補齊後綴:"
+msgstr "暱稱自動補齊後綴："
 
 #: src/fe-gtk/setup.c:206
 msgid "Nick completion sorted:"
@@ -5270,14 +5182,12 @@ msgid "Graphical"
 msgstr ""
 
 #: src/fe-gtk/setup.c:223
-#, fuzzy
 msgid "A-Z, ops first"
-msgstr "A-Z, Op 最先"
+msgstr ""
 
 #: src/fe-gtk/setup.c:225
-#, fuzzy
 msgid "Z-A, ops last"
-msgstr "Z-A, Op 最後"
+msgstr ""
 
 #: src/fe-gtk/setup.c:226
 msgid "Z-A"
@@ -5349,7 +5259,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:260
 msgid "User list sorted by:"
-msgstr "使用者清單排列方式:"
+msgstr "使用者清單排列方式："
 
 #: src/fe-gtk/setup.c:261
 msgid "Show user list at:"
@@ -5360,13 +5270,12 @@ msgid "Away Tracking"
 msgstr ""
 
 #: src/fe-gtk/setup.c:264
-#, fuzzy
 msgid "Track the away status of users and mark them in a different color"
-msgstr "追蹤使用者的離開狀態並且以不同顏色標記它們"
+msgstr ""
 
 #: src/fe-gtk/setup.c:265
 msgid "On channels smaller than:"
-msgstr "在小於此值的聊天室裡:"
+msgstr "在小於此值的聊天室裡："
 
 #: src/fe-gtk/setup.c:267
 msgid "Action Upon Double Click"
@@ -5457,7 +5366,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:320
 msgid "Focus new tabs:"
-msgstr "聚焦到新分頁:"
+msgstr "聚焦到新分頁："
 
 #: src/fe-gtk/setup.c:321
 msgid "Placement of notices:"
@@ -5469,7 +5378,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:323
 msgid "Shorten tab labels to:"
-msgstr "縮短分頁標籤至:"
+msgstr "縮短分頁標籤至："
 
 #: src/fe-gtk/setup.c:323
 msgid "letters."
@@ -5481,15 +5390,15 @@ msgstr "分頁或視窗"
 
 #: src/fe-gtk/setup.c:326
 msgid "Open channels in:"
-msgstr "打開聊天室於:"
+msgstr "打開聊天室於："
 
 #: src/fe-gtk/setup.c:327
 msgid "Open dialogs in:"
-msgstr "打開對話框於:"
+msgstr "打開對話框於："
 
 #: src/fe-gtk/setup.c:328
 msgid "Open utilities in:"
-msgstr "打開工具於:"
+msgstr "打開工具於："
 
 #: src/fe-gtk/setup.c:328
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
@@ -5521,15 +5430,15 @@ msgstr "檔案和目錄"
 
 #: src/fe-gtk/setup.c:353
 msgid "Auto accept file offers:"
-msgstr "自動接受所提供的檔案:"
+msgstr "自動接受所提供的檔案："
 
 #: src/fe-gtk/setup.c:354
 msgid "Download files to:"
-msgstr "把檔案下載到:"
+msgstr "把檔案下載到："
 
 #: src/fe-gtk/setup.c:355
 msgid "Move completed files to:"
-msgstr "移動完成下載的檔案到:"
+msgstr "移動完成下載的檔案到："
 
 #: src/fe-gtk/setup.c:356
 msgid "Save nick name in filenames"
@@ -5552,9 +5461,8 @@ msgid "Chat window"
 msgstr "聊天視窗"
 
 #: src/fe-gtk/setup.c:363
-#, fuzzy
 msgid "Maximum File Transfer Speeds (Bytes per Second)"
-msgstr "最大檔案傳輸速度(位元組每秒)"
+msgstr ""
 
 #: src/fe-gtk/setup.c:364
 msgid "One upload:"
@@ -5566,11 +5474,11 @@ msgstr "一個傳送行程的最大速度"
 
 #: src/fe-gtk/setup.c:366
 msgid "One download:"
-msgstr "一次下載:"
+msgstr "一次下載："
 
 #: src/fe-gtk/setup.c:368
 msgid "All uploads combined:"
-msgstr "所有上傳:"
+msgstr "所有上傳："
 
 #: src/fe-gtk/setup.c:369 src/fe-gtk/setup.c:371
 msgid "Maximum speed for all files"
@@ -5701,15 +5609,15 @@ msgstr "預設訊息"
 
 #: src/fe-gtk/setup.c:528
 msgid "Quit:"
-msgstr "離開:"
+msgstr "離開："
 
 #: src/fe-gtk/setup.c:529
 msgid "Leave channel:"
-msgstr "離開聊天室:"
+msgstr "離開聊天室："
 
 #: src/fe-gtk/setup.c:530
 msgid "Away:"
-msgstr "離開:"
+msgstr "離開："
 
 #: src/fe-gtk/setup.c:532
 msgid "Away"
@@ -5795,8 +5703,8 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:562
 msgid ""
-"Automatically include timestamps in copied lines of text. Otherwise, include "
-"timestamps if the Shift key is held down while selecting."
+"Automatically include timestamps in copied lines of text. Otherwise, include"
+" timestamps if the Shift key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:564
@@ -5805,8 +5713,8 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:565
 msgid ""
-"Automatically include color information in copied lines of text.  Otherwise, "
-"include color information if the Ctrl key is held down while selecting."
+"Automatically include color information in copied lines of text.  Otherwise,"
+" include color information if the Ctrl key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:570
@@ -5845,7 +5753,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:577
 msgid "Auto reconnect delay:"
-msgstr "自動重連間隔:"
+msgstr "自動重連間隔："
 
 #: src/fe-gtk/setup.c:578
 msgid "Auto join delay:"
@@ -5857,7 +5765,8 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:579
 msgid ""
-"Attempt to use this banmask when banning or quieting. (requires irc_who_join)"
+"Attempt to use this banmask when banning or quieting. (requires "
+"irc_who_join)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:586 src/fe-gtk/setup.c:1883
@@ -5870,7 +5779,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:588
 msgid "Scrollback lines:"
-msgstr "回滾列數:"
+msgstr "回滾列數："
 
 #: src/fe-gtk/setup.c:589
 msgid "Enable logging of conversations to disk"
@@ -5891,7 +5800,7 @@ msgstr "在日誌中加入時間戳記"
 
 #: src/fe-gtk/setup.c:595
 msgid "Log timestamp format:"
-msgstr "日誌時間戳記格式:"
+msgstr "日誌時間戳記格式："
 
 #: src/fe-gtk/setup.c:602
 msgid "URLs"
@@ -5934,19 +5843,16 @@ msgid "Auto"
 msgstr "自動"
 
 #: src/fe-gtk/setup.c:625
-#, fuzzy
 msgid "All connections"
-msgstr "所有的連接"
+msgstr ""
 
 #: src/fe-gtk/setup.c:626
-#, fuzzy
 msgid "IRC server only"
-msgstr "僅列出 IRC 伺服器"
+msgstr ""
 
 #: src/fe-gtk/setup.c:627
-#, fuzzy
 msgid "DCC only"
-msgstr "僅使用 DCC Get"
+msgstr ""
 
 #: src/fe-gtk/setup.c:633
 msgid "Your Address"
@@ -5954,7 +5860,7 @@ msgstr "您的位址"
 
 #: src/fe-gtk/setup.c:634
 msgid "Bind to:"
-msgstr "綁定於:"
+msgstr "綁定於："
 
 #: src/fe-gtk/setup.c:635
 msgid "Only useful for computers with multiple addresses."
@@ -5970,29 +5876,25 @@ msgstr "從 IRC 伺服器獲取我的位址"
 
 #: src/fe-gtk/setup.c:639
 msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"向 IRC 伺服器查詢您的真實位址。如果您具有 192.168.*.* 這樣的位址時，請使用此"
-"命令。"
+"Asks the IRC server for your real address. Use this if you have a "
+"192.168.*.* address!"
+msgstr "向 IRC 伺服器查詢您的真實位址。如果您具有 192.168.*.* 這樣的位址時，請使用此命令。"
 
 #: src/fe-gtk/setup.c:640
 msgid "DCC IP address:"
-msgstr "DCC IP 位址:"
+msgstr "DCC IP 位址："
 
 #: src/fe-gtk/setup.c:641
 msgid "Claim you are at this address when offering files."
 msgstr "發送檔案時聲稱您是這個位址。"
 
 #: src/fe-gtk/setup.c:642
-#, fuzzy
 msgid "First DCC listen port:"
-msgstr "第一個 DCC 檔案發送輸出入埠:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:643
-#, fuzzy
 msgid "Last DCC listen port:"
-msgstr "最後一個 DCC 檔案傳送輸出入埠:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:644
 msgid "!Leave ports at zero for full range."
@@ -6004,32 +5906,31 @@ msgstr "代理伺服器"
 
 #: src/fe-gtk/setup.c:647
 msgid "Hostname:"
-msgstr "主機名:"
+msgstr "主機名："
 
 #: src/fe-gtk/setup.c:648 src/fe-gtk/setup.c:664
 msgid "Port:"
-msgstr "輸出入埠:"
+msgstr "輸出入埠："
 
 #: src/fe-gtk/setup.c:649
 msgid "Type:"
-msgstr "類型:"
+msgstr "類型："
 
 #: src/fe-gtk/setup.c:650
 msgid "Use proxy for:"
-msgstr "使用代理伺服器於:"
+msgstr "使用代理伺服器於："
 
 #: src/fe-gtk/setup.c:652
 msgid "Proxy Authentication"
 msgstr "代理伺服器驗證"
 
 #: src/fe-gtk/setup.c:653
-#, fuzzy
 msgid "Use authentication (HTTP or Socks5 only)"
-msgstr "使用驗證(HTTP 或僅有 Socks5)"
+msgstr ""
 
 #: src/fe-gtk/setup.c:654
 msgid "Username:"
-msgstr "使用者名:"
+msgstr "使用者名："
 
 #: src/fe-gtk/setup.c:662
 msgid "Identd Server"
@@ -6079,19 +5980,19 @@ msgstr "文字顏色"
 
 #: src/fe-gtk/setup.c:1536
 msgid "mIRC colors:"
-msgstr "mIRC 顏色:"
+msgstr "mIRC 顏色："
 
 #: src/fe-gtk/setup.c:1544
 msgid "Local colors:"
-msgstr "本地的顏色:"
+msgstr "本地的顏色："
 
 #: src/fe-gtk/setup.c:1552 src/fe-gtk/setup.c:1557
 msgid "Foreground:"
-msgstr "前景:"
+msgstr "前景："
 
 #: src/fe-gtk/setup.c:1553 src/fe-gtk/setup.c:1558
 msgid "Background:"
-msgstr "背景:"
+msgstr "背景："
 
 #: src/fe-gtk/setup.c:1555
 msgid "Selected Text"
@@ -6103,23 +6004,23 @@ msgstr "介面顏色"
 
 #: src/fe-gtk/setup.c:1562
 msgid "New data:"
-msgstr "新資料:"
+msgstr "新資料："
 
 #: src/fe-gtk/setup.c:1563
 msgid "Marker line:"
-msgstr "標記線:"
+msgstr "標記線："
 
 #: src/fe-gtk/setup.c:1564
 msgid "New message:"
-msgstr "新訊息:"
+msgstr "新訊息："
 
 #: src/fe-gtk/setup.c:1565
 msgid "Away user:"
-msgstr "離開的使用者:"
+msgstr "離開的使用者："
 
 #: src/fe-gtk/setup.c:1566
 msgid "Highlight:"
-msgstr "高亮度顯示:"
+msgstr "高亮度顯示："
 
 #: src/fe-gtk/setup.c:1567
 msgid "Spell checker:"
@@ -6143,7 +6044,7 @@ msgstr "選擇聲音檔案"
 
 #: src/fe-gtk/setup.c:1800
 msgid "Sound file:"
-msgstr "音效檔案:"
+msgstr "音效檔案："
 
 #: src/fe-gtk/setup.c:1815
 msgid "_Browse..."
@@ -6212,8 +6113,7 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:2254
-msgid ""
-"The Real name option cannot be left blank. Falling back to \"realname\"."
+msgid "The Real name option cannot be left blank. Falling back to \"realname\"."
 msgstr ""
 
 #: src/fe-gtk/setup.c:2261
@@ -6226,16 +6126,12 @@ msgid ""
 "Auto accepting DCC to your home directory\n"
 "can be dangerous and is exploitable. Eg:\n"
 "Someone could send you a .bash_profile"
-msgstr ""
-"*警告*\n"
-"自動接收 DCC 到您的主目錄中是危險之舉，\n"
-"且有被盜用的可能性。例如:\n"
-"某人可能會給您發送一份 .bash_profile 檔案"
+msgstr "*警告*\n自動接收 DCC 到您的主目錄中是危險之舉，\n且有被盜用的可能性。例如：\n某人可能會給您發送一份 .bash_profile 檔案"
 
 #: src/fe-gtk/setup.c:2293
 #, c-format
 msgid "Preferences - %s"
-msgstr "偏好設定 - %s"
+msgstr ""
 
 #: src/fe-gtk/sexy-spell-entry.c:554
 msgid "<i>(no suggestions)</i>"
@@ -6301,7 +6197,7 @@ msgstr ""
 #: src/fe-gtk/urlgrab.c:198
 #, c-format
 msgid "URL Grabber - %s"
-msgstr "URL 擷取程式 - %s"
+msgstr ""
 
 #: src/fe-gtk/urlgrab.c:214
 msgid "Clear list"
@@ -6344,8 +6240,8 @@ msgstr ""
 #: plugins/sysinfo/sysinfo.c:168
 msgid ""
 "Sysinfo: Valid settings are: announce and hide_* for each piece of "
-"information. e.g. hide_os. Without a value it will show current (or default) "
-"setting.\n"
+"information. e.g. hide_os. Without a value it will show current (or default)"
+" setting.\n"
 msgstr ""
 
 #: plugins/sysinfo/sysinfo.c:190
@@ -6361,16 +6257,3 @@ msgstr ""
 #, c-format
 msgid "%s plugin unloaded\n"
 msgstr ""
-
-#~ msgid "Sendfile"
-#~ msgstr "發送檔案"
-
-#~ msgid ""
-#~ "Error parsing event %s.\n"
-#~ "Loading default."
-#~ msgstr ""
-#~ "解析事件 %s 時出錯。\n"
-#~ "載入預設值。"
-
-#~ msgid "Character Chart..."
-#~ msgstr "字元集..."
