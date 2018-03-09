@@ -457,7 +457,6 @@ plugin_auto_load (session *sess)
 	for_files (lib_dir, "hcexec.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcfishlim.dll", plugin_auto_load_cb);
 	for_files(lib_dir, "hclua.dll", plugin_auto_load_cb);
-	for_files (lib_dir, "hcmpcinfo.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcperl.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcpython2.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcpython3.dll", plugin_auto_load_cb);
