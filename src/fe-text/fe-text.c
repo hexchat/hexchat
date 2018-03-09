@@ -508,6 +508,10 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_autoload)
 	{
+#ifndef USE_PLUGIN
+		printf (PACKAGE_NAME" was build without plugin support\n");
+		return 1;
+#else
 #ifdef WIN32
 		/* see the chdir() below */
 		char *sl, *exe = g_strdup (argv[0]);
@@ -520,6 +524,7 @@ fe_args (int argc, char *argv[])
 		g_free (exe);
 #else
 		printf ("%s\n", HEXCHATLIBDIR);
+#endif
 #endif
 		return 0;
 	}
