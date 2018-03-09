@@ -519,7 +519,9 @@ fe_args (int argc, char *argv[])
 		}
 		g_free (exe);
 #else
+#ifdef HEXCHATLIBDIR
 		printf ("%s\n", HEXCHATLIBDIR);
+#endif
 #endif
 		return 0;
 	}
