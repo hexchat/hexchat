@@ -2342,7 +2342,10 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				return FALSE;
 
 			mask = word[2];
-			if (strchr (mask, '?') == NULL &&
+			/* If not a full mask or using wildcards, assume nick */
+			if (strchr (mask, '!') == NULL &&
+			    strchr (mask, '@') == NULL &&
+			    strchr (mask, '?') == NULL &&
 			    strchr (mask, '*') == NULL)
 			{
 				mask = tbuf;
