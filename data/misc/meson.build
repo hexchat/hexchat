@@ -13,7 +13,7 @@ if get_option('with-gtk')
   appstream_util = find_program('appstream-util', required: false)
   if appstream_util.found()
     test('Validate io.github.Hexchat.appdata.xml', appstream_util,
-      args: ['validate', hexchat_appdata]
+      args: ['validate-relax', hexchat_appdata]
     )
   endif
 

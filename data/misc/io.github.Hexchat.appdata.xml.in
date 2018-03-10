@@ -27,6 +27,33 @@
     <id>hexchat.desktop</id>
   </provides>
   <releases>
+    <release date="2018-03-10" version="2.14.0">
+      <description>
+        <p>This is largely a bug fix release though it has some large behind the scenes changes:</p>
+        <ul>
+          <li>Rename data files to use *io.github.Hexchat* name</li>
+          <li>Add option (irc_reconnect_rejoin) to disable auto-rejoin on reconnect</li>
+          <li>Add ability to set custom tray icon separate of app icon</li>
+          <li>Fix Enchant 2.0+ support</li>
+          <li>Fix input box theming with Adwaita-dark</li>
+          <li>Fix custom sounds not respecting omit if away option</li>
+          <li>Fix detecting if a tray doesn't exist on x11</li>
+          <li>Fix cutting off ctcp text after ending \01</li>
+          <li>Fix /ignore not accepting full hosts</li>
+          <li>Fix characters getting cut off when their width changes</li>
+          <li>Fix various possible crashes</li>
+          <li>Change preference window to be scroll-able</li>
+          <li>Remove ctrl+w binding by default</li>
+          <li>doat: Fix channels with / in them</li>
+          <li>fishlim: Fix key exchange</li>
+          <li>fishlim: Fix building against LibreSSL</li>
+          <li>sysinfo: Fix pci.ids file not being found on some distros</li>
+          <li>sysinfo: Make libpci optional</li>
+          <li>lua: Avoid loading the same script multiple times</li>
+          <li>Update translations</li>
+        </ul>
+      </description>
+    </release>
     <release date="2016-12-10" version="2.12.4">
       <description>
         <p>This is another bug fix release:</p>
