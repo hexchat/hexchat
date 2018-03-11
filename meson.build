@@ -131,7 +131,6 @@ global_ldflags = []
 test_ldflags = [
   '-Wl,-z,relro',
   '-Wl,-z,now',
-  '-Wl,-pie',
   # mingw
   '-Wl,--dynamicbase',
   '-Wl,--nxcompat',
