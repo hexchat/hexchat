@@ -2010,7 +2010,7 @@ hexchat_pluginpref_list (hexchat_plugin *pl, char* dest)
 	else													/* existing config file, get list of settings */
 	{
 		strcpy (dest, "");									/* clean up garbage */
-		while (fscanf (fpIn, " %[^\n]", bufp) != EOF)	/* read whole lines including whitespaces */
+		while (fscanf (fpIn, " %511[^\n]", bufp) != EOF)	/* read whole lines including whitespaces */
 		{
 			token = strtok (buffer, "=");
 			g_strlcat (dest, g_strchomp (token), 4096); /* Dest must not be smaller than this */
