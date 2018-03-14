@@ -157,10 +157,7 @@ static char * gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** r
 #define EMPH_BOLD 2
 #define EMPH_HIDDEN 4
 static PangoAttrList *attr_lists[4];
-#ifdef G_OS_WIN32
-/* the fontwidths variable is used on Windows only. */
 static int fontwidths[4][128];
-#endif
 
 static PangoAttribute *
 xtext_pango_attr (PangoAttribute *attr)
@@ -173,10 +170,7 @@ xtext_pango_attr (PangoAttribute *attr)
 static void
 xtext_pango_init (GtkXText *xtext)
 {
-	int i;
-#ifdef G_OS_WIN32
-	int j;
-#endif
+	int i, j;
 	char buf[2] = "\000";
 
 	if (attr_lists[0])
@@ -208,7 +202,6 @@ xtext_pango_init (GtkXText *xtext)
 			break;
 		}
 
-#ifdef G_OS_WIN32
 		/* Now initialize fontwidths[i] */
 		pango_layout_set_attributes (xtext->layout, attr_lists[i]);
 		for (j = 0; j < 128; j++)
@@ -217,14 +210,8 @@ xtext_pango_init (GtkXText *xtext)
 			pango_layout_set_text (xtext->layout, buf, 1);
 			pango_layout_get_pixel_size (xtext->layout, &fontwidths[i][j], NULL);
 		}
-#endif
 	}
-
-	/* re-compute space_width without using fontwidths */
-	pango_layout_set_attributes (xtext->layout, attr_lists[0]);
-	buf[0] = ' ';
-	pango_layout_set_text (xtext->layout, buf, 1);
-	pango_layout_get_pixel_size (xtext->layout, &(xtext->space_width), NULL);
+	xtext->space_width = fontwidths[0][' '];
 }
 
 static void
@@ -302,10 +289,8 @@ static int
 backend_get_text_width_emph (GtkXText *xtext, guchar *str, int len, int emphasis)
 {
 	int width;
-#ifdef G_OS_WIN32
 	int deltaw;
 	int mbl;
-#endif
 
 	if (*str == 0)
 		return 0;
@@ -316,8 +301,6 @@ backend_get_text_width_emph (GtkXText *xtext, guchar *str, int len, int emphasis
 
 	width = 0;
 	pango_layout_set_attributes (xtext->layout, attr_lists[emphasis]);
-
-#ifdef G_OS_WIN32
 	while (len > 0)
 	{
 		mbl = charlen(str);
@@ -332,12 +315,6 @@ backend_get_text_width_emph (GtkXText *xtext, guchar *str, int len, int emphasis
 		str += mbl;
 		len -= mbl;
 	}
-#else
-	/* This code is slow on Windows,
-	   but it will get the correct width from pango on Linux. */
-	pango_layout_set_text (xtext->layout, str, len);
-	pango_layout_get_pixel_size (xtext->layout, &width, NULL);
-#endif
 
 	return width;
 }
