@@ -57,3 +57,6 @@ option('with-upd', type: 'boolean',
 option('with-winamp', type: 'boolean',
   description: 'Winamp plugin, Windows only'
 )
+option('install-plugin-metainfo', type: 'boolean', value: false,
+  description: 'Installs metainfo files for enabled plugins, useful when distros create split packages'
+)
