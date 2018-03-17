@@ -1585,8 +1585,8 @@ mg_create_tabmenu (session *sess, GdkEventButton *event, chan *ch)
 static gboolean
 mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventButton *event)
 {
-	/* middle-click or shift-click to close a tab */
-	if (((prefs.hex_gui_tab_middleclose && event->button == 2) || (event->button == 1 && event->state & STATE_SHIFT))
+	/* middle-click to close a tab */
+	if (((prefs.hex_gui_tab_middleclose && event->button == 2))
 		&& event->type == GDK_BUTTON_PRESS)
 	{
 		mg_xbutton_cb (cv, ch, tag, ud);
