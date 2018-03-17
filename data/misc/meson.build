@@ -74,46 +74,46 @@ if get_option('with-plugin')
   # FIXME: These should all get translated somewhere
   if get_option('with-checksum')
     plugin_metainfo += [
-      ['Checksum', 'Calculates a checksum for all sent and recieved DCC files']
+      ['Checksum', 'Calculates a checksum for all sent and recieved DCC files', 'MIT']
     ]
   endif
 
   if get_option('with-fishlim')
     plugin_metainfo += [
-      ['Fishlim', 'Allows setting a key for encrypted conversations']
+      ['Fishlim', 'Allows setting a key for encrypted conversations', 'MIT AND GPL-2.0+']
     ]
   endif
 
   if get_option('with-lua') != 'false'
     plugin_metainfo += [
-      ['Lua', 'Provides a scripting interface in Lua']
+      ['Lua', 'Provides a scripting interface in Lua', 'MIT']
     ]
   endif
 
   if get_option('with-perl')
     plugin_metainfo += [
-      ['Perl', 'Provides a scripting interface in Perl']
+      ['Perl', 'Provides a scripting interface in Perl', 'GPL-2.0+']
     ]
   endif
 
   if get_option('with-python') != 'false'
     plugin_metainfo += [
-      ['Python', 'Provides a scripting interface in Python']
+      ['Python', 'Provides a scripting interface in Python', 'GPL-2.0+']
     ]
   endif
 
   if get_option('with-sysinfo')
     plugin_metainfo += [
-      ['Sysinfo', 'Adds command to display system information']
+      ['Sysinfo', 'Adds command to display system information', 'GPL-2.0+']
     ]
   endif
 
   foreach metainfo : plugin_metainfo
     name = metainfo[0]
-    desc = metainfo[1]
     conf = configuration_data()
     conf.set('NAME', name)
-    conf.set('SUMMARY', desc)
+    conf.set('SUMMARY', metainfo[1])
+    conf.set('LICENSE', metainfo[2])
 
     configure_file(
       input: 'io.github.Hexchat.Plugin.metainfo.xml.in',
