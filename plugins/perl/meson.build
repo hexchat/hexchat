@@ -13,11 +13,17 @@ hexchat_perl_module = custom_target('hexchat-perl-header',
   command: [generate_perl_header, '@OUTPUT@', '@INPUT@']
 )
 
-irc_perl_module = custom_target('irc-perl-header',
-  input: 'lib/IRC.pm',
-  output: 'irc.pm.h',
-  command: [generate_perl_header, '@OUTPUT@', '@INPUT@']
-)
+perl_cflags = []
+irc_perl_module = []
+
+if get_option('with-perl-legacy-api')
+  irc_perl_module = custom_target('irc-perl-header',
+    input: 'lib/IRC.pm',
+    output: 'irc.pm.h',
+    command: [generate_perl_header, '@OUTPUT@', '@INPUT@']
+  )
+  perl_cflags += '-DOLD_PERL'
+endif
 
 perl = find_program('perl')
 
@@ -25,7 +31,6 @@ ret = run_command([perl, '-MExtUtils::Embed', '-e', 'ccopts'])
 if ret.returncode() != 0
   error('perl: Failed to get cflags')
 endif
-perl_cflags = []
 foreach flag : ret.stdout().strip().split(' ')
   if flag.startswith('-I') or flag.startswith('-D')
     perl_cflags += flag
