@@ -359,6 +359,7 @@ tray_toggle_visibility (gboolean force_hide)
 		if (fullscreen)
 			gtk_window_fullscreen (win);
 		gtk_widget_show (GTK_WIDGET (win));
+		gtk_window_deiconify (win);
 		gtk_window_present (win);
 	}
 
