@@ -42,8 +42,8 @@ option('with-fishlim', type: 'boolean',
 option('with-lua', type: 'string', value: 'luajit',
   description: 'Lua scripting plugin, value is pkg-config name to use or "false"'
 )
-option('with-perl', type: 'boolean',
-  description: 'Perl scripting plugin'
+option('with-perl', type: 'string', value: 'perl',
+  description: 'Perl scripting plugin, value is path to perl executable or "false"'
 )
 option('with-python', type: 'string', value: 'python3',
   description: 'Python scripting plugin. value is pkg-config name to use or "false"'

@@ -25,7 +25,7 @@ if get_option('with-perl-legacy-api')
   perl_cflags += '-DOLD_PERL'
 endif
 
-perl = find_program('perl')
+perl = find_program(get_option('with-perl'))
 
 ret = run_command([perl, '-MExtUtils::Embed', '-e', 'ccopts'])
 if ret.returncode() != 0
