@@ -90,7 +90,7 @@ if get_option('with-plugin')
     ]
   endif
 
-  if get_option('with-perl')
+  if get_option('with-perl') != 'false'
     plugin_metainfo += [
       ['Perl', 'Provides a scripting interface in Perl', 'GPL-2.0+']
     ]

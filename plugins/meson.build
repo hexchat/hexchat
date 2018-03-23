@@ -26,7 +26,7 @@ if get_option('with-lua') != 'false'
   subdir('lua')
 endif
 
-if get_option('with-perl')
+if get_option('with-perl') != 'false'
   subdir('perl')
 endif
 
