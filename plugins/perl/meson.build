@@ -76,11 +76,14 @@ int main(void) {
   error('found perl not suitable for plugin')
 endif
 
+perl_dep = declare_dependency(
+  compile_args: perl_cflags,
+  link_args: perl_ldflags
+)
+
 shared_module('perl',
   sources: ['perl.c', hexchat_perl_module, irc_perl_module],
-  dependencies: [libgio_dep, hexchat_plugin_dep],
-  c_args: perl_cflags,
-  link_args: perl_ldflags,
+  dependencies: [libgio_dep, hexchat_plugin_dep, perl_dep],
   install: true,
   install_dir: plugindir,
   install_rpath: perl_rpath,
