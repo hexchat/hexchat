@@ -162,7 +162,7 @@ plugingui_load (void)
 	char *sub_dir = g_build_filename (get_xdir(), "addons", NULL);
 
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
-							sub_dir, "*."G_MODULE_SUFFIX";*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
+							sub_dir, "*."PLUGIN_SUFFIX";*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 
 	g_free (sub_dir);
 }
@@ -185,7 +185,7 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	                                    FILEPATH_COLUMN, &file, -1))
 		return;
 
-	if (g_str_has_suffix (file, "."G_MODULE_SUFFIX))
+	if (g_str_has_suffix (file, "."PLUGIN_SUFFIX))
 	{
 		if (plugin_kill (modname, FALSE) == 2)
 			fe_message (_("That plugin is refusing to unload.\n"), FE_MSG_ERROR);
