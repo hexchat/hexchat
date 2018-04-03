@@ -8,7 +8,7 @@ before_install:
 install:
     - docker run -d --privileged --cidfile=/tmp/cid --volume=${PWD}:/opt/hexchat hexchat/ubuntu-ci /bin/systemd --system
 script:
-    - docker exec `cat /tmp/cid` /bin/sh -c 'meson /opt/hexchat /opt/hexchat-build -Dwith-text=true -Dwith-theme-manager=true && ninja -C /opt/hexchat-build install'
+    - docker exec `cat /tmp/cid` /bin/sh -c 'meson /opt/hexchat /opt/hexchat-build -Dwith-text=true -Dwith-theme-manager=true && ninja -C /opt/hexchat-build install && ninja -C /opt/hexchat-build test'
 after_script:
     - docker kill `cat /tmp/cid`
 notifications:
