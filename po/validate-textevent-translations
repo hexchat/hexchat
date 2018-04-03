@@ -33,7 +33,7 @@ def validate_language(path):
 
     print('Validating', path)
 
-    with open(path, 'r') as f:
+    with open(path, 'r', encoding='utf-8') as f:
         in_event = False
         event_input = ''
 
