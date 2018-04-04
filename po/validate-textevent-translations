@@ -7,21 +7,29 @@ import sys
 ret = 0
 
 
+def log(prefix, suffix, fallback):
+    try:
+        print(prefix, suffix)  # Non-utf8 output...
+    except UnicodeEncodeError:
+        print(prefix, fallback)
+
+
 def validate_translation(input, translation):
     if not translation:
         return True
 
     if re.findall(r'(?:(?<!%)%[^%OCRUHBIH]|\$[^at1234])', translation):
-        print('Translation includes invalid formatting:', translation)
+        log('Translation includes invalid formatting:', translation, input)
+        return False
 
     in_vars = re.findall(r'(\$(?:\d|t))', input)
     if not all(var in translation for var in in_vars):
-        print('Translation does not contain all variables:', translation)
+        log('Translation does not contain all variables:', translation, input)
         return False
 
     in_ascii = re.findall(r'\$a(\d{3})', translation)
     if any(int(i) > 256 for i in in_ascii):
-        print('Translation contains invalid ascii value:')
+        log('Translation contains invalid ascii value:', translation, input)
         return False
 
     # We could try to validate colors but that is pretty flexible
