@@ -104,6 +104,17 @@ palette_alloc (GtkWidget * widget)
 }
 
 void
+palette_realloc (GtkWidget * widget)
+{
+	int i;
+	GdkColormap *cmap;
+
+	cmap = gtk_widget_get_colormap (widget);
+	for (i = MAX_COL; i >= 0; i--)
+		gdk_colormap_alloc_color (cmap, &colors[i], FALSE, TRUE);
+}
+
+void
 palette_load (void)
 {
 	int i, j, fh;

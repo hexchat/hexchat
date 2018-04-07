@@ -35,6 +35,7 @@ extern GdkColor colors[];
 #define MAX_COL 41
 
 void palette_alloc (GtkWidget * widget);
+void palette_realloc (GtkWidget * widget);
 void palette_load (void);
 void palette_save (void);
 

@@ -2153,6 +2153,7 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	case 0x058b836e: fe_ctrl_gui (sess, 8, 0); break; /* APPLY */
 	case 0xac1eee45: fe_ctrl_gui (sess, 7, 2); break; /* ATTACH */
 	case 0x05a72f63: fe_ctrl_gui (sess, 4, atoi (word[3])); break; /* COLOR */
+	case 0x397de849: fe_ctrl_gui (sess, 9, 0); break; /* RELOADCOLORS*/
 	case 0xb06a1793: fe_ctrl_gui (sess, 7, 1); break; /* DETACH */
 	case 0x05cfeff0: fe_ctrl_gui (sess, 3, 0); break; /* FLASH */
 	case 0x05d154d8: fe_ctrl_gui (sess, 2, 0); break; /* FOCUS */
@@ -4001,8 +4002,8 @@ const struct commands xc_cmds[] = {
 	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
 	{"GHOST", cmd_ghost, 1, 0, 1, N_("GHOST <nick> [password], Kills a ghosted nickname")},
-	{"GUI", cmd_gui, 0, 0, 1, "GUI [APPLY|ATTACH|DETACH|SHOW|HIDE|FOCUS|FLASH|ICONIFY|COLOR <n>]\n"
-									  "       GUI [MSGBOX <text>|MENU TOGGLE]"},
+	{"GUI", cmd_gui, 0, 0, 1, "GUI [APPLY|ATTACH|DETACH|SHOW|HIDE|FOCUS|FLASH|ICONIFY]\n"
+									  "       GUI [COLOR <n>|RELOADCOLORS|MSGBOX <text>|MENU TOGGLE]"},
 	{"HELP", cmd_help, 0, 0, 1, 0},
 	{"HOP", cmd_hop, 1, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},
