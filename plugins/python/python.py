@@ -147,6 +147,7 @@ class Plugin:
                                                 ffi.NULL)
         except Exception as e:
             lib.hexchat_print(lib.ph, 'Failed to load module: {}'.format(e).encode())
+            traceback.print_exc()
             return False
         return True
 
@@ -158,6 +159,7 @@ class Plugin:
                     hook.callback(hook.userdata)
                 except Exception as e:
                     log('Failed to run hook:', e)
+                    traceback.print_exc()
         del self.hooks
         if self.ph is not None:
             lib.hexchat_plugingui_remove(lib.ph, self.ph)
