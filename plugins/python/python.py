@@ -108,7 +108,10 @@ class Plugin:
         self.version = ''
         self.description = ''
         self.hooks = set()
-        self.globals = {'__plugin': weakref.proxy(self)}
+        self.globals = {
+            '__plugin': weakref.proxy(self),
+            '__name__': '__main__',
+        }
 
     def add_hook(self, callback, userdata, is_unload=False):
         hook = Hook(self, callback, userdata, is_unload=is_unload)
@@ -324,12 +327,15 @@ def change_cwd(path):
 def autoload():
     configdir = ffi.string(lib.hexchat_get_info(lib.ph, b'configdir')).decode()
     addondir = os.path.join(configdir, 'addons')
-    with change_cwd(addondir):  # Maintaining old behavior
-        for f in os.listdir(addondir):
-            if f.endswith('.py'):
-                log('Autoloading', f)
-                # TODO: Set cwd
-                load_filename(os.path.join(addondir, f))
+    try:
+        with change_cwd(addondir):  # Maintaining old behavior
+            for f in os.listdir(addondir):
+                if f.endswith('.py'):
+                    log('Autoloading', f)
+                    # TODO: Set cwd
+                    load_filename(os.path.join(addondir, f))
+    except FileNotFoundError as e:
+        log('Autoload failed', e)
 
 
 def list_plugins():
@@ -441,7 +447,7 @@ def _on_plugin_init(plugin_name, plugin_desc, plugin_version, arg):
         sys.path.append(os.path.abspath(modpath))
         hexchat = importlib.import_module('hexchat')
     except (UnicodeDecodeError, ImportError) as e:
-        lib.hexchat_print(lib.ph, b'Failed to import module: ' + e.message.encode())
+        lib.hexchat_print(lib.ph, b'Failed to import module: ' + repr(e).encode())
         return 0
 
     hexchat_stdout = Stdout()
