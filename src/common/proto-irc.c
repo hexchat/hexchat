@@ -53,7 +53,9 @@ irc_login (server *serv, char *user, char *realname)
 
 	if (serv->password[0] && serv->loginmethod == LOGIN_PASS)
 	{
-		tcp_sendf (serv, "PASS %s\r\n", serv->password);
+		tcp_sendf (serv, "PASS %s%s\r\n",
+			(serv->password[0] == ':' || strchr (serv->password, ' ')) ? ":" : "",
+			serv->password);
 	}
 
 	tcp_sendf (serv,
