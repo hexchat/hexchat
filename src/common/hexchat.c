@@ -1088,6 +1088,7 @@ main (int argc, char *argv[])
 		load_default_config ();
 		make_config_dirs ();
 		make_dcc_dirs ();
+		migrate_from_xchat ();
 	}
 
 	/* we MUST do this after load_config () AND before fe_init (thus gtk_init) otherwise it will fail */

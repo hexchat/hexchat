@@ -41,6 +41,7 @@ int check_config_dir (void);
 void load_default_config (void);
 int make_config_dirs (void);
 int make_dcc_dirs (void);
+void migrate_from_xchat (void);
 int load_config (void);
 int save_config (void);
 void list_free (GSList ** list);
