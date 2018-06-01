@@ -76,6 +76,7 @@ struct _hexchat_list
 	GSList *pos;		/* current pos */
 	GSList *next;		/* next pos */
 	GSList *head;		/* for LIST_USERS only */
+	int ipos;		/* for LIST_COMMANDS_HEXCHAT only */
 	struct notify_per_server *notifyps;	/* notify_per_server * */
 };
 
@@ -95,7 +96,11 @@ enum
 	LIST_DCC,
 	LIST_IGNORE,
 	LIST_NOTIFY,
-	LIST_USERS
+	LIST_USERS,
+	/* these are done in 3 parts because they're split in 3 parts */
+	LIST_COMMANDS_HEXCHAT,
+	LIST_COMMANDS_USER,
+	LIST_COMMANDS_PLUGIN,
 };
 
 /* We use binary flags here because it makes it possible for plugin_hook_find()
@@ -1290,6 +1295,11 @@ hexchat_list_get (hexchat_plugin *ph, const char *name)
 		list->head = (void *)ph->context;	/* reuse this pointer */
 		break;
 
+	case 0xdc160a88:	/* commands */
+		list->type = LIST_COMMANDS_HEXCHAT;
+		list->ipos = -1;
+		break;
+
 	case 0x6a68e08: /* users */
 		if (is_session (ph->context))
 		{
@@ -1318,11 +1328,41 @@ hexchat_list_free (hexchat_plugin *ph, hexchat_list *xlist)
 int
 hexchat_list_next (hexchat_plugin *ph, hexchat_list *xlist)
 {
-	if (xlist->next == NULL)
-		return 0;
+	int ok = 0; /* this avoids using goto */
+	while (ok^=1) {
+		if (xlist->next == NULL) {
+			if (xlist->type == LIST_COMMANDS_HEXCHAT) {
+				if (xc_cmds[xlist->ipos+1].name) {
+					xlist->ipos++;
+					return 1;
+				} else {
+					xlist->type = LIST_COMMANDS_USER;
+					xlist->next = command_list;
+					if (xlist->next == NULL)
+						return 0;
+					/* stitch up the lists */
+				}
+			} else if (xlist->type == LIST_COMMANDS_USER) {
+				xlist->type = LIST_COMMANDS_PLUGIN;
+				xlist->next = hook_list;
+				if (xlist->next == NULL)
+					return 0;
+				/* stitch up the lists */
+			} else {
+				return 0;
+			}
+		}
 
-	xlist->pos = xlist->next;
-	xlist->next = xlist->pos->next;
+		xlist->pos = xlist->next;
+		xlist->next = xlist->pos->next;
+
+		/* if this is a plugin commands list and we
+			don't have a command, give it another go */
+		if (xlist->type == LIST_COMMANDS_PLUGIN &&
+							 !(((hexchat_hook *)xlist->pos->data)->type & HOOK_COMMAND)) {
+			ok = 0;
+		}
+	}
 
 	/* NOTIFY LIST: Find the entry which matches the context
 		of the plugin when list_get was originally called. */
@@ -1363,9 +1403,13 @@ hexchat_list_fields (hexchat_plugin *ph, const char *name)
 	{
 		"saccount", "iaway", "shost", "tlasttalk", "snick", "sprefix", "srealname", "iselected", NULL
 	};
+	static const char * const commands_fields[] =
+	{
+		"name", "help", "kind", NULL
+	};
 	static const char * const list_of_lists[] =
 	{
-		"channels",	"dcc", "ignore", "notify", "users", NULL
+		"channels",	"dcc", "ignore", "notify", "users", "commands", NULL
 	};
 
 	switch (str_hash (name))
@@ -1378,6 +1422,8 @@ hexchat_list_fields (hexchat_plugin *ph, const char *name)
 		return ignore_fields;
 	case 0xc2079749:	/* notify */
 		return notify_fields;
+	case 0xdc160a88:	/* commands */
+		return commands_fields;
 	case 0x6a68e08:	/* users */
 		return users_fields;
 	case 0x6236395:	/* lists */
@@ -1431,8 +1477,9 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 	/* a NULL xlist is a shortcut to current "channels" context */
 	if (xlist)
 	{
-		data = xlist->pos->data;
 		type = xlist->type;
+		if (type != LIST_COMMANDS_HEXCHAT)
+			data = xlist->pos->data;
 	}
 
 	switch (type)
@@ -1506,6 +1553,36 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			return ((struct User *)data)->realname;
 		}
 		break;
+
+	case LIST_COMMANDS_HEXCHAT:
+		switch (hash)
+		{
+		case 0x337a8b: /* name */
+			return xc_cmds[xlist->ipos].name;
+		case 0x30cf41: /* help */
+			return xc_cmds[xlist->ipos].help;
+		}
+		break;
+
+	case LIST_COMMANDS_USER:
+		switch (hash)
+		{
+		case 0x337a8b: /* name */
+			return ((struct popup *)data)->name;
+		case 0x30cf41: /* help */
+			return ((struct popup *)data)->cmd;
+		}
+		break;
+
+	case LIST_COMMANDS_PLUGIN:
+		switch (hash)
+		{
+		case 0x337a8b: /* name */
+			return ((hexchat_hook *)data)->name;
+		case 0x30cf41: /* help */
+			return ((hexchat_hook *)data)->help_text;
+		}
+		break;
 	}
 
 	return NULL;
@@ -1522,8 +1599,9 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 	/* a NULL xlist is a shortcut to current "channels" context */
 	if (xlist)
 	{
-		data = xlist->pos->data;
 		type = xlist->type;
+		if (type != LIST_COMMANDS_HEXCHAT)
+			data = xlist->pos->data;
 	}
 
 	switch (type)
@@ -1651,6 +1729,29 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		}
 		break;
 
+	case LIST_COMMANDS_HEXCHAT:
+		switch (hash)
+		{
+		case 0x323b94: /* kind */
+			return HEXCHAT_COMMAND_KIND_BUILTIN;
+		}
+		break;
+
+	case LIST_COMMANDS_USER:
+		switch (hash)
+		{
+		case 0x323b94: /* kind */
+			return HEXCHAT_COMMAND_KIND_USER;
+		}
+		break;
+
+	case LIST_COMMANDS_PLUGIN:
+		switch (hash)
+		{
+		case 0x323b94: /* kind */
+			return HEXCHAT_COMMAND_KIND_PLUGIN;
+		}
+		break;
 	}
 
 	return -1;
