@@ -208,7 +208,8 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	"ACCEL=<Alt>Right\nMove front tab right\nD1!\nD2!\n\n"\
 	"ACCEL=<Primary><Shift>Page_Up\nMove tab family left\nD1!\nD2!\n\n"\
 	"ACCEL=<Primary><Shift>Page_Down\nMove tab family right\nD1!\nD2!\n\n"\
-	"ACCEL=F9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
+	"ACCEL=F9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"\
+	"ACCEL=Ctrl+W\nClose current tab\nD1:/CLOSE\nD2!\n\n"
 
 void
 key_init ()
