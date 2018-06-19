@@ -50,7 +50,9 @@ hexchat_gtk_ldflags = [
 if get_option('with-libnotify')
   hexchat_gtk_sources += 'notifications/notification-libnotify.c'
   hexchat_gtk_deps += dependency('libnotify')
-elif false # TODO HAVE_GTK_MAC
+elif host_machine.system() == 'darwin'
+  hexchat_gtk_sources += 'notifications/notification-osx.m'
+  hexchat_gtk_deps += dependency('-framework Foundation')
 elif host_machine.system() == 'windows'
   hexchat_gtk_sources += 'notifications/notification-windows.c'
 
