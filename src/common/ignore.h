@@ -40,14 +40,14 @@ extern int ignored_invi;
 struct ignore
 {
 	char *mask;
-	unsigned int type;	/* one of more of IG_* ORed together */
+	guint type; /* one of more of IG_* ORed together */
 };
 
 struct ignore *ignore_exists (char *mask);
-int ignore_add (char *mask, int type, gboolean overwrite);
+int ignore_add (char *mask, guint type, gboolean overwrite);
 void ignore_showlist (session *sess);
 int ignore_del (char *mask, struct ignore *ig);
-int ignore_check (char *mask, int type);
+int ignore_check (char *mask, guint type);
 void ignore_load (void);
 void ignore_save (void);
 void ignore_gui_open (void);

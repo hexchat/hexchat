@@ -77,7 +77,7 @@ ignore_exists (char *mask)
  */
 
 int
-ignore_add (char *mask, int type, gboolean overwrite)
+ignore_add (char *mask, guint type, gboolean overwrite)
 {
 	struct ignore *ig = NULL;
 	int change_only = FALSE;
@@ -200,7 +200,7 @@ ignore_del (char *mask, struct ignore *ig)
 /* check if a msg should be ignored by browsing our ignore list */
 
 int
-ignore_check (char *host, int type)
+ignore_check (char *host, guint type)
 {
 	struct ignore *ig;
 	GSList *list = ignore_list;

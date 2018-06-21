@@ -58,14 +58,22 @@ get_store (void)
 	return gtk_tree_view_get_model (g_object_get_data (G_OBJECT (ignorewin), "view"));
 }
 
-static int
+static guint
 ignore_get_flags (GtkTreeModel *model, GtkTreeIter *iter)
 {
 	gboolean chan, priv, noti, ctcp, dcc, invi, unig;
-	int flags = 0;
+	guint flags = 0;
 
-	gtk_tree_model_get (model, iter, 1, &chan, 2, &priv, 3, &noti,
-	                    4, &ctcp, 5, &dcc, 6, &invi, 7, &unig, -1);
+	gtk_tree_model_get (
+		model, iter,
+		CHAN_COLUMN, &chan,
+		PRIV_COLUMN, &priv,
+		NOTICE_COLUMN, &noti,
+		CTCP_COLUMN, &ctcp,
+		DCC_COLUMN, &dcc,
+		INVITE_COLUMN, &invi,
+		UNIGNORE_COLUMN, &unig,
+		-1);
 	if (chan)
 		flags |= IG_CHAN;
 	if (priv)
@@ -89,11 +97,11 @@ mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
 	GtkListStore *store = GTK_LIST_STORE (get_store ());
 	GtkTreeIter iter;
 	char *old;
-	int flags;
+	guint flags;
 
 	gtkutil_treemodel_string_to_iter (GTK_TREE_MODEL (store), path, &iter);
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 0, &old, -1);
-	
+
 	if (!strcmp (old, new))	/* no change */
 		;
 	else if (ignore_exists (new))	/* duplicate, ignore */
@@ -109,7 +117,6 @@ mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
 		gtk_list_store_set (store, &iter, MASK_COLUMN, new, -1);
 	}
 	g_free (old);
-	
 }
 
 static void
@@ -120,7 +127,7 @@ option_toggled (GtkCellRendererToggle *render, gchar *path, gpointer data)
 	int col_id = GPOINTER_TO_INT (data);
 	gboolean active;
 	char *mask;
-	int flags;
+	guint flags;
 
 	gtkutil_treemodel_string_to_iter (GTK_TREE_MODEL (store), path, &iter);
 
@@ -233,7 +240,7 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 	GtkListStore *store = GTK_LIST_STORE (get_store ());
 	GtkTreeIter iter;
 	GtkTreePath *path;
-	int flags = IG_CHAN | IG_PRIV | IG_NOTI | IG_CTCP | IG_DCC | IG_INVI;
+	guint flags = IG_CHAN | IG_PRIV | IG_NOTI | IG_CTCP | IG_DCC | IG_INVI;
 
 	if (cancel)
 		return;
@@ -248,8 +255,17 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 
 	gtk_list_store_append (store, &iter);
 	/* ignore everything by default */
-	gtk_list_store_set (store, &iter, 0, mask, 1, TRUE, 2, TRUE, 3, TRUE,
-	                    4, TRUE, 5, TRUE, 6, TRUE, 7, FALSE, -1);
+	gtk_list_store_set (
+		store, &iter,
+		MASK_COLUMN, mask,
+		CHAN_COLUMN, TRUE,
+		PRIV_COLUMN, TRUE,
+		NOTICE_COLUMN, TRUE,
+		CTCP_COLUMN, TRUE,
+		DCC_COLUMN, TRUE,
+		INVITE_COLUMN, TRUE,
+		UNIGNORE_COLUMN, FALSE,
+		-1);
 	/* make sure the new row is visible and selected */
 	path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
 	gtk_tree_view_scroll_to_cell (view, path, NULL, TRUE, 1.0, 0.0);
