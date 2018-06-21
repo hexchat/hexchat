@@ -36,6 +36,7 @@ extern int ignored_invi;
 #define IG_UNIG	32
 #define IG_NOSAVE	64
 #define IG_DCC		128
+#define IG_JOINS_PARTS 256
 
 struct ignore
 {

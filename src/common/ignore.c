@@ -147,6 +147,10 @@ ignore_showlist (session *sess)
 			strcat (tbuf, _("YES  "));
 		else
 			strcat (tbuf, _("NO   "));
+		if (ig->type & IG_JOINS_PARTS)
+			strcat (tbuf, _("YES         "));
+		else
+			strcat (tbuf, _("NO          "));
 		if (ig->type & IG_UNIG)
 			strcat (tbuf, _("YES  "));
 		else

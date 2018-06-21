@@ -2385,6 +2385,8 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			type |= IG_NOSAVE;
 		else if (!g_ascii_strcasecmp (word[i], "DCC"))
 			type |= IG_DCC;
+		else if (!g_ascii_strcasecmp (word[i], "JOINS_PARTS"))
+			type |= IG_JOINS_PARTS;
 		else
 		{
 			sprintf (tbuf, _("Unknown arg '%s' ignored."), word[i]);
@@ -4011,7 +4013,7 @@ const struct commands xc_cmds[] = {
 	 N_("IGNORE <mask> <types..> <options..>\n"
 	 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
 	 "    types - types of data to ignore, one or all of:\n"
-	 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
+	 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, JOINS_PARTS, ALL\n"
 	 "    options - NOSAVE, QUIET")},
 
 	{"INVITE", cmd_invite, 1, 0, 1,
