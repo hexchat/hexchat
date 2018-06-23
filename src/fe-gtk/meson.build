@@ -52,7 +52,7 @@ if get_option('with-libnotify')
   hexchat_gtk_deps += dependency('libnotify')
 elif host_machine.system() == 'darwin'
   hexchat_gtk_sources += 'notifications/notification-osx.m'
-  hexchat_gtk_deps += dependency('-framework Foundation')
+  hexchat_gtk_deps += dependency('appleframeworks', modules : ['Foundation'])
 elif host_machine.system() == 'windows'
   hexchat_gtk_sources += 'notifications/notification-windows.c'
 
