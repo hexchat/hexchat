@@ -1,4 +1,4 @@
-project('hexchat', 'c',
+project('hexchat', 'c', 'objc',
   version: '2.14.1',
   meson_version: '>= 0.38.0',
   default_options: [
@@ -12,6 +12,9 @@ i18n = import('i18n')
 gnome = import('gnome')
 cc = meson.get_compiler('c')
 
+if host_machine.system() == 'darwin'
+  libgtk_mac_integration_dep = dependency('gtk-mac-integration-gtk2')
+endif
 
 libgio_dep = dependency('gio-2.0', version: '>= 2.34.0')
 libgmodule_dep = dependency('gmodule-2.0')
@@ -30,6 +33,10 @@ config_h.set_quoted('GETTEXT_PACKAGE', 'hexchat')
 config_h.set_quoted('LOCALEDIR', join_paths(get_option('prefix'),
                                  get_option('datadir'), 'locale'))
 config_h.set10('ENABLE_NLS', true)
+
+if host_machine.system() == 'darwin'
+  config_h.set('HAVE_GTK_MAC', true)
+endif
 
 # Optional features
 config_h.set('USE_OPENSSL', get_option('with-ssl'))
