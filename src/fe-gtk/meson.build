@@ -31,7 +31,6 @@ hexchat_gtk_sources = [
 gtk_dep = dependency('gtk+-2.0', version: '>= 2.24.0')
 hexchat_gtk_deps = [
   hexchat_common_dep,
-  libgtk_mac_integration_dep, #used by gtk-mac-integration
   libgmodule_dep, # used by libsexy
   gtk_dep
 ]
