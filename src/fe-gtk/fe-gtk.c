@@ -319,10 +319,11 @@ fe_init (void)
 	palette_load ();
 	key_init ();
 	pixmaps_init ();
-
+/*
 #ifdef HAVE_GTK_MAC
 	gtkosx_application_set_dock_icon_pixbuf (osx_app, pix_hexchat);
 #endif
+*/
 	channelwin_pix = pixmap_load_from_file (prefs.hex_text_background);
 	input_style = create_input_style (gtk_style_new ());
 }
