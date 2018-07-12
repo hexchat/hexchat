@@ -2272,7 +2272,6 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		menu_bar = gtk_menu_bar_new ();
 #ifdef HAVE_GTK_MAC
 		gtkosx_application_set_menu_bar (osx_app, GTK_MENU_SHELL (menu_bar));
-		gtk_widget_hide(menu_bar);
 #endif
 	}
 	else
