@@ -237,7 +237,7 @@ def _on_print_attrs_hook(word, attrs, userdata):
     word_eol = create_wordeollist(word)
     attr = Attribute()
     attr.time = attrs.server_time_utc
-    return to_cb_ret(hook.callback(word, word_eol, attr,  hook.userdata))
+    return to_cb_ret(hook.callback(word, word_eol, hook.userdata, attr))
 
 
 @ffi.def_extern()
@@ -255,7 +255,7 @@ def _on_server_attrs_hook(word, word_eol, attrs, userdata):
     word_eol = create_wordlist(word_eol)
     attr = Attribute()
     attr.time = attrs.server_time_utc
-    return to_cb_ret(hook.callback(word, word_eol, attr, hook.userdata))
+    return to_cb_ret(hook.callback(word, word_eol, hook.userdata, attr))
 
 
 @ffi.def_extern()
