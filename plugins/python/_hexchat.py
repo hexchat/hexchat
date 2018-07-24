@@ -261,7 +261,7 @@ def hook_unload(callback, userdata=None):
 
 def unhook(handle):
     plugin = __get_current_plugin()
-    return plugin.remove_hook_by_id(handle)
+    return plugin.remove_hook(handle)
 
 
 def set_pluginpref(name, value):
