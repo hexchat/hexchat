@@ -59,7 +59,7 @@ class Stdout:
 
 class Attribute:
     def __init__(self):
-        self.server_time_utc = 0
+        self.time = 0
 
     def __repr__(self):
         return '<Attribute object at {}>'.format(id(self))
@@ -236,7 +236,7 @@ def _on_print_attrs_hook(word, attrs, userdata):
     word = create_wordlist(word)
     word_eol = create_wordeollist(word)
     attr = Attribute()
-    attr.server_time_utc = attrs.server_time_utc
+    attr.time = attrs.server_time_utc
     return to_cb_ret(hook.callback(word, word_eol, attr,  hook.userdata))
 
 
@@ -254,7 +254,7 @@ def _on_server_attrs_hook(word, word_eol, attrs, userdata):
     word = create_wordlist(word)
     word_eol = create_wordlist(word_eol)
     attr = Attribute()
-    attr.server_time_utc = attrs.server_time_utc
+    attr.time = attrs.server_time_utc
     return to_cb_ret(hook.callback(word, word_eol, attr, hook.userdata))
 
 
