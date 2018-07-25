@@ -97,7 +97,7 @@ else:
         return compile(data, filename, 'exec', optimize=2, dont_inherit=True)
 
     def compile_line(string):
-        return compile(string, '<string>', 'eval', optimize=2, dont_inherit=True)
+        return compile(string, '<string>', 'single', optimize=2, dont_inherit=True)
 
 
 class Plugin:
