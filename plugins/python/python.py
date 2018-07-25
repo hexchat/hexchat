@@ -98,7 +98,8 @@ else:
         return compile(data, filename, 'exec', optimize=2, dont_inherit=True)
 
     def compile_line(string):
-        return compile(string, '<string>', 'eval', optimize=2, dont_inherit=True)
+        # newline appended to solve unexpected EOF issues
+        return compile(string + '\n', '<string>', 'single', optimize=2, dont_inherit=True)
 
 
 class Plugin:
@@ -122,7 +123,7 @@ class Plugin:
     def remove_hook(self, hook):
         for h in self.hooks:
             if id(h) == hook:
-                ud = hook.userdata
+                ud = h.userdata
                 self.hooks.remove(h)
                 return ud
         else:
