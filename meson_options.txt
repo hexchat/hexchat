@@ -28,6 +28,9 @@ option('with-theme-manager', type: 'boolean', value: false,
 option('dbus-service-use-appid', type: 'boolean', value: false,
   description: 'Rename dbus service to match app-id, required for Flatpak'
 )
+option('with-appdata', type: 'boolean',
+  description: 'Install appdata files for app stores'
+)
 
 # Plugins
 option('with-checksum', type: 'boolean',

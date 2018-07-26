@@ -3,19 +3,21 @@ metainfodir = join_paths(get_option('datadir'), 'metainfo')
 desktop_utils = find_program('desktop-file-validate', required: false)
 
 if get_option('with-gtk')
-  hexchat_appdata = i18n.merge_file(
-    input: 'io.github.Hexchat.appdata.xml.in',
-    output: 'io.github.Hexchat.appdata.xml',
-    po_dir: '../../po',
-    install: true,
-    install_dir: metainfodir
-  )
-
-  appstream_util = find_program('appstream-util', required: false)
-  if appstream_util.found()
-    test('Validate io.github.Hexchat.appdata.xml', appstream_util,
-      args: ['validate-relax', hexchat_appdata]
+  if get_option('with-appdata')
+    hexchat_appdata = i18n.merge_file(
+      input: 'io.github.Hexchat.appdata.xml.in',
+      output: 'io.github.Hexchat.appdata.xml',
+      po_dir: '../../po',
+      install: true,
+      install_dir: metainfodir
     )
+
+    appstream_util = find_program('appstream-util', required: false)
+    if appstream_util.found()
+      test('Validate io.github.Hexchat.appdata.xml', appstream_util,
+        args: ['validate-relax', hexchat_appdata]
+      )
+    endif
   endif
 
   desktop_conf = configuration_data()
@@ -68,7 +70,7 @@ if get_option('with-theme-manager')
   )
 endif
 
-if get_option('with-plugin')
+if get_option('with-plugin') and get_option('with-appdata')
   plugin_metainfo = []
 
   # FIXME: These should all get translated somewhere
