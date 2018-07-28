@@ -121,7 +121,7 @@ class Plugin:
     def remove_hook(self, hook):
         for h in self.hooks:
             if id(h) == hook:
-                ud = hook.userdata
+                ud = h.userdata
                 self.hooks.remove(h)
                 return ud
         else:
