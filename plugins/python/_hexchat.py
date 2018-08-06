@@ -150,6 +150,15 @@ class ListItem:
         return '<{} list item at {}>'.format(self._listname, id(self))
 
 
+# done this way for speed
+if sys.version_info[0] == 2:
+    def get_getter(name):
+        return ord(name[0])
+else:
+    def get_getter(name):
+        return name[0]
+
+
 def get_list(name):
     # XXX: This function is extremely inefficient and could be interators and
     # lazily loaded properties, but for API compat we stay slow
@@ -189,7 +198,7 @@ def get_list(name):
     while lib.hexchat_list_next(lib.ph, list_) is 1:
         item = ListItem(orig_name)
         for field in fields:
-            getter = getters.get(ord(field[0]))
+            getter = getters.get(get_getter(field))
             if getter is not None:
                 field_name = field[1:]
                 setattr(item, __cached_decoded_str(field_name), getter(field_name))
