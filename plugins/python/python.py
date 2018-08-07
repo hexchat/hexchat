@@ -417,7 +417,8 @@ def _on_py_command(word, word_eol, userdata):
         unload_name(name)
     elif subcmd == 'reload':
         name = ffi.string(word[3]).decode()
-        reload_name(name)
+        if not reload_name(name):
+            print("cannot find a plugin with that name")
     elif subcmd == 'console':
         lib.hexchat_command(lib.ph, b'QUERY >>python<<')
     elif subcmd == 'list':
