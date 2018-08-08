@@ -414,7 +414,8 @@ def _on_py_command(word, word_eol, userdata):
         load_filename(filename)
     elif subcmd == 'unload':
         name = ffi.string(word[3]).decode()
-        unload_name(name)
+        if not unload_name(name):
+            print("Can't find a python plugin with that name")
     elif subcmd == 'reload':
         name = ffi.string(word[3]).decode()
         if not reload_name(name):
