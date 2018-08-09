@@ -415,11 +415,11 @@ def _on_py_command(word, word_eol, userdata):
     elif subcmd == 'unload':
         name = ffi.string(word[3]).decode()
         if not unload_name(name):
-            print("Can't find a python plugin with that name")
+            print('Can\'t find a python plugin with that name')
     elif subcmd == 'reload':
         name = ffi.string(word[3]).decode()
         if not reload_name(name):
-            print("Can't find a python plugin with that name")
+            print('Can\'t find a python plugin with that name')
     elif subcmd == 'console':
         lib.hexchat_command(lib.ph, b'QUERY >>python<<')
     elif subcmd == 'list':
