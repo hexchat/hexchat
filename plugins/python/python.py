@@ -98,7 +98,7 @@ else:
 
     def compile_line(string):
         # newline appended to solve unexpected EOF issues
-        return compile(string + "\n", '<string>', 'single', optimize=2, dont_inherit=True)
+        return compile(string + '\n', '<string>', 'single', optimize=2, dont_inherit=True)
 
 
 class Plugin:
