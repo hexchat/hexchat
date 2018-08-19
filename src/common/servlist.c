@@ -1139,7 +1139,7 @@ servlist_save (void)
 		first = TRUE;
 #endif
 
-	fp = hexchat_fopen_file ("servlist.conf", "w", 0);
+	fp = hexchat_fopen_file ("servlist.conf", "wb", 0);
 	if (!fp)
 	{
 #ifndef WIN32
