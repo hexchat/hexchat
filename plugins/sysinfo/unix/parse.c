@@ -271,12 +271,12 @@ int xs_parse_meminfo(unsigned long long *mem_tot, unsigned long long *mem_free, 
 
 static void strip_quotes(char *string)
 {
-  size_t len = strlen(string);
-  if (string[len - 1] == '"')
-	string[--len] = '\0';
+	size_t len = strlen(string);
+	if (string[len - 1] == '"')
+		string[--len] = '\0';
 
-  if (string[0] == '"')
-	memmove(string, string + 1, len + 1);
+	if (string[0] == '"')
+		memmove(string, string + 1, len);
 }
 
 int xs_parse_distro(char *name)
