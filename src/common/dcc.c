@@ -1006,7 +1006,7 @@ dcc_socks_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC
 		sc.type = 1;
 		sc.port = htons (dcc->port);
 		sc.address = htonl (dcc->addr);
-		strncpy (sc.username, prefs.hex_irc_user_name, 9);
+		g_strlcpy (sc.username, prefs.hex_irc_user_name, sizeof (sc.username));
 		memcpy (proxy->buffer, &sc, sizeof (sc));
 		proxy->buffersize = 8 + strlen (sc.username) + 1;
 		proxy->bufferused = 0;

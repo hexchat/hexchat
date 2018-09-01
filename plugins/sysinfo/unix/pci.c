@@ -142,7 +142,7 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 		{
 			position = strstr(buffer, vendor);
 			position += 6;
-			strncpy(vendorname, position, bsize/2);
+			g_strlcpy(vendorname, position, sizeof (vendorname));
 			position = strstr(vendorname, "\n");
 			*(position) = '\0';
 			break;
@@ -154,7 +154,7 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 		{
 			position = strstr(buffer, device);
 			position += 6;
-			strncpy(devicename, position, bsize/2);
+			g_strlcpy(devicename, position, sizeof (devicename));
 			position = strstr(devicename, " (");
 			if (position == NULL)
 				position = strstr(devicename, "\n");

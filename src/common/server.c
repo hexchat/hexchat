@@ -1042,7 +1042,7 @@ traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 	sc.type = 1;
 	sc.port = htons (port);
 	sc.address = inet_addr (serverAddr);
-	strncpy (sc.username, prefs.hex_irc_user_name, 9);
+	g_strlcpy (sc.username, prefs.hex_irc_user_name, sizeof (sc.username));
 
 	send (sok, (char *) &sc, 8 + strlen (sc.username) + 1, 0);
 	buf[1] = 0;
