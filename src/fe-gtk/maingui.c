@@ -1519,6 +1519,9 @@ mg_create_alertmenu (session *sess, GtkWidget *menu)
 
 	submenu = menu_quick_sub (_("_Extra Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
 
+	/* TODO: This should be added by the plugin, not sure how to do that though. */
+	mg_perchan_menu_item (_("_Notification"), submenu, &sess->alert_notif, prefs.hex_input_balloon_hilight);
+
 	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.hex_input_beep_chans);
 
 	mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.hex_input_tray_chans);

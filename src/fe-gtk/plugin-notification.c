@@ -25,12 +25,18 @@
 
 static hexchat_plugin *ph;
 
+static int get_bool_preference(const char* pref)
+{
+	int value = 0;
+	if (hexchat_get_prefs (ph, pref, NULL, &value) != 3)
+		return 0;
+	return value;
+}
+
 static gboolean
 should_alert (void)
 {
-	int omit_away, omit_focused, omit_tray;
-
-	if (hexchat_get_prefs (ph, "gui_focus_omitalerts", NULL, &omit_focused) == 3 && omit_focused)
+	if (get_bool_preference ("gui_focus_omitalerts"))
 	{
 		const char *status = hexchat_get_info (ph, "win_status");
 
@@ -38,17 +44,15 @@ should_alert (void)
 			return FALSE;
 	}
 
-	if (hexchat_get_prefs (ph, "away_omit_alerts", NULL, &omit_away) == 3 && omit_away)
+	if (get_bool_preference ("away_omit_alerts"))
 	{
 		if (hexchat_get_info (ph, "away"))
 			return FALSE;
 	}
 
-	if (hexchat_get_prefs (ph, "gui_tray_quiet", NULL, &omit_tray) == 3 && omit_tray)
+	if (get_bool_preference ("gui_tray_quiet"))
 	{
-		int tray_enabled;
-
-		if (hexchat_get_prefs (ph, "gui_tray", NULL, &tray_enabled) == 3 && tray_enabled)
+		if (get_bool_preference ("gui_tray"))
 		{
 			const char *status = hexchat_get_info (ph, "win_status");
 
@@ -104,9 +108,7 @@ show_notificationf (const char *text, const char *format, ...)
 static int
 incoming_hilight_cb (char *word[], gpointer userdata)
 {
-	int hilight;
-
-	if (hexchat_get_prefs (ph, "input_balloon_hilight", NULL, &hilight) == 3 && hilight && should_alert())
+	if (get_bool_preference("input_balloon_hilight") && should_alert())
 	{
 		show_notificationf (word[2], _("Highlighted message from: %s (%s)"), word[1], hexchat_get_info (ph, "channel"));
 	}
@@ -116,21 +118,26 @@ incoming_hilight_cb (char *word[], gpointer userdata)
 static int
 incoming_message_cb (char *word[], gpointer userdata)
 {
-	int message;
+	const char* channel = hexchat_get_info(ph, "channel");
+	int chanopts = hexchat_list_int(ph, NULL, "flags");
+	int alert_notif_flag = 1 << 10;
 
-	if (hexchat_get_prefs (ph, "input_balloon_chans", NULL, &message) == 3 && message && should_alert ())
+	/* Check if notifications are activated either globally or for this channel */
+	if (get_bool_preference("input_balloon_chans") || (chanopts & alert_notif_flag))
 	{
-		show_notificationf (word[2], _("Channel message from: %s (%s)"), word[1], hexchat_get_info (ph, "channel"));
+		if (should_alert())
+		{
+			show_notificationf (word[2], _("Channel message from: %s (%s)"), word[1], channel);
+		}
 	}
+
 	return HEXCHAT_EAT_NONE;
 }
 
 static int
 incoming_priv_cb (char *word[], gpointer userdata)
 {
-	int priv;
-
-	if (hexchat_get_prefs (ph, "input_balloon_priv", NULL, &priv) == 3 && priv && should_alert ())
+	if (get_bool_preference("input_balloon_priv") && should_alert ())
 	{
 		const char *network = hexchat_get_info (ph, "network");
 		if (!network)
