@@ -1520,7 +1520,6 @@ mg_create_alertmenu (session *sess, GtkWidget *menu)
 
 	submenu = menu_quick_sub (_("_Extra Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
 
-	/* TODO: This should be added by the plugin, not sure how to do that though. */
 	if (notification_backend_supported())
 	{
 		mg_perchan_menu_item (_("_Notification"), submenu, &sess->alert_notif, prefs.hex_input_balloon_hilight);
