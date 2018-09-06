@@ -1410,6 +1410,8 @@ hexchat_list_time (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		break;
 
 	case LIST_USERS:
+		if (!xlist->pos)
+			return (time_t) -1;
 		data = xlist->pos->data;
 		switch (hash)
 		{
@@ -1431,7 +1433,8 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 	/* a NULL xlist is a shortcut to current "channels" context */
 	if (xlist)
 	{
-		data = xlist->pos->data;
+		if (xlist->pos)
+			data = xlist->pos->data;
 		type = xlist->type;
 	}
 
@@ -1522,7 +1525,8 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 	/* a NULL xlist is a shortcut to current "channels" context */
 	if (xlist)
 	{
-		data = xlist->pos->data;
+		if (xlist->pos)
+			data = xlist->pos->data;
 		type = xlist->type;
 	}
 
