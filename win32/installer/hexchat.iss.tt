@@ -119,13 +119,15 @@ Source: "etc\fonts\*"; DestDir: "{app}\etc\fonts"; Flags: ignoreversion createal
 
 Source: "atk-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "cairo.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "freetype.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "fribidi-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "fontconfig.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gdk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "gio-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "glib-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "gmodule-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "gobject-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gio-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "glib-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gmodule-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gobject-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 #if APPARCH == "x64"
 Source: "gspawn-win64-helper.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gspawn-win64-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -133,7 +135,7 @@ Source: "gspawn-win64-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversio
 Source: "gspawn-win32-helper.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gspawn-win32-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 #endif
-Source: "gthread-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gthread-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gtk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs

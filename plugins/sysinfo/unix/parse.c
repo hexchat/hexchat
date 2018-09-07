@@ -269,6 +269,16 @@ int xs_parse_meminfo(unsigned long long *mem_tot, unsigned long long *mem_free, 
 	return 0;
 }
 
+static void strip_quotes(char *string)
+{
+	size_t len = strlen(string);
+	if (string[len - 1] == '"')
+		string[--len] = '\0';
+
+	if (string[0] == '"')
+		memmove(string, string + 1, len);
+}
+
 int xs_parse_distro(char *name)
 {
 	FILE *fp = NULL;
@@ -319,6 +329,20 @@ int xs_parse_distro(char *name)
 			g_snprintf(buffer, bsize, "Gentoo Linux (stable)");
 		else
 			g_snprintf(buffer, bsize, "Gentoo Linux %s", keywords);
+	}
+	else if((fp = fopen("/etc/os-release", "r")) != NULL)
+	{
+		char name[bsize], version[bsize];
+		strcpy(name, "?");
+		strcpy(version, "?");
+		while(fgets(buffer, bsize, fp) != NULL)
+		{
+			find_match_char(buffer, "NAME=", name);
+			find_match_char(buffer, "VERSION=", version);
+		}
+		strip_quotes(name);
+		strip_quotes(version);
+		g_snprintf(buffer, bsize, "%s %s", name, version);
 	}
 	else
 		g_snprintf(buffer, bsize, "Unknown Distro");
