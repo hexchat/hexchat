@@ -13,13 +13,13 @@ sysinfo_includes = []
 sysinfo_cargs = []
 
 system = host_machine.system()
-if system == 'linux' or system == 'darwin'
+if system == 'linux' or system == 'gnu' or system.startswith('gnu/') or system == 'darwin'
   sysinfo_includes += 'shared'
   sysinfo_sources += [
     'shared/df.c'
   ]
 
-  if system == 'linux'
+  if system == 'linux' or system == 'gnu' or system.startswith('gnu/')
     libpci = dependency('libpci', required: false, method: 'pkg-config')
     if libpci.found()
       sysinfo_deps += libpci
