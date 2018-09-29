@@ -52,7 +52,7 @@ typedef struct _hexchat_context hexchat_context;
 typedef struct
 {
 	time_t server_time_utc; /* 0 if not used */
-	char ircv3_line;
+	char *ircv3_line;
 } hexchat_event_attrs;
 
 #ifndef PLUGIN_C
