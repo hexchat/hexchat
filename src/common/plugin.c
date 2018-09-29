@@ -630,12 +630,13 @@ hexchat_event_attrs_free (hexchat_plugin *ph, hexchat_event_attrs *attrs)
 /* got a server PRIVMSG, NOTICE, numeric etc... */
 
 int
-plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[],
+plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[], char *tags[],
 					time_t server_time)
 {
 	hexchat_event_attrs attrs;
 
 	attrs.server_time_utc = server_time;
+	attrs.ircv3_line = tags;
 
 	return plugin_hook_run (sess, name, word, word_eol, &attrs, 
 							HOOK_SERVER | HOOK_SERVER_ATTRS);

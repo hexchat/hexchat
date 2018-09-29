@@ -240,6 +240,7 @@ typedef struct {
 typedef struct {
 	PyObject_HEAD
 	PyObject *time;
+	PyObject *ircv3;
 } AttributeObject;
 
 typedef struct {
@@ -930,6 +931,7 @@ static PyTypeObject XChatOut_Type = {
 
 static PyMemberDef Attribute_members[] = {
 	{"time", T_OBJECT, OFF(time), 0},
+	{"ircv3", T_OBJECT, OFF(ircv3), 0},
 	{0}
 };
 
@@ -996,6 +998,12 @@ Attribute_New(hexchat_event_attrs *attrs)
 	attr = PyObject_New(AttributeObject, &Attribute_Type);
 	if (attr != NULL) {
 		attr->time = PyLong_FromLong((long)attrs->server_time_utc);
+		char* *tagstring = attrs->ircv3_line;
+		// PLACEHOLDER
+		attr->ircv3 = PyUnicode_FromString("yay it works");
+// 		attr->ircv3 = PyUnicode_FromString((char)*tagstring);
+// 		attr->ircv3 = PyUnicode_FromString((char[99]){attrs->ircv3_line});
+// 		attr->ircv3 = PyUnicode_FromString((char) attrs->ircv3_line);
 	}
 	return (PyObject *) attr;
 }
