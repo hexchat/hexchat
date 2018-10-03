@@ -300,6 +300,7 @@ static PyObject *Context_get_list(ContextObject *self, PyObject *args);
 static PyObject *Context_compare(ContextObject *a, ContextObject *b, int op);
 static PyObject *Context_FromContext(hexchat_context *context);
 static PyObject *Context_FromServerAndChannel(char *server, char *channel);
+static PyObject *Context_get_prop(ContextObject *self, PyObject *args);
 
 static PyObject *Plugin_New(char *filename, PyObject *xcoobj);
 static PyObject *Plugin_GetCurrent(void);
@@ -334,6 +335,7 @@ static PyObject *Module_hexchat_pluginpref_set(PyObject *self, PyObject *args);
 static PyObject *Module_hexchat_pluginpref_get(PyObject *self, PyObject *args);
 static PyObject *Module_hexchat_pluginpref_delete(PyObject *self, PyObject *args);
 static PyObject *Module_hexchat_pluginpref_list(PyObject *self, PyObject *args);
+static PyObject* Module_hexchat_get_prop(PyObject *self, PyObject *args);
 
 static void IInterp_Exec(char *command);
 static int IInterp_Cmd(char *word[], char *word_eol[], void *userdata);
@@ -1125,6 +1127,18 @@ Context_compare(ContextObject *a, ContextObject *b, int op)
 	return ret;
 }
 
+static PyObject *
+Context_get_prop(ContextObject *self, PyObject *args) {
+	PyObject *plugin = Plugin_GetCurrent();
+	hexchat_context *current_context = Plugin_GetContext(plugin);
+	PyObject *ret;
+	Plugin_SetContext(plugin, self->context);
+	ret = Module_hexchat_get_prop((PyObject *)self, args);
+	Plugin_SetContext(plugin, current_context);
+	return ret;
+}
+
+
 static PyMethodDef Context_methods[] = {
 	{"set", (PyCFunction) Context_set, METH_NOARGS},
 	{"command", (PyCFunction) Context_command, METH_VARARGS},
@@ -1132,6 +1146,7 @@ static PyMethodDef Context_methods[] = {
 	{"emit_print", (PyCFunction) Context_emit_print, METH_VARARGS|METH_KEYWORDS},
 	{"get_info", (PyCFunction) Context_get_info, METH_VARARGS},
 	{"get_list", (PyCFunction) Context_get_list, METH_VARARGS},
+	{"get_prop", (PyCFunction) Context_get_prop, METH_VARARGS},
 	{NULL, NULL}
 };
 
@@ -2314,6 +2329,47 @@ Module_hexchat_strip(PyObject *self, PyObject *args)
 	return result;
 }
 
+static PyObject*
+Module_hexchat_get_prop(PyObject *self, PyObject *args)
+{
+	char *propName;
+	if (!PyArg_ParseTuple(args, "s:get_prop", &propName))
+		return NULL;
+	PyObject *out;
+	BEGIN_XCHAT_CALLS(RESTORE_CONTEXT);
+		char const *str = hexchat_list_str(ph, NULL, propName);
+		int number;
+		if(str)
+		{
+			if(!strcmp(propName, "context"))
+			{
+				out = Context_FromContext((hexchat_context *) str);
+				if (out == NULL)
+				{
+					out = Py_None;
+					Py_INCREF(out);
+				}
+			}
+			else
+			{
+				out = PyUnicode_FromString(str);
+			}
+		} else {
+			number = hexchat_list_int(ph, NULL, propName);
+			if(number != -1)
+			{
+				out = PyLong_FromLong(number);
+			}
+			else
+			{
+				out = Py_None;
+				Py_INCREF(out);
+			}
+		}
+	END_XCHAT_CALLS();
+	return out;
+}
+
 static PyMethodDef Module_xchat_methods[] = {
 	{"command",		Module_hexchat_command,
 		METH_VARARGS},
@@ -2361,6 +2417,7 @@ static PyMethodDef Module_xchat_methods[] = {
 		METH_VARARGS},
 	{"strip",		Module_hexchat_strip,
 		METH_VARARGS},
+	{"get_prop", Module_hexchat_get_prop, METH_VARARGS},
 	{NULL, NULL}
 };
 
