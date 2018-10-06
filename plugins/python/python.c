@@ -998,7 +998,6 @@ Attribute_New(hexchat_event_attrs *attrs)
 	attr = PyObject_New(AttributeObject, &Attribute_Type);
 	if (attr != NULL) {
 		attr->time = PyLong_FromLong((long)attrs->server_time_utc);
-		char* *tagstring = attrs->ircv3_line;
 		attr->ircv3 = PyUnicode_FromString(attrs->ircv3_line);
 	}
 	return (PyObject *) attr;
