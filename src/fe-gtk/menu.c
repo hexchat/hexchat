@@ -1002,6 +1002,18 @@ menu_chan_part (GtkWidget * menu, char *chan)
 }
 
 static void
+menu_chan_focus (GtkWidget * menu, char *chan)
+{
+	char tbuf[256];
+
+	if (current_sess)
+	{
+		g_snprintf (tbuf, sizeof tbuf, "doat %s gui focus", chan);
+		handle_command (current_sess, tbuf, FALSE);
+	}
+}
+
+static void
 menu_chan_join (GtkWidget * menu, char *chan)
 {
 	char tbuf[256];
@@ -1035,6 +1047,8 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 												 str_copy);
 	else
 	{
+		menu_quick_item_with_callback (menu_chan_focus, _("Focus Channel"), menu,
+												 str_copy);
 		menu_quick_item_with_callback (menu_chan_part, _("Part Channel"), menu,
 												 str_copy);
 		menu_quick_item_with_callback (menu_chan_cycle, _("Cycle Channel"), menu,
