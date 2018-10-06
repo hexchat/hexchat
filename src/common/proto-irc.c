@@ -1529,9 +1529,12 @@ irc_inline (server *serv, char *buf, int len)
 	char *word[PDIWORDS+1];
 	char *word_eol[PDIWORDS+1];
 	char *pdibuf;
+	char *fbuf;
 	message_tags_data tags_data = MESSAGE_TAGS_DATA_INIT;
 
 	pdibuf = g_malloc (len + 1);
+	fbuf = g_malloc (len+1);
+	strcpy(fbuf,buf);
 
 	sess = serv->front_session;
 
@@ -1575,7 +1578,7 @@ irc_inline (server *serv, char *buf, int len)
 		word_eol[1] = buf;	/* keep the ":" for plugins */
 
 		if (plugin_emit_server (sess, type, word, word_eol,
-								tags_data.timestamp))
+								tags_data.timestamp, fbuf))
 			goto xit;
 
 		word[1]++;
@@ -1586,7 +1589,7 @@ irc_inline (server *serv, char *buf, int len)
 		word[0] = type = word[1];
 
 		if (plugin_emit_server (sess, type, word, word_eol,
-								tags_data.timestamp))
+								tags_data.timestamp, fbuf))
 			goto xit;
 	}
 
@@ -1611,6 +1614,7 @@ irc_inline (server *serv, char *buf, int len)
 
 xit:
 	g_free (pdibuf);
+	g_free (fbuf);
 }
 
 void

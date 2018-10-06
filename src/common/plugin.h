@@ -172,7 +172,7 @@ void plugin_kill_all (void);
 void plugin_auto_load (session *sess);
 int plugin_emit_command (session *sess, char *name, char *word[], char *word_eol[]);
 int plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[],
-						time_t server_time);
+						time_t server_time, char *tags);
 int plugin_emit_print (session *sess, char *word[], time_t server_time);
 int plugin_emit_dummy_print (session *sess, char *name);
 int plugin_emit_keypress (session *sess, unsigned int state, unsigned int keyval, gunichar key);
