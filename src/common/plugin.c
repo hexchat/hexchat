@@ -654,6 +654,18 @@ plugin_emit_print (session *sess, char *word[], time_t server_time)
 							HOOK_PRINT | HOOK_PRINT_ATTRS);
 }
 
+/* used by plugin_emit_dummy_print to fix some UB */
+static void
+check_and_invalidate(void *plug_, void *killsess_)
+{
+	hexchat_plugin *plug = plug_;
+	session *killsess = killsess_;
+	if (plug->context == killsess)
+	{
+		plug->context = NULL;
+	}
+}
+
 int
 plugin_emit_dummy_print (session *sess, char *name)
 {
@@ -664,7 +676,16 @@ plugin_emit_dummy_print (session *sess, char *name)
 	for (i = 1; i < 32; i++)
 		word[i] = "\000";
 
-	return plugin_hook_run (sess, name, word, NULL, NULL, HOOK_PRINT);
+	i = plugin_hook_run (sess, name, word, NULL, NULL, HOOK_PRINT);
+
+	/* shoehorned fix for Undefined Behaviour */
+	/* see https://stackoverflow.com/q/52628773/3691554 */
+	/* this needs to be done on the hexchat side */
+	if (strcmp(name, "Close Context") == 0) {
+		g_slist_foreach(plugin_list, &check_and_invalidate, sess);
+	}
+
+	return i;
 }
 
 int
