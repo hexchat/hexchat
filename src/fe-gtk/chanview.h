@@ -36,6 +36,7 @@ GtkWidget *chanview_get_box (chanview *cv);
 void chanview_move_focus (chanview *cv, gboolean relative, int num);
 GtkOrientation chanview_get_orientation (chanview *cv);
 void chanview_set_orientation (chanview *cv, gboolean vertical);
+void chanview_queue_draw (chanview *cv);
 
 int chan_get_tag (chan *ch);
 void *chan_get_userdata (chan *ch);
