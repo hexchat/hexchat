@@ -193,6 +193,11 @@ static const struct defaultserver def[] =
 #endif
 	{0,			"irc.globalgamers.net"},
 
+#ifdef USE_OPENSSL
+	{"hackint", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.hackint.org"},
+#endif
+
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
 
