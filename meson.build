@@ -1,6 +1,6 @@
 project('hexchat', 'c',
   version: '2.14.2',
-  meson_version: '>= 0.40.0',
+  meson_version: '>= 0.46.0',
   default_options: [
     'c_std=gnu89',
     'buildtype=debugoptimized',
