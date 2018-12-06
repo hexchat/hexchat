@@ -281,6 +281,7 @@ def _on_say_command(word, word_eol, userdata):
         python = ffi.string(word_eol[1])
         lib.hexchat_print(lib.ph, b'>>> ' + python)
         exec_in_interp(__decode(python))
+        return 1
     return 0
 
 
