@@ -9,7 +9,11 @@ import signal
 import site
 import traceback
 import weakref
-from io import StringIO
+
+if sys.version_info < (3, 0):
+    from io import BytesIO as HelpEater
+else:
+    from io import StringIO as HelpEater
 
 from _hexchat_embedded import ffi, lib
 
@@ -476,7 +480,7 @@ def _on_plugin_init(plugin_name, plugin_desc, plugin_version, arg, libdir):
     hexchat_stdout = Stdout()
     sys.stdout = hexchat_stdout
     sys.stderr = hexchat_stdout
-    pydoc.help = pydoc.Helper(StringIO(), StringIO())
+    pydoc.help = pydoc.Helper(HelpEater(), HelpEater())
 
     lib.hexchat_hook_command(lib.ph, b'', 0, lib._on_say_command, ffi.NULL, ffi.NULL)
     lib.hexchat_hook_command(lib.ph, b'LOAD', 0, lib._on_load_command, ffi.NULL, ffi.NULL)
