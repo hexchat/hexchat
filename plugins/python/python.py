@@ -368,13 +368,8 @@ def list_plugins():
     ]
 
     for row in tbl:
-        lib.hexchat_print(
-            lib.ph,
-            b' '.join(
-                item.ljust(column_sizes[i])
-                for i, item in enumerate(row)
-            )
-        )
+        lib.hexchat_print(lib.ph, b' '.join(item.ljust(column_sizes[i])
+                                            for i, item in enumerate(row)))
 
     lib.hexchat_print(lib.ph, b'')
 
