@@ -349,15 +349,33 @@ def list_plugins():
         lib.hexchat_print(lib.ph, b'No python modules loaded')
         return
 
-    lib.hexchat_print(lib.ph, b'Name         Version  Filename             Description')
-    lib.hexchat_print(lib.ph, b'----         -------  --------             -----------')
+    tbl_headers = [b'Name', b'Version', b'Filename', b'Description']
+    tbl = [
+        tbl_headers,
+        [(b'-' * len(s)) for s in tbl_headers]
+    ]
+
     for plugin in plugins:
         basename = os.path.basename(plugin.filename).encode()
         name = plugin.name.encode()
         version = plugin.version.encode() if plugin.version else b'<none>'
         description = plugin.description.encode() if plugin.description else b'<none>'
-        string = b'%-12s %-8s %-20s %-10s' %(name, version, basename, description)
-        lib.hexchat_print(lib.ph, string)
+        tbl.append((name, version, basename, description))
+
+    column_sizes = [
+        max(len(item) for item in column)
+        for column in zip(*tbl)
+    ]
+
+    for row in tbl:
+        lib.hexchat_print(
+            lib.ph,
+            b' '.join(
+                item.ljust(column_sizes[i])
+                for i, item in enumerate(row)
+            )
+        )
+
     lib.hexchat_print(lib.ph, b'')
 
 
