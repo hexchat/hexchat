@@ -10,6 +10,9 @@ import traceback
 import weakref
 from _hexchat_embedded import ffi, lib
 
+if not hasattr(sys, 'argv'):
+    sys.argv = ['<hexchat>']
+
 VERSION = b'2.0'  # Sync with hexchat.__version__
 PLUGIN_NAME = ffi.new('char[]', b'Python')
 PLUGIN_DESC = ffi.new('char[]', b'Python %d.%d scripting interface'
