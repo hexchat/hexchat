@@ -1,6 +1,7 @@
-from contextlib import contextmanager
 import inspect
 import sys
+from contextlib import contextmanager
+
 from _hexchat_embedded import ffi, lib
 
 __all__ = [
@@ -40,13 +41,15 @@ def __get_current_plugin():
     while '__plugin' not in frame.f_globals:
         frame = frame.f_back
         assert frame is not None
+
     return frame.f_globals['__plugin']
 
 
 # Keeping API compat
-if sys.version_info[0] is 2:
+if sys.version_info[0] == 2:
     def __decode(string):
         return string
+
 else:
     def __decode(string):
         return string.decode()
@@ -64,16 +67,18 @@ def emit_print(event_name, *args, **kwargs):
         arg = args[i].encode() if len(args) > i else b''
         cstring = ffi.new('char[]', arg)
         cargs.append(cstring)
-    if time is 0:
+
+    if time == 0:
         return lib.hexchat_emit_print(lib.ph, event_name.encode(), *cargs)
-    else:
-        attrs = lib.hexchat_event_attrs_create(lib.ph)
-        attrs.server_time_utc = time
-        ret = lib.hexchat_emit_print(lib.ph, attrs, event_name.encode(), *cargs)
-        lib.hexchat_event_attrs_free(lib.ph, attrs)
-        return ret
+
+    attrs = lib.hexchat_event_attrs_create(lib.ph)
+    attrs.server_time_utc = time
+    ret = lib.hexchat_emit_print(lib.ph, attrs, event_name.encode(), *cargs)
+    lib.hexchat_event_attrs_free(lib.ph, attrs)
+    return ret
 
 
+# TODO: this shadows itself. command should be changed to cmd
 def command(command):
     lib.hexchat_command(lib.ph, command.encode())
 
@@ -97,21 +102,24 @@ def get_info(name):
         # Surely there is a less dumb way?
         ptr = repr(ret).rsplit(' ', 1)[1][:-1]
         return ptr
+
     return __decode(ffi.string(ret))
 
 
 def get_prefs(name):
     string_out = ffi.new('char**')
     int_out = ffi.new('int*')
-    type = lib.hexchat_get_prefs(lib.ph, name.encode(), string_out, int_out)
-    if type is 0:
+    _type = lib.hexchat_get_prefs(lib.ph, name.encode(), string_out, int_out)
+    if _type == 0:
         return None
-    elif type is 1:
+
+    if _type == 1:
         return __decode(ffi.string(string_out[0]))
-    elif type is 2 or type is 3:  # XXX: 3 should be a bool, but keeps API
+
+    if _type in (2, 3):  # XXX: 3 should be a bool, but keeps API
         return int_out[0]
-    else:
-        assert False
+
+    raise AssertionError('Out of bounds pref storage')
 
 
 def __cstrarray_to_list(arr):
@@ -120,6 +128,7 @@ def __cstrarray_to_list(arr):
     while arr[i] != ffi.NULL:
         ret.append(ffi.string(arr[i]))
         i += 1
+
     return ret
 
 
@@ -127,8 +136,7 @@ __FIELD_CACHE = {}
 
 
 def __get_fields(name):
-    return __FIELD_CACHE.setdefault(name,
-                                    __cstrarray_to_list(lib.hexchat_list_fields(lib.ph, name)))
+    return __FIELD_CACHE.setdefault(name, __cstrarray_to_list(lib.hexchat_list_fields(lib.ph, name)))
 
 
 __FIELD_PROPERTY_CACHE = {}
@@ -154,6 +162,7 @@ class ListItem:
 if sys.version_info[0] == 2:
     def get_getter(name):
         return ord(name[0])
+
 else:
     def get_getter(name):
         return name[0]
@@ -179,6 +188,7 @@ def get_list(name):
         string = lib.hexchat_list_str(lib.ph, list_, field)
         if string != ffi.NULL:
             return __decode(ffi.string(string))
+
         return ''
 
     def ptr_getter(field):
@@ -186,6 +196,7 @@ def get_list(name):
             ptr = lib.hexchat_list_str(lib.ph, list_, field)
             ctx = ffi.cast('hexchat_context*', ptr)
             return Context(ctx)
+
         return None
 
     getters = {
@@ -195,25 +206,27 @@ def get_list(name):
         ord('p'): ptr_getter,
     }
 
-    while lib.hexchat_list_next(lib.ph, list_) is 1:
+    while lib.hexchat_list_next(lib.ph, list_) == 1:
         item = ListItem(orig_name)
-        for field in fields:
-            getter = getters.get(get_getter(field))
+        for _field in fields:
+            getter = getters.get(get_getter(_field))
             if getter is not None:
-                field_name = field[1:]
+                field_name = _field[1:]
                 setattr(item, __cached_decoded_str(field_name), getter(field_name))
+
         ret.append(item)
 
     lib.hexchat_list_free(lib.ph, list_)
     return ret
 
 
+# TODO: 'command' here shadows command above, and should be renamed to cmd
 def hook_command(command, callback, userdata=None, priority=PRI_NORM, help=None):
     plugin = __get_current_plugin()
     hook = plugin.add_hook(callback, userdata)
     handle = lib.hexchat_hook_command(lib.ph, command.encode(), priority, lib._on_command_hook,
-                                      help.encode() if help is not None else ffi.NULL,
-                                      hook.handle)
+                                      help.encode() if help is not None else ffi.NULL, hook.handle)
+
     hook.hexchat_hook = handle
     return id(hook)
 
@@ -221,8 +234,7 @@ def hook_command(command, callback, userdata=None, priority=PRI_NORM, help=None)
 def hook_print(name, callback, userdata=None, priority=PRI_NORM):
     plugin = __get_current_plugin()
     hook = plugin.add_hook(callback, userdata)
-    handle = lib.hexchat_hook_print(lib.ph, name.encode(), priority, lib._on_print_hook,
-                                    hook.handle)
+    handle = lib.hexchat_hook_print(lib.ph, name.encode(), priority, lib._on_print_hook, hook.handle)
     hook.hexchat_hook = handle
     return id(hook)
 
@@ -230,8 +242,7 @@ def hook_print(name, callback, userdata=None, priority=PRI_NORM):
 def hook_print_attrs(name, callback, userdata=None, priority=PRI_NORM):
     plugin = __get_current_plugin()
     hook = plugin.add_hook(callback, userdata)
-    handle = lib.hexchat_hook_print_attrs(lib.ph, name.encode(), priority, lib._on_print_attrs_hook,
-                                          hook.handle)
+    handle = lib.hexchat_hook_print_attrs(lib.ph, name.encode(), priority, lib._on_print_attrs_hook, hook.handle)
     hook.hexchat_hook = handle
     return id(hook)
 
@@ -239,8 +250,7 @@ def hook_print_attrs(name, callback, userdata=None, priority=PRI_NORM):
 def hook_server(name, callback, userdata=None, priority=PRI_NORM):
     plugin = __get_current_plugin()
     hook = plugin.add_hook(callback, userdata)
-    handle = lib.hexchat_hook_server(lib.ph, name.encode(), priority, lib._on_server_hook,
-                                     hook.handle)
+    handle = lib.hexchat_hook_server(lib.ph, name.encode(), priority, lib._on_server_hook, hook.handle)
     hook.hexchat_hook = handle
     return id(hook)
 
@@ -248,8 +258,7 @@ def hook_server(name, callback, userdata=None, priority=PRI_NORM):
 def hook_server_attrs(name, callback, userdata=None, priority=PRI_NORM):
     plugin = __get_current_plugin()
     hook = plugin.add_hook(callback, userdata)
-    handle = lib.hexchat_hook_server_attrs(lib.ph, name.encode(), priority, lib._on_server_attrs_hook,
-                                           hook.handle)
+    handle = lib.hexchat_hook_server_attrs(lib.ph, name.encode(), priority, lib._on_server_attrs_hook, hook.handle)
     hook.hexchat_hook = handle
     return id(hook)
 
@@ -276,17 +285,18 @@ def unhook(handle):
 def set_pluginpref(name, value):
     if isinstance(value, str):
         return bool(lib.hexchat_pluginpref_set_str(lib.ph, name.encode(), value.encode()))
-    elif isinstance(value, int):
+
+    if isinstance(value, int):
         return bool(lib.hexchat_pluginpref_set_int(lib.ph, name.encode(), value))
-    else:
-        # XXX: This should probably raise but this keeps API
-        return False
+
+    # XXX: This should probably raise but this keeps API
+    return False
 
 
 def get_pluginpref(name):
     name = name.encode()
     string_out = ffi.new('char[512]')
-    if lib.hexchat_pluginpref_get_str(lib.ph, name, string_out) is not 1:
+    if lib.hexchat_pluginpref_get_str(lib.ph, name, string_out) != 1:
         return None
 
     string = ffi.string(string_out)
@@ -308,8 +318,9 @@ def del_pluginpref(name):
 
 def list_pluginpref():
     prefs_str = ffi.new('char[4096]')
-    if lib.hexchat_pluginpref_list(lib.ph, prefs_str) is 1:
+    if lib.hexchat_pluginpref_list(lib.ph, prefs_str) == 1:
         return __decode(prefs_str).split(',')
+
     return []
 
 
@@ -320,6 +331,7 @@ class Context:
     def __eq__(self, value):
         if not isinstance(value, Context):
             return False
+
         return self._ctx == value._ctx
 
     @contextmanager
@@ -327,9 +339,9 @@ class Context:
         old_ctx = lib.hexchat_get_context(lib.ph)
         if not self.set():
             # XXX: Behavior change, previously used wrong context
-            lib.hexchat_print(lib.ph,
-                              b'Context object refers to closed context, ignoring call')
+            lib.hexchat_print(lib.ph, b'Context object refers to closed context, ignoring call')
             return
+
         yield
         lib.hexchat_set_context(lib.ph, old_ctx)
 
@@ -370,4 +382,5 @@ def find_context(server=None, channel=None):
     ctx = lib.hexchat_find_context(lib.ph, server, channel)
     if ctx == ffi.NULL:
         return None
+
     return Context(ctx)
