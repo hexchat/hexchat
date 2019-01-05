@@ -1557,6 +1557,27 @@ irc_inline (server *serv, char *buf, int len)
 
 	/* split line into words and words_to_end_of_line */
 	process_data_init (pdibuf, buf, word, word_eol, FALSE, FALSE);
+	// Ignore the prefix
+	char **trail = word_eol + 1;
+
+	// Iterate until the next element is NULL or {0, }
+	while (*trail && (*trail)[0] && (*trail)[0] != ':')
+		trail++;
+
+	if (*trail && (*trail)[0] == ':')
+		// Move the trail forward one character
+		(*trail)++;
+
+	// Ignore the prefix
+	trail = word + 1;
+
+	// Iterate until the next element is NULL or {0, }
+	while (*(trail + 1) && (*(trail + 1))[0])
+		trail++;
+
+	if (*trail && (*trail)[0] == ':')
+		// Move the trail
+		(*trail)++;
 
 	if (buf[0] == ':')
 	{
