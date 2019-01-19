@@ -49,6 +49,10 @@ config_h.set('GLIB_VERSION_MIN_REQUIRED', 'GLIB_VERSION_2_34')
 config_h.set('HAVE_MEMRCHR', cc.has_function('memrchr'))
 config_h.set('HAVE_STRINGS_H', cc.has_header('strings.h'))
 
+config_h.set_quoted('HEXCHATLIBDIR',
+  join_paths(get_option('prefix'), get_option('libdir'), 'hexchat/plugins')
+)
+
 if libssl_dep.found()
   config_h.set('HAVE_X509_GET_SIGNATURE_NID',
     cc.has_function('X509_get_signature_nid', dependencies: libssl_dep)

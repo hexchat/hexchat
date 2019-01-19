@@ -2,7 +2,7 @@ sudo: required
 services: docker
 before_install:
     - docker pull ubuntu:16.04
-    - docker run --privileged --cidfile=/tmp/cid ubuntu:16.04 /bin/sh -c 'apt-get update && apt-get install -y meson/xenial-backports libcanberra-dev libdbus-glib-1-dev libglib2.0-dev libgtk2.0-dev libluajit-5.1-dev libnotify-dev libpci-dev libperl-dev libproxy-dev libssl-dev python3-dev mono-devel desktop-file-utils'
+    - docker run --privileged --cidfile=/tmp/cid ubuntu:16.04 /bin/sh -c 'apt-get update && apt-get install -y meson/xenial-backports libcanberra-dev libdbus-glib-1-dev libglib2.0-dev libgtk2.0-dev libluajit-5.1-dev libnotify-dev libpci-dev libperl-dev libproxy-dev libssl-dev python3-dev python3-cffi mono-devel desktop-file-utils'
     - docker commit `cat /tmp/cid` hexchat/ubuntu-ci
     - rm -f /tmp/cid
 install:
