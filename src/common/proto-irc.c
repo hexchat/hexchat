@@ -714,7 +714,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 333:
-		inbound_topictime (serv, word[4], word[5], atol (word[6]), tags_data);
+		inbound_topictime (serv, word[4], word[5], atol (STRIP_COLON(word[6])), tags_data);
 		break;
 
 #if 0
@@ -726,7 +726,7 @@ process_numeric (session * sess, int n,
 #endif
 
 	case 341:						  /* INVITE ACK */
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], word[5],
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], STRIP_COLON(word[5]),
 									  serv->servername, NULL, 0, tags_data->timestamp);
 		break;
 
@@ -1142,7 +1142,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		{
 
 		case WORDL('A','C','C','O'):
-			inbound_account (serv, nick, word[3], tags_data);
+			inbound_account (serv, nick, STRIP_COLON(word[3]), tags_data);
 			return;
 
 		case WORDL('A', 'U', 'T', 'H'):
@@ -1150,7 +1150,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			return;
 
 		case WORDL('C', 'H', 'G', 'H'):
-			inbound_user_info (sess, NULL, word[3], word[4], NULL, nick, NULL,
+			inbound_user_info (sess, NULL, word[3], STRIP_COLON(word[4]), NULL, nick, NULL,
 							   NULL, 0xff, tags_data);
 			return;
 

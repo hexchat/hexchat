@@ -28,6 +28,8 @@
 		(time_t)0, /* timestamp */		\
 	}
 
+#define STRIP_COLON(s) (s)[0] == ':' ? (s)+1 : (s)
+
 /* Message tag information that might be passed along with a server message
  *
  * See http://ircv3.atheme.org/specification/capability-negotiation-3.1
