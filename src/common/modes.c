@@ -767,7 +767,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 				arg++;
 				// is this the last argument?
 				if (arg == num_args + 1)
-					argstr = STRIP_COLON(word[arg + offset]);
+					argstr = STRIP_COLON(word, word_eol, arg+offset);
 				else
 					argstr = word[arg + offset];
 			}

@@ -28,7 +28,7 @@
 		(time_t)0, /* timestamp */		\
 	}
 
-#define STRIP_COLON(s) (s)[0] == ':' ? (s)+1 : (s)
+#define STRIP_COLON(word, word_eol, idx) (word)[(idx)][0] == ':' ? (word_eol)[(idx)]+1 : (word)[(idx)]
 
 /* Message tag information that might be passed along with a server message
  *
