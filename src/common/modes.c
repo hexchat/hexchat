@@ -735,6 +735,8 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 		if (!(*word[i + offset]))
 			break;
 		num_args++;
+		if (word[i + offset][0] == ':')
+			break;
 	}
 
 	/* count the number of modes (without the -/+ chars */
