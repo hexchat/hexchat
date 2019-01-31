@@ -767,11 +767,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 			if ((all_modes_have_args || mode_has_arg (serv, sign, *modes)) && arg < (num_args + 1))
 			{
 				arg++;
-				// is this the last argument?
-				if (arg == num_args + 1)
-					argstr = STRIP_COLON(word, word_eol, arg+offset);
-				else
-					argstr = word[arg + offset];
+				argstr = STRIP_COLON(word, word_eol, arg+offset);
 			}
 			handle_single_mode (&mr, sign, *modes, nick, chan,
 									  argstr, numeric_324 || prefs.hex_irc_raw_modes,
