@@ -1144,7 +1144,7 @@ usermenu_create (GtkWidget *menu)
 {
 	menu_create (menu, usermenu_list, "", FALSE);
 	menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);	/* sep */
-	menu_quick_item_with_callback (menu_usermenu, _("Edit This Menu" ELLIPSIS), menu, 0);
+	menu_quick_item_with_callback (menu_usermenu, _("Edit This Menu\xe2\x80\xa6"), menu, 0);
 }
 
 static void
@@ -1766,7 +1766,7 @@ static struct mymenu mymenu[] = {
 		{0, 0, 0, M_END, 0, 0, 0},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
-	{N_("_Load Plugin or Script" ELLIPSIS), menu_loadplugin, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 0, 1},
+	{N_("_Load Plugin or Script\xe2\x80\xa6"), menu_loadplugin, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},	/* 11 */
 #define DETACH_OFFSET (12)
 	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1},	/* 12 */
@@ -1801,7 +1801,7 @@ static struct mymenu mymenu[] = {
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
 	{N_("_Reconnect"), menu_reconnect, GTK_STOCK_CONNECT, M_MENUSTOCK, MENU_ID_RECONNECT, 0, 1},
-	{N_("_Join a Channel" ELLIPSIS), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
+	{N_("_Join a Channel\xe2\x80\xa6"), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
 	{N_("Channel _List"), menu_chanlist, GTK_STOCK_INDEX, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 #define AWAY_OFFSET (41)
@@ -1837,10 +1837,10 @@ static struct mymenu mymenu[] = {
 	{N_("Move to Marker Line"), menu_movetomarker, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_M},
 	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_KEY_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1},
-	{N_("Save Text" ELLIPSIS), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
+	{N_("Save Text\xe2\x80\xa6"), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
 #define SEARCH_OFFSET (70)
 	{N_("Search"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},
-		{N_("Search Text" ELLIPSIS), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_KEY_f},
+		{N_("Search Text\xe2\x80\xa6"), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_KEY_f},
 		{N_("Search Next"   ), menu_search_next, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_KEY_g},
 		{N_("Search Previous"   ), menu_search_prev, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_KEY_G},
 		{0, 0, 0, M_END, 0, 0, 0},
