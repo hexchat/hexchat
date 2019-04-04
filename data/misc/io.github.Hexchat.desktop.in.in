@@ -1,0 +1,19 @@
+[Desktop Entry]
+Name=HexChat
+GenericName=IRC Client
+Comment=Chat with other people online
+Keywords=IM;Chat;
+Exec=@exec_command@
+Icon=hexchat
+Terminal=false
+Type=Application
+Categories=GTK;Network;IRCClient;
+StartupNotify=true
+StartupWMClass=Hexchat
+X-GNOME-UsesNotifications=true
+MimeType=x-scheme-handler/irc;x-scheme-handler/ircs;
+Actions=SafeMode;
+
+[Desktop Action SafeMode]
+Name=Open Safe Mode
+Exec=hexchat --no-auto --no-plugins

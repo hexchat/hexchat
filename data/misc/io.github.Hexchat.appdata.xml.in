@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>io.github.Hexchat.desktop</id>
+  <name>HexChat</name>
+  <developer_name>HexChat</developer_name>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+  <translation type="gettext">hexchat</translation>
+  <summary>IRC Client</summary>
+  <description>
+    <p>HexChat is an easy to use yet extensible IRC Client. It allows you to securely join multiple networks and talk to users privately or in channels using a customizable interface. You can even transfer files.</p>
+    <p>HexChat supports features such as: DCC, SASL, proxies, spellcheck, alerts, logging, custom themes, and Python/Perl scripts.</p>
+  </description>
+  <url type="homepage">http://hexchat.github.io</url>
+  <url type="bugtracker">https://github.com/hexchat/hexchat</url>
+  <url type="donation">https://goo.gl/jESZvU</url>
+  <url type="help">https://hexchat.readthedocs.io/en/latest/</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>http://i.imgur.com/tLMguQz.png</image>
+      <caption>Main Chat Window</caption>
+    </screenshot>
+  </screenshots>
+  <provides>
+    <!-- Renamed from this -->
+    <id>hexchat.desktop</id>
+  </provides>
+  <releases>
+    <release date="2018-08-29" version="2.14.2">
+      <description>
+        <p>This is a minor release:</p>
+        <ul>
+          <li>Remove shift+click to close tab binding</li>
+          <li>Always unminimize when opening from tray</li>
+          <li>Fix some translations containing invalid text events</li>
+          <li>Fix sending server passwords starting with ":"</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-03-13" version="2.14.1">
+      <description>
+        <p>This is a very minor bug-fix release:</p>
+        <ul>
+          <li>Fix performance regression</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2018-03-10" version="2.14.0">
+      <description>
+        <p>This is largely a bug fix release though it has some large behind the scenes changes:</p>
+        <ul>
+          <li>Rename data files to use *io.github.Hexchat* name</li>
+          <li>Add option (irc_reconnect_rejoin) to disable auto-rejoin on reconnect</li>
+          <li>Add ability to set custom tray icon separate of app icon</li>
+          <li>Fix Enchant 2.0+ support</li>
+          <li>Fix input box theming with Adwaita-dark</li>
+          <li>Fix custom sounds not respecting omit if away option</li>
+          <li>Fix detecting if a tray doesn't exist on x11</li>
+          <li>Fix cutting off ctcp text after ending \01</li>
+          <li>Fix /ignore not accepting full hosts</li>
+          <li>Fix characters getting cut off when their width changes</li>
+          <li>Fix various possible crashes</li>
+          <li>Change preference window to be scroll-able</li>
+          <li>Remove ctrl+w binding by default</li>
+          <li>doat: Fix channels with / in them</li>
+          <li>fishlim: Fix key exchange</li>
+          <li>fishlim: Fix building against LibreSSL</li>
+          <li>sysinfo: Fix pci.ids file not being found on some distros</li>
+          <li>sysinfo: Make libpci optional</li>
+          <li>lua: Avoid loading the same script multiple times</li>
+          <li>Update translations</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2016-12-10" version="2.12.4">
+      <description>
+        <p>This is another bug fix release:</p>
+        <ul>
+          <li>Fix issue with timers causing ping timeouts</li>
+          <li>Fix building against OpenSSL 1.1</li>
+          <li>Fix /exec output printing invalid utf8</li>
+          <li>Replace doat plugin with an internal command</li>
+          <li>Change how tab colors interact with plugins</li>
+          <li>Enable filtering the beep character by default</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2016-10-22" version="2.12.3">
+      <description>
+        <p>This is a minor bug fix release just cleaning up a few issues:</p>
+        <ul>
+          <li>Fix crash with bad translations</li>
+          <li>Add new mhop command</li>
+          <li>Change ping timeout to 60 by default</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+  <kudos>
+    <kudo>UserDocs</kudo>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>Notifications</kudo>
+  </kudos>
+  <update_contact>tingping_at_fedoraproject.org</update_contact>
+</component>

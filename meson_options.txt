@@ -1,0 +1,68 @@
+option('with-gtk', type: 'boolean',
+  description: 'Main graphical interface'
+)
+option('with-text', type: 'boolean', value: false,
+  description: 'Text interface (not generally useful)'
+)
+option('with-ssl', type: 'boolean',
+  description: 'Support for TLS connections, requires openssl'
+)
+option('with-plugin', type: 'boolean',
+  description: 'Support for loadable plugins'
+)
+option('with-dbus', type: 'boolean',
+  description: 'Support used for single-instance and scripting interface, Unix only'
+)
+option('with-libproxy', type: 'boolean',
+  description: 'Support for getting proxy information, Unix only'
+)
+option('with-libnotify', type: 'boolean',
+  description: 'Support for freedesktop notifications, Unix only'
+)
+option('with-libcanberra', type: 'boolean',
+  description: 'Support for sound alerts, Unix only'
+)
+option('with-theme-manager', type: 'boolean', value: false,
+  description: 'Utility to help manage themes, requires mono/.net'
+)
+option('dbus-service-use-appid', type: 'boolean', value: false,
+  description: 'Rename dbus service to match app-id, required for Flatpak'
+)
+option('with-appdata', type: 'boolean',
+  description: 'Install appdata files for app stores'
+)
+
+# Plugins
+option('with-checksum', type: 'boolean',
+  description: 'DCC checksum plugin'
+)
+option('with-exec', type: 'boolean',
+  description: '/exec plugin, Windows only'
+)
+option('with-fishlim', type: 'boolean',
+  description: 'Fish encryption plugin, requires openssl'
+)
+option('with-lua', type: 'string', value: 'luajit',
+  description: 'Lua scripting plugin, value is pkg-config name to use or "false"'
+)
+option('with-perl', type: 'string', value: 'perl',
+  description: 'Perl scripting plugin, value is path to perl executable or "false"'
+)
+option('with-python', type: 'string', value: 'python3',
+  description: 'Python scripting plugin. value is pkg-config name to use or "false"'
+)
+option('with-sysinfo', type: 'boolean',
+  description: 'System information plugin, requires libpci on Unix'
+)
+option('with-upd', type: 'boolean',
+  description: 'Update plugin, Windows only'
+)
+option('with-winamp', type: 'boolean',
+  description: 'Winamp plugin, Windows only'
+)
+option('install-plugin-metainfo', type: 'boolean', value: false,
+  description: 'Installs metainfo files for enabled plugins, useful when distros create split packages'
+)
+option('with-perl-legacy-api', type: 'boolean', value: false,
+  description: 'Enables the legacy IRC perl module for compatibility with old scripts'
+)

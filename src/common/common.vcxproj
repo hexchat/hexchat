@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Configuration">
+    <PlatformToolset>v140</PlatformToolset>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cfgfiles.h" />
+    <ClInclude Include="chanopt.h" />
+    <ClInclude Include="ctcp.h" />
+    <ClInclude Include="dcc.h" />
+    <ClInclude Include="fe.h" />
+    <ClInclude Include="history.h" />
+    <ClInclude Include="ignore.h" />
+    <ClInclude Include="inbound.h" />
+    <ClInclude Include="inet.h" />
+    <ClInclude Include="$(HexChatLib)marshal.h" />
+    <ClInclude Include="modes.h" />
+    <ClInclude Include="network.h" />
+    <ClInclude Include="notify.h" />
+    <ClInclude Include="outbound.h" />
+    <ClInclude Include="plugin-identd.h" />
+    <ClInclude Include="plugin-timer.h" />
+    <ClInclude Include="plugin.h" />
+    <ClInclude Include="proto-irc.h" />
+    <ClInclude Include="server.h" />
+    <ClInclude Include="servlist.h" />
+    <ClInclude Include="ssl.h" />
+    <ClInclude Include="sysinfo\sysinfo.h" />
+    <ClInclude Include="text.h" />
+    <ClInclude Include="$(HexChatLib)textenums.h" />
+    <ClInclude Include="$(HexChatLib)textevents.h" />
+    <ClInclude Include="tree.h" />
+    <ClInclude Include="typedef.h" />
+    <ClInclude Include="url.h" />
+    <ClInclude Include="userlist.h" />
+    <ClInclude Include="util.h" />
+    <ClInclude Include="hexchat-plugin.h" />
+    <ClInclude Include="hexchat.h" />
+    <ClInclude Include="hexchatc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cfgfiles.c" />
+    <ClCompile Include="chanopt.c" />
+    <ClCompile Include="ctcp.c" />
+    <ClCompile Include="dcc.c" />
+    <ClCompile Include="history.c" />
+    <ClCompile Include="plugin-identd.c" />
+    <ClCompile Include="ignore.c" />
+    <ClCompile Include="inbound.c" />
+    <ClCompile Include="$(HexChatLib)marshal.c" />
+    <ClCompile Include="modes.c" />
+    <ClCompile Include="network.c" />
+    <ClCompile Include="notify.c" />
+    <ClCompile Include="outbound.c" />
+    <ClCompile Include="plugin-timer.c" />
+    <ClCompile Include="plugin.c" />
+    <ClCompile Include="proto-irc.c" />
+    <ClCompile Include="server.c" />
+    <ClCompile Include="servlist.c" />
+    <ClCompile Include="ssl.c" />
+    <ClCompile Include="sysinfo\win32\backend.c" />
+    <ClCompile Include="text.c" />
+    <ClCompile Include="tree.c" />
+    <ClCompile Include="url.c" />
+    <ClCompile Include="userlist.c" />
+    <ClCompile Include="util.c" />
+    <ClCompile Include="hexchat.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\win32\config.h.tt" />
+    <ClInclude Include="$(HexChatLib)config.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{87554B59-006C-4D94-9714-897B27067BA3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>common</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="..\..\win32\hexchat.props" />
+  <PropertyGroup>
+    <OutDir>$(HexChatLib)</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(HexChatLib);$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_LIB;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(HexChatLib);$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ItemDefinitionGroup>
+    <PreBuildEvent>
+      <Command><![CDATA[
+SET SOLUTIONDIR=$(SolutionDir)..\
+"$(Python3Path)\python.exe" $(ProjectDir)make-te.py "$(ProjectDir)textevents.in" "$(HexChatLib)textevents.h" "$(HexChatLib)textenums.h"
+powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\win32\config.h.tt" "$(HexChatLib)config.h"
+"$(Python3Path)\python.exe" "$(DepsRoot)\bin\glib-genmarshal" --prefix=_hexchat_marshal --header "$(ProjectDir)marshalers.list" --output "$(HexChatLib)marshal.h"
+"$(Python3Path)\python.exe" "$(DepsRoot)\bin\glib-genmarshal" --prefix=_hexchat_marshal --body "$(ProjectDir)marshalers.list" --output "$(HexChatLib)marshal.c"
+      ]]></Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+</Project>

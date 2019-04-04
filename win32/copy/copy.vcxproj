@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Configuration">
+    <PlatformToolset>v140</PlatformToolset>
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C9B735E4-75BC-45AC-A5E3-39A6D076F912}</ProjectGuid>
+    <RootNamespace>copy</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="..\hexchat.props" />
+  <ItemGroup>
+    <None Include="$(DepsRoot)\bin\cert.pem" />
+    <None Include="$(DepsRoot)\bin\atk-1.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\cairo.dll" />
+    <None Include="$(DepsRoot)\bin\freetype.dll" />
+    <None Include="$(DepsRoot)\bin\fribidi-0.dll" />
+    <None Include="$(DepsRoot)\bin\fontconfig.dll" />
+    <None Include="$(DepsRoot)\bin\gdk_pixbuf-2.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\gdk-win32-2.0.dll" />
+    <None Include="$(DepsRoot)\bin\gio-2.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\glib-2.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\gmodule-2.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\gobject-2.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\gspawn-win$(PlatformArchitecture)-helper.exe" />
+    <None Include="$(DepsRoot)\bin\gspawn-win$(PlatformArchitecture)-helper-console.exe" />
+    <None Include="$(DepsRoot)\bin\gthread-2.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\gtk-win32-2.0.dll" />
+    <None Include="$(DepsRoot)\bin\iconv.dll" />
+    <None Include="$(DepsRoot)\bin\libeay32.dll" />
+    <None Include="$(DepsRoot)\bin\libenchant.dll" />
+    <None Include="$(DepsRoot)\bin\ffi-7.dll" />
+    <None Include="$(DepsRoot)\bin\intl.dll" />
+    <None Include="$(DepsRoot)\bin\libpng16.dll" />
+    <None Include="$(DepsRoot)\bin\libxml2.dll" />
+    <None Include="$(DepsRoot)\bin\pango-1.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\pangocairo-1.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\pangoft2-1.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\pangowin32-1.0-0.dll" />
+    <None Include="$(DepsRoot)\bin\ssleay32.dll" />
+    <None Include="$(DepsRoot)\bin\zlib1.dll" />
+    <None Include="$(WinSparklePath)\WinSparkle.dll" />
+    <None Include="$(HexChatBin)thememan.exe" />
+    <None Include="changelog.url" />
+    <None Include="readme.url" />
+
+    <None Include="$(DepsRoot)\bin\lua51.dll" />
+    <None Include="$(DepsRoot)\bin\girepository-1.0-1.dll" />
+    <LuaLib Include="$(DepsRoot)\lib\lua\**\*.dll" />
+    <LuaShare Include="$(DepsRoot)\share\lua\*.lua" />
+    <LuaShare Include="$(DepsRoot)\share\lua\**\*.lua" />
+    <LuaShare Include="$(DepsRoot)\share\lua\**\**\*.lua" />
+    <Typelib Include="$(DepsRoot)\lib\girepository-1.0\*.typelib" />
+    <None Include="$(Python3Path)\Lib\site-packages\_cffi_backend.*.pyd" />
+    <None Include="$(Python2Path)\Lib\site-packages\_cffi_backend.pyd" />
+
+    <Engines Include="$(DepsRoot)\lib\gtk-2.0\i686-pc-vs14\engines\**\*" />
+
+    <FontConfig Include="$(DepsRoot)\etc\fonts\*"/>
+
+    <Share Include="share\**\*" />
+
+    <DepsRootDocs Include="$(DepsRoot)\share\doc\**\*" />
+
+    <Locale Include="$(HexChatBin)locale\**\*;$(DepsRoot)\share\locale\**\*" />
+
+    <MSWindowsTheme Include="$(DepsRoot)\share\themes\MS-Windows\**\*" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="Build">
+    <Copy SourceFiles="@(None)" DestinationFolder="$(HexChatRel)" />
+    <Copy SourceFiles="@(FontConfig)" DestinationFolder="$(HexChatRel)\etc\fonts" />
+    <Copy SourceFiles="@(Engines)" DestinationFiles="@(Engines->'$(HexChatRel)\lib\gtk-2.0\i686-pc-vs14\engines\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(Share)" DestinationFiles="@(Share->'$(HexChatRel)\share\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="..\..\COPYING" DestinationFolder="$(HexChatRel)\share\doc\hexchat" />
+    <Copy SourceFiles="$(WinSparklePath)\COPYING" DestinationFolder="$(HexChatRel)\share\doc\WinSparkle" />
+    <Copy SourceFiles="$(DepsRoot)\lib\enchant\libenchant_myspell.dll" DestinationFolder="$(HexChatRel)\lib\enchant" />
+    <Copy SourceFiles="@(Locale)" DestinationFiles="@(Locale->'$(HexChatRel)\share\locale\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(MSWindowsTheme)" DestinationFiles="@(MSWindowsTheme->'$(HexChatRel)\share\themes\MS-Windows\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(LuaShare)" DestinationFiles="@(LuaShare->'$(HexChatRel)\share\lua\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(LuaLib)" DestinationFiles="@(LuaLib->'$(HexChatRel)\lib\lua\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(Typelib)" DestinationFiles="@(Typelib->'$(HexChatRel)\lib\girepository-1.0\%(Filename)%(Extension)')" />
+    <Copy SourceFiles="..\..\plugins\python\xchat.py" DestinationFolder="$(HexChatRel)\python" />
+    <Copy SourceFiles="..\..\plugins\python\hexchat.py" DestinationFolder="$(HexChatRel)\python" />
+    <Copy SourceFiles="..\..\plugins\python\_hexchat.py" DestinationFolder="$(HexChatRel)\python" />
+
+    <WriteLinesToFile File="$(HexChatRel)portable-mode" Lines="2" Overwrite="true" />
+
+    <Copy SourceFiles="@(DepsRootDocs)" DestinationFiles="@(DepsRootDocs->'$(HexChatRel)\share\doc\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+</Project>

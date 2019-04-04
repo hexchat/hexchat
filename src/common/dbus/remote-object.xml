@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<node name="/">
+
+  <interface name="org.hexchat.connection">
+    <method name="Connect">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+      <arg type="s" name="filename" direction="in"/>
+      <arg type="s" name="name" direction="in"/>
+      <arg type="s" name="desc" direction="in"/>
+      <arg type="s" name="version" direction="in"/>
+      <arg type="s" name="path" direction="out"/>
+    </method>  
+    <method name="Disconnect">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+    </method>
+  </interface>
+
+  <interface name="org.hexchat.plugin">
+    <method name="Command">
+      <arg type="s" name="command" direction="in"/>
+    </method>
+    <method name="Print">
+      <arg type="s" name="text" direction="in"/>
+    </method>
+    <method name="FindContext">
+      <arg type="s" name="server" direction="in"/>
+      <arg type="s" name="channel" direction="in"/>
+      <arg type="u" name="ret_id" direction="out"/>
+    </method>
+    <method name="GetContext">
+      <arg type="u" name="ret_id" direction="out"/>
+    </method>
+    <method name="SetContext">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="b" name="ret" direction="out"/>
+    </method>
+    <method name="GetInfo">
+      <arg type="s" name="id" direction="in"/>
+      <arg type="s" name="ret_info" direction="out"/>
+    </method>
+    <method name="GetPrefs">
+      <arg type="s" name="name" direction="in"/>
+      <arg type="i" name="ret_type" direction="out"/>
+      <arg type="s" name="ret_str" direction="out"/>
+      <arg type="i" name="ret_int" direction="out"/>
+    </method>
+    <method name="HookCommand">
+      <arg type="s" name="name" direction="in"/>
+      <arg type="i" name="priority" direction="in"/>
+      <arg type="s" name="help_text" direction="in"/>
+      <arg type="i" name="return_value" direction="in"/>
+      <arg type="u" name="ret_id" direction="out"/>
+    </method>
+    <method name="HookServer">
+      <arg type="s" name="name" direction="in"/>
+      <arg type="i" name="priority" direction="in"/>
+      <arg type="i" name="return_value" direction="in"/>
+      <arg type="u" name="ret_id" direction="out"/>
+    </method>
+    <method name="HookPrint">
+      <arg type="s" name="name" direction="in"/>
+      <arg type="i" name="priority" direction="in"/>
+      <arg type="i" name="return_value" direction="in"/>
+      <arg type="u" name="ret_id" direction="out"/>
+    </method>
+    <method name="Unhook">
+      <arg type="u" name="id" direction="in"/>
+    </method>
+    <method name="ListGet">
+      <arg type="s" name="name" direction="in"/>
+      <arg type="u" name="ret_id" direction="out"/>
+    </method>
+    <method name="ListNext">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="b" name="ret" direction="out"/>
+    </method>
+    <method name="ListStr">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="s" name="name" direction="in"/>
+      <arg type="s" name="ret_str" direction="out"/>
+    </method>
+    <method name="ListInt">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="s" name="name" direction="in"/>
+      <arg type="i" name="ret_int" direction="out"/>
+    </method>
+    <method name="ListTime">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="s" name="name" direction="in"/>
+      <arg type="t" name="ret_time" direction="out"/>
+    </method>
+    <method name="ListFields">
+      <arg type="s" name="name" direction="in"/>
+      <arg type="as" name="ret" direction="out"/>
+    </method>
+    <method name="ListFree">
+      <arg type="u" name="id" direction="in"/>
+    </method>
+    <method name="EmitPrint">
+      <arg type="s" name="event_name" direction="in"/>
+      <arg type="as" name="args" direction="in"/>
+      <arg type="b" name="ret" direction="out"/>
+    </method>
+    <method name="Nickcmp">
+      <arg type="s" name="nick1" direction="in"/>
+      <arg type="s" name="nick2" direction="in"/>
+      <arg type="i" name="ret" direction="out"/>
+    </method>
+    <method name="Strip">
+      <arg type="s" name="str" direction="in"/>
+      <arg type="i" name="len" direction="in"/>
+      <arg type="i" name="flag" direction="in"/>
+      <arg type="s" name="ret_str" direction="out"/>
+    </method>
+    <method name="SendModes">
+      <arg type="as" name="targets" direction="in"/>
+      <arg type="i" name="modes_per_line" direction="in"/>
+      <arg type="y" name="sign" direction="in"/>
+      <arg type="y" name="mode" direction="in"/>
+    </method>
+
+    <signal name="CommandSignal">
+      <arg type="as" name="word"/>
+      <arg type="as" name="word_eol"/>
+      <arg type="u" name="hook_id"/>
+      <arg type="u" name="context_id"/>
+    </signal>
+    <signal name="ServerSignal">
+      <arg type="as" name="word"/>
+      <arg type="as" name="word_eol"/>
+      <arg type="u" name="hook_id"/>
+      <arg type="u" name="context_id"/>
+    </signal>
+    <signal name="PrintSignal">
+      <arg type="as" name="word"/>
+      <arg type="u" name="hook_id"/>
+      <arg type="u" name="context_id"/>
+    </signal>
+    <signal name="UnloadSignal"/>
+  </interface>
+</node>

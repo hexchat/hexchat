@@ -1,0 +1,430 @@
+#define APPNAM "HexChat"
+#define APPVER "<#= [string]::Join('.', $versionParts) #>"
+; These are defined by our installer project at build time
+;#define APPARCH "x64"
+;#define PROJECTDIR "C:\...\hexchat\win32\installer\"
+
+;http://mitrich.net23.net/?/inno-download-plugin.html
+#include <idp.iss>
+
+[Setup]
+AppName=HexChat
+AppVersion={#APPVER}
+AppVerName=HexChat {#APPVER}
+AppPublisher=HexChat
+AppPublisherURL=http://hexchat.github.io
+AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
+AppSupportURL=https://github.com/hexchat/hexchat/issues
+AppUpdatesURL=http://hexchat.github.io/downloads.html
+LicenseFile=share\doc\hexchat\COPYING
+UninstallDisplayIcon={app}\hexchat.exe
+UninstallDisplayName=HexChat
+#if APPARCH == "x64"
+DefaultDirName={pf64}\HexChat
+#else
+DefaultDirName={pf32}\HexChat
+#endif
+DefaultGroupName=HexChat
+DisableProgramGroupPage=yes
+SolidCompression=yes
+Compression=lzma2/ultra64
+SourceDir=..\rel
+OutputDir=..
+#if APPARCH == "x64"
+OutputBaseFilename={#APPNAM} {#APPVER} x64
+#else
+OutputBaseFilename={#APPNAM} {#APPVER} x86
+#endif
+FlatComponentsList=no
+PrivilegesRequired=none
+ShowComponentSizes=no
+CreateUninstallRegKey=not IsTaskSelected('portable')
+Uninstallable=not IsTaskSelected('portable')
+#if APPARCH == "x64"
+ArchitecturesAllowed=x64
+ArchitecturesInstallIn64BitMode=x64
+#else
+ArchitecturesAllowed=x86 x64
+#endif
+MinVersion=6.1
+WizardImageFile={#PROJECTDIR}wizardimage.bmp
+WizardSmallImageFile={#PROJECTDIR}wizardsmallimage.bmp
+SetupIconFile={#PROJECTDIR}..\..\data\icons\hexchat.ico
+
+[Types]
+Name: "normal"; Description: "Normal Installation"
+Name: "minimal"; Description: "Minimal Installation"
+Name: "custom"; Description: "Custom Installation"; Flags: iscustom
+
+[Components]
+Name: "libs"; Description: "HexChat"; Types: normal minimal custom; Flags: fixed
+Name: "xctext"; Description: "HexChat-Text"; Types: custom; Flags: disablenouninstallwarning
+Name: "xtm"; Description: "HexChat Theme Manager"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "translations"; Description: "Translations"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "spell"; Description: "Spelling Dictionaries"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins"; Description: "Plugins"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\checksum"; Description: "Checksum"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\exec"; Description: "Exec"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\lua"; Description: "Lua"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "langs\perl"; Description: "Perl (requires Perl 5.20)"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\python"; Description: "Python Interface"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\python\python2"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning exclusive
+Name: "langs\python\python3"; Description: "Python (requires Python 3.6)"; Types: custom; Flags: disablenouninstallwarning exclusive
+
+[Tasks]
+Name: portable; Description: "Yes"; GroupDescription: "Portable Mode: Stores configuration files within install directory for portable drives."; Flags: unchecked
+
+[Registry]
+Root: HKCR; Subkey: "irc"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Tasks: not portable
+Root: HKCR; Subkey: "irc"; ValueType: string; ValueName: ""; ValueData: "URL:IRC Protocol"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\hexchat.exe,0"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\hexchat.exe --url=""%1"""; Flags: uninsdeletevalue; Tasks: not portable
+
+Root: HKCR; Subkey: ".hct"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".hct"; ValueType: string; ValueName: ""; ValueData: "HexChat Theme File"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".hct"; ValueType: string; ValueName: "HexChat Theme File"; ValueData: ""; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".hct\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\thememan.exe,0"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".hct\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".hct\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\thememan.exe ""%1"""; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+
+[Run]
+Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
+Filename: "http://docs.hexchat.org/en/latest/changelog.html"; Description: "See what's changed"; Flags: shellexec runasoriginaluser postinstall skipifsilent unchecked
+Filename: "{tmp}\vcredist.exe"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing Visual C++ Redistributable"; Flags: skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\vcredist2013.exe"; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing Visual C++ Redistributable"; Flags: skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\dotnet4.exe"; Parameters: "/q /norestart"; StatusMsg: "Installing .NET"; Components: xtm; Flags: skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\perl.msi"; StatusMsg: "Installing Perl"; Components: langs\perl; Flags: shellexec skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\python.msi"; StatusMsg: "Installing Python"; Components: langs\python; Flags: shellexec skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\python.exe"; Parameters: "InstallAllUsers=1 PrependPath=1"; StatusMsg: "Installing Python"; Components: langs\python; Flags: shellexec skipifdoesntexist; Tasks: not portable
+Filename: "{tmp}\spelling-dicts.exe"; Parameters: "/verysilent"; StatusMsg: "Installing Spelling Dictionaries"; Components: spell; Flags: skipifdoesntexist; Tasks: not portable
+
+[Files]
+Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
+
+Source: "changelog.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "readme.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
+Source: "share\doc\*"; DestDir: "{app}\share\doc"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
+Source: "share\themes\MS-Windows\*"; DestDir: "{app}\share\themes\MS-Windows"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
+Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
+Source: "etc\fonts\*"; DestDir: "{app}\etc\fonts"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
+
+Source: "atk-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "cairo.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "freetype.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "fribidi-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "fontconfig.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gdk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gio-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "glib-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gmodule-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gobject-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#if APPARCH == "x64"
+Source: "gspawn-win64-helper.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gspawn-win64-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#else
+Source: "gspawn-win32-helper.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gspawn-win32-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#endif
+Source: "gthread-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gtk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "ffi-7.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "intl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libpng16.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pango-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangocairo-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangoft2-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangowin32-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+
+Source: "plugins\hcnotifications-winrt.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: libs
+
+Source: "lib\enchant\*"; DestDir: "{app}\lib\enchant"; Flags: ignoreversion; Components: libs
+
+Source: "lib\gtk-2.0\i686-pc-vs14\engines\*"; DestDir: "{app}\lib\gtk-2.0\i686-pc-vs14\engines"; Flags: ignoreversion; Components: libs
+
+Source: "girepository-1.0-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
+Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
+Source: "lib\lua\lgi\*.dll"; DestDir: "{app}\lib\lua\lgi"; Flags: ignoreversion; Components: langs\lua
+Source: "lib\girepository-1.0\*.typelib"; DestDir: "{app}\lib\girepository-1.0"; Flags: ignoreversion; Components: langs\lua
+Source: "share\lua\*.lua"; DestDir: "{app}\share\lua"; Flags: ignoreversion; Components: langs\lua
+Source: "share\lua\lgi\*.lua"; DestDir: "{app}\share\lua\lgi"; Flags: ignoreversion; Components: langs\lua
+Source: "share\lua\lgi\override\*.lua"; DestDir: "{app}\share\lua\lgi\override"; Flags: ignoreversion; Components: langs\lua
+Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
+
+Source: "plugins\hcchecksum.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\checksum
+Source: "plugins\hcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
+Source: "plugins\hcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim
+Source: "share\music.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\winamp
+Source: "share\download.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\upd
+Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
+Source: "WinSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugins\upd
+Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
+Source: "share\system.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\sysinfo
+Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
+Source: "plugins\hcperl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\perl
+
+Source: "python\*.py"; DestDir: "{app}\python"; Flags: ignoreversion; Components: langs\python
+
+Source: "plugins\hcpython2.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python\python2
+Source: "_cffi_backend.pyd"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\python\python2
+
+Source: "plugins\hcpython3.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python\python3
+Source: "_cffi_backend.cp3*.pyd"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\python\python3
+
+Source: "hexchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
+Source: "thememan.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xtm
+
+[Icons]
+Name: "{group}\HexChat"; Filename: "{app}\hexchat.exe"; AppUserModelID: "HexChat.Desktop.Notify"; Tasks: not portable
+Name: "{group}\HexChat Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable
+Name: "{group}\HexChat ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
+Name: "{group}\HexChat ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable
+Name: "{group}\HexChat Config Folder"; Filename: "%APPDATA%\HexChat\"; Tasks: not portable
+Name: "{group}\HexChat-Text"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
+Name: "{group}\HexChat Theme Manager"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
+Name: "{group}\Uninstall HexChat"; Filename: "{uninstallexe}"; Tasks: not portable
+
+[Messages]
+BeveledLabel= {#APPNAM}
+
+[Code]
+/////////////////////////////////////////////////////////////////////
+procedure InitializeWizard;
+begin
+	WizardForm.LicenseAcceptedRadio.Checked := True;
+
+	idpDownloadAfter(wpReady);
+end;
+
+/////////////////////////////////////////////////////////////////////
+function GetSysDir(): String;
+begin
+#if APPARCH != "x64"
+	if IsWin64 then
+		Result := ExpandConstant('{syswow64}\')
+	else
+		Result := ExpandConstant('{sys}\');
+#else
+	Result := ExpandConstant('{sys}\');
+#endif
+end;
+
+/////////////////////////////////////////////////////////////////////
+function CheckDLL(DLLName: String): Boolean;
+var
+	ResultCode: Integer;
+begin
+	if ExecAsOriginalUser(GetSysDir() + 'where.exe', '/Q ' + DLLName,
+						'', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+		Result := ResultCode = 0 // 0 is success
+	else
+		Result := False;
+end;
+
+/////////////////////////////////////////////////////////////////////
+function CheckVCInstall(): Boolean;
+begin
+	Result := FileExists(GetSysDir() + 'vcruntime140.dll');;
+end;
+
+function CheckVC2013Install(): Boolean;
+begin
+	Result := FileExists(GetSysDir() + 'msvcr120.dll');;
+end;
+
+
+/////////////////////////////////////////////////////////////////////
+function CheckSpellInstall(): Boolean;
+var
+	Version: TWindowsVersion;
+begin
+	GetWindowsVersionEx(Version);
+
+	// Windows 8 or greater has built in spell check.
+	if Version.NTPlatform and (Version.Major > 6) or ((Version.Major = 6) and (Version.Minor > 1)) then
+		Result := True
+	else
+		Result := DirExists(ExpandConstant('{localappdata}') + '\enchant\myspell');
+end;
+
+/////////////////////////////////////////////////////////////////////
+function CheckDotNetInstall(): Boolean;
+begin
+	Result := RegKeyExists(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v4');
+end;
+
+/////////////////////////////////////////////////////////////////////
+// Sets up the automatic downloads
+/////////////////////////////////////////////////////////////////////
+procedure CurPageChanged(CurPageID: Integer);
+var
+	REDIST: String;
+	REDIST_2013: String;
+	PERL: String;
+	PY2: String;
+	PY3: String;
+	DOTNET: String;
+	SPELL: String;
+begin
+  if(CurPageID = wpReady) then
+  begin
+    idpClearFiles;
+
+	if not IsTaskSelected('portable') then
+	begin
+
+#if APPARCH == "x64"
+		REDIST := 'https://dl.hexchat.net/misc/vcredist_2015_x64.exe';
+		REDIST_2013 := 'https://dl.hexchat.net/misc/vcredist_2013_x64.exe';
+		PERL := 'https://dl.hexchat.net/misc/perl/Perl%205.20.0%20x64.msi';
+		PY2 := 'https://www.python.org/ftp/python/2.7.14/python-2.7.14.amd64.msi';
+		PY3 := 'https://www.python.org/ftp/python/3.6.4/python-3.6.4-amd64.exe';
+#else
+		REDIST := 'https://dl.hexchat.net/misc/vcredist_2015_x86.exe';
+		REDIST_2013 := 'https://dl.hexchat.net/misc/vcredist_2013_x86.exe';
+		PERL := 'https://dl.hexchat.net/misc/perl/Perl%205.20.0%20x86.msi';
+		PY2 := 'https://www.python.org/ftp/python/2.7.14/python-2.7.14.msi';
+		PY3 := 'https://www.python.org/ftp/python/3.6.4/python-3.6.4.exe';
+#endif
+		DOTNET := 'https://dl.hexchat.net/misc/dotnet_40.exe';
+		SPELL := 'https://dl.hexchat.net/hexchat/HexChat%20Spelling%20Dictionaries%20r2.exe';
+
+		if not CheckVCInstall() then
+			idpAddFile(REDIST, ExpandConstant('{tmp}\vcredist.exe'));
+
+		if IsComponentSelected('xtm') and not CheckDotNetInstall() then
+			idpAddFile(DOTNET, ExpandConstant('{tmp}\dotnet4.exe'));
+
+		if IsComponentSelected('spell') and not CheckSpellInstall() then
+			idpAddFile(SPELL, ExpandConstant('{tmp}\spelling-dicts.exe'));
+
+		if not WizardSilent() then
+		begin
+			if IsComponentSelected('langs\perl') and not CheckDLL('perl520.dll') then
+			begin
+				if not CheckVC2013Install() then
+					idpAddFile(REDIST_2013, ExpandConstant('{tmp}\vcredist2013.exe'));
+
+				idpAddFile(PERL, ExpandConstant('{tmp}\perl.msi'))
+			end;
+
+			if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
+				idpAddFile(PY2, ExpandConstant('{tmp}\python.msi'));
+
+			if IsComponentSelected('langs\python\python3') and not CheckDLL('python36.dll') then
+				idpAddFile(PY3, ExpandConstant('{tmp}\python.exe'));
+		end;
+	end;
+  end;
+end;
+
+/////////////////////////////////////////////////////////////////////
+// Disable portable-mode if installing to program files
+/////////////////////////////////////////////////////////////////////
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+	if (CurPageID = wpSelectTasks) then
+		if (WizardForm.TasksList.Checked[1] = True) then
+#if APPARCH == "x64"
+			if (WizardDirValue() = ExpandConstant('{pf64}\HexChat')) then
+#else
+			if (WizardDirValue() = ExpandConstant('{pf32}\HexChat')) then
+#endif
+			begin
+				WizardForm.TasksList.Checked[1] := False
+				MsgBox('Portable mode is only intended for use on portable drives and has been disabled.', mbInformation, MB_OK)
+			end;
+
+	Result := True; // Always continue
+end;
+
+/////////////////////////////////////////////////////////////////////
+// these are required for x86->x64 or reverse upgrades
+/////////////////////////////////////////////////////////////////////
+function GetUninstallString(): String;
+var
+	sUnInstPath: String;
+	sUnInstallString: String;
+begin
+#if APPARCH == "x64"
+	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\HexChat (x64)_is1');
+#else
+	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\HexChat (x86)_is1');
+#endif
+	sUnInstallString := '';
+	if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
+		RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+	if not (sUnInstallString <> '') then
+		sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\HexChat_is1');
+				if not RegQueryStringValue(HKLM32, sUnInstPath, 'UninstallString', sUnInstallString) then
+					if not RegQueryStringValue(HKCU32, sUnInstPath, 'UninstallString', sUnInstallString) then
+						if IsWin64 then
+							if not RegQueryStringValue(HKLM64, sUnInstPath, 'UninstallString', sUnInstallString) then
+								RegQueryStringValue(HKCU64, sUnInstPath, 'UninstallString', sUnInstallString);
+	Result := sUnInstallString;
+end;
+
+/////////////////////////////////////////////////////////////////////
+function IsUpgrade(): Boolean;
+begin
+	Result := (GetUninstallString() <> '');
+end;
+
+
+/////////////////////////////////////////////////////////////////////
+function UnInstallOldVersion(): Integer;
+var
+	sUnInstallString: String;
+	iResultCode: Integer;
+begin
+// Return Values:
+// 1 - uninstall string is empty
+// 2 - error executing the UnInstallString
+// 3 - successfully executed the UnInstallString
+
+	// default return value
+	Result := 0;
+
+	// get the uninstall string of the old app
+	sUnInstallString := GetUninstallString();
+	if sUnInstallString <> '' then begin
+		sUnInstallString := RemoveQuotes(sUnInstallString);
+		if Exec(sUnInstallString, '/VERYSILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
+			Result := 3
+		else
+			Result := 2;
+	end else
+		Result := 1;
+end;
+
+/////////////////////////////////////////////////////////////////////
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+	if not (IsTaskSelected('portable')) then
+	begin
+		if (CurStep=ssInstall) then
+		begin
+			if (IsUpgrade()) then
+			begin
+				UnInstallOldVersion();
+			end;
+			DeleteFile(ExpandConstant('{app}\portable-mode'));
+		end;
+	end;
+end;

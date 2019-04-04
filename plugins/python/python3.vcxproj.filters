@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{f4eaf231-f095-42d3-8427-b2b6006cacb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{0166c0f9-7968-4a09-9ef5-a5179c7746eb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(IntDir)python.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="python.def">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="_hexchat.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="generate_plugin.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="hexchat.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="python.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="xchat.py">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

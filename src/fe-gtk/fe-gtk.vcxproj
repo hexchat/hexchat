@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Configuration">
+    <PlatformToolset>v140</PlatformToolset>
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E4BDB4C8-2335-415A-ACEE-BA88B19BFE82}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>fegtk</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <Import Project="..\..\win32\hexchat.props" />
+  <PropertyGroup>
+    <TargetName>hexchat</TargetName>
+    <OutDir>$(HexChatRel)</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\common;$(HexChatLib);$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(DepsRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(DepLibs);$(HexChatLib)common.lib;wbemuuid.lib;comsupp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_WINDOWS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\common;$(HexChatLib);$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(DepsRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(DepLibs);$(HexChatLib)common.lib;wbemuuid.lib;comsupp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <PreBuildEvent>
+      <Command><![CDATA[
+SET SOLUTIONDIR=$(SolutionDir)..\
+powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\src\fe-gtk\hexchat.rc.tt" "$(HexChatLib)hexchat.rc.utf8"
+REM hexchat.rc needs to be in UCS-2 or Resource Compiler will complain
+powershell "Get-Content -Encoding UTF8 '$(HexChatLib)hexchat.rc.utf8' | Out-File '$(HexChatLib)hexchat.rc'; Remove-Item '$(HexChatLib)hexchat.rc.utf8'"
+"$(DepsRoot)\bin\glib-compile-resources.exe" --generate-header --manual-register --sourcedir "$(DataDir)" --target "$(HexChatLib)resources.h" "$(DataDir)hexchat.gresource.xml"
+"$(DepsRoot)\bin\glib-compile-resources.exe" --generate-source --manual-register --sourcedir "$(DataDir)" --target "$(HexChatLib)resources.c" "$(DataDir)hexchat.gresource.xml"
+      ]]></Command>
+      <Message>Build hexchat.rc and gresource file</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="ascii.h" />
+    <ClInclude Include="banlist.h" />
+    <ClInclude Include="chanlist.h" />
+    <ClInclude Include="chanview.h" />
+    <ClInclude Include="custom-list.h" />
+    <ClInclude Include="editlist.h" />
+    <ClInclude Include="fe-gtk.h" />
+    <ClInclude Include="fkeys.h" />
+    <ClInclude Include="gtkutil.h" />
+    <ClInclude Include="joind.h" />
+    <ClInclude Include="maingui.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="notifications\notification-backend.h" />
+    <ClInclude Include="notifygui.h" />
+    <ClInclude Include="palette.h" />
+    <ClInclude Include="pixmaps.h" />
+    <ClInclude Include="plugin-tray.h" />
+    <ClInclude Include="plugingui.h" />
+    <ClInclude Include="rawlog.h" />
+    <ClInclude Include="servlistgui.h" />
+    <ClInclude Include="setup.h" />
+    <ClInclude Include="sexy-iso-codes.h" />
+    <ClInclude Include="sexy-spell-entry.h" />
+    <ClInclude Include="textgui.h" />
+    <ClInclude Include="urlgrab.h" />
+    <ClInclude Include="userlistgui.h" />
+    <ClInclude Include="xtext.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ascii.c" />
+    <ClCompile Include="banlist.c" />
+    <ClCompile Include="chanlist.c" />
+    <ClCompile Include="chanview.c" />
+    <ClCompile Include="custom-list.c" />
+    <ClCompile Include="dccgui.c" />
+    <ClCompile Include="editlist.c" />
+    <ClCompile Include="fe-gtk.c" />
+    <ClCompile Include="fkeys.c" />
+    <ClCompile Include="gtkutil.c" />
+    <ClCompile Include="ignoregui.c" />
+    <ClCompile Include="joind.c" />
+    <ClCompile Include="maingui.c" />
+    <ClCompile Include="menu.c" />
+    <ClCompile Include="notifications\notification-windows.c" />
+    <ClCompile Include="notifygui.c" />
+    <ClCompile Include="palette.c" />
+    <ClCompile Include="pixmaps.c" />
+    <ClCompile Include="plugin-notification.c" />
+    <ClCompile Include="plugin-tray.c" />
+    <ClCompile Include="plugingui.c" />
+    <ClCompile Include="rawlog.c" />
+    <ClCompile Include="$(HexChatLib)resources.c" />
+    <ClCompile Include="servlistgui.c" />
+    <ClCompile Include="setup.c" />
+    <ClCompile Include="sexy-iso-codes.c" />
+    <ClCompile Include="sexy-spell-entry.c" />
+    <ClCompile Include="textgui.c" />
+    <ClCompile Include="urlgrab.c" />
+    <ClCompile Include="userlistgui.c" />
+    <ClCompile Include="xtext.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\..\win32\hexchat.exe.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hexchat.rc.tt" />
+    <ResourceCompile Include="$(HexChatLib)hexchat.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\data\icons\hexchat.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\data\hexchat.gresource.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

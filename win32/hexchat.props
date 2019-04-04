@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup Label="UserMacros">
+
+		<!-- SPECIFY YOUR DEPENDENCY DIRECTORIES HERE -->
+
+		<YourDepsPath>c:\gtk-build\gtk</YourDepsPath>
+		<YourGendefPath>c:\gtk-build\gendef</YourGendefPath>
+		<YourPerlPath>c:\gtk-build\perl-5.20</YourPerlPath>
+		<YourPython2Path>c:\gtk-build\python-2.7</YourPython2Path>
+		<YourPython3Path>c:\gtk-build\python-3.6</YourPython3Path>
+		<YourWinSparklePath>c:\gtk-build\WinSparkle</YourWinSparklePath>
+
+		<!-- YOU SHOULDN'T TOUCH ANYTHING BELOW -->
+
+		<!-- G_DISABLE_DEPRECATED is unfeasible due to g_completion_* -->
+		<!-- must be buildable with GSEAL_ENABLE in the future, xtext, setup, and chanview-tabs stand in the way -->
+		<OwnFlags>GTK_DISABLE_DEPRECATED;GDK_PIXBUF_DISABLE_DEPRECATED;G_DISABLE_SINGLE_INCLUDES;GDK_PIXBUF_DISABLE_SINGLE_INCLUDES;GTK_DISABLE_SINGLE_INCLUDES;HAVE_STRTOULL;strtoull=_strtoui64;strcasecmp=stricmp;strncasecmp=strnicmp;__inline__=__inline</OwnFlags>
+		<!-- FIXME: Add ability to use debug builds -->
+		<DepsRoot>$(YourDepsPath)\$(PlatformName)\release</DepsRoot>
+		<GendefPath>$(YourGendefPath)</GendefPath>
+		<WinSparklePath>$(YourWinSparklePath)\$(PlatformName)</WinSparklePath>
+		<PerlPath>$(YourPerlPath)\$(PlatformName)</PerlPath>
+		<PerlLib>perl520</PerlLib>
+		<Python2Path>$(YourPython2Path)\$(PlatformName)</Python2Path>
+		<Python2Lib>python27</Python2Lib>
+		<Python2Output>hcpython2</Python2Output>
+		<Python3Path>$(YourPython3Path)\$(PlatformName)</Python3Path>
+		<Python3Lib>python36</Python3Lib>
+		<Python3Output>hcpython3</Python3Output>
+		<LuaInclude>$(DepsRoot)\include\luajit-2.1</LuaInclude>
+		<LuaOutput>hclua</LuaOutput>
+		<LuaLib>lua51</LuaLib>
+		<Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
+		<Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
+		<DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;intl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
+		<DataDir>$(SolutionDir)..\data\\</DataDir>
+		<HexChatBuild>$(SolutionDir)..\..\hexchat-build</HexChatBuild>
+		<HexChatBin>$(HexChatBuild)\$(PlatformName)\bin\</HexChatBin>
+		<HexChatObj>$(HexChatBuild)\$(PlatformName)\obj\</HexChatObj>
+		<HexChatLib>$(HexChatBuild)\$(PlatformName)\lib\</HexChatLib>
+		<HexChatPdb>$(HexChatBuild)\$(PlatformName)\pdb\</HexChatPdb>
+		<HexChatRel>$(HexChatBuild)\$(PlatformName)\rel\</HexChatRel>
+		<IsccPath>"$(MSBuildExtensionsPath32)\..\Inno Setup 5\iscc.exe"</IsccPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<LinkIncremental>false</LinkIncremental>
+		<IntDir>$(HexChatObj)$(ProjectName)\</IntDir>
+		<UseDebugLibraries>false</UseDebugLibraries>
+		<WholeProgramOptimization>true</WholeProgramOptimization>
+		<CharacterSet>MultiByte</CharacterSet>
+	</PropertyGroup>
+
+	<ItemDefinitionGroup>
+		<ClCompile>
+			<WarningLevel>Level3</WarningLevel>
+			<PrecompiledHeader>NotUsing</PrecompiledHeader>
+			<DisableSpecificWarnings>4996</DisableSpecificWarnings>
+			<AdditionalOptions>/d2Zi+ %(AdditionalOptions)</AdditionalOptions>
+			<WholeProgramOptimization>true</WholeProgramOptimization>
+			<!-- UNCOMMENT ONLY ONE -->
+			<!--Optimization>Disabled</Optimization-->
+			<Optimization>MaxSpeed</Optimization>
+			<!--Optimization>MinSpace</Optimization-->
+			<!--Optimization>Full</Optimization-->
+			<FunctionLevelLinking>true</FunctionLevelLinking>
+			<IntrinsicFunctions>true</IntrinsicFunctions>
+			<MultiProcessorCompilation>true</MultiProcessorCompilation>
+			<PreProcessorDefinitions>NTDDI_VERSION=NTDDI_WIN8;_WIN32_WINNT=_WIN32_WINNT_WIN8;%(PreProcessorDefinitions)</PreProcessorDefinitions>
+		</ClCompile>
+		<Lib>
+			<LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+		</Lib>
+		<Link>
+			<ImportLibrary>$(HexChatLib)$(TargetName).lib</ImportLibrary>
+			<ProgramDatabaseFile>$(HexChatPdb)$(TargetName).pdb</ProgramDatabaseFile>
+			<SubSystem>Windows</SubSystem>
+			<GenerateDebugInformation>Debug</GenerateDebugInformation>
+			<EnableCOMDATFolding>true</EnableCOMDATFolding>
+			<OptimizeReferences>true</OptimizeReferences>
+			<LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+		</Link>
+	</ItemDefinitionGroup>
+
+	<ItemGroup />
+</Project>
