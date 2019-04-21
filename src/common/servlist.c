@@ -166,9 +166,6 @@ static const struct defaultserver def[] =
 	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
 
-	{"Furnet", 0, 0, 0, 0, 0, TRUE},
-	{0,			"irc.furnet.org"},
-
 	{"GalaxyNet",	0},
 	{0,			"irc.galaxynet.org"},
 
