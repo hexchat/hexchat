@@ -2806,6 +2806,9 @@ hexchat_plugin_deinit(void)
 	xchatout_buffer = NULL;
 
 	if (interp_plugin) {
+		PyThreadState *tstate = ((PluginObject*)interp_plugin)->tstate;
+		PyThreadState_Swap(tstate);
+		Py_EndInterpreter(tstate);
 		Py_DECREF(interp_plugin);
 		interp_plugin = NULL;
 	}
