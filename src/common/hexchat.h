@@ -313,7 +313,6 @@ struct hexchatprefs
 
 	/* these are the private variables */
 	guint32 local_ip;
-	guint32 dcc_ip;
 
 	unsigned int wait_on_exit;	/* wait for logs to be flushed to disk IF we're connected */
 
@@ -482,6 +481,10 @@ typedef struct server
 	int proxy_sok4;
 	int proxy_sok6;
 	int id;					/* unique ID number (for plugin API) */
+
+	/* dcc_ip moved from haxchatprefs to make it per-server */
+	guint32 dcc_ip;
+
 #ifdef USE_OPENSSL
 	SSL_CTX *ctx;
 	SSL *ssl;

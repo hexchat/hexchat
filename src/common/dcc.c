@@ -1618,13 +1618,13 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 }
 
 guint32
-dcc_get_my_address (void)	/* the address we'll tell the other person */
+dcc_get_my_address (session *sess)	/* the address we'll tell the other person */
 {
 	struct hostent *dns_query;
 	guint32 addr = 0;
 
-	if (prefs.hex_dcc_ip_from_server && prefs.dcc_ip)
-		addr = prefs.dcc_ip;
+	if (prefs.hex_dcc_ip_from_server && sess->server->dcc_ip)
+		addr = sess->server->dcc_ip;
 	else if (prefs.hex_dcc_ip[0])
 	{
 	   dns_query = gethostbyname ((const char *) prefs.hex_dcc_ip);
@@ -1710,7 +1710,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 	/*if we have a dcc_ip, we use that, so the remote client can connect*/
 	/*else we try to take an address from hex_dcc_ip*/
 	/*if something goes wrong we tell the client to connect to our LAN ip*/
-	dcc->addr = dcc_get_my_address ();
+	dcc->addr = dcc_get_my_address (sess);
 
 	/*if nothing else worked we use the address we bound to*/
 	if (dcc->addr == 0)
