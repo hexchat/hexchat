@@ -482,7 +482,7 @@ typedef struct server
 	int proxy_sok6;
 	int id;					/* unique ID number (for plugin API) */
 
-	/* dcc_ip moved from haxchatprefs to make it per-server */
+	/* dcc_ip moved from hexchatprefs to make it per-server */
 	guint32 dcc_ip;
 
 #ifdef USE_OPENSSL
