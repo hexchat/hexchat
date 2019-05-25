@@ -84,7 +84,7 @@ char *fish_base64_encode(const char *message, int message_len) {
     char *end = NULL;
     char *msg = NULL;
 
-    if (message_len == 0)
+    if (message_len <= 0)
         return NULL;
 
     encoded = g_malloc(((message_len - 1) / 8) * 12 + 12 + 1); /* each 8-byte block becomes 12 bytes */
@@ -130,7 +130,7 @@ char *fish_base64_decode(const char *message, int *final_len) {
 
     message_len = strlen(message);
 
-    if (message_len == 0 || message_len % 12 != 0)
+    if (message_len <= 0 || message_len % 12 != 0)
         return NULL;
 
     *final_len = ((message_len - 1) / 12) * 8 + 8 + 1; /* Each 12 bytes becomes 8-byte block */
