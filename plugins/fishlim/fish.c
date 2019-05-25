@@ -29,6 +29,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <openssl/evp.h>
 #include <openssl/blowfish.h>
 
 #include "keystore.h"
@@ -60,100 +61,195 @@ static const signed char fish_unbase64[256] = {
     *((dest)++) = (source) & 0xFF; \
 } while (0);
 
+#define GET_LONG(dest, source) do { \
+    dest = ((uint8_t)*((source)++) << 24); \
+    dest |= ((uint8_t)*((source)++) << 16); \
+    dest |= ((uint8_t)*((source)++) << 8); \
+    dest |= (uint8_t)*((source)++); \
+} while (0);
 
-char *fish_encrypt(const char *key, size_t keylen, const char *message) {
-    BF_KEY bfkey;
-    size_t messagelen;
-    size_t i;
-    int j;
-    char *encrypted;
+
+/**
+ * Encode ECB FiSH Base64
+ *
+ * @param [in] message      Bytes to encode
+ * @param [in] message_len  Size of bytes to encode
+ * @return Array of char with encoded string
+ */
+char *fish_base64_encode(const char *message, int message_len) {
+    BF_LONG left = 0, right = 0;
+    int i, j;
+    char *encoded;
     char *end;
-    unsigned char bit;
-    unsigned char word;
-    unsigned char d;
-    BF_set_key(&bfkey, keylen, (const unsigned char*)key);
-    
-    messagelen = strlen(message);
-    if (messagelen == 0) return NULL;
-    encrypted = g_malloc(((messagelen - 1) / 8) * 12 + 12 + 1); /* each 8-byte block becomes 12 bytes */
-    end = encrypted;
-     
-    while (*message) {
-        /* Read 8 bytes (a Blowfish block) */
-        BF_LONG binary[2] = { 0, 0 };
-        unsigned char c;
-        for (i = 0; i < 8; i++) {
-            c = message[i];
-            binary[i >> 2] |= c << 8*(3 - (i&3));
-            if (c == '\0') break;
+    char *msg;
+
+    if (message_len == 0)
+        return NULL;
+
+    encoded = g_malloc(((message_len - 1) / 8) * 12 + 12 + 1); /* each 8-byte block becomes 12 bytes */
+    end = encoded;
+
+    for (j = 0; j < message_len; j += 8) {
+        msg = (char *) message;
+
+        GET_LONG(left, msg);
+        GET_LONG(right, msg);
+
+        for (i = 0; i < 6; ++i) {
+            *end++ = fish_base64[right & 0x3fu];
+            right = (right >> 6u);
         }
+
+        for (i = 0; i < 6; ++i) {
+            *end++ = fish_base64[left & 0x3fu];
+            left = (left >> 6u);
+        }
+
         message += 8;
-        
-        /* Encrypt block */
-        BF_encrypt(binary, &bfkey);
-        
-        /* Emit FiSH-BASE64 */
-        bit = 0;
-        word = 1;
-        for (j = 0; j < 12; j++) {
-            d = fish_base64[(binary[word] >> bit) & 63];
-            *(end++) = d;
-            bit += 6;
-            if (j == 5) {
-                bit = 0;
-                word = 0;
-            }
-        }
-        
-        /* Stop if a null terminator was found */
-        if (c == '\0') break;
     }
+
     *end = '\0';
-    return encrypted;
+    return encoded;
+}
+
+/**
+ * Decode ECB FiSH Base64
+ *
+ * @param [in] message     Base64 encoded string
+ * @param [out] final_len  Real length of message
+ * @return Array of char with decoded message
+ */
+char *fish_base64_decode(const char *message, int *final_len) {
+    BF_LONG left, right;
+    int i;
+    char *bytes;
+    char *msg;
+    char *byt;
+
+    *final_len = ((strlen(message) - 1) / 12) * 8 + 8 + 1; /* Each 12 bytes becomes 8-byte block */
+    (*final_len)--; /* We support binary data */
+
+    bytes = g_malloc(*final_len);
+    byt = bytes;
+
+    msg = (char *) message;
+
+    while (*msg) {
+        right = 0;
+        left = 0;
+        for (i = 0; i < 6; i++) right |= (uint8_t) fish_unbase64[*msg++] << (i * 6u);
+        for (i = 0; i < 6; i++) left |= (uint8_t) fish_unbase64[*msg++] << (i * 6u);
+        GET_BYTES(byt, left);
+        GET_BYTES(byt, right);
+    }
+
+    return bytes;
+}
+
+/**
+ * Encrypt or decrypt data with Blowfish cipher, support binary data.
+ *
+ * Good documentation for EVP:
+ *
+ * - https://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
+ *
+ * - https://stackoverflow.com/questions/5727646/what-is-the-length-parameter-of-aes-evp-decrypt
+ *
+ * - https://stackoverflow.com/questions/26345175/correct-way-to-free-allocate-the-context-in-the-openssl
+ *
+ * - https://stackoverflow.com/questions/29874150/working-with-evp-and-openssl-coding-in-c
+ *
+ * @param [in] plaintext        Bytes to encrypt or descrypt
+ * @param [in] plaintext_len    Size of plaintext
+ * @param [in] key              Bytes of key
+ * @param [in] keylen           Size of key
+ * @param [in] encode           1 or encrypt 0 for decrypt
+ * @param [out] ciphertext_len  The bytes writen
+ * @return Array of char with data crypted or uncrypted
+ */
+char *fish_cipher(const char *plaintext, int plaintext_len, const char *key, size_t keylen, int encode, int *ciphertext_len) {
+    EVP_CIPHER_CTX *ctx;
+    int bytes_written = 0;
+    unsigned char *ciphertext = NULL;
+    int block_size = 0;
+
+    /* Zero Padding */
+    block_size = plaintext_len;
+
+    if (block_size % 8 != 0) {
+        block_size = block_size + 8 - (block_size % 8);
+    }
+
+    ciphertext = (unsigned char *) g_malloc0(block_size);
+    memcpy(ciphertext, plaintext, plaintext_len);
+
+    /* Create and initialise the context */
+    if (!(ctx = EVP_CIPHER_CTX_new()))
+        return NULL;
+
+    /* Initialise the cipher operation only with mode  */
+    if (!EVP_CipherInit_ex(ctx, EVP_bf_ecb(), NULL, NULL, NULL, encode))
+        return NULL;
+
+    /* Set custom key length */
+    if (!EVP_CIPHER_CTX_set_key_length(ctx, keylen))
+        return NULL;
+
+    /* Finish the initiation the cipher operation */
+    if (1 != EVP_CipherInit_ex(ctx, NULL, NULL, (const unsigned char *) key, NULL, encode))
+        return NULL;
+
+    /* We will manage this */
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
+    /* Do cipher operation */
+    if (1 != EVP_CipherUpdate(ctx, ciphertext, &bytes_written, ciphertext, block_size))
+        return NULL;
+
+    *ciphertext_len = bytes_written;
+
+    /* Finalise the cipher. Further ciphertext bytes may be written at this stage */
+    if (1 != EVP_CipherFinal_ex(ctx, ciphertext + bytes_written, &bytes_written))
+        return NULL;
+
+    *ciphertext_len += bytes_written;
+
+    /* Clean up */
+    EVP_CIPHER_CTX_free(ctx);
+
+    return (char *) ciphertext;
+}
+
+
+char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len) {
+    int ciphertext_len = 0;
+    char *ciphertext = NULL;
+    char *b64 = NULL;
+
+    ciphertext = fish_cipher(message, message_len, key, keylen, 1, &ciphertext_len);
+    b64 = fish_base64_encode((const char *) ciphertext, ciphertext_len);
+    g_free(ciphertext);
+
+    return b64;
 }
 
 
 char *fish_decrypt(const char *key, size_t keylen, const char *data) {
-    BF_KEY bfkey;
-    size_t i;
-    char *decrypted;
-    char *end;
-    unsigned char bit;
-    unsigned char word;
-    unsigned char d;
-    BF_set_key(&bfkey, keylen, (const unsigned char*)key);
-    
-    decrypted = g_malloc(strlen(data) + 1);
-    end = decrypted;
-    
-    while (*data) {
-        /* Convert from FiSH-BASE64 */
-        BF_LONG binary[2] = { 0, 0 };
-        bit = 0;
-        word = 1;
-        for (i = 0; i < 12; i++) {
-            d = fish_unbase64[(const unsigned char)*(data++)];
-            if (d == IB) goto decrypt_end;
-            binary[word] |= (unsigned long)d << bit;
-            bit += 6;
-            if (i == 5) {
-                bit = 0;
-                word = 0;
-            }
-        }
-        
-        /* Decrypt block */
-        BF_decrypt(binary, &bfkey);
-        
-        /* Copy to buffer */
-        GET_BYTES(end, binary[0]);
-        GET_BYTES(end, binary[1]);
-    }
-    
-  decrypt_end:
-    *end = '\0';
-    return decrypted;
+    int ciphertext_len;
+    char *ciphertext;
+    char *plaintext;
+    char *plaintext_str;
+
+    ciphertext = fish_base64_decode(data, &ciphertext_len);
+    plaintext = fish_cipher(ciphertext, ciphertext_len, key, keylen, 0, &ciphertext_len);
+    plaintext_str = g_malloc0(ciphertext_len + 1);
+    memcpy(plaintext_str, plaintext, ciphertext_len);
+    g_free(ciphertext);
+    g_free(plaintext);
+
+    return plaintext_str;
 }
+
 
 /**
  * Encrypts a message (see fish_decrypt). The key is searched for in the
@@ -168,7 +264,7 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
     if (!key) return NULL;
     
     /* Encrypt */
-    encrypted = fish_encrypt(key, strlen(key), data);
+    encrypted = fish_encrypt(key, strlen(key), data, strlen(data));
     
     g_free(key);
     return encrypted;

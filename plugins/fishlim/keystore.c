@@ -204,7 +204,7 @@ gboolean keystore_store_key(const char *nick, const char *key) {
     password = get_keystore_password();
     if (password) {
         /* Encrypt the password */
-        encrypted = fish_encrypt(password, strlen(password), key);
+        encrypted = fish_encrypt(password, strlen(password), key, strlen(key));
         if (!encrypted) goto end;
         
         /* Prepend "+OK " */
