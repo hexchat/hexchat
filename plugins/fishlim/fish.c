@@ -77,14 +77,14 @@ static const signed char fish_unbase64[256] = {
  * @param [in] message_len  Size of bytes to encode
  * @return Array of char with encoded string
  */
-char *fish_base64_encode(const char *message, int message_len) {
+char *fish_base64_encode(const char *message, size_t message_len) {
     BF_LONG left = 0, right = 0;
     int i, j;
     char *encoded = NULL;
     char *end = NULL;
     char *msg = NULL;
 
-    if (message_len <= 0)
+    if (message_len == 0)
         return NULL;
 
     encoded = g_malloc(((message_len - 1) / 8) * 12 + 12 + 1); /* each 8-byte block becomes 12 bytes */
@@ -120,17 +120,17 @@ char *fish_base64_encode(const char *message, int message_len) {
  * @param [out] final_len  Real length of message
  * @return Array of char with decoded message
  */
-char *fish_base64_decode(const char *message, int *final_len) {
+char *fish_base64_decode(const char *message, size_t *final_len) {
     BF_LONG left, right;
     int i;
     char *bytes = NULL;
     char *msg = NULL;
     char *byt = NULL;
-    int message_len;
+    size_t message_len;
 
     message_len = strlen(message);
 
-    if (message_len <= 0 || message_len % 12 != 0)
+    if (message_len == 0 || message_len % 12 != 0 || strspn(message, fish_base64) != message_len)
         return NULL;
 
     *final_len = ((message_len - 1) / 12) * 8 + 8 + 1; /* Each 12 bytes becomes 8-byte block */
@@ -173,13 +173,13 @@ char *fish_base64_decode(const char *message, int *final_len) {
  * @param [out] ciphertext_len  The bytes writen
  * @return Array of char with data crypted or uncrypted
  */
-char *fish_cipher(const char *plaintext, int plaintext_len, const char *key, size_t keylen, int encode, int *ciphertext_len) {
+char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, size_t keylen, int encode, size_t *ciphertext_len) {
     EVP_CIPHER_CTX *ctx;
     int bytes_written = 0;
     unsigned char *ciphertext = NULL;
-    int block_size = 0;
+    size_t block_size = 0;
 
-    if(plaintext_len <= 0 || keylen <= 0 || encode < 0 || encode > 1)
+    if(plaintext_len == 0 || keylen == 0 || encode < 0 || encode > 1)
         return NULL;
 
     /* Zero Padding */
@@ -231,16 +231,16 @@ char *fish_cipher(const char *plaintext, int plaintext_len, const char *key, siz
 
 
 char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len) {
-    int ciphertext_len = 0;
+    size_t ciphertext_len = 0;
     char *ciphertext = NULL;
     char *b64 = NULL;
 
-    if(keylen <= 0 || message_len <= 0)
+    if(keylen == 0 || message_len == 0)
         return NULL;
 
     ciphertext = fish_cipher(message, message_len, key, keylen, 1, &ciphertext_len);
 
-    if(ciphertext == NULL || ciphertext_len <= 0)
+    if(ciphertext == NULL || ciphertext_len == 0)
         return NULL;
 
     b64 = fish_base64_encode((const char *) ciphertext, ciphertext_len);
@@ -254,23 +254,23 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t m
 
 
 char *fish_decrypt(const char *key, size_t keylen, const char *data) {
-    int ciphertext_len = 0;
+    size_t ciphertext_len = 0;
     char *ciphertext = NULL;
     char *plaintext = NULL;
     char *plaintext_str = NULL;
 
-    if(keylen <= 0 || strlen(data) <= 0)
+    if(keylen == 0 || strlen(data) == 0)
         return NULL;
 
     ciphertext = fish_base64_decode(data, &ciphertext_len);
 
-    if (ciphertext == NULL || ciphertext_len <= 0)
+    if (ciphertext == NULL || ciphertext_len == 0)
         return NULL;
 
     plaintext = fish_cipher(ciphertext, ciphertext_len, key, keylen, 0, &ciphertext_len);
     g_free(ciphertext);
 
-    if (ciphertext_len <= 0)
+    if (ciphertext_len == 0)
         return NULL;
 
     plaintext_str = g_malloc0(ciphertext_len + 1);
