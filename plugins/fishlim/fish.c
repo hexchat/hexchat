@@ -284,7 +284,7 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t m
 
     switch (mode) {
         case FISH_CBC_MODE:
-            base64_encode((const unsigned char *) ciphertext, ciphertext_len, &b64);
+            openssl_base64_encode((const unsigned char *) ciphertext, ciphertext_len, &b64);
             break;
 
         case FISH_ECB_MODE:
@@ -310,7 +310,7 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode) {
 
     switch (mode) {
         case FISH_CBC_MODE:
-            if (base64_decode(data, (unsigned char **) &ciphertext, &ciphertext_len) != 0)
+            if (openssl_base64_decode(data, (unsigned char **) &ciphertext, &ciphertext_len) != 0)
                 return NULL;
             break;
 

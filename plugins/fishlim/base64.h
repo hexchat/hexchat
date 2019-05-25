@@ -30,7 +30,7 @@
 
 #include <glib.h>
 
-int base64_encode(const unsigned char *buffer, size_t length, char **b64text);
-int base64_decode(const char *b64message, unsigned char **buffer, size_t *length);
+int openssl_base64_encode(const unsigned char *buffer, size_t length, char **b64text);
+int openssl_base64_decode(const char *b64message, unsigned char **buffer, size_t *length);
 
 #endif //BASE64_H

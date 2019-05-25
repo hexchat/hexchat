@@ -48,7 +48,7 @@ size_t calcDecodeLength(const char *b64input) { //Calculates the length of a dec
     return (len * 3) / 4 - padding;
 }
 
-int base64_encode(const unsigned char *buffer, size_t length, char **b64text) { //Encodes a binary safe base 64 string
+int openssl_base64_encode(const unsigned char *buffer, size_t length, char **b64text) { //Encodes a binary safe base 64 string
     BIO *bio, *b64;
     BUF_MEM *bufferPtr;
 
@@ -70,7 +70,7 @@ int base64_encode(const unsigned char *buffer, size_t length, char **b64text) { 
     return (0); //success
 }
 
-int base64_decode(const char *b64message, unsigned char **buffer, size_t *length) { //Decodes a base64 encoded string
+int openssl_base64_decode(const char *b64message, unsigned char **buffer, size_t *length) { //Decodes a base64 encoded string
     BIO *bio = NULL, *b64 = NULL;
     int decodeLen = 0;
 
