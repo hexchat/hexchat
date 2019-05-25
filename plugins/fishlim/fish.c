@@ -32,8 +32,10 @@
 #include <string.h>
 #include <openssl/evp.h>
 #include <openssl/blowfish.h>
+#include <openssl/rand.h>
 
 #include "keystore.h"
+#include "base64.h"
 #include "fish.h"
 
 #define IB 64
@@ -170,21 +172,44 @@ char *fish_base64_decode(const char *message, size_t *final_len) {
  * @param [in] key              Bytes of key
  * @param [in] keylen           Size of key
  * @param [in] encode           1 or encrypt 0 for decrypt
+ * @param [in] mode             EVP_CIPH_ECB_MODE or EVP_CIPH_CBC_MODE
  * @param [out] ciphertext_len  The bytes writen
  * @return Array of char with data crypted or uncrypted
  */
-char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, size_t keylen, int encode, size_t *ciphertext_len) {
+char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, size_t keylen, int encode, int mode, size_t *ciphertext_len) {
     EVP_CIPHER_CTX *ctx;
+    EVP_CIPHER *cipher = NULL;
     int bytes_written = 0;
     unsigned char *ciphertext = NULL;
+    unsigned char *iv_ciphertext = NULL;
+    unsigned char *iv = NULL;
     size_t block_size = 0;
 
-    if(plaintext_len == 0 || keylen == 0 || encode < 0 || encode > 1)
+    if (plaintext_len == 0 || keylen == 0 || encode < 0 || encode > 1)
         return NULL;
 
-    /* Zero Padding */
     block_size = plaintext_len;
 
+    if (mode == EVP_CIPH_CBC_MODE) {
+        if (encode == 1) {
+            iv = (unsigned char *) g_malloc0(8);
+            RAND_bytes(iv, 8);
+        } else {
+            if (plaintext_len <= 8) /* IV + DATA */
+                return NULL;
+
+            iv = (unsigned char *) plaintext;
+            block_size -= 8;
+            plaintext += 8;
+            plaintext_len -= 8;
+        }
+
+        cipher = (EVP_CIPHER *) EVP_bf_cbc();
+    } else if (mode == EVP_CIPH_ECB_MODE) {
+        cipher = (EVP_CIPHER *) EVP_bf_ecb();
+    }
+
+    /* Zero Padding */
     if (block_size % 8 != 0) {
         block_size = block_size + 8 - (block_size % 8);
     }
@@ -196,8 +221,8 @@ char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, 
     if (!(ctx = EVP_CIPHER_CTX_new()))
         return NULL;
 
-    /* Initialise the cipher operation only with mode  */
-    if (!EVP_CipherInit_ex(ctx, EVP_bf_ecb(), NULL, NULL, NULL, encode))
+    /* Initialise the cipher operation only with mode */
+    if (!EVP_CipherInit_ex(ctx, cipher, NULL, NULL, NULL, encode))
         return NULL;
 
     /* Set custom key length */
@@ -205,7 +230,7 @@ char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, 
         return NULL;
 
     /* Finish the initiation the cipher operation */
-    if (1 != EVP_CipherInit_ex(ctx, NULL, NULL, (const unsigned char *) key, NULL, encode))
+    if (1 != EVP_CipherInit_ex(ctx, NULL, NULL, (const unsigned char *) key, iv, encode))
         return NULL;
 
     /* We will manage this */
@@ -226,24 +251,46 @@ char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, 
     /* Clean up */
     EVP_CIPHER_CTX_free(ctx);
 
-    return (char *) ciphertext;
+
+    if (mode == EVP_CIPH_CBC_MODE && encode == 1) {
+        /* Join IV + DATA */
+        iv_ciphertext = g_malloc0(8 + *ciphertext_len);
+
+        memcpy(iv_ciphertext, iv, 8);
+        memcpy(&iv_ciphertext[8], ciphertext, *ciphertext_len);
+        *ciphertext_len += 8;
+
+        g_free(ciphertext);
+        g_free(iv);
+
+        return (char *) iv_ciphertext;
+    } else {
+        return (char *) ciphertext;
+    }
 }
 
-
-char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len) {
+char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len, int mode) {
     size_t ciphertext_len = 0;
     char *ciphertext = NULL;
     char *b64 = NULL;
 
-    if(keylen == 0 || message_len == 0)
+    if (keylen == 0 || message_len == 0)
         return NULL;
 
-    ciphertext = fish_cipher(message, message_len, key, keylen, 1, &ciphertext_len);
+    ciphertext = fish_cipher(message, message_len, key, keylen, 1, mode, &ciphertext_len);
 
-    if(ciphertext == NULL || ciphertext_len == 0)
+    if (ciphertext == NULL || ciphertext_len == 0)
         return NULL;
 
-    b64 = fish_base64_encode((const char *) ciphertext, ciphertext_len);
+    switch (mode) {
+        case FISH_CBC_MODE:
+            base64_encode((const unsigned char *) ciphertext, ciphertext_len, &b64);
+            break;
+
+        case FISH_ECB_MODE:
+            b64 = fish_base64_encode((const char *) ciphertext, ciphertext_len);
+    }
+
     g_free(ciphertext);
 
     if (b64 == NULL)
@@ -252,22 +299,29 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t m
     return b64;
 }
 
-
-char *fish_decrypt(const char *key, size_t keylen, const char *data) {
+char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode) {
     size_t ciphertext_len = 0;
     char *ciphertext = NULL;
     char *plaintext = NULL;
     char *plaintext_str = NULL;
 
-    if(keylen == 0 || strlen(data) == 0)
+    if (keylen == 0 || strlen(data) == 0)
         return NULL;
 
-    ciphertext = fish_base64_decode(data, &ciphertext_len);
+    switch (mode) {
+        case FISH_CBC_MODE:
+            if (base64_decode(data, (unsigned char **) &ciphertext, &ciphertext_len) != 0)
+                return NULL;
+            break;
+
+        case FISH_ECB_MODE:
+            ciphertext = fish_base64_decode(data, &ciphertext_len);
+    }
 
     if (ciphertext == NULL || ciphertext_len == 0)
         return NULL;
 
-    plaintext = fish_cipher(ciphertext, ciphertext_len, key, keylen, 0, &ciphertext_len);
+    plaintext = fish_cipher(ciphertext, ciphertext_len, key, keylen, 0, mode, &ciphertext_len);
     g_free(ciphertext);
 
     if (ciphertext_len == 0)
@@ -294,7 +348,7 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
     if (!key) return NULL;
     
     /* Encrypt */
-    encrypted = fish_encrypt(key, strlen(key), data, strlen(data));
+    encrypted = fish_encrypt(key, strlen(key), data, strlen(data), FISH_ECB_MODE);
     
     g_free(key);
     return encrypted;
@@ -312,7 +366,7 @@ char *fish_decrypt_from_nick(const char *nick, const char *data) {
     if (!key) return NULL;
     
     /* Decrypt */
-    decrypted = fish_decrypt(key, strlen(key), data);
+    decrypted = fish_decrypt(key, strlen(key), data, FISH_ECB_MODE);
     
     g_free(key);
     return decrypted;

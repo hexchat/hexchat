@@ -121,7 +121,7 @@ char *keystore_get_key(const char *nick) {
         /* Key is encrypted */
         const char *encrypted = value+4;
         const char *password = get_keystore_password();
-        char *decrypted = fish_decrypt(password, strlen(password), encrypted);
+        char *decrypted = fish_decrypt(password, strlen(password), encrypted, FISH_ECB_MODE);
         g_free(value);
         return decrypted;
     }
@@ -204,7 +204,7 @@ gboolean keystore_store_key(const char *nick, const char *key) {
     password = get_keystore_password();
     if (password) {
         /* Encrypt the password */
-        encrypted = fish_encrypt(password, strlen(password), key, strlen(key));
+        encrypted = fish_encrypt(password, strlen(password), key, strlen(key), FISH_ECB_MODE);
         if (!encrypted) goto end;
         
         /* Prepend "+OK " */
