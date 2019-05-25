@@ -120,6 +120,7 @@ static int login_types_conf[] =
 {
 	LOGIN_DEFAULT,			/* default entry - we don't use this but it makes indexing consistent with login_types[] so it's nice */
 	LOGIN_SASL,
+	LOGIN_SASL_NICK,
 #ifdef USE_OPENSSL
 	LOGIN_SASLEXTERNAL,
 #endif
@@ -141,6 +142,7 @@ static const char *login_types[]=
 {
 	"Default",
 	"SASL (username + password)",
+	"SASL (nick + password)",
 #ifdef USE_OPENSSL
 	"SASL EXTERNAL (cert)",
 #endif

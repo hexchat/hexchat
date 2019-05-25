@@ -75,6 +75,7 @@ extern GSList *network_list;
 #define LOGIN_AUTH				5
 #endif
 #define LOGIN_SASL				6
+#define LOGIN_SASL_NICK			11
 #define LOGIN_PASS				7
 #define LOGIN_CHALLENGEAUTH		8
 #define LOGIN_CUSTOM			9

@@ -161,7 +161,7 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.fdfnet.net"},
 
-	{"freenode", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{"freenode", 0, 0, 0, LOGIN_SASL_NICK, 0, TRUE},
 	{0,				"chat.freenode.net"},
 	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
