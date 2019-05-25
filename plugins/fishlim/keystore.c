@@ -104,26 +104,43 @@ static gchar *get_nick_value(GKeyFile *keyfile, const char *nick, const char *it
  * Extracts a key from the key store file.
  */
 char *keystore_get_key(const char *nick) {
+    GKeyFile *keyfile;
+    char *escaped_nick;
+    gchar *value;
+    int mode;
+    char *password;
+    char *encrypted;
+    char *decrypted;
+
     /* Get the key */
-    GKeyFile *keyfile = getConfigFile();
-    char *escaped_nick = escape_nickname(nick);
-    gchar *value = get_nick_value(keyfile, escaped_nick, "key");
+    keyfile = getConfigFile();
+    escaped_nick = escape_nickname(nick);
+    value = get_nick_value(keyfile, escaped_nick, "key");
     g_key_file_free(keyfile);
     g_free(escaped_nick);
 
     if (!value)
         return NULL;
-    
-    if (strncmp(value, "+OK ", 4) != 0) {
-        /* Key is stored in plaintext */
-        return value;
-    } else {
+
+    if (strncmp(value, "+OK ", 4) == 0) {
         /* Key is encrypted */
-        const char *encrypted = value+4;
-        const char *password = get_keystore_password();
-        char *decrypted = fish_decrypt(password, strlen(password), encrypted, FISH_ECB_MODE);
+        encrypted = (char *) value;
+        encrypted += 4;
+
+        mode = FISH_ECB_MODE;
+
+        if (*encrypted == '*') {
+            ++encrypted;
+            mode = FISH_CBC_MODE;
+        }
+
+        password = (char *) get_keystore_password();
+        decrypted = fish_decrypt((const char *) password, strlen(password), (const char *) encrypted, mode);
         g_free(value);
         return decrypted;
+    } else {
+        /* Key is stored in plaintext */
+        return value;
     }
 }
 
@@ -204,11 +221,11 @@ gboolean keystore_store_key(const char *nick, const char *key) {
     password = get_keystore_password();
     if (password) {
         /* Encrypt the password */
-        encrypted = fish_encrypt(password, strlen(password), key, strlen(key), FISH_ECB_MODE);
+        encrypted = fish_encrypt(password, strlen(password), key, strlen(key), FISH_CBC_MODE);
         if (!encrypted) goto end;
         
         /* Prepend "+OK " */
-        wrapped = g_strconcat("+OK ", encrypted, NULL);
+        wrapped = g_strconcat("+OK *", encrypted, NULL);
         g_free(encrypted);
         
         /* Store encrypted in file */
