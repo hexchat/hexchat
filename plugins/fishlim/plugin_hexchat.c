@@ -483,7 +483,7 @@ static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
     }
 
     hexchat_commandf(ph, "quote NOTICE %s :+OK %s", target, buf);
-    hexchat_emit_print(ph, "Notice Sent", target, notice);
+    hexchat_emit_print(ph, "Notice Send", target, notice);
     g_free(buf);
 
     return HEXCHAT_EAT_ALL;
