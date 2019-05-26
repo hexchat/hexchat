@@ -468,6 +468,7 @@ static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
 {
     const char *target = word[2];
     const char *notice = word_eol[3];
+    char *notice_flag;
     char *buf;
     int mode;
 
@@ -483,7 +484,9 @@ static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
     }
 
     hexchat_commandf(ph, "quote NOTICE %s :+OK %s", target, buf);
-    hexchat_emit_print(ph, "Notice Send", target, notice);
+    notice_flag = g_strconcat("[", fish_modes[mode], "] ", notice, NULL);
+    hexchat_emit_print(ph, "Notice Send", target, notice_flag);
+    g_free(notice_flag);
     g_free(buf);
 
     return HEXCHAT_EAT_ALL;
