@@ -341,17 +341,31 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode) {
  */
 char *fish_encrypt_for_nick(const char *nick, const char *data) {
     char *key;
-    char *encrypted;
+    char *encrypted, *encrypted_cbc = NULL;
+    int mode;
+    int encrypted_len = 0;
 
     /* Look for key */
-    key = keystore_get_key(nick);
+    key = keystore_get_key(nick, &mode);
     if (!key) return NULL;
-    
+
     /* Encrypt */
-    encrypted = fish_encrypt(key, strlen(key), data, strlen(data), FISH_ECB_MODE);
-    
+    encrypted = fish_encrypt(key, strlen(key), data, strlen(data), mode);
+
     g_free(key);
-    return encrypted;
+
+    if (encrypted == NULL || mode == FISH_ECB_MODE)
+        return encrypted;
+
+    /* Add '*' for CBC */
+    encrypted_len = strlen(encrypted);
+    encrypted_cbc = g_malloc0(encrypted_len + 2);
+    *encrypted_cbc = '*';
+
+    memcpy(&encrypted_cbc[1], encrypted, encrypted_len);
+    g_free(encrypted);
+
+    return encrypted_cbc;
 }
 
 /**
@@ -361,14 +375,20 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
 char *fish_decrypt_from_nick(const char *nick, const char *data) {
     char *key;
     char *decrypted;
+    int mode;
+
     /* Look for key */
-    key = keystore_get_key(nick);
+    key = keystore_get_key(nick, &mode);
     if (!key) return NULL;
-    
+
+    if (mode == FISH_CBC_MODE)
+        ++data;
+
     /* Decrypt */
-    decrypted = fish_decrypt(key, strlen(key), data, FISH_ECB_MODE);
-    
+    decrypted = fish_decrypt(key, strlen(key), data, mode);
+
     g_free(key);
+
     return decrypted;
 }
 

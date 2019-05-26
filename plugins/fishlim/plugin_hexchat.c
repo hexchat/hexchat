@@ -37,11 +37,13 @@
 #include "keystore.h"
 #include "irc.h"
 
+static const char *fish_modes[] = {"", "ECB", "CBC", NULL};
+
 static const char plugin_name[] = "FiSHLiM";
 static const char plugin_desc[] = "Encryption plugin for the FiSH protocol. Less is More!";
 static const char plugin_version[] = "0.1.0";
 
-static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
+static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] [<mode>:]<password>, sets the key for a channel or nick. Modes: ECB, CBC";
 static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
 static const char usage_keyx[] = "Usage: KEYX [<nick>], performs DH1080 key-exchange with <nick>";
 static const char usage_topic[] = "Usage: TOPIC+ <topic>, sets a new encrypted topic for the current channel";
@@ -236,8 +238,8 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
     const char *dh_pubkey = word[5];
     hexchat_context *query_ctx;
     const char *prefix;
-    gboolean cbc;
     char *sender, *secret_key, *priv_key = NULL;
+    int mode = FISH_ECB_MODE;
 
     if (!*dh_message || !*dh_pubkey || strlen(dh_pubkey) != 181)
         return HEXCHAT_EAT_NONE;
@@ -254,19 +256,15 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
     if (*dh_message == '+' || *dh_message == '-')
         dh_message++; /* identify-msg */
 
-    cbc = g_strcmp0 (word[6], "CBC") == 0;
+    if (g_strcmp0 (word[6], "CBC") == 0)
+        mode = FISH_CBC_MODE;
 
     if (!strcmp(dh_message, "DH1080_INIT")) {
         char *pub_key;
 
-        if (cbc) {
-            hexchat_print(ph, "Received key exchange for CBC mode which is not supported.");
-            goto cleanup;
-        }
-
-        hexchat_printf(ph, "Received public key from %s, sending mine...", sender);
+        hexchat_printf(ph, "Received public key from %s (%s), sending mine...", sender, fish_modes[mode]);
         if (dh1080_generate_key(&priv_key, &pub_key)) {
-            hexchat_commandf(ph, "quote NOTICE %s :DH1080_FINISH %s", sender, pub_key);
+            hexchat_commandf(ph, "quote NOTICE %s :DH1080_FINISH %s%s", sender, pub_key, (mode == FISH_CBC_MODE) ? " CBC" : "");
             g_free(pub_key);
         } else {
             hexchat_print(ph, "Failed to generate keys");
@@ -279,11 +277,6 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
         g_hash_table_steal(pending_exchanges, sender_lower);
         g_free(sender_lower);
 
-        if (cbc) {
-            hexchat_print(ph, "Received key exchange for CBC mode which is not supported.");
-            goto cleanup;
-        }
-
         if (!priv_key) {
             hexchat_printf(ph, "Received a key exchange response for unknown user: %s", sender);
             goto cleanup;
@@ -295,8 +288,8 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
     }
 
     if (dh1080_compute_key(priv_key, dh_pubkey, &secret_key)) {
-        keystore_store_key(sender, secret_key);
-        hexchat_printf(ph, "Stored new key for %s", sender);
+        keystore_store_key(sender, secret_key, mode);
+        hexchat_printf(ph, "Stored new key for %s (%s)", sender, fish_modes[mode]);
         g_free(secret_key);
     } else {
         hexchat_print(ph, "Failed to create secret key!");
@@ -314,6 +307,7 @@ cleanup:
 static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     const char *nick;
     const char *key;
+    int mode;
 
     /* Check syntax */
     if (*word[2] == '\0') {
@@ -331,9 +325,17 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
         key = word_eol[3];
     }
 
+    mode = FISH_ECB_MODE;
+    if (!strncmp("cbc:", key, 4) || !strncmp("CBC:", key, 4)) {
+        key = key+4;
+        mode = FISH_CBC_MODE;
+    } else if (!strncmp("ecb:", key, 4) || !strncmp("ECB:", key, 4)) {
+        key = key+4;
+    }
+
     /* Set password */
-    if (keystore_store_key(nick, key)) {
-        hexchat_printf(ph, "Stored key for %s\n", nick);
+    if (keystore_store_key(nick, key, mode)) {
+        hexchat_printf(ph, "Stored key for %s (%s)\n", nick, fish_modes[mode]);
     } else {
         hexchat_printf(ph, "\00305Failed to store key in addon_fishlim.conf\n");
     }
@@ -391,8 +393,8 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
     if (dh1080_generate_key(&priv_key, &pub_key)) {
         g_hash_table_replace (pending_exchanges, g_ascii_strdown(target, -1), priv_key);
 
-        hexchat_commandf(ph, "quote NOTICE %s :DH1080_INIT %s", target, pub_key);
-        hexchat_printf(ph, "Sent public key to %s, waiting for reply...", target);
+        hexchat_commandf(ph, "quote NOTICE %s :DH1080_INIT %s CBC", target, pub_key);
+        hexchat_printf(ph, "Sent public key to %s (CBC), waiting for reply...", target);
 
         g_free(pub_key);
     } else {

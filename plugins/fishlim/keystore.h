@@ -29,8 +29,8 @@
 
 #include <glib.h>
 
-char *keystore_get_key(const char *nick);
-gboolean keystore_store_key(const char *nick, const char *key);
+char *keystore_get_key(const char *nick, int *mode);
+gboolean keystore_store_key(const char *nick, const char *key, int mode);
 gboolean keystore_delete_nick(const char *nick);
 
 #endif
