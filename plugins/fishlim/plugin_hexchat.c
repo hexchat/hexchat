@@ -44,7 +44,7 @@ static const char plugin_desc[] = "Encryption plugin for the FiSH protocol. Less
 static const char plugin_version[] = "0.1.0";
 
 static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] [<mode>:]<password>, sets the key for a channel or nick. Modes: ECB, CBC";
-static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
+static const char usage_delkey[] = "Usage: DELKEY [<nick or #channel>], deletes the key for a channel or nick";
 static const char usage_keyx[] = "Usage: KEYX [<nick>], performs DH1080 key-exchange with <nick>";
 static const char usage_topic[] = "Usage: TOPIC+ <topic>, sets a new encrypted topic for the current channel";
 static const char usage_notice[] = "Usage: NOTICE+ <nick or #channel> <notice>";
@@ -377,14 +377,21 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
  */
 static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     const char *nick;
+    int ctx_type = 0;
 
-    /* Check syntax */
-    if (*word[2] == '\0' || *word[3] != '\0') {
-        hexchat_printf(ph, "%s\n", usage_delkey);
-        return HEXCHAT_EAT_HEXCHAT;
+    /* Delete key from input */
+    if (*word[2] != '\0') {
+        nick = g_strstrip(word_eol[2]);
+    } else { /* Delete key from current context */
+        nick = hexchat_get_info(ph, "channel");
+        ctx_type = hexchat_list_int(ph, NULL, "type");
+
+        /* Only allow channel or dialog */
+        if (ctx_type < 2 || ctx_type > 3) {
+            hexchat_printf(ph, "%s\n", usage_delkey);
+            return HEXCHAT_EAT_HEXCHAT;
+        }
     }
-
-    nick = g_strstrip (word_eol[2]);
 
     /* Delete the given nick from the key store */
     if (keystore_delete_nick(nick)) {
