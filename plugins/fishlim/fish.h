@@ -35,8 +35,8 @@
 
 char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len, int mode);
 char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode);
-char *fish_encrypt_for_nick(const char *nick, const char *data);
-char *fish_decrypt_from_nick(const char *nick, const char *data);
+char *fish_encrypt_for_nick(const char *nick, const char *data, int *omode);
+char *fish_decrypt_from_nick(const char *nick, const char *data, int *omode);
 
 #endif
 

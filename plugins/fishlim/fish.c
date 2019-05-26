@@ -339,7 +339,7 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode) {
  * Encrypts a message (see fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_encrypt_for_nick(const char *nick, const char *data) {
+char *fish_encrypt_for_nick(const char *nick, const char *data, int *omode) {
     char *key;
     char *encrypted, *encrypted_cbc = NULL;
     int mode;
@@ -348,6 +348,8 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
     /* Look for key */
     key = keystore_get_key(nick, &mode);
     if (!key) return NULL;
+
+    *omode = mode;
 
     /* Encrypt */
     encrypted = fish_encrypt(key, strlen(key), data, strlen(data), mode);
@@ -372,7 +374,7 @@ char *fish_encrypt_for_nick(const char *nick, const char *data) {
  * Decrypts a message (see fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_decrypt_from_nick(const char *nick, const char *data) {
+char *fish_decrypt_from_nick(const char *nick, const char *data, int *omode) {
     char *key;
     char *decrypted;
     int mode;
@@ -380,6 +382,8 @@ char *fish_decrypt_from_nick(const char *nick, const char *data) {
     /* Look for key */
     key = keystore_get_key(nick, &mode);
     if (!key) return NULL;
+
+    *omode = mode;
 
     if (mode == FISH_CBC_MODE)
         ++data;

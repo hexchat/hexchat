@@ -118,14 +118,32 @@ int irc_nick_cmp(const char *a, const char *b) {
  */
 static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     const char *own_nick;
+    const char *prefix = "";
+    hexchat_list* list;
+    int mode;
+    char *message;
     /* Encrypt the message if possible */
     const char *channel = hexchat_get_info(ph, "channel");
-    char *encrypted = fish_encrypt_for_nick(channel, word_eol[1]);
+    char *encrypted = fish_encrypt_for_nick(channel, word_eol[1], &mode);
     if (!encrypted) return HEXCHAT_EAT_NONE;
     
     /* Display message */
     own_nick = hexchat_get_info(ph, "nick");
-    hexchat_emit_print(ph, "Your Message", own_nick, word_eol[1], NULL);
+
+    /* Get prefix for own nick if any */
+    list = hexchat_list_get (ph, "users");
+    if (list) {
+        while (hexchat_list_next(ph, list)) {
+            if (strcmp(own_nick, hexchat_list_str(ph, list, "nick")) == 0)
+                prefix = hexchat_list_str(ph, list, "prefix");
+        }
+        hexchat_list_free(ph, list);
+    }
+
+    /* Add encrypted flag */
+    message = g_strconcat("[", fish_modes[mode], "] ", word_eol[1], NULL);
+    hexchat_emit_print(ph, "Your Message", own_nick, message, prefix, NULL);
+    g_free(message);
     
     /* Send message */
     hexchat_commandf(ph, "PRIVMSG %s :+OK %s", channel, encrypted);
@@ -145,6 +163,7 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     const char *peice;
     char *sender_nick;
     char *decrypted;
+    int mode;
     size_t w;
     size_t ew;
     size_t uw;
@@ -172,8 +191,8 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     
     /* Try to decrypt with these (the keys are searched for in the key store) */
     encrypted = word[ew+1];
-    decrypted = fish_decrypt_from_nick(recipient, encrypted);
-    if (!decrypted) decrypted = fish_decrypt_from_nick(sender_nick, encrypted);
+    decrypted = fish_decrypt_from_nick(recipient, encrypted, &mode);
+    if (!decrypted) decrypted = fish_decrypt_from_nick(sender_nick, encrypted, &mode);
     
     /* Check for error */
     if (!decrypted) goto decrypt_error;
@@ -208,6 +227,13 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
 
             if (prefix_char) {
                 g_string_append_c (message, prefix_char);
+            }
+
+            /* Add encrypted flag */
+            if (strcmp(word[2], "PRIVMSG") == 0 || strcmp(word[2], "NOTICE") == 0) {
+                g_string_append(message, "[");
+                g_string_append(message, fish_modes[mode]);
+                g_string_append(message, "] ");
             }
 
         } else {
@@ -411,6 +437,7 @@ static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
     const char *target;
     const char *topic = word_eol[2];
     char *buf;
+    int mode;
 
     if (!*topic) {
         hexchat_print(ph, usage_topic);
@@ -423,7 +450,7 @@ static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
     }
 
     target = hexchat_get_info(ph, "channel");
-    buf = fish_encrypt_for_nick(target, topic);
+    buf = fish_encrypt_for_nick(target, topic, &mode);
     if (buf == NULL) {
         hexchat_printf(ph, "/topic+ error, no key found for %s", target);
         return HEXCHAT_EAT_ALL;
@@ -442,13 +469,14 @@ static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
     const char *target = word[2];
     const char *notice = word_eol[3];
     char *buf;
+    int mode;
 
     if (!*target || !*notice) {
         hexchat_print(ph, usage_notice);
         return HEXCHAT_EAT_ALL;
     }
 
-    buf = fish_encrypt_for_nick(target, notice);
+    buf = fish_encrypt_for_nick(target, notice, &mode);
     if (buf == NULL) {
         hexchat_printf(ph, "/notice+ error, no key found for %s.", target);
         return HEXCHAT_EAT_ALL;
@@ -470,13 +498,14 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata)
     const char *message = word_eol[3];
     hexchat_context *query_ctx;
     char *buf;
+    int mode;
 
     if (!*target || !*message) {
         hexchat_print(ph, usage_msg);
         return HEXCHAT_EAT_ALL;
     }
 
-    buf = fish_encrypt_for_nick(target, message);
+    buf = fish_encrypt_for_nick(target, message, &mode);
     if (buf == NULL) {
         hexchat_printf(ph, "/msg+ error, no key found for %s", target);
         return HEXCHAT_EAT_ALL;
@@ -503,8 +532,9 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata)
 static int handle_crypt_me(char *word[], char *word_eol[], void *userdata) {
 	const char *channel = hexchat_get_info(ph, "channel");
 	char *buf;
+	int mode;
 
-    buf = fish_encrypt_for_nick(channel, word_eol[2]);
+    buf = fish_encrypt_for_nick(channel, word_eol[2], &mode);
 	if (!buf)
         return HEXCHAT_EAT_NONE;
 
