@@ -333,6 +333,7 @@ cleanup:
 static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     const char *nick;
     const char *key;
+    char *key_lower;
     int mode;
 
     /* Check syntax */
@@ -352,12 +353,14 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     }
 
     mode = FISH_ECB_MODE;
-    if (!strncmp("cbc:", key, 4) || !strncmp("CBC:", key, 4)) {
+    key_lower = g_ascii_strdown(key, -1);
+    if (strncmp("cbc:", key_lower, 4) == 0) {
         key = key+4;
         mode = FISH_CBC_MODE;
-    } else if (!strncmp("ecb:", key, 4) || !strncmp("ECB:", key, 4)) {
+    } else if (strncmp("ecb:", key_lower, 4) == 0) {
         key = key+4;
     }
+    g_free(key_lower);
 
     /* Set password */
     if (keystore_store_key(nick, key, mode)) {
