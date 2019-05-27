@@ -100,6 +100,33 @@ static hexchat_context *find_context_on_network (const char *name) {
     return ret;
 }
 
+/**
+ * Retrive the prefix character for own nick in current context
+ * @return @ or + or NULL
+ */
+const char *get_my_own_prefix(void) {
+    const char *own_nick;
+    hexchat_list* list;
+
+    /* Display message */
+    own_nick = hexchat_get_info(ph, "nick");
+
+    if (!own_nick)
+        return NULL;
+
+    /* Get prefix for own nick if any */
+    list = hexchat_list_get (ph, "users");
+    if (list) {
+        while (hexchat_list_next(ph, list)) {
+            if (strcmp(own_nick, hexchat_list_str(ph, list, "nick")) == 0)
+                return hexchat_list_str(ph, list, "prefix");
+        }
+        hexchat_list_free(ph, list);
+    }
+
+    return NULL;
+}
+
 int irc_nick_cmp(const char *a, const char *b) {
 	return hexchat_nickcmp (ph, a, b);
 }
@@ -117,9 +144,7 @@ int irc_nick_cmp(const char *a, const char *b) {
  * Called when a message is to be sent.
  */
 static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
-    const char *own_nick;
     const char *prefix = "";
-    hexchat_list* list;
     int mode;
     char *message;
     /* Encrypt the message if possible */
@@ -127,22 +152,14 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     char *encrypted = fish_encrypt_for_nick(channel, word_eol[1], &mode);
     if (!encrypted) return HEXCHAT_EAT_NONE;
     
-    /* Display message */
-    own_nick = hexchat_get_info(ph, "nick");
-
     /* Get prefix for own nick if any */
-    list = hexchat_list_get (ph, "users");
-    if (list) {
-        while (hexchat_list_next(ph, list)) {
-            if (strcmp(own_nick, hexchat_list_str(ph, list, "nick")) == 0)
-                prefix = hexchat_list_str(ph, list, "prefix");
-        }
-        hexchat_list_free(ph, list);
-    }
+    prefix = get_my_own_prefix();
 
     /* Add encrypted flag */
     message = g_strconcat("[", fish_modes[mode], "] ", word_eol[1], NULL);
-    hexchat_emit_print(ph, "Your Message", own_nick, message, prefix, NULL);
+
+    /* Display message */
+    hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"), message, prefix, NULL);
     g_free(message);
     
     /* Send message */
@@ -505,10 +522,10 @@ static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
 /**
  * Command handler for /msg+
  */
-static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata)
-{
+static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
     const char *target = word[2];
     const char *message = word_eol[3];
+    const char *prefix = "";
     hexchat_context *query_ctx;
     char *buf;
     int mode;
@@ -528,13 +545,13 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata)
 
     query_ctx = find_context_on_network(target);
     if (query_ctx) {
-	    hexchat_set_context(ph, query_ctx);
+        hexchat_set_context(ph, query_ctx);
 
-        /* FIXME: Mode char */
+        prefix = get_my_own_prefix();
+
         hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"),
-                           message, "", "");
-    }
-    else {
+                           message, prefix, NULL);
+    } else {
         hexchat_emit_print(ph, "Message Send", target, message);
     }
 
