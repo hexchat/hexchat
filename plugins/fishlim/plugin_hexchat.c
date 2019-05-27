@@ -198,7 +198,7 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     if (!decrypted) goto decrypt_error;
     
     /* Build unecrypted message */
-    message = g_string_sized_new (100); /* TODO: more accurate estimation of size */
+    message = g_string_sized_new (strlen(word_eol[1])); /* Just put at least the size of original command */
     g_string_append (message, "RECV");
 
     if (attrs->server_time_utc)
