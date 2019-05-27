@@ -525,6 +525,7 @@ static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
 static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
     const char *target = word[2];
     const char *message = word_eol[3];
+    char *message_flag;
     const char *prefix = "";
     hexchat_context *query_ctx;
     char *buf;
@@ -549,8 +550,11 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
 
         prefix = get_my_own_prefix();
 
+        /* Add encrypted flag */
+        message_flag = g_strconcat("[", fish_modes[mode], "] ", message, NULL);
         hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"),
-                           message, prefix, NULL);
+                           message_flag, prefix, NULL);
+        g_free(message_flag);
     } else {
         hexchat_emit_print(ph, "Message Send", target, message);
     }
