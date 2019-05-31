@@ -104,7 +104,8 @@ static hexchat_context *find_context_on_network (const char *name) {
  * Retrive the prefix character for own nick in current context
  * @return @ or + or NULL
  */
-const char *get_my_own_prefix(void) {
+char *get_my_own_prefix(void) {
+    gchar *result = NULL;
     const char *own_nick;
     hexchat_list* list;
 
@@ -119,12 +120,12 @@ const char *get_my_own_prefix(void) {
     if (list) {
         while (hexchat_list_next(ph, list)) {
             if (strcmp(own_nick, hexchat_list_str(ph, list, "nick")) == 0)
-                return hexchat_list_str(ph, list, "prefix");
+                result = g_strdup(hexchat_list_str(ph, list, "prefix"));
         }
         hexchat_list_free(ph, list);
     }
 
-    return NULL;
+    return result;
 }
 
 int irc_nick_cmp(const char *a, const char *b) {
@@ -144,7 +145,7 @@ int irc_nick_cmp(const char *a, const char *b) {
  * Called when a message is to be sent.
  */
 static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
-    const char *prefix = "";
+    char *prefix;
     int mode;
     char *message;
     /* Encrypt the message if possible */
@@ -160,6 +161,7 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
 
     /* Display message */
     hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"), message, prefix, NULL);
+    g_free(prefix);
     g_free(message);
     
     /* Send message */
@@ -526,7 +528,7 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
     const char *target = word[2];
     const char *message = word_eol[3];
     char *message_flag;
-    const char *prefix = "";
+    char *prefix;
     hexchat_context *query_ctx;
     char *buf;
     int mode;
@@ -554,6 +556,7 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
         message_flag = g_strconcat("[", fish_modes[mode], "] ", message, NULL);
         hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"),
                            message_flag, prefix, NULL);
+        g_free(prefix);
         g_free(message_flag);
     } else {
         hexchat_emit_print(ph, "Message Send", target, message);
