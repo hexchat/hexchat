@@ -30,13 +30,12 @@
 
 #include <glib.h>
 
-# define FISH_ECB_MODE 0x1
-# define FISH_CBC_MODE 0x2
+enum fish_mode {ECB = 0x1, CBC = 0x2};
 
-char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len, int mode);
-char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode);
-char *fish_encrypt_for_nick(const char *nick, const char *data, int *omode);
-char *fish_decrypt_from_nick(const char *nick, const char *data, int *omode);
+char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len, enum fish_mode mode);
+char *fish_decrypt(const char *key, size_t keylen, const char *data, enum fish_mode mode);
+char *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *omode);
+char *fish_decrypt_from_nick(const char *nick, const char *data, enum fish_mode *omode);
 
 #endif
 

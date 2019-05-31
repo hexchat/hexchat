@@ -103,7 +103,7 @@ static gchar *get_nick_value(GKeyFile *keyfile, const char *nick, const char *it
 /**
  * Extracts a key from the key store file.
  */
-char *keystore_get_key(const char *nick, int *mode) {
+char *keystore_get_key(const char *nick, enum fish_mode *mode) {
     GKeyFile *keyfile;
     char *escaped_nick;
     gchar *value, *key_mode;
@@ -121,12 +121,12 @@ char *keystore_get_key(const char *nick, int *mode) {
     g_free(escaped_nick);
 
     /* Determine cipher mode */
-    *mode = FISH_ECB_MODE;
+    *mode = ECB;
     if (key_mode) {
         if (*key_mode == '1')
-            *mode = FISH_ECB_MODE;
+            *mode = ECB;
         else if (*key_mode == '2')
-            *mode = FISH_CBC_MODE;
+            *mode = CBC;
         g_free(key_mode);
     }
 
@@ -138,11 +138,11 @@ char *keystore_get_key(const char *nick, int *mode) {
         encrypted = (char *) value;
         encrypted += 4;
 
-        encrypted_mode = FISH_ECB_MODE;
+        encrypted_mode = ECB;
 
         if (*encrypted == '*') {
             ++encrypted;
-            encrypted_mode = FISH_CBC_MODE;
+            encrypted_mode = CBC;
         }
 
         password = (char *) get_keystore_password();
@@ -217,7 +217,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 /**
  * Sets a key in the key store file.
  */
-gboolean keystore_store_key(const char *nick, const char *key, int mode) {
+gboolean keystore_store_key(const char *nick, const char *key, enum fish_mode mode) {
     const char *password;
     char *encrypted;
     char *wrapped;
@@ -232,7 +232,7 @@ gboolean keystore_store_key(const char *nick, const char *key, int mode) {
     password = get_keystore_password();
     if (password) {
         /* Encrypt the password */
-        encrypted = fish_encrypt(password, strlen(password), key, strlen(key), FISH_CBC_MODE);
+        encrypted = fish_encrypt(password, strlen(password), key, strlen(key), CBC);
         if (!encrypted) goto end;
         
         /* Prepend "+OK " */

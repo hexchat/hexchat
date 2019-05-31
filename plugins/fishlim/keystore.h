@@ -28,9 +28,10 @@
 #include <stddef.h>
 
 #include <glib.h>
+#include <fish.h>
 
-char *keystore_get_key(const char *nick, int *mode);
-gboolean keystore_store_key(const char *nick, const char *key, int mode);
+char *keystore_get_key(const char *nick, enum fish_mode *mode);
+gboolean keystore_store_key(const char *nick, const char *key, enum fish_mode mode);
 gboolean keystore_delete_nick(const char *nick);
 
 #endif

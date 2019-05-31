@@ -270,7 +270,7 @@ char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, 
     }
 }
 
-char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len, int mode) {
+char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len, enum fish_mode mode) {
     size_t ciphertext_len = 0;
     char *ciphertext = NULL;
     char *b64 = NULL;
@@ -284,11 +284,11 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t m
         return NULL;
 
     switch (mode) {
-        case FISH_CBC_MODE:
+        case CBC:
             openssl_base64_encode((const unsigned char *) ciphertext, ciphertext_len, &b64);
             break;
 
-        case FISH_ECB_MODE:
+        case ECB:
             b64 = fish_base64_encode((const char *) ciphertext, ciphertext_len);
     }
 
@@ -300,7 +300,7 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t m
     return b64;
 }
 
-char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode) {
+char *fish_decrypt(const char *key, size_t keylen, const char *data, enum fish_mode mode) {
     size_t ciphertext_len = 0;
     char *ciphertext = NULL;
     char *plaintext = NULL;
@@ -310,12 +310,12 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode) {
         return NULL;
 
     switch (mode) {
-        case FISH_CBC_MODE:
+        case CBC:
             if (openssl_base64_decode(data, (unsigned char **) &ciphertext, &ciphertext_len) != 0)
                 return NULL;
             break;
 
-        case FISH_ECB_MODE:
+        case ECB:
             ciphertext = fish_base64_decode(data, &ciphertext_len);
     }
 
@@ -340,10 +340,10 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data, int mode) {
  * Encrypts a message (see fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_encrypt_for_nick(const char *nick, const char *data, int *omode) {
+char *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *omode) {
     char *key;
     char *encrypted, *encrypted_cbc = NULL;
-    int mode;
+    enum fish_mode mode;
     int encrypted_len = 0;
 
     /* Look for key */
@@ -357,7 +357,7 @@ char *fish_encrypt_for_nick(const char *nick, const char *data, int *omode) {
 
     g_free(key);
 
-    if (encrypted == NULL || mode == FISH_ECB_MODE)
+    if (encrypted == NULL || mode == ECB)
         return encrypted;
 
     /* Add '*' for CBC */
@@ -375,10 +375,10 @@ char *fish_encrypt_for_nick(const char *nick, const char *data, int *omode) {
  * Decrypts a message (see fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_decrypt_from_nick(const char *nick, const char *data, int *omode) {
+char *fish_decrypt_from_nick(const char *nick, const char *data, enum fish_mode *omode) {
     char *key;
     char *decrypted;
-    int mode;
+    enum fish_mode mode;
 
     /* Look for key */
     key = keystore_get_key(nick, &mode);
@@ -386,7 +386,7 @@ char *fish_decrypt_from_nick(const char *nick, const char *data, int *omode) {
 
     *omode = mode;
 
-    if (mode == FISH_CBC_MODE)
+    if (mode == CBC)
         ++data;
 
     /* Decrypt */

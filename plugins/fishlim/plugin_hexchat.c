@@ -149,7 +149,7 @@ char *get_my_own_prefix(void) {
  */
 static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     char *prefix;
-    int mode;
+    enum fish_mode mode;
     char *message;
     /* Encrypt the message if possible */
     const char *channel = hexchat_get_info(ph, "channel");
@@ -185,7 +185,7 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     const char *peice;
     char *sender_nick;
     char *decrypted;
-    int mode;
+    enum fish_mode mode;
     size_t w;
     size_t ew;
     size_t uw;
@@ -289,7 +289,7 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
     hexchat_context *query_ctx;
     const char *prefix;
     char *sender, *secret_key, *priv_key = NULL;
-    int mode = FISH_ECB_MODE;
+    enum fish_mode mode = ECB;
 
     if (!*dh_message || !*dh_pubkey || strlen(dh_pubkey) != 181)
         return HEXCHAT_EAT_NONE;
@@ -307,14 +307,14 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
         dh_message++; /* identify-msg */
 
     if (g_strcmp0 (word[6], "CBC") == 0)
-        mode = FISH_CBC_MODE;
+        mode = CBC;
 
     if (!strcmp(dh_message, "DH1080_INIT")) {
         char *pub_key;
 
         hexchat_printf(ph, "Received public key from %s (%s), sending mine...", sender, fish_modes[mode]);
         if (dh1080_generate_key(&priv_key, &pub_key)) {
-            hexchat_commandf(ph, "quote NOTICE %s :DH1080_FINISH %s%s", sender, pub_key, (mode == FISH_CBC_MODE) ? " CBC" : "");
+            hexchat_commandf(ph, "quote NOTICE %s :DH1080_FINISH %s%s", sender, pub_key, (mode == CBC) ? " CBC" : "");
             g_free(pub_key);
         } else {
             hexchat_print(ph, "Failed to generate keys");
@@ -358,7 +358,7 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
     const char *nick;
     const char *key;
     char *key_lower;
-    int mode;
+    enum fish_mode mode;
 
     /* Check syntax */
     if (*word[2] == '\0') {
@@ -376,11 +376,11 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
         key = word_eol[3];
     }
 
-    mode = FISH_ECB_MODE;
+    mode = ECB;
     key_lower = g_ascii_strdown(key, -1);
     if (strncmp("cbc:", key_lower, 4) == 0) {
         key = key+4;
-        mode = FISH_CBC_MODE;
+        mode = CBC;
     } else if (strncmp("ecb:", key_lower, 4) == 0) {
         key = key+4;
     }
@@ -471,7 +471,7 @@ static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
     const char *target;
     const char *topic = word_eol[2];
     char *buf;
-    int mode;
+    enum fish_mode mode;
 
     if (!*topic) {
         hexchat_print(ph, usage_topic);
@@ -504,7 +504,7 @@ static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
     const char *notice = word_eol[3];
     char *notice_flag;
     char *buf;
-    int mode;
+    enum fish_mode mode;
 
     if (!*target || !*notice) {
         hexchat_print(ph, usage_notice);
@@ -536,7 +536,7 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
     char *prefix;
     hexchat_context *query_ctx;
     char *buf;
-    int mode;
+    enum fish_mode mode;
 
     if (!*target || !*message) {
         hexchat_print(ph, usage_msg);
@@ -574,7 +574,7 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
 static int handle_crypt_me(char *word[], char *word_eol[], void *userdata) {
 	const char *channel = hexchat_get_info(ph, "channel");
 	char *buf;
-	int mode;
+	enum fish_mode mode;
 
     buf = fish_encrypt_for_nick(channel, word_eol[2], &mode);
 	if (!buf)
