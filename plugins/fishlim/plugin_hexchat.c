@@ -56,6 +56,13 @@ static GHashTable *pending_exchanges;
 
 
 /**
+ * Compare two nicks using the current plugin
+ */
+int irc_nick_cmp(const char *a, const char *b) {
+    return hexchat_nickcmp (ph, a, b);
+}
+
+/**
  * Returns the path to the key store file.
  */
 gchar *get_config_filename(void) {
@@ -90,7 +97,7 @@ static hexchat_context *find_context_on_network (const char *name) {
         int chan_id = hexchat_list_int(ph, channels, "id");
         const char *chan_name = hexchat_list_str(ph, channels, "channel");
 
-        if (chan_id == id && chan_name && hexchat_nickcmp (ph, chan_name, name) == 0) {
+        if (chan_id == id && chan_name && irc_nick_cmp (chan_name, name) == 0) {
             ret = (hexchat_context*)hexchat_list_str(ph, channels, "context");
             break;
         }
@@ -119,17 +126,13 @@ char *get_my_own_prefix(void) {
     list = hexchat_list_get (ph, "users");
     if (list) {
         while (hexchat_list_next(ph, list)) {
-            if (strcmp(own_nick, hexchat_list_str(ph, list, "nick")) == 0)
+            if (irc_nick_cmp(own_nick, hexchat_list_str(ph, list, "nick")) == 0)
                 result = g_strdup(hexchat_list_str(ph, list, "prefix"));
         }
         hexchat_list_free(ph, list);
     }
 
     return result;
-}
-
-int irc_nick_cmp(const char *a, const char *b) {
-	return hexchat_nickcmp (ph, a, b);
 }
 
 /*static int handle_debug(char *word[], char *word_eol[], void *userdata) {
