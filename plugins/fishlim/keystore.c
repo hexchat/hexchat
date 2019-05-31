@@ -28,8 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "irc.h"
-#include "fish.h"
 #include "keystore.h"
+#include "fish.h"
 #include "plugin_hexchat.h"
 
 
