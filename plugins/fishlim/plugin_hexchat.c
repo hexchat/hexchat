@@ -214,10 +214,12 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     /* Try to decrypt with these (the keys are searched for in the key store) */
     encrypted = word[ew+1];
     decrypted = fish_decrypt_from_nick(recipient, encrypted, &mode);
-    if (!decrypted) decrypted = fish_decrypt_from_nick(sender_nick, encrypted, &mode);
+    if (!decrypted)
+        decrypted = fish_decrypt_from_nick(sender_nick, encrypted, &mode);
     
     /* Check for error */
-    if (!decrypted) goto decrypt_error;
+    if (!decrypted)
+        goto decrypt_error;
     
     /* Build unecrypted message */
     message = g_string_sized_new (strlen(word_eol[1])); /* Just put at least the size of original command */
