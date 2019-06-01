@@ -58,6 +58,12 @@ static const signed char fish_unbase64[256] = {
     27,28,29,30,31,32,33,34,  35,36,37,IB,IB,IB,IB,IB,
 };
 
+/**
+ * Convert Int to 4 Bytes (Big-endian)
+ * 
+ * @param int   source
+ * @param char* dest
+ */
 #define GET_BYTES(dest, source) do { \
     *((dest)++) = ((source) >> 24) & 0xFF; \
     *((dest)++) = ((source) >> 16) & 0xFF; \
@@ -65,6 +71,12 @@ static const signed char fish_unbase64[256] = {
     *((dest)++) = (source) & 0xFF; \
 } while (0);
 
+/**
+ * Convert 4 Bytes to Int (Big-endian)
+ * 
+ * @param char* source
+ * @param int   dest
+ */
 #define GET_LONG(dest, source) do { \
     dest = ((uint8_t)*((source)++) << 24); \
     dest |= ((uint8_t)*((source)++) << 16); \
@@ -90,12 +102,15 @@ char *fish_base64_encode(const char *message, size_t message_len) {
     if (message_len == 0)
         return NULL;
 
-    encoded = g_malloc(((message_len - 1) / 8) * 12 + 12 + 1); /* each 8-byte block becomes 12 bytes */
+    /* Each 8-byte block becomes 12 bytes (fish base64 format) and add 1 byte for \0 */
+    encoded = g_malloc(((message_len - 1) / 8) * 12 + 12 + 1);
     end = encoded;
 
+    /* Iterate over each 8-byte block (Blowfish block size) */
     for (j = 0; j < message_len; j += 8) {
         msg = (char *) message;
 
+        /* Set left and right longs */
         GET_LONG(left, msg);
         GET_LONG(right, msg);
 
@@ -109,6 +124,7 @@ char *fish_base64_encode(const char *message, size_t message_len) {
             left = (left >> 6u);
         }
 
+        /* The previous for'd ensure fill all bytes of encoded, we don't need will with zeros */
         message += 8;
     }
 
@@ -119,7 +135,7 @@ char *fish_base64_encode(const char *message, size_t message_len) {
 /**
  * Decode ECB FiSH Base64
  *
- * @param [in] message     Base64 encoded string
+ * @param [in]  message    Base64 encoded string
  * @param [out] final_len  Real length of message
  * @return Array of char with decoded message
  */
@@ -133,10 +149,12 @@ char *fish_base64_decode(const char *message, size_t *final_len) {
 
     message_len = strlen(message);
 
+    /* Ensure blocks of 12 bytes each one and valid characters */
     if (message_len == 0 || message_len % 12 != 0 || strspn(message, fish_base64) != message_len)
         return NULL;
 
-    *final_len = ((message_len - 1) / 12) * 8 + 8 + 1; /* Each 12 bytes becomes 8-byte block */
+    /* Each 12 bytes becomes 8-byte block and add 1 byte for \0 */
+    *final_len = ((message_len - 1) / 12) * 8 + 8 + 1;
     (*final_len)--; /* We support binary data */
     bytes = (char *) g_malloc0(*final_len);
     byt = bytes;
