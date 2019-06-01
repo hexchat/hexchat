@@ -146,7 +146,7 @@ char *keystore_get_key(const char *nick, enum fish_mode *mode) {
         }
 
         password = (char *) get_keystore_password();
-        decrypted = fish_decrypt((const char *) password, strlen(password), (const char *) encrypted, encrypted_mode);
+        decrypted = fish_decrypt_str((const char *) password, strlen(password), (const char *) encrypted, encrypted_mode);
         g_free(value);
         return decrypted;
     } else {

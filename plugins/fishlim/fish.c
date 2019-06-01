@@ -272,6 +272,17 @@ char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, 
     }
 }
 
+/**
+ * Return a fish or standard Base64 encoded string with data encrypted
+ * is binary safe
+ * 
+ * @param [in] key          Bytes of key
+ * @param [in] keylen       Size of key
+ * @param [in] message      Bytes to encrypt
+ * @param [in] message_len  Size of message
+ * @param [in] mode         Chiper mode
+ * @return Array of char with data encrypted
+ */
 char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len, enum fish_mode mode) {
     size_t ciphertext_len = 0;
     char *ciphertext = NULL;
@@ -302,11 +313,23 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t m
     return b64;
 }
 
-char *fish_decrypt(const char *key, size_t keylen, const char *data, enum fish_mode mode) {
+/**
+ * Return an array of bytes with data decrypted
+ * is binary safe
+ * 
+ * @param [in] key         Bytes of key
+ * @param [in] keylen      Size of key
+ * @param [in] data        Fish or standard Base64 encoded string
+ * @param [in] mode        Chiper mode
+ * @param [out] final_len  Length of returned array
+ * @return Array of char with data decrypted
+ */
+char *fish_decrypt(const char *key, size_t keylen, const char *data, enum fish_mode mode, size_t *final_len) {
     size_t ciphertext_len = 0;
     char *ciphertext = NULL;
     char *plaintext = NULL;
-    char *plaintext_str = NULL;
+
+    *final_len = 0;
 
     if (keylen == 0 || strlen(data) == 0)
         return NULL;
@@ -324,19 +347,39 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data, enum fish_m
     if (ciphertext == NULL || ciphertext_len == 0)
         return NULL;
 
-    plaintext = fish_cipher(ciphertext, ciphertext_len, key, keylen, 0, mode, &ciphertext_len);
+    plaintext = fish_cipher(ciphertext, ciphertext_len, key, keylen, 0, mode, final_len);
     g_free(ciphertext);
 
-    if (ciphertext_len == 0)
+    if (*final_len == 0)
         return NULL;
 
-    plaintext_str = g_malloc0(ciphertext_len + 1);
-    memcpy(plaintext_str, plaintext, ciphertext_len);
-    g_free(plaintext);
+    return plaintext;
+}
+
+/**
+ * Similar to fish_decrypt, but pad with zeros any after the first zero in the decrypted data
+ * 
+ * @param [in] key         Bytes of key
+ * @param [in] keylen      Size of key
+ * @param [in] data        Fish or standard Base64 encoded string
+ * @param [in] mode        Chiper mode
+ * @return Array of char with data decrypted
+ */
+char *fish_decrypt_str(const char *key, size_t keylen, const char *data, enum fish_mode mode) {
+    char *decrypted = NULL;
+    char *plaintext_str = NULL;
+    size_t decrypted_len = 0;
+
+    decrypted = fish_decrypt(key, strlen(key), data, mode, &decrypted_len);
+
+    if (decrypted == NULL || decrypted_len == 0)
+        return NULL;
+
+    plaintext_str = g_strndup(decrypted, decrypted_len);
+    g_free(decrypted);
 
     return plaintext_str;
 }
-
 
 /**
  * Encrypts a message (see fish_decrypt). The key is searched for in the
@@ -387,8 +430,7 @@ char *fish_decrypt_from_nick(const char *nick, const char *data, enum fish_mode 
         ++data;
 
     /* Decrypt */
-    decrypted = fish_decrypt(key, strlen(key), data, mode);
-
+    decrypted = fish_decrypt_str(key, strlen(key), data, mode);
     g_free(key);
 
     return decrypted;
