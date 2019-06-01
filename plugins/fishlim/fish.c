@@ -168,14 +168,14 @@ char *fish_base64_decode(const char *message, size_t *final_len) {
  *
  * - https://stackoverflow.com/questions/29874150/working-with-evp-and-openssl-coding-in-c
  *
- * @param [in] plaintext        Bytes to encrypt or descrypt
+ * @param [in] plaintext        Bytes to encrypt or decrypt
  * @param [in] plaintext_len    Size of plaintext
  * @param [in] key              Bytes of key
  * @param [in] keylen           Size of key
  * @param [in] encode           1 or encrypt 0 for decrypt
  * @param [in] mode             EVP_CIPH_ECB_MODE or EVP_CIPH_CBC_MODE
- * @param [out] ciphertext_len  The bytes writen
- * @return Array of char with data crypted or uncrypted
+ * @param [out] ciphertext_len  The bytes written
+ * @return Array of char with data encrypted or decrypted
  */
 char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, size_t keylen, int encode, int mode, size_t *ciphertext_len) {
     EVP_CIPHER_CTX *ctx;
