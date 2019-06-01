@@ -271,6 +271,8 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
 
     /* Simulate unencrypted message */
     /* hexchat_printf(ph, "simulating: %s\n", message->str); */
+    /* RECV command will throw this function again, if message have multiple
+       encrypted data, we will decrypt all */
     hexchat_command(ph, message->str);
 
     g_string_free (message, TRUE);
