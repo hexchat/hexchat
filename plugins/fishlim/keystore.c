@@ -121,12 +121,12 @@ char *keystore_get_key(const char *nick, enum fish_mode *mode) {
     g_free(escaped_nick);
 
     /* Determine cipher mode */
-    *mode = ECB;
+    *mode = FISH_ECB_MODE;
     if (key_mode) {
         if (*key_mode == '1')
-            *mode = ECB;
+            *mode = FISH_ECB_MODE;
         else if (*key_mode == '2')
-            *mode = CBC;
+            *mode = FISH_CBC_MODE;
         g_free(key_mode);
     }
 
@@ -138,11 +138,11 @@ char *keystore_get_key(const char *nick, enum fish_mode *mode) {
         encrypted = (char *) value;
         encrypted += 4;
 
-        encrypted_mode = ECB;
+        encrypted_mode = FISH_ECB_MODE;
 
         if (*encrypted == '*') {
             ++encrypted;
-            encrypted_mode = CBC;
+            encrypted_mode = FISH_CBC_MODE;
         }
 
         password = (char *) get_keystore_password();
@@ -232,7 +232,7 @@ gboolean keystore_store_key(const char *nick, const char *key, enum fish_mode mo
     password = get_keystore_password();
     if (password) {
         /* Encrypt the password */
-        encrypted = fish_encrypt(password, strlen(password), key, strlen(key), CBC);
+        encrypted = fish_encrypt(password, strlen(password), key, strlen(key), FISH_CBC_MODE);
         if (!encrypted) goto end;
         
         /* Prepend "+OK " */

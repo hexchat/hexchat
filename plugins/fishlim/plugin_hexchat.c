@@ -289,7 +289,7 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
     hexchat_context *query_ctx;
     const char *prefix;
     char *sender, *secret_key, *priv_key = NULL;
-    enum fish_mode mode = ECB;
+    enum fish_mode mode = FISH_ECB_MODE;
 
     if (!*dh_message || !*dh_pubkey || strlen(dh_pubkey) != 181)
         return HEXCHAT_EAT_NONE;
@@ -307,14 +307,14 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
         dh_message++; /* identify-msg */
 
     if (g_strcmp0 (word[6], "CBC") == 0)
-        mode = CBC;
+        mode = FISH_CBC_MODE;
 
     if (!strcmp(dh_message, "DH1080_INIT")) {
         char *pub_key;
 
         hexchat_printf(ph, "Received public key from %s (%s), sending mine...", sender, fish_modes[mode]);
         if (dh1080_generate_key(&priv_key, &pub_key)) {
-            hexchat_commandf(ph, "quote NOTICE %s :DH1080_FINISH %s%s", sender, pub_key, (mode == CBC) ? " CBC" : "");
+            hexchat_commandf(ph, "quote NOTICE %s :DH1080_FINISH %s%s", sender, pub_key, (mode == FISH_CBC_MODE) ? " CBC" : "");
             g_free(pub_key);
         } else {
             hexchat_print(ph, "Failed to generate keys");
@@ -376,11 +376,11 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
         key = word_eol[3];
     }
 
-    mode = ECB;
+    mode = FISH_ECB_MODE;
     key_lower = g_ascii_strdown(key, -1);
     if (strncmp("cbc:", key_lower, 4) == 0) {
         key = key+4;
-        mode = CBC;
+        mode = FISH_CBC_MODE;
     } else if (strncmp("ecb:", key_lower, 4) == 0) {
         key = key+4;
     }

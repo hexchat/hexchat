@@ -284,11 +284,11 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t m
         return NULL;
 
     switch (mode) {
-        case CBC:
+        case FISH_CBC_MODE:
             openssl_base64_encode((const unsigned char *) ciphertext, ciphertext_len, &b64);
             break;
 
-        case ECB:
+        case FISH_ECB_MODE:
             b64 = fish_base64_encode((const char *) ciphertext, ciphertext_len);
     }
 
@@ -310,12 +310,12 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data, enum fish_m
         return NULL;
 
     switch (mode) {
-        case CBC:
+        case FISH_CBC_MODE:
             if (openssl_base64_decode(data, (unsigned char **) &ciphertext, &ciphertext_len) != 0)
                 return NULL;
             break;
 
-        case ECB:
+        case FISH_ECB_MODE:
             ciphertext = fish_base64_decode(data, &ciphertext_len);
     }
 
@@ -357,7 +357,7 @@ char *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *
 
     g_free(key);
 
-    if (encrypted == NULL || mode == ECB)
+    if (encrypted == NULL || mode == FISH_ECB_MODE)
         return encrypted;
 
     /* Add '*' for CBC */
@@ -386,7 +386,7 @@ char *fish_decrypt_from_nick(const char *nick, const char *data, enum fish_mode 
 
     *omode = mode;
 
-    if (mode == CBC)
+    if (mode == FISH_CBC_MODE)
         ++data;
 
     /* Decrypt */
