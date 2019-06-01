@@ -346,7 +346,6 @@ char *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *
     char *key;
     char *encrypted, *encrypted_cbc = NULL;
     enum fish_mode mode;
-    int encrypted_len = 0;
 
     /* Look for key */
     key = keystore_get_key(nick, &mode);
@@ -363,12 +362,7 @@ char *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *
         return encrypted;
 
     /* Add '*' for CBC */
-    encrypted_len = strlen(encrypted);
-    /* 1 for * and 1 for \0 at end */
-    encrypted_cbc = g_new0(char, encrypted_len + 2);
-    *encrypted_cbc = '*';
-
-    memcpy(&encrypted_cbc[1], encrypted, encrypted_len);
+    encrypted_cbc = g_strdup_printf("*%s",encrypted);
     g_free(encrypted);
 
     return encrypted_cbc;
