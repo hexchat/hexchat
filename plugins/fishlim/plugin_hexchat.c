@@ -397,14 +397,14 @@ static int handle_setkey(char *word[], char *word_eol[], void *userdata) {
  * Command handler for /delkey
  */
 static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
-    const char *nick;
+    char *nick = NULL;
     int ctx_type = 0;
 
     /* Delete key from input */
     if (*word[2] != '\0') {
-        nick = g_strstrip(word_eol[2]);
+        nick = g_strstrip(g_strdup(word_eol[2]));
     } else { /* Delete key from current context */
-        nick = hexchat_get_info(ph, "channel");
+        nick = g_strdup(hexchat_get_info(ph, "channel"));
         ctx_type = hexchat_list_int(ph, NULL, "type");
 
         /* Only allow channel or dialog */
@@ -420,6 +420,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
     } else {
         hexchat_printf(ph, "\00305Failed to delete key in addon_fishlim.conf!\n");
     }
+    g_free(nick);
 
     return HEXCHAT_EAT_HEXCHAT;
 }
