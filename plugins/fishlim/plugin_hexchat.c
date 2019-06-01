@@ -114,7 +114,7 @@ static hexchat_context *find_context_on_network (const char *name) {
 char *get_my_own_prefix(void) {
     char *result = NULL;
     const char *own_nick;
-    hexchat_list* list;
+    hexchat_list *list;
 
     /* Display message */
     own_nick = hexchat_get_info(ph, "nick");
