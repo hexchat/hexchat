@@ -362,7 +362,8 @@ char *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *
 
     /* Add '*' for CBC */
     encrypted_len = strlen(encrypted);
-    encrypted_cbc = g_malloc0(encrypted_len + 2);
+    /* 1 for * and 1 for \0 at end */
+    encrypted_cbc = g_new0(char, encrypted_len + 2);
     *encrypted_cbc = '*';
 
     memcpy(&encrypted_cbc[1], encrypted, encrypted_len);
