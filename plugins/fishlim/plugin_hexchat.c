@@ -300,7 +300,7 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
     sender = irc_prefix_get_nick(prefix);
     query_ctx = find_context_on_network(sender);
     if (query_ctx)
-        hexchat_set_context(ph, query_ctx);
+        g_assert(hexchat_set_context(ph, query_ctx) == 1);
 
     dh_message++; /* : prefix */
     if (*dh_message == '+' || *dh_message == '-')
@@ -439,7 +439,7 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
     }
 
     if (query_ctx) {
-        hexchat_set_context(ph, query_ctx);
+        g_assert(hexchat_set_context(ph, query_ctx) == 1);
         ctx_type = hexchat_list_int(ph, NULL, "type");
     }
 
@@ -551,7 +551,7 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
 
     query_ctx = find_context_on_network(target);
     if (query_ctx) {
-        hexchat_set_context(ph, query_ctx);
+        g_assert(hexchat_set_context(ph, query_ctx) == 1);
 
         prefix = get_my_own_prefix();
 
