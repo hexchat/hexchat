@@ -242,7 +242,7 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
         if (uw == ew) {
             /* Add the encrypted data */
             peice = decrypted;
-            uw++; /* Skip "OK+" */
+            uw++; /* Skip "+OK" */
             
             if (ew == w+1) {
                 /* Prefix with colon, which gets stripped out otherwise */
