@@ -4,7 +4,6 @@ endif
 
 fishlim_sources = [
   'dh1080.c',
-  'base64.c',
   'fish.c',
   'irc.c',
   'keystore.c',

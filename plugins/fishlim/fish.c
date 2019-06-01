@@ -36,11 +36,11 @@
 #include <openssl/rand.h>
 
 #include "keystore.h"
-#include "base64.h"
 #include "fish.h"
 
 #define IB 64
-static const char fish_base64[64] = "./0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+static const char fish_base64[] = "./0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+static const char base64_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 static const signed char fish_unbase64[256] = {
     IB,IB,IB,IB,IB,IB,IB,IB,  IB,IB,IB,IB,IB,IB,IB,IB,
     IB,IB,IB,IB,IB,IB,IB,IB,  IB,IB,IB,IB,IB,IB,IB,IB,
@@ -316,7 +316,7 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t m
 
     switch (mode) {
         case FISH_CBC_MODE:
-            openssl_base64_encode((const unsigned char *) ciphertext, ciphertext_len, &b64);
+            b64 = g_base64_encode((const unsigned char *) ciphertext, ciphertext_len);
             break;
 
         case FISH_ECB_MODE:
@@ -354,8 +354,9 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data, enum fish_m
 
     switch (mode) {
         case FISH_CBC_MODE:
-            if (openssl_base64_decode(data, (unsigned char **) &ciphertext, &ciphertext_len) != 0)
+            if (strspn(data, base64_chars) != strlen(data))
                 return NULL;
+            ciphertext = (char *) g_base64_decode(data, &ciphertext_len);
             break;
 
         case FISH_ECB_MODE:
