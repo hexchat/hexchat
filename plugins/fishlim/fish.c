@@ -186,6 +186,8 @@ char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, 
     unsigned char *iv = NULL;
     size_t block_size = 0;
 
+    *ciphertext_len = 0;
+
     if (plaintext_len == 0 || keylen == 0 || encode < 0 || encode > 1)
         return NULL;
 
