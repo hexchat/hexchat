@@ -112,7 +112,7 @@ static hexchat_context *find_context_on_network (const char *name) {
  * @return @ or + or NULL
  */
 char *get_my_own_prefix(void) {
-    gchar *result = NULL;
+    char *result = NULL;
     const char *own_nick;
     hexchat_list* list;
 
