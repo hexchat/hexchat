@@ -30,7 +30,6 @@
 #include <string.h>
 
 #include "hexchat-plugin.h"
-#define HEXCHAT_MAX_WORDS 32
 
 #include "fish.h"
 #include "dh1080.h"
@@ -135,6 +134,83 @@ char *get_my_own_prefix(void) {
     return result;
 }
 
+/**
+ * Try to decrypt the first occurrence of fish message
+ * 
+ * @param message  Message to decrypt
+ * @param key     Key of message
+ * @return Array of char with decrypted message or NULL. The returned string 
+ * should be freed with g_free() when no longer needed.
+ */
+char *decrypt_raw_message(const char *message, const char *key) {
+    const char *prefixes[] = {"+OK ", "mcps ", NULL};
+    char *start = NULL, *end = NULL;
+    char *left = NULL, *right = NULL;
+    char *encrypted = NULL, *decrypted = NULL;
+    int length = 0;
+    int index_prefix;
+    enum fish_mode mode;
+    GString *message_decrypted;
+    char *result = NULL;
+
+    if (message == NULL || key == NULL)
+        return NULL;
+
+    for (index_prefix = 0; index_prefix < 2; index_prefix++) {
+        start = g_strstr_len(message, strlen(message), prefixes[index_prefix]);
+        if (start) {
+            /* Length ALWAYS will be less that original message
+             * add '[CBC] ' length */
+            message_decrypted = g_string_sized_new(strlen(message) + 6);
+
+            /* Left part of message */
+            left = g_strndup(message, start - message);
+            g_string_append(message_decrypted, left);
+            g_free(left);
+
+            /* Encrypted part */
+            start += strlen(prefixes[index_prefix]);
+            end = g_strstr_len(start, strlen(message), " ");
+            if (end) {
+                length = end - start;
+                right = end;
+            }
+
+            if (length > 0) {
+                encrypted = g_strndup(start, length);
+            } else {
+                encrypted = g_strdup(start);
+            }
+            decrypted = fish_decrypt_from_nick(key, encrypted, &mode);
+            g_free(encrypted);
+
+            if (decrypted == NULL) {
+                g_string_free(message_decrypted, TRUE);
+                return NULL;
+            }
+
+            /* Add encrypted flag */
+            g_string_append(message_decrypted, "[");
+            g_string_append(message_decrypted, fish_modes[mode]);
+            g_string_append(message_decrypted, "] ");
+            /* Decrypted message */
+            g_string_append(message_decrypted, decrypted);
+            g_free(decrypted);
+
+            /* Right part of message */
+            if (right) {
+                g_string_append(message_decrypted, right);
+            }
+
+            result = message_decrypted->str;
+            g_string_free(message_decrypted, FALSE);
+            return result;
+        }
+    }
+
+    return NULL;
+}
+
 /*static int handle_debug(char *word[], char *word_eol[], void *userdata) {
     hexchat_printf(ph, "debug incoming: ");
     for (size_t i = 1; word[i] != NULL && word[i][0] != '\0'; i++) {
@@ -181,108 +257,59 @@ static int handle_incoming(char *word[], char *word_eol[], hexchat_event_attrs *
     const char *prefix;
     const char *command;
     const char *recipient;
-    const char *encrypted;
-    const char *peice;
+    const char *raw_message = word_eol[1];
     char *sender_nick;
     char *decrypted;
-    enum fish_mode mode;
-    size_t w;
-    size_t ew;
-    size_t uw;
-    char prefix_char = 0;
+    size_t parameters_offset;
     GString *message;
 
-    if (!irc_parse_message((const char **)word, &prefix, &command, &w))
+    if (!irc_parse_message((const char **)word, &prefix, &command, &parameters_offset))
         return HEXCHAT_EAT_NONE;
-    
+
     /* Topic (command 332) has an extra parameter */
-    if (!strcmp(command, "332")) w++;
-    
-    /* Look for encrypted data */
-    for (ew = w+1; ew < HEXCHAT_MAX_WORDS-1; ew++) {
-        const char *s = (ew == w+1 ? word[ew]+1 : word[ew]);
-        if (*s && (s[1] == '+' || s[1] == 'm')) { prefix_char = *(s++); }
-        else { prefix_char = 0; }
-        if (strcmp(s, "+OK") == 0 || strcmp(s, "mcps") == 0) goto has_encrypted_data;
+    if (!strcmp(command, "332"))
+        parameters_offset++;
+
+    /* Extract sender nick and recipient nick/channel and try to decrypt */
+    recipient = word[parameters_offset];
+    decrypted = decrypt_raw_message(raw_message, recipient);
+    if (decrypted == NULL) {
+        sender_nick = irc_prefix_get_nick(prefix);
+        decrypted = decrypt_raw_message(raw_message, sender_nick);
+        g_free(sender_nick);
     }
-    return HEXCHAT_EAT_NONE;
-  has_encrypted_data: ;
-    /* Extract sender nick and recipient nick/channel */
-    sender_nick = irc_prefix_get_nick(prefix);
-    recipient = word[w];
-    
-    /* Try to decrypt with these (the keys are searched for in the key store) */
-    encrypted = word[ew+1];
-    decrypted = fish_decrypt_from_nick(recipient, encrypted, &mode);
-    if (!decrypted)
-        decrypted = fish_decrypt_from_nick(sender_nick, encrypted, &mode);
-    
-    /* Check for error */
-    if (!decrypted)
-        goto decrypt_error;
-    
-    /* Build unecrypted message */
-    message = g_string_sized_new (strlen(word_eol[1])); /* Just put at least the size of original command */
-    g_string_append (message, "RECV");
+
+    /* Nothing to decrypt */
+    if (decrypted == NULL)
+        return HEXCHAT_EAT_NONE;
+
+    /* Build decrypted message */
+
+    /* decrypted + 'RECV ' + '@time=YYYY-MM-DDTHH:MM:SS.fffffZ ' */
+    message = g_string_sized_new (strlen(decrypted) + 5 + 33);
+    g_string_append (message, "RECV ");
 
     if (attrs->server_time_utc)
     {
         GTimeVal tv = { (glong)attrs->server_time_utc, 0 };
         char *timestamp = g_time_val_to_iso8601 (&tv);
 
-       g_string_append (message, " @time=");
+       g_string_append (message, "@time=");
        g_string_append (message, timestamp);
+       g_string_append (message, " ");
        g_free (timestamp);
     }
 
-    for (uw = 1; uw < HEXCHAT_MAX_WORDS; uw++) {
-        if (word[uw][0] != '\0')
-            g_string_append_c (message, ' ');
-        
-        if (uw == ew) {
-            /* Add the encrypted data */
-            peice = decrypted;
-            uw++; /* Skip "+OK" */
-            
-            if (ew == w+1) {
-                /* Prefix with colon, which gets stripped out otherwise */
-                g_string_append_c (message, ':');
-            }
-
-            if (prefix_char) {
-                g_string_append_c (message, prefix_char);
-            }
-
-            /* Add encrypted flag */
-            if (strcmp(word[2], "PRIVMSG") == 0 || strcmp(word[2], "NOTICE") == 0) {
-                g_string_append(message, "[");
-                g_string_append(message, fish_modes[mode]);
-                g_string_append(message, "] ");
-            }
-
-        } else {
-            /* Add unencrypted data (for example, a prefix from a bouncer or bot) */
-            peice = word[uw];
-        }
-
-        g_string_append (message, peice);
-    }
+    g_string_append (message, decrypted);
     g_free(decrypted);
 
-    /* Simulate unencrypted message */
-    /* hexchat_printf(ph, "simulating: %s\n", message->str); */
-    /* RECV command will throw this function again, if message have multiple
-       encrypted data, we will decrypt all */
+    /* Fake server message
+     * RECV command will throw this function again, if message have multiple
+     * encrypted data, we will decrypt all */
     hexchat_command(ph, message->str);
-
     g_string_free (message, TRUE);
-    g_free(sender_nick);
-    return HEXCHAT_EAT_HEXCHAT;
 
-  decrypt_error:
-    g_free(decrypted);
-    g_free(sender_nick);
-    return HEXCHAT_EAT_NONE;
+    return HEXCHAT_EAT_HEXCHAT;
 }
 
 static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
