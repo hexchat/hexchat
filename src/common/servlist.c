@@ -59,6 +59,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.nurs.or.jp"},
 	{0,			"irc.juggler.jp"},
 
+	{"6697",    0},
+    {0,            "irc.6697.co.uk/+6697"},
+    {0,            "irc.af/+6697"},
+    {0,            "irc.jupe.city/+6697"},
+    {0,            "irc.corruptnet.org/+6697"},
+	
 	{"AccessIRC",	0},
 	/* Self signed */
 	{0,			"irc.accessirc.net"},
