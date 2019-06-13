@@ -301,6 +301,9 @@ static const struct defaultserver def[] =
 	{"Serenity-IRC",	0},
 	{0,			"irc.serenity-irc.net"},
 
+	{"SimosNap", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,            "irc.simosnap.com"},
+
 	{"SlashNET",	0},
 	/* Self signed */
 	{0,			"irc.slashnet.org"},
