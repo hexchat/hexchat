@@ -73,7 +73,7 @@ def emit_print(event_name, *args, **kwargs):
 
     attrs = lib.hexchat_event_attrs_create(lib.ph)
     attrs.server_time_utc = time
-    ret = lib.hexchat_emit_print(lib.ph, attrs, event_name.encode(), *cargs)
+    ret = lib.hexchat_emit_print_attrs(lib.ph, attrs, event_name.encode(), *cargs)
     lib.hexchat_event_attrs_free(lib.ph, attrs)
     return ret
 
