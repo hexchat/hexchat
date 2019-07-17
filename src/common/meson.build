@@ -105,6 +105,7 @@ hexchat_common = static_library('hexchatcommon',
 )
 
 hexchat_common_dep = declare_dependency(
+  sources: [textevents] + marshal,
   link_with: hexchat_common,
   include_directories: common_includes,
   compile_args: common_cflags,
