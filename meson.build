@@ -1,6 +1,6 @@
 project('hexchat', 'c',
-  version: '2.14.1',
-  meson_version: '>= 0.38.0',
+  version: '2.14.2',
+  meson_version: '>= 0.40.0',
   default_options: [
     'c_std=gnu89',
     'buildtype=debugoptimized',
@@ -58,6 +58,10 @@ config_h.set('GLIB_VERSION_MIN_REQUIRED', 'GLIB_VERSION_2_34')
 # Detected features
 config_h.set('HAVE_MEMRCHR', cc.has_function('memrchr'))
 config_h.set('HAVE_STRINGS_H', cc.has_header('strings.h'))
+
+config_h.set_quoted('HEXCHATLIBDIR',
+  join_paths(get_option('prefix'), get_option('libdir'), 'hexchat/plugins')
+)
 
 if libssl_dep.found()
   config_h.set('HAVE_X509_GET_SIGNATURE_NID',
@@ -145,7 +149,13 @@ test_ldflags = [
   '-Wl,--nxcompat',
 ]
 foreach ldflag : test_ldflags
-  if cc.has_argument(ldflag) and cc.links('int main (void) { return 0; }', args: ldflag)
+  if meson.version().version_compare('>= 0.46.0')
+    has_arg = cc.has_link_argument(ldflag)
+  else
+    has_arg = cc.has_argument(ldflag)
+  endif
+
+  if has_arg and cc.links('int main (void) { return 0; }', args: ldflag)
     global_ldflags += ldflag
   endif
 endforeach

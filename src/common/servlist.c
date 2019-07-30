@@ -166,9 +166,6 @@ static const struct defaultserver def[] =
 	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
 
-	{"Furnet", 0, 0, 0, 0, 0, TRUE},
-	{0,			"irc.furnet.org"},
-
 	{"GalaxyNet",	0},
 	{0,			"irc.galaxynet.org"},
 
@@ -195,6 +192,11 @@ static const struct defaultserver def[] =
 	{0,			"irc.globalgamers.net/+6660"},
 #endif
 	{0,			"irc.globalgamers.net"},
+
+#ifdef USE_OPENSSL
+	{"hackint", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.hackint.org"},
+#endif
 
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
