@@ -1,0 +1,44 @@
+name: Windows
+on: [push]
+jobs:
+  build:
+    runs-on: windows-2016
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Install Dependencies
+        run: |
+          New-Item -Name "deps" -ItemType "Directory"
+
+          Invoke-WebRequest http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe -OutFile deps\innosetup-unicode.exe
+          & deps\innosetup-unicode.exe /VERYSILENT
+
+          Invoke-WebRequest https://dl.hexchat.net/misc/idpsetup-1.1.2.exe -OutFile deps\idpsetup.exe
+          & deps\idpsetup.exe /VERYSILENT
+
+          Invoke-WebRequest https://www.7-zip.org/a/7z1900-x64.exe -OutFile deps\7z-x64.exe
+          & deps\7z-x64.exe /S /D="C:\Program Files\7-Zip" 
+
+          Invoke-WebRequest https://dl.hexchat.net/gtk/gtk-x64-2018-08-29.7z -OutFile deps\gtk-x64.7z
+          & "C:\Program Files\7-Zip\7z.exe" x deps\gtk-x64.7z -oC:\gtk-build\gtk
+
+          Invoke-WebRequest https://dl.hexchat.net/gtk-win32/gendef-20111031.7z -OutFile deps\gendef.7z
+          & "C:\Program Files\7-Zip\7z.exe" x deps\gendef.7z -oC:\gtk-build
+
+          Invoke-WebRequest https://dl.hexchat.net/gtk-win32/WinSparkle-20151011.7z -OutFile deps\WinSparkle.7z
+          & "C:\Program Files\7-Zip\7z.exe" x deps\WinSparkle.7z -oC:\gtk-build\WinSparkle
+
+          Invoke-WebRequest https://dl.hexchat.net/misc/perl/perl-5.20.0-x64.7z -OutFile deps\perl-x64.7z
+          & "C:\Program Files\7-Zip\7z.exe" x deps\perl-x64.7z -oC:\gtk-build\perl-5.20\x64
+
+          New-Item -Path "c:\gtk-build" -Name "python-2.7" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/2.7.16/x64"
+          New-Item -Path "c:\gtk-build" -Name "python-3.6" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/3.6.8/x64"
+        shell: powershell
+
+      - name: Build
+        run: |
+          "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\Tools\VsDevCmd.bat"
+          msbuild win32\hexchat.sln
