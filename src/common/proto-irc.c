@@ -957,6 +957,7 @@ process_numeric (session * sess, int n,
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_SASLRESPONSE, serv->server_session, word[1],
 									  word[2], word[3], ++word_eol[4], 0,
 									  tags_data->timestamp);
+		serv->waiting_on_sasl = FALSE;
 		if (!serv->sent_capend)
 		{
 			serv->sent_capend = TRUE;
@@ -1330,7 +1331,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 				else if (strncasecmp (word[4], "NAK", 3) == 0)
 				{
-					inbound_cap_nak (serv, tags_data);
+					inbound_cap_nak (serv, word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5], tags_data);
 				}
 				else if (strncasecmp (word[4], "LIST", 4) == 0)	
 				{
