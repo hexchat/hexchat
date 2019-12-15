@@ -53,6 +53,10 @@
 #include "sexy-spell-entry.h"
 #include "gtkutil.h"
 
+#ifdef WIN32
+#include <winuser.h>
+#endif
+
 #define GUI_SPACING (3)
 #define GUI_BORDER (0)
 
