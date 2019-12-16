@@ -54,7 +54,7 @@
 #include "gtkutil.h"
 
 #ifdef G_OS_WIN32
-#include <winuser.h>
+#include <windows.h>
 #endif
 
 #define GUI_SPACING (3)
