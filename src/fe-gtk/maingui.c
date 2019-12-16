@@ -53,7 +53,7 @@
 #include "sexy-spell-entry.h"
 #include "gtkutil.h"
 
-#ifdef WIN32
+#ifdef G_OS_WIN32
 #include <winuser.h>
 #endif
 
