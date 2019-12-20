@@ -1,0 +1,56 @@
+version: 1.0.{build}
+image: Visual Studio 2015
+shallow_clone: true
+environment:
+  matrix:
+  - platform: x64
+    arch: x64
+  - platform: win32
+    arch: x86
+before_build:
+- cmd: |
+    set PATH="C:\Program Files\7-Zip";%PATH%
+
+    appveyor DownloadFile http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe
+    innosetup-5.5.9-unicode.exe /VERYSILENT
+
+    appveyor DownloadFile https://dl.hexchat.net/misc/idpsetup-1.1.2.exe
+    idpsetup-1.1.2.exe /VERYSILENT
+
+    REM appveyor DownloadFile https://dl.hexchat.net/gtk-win32/vc14/%arch%/gtk-%platform%.7z
+
+    appveyor DownloadFile https://dl.hexchat.net/gtk/gtk-%platform%-2018-08-29.7z
+    7z x gtk-%platform%-*.7z -oC:\gtk-build\gtk
+
+    appveyor DownloadFile https://dl.hexchat.net/gtk-win32/gendef-20111031.7z
+    7z x gendef-20111031.7z -oC:\gtk-build
+
+    appveyor DownloadFile https://dl.hexchat.net/gtk-win32/WinSparkle-20151011.7z
+    7z x WinSparkle-20151011.7z -oC:\gtk-build\WinSparkle
+
+    appveyor DownloadFile https://dl.hexchat.net/misc/perl/perl-5.20.0-%arch%.7z
+    7z x perl-5.20.0-%arch%.7z -oC:\gtk-build\perl-5.20\%platform%
+
+    mkdir C:\gtk-build\python-3.6
+    mkdir C:\gtk-build\python-2.7
+    mklink /d C:\gtk-build\python-3.6\x64 C:\Python36-x64
+    mklink /d C:\gtk-build\python-3.6\Win32 C:\Python36
+    mklink /d C:\gtk-build\python-2.7\x64 C:\Python27-x64
+    mklink /d C:\gtk-build\python-2.7\Win32 C:\Python27
+
+    C:\Python36-x64\python.exe -m pip install cffi
+    C:\Python27-x64\python.exe -m pip install cffi
+    C:\Python36\python.exe -m pip install cffi
+    C:\Python27\python.exe -m pip install cffi
+build:
+  project: win32\hexchat.sln
+  parallel: true
+  verbosity: minimal
+after_build:
+- cmd: |-
+    move ..\hexchat-build\%platform%\HexChat*.exe .\
+    move ..\hexchat-build .\
+artifacts:
+- path: hexchat-build
+- path: HexChat*.exe
+  name: installer
