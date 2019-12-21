@@ -39,13 +39,9 @@ if gtk_dep.get_pkgconfig_variable('target') == 'x11'
   hexchat_gtk_deps += dependency('x11')
 endif
 
-hexchat_gtk_cflags = [
-  '-fPIE'
-]
+hexchat_gtk_cflags = []
 
-hexchat_gtk_ldflags = [
-  '-pie'
-]
+hexchat_gtk_ldflags = []
 
 if get_option('with-libnotify')
   hexchat_gtk_sources += 'notifications/notification-libnotify.c'
@@ -89,6 +85,7 @@ executable('hexchat',
   dependencies: hexchat_gtk_deps,
   c_args: hexchat_gtk_cflags,
   link_args: hexchat_gtk_ldflags,
+  pie: true,
   install: true,
   gui_app: true,
 )

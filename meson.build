@@ -87,8 +87,6 @@ endif
 
 global_cflags = []
 test_cflags = [
-  '-pipe',
-  '-fPIE',
   '-funsigned-char',
   '-Wno-conversion',
   '-Wno-pointer-sign',
