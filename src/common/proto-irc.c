@@ -60,8 +60,8 @@ irc_login (server *serv, char *user, char *realname)
 
 	tcp_sendf (serv,
 				  "NICK %s\r\n"
-				  "USER %s %s %s :%s\r\n",
-				  serv->nick, user, user, serv->servername, realname);
+				  "USER %s 0 * :%s\r\n",
+				  serv->nick, user, realname);
 }
 
 static void
