@@ -195,19 +195,19 @@ msgstr "オペレーターアクション(_P)"
 
 #: src/common/hexchat.c:892
 msgid "Give Ops"
-msgstr "なるとを与える"
+msgstr "オペレーター権限を与える"
 
 #: src/common/hexchat.c:893
 msgid "Take Ops"
-msgstr "なるとを奪う"
+msgstr "オペレーター権限を奪う"
 
 #: src/common/hexchat.c:894
 msgid "Give Voice"
-msgstr "Voice を与える"
+msgstr "発言権を与える"
 
 #: src/common/hexchat.c:895
 msgid "Take Voice"
-msgstr "Voice を奪う"
+msgstr "発言権を奪う"
 
 #: src/common/hexchat.c:897
 msgid "Kick/Ban"
@@ -254,11 +254,11 @@ msgstr "バージョンを隠す"
 
 #: src/common/hexchat.c:932
 msgid "Op"
-msgstr "なると"
+msgstr "オペレーター"
 
 #: src/common/hexchat.c:933
 msgid "DeOp"
-msgstr "なると奪略"
+msgstr "オペレーター権限の剥奪"
 
 #: src/common/hexchat.c:936
 msgid "bye"
@@ -471,7 +471,7 @@ msgid ""
 "chanop)"
 msgstr ""
 "BAN <マスク> [<禁止タイプ>], 現在のチャンネルから, マスクに一致するニックをバ"
-"ンする. 既にチャンネルに参加しているニックに関しては効果がない (なるとが必要)"
+"ンする. 既にチャンネルに参加しているニックに関しては効果がない (オペレーター権限が必要)"
 
 #: src/common/outbound.c:3944
 msgid "CHANOPT [-quiet] <variable> [<value>]"
@@ -543,7 +543,7 @@ msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
 msgstr ""
-"DEHOP <ニック>, 現在のチャンネルの指定ニックからハーフなるとを剥奪する (なる"
+"DEHOP <ニック>, 現在のチャンネルの指定ニックからハーフオペレーター権限を剥奪する (なる"
 "とが必要)"
 
 #: src/common/outbound.c:3970
@@ -555,7 +555,7 @@ msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
 msgstr ""
-"DEOP <ニック>, 現在のチャンネルの指定ニックからなるとを剥奪する (なるとが必"
+"DEOP <ニック>, 現在のチャンネルの指定ニックからオペレーター権限を剥奪する (オペレーター権限が必"
 "要)"
 
 #: src/common/outbound.c:3974
@@ -563,7 +563,7 @@ msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
 msgstr ""
-"DEVOICE <ニック>, 現在のチャンネルの指定ニックから, 発言権を削除する (なると"
+"DEVOICE <ニック>, 現在のチャンネルの指定ニックから, 発言権を削除する (オペレーター権限"
 "が必要)"
 
 #: src/common/outbound.c:3975
@@ -628,7 +628,7 @@ msgstr "GHOST <ニック> [パスワード], 幽霊化したニックを Kill �
 
 #: src/common/outbound.c:4008
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr "HOP <ニック>, 指定のニックにハーフなるとを与える (なるとが必要)"
+msgstr "HOP <ニック>, 指定のニックにハーフオペレーター権限を与える (オペレーター権限が必要)"
 
 #: src/common/outbound.c:4009
 msgid "ID <password>, identifies yourself to nickserv"
@@ -654,7 +654,7 @@ msgid ""
 "current channel (needs chanop)"
 msgstr ""
 "INVITE <ニック> [<チャンネル>], 指定のチャンネルへ招待する。標準では現在の"
-"チャンネル名 (なるとが必要)"
+"チャンネル名 (オペレーター権限が必要)"
 
 #: src/common/outbound.c:4019
 msgid "JOIN <channel>, joins the channel"
@@ -697,11 +697,11 @@ msgstr "LOAD [-e] <ファイル>, スクリプトかプラグインを読み込�
 #: src/common/outbound.c:4037
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr "MDEHOP, 現在のチャンネルの全員のハーフなるとを剥奪する (なるとが必要)"
+msgstr "MDEHOP, 現在のチャンネルの全員のハーフオペレーター権限を剥奪する (オペレーター権限が必要)"
 
 #: src/common/outbound.c:4039
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr "MDEOP, 現在のチャンネルの全員のなるとを剥奪する (なるとが必要)"
+msgstr "MDEOP, 現在のチャンネルの全員のオペレーター権限を剥奪する (オペレーター権限が必要)"
 
 #: src/common/outbound.c:4041
 msgid ""
@@ -718,11 +718,11 @@ msgstr ""
 #: src/common/outbound.c:4047
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr "MKICK, 現在のチャンネルの自分以外の全員をキックする (なるとが必要)"
+msgstr "MKICK, 現在のチャンネルの自分以外の全員をキックする (オペレーター権限が必要)"
 
 #: src/common/outbound.c:4050
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr "MOP, 現在のチャンネルの全員のなるとを剥奪する (なるとが必要)"
+msgstr "MOP, 現在のチャンネルの全員のオペレーター権限を剥奪する (オペレーター権限が必要)"
 
 #: src/common/outbound.c:4051
 msgid ""
@@ -760,7 +760,7 @@ msgstr ""
 
 #: src/common/outbound.c:4065
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr "OP <ニック>, 指定のニックになるとを与える (なるとが必要)"
+msgstr "OP <ニック>, 指定のニックにオペレーター権限を与える (オペレーター権限が必要)"
 
 #: src/common/outbound.c:4067
 msgid ""
@@ -922,7 +922,7 @@ msgstr ""
 
 #: src/common/outbound.c:4129
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr "VOICE <ニック>, 発言権を指定のニックへ与える (なるとが必要)"
+msgstr "VOICE <ニック>, 発言権を指定のニックへ与える (オペレーター権限が必要)"
 
 #: src/common/outbound.c:4131
 msgid "WALLCHAN <message>, writes the message to all channels"
@@ -932,7 +932,7 @@ msgstr "WALLCHAN <メッセージ>, 全チャンネルへメッセージを送�
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr ""
-"WALLCHOP <メッセージ>, 現在のチャンネルのなると保持者全員へメッセージを送信す"
+"WALLCHOP <メッセージ>, 現在のチャンネルのオペレーター権限保持者全員へメッセージを送信す"
 "る"
 
 #: src/common/outbound.c:4166
@@ -1761,11 +1761,11 @@ msgstr ""
 
 #: src/common/text.c:1127
 msgid "The nick of the person who has been op'ed"
-msgstr "なるとをもらったニック"
+msgstr "オペレーター権限をもらったニック"
 
 #: src/common/text.c:1131
 msgid "The nick of the person who has been halfop'ed"
-msgstr "ハーフなるとをもらったニック"
+msgstr "ハーフオペレーター権限をもらったニック"
 
 #: src/common/text.c:1132
 msgid "The nick of the person who did the halfop'ing"
@@ -1809,7 +1809,7 @@ msgstr ""
 
 #: src/common/text.c:1160
 msgid "The nick of the person who has been deop'ed"
-msgstr "なるとを取られたニック"
+msgstr "オペレーター権限を取られたニック"
 
 #: src/common/text.c:1163
 msgid "The nick of the person who did the dehalfop'ing"
@@ -1817,7 +1817,7 @@ msgstr ""
 
 #: src/common/text.c:1164
 msgid "The nick of the person who has been dehalfop'ed"
-msgstr "ハーフなるとを取られたニック"
+msgstr "ハーフオペレーター権限を取られたニック"
 
 #: src/common/text.c:1168
 msgid "The nick of the person who did the devoice'ing"
@@ -6351,7 +6351,7 @@ msgstr "ファイルにリストを保存"
 #: src/fe-gtk/userlistgui.c:108
 #, c-format
 msgid "%d ops, %d total"
-msgstr "%d 個のなると、合計 %d 個"
+msgstr "%d 人のオペレーター、合計 %d 人"
 
 #: src/fe-text/fe-text.c:472
 msgid "Open an irc://server:port/channel URL"
