@@ -200,13 +200,35 @@ tcp_send_len (server *serv, char *buf, int len)
 	}
 	else
 	{
-		/* WHO/MODE get the lowest priority */
-		if (g_ascii_strncasecmp (dbuf + 1, "WHO ", 4) == 0 ||
-		/* but only MODE queries, not changes */
-			(g_ascii_strncasecmp (dbuf + 1, "MODE", 4) == 0 &&
-			 strchr (dbuf, '-') == NULL &&
-			 strchr (dbuf, '+') == NULL))
+		/* WHO gets the lowest priority */
+		if (g_ascii_strncasecmp (dbuf + 1, "WHO ", 4) == 0)
 			dbuf[0] = 0;
+		/* as do MODE queries (but not changes) */
+		else if (g_ascii_strncasecmp (dbuf + 1, "MODE ", 5) == 0)
+		{
+			char *mode_str, *mode_str_end, *loc;
+			/* skip spaces before channel/nickname */
+			for (mode_str = dbuf + 5; *mode_str == ' '; ++mode_str);
+			/* skip over channel/nickname */
+			mode_str = strchr (mode_str, ' ');
+			if (mode_str)
+			{
+				/* skip spaces before mode string */
+				for (; *mode_str == ' '; ++mode_str);
+				/* find spaces after end of mode string */
+				mode_str_end = strchr (mode_str, ' ');
+				/* look for +/- within the mode string */
+				loc = strchr (mode_str, '-');
+				if (loc && (!mode_str_end || loc < mode_str_end))
+					goto keep_priority;
+				loc = strchr (mode_str, '+');
+				if (loc && (!mode_str_end || loc < mode_str_end))
+					goto keep_priority;
+			}
+			dbuf[0] = 0;
+keep_priority:
+			;
+		}
 	}
 
 	serv->outbound_queue = g_slist_append (serv->outbound_queue, dbuf);
