@@ -80,9 +80,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.kis.lt"},
 	{0,			"irc.vub.lt"},
 
-	{"Anthrochat", 0, 0, 0, 0, 0, TRUE},
-	{0,			"irc.anthrochat.net"},
-
 	{"ARCNet",	0},
 	{0,			"arcnet-irc.org"},
 
@@ -96,8 +93,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.betachat.net"},
 	{"BuddyIM", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.buddy.im"},
-	{"Canternet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.canternet.org"},
 
 	{"Chat4all", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.chat4all.org"},
@@ -127,9 +122,6 @@ static const struct defaultserver def[] =
 
 	{"Dark-Tou-Net",	0},
 	{0,			"irc.d-t-net.de"},
-
-	{"DeltaAnime", 0},
-	{0,			"irc.deltaanime.net"},
 
 	{"EFnet",	0},
 	{0,			"irc.choopa.net"},
@@ -270,9 +262,6 @@ static const struct defaultserver def[] =
 
 	{"PIRC.PL",	0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.pirc.pl"},
-	
-	{"PonyChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.ponychat.net"},
 
 	{"PTNet.org",	0},
 	/* Note that the network suggests ISO-8859-1 but most users ignore this */
