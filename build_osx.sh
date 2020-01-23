@@ -184,6 +184,7 @@ Main()
   BrewCheckAndInstall gettext "gettext --version"
 
 
+  # Get Hexchat Version
   LIG_VER=$(grep "  version:" meson.build | tr "'" " ")
   IFS=' ' # space is set as delimiter
   read -ra ARR_VER <<< "$LIG_VER" # str is read into an array as tokens separated by IFS
@@ -201,10 +202,28 @@ Main()
 
   cp -f osx/hexchat.icns ${BASE_DIR}/build/hexchat.app/Contents/Resources/
   cp -f osx/Info.plist.in ${BASE_DIR}/build/hexchat.app/Contents/Info.plist
-  sed -i'' -e s/@VERSION@/$VER/g ${BASE_DIR}/build/hexchat.app/Contents/Info.plist
+  sed -i '' -e s/@VERSION@/$VER/g ${BASE_DIR}/build/hexchat.app/Contents/Info.plist
 
   rm -rf ${BASE_DIR}/build/hexchat.app/include
   rm -rf ${BASE_DIR}/build/hexchat.app/share
+
+
+  # Make Portable version
+  mkdir ${BASE_DIR}/build/dylibs
+  cp -r ${BASE_DIR}/build/hexchat.app ${BASE_DIR}/build/hexchat-portable.app
+
+  otool -L ${BASE_DIR}/build/hexchat-portable.app/Contents/MacOS/hexchat | grep -v -e hexchat -e "/usr/lib/" | while read DYLIB DYLIB_INFO
+    do
+      #Remove the \t char of $DYLIB
+      DYLIB=${DYLIB//[[:space:]]/}
+      DYLIB_NAME=$(basename $DYLIB)
+      cp -f "${DYLIB}" "${BASE_DIR}/build/dylibs/"
+      cp -f "${DYLIB}" "${BASE_DIR}/build/hexchat-portable.app/Contents/Resources/lib/"
+
+      install_name_tool -change "${DYLIB}"  "@executable_path/../Resources/lib/${DYLIB_NAME}" "${BASE_DIR}/build/hexchat-portable.app/Contents/MacOS/hexchat" 
+    done
+
+
 
 
   Info "###### END (ALL) ######"
