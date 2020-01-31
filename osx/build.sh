@@ -152,7 +152,7 @@ PatchTextPath()
 {
   SRC_BINARY=$1
 
-  SRC_BINAY_NAME=$(basename "${SRC_BINARY}")
+  SRC_BINARY_NAME=$(basename "${SRC_BINARY}")
 
   NB_LINE=0
 
@@ -185,7 +185,7 @@ Lib2StandaloneLib()
   PREFIX=$3
   PATCH_TEXT_PATH=$4
 
-  SRC_BINAY_NAME=$(basename "${SRC_BINARY}")
+  SRC_BINARY_NAME=$(basename "${SRC_BINARY}")
 
   #echo "* ${SRC_BINARY}"
 
@@ -243,12 +243,42 @@ Lib2StandaloneLib()
 }
 
 ################################
+# Function FindAndInstallBin
+################################
+FindAndInstallBin()
+{
+  SRC_BINARY=$1
+  DIR_BINARIES=$2
+
+  SRC_BINARY_NAME=$(basename "${SRC_BINARY}")
+
+
+  IFS=":" # : is set as delimiter
+  ARR_PATH=( $(echo "${PATH}") )
+  IFS=' ' # space is set as delimiter
+
+  for DIR_BINARY in ${ARR_PATH[@]}
+  do
+    FIND_BINARY="${DIR_BINARY}/${SRC_BINARY_NAME}"
+
+    if [ -f "${FIND_BINARY}" ] ; then
+      echo "- ADD: ${FIND_BINARY}"
+      cp -f "${FIND_BINARY}" "${DIR_BINARIES}"
+      break
+    fi
+
+  done
+}
+
+################################
 # Function Main
 ################################
 Main()
 {
 
-  Info "###### START (ALL) ######"
+  Info "##########################################################"
+  Info "###### INSTALL DEV. ENV. AND SUPLLY LIBRARIES (ALL) ######"
+  Info "##########################################################"
 
   # Add $HOME build prefix (For BlacDady and maybe other people)
   BuildInstallPrefix "$HOME"
@@ -291,6 +321,11 @@ Main()
   BrewCheckAndInstall luajit "luajit -v"
   BrewCheckAndInstall gettext "gettext --version"
 
+  BrewCheckAndInstall curl "curl --version"
+
+  Info "#################################################"
+  Info "###### MESON CONFIG / POST TREATMENT (ALL) ######"
+  Info "#################################################"
 
   # Get Hexchat Version
   LIG_VER=$(grep "  version:" ../meson.build | tr "'" " ")
@@ -319,9 +354,23 @@ Main()
   # TODO : TO REVIEW IT ALSO : ADD JUST ADD TO ANOMYNOUS THE RELEASE
   sed -i '' -e "s/^prefix=.*$/prefix=.\/Contents\/Resources/g" "${BUILD_DIR}/data/pkgconfig/hexchat-plugin.pc"
 
+
+
+
+  Info "###############################"
+  Info "###### NINJA BUILD (ALL) ######"
+  Info "###############################"
+
   ninja -C "${BUILD_DIR}" install
 
+
+
+  Info "#################################################"
+  Info "###### MAKE BUNDLES / POST TREATMENT (ALL) ######"
+  Info "#################################################"
+
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/MacOS"
+  mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/bin" >/dev/null 2>&1
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/gtk-2.0"
 
   #OpenSSL
@@ -329,11 +378,18 @@ Main()
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/openssl/private"
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/lib/engines-1.1"
   cp -f "${BASE_DIR}/MozillaCACert_20200130.pem" "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/openssl/cert.pem"
+  cp -f "${BASE_DIR}/certs/"* "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/openssl/certs/"
+
+  FindAndInstallBin "openssl" "${BUILD_DIR}/hexchat.app/Contents/Resources/bin/"
+
+  #CURL
+  FindAndInstallBin "curl" "${BUILD_DIR}/hexchat.app/Contents/Resources/bin/"
 
   cp -f "${BASE_DIR}/hexchat.icns" "${BUILD_DIR}/hexchat.app/Contents/Resources/"
   cp -f "${BASE_DIR}/launcher_GIMP_model.sh" "${BUILD_DIR}/hexchat.app/Contents/MacOS/hexchat"
 
-  cp -f "${BASE_DIR}/gtkrc" "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/gtk-2.0/"
+  #cp -f "${BASE_DIR}/gtkrc" "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/gtk-2.0/"
+  cp -f "${BASE_DIR}/gtkrc_gtk+_theme_Mac" "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/gtk-2.0/gtkrc"
 
   cp -f "${BASE_DIR}/Info.plist.in" "${BUILD_DIR}/hexchat.app/Contents/Info.plist"
   sed -i '' -e s/@VERSION@/$VER/g "${BUILD_DIR}/hexchat.app/Contents/Info.plist"
@@ -375,6 +431,11 @@ Main()
   done
 
 
+
+  Info "#################################"
+  Info "###### MAKE RELEASES (ALL) ######"
+  Info "#################################"
+
   # Update Releases Dir
   rm -rf "${RELEASES_DIR}/${VER}/OSX" >/dev/null 2>&1
   mkdir -p "${RELEASES_DIR}/${VER}/OSX" >/dev/null 2>&1
@@ -384,9 +445,9 @@ Main()
   cp -rf "${BUILD_DIR}/hexchat-light.app" "${RELEASES_DIR}/${VER}/OSX/"
 
 
-
-
+  Info "#######################"
   Info "###### END (ALL) ######"
+  Info "#######################"
   Info ""
 }
 

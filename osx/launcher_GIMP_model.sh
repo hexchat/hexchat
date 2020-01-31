@@ -38,23 +38,6 @@ export GTK_EXE_PREFIX="$bundle_res"
 export GTK_PATH="$bundle_res"
 
 
-# OPENSLL
-export OPENSSL_CONF="$bundle_etc"/openssl/openssl.cnf
-export CTLOG_FILE="$bundle_etc"/openssl/ct_log_list.cnf
-export OPENSSL_ENGINES="$bundle_lib"/engines-1.1
-
-if [ -f "/etc/ssl/cert.pem" ] ; then 
- # USE Apple CA Certs 
- export SSL_CERT_FILE=/etc/ssl/cert.pem
-else
- # USE Mozilla CA Certs 
- export SSL_CERT_FILE="$bundle_etc"/openssl/cert.pem
-fi
-# Force Mozilla CA Certs 
-# TODO AUTO UPDATE MOZILLA CA CERT
- export SSL_CERT_FILE="$bundle_etc"/openssl/cert.pem
-
-export SSL_CERT_DIR="$bundle_etc"/openssl/certs
 
 # Set up PATH variable
 export PATH="$bundle_contents/MacOS:$bundle_bin:$PATH"
@@ -142,6 +125,45 @@ export POPPLER_DATADIR="$bundle_data/poppler"
 if test -f "$bundle_lib/charset.alias"; then
  export CHARSETALIASDIR="$bundle_lib"
 fi
+
+
+
+#CONFIG OPENSSL AND UPDATE TRUST ROOT CERTIFICATE STORE
+export OPENSSL_CONF="$bundle_etc"/openssl/openssl.cnf
+export CTLOG_FILE="$bundle_etc"/openssl/ct_log_list.cnf
+export OPENSSL_ENGINES="$bundle_lib"/engines-1.1
+
+# USE Apple CA Certs 
+if [ -f "/etc/ssl/cert.pem" ] ; then export SSL_CERT_FILE=/etc/ssl/cert.pem; fi
+if [ -d "/etc/ssl/certs" ] ; then export SSL_CERT_DIR=/etc/ssl/certs; fi
+
+if true; then
+ # FORCE TO USE Mozilla CA Certs 
+ export SSL_CERT_FILE="$bundle_etc"/openssl/cert.pem
+ export SSL_CERT_DIR="$bundle_etc"/openssl/certs
+fi
+
+export CURL_CA_BUNDLE="${SSL_CERT_FILE}"
+export CURL_CA_PATH="${SSL_CERT_DIR}"
+
+echo ""
+echo "OPENSSL CONFIG:"
+openssl version -a
+echo ""
+
+if [ "${SSL_CERT_FILE}" == "$bundle_etc/openssl/cert.pem" ] ; then
+  echo "UPDATE TRUST ROOT CERTIFICATE STORE"
+  echo "FROM https://curl.haxx.se/docs/caextract.html"
+
+  # -k : Don't check issuer because the first time without cert.pem curl FAILED
+  curl -k --time-cond ${SSL_CERT_FILE} --output ${SSL_CERT_FILE} https://curl.haxx.se/ca/cacert.pem
+  echo
+fi
+
+echo "TEST OPENSSL TRUST ROOT CERTIFICATE STORE (ftp.gnu.org)"
+echo "" | openssl  s_client -connect ftp.gnu.org:443 2>&1 | grep "Verification"
+echo ""
+
 
 # Extra arguments can be added in environment.sh.
 EXTRA_ARGS=
