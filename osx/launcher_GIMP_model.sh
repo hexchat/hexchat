@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Based on the launcher of GIMP 2.8
 # Purpose: 	set up the runtime environment and run HEXCHAT
@@ -69,10 +69,31 @@ fi
 export LIBRARY_PATH="/usr/local/lib"
 export DYLD_FALLBACK_LIBRARY_PATH="/usr/local/lib"
 
+
+
+# FOR HEXCHAT VERSION LIGTH
 if [ -d "/usr/local/opt/gettext/lib" ] ; then
  export LIBRARY_PATH="/usr/local/opt/gettext/lib:$LIBRARY_PATH"
  export DYLD_FALLBACK_LIBRARY_PATH="/usr/local/opt/gettext/lib:$DYLD_FALLBACK_LIBRARY_PATH"
 fi
+
+# FOR HEXCHAT VERSION LIGTH (Libs Glib for all plugins)
+ if [ -d "/usr/local/opt/glib/lib" ] ; then
+ export LIBRARY_PATH="/usr/local/opt/glib/lib:$LIBRARY_PATH"
+ export DYLD_FALLBACK_LIBRARY_PATH="/usr/local/opt/glib/lib:$DYLD_FALLBACK_LIBRARY_PATH"
+ fi
+
+# FOR HEXCHAT VERSION LIGTH (Lib Python for plugin python.dylib)
+ if [ -d "/usr/local/opt/python/Frameworks/Python.framework" ] ; then
+ export LIBRARY_PATH="/usr/local/opt/python/Frameworks/Python.framework:$LIBRARY_PATH"
+ export DYLD_FALLBACK_LIBRARY_PATH="/usr/local/opt/python/Frameworks/Python.framework:$DYLD_FALLBACK_LIBRARY_PATH"
+ fi
+
+# FOR HEXCHAT VERSION LIGTH (Lib libperl.dylib for plugin perl.dylib)
+ if [ -d "/usr/local/opt/perl/lib/perl5/5.30.1/darwin-thread-multi-2level/CORE/" ] ; then
+ export LIBRARY_PATH="/usr/local/opt/perl/lib/perl5/5.30.1/darwin-thread-multi-2level/CORE/:$LIBRARY_PATH"
+ export DYLD_FALLBACK_LIBRARY_PATH="/usr/local/opt/perl/lib/perl5/5.30.1/darwin-thread-multi-2level/CORE/:$DYLD_FALLBACK_LIBRARY_PATH"
+ fi
 
 
 # Bundle librarie folder
@@ -128,6 +149,30 @@ fi
 
 
 
+# Config DBUS 
+bundle_expr=$(echo $bundle | sed -e "s/\\//\\\\\\//g")
+cp -f "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist.in" "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist"
+sed -i '' -e "s/@HEXCHAT_BASE_PATH@/$bundle_expr/g" "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist" 
+
+cp -f "$bundle_etc/dbus-1/session.conf.in" "$bundle_etc/dbus-1/session.conf"
+sed -i '' -e "s/@HEXCHAT_BASE_PATH@/$bundle_expr/g" "$bundle_etc/dbus-1/session.conf" 
+
+
+echo ""
+echo "DBUS CONFIG"
+dbus-daemon --version
+echo ""
+
+#Test If Dbus is load in the launchd session (default org.freedesktop.dbus-session)
+DBUS_LAUNCHD_SESSION_BUS_SOCKET=$(launchctl getenv DBUS_LAUNCHD_SESSION_BUS_SOCKET)
+if [ "${DBUS_LAUNCHD_SESSION_BUS_SOCKET}" == "" ] ; then
+ echo "DBUS_LAUNCHD_SESSION_BUS_SOCKET Not Found: Start STANDALONE org.freedesktop.dbus-session service"
+ launchctl unload "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist"
+ launchctl load "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist" 
+fi
+
+
+
 #CONFIG OPENSSL AND UPDATE TRUST ROOT CERTIFICATE STORE
 export OPENSSL_CONF="$bundle_etc"/openssl/openssl.cnf
 export CTLOG_FILE="$bundle_etc"/openssl/ct_log_list.cnf
@@ -145,6 +190,11 @@ fi
 
 export CURL_CA_BUNDLE="${SSL_CERT_FILE}"
 export CURL_CA_PATH="${SSL_CERT_DIR}"
+
+echo ""
+echo "CURL CONFIG"
+curl --version
+echo ""
 
 echo ""
 echo "OPENSSL CONFIG:"

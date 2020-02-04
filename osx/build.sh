@@ -348,8 +348,8 @@ Main()
 
 
 
-  # TODO : TO REVIEW ALL DBUS BECAUSE THIS CANNOT WORK : ADD JUST THIS TO ANOMYNOUS THE RELEASE
-  sed -i '' -e "s/^Exec=.*$/Exec=.\/Contents\/Resources\/bin\/dbus-daemon/g" "${BUILD_DIR}/src/common/dbus/org.hexchat.service.service"
+  # TODO : TO REVIEW HEXCHAT SERVICE 
+  sed -i '' -e "s/^Exec=.*$/Exec=.\/Contents\/Resources\/bin\/heschat/g" "${BUILD_DIR}/src/common/dbus/org.hexchat.service.service"
  
   # TODO : TO REVIEW IT ALSO : ADD JUST ADD TO ANOMYNOUS THE RELEASE
   sed -i '' -e "s/^prefix=.*$/prefix=.\/Contents\/Resources/g" "${BUILD_DIR}/data/pkgconfig/hexchat-plugin.pc"
@@ -373,7 +373,7 @@ Main()
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/bin" >/dev/null 2>&1
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/gtk-2.0"
 
-  #OpenSSL
+  ### OpenSSL Standalone Version
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/openssl/certs"
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/openssl/private"
   mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/lib/engines-1.1"
@@ -382,9 +382,17 @@ Main()
 
   FindAndInstallBin "openssl" "${BUILD_DIR}/hexchat.app/Contents/Resources/bin/"
 
-  #CURL
+  ### CURL Standalone Version
   FindAndInstallBin "curl" "${BUILD_DIR}/hexchat.app/Contents/Resources/bin/"
 
+  ### DBUS Standalone Version
+  mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/dbus-1/session.d"
+  cp -f "${BASE_DIR}/dbus/org.freedesktop.dbus-session.plist.in" "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/dbus-1/"
+  cp -f "${BASE_DIR}/dbus/session.conf.in" "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/dbus-1/"
+
+  FindAndInstallBin "dbus-daemon" "${BUILD_DIR}/hexchat.app/Contents/Resources/bin/"
+
+  ### OTHERS RESOURCES Standalone Version
   cp -f "${BASE_DIR}/hexchat.icns" "${BUILD_DIR}/hexchat.app/Contents/Resources/"
   cp -f "${BASE_DIR}/launcher_GIMP_model.sh" "${BUILD_DIR}/hexchat.app/Contents/MacOS/hexchat"
 
@@ -392,7 +400,7 @@ Main()
   cp -f "${BASE_DIR}/gtkrc_gtk+_theme_Mac" "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/gtk-2.0/gtkrc"
 
   cp -f "${BASE_DIR}/Info.plist.in" "${BUILD_DIR}/hexchat.app/Contents/Info.plist"
-  sed -i '' -e s/@VERSION@/$VER/g "${BUILD_DIR}/hexchat.app/Contents/Info.plist"
+  sed -i '' -e "s/@VERSION@/$VER/g" "${BUILD_DIR}/hexchat.app/Contents/Info.plist"
 
 
   # Make Portable version
@@ -400,20 +408,18 @@ Main()
   mkdir -p "${BUILD_DIR}/dylibs"
   cp -r "${BUILD_DIR}/hexchat.app" "${BUILD_DIR}/hexchat-light.app"
 
-  #Lib2StandaloneLib "${BUILD_DIR}/hexchat.app/Contents/Resources/bin/hexchat" "${BUILD_DIR}/hexchat.app/Contents/Resources/lib" "@executable_path/../Resources/lib/"
-  #Lib2StandaloneLib "${BUILD_DIR}/hexchat-light.app/Contents/Resources/bin/hexchat" "${BUILD_DIR}/dylibs" ""
 
   # hexchat.app treatment 
   ls -ld ${BUILD_DIR}/hexchat.app/Contents/Resources/bin/* | grep '^-' | awk '{print $9}' | while read BIN_FILE
   do
     #echo "BINFILE: ${BIN_FILE}"
-    Lib2StandaloneLib "${BIN_FILE}" "${BUILD_DIR}/hexchat.app/Contents/Resources/lib" "@executable_path/../Resources/lib/" "true"
+    Lib2StandaloneLib "${BIN_FILE}" "${BUILD_DIR}/hexchat.app/Contents/Resources/lib" "@executable_path/../lib/" "true"
   done
 
   ls -ld ${BUILD_DIR}/hexchat.app/Contents/Resources/lib/hexchat/plugins/*.dylib | grep '^-' | awk '{print $9}' | while read LIB_FILE
   do
     #echo "LIBFILE: ${LIB_FILE}"
-    Lib2StandaloneLib "${LIB_FILE}" "${BUILD_DIR}/hexchat.app/Contents/Resources/lib" "@executable_path/../Resources/lib/" "true"
+    Lib2StandaloneLib "${LIB_FILE}" "${BUILD_DIR}/hexchat.app/Contents/Resources/lib" "@executable_path/../lib/" "true"
   done
 
 
