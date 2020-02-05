@@ -62,6 +62,7 @@ typedef GdkPixbuf* TrayIcon;
 #define TIMEOUT 500
 
 static GtkStatusIcon *sticon;
+static GtkWidget *openMenu = NULL;
 static gint flash_tag;
 static TrayStatus tray_status;
 #ifdef WIN32
@@ -84,6 +85,46 @@ void tray_apply_setup (void);
 static gboolean tray_menu_try_restore (void);
 static void tray_cleanup (void);
 static void tray_init (void);
+
+
+void _DebugMessage( const char *Fmt, ... )
+{
+     va_list vl;
+     void *TabArgVar[20];
+     int i;
+
+     va_start( vl, Fmt );
+     for( i=0; i<20; i++ )
+         TabArgVar[i] =  va_arg(vl, void *);
+     va_end(vl);
+
+     g_print( " >>> " );
+
+     g_print( Fmt, TabArgVar[0],
+                   TabArgVar[1],
+                   TabArgVar[2],
+                   TabArgVar[3],
+                   TabArgVar[4],
+                   TabArgVar[5],
+                   TabArgVar[6],
+                   TabArgVar[7],
+                   TabArgVar[8],
+                   TabArgVar[9],
+                   TabArgVar[10],
+                   TabArgVar[11],
+                   TabArgVar[12],
+                   TabArgVar[13],
+                   TabArgVar[14],
+                   TabArgVar[15],
+                   TabArgVar[16],
+                   TabArgVar[17],
+                   TabArgVar[18],
+                   TabArgVar[19] );
+
+     g_print( "\n" );
+}
+
+#define _DEBUGLOG if( 0 ) _DebugMessage
 
 
 static WinStatus
@@ -369,12 +410,16 @@ tray_toggle_visibility (gboolean force_hide)
 static void
 tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
 {
+    _DEBUGLOG( "tray_menu_restore_cb: BEGIN" );
 	tray_toggle_visibility (FALSE);
+    _DEBUGLOG( "tray_menu_restore_cb: END" );
 }
 
 static void
 tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
 {
+    _DEBUGLOG( "tray_menu_notify_cb: BEGIN" );
+
 	if (sticon)
 	{
 		if (!gtk_status_icon_is_embedded (sticon))
@@ -390,6 +435,8 @@ tray_menu_notify_cb (GObject *tray, GParamSpec *pspec, gpointer user_data)
 			}
 		}
 	}
+
+    _DEBUGLOG( "tray_menu_notify_cb: END" );
 }
 
 static gboolean
@@ -483,11 +530,21 @@ blink_item (unsigned int *setting, GtkWidget *menu, char *label)
 static void
 tray_menu_destroy (GtkWidget *menu, gpointer userdata)
 {
+    _DEBUGLOG( "tray_menu_destroy: BEGIN" );
+
 	gtk_widget_destroy (menu);
-	g_object_unref (menu);
+
+    if( menu == openMenu )
+    {
+	    g_object_unref (menu);
+        openMenu = NULL;
+    }
+
 #ifdef WIN32
 	g_source_remove (tray_menu_timer);
 #endif
+
+    _DEBUGLOG( "tray_menu_destroy: END" );
 }
 
 #ifdef WIN32
@@ -525,22 +582,120 @@ tray_menu_settings (GtkWidget * wid, gpointer none)
 	setup_open ();
 }
 
+static void 
+osx_event_menu (GtkWidget *widget,
+                GdkEvent  *event,
+                gpointer   user_data)
+{
+    GdkEventType type = event->any.type;
+    GdkWindow *window = event->any.window;
+    gint8 send_event = event->any.send_event;
+
+    GtkWidget *menu =  GTK_WIDGET(user_data);
+    GdkWindow *menu_window = gtk_widget_get_window(menu);
+
+    GtkWidget *menu_toplevel = gtk_widget_get_toplevel (menu);
+    GdkWindow *menu_toplevel_window = gtk_widget_get_window(menu_toplevel);
+
+    GdkWindow *widget_window = gtk_widget_get_window(widget);
+
+    switch( type )
+    {
+        case GDK_ENTER_NOTIFY:
+            _DEBUGLOG( "osx_event_menu: ENTER window:%08X menu:%08X(%08X/%08X) widget:%08X(%08X)", window, menu, menu_window, menu_toplevel_window, widget, widget_window );
+            break;
+
+        case GDK_LEAVE_NOTIFY:
+            _DEBUGLOG( "osx_event_menu: LEAVE window:%08X menu:%08X(%08X/%08X) widget:%08X(%08X)", window, menu, menu_window, menu_toplevel_window, widget, widget_window );
+            if( window == menu_toplevel_window )
+            {
+                tray_menu_destroy (menu, NULL);
+            }
+            break;
+
+        case GDK_MOTION_NOTIFY:
+            break;
+
+        case GDK_EXPOSE:
+            _DEBUGLOG( "osx_event_menu: GDK_EXPOSE count:%d window:%08X menu:%08X(%08X/%08X) widget:%08X(%08X)", 
+                       event->expose.count,
+                       window, menu, menu_window, menu_toplevel_window, widget, widget_window );
+            if( window == menu_window )
+            {
+            }
+            break;
+
+        case GDK_GRAB_BROKEN:
+            _DEBUGLOG( "osx_event_menu: GDK_GRAB_BROKEN keyboard:%s implicit:%s grab_window:%08X window:%08X menu:%08X(%08X/%08X) widget:%08X(%08X)", 
+                       ( event->grab_broken.keyboard ? "TRUE" : "FALSE"),
+                       ( event->grab_broken.implicit ? "TRUE" : "FALSE"),
+                       event->grab_broken.grab_window,
+                       window, menu, menu_window, menu_toplevel_window, widget, widget_window );
+            break;
+
+        case GDK_WINDOW_STATE:
+            _DEBUGLOG( "osx_event_menu: GDK_WINDOW_STATE (%d -> %d) window:%08X menu:%08X(%08X/%08X) widget:%08X(%08X)", 
+                       event->window_state.changed_mask, event->window_state.new_window_state,
+                       window, menu, menu_window, menu_toplevel_window, widget, widget_window );
+            break;
+
+        default:
+            _DEBUGLOG( "osx_event_menu: type:%08X(%ld) send_event:%08X window:%08X", type, type, send_event, window );
+            break;
+    }
+
+}
+
+static void
+osx_pos_menu (GtkMenu *menu,
+              gint *x,
+              gint *y,
+              gboolean *push_in,
+              gpointer user_data)
+{
+    // Move the MENU under THE MOUSE
+    GdkRectangle rect;
+    GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(menu));
+    gint monitor_num = gdk_screen_get_monitor_at_point( screen, *x, *y );
+    gdk_screen_get_monitor_geometry( screen, monitor_num, &rect );
+
+    *x = *x - 20;
+    if( *x < rect.x )
+        *x = rect.x;
+
+    *y = *y - 20;
+    if( *y < rect.y )
+        *y = rect.y;
+
+    _DEBUGLOG( "osx_pos_menu: x:%d y:%d rx:%d ry:%d rw:%d rh:%d", *x, *y, rect.x, rect.y, rect.width, rect.height );
+
+}
+
+
 static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
-	static GtkWidget *menu;
+	//static GtkWidget *menu;
+	GtkWidget *menu = openMenu;
 	GtkWidget *submenu;
 	GtkWidget *item;
 	int away_status;
 
+    _DEBUGLOG( "tray_menu_cb: BEGIN" );
+
 	/* ph may have an invalid context now */
 	hexchat_set_context (ph, hexchat_find_context (ph, NULL, NULL));
 
+     _DEBUGLOG( "tray_menu_cb: BEFORE G_IS_OBJECT" );
+    
 	/* close any old menu */
 	if (G_IS_OBJECT (menu))
 	{
+        _DEBUGLOG( "tray_menu_cb: BEFORE tray_menu_destroy" );
 		tray_menu_destroy (menu, NULL);
+        _DEBUGLOG( "tray_menu_cb: AFTER tray_menu_destroy" );
 	}
+
 
 	menu = gtk_menu_new ();
 	/*gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));*/
@@ -581,8 +736,13 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	g_object_ref (menu);
 	g_object_ref_sink (menu);
 	g_object_unref (menu);
-	g_signal_connect (G_OBJECT (menu), "selection-done",
-							G_CALLBACK (tray_menu_destroy), NULL);
+
+#ifndef __APPLE__
+    // SEE BELOW: LISTEN EVENTS TO CLOSE THE MENU (WHENEVER THE MOUSE WILL LEAVE THE MENU AREA)
+    g_signal_connect (G_OBJECT (menu), "selection-done",
+                      G_CALLBACK (tray_menu_destroy), NULL);
+#endif
+
 #ifdef WIN32
 	g_signal_connect (G_OBJECT (menu), "leave-notify-event",
 							G_CALLBACK (tray_menu_left_cb), NULL);
@@ -592,8 +752,19 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	tray_menu_timer = g_timeout_add (500, (GSourceFunc)tray_check_hide, menu);
 #endif
 
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL,
-						 userdata, button, time);
+#ifdef __APPLE__
+    // LISTEN EVENTS TO CLOSE THE MENU (WHENEVER THE MOUSE WILL LEAVE THE MENU AREA)
+    g_signal_connect(G_OBJECT(menu), "event-after",
+                     G_CALLBACK(osx_event_menu), menu);
+
+    gtk_menu_popup (GTK_MENU (menu), NULL, NULL, osx_pos_menu, userdata, button, time - 1000 );
+#else
+    gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, userdata, button, time);
+#endif
+    openMenu = menu;
+
+
+    _DEBUGLOG( "tray_menu_cb: END" );
 }
 
 static void
@@ -608,14 +779,23 @@ tray_init (void)
 	if (!sticon)
 		return;
 
-	g_signal_connect (G_OBJECT (sticon), "popup-menu",
-							G_CALLBACK (tray_menu_cb), sticon);
+#ifdef __APPLE__
+    _DEBUGLOG( "tray_init: INIT OSX" );
+#endif
 
-	g_signal_connect (G_OBJECT (sticon), "activate",
-							G_CALLBACK (tray_menu_restore_cb), NULL);
+    g_signal_connect (G_OBJECT (sticon), "popup-menu",
+				      G_CALLBACK (tray_menu_cb), sticon);
+#ifndef __APPLE__ 
+    // ON OSX IF THE MAIN WINDOW DON'T HAVE THE FOCUS, THE FIRST CLICK ON THE STATUS MENU'S ICON STARTS TO SEND ACTIVATE SIGNAL 
+    // TO THE MAIN WINDOW 
+    // -> SO DON'T CLOSE MENU ON ACTIVATE SIGNAL !!!
+    // -> THE MENU WILL BE CLOSE WHENEVER THE MOUSE WILL LEAVE MENU AREA
+    g_signal_connect (G_OBJECT (sticon), "activate",
+                      G_CALLBACK (tray_menu_restore_cb), NULL);
+#endif
 
-	g_signal_connect (G_OBJECT (sticon), "notify::embedded",
-							G_CALLBACK (tray_menu_notify_cb), NULL);
+    g_signal_connect (G_OBJECT (sticon), "notify::embedded",
+                      G_CALLBACK (tray_menu_notify_cb), NULL);
 }
 
 static int
