@@ -622,6 +622,7 @@ osx_event_menu (GtkWidget *widget,
                        window, menu, menu_window, menu_toplevel_window, widget, widget_window );
             if( window == menu_window )
             {
+                _DEBUGLOG( "osx_event_menu: 1 for Empty branch of conditional, lgtm-com[bot]!" );
             }
             break;
 
