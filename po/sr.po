@@ -1,26 +1,24 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the hexchat package.
-#
+# 
 # Translators:
 # o Zoltan Čala <zolika@sezampro.yu>, 1999
-# Велимир Мајсторов <majstorov@gmail.com>, 2013-2015
+# Велимир Майсторов <majstorov@gmail.com>, 2013-2015
 # Zlatan Vasović <inactive+ZDroid@transifex.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-03 16:11-0400\n"
-"PO-Revision-Date: 2017-09-23 18:37+0000\n"
+"POT-Creation-Date: 2018-04-03 16:10-0400\n"
+"PO-Revision-Date: 2018-04-03 20:10+0000\n"
 "Last-Translator: TingPing <tingping@tingping.se>\n"
-"Language-Team: Serbian (http://www.transifex.com/hexchat/hexchat/language/"
-"sr/)\n"
-"Language: sr\n"
+"Language-Team: Serbian (http://www.transifex.com/hexchat/hexchat/language/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: sr\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: data/misc/io.github.Hexchat.appdata.xml.in:4
 #: data/misc/io.github.Hexchat.appdata.xml.in:5
@@ -301,9 +299,7 @@ msgstr ""
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
-msgstr ""
-"* Није добра идеја да користите IRC као\n"
-"  администратор. Боље је направити налог.\n"
+msgstr "* Није добра идеја да користите IRC као\n  администратор. Боље је направити налог.\n"
 
 #: src/common/ignore.c:127 src/common/ignore.c:131 src/common/ignore.c:135
 #: src/common/ignore.c:139 src/common/ignore.c:143 src/common/ignore.c:147
@@ -455,9 +451,7 @@ msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
-msgstr ""
-"BAN <шаблон> [<врста>], забрана за све кориснике обухваћене шаблоном од "
-"приступа каналу. Ако су већ на каналу, не избацује их (за то треба бити „оп‟)"
+msgstr "BAN <шаблон> [<врста>], забрана за све кориснике обухваћене шаблоном од приступа каналу. Ако су већ на каналу, не избацује их (за то треба бити „оп‟)"
 
 #: src/common/outbound.c:3944
 msgid "CHANOPT [-quiet] <variable> [<value>]"
@@ -465,10 +459,9 @@ msgstr "CHANOPT [-quiet] <променљива> [<вредност>]"
 
 #: src/common/outbound.c:3945
 msgid ""
-"CHARSET [<encoding>], get or set the encoding used for the current connection"
-msgstr ""
-"CHARSET [<енкодинг>], добија или подешава енкодинг коришћен за тренутну "
-"конекцију"
+"CHARSET [<encoding>], get or set the encoding used for the current "
+"connection"
+msgstr "CHARSET [<енкодинг>], добија или подешава енкодинг коришћен за тренутну конекцију"
 
 #: src/common/outbound.c:3946
 msgid ""
@@ -490,14 +483,13 @@ msgstr "COUNTRY [-s] <код|шаблон>, тражи код земље, нпр
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
-msgstr ""
-"CTCP <име> <порука>, шаље CTCP поруку на дато име, попут VERSION или USERINFO"
+msgstr "CTCP <име> <порука>, шаље CTCP поруку на дато име, попут VERSION или USERINFO"
 
 #: src/common/outbound.c:3954
 msgid ""
-"CYCLE [<channel>], parts the current or given channel and immediately rejoins"
-msgstr ""
-"CYCLE [<канал>] излази из тренутног канала и одмах се поново придружује"
+"CYCLE [<channel>], parts the current or given channel and immediately "
+"rejoins"
+msgstr "CYCLE [<канал>] излази из тренутног канала и одмах се поново придружује"
 
 #: src/common/outbound.c:3956
 msgid ""
@@ -510,25 +502,13 @@ msgid ""
 "DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
 "DCC CLOSE <type> <nick> <file>         example:\n"
 "         /dcc close send johnsmith file.tar.gz"
-msgstr ""
-"\n"
-"DCC GET <име>                      - прихвати понуђену датотеку\n"
-"DCC SEND [-maxcps=#] <име> <дат>   - пошаљи некоме датотеку\n"
-"DCC PSEND [-maxcps=#] <име> <дат>   - пошаљи некоме датотеку, пасиван начин\n"
-"DCC LIST                           - покажи списак за DCC\n"
-"DCC CHAT <име>                     - понуди разговор преко DCC\n"
-"DCC PCHAT <име>                     - понуди разговор преко DCC, пасиван "
-"начин\n"
-"DCC CLOSE <тип> <име> <дат>            пример:\n"
-"         /dcc close send пераперић датотека.tar.gz"
+msgstr "\nDCC GET <име>                      - прихвати понуђену датотеку\nDCC SEND [-maxcps=#] <име> <дат>   - пошаљи некоме датотеку\nDCC PSEND [-maxcps=#] <име> <дат>   - пошаљи некоме датотеку, пасиван начин\nDCC LIST                           - покажи списак за DCC\nDCC CHAT <име>                     - понуди разговор преко DCC\nDCC PCHAT <име>                     - понуди разговор преко DCC, пасиван начин\nDCC CLOSE <тип> <име> <дат>            пример:\n         /dcc close send пераперић датотека.tar.gz"
 
 #: src/common/outbound.c:3968
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
-msgstr ""
-"DEHOP <име>, склања полу-оп звање за име на тренутном каналу (потребан "
-"је„оп)‟"
+msgstr "DEHOP <име>, склања полу-оп звање за име на тренутном каналу (потребан је„оп)‟"
 
 #: src/common/outbound.c:3970
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
@@ -566,9 +546,7 @@ msgstr "ECHO <текст>, исписује текст"
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <наредба>, изврши наредбу. Ако је дата ознака -o онда се исписшаље "
-"на тренутни канал, иначе се исписује у оквиру за текст."
+msgstr "EXEC [-o] <наредба>, изврши наредбу. Ако је дата ознака -o онда се исписшаље на тренутни канал, иначе се исписује у оквиру за текст."
 
 #: src/common/outbound.c:3983
 msgid "EXECCONT, sends the process SIGCONT"
@@ -578,9 +556,7 @@ msgstr "EXECCONT, шаље процесу SIGCONT"
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9], зауставља позив exec у овој сесији. Ако је дато и -9 процесу "
-"се шаље SIGKILL"
+msgstr "EXECKILL [-9], зауставља позив exec у овој сесији. Ако је дато и -9 процесу се шаље SIGKILL"
 
 #: src/common/outbound.c:3988
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -621,20 +597,13 @@ msgid ""
 "    types - types of data to ignore, one or all of:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
-msgstr ""
-"IGNORE <шаблон> <типови...> <избори...>\n"
-"    шаблон - шаблон за име рачунара, нпр. *!*@.aol.com\n"
-"    типови - шта занемарити, један или више из скупа:\n"
-"            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
-"    избори  - NOSAVE, QUIET"
+msgstr "IGNORE <шаблон> <типови...> <избори...>\n    шаблон - шаблон за име рачунара, нпр. *!*@.aol.com\n    типови - шта занемарити, један или више из скупа:\n            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n    избори  - NOSAVE, QUIET"
 
 #: src/common/outbound.c:4018
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
-msgstr ""
-"INVITE <име> [<канал>], позива име да се прикључи каналу, мисли се на "
-"тренутни ако се не наведе (потребан је оп)"
+msgstr "INVITE <име> [<канал>], позива име да се прикључи каналу, мисли се на тренутни ако се не наведе (потребан је оп)"
 
 #: src/common/outbound.c:4019
 msgid "JOIN <channel>, joins the channel"
@@ -661,14 +630,8 @@ msgid ""
 "    Use -h to highlight the found string(s)\n"
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
-"    Use -- (double hyphen) to end options when searching for, say, the "
-"string '-r'"
-msgstr ""
-"LASTLOG [-h] [-m] [-r] [--] <реч>, тражи реч у баферу⏎\n"
-"Користи -h за истицање пронађене(их) речи⏎\n"
-"Користи -m за поклапање са величином слова⏎\n"
-"Користи -r када je реч регуларни израз⏎\n"
-"Користи -- (дупла цртица) за завршавање опција за претрагу, рецимо, реч '-r'"
+"    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
+msgstr "LASTLOG [-h] [-m] [-r] [--] <реч>, тражи реч у баферу⏎\nКористи -h за истицање пронађене(их) речи⏎\nКористи -m за поклапање са величином слова⏎\nКористи -r када je реч регуларни израз⏎\nКористи -- (дупла цртица) за завршавање опција за претрагу, рецимо, реч '-r'"
 
 #: src/common/outbound.c:4034
 msgid "LOAD [-e] <file>, loads a plugin or script"
@@ -677,8 +640,7 @@ msgstr "LOAD [-e] <дат.>, учитава додатак или скрипту
 #: src/common/outbound.c:4037
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr ""
-"MDEHOP, одузима звање свим полу-операторима на овом каналу (потребан је оп)"
+msgstr "MDEHOP, одузима звање свим полу-операторима на овом каналу (потребан је оп)"
 
 #: src/common/outbound.c:4039
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
@@ -686,11 +648,9 @@ msgstr "MDEOP, одузима звање свим операторима на о
 
 #: src/common/outbound.c:4041
 msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <радња>, шаље опис радње на овај канал (радње се пишу у трећем лицу, "
-"нпр. /me скаче"
+"ME <action>, sends the action to the current channel (actions are written in"
+" the 3rd person, like /me jumps)"
+msgstr "ME <радња>, шаље опис радње на овај канал (радње се пишу у трећем лицу, нпр. /me скаче"
 
 #: src/common/outbound.c:4045
 msgid "MHOP, Mass hop's all users in the current channel (needs chanop)"
@@ -707,8 +667,8 @@ msgstr "MOP, свима на каналу додељује звање опера
 
 #: src/common/outbound.c:4051
 msgid ""
-"MSG <nick> <message>, sends a private message, message \".\" to send to last "
-"nick or prefix with \"=\" for dcc chat"
+"MSG <nick> <message>, sends a private message, message \".\" to send to last"
+" nick or prefix with \"=\" for dcc chat"
 msgstr ""
 
 #: src/common/outbound.c:4054
@@ -735,9 +695,7 @@ msgstr "NOTICE <корисник/канал> <порука>, шаље обаве
 msgid ""
 "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or "
 "adds someone to it"
-msgstr ""
-"NOTIFY [-n network1[,network2,...]] [<надимак>], приказује Вашу листу "
-"обавештења или додаје некога на њу"
+msgstr "NOTIFY [-n network1[,network2,...]] [<надимак>], приказује Вашу листу обавештења или додаје некога на њу"
 
 #: src/common/outbound.c:4065
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
@@ -746,8 +704,7 @@ msgstr "OP <име>, даје звање оператора овом имену 
 #: src/common/outbound.c:4067
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
-"PART [<канал>] [<разлог>], напушта канал, и то тренутни ако се не наведе"
+msgstr "PART [<канал>] [<разлог>], напушта канал, и то тренутни ако се не наведе"
 
 #: src/common/outbound.c:4069
 msgid "PING <nick | channel>, CTCP pings nick or channel"
@@ -775,23 +732,17 @@ msgstr "QUOTE <текст>, шаље сирови текст серверу"
 
 #: src/common/outbound.c:4080
 msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
+"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as "
+"/RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<рач.>] [<порт>] [<лозинка>], може се користити и само /"
-"RECONNECT за поновно спајање на сервер или као /RECONNECT ALL за поновно "
-"спајање на све отворене сервере"
+msgstr "RECONNECT [-ssl] [<рач.>] [<порт>] [<лозинка>], може се користити и само /RECONNECT за поновно спајање на сервер или као /RECONNECT ALL за поновно спајање на све отворене сервере"
 
 #: src/common/outbound.c:4083
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
-msgstr ""
-"RECONNECT [<рач.>] [<порт>] [<лозинка>], може се користити и само /RECONNECT "
-"за поновно спајање на сервер или као /RECONNECT ALL за поновно спајање на "
-"све отворене сервере"
+msgstr "RECONNECT [<рач.>] [<порт>] [<лозинка>], може се користити и само /RECONNECT за поновно спајање на сервер или као /RECONNECT ALL за поновно спајање на све отворене сервере"
 
 #: src/common/outbound.c:4085
 msgid ""
@@ -823,17 +774,13 @@ msgstr "SERVCHAN <рач.> <порт> <канал>, повезује се и у�
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 6697 for ssl connections"
-msgstr ""
-"SERVER [-ssl] <хост> [<порт>] [<лозинка>], повезује са сервером, "
-"подразумевани порт је 6667 за нормалне конекције, и 6697 за ssl конекције"
+msgstr "SERVER [-ssl] <хост> [<порт>] [<лозинка>], повезује са сервером, подразумевани порт је 6667 за нормалне конекције, и 6697 за ssl конекције"
 
 #: src/common/outbound.c:4102
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
-msgstr ""
-"SERVER <рач.> [<порт>] [<лозинка>], повезује се на сервер, узима да је порт "
-"6667"
+msgstr "SERVER <рач.> [<порт>] [<лозинка>], повезује се на сервер, узима да је порт 6667"
 
 #: src/common/outbound.c:4104
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
@@ -853,9 +800,9 @@ msgstr "SETTEXT <нови текст>, замењује текст у оквир
 
 #: src/common/outbound.c:4110
 msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr ""
-"TOPIC [<тема>], поставља тему ако је наведена, иначе прикаже тренутну тему"
+"TOPIC [<topic>], sets the topic if one is given, else shows the current "
+"topic"
+msgstr "TOPIC [<тема>], поставља тему ако је наведена, иначе прикаже тренутну тему"
 
 #: src/common/outbound.c:4112
 msgid ""
@@ -865,14 +812,7 @@ msgid ""
 "TRAY -i <number>                    Blink tray with an internal icon.\n"
 "TRAY -t <text>                      Set the tray tooltip.\n"
 "TRAY -b <title> <text>              Set the tray balloon."
-msgstr ""
-"\n"
-"TRAY -f <време> <датотека 1> [<датотека 2>] Трепћи платоом између две "
-"иконице.⏎\n"
-"TRAY -f <датотека> Постави плато на фиксирану иконицу.⏎\n"
-"TRAY -i <број> Трепћи платоом уз интерну иконицу.⏎\n"
-"TRAY -t <тeкст> Постави тултип платоа.⏎\n"
-"TRAY -b <наслов> <текст> Постави балон платоа."
+msgstr "\nTRAY -f <време> <датотека 1> [<датотека 2>] Трепћи платоом између две иконице.⏎\nTRAY -f <датотека> Постави плато на фиксирану иконицу.⏎\nTRAY -i <број> Трепћи платоом уз интерну иконицу.⏎\nTRAY -t <тeкст> Постави тултип платоа.⏎\nTRAY -b <наслов> <текст> Постави балон платоа."
 
 #: src/common/outbound.c:4119
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
@@ -888,8 +828,8 @@ msgstr "UNLOAD <име>, уклони додатак или скрипт"
 
 #: src/common/outbound.c:4123
 msgid ""
-"UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the "
-"server."
+"UNQUIET <mask> [<mask>...], unquiets the specified masks if supported by the"
+" server."
 msgstr ""
 
 #: src/common/outbound.c:4124
@@ -898,10 +838,9 @@ msgstr "URL <url>, отвара URL у прегледнику мреже"
 
 #: src/common/outbound.c:4126
 msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
-msgstr ""
-"USELECT [-a] [-s] <име1> <име2> итд, наглашава имена у списку корисника "
-"канала"
+"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel "
+"userlist"
+msgstr "USELECT [-a] [-s] <име1> <име2> итд, наглашава имена у списку корисника канала"
 
 #: src/common/outbound.c:4129
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
@@ -930,9 +869,7 @@ msgstr "Употреба: %s\n"
 msgid ""
 "\n"
 "No help available on that command.\n"
-msgstr ""
-"\n"
-"За ову наредбу помоћ није доступна.\n"
+msgstr "\nЗа ову наредбу помоћ није доступна.\n"
 
 #: src/common/outbound.c:4204
 msgid "No such command.\n"
@@ -953,8 +890,7 @@ msgstr ""
 
 #: src/common/plugin.c:403
 msgid "No hexchat_plugin_init symbol; is this really a HexChat plugin?"
-msgstr ""
-"Нема hexchat_plugin_init симбола; да ли је ово стварно HexChat додатак?"
+msgstr "Нема hexchat_plugin_init симбола; да ли је ово стварно HexChat додатак?"
 
 #: src/common/plugin-identd.c:175
 #, c-format
@@ -1002,9 +938,7 @@ msgstr "Да ли сте сигурни да је ово SSL сервер и п�
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
-msgstr ""
-"Рачунар %s наизглед не постоји\n"
-"Проверите подешавања за IP!\n"
+msgstr "Рачунар %s наизглед не постоји\nПроверите подешавања за IP!\n"
 
 #: src/common/server.c:881
 msgid "Proxy traversal failed.\n"
@@ -1020,9 +954,7 @@ msgstr "Покушавам везу са следећим сервером у %s
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
 "network %s."
-msgstr ""
-"Упозорење: Скуп знакова „%s‟ није познат. За мрежу %s се зато неће користити "
-"конверзија."
+msgstr "Упозорење: Скуп знакова „%s‟ није познат. За мрежу %s се зато неће користити конверзија."
 
 #: src/common/textevents.h:7
 msgid "%C18*%O$t%C18$1%O added to notify list."
@@ -1181,7 +1113,8 @@ msgid "%C23*%O$tDCC CHAT to %C18$1%O aborted."
 msgstr "%C23*%O$tDCC разговор са %C18$1%O је прекинут."
 
 #: src/common/textevents.h:145
-msgid "%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC CHAT connection established to %C18$1%C %C30[%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:148
@@ -1215,8 +1148,8 @@ msgstr ""
 
 #: src/common/textevents.h:169
 msgid ""
-"%C20*%O$tReceived a malformed DCC request from %C18$1%O.$a010%C23*%O"
-"$tContents of packet: %C23$2%O"
+"%C20*%O$tReceived a malformed DCC request from "
+"%C18$1%O.$a010%C23*%O$tContents of packet: %C23$2%O"
 msgstr ""
 
 #: src/common/textevents.h:172
@@ -1237,7 +1170,8 @@ msgid ""
 msgstr ""
 
 #: src/common/textevents.h:184
-msgid "%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC RECV connection established to %C18$1 %C30[%O%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:187
@@ -1250,7 +1184,8 @@ msgstr ""
 
 #: src/common/textevents.h:193
 msgid ""
-"%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' instead."
+"%C23*%O$tThe file '%C24$1%C' already exists, saving it as '%C23$2%O' "
+"instead."
 msgstr ""
 
 #: src/common/textevents.h:196
@@ -1267,7 +1202,8 @@ msgid ""
 msgstr ""
 
 #: src/common/textevents.h:205
-msgid "%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
+msgid ""
+"%C24*%O$tDCC SEND connection established to %C18$1 %C30[%O%C24$2%C30]%O"
 msgstr ""
 
 #: src/common/textevents.h:208
@@ -1326,8 +1262,7 @@ msgstr "%OЛиста игнорисања је празна."
 
 #: src/common/textevents.h:250
 msgid "%C20*%O$tCannot join %C22$1%C (%C20Channel is invite only%O)"
-msgstr ""
-"%C20*%O$tНе могу да се прикључим %C22$1%C (%C20Канал је само за позване%O)"
+msgstr "%C20*%O$tНе могу да се прикључим %C22$1%C (%C20Канал је само за позване%O)"
 
 #: src/common/textevents.h:253
 msgid "%C24*%O$tYou have been invited to %C22$1%O by %C18$2%O (%C29$3%O)"
@@ -1547,9 +1482,7 @@ msgstr "**** ПОЧЕТАК ЗАПИСА У ДНЕВНИКУ У %s\n"
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
-msgstr ""
-"* Не могу да отворим лог датотеку (датотеке) за писање. Проверите\n"
-"дозволе %s"
+msgstr "* Не могу да отворим лог датотеку (датотеке) за писање. Проверите\nдозволе %s"
 
 #: src/common/text.c:960
 msgid "Left message"
@@ -3284,9 +3217,7 @@ msgstr "Датум"
 
 #: src/fe-gtk/banlist.c:785
 msgid "You can only open the Ban List window while in a channel tab."
-msgstr ""
-"Списак ућутканих се може отворити само ако је отворен језичак за приказ "
-"канала"
+msgstr "Списак ућутканих се може отворити само ако је отворен језичак за приказ канала"
 
 #: src/fe-gtk/banlist.c:808
 #, c-format
@@ -3407,18 +3338,13 @@ msgid ""
 "Cannot access file: %s\n"
 "%s.\n"
 "Resuming not possible."
-msgstr ""
-"Не могу да приступим: %s\n"
-"%s.\n"
-"Настављање није могуће."
+msgstr "Не могу да приступим: %s\n%s.\nНастављање није могуће."
 
 #: src/fe-gtk/dccgui.c:536
 msgid ""
 "File in download directory is larger than file offered. Resuming not "
 "possible."
-msgstr ""
-"Датотека која је претходно преузета је већа него понуђена. Зато није могуће "
-"наставити пренос."
+msgstr "Датотека која је претходно преузета је већа него понуђена. Зато није могуће наставити пренос."
 
 #: src/fe-gtk/dccgui.c:540
 msgid "Cannot resume the same file from two people."
@@ -3564,10 +3490,7 @@ msgid ""
 "Failed to open font:\n"
 "\n"
 "%s"
-msgstr ""
-"Не може се отворити фонт:\n"
-"\n"
-"%s"
+msgstr "Не може се отворити фонт:\n\n%s"
 
 #: src/fe-gtk/fe-gtk.c:715
 msgid "Search buffer is empty.\n"
@@ -3585,18 +3508,18 @@ msgstr "Мрежни ред слања: бајтова: %d"
 
 #: src/fe-gtk/fkeys.c:141
 msgid ""
-"The Run Command action runs the data in Data 1 as if it had been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate separate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
+"The Run Command action runs the data in Data 1 as if it had been typed "
+"into the entry box where you pressed the key sequence. Thus it can contain "
+"text (which will be sent to the channel/person), commands or user commands. "
+"When run all \\n characters in Data 1 are used to deliminate separate "
+"commands so it is possible to run more than one command. If you want a \\ "
+"in the actual text run then enter \\\\"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:143
 msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
+"The Change Page command switches between pages in the notebook. Set Data 1"
+" to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position. Set Data 1 to auto to "
 "switch to the page with the most recent and important activity (queries "
 "first, then channels with hilight, channels with dialogue, channels with "
@@ -3607,65 +3530,50 @@ msgstr ""
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"Наредба ^BУбаци у запис^B ће убацити садржај поља Data 1 на место на ком је "
-"био фокус када је притиснута комбинација тастера"
+msgstr "Наредба ^BУбаци у запис^B ће убацити садржај поља Data 1 на место на ком је био фокус када је притиснута комбинација тастера"
 
 #: src/fe-gtk/fkeys.c:147
 msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
+"The Scroll Page command scrolls the text widget up or down one page or one"
+" line. Set Data 1 to either Top, Bottom, Up, Down, +1 or -1."
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:149
 msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
-msgstr ""
-"Команда ^BПостави запис^B пребацује садржај поља Data 1 на место које је "
-"било у фокусу"
+"The Set Buffer command sets the entry where the key sequence was entered "
+"to the contents of Data 1"
+msgstr "Команда ^BПостави запис^B пребацује садржај поља Data 1 на место које је било у фокусу"
 
 #: src/fe-gtk/fkeys.c:151
 msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"Команда ^BПоследња команда^B уписује последњу унету команду, као када се у "
-"шкољци притисне стрелица нагоре"
+"The Last Command command sets the entry to contain the last command "
+"entered - the same as pressing up in a shell"
+msgstr "Команда ^BПоследња команда^B уписује последњу унету команду, као када се у шкољци притисне стрелица нагоре"
 
 #: src/fe-gtk/fkeys.c:153
 msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"Команда ^BНаредна команда^B уписује команду која је следећа на реду, слично "
-"као притисак на стрелицу надоле у шкољци"
+"The Next Command command sets the entry to contain the next command "
+"entered - the same as pressing down in a shell"
+msgstr "Команда ^BНаредна команда^B уписује команду која је следећа на реду, слично као притисак на стрелицу надоле у шкољци"
 
 #: src/fe-gtk/fkeys.c:155
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"Ова команда мења текст у линији за унос тако што довршава непотпуно име или "
-"команду. Ако је поље Data 1 попуњено, дупли притисак на табулатор бира "
-"последње име, не следеће"
+"or command. If Data 1 is set then double-tabbing in a string will select the"
+" last nick, not the next"
+msgstr "Ова команда мења текст у линији за унос тако што довршава непотпуно име или команду. Ако је поље Data 1 попуњено, дупли притисак на табулатор бира последње име, не следеће"
 
 #: src/fe-gtk/fkeys.c:157
 msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"Овом командом се можете шетати горе-доле кроз листу имена. Ако је Data 1 "
-"постављено на било шта, кретаћете се на горе, иначе на доле"
+"This command scrolls up and down through the list of nicks. If Data 1 is set"
+" to anything it will scroll up, else it scrolls down"
+msgstr "Овом командом се можете шетати горе-доле кроз листу имена. Ако је Data 1 постављено на било шта, кретаћете се на горе, иначе на доле"
 
 #: src/fe-gtk/fkeys.c:159
 msgid ""
 "This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
-msgstr ""
-"Ова команда проверава да ли се последња унета реч налази на списку за "
-"замене, и замењује је ако је пронађе"
+msgstr "Ова команда проверава да ли се последња унета реч налази на списку за замене, и замењује је ако је пронађе"
 
 #: src/fe-gtk/fkeys.c:161
 msgid "This command moves the front tab left by one"
@@ -3840,9 +3748,7 @@ msgstr "Тема није постављена"
 msgid ""
 "This server still has %d channels or dialogs associated with it. Close them "
 "all?"
-msgstr ""
-"Овај сервер има укупно оволико канала: %d или дијалога. Да ли желите да их "
-"све затворите?"
+msgstr "Овај сервер има укупно оволико канала: %d или дијалога. Да ли желите да их све затворите?"
 
 #: src/fe-gtk/maingui.c:1177
 msgid "Quit HexChat?"
@@ -4215,19 +4121,7 @@ msgid ""
 "&2  =  word 2 to the end of line\n"
 "&3  =  word 3 to the end of line\n"
 "\n"
-msgstr ""
-"CTCP одговори - посебни кодови:\n"
-"\n"
-"%d = подаци (цео CTCP)\n"
-"%e = назив тренутне мреже\n"
-"%m = информације о машини\n"
-"%s = кирисник који је послао CTCP\n"
-"%t = време/датум\n"
-"%2 = друга реч\n"
-"%3 = трећа реч\n"
-"&2 = друга реч ка крају линије\n"
-"&3 = трећа реч ка крају линије\n"
-"\n"
+msgstr "CTCP одговори - посебни кодови:\n\n%d = подаци (цео CTCP)\n%e = назив тренутне мреже\n%m = информације о машини\n%s = кирисник који је послао CTCP\n%t = време/датум\n%2 = друга реч\n%3 = трећа реч\n&2 = друга реч ка крају линије\n&3 = трећа реч ка крају линије\n\n"
 
 #: src/fe-gtk/menu.c:1519
 #, c-format
@@ -5700,9 +5594,7 @@ msgstr "Надимци који се увек истичу:"
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
-msgstr ""
-"Раздвојте више речи зарезима.\n"
-"Џокери су прихваћени."
+msgstr "Раздвојте више речи зарезима.\nЏокери су прихваћени."
 
 #: src/fe-gtk/setup.c:444
 msgid "Bounce dock icon on:"
@@ -5808,8 +5700,8 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:562
 msgid ""
-"Automatically include timestamps in copied lines of text. Otherwise, include "
-"timestamps if the Shift key is held down while selecting."
+"Automatically include timestamps in copied lines of text. Otherwise, include"
+" timestamps if the Shift key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:564
@@ -5818,8 +5710,8 @@ msgstr "Аутоматски додај информације о бојама"
 
 #: src/fe-gtk/setup.c:565
 msgid ""
-"Automatically include color information in copied lines of text.  Otherwise, "
-"include color information if the Ctrl key is held down while selecting."
+"Automatically include color information in copied lines of text.  Otherwise,"
+" include color information if the Ctrl key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:570
@@ -5870,7 +5762,8 @@ msgstr "Врста Бана:"
 
 #: src/fe-gtk/setup.c:579
 msgid ""
-"Attempt to use this banmask when banning or quieting. (requires irc_who_join)"
+"Attempt to use this banmask when banning or quieting. (requires "
+"irc_who_join)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:586 src/fe-gtk/setup.c:1883
@@ -5980,11 +5873,9 @@ msgstr "Сазнај IP овог рачунара од сервера"
 
 #: src/fe-gtk/setup.c:639
 msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"Упитајте ИРЦ сервер да сазнате вашу адресу. Корисни уколико је права адреса "
-"из опсега 192.168.*.*!"
+"Asks the IRC server for your real address. Use this if you have a "
+"192.168.*.* address!"
+msgstr "Упитајте ИРЦ сервер да сазнате вашу адресу. Корисни уколико је права адреса из опсега 192.168.*.*!"
 
 #: src/fe-gtk/setup.c:640
 msgid "DCC IP address:"
@@ -6219,10 +6110,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:2254
-msgid ""
-"The Real name option cannot be left blank. Falling back to \"realname\"."
-msgstr ""
-"Опција правог имена не може остати празна. Вредност се враћа на „realname“."
+msgid "The Real name option cannot be left blank. Falling back to \"realname\"."
+msgstr "Опција правог имена не може остати празна. Вредност се враћа на „realname“."
 
 #: src/fe-gtk/setup.c:2261
 msgid "Some settings were changed that require a restart to take full effect."
@@ -6234,11 +6123,7 @@ msgid ""
 "Auto accepting DCC to your home directory\n"
 "can be dangerous and is exploitable. Eg:\n"
 "Someone could send you a .bash_profile"
-msgstr ""
-"*УПОЗОРЕЊЕ*\n"
-"Аутоматско прихватање DCC захтева у кућном\n"
-"директоријуму је опасно и може се искористити.\n"
-"Нпр. неко може послати датотеку .bash_profile"
+msgstr "*УПОЗОРЕЊЕ*\nАутоматско прихватање DCC захтева у кућном\nдиректоријуму је опасно и може се искористити.\nНпр. неко може послати датотеку .bash_profile"
 
 #: src/fe-gtk/setup.c:2293
 #, c-format
@@ -6352,8 +6237,8 @@ msgstr ""
 #: plugins/sysinfo/sysinfo.c:168
 msgid ""
 "Sysinfo: Valid settings are: announce and hide_* for each piece of "
-"information. e.g. hide_os. Without a value it will show current (or default) "
-"setting.\n"
+"information. e.g. hide_os. Without a value it will show current (or default)"
+" setting.\n"
 msgstr ""
 
 #: plugins/sysinfo/sysinfo.c:190
@@ -6369,9 +6254,3 @@ msgstr ""
 #, c-format
 msgid "%s plugin unloaded\n"
 msgstr ""
-
-#~ msgid "Socks4"
-#~ msgstr "Socks4"
-
-#~ msgid "Socks5"
-#~ msgstr "Socks5"
