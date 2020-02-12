@@ -115,7 +115,6 @@ if [ -d "$HOME/lib/pkgconfig" ] ; then
  export PKG_CONFIG_PATH="$HOME/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
 
-
 if false; then # DOTO Include Ptyhon in the standalone version
  # Set up Python
 
@@ -149,13 +148,30 @@ fi
 
 
 
-# Config DBUS 
-bundle_expr=$(echo $bundle | sed -e "s/\\//\\\\\\//g")
-cp -f "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist.in" "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist"
-sed -i '' -e "s/@HEXCHAT_BASE_PATH@/$bundle_expr/g" "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist" 
+# Test if bundle path changed
+LAST_LOCATION_FILE="$bundle_etc/lastlocation"
+LOCATION_CHANGED="true"
+if [ -f "${LAST_LOCATION_FILE}" ] ; then
+ LAST_LOCATION=$(cat "${LAST_LOCATION_FILE}")
+ if [ "${LAST_LOCATION}" == "$bundle" ] ; then
+  LOCATION_CHANGED="false"
+ fi
+fi
+#echo "LOCATION_CHANGED: ${LOCATION_CHANGED}"
 
-cp -f "$bundle_etc/dbus-1/session.conf.in" "$bundle_etc/dbus-1/session.conf"
-sed -i '' -e "s/@HEXCHAT_BASE_PATH@/$bundle_expr/g" "$bundle_etc/dbus-1/session.conf" 
+
+
+
+
+# Config DBUS 
+if [ "${LOCATION_CHANGED}" == "true" ] ; then
+ bundle_expr=$(echo $bundle | sed -e "s/\\//\\\\\\//g")
+ cp -f "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist.in" "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist"
+ sed -i '' -e "s/@HEXCHAT_BASE_PATH@/$bundle_expr/g" "$bundle_etc/dbus-1/org.freedesktop.dbus-session.plist" 
+
+ cp -f "$bundle_etc/dbus-1/session.conf.in" "$bundle_etc/dbus-1/session.conf"
+ sed -i '' -e "s/@HEXCHAT_BASE_PATH@/$bundle_expr/g" "$bundle_etc/dbus-1/session.conf" 
+fi
 
 
 echo ""
@@ -214,6 +230,42 @@ echo "TEST OPENSSL TRUST ROOT CERTIFICATE STORE (ftp.gnu.org)"
 echo "" | openssl  s_client -connect ftp.gnu.org:443 2>&1 | grep "Verification"
 echo ""
 
+# Config TOR 
+echo ""
+echo "TOR CONFIG:"
+tor --version
+echo ""
+
+MYHOME=$(echo ~)
+TOR_HOME="${MYHOME}/Library/Application Support/Hexchat-Data/Tor"
+
+if [ "${LOCATION_CHANGED}" == "true" ] ; then
+ HASHPASS=$("$bundle_bin/tor" --hash-password hexchatAccessPremium)
+
+ mkdir -p "${TOR_HOME}" >/dev/null 2>&1
+
+ cp -f "$bundle_etc/tor/torrc.in" "${TOR_HOME}/torrc"
+ cp -f "$bundle_etc/tor/torrc-defaults.in" "$bundle_etc/tor/torrc-defaults"
+
+ bundle_expr=$(echo $bundle | sed -e "s/\\//\\\\\\//g")
+ MYHOME_expr=$(echo "${MYHOME}" | sed -e "s/\\//\\\\\\//g")
+ HASHPASS_expr=$(echo "${HASHPASS}")
+
+ sed -i '' -e "s/@HEXCHAT_BASE_PATH@/$bundle_expr/g" "$bundle_etc/tor/torrc-defaults" 
+ sed -i '' -e "s/@HEXCHAT_BASE_PATH@/$bundle_expr/g" "${TOR_HOME}/torrc" 
+
+ sed -i '' -e "s/@HOME_PATH@/$MYHOME_expr/g" "${TOR_HOME}/torrc" 
+
+ sed -i '' -e "s/@TOR_CONTROL_HASH_PASSWORD@/$HASHPASS_expr/g" "$bundle_etc/tor/torrc-defaults"
+ sed -i '' -e "s/@TOR_CONTROL_HASH_PASSWORD@/$HASHPASS_expr/g" "${TOR_HOME}/torrc" 
+
+fi
+
+
+# FIN
+if [ "${LOCATION_CHANGED}" == "true" ] ; then
+ echo -n "$bundle" >"${LAST_LOCATION_FILE}"
+fi
 
 # Extra arguments can be added in environment.sh.
 EXTRA_ARGS=
@@ -225,6 +277,11 @@ fi
 if /bin/expr "x$1" : '^x-psn_' > /dev/null; then
  shift 1
 fi
+
+echo "Launching TOR..."
+cd "$bundle"
+#"$bundle_bin/tor" $TOR_ARGS >/dev/null 2>&1 &
+"$bundle_bin/tor" --defaults-torrc "$bundle_etc/tor/torrc-defaults" --ignore-missing-torrc -f "${TOR_HOME}/torrc" +__OwningControllerProcess $$ &
 
 echo "Launching HEXCHAT..."
 cd "$bundle"

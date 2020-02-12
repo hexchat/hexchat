@@ -349,6 +349,8 @@ Main()
 
   BrewCheckAndInstall curl "curl --version"
 
+  BrewCheckAndInstall tor "tor --version"
+
   Info "#################################################"
   Info "###### MESON CONFIG / POST TREATMENT (ALL) ######"
   Info "#################################################"
@@ -416,6 +418,12 @@ Main()
   cp -f "${BASE_DIR}/dbus/session.conf.in" "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/dbus-1/"
 
   FindAndInstallBin "dbus-daemon" "${BUILD_DIR}/hexchat.app/Contents/Resources/bin/"
+
+  ### TOR Standalone Version
+  mkdir -p "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/tor"
+  cp -f "${BASE_DIR}/tor/"* "${BUILD_DIR}/hexchat.app/Contents/Resources/etc/tor/"
+
+  FindAndInstallBin "tor" "${BUILD_DIR}/hexchat.app/Contents/Resources/bin/"
 
   ### OTHERS RESOURCES Standalone Version
   cp -f "${BASE_DIR}/hexchat.icns" "${BUILD_DIR}/hexchat.app/Contents/Resources/"
