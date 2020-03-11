@@ -1,6 +1,12 @@
 python_opt = get_option('with-python')
 if python_opt.startswith('python3')
-  python_dep = dependency(python_opt, version: '>= 3.3')
+  # Python 3.8 introduced a new -embed variant
+  if not python_opt.endswith('-embed')
+    python_dep = dependency(python_opt + '-embed', version: '>= 3.3', required: false)
+  endif
+  if not python_dep.found()
+    python_dep = dependency(python_opt, version: '>= 3.3')
+  endif
 else
   python_dep = dependency(python_opt, version: '>= 2.7')
 endif
