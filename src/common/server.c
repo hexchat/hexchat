@@ -1116,6 +1116,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	if (auth)
 	{
 		int len_u=0, len_p=0;
+		unsigned char *u_p_buf;
 
 		/* authentication sub-negotiation (RFC1929) */
 		if (buf[1] != 2)  /* UPA not supported by server */
@@ -1124,18 +1125,22 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 			return 1;
 		}
 
-		memset (buf, 0, sizeof(buf));
-
 		/* form the UPA request */
 		len_u = strlen (prefs.hex_net_proxy_user);
 		len_p = strlen (prefs.hex_net_proxy_pass);
-		buf[0] = 1;
-		buf[1] = len_u;
-		memcpy (buf + 2, prefs.hex_net_proxy_user, len_u);
-		buf[2 + len_u] = len_p;
-		memcpy (buf + 3 + len_u, prefs.hex_net_proxy_pass, len_p);
 
-		send (sok, buf, 3 + len_u + len_p, 0);
+        packetlen = 2 + len_u + 1 + len_p;
+		u_p_buf = g_malloc0 (packetlen);
+
+		u_p_buf[0] = 1;
+		u_p_buf[1] = len_u;
+		memcpy (u_p_buf + 2, prefs.hex_net_proxy_user, len_u);
+		u_p_buf[2 + len_u] = len_p;
+		memcpy (u_p_buf + 3 + len_u, prefs.hex_net_proxy_pass, len_p);
+
+		send (sok, u_p_buf, packetlen, 0);
+		g_free(u_p_buf);
+
 		if ( recv (sok, buf, 2, 0) != 2 )
 			goto read_error;
 		if ( buf[1] != 0 )
