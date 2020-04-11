@@ -41,11 +41,11 @@ jobs:
           & 7z.exe x deps\perl-${{ matrix.arch }}.7z -oC:\gtk-build\perl-5.20\${{ matrix.platform }}
 
           New-Item -Path "c:\gtk-build" -Name "python-2.7" -ItemType "Directory"
-          New-Item -Path "c:\gtk-build" -Name "python-3.6" -ItemType "Directory"
+          New-Item -Path "c:\gtk-build" -Name "python-3.8" -ItemType "Directory"
           New-Item -Path "c:\gtk-build\python-2.7" -Name "${{ matrix.platform }}" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/2.7.18/${{ matrix.arch }}"
-          New-Item -Path "c:\gtk-build\python-3.6" -Name "${{ matrix.platform }}" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/3.6.8/${{ matrix.arch }}"
+          New-Item -Path "c:\gtk-build\python-3.8" -Name "${{ matrix.platform }}" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/3.8.10/${{ matrix.arch }}"
 
-          C:/hostedtoolcache/windows/Python/3.6.8/${{ matrix.arch }}/python.exe -m pip install cffi
+          C:/hostedtoolcache/windows/Python/3.8.10/${{ matrix.arch }}/python.exe -m pip install cffi
           C:/hostedtoolcache/windows/Python/2.7.18/${{ matrix.arch }}/python.exe -m pip install -qq cffi
         shell: powershell
 
