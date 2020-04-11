@@ -74,7 +74,7 @@ Name: "langs\lua"; Description: "Lua"; Types: normal custom; Flags: disablenouni
 Name: "langs\perl"; Description: "Perl (requires Perl 5.20)"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\python"; Description: "Python Interface"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\python\python2"; Description: "Python (requires Python 2.7)"; Types: custom; Flags: disablenouninstallwarning exclusive
-Name: "langs\python\python3"; Description: "Python (requires Python 3.6)"; Types: custom; Flags: disablenouninstallwarning exclusive
+Name: "langs\python\python3"; Description: "Python (requires Python 3.8)"; Types: custom; Flags: disablenouninstallwarning exclusive
 
 [Tasks]
 Name: portable; Description: "Yes"; GroupDescription: "Portable Mode: Stores configuration files within install directory for portable drives."; Flags: unchecked
@@ -298,14 +298,14 @@ begin
 		REDIST := 'https://dl.hexchat.net/misc/vcredist_2015_x64.exe';
 		REDIST_2013 := 'https://dl.hexchat.net/misc/vcredist_2013_x64.exe';
 		PERL := 'https://dl.hexchat.net/misc/perl/Perl%205.20.0%20x64.msi';
-		PY2 := 'https://www.python.org/ftp/python/2.7.14/python-2.7.14.amd64.msi';
-		PY3 := 'https://www.python.org/ftp/python/3.6.4/python-3.6.4-amd64.exe';
+		PY2 := 'https://www.python.org/ftp/python/2.7.18/python-2.7.18.amd64.msi';
+		PY3 := 'https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe';
 #else
 		REDIST := 'https://dl.hexchat.net/misc/vcredist_2015_x86.exe';
 		REDIST_2013 := 'https://dl.hexchat.net/misc/vcredist_2013_x86.exe';
 		PERL := 'https://dl.hexchat.net/misc/perl/Perl%205.20.0%20x86.msi';
-		PY2 := 'https://www.python.org/ftp/python/2.7.14/python-2.7.14.msi';
-		PY3 := 'https://www.python.org/ftp/python/3.6.4/python-3.6.4.exe';
+		PY2 := 'https://www.python.org/ftp/python/2.7.18/python-2.7.18.msi';
+		PY3 := 'https://www.python.org/ftp/python/3.8.10/python-3.8.10.exe';
 #endif
 		DOTNET := 'https://dl.hexchat.net/misc/dotnet_40.exe';
 		SPELL := 'https://dl.hexchat.net/hexchat/HexChat%20Spelling%20Dictionaries%20r2.exe';
@@ -332,7 +332,7 @@ begin
 			if IsComponentSelected('langs\python\python2') and not CheckDLL('python27.dll') then
 				idpAddFile(PY2, ExpandConstant('{tmp}\python.msi'));
 
-			if IsComponentSelected('langs\python\python3') and not CheckDLL('python36.dll') then
+			if IsComponentSelected('langs\python\python3') and not CheckDLL('python38.dll') then
 				idpAddFile(PY3, ExpandConstant('{tmp}\python.exe'));
 		end;
 	end;
