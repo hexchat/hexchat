@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Release|Win32">
@@ -38,7 +38,8 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_MEMORY;_CRT_SECURE_CPP_OVERLOAD_SECURE_NAMES_MEMORY;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NDEBUG;_WINDOWS;_USRDLL;NOTIFICATIONS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalUsingDirectories>$(VCInstallDir)vcpackages;$(FrameworkSdkDir)References\CommonConfiguration\Neutral;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(VC_LibraryPath_VC_x86_Store)\references;$(WindowsSDK_UnionMetadataPath);$(VCInstallDir)vcpackages;$(FrameworkSdkDir)References\CommonConfiguration\Neutral;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(DepLibs);mincore.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -50,7 +51,8 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_MEMORY;_CRT_SECURE_CPP_OVERLOAD_SECURE_NAMES_MEMORY;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT;NDEBUG;_WINDOWS;_USRDLL;NOTIFICATIONS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalUsingDirectories>$(VCInstallDir)vcpackages;$(FrameworkSdkDir)References\CommonConfiguration\Neutral;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(VC_LibraryPath_VC_x86_Store)\references;$(WindowsSDK_UnionMetadataPath);$(VCInstallDir)vcpackages;$(FrameworkSdkDir)References\CommonConfiguration\Neutral;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(DepLibs);mincore.lib;runtimeobject.lib;%(AdditionalDependencies)</AdditionalDependencies>
