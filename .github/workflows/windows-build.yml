@@ -1,0 +1,74 @@
+name: Windows Build
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        platform: [x64, win32]
+        arch: [x64, x86]
+        exclude:
+          - platform: x64
+            arch: x86
+          - platform: win32
+            arch: x64
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Install Dependencies
+        run: |
+          New-Item -Name "deps" -ItemType "Directory"
+
+          Invoke-WebRequest http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe -OutFile deps\innosetup-unicode.exe
+          & deps\innosetup-unicode.exe /VERYSILENT | Out-Null
+
+          Invoke-WebRequest https://bitbucket.org/mitrich_k/inno-download-plugin/downloads/idpsetup-1.5.1.exe -OutFile deps\idpsetup.exe
+          & deps\idpsetup.exe /VERYSILENT
+
+          Invoke-WebRequest https://dl.hexchat.net/gtk/gtk-${{ matrix.platform }}-2018-08-29.7z -OutFile deps\gtk-${{ matrix.arch }}.7z
+          & 7z.exe x deps\gtk-${{ matrix.arch }}.7z -oC:\gtk-build\gtk
+
+          Invoke-WebRequest https://dl.hexchat.net/gtk-win32/gendef-20111031.7z -OutFile deps\gendef.7z
+          & 7z.exe x deps\gendef.7z -oC:\gtk-build
+
+          Invoke-WebRequest https://dl.hexchat.net/gtk-win32/WinSparkle-20151011.7z -OutFile deps\WinSparkle.7z
+          & 7z.exe x deps\WinSparkle.7z -oC:\gtk-build\WinSparkle
+
+          Invoke-WebRequest https://dl.hexchat.net/misc/perl/perl-5.20.0-${{ matrix.arch }}.7z -OutFile deps\perl-${{ matrix.arch }}.7z
+          & 7z.exe x deps\perl-${{ matrix.arch }}.7z -oC:\gtk-build\perl-5.20\${{ matrix.platform }}
+
+          New-Item -Path "c:\gtk-build" -Name "python-2.7" -ItemType "Directory"
+          New-Item -Path "c:\gtk-build" -Name "python-3.6" -ItemType "Directory"
+          New-Item -Path "c:\gtk-build\python-2.7" -Name "${{ matrix.platform }}" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/2.7.17/${{ matrix.arch }}"
+          New-Item -Path "c:\gtk-build\python-3.6" -Name "${{ matrix.platform }}" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/3.6.8/${{ matrix.arch }}"
+
+          C:/hostedtoolcache/windows/Python/3.6.8/${{ matrix.arch }}/python.exe -m pip install cffi
+          C:/hostedtoolcache/windows/Python/2.7.17/${{ matrix.arch }}/python.exe -m pip install -qq cffi
+        shell: powershell
+
+      - name: Build
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\Tools\VsDevCmd.bat"
+          msbuild win32\hexchat.sln /m /verbosity:minimal /p:Configuration=Release /p:Platform=${{ matrix.platform }}
+        shell: cmd
+
+      - name: Preparing Artifacts
+        run: |
+          move ..\hexchat-build\${{ matrix.platform }}\HexChat*.exe .\
+          move ..\hexchat-build .\
+        shell: cmd
+
+      - uses: actions/upload-artifact@v2-preview
+        with:
+          name: Installer
+          path: HexChat*.exe
+
+      - uses: actions/upload-artifact@v2-preview
+        with:
+          name: Build
+          path: hexchat-build
