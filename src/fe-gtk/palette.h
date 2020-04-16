@@ -22,17 +22,21 @@
 
 extern GdkColor colors[];
 
-#define COL_MARK_FG 32
-#define COL_MARK_BG 33
-#define COL_FG 34
-#define COL_BG 35
-#define COL_MARKER 36
-#define COL_NEW_DATA 37
-#define COL_HILIGHT 38
-#define COL_NEW_MSG 39
-#define COL_AWAY 40
-#define COL_SPELL 41
-#define MAX_COL 41
+#define THEME_MAX_MIRC_COLS 32
+#define THEME_MAX_COLOR (THEME_MAX_MIRC_COLS + 9)
+
+#define COL_START_SYS 99 /* beginning index of system colors */
+#define COL_MARK_FG (COL_START_SYS)
+#define COL_MARK_BG (COL_START_SYS + 1)
+#define COL_FG (COL_START_SYS + 2)
+#define COL_BG (COL_START_SYS + 3)
+#define COL_MARKER (COL_START_SYS + 4)
+#define COL_NEW_DATA (COL_START_SYS + 5)
+#define COL_HILIGHT (COL_START_SYS + 6)
+#define COL_NEW_MSG (COL_START_SYS + 7)
+#define COL_AWAY (COL_START_SYS + 8)
+#define COL_SPELL (COL_START_SYS + 9)
+#define MAX_COL COL_SPELL
 
 void palette_alloc (GtkWidget * widget);
 void palette_load (void);

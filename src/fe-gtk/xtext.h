@@ -41,14 +41,14 @@
 #define ATTR_UNDERLINE	'\037'
 
 /* these match palette.h */
-#define XTEXT_MIRC_COLS 32
-#define XTEXT_COLS 37		/* 32 plus 5 for extra stuff below */
-#define XTEXT_MARK_FG 32	/* for marking text */
-#define XTEXT_MARK_BG 33
-#define XTEXT_FG 34
-#define XTEXT_BG 35
-#define XTEXT_MARKER 36		/* for marker line */
-#define XTEXT_MAX_COLOR 41
+#define XTEXT_MIRC_COLS 99
+#define XTEXT_COLS (XTEXT_MIRC_COLS + 5)/* plus 5 for extra stuff below */
+#define XTEXT_MARK_FG (XTEXT_MIRC_COLS)	/* for marking text */
+#define XTEXT_MARK_BG (XTEXT_MIRC_COLS + 1)
+#define XTEXT_FG (XTEXT_MIRC_COLS + 2)
+#define XTEXT_BG (XTEXT_MIRC_COLS + 3)
+#define XTEXT_MARKER (XTEXT_MIRC_COLS + 4) /* for marker line */
+#define XTEXT_MAX_COLOR (XTEXT_MIRC_COLS + 9)
 
 typedef struct _GtkXText GtkXText;
 typedef struct _GtkXTextClass GtkXTextClass;
