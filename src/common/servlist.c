@@ -248,9 +248,6 @@ static const struct defaultserver def[] =
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
 
-	{"Moznet", 0, 0, 0, 0, 0, TRUE},
-	{0,			"irc.mozilla.org"},
-	
 	{"ObsidianIRC",  0},
 	/* Self signed */
 	{0,      "irc.obsidianirc.net"}, 
