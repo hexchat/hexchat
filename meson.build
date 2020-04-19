@@ -134,9 +134,11 @@ test_ldflags = [
   '-Wl,-z,relro',
   '-Wl,-z,now',
   # mingw
-  '-Wl,--dynamicbase',
   '-Wl,--nxcompat',
 ]
+if not (host_machine.system() == 'windows' and get_option('debug'))
+ test_ldflags += '-Wl,--dynamicbase'
+endif
 foreach ldflag : test_ldflags
   if meson.version().version_compare('>= 0.46.0')
     has_arg = cc.has_link_argument(ldflag)
