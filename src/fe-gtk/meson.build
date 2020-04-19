@@ -80,6 +80,10 @@ resources = gnome.compile_resources('resources',
   extra_args: ['--manual-register']
 )
 
+if host_machine.system() == 'windows'
+  hexchat_gtk_ldflags += '-Wl,-e,mainCRTStartup'
+endif
+
 executable('hexchat',
   sources:  resources + hexchat_gtk_sources,
   dependencies: hexchat_gtk_deps,
