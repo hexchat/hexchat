@@ -355,7 +355,8 @@ plugin_kill_all (void)
 	}
 }
 
-#ifdef USE_PLUGIN
+#if defined(USE_PLUGIN) || defined(WIN32)
+/* used for loading plugins, and in fe-gtk/notifications/notification-windows.c */
 
 GModule *
 module_load (char *filename)
@@ -383,6 +384,10 @@ module_load (char *filename)
 
 	return handle;
 }
+
+#endif
+
+#ifdef USE_PLUGIN
 
 /* load a plugin from a filename. Returns: NULL-success or an error string */
 
