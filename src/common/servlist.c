@@ -54,11 +54,6 @@ static const struct defaultserver def[] =
 	/* Invalid hostname in cert */
 	{0,			"irc.2600.net"},
 
-	{"2ch", 0, 0, "iso-2022-jp", 0, 0},
-	{0,			"irc.2ch.sc"},
-	{0,			"irc.nurs.or.jp"},
-	{0,			"irc.juggler.jp"},
-
 	{"AccessIRC",	0},
 	/* Self signed */
 	{0,			"irc.accessirc.net"},
