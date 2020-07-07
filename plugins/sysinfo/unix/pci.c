@@ -92,6 +92,11 @@ int pci_find_by_class(u16 *class, char *vendor, char *device)
 	struct pci_dev *p;
 	int nomatch = 1;
 
+	/* libpci has no way to report errors it calls exit()
+	 * so we need to manually avoid potential failures like this one */
+	if (!g_file_test ("/proc/bus/pci", G_FILE_TEST_EXISTS))
+		return 1;
+
 	pacc = pci_alloc();
 	pci_filter_init(pacc, &filter);
 	pci_init(pacc);
@@ -122,11 +127,8 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 	char *position;
 	int cardfound = 0;
 	FILE *fp;
-	
-	if (!sysinfo_get_str_pref ("pciids", buffer))
-		strcpy (buffer, DEFAULT_PCIIDS);
 
-	fp = fopen (buffer, "r");
+	fp = fopen (PCIIDS_FILE, "r");
 	if(fp == NULL)
 	{
 		g_snprintf(fullname, bsize, "%s:%s", vendor, device);
@@ -140,7 +142,7 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 		{
 			position = strstr(buffer, vendor);
 			position += 6;
-			strncpy(vendorname, position, bsize/2);
+			g_strlcpy(vendorname, position, sizeof (vendorname));
 			position = strstr(vendorname, "\n");
 			*(position) = '\0';
 			break;
@@ -152,7 +154,7 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 		{
 			position = strstr(buffer, device);
 			position += 6;
-			strncpy(devicename, position, bsize/2);
+			g_strlcpy(devicename, position, sizeof (devicename));
 			position = strstr(devicename, " (");
 			if (position == NULL)
 				position = strstr(devicename, "\n");
@@ -164,6 +166,6 @@ void pci_find_fullname(char *fullname, char *vendor, char *device)
 	if (cardfound == 1)
 		g_snprintf(fullname, bsize, "%s %s", vendorname, devicename);
 	else
-		g_snprintf(fullname, bsize, "%s:%s", vendor, device);	
+		g_snprintf(fullname, bsize, "%s:%s", vendor, device);
 	fclose(fp);
 }

@@ -51,7 +51,7 @@ sub get_context;
 sub HexChat::Internal::context_info;
 sub HexChat::Internal::print;
 
-#keep compability with Xchat scripts
+#keep compatibility with Xchat scripts
 sub EAT_XCHAT ();
 BEGIN {
 	*Xchat:: = *HexChat::;

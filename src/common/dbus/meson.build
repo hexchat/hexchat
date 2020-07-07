@@ -14,11 +14,22 @@ dbus_includes = [
 
 dbus_service_dir = join_paths(get_option('datadir'), 'dbus-1/services')
 
+if get_option('dbus-service-use-appid')
+  dbus_service_name = 'io.github.Hexchat'
+  dbus_output_file = 'io.github.Hexchat.service'
+  dbus_cargs = '-DDBUS_SERVICE="io.github.Hexchat"'
+else
+  dbus_service_name = 'org.hexchat.service'
+  dbus_output_file = 'org.hexchat.service.service'
+  dbus_cargs = '-DDBUS_SERVICE="org.hexchat.service"'
+endif
+
 dbus_conf = configuration_data()
 dbus_conf.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
+dbus_conf.set('service_name', dbus_service_name)
 configure_file(
   input: 'org.hexchat.service.service.in',
-  output: 'org.hexchat.service.service',
+  output: dbus_output_file,
   configuration: dbus_conf,
   install: true,
   install_dir: dbus_service_dir
@@ -34,6 +45,7 @@ dbus_remote_object = custom_target('remote-object-glue',
 
 hexchat_dbus = static_library('hexchatdbus',
   sources: [dbus_remote_object, marshal] + dbus_sources,
+  c_args: dbus_cargs,
   dependencies: common_deps + dbus_deps,
   include_directories: dbus_includes,
   pic: true

@@ -1,6 +1,6 @@
 project('hexchat', 'c',
-  version: '2.12.4',
-  meson_version: '>= 0.37.0',
+  version: '2.14.3',
+  meson_version: '>= 0.40.0',
   default_options: [
     'c_std=gnu89',
     'buildtype=debugoptimized',
@@ -15,6 +15,7 @@ cc = meson.get_compiler('c')
 
 libgio_dep = dependency('gio-2.0', version: '>= 2.34.0')
 libgmodule_dep = dependency('gmodule-2.0')
+global_deps = []
 if cc.get_id() == 'msvc'
   libssl_dep = cc.find_library('libeay32')
 else
@@ -48,6 +49,10 @@ config_h.set('GLIB_VERSION_MIN_REQUIRED', 'GLIB_VERSION_2_34')
 config_h.set('HAVE_MEMRCHR', cc.has_function('memrchr'))
 config_h.set('HAVE_STRINGS_H', cc.has_header('strings.h'))
 
+config_h.set_quoted('HEXCHATLIBDIR',
+  join_paths(get_option('prefix'), get_option('libdir'), 'hexchat/plugins')
+)
+
 if libssl_dep.found()
   config_h.set('HAVE_X509_GET_SIGNATURE_NID',
     cc.has_function('X509_get_signature_nid', dependencies: libssl_dep)
@@ -76,13 +81,16 @@ configure_file(output: 'config.h', configuration: config_h)
 config_h_include = include_directories('.')
 
 if host_machine.system() == 'windows'
-  add_project_arguments('-DWIN32', language: 'c')
+  add_project_arguments(
+    '-DWIN32',
+    '-DNTDDI_VERSION=NTDDI_WIN7',
+    '-D_WIN32_WINNT=_WIN32_WINNT_WIN7',
+     language: 'c')
 endif
 
 
 global_cflags = []
 test_cflags = [
-  '-pipe',
   '-funsigned-char',
   '-Wno-conversion',
   '-Wno-pointer-sign',
@@ -98,29 +106,51 @@ test_cflags = [
   '-Werror=missing-include-dirs',
   '-Werror=date-time',
 ]
-if host_machine.system() != 'windows' and get_option('buildtype') != 'plain'
-  test_cflags += '-fstack-protector-strong'
-endif
 foreach cflag : test_cflags
   if cc.has_multi_arguments(cflag)
     global_cflags += cflag
   endif
 endforeach
+if get_option('buildtype') != 'plain'
+  if cc.has_argument('-fstack-protector-strong') and cc.links('''
+     int main (void) {
+       char buffer[16];
+       strcpy(buffer, "foo");
+       return 0;
+     }
+     ''', args: '-fstack-protector-all')
+    global_cflags += '-fstack-protector-strong'
+
+    if host_machine.system() == 'windows'
+      global_deps += cc.find_library('ssp')
+    endif
+  endif
+endif
 add_project_arguments(global_cflags, language: 'c')
 
-if host_machine.system() != 'windows'
-  global_ldflags = []
-  test_ldflags = [
-    '-Wl,-z,relro',
-    '-Wl,-z,now',
-  ]
-  foreach ldflag : test_ldflags
-    if cc.has_argument(ldflag)
-      global_ldflags += ldflag
-    endif
-  endforeach
-  add_project_link_arguments(global_ldflags, language: 'c')
+
+global_ldflags = []
+test_ldflags = [
+  '-Wl,-z,relro',
+  '-Wl,-z,now',
+  # mingw
+  '-Wl,--nxcompat',
+]
+if not (host_machine.system() == 'windows' and get_option('debug'))
+ test_ldflags += '-Wl,--dynamicbase'
 endif
+foreach ldflag : test_ldflags
+  if meson.version().version_compare('>= 0.46.0')
+    has_arg = cc.has_link_argument(ldflag)
+  else
+    has_arg = cc.has_argument(ldflag)
+  endif
+
+  if has_arg and cc.links('int main (void) { return 0; }', args: ldflag)
+    global_ldflags += ldflag
+  endif
+endforeach
+add_project_link_arguments(global_ldflags, language: 'c')
 
 subdir('src')
 if get_option('with-plugin')

@@ -66,7 +66,6 @@ Name: "plugins"; Description: "Plugins"; Types: custom; Flags: disablenouninstal
 Name: "plugins\checksum"; Description: "Checksum"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\exec"; Description: "Exec"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disablenouninstallwarning
-Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
@@ -116,16 +115,19 @@ Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createal
 Source: "share\doc\*"; DestDir: "{app}\share\doc"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "share\themes\MS-Windows\*"; DestDir: "{app}\share\themes\MS-Windows"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
+Source: "etc\fonts\*"; DestDir: "{app}\etc\fonts"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 
-Source: "atk-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "atk-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "cairo.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "freetype.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "fribidi-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "fontconfig.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "gdk_pixbuf-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gdk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "gio-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "glib-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "gmodule-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "gobject-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gio-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "glib-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gmodule-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gobject-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 #if APPARCH == "x64"
 Source: "gspawn-win64-helper.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gspawn-win64-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -133,21 +135,19 @@ Source: "gspawn-win64-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversio
 Source: "gspawn-win32-helper.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gspawn-win32-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 #endif
-Source: "gthread-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "gthread-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gtk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "harfbuzz.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libffi.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libintl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "ffi-7.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "intl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libpng16.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pango-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pangocairo-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pangoft2-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pangowin32-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "pixman-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pango-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangocairo-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangoft2-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "pangowin32-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 
@@ -157,30 +157,34 @@ Source: "lib\enchant\*"; DestDir: "{app}\lib\enchant"; Flags: ignoreversion; Com
 
 Source: "lib\gtk-2.0\i686-pc-vs14\engines\*"; DestDir: "{app}\lib\gtk-2.0\i686-pc-vs14\engines"; Flags: ignoreversion; Components: libs
 
-Source: "girepository-1.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
+Source: "girepository-1.0-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
 Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\lua
 Source: "lib\lua\lgi\*.dll"; DestDir: "{app}\lib\lua\lgi"; Flags: ignoreversion; Components: langs\lua
 Source: "lib\girepository-1.0\*.typelib"; DestDir: "{app}\lib\girepository-1.0"; Flags: ignoreversion; Components: langs\lua
 Source: "share\lua\*.lua"; DestDir: "{app}\share\lua"; Flags: ignoreversion; Components: langs\lua
 Source: "share\lua\lgi\*.lua"; DestDir: "{app}\share\lua\lgi"; Flags: ignoreversion; Components: langs\lua
 Source: "share\lua\lgi\override\*.lua"; DestDir: "{app}\share\lua\lgi\override"; Flags: ignoreversion; Components: langs\lua
+Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
 
 Source: "plugins\hcchecksum.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\checksum
 Source: "plugins\hcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
 Source: "plugins\hcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim
-Source: "share\music.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\winamp or plugins\mpcinfo
-Source: "plugins\hcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
+Source: "share\music.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\winamp
 Source: "share\download.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\upd
 Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
 Source: "WinSparkle.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugins\upd
 Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
 Source: "share\system.png"; DestDir: "{app}\share"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
+Source: "plugins\hcperl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\perl
+
+Source: "python\*.py"; DestDir: "{app}\python"; Flags: ignoreversion; Components: langs\python
 
 Source: "plugins\hcpython2.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python\python2
+Source: "_cffi_backend.pyd"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\python\python2
+
 Source: "plugins\hcpython3.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python\python3
-Source: "plugins\hcperl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\perl
-Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
+Source: "_cffi_backend.cp3*.pyd"; DestDir: "{app}"; Flags: ignoreversion; Components: langs\python\python3
 
 Source: "hexchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
@@ -289,14 +293,14 @@ begin
 		REDIST := 'https://dl.hexchat.net/misc/vcredist_2015_x64.exe';
 		REDIST_2013 := 'https://dl.hexchat.net/misc/vcredist_2013_x64.exe';
 		PERL := 'https://dl.hexchat.net/misc/perl/Perl%205.20.0%20x64.msi';
-		PY2 := 'https://www.python.org/ftp/python/2.7.12/python-2.7.12.amd64.msi';
-		PY3 := 'https://www.python.org/ftp/python/3.6.0/python-3.6.0-amd64.exe';
+		PY2 := 'https://www.python.org/ftp/python/2.7.14/python-2.7.14.amd64.msi';
+		PY3 := 'https://www.python.org/ftp/python/3.6.4/python-3.6.4-amd64.exe';
 #else
 		REDIST := 'https://dl.hexchat.net/misc/vcredist_2015_x86.exe';
 		REDIST_2013 := 'https://dl.hexchat.net/misc/vcredist_2013_x86.exe';
 		PERL := 'https://dl.hexchat.net/misc/perl/Perl%205.20.0%20x86.msi';
-		PY2 := 'https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi';
-		PY3 := 'https://www.python.org/ftp/python/3.6.0/python-3.6.0.exe';
+		PY2 := 'https://www.python.org/ftp/python/2.7.14/python-2.7.14.msi';
+		PY3 := 'https://www.python.org/ftp/python/3.6.4/python-3.6.4.exe';
 #endif
 		DOTNET := 'https://dl.hexchat.net/misc/dotnet_40.exe';
 		SPELL := 'https://dl.hexchat.net/hexchat/HexChat%20Spelling%20Dictionaries%20r2.exe';

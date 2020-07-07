@@ -16,12 +16,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
-#include <gmodule.h>
-
 #include "hexchat.h"
 #include "plugin.h"
 
-#include <Windows.h>
+#include <gmodule.h>
+#include <windows.h>
 
 void (*winrt_notification_backend_show) (const char *title, const char *text) = NULL;
 int (*winrt_notification_backend_init) (const char **error) = NULL;

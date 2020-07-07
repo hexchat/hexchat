@@ -187,6 +187,7 @@ void
 url_opengui ()
 {
 	GtkWidget *vbox, *hbox, *view;
+	char buf[128];
 
 	if (urlgrabberwindow)
 	{
@@ -194,9 +195,10 @@ url_opengui ()
 		return;
 	}
 
+	g_snprintf(buf, sizeof(buf), _("URL Grabber - %s"), _(DISPLAY_NAME));
 	urlgrabberwindow =
-		mg_create_generic_tab ("UrlGrabber", _(DISPLAY_NAME": URL Grabber"), FALSE,
-							 TRUE, url_closegui, NULL, 400, 256, &vbox, 0);
+		mg_create_generic_tab ("UrlGrabber", buf, FALSE, TRUE, url_closegui, NULL,
+							 400, 256, &vbox, 0);
 	gtkutil_destroy_on_esc (urlgrabberwindow);
 	view = url_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (urlgrabberwindow), "model",

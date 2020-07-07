@@ -237,7 +237,7 @@ alert_match_word (char *word, char *masks)
 		{
 			endchar = *p;
 			*p = 0;
-			res = match (masks, word);
+			res = match (g_strchug (masks), word);
 			*p = endchar;
 
 			if (res)
@@ -932,7 +932,7 @@ void
 inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 					 const message_tags_data *tags_data)
 {
-	char *po,*ptr=to;
+	char *ptr = to;
 	session *sess = 0;
 	int server_notice = FALSE;
 
@@ -940,7 +940,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 		sess = find_channel (serv, ptr);
 
 	/* /notice [mode-prefix]#channel should end up in that channel */
-	if (!sess && strchr(serv->nick_prefixes, ptr[0]) != NULL)
+	if (!sess && ptr[0] && strchr(serv->nick_prefixes, ptr[0]) != NULL)
 	{
 		ptr++;
 		sess = find_channel (serv, ptr);
@@ -1005,18 +1005,21 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 		}
 	}
 
-	if (msg[0] == 1)
+	if (msg[0] == '\001')
 	{
+		size_t len;
+
 		msg++;
 		if (!strncmp (msg, "PING", 4))
 		{
 			inbound_ping_reply (sess, msg + 5, nick, tags_data);
 			return;
 		}
+
+		len = strlen(msg);
+		if (msg[len - 1] == '\001')
+			msg[len - 1] = '\000';
 	}
-	po = strchr (msg, '\001');
-	if (po)
-		po[0] = 0;
 
 	if (server_notice)
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVNOTICE, sess, msg, nick, NULL, NULL, 0,
@@ -1417,7 +1420,7 @@ inbound_foundip (session *sess, char *ip, const message_tags_data *tags_data)
 	HostAddr = gethostbyname (ip);
 	if (HostAddr)
 	{
-		prefs.dcc_ip = ((struct in_addr *) HostAddr->h_addr)->s_addr;
+		sess->server->dcc_ip = ((struct in_addr *) HostAddr->h_addr)->s_addr;
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_FOUNDIP, sess->server->server_session,
 									  inet_ntoa (*((struct in_addr *) HostAddr->h_addr)),
 									  NULL, NULL, NULL, 0, tags_data->timestamp);
@@ -1555,6 +1558,7 @@ inbound_login_end (session *sess, char *text, const message_tags_data *tags_data
 	GSList *cmdlist;
 	commandentry *cmd;
 	server *serv = sess->server;
+	ircnet *net = serv->network;
 
 	if (!serv->end_of_motd)
 	{
@@ -1565,29 +1569,32 @@ inbound_login_end (session *sess, char *text, const message_tags_data *tags_data
 		}
 		set_default_modes (serv);
 
-		if (serv->network)
+		if (net)
 		{
 			/* there may be more than 1, separated by \n */
 
-			cmdlist = ((ircnet *)serv->network)->commandlist;
+			cmdlist = net->commandlist;
 			while (cmdlist)
 			{
 				cmd = cmdlist->data;
 				inbound_exec_eom_cmd (cmd->command, sess);
 				cmdlist = cmdlist->next;
 			}
+		}
+		/* The previously ran commands can alter the state of the server */
+		if (serv->network != net)
+			return;
 
-			/* send nickserv password */
-			if (((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
-			{
-				serv->p_ns_identify (serv, ((ircnet *)serv->network)->pass);
-			}
+		/* send nickserv password */
+		if (net && net->pass && inbound_nickserv_login (serv))
+		{
+			serv->p_ns_identify (serv, net->pass);
 		}
 
 		/* wait for join if command or nickserv set */
-		if (serv->network && prefs.hex_irc_join_delay
-			&& ((((ircnet *)serv->network)->pass && inbound_nickserv_login (serv))
-				|| ((ircnet *)serv->network)->commandlist))
+		if (net && prefs.hex_irc_join_delay
+			&& ((net->pass && inbound_nickserv_login (serv))
+				|| net->commandlist))
 		{
 			serv->joindelay_tag = fe_timeout_add_seconds (prefs.hex_irc_join_delay, check_autojoin_channels, serv);
 		}
@@ -1761,7 +1768,6 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 {
 	char buffer[500];	/* buffer for requesting capabilities and emitting the signal */
 	gboolean want_cap = FALSE; /* format the CAP REQ string based on previous capabilities being requested or not */
-	gboolean want_sasl = FALSE; /* CAP END shouldn't be sent when SASL is requested, it needs further responses */
 	char **extensions;
 	int i;
 
@@ -1809,7 +1815,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 				serv->sasl_mech = sasl_mech;
 			}
 			want_cap = TRUE;
-			want_sasl = TRUE;
+			serv->waiting_on_sasl = TRUE;
 			g_strlcat (buffer, "sasl ", sizeof(buffer));
 			continue;
 		}
@@ -1835,7 +1841,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 									  tags_data->timestamp);
 		tcp_sendf (serv, "%s\r\n", g_strchomp (buffer));
 	}
-	if (!want_sasl && !serv->waiting_on_cap)
+	if (!serv->waiting_on_sasl && !serv->waiting_on_cap)
 	{
 		/* if we use SASL, CAP END is dealt via raw numerics */
 		serv->sent_capend = TRUE;
@@ -1844,13 +1850,25 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 }
 
 void
-inbound_cap_nak (server *serv, const message_tags_data *tags_data)
+inbound_cap_nak (server *serv, char *extensions_str, const message_tags_data *tags_data)
 {
-	if (!serv->waiting_on_cap && !serv->sent_capend)
+	char **extensions;
+	int i;
+
+	extensions = g_strsplit (extensions_str, " ", 0);
+	for (i=0; extensions[i]; i++)
+	{
+		if (!g_strcmp0 (extensions[i], "sasl"))
+			serv->waiting_on_sasl = FALSE;
+	}
+
+	if (!serv->waiting_on_cap && !serv->waiting_on_sasl && !serv->sent_capend)
 	{
 		serv->sent_capend = TRUE;
 		tcp_send_len (serv, "CAP END\r\n", 9);
 	}
+
+	g_strfreev (extensions);
 }
 
 void

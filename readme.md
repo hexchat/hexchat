@@ -1,4 +1,4 @@
-# HexChat [![Build Status](http://img.shields.io/travis/hexchat/hexchat/master.svg?style=flat)](https://travis-ci.org/hexchat/hexchat) [![Build Status](https://img.shields.io/appveyor/ci/TingPing/hexchat/master.svg?style=flat)](https://ci.appveyor.com/project/TingPing/hexchat)
+# HexChat
 
 HexChat is an IRC client for Windows and UNIX-like operating systems.  
 See [IRCHelp.org](http://irchelp.org) for information about IRC in general.  

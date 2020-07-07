@@ -22,8 +22,5 @@
 #define SYSINFO_H
 
 #define bsize 1024
-#define DEFAULT_PCIIDS "/usr/share/hwdata/pci.ids"
-
-int sysinfo_get_str_pref (const char *name, char *dest);
 
 #endif

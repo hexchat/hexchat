@@ -133,16 +133,6 @@ print_info (char *info, gboolean announce)
 	hexchat_print (ph, _("Sysinfo: No info by that name\n"));
 }
 
-/*
- * Simple wrapper for backend specific options.
- * Ensure dest >= 512.
- */
-int
-sysinfo_get_str_pref (const char *pref, char *dest)
-{
-	return hexchat_pluginpref_get_str (ph, pref, dest);
-}
-
 static gboolean
 sysinfo_get_bool_pref (const char *pref, gboolean def)
 {
@@ -184,24 +174,6 @@ sysinfo_set_pref (char *key, char *value)
 		sysinfo_set_pref_real (key, value, DEFAULT_ANNOUNCE);
 		return;
 	}
-#ifdef HAVE_LIBPCI
-	else if (!strcmp (key, "pciids"))
-	{
-		if (value && value[0])
-		{
-			hexchat_pluginpref_set_str (ph, "pciids", value);
-			hexchat_printf (ph, _("Sysinfo: pciids is set to: %s\n"), value);
-		}
-		else
-		{
-			char buf[512];
-			if (hexchat_pluginpref_get_str (ph, "pciids", buf) == 0)
-				strcpy (buf, DEFAULT_PCIIDS);
-			hexchat_printf (ph, _("Sysinfo: pciids is set to: %s\n"), buf);
-		}
-		return;
-	}
-#endif
 	else if (g_str_has_prefix (key, "hide_"))
 	{
 		int i;

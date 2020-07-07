@@ -142,7 +142,7 @@ fe_args (int argc, char *argv[])
 		{
 			if (strstr (error->message, "--help-all") != NULL)
 			{
-				buffer = g_strdup_printf (g_option_context_get_help (context, FALSE, NULL));
+				buffer = g_option_context_get_help (context, FALSE, NULL);
 				gtk_init (&argc, &argv);
 				create_msg_dialog ("Long Help", buffer);
 				g_free (buffer);
@@ -150,7 +150,7 @@ fe_args (int argc, char *argv[])
 			}
 			else if (strstr (error->message, "--help") != NULL || strstr (error->message, "-?") != NULL)
 			{
-				buffer = g_strdup_printf (g_option_context_get_help (context, TRUE, NULL));
+				buffer = g_option_context_get_help (context, TRUE, NULL);
 				gtk_init (&argc, &argv);
 				create_msg_dialog ("Help", buffer);
 				g_free (buffer);
@@ -293,10 +293,10 @@ create_input_style (GtkStyle *style)
 		GtkSettings *settings = gtk_settings_get_default ();
 		char *theme_name;
 
-		/* gnome-themes-standard 3.20 relies on images to do theming
+		/* gnome-themes-standard 3.20+ relies on images to do theming
 		 * so we have to override that. */
 		g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
-		if (g_str_has_prefix (theme_name, "Adwaita"))
+		if (g_str_has_prefix (theme_name, "Adwaita") || g_str_has_prefix (theme_name, "Yaru"))
 			gtk_rc_parse_string (adwaita_workaround_rc);
 		g_free (theme_name);
 

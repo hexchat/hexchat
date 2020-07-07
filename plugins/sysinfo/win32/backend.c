@@ -30,14 +30,7 @@
 
 #include "../format.h"
 
-static int command_callback (char *word[], char *word_eol[], void *user_data);
-
-void print_info (void);
-
-guint64 hdd_capacity;
-guint64 hdd_free_space;
-char *read_hdd_info (IWbemClassObject *object);
-char *get_memory_info (void);
+static char *get_memory_info (void);
 
 char *
 sysinfo_backend_get_sound (void)
@@ -96,11 +89,6 @@ char *
 sysinfo_backend_get_os (void)
 {
 	return sysinfo_get_os ();
-}
-
-static int get_cpu_arch (void)
-{
-	return sysinfo_get_cpu_arch ();
 }
 
 static char *get_memory_info (void)

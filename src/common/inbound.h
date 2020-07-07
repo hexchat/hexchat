@@ -92,7 +92,7 @@ void inbound_cap_ack (server *serv, char *nick, char *extensions,
 							 const message_tags_data *tags_data);
 void inbound_cap_ls (server *serv, char *nick, char *extensions,
 							const message_tags_data *tags_data);
-void inbound_cap_nak (server *serv, const message_tags_data *tags_data);
+void inbound_cap_nak (server *serv, char *extensions, const message_tags_data *tags_data);
 void inbound_cap_list (server *serv, char *nick, char *extensions,
 							  const message_tags_data *tags_data);
 void inbound_cap_del (server *serv, char *nick, char *extensions,

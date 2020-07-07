@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+
+import os
+import re
+import sys
+
+ret = 0
+
+
+def log(prefix, suffix, fallback):
+    try:
+        print(prefix, suffix)  # Non-utf8 output...
+    except UnicodeEncodeError:
+        print(prefix, fallback)
+
+
+def validate_translation(input, translation):
+    if not translation:
+        return True
+
+    if re.findall(r'(?:(?<!%)%[^%OCRUHBIH]|\$[^at1234])', translation):
+        log('Translation includes invalid formatting:', translation, input)
+        return False
+
+    in_vars = re.findall(r'(\$(?:\d|t))', input)
+    if not all(var in translation for var in in_vars):
+        log('Translation does not contain all variables:', translation, input)
+        return False
+
+    in_ascii = re.findall(r'\$a(\d{3})', translation)
+    if any(int(i) > 256 for i in in_ascii):
+        log('Translation contains invalid ascii value:', translation, input)
+        return False
+
+    # We could try to validate colors but that is pretty flexible
+    return True
+
+
+def validate_language(path):
+    global ret
+
+    print('Validating', path)
+
+    with open(path, 'r', encoding='utf-8') as f:
+        in_event = False
+        event_input = ''
+
+        for line in f:
+            if 'textevents.h' in line:
+                in_event = True
+            elif in_event is False:
+                continue
+            elif line.startswith('msgid'):
+                event_input = line[7:-2]
+            elif line.startswith('msgstr'):
+                if not validate_translation(event_input, line[8:-2]):
+                    ret = 1
+                in_event = False
+            elif line == '\n':
+                print('Failed to find translation for', event_input)
+                in_event = False
+
+
+with open(sys.argv[1], 'r') as linguas:
+    for lang in linguas:
+        path = os.path.join(sys.argv[2], lang.strip() + '.po')
+        validate_language(path)
+
+sys.exit(ret)

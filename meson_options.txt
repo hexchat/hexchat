@@ -25,6 +25,12 @@ option('with-libcanberra', type: 'boolean',
 option('with-theme-manager', type: 'boolean', value: false,
   description: 'Utility to help manage themes, requires mono/.net'
 )
+option('dbus-service-use-appid', type: 'boolean', value: false,
+  description: 'Rename dbus service to match app-id, required for Flatpak'
+)
+option('with-appdata', type: 'boolean',
+  description: 'Install appdata files for app stores'
+)
 
 # Plugins
 option('with-checksum', type: 'boolean',
@@ -39,8 +45,8 @@ option('with-fishlim', type: 'boolean',
 option('with-lua', type: 'string', value: 'luajit',
   description: 'Lua scripting plugin, value is pkg-config name to use or "false"'
 )
-option('with-perl', type: 'boolean',
-  description: 'Perl scripting plugin'
+option('with-perl', type: 'string', value: 'perl',
+  description: 'Perl scripting plugin, value is path to perl executable or "false"'
 )
 option('with-python', type: 'string', value: 'python3',
   description: 'Python scripting plugin. value is pkg-config name to use or "false"'
@@ -53,4 +59,10 @@ option('with-upd', type: 'boolean',
 )
 option('with-winamp', type: 'boolean',
   description: 'Winamp plugin, Windows only'
+)
+option('install-plugin-metainfo', type: 'boolean', value: false,
+  description: 'Installs metainfo files for enabled plugins, useful when distros create split packages'
+)
+option('with-perl-legacy-api', type: 'boolean', value: false,
+  description: 'Enables the legacy IRC perl module for compatibility with old scripts'
 )

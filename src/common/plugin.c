@@ -200,13 +200,15 @@ plugin_list_add (hexchat_context *ctx, char *filename, const char *name,
 	return pl;
 }
 
+#ifndef WIN32
 static void *
 hexchat_dummy (hexchat_plugin *ph)
 {
 	return NULL;
 }
 
-#ifdef WIN32
+#else
+
 static int
 hexchat_read_fd (hexchat_plugin *ph, GIOChannel *source, char *buf, int *len)
 {
@@ -353,7 +355,8 @@ plugin_kill_all (void)
 	}
 }
 
-#ifdef USE_PLUGIN
+#if defined(USE_PLUGIN) || defined(WIN32)
+/* used for loading plugins, and in fe-gtk/notifications/notification-windows.c */
 
 GModule *
 module_load (char *filename)
@@ -381,6 +384,10 @@ module_load (char *filename)
 
 	return handle;
 }
+
+#endif
+
+#ifdef USE_PLUGIN
 
 /* load a plugin from a filename. Returns: NULL-success or an error string */
 
@@ -455,7 +462,6 @@ plugin_auto_load (session *sess)
 	for_files (lib_dir, "hcexec.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcfishlim.dll", plugin_auto_load_cb);
 	for_files(lib_dir, "hclua.dll", plugin_auto_load_cb);
-	for_files (lib_dir, "hcmpcinfo.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcperl.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcpython2.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcpython3.dll", plugin_auto_load_cb);
@@ -463,10 +469,10 @@ plugin_auto_load (session *sess)
 	for_files (lib_dir, "hcwinamp.dll", plugin_auto_load_cb);
 	for_files (lib_dir, "hcsysinfo.dll", plugin_auto_load_cb);
 #else
-	for_files (lib_dir, "*."G_MODULE_SUFFIX, plugin_auto_load_cb);
+	for_files (lib_dir, "*."PLUGIN_SUFFIX, plugin_auto_load_cb);
 #endif
 
-	for_files (sub_dir, "*."G_MODULE_SUFFIX, plugin_auto_load_cb);
+	for_files (sub_dir, "*."PLUGIN_SUFFIX, plugin_auto_load_cb);
 
 	g_free (sub_dir);
 }
@@ -2009,7 +2015,7 @@ hexchat_pluginpref_list (hexchat_plugin *pl, char* dest)
 	else													/* existing config file, get list of settings */
 	{
 		strcpy (dest, "");									/* clean up garbage */
-		while (fscanf (fpIn, " %[^\n]", bufp) != EOF)	/* read whole lines including whitespaces */
+		while (fscanf (fpIn, " %511[^\n]", bufp) != EOF)	/* read whole lines including whitespaces */
 		{
 			token = strtok (buffer, "=");
 			g_strlcat (dest, g_strchomp (token), 4096); /* Dest must not be smaller than this */

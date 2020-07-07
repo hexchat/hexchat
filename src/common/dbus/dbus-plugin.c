@@ -32,7 +32,6 @@
 #define PDESC _("plugin for remote access using DBUS")
 #define PVERSION ""
 
-#define DBUS_SERVICE "org.hexchat.service"
 #define DBUS_OBJECT_PATH "/org/hexchat"
 
 static hexchat_plugin *ph;

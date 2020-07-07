@@ -27,7 +27,6 @@
 #include "hexchat.h"
 #include "hexchatc.h"
 
-#define DBUS_SERVICE "org.hexchat.service"
 #define DBUS_REMOTE_PATH "/org/hexchat/Remote"
 #define DBUS_REMOTE_INTERFACE "org.hexchat.plugin"
 

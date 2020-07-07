@@ -144,7 +144,7 @@ static const char *login_types[]=
 #ifdef USE_OPENSSL
 	"SASL EXTERNAL (cert)",
 #endif
-	"Server Password (/PASS password)",
+	"Server password (/PASS password)",
 	"NickServ (/MSG NickServ + password)",
 	"NickServ (/NICKSERV + password)",
 #ifdef USE_OPENSSL
@@ -1707,7 +1707,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	editwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (editwindow), 4);
-	g_snprintf (buf, sizeof (buf), _(DISPLAY_NAME": Edit %s"), net->name);
+	g_snprintf (buf, sizeof (buf), _("Edit %s - %s"), net->name, _(DISPLAY_NAME));
 	gtk_window_set_title (GTK_WINDOW (editwindow), buf);
 	gtk_window_set_default_size (GTK_WINDOW (editwindow), netedit_win_width, netedit_win_height);
 	gtk_window_set_transient_for (GTK_WINDOW (editwindow), GTK_WINDOW (parent));
@@ -1970,10 +1970,12 @@ servlist_open_networks (void)
 	GtkTreeModel *model;
 	GtkListStore *store;
 	GtkCellRenderer *renderer;
+	char buf[128];
 
 	servlist = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
-	gtk_window_set_title (GTK_WINDOW (servlist), _(DISPLAY_NAME": Network List"));
+	g_snprintf(buf, sizeof(buf), _("Network List - %s"), _(DISPLAY_NAME));
+	gtk_window_set_title (GTK_WINDOW (servlist), buf);
 	gtk_window_set_default_size (GTK_WINDOW (servlist), netlist_win_width, netlist_win_height);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");
 	gtk_window_set_type_hint (GTK_WINDOW (servlist), GDK_WINDOW_TYPE_HINT_DIALOG);
@@ -2164,7 +2166,7 @@ servlist_open_networks (void)
 
 	button_sort = gtk_button_new_with_mnemonic (_("_Sort"));
 	gtk_widget_set_tooltip_text (button_sort, _("Sorts the network list in alphabetical order. "
-				"Use SHIFT-UP and SHIFT-DOWN keys to move a row."));
+				"Use Shift+Up and Shift+Down keys to move a row."));
 	g_signal_connect (G_OBJECT (button_sort), "clicked",
 							G_CALLBACK (servlist_sort), 0);
 	gtk_widget_show (button_sort);

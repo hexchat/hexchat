@@ -577,7 +577,7 @@ exec_notify_kill (session * sess)
 		waitpid (re->childpid, NULL, WNOHANG);
 		fe_input_remove (re->iotag);
 		close (re->myfd);
-		g_free(re->linebuf);
+		g_free (re->linebuf);
 		g_free (re);
 	}
 #endif
@@ -883,9 +883,9 @@ xchat_init (void)
 		"NAME ENDSUB\n"				"CMD \n\n",
 
 		_("_Open Dialog Window"), "gtk-go-up",
-		_("_Send a File"), "gtk-floppy",
+		_("_Send a File" ELLIPSIS), "gtk-floppy",
 		_("_User Info (WhoIs)"), "gtk-info",
-		_("_Add to Friends List"), "gtk-add",
+		_("_Add to Friends List" ELLIPSIS), "gtk-add",
 		_("_Ignore"), "gtk-stop",
 		_("O_perator Actions"),
 
@@ -935,7 +935,7 @@ xchat_init (void)
 				_("Kick"),
 				_("bye"),
 				_("Enter reason to kick %s:"),
-				_("Sendfile"),
+				_("Send File"),
 				_("Dialog"));
 	list_loadconf ("buttons.conf", &button_list, buf);
 
@@ -966,7 +966,7 @@ xchat_init (void)
 		fe_serverlist_open (NULL);
 
 	/* turned OFF via -a arg or by passing urls */
-	if (!arg_dont_autoconnect && !arg_urls)
+	if (!arg_dont_autoconnect && !arg_urls && !arg_url)
 	{
 		/* do any auto connects */
 		if (!servlist_have_auto ())	/* if no new windows open .. */
@@ -1102,7 +1102,7 @@ main (int argc, char *argv[])
 #endif
 
 #ifdef USE_LIBPROXY
-	libproxy_factory = px_proxy_factory_new();
+	libproxy_factory = px_proxy_factory_new ();
 #endif
 
 #ifdef WIN32
@@ -1148,7 +1148,7 @@ main (int argc, char *argv[])
 #endif
 
 #ifdef USE_LIBPROXY
-	px_proxy_factory_free(libproxy_factory);
+	px_proxy_factory_free (libproxy_factory);
 #endif
 
 #ifdef WIN32

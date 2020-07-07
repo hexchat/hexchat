@@ -53,13 +53,15 @@ irc_login (server *serv, char *user, char *realname)
 
 	if (serv->password[0] && serv->loginmethod == LOGIN_PASS)
 	{
-		tcp_sendf (serv, "PASS %s\r\n", serv->password);
+		tcp_sendf (serv, "PASS %s%s\r\n",
+			(serv->password[0] == ':' || strchr (serv->password, ' ')) ? ":" : "",
+			serv->password);
 	}
 
 	tcp_sendf (serv,
 				  "NICK %s\r\n"
-				  "USER %s %s %s :%s\r\n",
-				  serv->nick, user, user, serv->servername, realname);
+				  "USER %s 0 * :%s\r\n",
+				  serv->nick, user, realname);
 }
 
 static void
@@ -619,7 +621,7 @@ process_numeric (session * sess, int n,
 	case 319:
 		if (!serv->skip_next_whois)
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS2, whois_sess, word[4],
-										  word_eol[5] + 1, NULL, NULL, 0,
+										  word_eol[5][0] == ':' ? word_eol[5] + 1 : word_eol[5], NULL, NULL, 0,
 										  tags_data->timestamp);
 		break;
 
@@ -712,7 +714,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 333:
-		inbound_topictime (serv, word[4], word[5], atol (word[6]), tags_data);
+		inbound_topictime (serv, word[4], word[5], atol (STRIP_COLON(word, word_eol, 6)), tags_data);
 		break;
 
 #if 0
@@ -724,7 +726,7 @@ process_numeric (session * sess, int n,
 #endif
 
 	case 341:						  /* INVITE ACK */
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], word[5],
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], STRIP_COLON(word, word_eol, 5),
 									  serv->servername, NULL, 0, tags_data->timestamp);
 		break;
 
@@ -955,6 +957,7 @@ process_numeric (session * sess, int n,
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_SASLRESPONSE, serv->server_session, word[1],
 									  word[2], word[3], ++word_eol[4], 0,
 									  tags_data->timestamp);
+		serv->waiting_on_sasl = FALSE;
 		if (!serv->sent_capend)
 		{
 			serv->sent_capend = TRUE;
@@ -1140,7 +1143,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		{
 
 		case WORDL('A','C','C','O'):
-			inbound_account (serv, nick, word[3], tags_data);
+			inbound_account (serv, nick, STRIP_COLON(word, word_eol, 3), tags_data);
 			return;
 
 		case WORDL('A', 'U', 'T', 'H'):
@@ -1148,7 +1151,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			return;
 
 		case WORDL('C', 'H', 'G', 'H'):
-			inbound_user_info (sess, NULL, word[3], word[4], NULL, nick, NULL,
+			inbound_user_info (sess, NULL, word[3], STRIP_COLON(word, word_eol, 4), NULL, nick, NULL,
 							   NULL, 0xff, tags_data);
 			return;
 
@@ -1241,6 +1244,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 					len = strlen (text);
 					if (text[0] == 1)	/* ctcp */
 					{
+						char *new_pdibuf = NULL;
 						if (text[len - 1] == 1)
 						{
 							text[len - 1] = 0;
@@ -1249,10 +1253,30 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						if (g_ascii_strncasecmp (text, "ACTION", 6) != 0)
 							flood_check (nick, ip, serv, sess, 0);
 						if (g_ascii_strncasecmp (text, "DCC ", 4) == 0)
-							/* redo this with handle_quotes TRUE */
-							process_data_init (word[1], word_eol[1], word, word_eol, TRUE, FALSE);
+						{
+							int i;
+							char *new_word[PDIWORDS+1] = { NULL };
+							char *new_word_eol[PDIWORDS+1] = { NULL };
+
+							new_pdibuf = g_malloc (strlen (word_eol[6]) + 1);
+
+							/* This is a bit ugly but we handle the contents of the DCC message containing
+							 * "quoted paths for files" here which means reparsing the message with handle_quotes.
+							 * We avoid reparsing the entire message to avoid corrupting the non DCC parts.
+							 * Greater than PDIWORD length DCC messages will be truncated. */
+							process_data_init (new_pdibuf, word_eol[6], new_word, new_word_eol, TRUE, FALSE);
+							for (i = 6; i < PDIWORDS; ++i)
+							{
+								word[i] = new_word[i - 5];
+								word_eol[i] = new_word_eol[i - 5];
+							}
+						}
+
 						ctcp_handle (sess, to, nick, ip, text, word, word_eol, id,
 										 tags_data);
+
+						/* Note word will be invalid beyond this scope */
+						g_free (new_pdibuf);
 					} else
 					{
 						if (is_channel (serv, to))
@@ -1310,7 +1334,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 				else if (strncasecmp (word[4], "NAK", 3) == 0)
 				{
-					inbound_cap_nak (serv, tags_data);
+					inbound_cap_nak (serv, word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5], tags_data);
 				}
 				else if (strncasecmp (word[4], "LIST", 4) == 0)	
 				{
@@ -1453,7 +1477,13 @@ handle_message_tag_time (const char *time, message_tags_data *tags_data)
 		long long int t;
 
 		/* we ignore the milisecond part */
-		if (sscanf (time, "%lld", &t) != 1)
+		if (
+#if defined(__MINGW64__) || defined(__MINGW32__)
+		__mingw_sscanf
+#else
+		sscanf
+#endif
+		(time, "%lld", &t) != 1)
 			return;
 
 		tags_data->timestamp = (time_t) t;

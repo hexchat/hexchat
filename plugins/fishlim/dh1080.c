@@ -189,10 +189,12 @@ dh1080_compute_key (const char *priv_key, const char *pub_key, char **secret_key
 	char *pub_key_data;
 	gsize pub_key_len;
 	BIGNUM *pk;
-	BIGNUM *temp_pub_key = BN_new();
 	DH *dh;
+#ifdef HAVE_DH_SET0_KEY
+	BIGNUM *temp_pub_key = BN_new();
+#endif
 
-  	g_assert (secret_key != NULL);
+	g_assert (secret_key != NULL);
 
 	/* Verify base64 strings */
 	if (strspn (priv_key, B64ABC) != strlen (priv_key)
@@ -213,7 +215,7 @@ dh1080_compute_key (const char *priv_key, const char *pub_key, char **secret_key
 		int shared_len;
 		BIGNUM *priv_key_num;
 
-	  	priv_key_data = dh1080_decode_b64 (priv_key, &priv_key_len);
+		priv_key_data = dh1080_decode_b64 (priv_key, &priv_key_len);
 		priv_key_num = BN_bin2bn(priv_key_data, priv_key_len, NULL);
 #ifndef HAVE_DH_SET0_KEY
 		dh->priv_key = priv_key_num;
@@ -226,7 +228,7 @@ dh1080_compute_key (const char *priv_key, const char *pub_key, char **secret_key
 		*secret_key = dh1080_encode_b64 (sha256, sizeof(sha256));
 
 		OPENSSL_cleanse (priv_key_data, priv_key_len);
-	  	g_free (priv_key_data);
+		g_free (priv_key_data);
 	}
 
 	BN_free (pk);

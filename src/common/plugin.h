@@ -181,4 +181,12 @@ int plugin_show_help (session *sess, char *cmd);
 void plugin_command_foreach (session *sess, void *userdata, void (*cb) (session *sess, void *userdata, char *name, char *usage));
 session *plugin_find_context (const char *servname, const char *channel, server *current_server);
 
+/* On macOS, G_MODULE_SUFFIX says "so" but meson uses "dylib"
+ * https://github.com/mesonbuild/meson/issues/1160 */
+#if defined(__APPLE__)
+#  define PLUGIN_SUFFIX "dylib"
+#else
+#  define PLUGIN_SUFFIX G_MODULE_SUFFIX
+#endif
+
 #endif

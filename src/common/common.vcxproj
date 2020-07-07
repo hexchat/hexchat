@@ -111,11 +111,10 @@
     <PreBuildEvent>
       <Command><![CDATA[
 SET SOLUTIONDIR=$(SolutionDir)..\
-"$(HexChatLib)make-te.exe" < "$(ProjectDir)textevents.in" > "$(HexChatLib)textevents.h" 2> "$(HexChatLib)textenums.h"
+"$(Python3Path)\python.exe" $(ProjectDir)make-te.py "$(ProjectDir)textevents.in" "$(HexChatLib)textevents.h" "$(HexChatLib)textenums.h"
 powershell -File "$(SolutionDir)..\win32\version-template.ps1" "$(SolutionDir)..\win32\config.h.tt" "$(HexChatLib)config.h"
-"$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --header "$(ProjectDir)marshalers.list" > "$(HexChatLib)marshal.h"
-"$(DepsRoot)\bin\glib-genmarshal.exe" --prefix=_hexchat_marshal --body "$(ProjectDir)marshalers.list" > "$(HexChatLib)marshal.c"
-
+"$(Python3Path)\python.exe" "$(DepsRoot)\bin\glib-genmarshal" --prefix=_hexchat_marshal --header "$(ProjectDir)marshalers.list" --output "$(HexChatLib)marshal.h"
+"$(Python3Path)\python.exe" "$(DepsRoot)\bin\glib-genmarshal" --prefix=_hexchat_marshal --body "$(ProjectDir)marshalers.list" --output "$(HexChatLib)marshal.c"
       ]]></Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>

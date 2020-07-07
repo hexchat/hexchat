@@ -24,9 +24,11 @@ common_sources = [
   'util.c'
 ]
 
+common_sysinfo_deps = []
+
 common_deps = [
   libgio_dep,
-]
+] + global_deps
 
 common_includes = [
   config_h_include,
@@ -41,7 +43,10 @@ if host_machine.system() == 'windows'
   common_deps += [
     cc.find_library('ws2_32'), # winsock
     cc.find_library('winmm'), # playsound
+  ]
+  common_sysinfo_deps += [
     cc.find_library('wbemuuid'), # sysinfo
+    cc.find_library('wbemcore'),
   ]
 
   common_sources += 'sysinfo/win32/backend.c'
@@ -88,22 +93,19 @@ endif
 
 if get_option('with-plugin')
   common_deps += libgmodule_dep
-  common_cflags += '-DHEXCHATLIBDIR="@0@"'.format(join_paths(get_option('prefix'),
-                                                  get_option('libdir'),
-                                                  'hexchat/plugins'))
-
   install_headers('hexchat-plugin.h')
 endif
 
 hexchat_common = static_library('hexchatcommon',
   sources: [textevents] + marshal + common_sources,
   include_directories: config_h_include,
-  dependencies: common_deps,
+  dependencies: common_deps + common_sysinfo_deps,
   c_args: common_cflags,
   pic: true
 )
 
 hexchat_common_dep = declare_dependency(
+  sources: [textevents] + marshal,
   link_with: hexchat_common,
   include_directories: common_includes,
   compile_args: common_cflags,
@@ -113,4 +115,5 @@ hexchat_common_dep = declare_dependency(
 hexchat_plugin_dep = declare_dependency(
   include_directories: common_includes,
   compile_args: common_cflags,
+  dependencies: global_deps,
 )

@@ -147,26 +147,6 @@ static void gtk_xtext_search_fini (xtext_buffer *);
 static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_flags flags, GError **perr);
 static char * gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent, int *ret_off, int *ret_len, GSList **slp);
 
-/* Avoid warning messages for this unused function */
-#if 0
-/* gives width of a 8bit string - with no mIRC codes in it */
-
-static int
-gtk_xtext_text_width_8bit (GtkXText *xtext, unsigned char *str, int len)
-{
-	int width = 0;
-
-	while (len)
-	{
-		width += xtext->fontwidth[*str];
-		str++;
-		len--;
-	}
-
-	return width;
-}
-#endif
-
 #define xtext_draw_bg(xt,x,y,w,h) gdk_draw_rectangle(xt->draw_buf, xt->bgc, 1, x, y, w, h);
 
 /* ======================================= */
@@ -4677,9 +4657,11 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 	ent = g_malloc (left_len + right_len + 2 + sizeof (textentry));
 	str = (unsigned char *) ent + sizeof (textentry);
 
-	memcpy (str, left_text, left_len);
+	if (left_len)
+		memcpy (str, left_text, left_len);
 	str[left_len] = ' ';
-	memcpy (str + left_len + 1, right_text, right_len);
+	if (right_len)
+		memcpy (str + left_len + 1, right_text, right_len);
 	str[left_len + 1 + right_len] = 0;
 
 	left_width = gtk_xtext_text_width (buf->xtext, left_text, left_len);
@@ -4724,6 +4706,7 @@ void
 gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp)
 {
 	textentry *ent;
+	gboolean truncate = FALSE;
 
 	if (len == -1)
 		len = strlen (text);
@@ -4732,14 +4715,27 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len, time_t stamp)
 		len--;
 
 	if (len >= sizeof (buf->xtext->scratch_buffer))
+	{
 		len = sizeof (buf->xtext->scratch_buffer) - 1;
+		truncate = TRUE;
+	}
 
 	ent = g_malloc (len + 1 + sizeof (textentry));
 	ent->str = (unsigned char *) ent + sizeof (textentry);
 	ent->str_len = len;
 	if (len)
-		memcpy (ent->str, text, len);
-	ent->str[len] = 0;
+	{
+		if (!truncate)
+		{
+			memcpy (ent->str, text, len);
+			ent->str[len] = '\0';
+		}
+		else
+		{
+			safe_strcpy (ent->str, text, sizeof (buf->xtext->scratch_buffer));
+			ent->str_len = strlen (ent->str);
+		}
+	}
 	ent->indent = 0;
 	ent->left_len = -1;
 
@@ -4962,6 +4958,14 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 	dontscroll (buf);	/* force scrolling off */
 	xtext->adj->value = buf->old_value;
 	xtext->adj->upper = buf->num_lines;
+
+	/* if the scrollbar was down, keep it down */
+	if (xtext->buffer->scrollbar_down && xtext->adj->value <
+		xtext->adj->upper - xtext->adj->page_size)
+	{
+		xtext->adj->value = xtext->adj->upper - xtext->adj->page_size;
+	}
+
 	if (xtext->adj->upper == 0)
 		xtext->adj->upper = 1;
 	/* sanity check */

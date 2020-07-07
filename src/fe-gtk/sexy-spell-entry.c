@@ -159,49 +159,66 @@ initialize_enchant (void)
 {
 	GModule *enchant;
 	gpointer funcptr;
-
-
-	enchant = g_module_open("libenchant."G_MODULE_SUFFIX, 0);
-	if (enchant == NULL)
-	{
-#ifndef WIN32
-		enchant = g_module_open("libenchant.so.1", 0);
-		if (enchant == NULL)
-		{
+    gsize i;
+    const char * const libnames[] = {
+#ifdef G_OS_WIN32
+        "libenchant.dll",
+#endif
+#ifdef G_OS_UNIX
+        "libenchant.so.1",
+        "libenchant.so.2",
+        "libenchant-2.so.2",
+#endif
 #ifdef __APPLE__
-			enchant = g_module_open("libenchant.dylib", 0);
-			if (enchant == NULL)
+        "libenchant.dylib",
 #endif
-				return;
-		}
-#else
-		return;
-#endif
-	}
+    };
 
-	have_enchant = TRUE;
+    for (i = 0; i < G_N_ELEMENTS(libnames); ++i)
+    {
+        enchant = g_module_open(libnames[i], 0);
+        if (enchant)
+        {
+            g_info ("Loaded %s", libnames[i]);
+            have_enchant = TRUE;
+            break;
+        }
+    }
 
-#define MODULE_SYMBOL(name, func) \
-	g_module_symbol(enchant, (name), &funcptr); \
-	(func) = funcptr;
+  if (!have_enchant)
+    return;
 
-	MODULE_SYMBOL("enchant_broker_init", enchant_broker_init)
-	MODULE_SYMBOL("enchant_broker_free", enchant_broker_free)
-	MODULE_SYMBOL("enchant_broker_free_dict", enchant_broker_free_dict)
-	MODULE_SYMBOL("enchant_broker_list_dicts", enchant_broker_list_dicts)
-	MODULE_SYMBOL("enchant_broker_request_dict", enchant_broker_request_dict)
+#define MODULE_SYMBOL(name, func, alt_name) G_STMT_START { \
+    const char *funcname = name; \
+    gboolean ret = g_module_symbol(enchant, funcname, &funcptr); \
+    if (alt_name) { \
+        funcname = alt_name; \
+        ret = g_module_symbol(enchant, funcname, &funcptr); \
+    } \
+    if (ret == FALSE) { \
+        g_warning ("Failed to find enchant symbol %s", funcname); \
+        have_enchant = FALSE; \
+        return; \
+    } \
+    (func) = funcptr; \
+} G_STMT_END;
 
-	MODULE_SYMBOL("enchant_dict_add_to_personal", enchant_dict_add_to_personal)
-	MODULE_SYMBOL("enchant_dict_add_to_session", enchant_dict_add_to_session)
-	MODULE_SYMBOL("enchant_dict_check", enchant_dict_check)
-	MODULE_SYMBOL("enchant_dict_describe", enchant_dict_describe)
+	MODULE_SYMBOL("enchant_broker_init", enchant_broker_init, NULL)
+	MODULE_SYMBOL("enchant_broker_free", enchant_broker_free, NULL)
+	MODULE_SYMBOL("enchant_broker_free_dict", enchant_broker_free_dict, NULL)
+	MODULE_SYMBOL("enchant_broker_list_dicts", enchant_broker_list_dicts, NULL)
+	MODULE_SYMBOL("enchant_broker_request_dict", enchant_broker_request_dict, NULL)
+
+	MODULE_SYMBOL("enchant_dict_add_to_personal", enchant_dict_add_to_personal,
+                  "enchant_dict_add")
+	MODULE_SYMBOL("enchant_dict_add_to_session", enchant_dict_add_to_session, NULL)
+	MODULE_SYMBOL("enchant_dict_check", enchant_dict_check, NULL)
+	MODULE_SYMBOL("enchant_dict_describe", enchant_dict_describe, NULL)
 	MODULE_SYMBOL("enchant_dict_free_suggestions",
-				  enchant_dict_free_suggestions)
+				  enchant_dict_free_suggestions, "enchant_dict_free_string_list")
 	MODULE_SYMBOL("enchant_dict_store_replacement",
-				  enchant_dict_store_replacement)
-	MODULE_SYMBOL("enchant_dict_suggest", enchant_dict_suggest)
-
-#undef MODULE_SYMBOL
+				  enchant_dict_store_replacement, NULL)
+	MODULE_SYMBOL("enchant_dict_suggest", enchant_dict_suggest, NULL)
 }
 
 static void
