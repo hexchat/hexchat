@@ -1,5 +1,3 @@
-cmocka_dep = dependency('cmocka', fallback : ['cmocka', 'cmocka_dep'])
-
 test_sources = [
   'tests.c',
   'fake/keystore.c',
@@ -8,7 +6,7 @@ test_sources = [
 ]
 
 e = executable('fishlim_tests', test_sources,
-  dependencies: [cmocka_dep, libgio_dep, libssl_dep],
+  dependencies: [libgio_dep, libssl_dep],
 )
 
 test('Fishlim Tests', e)

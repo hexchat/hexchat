@@ -25,12 +25,6 @@
 #ifndef PLUGIN_HEXCHAT_FISHLIM_TEST_H
 #define PLUGIN_HEXCHAT_FISHLIM_TEST_H
 
-
-// Unit Test
-#include <stdarg.h>
-#include <stddef.h>
-#include <setjmp.h>
-#include <cmocka.h>
 // Libs
 #include <stdio.h>
 #include <glib.h>
@@ -53,7 +47,7 @@ void random_string(char *out, size_t len) {
     g_rand_free(rand);
 }
 
-static void __base64_len(void **state) {
+void __base64_len() {
     char *b64 = NULL;
     int i, message_len = 0;
     char message[1000];
@@ -63,14 +57,14 @@ static void __base64_len(void **state) {
         for (message_len = 1; message_len < 1000; ++message_len) {
             random_string(message, message_len);
             b64 = g_base64_encode((const unsigned char *) message, message_len);
-            assert_false(b64 == NULL);
-            assert_true(strlen(b64) == base64_len(message_len));
+            g_assert_false(b64 == NULL);
+            g_assert_true(strlen(b64) == base64_len(message_len));
             g_free(b64);
         }
     }
 }
 
-static void __base64_fish_len(void **state) {
+void __base64_fish_len() {
     char *b64 = NULL;
     int i, message_len = 0;
     char message[1000];
@@ -80,14 +74,14 @@ static void __base64_fish_len(void **state) {
         for (message_len = 1; message_len < 1000; ++message_len) {
             random_string(message, message_len);
             b64 = fish_base64_encode(message, message_len);
-            assert_false(b64 == NULL);
-            assert_true(strlen(b64) == base64_fish_len(message_len));
+            g_assert_false(b64 == NULL);
+            g_assert_true(strlen(b64) == base64_fish_len(message_len));
             g_free(b64);
         }
     }
 }
 
-static void __base64_cbc_len(void **state) {
+void __base64_cbc_len() {
     char *b64 = NULL;
     int i, message_len = 0;
     char key[33];
@@ -100,14 +94,14 @@ static void __base64_cbc_len(void **state) {
         for (message_len = 1; message_len < 1000; ++message_len) {
             random_string(message, message_len);
             b64 = fish_encrypt(key, 32, message, message_len, FISH_CBC_MODE);
-            assert_false(b64 == NULL);
-            assert_true(strlen(b64) == cbc_len(message_len));
+            g_assert_false(b64 == NULL);
+            g_assert_true(strlen(b64) == cbc_len(message_len));
             g_free(b64);
         }
     }
 }
 
-static void __base64_ecb_len(void **state) {
+void __base64_ecb_len() {
     char *b64 = NULL;
     int i, message_len = 0;
     char key[33];
@@ -121,8 +115,8 @@ static void __base64_ecb_len(void **state) {
             random_string(message, message_len);
             b64 = fish_encrypt(key, 32, message, message_len, FISH_ECB_MODE);
             //printf("msg: %s, b64: %s, len: %ld, calculated len: %ld\n", message, b64, strlen(b64), ecb_len(message_len));
-            assert_false(b64 == NULL);
-            assert_true(strlen(b64) == ecb_len(message_len));
+            g_assert_false(b64 == NULL);
+            g_assert_true(strlen(b64) == ecb_len(message_len));
             g_free(b64);
         }
     }
@@ -130,14 +124,14 @@ static void __base64_ecb_len(void **state) {
 
 int main(int argc, char *argv[]) {
 
-    const struct CMUnitTest tests[] = {
-            cmocka_unit_test(__base64_len),
-            cmocka_unit_test(__base64_fish_len),
-            cmocka_unit_test(__base64_cbc_len),
-            cmocka_unit_test(__base64_ecb_len),
-    };
+    g_test_init(&argc, &argv, NULL);
 
-    return cmocka_run_group_tests(tests, NULL, NULL);
+    g_test_add_func("/fishlim/__base64_len", __base64_len);
+    g_test_add_func("/fishlim/__base64_fish_len", __base64_fish_len);
+    g_test_add_func("/fishlim/__base64_cbc_len", __base64_cbc_len);
+    g_test_add_func("/fishlim/__base64_ecb_len", __base64_ecb_len);
+
+    return g_test_run();
 }
 
 #endif //PLUGIN_HEXCHAT_FISHLIM_TEST_H
