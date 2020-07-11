@@ -73,30 +73,30 @@ void __ecb() {
 
             /* Encrypt */
             bo64 = __old_fish_encrypt(key, key_len, message);
-            g_assert_false(bo64 == NULL);
+            g_assert_nonnull(bo64);
             b64 = fish_encrypt(key, key_len, message, message_len, FISH_ECB_MODE);
-            g_assert_false(b64 == NULL);
-            g_assert_true(g_strcmp0(b64, bo64) == 0);
+            g_assert_nonnull(b64);
+            g_assert_cmpuint(g_strcmp0(b64, bo64), == , 0);
 
             /* Decrypt */
             /* Linear */
             deo = __old_fish_decrypt(key, key_len, bo64);
             de = fish_decrypt_str(key, key_len, b64, FISH_ECB_MODE);
-            g_assert_false(deo == NULL);
-            g_assert_false(de == NULL);
-            g_assert_true(g_strcmp0(de, message) == 0);
-            g_assert_true(g_strcmp0(deo, message) == 0);
-            g_assert_true(g_strcmp0(de, deo) == 0);
+            g_assert_nonnull(deo);
+            g_assert_nonnull(de);
+            g_assert_cmpuint(g_strcmp0(de, message), == , 0);
+            g_assert_cmpuint(g_strcmp0(deo, message), == , 0);
+            g_assert_cmpuint(g_strcmp0(de, deo), == , 0);
             g_free(deo);
             g_free(de);
             /* Mixed */
             deo = __old_fish_decrypt(key, key_len, b64);
             de = fish_decrypt_str(key, key_len, bo64, FISH_ECB_MODE);
-            g_assert_false(deo == NULL);
-            g_assert_false(de == NULL);
-            g_assert_true(g_strcmp0(de, message) == 0);
-            g_assert_true(g_strcmp0(deo, message) == 0);
-            g_assert_true(g_strcmp0(de, deo) == 0);
+            g_assert_nonnull(deo);
+            g_assert_nonnull(de);
+            g_assert_cmpuint(g_strcmp0(de, message), == , 0);
+            g_assert_cmpuint(g_strcmp0(deo, message), == , 0);
+            g_assert_cmpuint(g_strcmp0(de, deo), == , 0);
             g_free(deo);
             g_free(de);
 
@@ -127,13 +127,13 @@ void __cbc() {
 
             /* Encrypt */
             b64 = fish_encrypt(key, key_len, message, message_len, FISH_CBC_MODE);
-            g_assert_false(b64 == NULL);
+            g_assert_nonnull(b64);
 
             /* Decrypt */
             /* Linear */
             de = fish_decrypt_str(key, key_len, b64, FISH_CBC_MODE);
-            g_assert_false(de == NULL);
-            g_assert_true(g_strcmp0(de, message) == 0);
+            g_assert_nonnull(de);
+            g_assert_cmpuint(g_strcmp0(de, message), == , 0);
             g_free(de);
 
             /* Free */
@@ -155,8 +155,8 @@ void __base64_len() {
         for (message_len = 1; message_len < 1000; ++message_len) {
             random_string(message, message_len);
             b64 = g_base64_encode((const unsigned char *) message, message_len);
-            g_assert_false(b64 == NULL);
-            g_assert_true(strlen(b64) == base64_len(message_len));
+            g_assert_nonnull(b64);
+            g_assert_cmpuint(strlen(b64), == , base64_len(message_len));
             g_free(b64);
         }
     }
@@ -175,8 +175,8 @@ void __base64_fish_len() {
         for (message_len = 1; message_len < 1000; ++message_len) {
             random_string(message, message_len);
             b64 = fish_base64_encode(message, message_len);
-            g_assert_false(b64 == NULL);
-            g_assert_true(strlen(b64) == base64_fish_len(message_len));
+            g_assert_nonnull(b64);
+            g_assert_cmpuint(strlen(b64), == , base64_fish_len(message_len));
             g_free(b64);
         }
     }
@@ -200,8 +200,8 @@ void __base64_ecb_len() {
         for (message_len = 1; message_len < 1000; ++message_len) {
             random_string(message, message_len);
             b64 = fish_encrypt(key, key_len, message, message_len, FISH_ECB_MODE);
-            g_assert_false(b64 == NULL);
-            g_assert_true(strlen(b64) == ecb_len(message_len));
+            g_assert_nonnull(b64);
+            g_assert_cmpuint(strlen(b64), == , ecb_len(message_len));
             g_free(b64);
         }
     }
@@ -224,8 +224,8 @@ void __base64_cbc_len() {
         for (message_len = 1; message_len < 1000; ++message_len) {
             random_string(message, message_len);
             b64 = fish_encrypt(key, key_len, message, message_len, FISH_CBC_MODE);
-            g_assert_false(b64 == NULL);
-            g_assert_true(strlen(b64) == cbc_len(message_len));
+            g_assert_nonnull(b64);
+            g_assert_cmpuint(strlen(b64), == , cbc_len(message_len));
             g_free(b64);
         }
     }
