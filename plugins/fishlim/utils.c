@@ -37,7 +37,7 @@ unsigned long base64_len(size_t plaintext_len) {
 }
 
 /**
- * Calculate the length of Base64-encoded string
+ * Calculate the length of BlowcryptBase64-encoded string
  *
  * @param plaintext_len Size of clear text to encode
  * @return Size of encoded string
