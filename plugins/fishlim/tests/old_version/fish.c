@@ -31,7 +31,6 @@
 #include <string.h>
 #include <openssl/blowfish.h>
 
-#include "keystore.h"
 #include "fish.h"
 
 #define IB 64
@@ -61,7 +60,7 @@ static const signed char fish_unbase64[256] = {
 } while (0);
 
 
-char *fish_encrypt(const char *key, size_t keylen, const char *message) {
+char *__old_fish_encrypt(const char *key, size_t keylen, const char *message) {
     BF_KEY bfkey;
     size_t messagelen;
     size_t i;
@@ -113,7 +112,7 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message) {
 }
 
 
-char *fish_decrypt(const char *key, size_t keylen, const char *data) {
+char *__old_fish_decrypt(const char *key, size_t keylen, const char *data) {
     BF_KEY bfkey;
     size_t i;
     char *decrypted;
@@ -156,38 +155,38 @@ char *fish_decrypt(const char *key, size_t keylen, const char *data) {
 }
 
 /**
- * Encrypts a message (see fish_decrypt). The key is searched for in the
+ * Encrypts a message (see __old_fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_encrypt_for_nick(const char *nick, const char *data) {
+char *__old_fish_encrypt_for_nick(const char *nick, const char *data) {
     char *key;
     char *encrypted;
 
     /* Look for key */
-    key = keystore_get_key(nick);
+    /*key = keystore_get_key(nick);*/
     if (!key) return NULL;
-    
+
     /* Encrypt */
-    encrypted = fish_encrypt(key, strlen(key), data);
-    
+    encrypted = __old_fish_encrypt(key, strlen(key), data);
+
     g_free(key);
     return encrypted;
 }
 
 /**
- * Decrypts a message (see fish_decrypt). The key is searched for in the
+ * Decrypts a message (see __old_fish_decrypt). The key is searched for in the
  * key store.
  */
-char *fish_decrypt_from_nick(const char *nick, const char *data) {
+char *__old_fish_decrypt_from_nick(const char *nick, const char *data) {
     char *key;
     char *decrypted;
     /* Look for key */
-    key = keystore_get_key(nick);
+    /*key = keystore_get_key(nick);*/
     if (!key) return NULL;
-    
+
     /* Decrypt */
-    decrypted = fish_decrypt(key, strlen(key), data);
-    
+    decrypted = __old_fish_decrypt(key, strlen(key), data);
+
     g_free(key);
     return decrypted;
 }
