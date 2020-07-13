@@ -22,17 +22,26 @@
 
 */
 
-#ifndef KEYSTORE_H
-#define KEYSTORE_H
+#include "../../fish.h"
 
-#include <stddef.h>
 
-#include <glib.h>
-#include "fish.h"
+/**
+ * Extracts a key from the key store file.
+ */
+char *keystore_get_key(const char *nick, enum fish_mode *mode) {
+    return NULL;
+}
 
-char *keystore_get_key(const char *nick, enum fish_mode *mode);
-gboolean keystore_store_key(const char *nick, const char *key, enum fish_mode mode);
-gboolean keystore_delete_nick(const char *nick);
+/**
+ * Sets a key in the key store file.
+ */
+gboolean keystore_store_key(const char *nick, const char *key, enum fish_mode mode) {
+    return NULL;
+}
 
-#endif
-
+/**
+ * Deletes a nick from the key store.
+ */
+gboolean keystore_delete_nick(const char *nick) {
+    return NULL;
+}

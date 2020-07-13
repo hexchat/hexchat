@@ -22,17 +22,18 @@
 
 */
 
-#ifndef KEYSTORE_H
-#define KEYSTORE_H
+#ifndef FISH_OLD_H
+#define FISH_OLD_H
 
 #include <stddef.h>
 
 #include <glib.h>
-#include "fish.h"
 
-char *keystore_get_key(const char *nick, enum fish_mode *mode);
-gboolean keystore_store_key(const char *nick, const char *key, enum fish_mode mode);
-gboolean keystore_delete_nick(const char *nick);
+char *__old_fish_encrypt(const char *key, size_t keylen, const char *message);
+char *__old_fish_decrypt(const char *key, size_t keylen, const char *data);
+char *__old_fish_encrypt_for_nick(const char *nick, const char *data);
+char *__old_fish_decrypt_from_nick(const char *nick, const char *data);
 
 #endif
+
 

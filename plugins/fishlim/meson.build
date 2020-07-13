@@ -2,6 +2,9 @@ if not libssl_dep.found()
   error('fish plugin requires openssl')
 endif
 
+# Run tests
+subdir('tests')
+
 fishlim_sources = [
   'dh1080.c',
   'fish.c',
