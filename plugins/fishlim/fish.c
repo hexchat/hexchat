@@ -164,8 +164,8 @@ char *fish_base64_decode(const char *message, size_t *final_len) {
     while (*msg) {
         right = 0;
         left = 0;
-        for (i = 0; i < 6; i++) right |= (uint8_t) fish_unbase64[*msg++] << (i * 6u);
-        for (i = 0; i < 6; i++) left |= (uint8_t) fish_unbase64[*msg++] << (i * 6u);
+        for (i = 0; i < 6; i++) right |= (uint8_t) fish_unbase64[(int)*msg++] << (i * 6u);
+        for (i = 0; i < 6; i++) left |= (uint8_t) fish_unbase64[(int)*msg++] << (i * 6u);
         GET_BYTES(byt, left);
         GET_BYTES(byt, right);
     }
