@@ -56,7 +56,7 @@ void random_string(char *out, size_t len) {
 /**
  * Check encrypt and decrypt in ECB mode and compare with old implementation
  */
-void __ecb() {
+void __ecb(void) {
     char *bo64 = NULL, *b64 = NULL;
     char *deo = NULL, *de = NULL;
     int key_len, message_len = 0;
@@ -110,7 +110,7 @@ void __ecb() {
 /**
  * Check encrypt and decrypt in CBC mode
  */
-void __cbc() {
+void __cbc(void) {
     char *b64 = NULL;
     char *de = NULL;
     int key_len, message_len = 0;
@@ -145,7 +145,7 @@ void __cbc() {
 /**
  * Check the calculation of final length from an encoded string in Base64
  */
-void __base64_len() {
+void __base64_len(void) {
     char *b64 = NULL;
     int i, message_len = 0;
     char message[1000];
@@ -165,7 +165,7 @@ void __base64_len() {
 /**
  * Check the calculation of final length from an encoded string in BlowcryptBase64
  */
-void __base64_fish_len() {
+void __base64_fish_len(void) {
     char *b64 = NULL;
     int i, message_len = 0;
     char message[1000];
@@ -186,7 +186,7 @@ void __base64_fish_len() {
 /**
  * Check the calculation of final length from an encrypted string in ECB mode
  */
-void __base64_ecb_len() {
+void __base64_ecb_len(void) {
     char *b64 = NULL;
     int key_len, message_len = 0;
     char key[57];
@@ -210,7 +210,7 @@ void __base64_ecb_len() {
 /**
  * Check the calculation of final length from an encrypted string in CBC mode
  */
-void __base64_cbc_len() {
+void __base64_cbc_len(void) {
     char *b64 = NULL;
     int key_len, message_len = 0;
     char key[57];
