@@ -1805,7 +1805,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
 		if (!g_strcmp0 (extension, "sasl") &&
 			((serv->loginmethod == LOGIN_SASL && strlen (serv->password) != 0)
-				|| (serv->loginmethod == LOGIN_SASLEXTERNAL && serv->have_cert)))
+				|| serv->loginmethod == LOGIN_SASLEXTERNAL))
 		{
 			if (value)
 			{
