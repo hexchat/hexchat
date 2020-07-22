@@ -26,7 +26,6 @@
 #define PLUGIN_HEXCHAT_FISHLIM_TEST_H
 
 // Libs
-#include <stdio.h>
 #include <glib.h>
 // Project Libs
 #include "../fish.h"
