@@ -2,7 +2,7 @@
 
   Copyright (c) 2010-2011 Samuel Lidén Borell <samuel@kodafritt.se>
   Copyright (c) 2015 <the.cypher@gmail.com>
-  Copyright (c) 2019 <bakasura@protonmail.ch>
+  Copyright (c) 2019-2020 <bakasura@protonmail.ch>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,6 @@
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "hexchat-plugin.h"
 
 #include "fish.h"
@@ -108,13 +107,14 @@ static hexchat_context *find_context_on_network (const char *name) {
 }
 
 /**
- * Retrive the prefix character for own nick in current context
- * @return @ or + or NULL
+ * Retrive the field for own user in current context
+ * @return the field value
  */
-char *get_my_own_prefix(void) {
+char *get_my_info(const char *field, gboolean find_in_other_context) {
     char *result = NULL;
     const char *own_nick;
     hexchat_list *list;
+    hexchat_context *ctx_current, *ctx_channel;
 
     /* Display message */
     own_nick = hexchat_get_info(ph, "nick");
@@ -122,17 +122,82 @@ char *get_my_own_prefix(void) {
     if (!own_nick)
         return NULL;
 
-    /* Get prefix for own nick if any */
-    list = hexchat_list_get (ph, "users");
+    /* Get field for own nick if any */
+    list = hexchat_list_get(ph, "users");
     if (list) {
         while (hexchat_list_next(ph, list)) {
             if (irc_nick_cmp(own_nick, hexchat_list_str(ph, list, "nick")) == 0)
-                result = g_strdup(hexchat_list_str(ph, list, "prefix"));
+                result = g_strdup(hexchat_list_str(ph, list, field));
+        }
+        hexchat_list_free(ph, list);
+    }
+
+    if (result) {
+        return result;
+    }
+
+    /* Try to get from a channel (we are outside a channel)  */
+    if (!find_in_other_context) {
+        return NULL;
+    }
+
+    list = hexchat_list_get(ph, "channels");
+    if (list) {
+        ctx_current = hexchat_get_context(ph);
+        while (hexchat_list_next(ph, list)) {
+            ctx_channel = (hexchat_context *) hexchat_list_str(ph, list, "context");
+
+            hexchat_set_context(ph, ctx_channel);
+            result = get_my_info(field, FALSE);
+            hexchat_set_context(ph, ctx_current);
+
+            if (result) {
+                break;
+            }
         }
         hexchat_list_free(ph, list);
     }
 
     return result;
+}
+
+/**
+ * Retrive the prefix character for own nick in current context
+ * @return @ or + or NULL
+ */
+char *get_my_own_prefix(void) {
+    return get_my_info("prefix", FALSE);
+}
+
+/**
+ * Retrive the mask for own nick in current context
+ * @return Host name in the form: user@host (or NULL if not known)
+ */
+char *get_my_own_host(void) {
+    return get_my_info("host", TRUE);
+}
+
+/**
+ * Calculate the length of prefix for current user in current context
+ *
+ * @return Length of prefix
+ */
+int get_prefix_length(void) {
+    char *own_host;
+    int prefix_len = 0;
+
+    /* ':! ' + 'nick' + 'ident@host', e.g. ':user!~name@mynet.com ' */
+    prefix_len = 3 + strlen(hexchat_get_info(ph, "nick"));
+    own_host = get_my_own_host();
+    if (own_host) {
+        prefix_len += strlen(own_host);
+    } else {
+        /* https://stackoverflow.com/questions/8724954/what-is-the-maximum-number-of-characters-for-a-host-name-in-unix */
+        prefix_len += 64;
+    }
+    g_free(own_host);
+
+    return prefix_len;
 }
 
 /**
@@ -228,11 +293,23 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
     char *prefix;
     enum fish_mode mode;
     char *message;
-    /* Encrypt the message if possible */
+    GString *command;
+    GSList *encrypted_list, *encrypted_item;
+
     const char *channel = hexchat_get_info(ph, "channel");
-    char *encrypted = fish_encrypt_for_nick(channel, word_eol[1], &mode);
-    if (!encrypted) return HEXCHAT_EAT_NONE;
-    
+
+    /* Check if we can encrypt */
+    if (!fish_nick_has_key(channel)) return HEXCHAT_EAT_NONE;
+
+    command = g_string_new("");
+    g_string_printf(command, "PRIVMSG %s :+OK ", channel);
+
+    encrypted_list = fish_encrypt_for_nick(channel, word_eol[1], &mode, get_prefix_length() + command->len);
+    if (!encrypted_list) {
+        g_string_free(command, TRUE);
+        return HEXCHAT_EAT_NONE;
+    }
+
     /* Get prefix for own nick if any */
     prefix = get_my_own_prefix();
 
@@ -241,13 +318,21 @@ static int handle_outgoing(char *word[], char *word_eol[], void *userdata) {
 
     /* Display message */
     hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"), message, prefix, NULL);
-    g_free(prefix);
     g_free(message);
-    
-    /* Send message */
-    hexchat_commandf(ph, "PRIVMSG %s :+OK %s", channel, encrypted);
-    
-    g_free(encrypted);
+
+    /* Send encrypted messages */
+    encrypted_item = encrypted_list;
+    while (encrypted_item)
+    {
+        hexchat_commandf(ph, "%s%s", command->str, (char *)encrypted_item->data);
+
+        encrypted_item = encrypted_item->next;
+    }
+
+    g_free(prefix);
+    g_string_free(command, TRUE);
+    g_slist_free_full(encrypted_list, g_free);
+
     return HEXCHAT_EAT_HEXCHAT;
 }
 
@@ -498,8 +583,9 @@ static int handle_keyx(char *word[], char *word_eol[], void *userdata) {
 static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
     const char *target;
     const char *topic = word_eol[2];
-    char *buf;
     enum fish_mode mode;
+    GString *command;
+    GSList *encrypted_list;
 
     if (!*topic) {
         hexchat_print(ph, usage_topic);
@@ -512,44 +598,77 @@ static int handle_crypt_topic(char *word[], char *word_eol[], void *userdata) {
     }
 
     target = hexchat_get_info(ph, "channel");
-    buf = fish_encrypt_for_nick(target, topic, &mode);
-    if (buf == NULL) {
+
+    /* Check if we can encrypt */
+    if (!fish_nick_has_key(target)) {
         hexchat_printf(ph, "/topic+ error, no key found for %s", target);
         return HEXCHAT_EAT_ALL;
     }
 
-    hexchat_commandf(ph, "TOPIC %s +OK %s", target, buf);
-    g_free(buf);
-    return HEXCHAT_EAT_ALL;
+    command = g_string_new("");
+    g_string_printf(command, "TOPIC %s +OK ", target);
+
+    encrypted_list = fish_encrypt_for_nick(target, topic, &mode, get_prefix_length() + command->len);
+    if (!encrypted_list) {
+        g_string_free(command, TRUE);
+        hexchat_printf(ph, "/topic+ error, can't encrypt %s", target);
+        return HEXCHAT_EAT_ALL;
     }
+
+    hexchat_commandf(ph, "%s%s", command->str, (char *) encrypted_list->data);
+
+    g_string_free(command, TRUE);
+    g_slist_free_full(encrypted_list, g_free);
+
+    return HEXCHAT_EAT_ALL;
+}
 
 /**
  * Command handler for /notice+
  */
-static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata)
-{
+static int handle_crypt_notice(char *word[], char *word_eol[], void *userdata) {
     const char *target = word[2];
     const char *notice = word_eol[3];
     char *notice_flag;
-    char *buf;
     enum fish_mode mode;
+    GString *command;
+    GSList *encrypted_list, *encrypted_item;
 
     if (!*target || !*notice) {
         hexchat_print(ph, usage_notice);
         return HEXCHAT_EAT_ALL;
     }
 
-    buf = fish_encrypt_for_nick(target, notice, &mode);
-    if (buf == NULL) {
+    /* Check if we can encrypt */
+    if (!fish_nick_has_key(target)) {
         hexchat_printf(ph, "/notice+ error, no key found for %s.", target);
         return HEXCHAT_EAT_ALL;
     }
 
-    hexchat_commandf(ph, "quote NOTICE %s :+OK %s", target, buf);
+    command = g_string_new("");
+    g_string_printf(command, "quote NOTICE %s :+OK ", target);
+
+    encrypted_list = fish_encrypt_for_nick(target, notice, &mode, get_prefix_length() + command->len);
+    if (!encrypted_list) {
+        g_string_free(command, TRUE);
+        hexchat_printf(ph, "/notice+ error, can't encrypt %s", target);
+        return HEXCHAT_EAT_ALL;
+    }
+
     notice_flag = g_strconcat("[", fish_modes[mode], "] ", notice, NULL);
     hexchat_emit_print(ph, "Notice Send", target, notice_flag);
+
+    /* Send encrypted messages */
+    encrypted_item = encrypted_list;
+    while (encrypted_item) {
+        hexchat_commandf(ph, "%s%s", command->str, (char *) encrypted_item->data);
+
+        encrypted_item = encrypted_item->next;
+    }
+
     g_free(notice_flag);
-    g_free(buf);
+    g_string_free(command, TRUE);
+    g_slist_free_full(encrypted_list, g_free);
 
     return HEXCHAT_EAT_ALL;
 }
@@ -563,21 +682,41 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
     char *message_flag;
     char *prefix;
     hexchat_context *query_ctx;
-    char *buf;
     enum fish_mode mode;
+    GString *command;
+    GSList *encrypted_list, *encrypted_item;
 
     if (!*target || !*message) {
         hexchat_print(ph, usage_msg);
         return HEXCHAT_EAT_ALL;
     }
 
-    buf = fish_encrypt_for_nick(target, message, &mode);
-    if (buf == NULL) {
+    /* Check if we can encrypt */
+    if (!fish_nick_has_key(target)) {
         hexchat_printf(ph, "/msg+ error, no key found for %s", target);
         return HEXCHAT_EAT_ALL;
     }
 
-    hexchat_commandf(ph, "PRIVMSG %s :+OK %s", target, buf);
+    command = g_string_new("");
+    g_string_printf(command, "PRIVMSG %s :+OK ", target);
+
+    encrypted_list = fish_encrypt_for_nick(target, message, &mode, get_prefix_length() + command->len);
+    if (!encrypted_list) {
+        g_string_free(command, TRUE);
+        hexchat_printf(ph, "/msg+ error, can't encrypt %s", target);
+        return HEXCHAT_EAT_ALL;
+    }
+
+    /* Send encrypted messages */
+    encrypted_item = encrypted_list;
+    while (encrypted_item) {
+        hexchat_commandf(ph, "%s%s", command->str, (char *) encrypted_item->data);
+
+        encrypted_item = encrypted_item->next;
+    }
+
+    g_string_free(command, TRUE);
+    g_slist_free_full(encrypted_list, g_free);
 
     query_ctx = find_context_on_network(target);
     if (query_ctx) {
@@ -587,33 +726,52 @@ static int handle_crypt_msg(char *word[], char *word_eol[], void *userdata) {
 
         /* Add encrypted flag */
         message_flag = g_strconcat("[", fish_modes[mode], "] ", message, NULL);
-        hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"),
-                           message_flag, prefix, NULL);
+        hexchat_emit_print(ph, "Your Message", hexchat_get_info(ph, "nick"), message_flag, prefix, NULL);
         g_free(prefix);
         g_free(message_flag);
     } else {
         hexchat_emit_print(ph, "Message Send", target, message);
     }
 
-    g_free(buf);
     return HEXCHAT_EAT_ALL;
 }
 
 static int handle_crypt_me(char *word[], char *word_eol[], void *userdata) {
-	const char *channel = hexchat_get_info(ph, "channel");
-	char *buf;
-	enum fish_mode mode;
+    const char *channel = hexchat_get_info(ph, "channel");
+    enum fish_mode mode;
+    GString *command;
+    GSList *encrypted_list, *encrypted_item;
 
-    buf = fish_encrypt_for_nick(channel, word_eol[2], &mode);
-	if (!buf)
+    /* Check if we can encrypt */
+    if (!fish_nick_has_key(channel)) {
         return HEXCHAT_EAT_NONE;
+    }
 
-	hexchat_commandf(ph, "PRIVMSG %s :\001ACTION +OK %s \001", channel, buf);
-	hexchat_emit_print(ph, "Your Action", hexchat_get_info(ph, "nick"),
-                       word_eol[2], NULL);
+    command = g_string_new("");
+    g_string_printf(command, "PRIVMSG %s :\001ACTION +OK ", channel);
 
-	g_free(buf);
-	return HEXCHAT_EAT_ALL;
+    /* 2 = ' \001' */
+    encrypted_list = fish_encrypt_for_nick(channel, word_eol[2], &mode, get_prefix_length() + command->len + 2);
+    if (!encrypted_list) {
+        g_string_free(command, TRUE);
+        hexchat_printf(ph, "/me error, can't encrypt %s", channel);
+        return HEXCHAT_EAT_ALL;
+    }
+
+    hexchat_emit_print(ph, "Your Action", hexchat_get_info(ph, "nick"), word_eol[2], NULL);
+
+    /* Send encrypted messages */
+    encrypted_item = encrypted_list;
+    while (encrypted_item) {
+        hexchat_commandf(ph, "%s%s \001", command->str, (char *) encrypted_item->data);
+
+        encrypted_item = encrypted_item->next;
+    }
+
+    g_string_free(command, TRUE);
+    g_slist_free_full(encrypted_list, g_free);
+
+    return HEXCHAT_EAT_ALL;
 }
 
 /**

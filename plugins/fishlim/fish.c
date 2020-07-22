@@ -1,7 +1,7 @@
 /*
 
   Copyright (c) 2010 Samuel Lidén Borell <samuel@kodafritt.se>
-  Copyright (c) 2019 <bakasura@protonmail.ch>
+  Copyright (c) 2019-2020 <bakasura@protonmail.ch>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -37,8 +37,11 @@
 
 #include "keystore.h"
 #include "fish.h"
+#include "utils.h"
 
 #define IB 64
+/* rfc 2812; 512 - CR-LF = 510 */
+static const int MAX_COMMAND_LENGTH = 510;
 static const char fish_base64[] = "./0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const char base64_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 static const signed char fish_unbase64[256] = {
@@ -401,13 +404,40 @@ char *fish_decrypt_str(const char *key, size_t keylen, const char *data, enum fi
 }
 
 /**
- * Encrypts a message (see fish_decrypt). The key is searched for in the
- * key store.
+ * Determine if a nick have a key
+ *
+ * @param [in] nick  Nickname
+ * @return TRUE if have a key or FALSE if not
  */
-char *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *omode) {
+gboolean fish_nick_has_key(const char *nick) {
+    gboolean has_key = FALSE;
     char *key;
-    char *encrypted, *encrypted_cbc = NULL;
     enum fish_mode mode;
+
+    key = keystore_get_key(nick, &mode);
+    if (key) {
+        has_key = TRUE;
+        g_free(key);
+    };
+
+    return has_key;
+}
+
+/**
+ * Encrypts a message (see fish_encrypt). The key is searched for in the key store
+ *
+ * @param [in] nick         Nickname
+ * @param [in] data         Plaintext to encrypt
+ * @param [out] omode       Mode of encryption
+ * @param [in] command_len  Length of command to use without the message part
+ * @return A list of encoded strings with the message encrypted or NULL if any error occurred
+ */
+GSList *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *omode, size_t command_len) {
+    char *key;
+    GSList *encrypted_list = NULL;
+    char *encrypted = NULL;
+    enum fish_mode mode;
+    int max_len, max_chunks_len, chunks_len;
 
     /* Look for key */
     key = keystore_get_key(nick, &mode);
@@ -415,24 +445,40 @@ char *fish_encrypt_for_nick(const char *nick, const char *data, enum fish_mode *
 
     *omode = mode;
 
-    /* Encrypt */
-    encrypted = fish_encrypt(key, strlen(key), data, strlen(data), mode);
+    /* Calculate max length of each line */
+    max_len = MAX_COMMAND_LENGTH - command_len;
+    /* Add '*' */
+    if (mode == FISH_CBC_MODE) max_len--;
 
-    g_free(key);
+    max_chunks_len = max_text_command_len(max_len, mode);
 
-    if (encrypted == NULL || mode == FISH_ECB_MODE)
-        return encrypted;
+    const char *data_chunk = data;
 
-    /* Add '*' for CBC */
-    encrypted_cbc = g_strdup_printf("*%s",encrypted);
-    g_free(encrypted);
+    while(foreach_utf8_data_chunks(data_chunk, max_chunks_len, &chunks_len)) {
+        encrypted = fish_encrypt(key, strlen(key), data_chunk, chunks_len, mode);
 
-    return encrypted_cbc;
+        if (mode == FISH_CBC_MODE) {
+            /* Add '*' for CBC */
+            encrypted_list = g_slist_append(encrypted_list, g_strdup_printf("*%s", encrypted));
+            g_free(encrypted);
+        } else {
+            encrypted_list = g_slist_append(encrypted_list, encrypted);
+        }
+
+        /* Next chunk */
+        data_chunk += chunks_len;
+    }
+
+    return encrypted_list;
 }
 
 /**
- * Decrypts a message (see fish_decrypt). The key is searched for in the
- * key store.
+ * Decrypts a message (see fish_decrypt). The key is searched for in the key store
+ *
+ * @param [in] nick     Nickname
+ * @param [in] data     Plaintext to encrypt
+ * @param [out] omode   Mode of encryption
+ * @return Plaintext message or NULL if any error occurred
  */
 char *fish_decrypt_from_nick(const char *nick, const char *data, enum fish_mode *omode) {
     char *key;

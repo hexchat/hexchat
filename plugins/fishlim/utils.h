@@ -26,10 +26,14 @@
 #define PLUGIN_HEXCHAT_FISHLIM_UTILS_H
 
 #include <stddef.h>
+#include "fish.h"
 
 unsigned long base64_len(size_t plaintext_len);
 unsigned long base64_fish_len(size_t plaintext_len);
 unsigned long cbc_len(size_t plaintext_len);
 unsigned long ecb_len(size_t plaintext_len);
+unsigned long encoded_len(size_t plaintext_len, enum fish_mode mode);
+int max_text_command_len(size_t max_len, enum fish_mode mode);
+const char *foreach_utf8_data_chunks(const char *data, int max_chunk_len, int *chunk_len);
 
 #endif
