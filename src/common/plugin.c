@@ -115,6 +115,32 @@ enum
 	HOOK_DELETED      = 1 << 7  /* marked for deletion */
 };
 
+enum
+{
+	CHANNEL_FLAG_CONNECTED             = 1 << 0,
+	CHANNEL_FLAG_CONNECING             = 1 << 1,
+	CHANNEL_FLAG_AWAY                  = 1 << 2,
+	CHANNEL_FLAG_END_OF_MOTD           = 1 << 3,
+	CHANNEL_FLAG_HAS_WHOX              = 1 << 4,
+	CHANNEL_FLAG_HAS_IDMSG             = 1 << 5,
+	CHANNEL_FLAG_HIDE_JOIN_PARTS       = 1 << 6,
+	CHANNEL_FLAG_HIDE_JOIN_PARTS_UNSET = 1 << 7,
+	CHANNEL_FLAG_BEEP                  = 1 << 8,
+	CHANNEL_FLAG_BEEP_UNSET            = 1 << 9,
+	CHANNEL_FLAG_UNUSED                = 1 << 10,
+	CHANNEL_FLAG_LOGGING               = 1 << 11,
+	CHANNEL_FLAG_LOGGING_UNSET         = 1 << 12,
+	CHANNEL_FLAG_SCROLLBACK            = 1 << 13,
+	CHANNEL_FLAG_SCROLLBACK_UNSET      = 1 << 14,
+	CHANNEL_FLAG_STRIP_COLORS          = 1 << 15,
+	CHANNEL_FLAG_STRIP_COLORS_UNSET    = 1 << 16,
+	CHANNEL_FLAG_TRAY                  = 1 << 17,
+	CHANNEL_FLAG_TRAY_UNSET            = 1 << 18,
+	CHANNEL_FLAG_TASKBAR               = 1 << 19,
+	CHANNEL_FLAG_TASKBAR_UNSET         = 1 << 20,
+	CHANNEL_FLAG_COUNT                 = 21
+};
+
 GSList *plugin_list = NULL;	/* export for plugingui.c */
 static GSList *hook_list = NULL;
 
@@ -1521,7 +1547,11 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
 	gpointer data = ph->context;
-	int tmp = 0;
+
+    int channel_flag;
+	int channel_flags[CHANNEL_FLAG_COUNT];
+	int channel_flags_used = 0;
+
 	int type = LIST_CHANNELS;
 
 	/* a NULL xlist is a shortcut to current "channels" context */
@@ -1582,48 +1612,36 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		case 0xd1b:	/* id */
 			return ((struct session *)data)->server->id;
 		case 0x5cfee87:	/* flags */
-			/* used if alert_taskbar is unset */                 /* 20 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->alert_taskbar;      /* 19 */
-			tmp <<= 1;
-			/* used if alert_tray is unset */                    /* 18 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->alert_tray;         /* 17 */
-			tmp <<= 1;
-			/* used if text_strip is unset */                    /* 16 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->text_strip;          /* 15 */
-			tmp <<= 1;
-			/* used if text_scrollback is unset */               /* 14 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->text_scrollback;    /* 13 */
-			tmp <<= 1;
-			/* used if text_logging is unset */                  /* 12 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->text_logging;       /* 11 */
-			tmp <<= 1;
-			/* unused for historical reasons */                  /* 10 */
-			tmp <<= 1;
-			/* used if alert_beep is unset */                    /* 9 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->alert_beep;         /* 8 */
-			tmp <<= 1;
-			/* used if text_hidejoinpart is unset */              /* 7 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->text_hidejoinpart;   /* 6 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->server->have_idmsg; /* 5 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->server->have_whox;  /* 4 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->server->end_of_motd;/* 3 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->server->is_away;    /* 2 */
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->server->connecting; /* 1 */ 
-			tmp <<= 1;
-			tmp |= ((struct session *)data)->server->connected;  /* 0 */
-			return tmp;
+			channel_flags[0] = ((struct session *)data)->server->connected;
+			channel_flags[1] = ((struct session *)data)->server->connecting;
+			channel_flags[2] = ((struct session *)data)->server->is_away;
+			channel_flags[3] = ((struct session *)data)->server->end_of_motd;
+			channel_flags[4] = ((struct session *)data)->server->have_whox;
+			channel_flags[5] = ((struct session *)data)->server->have_idmsg;
+			channel_flags[6] = ((struct session *)data)->text_hidejoinpart;
+			channel_flags[7] = ((struct session *)data)->text_hidejoinpart == SET_DEFAULT;
+			channel_flags[8] = ((struct session *)data)->alert_beep;
+			channel_flags[9] = ((struct session *)data)->alert_beep == SET_DEFAULT;
+			channel_flags[10] = 0; /* unused for historical reasons */
+			channel_flags[11] = ((struct session *)data)->text_logging;
+			channel_flags[12] = ((struct session *)data)->text_logging == SET_DEFAULT;
+			channel_flags[13] = ((struct session *)data)->text_scrollback;
+			channel_flags[14] = ((struct session *)data)->text_scrollback == SET_DEFAULT;
+			channel_flags[15] = ((struct session *)data)->text_strip;
+			channel_flags[16] = ((struct session *)data)->text_strip == SET_DEFAULT;
+			channel_flags[17] = ((struct session *)data)->alert_tray;
+			channel_flags[18] = ((struct session *)data)->alert_tray == SET_DEFAULT;
+			channel_flags[19] = ((struct session *)data)->alert_taskbar;
+			channel_flags[20] = ((struct session *)data)->alert_taskbar == SET_DEFAULT;
+
+			/* Set flags */
+			for (channel_flag = 0; channel_flag < CHANNEL_FLAG_COUNT; ++channel_flag) {
+				if (channel_flags[channel_flag]) {
+					channel_flags_used |= 1 << channel_flag;
+				}
+			}
+
+			return channel_flags_used;
 		case 0x1a192: /* lag */
 			return ((struct session *)data)->server->lag;
 		case 0x1916144c: /* maxmodes */
