@@ -58,6 +58,7 @@ typedef struct
 
 static const channel_options chanopt[] =
 {
+	{"alert_balloon", NULL, S_F(alert_balloon)},
 	{"alert_beep", "BEEP", S_F(alert_beep)},
 	{"alert_taskbar", NULL, S_F(alert_taskbar)},
 	{"alert_tray", "TRAY", S_F(alert_tray)},
@@ -182,6 +183,7 @@ typedef struct
 {
 	/* Per-Channel Alerts */
 	/* use a byte, because we need a pointer to each element */
+	guint8 alert_balloon;
 	guint8 alert_beep;
 	guint8 alert_taskbar;
 	guint8 alert_tray;

@@ -138,7 +138,9 @@ enum
 	CHANNEL_FLAG_TRAY_UNSET            = 1 << 18,
 	CHANNEL_FLAG_TASKBAR               = 1 << 19,
 	CHANNEL_FLAG_TASKBAR_UNSET         = 1 << 20,
-	CHANNEL_FLAG_COUNT                 = 21
+	CHANNEL_FLAG_BALLOON               = 1 << 21,
+	CHANNEL_FLAG_BALLOON_UNSET         = 1 << 22,
+	CHANNEL_FLAG_COUNT                 = 23
 };
 
 GSList *plugin_list = NULL;	/* export for plugingui.c */
@@ -1633,6 +1635,8 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			channel_flags[18] = ((struct session *)data)->alert_tray == SET_DEFAULT;
 			channel_flags[19] = ((struct session *)data)->alert_taskbar;
 			channel_flags[20] = ((struct session *)data)->alert_taskbar == SET_DEFAULT;
+			channel_flags[21] = ((struct session *)data)->alert_balloon;
+			channel_flags[22] = ((struct session *)data)->alert_balloon == SET_DEFAULT;
 
 			/* Set flags */
 			for (channel_flag = 0; channel_flag < CHANNEL_FLAG_COUNT; ++channel_flag) {

@@ -363,6 +363,7 @@ typedef struct session
 {
 	/* Per-Channel Alerts */
 	/* use a byte, because we need a pointer to each element */
+	guint8 alert_balloon;
 	guint8 alert_beep;
 	guint8 alert_taskbar;
 	guint8 alert_tray;
