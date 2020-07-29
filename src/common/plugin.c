@@ -1550,7 +1550,7 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 	guint32 hash = str_hash (name);
 	gpointer data = ph->context;
 
-    int channel_flag;
+	int channel_flag;
 	int channel_flags[CHANNEL_FLAG_COUNT];
 	int channel_flags_used = 0;
 
