@@ -291,6 +291,9 @@ backend_font_open (GtkXText *xtext, char *name)
 	 */
 #if PANGO_VERSION_CHECK(1, 44, 0)
 	xtext->fontsize = pango_font_metrics_get_height (metrics) / PANGO_SCALE + 1;
+
+	if (xtext->fontsize == 0)
+		xtext->fontsize = xtext->font->ascent + xtext->font->descent;
 #else
 	xtext->fontsize = xtext->font->ascent + xtext->font->descent;
 #endif
