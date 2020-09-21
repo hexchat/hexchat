@@ -35,7 +35,7 @@
 
 #include <hexchat-plugin.h>
 
-#define WORD_ARRAY_LEN 48
+#define WORD_ARRAY_LEN 32
 
 static char plugin_name[] = "Lua";
 static char plugin_description[] = "Lua scripting interface";
