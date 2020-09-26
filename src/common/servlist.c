@@ -207,6 +207,9 @@ static const struct defaultserver def[] =
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
 
+	{"ICQ-Chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.icq-chat.com/+6697"},
+
 	{"IdleMonkeys", 0},
 	{0,			"irc.idlemonkeys.net"},
 
