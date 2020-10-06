@@ -59,7 +59,7 @@ static const struct defaultserver def[] =
 	/* Certs should never be invalid!!! */
 	{0,			"irc.6697.co.uk/+6697"},
 	{0,			"irc.mystagic.org/+6697"},
-	{0,			"charybdis.mystagic.dev /+6697"},
+	{0,			"charybdis.mystagic.dev/+6697"},
 	{0,			"irc.jupe.city/+6697"},
 #endif
 	{0,			"irc.6697.co.uk"},
