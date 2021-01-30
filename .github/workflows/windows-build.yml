@@ -44,11 +44,11 @@ jobs:
 
           New-Item -Path "c:\gtk-build" -Name "python-2.7" -ItemType "Directory"
           New-Item -Path "c:\gtk-build" -Name "python-3.6" -ItemType "Directory"
-          New-Item -Path "c:\gtk-build\python-2.7" -Name "${{ matrix.platform }}" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/2.7.17/${{ matrix.arch }}"
+          New-Item -Path "c:\gtk-build\python-2.7" -Name "${{ matrix.platform }}" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/2.7.18/${{ matrix.arch }}"
           New-Item -Path "c:\gtk-build\python-3.6" -Name "${{ matrix.platform }}" -ItemType "SymbolicLink" -Value "C:/hostedtoolcache/windows/Python/3.6.8/${{ matrix.arch }}"
 
           C:/hostedtoolcache/windows/Python/3.6.8/${{ matrix.arch }}/python.exe -m pip install cffi
-          C:/hostedtoolcache/windows/Python/2.7.17/${{ matrix.arch }}/python.exe -m pip install -qq cffi
+          C:/hostedtoolcache/windows/Python/2.7.18/${{ matrix.arch }}/python.exe -m pip install -qq cffi
         shell: powershell
 
       - name: Build
