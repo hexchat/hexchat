@@ -27,7 +27,7 @@ jobs:
           Invoke-WebRequest http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe -OutFile deps\innosetup-unicode.exe
           & deps\innosetup-unicode.exe /VERYSILENT | Out-Null
 
-          Invoke-WebRequest https://bitbucket.org/mitrich_k/inno-download-plugin/downloads/idpsetup-1.5.1.exe -OutFile deps\idpsetup.exe
+          Invoke-WebRequest https://dl.hexchat.net/misc/idpsetup-1.5.1.exe -OutFile deps\idpsetup.exe
           & deps\idpsetup.exe /VERYSILENT
 
           Invoke-WebRequest https://dl.hexchat.net/gtk/gtk-${{ matrix.platform }}-2018-08-29.7z -OutFile deps\gtk-${{ matrix.arch }}.7z
