@@ -235,6 +235,11 @@ static const struct defaultserver def[] =
 	{"Krstarica", 0},
 	{0,			"irc.krstarica.com"},
 
+#ifdef USE_OPENSSL
+	{"LibertaCasa", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.liberta.casa/+6697"},
+#endif
+
 	{"LibraIRC", 0},
 	/* Self signed */
 	{0,			"irc.librairc.net"},
@@ -342,6 +347,14 @@ static const struct defaultserver def[] =
 	{"Techtronix",	0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.techtronix.net"},
 
+#ifdef USE_OPENSSL
+	{"TripSit", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.tripsit.me/+6697"},
+	{0,			"newirc.tripsit.me/+6697"},
+	{0,			"coconut.tripsit.me/+6697"},
+	{0,			"innsbruck.tripsit.me/+6697"},
+#endif	
+	
 	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
 	/* Other servers use CP1251 and invalid certs */
 	{0,			"irc.servx.ru"},
