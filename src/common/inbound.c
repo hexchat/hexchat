@@ -815,7 +815,9 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp,
 	if (!sess)
 		sess = serv->server_session;
 
-	tim[24] = 0;	/* get rid of the \n */
+	if (tim != NULL)
+		tim[24] = 0;	/* get rid of the \n */
+
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_TOPICDATE, sess, chan, nick, tim, NULL, 0,
 								  tags_data->timestamp);
 }
@@ -1489,7 +1491,7 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask,
 	server *serv = sess->server;
 	char *nl;
 
-	if (stamp <= 0)
+	if (stamp <= 0 || time_str == NULL)
 	{
 		time_str = "";
 	}
