@@ -319,7 +319,7 @@ def del_pluginpref(name):
 def list_pluginpref():
     prefs_str = ffi.new('char[4096]')
     if lib.hexchat_pluginpref_list(lib.ph, prefs_str) == 1:
-        return __decode(prefs_str).split(',')
+        return __decode(ffi.string(prefs_str)).split(',')
 
     return []
 
