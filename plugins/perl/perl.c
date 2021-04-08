@@ -283,6 +283,8 @@ list_item_to_sv ( hexchat_list *list, const char *const *fields )
 	return sv_2mortal (newRV_noinc ((SV *) hash));
 }
 
+#define WORD_ARRAY_LEN 32
+
 static AV *
 array2av (char *array[])
 {
@@ -293,7 +295,7 @@ array2av (char *array[])
 
 	for (
 		count = 1;
-		count < 32 && array[count] != NULL && array[count][0] != 0;
+		count < WORD_ARRAY_LEN && array[count] != NULL && array[count][0] != 0;
 		count++
 	) {
 		temp = newSVpv (array[count], 0);

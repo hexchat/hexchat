@@ -35,6 +35,8 @@
 
 #include <hexchat-plugin.h>
 
+#define WORD_ARRAY_LEN 32
+
 static char plugin_name[] = "Lua";
 static char plugin_description[] = "Lua scripting interface";
 static char plugin_version[16] = "1.3";
@@ -275,13 +277,13 @@ static int api_command_closure(char *word[], char *word_eol[], void *udata)
 	base = lua_gettop(L);
 	lua_rawgeti(L, LUA_REGISTRYINDEX, info->ref);
 	lua_newtable(L);
-	for(i = 1; i < 32 && *word_eol[i]; i++)
+	for(i = 1; i < WORD_ARRAY_LEN && *word_eol[i]; i++)
 	{
 		lua_pushstring(L, word[i]);
 		lua_rawseti(L, -2, i);
 	}
 	lua_newtable(L);
-	for(i = 1; i < 32 && *word_eol[i]; i++)
+	for(i = 1; i < WORD_ARRAY_LEN && *word_eol[i]; i++)
 	{
 		lua_pushstring(L, word_eol[i]);
 		lua_rawseti(L, -2, i);
@@ -462,13 +464,13 @@ static int api_server_closure(char *word[], char *word_eol[], void *udata)
 	base = lua_gettop(L);
 	lua_rawgeti(L, LUA_REGISTRYINDEX, info->ref);
 	lua_newtable(L);
-	for(i = 1; i < 32 && *word_eol[i]; i++)
+	for(i = 1; i < WORD_ARRAY_LEN && *word_eol[i]; i++)
 	{
 		lua_pushstring(L, word[i]);
 		lua_rawseti(L, -2, i);
 	}
 	lua_newtable(L);
-	for(i = 1; i < 32 && *word_eol[i]; i++)
+	for(i = 1; i < WORD_ARRAY_LEN && *word_eol[i]; i++)
 	{
 		lua_pushstring(L, word_eol[i]);
 		lua_rawseti(L, -2, i);
@@ -521,13 +523,13 @@ static int api_server_attrs_closure(char *word[], char *word_eol[], hexchat_even
 	base = lua_gettop(L);
 	lua_rawgeti(L, LUA_REGISTRYINDEX, info->ref);
 	lua_newtable(L);
-	for(i = 1; i < 32 && *word_eol[i]; i++)
+	for(i = 1; i < WORD_ARRAY_LEN && *word_eol[i]; i++)
 	{
 		lua_pushstring(L, word[i]);
 		lua_rawseti(L, -2, i);
 	}
 	lua_newtable(L);
-	for(i = 1; i < 32 && *word_eol[i]; i++)
+	for(i = 1; i < WORD_ARRAY_LEN && *word_eol[i]; i++)
 	{
 		lua_pushstring(L, word_eol[i]);
 		lua_rawseti(L, -2, i);
@@ -1187,11 +1189,11 @@ static void patch_clibs(lua_State *L)
 		if(lua_type(L, -2) == LUA_TLIGHTUSERDATA && lua_type(L, -1) == LUA_TTABLE)
 		{
 			lua_setfield(L, LUA_REGISTRYINDEX, "_CLIBS");
+			lua_pop(L, 1);
 			break;
 		}
 		lua_pop(L, 1);
 	}
-	lua_pop(L, 1);
 }
 
 static GPtrArray *scripts;

@@ -31,8 +31,6 @@
 
 char *__old_fish_encrypt(const char *key, size_t keylen, const char *message);
 char *__old_fish_decrypt(const char *key, size_t keylen, const char *data);
-char *__old_fish_encrypt_for_nick(const char *nick, const char *data);
-char *__old_fish_decrypt_from_nick(const char *nick, const char *data);
 
 #endif
 

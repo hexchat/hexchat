@@ -36,12 +36,12 @@ char *keystore_get_key(const char *nick, enum fish_mode *mode) {
  * Sets a key in the key store file.
  */
 gboolean keystore_store_key(const char *nick, const char *key, enum fish_mode mode) {
-    return NULL;
+    return TRUE;
 }
 
 /**
  * Deletes a nick from the key store.
  */
 gboolean keystore_delete_nick(const char *nick) {
-    return NULL;
+    return TRUE;
 }

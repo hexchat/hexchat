@@ -75,7 +75,7 @@
 #define DOMAINLEN	100
 #define NICKLEN		64				/* including the NULL, so 63 really */
 #define CHANLEN		300
-#define PDIWORDS		32
+#define PDIWORDS	32
 #define USERNAMELEN 10
 #define HIDDEN_CHAR	8			/* invisible character for xtext */
 
