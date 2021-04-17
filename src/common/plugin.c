@@ -1415,6 +1415,8 @@ hexchat_list_time (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 		break;
 
 	case LIST_USERS:
+		if (!xlist->pos)
+			return (time_t) -1;
 		data = xlist->pos->data;
 		switch (hash)
 		{
@@ -1436,7 +1438,8 @@ hexchat_list_str (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 	/* a NULL xlist is a shortcut to current "channels" context */
 	if (xlist)
 	{
-		data = xlist->pos->data;
+		if (xlist->pos)
+			data = xlist->pos->data;
 		type = xlist->type;
 	}
 
@@ -1527,7 +1530,8 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 	/* a NULL xlist is a shortcut to current "channels" context */
 	if (xlist)
 	{
-		data = xlist->pos->data;
+		if (xlist->pos)
+			data = xlist->pos->data;
 		type = xlist->type;
 	}
 
@@ -1592,7 +1596,7 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			tmp <<= 1;
 			/* used if text_strip is unset */                    /* 16 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->text_strip;          /* 15 */
+			tmp |= ((struct session *)data)->text_strip;         /* 15 */
 			tmp <<= 1;
 			/* used if text_scrollback is unset */               /* 14 */
 			tmp <<= 1;
@@ -1602,15 +1606,15 @@ hexchat_list_int (hexchat_plugin *ph, hexchat_list *xlist, const char *name)
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->text_logging;       /* 11 */
 			tmp <<= 1;
-			/* unused for historical reasons */                  /* 10 */
+			tmp |= ((struct session *)data)->alert_notif;        /* 10 */
 			tmp <<= 1;
 			/* used if alert_beep is unset */                    /* 9 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->alert_beep;         /* 8 */
 			tmp <<= 1;
-			/* used if text_hidejoinpart is unset */              /* 7 */
+			/* used if text_hidejoinpart is unset */             /* 7 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->text_hidejoinpart;   /* 6 */
+			tmp |= ((struct session *)data)->text_hidejoinpart;  /* 6 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->server->have_idmsg; /* 5 */
 			tmp <<= 1;

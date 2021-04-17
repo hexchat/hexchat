@@ -52,6 +52,7 @@
 #include "xtext.h"
 #include "sexy-spell-entry.h"
 #include "gtkutil.h"
+#include "notifications/notification-backend.h"
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -1522,6 +1523,11 @@ mg_create_alertmenu (session *sess, GtkWidget *menu)
 	GtkWidget *submenu;
 
 	submenu = menu_quick_sub (_("_Extra Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
+
+	if (notification_backend_supported())
+	{
+		mg_perchan_menu_item (_("_Notification"), submenu, &sess->alert_notif, prefs.hex_input_balloon_hilight);
+	}
 
 	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.hex_input_beep_chans);
 
