@@ -239,6 +239,9 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.librairc.net"},
 
+	{"Libera Chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.libera.chat"},
+
 #ifdef USE_OPENSSL
 	{"LinkNet",	0},
 	{0,			"irc.link-net.org/+7000"},
