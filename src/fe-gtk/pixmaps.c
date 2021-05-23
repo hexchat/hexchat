@@ -111,8 +111,8 @@ load_pixmap (const char *filename)
 		iscale = atoi (scale);
 		if (iscale >= 0)
 		{
-			scaledpixbuf = gdk_pixbuf_scale_simple (pixbuf, gdk_pixbuf_get_height (pixbuf) * iscale,
-				gdk_pixbuf_get_width (pixbuf) * iscale, GDK_INTERP_BILINEAR);
+			scaledpixbuf = gdk_pixbuf_scale_simple (pixbuf, gdk_pixbuf_get_width (pixbuf) * iscale,
+				gdk_pixbuf_get_height (pixbuf) * iscale, GDK_INTERP_BILINEAR);
 
 			g_object_unref (pixbuf);
 			pixbuf = scaledpixbuf;
