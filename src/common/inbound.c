@@ -1725,6 +1725,7 @@ static const char * const supported_caps[] = {
 	"cap-notify",
 	"chghost",
 	"setname",
+	"invite-notify",
 
 	/* ZNC */
 	"znc.in/server-time-iso",
