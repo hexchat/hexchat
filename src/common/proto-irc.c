@@ -1157,6 +1157,11 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 							   NULL, 0xff, tags_data);
 			return;
 
+		case WORDL('S', 'E', 'T', 'N'):
+			inbound_user_info (sess, NULL, NULL, NULL, NULL, nick, STRIP_COLON(word, word_eol, 3),
+							   NULL, 0xff, tags_data);
+			return;
+
 		case WORDL('I','N','V','I'):
 			if (ignore_check (word[1], IG_INVI))
 				return;
