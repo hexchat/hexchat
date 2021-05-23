@@ -1633,7 +1633,7 @@ xit:
 void
 message_tags_data_free (message_tags_data *tags_data)
 {
-	g_free (tags_data->account);
+	g_clear_pointer (&tags_data->account, g_free);
 }
 
 void
