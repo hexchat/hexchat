@@ -1010,6 +1010,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						 const message_tags_data *tags_data)
 {
 	server *serv = sess->server;
+	char *account;
 	char ip[128], nick[NICKLEN];
 	char *text, *ex;
 	int len = strlen (type);
@@ -1027,9 +1028,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		safe_strcpy (nick, word[1], sizeof (nick));
 		ex[0] = '!';
 
-		if (tags_data->account)
-			inbound_user_info (sess, NULL, NULL, NULL, NULL, nick, NULL,
-							   tags_data->account, 0xff, tags_data);
+		account = tags_data->account && *tags_data->account ? tags_data->account : "*";
+		userlist_set_account (sess, nick, account);
 	}
 
 	if (len == 4)
