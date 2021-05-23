@@ -89,7 +89,9 @@ pixmap_load_from_file (char *filename)
 static GdkPixbuf *
 load_pixmap (const char *filename)
 {
-	GdkPixbuf *pixbuf;
+	GdkPixbuf *pixbuf, *scaledpixbuf;
+	const char *scale;
+	int iscale;
 
 	gchar *path = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S "%s.png", get_xdir (), filename);
 	pixbuf = gdk_pixbuf_new_from_file (path, 0);
@@ -100,6 +102,21 @@ load_pixmap (const char *filename)
 		path = g_strdup_printf ("/icons/%s.png", filename);
 		pixbuf = gdk_pixbuf_new_from_resource (path, NULL);
 		g_free (path);
+	}
+
+	// Hack to avoid unbearably tiny icons on HiDPI screens.
+	scale = getenv ("GDK_SCALE");
+	if (scale)
+	{
+		iscale = atoi (scale);
+		if (iscale >= 0)
+		{
+			scaledpixbuf = gdk_pixbuf_scale_simple (pixbuf, gdk_pixbuf_get_height (pixbuf) * iscale,
+				gdk_pixbuf_get_width (pixbuf) * iscale, GDK_INTERP_BILINEAR);
+
+			g_object_unref (pixbuf);
+			pixbuf = scaledpixbuf;
+		}
 	}
 
 	g_warn_if_fail (pixbuf != NULL);
