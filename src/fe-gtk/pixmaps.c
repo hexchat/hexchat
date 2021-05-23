@@ -114,8 +114,11 @@ load_pixmap (const char *filename)
 			scaledpixbuf = gdk_pixbuf_scale_simple (pixbuf, gdk_pixbuf_get_width (pixbuf) * iscale,
 				gdk_pixbuf_get_height (pixbuf) * iscale, GDK_INTERP_BILINEAR);
 
-			g_object_unref (pixbuf);
-			pixbuf = scaledpixbuf;
+			if (scaledpixbuf)
+			{
+				g_object_unref (pixbuf);
+				pixbuf = scaledpixbuf;
+			}
 		}
 	}
 
