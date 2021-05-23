@@ -130,8 +130,12 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 			g_free (user->hostname);
 			user->hostname = g_strdup (hostname);
 		}
-		if (!user->realname && realname && *realname)
+		if (realname && (!user->realname || strcmp(user->realname, realname)))
+		{
+			do_rehash = TRUE;
+			g_free (user->realname);
 			user->realname = g_strdup (realname);
+		}
 		if (!user->servername && servername)
 			user->servername = g_strdup (servername);
 		if (!user->account && account && strcmp (account, "0") != 0)
