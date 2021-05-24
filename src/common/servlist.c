@@ -237,7 +237,7 @@ static const struct defaultserver def[] =
 
 #ifdef USE_OPENSSL
 	{"LibertaCasa", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.liberta.casa/+6697"},
+	{0,			"irc.liberta.casa"},
 #endif
 
 	{"LibraIRC", 0},
@@ -349,10 +349,10 @@ static const struct defaultserver def[] =
 
 #ifdef USE_OPENSSL
 	{"TripSit", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.tripsit.me/+6697"},
-	{0,			"newirc.tripsit.me/+6697"},
-	{0,			"coconut.tripsit.me/+6697"},
-	{0,			"innsbruck.tripsit.me/+6697"},
+	{0,			"irc.tripsit.me"},
+	{0,			"newirc.tripsit.me"},
+	{0,			"coconut.tripsit.me"},
+	{0,			"innsbruck.tripsit.me"},
 #endif	
 	
 	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
