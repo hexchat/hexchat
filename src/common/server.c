@@ -1784,6 +1784,7 @@ server_set_defaults (server *serv)
 	serv->have_idmsg = FALSE;
 	serv->have_accnotify = FALSE;
 	serv->have_extjoin = FALSE;
+	serv->have_account_tag = FALSE;
 	serv->have_server_time = FALSE;
 	serv->have_sasl = FALSE;
 	serv->have_except = FALSE;

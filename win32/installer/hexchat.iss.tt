@@ -31,9 +31,9 @@ Compression=lzma2/ultra64
 SourceDir=..\rel
 OutputDir=..
 #if APPARCH == "x64"
-OutputBaseFilename={#APPNAM} {#APPVER} x64
+OutputBaseFilename={#APPNAM}-{#APPVER}_x64
 #else
-OutputBaseFilename={#APPNAM} {#APPVER} x86
+OutputBaseFilename={#APPNAM}-{#APPVER}_x86
 #endif
 FlatComponentsList=no
 PrivilegesRequired=none

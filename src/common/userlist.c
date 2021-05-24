@@ -101,13 +101,15 @@ userlist_set_account (struct session *sess, char *nick, char *account)
 	user = userlist_find (sess, nick);
 	if (user)
 	{
-		g_free (user->account);
-			
 		if (strcmp (account, "*") == 0)
-			user->account = NULL;
-		else
+		{
+			g_clear_pointer (&user->account, g_free);
+		} else if (g_strcmp0 (user->account, account))
+		{
+			g_free (user->account);
 			user->account = g_strdup (account);
-			
+		}
+
 		/* gui doesnt currently reflect login status, maybe later
 		fe_userlist_rehash (sess, user); */
 	}
@@ -130,8 +132,11 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 			g_free (user->hostname);
 			user->hostname = g_strdup (hostname);
 		}
-		if (!user->realname && realname && *realname)
+		if (realname && *realname && g_strcmp0 (user->realname, realname) != 0)
+		{
+			g_free (user->realname);
 			user->realname = g_strdup (realname);
+		}
 		if (!user->servername && servername)
 			user->servername = g_strdup (servername);
 		if (!user->account && account && strcmp (account, "0") != 0)

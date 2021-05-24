@@ -1520,14 +1520,32 @@ static void
 mg_create_alertmenu (session *sess, GtkWidget *menu)
 {
 	GtkWidget *submenu;
+	int hex_balloon, hex_beep, hex_tray, hex_flash;
 
-	submenu = menu_quick_sub (_("_Extra Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
 
-	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.hex_input_beep_chans);
+	switch (sess->type) {
+		case SESS_DIALOG:
+			hex_balloon = prefs.hex_input_balloon_priv;
+			hex_beep = prefs.hex_input_beep_priv;
+			hex_tray = prefs.hex_input_tray_priv;
+			hex_flash = prefs.hex_input_flash_priv;
+			break;
+		default:
+			hex_balloon = prefs.hex_input_balloon_chans;
+			hex_beep = prefs.hex_input_beep_chans;
+			hex_tray = prefs.hex_input_tray_chans;
+			hex_flash = prefs.hex_input_flash_chans;
+	}
 
-	mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.hex_input_tray_chans);
+	submenu = menu_quick_sub(_("_Extra Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
 
-	mg_perchan_menu_item (_("Blink Task _Bar"), submenu, &sess->alert_taskbar, prefs.hex_input_flash_chans);
+	mg_perchan_menu_item(_("Show Notifications"), submenu, &sess->alert_balloon, hex_balloon);
+
+	mg_perchan_menu_item(_("Beep on _Message"), submenu, &sess->alert_beep, hex_beep);
+
+	mg_perchan_menu_item(_("Blink Tray _Icon"), submenu, &sess->alert_tray, hex_tray);
+
+	mg_perchan_menu_item(_("Blink Task _Bar"), submenu, &sess->alert_taskbar, hex_flash);
 }
 
 static void
