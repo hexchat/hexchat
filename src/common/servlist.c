@@ -385,6 +385,9 @@ static const struct defaultserver def[] =
 
 	{"Xertion", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.xertion.org"},
+	
+	{"DeltaPool", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.deltapool.net"},
 
 	{0,0}
 };
