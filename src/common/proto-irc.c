@@ -1027,7 +1027,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		ex[0] = 0;
 		safe_strcpy (nick, word[1], sizeof (nick));
 		ex[0] = '!';
+	}
 
+
+	/** Update the account for this message's source. */
+	if (serv->have_account_tag)
+	{
 		account = tags_data->account && *tags_data->account ? tags_data->account : "*";
 		inbound_account (serv, nick, account, tags_data);
 	}
