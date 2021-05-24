@@ -815,7 +815,9 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp,
 	if (!sess)
 		sess = serv->server_session;
 
-	tim[24] = 0;	/* get rid of the \n */
+	if (tim != NULL)
+		tim[24] = 0;	/* get rid of the \n */
+
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_TOPICDATE, sess, chan, nick, tim, NULL, 0,
 								  tags_data->timestamp);
 }
@@ -1489,7 +1491,7 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask,
 	server *serv = sess->server;
 	char *nl;
 
-	if (stamp <= 0)
+	if (stamp <= 0 || time_str == NULL)
 	{
 		time_str = "";
 	}
@@ -1722,6 +1724,8 @@ static const char * const supported_caps[] = {
 	"userhost-in-names",
 	"cap-notify",
 	"chghost",
+	"setname",
+	"invite-notify",
 
 	/* ZNC */
 	"znc.in/server-time-iso",
@@ -1768,7 +1772,6 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 {
 	char buffer[500];	/* buffer for requesting capabilities and emitting the signal */
 	gboolean want_cap = FALSE; /* format the CAP REQ string based on previous capabilities being requested or not */
-	gboolean want_sasl = FALSE; /* CAP END shouldn't be sent when SASL is requested, it needs further responses */
 	char **extensions;
 	int i;
 
@@ -1806,7 +1809,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
 		if (!g_strcmp0 (extension, "sasl") &&
 			((serv->loginmethod == LOGIN_SASL && strlen (serv->password) != 0)
-				|| (serv->loginmethod == LOGIN_SASLEXTERNAL && serv->have_cert)))
+				|| serv->loginmethod == LOGIN_SASLEXTERNAL))
 		{
 			if (value)
 			{
@@ -1816,7 +1819,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 				serv->sasl_mech = sasl_mech;
 			}
 			want_cap = TRUE;
-			want_sasl = TRUE;
+			serv->waiting_on_sasl = TRUE;
 			g_strlcat (buffer, "sasl ", sizeof(buffer));
 			continue;
 		}
@@ -1842,7 +1845,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 									  tags_data->timestamp);
 		tcp_sendf (serv, "%s\r\n", g_strchomp (buffer));
 	}
-	if (!want_sasl && !serv->waiting_on_cap)
+	if (!serv->waiting_on_sasl && !serv->waiting_on_cap)
 	{
 		/* if we use SASL, CAP END is dealt via raw numerics */
 		serv->sent_capend = TRUE;
@@ -1851,13 +1854,25 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 }
 
 void
-inbound_cap_nak (server *serv, const message_tags_data *tags_data)
+inbound_cap_nak (server *serv, char *extensions_str, const message_tags_data *tags_data)
 {
-	if (!serv->waiting_on_cap && !serv->sent_capend)
+	char **extensions;
+	int i;
+
+	extensions = g_strsplit (extensions_str, " ", 0);
+	for (i=0; extensions[i]; i++)
+	{
+		if (!g_strcmp0 (extensions[i], "sasl"))
+			serv->waiting_on_sasl = FALSE;
+	}
+
+	if (!serv->waiting_on_cap && !serv->waiting_on_sasl && !serv->sent_capend)
 	{
 		serv->sent_capend = TRUE;
 		tcp_send_len (serv, "CAP END\r\n", 9);
 	}
+
+	g_strfreev (extensions);
 }
 
 void

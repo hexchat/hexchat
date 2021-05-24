@@ -283,8 +283,24 @@ backend_font_open (GtkXText *xtext, char *name)
 	metrics = pango_context_get_metrics (context, xtext->font->font, lang);
 	xtext->font->ascent = pango_font_metrics_get_ascent (metrics) / PANGO_SCALE;
 	xtext->font->descent = pango_font_metrics_get_descent (metrics) / PANGO_SCALE;
+
+	/*
+	 * In later versions of pango, a font's height should be calculated like
+	 * this to account for line gap; a typical symptom of not doing so is
+	 * cutting off the underscore on some fonts.
+	 */
+#if PANGO_VERSION_CHECK(1, 44, 0)
+	xtext->fontsize = pango_font_metrics_get_height (metrics) / PANGO_SCALE + 1;
+
+	if (xtext->fontsize == 0)
+		xtext->fontsize = xtext->font->ascent + xtext->font->descent;
+#else
+	xtext->fontsize = xtext->font->ascent + xtext->font->descent;
+#endif
+
 	pango_font_metrics_unref (metrics);
 }
+
 static int
 backend_get_text_width_emph (GtkXText *xtext, guchar *str, int len, int emphasis)
 {
@@ -3478,8 +3494,6 @@ gtk_xtext_set_font (GtkXText *xtext, char *name)
 	backend_font_open (xtext, name);
 	if (xtext->font == NULL)
 		return FALSE;
-
-	xtext->fontsize = xtext->font->ascent + xtext->font->descent;
 
 	{
 		char *time_str;

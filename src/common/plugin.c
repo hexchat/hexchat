@@ -355,7 +355,8 @@ plugin_kill_all (void)
 	}
 }
 
-#ifdef USE_PLUGIN
+#if defined(USE_PLUGIN) || defined(WIN32)
+/* used for loading plugins, and in fe-gtk/notifications/notification-windows.c */
 
 GModule *
 module_load (char *filename)
@@ -383,6 +384,10 @@ module_load (char *filename)
 
 	return handle;
 }
+
+#endif
+
+#ifdef USE_PLUGIN
 
 /* load a plugin from a filename. Returns: NULL-success or an error string */
 
@@ -657,11 +662,11 @@ plugin_emit_print (session *sess, char *word[], time_t server_time)
 int
 plugin_emit_dummy_print (session *sess, char *name)
 {
-	char *word[32];
+	char *word[PDIWORDS];
 	int i;
 
 	word[0] = name;
-	for (i = 1; i < 32; i++)
+	for (i = 1; i < PDIWORDS; i++)
 		word[i] = "\000";
 
 	return plugin_hook_run (sess, name, word, NULL, NULL, HOOK_PRINT);

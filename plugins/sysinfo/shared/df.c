@@ -26,7 +26,7 @@ int xs_parse_df(gint64 *out_total, gint64 *out_free)
 	FILE *pipe;
 	char buffer[bsize];
 	
-	pipe = popen("df -k -l -P", "r");
+	pipe = popen("df -k -l -P --exclude-type=squashfs --exclude-type=devtmpfs --exclude-type=tmpfs", "r");
 	if(pipe==NULL)
 		return 1;
 

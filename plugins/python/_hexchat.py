@@ -73,7 +73,7 @@ def emit_print(event_name, *args, **kwargs):
 
     attrs = lib.hexchat_event_attrs_create(lib.ph)
     attrs.server_time_utc = time
-    ret = lib.hexchat_emit_print(lib.ph, attrs, event_name.encode(), *cargs)
+    ret = lib.hexchat_emit_print_attrs(lib.ph, attrs, event_name.encode(), *cargs)
     lib.hexchat_event_attrs_free(lib.ph, attrs)
     return ret
 
@@ -319,7 +319,7 @@ def del_pluginpref(name):
 def list_pluginpref():
     prefs_str = ffi.new('char[4096]')
     if lib.hexchat_pluginpref_list(lib.ph, prefs_str) == 1:
-        return __decode(prefs_str).split(',')
+        return __decode(ffi.string(prefs_str)).split(',')
 
     return []
 

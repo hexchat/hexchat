@@ -54,11 +54,6 @@ static const struct defaultserver def[] =
 	/* Invalid hostname in cert */
 	{0,			"irc.2600.net"},
 
-	{"2ch", 0, 0, "iso-2022-jp", 0, 0},
-	{0,			"irc.2ch.sc"},
-	{0,			"irc.nurs.or.jp"},
-	{0,			"irc.juggler.jp"},
-
 	{"AccessIRC",	0},
 	/* Self signed */
 	{0,			"irc.accessirc.net"},
@@ -124,6 +119,13 @@ static const struct defaultserver def[] =
 
 	{"DarkMyst", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.darkmyst.org"},
+
+#ifdef USE_OPENSSL
+	{"darkscience", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.darkscience.net"},
+	{0,			"irc.drk.sc"},
+	{0,			"irc.darkscience.ws"},
+#endif
 
 	{"Dark-Tou-Net",	0},
 	{0,			"irc.d-t-net.de"},
@@ -237,6 +239,9 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.librairc.net"},
 
+	{"Libera Chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.libera.chat"},
+
 #ifdef USE_OPENSSL
 	{"LinkNet",	0},
 	{0,			"irc.link-net.org/+7000"},
@@ -248,9 +253,6 @@ static const struct defaultserver def[] =
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
 
-	{"Moznet", 0, 0, 0, 0, 0, TRUE},
-	{0,			"irc.mozilla.org"},
-	
 	{"ObsidianIRC",  0},
 	/* Self signed */
 	{0,      "irc.obsidianirc.net"}, 
@@ -275,9 +277,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.ponychat.net"},
 
 	{"PTNet.org",	0},
-	/* Note that the network suggests ISO-8859-1 but most users ignore this */
+	{0,			"irc.ptnet.org"},
 	{0,			"uevora.ptnet.org"},
-	{0,			"vianetworks.ptnet.org"},
+	{0,			"claranet.ptnet.org"},
+	{0,			"sonaquela.ptnet.org"},
+	{0,			"uc.ptnet.org"},
+	{0,			"ipg.ptnet.org"},
 
 	{"QuakeNet", 0, 0, 0, LOGIN_CHALLENGEAUTH},
 	{0,			"irc.quakenet.org"},
@@ -345,6 +350,9 @@ static const struct defaultserver def[] =
 
 	{"Techtronix",	0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.techtronix.net"},
+	
+	{"tilde.chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.tilde.chat"},
 
 	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
 	/* Other servers use CP1251 and invalid certs */
