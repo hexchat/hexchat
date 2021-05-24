@@ -240,7 +240,7 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.librairc.net"},
 
-	{"Libera Chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{"Libera.Chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.libera.chat"},
 
 #ifdef USE_OPENSSL
@@ -942,7 +942,7 @@ servlist_load_defaults (void)
 {
 	int i = 0, j = 0;
 	ircnet *net = NULL;
-	guint def_hash = g_str_hash ("freenode");
+	guint def_hash = g_str_hash ("Libera.Chat");
 
 	while (1)
 	{
