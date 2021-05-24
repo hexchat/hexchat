@@ -1295,6 +1295,13 @@ static char * const pevt_invited_help[] = {
 	N_("Server Name"),
 };
 
+static char * const pevt_invitedother_help[] = {
+	N_("Channel Name"),
+	N_("Nick of person who sent the invite"),
+	N_("Nick of person who was invited"),
+	N_("Server Name"),
+};
+
 static char * const pevt_usersonchan_help[] = {
 	N_("Channel Name"),
 	N_("Users"),
