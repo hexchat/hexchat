@@ -1545,7 +1545,7 @@ irc_inline (server *serv, char *buf, int len)
 
 	if (*buf == '@')
 	{
-		*tags = buf + 1; /* skip the '@' */
+		tags = buf + 1; /* skip the '@' */
 		char *sep = strchr (buf, ' ');
 
 		if (!sep)
