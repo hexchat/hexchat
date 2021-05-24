@@ -454,7 +454,8 @@ channel_date (session *sess, char *chan, char *timestr,
 {
 	time_t timestamp = (time_t) atol (timestr);
 	char *tim = ctime (&timestamp);
-	tim[24] = 0;	/* get rid of the \n */
+	if (tim != NULL)
+		tim[24] = 0;	/* get rid of the \n */
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANDATE, sess, chan, tim, NULL, NULL, 0,
 								  tags_data->timestamp);
 }
@@ -602,7 +603,8 @@ process_numeric (session * sess, int n,
 			else
 			{
 				tim = ctime (&timestamp);
-				tim[19] = 0; 	/* get rid of the \n */
+				if (tim != NULL)
+					tim[19] = 0; 	/* get rid of the \n */
 				EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS4T, whois_sess, word[4],
 											  outbuf, tim, NULL, 0, tags_data->timestamp);
 			}
@@ -1008,6 +1010,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						 const message_tags_data *tags_data)
 {
 	server *serv = sess->server;
+	char *account;
 	char ip[128], nick[NICKLEN];
 	char *text, *ex;
 	int len = strlen (type);
@@ -1024,6 +1027,14 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		ex[0] = 0;
 		safe_strcpy (nick, word[1], sizeof (nick));
 		ex[0] = '!';
+	}
+
+
+	/** Update the account for this message's source. */
+	if (serv->have_account_tag)
+	{
+		account = tags_data->account && *tags_data->account ? tags_data->account : "*";
+		inbound_account (serv, nick, account, tags_data);
 	}
 
 	if (len == 4)
@@ -1155,16 +1166,22 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 							   NULL, 0xff, tags_data);
 			return;
 
+		case WORDL('S', 'E', 'T', 'N'):
+			inbound_user_info (sess, NULL, NULL, NULL, NULL, nick, STRIP_COLON(word, word_eol, 3),
+							   NULL, 0xff, tags_data);
+			return;
+
 		case WORDL('I','N','V','I'):
 			if (ignore_check (word[1], IG_INVI))
 				return;
-			
-			if (word[4][0] == ':')
-				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, word[4] + 1, nick,
-											  serv->servername, NULL, 0,
+
+			text = STRIP_COLON(word, word_eol, 4);
+			if (serv->p_cmp (word[3], serv->nick))
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITEDOTHER, sess, text, nick,
+											  word[3], serv->servername, 0,
 											  tags_data->timestamp);
 			else
-				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, word[4], nick,
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, text, nick,
 											  serv->servername, NULL, 0,
 											  tags_data->timestamp);
 				
@@ -1242,10 +1259,13 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 							text++;
 					}
 					len = strlen (text);
-					if (text[0] == 1 && text[len - 1] == 1)	/* ctcp */
+					if (text[0] == 1)	/* ctcp */
 					{
 						char *new_pdibuf = NULL;
-						text[len - 1] = 0;
+						if (text[len - 1] == 1)
+						{
+							text[len - 1] = 0;
+						}
 						text++;
 						if (g_ascii_strncasecmp (text, "ACTION", 6) != 0)
 							flood_check (nick, ip, serv, sess, 0);
@@ -1514,6 +1534,9 @@ handle_message_tags (server *serv, const char *tags_str,
 		*value = '\0';
 		value++;
 
+		if (serv->have_account_tag && !strcmp (key, "account"))
+			tags_data->account = g_strdup (value);
+
 		if (serv->have_server_time && !strcmp (key, "time"))
 			handle_message_tag_time (value, tags_data);
 	}
@@ -1611,7 +1634,14 @@ irc_inline (server *serv, char *buf, int len)
 	}
 
 xit:
+	message_tags_data_free (&tags_data);
 	g_free (pdibuf);
+}
+
+void
+message_tags_data_free (message_tags_data *tags_data)
+{
+	g_clear_pointer (&tags_data->account, g_free);
 }
 
 void

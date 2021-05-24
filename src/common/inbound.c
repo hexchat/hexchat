@@ -815,7 +815,9 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp,
 	if (!sess)
 		sess = serv->server_session;
 
-	tim[24] = 0;	/* get rid of the \n */
+	if (tim != NULL)
+		tim[24] = 0;	/* get rid of the \n */
+
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_TOPICDATE, sess, chan, nick, tim, NULL, 0,
 								  tags_data->timestamp);
 }
@@ -1489,7 +1491,7 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask,
 	server *serv = sess->server;
 	char *nl;
 
-	if (stamp <= 0)
+	if (stamp <= 0 || time_str == NULL)
 	{
 		time_str = "";
 	}
@@ -1669,6 +1671,8 @@ inbound_toggle_caps (server *serv, const char *extensions_str, gboolean enable)
 			serv->have_server_time = enable;
 		else if (!strcmp (extension, "away-notify"))
 			serv->have_awaynotify = enable;
+		else if (!strcmp (extension, "account-tag"))
+			serv->have_account_tag = enable;
 		else if (!strcmp (extension, "sasl"))
 		{
 			serv->have_sasl = enable;
@@ -1722,6 +1726,9 @@ static const char * const supported_caps[] = {
 	"userhost-in-names",
 	"cap-notify",
 	"chghost",
+	"setname",
+	"invite-notify",
+	"account-tag",
 
 	/* ZNC */
 	"znc.in/server-time-iso",

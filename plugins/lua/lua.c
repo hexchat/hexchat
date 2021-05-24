@@ -1189,11 +1189,11 @@ static void patch_clibs(lua_State *L)
 		if(lua_type(L, -2) == LUA_TLIGHTUSERDATA && lua_type(L, -1) == LUA_TTABLE)
 		{
 			lua_setfield(L, LUA_REGISTRYINDEX, "_CLIBS");
+			lua_pop(L, 1);
 			break;
 		}
 		lua_pop(L, 1);
 	}
-	lua_pop(L, 1);
 }
 
 static GPtrArray *scripts;

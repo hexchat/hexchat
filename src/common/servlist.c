@@ -198,6 +198,7 @@ static const struct defaultserver def[] =
 #ifdef USE_OPENSSL
 	{"hackint", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.hackint.org"},
+	{0,			"irc.eu.hackint.org"},
 #endif
 
 	{"Hashmark",	0},
@@ -235,9 +236,17 @@ static const struct defaultserver def[] =
 	{"Krstarica", 0},
 	{0,			"irc.krstarica.com"},
 
+#ifdef USE_OPENSSL
+	{"LibertaCasa", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.liberta.casa"},
+#endif
+
 	{"LibraIRC", 0},
 	/* Self signed */
 	{0,			"irc.librairc.net"},
+
+	{"Libera.Chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.libera.chat"},
 
 #ifdef USE_OPENSSL
 	{"LinkNet",	0},
@@ -274,9 +283,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.ponychat.net"},
 
 	{"PTNet.org",	0},
-	/* Note that the network suggests ISO-8859-1 but most users ignore this */
+	{0,			"irc.ptnet.org"},
 	{0,			"uevora.ptnet.org"},
-	{0,			"vianetworks.ptnet.org"},
+	{0,			"claranet.ptnet.org"},
+	{0,			"sonaquela.ptnet.org"},
+	{0,			"uc.ptnet.org"},
+	{0,			"ipg.ptnet.org"},
 
 	{"QuakeNet", 0, 0, 0, LOGIN_CHALLENGEAUTH},
 	{0,			"irc.quakenet.org"},
@@ -299,6 +311,9 @@ static const struct defaultserver def[] =
 
 	{"Serenity-IRC",	0},
 	{0,			"irc.serenity-irc.net"},
+
+	{"SimosNap", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,            "irc.simosnap.com"},
 
 	{"SlashNET",	0},
 	/* Self signed */
@@ -341,7 +356,18 @@ static const struct defaultserver def[] =
 
 	{"Techtronix",	0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.techtronix.net"},
+	
+	{"tilde.chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.tilde.chat"},
 
+#ifdef USE_OPENSSL
+	{"TripSit", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.tripsit.me"},
+	{0,			"newirc.tripsit.me"},
+	{0,			"coconut.tripsit.me"},
+	{0,			"innsbruck.tripsit.me"},
+#endif	
+	
 	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
 	/* Other servers use CP1251 and invalid certs */
 	{0,			"irc.servx.ru"},
@@ -932,7 +958,7 @@ servlist_load_defaults (void)
 {
 	int i = 0, j = 0;
 	ircnet *net = NULL;
-	guint def_hash = g_str_hash ("freenode");
+	guint def_hash = g_str_hash ("Libera.Chat");
 
 	while (1)
 	{

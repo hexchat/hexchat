@@ -25,6 +25,9 @@
 
 static hexchat_plugin *ph;
 
+const int CHANNEL_FLAG_BALLOON       = 1 << 21;
+const int CHANNEL_FLAG_BALLOON_UNSET = 1 << 22;
+
 static gboolean
 should_alert (void)
 {
@@ -117,10 +120,24 @@ static int
 incoming_message_cb (char *word[], gpointer userdata)
 {
 	int message;
+	int flags;
+	int alert = 0;
 
-	if (hexchat_get_prefs (ph, "input_balloon_chans", NULL, &message) == 3 && message && should_alert ())
-	{
-		show_notificationf (word[2], _("Channel message from: %s (%s)"), word[1], hexchat_get_info (ph, "channel"));
+	flags = hexchat_list_int(ph, NULL, "flags");
+
+	/* Let sure that can alert */
+	if (should_alert()) {
+		/* Follow the channel rules if set */
+		if (!(flags & CHANNEL_FLAG_BALLOON_UNSET)) {
+			alert = (flags & CHANNEL_FLAG_BALLOON);
+		} else {
+			/* Else follow global environment */
+			alert = (hexchat_get_prefs(ph, "input_balloon_chans", NULL, &message) == 3 && message);
+		}
+	}
+
+	if (alert) {
+		show_notificationf(word[2], _("Channel message from: %s (%s)"), word[1], hexchat_get_info(ph, "channel"));
 	}
 	return HEXCHAT_EAT_NONE;
 }
@@ -129,8 +146,23 @@ static int
 incoming_priv_cb (char *word[], gpointer userdata)
 {
 	int priv;
+	int flags;
+	int alert = 0;
 
-	if (hexchat_get_prefs (ph, "input_balloon_priv", NULL, &priv) == 3 && priv && should_alert ())
+	flags = hexchat_list_int(ph, NULL, "flags");
+
+	/* Let sure that can alert */
+	if (should_alert()) {
+		/* Follow the private rules if set */
+		if (!(flags & CHANNEL_FLAG_BALLOON_UNSET)) {
+			alert = (flags & CHANNEL_FLAG_BALLOON);
+		} else {
+			/* Else follow global environment */
+			alert = (hexchat_get_prefs(ph, "input_balloon_priv", NULL, &priv) == 3 && priv);
+		}
+	}
+
+	if (alert)
 	{
 		const char *network = hexchat_get_info (ph, "network");
 		if (!network)
