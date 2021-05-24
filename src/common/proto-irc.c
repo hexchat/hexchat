@@ -1165,13 +1165,14 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		case WORDL('I','N','V','I'):
 			if (ignore_check (word[1], IG_INVI))
 				return;
-			
-			if (word[4][0] == ':')
-				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, word[4] + 1, nick,
-											  serv->servername, NULL, 0,
+
+			text = STRIP_COLON(word, word_eol, 4);
+			if (serv->p_cmp (word[3], serv->nick))
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITEDOTHER, sess, text, nick,
+											  word[3], serv->servername, 0,
 											  tags_data->timestamp);
 			else
-				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, word[4], nick,
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, text, nick,
 											  serv->servername, NULL, 0,
 											  tags_data->timestamp);
 				
