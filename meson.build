@@ -1,6 +1,6 @@
 project('hexchat', 'c',
-  version: '2.14.1',
-  meson_version: '>= 0.38.0',
+  version: '2.14.3',
+  meson_version: '>= 0.40.0',
   default_options: [
     'c_std=gnu89',
     'buildtype=debugoptimized',
@@ -49,6 +49,10 @@ config_h.set('GLIB_VERSION_MIN_REQUIRED', 'GLIB_VERSION_2_34')
 config_h.set('HAVE_MEMRCHR', cc.has_function('memrchr'))
 config_h.set('HAVE_STRINGS_H', cc.has_header('strings.h'))
 
+config_h.set_quoted('HEXCHATLIBDIR',
+  join_paths(get_option('prefix'), get_option('libdir'), 'hexchat/plugins')
+)
+
 if libssl_dep.found()
   config_h.set('HAVE_X509_GET_SIGNATURE_NID',
     cc.has_function('X509_get_signature_nid', dependencies: libssl_dep)
@@ -87,8 +91,6 @@ endif
 
 global_cflags = []
 test_cflags = [
-  '-pipe',
-  '-fPIE',
   '-funsigned-char',
   '-Wno-conversion',
   '-Wno-pointer-sign',
@@ -132,11 +134,19 @@ test_ldflags = [
   '-Wl,-z,relro',
   '-Wl,-z,now',
   # mingw
-  '-Wl,--dynamicbase',
   '-Wl,--nxcompat',
 ]
+if not (host_machine.system() == 'windows' and get_option('debug'))
+ test_ldflags += '-Wl,--dynamicbase'
+endif
 foreach ldflag : test_ldflags
-  if cc.has_argument(ldflag) and cc.links('int main (void) { return 0; }', args: ldflag)
+  if meson.version().version_compare('>= 0.46.0')
+    has_arg = cc.has_link_argument(ldflag)
+  else
+    has_arg = cc.has_argument(ldflag)
+  endif
+
+  if has_arg and cc.links('int main (void) { return 0; }', args: ldflag)
     global_ldflags += ldflag
   endif
 endforeach

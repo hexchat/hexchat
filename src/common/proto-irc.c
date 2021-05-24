@@ -60,8 +60,8 @@ irc_login (server *serv, char *user, char *realname)
 
 	tcp_sendf (serv,
 				  "NICK %s\r\n"
-				  "USER %s %s %s :%s\r\n",
-				  serv->nick, user, user, serv->servername, realname);
+				  "USER %s 0 * :%s\r\n",
+				  serv->nick, user, realname);
 }
 
 static void
@@ -454,7 +454,8 @@ channel_date (session *sess, char *chan, char *timestr,
 {
 	time_t timestamp = (time_t) atol (timestr);
 	char *tim = ctime (&timestamp);
-	tim[24] = 0;	/* get rid of the \n */
+	if (tim != NULL)
+		tim[24] = 0;	/* get rid of the \n */
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANDATE, sess, chan, tim, NULL, NULL, 0,
 								  tags_data->timestamp);
 }
@@ -602,7 +603,8 @@ process_numeric (session * sess, int n,
 			else
 			{
 				tim = ctime (&timestamp);
-				tim[19] = 0; 	/* get rid of the \n */
+				if (tim != NULL)
+					tim[19] = 0; 	/* get rid of the \n */
 				EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS4T, whois_sess, word[4],
 											  outbuf, tim, NULL, 0, tags_data->timestamp);
 			}
@@ -621,7 +623,7 @@ process_numeric (session * sess, int n,
 	case 319:
 		if (!serv->skip_next_whois)
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS2, whois_sess, word[4],
-										  word_eol[5] + 1, NULL, NULL, 0,
+										  word_eol[5][0] == ':' ? word_eol[5] + 1 : word_eol[5], NULL, NULL, 0,
 										  tags_data->timestamp);
 		break;
 
@@ -714,7 +716,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 333:
-		inbound_topictime (serv, word[4], word[5], atol (word[6]), tags_data);
+		inbound_topictime (serv, word[4], word[5], atol (STRIP_COLON(word, word_eol, 6)), tags_data);
 		break;
 
 #if 0
@@ -726,7 +728,7 @@ process_numeric (session * sess, int n,
 #endif
 
 	case 341:						  /* INVITE ACK */
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], word[5],
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], STRIP_COLON(word, word_eol, 5),
 									  serv->servername, NULL, 0, tags_data->timestamp);
 		break;
 
@@ -957,6 +959,7 @@ process_numeric (session * sess, int n,
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_SASLRESPONSE, serv->server_session, word[1],
 									  word[2], word[3], ++word_eol[4], 0,
 									  tags_data->timestamp);
+		serv->waiting_on_sasl = FALSE;
 		if (!serv->sent_capend)
 		{
 			serv->sent_capend = TRUE;
@@ -1142,7 +1145,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		{
 
 		case WORDL('A','C','C','O'):
-			inbound_account (serv, nick, word[3], tags_data);
+			inbound_account (serv, nick, STRIP_COLON(word, word_eol, 3), tags_data);
 			return;
 
 		case WORDL('A', 'U', 'T', 'H'):
@@ -1150,20 +1153,26 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			return;
 
 		case WORDL('C', 'H', 'G', 'H'):
-			inbound_user_info (sess, NULL, word[3], word[4], NULL, nick, NULL,
+			inbound_user_info (sess, NULL, word[3], STRIP_COLON(word, word_eol, 4), NULL, nick, NULL,
+							   NULL, 0xff, tags_data);
+			return;
+
+		case WORDL('S', 'E', 'T', 'N'):
+			inbound_user_info (sess, NULL, NULL, NULL, NULL, nick, STRIP_COLON(word, word_eol, 3),
 							   NULL, 0xff, tags_data);
 			return;
 
 		case WORDL('I','N','V','I'):
 			if (ignore_check (word[1], IG_INVI))
 				return;
-			
-			if (word[4][0] == ':')
-				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, word[4] + 1, nick,
-											  serv->servername, NULL, 0,
+
+			text = STRIP_COLON(word, word_eol, 4);
+			if (serv->p_cmp (word[3], serv->nick))
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITEDOTHER, sess, text, nick,
+											  word[3], serv->servername, 0,
 											  tags_data->timestamp);
 			else
-				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, word[4], nick,
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITED, sess, text, nick,
 											  serv->servername, NULL, 0,
 											  tags_data->timestamp);
 				
@@ -1330,7 +1339,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 				else if (strncasecmp (word[4], "NAK", 3) == 0)
 				{
-					inbound_cap_nak (serv, tags_data);
+					inbound_cap_nak (serv, word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5], tags_data);
 				}
 				else if (strncasecmp (word[4], "LIST", 4) == 0)	
 				{

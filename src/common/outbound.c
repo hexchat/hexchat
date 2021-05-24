@@ -3287,7 +3287,7 @@ cmd_send (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[2][0])
 		return FALSE;
 
-	addr = dcc_get_my_address ();
+	addr = dcc_get_my_address (sess);
 	if (addr == 0)
 	{
 		/* use the one from our connected server socket */

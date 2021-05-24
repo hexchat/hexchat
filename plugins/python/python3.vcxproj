@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Configuration">
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
@@ -37,6 +37,9 @@
       <AdditionalDependencies>"$(Python3Lib).lib";$(DepLibs);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(Python3Path)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(Python3Path)\python.exe" generate_plugin.py ..\..\src\common\hexchat-plugin.h python.py "$(IntDir)python.c"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -48,12 +51,20 @@
       <AdditionalDependencies>"$(Python3Lib).lib";$(DepLibs);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(Python3Path)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(Python3Path)\python.exe" generate_plugin.py ..\..\src\common\hexchat-plugin.h python.py "$(IntDir)python.c"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="generate_plugin.py" />
+    <None Include="hexchat.py" />
     <None Include="python.def" />
+    <None Include="python.py" />
+    <None Include="xchat.py" />
+    <None Include="_hexchat.py" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="python.c" />
+    <ClCompile Include="$(IntDir)python.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

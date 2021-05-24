@@ -75,7 +75,7 @@
 #define DOMAINLEN	100
 #define NICKLEN		64				/* including the NULL, so 63 really */
 #define CHANLEN		300
-#define PDIWORDS		32
+#define PDIWORDS	32
 #define USERNAMELEN 10
 #define HIDDEN_CHAR	8			/* invisible character for xtext */
 
@@ -301,8 +301,8 @@ struct hexchatprefs
 	char hex_irc_user_name[127];
 	char hex_net_bind_host[127];
 	char hex_net_proxy_host[64];
-	char hex_net_proxy_pass[32];
-	char hex_net_proxy_user[32];
+	char hex_net_proxy_pass[256];
+	char hex_net_proxy_user[256];
 	char hex_stamp_log_format[64];
 	char hex_stamp_text_format[64];
 	char hex_text_background[PATHLEN + 1];
@@ -313,7 +313,6 @@ struct hexchatprefs
 
 	/* these are the private variables */
 	guint32 local_ip;
-	guint32 dcc_ip;
 
 	unsigned int wait_on_exit;	/* wait for logs to be flushed to disk IF we're connected */
 
@@ -482,6 +481,10 @@ typedef struct server
 	int proxy_sok4;
 	int proxy_sok6;
 	int id;					/* unique ID number (for plugin API) */
+
+	/* dcc_ip moved from hexchatprefs to make it per-server */
+	guint32 dcc_ip;
+
 #ifdef USE_OPENSSL
 	SSL_CTX *ctx;
 	SSL *ssl;
@@ -575,6 +578,7 @@ typedef struct server
 	unsigned int sasl_mech;			/* mechanism for sasl auth */
 	unsigned int sent_capend:1;	/* have sent CAP END yet */
 	unsigned int waiting_on_cap:1;	/* waiting on another line of CAP LS */
+	unsigned int waiting_on_sasl:1; /* waiting on sasl */
 #ifdef USE_OPENSSL
 	unsigned int use_ssl:1;				  /* is server SSL capable? */
 	unsigned int accept_invalid_cert:1;/* ignore result of server's cert. verify */

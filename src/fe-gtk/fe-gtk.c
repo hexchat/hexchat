@@ -293,10 +293,10 @@ create_input_style (GtkStyle *style)
 		GtkSettings *settings = gtk_settings_get_default ();
 		char *theme_name;
 
-		/* gnome-themes-standard 3.20 relies on images to do theming
+		/* gnome-themes-standard 3.20+ relies on images to do theming
 		 * so we have to override that. */
 		g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
-		if (g_str_has_prefix (theme_name, "Adwaita"))
+		if (g_str_has_prefix (theme_name, "Adwaita") || g_str_has_prefix (theme_name, "Yaru"))
 			gtk_rc_parse_string (adwaita_workaround_rc);
 		g_free (theme_name);
 

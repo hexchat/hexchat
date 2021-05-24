@@ -103,27 +103,55 @@ static gchar *get_nick_value(GKeyFile *keyfile, const char *nick, const char *it
 /**
  * Extracts a key from the key store file.
  */
-char *keystore_get_key(const char *nick) {
+char *keystore_get_key(const char *nick, enum fish_mode *mode) {
+    GKeyFile *keyfile;
+    char *escaped_nick;
+    gchar *value, *key_mode;
+    int encrypted_mode;
+    char *password;
+    char *encrypted;
+    char *decrypted;
+
     /* Get the key */
-    GKeyFile *keyfile = getConfigFile();
-    char *escaped_nick = escape_nickname(nick);
-    gchar *value = get_nick_value(keyfile, escaped_nick, "key");
+    keyfile = getConfigFile();
+    escaped_nick = escape_nickname(nick);
+    value = get_nick_value(keyfile, escaped_nick, "key");
+    key_mode = get_nick_value(keyfile, escaped_nick, "mode");
     g_key_file_free(keyfile);
     g_free(escaped_nick);
 
+    /* Determine cipher mode */
+    *mode = FISH_ECB_MODE;
+    if (key_mode) {
+        if (*key_mode == '1')
+            *mode = FISH_ECB_MODE;
+        else if (*key_mode == '2')
+            *mode = FISH_CBC_MODE;
+        g_free(key_mode);
+    }
+
     if (!value)
         return NULL;
-    
-    if (strncmp(value, "+OK ", 4) != 0) {
-        /* Key is stored in plaintext */
-        return value;
-    } else {
+
+    if (strncmp(value, "+OK ", 4) == 0) {
         /* Key is encrypted */
-        const char *encrypted = value+4;
-        const char *password = get_keystore_password();
-        char *decrypted = fish_decrypt(password, strlen(password), encrypted);
+        encrypted = (char *) value;
+        encrypted += 4;
+
+        encrypted_mode = FISH_ECB_MODE;
+
+        if (*encrypted == '*') {
+            ++encrypted;
+            encrypted_mode = FISH_CBC_MODE;
+        }
+
+        password = (char *) get_keystore_password();
+        decrypted = fish_decrypt_str((const char *) password, strlen(password), (const char *) encrypted, encrypted_mode);
         g_free(value);
         return decrypted;
+    } else {
+        /* Key is stored in plaintext */
+        return value;
     }
 }
 
@@ -189,7 +217,7 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 /**
  * Sets a key in the key store file.
  */
-gboolean keystore_store_key(const char *nick, const char *key) {
+gboolean keystore_store_key(const char *nick, const char *key, enum fish_mode mode) {
     const char *password;
     char *encrypted;
     char *wrapped;
@@ -204,11 +232,11 @@ gboolean keystore_store_key(const char *nick, const char *key) {
     password = get_keystore_password();
     if (password) {
         /* Encrypt the password */
-        encrypted = fish_encrypt(password, strlen(password), key);
+        encrypted = fish_encrypt(password, strlen(password), key, strlen(key), FISH_CBC_MODE);
         if (!encrypted) goto end;
         
         /* Prepend "+OK " */
-        wrapped = g_strconcat("+OK ", encrypted, NULL);
+        wrapped = g_strconcat("+OK *", encrypted, NULL);
         g_free(encrypted);
         
         /* Store encrypted in file */
@@ -218,6 +246,9 @@ gboolean keystore_store_key(const char *nick, const char *key) {
         /* Store unencrypted in file */
         g_key_file_set_string(keyfile, escaped_nick, "key", key);
     }
+
+    /* Store cipher mode */
+    g_key_file_set_integer(keyfile, escaped_nick, "mode", mode);
     
     /* Save key store file */
     ok = save_keystore(keyfile);
