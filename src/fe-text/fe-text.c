@@ -837,7 +837,7 @@ fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 	/* only one action type handled for now, but could add more */
 	switch (action)
 	{
-	/* gui focus is really the only case hexchat-text needs to wory about */
+	/* gui focus is really the only case hexchat-text needs to worry about */
 	case FE_GUI_FOCUS:
 		current_sess = sess;
 		current_tab = sess;

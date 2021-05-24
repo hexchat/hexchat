@@ -518,6 +518,8 @@ struct
 	{ "pop",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "nfs",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
 	{ "smb",       "/", URI_AUTHORITY | URI_OPT_USERINFO | URI_PATH },
+	{ "gopher",    "/", URI_AUTHORITY | URI_PATH },
+	{ "gemini",    "/", URI_AUTHORITY | URI_PATH },
 	{ "ssh",       "",  URI_AUTHORITY | URI_OPT_USERINFO },
 	{ "sip",       "",  URI_AUTHORITY | URI_USERINFO },
 	{ "sips",      "",  URI_AUTHORITY | URI_USERINFO },
