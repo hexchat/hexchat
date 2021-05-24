@@ -103,10 +103,8 @@ userlist_set_account (struct session *sess, char *nick, char *account)
 	{
 		if (strcmp (account, "*") == 0)
 		{
-			g_free (user->account);
-			user->account = NULL;
-		}
-		else if (g_strcmp0 (user->account, account))
+			g_clear_pointer (&user->account, g_free);
+		} else if (g_strcmp0 (user->account, account))
 		{
 			g_free (user->account);
 			user->account = g_strdup (account);
