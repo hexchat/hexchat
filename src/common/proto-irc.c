@@ -1029,7 +1029,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		ex[0] = '!';
 
 		account = tags_data->account && *tags_data->account ? tags_data->account : "*";
-		userlist_set_account (sess, nick, account);
+		inbound_account (serv, nick, account, tags_data);
 	}
 
 	if (len == 4)
