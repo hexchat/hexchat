@@ -493,6 +493,7 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->logfd = -1;
 	sess->type = type;
 
+	sess->alert_balloon = SET_DEFAULT;
 	sess->alert_beep = SET_DEFAULT;
 	sess->alert_taskbar = SET_DEFAULT;
 	sess->alert_tray = SET_DEFAULT;

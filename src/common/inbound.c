@@ -1671,6 +1671,8 @@ inbound_toggle_caps (server *serv, const char *extensions_str, gboolean enable)
 			serv->have_server_time = enable;
 		else if (!strcmp (extension, "away-notify"))
 			serv->have_awaynotify = enable;
+		else if (!strcmp (extension, "account-tag"))
+			serv->have_account_tag = enable;
 		else if (!strcmp (extension, "sasl"))
 		{
 			serv->have_sasl = enable;
@@ -1724,6 +1726,9 @@ static const char * const supported_caps[] = {
 	"userhost-in-names",
 	"cap-notify",
 	"chghost",
+	"setname",
+	"invite-notify",
+	"account-tag",
 
 	/* ZNC */
 	"znc.in/server-time-iso",
