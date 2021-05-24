@@ -198,6 +198,7 @@ static const struct defaultserver def[] =
 #ifdef USE_OPENSSL
 	{"hackint", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.hackint.org"},
+	{0,			"irc.eu.hackint.org"},
 #endif
 
 	{"Hashmark",	0},

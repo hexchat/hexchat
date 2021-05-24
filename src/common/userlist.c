@@ -101,13 +101,15 @@ userlist_set_account (struct session *sess, char *nick, char *account)
 	user = userlist_find (sess, nick);
 	if (user)
 	{
-		g_free (user->account);
-			
 		if (strcmp (account, "*") == 0)
-			user->account = NULL;
-		else
+		{
+			g_clear_pointer (&user->account, g_free);
+		} else if (g_strcmp0 (user->account, account))
+		{
+			g_free (user->account);
 			user->account = g_strdup (account);
-			
+		}
+
 		/* gui doesnt currently reflect login status, maybe later
 		fe_userlist_rehash (sess, user); */
 	}
