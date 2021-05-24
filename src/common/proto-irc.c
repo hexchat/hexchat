@@ -1167,7 +1167,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				return;
 
 			text = STRIP_COLON(word, word_eol, 4);
-			if (g_strcmp0 (word[3], serv->nick))
+			if (serv->p_cmp (word[3], serv->nick))
 				EMIT_SIGNAL_TIMESTAMP (XP_TE_INVITEDOTHER, sess, text, nick,
 											  word[3], serv->servername, 0,
 											  tags_data->timestamp);
