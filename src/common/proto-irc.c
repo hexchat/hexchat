@@ -1010,6 +1010,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						 const message_tags_data *tags_data)
 {
 	server *serv = sess->server;
+	char *account;
 	char ip[128], nick[NICKLEN];
 	char *text, *ex;
 	int len = strlen (type);
@@ -1026,6 +1027,14 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		ex[0] = 0;
 		safe_strcpy (nick, word[1], sizeof (nick));
 		ex[0] = '!';
+	}
+
+
+	/** Update the account for this message's source. */
+	if (serv->have_account_tag)
+	{
+		account = tags_data->account && *tags_data->account ? tags_data->account : "*";
+		inbound_account (serv, nick, account, tags_data);
 	}
 
 	if (len == 4)
@@ -1522,6 +1531,9 @@ handle_message_tags (server *serv, const char *tags_str,
 		*value = '\0';
 		value++;
 
+		if (serv->have_account_tag && !strcmp (key, "account"))
+			tags_data->account = g_strdup (value);
+
 		if (serv->have_server_time && !strcmp (key, "time"))
 			handle_message_tag_time (value, tags_data);
 	}
@@ -1619,7 +1631,14 @@ irc_inline (server *serv, char *buf, int len)
 	}
 
 xit:
+	message_tags_data_free (&tags_data);
 	g_free (pdibuf);
+}
+
+void
+message_tags_data_free (message_tags_data *tags_data)
+{
+	g_clear_pointer (&tags_data->account, g_free);
 }
 
 void
