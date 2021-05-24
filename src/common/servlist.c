@@ -58,7 +58,7 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.accessirc.net"},
 
-	{"ACN", 0},
+	{"ACN", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"global.acn.gr"},
 
 	{"AfterNET", 0, 0, 0, LOGIN_SASL, 0, TRUE},
