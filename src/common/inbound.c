@@ -107,7 +107,8 @@ find_session_from_nick (char *nick, server *serv)
 
 	if (serv->front_session)
 	{
-		if (userlist_find (serv->front_session, nick))
+		// If we are here for ChanServ, then it is usually a reply for the user
+		if (!g_ascii_strcasecmp(nick, "ChanServ") || userlist_find (serv->front_session, nick))
 			return serv->front_session;
 	}
 
