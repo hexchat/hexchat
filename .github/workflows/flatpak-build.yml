@@ -1,0 +1,17 @@
+name: Flatpak Build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:gnome-40
+      options: --privileged
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v3
+      with:
+        bundle: hexchat.flatpak
+        manifest-path: flatpak/io.github.Hexchat.json

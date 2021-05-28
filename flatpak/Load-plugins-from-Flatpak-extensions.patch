@@ -1,0 +1,25 @@
+From 918503d57c6740d20be68a6717158673a2a8b25f Mon Sep 17 00:00:00 2001
+From: Patrick Griffis <tingping@tingping.se>
+Date: Sat, 17 Mar 2018 05:57:49 -0400
+Subject: [PATCH] Support loading Flatpak extensions
+
+---
+ src/common/plugin.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/common/plugin.c b/src/common/plugin.c
+index 3ad3c558..6addf962 100644
+--- a/src/common/plugin.c
++++ b/src/common/plugin.c
+@@ -450,6 +450,8 @@ plugin_auto_load (session *sess)
+ 	lib_dir = plugin_get_libdir ();
+ 	sub_dir = g_build_filename (get_xdir (), "addons", NULL);
+ 
++	for_files ("/app/extensions/lib/hexchat/plugins", "*.so", plugin_auto_load_cb);
++
+ #ifdef WIN32
+ 	/* a long list of bundled plugins that should be loaded automatically,
+ 	 * user plugins should go to <config>, leave Program Files alone! */
+-- 
+2.14.3
+

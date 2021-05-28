@@ -1,0 +1,79 @@
+{
+  "app-id": "io.github.Hexchat",
+  "branch": "stable",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "40",
+  "sdk": "org.gnome.Sdk",
+  "command": "hexchat",
+  "rename-icon": "hexchat",
+  "finish-args": [
+    "--share=ipc",
+    "--socket=x11",
+    "--share=network",
+    "--socket=pulseaudio",
+    "--filesystem=xdg-download",
+
+    "--talk-name=org.freedesktop.Notifications",
+
+    "--talk-name=org.mpris.MediaPlayer2.*"
+  ],
+  "add-extensions": {
+    "io.github.Hexchat.Plugin": {
+      "version": "20.08",
+      "directory": "extensions",
+      "add-ld-path": "lib",
+      "merge-dirs": "lib/hexchat/plugins",
+      "subdirectories": true,
+      "no-autodownload": true,
+      "autodelete": true
+    }
+  },
+  "modules": [
+    "shared-modules/gtk2/gtk2.json",
+    "shared-modules/gtk2/gtk2-common-themes.json",
+    "shared-modules/dbus-glib/dbus-glib-0.110.json",
+    "shared-modules/lua5.3/lua-5.3.5.json",
+    "shared-modules/libcanberra/libcanberra.json",
+    "python3-cffi.json",
+    {
+      "name": "lgi",
+      "buildsystem": "meson",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://github.com/pavouk/lgi.git",
+          "commit": "95418635aa8151a516d43166227ea2b9d4c4403f"
+        }
+      ]
+    },
+    {
+      "name": "hexchat",
+      "buildsystem": "meson",
+      "config-opts": [
+        "--buildtype=release",
+        "-Ddbus-service-use-appid=true",
+        "-Dwith-perl=false",
+        "-Dwith-lua=lua"
+      ],
+      "build-options": {
+        "cflags": "-Wno-error=missing-include-dirs"
+      },
+      "cleanup": [
+        "/share/man"
+      ],
+      "post-install": [
+        "install -d /app/extensions"
+      ],
+      "sources": [
+        {
+          "type": "dir",
+          "path": ".."
+        },
+        {
+          "type": "patch",
+          "path": "Load-plugins-from-Flatpak-extensions.patch"
+        }
+      ]
+    }
+  ]
+}
