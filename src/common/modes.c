@@ -825,7 +825,7 @@ parse_005_token (const char *token, char **name, char **value, gboolean *adding)
 				for (idx = 0; idx < 4; ++idx)
 				{
 					/* We need to do this to avoid jumping past the end of the array. */
-					if (toksplit)
+					if (*toksplit)
 						toksplit++;
 				}
 			} else
