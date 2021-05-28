@@ -891,7 +891,7 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 			serv->supports_monitor = tokadding;
 		} else if (g_strcmp0 (tokname, "NETWORK") == 0)
 		{
-			if (serv->server_session->type == SESS_SERVER)
+			if (serv->server_session->type == SESS_SERVER && strlen (tokvalue))
 			{
 				safe_strcpy (serv->server_session->channel, tokvalue, CHANLEN);
 				fe_set_channel (serv->server_session);
