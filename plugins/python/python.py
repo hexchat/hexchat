@@ -198,7 +198,7 @@ else:
 
 # There can be empty entries between non-empty ones so find the actual last value
 def wordlist_len(words):
-    for i in range(31, 1, -1):
+    for i in range(31, 0, -1):
         if ffi.string(words[i]):
             return i
 
