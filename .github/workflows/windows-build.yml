@@ -2,8 +2,41 @@ name: Windows Build
 on: [push, pull_request]
 
 jobs:
+  build-gtk:
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        platform: [x64, win32]
+        arch: [x64, x86]
+        exclude:
+          - platform: x64
+            arch: x86
+          - platform: win32
+            arch: x64
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: wingtk/gvsbuild
+          ref: 9b10978a8c5aa539f4280feeaa69bc5cc8bf9fbf
+
+      - uses: actions/cache@v2
+        with:
+          path: C:\gtk-build
+          key: 9b10978a8c5aa539f4280feeaa69bc5cc8bf9fbf
+
+      - name: Build
+        run: |
+          C:/hostedtoolcache/windows/Python/3.6.8/${{ matrix.arch }}/python.exe .\build.py build --python-dir="C:/hostedtoolcache/windows/Python/3.6.8/${{ matrix.arch }}" -p ${{ matrix.arch }} --vs-ver=16 gtk lgi openssl
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Build Files ${{ matrix.arch }}
+          path: C:\gtk-build\gtk\${{ matrix.platform }}\release
+
   build:
     runs-on: windows-2019
+    needs: build-gtk
     strategy:
       matrix:
         platform: [x64, win32]
