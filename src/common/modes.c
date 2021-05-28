@@ -792,7 +792,7 @@ hex_to_chr(char chr)
 }
 
 static void
-parse_005_token (const char *token, char **name, char** value, gboolean* adding)
+parse_005_token (const char *token, char **name, char **value, gboolean *adding)
 {
 	char *toksplit, *valuecurr;
 
