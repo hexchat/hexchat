@@ -798,7 +798,7 @@ parse_005_token (const char *token, char **name, char **value, gboolean *adding)
 
 	if (token[0] == '-')
 	{
-		adding = FALSE;
+		*adding = FALSE;
 		token++;
 	} else
 	{
