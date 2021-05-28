@@ -17,8 +17,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
 
       - name: Install Dependencies
         run: |
@@ -63,12 +61,12 @@ jobs:
           move ..\hexchat-build .\
         shell: cmd
 
-      - uses: actions/upload-artifact@v2-preview
+      - uses: actions/upload-artifact@v2
         with:
-          name: Installer
+          name: Installer ${{ matrix.arch }}
           path: HexChat*.exe
 
-      - uses: actions/upload-artifact@v2-preview
+      - uses: actions/upload-artifact@v2
         with:
-          name: Build
+          name: Build Files ${{ matrix.arch  }}
           path: hexchat-build
