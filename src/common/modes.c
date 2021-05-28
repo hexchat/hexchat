@@ -795,6 +795,7 @@ static void
 parse_005_token (const char *token, char **name, char **value, gboolean *adding)
 {
 	char *toksplit, *valuecurr;
+	size_t idx;
 
 	if (token[0] == '-')
 	{
@@ -821,7 +822,12 @@ parse_005_token (const char *token, char **name, char **value, gboolean *adding)
 				if (toksplit[1] == 'x' && g_ascii_isxdigit (toksplit[2]) && g_ascii_isxdigit (toksplit[3]))
 					*valuecurr++ = hex_to_chr (toksplit[2]) << 4 | hex_to_chr (toksplit[3]);
 
-				toksplit += 4;
+				for (idx = 0; idx < 4; ++idx)
+				{
+					/* We need to do this to avoid jumping past the end of the array. */
+					if (toksplit)
+						toksplit++;
+				}
 			} else
 			{
 				/** Non-escape characters can be copied as is. */
