@@ -1,0 +1,40 @@
+name: MSYS2 Build
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-python3-cffi
+            mingw-w64-x86_64-meson
+            mingw-w64-x86_64-gtk2
+            mingw-w64-x86_64-luajit
+            mingw-w64-x86_64-desktop-file-utils
+
+      - name: Configure
+        run: >-
+          meson build
+          -Dtext-frontend=true
+          -Ddbus=disabled
+          -Dwith-upd=false
+          -Dwith-perl=false
+
+      - name: Build
+        run: ninja -C build
+
+      - name: Test
+        run: ninja -C build test
+
+      - name: Install
+        run: ninja -C build install
