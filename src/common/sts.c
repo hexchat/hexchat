@@ -28,6 +28,28 @@
 
 GSList *profiles = NULL;
 
+struct sts_profile *
+sts_find (const char* host)
+{
+	time_t now;
+	GList *next;
+	struct sts_profile *nextprofile;
+
+	now = time (NULL);
+	for (next = profiles; next; next = next->next)
+	{
+		nextprofile = (struct sts_profile *)next->data;
+		if (now >= nextprofile->expiry)
+			continue; /* Profile has expired. */
+
+		if (!g_strcmp0 (host, nextprofile->host))
+			return nextprofile; /* We found the right profile! */
+	}
+
+	/* No profile for this host. */
+	return NULL;
+}
+
 void
 sts_load (void)
 {

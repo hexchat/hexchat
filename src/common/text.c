@@ -1289,6 +1289,10 @@ static char * const pevt_sslmessage_help[] = {
 	N_("Server Name")
 };
 
+static char * const pevt_stsredir_help[] = {
+	N_("Server Name"),
+};
+
 static char * const pevt_invited_help[] = {
 	N_("Channel Name"),
 	N_("Nick of person who invited you"),

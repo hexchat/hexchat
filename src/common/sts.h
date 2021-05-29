@@ -40,6 +40,10 @@ struct sts_profile
 	time_t expiry;
 };
 
+
+/* Searches for a STS profile that matches the specified hostname */
+struct sts_profile *sts_find (const char *host);
+
 /* Loads STS profiles from sts.conf */
 void sts_load (void);
 
