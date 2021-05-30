@@ -40,9 +40,9 @@
 #define SERVLIST_Y_PADDING 0			/* vertical padding in the network editor */
 
 #ifdef USE_OPENSSL
-# define DEFAULT_SERVER "irc.example.com/6697"
+# define DEFAULT_SERVER "newserver/6697"
 #else
-# define DEFAULT_SERVER "irc.example.com/6667"
+# define DEFAULT_SERVER "newserver/6667"
 #endif
 
 /* servlistgui.c globals */
