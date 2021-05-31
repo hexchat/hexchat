@@ -3227,17 +3227,21 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		int offset = 0;
 
 #ifdef USE_OPENSSL
+		int use_ssl = FALSE;
+		int use_ssl_noverify = FALSE;
 		if (g_strcmp0 (word[2], "-ssl") == 0)
 		{
-			serv->use_ssl = TRUE;
-			serv->accept_invalid_cert = FALSE;
+			use_ssl = TRUE;
+			use_ssl_noverify = FALSE;
 			offset++;	/* args move up by 1 word */
 		} else if (g_strcmp0 (word[2], "-ssl-noverify") == 0)
 		{
-			serv->use_ssl = TRUE;
-			serv->accept_invalid_cert = TRUE;
+			use_ssl = TRUE;
+			use_ssl_noverify = TRUE;
 			offset++;	/* args move up by 1 word */
 		}
+		serv->use_ssl = use_ssl;
+		serv->accept_invalid_cert = use_ssl_noverify;
 #endif
 
 		if (*word[4+offset])
