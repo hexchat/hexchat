@@ -460,6 +460,18 @@ channel_date (session *sess, char *chan, char *timestr,
 								  tags_data->timestamp);
 }
 
+static int
+trailing_index(char *word_eol[])
+{
+	int index;
+	for (index = 3; index < PDIWORDS; ++index)
+	{
+		if (word_eol[index][0] == ':')
+			break;
+	}
+	return index;
+}
+
 static void
 process_numeric (session * sess, int n,
 					  char *word[], char *word_eol[], char *text,
@@ -1138,6 +1150,39 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			inbound_away_notify (serv, nick,
 										(word_eol[3][0] == ':') ? word_eol[3] + 1 : NULL,
 										tags_data);
+			return;
+
+		case WORDL('F','A','I','L'):
+			text = STRIP_COLON(word, word_eol, trailing_index(word_eol));
+			if (g_strcmp0(word[3], "*") == 0)
+			{
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_FAIL, sess, word[4], text, NULL, NULL, NULL, tags_data->timestamp);
+			} else
+			{
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_FAILCMD, sess, word[3], word[4], text, NULL, NULL, tags_data->timestamp);
+			}
+			return;
+
+		case WORDL('W','A','R','N'):
+			text = STRIP_COLON(word, word_eol, trailing_index(word_eol));
+			if (g_strcmp0(word[3], "*") == 0)
+			{
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_WARN, sess, word[4], text, NULL, NULL, NULL, tags_data->timestamp);
+			} else
+			{
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_WARNCMD, sess, word[3], word[4], text, NULL, NULL, tags_data->timestamp);
+			}
+			return;
+
+		case WORDL('N','O','T','E'):
+			text = STRIP_COLON(word, word_eol, trailing_index(word_eol));
+			if (g_strcmp0(word[3], "*") == 0)
+			{
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTE, sess, word[4], text, NULL, NULL, NULL, tags_data->timestamp);
+			} else
+			{
+				EMIT_SIGNAL_TIMESTAMP (XP_TE_NOTECMD, sess, word[3], word[4], text, NULL, NULL, tags_data->timestamp);
+			}
 			return;
 		}
 
