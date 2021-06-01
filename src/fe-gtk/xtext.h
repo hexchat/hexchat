@@ -29,16 +29,17 @@
 #define GTK_IS_XTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_XTEXT))
 #define GTK_XTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_XTEXT, GtkXTextClass))
 
-#define ATTR_BOLD			'\002'
-#define ATTR_COLOR		'\003'
-#define ATTR_BLINK		'\006'
-#define ATTR_BEEP			'\007'
-#define ATTR_HIDDEN		'\010'
-#define ATTR_ITALICS2	'\011'
-#define ATTR_RESET		'\017'
-#define ATTR_REVERSE		'\026'
-#define ATTR_ITALICS		'\035'
-#define ATTR_UNDERLINE	'\037'
+#define ATTR_BOLD				'\002'
+#define ATTR_COLOR			'\003'
+#define ATTR_BLINK			'\006'
+#define ATTR_BEEP				'\007'
+#define ATTR_HIDDEN			'\010'
+#define ATTR_ITALICS2		'\011'
+#define ATTR_RESET			'\017'
+#define ATTR_REVERSE			'\026'
+#define ATTR_ITALICS			'\035'
+#define ATTR_STRIKETHROUGH	'\036'
+#define ATTR_UNDERLINE		'\037'
 
 /* these match palette.h */
 #define XTEXT_MIRC_COLS 32
@@ -207,6 +208,7 @@ struct _GtkXText
 
 	/* current text states */
 	unsigned int underline:1;
+	unsigned int strikethrough:1;
 	unsigned int hidden:1;
 
 	/* text parsing states */
