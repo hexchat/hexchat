@@ -390,6 +390,17 @@ insert_italic (SexySpellEntry *entry, guint start, gboolean toggle)
 }
 
 static void
+insert_strikethrough (SexySpellEntry *entry, guint start, gboolean toggle)
+{
+	PangoAttribute *sattr;
+
+	sattr  = pango_attr_strikethrough_new (!toggle);
+	sattr->start_index = start;
+	sattr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
+	pango_attr_list_change (entry->priv->attr_list, sattr);
+}
+
+static void
 insert_color (SexySpellEntry *entry, guint start, int fgcolor, int bgcolor)
 {
 	PangoAttribute *fgattr;
@@ -429,6 +440,7 @@ insert_reset (SexySpellEntry *entry, guint start)
 	insert_bold (entry, start, TRUE);
 	insert_underline (entry, start, TRUE);
 	insert_italic (entry, start, TRUE);
+	insert_strikethrough (entry, start, TRUE);
 	insert_color (entry, start, -1, -1);
 }
 
@@ -918,6 +930,7 @@ check_attributes (SexySpellEntry *entry, const char *text, int len)
 	gboolean bold = FALSE;
 	gboolean italic = FALSE;
 	gboolean underline = FALSE;
+	gboolean strikethrough = FALSE;
 	int parsing_color = 0;
 	char fg_color[3];
 	char bg_color[3];
@@ -942,6 +955,12 @@ check_attributes (SexySpellEntry *entry, const char *text, int len)
 			italic = !italic;
 			goto check_color;
 
+		case ATTR_STRIKETHROUGH:
+			insert_hiddenchar (entry, i, i + 1);
+			insert_strikethrough (entry, i, strikethrough);
+			strikethrough = !strikethrough;
+			goto check_color;
+
 		case ATTR_UNDERLINE:
 			insert_hiddenchar (entry, i, i + 1);
 			insert_underline (entry, i, underline);
@@ -954,6 +973,7 @@ check_attributes (SexySpellEntry *entry, const char *text, int len)
 			bold = FALSE;
 			italic = FALSE;
 			underline = FALSE;
+			strikethrough = FALSE;
 			goto check_color;
 
 		case ATTR_HIDDEN:

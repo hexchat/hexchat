@@ -4420,6 +4420,9 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 				case 'I':
 					buf[i] = '\035';
 					break;
+				case 'S':
+					buf[i] = '\036';
+					break;
 				case 'C':
 					buf[i] = '\003';
 					break;
