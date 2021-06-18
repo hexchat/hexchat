@@ -418,8 +418,6 @@ static int handle_keyx_notice(char *word[], char *word_eol[], void *userdata) {
         g_assert(hexchat_set_context(ph, query_ctx) == 1);
 
     dh_message++; /* : prefix */
-    if (*dh_message == '+' || *dh_message == '-')
-        dh_message++; /* identify-msg */
 
     if (g_strcmp0 (word[6], "CBC") == 0)
         mode = FISH_CBC_MODE;

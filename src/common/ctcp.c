@@ -94,9 +94,6 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 	char outbuf[1024];
 	int ctcp_offset = 2;
 
-	if (serv->have_idmsg && (word[4][1] == '+' || word[4][1] == '-') )
-			ctcp_offset = 3;
-
 	/* consider DCC to be different from other CTCPs */
 	if (!g_ascii_strncasecmp (msg, "DCC", 3))
 	{
@@ -129,7 +126,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		if (ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 			goto generic;
 
-		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id, tags_data);
+		inbound_action (sess, to, nick, ip, msg + 7, FALSE, tags_data->identified, tags_data);
 		return;
 	}
 

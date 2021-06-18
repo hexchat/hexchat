@@ -190,7 +190,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id,
 
 		if (ip && ip[0])
 			set_topic (sess, ip, ip);
-		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE, id, tags_data);
+		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE, tags_data->identified, tags_data);
 		return;
 	}
 
@@ -1656,7 +1656,7 @@ inbound_toggle_caps (server *serv, const char *extensions_str, gboolean enable)
 	{
 		const char *extension = extensions[i];
 
-		if (!strcmp (extension, "identify-msg"))
+		if (!strcmp (extension, "solanum.chat/identify-msg"))
 			serv->have_idmsg = enable;
 		else if (!strcmp (extension, "multi-prefix"))
 			serv->have_namesx = enable;
@@ -1713,8 +1713,6 @@ inbound_cap_del (server *serv, char *nick, char *extensions,
 }
 
 static const char * const supported_caps[] = {
-	"identify-msg",
-
 	/* IRCv3.1 */
 	"multi-prefix",
 	"away-notify",
@@ -1737,6 +1735,9 @@ static const char * const supported_caps[] = {
 
 	/* Twitch */
 	"twitch.tv/membership",
+
+	/* Solanum */
+	"solanum.chat/identify-msg",
 };
 
 static int
