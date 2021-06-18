@@ -1189,8 +1189,6 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 
 		case WORDL('N','O','T','I'):
 			{
-				int id = FALSE;								/* identified */
-
 				text = word_eol[4];
 				if (*text == ':')
 				{
@@ -1219,18 +1217,8 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 #endif
 
-				if (serv->have_idmsg)
-				{
-					if (*text == '+')
-					{
-						id = TRUE;
-						text++;
-					} else if (*text == '-')
-						text++;
-				}
-
 				if (!ignore_check (word[1], IG_NOTI))
-					inbound_notice (serv, word[3], nick, text, ip, id, tags_data);
+					inbound_notice (serv, word[3], nick, text, ip, tags_data->identified, tags_data);
 			}
 			return;
 
@@ -1238,7 +1226,6 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			{
 				char *to = word[3];
 				int len;
-				int id = FALSE;	/* identified */
 				if (*to)
 				{
 					/* Handle limited channel messages, for now no special event */
@@ -1249,15 +1236,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 					text = word_eol[4];
 					if (*text == ':')
 						text++;
-					if (serv->have_idmsg)
-					{
-						if (*text == '+')
-						{
-							id = TRUE;
-							text++;
-						} else if (*text == '-')
-							text++;
-					}
+
 					len = strlen (text);
 					if (text[0] == 1)	/* ctcp */
 					{
@@ -1289,7 +1268,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 							}
 						}
 
-						ctcp_handle (sess, to, nick, ip, text, word, word_eol, id,
+						ctcp_handle (sess, to, nick, ip, text, word, word_eol, tags_data->identified,
 										 tags_data);
 
 						/* Note word will be invalid beyond this scope */
@@ -1300,13 +1279,13 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 						{
 							if (ignore_check (word[1], IG_CHAN))
 								return;
-							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id,
+							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, tags_data->identified,
 												  tags_data);
 						} else
 						{
 							if (ignore_check (word[1], IG_PRIV))
 								return;
-							inbound_privmsg (serv, nick, ip, text, id, tags_data);
+							inbound_privmsg (serv, nick, ip, text, tags_data->identified, tags_data);
 						}
 					}
 				}
@@ -1536,6 +1515,9 @@ handle_message_tags (server *serv, const char *tags_str,
 
 		if (serv->have_account_tag && !strcmp (key, "account"))
 			tags_data->account = g_strdup (value);
+
+		if (serv->have_idmsg && strcmp (key, "solanum.chat/identified"))
+			tags_data->identified = TRUE;
 
 		if (serv->have_server_time && !strcmp (key, "time"))
 			handle_message_tag_time (value, tags_data);
