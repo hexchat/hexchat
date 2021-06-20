@@ -461,15 +461,15 @@ channel_date (session *sess, char *chan, char *timestr,
 }
 
 static int
-trailing_index(char *word_eol[])
+trailing_index(const char *word_eol[])
 {
-	int index;
-	for (index = 3; index < PDIWORDS; ++index)
+	int param_index;
+	for (param_index = 3; param_index < PDIWORDS; ++param_index)
 	{
-		if (word_eol[index][0] == ':')
+		if (word_eol[param_index][0] == ':')
 			break;
 	}
-	return index;
+	return param_index;
 }
 
 static void
