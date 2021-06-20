@@ -329,6 +329,7 @@ strip_color2 (const char *src, int len, char *dst, int flags)
 			case '\026':			  /*ATTR_REVERSE: */
 			case '\002':			  /*ATTR_BOLD: */
 			case '\037':			  /*ATTR_UNDERLINE: */
+			case '\036':			  /*ATTR_STRIKETHROUGH: */
 			case '\035':			  /*ATTR_ITALICS: */
 				if (!(flags & STRIP_ATTRIB)) goto pass_char;
 				break;

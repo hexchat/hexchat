@@ -947,6 +947,9 @@ servlist_net_add (char *name, char *comment, int prepend)
 	net = g_new0 (ircnet, 1);
 	net->name = g_strdup (name);
 	net->flags = FLAG_CYCLE | FLAG_USE_GLOBAL | FLAG_USE_PROXY;
+#ifdef USE_OPENSSL
+	net->flags |= FLAG_USE_SSL;
+#endif
 
 	if (prepend)
 		network_list = g_slist_prepend (network_list, net);

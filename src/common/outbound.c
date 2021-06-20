@@ -3225,16 +3225,23 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	else if (*word[2])
 	{
 		int offset = 0;
+
 #ifdef USE_OPENSSL
 		int use_ssl = FALSE;
-
-		if (strcmp (word[2], "-ssl") == 0)
+		int use_ssl_noverify = FALSE;
+		if (g_strcmp0 (word[2], "-ssl") == 0)
 		{
 			use_ssl = TRUE;
+			use_ssl_noverify = FALSE;
+			offset++;	/* args move up by 1 word */
+		} else if (g_strcmp0 (word[2], "-ssl-noverify") == 0)
+		{
+			use_ssl = TRUE;
+			use_ssl_noverify = TRUE;
 			offset++;	/* args move up by 1 word */
 		}
 		serv->use_ssl = use_ssl;
-		serv->accept_invalid_cert = TRUE;
+		serv->accept_invalid_cert = use_ssl_noverify;
 #endif
 
 		if (*word[4+offset])
@@ -3422,15 +3429,22 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *channel = NULL;
 	char *key = NULL;
 	int use_ssl = FALSE;
+	int use_ssl_noverify = FALSE;
 	int is_url = TRUE;
 	server *serv = sess->server;
 	ircnet *net = NULL;
 
 #ifdef USE_OPENSSL
 	/* BitchX uses -ssl, mIRC uses -e, let's support both */
-	if (strcmp (word[2], "-ssl") == 0 || strcmp (word[2], "-e") == 0)
+	if (g_strcmp0 (word[2], "-ssl") == 0 || g_strcmp0 (word[2], "-e") == 0)
 	{
 		use_ssl = TRUE;
+		offset++;	/* args move up by 1 word */
+	}
+	else if (g_strcmp0 (word[2], "-ssl-noverify") == 0)
+	{
+		use_ssl = TRUE;
+		use_ssl_noverify = TRUE;
 		offset++;	/* args move up by 1 word */
 	}
 #endif
@@ -3497,7 +3511,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 #ifdef USE_OPENSSL
 	serv->use_ssl = use_ssl;
-	serv->accept_invalid_cert = TRUE;
+	serv->accept_invalid_cert = use_ssl_noverify;
 #endif
 
 	/* try to connect by Network name */
@@ -3528,7 +3542,7 @@ cmd_servchan (struct session *sess, char *tbuf, char *word[],
 	int offset = 0;
 
 #ifdef USE_OPENSSL
-	if (strcmp (word[2], "-ssl") == 0)
+	if (g_strcmp0 (word[2], "-ssl") == 0 || g_strcmp0 (word[2], "-ssl-noverify") == 0)
 		offset++;
 #endif
 
@@ -3930,7 +3944,7 @@ cmd_voice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 const struct commands xc_cmds[] = {
 	{"ADDBUTTON", cmd_addbutton, 0, 0, 1,
 	 N_("ADDBUTTON <name> <action>, adds a button under the user-list")},
-	{"ADDSERVER", cmd_addserver, 0, 0, 1, N_("ADDSERVER <NewNetwork> <newserver/6667>, adds a new network with a new server to the network list")},
+	{"ADDSERVER", cmd_addserver, 0, 0, 1, N_("ADDSERVER <NewNetwork> <hostname/port>, adds a new network with a new server to the network list")},
 	{"ALLCHAN", cmd_allchannels, 0, 0, 1,
 	 N_("ALLCHAN <cmd>, sends a command to all channels you're in")},
 	{"ALLCHANL", cmd_allchannelslocal, 0, 0, 1,
@@ -4077,7 +4091,7 @@ const struct commands xc_cmds[] = {
 	 N_("QUOTE <text>, sends the text in raw form to the server")},
 #ifdef USE_OPENSSL
 	{"RECONNECT", cmd_reconnect, 0, 0, 1,
-	 N_("RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")},
+	 N_("RECONNECT [-ssl|-ssl-noverify] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")},
 #else
 	{"RECONNECT", cmd_reconnect, 0, 0, 1,
 	 N_("RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")},
@@ -4089,14 +4103,14 @@ const struct commands xc_cmds[] = {
 	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},
 #ifdef USE_OPENSSL
 	{"SERVCHAN", cmd_servchan, 0, 0, 1,
-	 N_("SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel")},
+	 N_("SERVCHAN [-ssl|-ssl-noverify] <host> <port> <channel>, connects and joins a channel")},
 #else
 	{"SERVCHAN", cmd_servchan, 0, 0, 1,
 	 N_("SERVCHAN <host> <port> <channel>, connects and joins a channel")},
 #endif
 #ifdef USE_OPENSSL
 	{"SERVER", cmd_server, 0, 0, 1,
-	 N_("SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 6697 for ssl connections")},
+	 N_("SERVER [-ssl|-ssl-noverify] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 6697 for ssl connections")},
 #else
 	{"SERVER", cmd_server, 0, 0, 1,
 	 N_("SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667")},
@@ -4419,6 +4433,9 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 					break;
 				case 'I':
 					buf[i] = '\035';
+					break;
+				case 'S':
+					buf[i] = '\036';
 					break;
 				case 'C':
 					buf[i] = '\003';

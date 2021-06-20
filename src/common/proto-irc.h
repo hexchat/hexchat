@@ -26,6 +26,7 @@
 #define MESSAGE_TAGS_DATA_INIT			\
 	{									\
 		NULL, /* account name */		\
+		FALSE, /* identified to nick */ \
 		(time_t)0, /* timestamp */		\
 	}
 
@@ -38,6 +39,7 @@
 typedef struct 
 {
 	char *account;
+	gboolean identified;
 	time_t timestamp;
 } message_tags_data;
 

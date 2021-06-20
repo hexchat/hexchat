@@ -913,6 +913,9 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 			{
 				server_set_encoding (serv, "UTF-8");
 			}
+		} else if (g_strcmp0 (tokname, "UTF8ONLY") == 0)
+		{
+			server_set_encoding (serv, "UTF-8");
 		} else if (g_strcmp0 (tokname, "NAMESX") == 0)
 		{
 									/* 12345678901234567 */
