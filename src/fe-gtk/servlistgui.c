@@ -39,6 +39,12 @@
 #define SERVLIST_X_PADDING 4			/* horizontal paddig in the network editor */
 #define SERVLIST_Y_PADDING 0			/* vertical padding in the network editor */
 
+#ifdef USE_OPENSSL
+# define DEFAULT_SERVER "newserver/6697"
+#else
+# define DEFAULT_SERVER "newserver/6667"
+#endif
+
 /* servlistgui.c globals */
 static GtkWidget *serverlist_win = NULL;
 static GtkWidget *networks_tree;		/* network TreeView */
@@ -299,7 +305,7 @@ servlist_networks_populate_ (GtkWidget *treeview, GSList *netlist, gboolean favo
 	if (!netlist)
 	{
 		net = servlist_net_add (_("New Network"), "", FALSE);
-		servlist_server_add (net, "newserver/6667");
+		servlist_server_add (net, DEFAULT_SERVER);
 		netlist = network_list;
 	}
 	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (treeview));
@@ -434,10 +440,10 @@ servlist_addserver (void)
 		return;
 
 	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (edit_trees[SERVER_TREE])));
-	servlist_server_add (selected_net, "newserver/6667");
+	servlist_server_add (selected_net, DEFAULT_SERVER);
 
 	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter, 0, "newserver/6667", 1, TRUE, -1);
+	gtk_list_store_set (store, &iter, 0, DEFAULT_SERVER, 1, TRUE, -1);
 
 	/* select this server */
 	servlist_select_and_show (GTK_TREE_VIEW (edit_trees[SERVER_TREE]), &iter, store);
@@ -498,7 +504,7 @@ servlist_addnet_cb (GtkWidget *item, GtkTreeView *treeview)
 
 	net = servlist_net_add (_("New Network"), "", TRUE);
 	net->encoding = g_strdup (IRC_DEFAULT_CHARSET);
-	servlist_server_add (net, "newserver/6667");
+	servlist_server_add (net, DEFAULT_SERVER);
 
 	store = (GtkListStore *)gtk_tree_view_get_model (treeview);
 	gtk_list_store_prepend (store, &iter);
