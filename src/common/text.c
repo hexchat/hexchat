@@ -1512,6 +1512,17 @@ static char * const pevt_discon_help[] = {
 	N_("Error"),
 };
 
+static char * const pevt_stdrpl_help[] = {
+	N_("Error Code"),
+	N_("Error Message"),
+};
+
+static char * const pevt_stdrplcmd_help[] = {
+	N_("Command"),
+	N_("Error Code"),
+	N_("Error Message"),
+};
+
 #include "textevents.h"
 
 static void
