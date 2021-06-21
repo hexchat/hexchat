@@ -50,7 +50,16 @@ void sts_load (void);
 /* Creates a new empty STS profile. */
 struct sts_profile * sts_new (void);
 
+/** Parses the key/value pairs from a STS cap into a hash table */
+GHashTable *sts_parse_cap (const char* cap);
+
 /* Saves STS profiles to sts.conf */
 void sts_save (void);
+
+/* Stores a new STS profile in the hash table */
+void sts_store (struct sts_profile *profile);
+
+/* Updates the expiry time for a STS profile. */
+void sts_update_expiry (const char *host, time_t newexpiry, struct sts_profile *incomplete_profile);
 
 #endif

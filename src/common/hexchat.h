@@ -546,6 +546,8 @@ typedef struct server
 
 	GSList *favlist;			/* list of channels & keys to join */
 
+	struct sts_profile *stsprofile; /* pending sts profile that caused a reconnect */
+
 	unsigned int motd_skipped:1;
 	unsigned int connected:1;
 	unsigned int connecting:1;

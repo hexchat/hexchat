@@ -3469,6 +3469,10 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		use_ssl_noverify = TRUE;
 		offset++;	/* args move up by 1 word */
 	}
+
+	/** If the server was previously used by a failed STS connection then free the incomplete profile. */
+	if (serv->stsprofile)
+		g_clear_pointer (&serv->stsprofile, g_free);
 #endif
 
 	if (!parse_irc_url (word[2 + offset], &server_name, &port, &channel, &key, &use_ssl))

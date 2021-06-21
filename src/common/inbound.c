@@ -47,6 +47,7 @@
 #include "ctcp.h"
 #include "hexchatc.h"
 #include "chanopt.h"
+#include "sts.h"
 
 
 void
@@ -1728,6 +1729,7 @@ static const char * const supported_caps[] = {
 	"setname",
 	"invite-notify",
 	"account-tag",
+	/* "sts", Handled manually */
 
 	/* ZNC */
 	"znc.in/server-time-iso",
@@ -1778,7 +1780,9 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 	char buffer[500];	/* buffer for requesting capabilities and emitting the signal */
 	gboolean want_cap = FALSE; /* format the CAP REQ string based on previous capabilities being requested or not */
 	char **extensions;
-	int i;
+	int i, stsvalue;
+	GHashTable *stscap;
+	const char *stsvaluestr;
 
 	if (g_str_has_prefix (extensions_str, "* "))
 	{
@@ -1811,6 +1815,57 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 			value++;
 		}
 
+#ifdef USE_OPENSSL
+		/** If the server has a STS profile then we should respect it. */
+		if (!g_strcmp0 (extension, "sts"))
+		{
+			stscap = sts_parse_cap (value);
+			if (serv->use_ssl)
+			{
+				/* Retrieve the duration; if its valid then store/update it. */
+				stsvaluestr = (const char*) g_hash_table_lookup (stscap, "duration");
+				if (stsvaluestr)
+				{
+					stsvalue = atoi (stsvaluestr);
+					if (stsvalue > 0)
+						sts_update_expiry(serv->hostname, stsvalue, serv->stsprofile);
+				}
+			} else
+			{
+				stsvaluestr = (const char*) g_hash_table_lookup (stscap, "port");
+				if (stsvaluestr)
+				{
+					stsvalue = atoi (stsvaluestr);
+					if (stsvalue > 0 && stsvalue < 65536)
+					{
+						/* We are connecting on plain text and have found a valid STS profile. */
+						serv->stsprofile = sts_new ();
+						strcpy (serv->stsprofile->host, serv->hostname);
+						serv->stsprofile->port = stsvalue;
+
+						/* Reconfigure with the new port and security settings. */
+						serv->port = serv->stsprofile->port;
+						serv->accept_invalid_cert = FALSE;
+						serv->use_ssl = TRUE;
+
+						/* We're reconnecting so don't request caps. */
+						want_cap = FALSE;
+
+						/* Reconnect to the server. */
+						EMIT_SIGNAL (XP_TE_STSREDIRNEW, serv->server_session, serv->hostname, NULL, NULL, NULL, 0);
+						stsvalue = prefs.hex_net_reconnect_delay;
+						prefs.hex_net_reconnect_delay = 0;
+						serv->auto_reconnect (serv, TRUE, -1);
+						prefs.hex_net_reconnect_delay = stsvalue;
+						break;
+					}
+				}
+			}
+
+			g_hash_table_destroy (stscap);
+		}
+#endif
+
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
 		if (!g_strcmp0 (extension, "sasl") &&
 			((serv->loginmethod == LOGIN_SASL && strlen (serv->password) != 0)
@@ -1841,6 +1896,28 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 	}
 
 	g_strfreev (extensions);
+
+#ifdef USE_OPENSSL
+	/* Check up on the status of the STS profile. */
+	if (!serv->waiting_on_cap && serv->ctx && serv->stsprofile)
+	{
+
+		/* We have reconnected using SSL; is the profile complete? */
+		if (serv->stsprofile->expiry)
+		{
+			/* The profile is fine; store it. */
+			sts_store (serv->stsprofile);
+			serv->stsprofile = NULL;
+		}
+		else
+		{
+			/* The profile redirected us to a broken server. We MUST block connection as per spec. */
+			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, "STS profile mismatch", NULL, NULL, NULL, 0);
+			serv->disconnect (serv, TRUE, -1);
+			return;
+		}
+	}
+#endif
 
 	if (want_cap)
 	{

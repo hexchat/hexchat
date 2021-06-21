@@ -1757,6 +1757,7 @@ server_new (void)
 
 	serv->id = id++;
 	serv->sok = -1;
+	serv->stsprofile = NULL;
 	strcpy (serv->nick, prefs.hex_irc_nick1);
 	server_set_defaults (serv);
 
@@ -1943,6 +1944,7 @@ server_free (server *serv)
 	g_free (serv->bad_nick_prefixes);
 	g_free (serv->last_away_reason);
 	g_free (serv->encoding);
+	g_free (serv->stsprofile);
 
 	g_iconv_close (serv->read_converter);
 	g_iconv_close (serv->write_converter);

@@ -32,7 +32,7 @@ struct sts_profile *
 sts_find (const char* host)
 {
 	time_t now;
-	GList *next;
+	GSList *next;
 	struct sts_profile *nextprofile;
 
 	now = time (NULL);
@@ -71,7 +71,7 @@ sts_load (void)
 			continue;
 		}
 
-		profiles = g_slist_append (profiles, profile);
+		sts_store (profile);
 	}
 }
 
@@ -85,6 +85,26 @@ sts_new (void)
 	profile->port = 0;
 	profile->expiry = 0;
 	return profile;
+}
+
+GHashTable *
+sts_parse_cap (const char* cap)
+{
+	char **entries, **currentry;
+	char *value;
+	GHashTable *table;
+
+	table = g_hash_table_new (g_str_hash, g_str_equal);
+	entries = g_strsplit (cap, ",", 0);
+	for (currentry = entries; *currentry; ++currentry)
+	{
+		value = strchr (*currentry, '=');
+		if (value)
+			g_hash_table_insert (table, g_strndup (*currentry, value - *currentry), g_strdup (value + 1));
+	}
+
+	g_free (entries);
+	return table;
 }
 
 void
@@ -101,7 +121,7 @@ sts_save (void)
 		return; /* Filesystem not writable. */
 
 	now = time (NULL);
-	for (next = profiles; next; next = profiles->next)
+	for (next = profiles; next; next = next->next)
 	{
 		nextprofile = (struct sts_profile *)next->data;
 		if (now >= nextprofile->expiry)
@@ -113,4 +133,19 @@ sts_save (void)
 	}
 
 	close (fh);
+}
+
+void
+sts_store (struct sts_profile *profile)
+{
+	profiles = g_slist_append (profiles, profile);
+}
+
+void sts_update_expiry (const char *host, time_t newexpiry, struct sts_profile *incomplete_profile)
+{
+	struct sts_profile *profile;
+
+	profile = incomplete_profile ? incomplete_profile : sts_find (host);
+	if (profile)
+		profile->expiry = time (NULL) + newexpiry;
 }
