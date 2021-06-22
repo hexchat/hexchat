@@ -813,7 +813,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 346:	/* +I-list entry */
-		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 346,
+		if (!inbound_banlist (sess, atol (STRIP_COLON (word, word_eol, 7)), word[4], word[5], word[6], 346,
 									 tags_data))
 			goto def;
 		break;
@@ -824,7 +824,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 348:	/* +e-list entry */
-		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 348,
+		if (!inbound_banlist (sess, atol (STRIP_COLON (word, word_eol, 7)), word[4], word[5], word[6], 348,
 									 tags_data))
 			goto def;
 		break;
@@ -849,7 +849,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 367: /* banlist entry */
-		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], 367,
+		if (!inbound_banlist (sess, atol (STRIP_COLON (word, word_eol, 7)), word[4], word[5], word[6], 367,
 									 tags_data))
 			goto def;
 		break;
