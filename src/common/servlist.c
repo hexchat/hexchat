@@ -54,10 +54,6 @@ static const struct defaultserver def[] =
 	/* Invalid hostname in cert */
 	{0,			"irc.2600.net"},
 
-	{"AccessIRC",	0},
-	/* Self signed */
-	{0,			"irc.accessirc.net"},
-
 	{"ACN", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"global.acn.gr"},
 
@@ -67,15 +63,11 @@ static const struct defaultserver def[] =
 	{"Aitvaras",	0},
 #ifdef USE_OPENSSL
 	{0,			"irc.data.lt/+6668"},
-	{0,			"irc.omnitel.net/+6668"},
-	{0,			"irc.ktu.lt/+6668"},
-	{0,			"irc.kis.lt/+6668"},
+	{0,			"irc.omicron.lt/+6668"},
 	{0,			"irc.vub.lt/+6668"},
 #endif
 	{0,			"irc.data.lt"},
-	{0,			"irc.omnitel.net"},
-	{0,			"irc.ktu.lt"},
-	{0,			"irc.kis.lt"},
+	{0,			"irc.omicron.lt"},
 	{0,			"irc.vub.lt"},
 
 	{"Anthrochat", 0, 0, 0, 0, 0, TRUE},
@@ -90,10 +82,6 @@ static const struct defaultserver def[] =
 	{"AzzurraNet",	0},
 	{0,			"irc.azzurra.org"},
 
-	{"BetaChat", 0, 0, 0, LOGIN_SASL},
-	{0,			"irc.betachat.net"},
-	{"BuddyIM", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.buddy.im"},
 	{"Canternet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.canternet.org"},
 
@@ -103,19 +91,16 @@ static const struct defaultserver def[] =
 	{"ChatJunkies",	0},
 	{0,			"irc.chatjunkies.org"},
 
-	{"ChatNet",	0},
-	{0,			"irc.chatnet.org"},
+	{"chatpat", 0, 0, "CP1251", LOGIN_CUSTOM, "MSG NS IDENTIFY %p"},
+	{0,			"irc.unibg.net"},
+	{0,			"irc.chatpat.bg"},
 
 	{"ChatSpike", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.chatspike.net"},
 
-	{"ChattingAway", 0},
-	{0,			"irc.chattingaway.com"},
-
-	{"Criten", 0},
-	/* Self signed */
-	{0,			"irc.criten.net"},
-
+	{"DaIRC", 0},
+	{0,			"irc.dairc.net"},
+	
 	{"DALnet", 0, 0, 0, LOGIN_NICKSERV},
 	/* Self signed */
 	{0,			"us.dal.net"},
@@ -132,19 +117,18 @@ static const struct defaultserver def[] =
 
 	{"Dark-Tou-Net",	0},
 	{0,			"irc.d-t-net.de"},
-
-	{"DeltaAnime", 0},
-	{0,			"irc.deltaanime.net"},
+	
+#ifdef USE_OPENSSL
+	{"DosersNET", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	/* Self signed */
+	{0,			"irc.dosers.net/+6697"},
+#endif
 
 	{"EFnet",	0},
 	{0,			"irc.choopa.net"},
-	{0,			"irc.paraphysics.net"},
 	{0,			"efnet.port80.se"},
 	{0,			"irc.underworld.no"},
-	{0,			"irc.inet.tele.dk"},
-
-	{"ElectroCode", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.electrocode.net"},
+	{0,			"efnet.deic.eu"},
 
 	{"EnterTheGame",	0},
 	{0,			"irc.enterthegame.com"},
@@ -171,15 +155,8 @@ static const struct defaultserver def[] =
 	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
 
-	{"GalaxyNet",	0},
-	{0,			"irc.galaxynet.org"},
-
 	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
-	
-	{"GeeksIRC", 0, 0, 0, LOGIN_SASL},
-	/* Self signed */
-	{0,			"irc.geeksirc.net"},
 
 	{"GeekShed", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.geekshed.net"},
@@ -206,13 +183,6 @@ static const struct defaultserver def[] =
 
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
-
-	{"IdleMonkeys", 0},
-	{0,			"irc.idlemonkeys.net"},
-
-	{"IndirectIRC", 0, 0, 0, LOGIN_SASL},
-	/* Self signed */
-	{0,			"irc.indirectirc.com"},
 	
 	{"Interlinked", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.interlinked.me"},
@@ -226,19 +196,16 @@ static const struct defaultserver def[] =
 	{"IRCNet",		0},
 	{0,				"open.ircnet.net"},
 
-	{"Irctoo.net",	0},
+	{"IRCtoo",	0},
 	{0,			"irc.irctoo.net"},
 
-	{"iZ-smart.net", 0, 0, "CP1252"},
-	{0,			"irc.iz-smart.net"},
-
-	{"KBFail", 0},
+	{"Keyboard-Failure", 0},
 	/* SSL is self-signed */
 	{0,			"irc.kbfail.net"},
 
-	{"Krstarica", 0},
-	{0,			"irc.krstarica.com"},
-
+	{"Libera.Chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.libera.chat"},
+	
 #ifdef USE_OPENSSL
 	{"LibertaCasa", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.liberta.casa"},
@@ -247,9 +214,6 @@ static const struct defaultserver def[] =
 	{"LibraIRC", 0},
 	/* Self signed */
 	{0,			"irc.librairc.net"},
-
-	{"Libera.Chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.libera.chat"},
 
 #ifdef USE_OPENSSL
 	{"LinkNet",	0},
@@ -262,10 +226,6 @@ static const struct defaultserver def[] =
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
 
-	{"ObsidianIRC",  0},
-	/* Self signed */
-	{0,      "irc.obsidianirc.net"}, 
-
 	{"Oceanius", 0, 0, 0, LOGIN_SASL},
 	/* Self signed */
 	{0,			"irc.oceanius.com"},
@@ -276,16 +236,16 @@ static const struct defaultserver def[] =
 	{"OtherNet",	0},
 	{0,			"irc.othernet.org"},
 
-	{"OzNet",	0},
+	{"OzOrg",	0},
 	{0,			"irc.oz.org"},
 
-	{"PIRC.PL",	0, 0, 0, 0, 0, TRUE},
-	{0,			"irc.pirc.pl"},
-	
-	{"PonyChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.ponychat.net"},
+	{"PIK", 0},
+	{0,			"irc.krstarica.com"},
 
-	{"PTNet.org",	0},
+	{"pirc.pl",	0, 0, 0, 0, 0, TRUE},
+	{0,			"irc.pirc.pl"},
+
+	{"PTNet",	0},
 	{0,			"irc.ptnet.org"},
 	{0,			"uevora.ptnet.org"},
 	{0,			"claranet.ptnet.org"},
@@ -306,12 +266,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.ru"},
 	{0,			"irc.lucky.net"},
 
-	{"SceneNet",	0},
-	{0,			"irc.scene.org"},
-
-	{"SeilEn.de", 0, 0, "CP1252"},
-	{0,			"irc.seilen.de"},
-
 	{"Serenity-IRC",	0},
 	{0,			"irc.serenity-irc.net"},
 
@@ -328,19 +282,12 @@ static const struct defaultserver def[] =
 	{"Sohbet.Net", 0, 0, "CP1254"},
 	{0,			"irc.sohbet.net"},
 
-	{"SolidIRC", 0},
-	/* Self signed */
-	{0,			"irc.solidirc.com"},
-
 	{"SorceryNet", 0, 0, 0, LOGIN_SASL},
 	/* Self signed */
 	{0,			"irc.sorcery.net"},
 	
 	{"SpotChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.spotchat.org"},
-
-	{"StarChat", 0},
-	{0,			"irc.starchat.net"},
 
 	{"Station51", 0},
 	/* Self signed */
@@ -370,27 +317,12 @@ static const struct defaultserver def[] =
 	{0,			"coconut.tripsit.me"},
 	{0,			"innsbruck.tripsit.me"},
 #endif	
-	
-	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
-	/* Other servers use CP1251 and invalid certs */
-	{0,			"irc.servx.ru"},
 
 	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM, "MSG x@channels.undernet.org login %u %p"},
 	{0,			"us.undernet.org"},
 
-	{"UniBG", 0, 0, "CP1251", LOGIN_CUSTOM, "MSG NS IDENTIFY %p"},
-	{0,			"irc.lirex.com"},
-	{0,			"irc.naturella.com"},
-	{0,			"irc.techno-link.com"},
-
-	{"Worldnet",		0},
-	{0,			"irc.worldnet.net"},
-
 	{"Xertion", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.xertion.org"},
-	
-	{"DeltaPool", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"irc.deltapool.net"},
 
 	{0,0}
 };
