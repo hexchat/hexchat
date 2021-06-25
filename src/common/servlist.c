@@ -120,7 +120,6 @@ static const struct defaultserver def[] =
 	
 #ifdef USE_OPENSSL
 	{"DosersNET", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	/* Self signed */
 	{0,			"irc.dosers.net/+6697"},
 #endif
 
