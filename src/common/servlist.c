@@ -118,6 +118,9 @@ static const struct defaultserver def[] =
 	{"Dark-Tou-Net",	0},
 	{0,			"irc.d-t-net.de"},
 	
+	{"DigitalIRC", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.digitalirc.org"},
+	
 #ifdef USE_OPENSSL
 	{"DosersNET", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.dosers.net/+6697"},
