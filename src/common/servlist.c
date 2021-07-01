@@ -318,7 +318,7 @@ static const struct defaultserver def[] =
 	/* um yes we do exist :) */
 	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
 	/* Other servers use CP1251 and invalid certs */
-	{0,			"irc.servx.ru"},
+	{0,			"irc.servx.org"},
 	{0,			"i.valware.uk"},
 	
 	
