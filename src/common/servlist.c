@@ -315,6 +315,12 @@ static const struct defaultserver def[] =
 	{"tilde.chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.tilde.chat"},
 
+	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
+	/* all servers use UTF-8 and valid certs */
+	{0,			"irc.servx.org"},
+	{0,			"i.valware.uk"},
+	
+	
 #ifdef USE_OPENSSL
 	{"TripSit", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.tripsit.me"},
