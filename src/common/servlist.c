@@ -315,7 +315,6 @@ static const struct defaultserver def[] =
 	{"tilde.chat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.tilde.chat"},
 
-	/* um yes we do exist :) */
 	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
 	/* all servers use UTF-8 and valid certs */
 	{0,			"irc.servx.org"},
