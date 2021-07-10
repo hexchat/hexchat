@@ -1071,7 +1071,8 @@ fe_open_url_inner (const char *url)
 #elif defined(__APPLE__)
     osx_show_uri (url);
 #else
-	char *escaped_url = g_uri_escape_string (url, G_URI_RESERVED_CHARS_GENERIC_DELIMITERS, FALSE);
+	char *escaped_url = g_uri_escape_string (url, G_URI_RESERVED_CHARS_GENERIC_DELIMITERS G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS,
+	                                         FALSE);
 	gtk_show_uri (NULL, escaped_url, GDK_CURRENT_TIME, NULL);
 	g_free (escaped_url);
 #endif
