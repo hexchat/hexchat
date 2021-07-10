@@ -1,4 +1,4 @@
-/* X-Chat
+ /* X-Chat
  * Copyright (C) 1998 Peter Zelezny.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -246,7 +246,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.pirc.pl"},
 
 	{"pissnet",	0, 0, 0, 0, 0, TRUE},
-	{0,			"irc.pissnet.xyz"},
+	{0,			"irc.letspiss.net"},
 	
 	{"PTNet",	0},
 	{0,			"irc.ptnet.org"},
