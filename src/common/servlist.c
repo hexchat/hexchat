@@ -152,6 +152,9 @@ static const struct defaultserver def[] =
 	/* Self signed */
 	{0,			"irc.fdfnet.net"},
 
+	{"Furnet", 0, 0, 0, 0, 0, TRUE},
+	{0,			"irc.furnet.org"},
+	
 	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 
