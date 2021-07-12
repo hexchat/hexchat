@@ -33,7 +33,6 @@ config_h.set10('ENABLE_NLS', true)
 
 # Optional features
 config_h.set('USE_OPENSSL', get_option('with-ssl'))
-config_h.set('USE_LIBPROXY', get_option('with-libproxy'))
 config_h.set('USE_LIBCANBERRA', get_option('with-libcanberra'))
 config_h.set('USE_DBUS', get_option('with-dbus'))
 config_h.set('USE_PLUGIN', get_option('with-plugin'))

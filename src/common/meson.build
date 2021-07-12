@@ -77,10 +77,6 @@ if get_option('with-ssl')
   common_deps += libssl_dep
 endif
 
-if get_option('with-libproxy')
-  common_deps += dependency('libproxy-1.0')
-endif
-
 if get_option('with-libcanberra')
   common_deps += dependency('libcanberra', version: '>= 0.22')
 endif
