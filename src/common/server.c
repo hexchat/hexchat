@@ -61,10 +61,6 @@
 #include "ssl.h"
 #endif
 
-#ifdef USE_LIBPROXY
-#include <proxy.h>
-#endif
-
 #ifdef USE_OPENSSL
 /* local variables */
 static struct session *g_sess = NULL;
@@ -78,9 +74,15 @@ static void server_disconnect (session * sess, int sendquit, int err);
 static int server_cleanup (server * serv);
 static void server_connect (server *serv, char *hostname, int port, int no_login);
 
-#ifdef USE_LIBPROXY
-extern pxProxyFactory *libproxy_factory;
-#endif
+static void
+write_error (char *message, GError **error)
+{
+	if (error == NULL || *error == NULL) {
+		return;
+	}
+	g_printerr ("%s: %s\n", message, (*error)->message);
+	g_clear_error (error);
+}
 
 /* actually send to the socket. This might do a character translation or
    send via SSL. server/dcc both use this function. */
@@ -1392,14 +1394,16 @@ server_child (server * serv)
 
 	if (!serv->dont_use_proxy) /* blocked in serverlist? */
 	{
-#ifdef USE_LIBPROXY
 		if (prefs.hex_net_proxy_type == 5)
 		{
 			char **proxy_list;
 			char *url, *proxy;
+			GProxyResolver *resolver;
+			GError *error = NULL;
 
+			resolver = g_proxy_resolver_get_default ();
 			url = g_strdup_printf ("irc://%s:%d", hostname, port);
-			proxy_list = px_proxy_factory_get_proxies (libproxy_factory, url);
+			proxy_list = g_proxy_resolver_lookup (resolver, url, NULL, &error);
 
 			if (proxy_list) {
 				/* can use only one */
@@ -1412,6 +1416,8 @@ server_child (server * serv)
 					proxy_type = 3;
 				else if (!strncmp (proxy, "socks", 5))
 					proxy_type = 2;
+			} else {
+				write_error ("Failed to lookup proxy", &error);
 			}
 
 			if (proxy_type) {
@@ -1426,7 +1432,7 @@ server_child (server * serv)
 			g_strfreev (proxy_list);
 			g_free (url);
 		}
-#endif
+
 		if (prefs.hex_net_proxy_host[0] &&
 			   prefs.hex_net_proxy_type > 0 &&
 			   prefs.hex_net_proxy_use != 2) /* proxy is NOT dcc-only */
