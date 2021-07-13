@@ -26,58 +26,58 @@ static gboolean strip_markup;
 static void
 on_notify_ready (GDBusProxy *proxy, GAsyncResult *res, gpointer user_data)
 {
-	GError *error = NULL;
-	guint32 notification_id;
-	GVariant *response = g_dbus_proxy_call_finish (proxy, res, &error);
-	if (error)
-	{
-		g_info ("Failed to send notification: %s", error->message);
-		g_error_free (error);
-		return;
-	}
+    GError *error = NULL;
+    guint32 notification_id;
+    GVariant *response = g_dbus_proxy_call_finish (proxy, res, &error);
+    if (error)
+    {
+        g_info ("Failed to send notification: %s", error->message);
+        g_error_free (error);
+        return;
+    }
 
-	g_variant_get (response, "(u)", &notification_id);
-	g_info ("Notification sent. ID=%u", notification_id);
+    g_variant_get (response, "(u)", &notification_id);
+    g_info ("Notification sent. ID=%u", notification_id);
 
-	g_variant_unref (response);
+    g_variant_unref (response);
 }
 
 void
 notification_backend_show (const char *title, const char *text)
 {
-	GVariantBuilder params;
+    GVariantBuilder params;
 
-	g_assert (fdo_notifications);
+    g_assert (fdo_notifications);
 
     if (strip_markup)
-		text = g_markup_escape_text (text, -1);
+        text = g_markup_escape_text (text, -1);
 
-	g_variant_builder_init (&params, G_VARIANT_TYPE ("(susssasa{sv}i)"));
-	g_variant_builder_add (&params, "s", "hexchat"); /* App name */
-	g_variant_builder_add (&params, "u", 0); /* ID, 0 means don't replace */
-	g_variant_builder_add (&params, "s", ""); /* App icon (set from hints instead) */
-	g_variant_builder_add (&params, "s", title);
-	g_variant_builder_add (&params, "s", text);
-	g_variant_builder_add (&params, "as", NULL); /* Actions */
+    g_variant_builder_init (&params, G_VARIANT_TYPE ("(susssasa{sv}i)"));
+    g_variant_builder_add (&params, "s", "hexchat"); /* App name */
+    g_variant_builder_add (&params, "u", 0); /* ID, 0 means don't replace */
+    g_variant_builder_add (&params, "s", ""); /* App icon (set from hints instead) */
+    g_variant_builder_add (&params, "s", title);
+    g_variant_builder_add (&params, "s", text);
+    g_variant_builder_add (&params, "as", NULL); /* Actions */
 
-	/* Hints */
-	g_variant_builder_open (&params, G_VARIANT_TYPE ("a{sv}"));
-	g_variant_builder_open (&params, G_VARIANT_TYPE ("{sv}"));
-	g_variant_builder_add (&params, "s", "desktop-entry");
-	g_variant_builder_add (&params, "v", g_variant_new_string ("io.github.Hexchat"));
-	g_variant_builder_close (&params);
-	g_variant_builder_close (&params);
+    /* Hints */
+    g_variant_builder_open (&params, G_VARIANT_TYPE ("a{sv}"));
+    g_variant_builder_open (&params, G_VARIANT_TYPE ("{sv}"));
+    g_variant_builder_add (&params, "s", "desktop-entry");
+    g_variant_builder_add (&params, "v", g_variant_new_string ("io.github.Hexchat"));
+    g_variant_builder_close (&params);
+    g_variant_builder_close (&params);
 
-	g_variant_builder_add (&params, "i", -1); /* Expiration */
+    g_variant_builder_add (&params, "i", -1); /* Expiration */
 
-	g_dbus_proxy_call (fdo_notifications,
-					   "Notify",
-					   g_variant_builder_end (&params),
-					   G_DBUS_CALL_FLAGS_NONE,
-					   1000,
-					   NULL,
+    g_dbus_proxy_call (fdo_notifications,
+                       "Notify",
+                       g_variant_builder_end (&params),
+                       G_DBUS_CALL_FLAGS_NONE,
+                       1000,
+                       NULL,
                        (GAsyncReadyCallback)on_notify_ready,
-					   NULL);
+                       NULL);
 
     if (strip_markup)
         g_free ((char*)text);
@@ -88,8 +88,8 @@ notification_backend_init (const char **error)
 {
     GError *err = NULL;
     GVariant *response;
-	char **capabilities;
-	guint i;
+    char **capabilities;
+    guint i;
 
     fdo_notifications = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
                                                        G_DBUS_PROXY_FLAGS_NONE,
@@ -112,20 +112,20 @@ notification_backend_init (const char **error)
                                        &err);
 
     if (err)
-	{
-		g_clear_object (&fdo_notifications);
+    {
+        g_clear_object (&fdo_notifications);
         goto return_error;
-	}
+    }
 
-	g_variant_get (response, "(^a&s)", &capabilities);
-	for (i = 0; capabilities[i]; i++)
-	{
-		if (strcmp (capabilities[i], "body-markup") == 0)
-			strip_markup = TRUE;
-	}
+    g_variant_get (response, "(^a&s)", &capabilities);
+    for (i = 0; capabilities[i]; i++)
+    {
+        if (strcmp (capabilities[i], "body-markup") == 0)
+            strip_markup = TRUE;
+    }
 
-	g_free (capabilities);
-	g_variant_unref (response);
+    g_free (capabilities);
+    g_variant_unref (response);
     return 1;
 
 return_error:
