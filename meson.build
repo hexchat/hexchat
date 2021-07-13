@@ -19,7 +19,6 @@ libgmodule_dep = dependency('gmodule-2.0')
 libcanberra_dep = dependency('libcanberra', version: '>= 0.22',
                              required: get_option('libcanberra'))
 dbus_glib_dep = dependency('dbus-glib-1', required: get_option('dbus'))
-libnotify_dep = dependency('libnotify', required: get_option('libnotify'))
 
 global_deps = []
 if cc.get_id() == 'msvc'
@@ -182,7 +181,6 @@ if meson.version().version_compare('>= 0.53.0')
     'TLS (openssl)': libssl_dep.found(),
     'Plugin Support': get_option('plugin'),
     'DBus Support': dbus_glib_dep.found(),
-    'libnotify': libnotify_dep.found(),
     'libcanberra': libcanberra_dep.found(),
   }, section: 'Features')
 
