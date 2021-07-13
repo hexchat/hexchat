@@ -1,32 +1,40 @@
-option('with-gtk', type: 'boolean',
+# Applications
+option('gtk-frontend', type: 'boolean',
   description: 'Main graphical interface'
 )
-option('with-text', type: 'boolean', value: false,
+option('text-frontend', type: 'boolean', value: false,
   description: 'Text interface (not generally useful)'
 )
-option('with-ssl', type: 'boolean',
-  description: 'Support for TLS connections, requires openssl'
-)
-option('with-plugin', type: 'boolean',
-  description: 'Support for loadable plugins'
-)
-option('with-dbus', type: 'boolean',
-  description: 'Support used for single-instance and scripting interface, Unix only'
-)
-option('with-libnotify', type: 'boolean',
-  description: 'Support for freedesktop notifications, Unix only'
-)
-option('with-libcanberra', type: 'boolean',
-  description: 'Support for sound alerts, Unix only'
-)
-option('with-theme-manager', type: 'boolean', value: false,
+option('theme-manager', type: 'boolean', value: false,
   description: 'Utility to help manage themes, requires mono/.net'
 )
+
+# Features
+option('tls', type: 'feature', value: 'enabled',
+  description: 'Support for TLS connections, requires openssl'
+)
+option('plugin', type: 'boolean',
+  description: 'Support for loadable plugins'
+)
+option('dbus', type: 'feature', value: 'auto',
+  description: 'Support used for single-instance and scripting interface, Unix only'
+)
+option('libnotify', type: 'feature', value: 'auto',
+  description: 'Support for freedesktop notifications, Unix only'
+)
+option('libcanberra', type: 'feature', value: 'auto',
+  description: 'Support for sound alerts, Unix only'
+)
+
+# Install options
 option('dbus-service-use-appid', type: 'boolean', value: false,
   description: 'Rename dbus service to match app-id, required for Flatpak'
 )
-option('with-appdata', type: 'boolean',
+option('install-appdata', type: 'boolean',
   description: 'Install appdata files for app stores'
+)
+option('install-plugin-metainfo', type: 'boolean', value: false,
+  description: 'Installs metainfo files for enabled plugins, useful when distros create split packages'
 )
 
 # Plugins
@@ -56,9 +64,6 @@ option('with-upd', type: 'boolean',
 )
 option('with-winamp', type: 'boolean',
   description: 'Winamp plugin, Windows only'
-)
-option('install-plugin-metainfo', type: 'boolean', value: false,
-  description: 'Installs metainfo files for enabled plugins, useful when distros create split packages'
 )
 option('with-perl-legacy-api', type: 'boolean', value: false,
   description: 'Enables the legacy IRC perl module for compatibility with old scripts'

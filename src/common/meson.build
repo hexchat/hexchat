@@ -28,6 +28,7 @@ common_sysinfo_deps = []
 
 common_deps = [
   libgio_dep,
+  libcanberra_dep,
 ] + global_deps
 
 common_includes = [
@@ -72,22 +73,18 @@ textevents = custom_target('textevents',
 #   SIGACTION
 #   HAVE_GTK_MAC
 
-if get_option('with-ssl')
+if libssl_dep.found()
   common_sources += 'ssl.c'
   common_deps += libssl_dep
 endif
 
-if get_option('with-libcanberra')
-  common_deps += dependency('libcanberra', version: '>= 0.22')
-endif
-
-if get_option('with-dbus')
+if dbus_glib_dep.found()
   subdir('dbus')
   common_deps += hexchat_dbus_dep
   common_includes += include_directories('dbus')
 endif
 
-if get_option('with-plugin')
+if get_option('plugin')
   common_deps += libgmodule_dep
   install_headers('hexchat-plugin.h')
 endif

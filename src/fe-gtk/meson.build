@@ -43,9 +43,9 @@ hexchat_gtk_cflags = []
 
 hexchat_gtk_ldflags = []
 
-if get_option('with-libnotify')
+if libnotify_dep.found()
   hexchat_gtk_sources += 'notifications/notification-libnotify.c'
-  hexchat_gtk_deps += dependency('libnotify')
+  hexchat_gtk_deps += libnotify_dep
 elif false # TODO HAVE_GTK_MAC
 elif host_machine.system() == 'windows'
   hexchat_gtk_sources += 'notifications/notification-windows.c'
@@ -69,7 +69,7 @@ if iso_codes.found()
                         join_paths(iso_codes_prefix, 'share/locale'))
 endif
 
-if get_option('with-plugin')
+if get_option('plugin')
   hexchat_gtk_sources += 'plugingui.c'
 endif
 

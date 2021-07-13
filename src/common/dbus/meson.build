@@ -1,5 +1,5 @@
 dbus_deps = [
-  dependency('dbus-glib-1')
+  dbus_glib_dep
 ]
 
 dbus_sources = [

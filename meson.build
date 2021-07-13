@@ -1,6 +1,6 @@
 project('hexchat', 'c',
   version: '2.14.3',
-  meson_version: '>= 0.40.0',
+  meson_version: '>= 0.47.0',
   default_options: [
     'c_std=gnu89',
     'buildtype=debugoptimized',
@@ -15,12 +15,18 @@ cc = meson.get_compiler('c')
 
 libgio_dep = dependency('gio-2.0', version: '>= 2.34.0')
 libgmodule_dep = dependency('gmodule-2.0')
+
+libcanberra_dep = dependency('libcanberra', version: '>= 0.22',
+                             required: get_option('libcanberra'))
+dbus_glib_dep = dependency('dbus-glib-1', required: get_option('dbus'))
+libnotify_dep = dependency('libnotify', required: get_option('libnotify'))
+
 global_deps = []
 if cc.get_id() == 'msvc'
   libssl_dep = cc.find_library('libeay32')
 else
   libssl_dep = dependency('openssl', version: '>= 0.9.8',
-                          required: get_option('with-ssl'))
+                          required: get_option('tls'))
 endif
 
 config_h = configuration_data()
@@ -32,10 +38,10 @@ config_h.set_quoted('LOCALEDIR', join_paths(get_option('prefix'),
 config_h.set10('ENABLE_NLS', true)
 
 # Optional features
-config_h.set('USE_OPENSSL', get_option('with-ssl'))
-config_h.set('USE_LIBCANBERRA', get_option('with-libcanberra'))
-config_h.set('USE_DBUS', get_option('with-dbus'))
-config_h.set('USE_PLUGIN', get_option('with-plugin'))
+config_h.set('USE_OPENSSL', libssl_dep.found())
+config_h.set('USE_LIBCANBERRA', libcanberra_dep.found())
+config_h.set('USE_DBUS', dbus_glib_dep.found())
+config_h.set('USE_PLUGIN', get_option('plugin'))
 
 config_h.set('G_DISABLE_SINGLE_INCLUDES', true)
 config_h.set('GTK_DISABLE_DEPRECATED', true)
@@ -152,7 +158,7 @@ endforeach
 add_project_link_arguments(global_ldflags, language: 'c')
 
 subdir('src')
-if get_option('with-plugin')
+if get_option('plugin')
   subdir('plugins')
 endif
 if cc.get_id() != 'msvc'
@@ -160,6 +166,33 @@ if cc.get_id() != 'msvc'
   subdir('po') # FIXME: build xgettext
 
   meson.add_install_script('meson_post_install.py',
-    '@0@'.format(get_option('with-theme-manager'))
+    '@0@'.format(get_option('theme-manager'))
   )
+endif
+
+if meson.version().version_compare('>= 0.53.0')
+  summary({
+    'prefix': get_option('prefix'),
+    'bindir': get_option('bindir'),
+    'libdir': get_option('libdir'),
+    'datadir': get_option('datadir'),
+  }, section: 'Directories')
+
+  summary({
+    'TLS (openssl)': libssl_dep.found(),
+    'Plugin Support': get_option('plugin'),
+    'DBus Support': dbus_glib_dep.found(),
+    'libnotify': libnotify_dep.found(),
+    'libcanberra': libcanberra_dep.found(),
+  }, section: 'Features')
+
+  summary({
+    'Lua': get_option('with-lua'),
+    'Python': get_option('with-python'),
+    'Perl': get_option('with-perl'),
+    'Perl Legacy API': get_option('with-perl-legacy-api'),
+    'FiSH': get_option('with-fishlim'),
+    'Sysinfo': get_option('with-sysinfo'),
+    'DCC Checksum': get_option('with-checksum'),
+  }, section: 'Plugins')
 endif

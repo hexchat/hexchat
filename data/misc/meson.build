@@ -2,8 +2,8 @@ appdir = join_paths(get_option('datadir'), 'applications')
 metainfodir = join_paths(get_option('datadir'), 'metainfo')
 desktop_utils = find_program('desktop-file-validate', required: false)
 
-if get_option('with-gtk')
-  if get_option('with-appdata')
+if get_option('gtk-frontend')
+  if get_option('install-appdata')
     hexchat_appdata = i18n.merge_file(
       input: 'io.github.Hexchat.appdata.xml.in',
       output: 'io.github.Hexchat.appdata.xml',
@@ -21,7 +21,7 @@ if get_option('with-gtk')
   endif
 
   desktop_conf = configuration_data()
-  if get_option('with-dbus')
+  if dbus_glib_dep.found()
     desktop_conf.set('exec_command', 'hexchat --existing %U')
   else
     desktop_conf.set('exec_command', 'hexchat %U')
@@ -49,7 +49,7 @@ if get_option('with-gtk')
   endif
 endif
 
-if get_option('with-theme-manager')
+if get_option('theme-manager')
   htm_desktop = i18n.merge_file(
     input: 'io.github.Hexchat.ThemeManager.desktop.in',
     output: 'io.github.Hexchat.ThemeManager.desktop',
@@ -70,7 +70,7 @@ if get_option('with-theme-manager')
   )
 endif
 
-if get_option('with-plugin') and get_option('with-appdata')
+if get_option('plugin')
   plugin_metainfo = []
 
   # FIXME: These should all get translated somewhere

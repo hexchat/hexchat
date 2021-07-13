@@ -1,11 +1,11 @@
-if get_option('with-plugin')
+if get_option('plugin')
   subdir('pkgconfig')
 endif
 
-if get_option('with-gtk')
+if get_option('gtk-frontend')
   subdir('icons')
   subdir('misc')
   subdir('man')
-elif get_option('with-theme-manager')
+elif get_option('theme-manager')
   subdir('misc')
 endif
