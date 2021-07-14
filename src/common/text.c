@@ -1323,7 +1323,6 @@ static char * const pevt_connect_help[] = {
 };
 
 static char * const pevt_sconnect_help[] = {
-	"PID"
 };
 
 static char * const pevt_generic_nick_help[] = {

@@ -27,19 +27,6 @@
 #include <errno.h>
 #include <fcntl.h>
 
-#define WANTSOCKET
-#define WANTARPA
-#include "inet.h"
-
-#ifdef WIN32
-#include <winbase.h>
-#include <io.h>
-#else
-#include <signal.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#endif
-
 #include "hexchat.h"
 #include "fe.h"
 #include "cfgfiles.h"
@@ -55,66 +42,28 @@
 #include "servlist.h"
 #include "server.h"
 
-#ifdef USE_OPENSSL
-#include <openssl/ssl.h>		  /* SSL_() */
-#include <openssl/err.h>		  /* ERR_() */
-#include "ssl.h"
-#endif
-
-#ifdef USE_OPENSSL
-/* local variables */
-static struct session *g_sess = NULL;
-#endif
 
 static GSList *away_list = NULL;
 GSList *serv_list = NULL;
 
-static void auto_reconnect (server *serv, int send_quit, int err);
-static void server_disconnect (session * sess, int sendquit, int err);
+static void auto_reconnect (server *serv, int send_quit, GError *err);
+static void server_disconnect (session * sess, int sendquit, GError *err);
 static int server_cleanup (server * serv);
 static void server_connect (server *serv, char *hostname, int port, int no_login);
-
-static void
-write_error (char *message, GError **error)
-{
-	if (error == NULL || *error == NULL) {
-		return;
-	}
-	g_printerr ("%s: %s\n", message, (*error)->message);
-	g_clear_error (error);
-}
-
-/* actually send to the socket. This might do a character translation or
-   send via SSL. server/dcc both use this function. */
-
-int
-tcp_send_real (void *ssl, int sok, GIConv write_converter, char *buf, int len)
-{
-	int ret;
-
-	gsize buf_encoded_len;
-	gchar *buf_encoded = text_convert_invalid (buf, len, write_converter, arbitrary_encoding_fallback_string, &buf_encoded_len);
-#ifdef USE_OPENSSL
-	if (!ssl)
-		ret = send (sok, buf_encoded, buf_encoded_len, 0);
-	else
-		ret = _SSL_send (ssl, buf_encoded, buf_encoded_len);
-#else
-	ret = send (sok, buf_encoded, buf_encoded_len, 0);
-#endif
-	g_free (buf_encoded);
-
-	return ret;
-}
 
 static int
 server_send_real (server *serv, char *buf, int len)
 {
-	fe_add_rawlog (serv, buf, len, TRUE);
+	gsize buf_encoded_len;
+	gchar *buf_encoded;
 
-	url_check_line (buf);
+	buf_encoded = text_convert_invalid (buf, len, serv->write_converter, arbitrary_encoding_fallback_string, &buf_encoded_len);
 
-	return tcp_send_real (serv->ssl, serv->sok, serv->write_converter, buf, len);
+	fe_add_rawlog (serv, buf_encoded, buf_encoded_len, TRUE);
+	url_check_line (buf_encoded);
+
+	// TODO: Error and cancellable
+	return g_socket_send (serv->socket, buf_encoded, buf_encoded_len, NULL, NULL);
 }
 
 /* new throttling system, uses the same method as the Undernet
@@ -262,20 +211,6 @@ tcp_sendf (server *serv, const char *fmt, ...)
 	tcp_send_len (serv, send_buf, len);
 }
 
-static int
-close_socket_cb (gpointer sok)
-{
-	closesocket (GPOINTER_TO_INT (sok));
-	return 0;
-}
-
-static void
-close_socket (int sok)
-{
-	/* close the socket in 5 seconds so the QUIT message is not lost */
-	fe_timeout_add_seconds (5, close_socket_cb, GINT_TO_POINTER (sok));
-}
-
 /* handle 1 line of text received from the server */
 
 static void
@@ -298,32 +233,23 @@ server_inline (server *serv, char *line, gssize len)
 /* read data from socket */
 
 static gboolean
-server_read (GIOChannel *source, GIOCondition condition, server *serv)
+on_socket_ready (GSocket *socket, GIOCondition condition, server *serv)
 {
-	int sok = serv->sok;
-	int error, i, len;
+	GError *error = NULL;
+	gssize len;
+	int i;
 	char lbuf[2050];
 
 	while (1)
 	{
-#ifdef USE_OPENSSL
-		if (!serv->ssl)
-#endif
-			len = recv (sok, lbuf, sizeof (lbuf) - 2, 0);
-#ifdef USE_OPENSSL
-		else
-			len = _SSL_recv (serv->ssl, lbuf, sizeof (lbuf) - 2);
-#endif
-		if (len < 1)
+		len = g_socket_receive (socket, lbuf, sizeof (lbuf) - 2, NULL, &error);
+		if (error)
 		{
-			error = 0;
-			if (len < 0)
+			if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
 			{
-				if (would_block ())
-					return TRUE;
-				error = sock_error ();
+				/* Fall through */
 			}
-			if (!serv->end_of_motd)
+			else if (!serv->end_of_motd)
 			{
 				server_disconnect (serv->server_session, FALSE, error);
 				if (!servlist_cycle (serv))
@@ -331,22 +257,26 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 					if (prefs.hex_net_auto_reconnect)
 						auto_reconnect (serv, FALSE, error);
 				}
-			} else
+			}
+			else
 			{
 				if (prefs.hex_net_auto_reconnect)
 					auto_reconnect (serv, FALSE, error);
 				else
 					server_disconnect (serv->server_session, FALSE, error);
 			}
-			return TRUE;
+
+			g_error_free (error);
+			return G_SOURCE_CONTINUE;
 		}
 
-		i = 0;
 
+		i = 0;
 		lbuf[len] = 0;
 
 		while (i < len)
 		{
+			// FIXME: Unsafe?
 			switch (lbuf[i])
 			{
 			case '\r':
@@ -378,8 +308,12 @@ server_connected (server * serv)
 	serv->ping_recv = time (0);
 	serv->lag_sent = 0;
 	serv->connected = TRUE;
-	set_nonblocking (serv->sok);
-	serv->iotag = fe_input_add (serv->sok, FIA_READ|FIA_EX, server_read, serv);
+
+	serv->socket_read_source = g_socket_create_source (serv->socket, G_IO_IN|G_IO_ERR, NULL);
+	g_source_set_callback (serv->socket_read_source, (GSourceFunc)on_socket_ready, serv, NULL);
+	g_source_attach (serv->socket_read_source, g_main_context_default ());
+	g_source_unref (serv->socket_read_source);
+
 	if (!serv->no_login)
 	{
 		EMIT_SIGNAL (XP_TE_CONNECTED, serv->server_session, NULL, NULL, NULL,
@@ -425,11 +359,7 @@ server_close_pipe (int *pipefd)	/* see comments below */
 static void
 server_stopconnecting (server * serv)
 {
-	if (serv->iotag)
-	{
-		fe_input_remove (serv->iotag);
-		serv->iotag = 0;
-	}
+	g_assert (!serv->socket_read_source);
 
 	if (serv->joindelay_tag)
 	{
@@ -437,255 +367,14 @@ server_stopconnecting (server * serv)
 		serv->joindelay_tag = 0;
 	}
 
-#ifndef WIN32
-	/* kill the child process trying to connect */
-	kill (serv->childpid, SIGKILL);
-	waitpid (serv->childpid, NULL, 0);
-
-	close (serv->childwrite);
-	close (serv->childread);
-#else
-	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
-
-	{
-		/* if we close the pipe now, giowin32 will crash. */
-		int *pipefd = g_new (int, 2);
-		pipefd[0] = serv->childwrite;
-		pipefd[1] = serv->childread;
-		g_idle_add ((GSourceFunc)server_close_pipe, pipefd);
-	}
-#endif
-
-#ifdef USE_OPENSSL
-	if (serv->ssl_do_connect_tag)
-	{
-		fe_timeout_remove (serv->ssl_do_connect_tag);
-		serv->ssl_do_connect_tag = 0;
-	}
-#endif
+	if (serv->connection_cancellable)
+		g_cancellable_cancel (serv->connection_cancellable);
 
 	fe_progressbar_end (serv);
 
 	serv->connecting = FALSE;
 	fe_server_event (serv, FE_SE_DISCONNECT, 0);
 }
-
-#ifdef USE_OPENSSL
-#define	SSLTMOUT	90				  /* seconds */
-static void
-ssl_cb_info (SSL * s, int where, int ret)
-{
-/*	char buf[128];*/
-
-
-	return;							  /* FIXME: make debug level adjustable in serverlist or settings */
-
-/*	g_snprintf (buf, sizeof (buf), "%s (%d)", SSL_state_string_long (s), where);
-	if (g_sess)
-		EMIT_SIGNAL (XP_TE_SSLMESSAGE, g_sess, buf, NULL, NULL, NULL, 0);
-	else
-		fprintf (stderr, "%s\n", buf);*/
-}
-
-static int
-ssl_cb_verify (int ok, X509_STORE_CTX * ctx)
-{
-	char subject[256];
-	char issuer[256];
-	char buf[512];
-	X509 *current_cert = X509_STORE_CTX_get_current_cert (ctx);
-
-	if (!current_cert)
-		return TRUE;
-
-	X509_NAME_oneline (X509_get_subject_name (current_cert),
-	                   subject, sizeof (subject));
-	X509_NAME_oneline (X509_get_issuer_name (current_cert),
-	                   issuer, sizeof (issuer));
-
-	g_snprintf (buf, sizeof (buf), "* Subject: %s", subject);
-	EMIT_SIGNAL (XP_TE_SSLMESSAGE, g_sess, buf, NULL, NULL, NULL, 0);
-	g_snprintf (buf, sizeof (buf), "* Issuer: %s", issuer);
-	EMIT_SIGNAL (XP_TE_SSLMESSAGE, g_sess, buf, NULL, NULL, NULL, 0);
-
-	return TRUE;
-}
-
-static int
-ssl_do_connect (server * serv)
-{
-	char buf[256]; // ERR_error_string() MUST have this size
-
-	g_sess = serv->server_session;
-
-	/* Set SNI hostname before connect */
-	SSL_set_tlsext_host_name(serv->ssl, serv->hostname);
-
-	if (SSL_connect (serv->ssl) <= 0)
-	{
-		char err_buf[128];
-		int err;
-
-		g_sess = NULL;
-		if ((err = ERR_get_error ()) > 0)
-		{
-			ERR_error_string (err, err_buf);
-			g_snprintf (buf, sizeof (buf), "(%d) %s", err, err_buf);
-			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, buf, NULL,
-							 NULL, NULL, 0);
-
-			if (ERR_GET_REASON (err) == SSL_R_WRONG_VERSION_NUMBER)
-				PrintText (serv->server_session, _("Are you sure this is a SSL capable server and port?\n"));
-
-			server_cleanup (serv);
-
-			if (prefs.hex_net_auto_reconnectonfail)
-				auto_reconnect (serv, FALSE, -1);
-
-			return (0);				  /* remove it (0) */
-		}
-	}
-	g_sess = NULL;
-
-	if (SSL_is_init_finished (serv->ssl))
-	{
-		struct cert_info cert_info;
-		struct chiper_info *chiper_info;
-		int verify_error;
-		int i;
-
-		if (!_SSL_get_cert_info (&cert_info, serv->ssl))
-		{
-			g_snprintf (buf, sizeof (buf), "* Certification info:");
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
-			g_snprintf (buf, sizeof (buf), "  Subject:");
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
-			for (i = 0; cert_info.subject_word[i]; i++)
-			{
-				g_snprintf (buf, sizeof (buf), "    %s", cert_info.subject_word[i]);
-				EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-								 NULL, 0);
-			}
-			g_snprintf (buf, sizeof (buf), "  Issuer:");
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
-			for (i = 0; cert_info.issuer_word[i]; i++)
-			{
-				g_snprintf (buf, sizeof (buf), "    %s", cert_info.issuer_word[i]);
-				EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-								 NULL, 0);
-			}
-			g_snprintf (buf, sizeof (buf), "  Public key algorithm: %s (%d bits)",
-						 cert_info.algorithm, cert_info.algorithm_bits);
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
-			/*if (cert_info.rsa_tmp_bits)
-			{
-				g_snprintf (buf, sizeof (buf),
-							 "  Public key algorithm uses ephemeral key with %d bits",
-							 cert_info.rsa_tmp_bits);
-				EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-								 NULL, 0);
-			}*/
-			g_snprintf (buf, sizeof (buf), "  Sign algorithm %s",
-						 cert_info.sign_algorithm/*, cert_info.sign_algorithm_bits*/);
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
-			g_snprintf (buf, sizeof (buf), "  Valid since %s to %s",
-						 cert_info.notbefore, cert_info.notafter);
-			EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
-		} else
-		{
-			g_snprintf (buf, sizeof (buf), "No Certificate");
-			goto conn_fail;
-		}
-
-		chiper_info = _SSL_get_cipher_info (serv->ssl);	/* static buffer */
-		g_snprintf (buf, sizeof (buf), "* Cipher info:");
-		EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL, NULL,
-						 0);
-		g_snprintf (buf, sizeof (buf), "  Version: %s, cipher %s (%u bits)",
-					 chiper_info->version, chiper_info->chiper,
-					 chiper_info->chiper_bits);
-		EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL, NULL,
-						 0);
-
-		verify_error = SSL_get_verify_result (serv->ssl);
-		switch (verify_error)
-		{
-		case X509_V_OK:
-			{
-				X509 *cert = SSL_get_peer_certificate (serv->ssl);
-				int hostname_err;
-				if ((hostname_err = _SSL_check_hostname(cert, serv->hostname)) != 0)
-				{
-					g_snprintf (buf, sizeof (buf), "* Verify E: Failed to validate hostname? (%d)%s",
-							 hostname_err, serv->accept_invalid_cert ? " -- Ignored" : "");
-					if (serv->accept_invalid_cert)
-						EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL, NULL, 0);
-					else
-						goto conn_fail;
-				}
-				break;
-			}
-			/* g_snprintf (buf, sizeof (buf), "* Verify OK (?)"); */
-			/* EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL, NULL, 0); */
-		case X509_V_ERR_UNABLE_TO_GET_ISSUER_CERT_LOCALLY:
-		case X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE:
-		case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
-		case X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN:
-		case X509_V_ERR_CERT_HAS_EXPIRED:
-			if (serv->accept_invalid_cert)
-			{
-				g_snprintf (buf, sizeof (buf), "* Verify E: %s.? (%d) -- Ignored",
-							 X509_verify_cert_error_string (verify_error),
-							 verify_error);
-				EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
-								 NULL, 0);
-				break;
-			}
-		default:
-			g_snprintf (buf, sizeof (buf), "%s.? (%d)",
-						 X509_verify_cert_error_string (verify_error),
-						 verify_error);
-conn_fail:
-			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, buf, NULL, NULL,
-							 NULL, 0);
-
-			server_cleanup (serv);
-
-			return (0);
-		}
-
-		server_stopconnecting (serv);
-
-		/* activate gtk poll */
-		server_connected (serv);
-
-		return (0);					  /* remove it (0) */
-	} else
-	{
-		SSL_SESSION *session = SSL_get_session (serv->ssl);
-		if (session && SSL_SESSION_get_time (session) + SSLTMOUT < time (NULL))
-		{
-			g_snprintf (buf, sizeof (buf), "SSL handshake timed out");
-			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, buf, NULL,
-							 NULL, NULL, 0);
-			server_cleanup (serv); /* ->connecting = FALSE */
-
-			if (prefs.hex_net_auto_reconnectonfail)
-				auto_reconnect (serv, FALSE, -1);
-
-			return (0);				  /* remove it (0) */
-		}
-
-		return (1);					  /* call it more (1) */
-	}
-}
-#endif
 
 static int
 timeout_auto_reconnect (server *serv)
@@ -702,7 +391,7 @@ timeout_auto_reconnect (server *serv)
 }
 
 static void
-auto_reconnect (server *serv, int send_quit, int err)
+auto_reconnect (server *serv, int send_quit, GError *error)
 {
 	session *s;
 	int del;
@@ -727,17 +416,13 @@ auto_reconnect (server *serv, int send_quit, int err)
 	}
 
 	if (serv->connected)
-		server_disconnect (serv->server_session, send_quit, err);
+		server_disconnect (serv->server_session, send_quit, error);
 
 	del = prefs.hex_net_reconnect_delay * 1000;
 	if (del < 1000)
 		del = 500;				  /* so it doesn't block the gui */
 
-#ifndef WIN32
-	if (err == -1 || err == 0 || err == ECONNRESET || err == ETIMEDOUT)
-#else
-	if (err == -1 || err == 0 || err == WSAECONNRESET || err == WSAETIMEDOUT)
-#endif
+	if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CONNECTION_CLOSED) || g_error_matches (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT))
 		serv->reconnect_away = serv->is_away;
 
 	/* is this server in a reconnect delay? remove it! */
@@ -764,32 +449,6 @@ server_flush_queue (server *serv)
 static void
 server_connect_success (server *serv)
 {
-#ifdef USE_OPENSSL
-#define	SSLDOCONNTMOUT	300
-	if (serv->use_ssl)
-	{
-		char *err;
-
-		/* it'll be a memory leak, if connection isn't terminated by
-		   server_cleanup() */
-		if ((err = _SSL_set_verify (serv->ctx, ssl_cb_verify, NULL)))
-		{
-			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, err, NULL,
-							 NULL, NULL, 0);
-			server_cleanup (serv);	/* ->connecting = FALSE */
-			return;
-		}
-		serv->ssl = _SSL_socket (serv->ctx, serv->sok);
-		/* FIXME: it'll be needed by new servers */
-		/* send(serv->sok, "STLS\r\n", 6, 0); sleep(1); */
-		set_nonblocking (serv->sok);
-		serv->ssl_do_connect_tag = fe_timeout_add (SSLDOCONNTMOUT,
-																 ssl_do_connect, serv);
-		return;
-	}
-
-	serv->ssl = NULL;
-#endif
 	server_stopconnecting (serv);	/* ->connecting = FALSE */
 	/* activate glib poll */
 	server_connected (serv);
@@ -797,6 +456,7 @@ server_connect_success (server *serv)
 
 /* receive info from the child-process about connection progress */
 
+#if 0
 static gboolean
 server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 {
@@ -814,87 +474,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, tbuf, sizeof tbuf);
 		PrintText (serv->server_session, tbuf);
 		break;
-	case '1':						  /* unknown host */
-		server_stopconnecting (serv);
-		closesocket (serv->sok4);
-		if (serv->proxy_sok4 != -1)
-			closesocket (serv->proxy_sok4);
-		if (serv->sok6 != -1)
-			closesocket (serv->sok6);
-		if (serv->proxy_sok6 != -1)
-			closesocket (serv->proxy_sok6);
-		EMIT_SIGNAL (XP_TE_UKNHOST, sess, NULL, NULL, NULL, NULL, 0);
-		if (!servlist_cycle (serv))
-			if (prefs.hex_net_auto_reconnectonfail)
-				auto_reconnect (serv, FALSE, -1);
-		break;
-	case '2':						  /* connection failed */
-		waitline2 (source, tbuf, sizeof tbuf);
-		server_stopconnecting (serv);
-		closesocket (serv->sok4);
-		if (serv->proxy_sok4 != -1)
-			closesocket (serv->proxy_sok4);
-		if (serv->sok6 != -1)
-			closesocket (serv->sok6);
-		if (serv->proxy_sok6 != -1)
-			closesocket (serv->proxy_sok6);
-		EMIT_SIGNAL (XP_TE_CONNFAIL, sess, errorstring (atoi (tbuf)), NULL,
-						 NULL, NULL, 0);
-		if (!servlist_cycle (serv))
-			if (prefs.hex_net_auto_reconnectonfail)
-				auto_reconnect (serv, FALSE, -1);
-		break;
-	case '3':						  /* gethostbyname finished */
-		waitline2 (source, host, sizeof host);
-		waitline2 (source, ip, sizeof ip);
-		waitline2 (source, outbuf, sizeof outbuf);
-		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
-		break;
-	case '4':						  /* success */
-		waitline2 (source, tbuf, sizeof (tbuf));
-		serv->sok = atoi (tbuf);
-		/* close the one we didn't end up using */
-		if (serv->sok == serv->sok4)
-			closesocket (serv->sok6);
-		else
-			closesocket (serv->sok4);
-		if (serv->proxy_sok != -1)
-		{
-			if (serv->proxy_sok == serv->proxy_sok4)
-				closesocket (serv->proxy_sok6);
-			else
-				closesocket (serv->proxy_sok4);
-		}
 
-		{
-			struct sockaddr_storage addr;
-			int addr_len = sizeof (addr);
-			guint16 port;
-			ircnet *net = serv->network;
-
-			if (!getsockname (serv->sok, (struct sockaddr *)&addr, &addr_len))
-			{
-				if (addr.ss_family == AF_INET)
-					port = ntohs(((struct sockaddr_in *)&addr)->sin_port);
-				else
-					port = ntohs(((struct sockaddr_in6 *)&addr)->sin6_port);
-
-				g_snprintf (outbuf, sizeof (outbuf), "IDENTD %"G_GUINT16_FORMAT" ", port);
-				if (net && net->user && !(net->flags & FLAG_USE_GLOBAL))
-					g_strlcat (outbuf, net->user, sizeof (outbuf));
-				else
-					g_strlcat (outbuf, prefs.hex_irc_user_name, sizeof (outbuf));
-
-				handle_command (serv->server_session, outbuf, FALSE);
-			}
-		}
-
-		server_connect_success (serv);
-		break;
-	case '5':						  /* prefs ip discovered */
-		waitline2 (source, tbuf, sizeof tbuf);
-		prefs.local_ip = inet_addr (tbuf);
-		break;
 	case '7':						  /* gethostbyname (prefs.hex_net_bind_host) failed */
 		sprintf (outbuf,
 					_("Cannot resolve hostname %s\nCheck your IP Settings!\n"),
@@ -905,14 +485,12 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		PrintText (sess, _("Proxy traversal failed.\n"));
 		server_disconnect (sess, FALSE, -1);
 		break;
-	case '9':
-		waitline2 (source, tbuf, sizeof tbuf);
-		EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, tbuf, NULL, NULL, NULL, 0);
-		break;
 	}
 
 	return TRUE;
 }
+
+#endif
 
 /* kill all sockets & iotags of a server. Stop a connection attempt, or
    disconnect if already connected. */
@@ -922,45 +500,26 @@ server_cleanup (server * serv)
 {
 	fe_set_lag (serv, 0);
 
-	if (serv->iotag)
+	if (serv->socket_read_source)
 	{
-		fe_input_remove (serv->iotag);
-		serv->iotag = 0;
+		g_clear_pointer (&serv->socket_read_source, g_source_destroy);
 	}
-
 	if (serv->joindelay_tag)
 	{
 		fe_timeout_remove (serv->joindelay_tag);
 		serv->joindelay_tag = 0;
 	}
 
-#ifdef USE_OPENSSL
-	if (serv->ssl)
-	{
-		SSL_shutdown (serv->ssl);
-		SSL_free (serv->ssl);
-		serv->ssl = NULL;
-	}
-#endif
+	g_clear_object (&serv->socket_client);
 
 	if (serv->connecting)
 	{
 		server_stopconnecting (serv);
-		closesocket (serv->sok4);
-		if (serv->proxy_sok4 != -1)
-			closesocket (serv->proxy_sok4);
-		if (serv->sok6 != -1)
-			closesocket (serv->sok6);
-		if (serv->proxy_sok6 != -1)
-			closesocket (serv->proxy_sok6);
 		return 1;
 	}
 
 	if (serv->connected)
 	{
-		close_socket (serv->sok);
-		if (serv->proxy_sok)
-			close_socket (serv->proxy_sok);
 		serv->connected = FALSE;
 		serv->end_of_motd = FALSE;
 		return 2;
@@ -978,11 +537,10 @@ server_cleanup (server * serv)
 }
 
 static void
-server_disconnect (session * sess, int sendquit, int err)
+server_disconnect (session * sess, int sendquit, GError *err)
 {
 	server *serv = sess->server;
 	GSList *list;
-	char tbuf[64];
 	gboolean shutup = FALSE;
 
 	/* send our QUIT reason */
@@ -1000,8 +558,7 @@ server_disconnect (session * sess, int sendquit, int err)
 		notc_msg (sess);
 		return;
 	case 1:							  /* it was in the process of connecting */
-		sprintf (tbuf, "%d", sess->server->childpid);
-		EMIT_SIGNAL (XP_TE_STOPCONNECT, sess, tbuf, NULL, NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_STOPCONNECT, sess, NULL, NULL, NULL, NULL, 0);
 		return;
 	case 3:
 		shutup = TRUE;	/* won't print "disconnected" in channels */
@@ -1017,7 +574,7 @@ server_disconnect (session * sess, int sendquit, int err)
 		{
 			if (!shutup || sess->type == SESS_SERVER)
 				/* print "Disconnected" to each window using this server */
-				EMIT_SIGNAL (XP_TE_DISCON, sess, errorstring (err), NULL, NULL, NULL, 0);
+				EMIT_SIGNAL (XP_TE_DISCON, sess, err ? err->message : NULL, NULL, NULL, NULL, 0);
 
 			if (!sess->channel[0] || sess->type == SESS_CHANNEL)
 				clear_channel (sess);
@@ -1036,320 +593,8 @@ server_disconnect (session * sess, int sendquit, int err)
 
 /* send a "print text" command to the parent process - MUST END IN \n! */
 
-static void
-proxy_error (int fd, char *msg)
-{
-	write (fd, "0\n", 2);
-	write (fd, msg, strlen (msg));
-}
-
-struct sock_connect
-{
-	char version;
-	char type;
-	guint16 port;
-	guint32 address;
-	char username[10];
-};
-
-/* traverse_socks() returns:
- *				0 success                *
- *          1 socks traversal failed */
-
-static int
-traverse_socks (int print_fd, int sok, char *serverAddr, int port)
-{
-	struct sock_connect sc;
-	unsigned char buf[256];
-
-	sc.version = 4;
-	sc.type = 1;
-	sc.port = htons (port);
-	sc.address = inet_addr (serverAddr);
-	g_strlcpy (sc.username, prefs.hex_irc_user_name, sizeof (sc.username));
-
-	send (sok, (char *) &sc, 8 + strlen (sc.username) + 1, 0);
-	buf[1] = 0;
-	recv (sok, buf, 10, 0);
-	if (buf[1] == 90)
-		return 0;
-
-	g_snprintf (buf, sizeof (buf), "SOCKS\tServer reported error %d,%d.\n", buf[0], buf[1]);
-	proxy_error (print_fd, buf);
-	return 1;
-}
-
-struct sock5_connect1
-{
-	char version;
-	char nmethods;
-	char method;
-};
-
-static int
-traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
-{
-	struct sock5_connect1 sc1;
-	unsigned char *sc2;
-	unsigned int packetlen, addrlen;
-	unsigned char buf[260];
-	int auth = prefs.hex_net_proxy_auth && prefs.hex_net_proxy_user[0] && prefs.hex_net_proxy_pass[0];
-
-	sc1.version = 5;
-	sc1.nmethods = 1;
-	if (auth)
-		sc1.method = 2;  /* Username/Password Authentication (UPA) */
-	else
-		sc1.method = 0;  /* NO Authentication */
-	send (sok, (char *) &sc1, 3, 0);
-	if (recv (sok, buf, 2, 0) != 2)
-		goto read_error;
-
-	if (buf[0] != 5)
-	{
-		proxy_error (print_fd, "SOCKS\tServer is not socks version 5.\n");
-		return 1;
-	}
-
-	/* did the server say no auth required? */
-	if (buf[1] == 0)
-		auth = 0;
-
-	if (auth)
-	{
-		int len_u=0, len_p=0;
-		unsigned char *u_p_buf;
-
-		/* authentication sub-negotiation (RFC1929) */
-		if (buf[1] != 2)  /* UPA not supported by server */
-		{
-			proxy_error (print_fd, "SOCKS\tServer doesn't support UPA authentication.\n");
-			return 1;
-		}
-
-		/* form the UPA request */
-		len_u = strlen (prefs.hex_net_proxy_user);
-		len_p = strlen (prefs.hex_net_proxy_pass);
-
-        packetlen = 2 + len_u + 1 + len_p;
-		u_p_buf = g_malloc0 (packetlen);
-
-		u_p_buf[0] = 1;
-		u_p_buf[1] = len_u;
-		memcpy (u_p_buf + 2, prefs.hex_net_proxy_user, len_u);
-		u_p_buf[2 + len_u] = len_p;
-		memcpy (u_p_buf + 3 + len_u, prefs.hex_net_proxy_pass, len_p);
-
-		send (sok, u_p_buf, packetlen, 0);
-		g_free(u_p_buf);
-
-		if ( recv (sok, buf, 2, 0) != 2 )
-			goto read_error;
-		if ( buf[1] != 0 )
-		{
-			proxy_error (print_fd, "SOCKS\tAuthentication failed. "
-							 "Is username and password correct?\n");
-			return 1; /* UPA failed! */
-		}
-	}
-	else
-	{
-		if (buf[1] != 0)
-		{
-			proxy_error (print_fd, "SOCKS\tAuthentication required but disabled in settings.\n");
-			return 1;
-		}
-	}
-
-	addrlen = strlen (serverAddr);
-	packetlen = 4 + 1 + addrlen + 2;
-	sc2 = g_malloc (packetlen);
-	sc2[0] = 5;						  /* version */
-	sc2[1] = 1;						  /* command */
-	sc2[2] = 0;						  /* reserved */
-	sc2[3] = 3;						  /* address type */
-	sc2[4] = (unsigned char) addrlen;	/* hostname length */
-	memcpy (sc2 + 5, serverAddr, addrlen);
-	*((unsigned short *) (sc2 + 5 + addrlen)) = htons (port);
-	send (sok, sc2, packetlen, 0);
-	g_free (sc2);
-
-	/* consume all of the reply */
-	if (recv (sok, buf, 4, 0) != 4)
-		goto read_error;
-	if (buf[0] != 5 || buf[1] != 0)
-	{
-		if (buf[1] == 2)
-			g_snprintf (buf, sizeof (buf), "SOCKS\tProxy refused to connect to host (not allowed).\n");
-		else
-			g_snprintf (buf, sizeof (buf), "SOCKS\tProxy failed to connect to host (error %d).\n", buf[1]);
-		proxy_error (print_fd, buf);
-		return 1;
-	}
-	if (buf[3] == 1)	/* IPV4 32bit address */
-	{
-		if (recv (sok, buf, 6, 0) != 6)
-			goto read_error;
-	} else if (buf[3] == 4)	/* IPV6 128bit address */
-	{
-		if (recv (sok, buf, 18, 0) != 18)
-			goto read_error;
-	} else if (buf[3] == 3)	/* string, 1st byte is size */
-	{
-		if (recv (sok, buf, 1, 0) != 1)	/* read the string size */
-			goto read_error;
-		packetlen = buf[0] + 2;	/* can't exceed 260 */
-		if (recv (sok, buf, packetlen, 0) != packetlen)
-			goto read_error;
-	}
-
-	return 0;	/* success */
-
-read_error:
-	proxy_error (print_fd, "SOCKS\tRead error from server.\n");
-	return 1;
-}
-
-static int
-traverse_wingate (int print_fd, int sok, char *serverAddr, int port)
-{
-	char buf[128];
-
-	g_snprintf (buf, sizeof (buf), "%s %d\r\n", serverAddr, port);
-	send (sok, buf, strlen (buf), 0);
-
-	return 0;
-}
-
-/* stuff for HTTP auth is here */
-
-static void
-three_to_four (char *from, char *to)
-{
-	static const char tab64[64]=
-	{
-		'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
-		'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
-		'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
-		'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
-	};
-
-	to[0] = tab64 [ (from[0] >> 2) & 63 ];
-	to[1] = tab64 [ ((from[0] << 4) | (from[1] >> 4)) & 63 ];
-	to[2] = tab64 [ ((from[1] << 2) | (from[2] >> 6)) & 63 ];
-	to[3] = tab64 [ from[2] & 63 ];
-};
-
-void
-base64_encode (char *to, char *from, unsigned int len)
-{
-	while (len >= 3)
-	{
-		three_to_four (from, to);
-		len -= 3;
-		from += 3;
-		to += 4;
-	}
-	if (len)
-	{
-		char three[3] = {0,0,0};
-		unsigned int i;
-		for (i = 0; i < len; i++)
-		{
-			three[i] = *from++;
-		}
-		three_to_four (three, to);
-		if (len == 1)
-		{
-			to[2] = to[3] = '=';
-		}
-		else if (len == 2)
-		{
-			to[3] = '=';
-		}
-		to += 4;
-	};
-	to[0] = 0;
-}
-
-static int
-http_read_line (int print_fd, int sok, char *buf, int len)
-{
-	len = waitline (sok, buf, len, TRUE);
-	if (len >= 1)
-	{
-		/* print the message out (send it to the parent process) */
-		write (print_fd, "0\n", 2);
-
-		if (buf[len-1] == '\r')
-		{
-			buf[len-1] = '\n';
-			write (print_fd, buf, len);
-		} else
-		{
-			write (print_fd, buf, len);
-			write (print_fd, "\n", 1);
-		}
-	}
-
-	return len;
-}
-
-static int
-traverse_http (int print_fd, int sok, char *serverAddr, int port)
-{
-	char buf[512];
-	char auth_data[256];
-	char auth_data2[252];
-	int n, n2;
-
-	n = g_snprintf (buf, sizeof (buf), "CONNECT %s:%d HTTP/1.0\r\n",
-					  serverAddr, port);
-	if (prefs.hex_net_proxy_auth)
-	{
-		n2 = g_snprintf (auth_data2, sizeof (auth_data2), "%s:%s",
-							prefs.hex_net_proxy_user, prefs.hex_net_proxy_pass);
-		base64_encode (auth_data, auth_data2, n2);
-		n += g_snprintf (buf+n, sizeof (buf)-n, "Proxy-Authorization: Basic %s\r\n", auth_data);
-	}
-	n += g_snprintf (buf+n, sizeof (buf)-n, "\r\n");
-	send (sok, buf, n, 0);
-
-	n = http_read_line (print_fd, sok, buf, sizeof (buf));
-	/* "HTTP/1.0 200 OK" */
-	if (n < 12)
-		return 1;
-	if (memcmp (buf, "HTTP/", 5) || memcmp (buf + 9, "200", 3))
-		return 1;
-	while (1)
-	{
-		/* read until blank line */
-		n = http_read_line (print_fd, sok, buf, sizeof (buf));
-		if (n < 1 || (n == 1 && buf[0] == '\n'))
-			break;
-	}
-	return 0;
-}
-
-static int
-traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, netstore *ns_proxy, int csok4, int csok6, int *csok, char bound)
-{
-	switch (proxy_type)
-	{
-	case 1:
-		return traverse_wingate (print_fd, sok, ip, port);
-	case 2:
-		return traverse_socks (print_fd, sok, ip, port);
-	case 3:
-		return traverse_socks5 (print_fd, sok, ip, port);
-	case 4:
-		return traverse_http (print_fd, sok, ip, port);
-	}
-
-	return 1;
-}
-
 /* this is the child process making the connection attempt */
+#if 0
 
 static int
 server_child (server * serv)
@@ -1373,24 +618,6 @@ server_child (server * serv)
 	int proxy_port;
 
 	ns_server = net_store_new ();
-
-	/* is a hostname set? - bind to it */
-	if (prefs.hex_net_bind_host[0])
-	{
-		ns_local = net_store_new ();
-		local_ip = net_resolve (ns_local, prefs.hex_net_bind_host, 0, &real_hostname);
-		if (local_ip != NULL)
-		{
-			g_snprintf (buf, sizeof (buf), "5\n%s\n", local_ip);
-			write (serv->childwrite, buf, strlen (buf));
-			net_bind (ns_local, serv->sok4, serv->sok6);
-			bound = 1;
-		} else
-		{
-			write (serv->childwrite, "7\n", 2);
-		}
-		net_store_destroy (ns_local);
-	}
 
 	if (!serv->dont_use_proxy) /* blocked in serverlist? */
 	{
@@ -1442,6 +669,7 @@ server_child (server * serv)
 			proxy_port = prefs.hex_net_proxy_port;
 		}
 	}
+
 
 	serv->proxy_type = proxy_type;
 
@@ -1538,77 +766,197 @@ xit:
 	return 0;
 	/* cppcheck-suppress memleak */
 }
+#endif
+
+static void
+on_client_network_event (GSocketClient *client,
+                         GSocketClientEvent event,
+                         GSocketConnectable *connectable,
+                         GIOStream *connection,
+                         gpointer user_data)
+{
+	session *sess = user_data;
+
+	// TODO: 		prefs.local_ip = inet_addr (tbuf);
+
+	switch (event)
+	{
+	case G_SOCKET_CLIENT_RESOLVING:
+		EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, (char*)g_network_address_get_hostname (G_NETWORK_ADDRESS (connectable)),
+		             NULL, NULL, NULL, 0);
+		break;
+	case G_SOCKET_CLIENT_RESOLVED:
+		break;
+	case G_SOCKET_CLIENT_CONNECTING: {
+		GInetSocketAddress *remote_isaddr = G_INET_SOCKET_ADDRESS (g_socket_connection_get_remote_address (G_SOCKET_CONNECTION (connection), NULL));
+		
+		g_warn_if_fail (remote_isaddr != NULL);
+		if (remote_isaddr)
+		{
+			GInetAddress *remote_iaddr = G_INET_ADDRESS (g_inet_socket_address_get_address (remote_isaddr));
+			char *remote_iaddr_string = g_inet_address_to_string (remote_iaddr);
+			char *hostname = (char*)g_network_address_get_hostname (G_NETWORK_ADDRESS (connectable));
+			char port_str[16];
+			g_snprintf (port_str, sizeof (port_str), "%"G_GUINT16_FORMAT, g_inet_socket_address_get_port (remote_isaddr));
+
+			EMIT_SIGNAL (XP_TE_CONNECT, sess, hostname, remote_iaddr_string, port_str, NULL, 0);
+			g_free (remote_iaddr_string);
+			g_object_unref (remote_isaddr);
+		}
+		break;
+	}
+	case G_SOCKET_CLIENT_TLS_HANDSHAKED: {
+		// TODO: Print out certificate information
+		// EMIT_SIGNAL (XP_TE_SSLMESSAGE, serv->server_session, buf, NULL, NULL,
+		// 			NULL, 0);
+		break;
+	}
+	case G_SOCKET_CLIENT_CONNECTED: {
+		char buf[512];
+		ircnet *net = sess->server->network;
+		GInetSocketAddress *remote_isaddr = G_INET_SOCKET_ADDRESS (g_socket_connection_get_remote_address (G_SOCKET_CONNECTION (connection), NULL));
+
+		g_assert (remote_isaddr);
+		
+		g_snprintf (buf, sizeof (buf), "IDENTD %"G_GUINT16_FORMAT" ", g_inet_socket_address_get_port (remote_isaddr));
+		if (net && net->user && !(net->flags & FLAG_USE_GLOBAL))
+			g_strlcat (buf, net->user, sizeof (buf));
+		else
+			g_strlcat (buf, prefs.hex_irc_user_name, sizeof (buf));
+
+		handle_command (sess->server->server_session, buf, FALSE);
+
+		g_object_unref (remote_isaddr);
+		break;
+	}
+	}
+}
+
+static void
+on_client_connect_ready (GSocketClient *client, GAsyncResult *res, gpointer user_data)
+{
+	GSocketConnection *conn;
+	GError *error = NULL;
+	server *serv = user_data;
+
+	conn = g_socket_client_connect_finish (client, res, &error);
+	if (error)
+	{
+		g_debug ("Failed to connect: %s", error->message);
+	
+		if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+		{
+			g_error_free (error);
+			return;
+		}
+
+		server_stopconnecting (serv);
+		if (g_error_matches (error, G_RESOLVER_ERROR, G_RESOLVER_ERROR_NOT_FOUND))
+		{
+			EMIT_SIGNAL (XP_TE_UKNHOST, serv->server_session, NULL, NULL, NULL, NULL, 0);
+		}
+		else if (error->domain == G_TLS_ERROR)
+		{
+			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, error->message, NULL, NULL, NULL, 0);
+		}
+		else
+		{
+			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, error->message, NULL, NULL, NULL, 0);
+		}
+
+
+		if (!servlist_cycle (serv))
+			if (prefs.hex_net_auto_reconnectonfail)
+				auto_reconnect (serv, FALSE, error);
+
+		g_error_free (error);
+		return;
+	}
+
+	serv->socket_conn = g_steal_pointer (&conn);
+	serv->socket = g_socket_connection_get_socket (serv->socket_conn);
+	g_socket_set_blocking (serv->socket, FALSE);
+
+	server_connect_success (serv);
+}
 
 static void
 server_connect (server *serv, char *hostname, int port, int no_login)
 {
-	int pid, read_des[2];
 	session *sess = serv->server_session;
-
-#ifdef USE_OPENSSL
-	if (!serv->ctx && serv->use_ssl)
-	{
-		if (!(serv->ctx = _SSL_context_init (ssl_cb_info)))
-		{
-			fprintf (stderr, "_SSL_context_init failed\n");
-			exit (1);
-		}
-	}
-#endif
+	GSocketConnectable *connectable;
 
 	if (!hostname[0])
-		return;
-
-	if (port < 0)
 	{
-		/* use default port for this server type */
-		port = 6667;
-#ifdef USE_OPENSSL
-		if (serv->use_ssl)
-			port = 6697;
-#endif
+		g_debug ("server_connect: no hostname");
+		return;
 	}
-	port &= 0xffff;	/* wrap around */
 
-	if (serv->connected || serv->connecting || serv->recondelay_tag)
-		server_disconnect (sess, TRUE, -1);
+	if (port <= 0 || port > G_MAXUINT16)
+		port = serv->use_ssl ? 6697 : 6667;
+
+	connectable = g_network_address_new (hostname, port);
+	
+	serv->socket_client = g_socket_client_new ();
+	g_socket_client_set_tls (serv->socket_client, serv->use_ssl);
+	g_socket_client_set_enable_proxy (serv->socket_client, !serv->dont_use_proxy);
+	g_socket_client_set_timeout (serv->socket_client, 60); // FIXME
+	g_signal_connect (serv->socket_client, "event", G_CALLBACK (on_client_network_event), sess);
+
+	if (prefs.hex_net_bind_host[0])
+	{
+		GSocketAddress *local_addr = g_inet_socket_address_new_from_string (prefs.hex_net_bind_host, 0);
+		g_socket_client_set_local_address (serv->socket_client, local_addr);
+		g_object_unref (local_addr);
+	}
+
+	
+	if (!serv->dont_use_proxy)
+	{
+		//GProxyResolver *proxy_resolver = g_proxy_resolver_get_default ();
+		// TODO:
+	}
+
+	// if (serv->connected || serv->connecting || serv->recondelay_tag)
+	// 	server_disconnect (sess, TRUE, -1);
 
 	fe_progressbar_start (sess);
-
-	EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, hostname, NULL, NULL, NULL, 0);
 
 	safe_strcpy (serv->servername, hostname, sizeof (serv->servername));
 	/* overlap illegal in strncpy */
 	if (hostname != serv->hostname)
 		safe_strcpy (serv->hostname, hostname, sizeof (serv->hostname));
 
-#ifdef USE_OPENSSL
 	if (serv->use_ssl)
 	{
-		char *cert_file;
+		char *certificate_paths[2];
+		GError *error = NULL;
 		serv->have_cert = FALSE;
+		guint i;
 
 		/* first try network specific cert/key */
-		cert_file = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "certs" G_DIR_SEPARATOR_S "%s.pem",
-					 get_xdir (), server_get_network (serv, TRUE));
-		if (SSL_CTX_use_certificate_file (serv->ctx, cert_file, SSL_FILETYPE_PEM) == 1)
+		certificate_paths[0] = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "certs" G_DIR_SEPARATOR_S "%s.pem",
+                                                get_xdir (), server_get_network (serv, TRUE));
+		/* if that doesn't exist, try <config>/certs/client.pem */
+        certificate_paths[1] = g_build_filename (get_xdir (), "certs", "client.pem", NULL);
+
+		for (i = 0; i < G_N_ELEMENTS (certificate_paths); i++)
 		{
-			if (SSL_CTX_use_PrivateKey_file (serv->ctx, cert_file, SSL_FILETYPE_PEM) == 1)
-				serv->have_cert = TRUE;
-		}
-		else
-		{
-			/* if that doesn't exist, try <config>/certs/client.pem */
-			cert_file = g_build_filename (get_xdir (), "certs", "client.pem", NULL);
-			if (SSL_CTX_use_certificate_file (serv->ctx, cert_file, SSL_FILETYPE_PEM) == 1)
+			serv->client_cert = g_tls_certificate_new_from_file (certificate_paths[i], &error);
+			if (error)
 			{
-				if (SSL_CTX_use_PrivateKey_file (serv->ctx, cert_file, SSL_FILETYPE_PEM) == 1)
-					serv->have_cert = TRUE;
+				g_debug ("Failed opening client cert (%s): %s", certificate_paths[i], error->message);
+				g_clear_error (&error);
+				continue;
 			}
+
+			serv->have_cert = TRUE;
+			break;
 		}
-		g_free (cert_file);
+
+		g_free (certificate_paths[0]);
+		g_free (certificate_paths[1]);
 	}
-#endif
 
 	server_set_defaults (serv);
 	serv->connecting = TRUE;
@@ -1619,55 +967,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	fe_set_away (serv);
 	server_flush_queue (serv);
 
-#ifdef WIN32
-	if (_pipe (read_des, 4096, _O_BINARY) < 0)
-#else
-	if (pipe (read_des) < 0)
-#endif
-		return;
-#ifdef __EMX__ /* os/2 */
-	setmode (read_des[0], O_BINARY);
-	setmode (read_des[1], O_BINARY);
-#endif
-	serv->childread = read_des[0];
-	serv->childwrite = read_des[1];
-
-	/* create both sockets now, drop one later */
-	net_sockets (&serv->sok4, &serv->sok6);
-	serv->proxy_sok4 = -1;
-	serv->proxy_sok6 = -1;
-
-#ifdef WIN32
-	CloseHandle (CreateThread (NULL, 0,
-										(LPTHREAD_START_ROUTINE)server_child,
-										serv, 0, (DWORD *)&pid));
-#else
-#ifdef LOOKUPD
-	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different
-	 * seed for each child. This method gives a bigger variation in seed values
-	 * than calling srand(time(0)) in the child itself.
-	 */
-	rand();
-#endif
-	switch (pid = fork ())
-	{
-	case -1:
-		return;
-
-	case 0:
-		/* this is the child */
-		setuid (getuid ());
-		server_child (serv);
-		_exit (0);
-	}
-#endif
-	serv->childpid = pid;
-#ifdef WIN32
-	serv->iotag = fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child,
-#else
-	serv->iotag = fe_input_add (serv->childread, FIA_READ, server_read_child,
-#endif
-										 serv);
+	g_socket_client_connect_async (serv->socket_client, connectable, NULL, (GAsyncReadyCallback)on_client_connect_ready, serv);
 }
 
 void
@@ -1741,7 +1041,6 @@ server_new (void)
 	server_fill_her_up (serv);
 
 	serv->id = id++;
-	serv->sok = -1;
 	strcpy (serv->nick, prefs.hex_irc_nick1);
 	server_set_defaults (serv);
 
@@ -1932,10 +1231,6 @@ server_free (server *serv)
 
 	if (serv->favlist)
 		g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free);
-#ifdef USE_OPENSSL
-	if (serv->ctx)
-		_SSL_context_free (serv->ctx);
-#endif
 
 	fe_server_callback (serv);
 

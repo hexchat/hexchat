@@ -487,6 +487,19 @@ dcc_notify_kill (struct server *serv)
 	}
 }
 
+static int
+tcp_send_real (int sok, GIConv write_converter, char *buf, int len)
+{
+	int ret;
+
+	gsize buf_encoded_len;
+	gchar *buf_encoded = text_convert_invalid (buf, len, write_converter, arbitrary_encoding_fallback_string, &buf_encoded_len);
+	ret = send (sok, buf_encoded, buf_encoded_len, 0);
+	g_free (buf_encoded);
+
+	return ret;
+}
+
 struct DCC *
 dcc_write_chat (char *nick, char *text)
 {
@@ -499,7 +512,7 @@ dcc_write_chat (char *nick, char *text)
 	if (dcc && dcc->dccstat == STAT_ACTIVE)
 	{
 		len = strlen (text);
-		tcp_send_real (NULL, dcc->sok, dcc->serv->write_converter, text, len);
+		tcp_send_real (dcc->sok, dcc->serv->write_converter, text, len);
 		send (dcc->sok, "\n", 1, 0);
 		dcc->size += len;
 		fe_dcc_update (dcc);
@@ -1656,7 +1669,8 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 	memset (&SAddr, 0, sizeof (struct sockaddr_in));
 
 	len = sizeof (SAddr);
-	getsockname (dcc->serv->sok, (struct sockaddr *) &SAddr, &len);
+	/* TODO: Get rid of raw socket usage */
+	getsockname (g_socket_get_fd (dcc->serv->socket), (struct sockaddr *) &SAddr, &len);
 
 	SAddr.sin_family = AF_INET;
 

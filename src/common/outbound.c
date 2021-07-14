@@ -903,8 +903,8 @@ cmd_debug (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	while (list)
 	{
 		v = (struct server *) list->data;
-		sprintf (tbuf, "%p %-5d %s\n",
-					v, v->sok, v->servername);
+		sprintf (tbuf, "%p %s\n",
+					v, v->servername);
 		PrintText (sess, tbuf);
 		list = list->next;
 	}
@@ -1414,7 +1414,7 @@ cmd_devoice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_discon (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	sess->server->disconnect (sess, TRUE, -1);
+	sess->server->disconnect (sess, TRUE, NULL);
 	return TRUE;
 }
 
@@ -1956,7 +1956,7 @@ cmd_quit (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (*word_eol[2])
 		sess->quitreason = word_eol[2];
-	sess->server->disconnect (sess, TRUE, -1);
+	sess->server->disconnect (sess, TRUE, NULL);
 	sess->quitreason = NULL;
 	return 2;
 }
@@ -3216,7 +3216,7 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			serv = list->data;
 			if (serv->connected)
-				serv->auto_reconnect (serv, TRUE, -1);
+				serv->auto_reconnect (serv, TRUE, NULL);
 			list = list->next;
 		}
 	}
@@ -3249,11 +3249,11 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (*word[3+offset])
 			serv->port = atoi (word[3+offset]);
 		safe_strcpy (serv->hostname, word[2+offset], sizeof (serv->hostname));
-		serv->auto_reconnect (serv, TRUE, -1);
+		serv->auto_reconnect (serv, TRUE, NULL);
 	}
 	else
 	{
-		serv->auto_reconnect (serv, TRUE, -1);
+		serv->auto_reconnect (serv, TRUE, NULL);
 	}
 	prefs.hex_net_reconnect_delay = tmp;
 
@@ -3294,6 +3294,7 @@ cmd_send (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!word[2][0])
 		return FALSE;
 
+#if 0
 	addr = dcc_get_my_address (sess);
 	if (addr == 0)
 	{
@@ -3313,6 +3314,7 @@ cmd_send (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		g_snprintf (tbuf, 512, "DCC SEND %s", word_eol[2]);
 
 	handle_command (sess, tbuf, FALSE);
+#endif
 
 	return TRUE;
 }

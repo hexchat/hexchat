@@ -39,10 +39,6 @@
 #include "history.h"
 #include "tree.h"
 
-#ifdef USE_OPENSSL
-#include <openssl/ssl.h>		  /* SSL_() */
-#endif
-
 #ifdef __EMX__						  /* for o/s 2 */
 #define OFLAGS O_BINARY
 #define g_ascii_strcasecmp stricmp
@@ -434,10 +430,10 @@ typedef struct server
 {
 	/*  server control operations (in server*.c) */
 	void (*connect)(struct server *, char *hostname, int port, int no_login);
-	void (*disconnect)(struct session *, int sendquit, int err);
+	void (*disconnect)(struct session *, int sendquit, GError *err);
 	int  (*cleanup)(struct server *);
 	void (*flush_queue)(struct server *);
-	void (*auto_reconnect)(struct server *, int send_quit, int err);
+	void (*auto_reconnect)(struct server *, int send_quit, GError *err);
 	/* irc protocol functions (in proto*.c) */
 	void (*p_inline)(struct server *, char *buf, int len);
 	void (*p_invite)(struct server *, char *channel, char *nick);
@@ -474,29 +470,18 @@ typedef struct server
 	int (*p_cmp)(const char *s1, const char *s2);
 
 	int port;
-	int sok;					/* is equal to sok4 or sok6 (the one we are using) */
-	int sok4;					/* tcp4 socket */
-	int sok6;					/* tcp6 socket */
-	int proxy_type;
-	int proxy_sok;				/* Additional information for MS Proxy beast */
-	int proxy_sok4;
-	int proxy_sok6;
 	int id;					/* unique ID number (for plugin API) */
 
 	/* dcc_ip moved from hexchatprefs to make it per-server */
 	guint32 dcc_ip;
 
-#ifdef USE_OPENSSL
-	SSL_CTX *ctx;
-	SSL *ssl;
-	int ssl_do_connect_tag;
-#else
-	void *ssl;
-#endif
-	int childread;
-	int childwrite;
-	int childpid;
-	int iotag;
+	GSocketClient *socket_client;
+	GSocketConnection *socket_conn;
+	GSocket *socket; /* Owned by socket_conn */
+	GCancellable *connection_cancellable;
+	GTlsCertificate *client_cert;
+	GSource *socket_read_source;
+
 	int recondelay_tag;				/* reconnect delay timeout */
 	int joindelay_tag;				/* waiting before we send JOIN */
 	char hostname[128];				/* real ip number */
