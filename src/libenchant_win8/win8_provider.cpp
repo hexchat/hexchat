@@ -22,7 +22,9 @@
 
 #include "config.h"
 
-#include <stdint.h>
+#ifdef _MSC_VER
+#include "typedef.h" // for ssize_t
+#endif
 
 #include <spellcheck.h>
 #include <glib.h>
