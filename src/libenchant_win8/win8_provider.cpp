@@ -22,13 +22,12 @@
 
 #include "config.h"
 
-#include <Spellcheck.h>
+#include <stdint.h>
+
+#include <spellcheck.h>
 #include <glib.h>
 
-#include "typedef.h" // for ssize_t
 #include <enchant-provider.h>
-
-ENCHANT_PLUGIN_DECLARE ("win8")
 
 /* --------- Utils ----------*/
 
@@ -233,12 +232,6 @@ win8_provider_list_dicts (EnchantProvider *provider, size_t *out_n_dicts)
 }
 
 static void
-win8_provider_free_string_list (EnchantProvider *provider, char **str_list)
-{
-	g_strfreev (str_list);
-}
-
-static void
 win8_provider_dispose (EnchantProvider *provider)
 {
 	if (provider)
@@ -283,7 +276,6 @@ init_enchant_provider (void)
 	provider->identify = win8_provider_identify;
 	provider->describe = win8_provider_describe;
 	provider->list_dicts = win8_provider_list_dicts;
-	provider->free_string_list = win8_provider_free_string_list;
 
 	provider->user_data = factory;
 

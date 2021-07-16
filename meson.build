@@ -85,11 +85,18 @@ configure_file(output: 'config.h', configuration: config_h)
 config_h_include = include_directories('.')
 
 if host_machine.system() == 'windows'
+  add_languages('cpp')
+
   add_project_arguments(
     '-DWIN32',
-    '-DNTDDI_VERSION=NTDDI_WIN7',
-    '-D_WIN32_WINNT=_WIN32_WINNT_WIN7',
+    '-DNTDDI_VERSION=NTDDI_WIN8',
+    '-D_WIN32_WINNT=_WIN32_WINNT_WIN8',
      language: 'c')
+  add_project_arguments(
+    '-DWIN32',
+    '-DNTDDI_VERSION=NTDDI_WIN8',
+    '-D_WIN32_WINNT=_WIN32_WINNT_WIN8',
+     language: 'cpp')
 endif
 
 
