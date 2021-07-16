@@ -1,17 +1,15 @@
-subdir('old_version')
-
 fishlim_test_sources = [
   'tests.c',
-  'fake/keystore.c',
+  'mock-keystore.c',
   '../fish.c',
   '../utils.c',
 ]
 
 fishlim_tests = executable('fishlim_tests', fishlim_test_sources,
-  dependencies: [libgio_dep, libssl_dep],
-  link_with : fishlim_old_lib
+  dependencies: [libgio_dep, libssl_dep, hexchat_plugin_dep],
+  include_directories: include_directories('..'),
 )
 
 test('Fishlim Tests', fishlim_tests,
-  timeout: 90
+  protocol: 'tap',
 )
