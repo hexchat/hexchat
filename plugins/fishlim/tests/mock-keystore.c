@@ -1,5 +1,4 @@
 /*
-
   Copyright (c) 2010 Samuel Lidén Borell <samuel@kodafritt.se>
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,16 +21,31 @@
 
 */
 
-#ifndef FISH_OLD_H
-#define FISH_OLD_H
+#include "fish.h"
 
-#include <stddef.h>
+/**
+ * Extracts a key from the key store file.
+ */
+char *
+keystore_get_key(const char *nick, enum fish_mode *mode)
+{
+    return NULL;
+}
 
-#include <glib.h>
+/**
+ * Sets a key in the key store file.
+ */
+gboolean
+keystore_store_key(const char *nick, const char *key, enum fish_mode mode)
+{
+    return TRUE;
+}
 
-char *__old_fish_encrypt(const char *key, size_t keylen, const char *message);
-char *__old_fish_decrypt(const char *key, size_t keylen, const char *data);
-
-#endif
-
-
+/**
+ * Deletes a nick from the key store.
+ */
+gboolean
+keystore_delete_nick(const char *nick)
+{
+    return TRUE;
+}
