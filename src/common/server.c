@@ -1770,6 +1770,7 @@ server_set_defaults (server *serv)
 	serv->chanmodes = g_strdup ("beI,k,l");
 	serv->nick_prefixes = g_strdup ("@%+");
 	serv->nick_modes = g_strdup ("ohv");
+	serv->modes_per_line = 3;
 	serv->sasl_mech = MECH_PLAIN;
 
 	if (!serv->encoding)
@@ -1778,6 +1779,7 @@ server_set_defaults (server *serv)
 	serv->nickcount = 1;
 	serv->end_of_motd = FALSE;
 	serv->sent_capend = FALSE;
+	serv->use_listargs = FALSE;
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;
 	serv->supports_monitor = FALSE;
