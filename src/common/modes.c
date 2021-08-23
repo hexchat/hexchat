@@ -67,8 +67,8 @@ send_channel_modes (session *sess, char *tbuf, char *word[], int wpos,
 	int usable_modes, orig_len, len, wlen, i, max;
 	server *serv = sess->server;
 
-	/* sanity check. IRC RFC says three per line. */
-	if (serv->modes_per_line < 3)
+	/* sanity check. IRC RFC says three per line but some servers may support less. */
+	if (serv->modes_per_line < 1)
 		serv->modes_per_line = 3;
 	if (modes_per_line < 1)
 		modes_per_line = serv->modes_per_line;

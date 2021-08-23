@@ -503,22 +503,6 @@ process_numeric (session * sess, int n,
 
 		goto def;
 
-	case 4:	/* check the ircd type */
-		serv->use_listargs = FALSE;
-		serv->modes_per_line = 3;		/* default to IRC RFC */
-		if (strncmp (word[5], "bahamut", 7) == 0)				/* DALNet */
-		{
-			serv->use_listargs = TRUE;		/* use the /list args */
-		} else if (strncmp (word[5], "u2.10.", 6) == 0)		/* Undernet */
-		{
-			serv->use_listargs = TRUE;		/* use the /list args */
-			serv->modes_per_line = 6;		/* allow 6 modes per line */
-		} else if (strncmp (word[5], "glx2", 4) == 0)
-		{
-			serv->use_listargs = TRUE;		/* use the /list args */
-		}
-		goto def;
-
 	case 5:
 		inbound_005 (serv, word, tags_data);
 		goto def;
