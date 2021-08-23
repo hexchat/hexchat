@@ -1770,7 +1770,7 @@ server_set_defaults (server *serv)
 	serv->chanmodes = g_strdup ("beI,k,l");
 	serv->nick_prefixes = g_strdup ("@%+");
 	serv->nick_modes = g_strdup ("ohv");
-	serv->modes_per_line = 3;
+	serv->modes_per_line = 3; /* https://datatracker.ietf.org/doc/html/rfc1459#section-4.2.3.1 */
 	serv->sasl_mech = MECH_PLAIN;
 
 	if (!serv->encoding)
