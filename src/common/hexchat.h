@@ -503,7 +503,7 @@ typedef struct server
 	char servername[128];			/* what the server says is its name */
 	char password[86];
 	char nick[NICKLEN];
-	char linebuf[2048];				/* RFC says 512 chars including \r\n */
+	char linebuf[8704];				/* RFC says 512 chars including \r\n, IRCv3 message tags add 8191, plus the NUL byte */
 	char *last_away_reason;
 	int pos;								/* current position in linebuf */
 	int nickcount;
