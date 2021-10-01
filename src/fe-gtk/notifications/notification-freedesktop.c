@@ -55,7 +55,7 @@ notification_backend_show (const char *title, const char *text)
     g_variant_builder_init (&params, G_VARIANT_TYPE ("(susssasa{sv}i)"));
     g_variant_builder_add (&params, "s", "hexchat"); /* App name */
     g_variant_builder_add (&params, "u", 0); /* ID, 0 means don't replace */
-    g_variant_builder_add (&params, "s", ""); /* App icon (set from hints instead) */
+    g_variant_builder_add (&params, "s", "io.github.Hexchat"); /* App icon */
     g_variant_builder_add (&params, "s", title);
     g_variant_builder_add (&params, "s", text);
     g_variant_builder_add (&params, "as", NULL); /* Actions */
