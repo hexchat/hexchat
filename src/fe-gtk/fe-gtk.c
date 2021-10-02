@@ -849,6 +849,15 @@ fe_set_throttle (server *serv)
 	}
 }
 
+static void
+fe_reloadcolors (struct session *sess)
+{
+	PrintText (sess, _("Reloading color palette from colors.conf\n"));
+	palette_load();
+	palette_realloc(sess->gui->window);
+	setup_apply_real(FALSE, FALSE, FALSE, FALSE);
+}
+
 void
 fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 {
@@ -866,6 +875,8 @@ fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 		fe_flash_window (sess); break;
 	case FE_GUI_COLOR:
 		fe_set_tab_color (sess, arg); break;
+	case FE_GUI_RELOADCOLORS:
+		fe_reloadcolors (sess); break;
 	case FE_GUI_ICONIFY:
 		gtk_window_iconify (GTK_WINDOW (sess->gui->window)); break;
 	case FE_GUI_MENU:
