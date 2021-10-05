@@ -67,6 +67,7 @@ sts_load (void)
 		if (sscanf (buf, "%s %u %ld", profile->host, &profile->port, &profile->expiry) != 3)
 		{
 			/* Malformed profile; drop it. */
+			g_debug ("Malformed STS profile: %s", buf);
 			g_free (profile);
 			continue;
 		}
@@ -80,10 +81,7 @@ sts_new (void)
 {
 	struct sts_profile *profile;
 
-	profile = malloc (sizeof (struct sts_profile));
-	profile->host[0] = 0;
-	profile->port = 0;
-	profile->expiry = 0;
+	profile = g_new0 (struct sts_profile, 1);
 	return profile;
 }
 
@@ -94,7 +92,7 @@ sts_parse_cap (const char* cap)
 	char *value;
 	GHashTable *table;
 
-	table = g_hash_table_new (g_str_hash, g_str_equal);
+	table = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	entries = g_strsplit (cap, ",", 0);
 	for (currentry = entries; *currentry; ++currentry)
 	{
@@ -103,7 +101,7 @@ sts_parse_cap (const char* cap)
 			g_hash_table_insert (table, g_strndup (*currentry, value - *currentry), g_strdup (value + 1));
 	}
 
-	g_free (entries);
+	g_strfreev (entries);
 	return table;
 }
 

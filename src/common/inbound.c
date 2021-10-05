@@ -1829,6 +1829,8 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 					stsvalue = atoi (stsvaluestr);
 					if (stsvalue > 0)
 						sts_update_expiry(serv->hostname, stsvalue, serv->stsprofile);
+					else
+						g_debug ("Malformed STS profile duration: %s", stsvaluestr);
 				}
 			} else
 			{
@@ -1840,7 +1842,7 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 					{
 						/* We are connecting on plain text and have found a valid STS profile. */
 						serv->stsprofile = sts_new ();
-						strcpy (serv->stsprofile->host, serv->hostname);
+						g_strlcpy (serv->stsprofile->host, serv->hostname, sizeof (serv->stsprofile->host));
 						serv->stsprofile->port = stsvalue;
 
 						/* Reconfigure with the new port and security settings. */
@@ -1859,6 +1861,8 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 						prefs.hex_net_reconnect_delay = stsvalue;
 						break;
 					}
+					else
+						g_debug ("Malformed STS profile port: %s", stsvaluestr);
 				}
 			}
 
