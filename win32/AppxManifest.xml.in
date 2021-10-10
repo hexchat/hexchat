@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap uap3 uap10 rescap">
+  <Identity Name="39215TingPing.HexChat" Publisher="CN=0330FC06-4EE0-4AAB-8FB9-F9B6C1FA037F" Version="<#= [string]::Join('.', $versionParts) #>.0" ProcessorArchitecture="x86" />
+  <Properties>
+    <DisplayName>HexChat</DisplayName>
+    <PublisherDisplayName>TingPing</PublisherDisplayName>
+    <Description>Chat Client</Description>
+    <Logo>Assets\StoreLogo.png</Logo>
+    <uap10:PackageIntegrity>
+      <uap10:Content Enforcement="on" />
+    </uap10:PackageIntegrity>
+  </Properties>
+  <Resources>
+    <Resource Language="en-us" />
+    <Resource uap:Scale="100" />
+    <Resource uap:Scale="125" />
+    <Resource uap:Scale="150" />
+    <Resource uap:Scale="200" />
+    <Resource uap:Scale="400" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.1" />
+    <PackageDependency Name="Microsoft.VCLibs.140.00.UWPDesktop" MinVersion="14.0.24217.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+  </Dependencies>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+  <Applications>
+    <Application Id="HexChat" Executable="hexchat.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="HexChat" Description="HexChat" BackgroundColor="transparent" Square150x150Logo="Assets\AppMedTile.png" Square44x44Logo="Assets\AppList.png">
+      </uap:VisualElements>
+      <Extensions>
+        <uap3:Extension Category="windows.protocol">
+          <uap3:Protocol Name="irc" Parameters="--url=&quot;%1&quot;">
+            <uap:DisplayName>IRC</uap:DisplayName>
+            <uap:Logo>Assets\irc.png</uap:Logo>
+          </uap3:Protocol>
+        </uap3:Extension>
+        <uap3:Extension Category="windows.protocol">
+          <uap3:Protocol Name="ircs" Parameters="--url=&quot;%1&quot;">
+            <uap:DisplayName>IRCS</uap:DisplayName>
+            <uap:Logo>Assets\irc.png</uap:Logo>
+          </uap3:Protocol>
+        </uap3:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+</Package>

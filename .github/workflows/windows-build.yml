@@ -55,9 +55,28 @@ jobs:
           msbuild win32\hexchat.sln /m /verbosity:minimal /p:Configuration=Release /p:Platform=${{ matrix.platform }}
         shell: cmd
 
+      - name: Creating Appx
+        run: |
+          cp -r ..\hexchat-build\${{ matrix.platform }}\rel ..\hexchat-appx
+          .\win32\version-template.ps1 win32\AppxManifest.xml.in $(Join-Path $(Resolve-Path ..\hexchat-appx) AppxManifest.xml)
+          cd ..\hexchat-appx
+          rm plugins\hcperl.dll
+          rm plugins\hcpython2.dll
+          rm plugins\hcpython3.dll
+          rm plugins\hcupd.dll
+          rm -r python
+          rm *.pyd
+          rm WinSparkle.dll
+          rm portable-mode
+          rm hexchat-text.exe
+          rm thememan.exe
+          makeappx pack /d . /p hexchat-${{ matrix.arch }}.appx
+        shell: powershell
+
       - name: Preparing Artifacts
         run: |
           move ..\hexchat-build\${{ matrix.platform }}\HexChat*.exe .\
+          move ..\hexchat-appx\hexchat-${{ matrix.arch }}.appx .\
           move ..\hexchat-build .\
         shell: cmd
 
@@ -68,5 +87,10 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: Build Files ${{ matrix.arch  }}
+          name: Build Files ${{ matrix.arch }}
           path: hexchat-build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Appx Files ${{ matrix.arch }}
+          path: hexchat-${{ matrix.arch }}.appx
