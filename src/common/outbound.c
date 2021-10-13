@@ -2152,7 +2152,6 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 	case 0x058b836e: fe_ctrl_gui (sess, 8, 0); break; /* APPLY */
 	case 0xac1eee45: fe_ctrl_gui (sess, 7, 2); break; /* ATTACH */
-	case 0x05a72f63: fe_ctrl_gui (sess, 4, atoi (word[3])); break; /* COLOR */
 	case 0xb06a1793: fe_ctrl_gui (sess, 7, 1); break; /* DETACH */
 	case 0x05cfeff0: fe_ctrl_gui (sess, 3, 0); break; /* FLASH */
 	case 0x05d154d8: fe_ctrl_gui (sess, 2, 0); break; /* FOCUS */
@@ -2165,6 +2164,12 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			fe_ctrl_gui (sess, 6, 0);
 		else
 			return FALSE;
+		break;
+	case 0x05a72f63: /* COLOR */
+		if (!g_ascii_strcasecmp (word[4], "-NOOVERRIDE"))
+			fe_ctrl_gui (sess, 4, FE_COLOR_FLAG_NOOVERRIDE | atoi (word[3]));
+		else
+			fe_ctrl_gui (sess, 4, atoi (word[3]));
 		break;
 	default:
 		return FALSE;

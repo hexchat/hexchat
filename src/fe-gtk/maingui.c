@@ -178,17 +178,23 @@ void
 fe_set_tab_color (struct session *sess, int col)
 {
 	struct session *server_sess = sess->server->server_session;
+	int col_noflags = (col & ~FE_COLOR_ALLFLAGS);
+	int col_shouldoverride = !(col & FE_COLOR_FLAG_NOOVERRIDE);
+
 	if (sess->res->tab && sess->gui->is_tab && (col == 0 || sess != current_tab))
 	{
-		switch (col)
+		switch (col_noflags)
 		{
 		case 0:	/* no particular color (theme default) */
 			sess->tab_state = TAB_STATE_NONE;
 			chan_set_color (sess->res->tab, plain_list);
 			break;
 		case 1:	/* new data has been displayed (dark red) */
-			sess->tab_state = TAB_STATE_NEW_DATA;
-			chan_set_color (sess->res->tab, newdata_list);
+			if (col_shouldoverride || !((sess->tab_state & TAB_STATE_NEW_MSG)
+										|| (sess->tab_state & TAB_STATE_NEW_HILIGHT))) {
+				sess->tab_state = TAB_STATE_NEW_DATA;
+				chan_set_color (sess->res->tab, newdata_list);
+			}
 
 			if (chan_is_collapsed (sess->res->tab)
 				&& !((server_sess->tab_state & TAB_STATE_NEW_MSG)
@@ -201,8 +207,10 @@ fe_set_tab_color (struct session *sess, int col)
 
 			break;
 		case 2:	/* new message arrived in channel (light red) */
-			sess->tab_state = TAB_STATE_NEW_MSG;
-			chan_set_color (sess->res->tab, newmsg_list);
+			if (col_shouldoverride || !(sess->tab_state & TAB_STATE_NEW_HILIGHT)) {
+				sess->tab_state = TAB_STATE_NEW_MSG;
+				chan_set_color (sess->res->tab, newmsg_list);
+			}
 
 			if (chan_is_collapsed (sess->res->tab)
 				&& !(server_sess->tab_state & TAB_STATE_NEW_HILIGHT)
