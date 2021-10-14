@@ -175,7 +175,7 @@ fe_flash_window (session *sess)
 /* set a tab plain, red, light-red, or blue */
 
 void
-fe_set_tab_color (struct session *sess, int col)
+fe_set_tab_color (struct session *sess, tabcolor col)
 {
 	struct session *server_sess = sess->server->server_session;
 	int col_noflags = (col & ~FE_COLOR_ALLFLAGS);
@@ -548,7 +548,7 @@ mg_focus (session *sess)
 	/* when called via mg_changui_new, is_tab might be true, but
 		sess->res->tab is still NULL. */
 	if (sess->res->tab)
-		fe_set_tab_color (sess, 0);
+		fe_set_tab_color (sess, FE_COLOR_NONE);
 }
 
 static int
