@@ -627,7 +627,7 @@ process_numeric (session * sess, int n,
 	case 320:	/* :is an identified user */
 		if (!serv->skip_next_whois)
 			EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS_ID, whois_sess, word[4],
-										  word_eol[5] + 1, NULL, NULL, 0,
+										  word_eol[5][0] == ':' ? word_eol[5] + 1 : word_eol[5], NULL, NULL, 0,
 										  tags_data->timestamp);
 		break;
 
