@@ -187,6 +187,9 @@ static const struct defaultserver def[] =
 	{"Interlinked", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.interlinked.me"},
 
+	{"Irc-Nerds", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.irc-nerds.net"},
+	
 	{"IRC4Fun", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,				"irc.irc4fun.net"},
 
