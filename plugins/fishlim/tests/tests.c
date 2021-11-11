@@ -21,6 +21,7 @@
 
 */
 
+#include <string.h>
 #include <glib.h>
 
 #include "fish.h"
