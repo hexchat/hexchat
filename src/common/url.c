@@ -620,7 +620,8 @@ re_email (void)
 /*	NICK description --- */
 /* For NICKPRE see before url_check_word() */
 #define NICKHYP	"-"
-#define NICKLET "a-z"
+/* UTF-8 range \u0400-\u04FF for support Cyrillic on some servers */
+#define NICKLET "a-z\u0400-\u04FF"
 #define NICKDIG "0-9"
 /*	Note for NICKSPE:  \\\\ boils down to a single \ */
 #define NICKSPE	"\\[\\]\\\\`_^{|}"
