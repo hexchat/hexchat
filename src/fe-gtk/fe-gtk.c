@@ -664,13 +664,13 @@ fe_print_text (struct session *sess, char *text, time_t stamp,
 		return;
 
 	if (sess == current_tab)
-		fe_set_tab_color (sess, 0);
+		fe_set_tab_color (sess, FE_COLOR_NONE);
 	else if (sess->tab_state & TAB_STATE_NEW_HILIGHT)
-		fe_set_tab_color (sess, 3);
+		fe_set_tab_color (sess, FE_COLOR_NEW_HILIGHT);
 	else if (sess->tab_state & TAB_STATE_NEW_MSG)
-		fe_set_tab_color (sess, 2);
+		fe_set_tab_color (sess, FE_COLOR_NEW_MSG);
 	else
-		fe_set_tab_color (sess, 1);
+		fe_set_tab_color (sess, FE_COLOR_NEW_DATA);
 }
 
 void

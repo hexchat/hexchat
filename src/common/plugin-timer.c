@@ -198,7 +198,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 		offset += 2;
 	}
 
-	timeout = atof (word[2 + offset]);
+	timeout = g_ascii_strtod (word[2 + offset], NULL);
 	command = word_eol[3 + offset];
 
 	if (timeout < 0.1 || timeout * 1000 > INT_MAX || !command[0])

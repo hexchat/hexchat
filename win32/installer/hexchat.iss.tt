@@ -138,7 +138,13 @@ Source: "gspawn-win32-helper-console.exe"; DestDir: "{app}"; Flags: ignoreversio
 Source: "gthread-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "gtk-win32-2.0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "iconv.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#if APPARCH == "x64"
+Source: "libcrypto-1_1-x64.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libssl-1_1-x64.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#else
+Source: "libcrypto-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libssl-1_1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+#endif
 Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "ffi-7.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "intl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -148,7 +154,6 @@ Source: "pango-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: l
 Source: "pangocairo-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pangoft2-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "pangowin32-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 
 Source: "plugins\hcnotifications-winrt.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: libs

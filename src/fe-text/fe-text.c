@@ -623,7 +623,7 @@ fe_cleanup (void)
 {
 }
 void
-fe_set_tab_color (struct session *sess, int col)
+fe_set_tab_color (struct session *sess, tabcolor col)
 {
 }
 void

@@ -880,7 +880,7 @@ inbound_005 (server * serv, char *word[], const message_tags_data *tags_data)
 				g_free (serv->nick_prefixes);
 				g_free (serv->nick_modes);
 				serv->nick_prefixes = g_strdup (pre + 1);
-				serv->nick_modes = g_strdup (tokvalue);
+				serv->nick_modes = g_strdup (tokvalue + 1);
 			} else
 			{
 				/* bad! some ircds don't give us the modes. */

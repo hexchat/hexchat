@@ -1,5 +1,5 @@
 project('hexchat', 'c',
-  version: '2.14.3',
+  version: '2.16.0',
   meson_version: '>= 0.47.0',
   default_options: [
     'c_std=gnu89',
@@ -22,7 +22,7 @@ dbus_glib_dep = dependency('dbus-glib-1', required: get_option('dbus'))
 
 global_deps = []
 if cc.get_id() == 'msvc'
-  libssl_dep = cc.find_library('libeay32')
+  libssl_dep = cc.find_library('libssl')
 else
   libssl_dep = dependency('openssl', version: '>= 0.9.8',
                           required: get_option('tls'))

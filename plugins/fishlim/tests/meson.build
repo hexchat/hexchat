@@ -12,4 +12,5 @@ fishlim_tests = executable('fishlim_tests', fishlim_test_sources,
 
 test('Fishlim Tests', fishlim_tests,
   protocol: 'tap',
+  timeout: 600,
 )

@@ -21,6 +21,7 @@
 
 */
 
+#include <string.h>
 #include <glib.h>
 
 #include "fish.h"
@@ -129,17 +130,17 @@ static void
 test_base64_len (void)
 {
     char *b64 = NULL;
-    int i, message_len = 0;
     char message[1000];
+    int message_end = sizeof (message) - 1;
 
-    for (i = 0; i < 10; ++i) {
-        for (message_len = 1; message_len < 1000; ++message_len) {
-            random_string(message, message_len);
-            b64 = g_base64_encode((const unsigned char *) message, message_len);
-            g_assert_nonnull(b64);
-            g_assert_cmpuint(strlen(b64), == , base64_len(message_len));
-            g_free(b64);
-        }
+    random_string(message, message_end);
+
+    for (; message_end >= 0; --message_end) {
+        message[message_end] = '\0'; /* Truncate instead of generating new strings */
+        b64 = g_base64_encode((const unsigned char *) message, message_end);
+        g_assert_nonnull(b64);
+        g_assert_cmpuint(strlen(b64), == , base64_len(message_end));
+        g_free(b64);
     }
 }
 
@@ -150,18 +151,15 @@ static void
 test_base64_fish_len (void)
 {
     char *b64 = NULL;
-    int i, message_len = 0;
+    int message_len = 0;
     char message[1000];
 
-    for (i = 0; i < 10; ++i) {
-
-        for (message_len = 1; message_len < 1000; ++message_len) {
-            random_string(message, message_len);
-            b64 = fish_base64_encode(message, message_len);
-            g_assert_nonnull(b64);
-            g_assert_cmpuint(strlen(b64), == , base64_fish_len(message_len));
-            g_free(b64);
-        }
+    for (message_len = 1; message_len < 1000; ++message_len) {
+        random_string(message, message_len);
+        b64 = fish_base64_encode(message, message_len);
+        g_assert_nonnull(b64);
+        g_assert_cmpuint(strlen(b64), == , base64_fish_len(message_len));
+        g_free(b64);
     }
 }
 
@@ -242,30 +240,28 @@ test_foreach_utf8_data_chunks(void)
 {
     GRand *rand = NULL;
     GString *chunks = NULL;
-    int tests, max_chunks_len, chunks_len;
+    int  max_chunks_len, chunks_len;
     char ascii_message[1001];
     char *data_chunk = NULL;
 
     rand = g_rand_new();
+    max_chunks_len = g_rand_int_range(rand, 2, 301);
+    random_string(ascii_message, 1000);
 
-    for (tests = 0; tests < 1000; ++tests) {
+    data_chunk = ascii_message;
 
-        max_chunks_len = g_rand_int_range(rand, 2, 301);
-        random_string(ascii_message, 1000);
+    chunks = g_string_new(NULL);
 
-        data_chunk = ascii_message;
-
-        chunks = g_string_new(NULL);
-
-        while (foreach_utf8_data_chunks(data_chunk, max_chunks_len, &chunks_len)) {
-            g_string_append(chunks, g_strndup(data_chunk, chunks_len));
-            /* Next chunk */
-            data_chunk += chunks_len;
-        }
-        /* Check data loss */
-        g_assert_cmpstr(chunks->str, == , ascii_message);
-        g_string_free(chunks, TRUE);
+    while (foreach_utf8_data_chunks(data_chunk, max_chunks_len, &chunks_len)) {
+        g_string_append(chunks, g_strndup(data_chunk, chunks_len));
+        /* Next chunk */
+        data_chunk += chunks_len;
     }
+    /* Check data loss */
+    g_assert_cmpstr(chunks->str, == , ascii_message);
+
+    g_string_free(chunks, TRUE);
+    g_rand_free (rand);
 }
 
 int
