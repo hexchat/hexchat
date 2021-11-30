@@ -278,5 +278,8 @@ main(int argc, char *argv[]) {
     g_test_add_func("/fishlim/max_text_command_len", test_max_text_command_len);
     g_test_add_func("/fishlim/foreach_utf8_data_chunks", test_foreach_utf8_data_chunks);
 
-    return g_test_run();
+    fish_init();
+    int ret = g_test_run();
+    fish_deinit();
+    return ret;
 }

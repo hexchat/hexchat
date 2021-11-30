@@ -35,6 +35,8 @@ enum fish_mode {
   FISH_CBC_MODE = 0x2
 };
 
+int fish_init(void);
+void fish_deinit(void);
 char *fish_base64_encode(const char *message, size_t message_len);
 char *fish_base64_decode(const char *message, size_t *final_len);
 char *fish_encrypt(const char *key, size_t keylen, const char *message, size_t message_len, enum fish_mode mode);
