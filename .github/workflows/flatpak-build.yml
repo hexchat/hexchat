@@ -1,7 +1,7 @@
 name: Flatpak Build
 on: [push, pull_request]
 jobs:
-  build:
+  flatpak_build:
     runs-on: ubuntu-latest
     container:
       image: bilelmoussaoui/flatpak-github-actions:gnome-40
