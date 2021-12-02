@@ -3882,34 +3882,6 @@ cmd_wallchop (struct session *sess, char *tbuf, char *word[],
 }
 
 static int
-cmd_wallchan (struct session *sess, char *tbuf, char *word[],
-				  char *word_eol[])
-{
-	GSList *list;
-
-	if (*word_eol[2])
-	{
-		list = sess_list;
-		while (list)
-		{
-			sess = list->data;
-			if (sess->type == SESS_CHANNEL)
-			{
-				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
-
-				inbound_chanmsg (sess->server, NULL, sess->channel,
-									  sess->server->nick, word_eol[2], TRUE, FALSE, 
-									  &no_tags);
-				sess->server->p_message (sess->server, sess->channel, word_eol[2]);
-			}
-			list = list->next;
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
-static int
 cmd_hop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int i = 2;
@@ -4147,8 +4119,6 @@ const struct commands xc_cmds[] = {
 	{"USERLIST", cmd_userlist, 1, 1, 1, 0},
 	{"VOICE", cmd_voice, 1, 1, 1,
 	 N_("VOICE <nick>, gives voice status to someone (needs chanop)")},
-	{"WALLCHAN", cmd_wallchan, 1, 1, 1,
-	 N_("WALLCHAN <message>, writes the message to all channels")},
 	{"WALLCHOP", cmd_wallchop, 1, 1, 1,
 	 N_("WALLCHOP <message>, sends the message to all chanops on the current channel")},
 	{0, 0, 0, 0, 0, 0}
