@@ -1077,8 +1077,8 @@ uri_contains_forbidden_characters (const char *uri)
 static char *
 maybe_escape_uri (const char *uri)
 {
-	/* There isn't an exact way to know if a string has already been escaped or not
-	 * so we can try some heuristics. */
+	/* The only way to know if a string has already been escaped or not
+	 * is by fulling parsing each segement but we can try some more simple heuristics. */
 
 	/* If we find characters that should clearly be escaped. */
 	if (uri_contains_forbidden_characters (uri))
