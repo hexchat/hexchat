@@ -1054,6 +1054,46 @@ osx_show_uri (const char *url)
 
 #endif
 
+static inline char *
+escape_uri (const char *uri)
+{
+	return g_uri_escape_string(uri, G_URI_RESERVED_CHARS_GENERIC_DELIMITERS G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, FALSE);
+}
+
+static inline gboolean
+uri_contains_forbidden_characters (const char *uri)
+{
+	while (*uri)
+	{
+		/* This is not an exhaustive list, the full URI has segments that allow characters like "[]:" for example. */
+		if (strchr ("`<> ${}\"+", *uri) != NULL || (*uri & 0x80) /* non-ascii */)
+			return TRUE;
+		uri++;
+	}
+
+	return FALSE;
+}
+
+static char *
+maybe_escape_uri (const char *uri)
+{
+	/* There isn't an exact way to know if a string has already been escaped or not
+	 * so we can try some heuristics. */
+
+	/* If we find characters that should clearly be escaped. */
+	if (uri_contains_forbidden_characters (uri))
+		return escape_uri (uri);
+
+	/* If it fails to be unescaped then it was not escaped. */
+	char *unescaped = g_uri_unescape_string (uri, NULL);
+	if (!unescaped)
+		return escape_uri (uri);
+	g_free (unescaped);
+
+	/* At this point it is probably safe to pass through as-is. */
+	return g_strdup (uri);
+}
+
 static void
 fe_open_url_inner (const char *url)
 {
@@ -1071,8 +1111,8 @@ fe_open_url_inner (const char *url)
 #elif defined(__APPLE__)
     osx_show_uri (url);
 #else
-	char *escaped_url = g_uri_escape_string (url, G_URI_RESERVED_CHARS_GENERIC_DELIMITERS G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS,
-	                                         FALSE);
+	char *escaped_url = maybe_escape_uri (url);
+	g_debug ("Opening URL \"%s\" (%s)", escaped_url, url);
 	gtk_show_uri (NULL, escaped_url, GDK_CURRENT_TIME, NULL);
 	g_free (escaped_url);
 #endif
