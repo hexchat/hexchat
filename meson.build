@@ -34,6 +34,7 @@ config_h.set_quoted('PACKAGE_NAME', meson.project_name())
 config_h.set_quoted('GETTEXT_PACKAGE', 'hexchat')
 config_h.set_quoted('LOCALEDIR', join_paths(get_option('prefix'),
                                  get_option('datadir'), 'locale'))
+config_h.set_quoted('G_LOG_DOMAIN', 'hexchat')
 config_h.set10('ENABLE_NLS', true)
 
 # Optional features
