@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <string.h>
 #include <gio/gio.h>
 
 static GDBusProxy *fdo_notifications;
