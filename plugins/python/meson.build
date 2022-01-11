@@ -28,4 +28,5 @@ shared_module('python', python3_source,
   install: true,
   install_dir: plugindir,
   name_prefix: '',
+  vs_module_defs: 'python.def'
 )
