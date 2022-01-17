@@ -1567,6 +1567,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 		if (serv->use_ssl)
 			port = 6697;
 #endif
+		g_debug ("Attempted to connect to invalid port, assuming default port %d", port);
 	}
 
 	if (serv->connected || serv->connecting || serv->recondelay_tag)
