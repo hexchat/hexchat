@@ -1579,9 +1579,29 @@ cmd_execw (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		EMIT_SIGNAL (XP_TE_NOCHILD, sess, NULL, NULL, NULL, NULL, 0);
 		return FALSE;
 	}
-	len = strlen(word_eol[2]);
-	temp = g_strconcat (word_eol[2], "\n", NULL);
-	PrintText(sess, temp);
+	// use -q flag to quiet/suppress output at text box
+	// use -- flag to stop interpreting arguments as flags
+	//        needed if -q itself would occur as data
+	if ( 0==strcmp (word[2], "--") )
+	{
+		len = strlen(word_eol[3]);
+		temp = g_strconcat (word_eol[3], "\n", NULL);
+		PrintText(sess, temp);
+	}
+	else
+	{
+		if ( 0==strcmp (word[2], "-q") )
+		{
+			len = strlen(word_eol[3]);
+			temp = g_strconcat (word_eol[3], "\n", NULL);
+		}
+		else
+		{
+			len = strlen(word_eol[2]);
+			temp = g_strconcat (word_eol[2], "\n", NULL);
+			PrintText(sess, temp);
+		}
+	}
 	write(sess->running_exec->myfd, temp, len + 1);
 	g_free(temp);
 
@@ -3977,7 +3997,7 @@ const struct commands xc_cmds[] = {
 	 N_("EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed")},
 #ifndef __EMX__
 	{"EXECSTOP", cmd_execs, 0, 0, 1, N_("EXECSTOP, sends the process SIGSTOP")},
-	{"EXECWRITE", cmd_execw, 0, 0, 1, N_("EXECWRITE, sends data to the processes stdin")},
+	{"EXECWRITE", cmd_execw, 0, 0, 1, N_("EXECWRITE [-q|--], sends data to the processes stdin; use -q flag to quiet/suppress output at text box; use -- flag to stop interpreting arguments as flags, needed if -q itself would occur as data")},
 #endif
 #endif
 #if 0
