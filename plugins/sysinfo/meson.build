@@ -57,4 +57,5 @@ shared_module('sysinfo', sysinfo_sources,
   install: true,
   install_dir: plugindir,
   name_prefix: '',
+  vs_module_defs: 'sysinfo.def',
 )
