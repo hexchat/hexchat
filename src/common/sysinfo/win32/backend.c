@@ -84,7 +84,8 @@ sysinfo_get_cpu_arch (void)
 
 	GetNativeSystemInfo (&si);
 
-	if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+	if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64 ||
+		si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM64)
 	{
 		return cpu_arch = 64;
 	}
@@ -106,7 +107,8 @@ sysinfo_get_build_arch (void)
 
 	GetSystemInfo (&si);
 
-	if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+	if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64 ||
+		si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM64)
 	{
 		return build_arch = 64;
 	}
