@@ -1579,10 +1579,7 @@ cmd_execw (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		EMIT_SIGNAL (XP_TE_NOCHILD, sess, NULL, NULL, NULL, NULL, 0);
 		return FALSE;
 	}
-	// use -q flag to quiet/suppress output at text box
-	// use -- flag to stop interpreting arguments as flags
-	//        needed if -q itself would occur as data
-	if ( 0==strcmp (word[2], "--") )
+	if (strcmp (word[2], "--") == 0)
 	{
 		len = strlen(word_eol[3]);
 		temp = g_strconcat (word_eol[3], "\n", NULL);
@@ -1590,7 +1587,7 @@ cmd_execw (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 	else
 	{
-		if ( 0==strcmp (word[2], "-q") )
+		if (strcmp (word[2], "-q") == 0)
 		{
 			len = strlen(word_eol[3]);
 			temp = g_strconcat (word_eol[3], "\n", NULL);
