@@ -158,8 +158,7 @@ dcc_prepare_row_chat (struct DCC *dcc, GtkListStore *store, GtkTreeIter *iter,
 	static char pos[16], size[16];
 	char *date;
 
-	date = ctime (&dcc->starttime);
-	date[strlen (date) - 1] = 0;	/* remove the \n */
+	date = safe_timestr (dcc->starttime);
 
 	proper_unit (dcc->pos, pos, sizeof (pos));
 	proper_unit (dcc->size, size, sizeof (size));

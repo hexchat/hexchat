@@ -1307,6 +1307,49 @@ safe_strcpy (char *dest, const char *src, int bytes_left)
 	}
 }
 
+const char *
+safe_timestr(time_t ts)
+{
+	struct tm *timeinfo;
+	static char timebuf[64];
+
+	errno = 0;
+	timeinfo = localtime (&ts);
+	if (!timeinfo)
+	{
+		/* Microsoft's localtime() implementation will return NULL and set errno
+		 * when given a value that is:
+		 *  - Before Thu Jan 01 1970 00:00:00 GMT+0000
+		 *  - After Tue Jan 19 2038 03:14:07 GMT+0000 on 32-bit systems.
+		 *  - After Wed Dec 31 3000 23:59:59 GMT+0000 on 64-bit systems.
+		 *
+		 * Additionally, POSIX specifies that localtime should return NULL and set
+		 * errno if an error is detected. Both glibc and musl use this behaviour
+		 * when given values that they can not handle internally.
+		 *
+		 * References:
+		 *  - https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/localtime-localtime32-localtime64
+		 *  - https://pubs.opengroup.org/onlinepubs/009604499/functions/localtime.html
+		 */
+		g_debug ("safe_timestr(): localtime returned NULL: %s", strerror (errno));
+		timebuf[0] = '?';
+		timebuf[1] = '\0';
+		return timebuf;
+	}
+
+	/* If strftime() returns 0 then the output buffer is too small. We have given
+	 * it a very generous buffer that should fit all real values so this will only
+	 * ever happen with a deliberately malformed value.
+	 */
+	if (!strftime (timebuf, sizeof(timebuf), "%a %b %d %Y %H:%M:%S", timeinfo))
+	{
+		g_debug ("safe_timestr(): strftime returned 0: %s", strerror (errno));
+		timebuf[0] = '?';
+		timebuf[1] = '\0';
+	}
+	return timebuf;
+}
+
 void
 canonalize_key (char *key)
 {

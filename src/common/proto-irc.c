@@ -453,9 +453,7 @@ channel_date (session *sess, char *chan, char *timestr,
 				  const message_tags_data *tags_data)
 {
 	time_t timestamp = (time_t) atol (timestr);
-	char *tim = ctime (&timestamp);
-	if (tim != NULL)
-		tim[24] = 0;	/* get rid of the \n */
+	char *tim = safe_timestr (timestamp);
 	EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANDATE, sess, chan, tim, NULL, NULL, 0,
 								  tags_data->timestamp);
 }
@@ -598,9 +596,7 @@ process_numeric (session * sess, int n,
 											  outbuf, NULL, NULL, 0, tags_data->timestamp);
 			else
 			{
-				tim = ctime (&timestamp);
-				if (tim != NULL)
-					tim[19] = 0; 	/* get rid of the \n */
+				tim = safe_timestr (timestamp);
 				EMIT_SIGNAL_TIMESTAMP (XP_TE_WHOIS4T, whois_sess, word[4],
 											  outbuf, tim, NULL, 0, tags_data->timestamp);
 			}

@@ -483,7 +483,7 @@ chanlist_filereq_done (server *serv, char *file)
 		return;
 
 	g_snprintf (buf, sizeof buf, "HexChat Channel List: %s - %s\n",
-				 serv->servername, ctime (&t));
+				 serv->servername, safe_timestr (t));
 	write (fh, buf, strlen (buf));
 
 	if (gtk_tree_model_get_iter_first (model, &iter))

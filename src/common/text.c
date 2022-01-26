@@ -344,7 +344,7 @@ scrollback_load (session *sess)
 
 	if (lines)
 	{
-		text = ctime (&stamp);
+		text = safe_timestr (stamp);
 		buf = g_strdup_printf ("\n*\t%s %s\n", _("Loaded log from"), text);
 		fe_print_text (sess, buf, 0, TRUE);
 		g_free (buf);
@@ -363,7 +363,7 @@ log_close (session *sess)
 		currenttime = time (NULL);
 		write (sess->logfd, obuf,
 			 g_snprintf (obuf, sizeof (obuf) - 1, _("**** ENDING LOGGING AT %s\n"),
-						  ctime (&currenttime)));
+						  safe_timestr (currenttime)));
 		close (sess->logfd);
 		sess->logfd = -1;
 	}
@@ -575,7 +575,7 @@ log_open_file (char *servname, char *channame, char *netname)
 	currenttime = time (NULL);
 	write (fd, buf,
 			 g_snprintf (buf, sizeof (buf), _("**** BEGIN LOGGING AT %s\n"),
-						  ctime (&currenttime)));
+						  safe_timestr (currenttime)));
 
 	return fd;
 }

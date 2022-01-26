@@ -4315,8 +4315,7 @@ auto_insert (char *dest, gsize destlen, unsigned char *src, char *word[],
 					utf = s; break;
 				case 't':
 					now = time (0);
-					utf = ctime (&now);
-					utf[19] = 0;
+					utf = safe_timestr (now);
 					break;
 				case 'u':
 					utf = u; break;
