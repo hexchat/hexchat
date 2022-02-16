@@ -957,16 +957,21 @@ static int api_hexchat_pluginprefs_meta_pairs(lua_State *L)
 	hexchat_plugin *h;
 
 	if(!script->name)
+
 		return luaL_error(L, "cannot use hexchat.pluginprefs before registering with hexchat.register");
 
 	dest = lua_newuserdata(L, 4096);
+
 	h = script->handle;
 	if(!hexchat_pluginpref_list(h, dest))
 		strcpy(dest, "");
 	lua_pushlightuserdata(L, dest);
 	lua_pushlightuserdata(L, dest);
 	lua_pushcclosure(L, api_hexchat_pluginprefs_meta_pairs_closure, 2);
-	return 1;
+	lua_insert(L, -2); // Return the userdata (second return value from pairs),
+						// even though it's not used by the closure (first return
+						// value from pairs), so that Lua knows not to GC it.
+	return 2;
 }
 
 static int api_attrs_meta_index(lua_State *L)
@@ -1764,4 +1769,3 @@ G_MODULE_EXPORT int hexchat_plugin_deinit(hexchat_plugin *plugin_handle)
 	g_clear_pointer(&expand_buffer, g_free);
 	return 1;
 }
-
