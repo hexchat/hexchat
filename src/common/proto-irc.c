@@ -920,6 +920,14 @@ process_numeric (session * sess, int n,
 		notify_set_online (serv, word[4], tags_data);
 		break;
 
+	case 524: // ERR_HELPNOTFOUND
+	case 704: // RPL_HELPSTART
+	case 705: // RPL_HELPTXT
+	case 706: // RPL_ENDOFHELP
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVTEXT, sess, STRIP_COLON(word, word_eol, 5), NULL, NULL, NULL,
+									  0, tags_data->timestamp);
+		break;
+
 	case 728:	/* +q-list entry */
 		/* NOTE:  FREENODE returns these results inconsistent with e.g. +b */
 		/* Who else has imlemented MODE_QUIET, I wonder? */
