@@ -123,7 +123,11 @@ notify_save (void)
 {
 	int fh;
 	struct notify *notify;
-	GSList *list = notify_list;
+        // while reading the notify.conf file, elements are added by prepending to the
+        // list. reverse the list before writing to disk to keep the original
+        // order of the list
+        GSList *list = g_slist_copy(notify_list);
+        list = g_slist_reverse(list);
 
 	fh = hexchat_open_file ("notify.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
@@ -142,6 +146,7 @@ notify_save (void)
 		}
 		close (fh);
 	}
+        g_slist_free(list);
 }
 
 void

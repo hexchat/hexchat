@@ -47,7 +47,6 @@ if host_machine.system() == 'windows'
   ]
   common_sysinfo_deps += [
     cc.find_library('wbemuuid'), # sysinfo
-    cc.find_library('wbemcore'),
   ]
 
   common_sources += 'sysinfo/win32/backend.c'

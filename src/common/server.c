@@ -1559,7 +1559,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	if (!hostname[0])
 		return;
 
-	if (port < 0)
+	if (port < 1 || port > 65535)
 	{
 		/* use default port for this server type */
 		port = 6667;
@@ -1567,8 +1567,8 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 		if (serv->use_ssl)
 			port = 6697;
 #endif
+		g_debug ("Attempted to connect to invalid port, assuming default port %d", port);
 	}
-	port &= 0xffff;	/* wrap around */
 
 	if (serv->connected || serv->connecting || serv->recondelay_tag)
 		server_disconnect (sess, TRUE, -1);

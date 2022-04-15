@@ -5,4 +5,5 @@ shared_module('upd', 'upd.c',
   install: true,
   install_dir: plugindir,
   name_prefix: '',
+  vs_module_defs: 'upd.def',
 )

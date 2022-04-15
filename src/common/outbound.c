@@ -1579,9 +1579,26 @@ cmd_execw (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		EMIT_SIGNAL (XP_TE_NOCHILD, sess, NULL, NULL, NULL, NULL, 0);
 		return FALSE;
 	}
-	len = strlen(word_eol[2]);
-	temp = g_strconcat (word_eol[2], "\n", NULL);
-	PrintText(sess, temp);
+	if (strcmp (word[2], "--") == 0)
+	{
+		len = strlen(word_eol[3]);
+		temp = g_strconcat (word_eol[3], "\n", NULL);
+		PrintText(sess, temp);
+	}
+	else
+	{
+		if (strcmp (word[2], "-q") == 0)
+		{
+			len = strlen(word_eol[3]);
+			temp = g_strconcat (word_eol[3], "\n", NULL);
+		}
+		else
+		{
+			len = strlen(word_eol[2]);
+			temp = g_strconcat (word_eol[2], "\n", NULL);
+			PrintText(sess, temp);
+		}
+	}
 	write(sess->running_exec->myfd, temp, len + 1);
 	g_free(temp);
 
@@ -3882,34 +3899,6 @@ cmd_wallchop (struct session *sess, char *tbuf, char *word[],
 }
 
 static int
-cmd_wallchan (struct session *sess, char *tbuf, char *word[],
-				  char *word_eol[])
-{
-	GSList *list;
-
-	if (*word_eol[2])
-	{
-		list = sess_list;
-		while (list)
-		{
-			sess = list->data;
-			if (sess->type == SESS_CHANNEL)
-			{
-				message_tags_data no_tags = MESSAGE_TAGS_DATA_INIT;
-
-				inbound_chanmsg (sess->server, NULL, sess->channel,
-									  sess->server->nick, word_eol[2], TRUE, FALSE, 
-									  &no_tags);
-				sess->server->p_message (sess->server, sess->channel, word_eol[2]);
-			}
-			list = list->next;
-		}
-		return TRUE;
-	}
-	return FALSE;
-}
-
-static int
 cmd_hop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int i = 2;
@@ -4005,7 +3994,7 @@ const struct commands xc_cmds[] = {
 	 N_("EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed")},
 #ifndef __EMX__
 	{"EXECSTOP", cmd_execs, 0, 0, 1, N_("EXECSTOP, sends the process SIGSTOP")},
-	{"EXECWRITE", cmd_execw, 0, 0, 1, N_("EXECWRITE, sends data to the processes stdin")},
+	{"EXECWRITE", cmd_execw, 0, 0, 1, N_("EXECWRITE [-q|--], sends data to the processes stdin; use -q flag to quiet/suppress output at text box; use -- flag to stop interpreting arguments as flags, needed if -q itself would occur as data")},
 #endif
 #endif
 #if 0
@@ -4147,8 +4136,6 @@ const struct commands xc_cmds[] = {
 	{"USERLIST", cmd_userlist, 1, 1, 1, 0},
 	{"VOICE", cmd_voice, 1, 1, 1,
 	 N_("VOICE <nick>, gives voice status to someone (needs chanop)")},
-	{"WALLCHAN", cmd_wallchan, 1, 1, 1,
-	 N_("WALLCHAN <message>, writes the message to all channels")},
 	{"WALLCHOP", cmd_wallchop, 1, 1, 1,
 	 N_("WALLCHOP <message>, sends the message to all chanops on the current channel")},
 	{0, 0, 0, 0, 0, 0}

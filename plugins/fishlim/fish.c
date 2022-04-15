@@ -87,6 +87,54 @@ static const signed char fish_unbase64[256] = {
     dest |= (uint8_t)*((source)++); \
 } while (0);
 
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#include <openssl/provider.h>
+static OSSL_PROVIDER *legacy_provider;
+static OSSL_PROVIDER *default_provider;
+static OSSL_LIB_CTX* *ossl_ctx;
+#endif
+
+int fish_init(void)
+{
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+    ossl_ctx = OSSL_LIB_CTX_new();
+    if (!ossl_ctx)
+        return 0;
+
+    legacy_provider = OSSL_PROVIDER_load(ossl_ctx, "legacy");
+    if (!legacy_provider) {
+        fish_deinit();
+        return 0;
+    }
+
+    default_provider = OSSL_PROVIDER_load(ossl_ctx, "default");
+    if (!default_provider) {
+        fish_deinit();
+        return 0;
+    }
+#endif
+    return 1;
+}
+
+void fish_deinit(void)
+{
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+    if (legacy_provider) {
+        OSSL_PROVIDER_unload(legacy_provider);
+        legacy_provider = NULL;
+    }
+
+    if (default_provider) {
+        OSSL_PROVIDER_unload(default_provider);
+        default_provider = NULL;
+    }
+
+    if (ossl_ctx) {
+        OSSL_LIB_CTX_free(ossl_ctx);
+        ossl_ctx = NULL;
+    }
+#endif
+}
 
 /**
  * Encode ECB FiSH Base64
@@ -228,9 +276,19 @@ char *fish_cipher(const char *plaintext, size_t plaintext_len, const char *key, 
             plaintext_len -= 8;
         }
 
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+        cipher = EVP_CIPHER_fetch(ossl_ctx, "BF-CBC", NULL);
+#else
         cipher = (EVP_CIPHER *) EVP_bf_cbc();
+#endif
+
     } else if (mode == EVP_CIPH_ECB_MODE) {
+
+#if OPENSSL_VERSION_NUMBER >= 0x30000000L
+        cipher = EVP_CIPHER_fetch(ossl_ctx, "BF-ECB", NULL);
+#else
         cipher = (EVP_CIPHER *) EVP_bf_ecb();
+#endif
     }
 
     /* Zero Padding */

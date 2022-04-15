@@ -815,6 +815,9 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
     hexchat_hook_server_attrs(ph, "TOPIC", HEXCHAT_PRI_NORM, handle_incoming, NULL);
     hexchat_hook_server_attrs(ph, "332", HEXCHAT_PRI_NORM, handle_incoming, NULL);
 
+    if (!fish_init())
+        return 0;
+
     if (!dh1080_init())
         return 0;
 
@@ -828,6 +831,7 @@ int hexchat_plugin_init(hexchat_plugin *plugin_handle,
 int hexchat_plugin_deinit(void) {
     g_clear_pointer(&pending_exchanges, g_hash_table_destroy);
     dh1080_deinit();
+    fish_deinit();
 
     hexchat_printf(ph, "%s plugin unloaded\n", plugin_name);
     return 1;
