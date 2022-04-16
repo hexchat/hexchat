@@ -1362,7 +1362,7 @@ savebuffer_req_done (session *sess, char *file)
 static void
 menu_savebuffer (GtkWidget * wid, gpointer none)
 {
-	gtkutil_file_req (_("Select an output filename"), savebuffer_req_done,
+	gtkutil_file_req (NULL, _("Select an output filename"), savebuffer_req_done,
 							current_sess, NULL, NULL, FRF_WRITE);
 }
 

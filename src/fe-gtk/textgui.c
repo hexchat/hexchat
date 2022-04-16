@@ -282,7 +282,7 @@ pevent_save_cb (GtkWidget * wid, void *data)
 {
 	if (data)
 	{
-		gtkutil_file_req (_("Print Texts File"), pevent_save_req_cb, NULL,
+		gtkutil_file_req (NULL, _("Print Texts File"), pevent_save_req_cb, NULL,
 								NULL, NULL, FRF_WRITE);
 		return;
 	}
@@ -304,7 +304,7 @@ pevent_load_req_cb (void *arg1, char *file)
 static void
 pevent_load_cb (GtkWidget * wid, void *data)
 {
-	gtkutil_file_req (_("Print Texts File"), pevent_load_req_cb, NULL, NULL, NULL, 0);
+	gtkutil_file_req (NULL, _("Print Texts File"), pevent_load_req_cb, NULL, NULL, NULL, 0);
 }
 
 static void

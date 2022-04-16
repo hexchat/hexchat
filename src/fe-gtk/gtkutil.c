@@ -190,7 +190,7 @@ gtkutil_file_req_response (GtkWidget *dialog, gint res, struct file_req *freq)
 }
 
 void
-gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter, char *extensions,
+gtkutil_file_req (GtkWindow *parent, const char *title, void *callback, void *userdata, char *filter, char *extensions,
 						int flags)
 {
 	struct file_req *freq;
@@ -269,6 +269,16 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 							G_CALLBACK (gtkutil_file_req_response), freq);
 	g_signal_connect (G_OBJECT (dialog), "destroy",
 						   G_CALLBACK (gtkutil_file_req_destroy), (gpointer) freq);
+
+	if (parent)
+		gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
+
+	if (flags & FRF_MODAL)
+	{
+		g_assert (parent);
+		gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+	}
+
 	gtk_widget_show (dialog);
 }
 

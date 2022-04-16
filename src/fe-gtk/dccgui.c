@@ -146,7 +146,7 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
 	mdc->maxcps = maxcps;
 	mdc->passive = passive;
 
-	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, prefs.hex_dcc_dir, NULL, FRF_MULTIPLE|FRF_FILTERISINITIAL);
+	gtkutil_file_req (NULL, tbuf, dcc_send_filereq_file, mdc, prefs.hex_dcc_dir, NULL, FRF_MULTIPLE|FRF_FILTERISINITIAL);
 
 	g_free (tbuf);
 }

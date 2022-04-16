@@ -903,7 +903,7 @@ fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *)
 	if (dcc->file)
 	{
 		char *filepath = g_build_filename (prefs.hex_dcc_dir, dcc->file, NULL);
-		gtkutil_file_req (message, dcc_saveas_cb, ud, filepath, NULL,
+		gtkutil_file_req (NULL, message, dcc_saveas_cb, ud, filepath, NULL,
 								FRF_WRITE|FRF_NOASKOVERWRITE|FRF_FILTERISINITIAL);
 		g_free (filepath);
 	}
@@ -1216,7 +1216,7 @@ fe_get_file (const char *title, char *initial,
 {
 	/* OK: Call callback once per file, then once more with file=NULL. */
 	/* CANCEL: Call callback once with file=NULL. */
-	gtkutil_file_req (title, callback, userdata, initial, NULL, flags | FRF_FILTERISINITIAL);
+	gtkutil_file_req (NULL, title, callback, userdata, initial, NULL, flags | FRF_FILTERISINITIAL);
 }
 
 void

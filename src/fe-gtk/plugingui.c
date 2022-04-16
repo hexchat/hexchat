@@ -161,7 +161,7 @@ plugingui_load (void)
 {
 	char *sub_dir = g_build_filename (get_xdir(), "addons", NULL);
 
-	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
+	gtkutil_file_req (NULL, _("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
 							sub_dir, "*."PLUGIN_SUFFIX";*.lua;*.pl;*.py;*.tcl;*.js", FRF_FILTERISINITIAL|FRF_EXTENSIONS);
 
 	g_free (sub_dir);

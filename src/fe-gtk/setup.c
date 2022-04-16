@@ -48,6 +48,7 @@ GtkStyle *create_input_style (GtkStyle *);
 
 #define LABEL_INDENT 12
 
+static GtkWidget *setup_window = NULL;
 static int last_selected_page = 0;
 static int last_selected_row = 0; /* sound row */
 static gboolean color_change;
@@ -1105,8 +1106,8 @@ setup_browsefile_cb (GtkWidget *button, GtkWidget *entry)
 	filter = "image/*";
 	filter_type = FRF_MIMETYPES;
 #endif
-	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb,
-					entry, NULL, filter, filter_type|FRF_RECENTLYUSED);
+	gtkutil_file_req (GTK_WINDOW (setup_window), _("Select an Image File"), setup_filereq_cb,
+					entry, NULL, filter, filter_type|FRF_RECENTLYUSED|FRF_MODAL);
 }
 
 static void
@@ -1141,7 +1142,7 @@ setup_fontsel_cancel (GtkWidget *button, GtkFontSelectionDialog *dialog)
 static void
 setup_browsefolder_cb (GtkWidget *button, GtkEntry *entry)
 {
-	gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry, (char*)gtk_entry_get_text (entry), NULL, FRF_CHOOSEFOLDER);
+	gtkutil_file_req (GTK_WINDOW (setup_window), _("Select Download Folder"), setup_filereq_cb, entry, (char*)gtk_entry_get_text (entry), NULL, FRF_CHOOSEFOLDER|FRF_MODAL);
 }
 
 static void
@@ -1153,6 +1154,9 @@ setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 
 	dialog = (GtkFontSelectionDialog *) gtk_font_selection_dialog_new (_("Select font"));
 	font_dialog = (GtkWidget *)dialog;	/* global var */
+
+	gtk_window_set_transient_for (GTK_WINDOW (font_dialog), GTK_WINDOW (setup_window));
+	gtk_window_set_modal (GTK_WINDOW (font_dialog), TRUE);
 
 	sel = (GtkFontSelection *) gtk_font_selection_dialog_get_font_selection (dialog);
 
@@ -1457,6 +1461,8 @@ setup_color_cb (GtkWidget *button, gpointer userdata)
 	g_object_set_data (G_OBJECT (ok_button), "b", button);
 	gtk_widget_set_sensitive (help_button, FALSE);
 	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (gtk_color_selection_dialog_get_color_selection (cdialog)), color);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (setup_window));
+	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	gtk_widget_show (dialog);
 
 	g_object_unref (cancel_button);
@@ -1711,8 +1717,8 @@ setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
 	filter_type = FRF_MIMETYPES;
 #endif
 
-	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry,
-						sounds_dir, filter, FRF_FILTERISINITIAL|filter_type);
+	gtkutil_file_req (GTK_WINDOW (setup_window), _("Select a sound file"), setup_snd_filereq_cb, entry,
+						sounds_dir, filter, FRF_MODAL|FRF_FILTERISINITIAL|filter_type);
 	g_free (sounds_dir);
 }
 
@@ -2336,8 +2342,6 @@ setup_close_cb (GtkWidget *win, GtkWidget **swin)
 void
 setup_open (void)
 {
-	static GtkWidget *setup_window = NULL;
-
 	if (setup_window)
 	{
 		gtk_window_present (GTK_WINDOW (setup_window));
