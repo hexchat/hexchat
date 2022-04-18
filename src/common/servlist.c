@@ -46,6 +46,7 @@ struct defaultserver
 	int loginmode;		/* default authentication type */
 	char *connectcmd;	/* default connect command - should only be used for rare login types, paired with LOGIN_CUSTOM */
 	gboolean ssl;
+	gboolean ignoreinvalid;
 };
 
 static const struct defaultserver def[] =
@@ -70,6 +71,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.omicron.lt"},
 	{0,			"irc.vub.lt"},
 
+	{"AnonOps", 0, 0, 0, 0, 0, TRUE, TRUE},
+	{0,			"irc.anonops.com"},
+	
 	{"Anthrochat", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.anthrochat.net"},
 
@@ -936,7 +940,10 @@ servlist_load_defaults (void)
 			{
 				net->flags |= FLAG_USE_SSL;
 			}
-
+			if (def[i].ignoreinvalid)
+			{
+				net->flags |= FLAG_ALLOW_INVALID;
+			}
 			if (g_str_hash (def[i].network) == def_hash)
 			{
 				prefs.hex_gui_slist_select = j;
