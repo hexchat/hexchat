@@ -70,6 +70,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.omicron.lt"},
 	{0,			"irc.vub.lt"},
 
+	{"AnonOps", 0, 0, 0, 0, 0, TRUE},
+	{0,			"irc.anonops.com"},
+	
 	{"Anthrochat", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.anthrochat.net"},
 
