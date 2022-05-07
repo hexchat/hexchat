@@ -146,8 +146,8 @@ class Plugin:
     def loadfile(self, filename):
         try:
             self.filename = filename
-            with open(filename, encoding='utf-8') as f:
-                data = f.read()
+            with open(filename, 'rb') as f:
+                data = f.read().decode('utf-8')
             compiled = compile_file(data, filename)
             exec(compiled, self.globals)
 
