@@ -25,7 +25,7 @@ DefaultDirName={pf64}\HexChat
 DefaultDirName={pf32}\HexChat
 #endif
 DefaultGroupName=HexChat
-DisableProgramGroupPage=yes
+AllowNoIcons=yes
 SolidCompression=yes
 Compression=lzma2/ultra64
 SourceDir=..\rel
@@ -60,6 +60,9 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 Name: "libs"; Description: "HexChat"; Types: normal minimal custom; Flags: fixed
 Name: "xctext"; Description: "HexChat-Text"; Types: custom; Flags: disablenouninstallwarning
 Name: "xtm"; Description: "HexChat Theme Manager"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "icons"; Description: "Create Shortcuts"; Types: custom; Flags: disablenouninstallwarning
+Name: "icons\desktopicon"; Description: "Create Desktop Shortcut"; Types: custom; Flags: disablenouninstallwarning
+Name: "icons\quicklaunchicon"; Description: "Create Quick Launch Shortcut"; Types: custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "spell"; Description: "Spelling Dictionaries"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: custom; Flags: disablenouninstallwarning
@@ -196,14 +199,16 @@ Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: 
 Source: "thememan.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xtm
 
 [Icons]
-Name: "{group}\HexChat"; Filename: "{app}\hexchat.exe"; AppUserModelID: "HexChat.Desktop.Notify"; Tasks: not portable
-Name: "{group}\HexChat Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable
-Name: "{group}\HexChat ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
-Name: "{group}\HexChat ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable
-Name: "{group}\HexChat Config Folder"; Filename: "%APPDATA%\HexChat\"; Tasks: not portable
-Name: "{group}\HexChat-Text"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
-Name: "{group}\HexChat Theme Manager"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
-Name: "{group}\Uninstall HexChat"; Filename: "{uninstallexe}"; Tasks: not portable
+Name: "{group}\HexChat"; Filename: "{app}\hexchat.exe"; AppUserModelID: "HexChat.Desktop.Notify"; Tasks: not portable; Check: not WizardNoIcons
+Name: "{group}\HexChat Safe Mode"; Filename: "{app}\hexchat.exe"; Parameters: "--no-auto --no-plugins"; Tasks: not portable; Check: not WizardNoIcons
+Name: "{group}\HexChat ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable; Check: not WizardNoIcons
+Name: "{group}\HexChat ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable; Check: not WizardNoIcons
+Name: "{group}\HexChat Config Folder"; Filename: "%APPDATA%\HexChat\"; Tasks: not portable; Check: not WizardNoIcons
+Name: "{group}\HexChat-Text"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable; Check: not WizardNoIcons
+Name: "{group}\HexChat Theme Manager"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable; Check: not WizardNoIcons
+Name: "{group}\Uninstall HexChat"; Filename: "{uninstallexe}"; Tasks: not portable; Check: not WizardNoIcons
+Name: "{commondesktop}\HexChat"; Filename: "{app}\hexchat.exe"; AppUserModelID: "HexChat.Desktop.Notify"; Components: icons\desktopicon; Tasks: not portable
+Name: "{commonappdata}\Microsoft\Internet Explorer\Quick Launch\HexChat"; Filename: "{app}\hexchat.exe"; Components: icons\quicklaunchicon; Tasks: not portable
 
 [Messages]
 BeveledLabel= {#APPNAM}
