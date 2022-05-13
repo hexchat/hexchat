@@ -1931,7 +1931,7 @@ inbound_sasl_authenticate (server *serv, char *data)
 
 		/* long SASL passwords must be split into 400-byte chunks
 		   https://ircv3.net/specs/extensions/sasl-3.1#the-authenticate-command */
-		size_t pass_len = strlen(pass);
+		size_t pass_len = strlen (pass);
 		if (pass_len <= 400)
 			tcp_sendf (serv, "AUTHENTICATE %s\r\n", pass);
 		else
