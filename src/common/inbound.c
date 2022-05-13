@@ -1945,9 +1945,8 @@ inbound_sasl_authenticate (server *serv, char *data)
 				g_free (pass_chunk);
 			}
 		}
-		if (pass_len % 400 == 0) {
+		if (pass_len % 400 == 0)
 			tcp_sendf (serv, "AUTHENTICATE +\r\n");
-		}
 		g_free (pass);
 
 		
