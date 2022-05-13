@@ -1929,7 +1929,24 @@ inbound_sasl_authenticate (server *serv, char *data)
 			return;
 		}
 
-		tcp_sendf (serv, "AUTHENTICATE %s\r\n", pass);
+		/* long SASL passwords must be split into 400-byte chunks
+		   https://ircv3.net/specs/extensions/sasl-3.1#the-authenticate-command */
+		size_t pass_len = strlen (pass);
+		if (pass_len <= 400)
+			tcp_sendf (serv, "AUTHENTICATE %s\r\n", pass);
+		else
+		{
+			size_t sent = 0;
+			while (sent < pass_len)
+			{
+				char *pass_chunk = g_strndup (pass + sent, 400);
+				tcp_sendf (serv, "AUTHENTICATE %s\r\n", pass_chunk);
+				sent += 400;
+				g_free (pass_chunk);
+			}
+		}
+		if (pass_len % 400 == 0)
+			tcp_sendf (serv, "AUTHENTICATE +\r\n");
 		g_free (pass);
 
 		
