@@ -356,6 +356,8 @@ static char *read_cpu_info (IWbemClassObject *object)
 
 	VariantClear (&max_clock_speed_variant);
 
+	g_strchomp (name_utf8);
+
 	if (cpu_freq_mhz > 1000)
 	{
 		result = g_strdup_printf ("%s (%.2fGHz)", name_utf8, cpu_freq_mhz / 1000.f);
