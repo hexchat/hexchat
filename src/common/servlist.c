@@ -193,9 +193,6 @@ static const struct defaultserver def[] =
 	{"IRC4Fun", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,				"irc.irc4fun.net"},
 
-	{"IRCHighWay", 0, 0, 0, 0, 0, TRUE},
-	{0,				"irc.irchighway.net"},
-
 	{"IRCNet",		0},
 	{0,				"open.ircnet.net"},
 
