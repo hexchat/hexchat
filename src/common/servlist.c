@@ -54,8 +54,8 @@ static const struct defaultserver def[] =
 	/* Invalid hostname in cert */
 	{0,			"irc.2600.net"},
 
-	{"ACN", 0, 0, 0, LOGIN_SASL, 0, TRUE},
-	{0,			"global.acn.gr"},
+	{"ACN",	0},
+	{0,			"irc.acn.gr"},
 
 	{"AfterNET", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.afternet.org"},
