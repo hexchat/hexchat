@@ -91,7 +91,7 @@ static const signed char fish_unbase64[256] = {
 #include <openssl/provider.h>
 static OSSL_PROVIDER *legacy_provider;
 static OSSL_PROVIDER *default_provider;
-static OSSL_LIB_CTX* *ossl_ctx;
+static OSSL_LIB_CTX *ossl_ctx;
 #endif
 
 int fish_init(void)

@@ -894,7 +894,7 @@ key_save_kbs (void)
 #define STRIP_WHITESPACE \
 	while (buf[0] == ' ' || buf[0] == '\t') \
 		buf++; \
-		len = strlen (buf); \
+	len = strlen (buf); \
 	while (buf[len] == ' ' || buf[len] == '\t') \
 	{ \
 		buf[len] = 0; \
