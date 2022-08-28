@@ -947,7 +947,7 @@ gtk_xtext_find_char (GtkXText * xtext, int x, int y, int *off, int *out_of_bound
 	textentry *ent;
 	int line;
 	int subline;
-	int outofbounds;
+	int outofbounds = FALSE;
 
 	/* Adjust y value for negative rounding, double to int */
 	if (y < 0)
