@@ -1255,7 +1255,7 @@ void
 sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 {
 	GSList *enchant_langs;
-	char *lang, *langs;
+	char *lang, **i, **langs;
 
 	if (!have_enchant)
 		return;
@@ -1265,21 +1265,21 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 
 	enchant_langs = sexy_spell_entry_get_languages(entry);
 
-	langs = g_strdup (prefs.hex_text_spell_langs);
+	langs = g_strsplit_set (prefs.hex_text_spell_langs, ", \t", 0);
 
-	lang = strtok (langs, ",");
-	while (lang != NULL)
+	for (i = langs; *i; i++)
 	{
+		lang = *i;
+
 		if (enchant_has_lang (lang, enchant_langs))
 		{
 			sexy_spell_entry_activate_language_internal (entry, lang, NULL);
 		}
-		lang = strtok (NULL, ",");
 	}
 
 	g_slist_foreach(enchant_langs, (GFunc) g_free, NULL);
 	g_slist_free(enchant_langs);
-	g_free (langs);
+	g_strfreev (langs);
 
 	/* If we don't have any languages activated, use "en" */
 	if (entry->priv->dict_list == NULL)
