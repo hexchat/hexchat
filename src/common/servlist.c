@@ -223,6 +223,9 @@ static const struct defaultserver def[] =
 
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
+	
+	{"Newnet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.netnet.net"},
 
 	{"Oceanius", 0, 0, 0, LOGIN_SASL},
 	/* Self signed */
