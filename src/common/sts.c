@@ -29,7 +29,7 @@
 GSList *profiles = NULL;
 
 struct sts_profile *
-sts_find (const char* host)
+sts_find (const char *host)
 {
 	time_t now;
 	GSList *next;
@@ -96,7 +96,7 @@ sts_new (void)
 }
 
 GHashTable *
-sts_parse_cap (const char* cap)
+sts_parse_cap (const char *cap)
 {
 	char **entries, **currentry;
 	char *value;
