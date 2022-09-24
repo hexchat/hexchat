@@ -53,25 +53,35 @@ sts_find (const char* host)
 void
 sts_load (void)
 {
-	char buf[256];
-	int fh;
+	g_autoptr (GFile) file = NULL;
+	g_autoptr (GFileInputStream) input = NULL;
+	g_autoptr (GDataInputStream) stream = NULL;
+	char *path;
+	char *line;
 	struct sts_profile *profile;
 
-	fh = hexchat_open_file (STS_CONFIG_FILE, O_RDONLY, 0, 0);
-	if (fh < 0)
+	path = g_build_filename (get_xdir (), STS_CONFIG_FILE, NULL);
+	file = g_file_new_for_path (path);
+	g_free (path);
+
+	input = g_file_read (file, NULL, NULL);
+	if (!input)
 		return; /* Filesystem not readable. */
 
-	while (waitline (fh, buf, sizeof buf, FALSE) != -1)
+	stream = g_data_input_stream_new (G_INPUT_STREAM (input));
+	while ((line = g_data_input_stream_read_line (stream, NULL, NULL, NULL)))
 	{
 		profile = sts_new ();
-		if (sscanf (buf, "%s %u %ld", profile->host, &profile->port, &profile->expiry) != 3)
+		if (sscanf (line, "%s %u %ld", profile->host, &profile->port, &profile->expiry) != 3)
 		{
 			/* Malformed profile; drop it. */
-			g_debug ("Malformed STS profile: %s", buf);
+			g_debug ("Malformed STS profile: %s", line);
+			g_free (line);
 			g_free (profile);
 			continue;
 		}
 
+		g_free (line);
 		sts_store (profile);
 	}
 }
@@ -108,17 +118,25 @@ sts_parse_cap (const char* cap)
 void
 sts_save (void)
 {
+	g_autoptr (GFile) file = NULL;
+	g_autoptr (GFileOutputStream) output = NULL;
+	g_autoptr (GDataOutputStream) stream = NULL;
 	char buf[512];
-	int fh;
 	const GSList *next;
+	char *path;
 	struct sts_profile *nextprofile;
 	time_t now;
 
-	fh = hexchat_open_file (STS_CONFIG_FILE, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
-	if (fh < 0)
-		return; /* Filesystem not writable. */
+	path = g_build_filename (get_xdir (), STS_CONFIG_FILE, NULL);
+	file = g_file_new_for_path (path);
+	g_free (path);
+
+	output = g_file_replace (file, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL);
+	if (!output)
+		return; /* Filesystem not readable. */
 
 	now = time (NULL);
+	stream = g_data_output_stream_new (G_OUTPUT_STREAM (output));
 	for (next = profiles; next; next = next->next)
 	{
 		nextprofile = (struct sts_profile *)next->data;
@@ -127,10 +145,10 @@ sts_save (void)
 
 		g_snprintf (buf, sizeof buf, "%s %u %ld\n", nextprofile->host, nextprofile->port,
 			(unsigned long)nextprofile->expiry);
-		write (fh, buf, strlen (buf));
-	}
 
-	close (fh);
+		if (!g_data_output_stream_put_string (stream, buf, NULL, NULL))
+			g_debug ("Failed to save STS profile: %s", buf);
+	}
 }
 
 void
