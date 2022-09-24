@@ -3249,7 +3249,7 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		int offset = 0;
 
 #ifdef USE_OPENSSL
-		int use_ssl = FALSE;
+		int use_ssl = TRUE;
 		int use_ssl_noverify = FALSE;
 		if (g_strcmp0 (word[2], "-ssl") == 0)
 		{
@@ -3260,6 +3260,11 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			use_ssl = TRUE;
 			use_ssl_noverify = TRUE;
+			offset++;	/* args move up by 1 word */
+		} else if (g_strcmp0 (word[2], "-insecure") == 0)
+		{
+			use_ssl = FALSE;
+			use_ssl_noverify = FALSE;
 			offset++;	/* args move up by 1 word */
 		}
 		serv->use_ssl = use_ssl;
@@ -3450,8 +3455,10 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *pass = NULL;
 	char *channel = NULL;
 	char *key = NULL;
-	int use_ssl = FALSE;
+#ifdef USE_OPENSSL
+	int use_ssl = TRUE;
 	int use_ssl_noverify = FALSE;
+#endif
 	int is_url = TRUE;
 	server *serv = sess->server;
 	ircnet *net = NULL;
@@ -3467,6 +3474,11 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		use_ssl = TRUE;
 		use_ssl_noverify = TRUE;
+		offset++;	/* args move up by 1 word */
+	}
+	else if (g_strcmp0 (word[2], "-insecure") == 0)
+	{
+		use_ssl = FALSE;
 		offset++;	/* args move up by 1 word */
 	}
 #endif
@@ -3507,6 +3519,13 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		port++;
 #ifdef USE_OPENSSL
 		use_ssl = TRUE;
+#endif
+	}
+	else if (port[0] == '-')
+	{
+		port++;
+#ifdef USE_OPENSSL
+		use_ssl = FALSE;
 #endif
 	}
 
@@ -3564,7 +3583,7 @@ cmd_servchan (struct session *sess, char *tbuf, char *word[],
 	int offset = 0;
 
 #ifdef USE_OPENSSL
-	if (g_strcmp0 (word[2], "-ssl") == 0 || g_strcmp0 (word[2], "-ssl-noverify") == 0)
+	if (g_strcmp0 (word[2], "-ssl") == 0 || g_strcmp0 (word[2], "-ssl-noverify") == 0 || g_strcmp0 (word[2], "-insecure") == 0)
 		offset++;
 #endif
 
@@ -4098,14 +4117,14 @@ const struct commands xc_cmds[] = {
 	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},
 #ifdef USE_OPENSSL
 	{"SERVCHAN", cmd_servchan, 0, 0, 1,
-	 N_("SERVCHAN [-ssl|-ssl-noverify] <host> <port> <channel>, connects and joins a channel")},
+	 N_("SERVCHAN [-insecure|-ssl|-ssl-noverify] <host> <port> <channel>, connects and joins a channel")},
 #else
 	{"SERVCHAN", cmd_servchan, 0, 0, 1,
 	 N_("SERVCHAN <host> <port> <channel>, connects and joins a channel")},
 #endif
 #ifdef USE_OPENSSL
 	{"SERVER", cmd_server, 0, 0, 1,
-	 N_("SERVER [-ssl|-ssl-noverify] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 6697 for ssl connections")},
+	 N_("SERVER [-insecure|-ssl|-ssl-noverify] <host> [<port>] [<password>], connects to a server, the default port is 6667 for insecure connections, and 6697 for ssl connections")},
 #else
 	{"SERVER", cmd_server, 0, 0, 1,
 	 N_("SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667")},
