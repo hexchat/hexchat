@@ -674,8 +674,6 @@ key_dialog_treeview_new (GtkWidget *box)
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW(view))),
 					"changed", G_CALLBACK (key_dialog_selection_changed), NULL);
 
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
-
 	render = gtk_cell_renderer_accel_new ();
 	g_object_set (render, "editable", TRUE,
 #ifndef WIN32
