@@ -66,7 +66,6 @@ plugingui_treeview_new (GtkWidget *box)
 	                             FILE_COLUMN, _("File"),
 	                             DESC_COLUMN, _("Description"),
 	                             FILEPATH_COLUMN, NULL, -1);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
 	     col_id++)
 			gtk_tree_view_column_set_alignment (col, 0.5);

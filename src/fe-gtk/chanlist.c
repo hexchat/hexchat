@@ -777,7 +777,6 @@ chanlist_opengui (server *serv, int do_refresh)
 	chanlist_add_column (view, COL_CHANNEL, 96, _("Channel"), FALSE);
 	chanlist_add_column (view, COL_USERS,   50, _("Users"),   TRUE);
 	chanlist_add_column (view, COL_TOPIC,   50, _("Topic"),   FALSE);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 	/* this is a speed up, but no horizontal scrollbar :( */
 	/*gtk_tree_view_set_fixed_height_mode (GTK_TREE_VIEW (view), TRUE);*/
 	gtk_widget_show (view);

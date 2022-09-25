@@ -1794,7 +1794,6 @@ setup_create_sound_page (void)
 							G_CALLBACK (setup_snd_row_cb), NULL);
 	gtk_widget_show (sound_tree);
 	gtk_container_add (GTK_CONTAINER (scrolledwindow1), sound_tree);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (sound_tree), TRUE);
 
 	table1 = gtk_table_new (2, 3, FALSE);
 	gtk_widget_show (table1);

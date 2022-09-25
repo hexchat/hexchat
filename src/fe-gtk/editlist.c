@@ -288,8 +288,6 @@ editlist_treeview_new (GtkWidget *box, char *title1, char *title2)
 	g_signal_connect (G_OBJECT (view), "key_press_event",
 						G_CALLBACK (editlist_keypress), NULL);
 
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
-
 	render = gtk_cell_renderer_text_new ();
 	g_object_set (render, "editable", TRUE, NULL);
 	g_signal_connect (G_OBJECT (render), "edited",

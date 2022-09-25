@@ -356,7 +356,6 @@ pevent_treeview_new (GtkWidget *box)
 	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
 	gtk_tree_view_set_fixed_height_mode (GTK_TREE_VIEW (view), TRUE);
 	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (view), TRUE);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view));
 	g_signal_connect (G_OBJECT (sel), "changed",

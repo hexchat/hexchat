@@ -812,7 +812,6 @@ fe_dcc_open_recv_win (int passive)
 										 G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
 										 G_TYPE_STRING, G_TYPE_POINTER, GDK_TYPE_COLOR);
 	view = gtkutil_treeview_new (vbox, GTK_TREE_MODEL (store), NULL, -1);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 	/* Up/Down Icon column */
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view), -1, NULL,
 																gtk_cell_renderer_pixbuf_new (),
@@ -1067,7 +1066,6 @@ fe_dcc_open_chat_win (int passive)
 	dcc_add_column (view, CCOL_START,  CCOL_COLOR, _("Start Time"), FALSE);
 
 	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (view), 1), TRUE);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 
 	dcccwin.list = view;
 	dcccwin.store = store;
