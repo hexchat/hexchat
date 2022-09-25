@@ -3811,7 +3811,8 @@ gtk_xtext_render_page (GtkXText * xtext)
 	if (xtext->buffer->indent < MARGIN)
 		xtext->buffer->indent = MARGIN;	  /* 2 pixels is our left margin */
 
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
+	width = gdk_window_get_width (GTK_WIDGET (xtext)->window);
+	height = gdk_window_get_height (GTK_WIDGET (xtext)->window);
 
 	if (width < 34 || height < xtext->fontsize || width < xtext->buffer->indent + 32)
 		return;
