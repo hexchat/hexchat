@@ -908,7 +908,7 @@ setup_create_hscale (GtkWidget *table, int row, const setting *set)
 
 #ifndef WIN32 /* Windows always supports this */
 	/* Only used for transparency currently */
-	if (!gtk_widget_is_composited (current_sess->gui->window))
+	if (!gdk_screen_is_composited (gdk_window_get_screen (GDK_WINDOW (current_sess->gui->window))))
 		gtk_widget_set_sensitive (wid, FALSE);
 #endif
 }
