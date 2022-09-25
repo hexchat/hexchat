@@ -131,7 +131,7 @@ PrintTextRaw (void *xtbuf, unsigned char *text, int indent, time_t stamp)
 			{
 				beep_done = TRUE;
 				if (!prefs.hex_input_filter_beep)
-					gdk_beep ();
+					gdk_display_beep (gdk_display_get_default ());
 			}
 		default:
 			text++;

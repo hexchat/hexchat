@@ -459,7 +459,7 @@ chanlist_join (GtkWidget * wid, server *serv)
 			g_snprintf (tbuf, sizeof (tbuf), "join %s", chan);
 			handle_command (serv->server_session, tbuf, FALSE);
 		} else
-			gdk_beep ();
+			gdk_display_beep (gdk_display_get_default ());
 		g_free (chan);
 	}
 }
