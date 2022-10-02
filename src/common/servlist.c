@@ -89,6 +89,11 @@ static const struct defaultserver def[] =
 	{"ChatJunkies",	0},
 	{0,			"irc.chatjunkies.org"},
 
+#ifdef USE_OPENSSL
+	{"ChillNet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.chillnet.org"},
+#endif
+
 	{"chatpat", 0, 0, "CP1251", LOGIN_CUSTOM, "MSG NS IDENTIFY %p"},
 	{0,			"irc.unibg.net"},
 	{0,			"irc.chatpat.bg"},
