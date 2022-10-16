@@ -4117,14 +4117,14 @@ const struct commands xc_cmds[] = {
 	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},
 #ifdef USE_OPENSSL
 	{"SERVCHAN", cmd_servchan, 0, 0, 1,
-	 N_("SERVCHAN [-insecure|-ssl|-ssl-noverify] <host> <port> <channel>, connects and joins a channel")},
+	 N_("SERVCHAN [-insecure|-ssl|-ssl-noverify] <host> <port> <channel>, connects and joins a channel using ssl unless otherwise specified")},
 #else
 	{"SERVCHAN", cmd_servchan, 0, 0, 1,
 	 N_("SERVCHAN <host> <port> <channel>, connects and joins a channel")},
 #endif
 #ifdef USE_OPENSSL
 	{"SERVER", cmd_server, 0, 0, 1,
-	 N_("SERVER [-insecure|-ssl|-ssl-noverify] <host> [<port>] [<password>], connects to a server, the default port is 6667 for insecure connections, and 6697 for ssl connections")},
+	 N_("SERVER [-insecure|-ssl|-ssl-noverify] <host> [<port>] [<password>], connects to a server using ssl unless otherwise specified, the default port is 6697 for ssl connections and 6667 for insecure connections")},
 #else
 	{"SERVER", cmd_server, 0, 0, 1,
 	 N_("SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667")},
