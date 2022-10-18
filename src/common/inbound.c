@@ -1728,6 +1728,7 @@ static const char * const supported_caps[] = {
 	"setname",
 	"invite-notify",
 	"account-tag",
+	"extended-monitor",
 
 	/* ZNC */
 	"znc.in/server-time-iso",
