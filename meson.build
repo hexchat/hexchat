@@ -13,7 +13,7 @@ gnome = import('gnome')
 cc = meson.get_compiler('c')
 
 
-libgio_dep = dependency('gio-2.0', version: '>= 2.34.0')
+libgio_dep = dependency('gio-2.0', version: '>= 2.36.0')
 libgmodule_dep = dependency('gmodule-2.0')
 
 libcanberra_dep = dependency('libcanberra', version: '>= 0.22',
@@ -47,8 +47,8 @@ config_h.set('G_DISABLE_SINGLE_INCLUDES', true)
 config_h.set('GTK_DISABLE_DEPRECATED', true)
 config_h.set('GTK_DISABLE_SINGLE_INCLUDES', true)
 config_h.set('GDK_PIXBUF_DISABLE_SINGLE_INCLUDES', true)
-config_h.set('GLIB_VERSION_MAX_ALLOWED', 'GLIB_VERSION_2_34')
-config_h.set('GLIB_VERSION_MIN_REQUIRED', 'GLIB_VERSION_2_34')
+config_h.set('GLIB_VERSION_MAX_ALLOWED', 'GLIB_VERSION_2_36')
+config_h.set('GLIB_VERSION_MIN_REQUIRED', 'GLIB_VERSION_2_36')
 
 # Detected features
 config_h.set('HAVE_MEMRCHR', cc.has_function('memrchr'))
