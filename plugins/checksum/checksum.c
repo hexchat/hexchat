@@ -22,216 +22,150 @@
 
 #include "config.h"
 
-#include <stdlib.h>
-#include <glib.h>
-#include <glib/gstdio.h>
 #include <gio/gio.h>
 
 #include "hexchat-plugin.h"
 
-#define BUFSIZE 32768
-#define DEFAULT_LIMIT 256									/* default size is 256 MiB */
-#define SHA256_DIGEST_LENGTH 32
-#define SHA256_BUFFER_LENGTH 65
-
 static hexchat_plugin *ph;									/* plugin handle */
 static char name[] = "Checksum";
 static char desc[] = "Calculate checksum for DCC file transfers";
-static char version[] = "3.1";
+static char version[] = "4.0";
 
 static void
-set_limit (char *size)
+print_sha256_result (hexchat_context *ctx, gboolean send_message, const char *checksum, const char *filename, GError *error)
 {
-	int limit = atoi (size);
+	/* Context may have been destroyed. */
+	/* FIXME: This could still send the PRIVMSG even if the context was closed. */
+	if (!hexchat_set_context (ph, ctx))
+		return;
 
-	if (limit > 0 && limit < INT_MAX)
-	{
-		if (hexchat_pluginpref_set_int (ph, "limit", limit))
-			hexchat_printf (ph, "Checksum: File size limit has successfully been set to: %d MiB\n", limit);
-		else
-			hexchat_printf (ph, "Checksum: File access error while saving!\n");
-	}
+	if (error)
+		hexchat_printf (ph, "Failed to create checksum for %s: %s", filename, error->message);
+	else if (send_message)
+		hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", hexchat_get_info (ph, "channel"), filename, checksum);
 	else
-	{
-		hexchat_printf (ph, "Checksum: Invalid input!\n");
-	}
+		hexchat_printf (ph, "SHA-256 checksum for %s (local): %s\n", filename, checksum);
 }
 
-static int
-get_limit (void)
+/* TODO: We could put more info in task data and share the same callback. */
+static void
+on_received_file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
 {
-	int size = hexchat_pluginpref_get_int (ph, "limit");
+	hexchat_context *ctx = user_data;
+	GError *error = NULL;
+	char *sha256 = NULL;
+	const char *filename = g_task_get_task_data (G_TASK (result));
 
-	if (size <= 0 || size >= INT_MAX)
-		return DEFAULT_LIMIT;
-	else
-		return size;
+	sha256 = g_task_propagate_pointer (G_TASK (result), &error);
+	print_sha256_result (ctx, FALSE, sha256, filename, error);
+
+	g_free (sha256);
+	g_clear_error (&error);
 }
 
-static gboolean
-check_limit (GFile *file)
+static void
+on_sent_file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
 {
-	GFileInfo *file_info;
-	goffset file_size;
+	hexchat_context *ctx = user_data;
+	GError *error = NULL;
+	char *sha256 = NULL;
+	const char *filename = g_task_get_task_data (G_TASK (result));
 
-	file_info = g_file_query_info (file, G_FILE_ATTRIBUTE_STANDARD_SIZE, G_FILE_QUERY_INFO_NONE,
-									NULL, NULL);
+	sha256 = g_task_propagate_pointer (G_TASK (result), &error);
+	print_sha256_result (ctx, TRUE, sha256, filename, error);
 
-	if (!file_info)
-		return FALSE;
-
-	file_size = g_file_info_get_size (file_info);
-	g_object_unref (file_info);
-
-	if (file_size > get_limit () * 1048576ll)
-		return FALSE;
-
-	return TRUE;
+	g_free (sha256);
+	g_clear_error (&error);
 }
 
-static gboolean
-sha256_from_stream (GFileInputStream *file_stream, char out_buf[])
+static void
+thread_sha256_file (GTask *task, GFile *file, gpointer task_data, GCancellable *cancellable)
 {
 	GChecksum *checksum;
-	gssize bytes_read;
-	guint8 digest[SHA256_DIGEST_LENGTH];
-	gsize digest_len = sizeof(digest);
-	guchar buffer[BUFSIZE];
-	gsize i;
+	GFileInputStream *istream;
+	guint8 buffer[32768];
+	GError *error = NULL;
+	gssize ret;
+
+	istream = g_file_read (file, cancellable, &error);
+	if (error) {
+		g_task_return_error (task, error);
+		return;
+	}
 
 	checksum = g_checksum_new (G_CHECKSUM_SHA256);
 
-	while ((bytes_read = g_input_stream_read (G_INPUT_STREAM (file_stream), buffer, sizeof (buffer), NULL, NULL)))
-	{
-		if (bytes_read == -1)
-		{
-			g_checksum_free (checksum);
-			return FALSE;
-		}
+	while ((ret = g_input_stream_read (G_INPUT_STREAM (istream), buffer, sizeof(buffer), cancellable, &error)) > 0)
+		g_checksum_update (checksum, buffer, ret);
 
-		g_checksum_update (checksum, buffer, bytes_read);
+	if (error) {
+		g_checksum_free (checksum);
+		g_task_return_error (task, error);
+		return;
 	}
 
-	g_checksum_get_digest (checksum, digest, &digest_len);
+	g_task_return_pointer (task, g_strdup (g_checksum_get_string (checksum)), g_free);
 	g_checksum_free (checksum);
-
-	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
-	{
-		/* out_buf will be exactly SHA256_BUFFER_LENGTH including null */
-		g_sprintf (out_buf + (i * 2), "%02x", digest[i]);
-	}
-
-	return TRUE;
-}
-
-static gboolean
-sha256_from_file (char *filename, char out_buf[])
-{
-	GFileInputStream *file_stream;
-	char *filename_fs;
-	GFile *file;
-
-	filename_fs = g_filename_from_utf8 (filename, -1, NULL, NULL, NULL);
-	if (!filename_fs)
-	{
-		hexchat_printf (ph, "Checksum: Invalid filename (%s)\n", filename);
-		return FALSE;
-	}
-
-	file = g_file_new_for_path (filename_fs);
-	g_free (filename_fs);
-	if (!file)
-	{
-		hexchat_printf (ph, "Checksum: Failed to open %s\n", filename);
-		return FALSE;
-	}
-
-	if (!check_limit (file))
-	{
-		hexchat_printf (ph, "Checksum: %s is larger than size limit. You can increase it with /CHECKSUM SET.\n", filename);
-		g_object_unref (file);
-		return FALSE;
-	}
-
-	file_stream = g_file_read (file, NULL, NULL);
-	if (!file_stream)
-	{
-		hexchat_printf (ph, "Checksum: Failed to read file %s\n", filename);
-		g_object_unref (file);
-		return FALSE;
-	}
-
-	if (!sha256_from_stream (file_stream, out_buf))
-	{
-		hexchat_printf (ph, "Checksum: Failed to generate checksum for %s\n", filename);
-		g_object_unref (file_stream);
-		g_object_unref (file);
-		return FALSE;
-	}
-
-	g_object_unref (file_stream);
-	g_object_unref (file);
-	return TRUE;
 }
 
 static int
 dccrecv_cb (char *word[], void *userdata)
 {
+	GTask *task;
+	char *filename_fs;
+	GFile *file;
+	hexchat_context *ctx;
 	const char *dcc_completed_dir;
-	char *filename, checksum[SHA256_BUFFER_LENGTH];
-
-	/* Print in the privmsg tab of the sender */
-	hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
+	char *filename;
 
 	if (hexchat_get_prefs (ph, "dcc_completed_dir", &dcc_completed_dir, NULL) == 1 && dcc_completed_dir[0] != '\0')
 		filename = g_build_filename (dcc_completed_dir, word[1], NULL);
 	else
 		filename = g_strdup (word[2]);
 
-	if (sha256_from_file (filename, checksum))
-	{
-		hexchat_printf (ph, "SHA-256 checksum for %s (local): %s\n", word[1], checksum);
+	filename_fs = g_filename_from_utf8 (filename, -1, NULL, NULL, NULL);
+	if (!filename_fs) {
+		hexchat_printf (ph, "Checksum: Invalid filename (%s)\n", filename);
+		g_free (filename);
+		return HEXCHAT_EAT_NONE;
 	}
 
-	g_free (filename);
+	/* Print in the privmsg tab of the sender */
+	ctx = hexchat_find_context (ph, NULL, word[3]);
+
+	file = g_file_new_for_path (filename_fs);
+	task = g_task_new (file, NULL, (GAsyncReadyCallback) on_received_file_sha256_complete, ctx);
+	g_task_set_task_data (task, filename, g_free);
+	g_task_run_in_thread (task, (GTaskThreadFunc) thread_sha256_file);
+
+	g_free (filename_fs);
+	g_object_unref (file);
+	g_object_unref (task);
+
 	return HEXCHAT_EAT_NONE;
 }
 
 static int
 dccoffer_cb (char *word[], void *userdata)
 {
-	char checksum[SHA256_BUFFER_LENGTH];
+	GFile *file;
+	GTask *task;
+	hexchat_context *ctx;
+	char *filename;
 
 	/* Print in the privmsg tab of the receiver */
-	hexchat_set_context (ph, hexchat_find_context (ph, NULL, word[3]));
+	ctx = hexchat_find_context (ph, NULL, word[3]);
 
-	if (sha256_from_file (word[3], checksum))
-	{
-		hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], checksum);
-	}
+	filename = g_strdup (word[3]);
+	file = g_file_new_for_path (filename);
+	task = g_task_new (file, NULL, (GAsyncReadyCallback) on_sent_file_sha256_complete, ctx);
+	g_task_set_task_data (task, filename, g_free);
+	g_task_run_in_thread (task, (GTaskThreadFunc) thread_sha256_file);
+
+	g_object_unref (file);
+	g_object_unref (task);
 
 	return HEXCHAT_EAT_NONE;
-}
-
-static int
-checksum (char *word[], char *word_eol[], void *userdata)
-{
-	if (!g_ascii_strcasecmp ("GET", word[2]))
-	{
-		hexchat_printf (ph, "File size limit for checksums: %d MiB", get_limit ());
-	}
-	else if (!g_ascii_strcasecmp ("SET", word[2]))
-	{
-		set_limit (word[3]);
-	}
-	else
-	{
-		hexchat_printf (ph, "Usage: /CHECKSUM GET|SET\n");
-		hexchat_printf (ph, "  GET - print the maximum file size (in MiB) to be hashed\n");
-		hexchat_printf (ph, "  SET <filesize> - set the maximum file size (in MiB) to be hashed\n");
-	}
-
-	return HEXCHAT_EAT_ALL;
 }
 
 int
@@ -243,13 +177,6 @@ hexchat_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, char **p
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	/* this is required for the very first run */
-	if (hexchat_pluginpref_get_int (ph, "limit") == -1)
-	{
-		hexchat_pluginpref_set_int (ph, "limit", DEFAULT_LIMIT);
-	}
-
-	hexchat_hook_command (ph, "CHECKSUM", HEXCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|SET", NULL);
 	hexchat_hook_print (ph, "DCC RECV Complete", HEXCHAT_PRI_NORM, dccrecv_cb, NULL);
 	hexchat_hook_print (ph, "DCC Offer", HEXCHAT_PRI_NORM, dccoffer_cb, NULL);
 
