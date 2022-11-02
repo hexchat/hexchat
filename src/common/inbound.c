@@ -1474,9 +1474,16 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 		for (list = sess_list; list; list = list->next)
 		{
 			sess = list->data;
-			if (sess->type == SESS_CHANNEL && sess->server == serv)
+			if (sess->server != serv)
+				continue;
+
+			if (sess->type == SESS_CHANNEL)
 			{
 				userlist_add_hostname (sess, nick, uhost, realname, servname, account, away);
+			}
+			else if (sess->type == SESS_DIALOG && uhost && !serv->p_cmp (sess->channel, nick))
+			{
+				set_topic (sess, uhost, uhost);
 			}
 		}
 	}
