@@ -773,6 +773,7 @@ load_default_config(void)
 	prefs.hex_gui_ulist_count = 1;
 	prefs.hex_gui_ulist_icons = 1;
 	prefs.hex_gui_ulist_style = 1;
+	prefs.hex_gui_win_nick = 1;
 	prefs.hex_gui_win_save = 1;
 	prefs.hex_input_filter_beep = 1;
 	prefs.hex_input_flash_hilight = 1;
