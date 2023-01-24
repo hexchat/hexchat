@@ -176,6 +176,7 @@ static const setting appearance_settings[] =
 	{ST_HEADER,	N_("Title Bar"),0,0,0},
 	{ST_TOGGLE, N_("Show channel modes"), P_OFFINTNL(hex_gui_win_modes),0,0,0},
 	{ST_TOGGLR, N_("Show number of users"), P_OFFINTNL(hex_gui_win_ucount),0,0,0},
+	{ST_TOGGLE, N_("Show nickname"), P_OFFINTNL(hex_gui_win_nick),0,0,0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };

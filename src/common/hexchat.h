@@ -150,6 +150,7 @@ struct hexchatprefs
 	unsigned int hex_gui_ulist_style;
 	unsigned int hex_gui_usermenu;
 	unsigned int hex_gui_win_modes;
+	unsigned int hex_gui_win_nick;
 	unsigned int hex_gui_win_save;
 	unsigned int hex_gui_win_swap;
 	unsigned int hex_gui_win_ucount;

@@ -468,6 +468,7 @@ const struct prefs vars[] =
 	{"gui_win_fullscreen", P_OFFINT (hex_gui_win_fullscreen), TYPE_INT},
 	{"gui_win_left", P_OFFINT (hex_gui_win_left), TYPE_INT},
 	{"gui_win_modes", P_OFFINT (hex_gui_win_modes), TYPE_BOOL},
+	{"gui_win_nick", P_OFFINT (hex_gui_win_nick), TYPE_BOOL},
 	{"gui_win_save", P_OFFINT (hex_gui_win_save), TYPE_BOOL},
 	{"gui_win_state", P_OFFINT (hex_gui_win_state), TYPE_INT},
 	{"gui_win_swap", P_OFFINT (hex_gui_win_swap), TYPE_BOOL},
@@ -772,6 +773,7 @@ load_default_config(void)
 	prefs.hex_gui_ulist_count = 1;
 	prefs.hex_gui_ulist_icons = 1;
 	prefs.hex_gui_ulist_style = 1;
+	prefs.hex_gui_win_nick = 1;
 	prefs.hex_gui_win_save = 1;
 	prefs.hex_input_filter_beep = 1;
 	prefs.hex_input_flash_hilight = 1;
