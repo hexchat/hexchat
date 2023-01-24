@@ -399,27 +399,22 @@ fe_set_title (session *sess)
 					 _(DISPLAY_NAME));
 		break;
 	case SESS_SERVER:
-		g_snprintf (tbuf, sizeof (tbuf), "%s @ %s - %s",
-					 sess->server->nick, server_get_network (sess->server, TRUE),
+		g_snprintf (tbuf, sizeof (tbuf), "%s%s%s - %s",
+					 prefs.hex_gui_win_nick ? sess->server->nick : "",
+					 prefs.hex_gui_win_nick ? " @ " : "", server_get_network (sess->server, TRUE),
 					 _(DISPLAY_NAME));
 		break;
 	case SESS_CHANNEL:
 		/* don't display keys in the titlebar */
-		if (prefs.hex_gui_win_modes)
-		{
 			g_snprintf (tbuf, sizeof (tbuf),
-						 "%s @ %s / %s (%s) - %s",
-						 sess->server->nick, server_get_network (sess->server, TRUE),
-						 sess->channel, sess->current_modes ? sess->current_modes : "",
-						 _(DISPLAY_NAME));
-		}
-		else
-		{
-			g_snprintf (tbuf, sizeof (tbuf),
-						 "%s @ %s / %s - %s",
-						 sess->server->nick, server_get_network (sess->server, TRUE),
-						 sess->channel, _(DISPLAY_NAME));
-		}
+					 "%s%s%s / %s%s%s%s - %s",
+					 prefs.hex_gui_win_nick ? sess->server->nick : "",
+					 prefs.hex_gui_win_nick ? " @ " : "",
+					 server_get_network (sess->server, TRUE), sess->channel,
+					 prefs.hex_gui_win_modes && sess->current_modes ? " (" : "",
+					 prefs.hex_gui_win_modes && sess->current_modes ? sess->current_modes : "",
+					 prefs.hex_gui_win_modes && sess->current_modes ? ")" : "",
+					 _(DISPLAY_NAME));
 		if (prefs.hex_gui_win_ucount)
 		{
 			g_snprintf (tbuf + strlen (tbuf), 9, " (%d)", sess->total);
@@ -427,8 +422,9 @@ fe_set_title (session *sess)
 		break;
 	case SESS_NOTICES:
 	case SESS_SNOTICES:
-		g_snprintf (tbuf, sizeof (tbuf), "%s @ %s (notices) - %s",
-					 sess->server->nick, server_get_network (sess->server, TRUE),
+		g_snprintf (tbuf, sizeof (tbuf), "%s%s%s (notices) - %s",
+					 prefs.hex_gui_win_nick ? sess->server->nick : "",
+					 prefs.hex_gui_win_nick ? " @ " : "", server_get_network (sess->server, TRUE),
 					 _(DISPLAY_NAME));
 		break;
 	default:

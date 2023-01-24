@@ -468,6 +468,7 @@ const struct prefs vars[] =
 	{"gui_win_fullscreen", P_OFFINT (hex_gui_win_fullscreen), TYPE_INT},
 	{"gui_win_left", P_OFFINT (hex_gui_win_left), TYPE_INT},
 	{"gui_win_modes", P_OFFINT (hex_gui_win_modes), TYPE_BOOL},
+	{"gui_win_nick", P_OFFINT (hex_gui_win_nick), TYPE_BOOL},
 	{"gui_win_save", P_OFFINT (hex_gui_win_save), TYPE_BOOL},
 	{"gui_win_state", P_OFFINT (hex_gui_win_state), TYPE_INT},
 	{"gui_win_swap", P_OFFINT (hex_gui_win_swap), TYPE_BOOL},
