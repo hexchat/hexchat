@@ -101,9 +101,11 @@ static void sexy_spell_entry_finalize(GObject *obj);
 static void sexy_spell_entry_destroy(GObject *obj);
 static gint sexy_spell_entry_expose(GtkWidget *widget, GdkEventExpose *event);
 static gint sexy_spell_entry_button_press(GtkWidget *widget, GdkEventButton *event);
+static gint sexy_spell_entry_preedit_length(GtkEntry *entry);
 
 /* GtkEditable handlers */
 static void sexy_spell_entry_changed(GtkEditable *editable, gpointer data);
+static void sexy_spell_entry_preedit_changed(GtkEditable *editable, gchar* preedit, gpointer data);
 
 /* Other handlers */
 static gboolean sexy_spell_entry_popup_menu(GtkWidget *widget, SexySpellEntry *entry);
@@ -286,22 +288,31 @@ gtk_entry_find_position (GtkEntry *entry, gint x)
 	PangoLayoutLine *line;
 	const gchar *text;
 	gint cursor_index;
+	gint cursor_pos;
+	gint preedit_length;
+	gint scroll_offset;
 	gint index;
 	gint pos;
 	gboolean trailing;
 
-	x = x + entry->scroll_offset;
+	g_object_get (entry,
+		"cursor-position", &cursor_pos,
+		"scroll-offset", &scroll_offset,
+		NULL);
+
+	x = x + scroll_offset;
 
 	layout = gtk_entry_get_layout(entry);
 	text = pango_layout_get_text(layout);
-	cursor_index = g_utf8_offset_to_pointer(text, entry->current_pos) - text;
+	cursor_index = g_utf8_offset_to_pointer(text, cursor_pos) - text;
 
 	line = pango_layout_get_lines(layout)->data;
 	pango_layout_line_x_to_index(line, x * PANGO_SCALE, &index, &trailing);
 
-	if (index >= cursor_index && entry->preedit_length) {
-		if (index >= cursor_index + entry->preedit_length) {
-			index -= entry->preedit_length;
+	preedit_length = sexy_spell_entry_preedit_length (entry);
+	if (index >= cursor_index && preedit_length) {
+		if (index >= cursor_index + preedit_length) {
+			index -= preedit_length;
 		} else {
 			index = cursor_index;
 			trailing = FALSE;
@@ -383,7 +394,7 @@ insert_italic (SexySpellEntry *entry, guint start, gboolean toggle)
 {
 	PangoAttribute *iattr;
 
-	iattr  = pango_attr_style_new (toggle ? PANGO_STYLE_NORMAL : PANGO_STYLE_ITALIC); 
+	iattr  = pango_attr_style_new (toggle ? PANGO_STYLE_NORMAL : PANGO_STYLE_ITALIC);
 	iattr->start_index = start;
 	iattr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
 	pango_attr_list_change (entry->priv->attr_list, iattr);
@@ -783,6 +794,7 @@ sexy_spell_entry_init(SexySpellEntry *entry)
 	g_signal_connect(G_OBJECT(entry), "popup-menu", G_CALLBACK(sexy_spell_entry_popup_menu), entry);
 	g_signal_connect(G_OBJECT(entry), "populate-popup", G_CALLBACK(sexy_spell_entry_populate_popup), NULL);
 	g_signal_connect(G_OBJECT(entry), "changed", G_CALLBACK(sexy_spell_entry_changed), NULL);
+	g_signal_connect(G_OBJECT(entry), "preedit-changed", G_CALLBACK(sexy_spell_entry_preedit_changed), NULL);
 }
 
 static void
@@ -1122,9 +1134,8 @@ sexy_spell_entry_expose(GtkWidget *widget, GdkEventExpose *event)
 	GtkEntry *gtk_entry = GTK_ENTRY(widget);
 	PangoLayout *layout;
 
-	
 	layout = gtk_entry_get_layout(gtk_entry);
-	if (gtk_entry->preedit_length == 0)
+	if (sexy_spell_entry_preedit_length (gtk_entry) == 0)
 	{
 		pango_layout_set_attributes(layout, entry->priv->attr_list);
 	}
@@ -1227,6 +1238,20 @@ sexy_spell_entry_changed(GtkEditable *editable, gpointer data)
 	}
 	entry_strsplit_utf8(GTK_ENTRY(entry), &entry->priv->words, &entry->priv->word_starts, &entry->priv->word_ends);
 	sexy_spell_entry_recheck_all(entry);
+}
+
+static void
+sexy_spell_entry_preedit_changed(GtkEditable *editable, gchar* preedit, gpointer data)
+{
+	/** Because object internals are private in GTK 3 we need to store this when it changes. */
+	g_object_set_data (G_OBJECT (editable), "preedit", preedit);
+}
+
+static gint
+sexy_spell_entry_preedit_length(GtkEntry *entry)
+{
+	gchar *text = (gchar*)g_object_get_data (G_OBJECT (entry), "preedit");
+	return text ? strlen (text) : 0;
 }
 
 static gboolean
