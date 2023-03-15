@@ -1065,8 +1065,7 @@ uri_contains_forbidden_characters (const char *uri)
 {
 	while (*uri)
 	{
-		/* This is not an exhaustive list, the full URI has segments that allow characters like "[]:" for example. */
-		if (strchr ("`<> ${}\"+", *uri) != NULL || (*uri & 0x80) /* non-ascii */)
+		if (!g_ascii_isalnum (*uri) && !strchr ("-._~:/?#[]@!$&'()*+,;=", *uri))
 			return TRUE;
 		uri++;
 	}
