@@ -124,6 +124,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.dosers.net/+6697"},
 #endif
 
+	{"Dyne/Freaknet",	0},
+	{0,			"irc.dyne.org/6667"},
+
 	{"EFnet",	0},
 	{0,			"irc.choopa.net"},
 	{0,			"efnet.port80.se"},
@@ -218,11 +221,20 @@ static const struct defaultserver def[] =
 	{0,			"irc.link-net.org/+7000"},
 #endif
 
+	{"MAGnet",	0},
+	{0,			"irc.perl.org/6667"},
+#ifdef USE_OPENSSL
+	{0,			"ssl.irc.perl.org/+7062"},
+#endif
+
 	{"MindForge", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.mindforge.org"},
 
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
+
+	{"Newnet",		0},
+	{0,			"irc.newnet.net"},
 
 	{"Oceanius", 0, 0, 0, LOGIN_SASL},
 	/* Self signed */
@@ -327,6 +339,9 @@ static const struct defaultserver def[] =
 
 	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM, "MSG x@channels.undernet.org login %u %p"},
 	{0,			"us.undernet.org"},
+
+	{"Wikimedia",	0},
+	{0,			"irc.wikimedia.org/6667"},
 
 	{"Xertion", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.xertion.org"},
