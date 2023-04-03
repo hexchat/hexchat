@@ -291,7 +291,15 @@ def _on_timer_hook(userdata):
     if hook.callback(hook.userdata) == True:
         return 1
 
-    hook.is_unload = True  # Don't unhook
+    try:
+        # Avoid calling hexchat_unhook twice if unnecessary
+        hook.is_unload = True
+    except ReferenceError:
+        # hook is a weak reference, it might have been destroyed by the callback
+        # in which case it has already been removed from hook.plugin.hooks and
+        # we wouldn't be able to test it with h == hook anyway.
+        return 0
+
     for h in hook.plugin.hooks:
         if h == hook:
             hook.plugin.hooks.remove(h)
