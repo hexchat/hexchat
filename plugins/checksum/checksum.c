@@ -31,49 +31,46 @@ static char name[] = "Checksum";
 static char desc[] = "Calculate checksum for DCC file transfers";
 static char version[] = "4.0";
 
-static void
-print_sha256_result (hexchat_context *ctx, gboolean send_message, const char *checksum, const char *filename, GError *error)
-{
-	/* Context may have been destroyed. */
-	/* FIXME: This could still send the PRIVMSG even if the context was closed. */
-	if (!hexchat_set_context (ph, ctx))
-		return;
 
-	if (error)
-		hexchat_printf (ph, "Failed to create checksum for %s: %s", filename, error->message);
-	else if (send_message)
+typedef struct {
+	hexchat_context *ctx;
+	gboolean send_message;
+} ChecksumCallbackInfo;
+
+
+static void
+print_sha256_result (ChecksumCallbackInfo *info, const char *checksum, const char *filename, GError *error)
+{
+
+	/* Context may have never been set or destroyed.*/
+	if(!info->ctx  || !hexchat_set_context (ph, info->ctx)){
+		// So then we get the next best available channel, since we always want to print at least somewhere, it's fine
+		hexchat_context * ctx = hexchat_find_context (ph, NULL, NULL);
+		hexchat_set_context (ph, ctx);
+	}
+
+	if (error){
+		hexchat_printf (ph, "Failed to create checksum for %s: %s\n", filename, error->message);
+	}
+	else if (info->send_message){
 		hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", hexchat_get_info (ph, "channel"), filename, checksum);
-	else
+	}else{
 		hexchat_printf (ph, "SHA-256 checksum for %s (local): %s\n", filename, checksum);
+	}
 }
 
-/* TODO: We could put more info in task data and share the same callback. */
 static void
-on_received_file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
-{
-	hexchat_context *ctx = user_data;
+file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
+{	
+	ChecksumCallbackInfo * callback_info = user_data;
 	GError *error = NULL;
 	char *sha256 = NULL;
 	const char *filename = g_task_get_task_data (G_TASK (result));
 
 	sha256 = g_task_propagate_pointer (G_TASK (result), &error);
-	print_sha256_result (ctx, FALSE, sha256, filename, error);
+	print_sha256_result (callback_info, sha256, filename, error);
 
-	g_free (sha256);
-	g_clear_error (&error);
-}
-
-static void
-on_sent_file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
-{
-	hexchat_context *ctx = user_data;
-	GError *error = NULL;
-	char *sha256 = NULL;
-	const char *filename = g_task_get_task_data (G_TASK (result));
-
-	sha256 = g_task_propagate_pointer (G_TASK (result), &error);
-	print_sha256_result (ctx, TRUE, sha256, filename, error);
-
+	g_free(callback_info);
 	g_free (sha256);
 	g_clear_error (&error);
 }
@@ -132,9 +129,18 @@ dccrecv_cb (char *word[], void *userdata)
 
 	/* Print in the privmsg tab of the sender */
 	ctx = hexchat_find_context (ph, NULL, word[3]);
+	// if we didn't request the file from the channel, it's send to us from, use the current one, from which we actually requested it
+	if(!ctx){
+		ctx = hexchat_find_context (ph, NULL, NULL);
+	}
+
+	ChecksumCallbackInfo* callback_data= g_malloc(sizeof(ChecksumCallbackInfo));
+	callback_data->ctx = ctx;
+	callback_data->send_message = FALSE;
+	
 
 	file = g_file_new_for_path (filename_fs);
-	task = g_task_new (file, NULL, (GAsyncReadyCallback) on_received_file_sha256_complete, ctx);
+	task = g_task_new (file, NULL, (GAsyncReadyCallback) file_sha256_complete, (gpointer)callback_data);
 	g_task_set_task_data (task, filename, g_free);
 	g_task_run_in_thread (task, (GTaskThreadFunc) thread_sha256_file);
 
@@ -155,10 +161,18 @@ dccoffer_cb (char *word[], void *userdata)
 
 	/* Print in the privmsg tab of the receiver */
 	ctx = hexchat_find_context (ph, NULL, word[3]);
+	// if we didn't send the file from the channel, thats the private channel between us and the receiver, use the current one, from which we actually sent it
+	if(!ctx){
+		ctx = hexchat_find_context (ph, NULL, NULL);
+	}
+
+	ChecksumCallbackInfo* callback_data= g_malloc(sizeof(ChecksumCallbackInfo));
+	callback_data->ctx = ctx;
+	callback_data->send_message = TRUE;
 
 	filename = g_strdup (word[3]);
 	file = g_file_new_for_path (filename);
-	task = g_task_new (file, NULL, (GAsyncReadyCallback) on_sent_file_sha256_complete, ctx);
+	task = g_task_new (file, NULL, (GAsyncReadyCallback) file_sha256_complete, (gpointer)callback_data);
 	g_task_set_task_data (task, filename, g_free);
 	g_task_run_in_thread (task, (GTaskThreadFunc) thread_sha256_file);
 
