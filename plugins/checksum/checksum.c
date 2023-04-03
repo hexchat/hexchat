@@ -31,49 +31,59 @@ static char name[] = "Checksum";
 static char desc[] = "Calculate checksum for DCC file transfers";
 static char version[] = "4.0";
 
-static void
-print_sha256_result (hexchat_context *ctx, gboolean send_message, const char *checksum, const char *filename, GError *error)
-{
-	/* Context may have been destroyed. */
-	/* FIXME: This could still send the PRIVMSG even if the context was closed. */
-	if (!hexchat_set_context (ph, ctx))
-		return;
 
-	if (error)
-		hexchat_printf (ph, "Failed to create checksum for %s: %s", filename, error->message);
-	else if (send_message)
+typedef struct {
+	gboolean send_message;
+	GString *servername;
+	GString *channel;
+} ChecksumCallbackInfo;
+
+
+static void
+print_sha256_result (ChecksumCallbackInfo *info, const char *checksum, const char *filename, GError *error)
+{
+
+	// So then we get the next best available channel, since we always want to print at least somewhere, it's fine
+	hexchat_context *ctx = hexchat_find_context(ph, info->servername->str, info->channel->str);
+	if (!ctx) {
+		// before we print a private message to the wrong channel, we exit early
+		if (info->send_message) {
+			return;
+		}
+
+		// if the context isn't found the first time, we search in the server
+		ctx = hexchat_find_context(ph, info->servername->str, NULL);
+		if (!ctx) {
+			//the second time we exit early, since printing in another server isn't desireable
+			return;
+		}
+	}
+
+	hexchat_set_context(ph, ctx);
+
+	if (error) {
+		hexchat_printf (ph, "Failed to create checksum for %s: %s\n", filename, error->message);
+	} else if (info->send_message) {
 		hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", hexchat_get_info (ph, "channel"), filename, checksum);
-	else
+	} else {
 		hexchat_printf (ph, "SHA-256 checksum for %s (local): %s\n", filename, checksum);
+	}
 }
 
-/* TODO: We could put more info in task data and share the same callback. */
 static void
-on_received_file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
-{
-	hexchat_context *ctx = user_data;
+file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
+{	
+	ChecksumCallbackInfo * callback_info = user_data;
 	GError *error = NULL;
 	char *sha256 = NULL;
 	const char *filename = g_task_get_task_data (G_TASK (result));
 
 	sha256 = g_task_propagate_pointer (G_TASK (result), &error);
-	print_sha256_result (ctx, FALSE, sha256, filename, error);
+	print_sha256_result (callback_info, sha256, filename, error);
 
-	g_free (sha256);
-	g_clear_error (&error);
-}
-
-static void
-on_sent_file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
-{
-	hexchat_context *ctx = user_data;
-	GError *error = NULL;
-	char *sha256 = NULL;
-	const char *filename = g_task_get_task_data (G_TASK (result));
-
-	sha256 = g_task_propagate_pointer (G_TASK (result), &error);
-	print_sha256_result (ctx, TRUE, sha256, filename, error);
-
+	g_string_free(callback_info->servername, TRUE);
+	g_string_free(callback_info->channel, TRUE);
+	g_free(callback_info);
 	g_free (sha256);
 	g_clear_error (&error);
 }
@@ -114,7 +124,6 @@ dccrecv_cb (char *word[], void *userdata)
 	GTask *task;
 	char *filename_fs;
 	GFile *file;
-	hexchat_context *ctx;
 	const char *dcc_completed_dir;
 	char *filename;
 
@@ -130,11 +139,16 @@ dccrecv_cb (char *word[], void *userdata)
 		return HEXCHAT_EAT_NONE;
 	}
 
-	/* Print in the privmsg tab of the sender */
-	ctx = hexchat_find_context (ph, NULL, word[3]);
+	ChecksumCallbackInfo *callback_data = g_new (ChecksumCallbackInfo, 1);
+	const char* servername = hexchat_get_info(ph, "server");
+	callback_data->servername = !servername ? NULL : g_string_new(servername);
+	const char *channel = hexchat_get_info(ph, "channel");
+	callback_data->channel = !channel ? NULL : g_string_new(channel);
+	callback_data->send_message = FALSE;
+	
 
 	file = g_file_new_for_path (filename_fs);
-	task = g_task_new (file, NULL, (GAsyncReadyCallback) on_received_file_sha256_complete, ctx);
+	task = g_task_new (file, NULL, (GAsyncReadyCallback) file_sha256_complete, (gpointer)callback_data);
 	g_task_set_task_data (task, filename, g_free);
 	g_task_run_in_thread (task, (GTaskThreadFunc) thread_sha256_file);
 
@@ -150,15 +164,18 @@ dccoffer_cb (char *word[], void *userdata)
 {
 	GFile *file;
 	GTask *task;
-	hexchat_context *ctx;
 	char *filename;
 
-	/* Print in the privmsg tab of the receiver */
-	ctx = hexchat_find_context (ph, NULL, word[3]);
+	ChecksumCallbackInfo *callback_data = g_new (ChecksumCallbackInfo, 1);
+	const char* servername = hexchat_get_info(ph, "server");
+	callback_data->servername = !servername ? NULL : g_string_new(servername);
+	const char *channel = hexchat_get_info(ph, "channel");
+	callback_data->channel = !channel ? NULL : g_string_new(channel);
+	callback_data->send_message = TRUE;
 
 	filename = g_strdup (word[3]);
 	file = g_file_new_for_path (filename);
-	task = g_task_new (file, NULL, (GAsyncReadyCallback) on_sent_file_sha256_complete, ctx);
+	task = g_task_new (file, NULL, (GAsyncReadyCallback) file_sha256_complete, (gpointer)callback_data);
 	g_task_set_task_data (task, filename, g_free);
 	g_task_run_in_thread (task, (GTaskThreadFunc) thread_sha256_file);
 
