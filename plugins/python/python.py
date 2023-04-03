@@ -64,6 +64,10 @@ class Stdout:
         else:
             self.buffer += string
 
+    def flush(self):
+        lib.hexchat_print(lib.ph, bytes(self.buffer))
+        self.buffer = bytearray()
+
     def isatty(self):
         return False
 
