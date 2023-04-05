@@ -166,7 +166,7 @@ dccoffer_cb (char *word[], void *userdata)
 		ctx = hexchat_find_context (ph, NULL, NULL);
 	}
 
-	ChecksumCallbackInfo* callback_data= g_malloc(sizeof(ChecksumCallbackInfo));
+	ChecksumCallbackInfo *callback_data = g_new (ChecksumCallbackInfo, 1);
 	callback_data->ctx = ctx;
 	callback_data->send_message = TRUE;
 
