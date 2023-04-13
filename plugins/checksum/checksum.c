@@ -33,8 +33,9 @@ static char version[] = "4.0";
 
 
 typedef struct {
-	hexchat_context *ctx;
 	gboolean send_message;
+	GString *servername;
+	GString *channel;
 } ChecksumCallbackInfo;
 
 
@@ -42,19 +43,29 @@ static void
 print_sha256_result (ChecksumCallbackInfo *info, const char *checksum, const char *filename, GError *error)
 {
 
-	/* Context may have never been set or destroyed.*/
-	if(!info->ctx  || !hexchat_set_context (ph, info->ctx)){
-		// So then we get the next best available channel, since we always want to print at least somewhere, it's fine
-		hexchat_context * ctx = hexchat_find_context (ph, NULL, NULL);
-		hexchat_set_context (ph, ctx);
+	// So then we get the next best available channel, since we always want to print at least somewhere, it's fine
+	hexchat_context *ctx = hexchat_find_context(ph, info->servername->str, info->channel->str);
+	if (!ctx) {
+		// before we print a private message to the wrong channel, we exit early
+		if (info->send_message) {
+			return;
+		}
+
+		// if the context isn't found the first time, we search in the server
+		ctx = hexchat_find_context(ph, info->servername->str, NULL);
+		if (!ctx) {
+			//the second time we exit early, since printing in another server isn't desireable
+			return;
+		}
 	}
 
-	if (error){
+	hexchat_set_context(ph, ctx);
+
+	if (error) {
 		hexchat_printf (ph, "Failed to create checksum for %s: %s\n", filename, error->message);
-	}
-	else if (info->send_message){
+	} else if (info->send_message) {
 		hexchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", hexchat_get_info (ph, "channel"), filename, checksum);
-	}else{
+	} else {
 		hexchat_printf (ph, "SHA-256 checksum for %s (local): %s\n", filename, checksum);
 	}
 }
@@ -70,6 +81,8 @@ file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
 	sha256 = g_task_propagate_pointer (G_TASK (result), &error);
 	print_sha256_result (callback_info, sha256, filename, error);
 
+	g_string_free(callback_info->servername, TRUE);
+	g_string_free(callback_info->channel, TRUE);
 	g_free(callback_info);
 	g_free (sha256);
 	g_clear_error (&error);
@@ -111,7 +124,6 @@ dccrecv_cb (char *word[], void *userdata)
 	GTask *task;
 	char *filename_fs;
 	GFile *file;
-	hexchat_context *ctx;
 	const char *dcc_completed_dir;
 	char *filename;
 
@@ -127,15 +139,11 @@ dccrecv_cb (char *word[], void *userdata)
 		return HEXCHAT_EAT_NONE;
 	}
 
-	/* Print in the privmsg tab of the sender */
-	ctx = hexchat_find_context (ph, NULL, word[3]);
-	// if we didn't request the file from the channel, it's send to us from, use the current one, from which we actually requested it
-	if(!ctx){
-		ctx = hexchat_find_context (ph, NULL, NULL);
-	}
-
 	ChecksumCallbackInfo *callback_data = g_new (ChecksumCallbackInfo, 1);
-	callback_data->ctx = ctx;
+	const char* servername = hexchat_get_info(ph, "server");
+	callback_data->servername = !servername ? NULL : g_string_new(servername);
+	const char *channel = hexchat_get_info(ph, "channel");
+	callback_data->channel = !channel ? NULL : g_string_new(channel);
 	callback_data->send_message = FALSE;
 	
 
@@ -156,18 +164,13 @@ dccoffer_cb (char *word[], void *userdata)
 {
 	GFile *file;
 	GTask *task;
-	hexchat_context *ctx;
 	char *filename;
 
-	/* Print in the privmsg tab of the receiver */
-	ctx = hexchat_find_context (ph, NULL, word[3]);
-	// if we didn't send the file from the channel, thats the private channel between us and the receiver, use the current one, from which we actually sent it
-	if(!ctx){
-		ctx = hexchat_find_context (ph, NULL, NULL);
-	}
-
 	ChecksumCallbackInfo *callback_data = g_new (ChecksumCallbackInfo, 1);
-	callback_data->ctx = ctx;
+	const char* servername = hexchat_get_info(ph, "server");
+	callback_data->servername = !servername ? NULL : g_string_new(servername);
+	const char *channel = hexchat_get_info(ph, "channel");
+	callback_data->channel = !channel ? NULL : g_string_new(channel);
 	callback_data->send_message = TRUE;
 
 	filename = g_strdup (word[3]);
