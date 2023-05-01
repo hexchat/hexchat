@@ -34,17 +34,16 @@ static char version[] = "4.0";
 
 typedef struct {
 	gboolean send_message;
-	GString *servername;
-	GString *channel;
+	char *servername;
+	char *channel;
 } ChecksumCallbackInfo;
 
 
 static void
 print_sha256_result (ChecksumCallbackInfo *info, const char *checksum, const char *filename, GError *error)
 {
-
 	// So then we get the next best available channel, since we always want to print at least somewhere, it's fine
-	hexchat_context *ctx = hexchat_find_context(ph, info->servername->str, info->channel->str);
+	hexchat_context *ctx = hexchat_find_context(ph, info->servername, info->channel);
 	if (!ctx) {
 		// before we print a private message to the wrong channel, we exit early
 		if (info->send_message) {
@@ -52,9 +51,9 @@ print_sha256_result (ChecksumCallbackInfo *info, const char *checksum, const cha
 		}
 
 		// if the context isn't found the first time, we search in the server
-		ctx = hexchat_find_context(ph, info->servername->str, NULL);
+		ctx = hexchat_find_context(ph, info->servername, NULL);
 		if (!ctx) {
-			//the second time we exit early, since printing in another server isn't desireable
+			// The second time we exit early, since printing in another server isn't desireable
 			return;
 		}
 	}
@@ -81,8 +80,8 @@ file_sha256_complete (GFile *file, GAsyncResult *result, gpointer user_data)
 	sha256 = g_task_propagate_pointer (G_TASK (result), &error);
 	print_sha256_result (callback_info, sha256, filename, error);
 
-	g_string_free(callback_info->servername, TRUE);
-	g_string_free(callback_info->channel, TRUE);
+	g_free(callback_info->servername);
+	g_free(callback_info->channel);
 	g_free(callback_info);
 	g_free (sha256);
 	g_clear_error (&error);
@@ -140,12 +139,10 @@ dccrecv_cb (char *word[], void *userdata)
 	}
 
 	ChecksumCallbackInfo *callback_data = g_new (ChecksumCallbackInfo, 1);
-	const char* servername = hexchat_get_info(ph, "server");
-	callback_data->servername = !servername ? NULL : g_string_new(servername);
-	const char *channel = hexchat_get_info(ph, "channel");
-	callback_data->channel = !channel ? NULL : g_string_new(channel);
+	callback_data->servername = g_strdup(hexchat_get_info(ph, "server"));
+	callback_data->channel = g_strdup(hexchat_get_info(ph, "channel"));
 	callback_data->send_message = FALSE;
-	
+
 
 	file = g_file_new_for_path (filename_fs);
 	task = g_task_new (file, NULL, (GAsyncReadyCallback) file_sha256_complete, (gpointer)callback_data);
@@ -167,10 +164,8 @@ dccoffer_cb (char *word[], void *userdata)
 	char *filename;
 
 	ChecksumCallbackInfo *callback_data = g_new (ChecksumCallbackInfo, 1);
-	const char* servername = hexchat_get_info(ph, "server");
-	callback_data->servername = !servername ? NULL : g_string_new(servername);
-	const char *channel = hexchat_get_info(ph, "channel");
-	callback_data->channel = !channel ? NULL : g_string_new(channel);
+	callback_data->servername = g_strdup(hexchat_get_info(ph, "server"));
+	callback_data->channel = g_strdup(hexchat_get_info(ph, "channel"));
 	callback_data->send_message = TRUE;
 
 	filename = g_strdup (word[3]);
