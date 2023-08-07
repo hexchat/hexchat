@@ -80,6 +80,11 @@ static const struct defaultserver def[] =
 	{"AzzurraNet",	0},
 	{0,			"irc.azzurra.org"},
 
+#ifdef USE_OPENSSL
+	{"BaphoNet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.orderofthetilde.net"},
+#endif
+
 	{"Canternet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.canternet.org"},
 
