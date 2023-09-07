@@ -113,6 +113,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.darkscience.ws"},
 #endif
 
+	{"Darkworld",	0},
+	{0,			"irc.darkworld.network/+6697"},
+
 	{"Dark-Tou-Net",	0},
 	{0,			"irc.d-t-net.de"},
 	
