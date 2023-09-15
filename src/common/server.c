@@ -1399,7 +1399,8 @@ server_child (server * serv)
 		{
 			g_snprintf (buf, sizeof (buf), "5\n%s\n", local_ip);
 			write (serv->childwrite, buf, strlen (buf));
-			int r = net_bind (ns_local, serv->sok4, serv->sok6);
+			const char *sok4_error = NULL, *sok5_error = NULL;
+			int r = net_bind (ns_local, serv->sok4, serv->sok6, &sok4_error, &sok5_error);
 			if (r)
 			{
 				bound = 1;
@@ -1409,7 +1410,8 @@ server_child (server * serv)
 					closesocket (serv->sok4);
 			} else
 			{
-				g_snprintf (buf, sizeof (buf), "10\n%s\n%s\n", local_ip, strerror (errno));
+				g_snprintf (buf, sizeof (buf), "10\n%s\n%s; %s\n", local_ip, sok4_error,
+						sok5_error);
 				write (serv->childwrite, buf, strlen (buf));
 			}
 		} else
