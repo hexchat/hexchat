@@ -24,6 +24,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <glib.h>
+#include <errno.h>
 
 #ifndef WIN32
 #include <unistd.h>
