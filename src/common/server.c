@@ -1404,6 +1404,7 @@ server_child (server * serv)
 			if (r)
 			{
 				bound = 1;
+				/* close the socket that fails to bind to make sure it isn't used */
 				if (r == 1)
 					closesocket (serv->sok6);
 				else if (r == 2)
