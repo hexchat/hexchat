@@ -164,13 +164,18 @@ net_connect (netstore * ns, int sok4, int sok6, int *sok_return)
 	return error;
 }
 
-void
+int
 net_bind (netstore * tobindto, int sok4, int sok6)
 {
-	bind (sok4, tobindto->ip6_hostent->ai_addr,
-			tobindto->ip6_hostent->ai_addrlen);
-	bind (sok6, tobindto->ip6_hostent->ai_addr,
-			tobindto->ip6_hostent->ai_addrlen);
+	int r = 0;
+
+	if (bind (sok4, tobindto->ip6_hostent->ai_addr, tobindto->ip6_hostent->ai_addrlen) == 0)
+		r |= 1;
+
+	if (bind (sok6, tobindto->ip6_hostent->ai_addr, tobindto->ip6_hostent->ai_addrlen) == 0)
+		r |= 2;
+
+	return r;
 }
 
 void

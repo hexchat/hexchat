@@ -35,7 +35,7 @@ netstore *net_store_new (void);
 void net_store_destroy (netstore *ns);
 int net_connect (netstore *ns, int sok4, int sok6, int *sok_return);
 char *net_resolve (netstore *ns, char *hostname, int port, char **real_host);
-void net_bind (netstore *tobindto, int sok4, int sok6);
+int net_bind (netstore *tobindto, int sok4, int sok6);
 char *net_ip (guint32 addr);
 void net_sockets (int *sok4, int *sok6);
 
