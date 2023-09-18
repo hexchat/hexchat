@@ -1411,8 +1411,9 @@ server_child (server * serv)
 					closesocket (serv->sok6);
 			} else
 			{
-				g_snprintf (buf, sizeof (buf), "10\n%s\n%s; %s\n", local_ip, sok4_error,
-						sok6_error);
+				const char *format = (strncmp (sok4_error, sok6_error, 128) == 0) ? "10\n%s\n%s\n" :
+						"10\n%s\n%s; %s\n";
+				g_snprintf (buf, sizeof (buf), format, local_ip, sok4_error, sok6_error);
 				write (serv->childwrite, buf, strlen (buf));
 			}
 		} else
