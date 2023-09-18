@@ -918,7 +918,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, tbuf, sizeof tbuf);
 		EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, tbuf, NULL, NULL, NULL, 0);
 		break;
-	case 10:						  /* netbind failed */
+	case 10:						  /* net_bind failed */
 		waitline2 (source, tbuf, sizeof tbuf);
 		waitline2 (source, tbuf2, sizeof tbuf2);
 		sprintf (outbuf, _("Failed to bind %s to socket: %s\n"), tbuf, tbuf2);
