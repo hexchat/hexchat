@@ -1399,7 +1399,7 @@ server_child (server * serv)
 		{
 			g_snprintf (buf, sizeof (buf), "5\n%s\n", local_ip);
 			write (serv->childwrite, buf, strlen (buf));
-			const char *sok4_error = NULL, *sok5_error = NULL;
+			const char *sok4_error, *sok5_error;
 			int r = net_bind (ns_local, serv->sok4, serv->sok6, &sok4_error, &sok5_error);
 			if (r)
 			{

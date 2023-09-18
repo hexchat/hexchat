@@ -169,6 +169,7 @@ int
 net_bind (netstore *tobindto, int sok4, int sok6, const char **sok4_error, const char **sok6_error)
 {
 	int r = 0;
+	*sok4_error = *sok6_error = NULL;
 
 	if (bind (sok4, tobindto->ip6_hostent->ai_addr, tobindto->ip6_hostent->ai_addrlen) == 0)
 		r |= 1;
