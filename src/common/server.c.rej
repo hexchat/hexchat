@@ -1,0 +1,170 @@
+--- src/common/server.c
++++ src/common/server.c
+@@ -802,19 +802,27 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
+ {
+ 	session *sess = serv->server_session;
+ 	char tbuf[128];
++	char tbuf2[128];
+ 	char outbuf[512];
+ 	char host[100];
+ 	char ip[100];
++	int code;
+ 
+ 	waitline2 (source, tbuf, sizeof tbuf);
+ 
+-	switch (tbuf[0])
++	if (tbuf[0] == '0')
++		code = 0;
++	else if ((code = atoi (tbuf)) == 0)
++		code = -1;
++
++	switch (code)
+ 	{
+-	case '0':	/* print some text */
++	case 0:	/* print some text */
+ 		waitline2 (source, tbuf, sizeof tbuf);
+ 		PrintText (serv->server_session, tbuf);
+ 		break;
+-	case '1':						  /* unknown host */
++	case 1:						  /* unknown host */
++		waitline2 (source, tbuf, sizeof tbuf);
+ 		server_stopconnecting (serv);
+ 		closesocket (serv->sok4);
+ 		if (serv->proxy_sok4 != -1)
+@@ -823,12 +831,12 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
+ 			closesocket (serv->sok6);
+ 		if (serv->proxy_sok6 != -1)
+ 			closesocket (serv->proxy_sok6);
+-		EMIT_SIGNAL (XP_TE_UKNHOST, sess, NULL, NULL, NULL, NULL, 0);
++		EMIT_SIGNAL (XP_TE_UKNHOST, sess, tbuf, NULL, NULL, NULL, 0);
+ 		if (!servlist_cycle (serv))
+ 			if (prefs.hex_net_auto_reconnectonfail)
+ 				auto_reconnect (serv, FALSE, -1);
+ 		break;
+-	case '2':						  /* connection failed */
++	case 2:						  /* connection failed */
+ 		waitline2 (source, tbuf, sizeof tbuf);
+ 		server_stopconnecting (serv);
+ 		closesocket (serv->sok4);
+@@ -844,13 +852,13 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
+ 			if (prefs.hex_net_auto_reconnectonfail)
+ 				auto_reconnect (serv, FALSE, -1);
+ 		break;
+-	case '3':						  /* gethostbyname finished */
++	case 3:						  /* gethostbyname finished */
+ 		waitline2 (source, host, sizeof host);
+ 		waitline2 (source, ip, sizeof ip);
+ 		waitline2 (source, outbuf, sizeof outbuf);
+ 		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
+ 		break;
+-	case '4':						  /* success */
++	case 4:						  /* success */
+ 		waitline2 (source, tbuf, sizeof (tbuf));
+ 		serv->sok = atoi (tbuf);
+ 		/* close the one we didn't end up using */
+@@ -891,24 +899,30 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
+ 
+ 		server_connect_success (serv);
+ 		break;
+-	case '5':						  /* prefs ip discovered */
++	case 5:						  /* prefs ip discovered */
+ 		waitline2 (source, tbuf, sizeof tbuf);
+ 		prefs.local_ip = inet_addr (tbuf);
+ 		break;
+-	case '7':						  /* gethostbyname (prefs.hex_net_bind_host) failed */
++	case 7:						  /* gethostbyname (prefs.hex_net_bind_host) failed */
+ 		sprintf (outbuf,
+ 					_("Cannot resolve hostname %s\nCheck your IP Settings!\n"),
+ 					prefs.hex_net_bind_host);
+ 		PrintText (sess, outbuf);
+ 		break;
+-	case '8':
++	case 8:
+ 		PrintText (sess, _("Proxy traversal failed.\n"));
+ 		server_disconnect (sess, FALSE, -1);
+ 		break;
+-	case '9':
++	case 9:
+ 		waitline2 (source, tbuf, sizeof tbuf);
+ 		EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, tbuf, NULL, NULL, NULL, 0);
+ 		break;
++	case 10:						  /* netbind failed */
++		waitline2 (source, tbuf, sizeof tbuf);
++		waitline2 (source, tbuf2, sizeof tbuf2);
++		sprintf (outbuf, _("Failed to bind %s to socket: %s\n"), tbuf, tbuf2);
++		PrintText (sess, outbuf);
++		break;
+ 	}
+ 
+ 	return TRUE;
+@@ -1367,7 +1381,7 @@ server_child (server * serv)
+ 	char *local_ip;
+ 	int connect_port;
+ 	char buf[512];
+-	char bound = 0;
++	int bound = 0;
+ 	int proxy_type = 0;
+ 	char *proxy_host = NULL;
+ 	int proxy_port;
+@@ -1383,13 +1397,20 @@ server_child (server * serv)
+ 		{
+ 			g_snprintf (buf, sizeof (buf), "5\n%s\n", local_ip);
+ 			write (serv->childwrite, buf, strlen (buf));
+-			net_bind (ns_local, serv->sok4, serv->sok6);
+-			bound = 1;
++			if (net_bind (ns_local, serv->sok4, serv->sok6) == 0)
++				bound = 1;
++			else
++			{
++				g_snprintf (buf, sizeof (buf), "10\n%s\n%s\n", local_ip, strerror (errno));
++				write (serv->childwrite, buf, strlen (buf));
++			}
+ 		} else
+ 		{
+ 			write (serv->childwrite, "7\n", 2);
+ 		}
+ 		net_store_destroy (ns_local);
++		if (! bound)
++			goto xit;
+ 	}
+ 
+ 	if (!serv->dont_use_proxy) /* blocked in serverlist? */
+@@ -1454,7 +1475,8 @@ server_child (server * serv)
+ 		g_free (proxy_host);
+ 		if (!ip)
+ 		{
+-			write (serv->childwrite, "1\n", 2);
++			g_snprintf (buf, sizeof (buf), "1\n%s\n", proxy_host);
++			write (serv->childwrite, buf, strlen (buf));
+ 			goto xit;
+ 		}
+ 		connect_port = proxy_port;
+@@ -1466,7 +1488,8 @@ server_child (server * serv)
+ 			proxy_ip = net_resolve (ns_proxy, hostname, port, &real_hostname);
+ 			if (!proxy_ip)
+ 			{
+-				write (serv->childwrite, "1\n", 2);
++				g_snprintf (buf, sizeof (buf), "1\n%s\n", hostname);
++				write (serv->childwrite, buf, strlen (buf));
+ 				goto xit;
+ 			}
+ 		} else						  /* otherwise we can just use the hostname */
+@@ -1476,7 +1499,8 @@ server_child (server * serv)
+ 		ip = net_resolve (ns_server, hostname, port, &real_hostname);
+ 		if (!ip)
+ 		{
+-			write (serv->childwrite, "1\n", 2);
++			g_snprintf (buf, sizeof (buf), "1\n%s\n", hostname);
++			write (serv->childwrite, buf, strlen (buf));
+ 			goto xit;
+ 		}
+ 		connect_port = port;
+@@ -1692,7 +1716,7 @@ server_set_encoding (server *serv, char *new_encoding)
+ 	if (new_encoding)
+ 	{
+ 		serv->encoding = g_strdup (new_encoding);
+-		/* the serverlist GUI might have added a space 
++		/* the serverlist GUI might have added a space
+ 			and short description - remove it. */
+ 		space = strchr (serv->encoding, ' ');
+ 		if (space)
