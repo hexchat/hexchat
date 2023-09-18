@@ -1401,14 +1401,14 @@ server_child (server * serv)
 			write (serv->childwrite, buf, strlen (buf));
 			const char *sok4_error, *sok5_error;
 			int r = net_bind (ns_local, serv->sok4, serv->sok6, &sok4_error, &sok5_error);
-			if (r)
+			if (r != 3)
 			{
 				bound = 1;
 				/* close the socket that fails to bind to make sure it isn't used */
 				if (r == 1)
-					closesocket (serv->sok6);
-				else if (r == 2)
 					closesocket (serv->sok4);
+				else if (r == 2)
+					closesocket (serv->sok6);
 			} else
 			{
 				g_snprintf (buf, sizeof (buf), "10\n%s\n%s; %s\n", local_ip, sok4_error,
