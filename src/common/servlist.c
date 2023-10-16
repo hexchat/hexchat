@@ -323,6 +323,11 @@ static const struct defaultserver def[] =
 	{0,			"newirc.tripsit.me"},
 	{0,			"coconut.tripsit.me"},
 	{0,			"innsbruck.tripsit.me"},
+#endif
+
+#ifdef USE_OPENSSL
+	{"DeltaWorlds", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.deltaworlds.com"},
 #endif	
 
 	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM, "MSG x@channels.undernet.org login %u %p"},
