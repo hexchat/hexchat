@@ -152,9 +152,9 @@ static const char *login_types[]=
 	"SASL PLAIN (username + password)",
 #ifdef USE_OPENSSL
 	"SASL EXTERNAL (cert)",
-    "SASL SCRAM-SHA-1",
-    "SASL SCRAM-SHA-256",
-    "SASL SCRAM-SHA-512",
+	"SASL SCRAM-SHA-1",
+	"SASL SCRAM-SHA-256",
+	"SASL SCRAM-SHA-512",
 #endif
 	"Server password (/PASS password)",
 	"NickServ (/MSG NickServ + password)",
