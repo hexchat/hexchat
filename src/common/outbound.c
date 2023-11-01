@@ -3458,6 +3458,8 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 #ifdef USE_OPENSSL
 	int use_ssl = TRUE;
 	int use_ssl_noverify = FALSE;
+#else
+	int use_ssl = FALSE;
 #endif
 	int is_url = TRUE;
 	server *serv = sess->server;
