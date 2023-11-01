@@ -1648,7 +1648,10 @@ inbound_identified (server *serv)	/* 'MODE +e MYSELF' on freenode */
 static const char *sasl_mechanisms[] =
 {
 	"PLAIN",
-	"EXTERNAL"
+	"EXTERNAL",
+	"SCRAM-SHA-1",
+	"SCRAM-SHA-256",
+	"SCRAM-SHA-512"
 };
 
 static void
@@ -1689,6 +1692,12 @@ inbound_toggle_caps (server *serv, const char *extensions_str, gboolean enable)
 #ifdef USE_OPENSSL
 				if (serv->loginmethod == LOGIN_SASLEXTERNAL)
 					serv->sasl_mech = MECH_EXTERNAL;
+				else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_1)
+					serv->sasl_mech = MECH_SCRAM_SHA_1;
+				else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_256)
+					serv->sasl_mech = MECH_SCRAM_SHA_256;
+				else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_512)
+					serv->sasl_mech = MECH_SCRAM_SHA_512;
 #endif
 				/* Mechanism either defaulted to PLAIN or server gave us list */
 				tcp_sendf (serv, "AUTHENTICATE %s\r\n", sasl_mechanisms[serv->sasl_mech]);
@@ -1766,6 +1775,24 @@ get_supported_mech (server *serv, const char *list)
 				break;
 			}
 		}
+		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_1) {
+			if (!strcmp(mechs[i], "SCRAM-SHA-1")) {
+				ret = MECH_SCRAM_SHA_1;
+				break;
+			}
+		}
+		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_256) {
+			if (!strcmp(mechs[i], "SCRAM-SHA-256")) {
+				ret = MECH_SCRAM_SHA_256;
+				break;
+			}
+		}
+		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_512) {
+			if (!strcmp(mechs[i], "SCRAM-SHA-512")) {
+				ret = MECH_SCRAM_SHA_512;
+				break;
+			}
+		}
 		else
 #endif
 		if (!strcmp (mechs[i], "PLAIN"))
@@ -1821,7 +1848,11 @@ inbound_cap_ls (server *serv, char *nick, char *extensions_str,
 
 		/* if the SASL password is set AND auth mode is set to SASL, request SASL auth */
 		if (!g_strcmp0 (extension, "sasl") &&
-			((serv->loginmethod == LOGIN_SASL && strlen (serv->password) != 0)
+			(((serv->loginmethod == LOGIN_SASL
+				|| serv->loginmethod == LOGIN_SASL_SCRAM_SHA_1
+				|| serv->loginmethod == LOGIN_SASL_SCRAM_SHA_256
+				|| serv->loginmethod == LOGIN_SASL_SCRAM_SHA_512)
+					&& strlen (serv->password) != 0)
 				|| serv->loginmethod == LOGIN_SASLEXTERNAL))
 		{
 			if (value)
@@ -1901,8 +1932,7 @@ inbound_cap_list (server *serv, char *nick, char *extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
 }
 
-static void
-plain_authenticate(server *serv, char *user, char *password)
+static void plain_authenticate(server *serv, char *user, char *password)
 {
 	char *pass = encode_sasl_pass_plain (user, password);
 
@@ -1933,6 +1963,59 @@ plain_authenticate(server *serv, char *user, char *password)
 		tcp_sendf (serv, "AUTHENTICATE +\r\n");
 }
 
+#ifdef USE_OPENSSL
+/*
+ * Sends AUTHENTICATE messages to log in via SCRAM.
+ */
+static void scram_authenticate(server *serv, const char *data, const char *digest,
+							   const char *user, const char *password)
+{
+	char *encoded, *decoded, *output;
+	int ret;
+	size_t output_len;
+	gsize decoded_len;
+
+	if (serv->scram_session == NULL) {
+		serv->scram_session = scram_create_session(digest, user, password);
+
+		if (serv->scram_session == NULL) {
+			// TODO: localized output
+			// g_error("Could not create SCRAM session with digest %s", digest);
+			tcp_sendf(serv, "AUTHENTICATE *\r\n");
+			return;
+		}
+	}
+
+	decoded = g_base64_decode(data, &decoded_len);
+	ret = scram_process(serv->scram_session, decoded, &output, &output_len);
+	g_free(decoded);
+
+	if (ret == SCRAM_IN_PROGRESS) {
+		// Authentication is still in progress
+		encoded = g_base64_encode((guchar *) output, output_len);
+		tcp_sendf(serv, "AUTHENTICATE %s\r\n", encoded);
+		g_free(encoded);
+		g_free(output);
+	} else if (ret == SCRAM_SUCCESS) {
+		// Authentication succeeded
+		tcp_sendf(serv, "AUTHENTICATE +\r\n");
+		scram_free_session(serv->scram_session);
+		serv->scram_session = NULL;
+	} else if (ret == SCRAM_ERROR) {
+		// Authentication failed
+		tcp_sendf(serv, "AUTHENTICATE *\r\n");
+
+		if (serv->scram_session->error != NULL) {
+			// TODO: localized output
+			// g_warning("SASL SCRAM authentication failed: %s", serv->scram_session->error);
+		}
+
+		scram_free_session(serv->scram_session);
+		serv->scram_session = NULL;
+	}
+}
+#endif
+
 void
 inbound_sasl_authenticate (server *serv, char *data)
 {
@@ -1959,6 +2042,15 @@ inbound_sasl_authenticate (server *serv, char *data)
 		case MECH_EXTERNAL:
 			tcp_sendf (serv, "AUTHENTICATE +\r\n");
 			break;
+		case MECH_SCRAM_SHA_1:
+			scram_authenticate(serv, data, "SHA1", user, serv->password);
+			return;
+		case MECH_SCRAM_SHA_256:
+			scram_authenticate(serv, data, "SHA256", user, serv->password);
+			return;
+		case MECH_SCRAM_SHA_512:
+			scram_authenticate(serv, data, "SHA512", user, serv->password);
+			return;
 #endif
 		}
 
@@ -1969,6 +2061,13 @@ inbound_sasl_authenticate (server *serv, char *data)
 void
 inbound_sasl_error (server *serv)
 {
+#ifdef USE_OPENSSL
+	if(serv->scram_session != NULL)
+	{
+		scram_free_session(serv->scram_session);
+		serv->scram_session = NULL;
+	}
+#endif
 	/* Just abort, not much we can do */
 	tcp_sendf (serv, "AUTHENTICATE *\r\n");
 }

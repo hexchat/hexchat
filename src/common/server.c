@@ -1765,7 +1765,13 @@ server_set_defaults (server *serv)
 	g_free (serv->chanmodes);
 	g_free (serv->nick_prefixes);
 	g_free (serv->nick_modes);
-
+#ifdef USE_OPENSSL
+	if(serv->scram_session != NULL)
+	{
+		scram_free_session (serv->scram_session);
+		serv->scram_session = NULL;
+	}
+#endif
 	serv->chantypes = g_strdup ("#&!+");
 	serv->chanmodes = g_strdup ("beI,k,l");
 	serv->nick_prefixes = g_strdup ("@%+");
@@ -1937,6 +1943,12 @@ server_free (server *serv)
 #ifdef USE_OPENSSL
 	if (serv->ctx)
 		_SSL_context_free (serv->ctx);
+
+	if(serv->scram_session != NULL)
+	{
+		scram_free_session (serv->scram_session);
+		serv->scram_session = NULL;
+	}
 #endif
 
 	fe_server_callback (serv);
