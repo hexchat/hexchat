@@ -128,6 +128,9 @@ static int login_types_conf[] =
 	LOGIN_SASL,
 #ifdef USE_OPENSSL
 	LOGIN_SASLEXTERNAL,
+	LOGIN_SASL_SCRAM_SHA_1,
+	LOGIN_SASL_SCRAM_SHA_256,
+	LOGIN_SASL_SCRAM_SHA_512,
 #endif
 	LOGIN_PASS,
 	LOGIN_MSG_NICKSERV,
@@ -146,9 +149,12 @@ static int login_types_conf[] =
 static const char *login_types[]=
 {
 	"Default",
-	"SASL (username + password)",
+	"SASL PLAIN (username + password)",
 #ifdef USE_OPENSSL
 	"SASL EXTERNAL (cert)",
+	"SASL SCRAM-SHA-1",
+	"SASL SCRAM-SHA-256",
+	"SASL SCRAM-SHA-512",
 #endif
 	"Server password (/PASS password)",
 	"NickServ (/MSG NickServ + password)",

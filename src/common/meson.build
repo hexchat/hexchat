@@ -15,6 +15,7 @@ common_sources = [
   'plugin-identd.c',
   'plugin-timer.c',
   'proto-irc.c',
+  'scram.c',
   'server.c',
   'servlist.c',
 	'text.c',
