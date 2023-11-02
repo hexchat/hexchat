@@ -179,7 +179,8 @@ static int process_server_first(scram_session *session, const char *data, char *
 	                                &b64_state, &b64_save);
 
 	// SaltedPassword := Hi(Normalize(password), salt, i)
-	session->salted_password = malloc(session->digest_size);
+	session->salted_password = g_malloc (session->digest_size);
+
 	PKCS5_PBKDF2_HMAC(session->password, strlen(session->password), (unsigned char *) salt,
 	                  salt_len, iteration_count, session->digest, session->digest_size,
 	                  session->salted_password);

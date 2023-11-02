@@ -2018,8 +2018,7 @@ scram_authenticate(server *serv, const char *data, const char *digest,
 			// g_warning("SASL SCRAM authentication failed: %s", serv->scram_session->error);
 		}
 
-		scram_free_session(serv->scram_session);
-		serv->scram_session = NULL;
+        g_clear_pointer (&serv->scram_session, scram_free_session);
 	}
 }
 #endif
@@ -2070,11 +2069,7 @@ void
 inbound_sasl_error (server *serv)
 {
 #ifdef USE_OPENSSL
-	if(serv->scram_session != NULL)
-	{
-		scram_free_session(serv->scram_session);
-		serv->scram_session = NULL;
-	}
+    g_clear_pointer (&serv->scram_session, scram_free_session);
 #endif
 	/* Just abort, not much we can do */
 	tcp_sendf (serv, "AUTHENTICATE *\r\n");
