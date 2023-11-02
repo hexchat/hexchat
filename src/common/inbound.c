@@ -1979,7 +1979,7 @@ scram_authenticate (server *serv, const char *data, const char *digest,
 					const char *user, const char *password)
 {
 	char *encoded, *decoded, *output;
-	int ret;
+	scram_status status;
 	size_t output_len;
 	gsize decoded_len;
 
@@ -1990,17 +1990,17 @@ scram_authenticate (server *serv, const char *data, const char *digest,
 		if (serv->scram_session == NULL)
 		{
 			// TODO: localized output
-			// g_error("Could not create SCRAM session with digest %s", digest);
+			g_warning ("Could not create SCRAM session with digest %s", digest);
 			tcp_sendf (serv, "AUTHENTICATE *\r\n");
 			return;
 		}
 	}
 
 	decoded = g_base64_decode (data, &decoded_len);
-	ret = scram_process (serv->scram_session, decoded, &output, &output_len);
+	status = scram_process (serv->scram_session, decoded, &output, &output_len);
 	g_free (decoded);
 
-	if (ret == SCRAM_IN_PROGRESS)
+	if (status == SCRAM_IN_PROGRESS)
 	{
 		// Authentication is still in progress
 		encoded = g_base64_encode ((guchar *) output, output_len);
@@ -2008,22 +2008,21 @@ scram_authenticate (server *serv, const char *data, const char *digest,
 		g_free (encoded);
 		g_free (output);
 	}
-	else if (ret == SCRAM_SUCCESS)
+	else if (status == SCRAM_SUCCESS)
 	{
 		// Authentication succeeded
 		tcp_sendf (serv, "AUTHENTICATE +\r\n");
 		scram_free_session (serv->scram_session);
 		serv->scram_session = NULL;
 	}
-	else if (ret == SCRAM_ERROR)
+	else if (status == SCRAM_ERROR)
 	{
 		// Authentication failed
 		tcp_sendf (serv, "AUTHENTICATE *\r\n");
 
 		if (serv->scram_session->error != NULL)
 		{
-			// TODO: localized output
-			// g_warning("SASL SCRAM authentication failed: %s", serv->scram_session->error);
+			g_info ("SASL SCRAM authentication failed: %s", serv->scram_session->error);
 		}
 
 		g_clear_pointer (&serv->scram_session, scram_free_session);
@@ -2035,7 +2034,7 @@ void
 inbound_sasl_authenticate (server *serv, char *data)
 {
 		ircnet *net = (ircnet*)serv->network;
-		char *user, *pass = NULL;
+		char *user;
 		const char *mech = sasl_mechanisms[serv->sasl_mech];
 
 		/* Got a list of supported mechanisms from outdated inspircd
