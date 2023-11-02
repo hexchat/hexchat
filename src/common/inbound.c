@@ -1775,24 +1775,30 @@ get_supported_mech (server *serv, const char *list)
 				break;
 			}
 		}
-		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_1) {
-			if (!strcmp(mechs[i], "SCRAM-SHA-1")) {
+		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_1)
+		{
+			if (!strcmp(mechs[i], "SCRAM-SHA-1"))
+			{
 				ret = MECH_SCRAM_SHA_1;
 				break;
 			}
 		}
-		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_256) {
-			if (!strcmp(mechs[i], "SCRAM-SHA-256")) {
+		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_256)
+		{
+			if (!strcmp(mechs[i], "SCRAM-SHA-256"))
+			{
 				ret = MECH_SCRAM_SHA_256;
 				break;
 			}
 		}
-		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_512) {
-			if (!strcmp(mechs[i], "SCRAM-SHA-512")) {
+		else if (serv->loginmethod == LOGIN_SASL_SCRAM_SHA_512)
+		{
+			if (!strcmp(mechs[i], "SCRAM-SHA-512"))
+			{
 				ret = MECH_SCRAM_SHA_512;
 				break;
 			}
-		}
+        }
 		else
 #endif
 		if (!strcmp (mechs[i], "PLAIN"))
@@ -1932,7 +1938,8 @@ inbound_cap_list (server *serv, char *nick, char *extensions,
 								  NULL, NULL, 0, tags_data->timestamp);
 }
 
-static void plain_authenticate(server *serv, char *user, char *password)
+static void
+plain_authenticate(server *serv, char *user, char *password)
 {
 	char *pass = encode_sasl_pass_plain (user, password);
 
@@ -1967,8 +1974,9 @@ static void plain_authenticate(server *serv, char *user, char *password)
 /*
  * Sends AUTHENTICATE messages to log in via SCRAM.
  */
-static void scram_authenticate(server *serv, const char *data, const char *digest,
-							   const char *user, const char *password)
+static void
+scram_authenticate(server *serv, const char *data, const char *digest,
+				   const char *user, const char *password)
 {
 	char *encoded, *decoded, *output;
 	int ret;
