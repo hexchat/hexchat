@@ -39,9 +39,9 @@ typedef struct {
 	int step;
 } scram_session;
 
-scram_session *scram_create_session(const char *digset, const char *username, const char *password);
-void scram_free_session(scram_session *session);
-int scram_process(scram_session *session, const char *input, char **output, size_t *output_len);
+scram_session *scram_create_session (const char *digset, const char *username, const char *password);
+void scram_free_session (scram_session *session);
+int scram_process (scram_session *session, const char *input, char **output, size_t *output_len);
 
 #endif
 #endif

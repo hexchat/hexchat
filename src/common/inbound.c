@@ -1939,7 +1939,7 @@ inbound_cap_list (server *serv, char *nick, char *extensions,
 }
 
 static void
-plain_authenticate(server *serv, char *user, char *password)
+plain_authenticate (server *serv, char *user, char *password)
 {
 	char *pass = encode_sasl_pass_plain (user, password);
 
@@ -1975,50 +1975,58 @@ plain_authenticate(server *serv, char *user, char *password)
  * Sends AUTHENTICATE messages to log in via SCRAM.
  */
 static void
-scram_authenticate(server *serv, const char *data, const char *digest,
-				   const char *user, const char *password)
+scram_authenticate (server *serv, const char *data, const char *digest,
+					const char *user, const char *password)
 {
 	char *encoded, *decoded, *output;
 	int ret;
 	size_t output_len;
 	gsize decoded_len;
 
-	if (serv->scram_session == NULL) {
-		serv->scram_session = scram_create_session(digest, user, password);
+	if (serv->scram_session == NULL)
+	{
+		serv->scram_session = scram_create_session (digest, user, password);
 
-		if (serv->scram_session == NULL) {
+		if (serv->scram_session == NULL)
+		{
 			// TODO: localized output
 			// g_error("Could not create SCRAM session with digest %s", digest);
-			tcp_sendf(serv, "AUTHENTICATE *\r\n");
+			tcp_sendf (serv, "AUTHENTICATE *\r\n");
 			return;
 		}
 	}
 
-	decoded = g_base64_decode(data, &decoded_len);
-	ret = scram_process(serv->scram_session, decoded, &output, &output_len);
-	g_free(decoded);
+	decoded = g_base64_decode (data, &decoded_len);
+	ret = scram_process (serv->scram_session, decoded, &output, &output_len);
+	g_free (decoded);
 
-	if (ret == SCRAM_IN_PROGRESS) {
+	if (ret == SCRAM_IN_PROGRESS)
+	{
 		// Authentication is still in progress
-		encoded = g_base64_encode((guchar *) output, output_len);
-		tcp_sendf(serv, "AUTHENTICATE %s\r\n", encoded);
-		g_free(encoded);
-		g_free(output);
-	} else if (ret == SCRAM_SUCCESS) {
+		encoded = g_base64_encode ((guchar *) output, output_len);
+		tcp_sendf (serv, "AUTHENTICATE %s\r\n", encoded);
+		g_free (encoded);
+		g_free (output);
+	}
+	else if (ret == SCRAM_SUCCESS)
+	{
 		// Authentication succeeded
-		tcp_sendf(serv, "AUTHENTICATE +\r\n");
-		scram_free_session(serv->scram_session);
+		tcp_sendf (serv, "AUTHENTICATE +\r\n");
+		scram_free_session (serv->scram_session);
 		serv->scram_session = NULL;
-	} else if (ret == SCRAM_ERROR) {
+	}
+	else if (ret == SCRAM_ERROR)
+	{
 		// Authentication failed
-		tcp_sendf(serv, "AUTHENTICATE *\r\n");
+		tcp_sendf (serv, "AUTHENTICATE *\r\n");
 
-		if (serv->scram_session->error != NULL) {
+		if (serv->scram_session->error != NULL)
+		{
 			// TODO: localized output
 			// g_warning("SASL SCRAM authentication failed: %s", serv->scram_session->error);
 		}
 
-        g_clear_pointer (&serv->scram_session, scram_free_session);
+		g_clear_pointer (&serv->scram_session, scram_free_session);
 	}
 }
 #endif
