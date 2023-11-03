@@ -1,5 +1,12 @@
 name: Flatpak Build
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
 jobs:
   flatpak_build:
     runs-on: ubuntu-latest
