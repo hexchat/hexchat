@@ -2012,8 +2012,7 @@ scram_authenticate (server *serv, const char *data, const char *digest,
 	{
 		// Authentication succeeded
 		tcp_sendf (serv, "AUTHENTICATE +\r\n");
-		scram_free_session (serv->scram_session);
-		serv->scram_session = NULL;
+		g_clear_pointer (&serv->scram_session, scram_free_session);
 	}
 	else if (status == SCRAM_ERROR)
 	{
