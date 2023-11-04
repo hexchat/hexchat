@@ -193,7 +193,7 @@ process_server_first (scram_session *session, const char *data, char **output,
 		return SCRAM_ERROR;
 	}
 
-	g_base64_decode_inplace  ((gchar *) salt, &salt_len);
+	g_base64_decode_inplace ((gchar *) salt, &salt_len);
 
 	// SaltedPassword := Hi(Normalize(password), salt, i)
 	session->salted_password = g_malloc (session->digest_size);

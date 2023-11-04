@@ -22,14 +22,8 @@
 #ifdef USE_OPENSSL
 #include <openssl/evp.h>
 
-typedef enum
+typedef struct
 {
-	SCRAM_ERROR = 0,
-	SCRAM_IN_PROGRESS,
-	SCRAM_SUCCESS
-} scram_status;
-
-typedef struct {
 	const EVP_MD *digest;
 	size_t digest_size;
 	char *username;
@@ -41,6 +35,13 @@ typedef struct {
 	char *error;
 	int step;
 } scram_session;
+
+typedef enum
+{
+	SCRAM_ERROR = 0,
+	SCRAM_IN_PROGRESS,
+	SCRAM_SUCCESS
+} scram_status;
 
 scram_session *scram_create_session (const char *digset, const char *username, const char *password);
 void scram_free_session (scram_session *session);
