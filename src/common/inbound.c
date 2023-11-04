@@ -1989,7 +1989,7 @@ scram_authenticate (server *serv, const char *data, const char *digest,
 
 		if (serv->scram_session == NULL)
 		{
-			// TODO: localized output
+			PrintTextf (serv->server_session, _("Could not create SCRAM session with digest %s"), digest);
 			g_warning ("Could not create SCRAM session with digest %s", digest);
 			tcp_sendf (serv, "AUTHENTICATE *\r\n");
 			return;
