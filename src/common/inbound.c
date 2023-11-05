@@ -2021,6 +2021,7 @@ scram_authenticate (server *serv, const char *data, const char *digest,
 
 		if (serv->scram_session->error != NULL)
 		{
+			PrintTextf (serv->server_session, _("SASL SCRAM authentication failed: %s"), serv->scram_session->error);
 			g_info ("SASL SCRAM authentication failed: %s", serv->scram_session->error);
 		}
 
