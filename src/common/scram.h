@@ -43,7 +43,7 @@ typedef enum
 	SCRAM_SUCCESS
 } scram_status;
 
-scram_session *scram_create_session (const char *digset, const char *username, const char *password);
+scram_session *scram_session_create (const char *digset, const char *username, const char *password);
 void scram_free_session (scram_session *session);
 scram_status scram_process (scram_session *session, const char *input, char **output, size_t *output_len);
 

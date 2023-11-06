@@ -1985,7 +1985,7 @@ scram_authenticate (server *serv, const char *data, const char *digest,
 
 	if (serv->scram_session == NULL)
 	{
-		serv->scram_session = scram_create_session (digest, user, password);
+		serv->scram_session = scram_session_create (digest, user, password);
 
 		if (serv->scram_session == NULL)
 		{

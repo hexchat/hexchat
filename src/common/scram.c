@@ -35,7 +35,7 @@
 #endif
 
 scram_session
-*scram_create_session (const char *digest, const char *username, const char *password)
+*scram_session_create (const char *digest, const char *username, const char *password)
 {
 	scram_session *session;
 	const EVP_MD *md;
@@ -162,10 +162,12 @@ process_server_first (scram_session *session, const char *data, char **output,
 	{
 		if (!strncmp (params[i], "r=", 2))
 		{
+			g_free (server_nonce_b64);
 			server_nonce_b64 = g_strdup (params[i] + 2);
 		}
 		else if (!strncmp (params[i], "s=", 2))
 		{
+			g_free (salt);
 			salt = g_strdup (params[i] + 2);
 		}
 		else if (!strncmp (params[i], "i=", 2))
@@ -180,6 +182,8 @@ process_server_first (scram_session *session, const char *data, char **output,
 		*salt == '\0' || iteration_count == 0)
 	{
 		session->error = g_strdup_printf ("Invalid server-first-message: %s", data);
+		g_free (server_nonce_b64);
+		g_free (salt);
 		return SCRAM_ERROR;
 	}
 
@@ -219,6 +223,10 @@ process_server_first (scram_session *session, const char *data, char **output,
 	// StoredKey := H(ClientKey)
 	if (!create_SHA (session, client_key, session->digest_size, stored_key, &stored_key_len))
 	{
+		g_free (client_final_message_without_proof);
+		g_free (server_nonce_b64);
+		g_free (salt);
+		g_free (client_key);
 		return SCRAM_ERROR;
 	}
 
@@ -241,10 +249,12 @@ process_server_first (scram_session *session, const char *data, char **output,
 	*output_len = strlen (*output);
 
 	g_free (server_nonce_b64);
-	g_free (client_final_message_without_proof);
 	g_free (salt);
+	g_free (client_final_message_without_proof);
+	g_free (client_key);
 	g_free (client_signature);
 	g_free (client_proof);
+	g_free (client_proof_b64);
 
 	session->step++;
 	return SCRAM_IN_PROGRESS;
