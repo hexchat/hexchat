@@ -59,7 +59,7 @@ scram_session
 }
 
 void
-scram_free_session (scram_session *session)
+scram_session_free (scram_session *session)
 {
 	if (session == NULL)
 	{
