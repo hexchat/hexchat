@@ -783,6 +783,7 @@ tray_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name,
 
 	hexchat_hook_print (ph, "Channel Msg Hilight", -1, tray_hilight_cb, NULL);
 	hexchat_hook_print (ph, "Channel Action Hilight", -1, tray_hilight_cb, NULL);
+	hexchat_hook_print (ph, "Channel Notice Hilight", -1, tray_hilight_cb, NULL);
 
 	hexchat_hook_print (ph, "Channel Message", -1, tray_message_cb, NULL);
 	hexchat_hook_print (ph, "Channel Action", -1, tray_message_cb, NULL);

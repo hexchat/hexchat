@@ -938,6 +938,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 	char *ptr = to;
 	session *sess = 0;
 	int server_notice = FALSE;
+	int hilight = FALSE;
 
 	if (is_channel (serv, ptr))
 		sess = find_channel (serv, ptr);
@@ -1024,8 +1025,14 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id,
 			msg[len - 1] = '\000';
 	}
 
+	if (is_hilight (nick, msg, sess, serv))
+		hilight = TRUE;
+
 	if (server_notice)
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_SERVNOTICE, sess, msg, nick, NULL, NULL, 0,
+									  tags_data->timestamp);
+	else if (hilight)
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_HCHANNOTICE, sess, nick, to, msg, NULL, 0,
 									  tags_data->timestamp);
 	else if (ptr)
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_CHANNOTICE, sess, nick, to, msg, NULL, 0,

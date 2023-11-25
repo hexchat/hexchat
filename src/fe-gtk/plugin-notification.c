@@ -224,6 +224,7 @@ notification_plugin_init (hexchat_plugin *plugin_handle, char **plugin_name, cha
 
 	hexchat_hook_print (ph, "Channel Msg Hilight", HEXCHAT_PRI_LOWEST, incoming_hilight_cb, NULL);
 	hexchat_hook_print (ph, "Channel Action Hilight", HEXCHAT_PRI_LOWEST, incoming_hilight_cb, NULL);
+	hexchat_hook_print (ph, "Channel Notice Hilight", HEXCHAT_PRI_LOWEST, incoming_hilight_cb, NULL);
 
 	hexchat_hook_print (ph, "Channel Message", HEXCHAT_PRI_LOWEST, incoming_message_cb, NULL);
 	hexchat_hook_print (ph, "Channel Action", HEXCHAT_PRI_LOWEST, incoming_message_cb, NULL);
