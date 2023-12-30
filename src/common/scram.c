@@ -78,7 +78,7 @@ scram_session_free (scram_session *session)
 }
 
 static int
-create_nonce (char *buffer, size_t length)
+create_nonce (void *buffer, size_t length)
 {
 	return RAND_bytes (buffer, length);
 }
