@@ -145,7 +145,8 @@ void fish_deinit(void)
  */
 char *fish_base64_encode(const char *message, size_t message_len) {
     BF_LONG left = 0, right = 0;
-    int i, j;
+    int i;
+    size_t j;
     char *encoded = NULL;
     char *end = NULL;
     char *msg = NULL;

@@ -170,7 +170,8 @@ xtext_pango_attr (PangoAttribute *attr)
 static void
 xtext_pango_init (GtkXText *xtext)
 {
-	int i, j;
+	size_t i;
+	int j;
 	char buf[2] = "\000";
 
 	if (attr_lists[0])

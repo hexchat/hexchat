@@ -67,7 +67,7 @@ hexchat_remote (void)
 	gboolean hexchat_running;
 	GError *error = NULL;
 	char *command = NULL;
-	int i;
+	guint i;
 
 	/* if there is nothing to do, return now. */
 	if (!arg_existing || !(arg_url || arg_urls || arg_command)) {

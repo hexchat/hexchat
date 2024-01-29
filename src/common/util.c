@@ -988,7 +988,7 @@ void
 country_search (char *pattern, void *ud, void (*print)(void *, char *, ...))
 {
 	const domain_t *dom;
-	int i;
+	size_t i;
 
 	for (i = 0; i < sizeof (domain) / sizeof (domain_t); i++)
 	{
