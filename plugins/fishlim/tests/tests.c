@@ -36,7 +36,7 @@ static void
 random_string(char *out, size_t len)
 {
     GRand *rand = NULL;
-    int i = 0;
+    size_t i = 0;
 
     rand = g_rand_new();
     for (i = 0; i < len; ++i) {

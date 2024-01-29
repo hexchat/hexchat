@@ -331,7 +331,7 @@ url_check_line (char *buf)
 	GRegex *re(void);
 	GMatchInfo *gmi;
 	char *po = buf;
-	int i;
+	size_t i;
 
 	/* Skip over message prefix */
 	if (*po == ':')

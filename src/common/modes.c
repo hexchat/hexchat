@@ -680,7 +680,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 	int len;
 	size_t arg;
 	size_t i, num_args;
-	int num_modes;
+	size_t num_modes;
 	size_t offset = 3;
 	int all_modes_have_args = FALSE;
 	int using_front_tab = FALSE;
