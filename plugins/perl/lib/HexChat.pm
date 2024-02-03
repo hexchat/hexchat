@@ -342,7 +342,7 @@ sub _do_for_each {
 
 	# not specifying any channels or servers is not the same as specifying
 	# undef for both
-	# - not specifying either results in calling the callback inthe current ctx
+	# - not specifying either results in calling the callback in the current ctx
 	# - specifying undef for for both results in calling the callback in the
 	#   front/currently selected tab
 	if( @_ == 3 && !($channels || $servers) ) { 
