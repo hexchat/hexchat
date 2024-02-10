@@ -762,7 +762,7 @@ process_numeric (session * sess, int n,
 
 				/* :server 354 yournick 152 #channel ~ident host servname nick H account :realname */
 				inbound_user_info (sess, word[5], word[6], word[7], word[8],
-										 word[9], word_eol[12]+1, word[11], away,
+										 word[9], word_eol[12][0] == ':' ? word_eol[12] + 1 : word_eol[12], word[11], away,
 										 tags_data);
 
 				/* try to show only user initiated whos */
