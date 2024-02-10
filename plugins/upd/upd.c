@@ -24,7 +24,7 @@
 
 #include "hexchat-plugin.h"
 
-#define APPCAST_URL "https://dl.hexchat.net/appcast.xml"
+#define APPCAST_URL "https://hexchat.github.io/appcast.xml"
 
 static hexchat_plugin *ph;   /* plugin handle */
 static char name[] = "Update Checker";

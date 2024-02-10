@@ -31,19 +31,19 @@ jobs:
           Invoke-WebRequest http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe -OutFile deps\innosetup-unicode.exe
           & deps\innosetup-unicode.exe /VERYSILENT | Out-Null
 
-          Invoke-WebRequest https://dl.hexchat.net/misc/idpsetup-1.5.1.exe -OutFile deps\idpsetup.exe
+          Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/idpsetup-1.5.1.exe -OutFile deps\idpsetup.exe
           & deps\idpsetup.exe /VERYSILENT
 
-          Invoke-WebRequest https://dl.hexchat.net/gtk/gtk-${{ matrix.platform }}-2018-08-29-openssl1.1.7z -OutFile deps\gtk-${{ matrix.arch }}.7z
+          Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/gtk-${{ matrix.platform }}-2018-08-29-openssl1.1.7z -OutFile deps\gtk-${{ matrix.arch }}.7z
           & 7z.exe x deps\gtk-${{ matrix.arch }}.7z -oC:\gtk-build\gtk
 
-          Invoke-WebRequest https://dl.hexchat.net/gtk-win32/gendef-20111031.7z -OutFile deps\gendef.7z
+          Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/gendef-20111031.7z-OutFile deps\gendef.7z
           & 7z.exe x deps\gendef.7z -oC:\gtk-build
 
-          Invoke-WebRequest https://dl.hexchat.net/gtk-win32/WinSparkle-20151011.7z -OutFile deps\WinSparkle.7z
+          Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/WinSparkle-20151011.7z -OutFile deps\WinSparkle.7z
           & 7z.exe x deps\WinSparkle.7z -oC:\gtk-build\WinSparkle
 
-          Invoke-WebRequest https://dl.hexchat.net/misc/perl/perl-5.20.0-${{ matrix.arch }}.7z -OutFile deps\perl-${{ matrix.arch }}.7z
+          Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/perl-5.20.0-${{ matrix.arch }}.7z -OutFile deps\perl-${{ matrix.arch }}.7z
           & 7z.exe x deps\perl-${{ matrix.arch }}.7z -oC:\gtk-build\perl-5.20\${{ matrix.platform }}
 
           New-Item -Path "c:\gtk-build" -Name "python-3.8" -ItemType "Directory"
