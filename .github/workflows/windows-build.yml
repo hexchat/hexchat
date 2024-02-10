@@ -37,7 +37,7 @@ jobs:
           Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/gtk-${{ matrix.platform }}-2018-08-29-openssl1.1.7z -OutFile deps\gtk-${{ matrix.arch }}.7z
           & 7z.exe x deps\gtk-${{ matrix.arch }}.7z -oC:\gtk-build\gtk
 
-          Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/gendef-20111031.7z-OutFile deps\gendef.7z
+          Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/gendef-20111031.7z -OutFile deps\gendef.7z
           & 7z.exe x deps\gendef.7z -oC:\gtk-build
 
           Invoke-WebRequest https://github.com/hexchat/gvsbuild/releases/download/hexchat-2.16.2/WinSparkle-20151011.7z -OutFile deps\WinSparkle.7z
