@@ -70,7 +70,7 @@ void key_action_tab_clean (void);
  */
 
 /* Remember that the *number* of actions is this *plus* 1 --AGL */
-#define KEY_MAX_ACTIONS 14
+#define KEY_MAX_ACTIONS 17
 
 struct key_binding
 {
@@ -132,6 +132,15 @@ static int key_action_move_tab_family_right (GtkWidget * wid, GdkEventKey * evt,
 static int key_action_put_history (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
+static int key_action_close_tab (GtkWidget * wid, GdkEventKey * evt,
+												  char *d1, char *d2,
+												  struct session *sess);
+static int key_action_undo_tab_close (GtkWidget * wid, GdkEventKey * evt,
+												  char *d1, char *d2,
+												  struct session *sess);
+static int key_action_clear_text (GtkWidget * wid, GdkEventKey * evt,
+												  char *d1, char *d2,
+												  struct session *sess);
 
 static GSList *keybind_list = NULL;
 
@@ -167,6 +176,12 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	 N_("This command moves the current tab family to the right")},
 	{key_action_put_history, "Push input line into history",
 	 N_("Push input line into history but doesn't send to server")},
+	{key_action_close_tab, "Close tab",
+	 N_("Close tab")},
+	{key_action_undo_tab_close, "Undo tab close",
+	 N_("Undo tab close")},
+	{key_action_clear_text, "Clear text",
+	 N_("Clear text")},
 };
 
 #define default_kb_cfg \
@@ -208,7 +223,10 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	"ACCEL=<Alt>Right\nMove front tab right\nD1!\nD2!\n\n"\
 	"ACCEL=<Primary><Shift>Page_Up\nMove tab family left\nD1!\nD2!\n\n"\
 	"ACCEL=<Primary><Shift>Page_Down\nMove tab family right\nD1!\nD2!\n\n"\
-	"ACCEL=F9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
+	"ACCEL=F9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"\
+	"ACCEL=<Primary>w\nClose tab\nD1:!\nD2!\n\n"\
+	"ACCEL=<Primary><Shift>t\nUndo tab close\nD1:!\nD2!\n\n"\
+	"ACCEL=<Primary>l\nClear text\nD1:!\nD2!\n\n"\
 
 void
 key_init ()
@@ -305,6 +323,7 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	struct key_binding *kb;
 	int n;
 	GSList *list;
+	guint upper, lower;
 
 	/* where did this event come from? */
 	list = sess_list;
@@ -333,9 +352,12 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	list = keybind_list;
 	while (list)
 	{
+		upper = lower = 0;
+		gdk_keyval_convert_case(evt->keyval, &upper, &lower);
 		kb = (struct key_binding*)list->data;
 
-		if (kb->keyval == evt->keyval && kb->mod == key_modifier_get_valid (evt->state))
+		if ((kb->keyval == evt->keyval || kb->keyval == upper || kb->keyval == lower) &&
+		    kb->mod == key_modifier_get_valid (evt->state))
 		{
 			if (kb->action < 0 || kb->action > KEY_MAX_ACTIONS)
 				return 0;
@@ -1767,6 +1789,29 @@ key_action_put_history (GtkWidget * wid, GdkEventKey * ent, char *d1,
 	return 2;						  /* -''- */
 }
 
+static int
+key_action_close_tab (GtkWidget * wid, GdkEventKey * ent, char *d1,
+									char *d2, struct session *sess)
+{
+	mg_close_sess (sess);
+	return 2;
+}
+
+static int
+key_action_undo_tab_close (GtkWidget * wid, GdkEventKey * ent, char *d1,
+									char *d2, struct session *sess)
+{
+	mg_undo_tab_close (sess);
+	return 2;
+}
+
+static int
+key_action_clear_text (GtkWidget * wid, GdkEventKey * ent, char *d1,
+									char *d2, struct session *sess)
+{
+	fe_text_clear (sess, 0);
+	return 2;
+}
 
 /* -------- */
 

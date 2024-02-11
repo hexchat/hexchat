@@ -1059,12 +1059,38 @@ mg_tab_close_cb (GtkWidget *dialog, gint arg1, session *sess)
 	}
 }
 
+typedef struct closed_channel {
+	server *server;
+	char channel[CHANLEN];
+	char key[64];
+} closed_channel;
+
+static GQueue closed_channels = G_QUEUE_INIT;
+
 void
 mg_tab_close (session *sess)
 {
 	GtkWidget *dialog;
 	GSList *list;
 	int i;
+
+	if (hexchat_is_quitting)
+	{
+		closed_channel *chan;
+		while (!g_queue_is_empty(&closed_channels))
+		{
+			chan = g_queue_pop_head(&closed_channels);
+			g_free(chan);
+		}
+	}
+	else if (is_channel (sess->server, sess->channel))
+	{
+		closed_channel *chan = g_new0(closed_channel, 1);
+		chan->server = sess->server;
+		g_strlcpy(chan->channel, sess->channel, CHANLEN);
+		g_strlcpy(chan->key, sess->channelkey, 64);
+		g_queue_push_head(&closed_channels, chan);
+	}
 
 	if (chan_remove (sess->res->tab, FALSE))
 	{
@@ -1095,6 +1121,21 @@ mg_tab_close (session *sess)
 		}
 		gtk_widget_show (dialog);
 	}
+}
+
+void
+mg_undo_tab_close (session *sess)
+{
+	closed_channel *chan;
+
+	if (g_queue_is_empty(&closed_channels))
+		return;
+
+	chan = g_queue_pop_head(&closed_channels);
+	if (is_server (chan->server))
+		chan->server->p_join (chan->server, chan->channel, chan->key);
+
+	g_free(chan);
 }
 
 static void
