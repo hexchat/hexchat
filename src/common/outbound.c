@@ -2582,7 +2582,6 @@ gboolean
 load_perform_file (session *sess, char *file)
 {
 	char tbuf[1024 + 4];
-	char *nl;
 	FILE *fp;
 
 	fp = hexchat_fopen_file (file, "r", 0);		/* load files from config dir */
@@ -2592,11 +2591,9 @@ load_perform_file (session *sess, char *file)
 	tbuf[1024] = 0;
 	while (fgets (tbuf, 1024, fp))
 	{
-		nl = strchr (tbuf, '\n');
-		if (nl == tbuf) /* skip empty commands */
+		tbuf[strcspn (tbuf, "\r\n")] = 0;
+		if (!*tbuf) /* skip empty commands */
 			continue;
-		if (nl)
-			*nl = 0;
 		if (tbuf[0] == prefs.hex_input_command_char[0])
 			handle_command (sess, tbuf + 1, TRUE);
 		else

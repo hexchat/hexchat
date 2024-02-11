@@ -959,7 +959,6 @@ servlist_load (void)
 {
 	FILE *fp;
 	char buf[2048];
-	int len;
 	ircnet *net = NULL;
 
 	/* simple migration we will keep for a short while */
@@ -980,11 +979,9 @@ servlist_load (void)
 
 	while (fgets (buf, sizeof (buf) - 2, fp))
 	{
-		len = strlen (buf);
-		if (!len)
+		buf[strcspn (buf, "\r\n")] = 0;
+		if (!*buf)
 			continue;
-		buf[len] = 0;
-		buf[len-1] = 0;	/* remove the trailing \n */
 		if (net)
 		{
 			switch (buf[0])
@@ -1117,7 +1114,7 @@ servlist_save (void)
 		first = TRUE;
 #endif
 
-	fp = hexchat_fopen_file ("servlist.conf", "w", 0);
+	fp = hexchat_fopen_file ("servlist.conf", "wb", 0);
 	if (!fp)
 	{
 #ifndef WIN32
