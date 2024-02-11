@@ -146,6 +146,7 @@ static void gtk_xtext_search_textentry_fini (gpointer, gpointer);
 static void gtk_xtext_search_fini (xtext_buffer *);
 static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_flags flags, GError **perr);
 static char * gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent, int *ret_off, int *ret_len, GSList **slp);
+static void backend_reload_font(GtkXText *xtext);
 
 #define xtext_draw_bg(xt,x,y,w,h) gdk_draw_rectangle(xt->draw_buf, xt->bgc, 1, x, y, w, h);
 
@@ -267,7 +268,8 @@ backend_font_open (GtkXText *xtext, char *name)
 	PangoFontMetrics *metrics;
 
 	xtext->font = &xtext->pango_font;
-	xtext->font->font = backend_font_open_real (name);
+	if (name)
+		xtext->font->font = backend_font_open_real (name);
 	if (!xtext->font->font)
 	{
 		xtext->font = NULL;
@@ -557,6 +559,11 @@ gtk_xtext_new (GdkColor palette[], int separator)
 
 	gtk_widget_set_double_buffered (GTK_WIDGET (xtext), FALSE);
 	gtk_xtext_set_palette (xtext, palette);
+
+	g_signal_connect_object(gtk_widget_get_settings(GTK_WIDGET(xtext)),
+				"notify::gtk-xft-dpi",
+				G_CALLBACK(backend_reload_font),
+				xtext, G_CONNECT_SWAPPED|G_CONNECT_AFTER);
 
 	return GTK_WIDGET (xtext);
 }
@@ -3499,11 +3506,20 @@ gtk_xtext_recalc_widths (xtext_buffer *buf, int do_str_width)
 	gtk_xtext_calc_lines (buf, FALSE);
 }
 
+static void
+backend_reload_font(GtkXText *xtext)
+{
+	if (gtk_widget_get_realized (GTK_WIDGET(xtext)) && xtext->font)
+	{
+		gtk_xtext_set_font(xtext, NULL);
+		gtk_widget_queue_draw(GTK_WIDGET(xtext));
+	}
+}
+
 int
 gtk_xtext_set_font (GtkXText *xtext, char *name)
 {
-
-	if (xtext->font)
+	if (name && xtext->font)
 		backend_font_close (xtext);
 
 	/* realize now, so that font_open has a XDisplay */
