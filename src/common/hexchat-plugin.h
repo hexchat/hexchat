@@ -39,6 +39,10 @@
 #define HEXCHAT_EAT_PLUGIN	2	/* don't let other plugins see this event */
 #define HEXCHAT_EAT_ALL		(HEXCHAT_EAT_HEXCHAT|HEXCHAT_EAT_PLUGIN)	/* don't let anything see this event */
 
+#define HEXCHAT_COMMAND_KIND_BUILTIN	0
+#define HEXCHAT_COMMAND_KIND_USER	1
+#define HEXCHAT_COMMAND_KIND_PLUGIN	2
+
 #ifdef __cplusplus
 extern "C" {
 #endif
