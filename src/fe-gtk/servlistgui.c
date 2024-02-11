@@ -589,6 +589,9 @@ servlist_move_item (GtkTreeView *view, GSList *list, gpointer item, int delta)
 	return list;
 }
 
+static void
+servlist_connect_cb (GtkWidget *button, gpointer userdata);
+
 static gboolean
 servlist_net_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 {
@@ -610,6 +613,11 @@ servlist_net_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 			network_list = servlist_move_item (GTK_TREE_VIEW (tree), network_list, selected_net, +1);
 		}
 	}
+    else if (evt->keyval == GDK_KEY_Return)
+    {
+        handled = TRUE;
+        servlist_connect_cb(NULL, NULL);
+    }
 
 	return handled;
 }
