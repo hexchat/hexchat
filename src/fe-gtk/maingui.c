@@ -3341,6 +3341,8 @@ mg_apply_setup (void)
 			mg_place_userlist_and_chanview (sess->gui);
 		if (sess->gui->is_tab)
 			done_main = TRUE;
+		/* redraw the chanview to prevent visual glitches due to font changes */
+		chanview_queue_draw(sess->gui->chanview);
 		list = list->next;
 	}
 }

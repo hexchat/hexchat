@@ -69,6 +69,7 @@ struct _chanview
 	gboolean (*func_is_collapsed) (chan *);
 	chan *(*func_get_parent) (chan *);
 	void (*func_cleanup) (chanview *);
+	void (*func_queue_draw) (chanview *);
 
 	unsigned int sorted:1;
 	unsigned int vertical:1;
@@ -192,6 +193,7 @@ chanview_set_impl (chanview *cv, int type)
 		cv->func_is_collapsed = cv_tabs_is_collapsed;
 		cv->func_get_parent = cv_tabs_get_parent;
 		cv->func_cleanup = cv_tabs_cleanup;
+		cv->func_queue_draw = NULL;
 		break;
 
 	default:
@@ -209,6 +211,7 @@ chanview_set_impl (chanview *cv, int type)
 		cv->func_is_collapsed = cv_tree_is_collapsed;
 		cv->func_get_parent = cv_tree_get_parent;
 		cv->func_cleanup = cv_tree_cleanup;
+		cv->func_queue_draw = cv_tree_queue_draw;
 		break;
 	}
 
@@ -437,6 +440,16 @@ chanview_set_orientation (chanview *cv, gboolean vertical)
 		cv->vertical = vertical;
 		cv->func_change_orientation (cv);
 	}
+}
+
+void
+chanview_queue_draw (chanview *cv)
+{
+	if (!cv->func_queue_draw) {
+		return;
+	}
+	cv->func_queue_draw (cv);
+	cv->func_postinit (cv);
 }
 
 int

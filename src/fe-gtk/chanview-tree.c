@@ -153,7 +153,6 @@ cv_tree_init (chanview *cv)
 	renderer = gtk_cell_renderer_text_new ();
 	if (prefs.hex_gui_compact)
 		g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
-	gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT (renderer), 1);
 	gtk_tree_view_column_pack_start(col, renderer, TRUE);
 	gtk_tree_view_column_set_attributes (col, renderer, "text", COL_NAME, "attributes", COL_ATTR, NULL);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(view), col);									
@@ -393,4 +392,15 @@ cv_tree_is_collapsed (chan *ch)
 	gtk_tree_path_free (path);
 	
 	return ret;
+}
+
+static void
+cv_tree_queue_draw (chanview *cv)
+{
+	/* assign the model again to cause the tree view to be redrawn
+	   note: Simply using gtk_widget_queue_draw() is not sufficient. */
+	GtkTreeView *tree_view = ((treeview *)cv)->tree;
+	GtkTreeModel *model = gtk_tree_view_get_model(tree_view);
+	gtk_tree_view_set_model(tree_view, NULL);
+	gtk_tree_view_set_model(tree_view, model);
 }
