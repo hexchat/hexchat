@@ -577,60 +577,58 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	char portbuf[32];
 	char lbuf[2050];
 
-	while (1)
+	if (dcc->throttled)
 	{
-		if (dcc->throttled)
-		{
-			fe_input_remove (dcc->iotag);
-			dcc->iotag = 0;
-			return FALSE;
-		}
-
-		if (!dcc->iotag)
-			dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
-
-		len = recv (dcc->sok, lbuf, sizeof (lbuf) - 2, 0);
-		if (len < 1)
-		{
-			if (len < 0)
-			{
-				if (would_block ())
-					return TRUE;
-			}
-			sprintf (portbuf, "%d", dcc->port);
-			EMIT_SIGNAL (XP_TE_DCCCHATF, dcc->serv->front_session, dcc->nick,
-							 net_ip (dcc->addr), portbuf,
-							 errorstring ((len < 0) ? sock_error () : 0), 0);
-			dcc_close (dcc, STAT_FAILED, FALSE);
-			return TRUE;
-		}
-		i = 0;
-		lbuf[len] = 0;
-		while (i < len)
-		{
-			switch (lbuf[i])
-			{
-			case '\r':
-				break;
-			case '\n':
-				dcc->dccchat->linebuf[dcc->dccchat->pos] = 0;
-				dead = dcc_chat_line (dcc, dcc->dccchat->linebuf);
-
-				if (dead || !dcc->dccchat) /* the dcc has been closed, don't use (DCC *)! */
-					return TRUE;
-
-				dcc->pos += dcc->dccchat->pos;
-				dcc->dccchat->pos = 0;
-				fe_dcc_update (dcc);
-				break;
-			default:
-				dcc->dccchat->linebuf[dcc->dccchat->pos] = lbuf[i];
-				if (dcc->dccchat->pos < (sizeof (dcc->dccchat->linebuf) - 1))
-					dcc->dccchat->pos++;
-			}
-			i++;
-		}
+		fe_input_remove (dcc->iotag);
+		dcc->iotag = 0;
+		return FALSE;
 	}
+
+	if (!dcc->iotag)
+		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
+
+	len = recv (dcc->sok, lbuf, sizeof (lbuf) - 2, 0);
+	if (len < 1)
+	{
+		if (len < 0)
+		{
+			if (would_block ())
+				return TRUE;
+		}
+		sprintf (portbuf, "%d", dcc->port);
+		EMIT_SIGNAL (XP_TE_DCCCHATF, dcc->serv->front_session, dcc->nick,
+						 net_ip (dcc->addr), portbuf,
+						 errorstring ((len < 0) ? sock_error () : 0), 0);
+		dcc_close (dcc, STAT_FAILED, FALSE);
+		return TRUE;
+	}
+	i = 0;
+	lbuf[len] = 0;
+	while (i < len)
+	{
+		switch (lbuf[i])
+		{
+		case '\r':
+			break;
+		case '\n':
+			dcc->dccchat->linebuf[dcc->dccchat->pos] = 0;
+			dead = dcc_chat_line (dcc, dcc->dccchat->linebuf);
+
+			if (dead || !dcc->dccchat) /* the dcc has been closed, don't use (DCC *)! */
+				return TRUE;
+
+			dcc->pos += dcc->dccchat->pos;
+			dcc->dccchat->pos = 0;
+			fe_dcc_update (dcc);
+			break;
+		default:
+			dcc->dccchat->linebuf[dcc->dccchat->pos] = lbuf[i];
+			if (dcc->dccchat->pos < (sizeof (dcc->dccchat->linebuf) - 1))
+				dcc->dccchat->pos++;
+		}
+		i++;
+	}
+        return TRUE;
 }
 
 static void
@@ -713,69 +711,67 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		dcc_close (dcc, STAT_FAILED, FALSE);
 		return TRUE;
 	}
-	while (1)
+	if (dcc->throttled)
 	{
-		if (dcc->throttled)
-		{
-			if (need_ack)
-				dcc_send_ack (dcc);
-
-			fe_input_remove (dcc->iotag);
-			dcc->iotag = 0;
-			return FALSE;
-		}
-
-		if (!dcc->iotag)
-			dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read, dcc);
-
-		n = recv (dcc->sok, buf, sizeof (buf), 0);
-		if (n < 1)
-		{
-			if (n < 0)
-			{
-				if (would_block ())
-				{
-					if (need_ack)
-						dcc_send_ack (dcc);
-					return TRUE;
-				}
-			}
-			EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
-							 dcc->destfile, dcc->nick,
-							 errorstring ((n < 0) ? sock_error () : 0), 0);
-			/* send ack here? but the socket is dead */
-			/*if (need_ack)
-				dcc_send_ack (dcc);*/
-			dcc_close (dcc, STAT_FAILED, FALSE);
-			return TRUE;
-		}
-
-		if (write (dcc->fp, buf, n) == -1) /* could be out of hdd space */
-		{
-			EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
-							 dcc->destfile, dcc->nick, errorstring (errno), 0);
-			if (need_ack)
-				dcc_send_ack (dcc);
-			dcc_close (dcc, STAT_FAILED, FALSE);
-			return TRUE;
-		}
-
-		dcc->lasttime = time (0);
-		dcc->pos += n;
-		need_ack = TRUE;	/* send ack when we're done recv()ing */
-
-		if (dcc->pos >= dcc->size)
-		{
+		if (need_ack)
 			dcc_send_ack (dcc);
-			dcc_close (dcc, STAT_DONE, FALSE);
-			dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
-			/* cppcheck-suppress deallocuse */
-			sprintf (buf, "%" G_GINT64_FORMAT, dcc->cps);
-			EMIT_SIGNAL (XP_TE_DCCRECVCOMP, dcc->serv->front_session,
-							 dcc->file, dcc->destfile, dcc->nick, buf, 0);
-			return TRUE;
-		}
+
+		fe_input_remove (dcc->iotag);
+		dcc->iotag = 0;
+		return FALSE;
 	}
+
+	if (!dcc->iotag)
+		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read, dcc);
+
+	n = recv (dcc->sok, buf, sizeof (buf), 0);
+	if (n < 1)
+	{
+		if (n < 0)
+		{
+			if (would_block ())
+			{
+				if (need_ack)
+					dcc_send_ack (dcc);
+				return TRUE;
+			}
+		}
+		EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
+						 dcc->destfile, dcc->nick,
+						 errorstring ((n < 0) ? sock_error () : 0), 0);
+		/* send ack here? but the socket is dead */
+		/*if (need_ack)
+			dcc_send_ack (dcc);*/
+		dcc_close (dcc, STAT_FAILED, FALSE);
+		return TRUE;
+	}
+
+	if (write (dcc->fp, buf, n) == -1) /* could be out of hdd space */
+	{
+		EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
+						 dcc->destfile, dcc->nick, errorstring (errno), 0);
+		if (need_ack)
+			dcc_send_ack (dcc);
+		dcc_close (dcc, STAT_FAILED, FALSE);
+		return TRUE;
+	}
+
+	dcc->lasttime = time (0);
+	dcc->pos += n;
+	need_ack = TRUE;	/* send ack when we're done recv()ing */
+
+	if (dcc->pos >= dcc->size)
+	{
+		dcc_send_ack (dcc);
+		dcc_close (dcc, STAT_DONE, FALSE);
+		dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
+		/* cppcheck-suppress deallocuse */
+		sprintf (buf, "%" G_GINT64_FORMAT, dcc->cps);
+		EMIT_SIGNAL (XP_TE_DCCRECVCOMP, dcc->serv->front_session,
+						 dcc->file, dcc->destfile, dcc->nick, buf, 0);
+		return TRUE;
+	}
+        return TRUE;
 }
 
 static void
