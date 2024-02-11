@@ -1581,10 +1581,11 @@ irc_inline (server *serv, char *buf, int len)
 	/* Python relies on this */
 	word[PDIWORDS] = NULL;
 	word_eol[PDIWORDS] = NULL;
+	char* tags = NULL;
 
 	if (*buf == '@')
 	{
-		char *tags = buf + 1; /* skip the '@' */
+		tags = buf + 1; /* skip the '@' */
 		char *sep = strchr (buf, ' ');
 
 		if (!sep)
@@ -1618,7 +1619,7 @@ irc_inline (server *serv, char *buf, int len)
 		word_eol[1] = buf;	/* keep the ":" for plugins */
 
 		if (plugin_emit_server (sess, type, word, word_eol,
-								tags_data.timestamp))
+								tags_data.timestamp, tags))
 			goto xit;
 
 		word[1]++;
@@ -1629,7 +1630,7 @@ irc_inline (server *serv, char *buf, int len)
 		word[0] = type = word[1];
 
 		if (plugin_emit_server (sess, type, word, word_eol,
-								tags_data.timestamp))
+								tags_data.timestamp, tags))
 			goto xit;
 	}
 
