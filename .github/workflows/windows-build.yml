@@ -1,11 +1,5 @@
 name: Windows Build
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   windows_build:

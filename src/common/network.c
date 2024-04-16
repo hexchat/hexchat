@@ -24,6 +24,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <glib.h>
+#include <errno.h>
 
 #ifndef WIN32
 #include <unistd.h>
@@ -164,13 +165,25 @@ net_connect (netstore * ns, int sok4, int sok6, int *sok_return)
 	return error;
 }
 
-void
-net_bind (netstore * tobindto, int sok4, int sok6)
+int
+net_bind (netstore *tobindto, int sok4, int sok6, const char **sok4_error, const char **sok6_error)
 {
-	bind (sok4, tobindto->ip6_hostent->ai_addr,
-			tobindto->ip6_hostent->ai_addrlen);
-	bind (sok6, tobindto->ip6_hostent->ai_addr,
-			tobindto->ip6_hostent->ai_addrlen);
+	int r = 0;
+	*sok4_error = *sok6_error = NULL;
+
+	if (bind (sok4, tobindto->ip6_hostent->ai_addr, tobindto->ip6_hostent->ai_addrlen) != 0)
+	{
+		r |= 1;
+		*sok4_error = strerror (errno);
+	}
+
+	if (bind (sok6, tobindto->ip6_hostent->ai_addr, tobindto->ip6_hostent->ai_addrlen) != 0)
+	{
+		r |= 2;
+		*sok6_error = strerror (errno);
+	}
+
+	return r;
 }
 
 void

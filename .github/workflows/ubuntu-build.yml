@@ -1,12 +1,5 @@
 name: Ubuntu Build
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-
+on: [push, pull_request]
 jobs:
   ubuntu_build:
     runs-on: ubuntu-20.04

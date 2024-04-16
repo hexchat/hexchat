@@ -1,11 +1,5 @@
 name: MSYS2 Build
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   msys2_build:
